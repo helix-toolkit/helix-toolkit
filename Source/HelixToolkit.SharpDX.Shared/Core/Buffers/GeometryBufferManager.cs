@@ -105,8 +105,9 @@ namespace HelixToolkit.UWP.Core
     /// Use to manage geometry vertex/index buffers. 
     /// Same geometry with same buffer type will share the same buffer across all models.
     /// </summary>
-    public sealed class GeometryBufferManager : DisposeObject, IGeometryBufferManager
+    public sealed class GeometryBufferManager : IDisposable, IGeometryBufferManager
     {
+        public int Count { get { return bufferDictionary.Count(); } }
         /// <summary>
         /// The buffer dictionary. Key1=<see cref="Geometry3D.GUID"/>, Key2=Typeof(Buffer)
         /// </summary>
@@ -196,25 +197,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void OnDispose(bool disposeManagedResources)
-        {
-            if (disposeManagedResources)
-            {
-                lock (bufferDictionary)
-                {
-                    foreach (var buffer in bufferDictionary.Values.ToArray())
-                    {
-                        buffer.Dispose();
-                    }
-                    bufferDictionary.Clear();
-                }
-            }
-            base.OnDispose(disposeManagedResources);
-        }
+
 
         /// <summary>
         /// 
@@ -248,5 +231,47 @@ namespace HelixToolkit.UWP.Core
                 return new GeometryBufferContainer(new T());
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    lock (bufferDictionary)
+                    {
+                        foreach (var buffer in bufferDictionary.Values.ToArray())
+                        {
+                            buffer.Dispose();
+                        }
+                        bufferDictionary.Clear();
+                    }
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~GeometryBufferManager() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

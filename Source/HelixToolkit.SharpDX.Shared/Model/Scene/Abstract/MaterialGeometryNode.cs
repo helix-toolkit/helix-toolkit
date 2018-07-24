@@ -53,9 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                         }
                         else
                         {
-                            var host = RenderHost;
                             Detach();
-                            Attach(host);
+                            Attach(RenderHost);
                         }
                     }
                 }
