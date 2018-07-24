@@ -66,8 +66,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             RemoveAndDispose(ref materialVariable);
             if(material != null && RenderCore is IMaterialRenderParams core)
             {
-                materialVariable = core.MaterialVariables = Collect(EffectsManager.MaterialVariableManager.Register(material, renderTechnique));
+                materialVariable = core.MaterialVariables = Collect(EffectsManager.MaterialVariableManager.Register(material, EffectTechnique));
             }
+        }
+
+        protected override OrderKey OnUpdateRenderOrderKey()
+        {
+            return OrderKey.Create(RenderOrder, materialVariable == null ? (ushort)0 : materialVariable.ID);
         }
 
         protected override bool OnAttach(IRenderHost host)

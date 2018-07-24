@@ -576,7 +576,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             base.OnDetach();
         }
-
+        protected override OrderKey OnUpdateRenderOrderKey()
+        {
+            return OrderKey.Create(RenderOrder, materialVariable == null ? (ushort)0 : materialVariable.ID);
+        }
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
         /// </summary>

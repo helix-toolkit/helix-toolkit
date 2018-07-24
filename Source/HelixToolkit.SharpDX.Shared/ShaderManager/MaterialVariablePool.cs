@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP
     public sealed class MaterialVariablePool : IDisposable, IMaterialVariablePool
     {
         public int Count { get { return dictionary.Count(); } }
+        private ushort IDMAX = 0;
         private readonly DoubleKeyDictionary<Guid, Guid, MaterialVariable> dictionary = new DoubleKeyDictionary<Guid, Guid, MaterialVariable>();
         private readonly IEffectsManager effectsManager;
 
@@ -45,6 +46,18 @@ namespace HelixToolkit.UWP
                         }
                     };
                     dictionary.Add(guid, techGuid, v);
+                    if (IDMAX - (ushort)Count > 1000)
+                    {
+                        IDMAX = 0;
+                        foreach(var m in dictionary)
+                        {
+                            m.Value.ID = ++IDMAX;
+                        }
+                    }
+                    else
+                    {
+                        v.ID = ++IDMAX;
+                    }
                     return v;
                 }
             }

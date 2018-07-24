@@ -22,6 +22,13 @@ namespace HelixToolkit.UWP.Model
         public abstract string DefaultShaderPassName { set; get; }
 
         public event EventHandler OnUpdateNeeded;
+        /// <summary>
+        /// Gets or sets the identifier. Used for material sorting
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public ushort ID { set; get; } = 0;
 
         protected IRenderTechnique Technique { private set; get; }
         protected bool NeedUpdate { set; get; } = true;

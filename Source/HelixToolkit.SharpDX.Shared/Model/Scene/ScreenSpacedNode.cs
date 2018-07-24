@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool OnAttach(IRenderHost host)
         {
-            RenderCore.Attach(renderTechnique);
+            RenderCore.Attach(EffectTechnique);
             var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
             screenSpaceCore.RelativeScreenLocationX = RelativeScreenLocationX;
             screenSpaceCore.RelativeScreenLocationY = RelativeScreenLocationY;
