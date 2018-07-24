@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+### Added
+
+### Improvement and Changes
+1. Move render environment map and render shadow map into PhongMaterial. (WPF.SharpDX and UWP)
+2. Includes material sorting if EnableRenderOrder = true. Update RenderOrder to ushort. Update sorting key to be uint = [RenderOrder, MaterialID]. (WPF.SharpDX and UWP)
+3. MaterialVariable pooling. (WPF.SharpDX and UWP)
+
+### Fixed
+1. Fix bug on DisposeAndClear not called during detaching scene node. (WPF.SharpDX and UWP)
+2. Fix bug on invalidate scene graph not working on detaching scene node. (WPF.SharpDX and UWP)
+
 ## [2.3.0] - 2018-7-22
 ### Added
 1. Dynamic Buffer Support for geometry data streaming. (WPF.SharpDX and UWP) [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki/Dynamic-Geometry3D-for-Data-Streaming)
