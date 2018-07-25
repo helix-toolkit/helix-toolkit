@@ -19,9 +19,9 @@ namespace HelixToolkit.UWP.Model
     {
         public static readonly NormalMaterialCore Core = new NormalMaterialCore();
 
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new PassOnlyMaterialVariable(DefaultPassNames.Normals);
+            return new PassOnlyMaterialVariable(DefaultPassNames.Normals, technique);
         }
     }
     /// <summary>
@@ -30,9 +30,9 @@ namespace HelixToolkit.UWP.Model
     public sealed class ColorMaterialCore : MaterialCore
     {
         public static readonly ColorMaterialCore Core = new ColorMaterialCore();
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new PassOnlyMaterialVariable(DefaultPassNames.Colors);
+            return new PassOnlyMaterialVariable(DefaultPassNames.Colors, technique);
         }
     }
     /// <summary>
@@ -41,9 +41,9 @@ namespace HelixToolkit.UWP.Model
     public sealed class PositionMaterialCore : MaterialCore
     {
         public static readonly PositionMaterialCore Core = new PositionMaterialCore();
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new PassOnlyMaterialVariable(DefaultPassNames.Positions);
+            return new PassOnlyMaterialVariable(DefaultPassNames.Positions, technique);
         }
     }
     /// <summary>
@@ -52,9 +52,9 @@ namespace HelixToolkit.UWP.Model
     public sealed class NormalVectorMaterialCore : MaterialCore
     {
         public static readonly NormalVectorMaterialCore Core = new NormalVectorMaterialCore();
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new PassOnlyMaterialVariable(DefaultPassNames.NormalVector);
+            return new PassOnlyMaterialVariable(DefaultPassNames.NormalVector, technique);
         }
     }
     /// <summary>
@@ -67,22 +67,10 @@ namespace HelixToolkit.UWP.Model
         public override string DefaultShaderPassName { set; get; }
 
         private readonly string passName;
-        public PassOnlyMaterialVariable(string passName) : base(null)
+        public PassOnlyMaterialVariable(string passName, IRenderTechnique technique) : base(null, technique)
         {
             this.passName = passName;
-        }
-
-        public override bool Attach(IRenderTechnique technique)
-        {
-            if (base.Attach(technique))
-            {
-                MaterialPass = technique[passName];
-                return !MaterialPass.IsNULL;
-            }
-            else
-            {
-                return false;
-            }
+            MaterialPass = technique[passName];
         }
 
         protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)

@@ -9,6 +9,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class MaterialCore : ObservableObject, IMaterial
     {
         private string name;
@@ -25,7 +28,12 @@ namespace HelixToolkit.UWP.Model
         }
 
         public Guid Guid { get; } = Guid.NewGuid();
-
-        public abstract MaterialVariable CreateMaterialVariables(IEffectsManager manager);
+        /// <summary>
+        /// Creates the material variables.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        /// <returns></returns>
+        public abstract MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique);
     }
 }

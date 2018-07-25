@@ -303,7 +303,7 @@ namespace HelixToolkit.UWP
             statePoolManager = Collect(new StatePoolManager(Device));
 
             RemoveAndDispose(ref geometryBufferManager);
-            geometryBufferManager = Collect(new GeometryBufferManager());
+            geometryBufferManager = Collect(new GeometryBufferManager(this));
 
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new TextureResourceManager(Device));
@@ -556,6 +556,22 @@ namespace HelixToolkit.UWP
         public void InvalidateRenderer()
         {
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Outputs the resource cout summary.
+        /// </summary>
+        /// <returns></returns>
+        public string GetResourceCountSummary()
+        {
+            return $"ConstantBuffer Count: {constantBufferPool.Count}\n" +
+                $"BlendState Count: {statePoolManager.BlendStatePool.Count}\n" +
+                $"DepthStencilState Count: {statePoolManager.DepthStencilStatePool.Count}\n" +
+                $"RasterState Count: {statePoolManager.RasterStatePool.Count}\n" +
+                $"SamplerState Count: {statePoolManager.SamplerStatePool.Count}\n" +
+                $"GeometryBuffer Count:{geometryBufferManager.Count}\n" +
+                $"MaterialTexture Count:{materialTextureManager.Count}\n" +
+                $"MaterialVariable Count:{materialVariableManager.Count}\n";
         }
     }
 }

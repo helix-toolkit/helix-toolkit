@@ -823,6 +823,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.rectangleAdorner != null)
             {
+                rectangleAdorner.Rectangle = rect;
                 return;
             }
 

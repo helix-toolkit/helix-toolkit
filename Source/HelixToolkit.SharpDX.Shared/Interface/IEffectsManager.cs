@@ -193,5 +193,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Invalidates the renderer.
         /// </summary>
         void InvalidateRenderer();
+        /// <summary>
+        /// Outputs the resource count summary.
+        /// </summary>
+        /// <returns></returns>
+        string GetResourceCountSummary();
     }
 }

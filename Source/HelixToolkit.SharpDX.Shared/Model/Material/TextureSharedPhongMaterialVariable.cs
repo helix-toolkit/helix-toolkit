@@ -89,7 +89,7 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (!fixedPassName && Set(ref defaultShaderPassName, value) && IsAttached)
+                if (!fixedPassName && Set(ref defaultShaderPassName, value))
                 {
                     MaterialPass = Technique[value];
                     UpdateMappings(MaterialPass);
@@ -112,7 +112,7 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (!fixedPassName && Set(ref transparentPassName, value) && IsAttached)
+                if (!fixedPassName && Set(ref transparentPassName, value))
                 {
                     TransparentPass = Technique[value];
                 }
@@ -162,9 +162,10 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         /// <param name="manager"></param>
+        /// <param name="technique"></param>
         /// <param name="material"></param>
-        public TextureSharedPhongMaterialVariables(IEffectsManager manager, PhongMaterialCore material)
-            :base(manager)
+        public TextureSharedPhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
+            :base(manager, technique)
         {
             this.material = material;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
@@ -172,6 +173,9 @@ namespace HelixToolkit.UWP.Model
             samplerDiffuseSlot = samplerAlphaSlot = samplerDisplaceSlot = samplerNormalSlot = samplerShadowSlot = -1;
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
+            MaterialPass = technique[DefaultShaderPassName];
+            TransparentPass = technique[TransparentPassName];
+            UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
             EnableTessellation = material.EnableTessellation;
@@ -182,24 +186,13 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         /// <param name="passName">Name of the pass.</param>
         /// <param name="manager">The manager.</param>
+        /// <param name="technique"></param>
         /// <param name="material">The material.</param>
-        public TextureSharedPhongMaterialVariables(string passName, IEffectsManager manager, PhongMaterialCore material)
-            : this(manager, material)
+        public TextureSharedPhongMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
+            : this(manager, technique, material)
         {
             DefaultShaderPassName = passName;
             fixedPassName = true;
-        }
-
-        public override bool Attach(IRenderTechnique technique)
-        {
-            if (base.Attach(technique))
-            {
-                MaterialPass = technique[DefaultShaderPassName];
-                TransparentPass = technique[TransparentPassName];
-                UpdateMappings(MaterialPass);
-                return !MaterialPass.IsNULL;
-            }
-            else { return false; }
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)

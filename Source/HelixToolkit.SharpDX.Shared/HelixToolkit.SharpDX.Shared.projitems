@@ -325,7 +325,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\StaticOctrees\StaticPointGeometryOctree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RelayExceptionEventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\SimpleRingBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\StateProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ShaderResourceViewProxy.cs" />

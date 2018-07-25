@@ -14,36 +14,44 @@ namespace HelixToolkit.UWP.Model
     using System;
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class MaterialVariable : ReferenceCountDisposeObject
     {
         public abstract string DefaultShaderPassName { set; get; }
 
         public event EventHandler OnUpdateNeeded;
+        /// <summary>
+        /// Gets or sets the identifier. Used for material sorting
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public ushort ID { set; get; } = 0;
 
         protected IRenderTechnique Technique { private set; get; }
-        protected bool IsAttached { private set; get; } = false;
         protected bool NeedUpdate { set; get; } = true;
-        public MaterialVariable(IEffectsManager manager)
-        {
-        }
-
-        public virtual bool Attach(IRenderTechnique technique)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MaterialVariable"/> class.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        public MaterialVariable(IEffectsManager manager, IRenderTechnique technique)
         {
             Technique = technique;
-            IsAttached = true;
-            return !technique.IsNull;
         }
-
+        /// <summary>
+        /// Binds the material.
+        /// </summary>
+        /// <param name="deviceContext">The device context.</param>
+        /// <param name="shaderPass">The shader pass.</param>
+        /// <returns></returns>
         public bool BindMaterial(DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             if (CanUpdateMaterial())
             {
-                if (deviceContext.SetCurrentMaterial(this))
-                {
-                    return OnBindMaterialTextures(deviceContext, shaderPass);
-                }
-                return true;
+                return OnBindMaterialTextures(deviceContext, shaderPass);
             }
             else
             {
@@ -70,12 +78,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="disposeManagedResources"></param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            if (disposeManagedResources)
-            {
-                IsAttached = false;
-                Technique = null;
-                OnUpdateNeeded = null;
-            }
+            OnUpdateNeeded = null;
             base.OnDispose(disposeManagedResources);
         }
 

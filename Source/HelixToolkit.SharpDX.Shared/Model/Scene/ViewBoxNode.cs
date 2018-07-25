@@ -311,6 +311,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             newMesh.Colors = new Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
             newMesh.TextureCoordinates.AddRange(mesh.TextureCoordinates);
             newMesh.Colors.AddRange(Enumerable.Repeat(new Color4(1, 1, 1, 1), mesh.Positions.Count));
+            newMesh.Normals = newMesh.CalculateNormals();
             ViewBoxMeshModel.Geometry = newMesh;
         }
 

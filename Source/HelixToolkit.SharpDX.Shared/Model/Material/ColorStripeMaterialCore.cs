@@ -101,9 +101,9 @@ namespace HelixToolkit.UWP.Model
             get { return colorStripeSampler; }
         }
 
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new ColorStripeMaterialVariables(manager, this);
+            return new ColorStripeMaterialVariables(manager, technique, this);
         }
     }
 
@@ -146,9 +146,10 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         /// <param name="manager"></param>
+        /// <param name="technique"></param>
         /// <param name="material"></param>
-        public ColorStripeMaterialVariables(IEffectsManager manager, ColorStripeMaterialCore material)
-            : base(manager)
+        public ColorStripeMaterialVariables(IEffectsManager manager, IRenderTechnique technique, ColorStripeMaterialCore material)
+            : base(manager, technique)
         {
             this.material = material;
             deviceResources = manager;
@@ -157,22 +158,10 @@ namespace HelixToolkit.UWP.Model
             samplerDiffuseSlot = -1;
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
+            MaterialPass = technique[defaultShaderPassName];
+            UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
-        }
-
-        public override bool Attach(IRenderTechnique technique)
-        {
-            if (base.Attach(technique))
-            {
-                MaterialPass = technique[defaultShaderPassName];
-                UpdateMappings(MaterialPass);
-                return !MaterialPass.IsNULL;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)

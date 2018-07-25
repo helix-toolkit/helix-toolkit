@@ -18,10 +18,6 @@ namespace HelixToolkit.UWP
     public interface IAttachableBufferModel : IGUID, IDisposable
     {
         /// <summary>
-        /// Occurs when [on invalidate renderer].
-        /// </summary>
-        event EventHandler<EventArgs> OnInvalidateRender;
-        /// <summary>
         /// Gets or sets the topology.
         /// </summary>
         /// <value>
@@ -66,6 +62,13 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IGeometryBufferModel : IAttachableBufferModel
     {
+        /// <summary>
+        /// Gets or sets the effects manager.
+        /// </summary>
+        /// <value>
+        /// The effects manager.
+        /// </value>
+        IEffectsManager EffectsManager { set; get; }
         /// <summary>
         /// Gets or sets the geometry.
         /// </summary>

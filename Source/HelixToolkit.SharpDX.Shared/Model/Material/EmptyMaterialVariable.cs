@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Model
 
         public override string DefaultShaderPassName { set; get; }
 
-        public EmptyMaterialVariable() : base(null)
+        public EmptyMaterialVariable() : base(null, null)
         {
 
         }

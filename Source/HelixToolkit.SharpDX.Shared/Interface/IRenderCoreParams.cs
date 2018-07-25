@@ -58,12 +58,12 @@ namespace HelixToolkit.UWP.Core
     public interface IMaterialRenderParams
     {
         /// <summary>
-        /// Gets or sets the material.
+        /// Gets or sets the material variables used for rendering.
         /// </summary>
         /// <value>
-        /// The material.
+        /// The material variable.
         /// </value>
-        MaterialCore Material { set; get; }
+        MaterialVariable MaterialVariables { set; get; }
     }
 
     /// <summary>

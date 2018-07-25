@@ -68,14 +68,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             get;
         }
 
-        private uint renderOrder = 0;
+        private ushort renderOrder = 0;
         /// <summary>
         /// Gets or sets the render order. Manually specify the render order
         /// </summary>
         /// <value>
         /// The render order.
         /// </value>
-        public uint RenderOrder
+        public ushort RenderOrder
         {
             set
             {
@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         ///   <c>true</c> if [need matrix update]; otherwise, <c>false</c>.
         /// </value>
-        protected bool needMatrixUpdate { private set; get; } = true;
+        protected bool NeedMatrixUpdate { private set; get; } = true;
 
         private Matrix modelMatrix = Matrix.Identity;
 
@@ -110,7 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 if (Set(ref modelMatrix, value))
                 {
-                    needMatrixUpdate = true;
+                    NeedMatrixUpdate = true;
                     InvalidateRender();
                 }
             }
@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 if (Set(ref parentMatrix, value))
                 {
-                    needMatrixUpdate = true;
+                    NeedMatrixUpdate = true;
                 }
             }
             get
@@ -246,6 +246,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
+
+        private IRenderTechnique renderTechnique;
         /// <summary>
         /// Gets the effects technique.
         /// </summary>
@@ -281,14 +283,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return renderCore.Value; }
         }
-
-        /// <summary>
-        /// Gets or sets the render technique.
-        /// </summary>
-        /// <value>
-        /// The render technique.
-        /// </value>
-        protected IRenderTechnique renderTechnique { private set; get; }
 
         /// <summary>
         ///
@@ -426,10 +420,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             if (IsAttached)
             {
                 IsAttached = false;
+                InvalidateSceneGraph();
                 RenderCore.Detach();
                 OnDetach();
-                OnDetached?.Invoke(this, EventArgs.Empty);
-                InvalidateSceneGraph();
+                DisposeAndClear();
+                OnDetached?.Invoke(this, EventArgs.Empty);              
             }
         }
 
@@ -438,7 +433,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         protected virtual void OnDetach()
         {
-            renderHost = null;
+            renderHost = null;           
         }
 
         protected void InvalidateRenderEvent(object sender, EventArgs arg)
@@ -483,20 +478,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return;
             }
-            if (needMatrixUpdate || forceUpdateTransform)
+            if (NeedMatrixUpdate || forceUpdateTransform)
             {
                 TotalModelMatrix = modelMatrix * parentMatrix;
-                needMatrixUpdate = false;
+                NeedMatrixUpdate = false;
             }
-            UpdateRenderOrderKey(context);
+        }
+        /// <summary>
+        /// Updates the render order key.
+        /// </summary>
+        public void UpdateRenderOrderKey()
+        {
+            RenderOrderKey = OnUpdateRenderOrderKey();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void UpdateRenderOrderKey(RenderContext context)
+        protected virtual OrderKey OnUpdateRenderOrderKey()
         {
-            //var dist = Math.Abs((BoundsSphereWithTransform.Center - context.Camera.Position).Length() - BoundsSphereWithTransform.Radius);           
-            //RenderOrderKey = OrderKey.Create(RenderOrder, dist);
-            RenderOrderKey = OrderKey.Create(RenderOrder, 0);
+            return OrderKey.Create(RenderOrder, 0);
         }
 
         /// <summary>

@@ -19,31 +19,26 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class MaterialGeometryRenderCore : GeometryRenderCore<ModelStruct>, IMaterialRenderParams
     {
-        private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
         private bool needMaterialUpdate = false;
+        private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
         /// <summary>
         /// Used to wrap all material resources
         /// </summary>
-        public MaterialVariable MaterialVariables { get { return materialVariables; } }
-        private MaterialCore material = null;
-        /// <summary>
-        /// 
-        /// </summary>
-        public MaterialCore Material
+        public MaterialVariable MaterialVariables
         {
             set
             {
-                if(Set(ref material, value) && IsAttached)
+                var old = materialVariables;
+                if(Set(ref materialVariables, value))
                 {
-                    if(materialVariables != null)
+                    if (old != null)
                     {
-                        materialVariables.OnUpdateNeeded -= MaterialVariables_OnUpdateNeeded;
+                        old.OnUpdateNeeded -= MaterialVariables_OnUpdateNeeded;
                     }
-                    RemoveAndDispose(ref materialVariables);
                     if (value != null)
                     {
-                        materialVariables = Collect(EffectTechnique.EffectsManager.MaterialVariableManager.Register(value));
-                        AssignMaterialVariableProperties(technique);
+                        value.OnUpdateNeeded += MaterialVariables_OnUpdateNeeded;
+                        needMaterialUpdate = true;
                     }
                     else
                     {
@@ -53,11 +48,10 @@ namespace HelixToolkit.UWP.Core
             }
             get
             {
-                return material;
+                return materialVariables;
             }
         }
 
-        private IRenderTechnique technique;
         /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.OnAttach(IRenderTechnique)"/>
         /// </summary>
@@ -67,16 +61,7 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(technique))
             {
-                this.technique = technique;
-                if (material != null)
-                {
-                    materialVariables = Collect(technique.EffectsManager.MaterialVariableManager.Register(material));
-                    AssignMaterialVariableProperties(technique);
-                }
-                else
-                {
-                    materialVariables = EmptyMaterialVariable.EmptyVariable;
-                }  
+                needMaterialUpdate = true;
                 return true;
             }
             else
@@ -85,27 +70,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private void AssignMaterialVariableProperties(IRenderTechnique technique)
-        {
-            materialVariables.Attach(technique);
-            materialVariables.OnUpdateNeeded += MaterialVariables_OnUpdateNeeded;
-            needMaterialUpdate = true;
-        }
-
         private void MaterialVariables_OnUpdateNeeded(object sender, System.EventArgs e)
         {
             needMaterialUpdate = true;
         }
 
-        protected override void OnDetach()
-        {
-            if (materialVariables != null)
-            {
-                materialVariables.OnUpdateNeeded -= MaterialVariables_OnUpdateNeeded;
-            }
-            materialVariables = EmptyMaterialVariable.EmptyVariable;
-            base.OnDetach();
-        }
         /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.GetModelConstantBufferDescription"/>
         /// </summary>

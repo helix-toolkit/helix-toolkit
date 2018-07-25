@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         string Name { set; get; }
         Guid Guid { get; }
-        MaterialVariable CreateMaterialVariables(IEffectsManager manager);
+        MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique);
     }
     /// <summary>
     /// 
@@ -154,6 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public interface IMaterialVariablePool
     {
-        MaterialVariable Register(IMaterial material);
+        int Count { get; }
+        MaterialVariable Register(IMaterial material, IRenderTechnique technique);
     }
 }
