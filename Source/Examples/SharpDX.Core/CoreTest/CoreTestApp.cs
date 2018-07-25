@@ -89,25 +89,25 @@ namespace CoreTest
 
             for (int i = 0; i < NumItems; ++i)
             {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
+                var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
                 groupSphere.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
 
             for (int i = 0; i < NumItems; ++i)
             {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
                 groupBox.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
 
             for(int i=0; i< NumItems; ++i)
             {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
                 groupPoints.AddChildNode(new PointNode() { Geometry = points, ModelMatrix = transform, Color = Color.Red, Size = new Size2F(0.5f, 0.5f) });
             }
 
             for (int i = 0; i < NumItems; ++i)
             {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
                 groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Color = Color.LightBlue, Thickness = 0.5f });
             }
 
