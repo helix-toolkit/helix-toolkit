@@ -75,10 +75,6 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string BoneSkinBlinn = "RenderBoneSkinBlinn";
-        /// <summary>
-        /// 
-        /// </summary>
         public const string ParticleStorm = "ParticleStorm";
         /// <summary>
         /// 
@@ -202,6 +198,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string MeshOutline = "RenderMeshOutline";
+        /// <summary>
+        /// The mesh bone skinned
+        /// </summary>
+        public const string MeshBoneSkinned = "MeshBoneSkinned";
 
         /// <summary>
         /// 

@@ -58,17 +58,19 @@ namespace HelixToolkit.UWP.Utilities
         ///
         /// </summary>
         public ResourceOptionFlags OptionFlags { private set; get; }
-
+        public ResourceUsage Usage { private set; get; } = ResourceUsage.Immutable;
         /// <summary>
         ///
         /// </summary>
         /// <param name="structureSize"></param>
         /// <param name="bindFlags"></param>
         /// <param name="optionFlags"></param>
-        public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None)
+        /// <param name="usage"></param>
+        public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None, ResourceUsage usage = ResourceUsage.Immutable)
             : base(structureSize, bindFlags)
         {
             OptionFlags = optionFlags;
+            Usage = usage;
         }
 
         /// <summary>
@@ -107,7 +109,7 @@ namespace HelixToolkit.UWP.Utilities
                 OptionFlags = this.OptionFlags,
                 SizeInBytes = StructureSize * count,
                 StructureByteStride = StructureSize,
-                Usage = ResourceUsage.Immutable
+                Usage = Usage
             };
             buffer = Collect(Buffer.Create(context, data.GetArrayByType(), buffdesc));
         }

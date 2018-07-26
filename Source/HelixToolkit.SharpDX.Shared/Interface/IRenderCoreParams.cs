@@ -21,13 +21,6 @@ namespace HelixToolkit.UWP.Core
     public interface IGeometryRenderCore
     {
         /// <summary>
-        /// Gets the vertex layout.
-        /// </summary>
-        /// <value>
-        /// The vertex layout.
-        /// </value>
-        InputLayout VertexLayout { get; }
-        /// <summary>
         /// Gets or sets the instance buffer.
         /// </summary>
         /// <value>
@@ -129,26 +122,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         SamplerStateDescription SamplerDescription { set; get; }
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IBoneSkinRenderParams
-    {
-        /// <summary>
-        /// Gets or sets the vertex bone identifier buffer.
-        /// </summary>
-        /// <value>
-        /// The vertex bone identifier buffer.
-        /// </value>
-        IElementsBufferModel VertexBoneIdBuffer { set; get; }
-        /// <summary>
-        /// Gets or sets the bone matrices.
-        /// </summary>
-        /// <value>
-        /// The bone matrices.
-        /// </value>
-        BoneMatricesStruct BoneMatrices { set; get; }
-    }
+
     /// <summary>
     /// 
     /// </summary>

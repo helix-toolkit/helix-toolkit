@@ -90,19 +90,6 @@ namespace BoneSkinDemo
             get;
         } = PhongMaterials.Indigo;
 
-        private IList<BoneIds> vertexBoneParams;
-        public IList<BoneIds> VertexBoneParams
-        {
-            set
-            {
-                SetValue(ref vertexBoneParams, value, nameof(VertexBoneParams));
-            }
-            get
-            {
-                return vertexBoneParams;
-            }
-        }
-
         private BoneMatricesStruct bones;
         public BoneMatricesStruct Bones
         {
@@ -193,7 +180,7 @@ namespace BoneSkinDemo
             this.AmbientLightColor = Colors.DarkGray;
             SetupCameraBindings(this.Camera);
 
-            var builder = new MeshBuilder(true, true, true);
+            var builder = new MeshBuilder(true, false);
             path = new List<Vector3>();
             for(int i=0; i< NumSegments; ++i)
             {
@@ -245,7 +232,7 @@ namespace BoneSkinDemo
                 }
             }
 
-            VertexBoneParams = boneParams.ToArray();
+            Model = new BoneSkinnedMeshGeometry3D(Model) { VertexBoneIds = boneParams.ToArray() };
 
             Instances = new List<Matrix>();
             for (int i = 0; i < 3; ++i)

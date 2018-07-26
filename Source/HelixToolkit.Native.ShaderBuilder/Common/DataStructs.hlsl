@@ -22,6 +22,23 @@ struct LightStruct
     matrix mLightProj; //56
 };
 
+struct VSSkinnedInput
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+    int4 bones : BONEIDS;
+    float4 boneWeights : BONEWEIGHTS;
+};
+
+struct VSSkinnedOutput
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+};
 
 struct VSInput
 {

@@ -38,6 +38,7 @@
     <None Remove="Resources\gsBillboard.cso" />
     <None Remove="Resources\gsLine.cso" />
     <None Remove="Resources\gsMeshNormalVector.cso" />
+    <None Remove="Resources\gsMeshSkinnedOut.cso" />
     <None Remove="Resources\gsParticle.cso" />
     <None Remove="Resources\gsPoint.cso" />
     <None Remove="Resources\hsMeshTriTessellation.cso" />
@@ -84,10 +85,7 @@
     <None Remove="Resources\psWireframeOIT.cso" />
     <None Remove="Resources\vsBillboard.cso" />
     <None Remove="Resources\vsBillboardInstancing.cso" />
-    <None Remove="Resources\vsBoneSkinning.cso" />
-    <None Remove="Resources\vsBoneSkinningShadow.cso" />
-    <None Remove="Resources\vsBoneSkinningTessellation.cso" />
-    <None Remove="Resources\vsBoneSkinningWireframe.cso" />
+    <None Remove="Resources\vsBoneSkinningBasic.cso" />
     <None Remove="Resources\vsCubeMap.cso" />
     <None Remove="Resources\vsMeshBatched.cso" />
     <None Remove="Resources\vsMeshBatchedShadow.cso" />
@@ -118,6 +116,7 @@
     <EmbeddedResource Include="Resources\gsBillboard.cso" />
     <EmbeddedResource Include="Resources\gsLine.cso" />
     <EmbeddedResource Include="Resources\gsMeshNormalVector.cso" />
+    <EmbeddedResource Include="Resources\gsMeshSkinnedOut.cso" />
     <EmbeddedResource Include="Resources\gsParticle.cso" />
     <EmbeddedResource Include="Resources\gsPoint.cso" />
     <EmbeddedResource Include="Resources\hsMeshTriTessellation.cso" />
@@ -164,10 +163,7 @@
     <EmbeddedResource Include="Resources\psWireframeOIT.cso" />
     <EmbeddedResource Include="Resources\vsBillboard.cso" />
     <EmbeddedResource Include="Resources\vsBillboardInstancing.cso" />
-    <EmbeddedResource Include="Resources\vsBoneSkinning.cso" />
-    <EmbeddedResource Include="Resources\vsBoneSkinningShadow.cso" />
-    <EmbeddedResource Include="Resources\vsBoneSkinningTessellation.cso" />
-    <EmbeddedResource Include="Resources\vsBoneSkinningWireframe.cso" />
+    <EmbeddedResource Include="Resources\vsBoneSkinningBasic.cso" />
     <EmbeddedResource Include="Resources\vsCubeMap.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatched.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatchedShadow.cso" />

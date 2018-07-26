@@ -12,35 +12,8 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
 
-    public class BoneSkinRenderCore : MeshRenderCore, IBoneSkinRenderParams
+    public class BoneSkinRenderCore : MeshRenderCore
     {
-        private IElementsBufferModel vertexBoneIdBuffer;
-        /// <summary>
-        /// Gets or sets the vertex bone identifier buffer.
-        /// </summary>
-        /// <value>
-        /// The vertex bone identifier buffer.
-        /// </value>
-        public IElementsBufferModel VertexBoneIdBuffer
-        {
-            set
-            {
-                var old = vertexBoneIdBuffer;
-                if(SetAffectsCanRenderFlag(ref vertexBoneIdBuffer, value))
-                {
-                    if(old != null)
-                    {
-                        old.OnElementChanged -= OnElementChanged;
-                    }
-                    if (vertexBoneIdBuffer != null)
-                    {
-                        vertexBoneIdBuffer.OnElementChanged += OnElementChanged;
-                    }
-                }              
-            }
-            get { return vertexBoneIdBuffer; }
-        }
-
         private BoneMatricesStruct boneMatrices;
         public BoneMatricesStruct BoneMatrices
         {
@@ -52,12 +25,19 @@ namespace HelixToolkit.UWP.Core
         }
 
         private ConstantBufferProxy boneCB;
+        private ShaderPass boneSkinPass;
+
+        public BoneSkinRenderCore()
+        {
+            NeedUpdate = true;
+        }
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
             {
                 boneCB = technique.ConstantBufferPool.Register(new ConstantBufferDescription(DefaultBufferNames.BoneCB, BoneMatricesStruct.SizeInBytes));
+                boneSkinPass = technique[DefaultPassNames.MeshBoneSkinned];
                 return true;
             }
             else
@@ -66,36 +46,23 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool OnUpdateCanRenderFlag()
+        protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
         {
-            return base.OnUpdateCanRenderFlag() && VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
-        }
-
-        protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
-        {
-            if (base.OnAttachBuffers(context, ref vertStartSlot))
+            if (boneSkinPass.IsNULL)
             {
-                VertexBoneIdBuffer?.AttachBuffer(context, ref vertStartSlot);
-                return true;
+                return;
             }
-            else
+            GeometryBuffer.UpdateBuffers(deviceContext, EffectTechnique.EffectsManager);
+            if (GeometryBuffer is IBoneSkinMeshBufferModel boneBuffer)
             {
-                return false;
-            }
-        }
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
-        {
-            base.OnUpdatePerModelStruct(ref model, context);     
-            model.HasBones = BoneMatrices.Bones != null ? 1 : 0;                 
-        }
-
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-            base.OnUploadPerModelConstantBuffers(context);
-            if (BoneMatrices.Bones != null)
-            {
-                boneCB.UploadDataToBuffer(context, BoneMatrices.Bones, BoneMatricesStruct.NumberOfBones);
+                boneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
+                if (BoneMatrices.Bones != null)
+                {
+                    boneCB.UploadDataToBuffer(deviceContext, BoneMatrices.Bones, BoneMatricesStruct.NumberOfBones);
+                }
+                boneSkinPass.BindShader(deviceContext);
+                deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
+                boneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
             }
         }
     }
