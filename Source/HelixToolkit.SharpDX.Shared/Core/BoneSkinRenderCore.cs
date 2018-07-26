@@ -61,10 +61,7 @@ namespace HelixToolkit.UWP.Core
             if (GeometryBuffer is IBoneSkinMeshBufferModel boneBuffer)
             {
                 boneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
-                if (BoneMatrices.Bones != null)
-                {
-                    boneCB.UploadDataToBuffer(deviceContext, BoneMatrices.Bones, BoneMatricesStruct.NumberOfBones);
-                }
+                boneCB.UploadDataToBuffer(deviceContext, BoneMatrices.Bones ?? BoneMatricesStruct.DefaultBones, BoneMatricesStruct.NumberOfBones);
                 boneSkinPass.BindShader(deviceContext);
                 deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
                 boneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
