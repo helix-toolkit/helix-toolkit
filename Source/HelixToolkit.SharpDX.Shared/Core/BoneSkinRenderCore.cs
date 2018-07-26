@@ -14,12 +14,16 @@ namespace HelixToolkit.UWP.Core
 
     public class BoneSkinRenderCore : MeshRenderCore
     {
+        private bool matricsChanged = true;
         private BoneMatricesStruct boneMatrices;
         public BoneMatricesStruct BoneMatrices
         {
             set
             {
-                SetAffectsRender(ref boneMatrices, value);
+                if(SetAffectsRender(ref boneMatrices, value))
+                {
+                    matricsChanged = true;
+                }
             }
             get { return boneMatrices; }
         }
@@ -36,6 +40,7 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(technique))
             {
+                matricsChanged = true;
                 boneCB = technique.ConstantBufferPool.Register(new ConstantBufferDescription(DefaultBufferNames.BoneCB, BoneMatricesStruct.SizeInBytes));
                 boneSkinPass = technique[DefaultPassNames.MeshBoneSkinned];
                 return true;
@@ -48,7 +53,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
         {
-            if (boneSkinPass.IsNULL)
+            if (boneSkinPass.IsNULL || !matricsChanged)
             {
                 return;
             }
@@ -64,6 +69,7 @@ namespace HelixToolkit.UWP.Core
                 deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
                 boneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
             }
+            matricsChanged = false;
         }
     }
 }
