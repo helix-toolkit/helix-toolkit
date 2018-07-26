@@ -28,10 +28,6 @@ namespace HelixToolkit.UWP.Core
         private RasterizerStateProxy invertCullModeState = null;
         public RasterizerStateProxy InvertCullModeState { get { return invertCullModeState; } }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public InputLayout VertexLayout { private set; get; }
         private IElementsBufferModel instanceBuffer;
         /// <summary>
         /// 
@@ -214,7 +210,6 @@ namespace HelixToolkit.UWP.Core
             {
                 DefaultShaderPass = technique[DefaultShaderPassName];
                 ShadowPass = technique[DefaultShadowPassName];
-                this.VertexLayout = technique.Layout;
                 CreateRasterState(rasterDescription, true);       
                 return true;
             }
@@ -266,7 +261,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="vertStartSlot"></param>
         protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
-            bool succ = GeometryBuffer.AttachBuffers(context, this.VertexLayout, ref vertStartSlot, EffectTechnique.EffectsManager);
+            bool succ = GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager);
             InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);
             return succ;
         }

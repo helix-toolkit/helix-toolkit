@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 #if NETFX_CORE
@@ -131,7 +132,9 @@ namespace HelixToolkit.Wpf.SharpDX
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = NumberOfBones)]
         public Matrix[] Bones;
         public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
+        public static readonly Matrix[] DefaultBones = Enumerable.Repeat(Matrix.Identity, NumberOfBones).ToArray();
     }
+
     /// <summary>
     /// 
     /// </summary>

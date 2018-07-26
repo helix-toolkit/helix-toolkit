@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\BillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoneSkinRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\BillboardBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\BoneSkinBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\EmptyBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\GeometryBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\ElementsBufferModel.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryBoundManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BoneSkinnedMeshGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\ColorStripeMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\DiffuseMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\EmptyMaterialVariable.cs" />

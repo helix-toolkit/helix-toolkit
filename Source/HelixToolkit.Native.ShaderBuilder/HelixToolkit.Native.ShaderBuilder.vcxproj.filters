@@ -276,5 +276,11 @@
     <FxCompile Include="VS\vsMeshBatchedShadow.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
+    <FxCompile Include="GS\gsMeshSkinnedOut.hlsl">
+      <Filter>GS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsBoneSkinningBasic.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -50,11 +50,17 @@ namespace HelixToolkit.UWP
         /// Attaches the buffers.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferStartSlot">The vertex buffer slot. It will be changed to next available slot after binding.</param>
         /// <param name="deviceResources"></param>
         /// <returns></returns>
-        bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
+        bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
+        /// <summary>
+        /// Updates the buffers.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceResources">The device resources.</param>
+        /// <returns>True if buffer updated.</returns>
+        bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources);
     }
 
     /// <summary>
@@ -62,6 +68,8 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IGeometryBufferModel : IAttachableBufferModel
     {
+        event EventHandler OnVertexBufferUpdated;
+        event EventHandler OnIndexBufferUpdated;
         /// <summary>
         /// Gets or sets the effects manager.
         /// </summary>
@@ -96,5 +104,30 @@ namespace HelixToolkit.UWP
         /// The type.
         /// </value>
         BillboardType Type { get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IBoneSkinMeshBufferModel : IGeometryBufferModel
+    {
+        event EventHandler OnBoneIdBufferUpdated;
+        IElementsBufferProxy BoneIdBuffer { get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IBoneSkinPreComputehBufferModel
+    {
+        bool CanPreCompute { get; }
+        /// <summary>
+        /// Binds the skinned vertex buffer to output.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void BindSkinnedVertexBufferToOutput(DeviceContextProxy context);
+        /// <summary>
+        /// Uns the bind skinned vertex buffer to output.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void UnBindSkinnedVertexBufferToOutput(DeviceContextProxy context);
     }
 }

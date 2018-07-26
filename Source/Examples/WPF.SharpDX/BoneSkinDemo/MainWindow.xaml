@@ -22,10 +22,10 @@
             EffectsManager="{Binding EffectsManager}"
             EnableDesignModeRendering="True"
             EnableSwapChainRendering="False"
-            IsShadowMappingEnabled="True"
+            IsShadowMappingEnabled="True" 
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
-            ShowFrameRate="True"
+            ShowFrameRate="True" 
             TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
@@ -51,8 +51,7 @@
                 Geometry="{Binding Model}"
                 Instances="{Binding Instances}"
                 IsThrowingShadow="True"
-                Material="{Binding Material}"
-                VertexBoneIds="{Binding VertexBoneParams}" />
+                Material="{Binding Material}"/>
             <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" />
         </hx:Viewport3DX>
         <StackPanel

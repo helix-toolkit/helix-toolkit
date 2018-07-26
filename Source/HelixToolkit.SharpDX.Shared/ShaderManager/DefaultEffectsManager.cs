@@ -174,6 +174,18 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
                     },
+                    new ShaderPassDescription(DefaultPassNames.PreComputeMeshBoneSkinned)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBoneSkinnedBasic,
+                            DefaultGSShaderDescriptions.GSMeshBoneSkinnedOut
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        Topology = PrimitiveTopology.PointList,
+                        InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshBoneSkinningBasic, DefaultInputLayout.VSInputBoneSkinnedBasic),
+                    },
                     new ShaderPassDescription(DefaultPassNames.DepthPrepass)
                     {
                         ShaderList = new[]
@@ -417,6 +429,18 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
+                    },
+                    new ShaderPassDescription(DefaultPassNames.PreComputeMeshBoneSkinned)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBoneSkinnedBasic,
+                            DefaultGSShaderDescriptions.GSMeshBoneSkinnedOut
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        Topology = PrimitiveTopology.PointList,
+                        InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshBoneSkinningBasic, DefaultInputLayout.VSInputBoneSkinnedBasic),
                     },
                     new ShaderPassDescription(DefaultPassNames.DiffuseOIT)
                     {
@@ -663,6 +687,18 @@ namespace HelixToolkit.UWP
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
                         Topology = PrimitiveTopology.PointList
                     },
+                    new ShaderPassDescription(DefaultPassNames.PreComputeMeshBoneSkinned)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBoneSkinnedBasic,
+                            DefaultGSShaderDescriptions.GSMeshBoneSkinnedOut
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        Topology = PrimitiveTopology.PointList,
+                        InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshBoneSkinningBasic, DefaultInputLayout.VSInputBoneSkinnedBasic),
+                    },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
                         ShaderList = new[]
@@ -821,250 +857,6 @@ namespace HelixToolkit.UWP
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSMeshInstancing,
-                            DefaultPSShaderDescriptions.PSEffectDiffuseXRayGrid
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP3,
-                        StencilRef = 1
-                    },
-                }
-            };
-
-            var renderBoneSkinning = new TechniqueDescription(DefaultRenderTechniqueNames.BoneSkinBlinn)
-            {
-                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshBoneSkinning, DefaultInputLayout.VSInputBoneSkinning),
-                PassDescriptions = new[]
-                {
-                    new ShaderPassDescription(DefaultPassNames.Default)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
-                    },
-                    new ShaderPassDescription(DefaultPassNames.Colors)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSMeshVertColor
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
-                    },
-                    new ShaderPassDescription(DefaultPassNames.Normals)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSMeshVertNormal
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
-                    },
-                    new ShaderPassDescription(DefaultPassNames.Positions)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSMeshVertPosition
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
-                    },
-                    new ShaderPassDescription(DefaultPassNames.Diffuse)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSMeshDiffuseMap
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
-                    },
-                    new ShaderPassDescription(DefaultPassNames.ColorStripe1D)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSMeshColorStripe
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
-                    },
-                    new ShaderPassDescription(DefaultPassNames.NormalVector)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultGSShaderDescriptions.GSMeshNormalVector,
-                            DefaultPSShaderDescriptions.PSLineColor
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
-                        Topology = PrimitiveTopology.PointList
-                    },
-                    new ShaderPassDescription(DefaultPassNames.OITPass)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSMeshBlinnPhongOIT
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
-                    },
-                    new ShaderPassDescription(DefaultPassNames.DiffuseOIT)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSMeshDiffuseMapOIT
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
-                    },
-                    new ShaderPassDescription(DefaultPassNames.DepthPrepass)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSShadow
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
-                    },
-                    new ShaderPassDescription(DefaultPassNames.MeshTriTessellation)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinningTessellation,
-                            DefaultHullShaderDescriptions.HSMeshTessellation,
-                            DefaultDomainShaderDescriptions.DSMeshTessellation,
-                            DefaultPSShaderDescriptions.PSMeshBlinnPhong
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual,
-                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
-                    },
-                    new ShaderPassDescription(DefaultPassNames.MeshTriTessellationOIT)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinningTessellation,
-                            DefaultHullShaderDescriptions.HSMeshTessellation,
-                            DefaultDomainShaderDescriptions.DSMeshTessellation,
-                            DefaultPSShaderDescriptions.PSMeshBlinnPhongOIT
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
-                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
-                    },
-                    new ShaderPassDescription(DefaultPassNames.ShadowPass)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinningShadow,
-                            DefaultPSShaderDescriptions.PSShadow
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
-                    },
-                    new ShaderPassDescription(DefaultPassNames.Wireframe)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSBoneSkinningWireframe,
-                            DefaultPSShaderDescriptions.PSMeshWireframe
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
-                        Topology = PrimitiveTopology.TriangleList
-                    },
-                    new ShaderPassDescription(DefaultPassNames.WireframeOITPass)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSBoneSkinningWireframe,
-                            DefaultPSShaderDescriptions.PSMeshWireframeOIT
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
-                        Topology = PrimitiveTopology.TriangleList
-                    },
-                    new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSBoneSkinningWireframe,
-                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
-                        StencilRef = 1
-                    },
-                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRayP1)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSBoneSkinningWireframe,
-                            DefaultPSShaderDescriptions.PSDepthStencilOnly
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayP1,
-                    },
-                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRayP2)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSEffectMeshXRay
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayP2,
-                        StencilRef = 1
-                    },
-                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRayGridP1)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSBoneSkinningWireframe,
-                            DefaultPSShaderDescriptions.PSDepthStencilOnly
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP1,
-                        StencilRef = 1
-                    },
-                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRayGridP2)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSBoneSkinningWireframe,
-                            DefaultPSShaderDescriptions.PSDepthStencilOnly
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP2,
-                        StencilRef = 1
-                    },
-                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRayGridP3)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
-                            DefaultPSShaderDescriptions.PSEffectXRayGrid
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP3,
-                        StencilRef = 1
-                    },
-                    new ShaderPassDescription(DefaultPassNames.EffectMeshDiffuseXRayGridP3)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
                             DefaultPSShaderDescriptions.PSEffectDiffuseXRayGrid
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
@@ -1769,7 +1561,6 @@ namespace HelixToolkit.UWP
             yield return renderBlinn;
             yield return renderBlinnBatched;
             yield return renderBlinnInstancing;
-            yield return renderBoneSkinning;
             yield return renderPoint;
             yield return renderLine;
             yield return renderBillboardText;
