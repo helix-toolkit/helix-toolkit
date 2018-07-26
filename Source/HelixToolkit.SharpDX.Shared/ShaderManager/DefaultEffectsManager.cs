@@ -174,7 +174,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshBoneSkinned)
+                    new ShaderPassDescription(DefaultPassNames.PreComputeMeshBoneSkinned)
                     {
                         ShaderList = new[]
                         {
@@ -430,7 +430,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshBoneSkinned)
+                    new ShaderPassDescription(DefaultPassNames.PreComputeMeshBoneSkinned)
                     {
                         ShaderList = new[]
                         {
@@ -687,7 +687,7 @@ namespace HelixToolkit.UWP
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
                         Topology = PrimitiveTopology.PointList
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshBoneSkinned)
+                    new ShaderPassDescription(DefaultPassNames.PreComputeMeshBoneSkinned)
                     {
                         ShaderList = new[]
                         {

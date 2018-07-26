@@ -68,6 +68,8 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IGeometryBufferModel : IAttachableBufferModel
     {
+        event EventHandler OnVertexBufferUpdated;
+        event EventHandler OnIndexBufferUpdated;
         /// <summary>
         /// Gets or sets the effects manager.
         /// </summary>
@@ -103,12 +105,20 @@ namespace HelixToolkit.UWP
         /// </value>
         BillboardType Type { get; }
     }
-
     /// <summary>
     /// 
     /// </summary>
-    public interface IBoneSkinMeshBufferModel
+    public interface IBoneSkinMeshBufferModel : IGeometryBufferModel
     {
+        event EventHandler OnBoneIdBufferUpdated;
+        IElementsBufferProxy BoneIdBuffer { get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IBoneSkinPreComputehBufferModel
+    {
+        bool CanPreCompute { get; }
         /// <summary>
         /// Binds the skinned vertex buffer to output.
         /// </summary>

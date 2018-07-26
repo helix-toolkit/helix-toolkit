@@ -49,8 +49,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            return !(base.OnCreateBufferModel(modelGuid, geometry) is GeometryBufferModel buffer) ? 
-                EmptyGeometryBufferModel.Empty : new BoneSkinMeshBufferModel(buffer, buffer.VertexStructSize.FirstOrDefault()) as IAttachableBufferModel;
+            return !(EffectsManager.GeometryBufferManager.Register<BoneSkinnedMeshBufferModel>(modelGuid, geometry) is IBoneSkinMeshBufferModel buffer) ? 
+                EmptyGeometryBufferModel.Empty : new BoneSkinPreComputeBufferModel(buffer, buffer.VertexStructSize.FirstOrDefault()) as IAttachableBufferModel;
         }
         /// <summary>
         /// Views the frustum test.

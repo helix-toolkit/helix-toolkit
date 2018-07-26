@@ -18,11 +18,63 @@ namespace HelixToolkit.UWP.Core
 {
     using Render;
     using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class BoneSkinnedMeshBufferModel : DefaultMeshGeometryBufferModel, IBoneSkinMeshBufferModel
+    {
+        public event EventHandler OnBoneIdBufferUpdated;
+        public IElementsBufferProxy BoneIdBuffer { get; private set; }
+        private bool boneIdChanged = true;
+
+        public BoneSkinnedMeshBufferModel()
+        {
+            BoneIdBuffer = Collect(new ImmutableBufferProxy(BoneIds.SizeInBytes, BindFlags.VertexBuffer, ResourceOptionFlags.None));
+        }
+
+        protected override bool IsVertexBufferChanged(string propertyName, int bufferIndex)
+        {
+            if (propertyName.Equals(nameof(BoneSkinnedMeshGeometry3D.VertexBoneIds)))
+            {
+                boneIdChanged = true;
+                return false;
+            }
+            else
+            {
+                return base.IsVertexBufferChanged(propertyName, bufferIndex);
+            }
+        }
+
+        public override bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        {
+            if (boneIdChanged)
+            {
+                lock (BoneIdBuffer)
+                {
+                    if (boneIdChanged)
+                    {
+                        if (Geometry is BoneSkinnedMeshGeometry3D boneMesh 
+                            && boneMesh.VertexBoneIds != null && boneMesh.VertexBoneIds.Count == boneMesh.Positions.Count)
+                        {
+                            BoneIdBuffer.UploadDataToBuffer(context, boneMesh.VertexBoneIds, boneMesh.VertexBoneIds.Count);
+                        }
+                        else
+                        {
+                            BoneIdBuffer.UploadDataToBuffer(context, new BoneIds[0], 0);
+                        }
+                        boneIdChanged = false;
+                        OnBoneIdBufferUpdated?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+            }
+            return base.UpdateBuffers(context, deviceResources);
+        }
+    }
 
     /// <summary>
     /// 
     /// </summary>
-    public sealed class BoneSkinMeshBufferModel : DisposeObject, IAttachableBufferModel, IBoneSkinMeshBufferModel
+    public sealed class BoneSkinPreComputeBufferModel : DisposeObject, IAttachableBufferModel, IBoneSkinPreComputehBufferModel
     {
         public PrimitiveTopology Topology { get => MeshBuffer.Topology; set => MeshBuffer.Topology = value; }
 
@@ -32,36 +84,38 @@ namespace HelixToolkit.UWP.Core
 
         public IElementsBufferProxy IndexBuffer => MeshBuffer.IndexBuffer;
 
+        public bool CanPreCompute => MeshBuffer.BoneIdBuffer.ElementCount != 0;
+
         public Guid GUID { get; } = new Guid();
-        private bool vertexBoneIdUpdated = true;
         private bool vertexBufferUpdate = true;
-        private readonly GeometryBufferModel MeshBuffer;
+        private readonly IBoneSkinMeshBufferModel MeshBuffer;
         private IElementsBufferProxy skinnedVertexBuffer;
-        private IElementsBufferProxy boneIdBuffer;
         private IElementsBufferProxy originalVertexBuffer;
         private VertexBufferBinding[] skinnedOutputBindings = new VertexBufferBinding[0];
         private VertexBufferBinding[] VertexBufferBindings = new VertexBufferBinding[0];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoneSkinMeshBufferModel"/> class.
+        /// Initializes a new instance of the <see cref="BoneSkinPreComputeBufferModel"/> class.
         /// </summary>
         /// <param name="meshBuffer">The mesh buffer.</param>
         /// <param name="structSize">Size of the structure.</param>
-        public BoneSkinMeshBufferModel(GeometryBufferModel meshBuffer, int structSize)
+        public BoneSkinPreComputeBufferModel(IBoneSkinMeshBufferModel meshBuffer, int structSize)
         {
             MeshBuffer = Collect(meshBuffer);
-            if (MeshBuffer.Geometry != null)
-            { MeshBuffer.Geometry.PropertyChanged += Geometry_PropertyChanged; }
             MeshBuffer.OnVertexBufferUpdated += MeshBuffer_OnVertexBufferUpdated;
+            MeshBuffer.OnBoneIdBufferUpdated += MeshBuffer_OnBoneIdBufferUpdated;
             skinnedVertexBuffer = Collect(new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer | BindFlags.StreamOutput, ResourceOptionFlags.None, ResourceUsage.Default));
-            boneIdBuffer = Collect(new ImmutableBufferProxy(BoneIds.SizeInBytes, BindFlags.VertexBuffer, ResourceOptionFlags.None));
         }
 
-        private void Geometry_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MeshBuffer_OnBoneIdBufferUpdated(object sender, EventArgs e)
         {
-            if (e.PropertyName.Equals(nameof(BoneSkinnedMeshGeometry3D.VertexBoneIds)))
+            if(originalVertexBuffer != null)
             {
-                vertexBoneIdUpdated = true;
+                skinnedOutputBindings = new VertexBufferBinding[]
+                {
+                    new VertexBufferBinding(originalVertexBuffer.Buffer, originalVertexBuffer.StructureSize, originalVertexBuffer.Offset),
+                    new VertexBufferBinding(MeshBuffer.BoneIdBuffer.Buffer, MeshBuffer.BoneIdBuffer.StructureSize, MeshBuffer.BoneIdBuffer.Offset)
+                };
             }
         }
 
@@ -148,9 +202,15 @@ namespace HelixToolkit.UWP.Core
                             if (skinnedVertexBuffer.Buffer == null || skinnedVertexBuffer.ElementCount != originalVertexBuffer.ElementCount)
                             {
                                 skinnedVertexBuffer.UploadDataToBuffer(context, new float[originalVertexBuffer.ElementCount * originalVertexBuffer.StructureSize], originalVertexBuffer.ElementCount);
+                                context.CopyResource(originalVertexBuffer.Buffer, skinnedVertexBuffer.Buffer);
                             }
                             VertexBuffer[0] = skinnedVertexBuffer;
                             VertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
+                            skinnedOutputBindings = new VertexBufferBinding[]
+                            {
+                                new VertexBufferBinding(originalVertexBuffer.Buffer, originalVertexBuffer.StructureSize, originalVertexBuffer.Offset),
+                                new VertexBufferBinding(MeshBuffer.BoneIdBuffer.Buffer, MeshBuffer.BoneIdBuffer.StructureSize, MeshBuffer.BoneIdBuffer.Offset)
+                            };
                         }
                         else
                         {
@@ -162,37 +222,12 @@ namespace HelixToolkit.UWP.Core
                     }
                 }
             }
-            if (vertexBoneIdUpdated)
-            {
-                lock (boneIdBuffer)
-                {
-                    if (vertexBoneIdUpdated)
-                    {
-                        if (MeshBuffer.Geometry is BoneSkinnedMeshGeometry3D boneMesh && boneMesh.VertexBoneIds != null && boneMesh.VertexBoneIds.Count == MeshBuffer.Geometry.Positions.Count)
-                        {
-                            boneIdBuffer.UploadDataToBuffer(context, boneMesh.VertexBoneIds, boneMesh.VertexBoneIds.Count);
-                        }
-                        else
-                        {
-                            boneIdBuffer.UploadDataToBuffer(context, new BoneIds[0], 0);
-                        }
-                        skinnedOutputBindings = new VertexBufferBinding[]
-                        {
-                            new VertexBufferBinding(originalVertexBuffer.Buffer, originalVertexBuffer.StructureSize, originalVertexBuffer.Offset),
-                            new VertexBufferBinding(boneIdBuffer.Buffer, boneIdBuffer.StructureSize, boneIdBuffer.Offset)
-                        };
-                        vertexBoneIdUpdated = false;
-                        updated = true;
-                    }
-                }               
-            }
             return updated;
         }
 
         protected override void OnDispose(bool disposeManagedResources)
         {
-            if (MeshBuffer.Geometry != null)
-            { MeshBuffer.Geometry.PropertyChanged -= Geometry_PropertyChanged; }
+            MeshBuffer.OnBoneIdBufferUpdated -= MeshBuffer_OnBoneIdBufferUpdated;
             MeshBuffer.OnVertexBufferUpdated -= MeshBuffer_OnVertexBufferUpdated;
             base.OnDispose(disposeManagedResources);        
         }

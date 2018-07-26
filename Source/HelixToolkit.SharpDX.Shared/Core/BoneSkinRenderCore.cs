@@ -29,7 +29,8 @@ namespace HelixToolkit.UWP.Core
         }
 
         private ConstantBufferProxy boneCB;
-        private ShaderPass boneSkinPass;
+        private ShaderPass preComputeBoneSkinPass;
+        private IBoneSkinPreComputehBufferModel preComputeBoneBuffer;
 
         public BoneSkinRenderCore()
         {
@@ -42,7 +43,7 @@ namespace HelixToolkit.UWP.Core
             {
                 matricsChanged = true;
                 boneCB = technique.ConstantBufferPool.Register(new ConstantBufferDescription(DefaultBufferNames.BoneCB, BoneMatricesStruct.SizeInBytes));
-                boneSkinPass = technique[DefaultPassNames.MeshBoneSkinned];
+                preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
                 return true;
             }
             else
@@ -51,22 +52,31 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        protected override void OnGeometryBufferChanged(IAttachableBufferModel buffer)
+        {
+            base.OnGeometryBufferChanged(buffer);
+            preComputeBoneBuffer = buffer as IBoneSkinPreComputehBufferModel;
+        }
+
         protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
         {
-            if (boneSkinPass.IsNULL || !matricsChanged)
+            if (preComputeBoneSkinPass.IsNULL || preComputeBoneBuffer == null || !preComputeBoneBuffer.CanPreCompute || !matricsChanged)
             {
                 return;
             }
             GeometryBuffer.UpdateBuffers(deviceContext, EffectTechnique.EffectsManager);
-            if (GeometryBuffer is IBoneSkinMeshBufferModel boneBuffer)
-            {
-                boneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
-                boneCB.UploadDataToBuffer(deviceContext, BoneMatrices.Bones ?? BoneMatricesStruct.DefaultBones, BoneMatricesStruct.NumberOfBones);
-                boneSkinPass.BindShader(deviceContext);
-                deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
-                boneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
-            }
-            matricsChanged = false;
+            preComputeBoneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
+            boneCB.UploadDataToBuffer(deviceContext, BoneMatrices.Bones ?? BoneMatricesStruct.DefaultBones, BoneMatricesStruct.NumberOfBones);
+            preComputeBoneSkinPass.BindShader(deviceContext);
+            deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
+            preComputeBoneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
+            matricsChanged = false;         
+        }
+
+        protected override void OnDetach()
+        {
+            preComputeBoneBuffer = null;
+            base.OnDetach();
         }
     }
 }

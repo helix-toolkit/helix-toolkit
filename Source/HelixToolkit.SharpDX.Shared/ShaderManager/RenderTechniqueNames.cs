@@ -201,7 +201,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The mesh bone skinned
         /// </summary>
-        public const string MeshBoneSkinned = "MeshBoneSkinned";
+        public const string PreComputeMeshBoneSkinned = "MeshBoneSkinned";
 
         /// <summary>
         /// 

@@ -210,8 +210,13 @@ namespace HelixToolkit.UWP.Core
             UpdateBuffers(context, deviceResources);
             return OnAttachBuffer(context, ref vertexBufferStartSlot);
         }
-
-        public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        /// <summary>
+        /// Updates the buffers.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceResources">The device resources.</param>
+        /// <returns></returns>
+        public virtual bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
         {
             bool bufferUpdated = false;
             if(VertexChanged != 0)
