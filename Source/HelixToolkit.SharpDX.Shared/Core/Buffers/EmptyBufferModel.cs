@@ -142,8 +142,9 @@ namespace HelixToolkit.UWP.Core
 
         }
 
-        public void UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
         {
+            return false;
         }
     }
 }

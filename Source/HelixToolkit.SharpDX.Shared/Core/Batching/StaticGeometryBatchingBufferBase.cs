@@ -225,9 +225,9 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        public void UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
         {
-
+            return false;
         }
 
         protected override void OnDispose(bool disposeManagedResources)

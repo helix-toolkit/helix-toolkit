@@ -23,6 +23,8 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class GeometryBufferModel : ReferenceCountDisposeObject, IGUID, IGeometryBufferModel
     {
+        public event EventHandler OnVertexBufferUpdated;
+        public event EventHandler OnIndexBufferUpdated;
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
@@ -209,8 +211,9 @@ namespace HelixToolkit.UWP.Core
             return OnAttachBuffer(context, ref vertexBufferStartSlot);
         }
 
-        public void UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
         {
+            bool bufferUpdated = false;
             if(VertexChanged != 0)
             {
                 lock (VertexBuffer)
@@ -235,6 +238,8 @@ namespace HelixToolkit.UWP.Core
                     {
                         VertexBufferBindings = OnCreateVertexBufferBinding();
                         updateVBinding = false;
+                        OnVertexBufferUpdated?.Invoke(this, EventArgs.Empty);
+                        bufferUpdated = true;
                     }
                 }
             }
@@ -245,10 +250,13 @@ namespace HelixToolkit.UWP.Core
                     if (IndexChanged)
                     {
                         OnCreateIndexBuffer(context, IndexBuffer, Geometry, deviceResources);
+                        bufferUpdated = true;
                     }
-                    IndexChanged = false;
+                    IndexChanged = false;                    
+                    OnIndexBufferUpdated?.Invoke(this, EventArgs.Empty);
                 }               
             }
+            return bufferUpdated;
         }
 
         protected virtual VertexBufferBinding[] OnCreateVertexBufferBinding()

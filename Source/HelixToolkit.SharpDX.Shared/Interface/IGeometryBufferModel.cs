@@ -59,7 +59,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceResources">The device resources.</param>
-        void UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources);
+        /// <returns>True if buffer updated.</returns>
+        bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources);
     }
 
     /// <summary>

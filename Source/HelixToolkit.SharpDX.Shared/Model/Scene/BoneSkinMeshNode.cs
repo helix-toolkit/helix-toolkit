@@ -5,6 +5,7 @@ Copyright(c) 2018 Helix Toolkit contributors
 
 using SharpDX;
 using System.Collections.Generic;
+using System.Linq;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
@@ -46,10 +47,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return new BoneSkinRenderCore();
         }
 
-        protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            return geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicSkinnedMeshGeometryBufferModel>(modelGuid, geometry)
-                : EffectsManager.GeometryBufferManager.Register<DefaultSkinnedMeshGeometryBufferModel>(modelGuid, geometry);
+            return !(base.OnCreateBufferModel(modelGuid, geometry) is GeometryBufferModel buffer) ? 
+                EmptyGeometryBufferModel.Empty : new BoneSkinMeshBufferModel(buffer, buffer.VertexStructSize.FirstOrDefault()) as IAttachableBufferModel;
         }
         /// <summary>
         /// Views the frustum test.

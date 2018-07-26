@@ -2,11 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-
 using global::SharpDX.Direct3D;
 using global::SharpDX.Direct3D11;
-using SharpDX;
+using global::SharpDX.DXGI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -22,51 +22,52 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="VertexStruct">The type of the ertex structure.</typeparam>
-    public abstract class BoneSkinMeshBufferModel<VertexStruct> : MeshGeometryBufferModel<VertexStruct>, IBoneSkinMeshBufferModel where VertexStruct : struct
+    public sealed class BoneSkinMeshBufferModel : DisposeObject, IAttachableBufferModel, IBoneSkinMeshBufferModel
     {
-        protected IElementsBufferProxy skinnedVertexBuffer;
-        protected IElementsBufferProxy boneIdBuffer;
-        protected VertexBufferBinding[] skinnedOutputBindings = new VertexBufferBinding[0];
+        public PrimitiveTopology Topology { get => MeshBuffer.Topology; set => MeshBuffer.Topology = value; }
+
+        public IElementsBufferProxy[] VertexBuffer { private set; get; } = new IElementsBufferProxy[0];
+
+        public IEnumerable<int> VertexStructSize { get { return VertexBuffer.Select(x => x != null ? x.StructureSize : 0); } }
+
+        public IElementsBufferProxy IndexBuffer => MeshBuffer.IndexBuffer;
+
+        public Guid GUID { get; } = new Guid();
+        private bool vertexBoneIdUpdated = true;
+        private bool vertexBufferUpdate = true;
+        private readonly GeometryBufferModel MeshBuffer;
+        private IElementsBufferProxy skinnedVertexBuffer;
+        private IElementsBufferProxy boneIdBuffer;
+        private IElementsBufferProxy originalVertexBuffer;
+        private VertexBufferBinding[] skinnedOutputBindings = new VertexBufferBinding[0];
+        private VertexBufferBinding[] VertexBufferBindings = new VertexBufferBinding[0];
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="BoneSkinMeshBufferModel{VertexStruct}"/> class.
+        /// Initializes a new instance of the <see cref="BoneSkinMeshBufferModel"/> class.
         /// </summary>
-        /// <param name="topology">The topology.</param>
-        /// <param name="vertexBuffer">The vertex buffer.</param>
-        /// <param name="indexBuffer">The index buffer.</param>
-        public BoneSkinMeshBufferModel(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
-            : base(topology, vertexBuffer, indexBuffer)
+        /// <param name="meshBuffer">The mesh buffer.</param>
+        /// <param name="structSize">Size of the structure.</param>
+        public BoneSkinMeshBufferModel(GeometryBufferModel meshBuffer, int structSize)
         {
-            skinnedVertexBuffer = Collect(new ImmutableBufferProxy(vertexBuffer.StructureSize, BindFlags.VertexBuffer | BindFlags.StreamOutput, ResourceOptionFlags.None, ResourceUsage.Default));
+            MeshBuffer = Collect(meshBuffer);
+            if (MeshBuffer.Geometry != null)
+            { MeshBuffer.Geometry.PropertyChanged += Geometry_PropertyChanged; }
+            MeshBuffer.OnVertexBufferUpdated += MeshBuffer_OnVertexBufferUpdated;
+            skinnedVertexBuffer = Collect(new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer | BindFlags.StreamOutput, ResourceOptionFlags.None, ResourceUsage.Default));
             boneIdBuffer = Collect(new ImmutableBufferProxy(BoneIds.SizeInBytes, BindFlags.VertexBuffer, ResourceOptionFlags.None));
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoneSkinMeshBufferModel{VertexStruct}"/> class.
-        /// </summary>
-        /// <param name="topology">The topology.</param>
-        /// <param name="vertexBuffer">The vertex buffer.</param>
-        /// <param name="indexBuffer">The index buffer.</param>
-        public BoneSkinMeshBufferModel(PrimitiveTopology topology, IElementsBufferProxy[] vertexBuffer, IElementsBufferProxy indexBuffer)
-            : base(topology, vertexBuffer, indexBuffer)
+        private void Geometry_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            skinnedVertexBuffer = Collect(new ImmutableBufferProxy(vertexBuffer[0].StructureSize, BindFlags.VertexBuffer | BindFlags.StreamOutput, ResourceOptionFlags.None, ResourceUsage.Default));
-            boneIdBuffer = Collect(new ImmutableBufferProxy(BoneIds.SizeInBytes, BindFlags.VertexBuffer, ResourceOptionFlags.None));
-        }
-
-        protected override VertexBufferBinding[] OnCreateVertexBufferBinding()
-        {
-            var orgBinding = base.OnCreateVertexBufferBinding();
-            if (VertexBuffer.Length > 0)
+            if (e.PropertyName.Equals(nameof(BoneSkinnedMeshGeometry3D.VertexBoneIds)))
             {
-                orgBinding[0] = new VertexBufferBinding(skinnedVertexBuffer.Buffer, skinnedVertexBuffer.StructureSize, skinnedVertexBuffer.Offset);
-                skinnedOutputBindings = new VertexBufferBinding[]
-                {
-                    new VertexBufferBinding(VertexBuffer[0].Buffer, VertexBuffer[0].StructureSize, VertexBuffer[0].Offset),
-                    new VertexBufferBinding(boneIdBuffer.Buffer, boneIdBuffer.StructureSize, boneIdBuffer.Offset)
-                };
-            }          
-            return orgBinding;
+                vertexBoneIdUpdated = true;
+            }
+        }
+
+        private void MeshBuffer_OnVertexBufferUpdated(object sender, EventArgs e)
+        {
+            vertexBufferUpdate = true;
         }
 
         /// <summary>
@@ -77,182 +78,123 @@ namespace HelixToolkit.UWP.Core
         public void BindSkinnedVertexBufferToOutput(DeviceContextProxy context)
         {
             context.SetVertexBuffers(0, skinnedOutputBindings);
-            context.SetIndexBuffer(null, global::SharpDX.DXGI.Format.Unknown, 0);
+            context.SetIndexBuffer(null, Format.Unknown, 0);
             context.SetStreamOutputTarget(skinnedVertexBuffer.Buffer, skinnedVertexBuffer.Offset);
         }
+
+        /// <summary>
+        /// Uns the bind skinned vertex buffer to gs stream output.
+        /// </summary>
+        /// <param name="context">The context.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UnBindSkinnedVertexBufferToOutput(DeviceContextProxy context)
         {
             context.SetStreamOutputTarget(null);
         }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class DefaultSkinnedMeshGeometryBufferModel : BoneSkinMeshBufferModel<DefaultVertex>
-    {
-        [ThreadStatic]
-        private static DefaultVertex[] vertexArrayBuffer = null;
-        private static readonly Vector2[] emptyTextureArray = new Vector2[0];
-        private static readonly Vector4[] emptyColorArray = new Vector4[0];
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultSkinnedMeshGeometryBufferModel"/> class.
-        /// </summary>
-        public DefaultSkinnedMeshGeometryBufferModel()
-            : base(PrimitiveTopology.TriangleList,
-                  new[]
-                  {
-                      new ImmutableBufferProxy(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer),
-                      new ImmutableBufferProxy(Vector2.SizeInBytes, BindFlags.VertexBuffer),
-                      new ImmutableBufferProxy(Vector4.SizeInBytes, BindFlags.VertexBuffer)
-                  } as IElementsBufferProxy[], new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
-        { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultSkinnedMeshGeometryBufferModel"/> class.
-        /// </summary>
-        /// <param name="buffers">The buffers.</param>
-        /// <param name="isDynamic"></param>
-        public DefaultSkinnedMeshGeometryBufferModel(IElementsBufferProxy[] buffers, bool isDynamic)
-            : base(PrimitiveTopology.TriangleList, buffers, 
-                  isDynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
-        {
-        }
-        /// <summary>
-        /// Determines whether [is vertex buffer changed] [the specified property name].
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <param name="bufferIndex"></param>
-        /// <returns>
-        ///   <c>true</c> if [is vertex buffer changed] [the specified property name]; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool IsVertexBufferChanged(string propertyName, int bufferIndex)
-        {
-            switch (bufferIndex)
-            {
-                case 0:
-                    return base.IsVertexBufferChanged(propertyName, bufferIndex) || propertyName.Equals(nameof(BoneSkinnedMeshGeometry3D.VertexBoneIds));
-                case 1:
-                    return propertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates));
-                case 2:
-                    return propertyName.Equals(nameof(MeshGeometry3D.Colors));
-                default:
-                    return false;
-            }
-        }
-        /// <summary>
-        /// Called when [create vertex buffer].
+        /// Attaches the buffers.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="bufferIndex">Index of the buffer.</param>
-        /// <param name="geometry">The geometry.</param>
+        /// <param name="vertexBufferStartSlot">The vertex buffer start slot.</param>
         /// <param name="deviceResources">The device resources.</param>
-        protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
+        /// <returns></returns>
+        public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
-            if (geometry is MeshGeometry3D mesh)
+            UpdateBuffers(context, deviceResources);
+            if (VertexBuffer.Length > 0)
             {
-                switch (bufferIndex)
+                if (VertexBuffer.Length == VertexBufferBindings.Length)
                 {
-                    case 0:
-                        // -- set geometry if given
-                        if (geometry.Positions != null && geometry.Positions.Count > 0)
-                        {
-                            // --- get geometry
-                            var data = BuildVertexArray(mesh);
-                            buffer.UploadDataToBuffer(context, data, geometry.Positions.Count, 0, geometry.PreDefinedVertexCount);
-                            skinnedVertexBuffer.UploadDataToBuffer(context, data, Geometry.Positions.Count, 0, Geometry.PreDefinedVertexCount);
-                            if (mesh is BoneSkinnedMeshGeometry3D boneMesh && boneMesh.VertexBoneIds != null && boneMesh.VertexBoneIds.Count >= geometry.Positions.Count)
-                            {
-                                boneIdBuffer.UploadDataToBuffer(context, boneMesh.VertexBoneIds, boneMesh.VertexBoneIds.Count);
-                            }
-                            else
-                            {
-                                boneIdBuffer.UploadDataToBuffer(context, new BoneIds[0], 0);
-                            }
-                        }
-                        else
-                        {
-                            buffer.UploadDataToBuffer(context, emptyVerts, 0);
-                            skinnedVertexBuffer.UploadDataToBuffer(context, emptyVerts, 0);
-                            boneIdBuffer.UploadDataToBuffer(context, new BoneIds[0], 0);
-                        }
-                        break;
-                    case 1:
-                        if (mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0)
-                        {
-                            buffer.UploadDataToBuffer(context, mesh.TextureCoordinates, mesh.TextureCoordinates.Count, 0, geometry.PreDefinedVertexCount);
-                        }
-                        else
-                        {
-                            buffer.UploadDataToBuffer(context, emptyTextureArray, 0);
-                        }
-                        break;
-                    case 2:
-                        if (geometry.Colors != null && geometry.Colors.Count > 0)
-                        {
-                            buffer.UploadDataToBuffer(context, geometry.Colors, geometry.Colors.Count, 0, geometry.PreDefinedVertexCount);
-                        }
-                        else
-                        {
-                            buffer.UploadDataToBuffer(context, emptyColorArray, 0);
-                        }
-                        break;
+                    context.SetVertexBuffers(vertexBufferStartSlot, VertexBufferBindings);
+                    vertexBufferStartSlot += VertexBuffer.Length;
+                }
+                else
+                {
+                    return false;
                 }
             }
-        }
-        /// <summary>
-        /// Builds the vertex array.
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        private DefaultVertex[] BuildVertexArray(MeshGeometry3D geometry)
-        {
-            //var geometry = this.geometryInternal as MeshGeometry3D;
-            var positions = geometry.Positions.GetEnumerator();
-            var vertexCount = geometry.Positions.Count;
-
-            var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-            var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-
-            var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
-            vertexArrayBuffer = array;
-            for (var i = 0; i < vertexCount; i++)
+            if (IndexBuffer != null)
             {
-                positions.MoveNext();
-                normals.MoveNext();
-                tangents.MoveNext();
-                bitangents.MoveNext();
-                array[i].Position = new Vector4(positions.Current, 1f);
-                array[i].Normal = normals.Current;
-                array[i].Tangent = tangents.Current;
-                array[i].BiTangent = bitangents.Current;
+                context.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset);
             }
-            normals.Dispose();
-            tangents.Dispose();
-            bitangents.Dispose();
-            positions.Dispose();
-            return array;
+            else
+            {
+                context.SetIndexBuffer(null, Format.Unknown, 0);
+            }
+            context.PrimitiveTopology = Topology;
+            return true;
         }
-    }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class DynamicSkinnedMeshGeometryBufferModel : DefaultSkinnedMeshGeometryBufferModel
-    {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicSkinnedMeshGeometryBufferModel"/> class.
+        /// Updates the buffers.
         /// </summary>
-        public DynamicSkinnedMeshGeometryBufferModel()
-            : base(new[]
-                  {
-                      new DynamicBufferProxy(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer),
-                      new DynamicBufferProxy(Vector2.SizeInBytes, BindFlags.VertexBuffer),
-                      new DynamicBufferProxy(Vector4.SizeInBytes, BindFlags.VertexBuffer)
-                  } as IElementsBufferProxy[], true)
-        { }
+        /// <param name="context">The context.</param>
+        /// <param name="deviceResources">The device resources.</param>
+        /// <returns></returns>
+        public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        {
+            bool updated = false;
+            if(MeshBuffer.UpdateBuffers(context, deviceResources) || vertexBufferUpdate)
+            {
+                lock (skinnedVertexBuffer)
+                {
+                    if (vertexBufferUpdate)
+                    {
+                        if (MeshBuffer.VertexBuffer.Length > 0)
+                        {
+                            VertexBuffer = MeshBuffer.VertexBuffer.ToArray();
+                            originalVertexBuffer = VertexBuffer[0];
+                            if (skinnedVertexBuffer.Buffer == null || skinnedVertexBuffer.ElementCount != originalVertexBuffer.ElementCount)
+                            {
+                                skinnedVertexBuffer.UploadDataToBuffer(context, new float[originalVertexBuffer.ElementCount * originalVertexBuffer.StructureSize], originalVertexBuffer.ElementCount);
+                            }
+                            VertexBuffer[0] = skinnedVertexBuffer;
+                            VertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
+                        }
+                        else
+                        {
+                            VertexBuffer = new IElementsBufferProxy[0];
+                            VertexBufferBindings = new VertexBufferBinding[0];
+                        }
+                        vertexBufferUpdate = false;
+                        updated = true;
+                    }
+                }
+            }
+            if (vertexBoneIdUpdated)
+            {
+                lock (boneIdBuffer)
+                {
+                    if (vertexBoneIdUpdated)
+                    {
+                        if (MeshBuffer.Geometry is BoneSkinnedMeshGeometry3D boneMesh && boneMesh.VertexBoneIds != null && boneMesh.VertexBoneIds.Count == MeshBuffer.Geometry.Positions.Count)
+                        {
+                            boneIdBuffer.UploadDataToBuffer(context, boneMesh.VertexBoneIds, boneMesh.VertexBoneIds.Count);
+                        }
+                        else
+                        {
+                            boneIdBuffer.UploadDataToBuffer(context, new BoneIds[0], 0);
+                        }
+                        skinnedOutputBindings = new VertexBufferBinding[]
+                        {
+                            new VertexBufferBinding(originalVertexBuffer.Buffer, originalVertexBuffer.StructureSize, originalVertexBuffer.Offset),
+                            new VertexBufferBinding(boneIdBuffer.Buffer, boneIdBuffer.StructureSize, boneIdBuffer.Offset)
+                        };
+                        vertexBoneIdUpdated = false;
+                        updated = true;
+                    }
+                }               
+            }
+            return updated;
+        }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            if (MeshBuffer.Geometry != null)
+            { MeshBuffer.Geometry.PropertyChanged -= Geometry_PropertyChanged; }
+            MeshBuffer.OnVertexBufferUpdated -= MeshBuffer_OnVertexBufferUpdated;
+            base.OnDispose(disposeManagedResources);        
+        }
     }
 }
