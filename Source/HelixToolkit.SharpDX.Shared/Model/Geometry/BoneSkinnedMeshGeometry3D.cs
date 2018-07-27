@@ -49,8 +49,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 return vertexBoneIds;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the animations.
+        /// </summary>
+        /// <value>
+        /// The animations.
+        /// </value>
         public Dictionary<string, Animations.Animation> Animations { set; get; }
+        /// <summary>
+        /// Gets or sets the bones.
+        /// </summary>
+        /// <value>
+        /// The bones.
+        /// </value>
+        public IList<Animations.Bone> Bones { set; get; }
         /// <summary>
         /// Merge meshes into one
         /// </summary>
