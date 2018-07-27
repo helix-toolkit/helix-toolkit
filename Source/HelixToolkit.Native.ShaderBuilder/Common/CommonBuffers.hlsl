@@ -64,7 +64,8 @@ cbuffer cbMeshModel : register(b1)
     bool bRenderShadowMap = false;
     float padding2;
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
-    float4x4 uvTransform;
+    float4 uvTransformR1;
+    float4 uvTransformR2;
 };
 #endif
 

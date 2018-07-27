@@ -224,7 +224,8 @@ namespace HelixToolkit.UWP.Model
                     DisplacementMapScaleMask = material.DisplacementMapScaleMask,
                     RenderShadowMap = 0,
                     HasCubeMap = 0,
-                    UVTransform = material.UVTransform
+                    UVTransformR1 = material.UVTransform.Column1,
+                    UVTransformR2 = material.UVTransform.Column2
                 };
                 NeedUpdate = false;
             }

@@ -318,7 +318,8 @@ namespace HelixToolkit.UWP.Model
                     MinTessDistance = material.MinTessellationDistance,
                     MaxDistTessFactor = material.MaxDistanceTessellationFactor,
                     MinDistTessFactor = material.MinDistanceTessellationFactor,
-                    UVTransform = material.UVTransform
+                    UVTransformR1 = material.UVTransform.Column1,
+                    UVTransformR2 = material.UVTransform.Column2
                     //UVTransformRow1 = new Vector2(material.UVTransform.M11, material.UVTransform.M12),
                     //UVTransformRow2 = new Vector2(material.UVTransform.M21, material.UVTransform.M22),
                     //UVTransformRow3 = Vector2.Zero,
