@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 // Port code from https://github.com/spazzarama/Direct3D-Rendering-Cookbook
+// And https://raw.githubusercontent.com/wiki/Microsoft/DirectXMesh/cmodump.cpp
 // Copyright (c) 2013 Justin Stenning
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -209,13 +210,15 @@ namespace HelixToolkit.UWP
             var materials = new List<Tuple<PhongMaterial, IList<string>>>(numMaterials);
             for(int i=0; i < numMaterials; ++i)
             {
-                var material = new PhongMaterial();
-                material.Name = reader.ReadCMO_wchar();
-                material.AmbientColor = reader.ReadStructure<Color4>();
-                material.DiffuseColor = reader.ReadStructure<Color4>();
-                material.SpecularColor = reader.ReadStructure<Color4>();
-                material.SpecularShininess = reader.ReadSingle();
-                material.EmissiveColor = reader.ReadStructure<Color4>();
+                var material = new PhongMaterial
+                {
+                    Name = reader.ReadCMO_wchar(),
+                    AmbientColor = reader.ReadStructure<Color4>(),
+                    DiffuseColor = reader.ReadStructure<Color4>(),
+                    SpecularColor = reader.ReadStructure<Color4>(),
+                    SpecularShininess = reader.ReadSingle(),
+                    EmissiveColor = reader.ReadStructure<Color4>()
+                };
                 var uvTransform = reader.ReadStructure<Matrix>();
                 if(uvTransform == Matrix.Zero)
                 {
@@ -345,12 +348,12 @@ namespace HelixToolkit.UWP
             {
                 var sub = subMesh[i];
                 var material = materials[(int)sub.MaterialIndex];
-                var vertexCollection = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x=>x.Position));
-                var normal = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.Normal));
-                var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.UV));
-                var tangent = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.Tangent.ToVector3()));
+                var vertexCollection = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x=>x.Position));
+                var normal = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Normal));
+                var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.UV));
+                var tangent = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Tangent.ToVector3()));
                 var biTangent = new Vector3Collection(normal.Zip(tangent, (x, y) => { return Vector3.Cross(x, y); }));                
-                var indexCollection = new IntCollection(indices[(int)sub.IndexBufferIndex].Select(x => (int)x));
+                var indexCollection = new IntCollection(indices[(int)sub.IndexDataIndex].Select(x => (int)x));
                 var meshGeo = new MeshGeometry3D()
                 {
                     Positions = vertexCollection,
@@ -361,7 +364,7 @@ namespace HelixToolkit.UWP
                 if(isAnimationData)
                 {
                     var boneskinmesh = new BoneSkinnedMeshGeometry3D(meshGeo) { Animations = animations };
-                    boneskinmesh.VertexBoneIds = new List<BoneIds>(skinningVertexBuffers[(int)sub.VertexBufferIndex]
+                    boneskinmesh.VertexBoneIds = new List<BoneIds>(skinningVertexBuffers[(int)sub.VertexDataIndex]
                         .Select(x => new BoneIds()
                         {
                             Bone1 = (int)x.BoneIndex0, Bone2 = (int)x.BoneIndex1, Bone3 = (int)x.BoneIndex2, Bone4 = (int)x.BoneIndex3,
@@ -381,8 +384,8 @@ namespace HelixToolkit.UWP
         public struct SubMesh
         {
             public uint MaterialIndex;
-            public uint IndexBufferIndex;
-            public uint VertexBufferIndex;
+            public uint IndexDataIndex;
+            public uint VertexDataIndex;
             public uint StartIndex;
             public uint PrimCount;
         };
