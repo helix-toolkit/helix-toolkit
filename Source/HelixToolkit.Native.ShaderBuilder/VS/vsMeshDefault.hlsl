@@ -44,7 +44,7 @@ PSInput main(VSInput input)
 	//set normal for interpolation	
     output.n = normalize(mul(inputn, (float3x3) mWorld));
 	//set texture coords
-    output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t.xy, 0, 1)).xy;
+    output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
     if (bHasDisplacementMap)
     {
         const float mipInterval = 20;

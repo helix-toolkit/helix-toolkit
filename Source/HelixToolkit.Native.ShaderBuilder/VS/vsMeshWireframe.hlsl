@@ -32,14 +32,15 @@ PSWireframeInput main(VSInput input)
 
 	//set position into world space	
     inputp = mul(inputp, mWorld);
-	
+
     if (bHasDisplacementMap)
     {
+        float2 t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
 	    //set normal for interpolation	
         inputn = normalize(mul(inputn, (float3x3) mWorld));
         const float mipInterval = 20;
         float mipLevel = clamp((distance(inputp.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, input.t, mipLevel);
+        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, t, mipLevel);
         inputp.xyz += inputn * mul(h, displacementMapScaleMask);
     }
     PSWireframeInput output = (PSWireframeInput)0;
