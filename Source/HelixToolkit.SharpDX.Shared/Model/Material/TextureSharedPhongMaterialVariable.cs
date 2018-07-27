@@ -4,13 +4,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using global::SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
 namespace HelixToolkit.UWP.Model
 #endif
 {
-    using Core;
+    using Core;    
     using Render;
     using ShaderManager;
     using Shaders;    
@@ -316,7 +317,12 @@ namespace HelixToolkit.UWP.Model
                     MaxTessDistance = material.MaxTessellationDistance,
                     MinTessDistance = material.MinTessellationDistance,
                     MaxDistTessFactor = material.MaxDistanceTessellationFactor,
-                    MinDistTessFactor = material.MinDistanceTessellationFactor
+                    MinDistTessFactor = material.MinDistanceTessellationFactor,
+                    UVTransform = material.UVTransform
+                    //UVTransformRow1 = new Vector2(material.UVTransform.M11, material.UVTransform.M12),
+                    //UVTransformRow2 = new Vector2(material.UVTransform.M21, material.UVTransform.M22),
+                    //UVTransformRow3 = Vector2.Zero,
+                    //UVTransformRow4 = new Vector2(material.UVTransform.M41, material.UVTransform.M42)
                 };
                 NeedUpdate = false;
             }

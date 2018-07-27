@@ -206,7 +206,7 @@ namespace HelixToolkit.UWP
         {
             var name = reader.ReadCMO_wchar();
             int numMaterials = (int)reader.ReadUInt32();
-            var materials = new List<Tuple<PhongMaterial, IList<string>, Matrix>>(numMaterials);
+            var materials = new List<Tuple<PhongMaterial, IList<string>>>(numMaterials);
             for(int i=0; i < numMaterials; ++i)
             {
                 var material = new PhongMaterial();
@@ -221,13 +221,14 @@ namespace HelixToolkit.UWP
                 {
                     uvTransform = Matrix.Identity;
                 }
+                material.UVTransform = Matrix.Transpose(uvTransform);
                 var pixelShaderName = reader.ReadCMO_wchar();//Not used
                 var textures = new List<string>();
                 for (int t = 0; t < MaxTextures; ++t)
                 {
                     textures.Add(reader.ReadCMO_wchar());
                 }
-                materials.Add(new Tuple<PhongMaterial, IList<string>, Matrix>(material, textures, uvTransform));
+                materials.Add(new Tuple<PhongMaterial, IList<string>>(material, textures));
             }
 
             //      BYTE - 1 if there is skeletal animation data present
@@ -346,7 +347,7 @@ namespace HelixToolkit.UWP
                 var material = materials[(int)sub.MaterialIndex];
                 var vertexCollection = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x=>x.Position));
                 var normal = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.Normal));
-                var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => Vector2.TransformNormal(x.UV, material.Item3)));
+                var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.UV));
                 var tangent = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.Tangent.ToVector3()));
                 var biTangent = new Vector3Collection(normal.Zip(tangent, (x, y) => { return Vector3.Cross(x, y); }));                
                 var indexCollection = new IntCollection(indices[(int)sub.IndexBufferIndex].Select(x => (int)x));

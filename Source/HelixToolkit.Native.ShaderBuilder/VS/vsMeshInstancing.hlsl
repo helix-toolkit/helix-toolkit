@@ -47,14 +47,14 @@ PSInput main(VSInstancingInput input)
     output.n = normalize(mul(inputn, (float3x3) mWorld));
     if (!bHasInstanceParams)
     {
-        output.t = input.t;
+        output.t = mul(float4(input.t.xy, 0, 1), (float4x2) uvTransform).xy;
         output.cDiffuse = vMaterialDiffuse;
         output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
     }
     else
     {
 		//set texture coords and color
-        output.t = input.t + input.tOffset;
+        output.t = mul(float4(input.t.xy, 0, 1), (float4x2) uvTransform).xy + input.tOffset;
         output.cDiffuse = input.diffuseC;
         output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
     }
