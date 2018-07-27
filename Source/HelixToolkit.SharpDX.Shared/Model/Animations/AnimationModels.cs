@@ -15,7 +15,6 @@ namespace HelixToolkit.UWP.Animations
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Bone
     {
-        // Bone name is stored in Mesh with BoneNames (indexes match between Bones and BoneNames)
         public int ParentIndex;
         public Matrix InvBindPose;
         public Matrix BindPose;

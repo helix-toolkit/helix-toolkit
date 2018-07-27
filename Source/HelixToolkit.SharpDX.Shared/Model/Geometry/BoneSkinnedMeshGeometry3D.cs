@@ -64,6 +64,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IList<Animations.Bone> Bones { set; get; }
         /// <summary>
+        /// Gets or sets the bone names.
+        /// </summary>
+        /// <value>
+        /// The bone names.
+        /// </value>
+        public IList<string> BoneNames { set; get; }
+        /// <summary>
         /// Merge meshes into one
         /// </summary>
         /// <param name="meshes"></param>
@@ -126,7 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 TextureCoordinates = textureCoods,
                 Tangents = tangents,
                 BiTangents = bitangents,
-                VertexBoneIds = vertexIds
+                VertexBoneIds = vertexIds,
             };
             return mesh;
         }

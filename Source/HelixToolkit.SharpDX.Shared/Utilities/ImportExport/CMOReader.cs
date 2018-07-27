@@ -293,7 +293,8 @@ namespace HelixToolkit.UWP
             // load mesh extent
             var extent = reader.ReadStructure<MeshExtent>();
             Dictionary<string, Animation> animations = null;
-            List<Bone> bones = null;
+            IList<Bone> bones = null;
+            IList<string> boneNames = null;
             if (isAnimationData)
             {
                 //      UINT - Bone count
@@ -303,12 +304,12 @@ namespace HelixToolkit.UWP
                 //          Bone structure
                 //      }
                 int boneCount = (int)reader.ReadUInt32();
-                var boneNames = new List<string>(boneCount);
-                bones = new List<Bone>(boneCount);
+                boneNames = new string[boneCount];
+                bones = new Bone[boneCount];
                 for (var i = 0; i < boneCount; i++)
                 {
-                    boneNames.Add(reader.ReadCMO_wchar());
-                    bones.Add(reader.ReadStructure<Bone>());
+                    boneNames[i] = reader.ReadCMO_wchar();
+                    bones[i] = reader.ReadStructure<Bone>();
                 }
 
                 //      UINT - Animation clip count
@@ -366,6 +367,7 @@ namespace HelixToolkit.UWP
                             Weights = new Vector4(x.BoneWeight0, x.BoneWeight1, x.BoneWeight2, x.BoneWeight3),
                         }));
                     boneskinmesh.Bones = bones;
+                    boneskinmesh.BoneNames = boneNames;
                     meshGeo = boneskinmesh;
                 }              
                 //Todo Load textures
