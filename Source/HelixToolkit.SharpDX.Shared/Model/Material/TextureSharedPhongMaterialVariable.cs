@@ -34,7 +34,7 @@ namespace HelixToolkit.UWP.Model
         private int texDiffuseSlot, texAlphaSlot, texNormalSlot, texDisplaceSlot;
         private int samplerDiffuseSlot, samplerAlphaSlot, samplerNormalSlot, samplerDisplaceSlot, samplerShadowSlot;
         private uint textureIndex = 0;
-        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
+        private PhongMaterialStruct materialStruct = new PhongMaterialStruct() { UVTransformR1 = new Vector4(1, 0, 0, 0), UVTransformR2 = new Vector4(0, 1, 0, 0) };
 
         private bool HasTextures
         {

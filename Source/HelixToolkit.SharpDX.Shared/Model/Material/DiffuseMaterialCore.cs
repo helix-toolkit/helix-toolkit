@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -111,7 +112,7 @@ namespace HelixToolkit.UWP.Model
         }
         private readonly PhongMaterialCore material;
         private readonly bool fixedPassName = false;
-        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
+        private PhongMaterialStruct materialStruct = new PhongMaterialStruct() { UVTransformR1 = new Vector4(1, 0, 0, 0), UVTransformR2 = new Vector4(0, 1, 0, 0) };
         /// <summary>
         /// 
         /// </summary>
