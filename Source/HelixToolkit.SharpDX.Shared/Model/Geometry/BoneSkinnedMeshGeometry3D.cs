@@ -50,6 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public Dictionary<string, Animations.Animation> Animations { set; get; }
         /// <summary>
         /// Merge meshes into one
         /// </summary>

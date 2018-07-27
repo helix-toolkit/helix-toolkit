@@ -42,16 +42,8 @@
             </hx:Viewport3DX.InputBindings>
             <hx:ShadowMap3D />
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <hx:BoneSkinMeshGeometryModel3D
-                x:Name="model"
-                BoneMatrices="{Binding Bones}"
-                CullMode="Back"
-                FillMode="{Binding FillMode}"
-                Geometry="{Binding Model}"
-                Instances="{Binding Instances}"
-                IsThrowingShadow="True"
-                Material="{Binding Material}"/>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding Light1Color}" />
+            <hx:GroupModel3D ItemsSource="{Binding Models}"/>
             <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" />
         </hx:Viewport3DX>
         <StackPanel

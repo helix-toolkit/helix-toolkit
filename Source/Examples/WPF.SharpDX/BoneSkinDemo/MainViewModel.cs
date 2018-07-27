@@ -15,48 +15,14 @@ using Matrix = global::SharpDX.Matrix;
 using Vector4 = global::SharpDX.Vector4;
 using System.Threading.Tasks;
 using System.Threading;
+using System.IO;
 
 namespace BoneSkinDemo
 {
     public class MainViewModel : BaseViewModel
     {
-        private Media3D.Vector3D light1Direction = new Media3D.Vector3D();
-        public Media3D.Vector3D Light1Direction
-        {
-            set
-            {
-                if (light1Direction != value)
-                {
-                    light1Direction = value;
-                    OnPropertyChanged();
-                }
-            }
-            get
-            {
-                return light1Direction;
-            }
-        }
-
         public Color Light1Color { get; set; }
         public Color AmbientLightColor { get; set; }
-
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
-        public Media3D.Vector3D CamLookDir
-        {
-            set
-            {
-                if (camLookDir != value)
-                {
-                    camLookDir = value;
-                    OnPropertyChanged();
-                    Light1Direction = value;
-                }
-            }
-            get
-            {
-                return camLookDir;
-            }
-        }
 
         private FillMode fillMode = FillMode.Solid;
         public FillMode FillMode
@@ -72,10 +38,8 @@ namespace BoneSkinDemo
             }
         }
 
-        public MeshGeometry3D Model
-        {
-            private set;get;
-        }
+        public ObservableElement3DCollection Models { get; } = new ObservableElement3DCollection();
+
         public MeshGeometry3D FloorModel
         {
             private set;get;
@@ -171,28 +135,13 @@ namespace BoneSkinDemo
            
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
-                Position = new Media3D.Point3D(20, 20, 20),
-                LookDirection = new Media3D.Vector3D(-20, -20, -20),
+                Position = new Media3D.Point3D(5, 5, 5),
+                LookDirection = new Media3D.Vector3D(-5, -5, -5),
                 UpDirection = new Media3D.Vector3D(0, 1, 0)
             };
             this.Light1Color = Colors.White;
-            this.Light1Direction = new Media3D.Vector3D(-10, -10, -10);
             this.AmbientLightColor = Colors.DarkGray;
-            SetupCameraBindings(this.Camera);
 
-            var builder = new MeshBuilder(true, false);
-            path = new List<Vector3>();
-            for(int i=0; i< NumSegments; ++i)
-            {
-                path.Add(new Vector3(0, (float)i/10, 0));
-            }
-
-            builder.AddTube(path, 2, Theta, false, false, true);
-            Model = builder.ToMesh();
-            for (int i = 0; i < Model.Positions.Count; ++i)
-            {
-                Model.Positions[i] = new Vector3(Model.Positions[i].X, 0, Model.Positions[i].Z);
-            }
             Material = new PhongMaterial()
             {
                 DiffuseColor = Colors.SteelBlue.ToColor4(),
@@ -208,48 +157,49 @@ namespace BoneSkinDemo
                 Bones = boneInternal.ToArray()
             };
 
-            builder = new MeshBuilder(true, true, false);
-            builder.AddBox(new Vector3(), 40, 0.5, 40, BoxFaces.All);
+            var builder = new MeshBuilder(true, true, false);
+            builder.AddBox(new Vector3(0, -1, 0), 5, 0.1, 5, BoxFaces.All);
             FloorModel = builder.ToMesh();
 
-            int boneId = 0;
-            numSegmentPerBone = (int)Math.Max(1, (double)Model.Positions.Count / Theta / (numBonesInModel - 1));
-            int count = 0;
-            for(int i=0; i < Model.Positions.Count / Theta; ++i)
+            LoadFile();
+        }
+        private void LoadFile()
+        {
+            var loader = new CMOReader();
+            var obj3Ds = loader.Read("Character.cmo");
+            foreach(var obj3D in obj3Ds)
             {
-                boneParams.AddRange(Enumerable.Repeat(new BoneIds()
+                if(obj3D.Geometry is BoneSkinnedMeshGeometry3D)
                 {
-                    Bone1 = Math.Min(numBonesInModel - 1, boneId),
-                    Bone2 = Math.Min(numBonesInModel - 1, boneId-1),
-                    Bone3 = Math.Min(numBonesInModel - 1, boneId+1),
-                    Weights = new Vector4(0.6f, 0.2f, 0.2f, 0)
-                }, Theta));
-                ++count;
-                if (count == numSegmentPerBone)
+                    Models.Add(new BoneSkinMeshGeometryModel3D()
+                    {
+                        Geometry = obj3D.Geometry,
+                        FrontCounterClockwise = false,
+                        Material = obj3D.Material.ConvertToMaterial(),
+                        CullMode = CullMode.Back
+                    });
+                }
+                else if(obj3D.Geometry is MeshGeometry3D)
                 {
-                    count = 0;
-                    ++boneId;
+                    Models.Add(new MeshGeometryModel3D()
+                    {
+                        Geometry = obj3D.Geometry,
+                        Material = obj3D.Material.ConvertToMaterial(),
+                        CullMode = CullMode.Back, FrontCounterClockwise=false
+                    });
                 }
             }
-
-            Model = new BoneSkinnedMeshGeometry3D(Model) { VertexBoneIds = boneParams.ToArray() };
-
-            Instances = new List<Matrix>();
-            for (int i = 0; i < 3; ++i)
+            using(var texFile = File.OpenRead("Character.png"))
             {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, -10)));
+                var memory = new MemoryStream();
+                texFile.CopyTo(memory);
+                foreach(var model in Models)
+                {
+                    ((model as MaterialGeometryModel3D).Material as PhongMaterial).DiffuseMap = memory;
+                }
             }
-            for (int i = 0; i < 3; ++i)
-            {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 0)));
-            }
-            for (int i = 0; i < 3; ++i)
-            {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 10)));
-            }
-            StartAnimation();
         }
-    
+
         private void StartAnimation()
         {
             cts.Cancel();
@@ -268,68 +218,7 @@ namespace BoneSkinDemo
 
         private void Timer_Tick()
         {
-            double angle = (0.05f*frame) * Math.PI / 180;
-            var xAxis = new Vector3(1, 0, 0);
-            var zAxis = new Vector3(0, 0, 1);
-            var yAxis = new Vector3(0, 1, 0);
-            var rotation = Matrix.RotationAxis(xAxis, 0);
-            double angleEach = 0;
-            int counter = 0;
-            for (int i=0; i< NumSegments && i < numBonesInModel; ++i, counter+= numSegmentPerBone)
-            {
-                if (i == 0)
-                {
-                    boneInternal[0] =rotation;
-                }
-                else
-                {
-                    var vp = Vector3.Transform(path[counter - numSegmentPerBone], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
-                    angleEach += angle;
-                    var v = Vector3.Transform(path[counter], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
-                    var rad = Math.Acos(Vector3.Dot(yAxis, (v-vp).Normalized()));
-                    if (angleEach < 0)
-                    {
-                        rad = -rad;
-                    }
-                    var rot = Matrix.RotationAxis(xAxis, (float)rad);
-                    var trans = Matrix.Translation(v);
-                    boneInternal[i] = rot * trans;
-                }
-            }
-            var newBone =  new BoneMatricesStruct() { Bones = boneInternal.ToArray() };
-            context.Post((o) =>
-            {
-                Bones = newBone;
-            }, null);
 
-            if (frame > 40 || frame < -40)
-            {
-                direction = !direction;
-            }
-            if (direction)
-            {
-                ++frame;
-            }
-            else
-            {
-                --frame;
-            }
-        }
-
-        public void SetupCameraBindings(Camera camera)
-        {
-            if (camera is ProjectionCamera)
-            {
-                SetBinding("CamLookDir", camera, ProjectionCamera.LookDirectionProperty, this);
-            }
-        }
-
-        private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay)
-        {
-            var binding = new Binding(path);
-            binding.Source = viewModel;
-            binding.Mode = mode;
-            BindingOperations.SetBinding(dobj, property, binding);
         }
 
         protected override void Dispose(bool disposing)

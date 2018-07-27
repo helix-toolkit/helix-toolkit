@@ -115,6 +115,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\AnimationModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
@@ -304,6 +305,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ElementsBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\FrameStatistics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\CMOReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\IModelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ModelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ObjReader.cs" />
