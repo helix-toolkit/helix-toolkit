@@ -206,7 +206,7 @@ namespace HelixToolkit.UWP
         {
             var name = reader.ReadCMO_wchar();
             int numMaterials = (int)reader.ReadUInt32();
-            var materials = new List<KeyValuePair<PhongMaterial, IList<string>>>(numMaterials);
+            var materials = new List<Tuple<PhongMaterial, IList<string>, Matrix>>(numMaterials);
             for(int i=0; i < numMaterials; ++i)
             {
                 var material = new PhongMaterial();
@@ -216,14 +216,18 @@ namespace HelixToolkit.UWP
                 material.SpecularColor = reader.ReadStructure<Color4>();
                 material.SpecularShininess = reader.ReadSingle();
                 material.EmissiveColor = reader.ReadStructure<Color4>();
-                var uvTransform = reader.ReadStructure<Matrix>();//Not used
+                var uvTransform = reader.ReadStructure<Matrix>();
+                if(uvTransform == Matrix.Zero)
+                {
+                    uvTransform = Matrix.Identity;
+                }
                 var pixelShaderName = reader.ReadCMO_wchar();//Not used
                 var textures = new List<string>();
                 for (int t = 0; t < MaxTextures; ++t)
                 {
                     textures.Add(reader.ReadCMO_wchar());
                 }
-                materials.Add(new KeyValuePair<PhongMaterial, IList<string>>(material, textures));
+                materials.Add(new Tuple<PhongMaterial, IList<string>, Matrix>(material, textures, uvTransform));
             }
 
             //      BYTE - 1 if there is skeletal animation data present
@@ -337,13 +341,20 @@ namespace HelixToolkit.UWP
             for (int i=0; i < subMesh.Count; ++i)
             {
                 var sub = subMesh[i];
+                var material = materials[(int)sub.MaterialIndex];
                 var vertexCollection = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x=>x.Position));
                 var normal = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.Normal));
-                var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.UV));
+                var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => Vector2.TransformNormal(x.UV, material.Item3)));
                 var tangent = new Vector3Collection(vertexBuffers[(int)sub.VertexBufferIndex].Select(x => x.Tangent.ToVector3()));
                 var biTangent = new Vector3Collection(normal.Zip(tangent, (x, y) => { return Vector3.Cross(x, y); }));                
                 var indexCollection = new IntCollection(indices[(int)sub.IndexBufferIndex].Select(x => (int)x));
-                var meshGeo = new MeshGeometry3D() { Positions = vertexCollection, Indices = indexCollection, Normals = normal, Tangents = tangent, BiTangents = biTangent, TextureCoordinates = tex };
+                var meshGeo = new MeshGeometry3D()
+                {
+                    Positions = vertexCollection,
+                    Indices = indexCollection, Normals = normal,
+                    Tangents = tangent, BiTangents = biTangent,
+                    TextureCoordinates = tex
+                };
                 if(isAnimationData)
                 {
                     var boneskinmesh = new BoneSkinnedMeshGeometry3D(meshGeo) { Animations = animations };
@@ -354,10 +365,9 @@ namespace HelixToolkit.UWP
                             Weights = new Vector4(x.BoneWeight0, x.BoneWeight1, x.BoneWeight2, x.BoneWeight3),
                         }));
                     meshGeo = boneskinmesh;
-                }
-                var material = materials[(int)sub.MaterialIndex].Key;
+                }              
                 //Todo Load textures
-                obj3Ds.Add(new Object3D() { Geometry = meshGeo, Material = material, Name = name });
+                obj3Ds.Add(new Object3D() { Geometry = meshGeo, Material = material.Item1, Name = name });
             }
             return obj3Ds;
         }
