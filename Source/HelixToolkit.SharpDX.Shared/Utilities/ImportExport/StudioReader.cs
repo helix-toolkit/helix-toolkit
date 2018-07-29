@@ -554,7 +554,7 @@ namespace HelixToolkit.UWP
             {
                 float x = reader.ReadSingle();
                 float y = reader.ReadSingle();
-                pts.Add(new Vector2(x, y));
+                pts.Add(new Vector2(x,1- y));
             }
             return pts;
         }
