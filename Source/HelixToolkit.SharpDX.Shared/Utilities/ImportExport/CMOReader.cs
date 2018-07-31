@@ -260,7 +260,7 @@ namespace HelixToolkit.UWP
             //          USHORT[] - Array of indices
             //      }
 
-            // load index buffers
+            // load triangle indices
             int indexBufferCount = (int)reader.ReadUInt32();
             var indices = new List<ushort[]>(indexBufferCount);
             for (var i = 0; i < indexBufferCount; i++)
@@ -274,7 +274,7 @@ namespace HelixToolkit.UWP
             //          Vertex[] - Array of vertices
             //      }
 
-            // load vertex buffers
+            // load vertex positions
             int vertexBufferCount = (int)reader.ReadUInt32();
             var vertexBuffers = new List<Vertex[]>(vertexBufferCount);
             for (var i = 0; i < vertexBufferCount; i++)
@@ -287,7 +287,7 @@ namespace HelixToolkit.UWP
             //          SkinningVertex[] - Array of skinning verts
             //      }
 
-            // load vertex skinning buffers
+            // load vertex skinning parameters
             int skinningVertexBufferCount = (int)reader.ReadUInt32();
             var skinningVertexBuffers = new List<SkinningVertex[]>(skinningVertexBufferCount);
             for (var i = 0; i < skinningVertexBufferCount; i++)
@@ -381,7 +381,7 @@ namespace HelixToolkit.UWP
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct SubMesh
+        private struct SubMesh
         {
             public uint MaterialIndex;
             public uint IndexDataIndex;
@@ -391,7 +391,7 @@ namespace HelixToolkit.UWP
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct Vertex
+        private struct Vertex
         {
             public Vector3 Position;
             public Vector3 Normal;
@@ -401,7 +401,7 @@ namespace HelixToolkit.UWP
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct SkinningVertex
+        private struct SkinningVertex
         {
             public uint BoneIndex0;
             public uint BoneIndex1;
