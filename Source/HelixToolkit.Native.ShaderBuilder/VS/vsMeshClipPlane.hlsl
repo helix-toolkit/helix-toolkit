@@ -100,7 +100,11 @@ PSInputClip main(VSInput input)
         float3 p = output.wp.xyz - CrossPlaneParams._m30_m31_m32 * CrossPlaneParams._m33;
         output.clipPlane.w = dot(CrossPlaneParams._m20_m21_m22, p);
     }
-
+    if (CuttingOperation == 1)
+    {
+        output.clipPlane.x = -(whenle(-output.clipPlane.x, 0) * whenle(-output.clipPlane.y, 0) * whenle(-output.clipPlane.z, 0) * whenle(-output.clipPlane.w, 0));
+        output.clipPlane.yzw = float3(0, 0, 0);
+    }
     return output;
 }
 
