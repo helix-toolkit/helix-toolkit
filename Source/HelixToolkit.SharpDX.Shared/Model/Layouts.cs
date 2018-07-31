@@ -365,6 +365,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Bool4 EnableCrossPlane;
         public Vector4 CrossSectionColors;
+        public int CuttingOperation;
+        Vector3 padding;
         // Format:
         // M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
         // M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
@@ -379,7 +381,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin</para>
         /// </summary>
         public Matrix CrossPlaneParams;
-        public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
+        public const int SizeInBytes = 4 * (4 * 3 + 4 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

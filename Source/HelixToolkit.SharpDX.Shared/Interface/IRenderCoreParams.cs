@@ -129,6 +129,10 @@ namespace HelixToolkit.UWP.Core
     public interface ICrossSectionRenderParams
     {
         /// <summary>
+        /// Cutting operation, intersects or substract
+        /// </summary>
+        CuttingOperation CuttingOperation { set; get; }
+        /// <summary>
         /// Gets or sets the color of the section.
         /// </summary>
         /// <value>

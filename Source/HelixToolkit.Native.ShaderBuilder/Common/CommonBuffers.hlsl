@@ -123,6 +123,8 @@ cbuffer cbClipping : register(b6)
 {
     bool4 EnableCrossPlane;
     float4 CrossSectionColors;
+    int CuttingOperation;
+    float3 paddingClipping;
 	// Format:
 	// M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
 	// M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
