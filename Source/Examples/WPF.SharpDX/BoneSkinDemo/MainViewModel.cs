@@ -1,81 +1,25 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
-//using SharpDX;
+using HelixToolkit.Wpf.SharpDX.Animations;
+using SharpDX;
 using SharpDX.Direct3D11;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Threading;
-using Media3D = System.Windows.Media.Media3D;
-using System.Windows.Media;
-using Vector3 = global::SharpDX.Vector3;
-using Matrix = global::SharpDX.Matrix;
-using Vector4 = global::SharpDX.Vector4;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Media;
+using Matrix = global::SharpDX.Matrix;
+using Media3D = System.Windows.Media.Media3D;
+using Vector3 = global::SharpDX.Vector3;
 
 namespace BoneSkinDemo
 {
     public class MainViewModel : BaseViewModel
     {
-        private Media3D.Vector3D light1Direction = new Media3D.Vector3D();
-        public Media3D.Vector3D Light1Direction
-        {
-            set
-            {
-                if (light1Direction != value)
-                {
-                    light1Direction = value;
-                    OnPropertyChanged();
-                }
-            }
-            get
-            {
-                return light1Direction;
-            }
-        }
+        public ObservableElement3DCollection Models { get; } = new ObservableElement3DCollection();
 
-        public Color Light1Color { get; set; }
-        public Color AmbientLightColor { get; set; }
-
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
-        public Media3D.Vector3D CamLookDir
-        {
-            set
-            {
-                if (camLookDir != value)
-                {
-                    camLookDir = value;
-                    OnPropertyChanged();
-                    Light1Direction = value;
-                }
-            }
-            get
-            {
-                return camLookDir;
-            }
-        }
-
-        private FillMode fillMode = FillMode.Solid;
-        public FillMode FillMode
-        {
-            set
-            {
-                fillMode = value;
-                OnPropertyChanged();
-            }
-            get
-            {
-                return fillMode;
-            }
-        }
-
-        public MeshGeometry3D Model
-        {
-            private set;get;
-        }
         public MeshGeometry3D FloorModel
         {
             private set;get;
@@ -90,16 +34,19 @@ namespace BoneSkinDemo
             get;
         } = PhongMaterials.Indigo;
 
-        private BoneMatricesStruct bones;
-        public BoneMatricesStruct Bones
+        private BoneMatricesStruct boneStruct;
+        public BoneMatricesStruct BoneStruct
         {
             set
             {
-                SetValue(ref bones, value, nameof(Bones));
+                if(SetValue(ref boneStruct, value))
+                {
+                    Model.BoneMatrices = value;
+                }
             }
             get
             {
-                return bones;
+                return boneStruct;
             }
         }
 
@@ -110,13 +57,13 @@ namespace BoneSkinDemo
             {
                 showWireframe = value;
                 OnPropertyChanged();
-                if (showWireframe)
+                 
+                foreach(var model in Models)
                 {
-                    FillMode = FillMode.Wireframe;
-                }
-                else
-                {
-                    FillMode = FillMode.Solid;
+                    if(model is MeshGeometryModel3D m)
+                    {
+                        m.RenderWireframe = value;
+                    }
                 }
             }
             get
@@ -153,15 +100,15 @@ namespace BoneSkinDemo
 
         private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
-        private int frame = 0;
-        private bool direction = false;
 
         private const int NumSegments = 100;
         private const int Theta = 24;
-        private IList<SharpDX.Vector3> path;
-        private int numSegmentPerBone;
         private CancellationTokenSource cts = new CancellationTokenSource();
         private SynchronizationContext context = SynchronizationContext.Current;
+        private BoneSkinnedMeshGeometry3D Mesh;
+        private BoneSkinMeshGeometryModel3D Model;
+        private Animation? CurrentAnimation;
+
         public MainViewModel()
         {
             this.Title = "BoneSkin Demo";
@@ -171,165 +118,185 @@ namespace BoneSkinDemo
            
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
-                Position = new Media3D.Point3D(20, 20, 20),
-                LookDirection = new Media3D.Vector3D(-20, -20, -20),
+                Position = new Media3D.Point3D(5, 5, 5),
+                LookDirection = new Media3D.Vector3D(-5, -5, -5),
                 UpDirection = new Media3D.Vector3D(0, 1, 0)
             };
-            this.Light1Color = Colors.White;
-            this.Light1Direction = new Media3D.Vector3D(-10, -10, -10);
-            this.AmbientLightColor = Colors.DarkGray;
-            SetupCameraBindings(this.Camera);
 
-            var builder = new MeshBuilder(true, false);
-            path = new List<Vector3>();
-            for(int i=0; i< NumSegments; ++i)
-            {
-                path.Add(new Vector3(0, (float)i/10, 0));
-            }
-
-            builder.AddTube(path, 2, Theta, false, false, true);
-            Model = builder.ToMesh();
-            for (int i = 0; i < Model.Positions.Count; ++i)
-            {
-                Model.Positions[i] = new Vector3(Model.Positions[i].X, 0, Model.Positions[i].Z);
-            }
             Material = new PhongMaterial()
             {
                 DiffuseColor = Colors.SteelBlue.ToColor4(),
                 RenderShadowMap=true,
             };
             FloorMaterial.RenderShadowMap = true;
-            for(int i=0; i< numBonesInModel; ++i)
-            {
-                boneInternal[i] = Matrix.Identity;
-            }
-            Bones = new BoneMatricesStruct()
-            {
-                Bones = boneInternal.ToArray()
-            };
-
-            builder = new MeshBuilder(true, true, false);
-            builder.AddBox(new Vector3(), 40, 0.5, 40, BoxFaces.All);
+            var builder = new MeshBuilder(true, true, false);
+            builder.AddBox(new Vector3(0, -1, 0), 5, 0.1, 5, BoxFaces.All);
             FloorModel = builder.ToMesh();
 
-            int boneId = 0;
-            numSegmentPerBone = (int)Math.Max(1, (double)Model.Positions.Count / Theta / (numBonesInModel - 1));
-            int count = 0;
-            for(int i=0; i < Model.Positions.Count / Theta; ++i)
-            {
-                boneParams.AddRange(Enumerable.Repeat(new BoneIds()
-                {
-                    Bone1 = Math.Min(numBonesInModel - 1, boneId),
-                    Bone2 = Math.Min(numBonesInModel - 1, boneId-1),
-                    Bone3 = Math.Min(numBonesInModel - 1, boneId+1),
-                    Weights = new Vector4(0.6f, 0.2f, 0.2f, 0)
-                }, Theta));
-                ++count;
-                if (count == numSegmentPerBone)
-                {
-                    count = 0;
-                    ++boneId;
-                }
-            }
-
-            Model = new BoneSkinnedMeshGeometry3D(Model) { VertexBoneIds = boneParams.ToArray() };
-
-            Instances = new List<Matrix>();
-            for (int i = 0; i < 3; ++i)
-            {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, -10)));
-            }
-            for (int i = 0; i < 3; ++i)
-            {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 0)));
-            }
-            for (int i = 0; i < 3; ++i)
-            {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 10)));
-            }
+            LoadFile();
             StartAnimation();
         }
-    
+        private void LoadFile()
+        {
+            var loader = new CMOReader();
+            var obj3Ds = loader.Read("Character.cmo");
+            foreach(var obj3D in obj3Ds)
+            {
+                if(obj3D.Geometry is BoneSkinnedMeshGeometry3D)
+                {
+                    Model = new BoneSkinMeshGeometryModel3D()
+                    {
+                        Geometry = obj3D.Geometry,
+                        FrontCounterClockwise = false,
+                        Material = obj3D.Material.ConvertToMaterial(),
+                        CullMode = CullMode.Back
+                    };
+                    Models.Add(Model);
+                    Mesh = obj3D.Geometry as BoneSkinnedMeshGeometry3D;
+                    
+                }
+                else if(obj3D.Geometry is MeshGeometry3D)
+                {
+                    Models.Add(new MeshGeometryModel3D()
+                    {
+                        Geometry = obj3D.Geometry,
+                        Material = obj3D.Material.ConvertToMaterial(),
+                        CullMode = CullMode.Back, FrontCounterClockwise=false
+                    });
+                }
+            }
+            using(var texFile = File.OpenRead("Character.png"))
+            {
+                var memory = new MemoryStream();
+                texFile.CopyTo(memory);
+                foreach(var model in Models)
+                {
+                    ((model as MaterialGeometryModel3D).Material as PhongMaterial).DiffuseMap = memory;
+                }
+            }
+        }
+
         private void StartAnimation()
         {
             cts.Cancel();
             cts.Dispose();
             cts = new CancellationTokenSource();
             var token = cts.Token;
+            CurrentAnimation = Mesh.Animations.Values.First();
             Task.Run(() =>
             {
+                lastTime = Stopwatch.GetTimestamp();
                 while (!token.IsCancellationRequested)
                 {
                     Timer_Tick();
-                    Task.Delay(20).Wait();
+                    Task.Delay(16).Wait();
                 }
             }, token);
         }
-
+        long lastTime;
         private void Timer_Tick()
         {
-            double angle = (0.05f*frame) * Math.PI / 180;
-            var xAxis = new Vector3(1, 0, 0);
-            var zAxis = new Vector3(0, 0, 1);
-            var yAxis = new Vector3(0, 1, 0);
-            var rotation = Matrix.RotationAxis(xAxis, 0);
-            double angleEach = 0;
-            int counter = 0;
-            for (int i=0; i< NumSegments && i < numBonesInModel; ++i, counter+= numSegmentPerBone)
+            var curr = Stopwatch.GetTimestamp();
+            var time = (float)(curr - lastTime) / Stopwatch.Frequency;
+
+            if (Mesh.Bones != null)
             {
-                if (i == 0)
+                // Retrieve each bone's local transform
+                for (var i = 0; i < Mesh.Bones.Count; i++)
                 {
-                    boneInternal[0] =rotation;
+                    boneInternal[i] = Mesh.Bones[i].BoneLocalTransform;
                 }
-                else
+
+                // Load bone transforms from animation frames
+                if (CurrentAnimation.HasValue)
                 {
-                    var vp = Vector3.Transform(path[counter - numSegmentPerBone], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
-                    angleEach += angle;
-                    var v = Vector3.Transform(path[counter], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
-                    var rad = Math.Acos(Vector3.Dot(yAxis, (v-vp).Normalized()));
-                    if (angleEach < 0)
+                    // Keep track of the last key-frame used for each bone
+                    Keyframe?[] lastKeyForBones = new Keyframe?[Mesh.Bones.Count];
+                    // Keep track of whether a bone has been interpolated
+                    bool[] lerpedBones = new bool[Mesh.Bones.Count];
+                    for (var i = 0; i < CurrentAnimation.Value.Keyframes.Count; i++)
                     {
-                        rad = -rad;
+                        // Retrieve current key-frame
+                        var frame = CurrentAnimation.Value.Keyframes[i];
+
+                        // If the current frame is not in the future
+                        if (frame.Time <= time)
+                        {
+                            // Keep track of last key-frame for bone
+                            lastKeyForBones[frame.BoneIndex] = frame;
+                            // Retrieve transform from current key-frame
+                            boneInternal[frame.BoneIndex] = frame.Transform;
+                        }
+                        // Frame is in the future, check if we should interpolate
+                        else
+                        {
+                            // Only interpolate a bone's key-frames ONCE
+                            if (!lerpedBones[frame.BoneIndex])
+                            {
+                                // Retrieve the previous key-frame if exists
+                                Keyframe prevFrame;
+                                if (lastKeyForBones[frame.BoneIndex] != null)
+                                    prevFrame = lastKeyForBones[frame.BoneIndex].Value;
+                                else
+                                    continue; // nothing to interpolate
+                                // Make sure we only interpolate with 
+                                // one future frame for this bone
+                                lerpedBones[frame.BoneIndex] = true;
+
+                                // Calculate time difference between frames
+                                var frameLength = frame.Time - prevFrame.Time;
+                                var timeDiff = time - prevFrame.Time;
+                                var amount = timeDiff / frameLength;
+
+                                // Interpolation using Lerp on scale and translation, and Slerp on Rotation (Quaternion)
+                                Vector3 t1, t2;   // Translation
+                                Quaternion q1, q2;// Rotation
+                                float s1, s2;     // Scale
+                                // Decompose the previous key-frame's transform
+                                prevFrame.Transform.DecomposeUniformScale(out s1, out q1, out t1);
+                                // Decompose the current key-frame's transform
+                                frame.Transform.DecomposeUniformScale(out s2, out q2, out t2);
+
+                                // Perform interpolation and reconstitute matrix
+                                boneInternal[frame.BoneIndex] =
+                                    Matrix.Scaling(MathUtil.Lerp(s1, s2, amount)) *
+                                    Matrix.RotationQuaternion(Quaternion.Slerp(q1, q2, amount)) *
+                                    Matrix.Translation(Vector3.Lerp(t1, t2, amount));
+                            }
+                        }
+
                     }
-                    var rot = Matrix.RotationAxis(xAxis, (float)rad);
-                    var trans = Matrix.Translation(v);
-                    boneInternal[i] = rot * trans;
+                }
+
+                // Apply parent bone transforms
+                // We assume here that the first bone has no parent
+                // and that each parent bone appears before children
+                for (var i = 1; i < Mesh.Bones.Count; i++)
+                {
+                    var bone = Mesh.Bones[i];
+                    if (bone.ParentIndex > -1)
+                    {
+                        var parentTransform = boneInternal[bone.ParentIndex];
+                        boneInternal[i] = (boneInternal[i] * parentTransform);
+                    }
+                }
+
+                // Change the bone transform from rest pose space into bone space (using the inverse of the bind/rest pose)
+                for (var i = 0; i < Mesh.Bones.Count; i++)
+                {
+                    boneInternal[i] = Mesh.Bones[i].InvBindPose * boneInternal[i];
+                }
+                var newBones = boneInternal.ToArray();
+                context.Post((o) => 
+                {
+                    BoneStruct = new BoneMatricesStruct() { Bones = newBones };
+                }, null);
+                // Check need to loop animation
+                if (CurrentAnimation.HasValue && CurrentAnimation.Value.EndTime <= time)
+                {
+                    lastTime = curr;
                 }
             }
-            var newBone =  new BoneMatricesStruct() { Bones = boneInternal.ToArray() };
-            context.Post((o) =>
-            {
-                Bones = newBone;
-            }, null);
-
-            if (frame > 40 || frame < -40)
-            {
-                direction = !direction;
-            }
-            if (direction)
-            {
-                ++frame;
-            }
-            else
-            {
-                --frame;
-            }
-        }
-
-        public void SetupCameraBindings(Camera camera)
-        {
-            if (camera is ProjectionCamera)
-            {
-                SetBinding("CamLookDir", camera, ProjectionCamera.LookDirectionProperty, this);
-            }
-        }
-
-        private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay)
-        {
-            var binding = new Binding(path);
-            binding.Source = viewModel;
-            binding.Mode = mode;
-            BindingOperations.SetBinding(dobj, property, binding);
         }
 
         protected override void Dispose(bool disposing)

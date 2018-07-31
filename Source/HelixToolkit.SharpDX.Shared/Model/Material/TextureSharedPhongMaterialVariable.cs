@@ -4,13 +4,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using global::SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
 namespace HelixToolkit.UWP.Model
 #endif
 {
-    using Core;
+    using Core;    
     using Render;
     using ShaderManager;
     using Shaders;    
@@ -33,7 +34,7 @@ namespace HelixToolkit.UWP.Model
         private int texDiffuseSlot, texAlphaSlot, texNormalSlot, texDisplaceSlot;
         private int samplerDiffuseSlot, samplerAlphaSlot, samplerNormalSlot, samplerDisplaceSlot, samplerShadowSlot;
         private uint textureIndex = 0;
-        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
+        private PhongMaterialStruct materialStruct = new PhongMaterialStruct() { UVTransformR1 = new Vector4(1, 0, 0, 0), UVTransformR2 = new Vector4(0, 1, 0, 0) };
 
         private bool HasTextures
         {
@@ -316,7 +317,13 @@ namespace HelixToolkit.UWP.Model
                     MaxTessDistance = material.MaxTessellationDistance,
                     MinTessDistance = material.MinTessellationDistance,
                     MaxDistTessFactor = material.MaxDistanceTessellationFactor,
-                    MinDistTessFactor = material.MinDistanceTessellationFactor
+                    MinDistTessFactor = material.MinDistanceTessellationFactor,
+                    UVTransformR1 = material.UVTransform.Column1,
+                    UVTransformR2 = material.UVTransform.Column2
+                    //UVTransformRow1 = new Vector2(material.UVTransform.M11, material.UVTransform.M12),
+                    //UVTransformRow2 = new Vector2(material.UVTransform.M21, material.UVTransform.M22),
+                    //UVTransformRow3 = Vector2.Zero,
+                    //UVTransformRow4 = new Vector2(material.UVTransform.M41, material.UVTransform.M42)
                 };
                 NeedUpdate = false;
             }

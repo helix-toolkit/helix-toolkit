@@ -39,7 +39,7 @@ HSInput main(VSInput input)
         }
     }
     output.p = mul(inputp, mWorld).xyz;
-    output.t = input.t;
+    output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
     output.n = inputn;
     output.t1 = inputt1;
     output.t2 = inputt2;

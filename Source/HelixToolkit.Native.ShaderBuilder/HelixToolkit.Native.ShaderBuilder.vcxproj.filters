@@ -42,18 +42,6 @@
     <FxCompile Include="VS\vsBillboardInstancing.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
-    <FxCompile Include="VS\vsBoneSkinning.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsBoneSkinningShadow.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsBoneSkinningTessellation.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsBoneSkinningWireframe.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
     <FxCompile Include="VS\vsCubeMap.hlsl">
       <Filter>VS</Filter>
     </FxCompile>

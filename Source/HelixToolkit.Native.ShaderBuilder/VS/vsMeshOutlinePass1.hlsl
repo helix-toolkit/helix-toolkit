@@ -35,15 +35,16 @@ float4 VSMeshOutlineP1(VSInput input) : SV_POSITION
 
 	//set position into world space	
     output.p = mul(inputp, mWorld);
-	
+
 	//set normal for interpolation	
     output.n = normalize(mul(inputn, (float3x3) mWorld));
 
     if (bHasDisplacementMap)
     {
+        float2 t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
         const float mipInterval = 20;
         float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, input.t, mipLevel);
+        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, t, mipLevel);
         output.p.xyz += output.n * mul(h, displacementMapScaleMask);
     }
 	//set position into clip space	

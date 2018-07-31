@@ -320,7 +320,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public int RenderShadowMap;
         float padding;
         public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
-        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4);
+        public Vector4 UVTransformR1; //Make sure to convert column majo into Row major. Pass into shader
+        public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
+        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2);
     }
     /// <summary>
     /// 

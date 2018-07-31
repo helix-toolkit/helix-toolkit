@@ -234,6 +234,17 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
             { ((d as Material).Core as IPhongMaterial).MinTessellationDistance = (float)(double)e.NewValue; }));
 
+
+        /// <summary>
+        /// The uv transform property
+        /// </summary>
+        public static readonly DependencyProperty UVTransformProperty =
+            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(PhongMaterial), new PropertyMetadata(Matrix.Identity, (d,e)=>
+            {
+                ((d as Material).Core as IPhongMaterial).UVTransform = (Matrix)e.NewValue;
+            }));
+
+
         /// <summary>
         /// Constructs a Shading Material which correspnds with 
         /// the Phong and BlinnPhong lighting models.
@@ -495,6 +506,17 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)GetValue(MinTessellationDistanceProperty); }
             set { SetValue(MinTessellationDistanceProperty, value); }
         }
+        /// <summary>
+        /// Gets or sets the texture uv transform.
+        /// </summary>
+        /// <value>
+        /// The uv transform.
+        /// </value>
+        public Matrix UVTransform
+        {
+            get { return (Matrix)GetValue(UVTransformProperty); }
+            set { SetValue(UVTransformProperty, value); }
+        }
 
         public PhongMaterial Clone()
         {
@@ -527,6 +549,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderNormalMap = RenderNormalMap,
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderShadowMap = RenderShadowMap,
+                UVTransform = UVTransform,
             };
         }
 
@@ -561,6 +584,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderNormalMap = RenderNormalMap,
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderShadowMap = RenderShadowMap,
+                UVTransform = UVTransform
             };
         }
     }
