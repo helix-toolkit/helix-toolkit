@@ -115,8 +115,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The buffer model internal.
         /// </value>
-        protected IGeometryBufferModel BufferModelInternal { get { return bufferModelInternal; } }
-        private IGeometryBufferModel bufferModelInternal;
+        protected IAttachableBufferModel BufferModelInternal { get { return bufferModelInternal; } }
+        private IAttachableBufferModel bufferModelInternal;
 
         /// <summary>
         /// Gets a value indicating whether [geometry valid].
@@ -404,7 +404,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Called when [create buffer model].
         /// </summary>
         /// <returns></returns>
-        protected virtual IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        protected virtual IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
             return EmptyGeometryBufferModel.Empty;
         }

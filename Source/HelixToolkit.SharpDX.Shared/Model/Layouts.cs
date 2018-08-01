@@ -133,7 +133,9 @@ namespace HelixToolkit.Wpf.SharpDX
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = NumberOfBones)]
         public Matrix[] Bones;
         public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
+        public static readonly Matrix[] DefaultBones = Enumerable.Repeat(Matrix.Identity, NumberOfBones).ToArray();
     }
+
     /// <summary>
     /// 
     /// </summary>
@@ -319,7 +321,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public int RenderShadowMap;
         float padding;
         public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
-        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4);
+        public Vector4 UVTransformR1; //Make sure to convert column majo into Row major. Pass into shader
+        public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
+        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2);
     }
     /// <summary>
     /// 
@@ -362,6 +366,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Bool4 EnableCrossPlane;
         public Vector4 CrossSectionColors;
+        public int CuttingOperation;
+        Vector3 padding;
         // Format:
         // M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
         // M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
@@ -376,7 +382,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin</para>
         /// </summary>
         public Matrix CrossPlaneParams;
-        public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
+        public const int SizeInBytes = 4 * (4 * 3 + 4 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

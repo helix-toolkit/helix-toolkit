@@ -132,14 +132,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 Positions = positions,
                 Indices = indices,
+                Normals = normals,
+                Colors = colors,
+                TextureCoordinates = textureCoods,
+                Tangents = tangents,
+                BiTangents = bitangents
             };
-
-            mesh.Normals = normals;
-            mesh.Colors = colors;
-            mesh.TextureCoordinates = textureCoods;
-            mesh.Tangents = tangents;
-            mesh.BiTangents = bitangents;
-
             return mesh;
         }
 

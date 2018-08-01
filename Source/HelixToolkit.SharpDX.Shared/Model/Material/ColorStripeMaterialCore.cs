@@ -141,7 +141,7 @@ namespace HelixToolkit.UWP.Model
 
         private readonly ColorStripeMaterialCore material;
         private readonly IDevice3DResources deviceResources;
-        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
+        private PhongMaterialStruct materialStruct = new PhongMaterialStruct() { UVTransformR1 = new Vector4(1, 0, 0, 0), UVTransformR2 = new Vector4(0, 1, 0, 0) };
         /// <summary>
         /// 
         /// </summary>
@@ -236,7 +236,9 @@ namespace HelixToolkit.UWP.Model
                 {
                     Diffuse = material.DiffuseColor,
                     HasDiffuseMap = material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0,
-                    HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0
+                    HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0,
+                    UVTransformR1 = new Vector4(1, 0, 0, 0),
+                    UVTransformR2 = new Vector4(0, 1, 0, 0)
                 };
                 NeedUpdate = false;
             }

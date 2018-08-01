@@ -15,24 +15,6 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class BoneSkinMeshGeometryModel3D : MeshGeometryModel3D
     {
-        public static DependencyProperty VertexBoneIdsProperty = DependencyProperty.Register("VertexBoneIds", typeof(IList<BoneIds>), typeof(BoneSkinMeshGeometryModel3D),
-            new PropertyMetadata(null, (d, e) =>
-            {
-                ((d as Element3DCore).SceneNode as BoneSkinMeshNode).VertexBoneIds = e.NewValue as IList<BoneIds>;
-            }));
-
-        public IList<BoneIds> VertexBoneIds
-        {
-            set
-            {
-                SetValue(VertexBoneIdsProperty, value);
-            }
-            get
-            {
-                return (IList<BoneIds>)GetValue(VertexBoneIdsProperty);
-            }
-        }
-
         public static DependencyProperty BoneMatricesProperty = DependencyProperty.Register("BoneMatrices", typeof(BoneMatricesStruct), typeof(BoneSkinMeshGeometryModel3D),
             new PropertyMetadata(new BoneMatricesStruct() { Bones = new Matrix[BoneMatricesStruct.NumberOfBones] },
                 (d, e) =>
@@ -55,15 +37,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override SceneNode OnCreateSceneNode()
         {
             return new BoneSkinMeshNode();
-        }
-
-        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
-        {
-            if (core is BoneSkinMeshNode n)
-            {
-                n.BoneMatrices = BoneMatrices;
-            }
-            base.AssignDefaultValuesToSceneNode(core);
         }
     }
 }

@@ -24,6 +24,28 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         #region Dependency Properties
         /// <summary>
+        /// Gets or sets the cutting operation.
+        /// </summary>
+        /// <value>
+        /// The cutting operation.
+        /// </value>
+        public CuttingOperation CuttingOperation
+        {
+            get { return (CuttingOperation)GetValue(CuttingOperationProperty); }
+            set { SetValue(CuttingOperationProperty, value); }
+        }
+        /// <summary>
+        /// The cutting operation property
+        /// </summary>
+        public static readonly DependencyProperty CuttingOperationProperty =
+            DependencyProperty.Register("CuttingOperation", typeof(CuttingOperation), typeof(CrossSectionMeshGeometryModel3D), 
+                new PropertyMetadata(CuttingOperation.Intersect, (d,e)=> 
+                {
+                    ((d as Element3DCore).SceneNode as CrossSectionMeshNode).CuttingOperation = (CuttingOperation)e.NewValue;
+                }));
+
+
+        /// <summary>
         /// Defines the CrossSectionColorProperty
         /// </summary>
         public static DependencyProperty CrossSectionColorProperty = DependencyProperty.Register("CrossSectionColor", typeof(Media.Color), typeof(CrossSectionMeshGeometryModel3D),

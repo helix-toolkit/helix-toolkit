@@ -199,11 +199,10 @@ namespace HelixToolkit.UWP.Core
         /// Attaches the buffers.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferStartSlot">The vertex buffer start slot.</param>
         /// <param name="deviceResources">The device resources.</param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
+        public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {        
             if (!Commit(context) && vertexBufferBindings.Length > 0)
             {
@@ -222,9 +221,13 @@ namespace HelixToolkit.UWP.Core
             {
                 context.SetIndexBuffer(null, Format.Unknown, 0);
             }
-            context.InputLayout = vertexLayout;
             context.PrimitiveTopology = Topology;
             return true;
+        }
+
+        public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        {
+            return false;
         }
 
         protected override void OnDispose(bool disposeManagedResources)

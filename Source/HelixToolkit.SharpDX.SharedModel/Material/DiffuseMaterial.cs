@@ -71,10 +71,35 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty); }
             set { this.SetValue(DiffuseMapSamplerProperty, value); }
         }
+        /// <summary>
+        /// The uv transform property
+        /// </summary>
+        public static readonly DependencyProperty UVTransformProperty =
+            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(DiffuseMaterial), new PropertyMetadata(Matrix.Identity, (d, e) =>
+            {
+                ((d as Material).Core as IPhongMaterial).UVTransform = (Matrix)e.NewValue;
+            }));
+        /// <summary>
+        /// Gets or sets the texture uv transform.
+        /// </summary>
+        /// <value>
+        /// The uv transform.
+        /// </value>
+        public Matrix UVTransform
+        {
+            get { return (Matrix)GetValue(UVTransformProperty); }
+            set { SetValue(UVTransformProperty, value); }
+        }
 
         protected override MaterialCore OnCreateCore()
         {
-            return new DiffuseMaterialCore();
+            return new DiffuseMaterialCore()
+            {
+                DiffuseColor = DiffuseColor,
+                DiffuseMap = DiffuseMap,
+                UVTransform = UVTransform,
+                DiffuseMapSampler = DiffuseMapSampler
+            };
         }
     }
 

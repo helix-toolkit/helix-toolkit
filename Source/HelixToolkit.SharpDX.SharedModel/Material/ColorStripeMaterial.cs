@@ -103,7 +103,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color stripe x enabled property
         /// </summary>
         public static readonly DependencyProperty ColorStripeXEnabledProperty =
-            DependencyProperty.Register("ColorStripeXEnabled", typeof(bool), typeof(ColorStripeMaterial), new PropertyMetadata(true, 
+            DependencyProperty.Register("ColorStripeXEnabled", typeof(bool), typeof(ColorStripeMaterial), new PropertyMetadata(true,
                 (d, e) => { ((d as Material).Core as ColorStripeMaterialCore).ColorStripeXEnabled = (bool)e.NewValue; }));
 
         /// <summary>
@@ -136,7 +136,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override MaterialCore OnCreateCore()
         {
-            return new ColorStripeMaterialCore();
+            return new ColorStripeMaterialCore()
+            {
+                DiffuseColor = DiffuseColor,
+                ColorStripeSampler = ColorStripeSampler,
+                ColorStripeX = ColorStripeX,
+                ColorStripeXEnabled = ColorStripeXEnabled,
+                ColorStripeY = ColorStripeY,
+                ColorStripeYEnabled = ColorStripeYEnabled
+            };
         }
     }
 }

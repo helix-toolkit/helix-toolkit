@@ -29,6 +29,24 @@ namespace HelixToolkit.UWP.Core
         private RasterizerStateProxy backfaceRasterState;
         #endregion
         #region Properties
+        private CuttingOperation cuttingOperation = CuttingOperation.Intersect;
+        /// <summary>
+        /// Gets or sets the cutting operation.
+        /// </summary>
+        /// <value>
+        /// The cutting operation.
+        /// </value>
+        public CuttingOperation CuttingOperation
+        {
+            set
+            {
+                if(SetAffectsRender(ref cuttingOperation, value))
+                {
+                    clipParameter.CuttingOperation = (int)value;
+                }
+            }
+            get { return cuttingOperation; }
+        }
         /// <summary>
         /// Defines the sectionColor
         /// </summary>       

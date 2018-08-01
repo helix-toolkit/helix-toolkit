@@ -64,6 +64,8 @@ cbuffer cbMeshModel : register(b1)
     bool bRenderShadowMap = false;
     float padding2;
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
+    float4 uvTransformR1;
+    float4 uvTransformR2;
 };
 #endif
 
@@ -75,16 +77,6 @@ cbuffer cbMeshModel : register(b1)
         float4 CursorVertCoord[4];
     };
 #endif
-
-#define MaxBones 128
-
-static const int4 minBoneV = { 0, 0, 0, 0 };
-static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
-
-cbuffer cbBoneSkinning : register(b2)
-{
-    matrix skinMatrices[MaxBones];
-};
 
 cbuffer cbLights : register(b3)
 {
@@ -121,6 +113,8 @@ cbuffer cbClipping : register(b6)
 {
     bool4 EnableCrossPlane;
     float4 CrossSectionColors;
+    int CuttingOperation;
+    float3 paddingClipping;
 	// Format:
 	// M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
 	// M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
@@ -198,6 +192,8 @@ Texture2D texOITAlpha : register(t11);
 
 Texture1D texColorStripe1DX : register(t12);
 Texture1D texColorStripe1DY : register(t13);
+
+StructuredBuffer<matrix> skinMatrices : register(t20);
 ///------------------Samplers-------------------
 SamplerState samplerDiffuse : register(s0);
 

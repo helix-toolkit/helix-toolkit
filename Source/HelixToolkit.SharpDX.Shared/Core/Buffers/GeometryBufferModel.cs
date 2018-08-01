@@ -23,6 +23,8 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class GeometryBufferModel : ReferenceCountDisposeObject, IGUID, IGeometryBufferModel
     {
+        public event EventHandler OnVertexBufferUpdated;
+        public event EventHandler OnIndexBufferUpdated;
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
@@ -199,13 +201,24 @@ namespace HelixToolkit.UWP.Core
         /// Attaches the buffers.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferStartSlot">The vertex buffer slot.</param>
         /// <param name="deviceResources">The device resources.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
+        public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
+            UpdateBuffers(context, deviceResources);
+            return OnAttachBuffer(context, ref vertexBufferStartSlot);
+        }
+        /// <summary>
+        /// Updates the buffers.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceResources">The device resources.</param>
+        /// <returns></returns>
+        public virtual bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        {
+            bool bufferUpdated = false;
             if(VertexChanged != 0)
             {
                 lock (VertexBuffer)
@@ -228,8 +241,10 @@ namespace HelixToolkit.UWP.Core
                     }  
                     if (updateVBinding)
                     {
-                        VertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
+                        VertexBufferBindings = OnCreateVertexBufferBinding();
                         updateVBinding = false;
+                        OnVertexBufferUpdated?.Invoke(this, EventArgs.Empty);
+                        bufferUpdated = true;
                     }
                 }
             }
@@ -240,11 +255,18 @@ namespace HelixToolkit.UWP.Core
                     if (IndexChanged)
                     {
                         OnCreateIndexBuffer(context, IndexBuffer, Geometry, deviceResources);
+                        bufferUpdated = true;
                     }
-                    IndexChanged = false;
+                    IndexChanged = false;                    
+                    OnIndexBufferUpdated?.Invoke(this, EventArgs.Empty);
                 }               
             }
-            return OnAttachBuffer(context, vertexLayout, ref vertexBufferStartSlot);
+            return bufferUpdated;
+        }
+
+        protected virtual VertexBufferBinding[] OnCreateVertexBufferBinding()
+        {
+            return VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
         }
         /// <summary>
         /// Called when [create vertex buffer].
@@ -267,10 +289,9 @@ namespace HelixToolkit.UWP.Core
         /// Called when [attach buffer].
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferStartSlot">The vertex buffer start slot. It will be changed to the next available slot after binding</param>
         /// <returns></returns>
-        protected virtual bool OnAttachBuffer(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
+        protected virtual bool OnAttachBuffer(DeviceContextProxy context, ref int vertexBufferStartSlot)
         {
             if (VertexBuffer.Length > 0)
             {
@@ -292,7 +313,6 @@ namespace HelixToolkit.UWP.Core
             {
                 context.SetIndexBuffer(null, Format.Unknown, 0);
             }
-            context.InputLayout = vertexLayout;
             context.PrimitiveTopology = Topology;
             return true;
         }

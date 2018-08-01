@@ -51,10 +51,21 @@
         public bool EnablePlane2 { set; get; } = true;
         public Plane Plane2 { set; get; } = new Plane(new Vector3(-1, 0, 0), -8);
         private float plane2Factor = 0.05f;
+        private int cuttingOperationIndex;
+        public int CuttingOperationIndex
+        {
+            set
+            {
+                if (SetValue(ref cuttingOperationIndex, value))
+                {
+                    CuttingOperation = (CuttingOperation)value;
+                }
+            }
+            get { return cuttingOperationIndex; }
+        }
 
-        public bool EnableAnimation { set; get; } = false;
+        public CuttingOperation CuttingOperation { set; get; }
 
-        private DispatcherTimer timer;
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
@@ -107,34 +118,6 @@
 
             Plane1Transform = new TranslateTransform3D(new Vector3D(0, 15, 0));
             Plane2Transform = new TranslateTransform3D(new Vector3D(15, 0, 0));
-
-            timer = new DispatcherTimer(DispatcherPriority.Render);           
-            timer.Interval = TimeSpan.FromMilliseconds(30);
-            timer.Tick += Timer_Tick;
-            timer.Start();
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (!EnableAnimation) { return; }
-            if (EnablePlane1)
-            {
-                Plane1 = new Plane(Plane1.Normal, Plane1.D + plane1Factor);
-                if (Plane1.D < -15 || Plane1.D > 0)
-                {
-                    plane1Factor = -plane1Factor;
-                }
-                Plane1Transform.OffsetY = -Plane1.D;
-            }
-            if (EnablePlane2)
-            {
-                Plane2 = new Plane(Plane2.Normal, Plane2.D + plane2Factor);
-                if (Plane2.D < -15 || Plane2.D > 5)
-                {
-                    plane2Factor = -plane2Factor;
-                }
-                Plane2Transform.OffsetX = -Plane2.D;
-            }
         }
 
         public List<Object3D> Load3ds(string path)

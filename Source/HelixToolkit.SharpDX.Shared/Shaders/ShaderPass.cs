@@ -68,6 +68,14 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public RasterizerStateProxy RasterState { private set; get; } = null;
         /// <summary>
+        /// Gets or sets the input layout. This is customized layout used for this ShaderPass only.
+        /// If this is not set, default is using <see cref="Technique.Layout"/> from <see cref="TechniqueDescription.InputLayoutDescription"/>
+        /// </summary>
+        /// <value>
+        /// The input layout.
+        /// </value>
+        public InputLayout Layout { private set; get; } = null;
+        /// <summary>
         /// Gets or sets the topology.
         /// </summary>
         /// <value>
@@ -81,8 +89,9 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         /// <param name="passDescription"></param>
+        /// <param name="layout"></param>
         /// <param name="manager"></param>
-        public ShaderPass(ShaderPassDescription passDescription, IEffectsManager manager)
+        public ShaderPass(ShaderPassDescription passDescription, InputLayout layout, IEffectsManager manager)
         {
             Name = passDescription.Name;
 
@@ -131,6 +140,14 @@ namespace HelixToolkit.UWP.Shaders
             SampleMask = passDescription.SampleMask;
 
             Topology = passDescription.Topology;
+            if(passDescription.InputLayoutDescription != null)
+            {
+                Layout = manager.ShaderManager.RegisterInputLayout(passDescription.InputLayoutDescription);
+            }
+            else
+            {
+                Layout = layout;
+            }
         }
 
         /// <summary>
@@ -150,6 +167,10 @@ namespace HelixToolkit.UWP.Shaders
         public void BindShader(DeviceContextProxy context, bool bindConstantBuffer = true)
         {
             context.SetShaderPass(this, bindConstantBuffer);
+            if(Layout != null)
+            {
+                context.InputLayout = Layout;
+            }
         }
 
         #region Get Shaders

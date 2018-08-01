@@ -49,7 +49,25 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             deviceContext.OutputMerger.SetRenderTargets(dsv, renderTarget);
         }
-
+        /// <summary>
+        /// Sets the stream output target.
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="offset">The offset.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetStreamOutputTarget(Buffer buffer, int offset = 0)
+        {
+            deviceContext.StreamOutput.SetTarget(buffer, offset);
+        }
+        /// <summary>
+        /// Sets the stream output target.
+        /// </summary>
+        /// <param name="bufferBindings">The buffer bindings.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetStreamOutputTarget(StreamOutputBufferBinding[] bufferBindings)
+        {
+            deviceContext.StreamOutput.SetTargets(bufferBindings);
+        }
         private static readonly RenderTargetView[] ZeroRenderTargetArray = new RenderTargetView[0];
 
         /// <summary>

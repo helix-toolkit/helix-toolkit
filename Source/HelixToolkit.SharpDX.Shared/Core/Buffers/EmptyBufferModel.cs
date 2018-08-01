@@ -91,6 +91,10 @@ namespace HelixToolkit.UWP.Core
         /// The effects manager.
         /// </value>
         public IEffectsManager EffectsManager { set; get; }
+#pragma warning disable CS0067
+        public event EventHandler OnVertexBufferUpdated;
+        public event EventHandler OnIndexBufferUpdated;
+#pragma warning restore CS0067
         /// <summary>
         /// Attaches this instance.
         /// </summary>
@@ -102,11 +106,10 @@ namespace HelixToolkit.UWP.Core
         /// Attaches the buffers.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferStartSlot">The vertex buffer start slot. Returns next available bind slot</param>
         /// <param name="deviceResources"></param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
+        public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
             return true;
         }
@@ -141,6 +144,11 @@ namespace HelixToolkit.UWP.Core
         public void Dispose()
         {
 
+        }
+
+        public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
+        {
+            return false;
         }
     }
 }

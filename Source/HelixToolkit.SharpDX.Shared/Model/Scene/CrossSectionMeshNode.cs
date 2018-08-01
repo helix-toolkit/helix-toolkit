@@ -20,6 +20,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     public class CrossSectionMeshNode : MeshNode
     {
         /// <summary>
+        /// Gets or sets the cutting operation.
+        /// </summary>
+        /// <value>
+        /// The cutting operation.
+        /// </value>
+        public CuttingOperation CuttingOperation
+        {
+            set
+            {
+                (RenderCore as ICrossSectionRenderParams).CuttingOperation = value;
+            }
+            get
+            {
+                return (RenderCore as ICrossSectionRenderParams).CuttingOperation;
+            }
+        }
+        /// <summary>
         /// Gets or sets the color of the cross section.
         /// </summary>
         /// <value>

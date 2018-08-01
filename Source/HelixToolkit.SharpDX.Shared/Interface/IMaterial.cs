@@ -147,6 +147,8 @@ namespace HelixToolkit.Wpf.SharpDX
         float MaxTessellationDistance { set; get; }
 
         float MinTessellationDistance { set; get; }
+
+        Matrix UVTransform { set; get; }
     }
 
     /// <summary>

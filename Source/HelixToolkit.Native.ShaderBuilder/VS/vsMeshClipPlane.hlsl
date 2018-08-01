@@ -43,12 +43,13 @@ PSInputClip main(VSInput input)
     output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
 	//set normal for interpolation	
     output.n = normalize(mul(inputn, (float3x3) mWorld));
-
+    	//set texture coords
+    output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
     if (bHasDisplacementMap)
     {
         const float mipInterval = 20;
         float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, input.t, mipLevel);
+        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, output.t, mipLevel);
         output.p.xyz += output.n * mul(h, displacementMapScaleMask);
     }
     output.wp = output.p;
@@ -61,8 +62,7 @@ PSInputClip main(VSInput input)
         output.sp = mul(output.wp, vLightViewProjection);
     }
 
-	//set texture coords and color
-    output.t = input.t;
+	//set color
     output.c = input.c;
     output.cDiffuse = vMaterialDiffuse;
     output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
@@ -100,7 +100,11 @@ PSInputClip main(VSInput input)
         float3 p = output.wp.xyz - CrossPlaneParams._m30_m31_m32 * CrossPlaneParams._m33;
         output.clipPlane.w = dot(CrossPlaneParams._m20_m21_m22, p);
     }
-
+    if (CuttingOperation == 1)
+    {
+        output.clipPlane.x = -(whenle(-output.clipPlane.x, 0) * whenle(-output.clipPlane.y, 0) * whenle(-output.clipPlane.z, 0) * whenle(-output.clipPlane.w, 0));
+        output.clipPlane.yzw = float3(0, 0, 0);
+    }
     return output;
 }
 
