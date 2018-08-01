@@ -181,19 +181,7 @@ namespace HelixToolkit.UWP.Utilities
             }
             else if (buffer == null || Capacity < newSizeInBytes)
             {
-                RemoveAndDispose(ref buffer);
-                var buffdesc = new BufferDescription()
-                {
-                    BindFlags = this.BindFlags,
-                    CpuAccessFlags = CpuAccessFlags.Write,
-                    OptionFlags = this.OptionFlags,
-                    SizeInBytes = StructureSize * System.Math.Max(count, minBufferCount),
-                    StructureByteStride = StructureSize,
-                    Usage = ResourceUsage.Dynamic
-                };
-                Capacity = buffdesc.SizeInBytes;
-                CapacityUsed = 0;
-                buffer = Collect(new Buffer(context, buffdesc));
+                Initialize(context, data, count, offset, minBufferCount);
             }
             if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred)
             {
@@ -217,6 +205,32 @@ namespace HelixToolkit.UWP.Utilities
                 context.UnmapSubresource(this.buffer, 0);
                 Offset = CapacityUsed = 0;
             }
+        }
+
+        /// <summary>
+        /// Initializes the specified device.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="device">The device.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="count">The count.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="minBufferCount">The minimum buffer count.</param>
+        public void Initialize<T>(Device device, IList<T> data, int count, int offset = default(int), int minBufferCount = default(int)) where T : struct
+        {
+            RemoveAndDispose(ref buffer);
+            var buffdesc = new BufferDescription()
+            {
+                BindFlags = this.BindFlags,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = this.OptionFlags,
+                SizeInBytes = StructureSize * System.Math.Max(count, minBufferCount),
+                StructureByteStride = StructureSize,
+                Usage = ResourceUsage.Dynamic
+            };
+            Capacity = buffdesc.SizeInBytes;
+            CapacityUsed = 0;
+            buffer = Collect(new Buffer(device, buffdesc));
         }
     }
 }
