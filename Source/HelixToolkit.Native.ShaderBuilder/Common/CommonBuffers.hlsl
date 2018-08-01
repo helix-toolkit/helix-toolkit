@@ -78,16 +78,6 @@ cbuffer cbMeshModel : register(b1)
     };
 #endif
 
-#define MaxBones 128
-
-static const int4 minBoneV = { 0, 0, 0, 0 };
-static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
-
-cbuffer cbBoneSkinning : register(b2)
-{
-    matrix skinMatrices[MaxBones];
-};
-
 cbuffer cbLights : register(b3)
 {
     LightStruct Lights[LIGHTS];
@@ -202,6 +192,8 @@ Texture2D texOITAlpha : register(t11);
 
 Texture1D texColorStripe1DX : register(t12);
 Texture1D texColorStripe1DY : register(t13);
+
+StructuredBuffer<matrix> skinMatrices : register(t20);
 ///------------------Samplers-------------------
 SamplerState samplerDiffuse : register(s0);
 
