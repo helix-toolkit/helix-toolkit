@@ -4,7 +4,9 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
-using System.Collections.Generic;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -318,8 +320,8 @@ namespace HelixToolkit.UWP.Model
                     MinTessDistance = material.MinTessellationDistance,
                     MaxDistTessFactor = material.MaxDistanceTessellationFactor,
                     MinDistTessFactor = material.MinDistanceTessellationFactor,
-                    UVTransformR1 = material.UVTransform.Column1,
-                    UVTransformR2 = material.UVTransform.Column2
+                    UVTransformR1 = material.UVTransform.Column1(),
+                    UVTransformR2 = material.UVTransform.Column2()
                     //UVTransformRow1 = new Vector2(material.UVTransform.M11, material.UVTransform.M12),
                     //UVTransformRow2 = new Vector2(material.UVTransform.M21, material.UVTransform.M22),
                     //UVTransformRow3 = Vector2.Zero,

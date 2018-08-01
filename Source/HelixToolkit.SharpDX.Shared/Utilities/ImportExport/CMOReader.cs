@@ -146,7 +146,9 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using global::SharpDX;
+using System.Numerics;
+using HelixToolkit.Mathematics;
+using Matrix = System.Numerics.Matrix4x4;
 using System.Runtime.InteropServices;
 #if !NETFX_CORE
 using System.Windows;
@@ -220,7 +222,7 @@ namespace HelixToolkit.UWP
                     EmissiveColor = reader.ReadStructure<Color4>()
                 };
                 var uvTransform = reader.ReadStructure<Matrix>();
-                if(uvTransform == Matrix.Zero)
+                if(uvTransform == MatrixHelper.Zero)
                 {
                     uvTransform = Matrix.Identity;
                 }

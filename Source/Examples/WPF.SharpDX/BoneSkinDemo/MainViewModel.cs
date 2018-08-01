@@ -1,7 +1,7 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Animations;
-using SharpDX;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,6 +14,7 @@ using System.Numerics;
 using Matrix = System.Numerics.Matrix4x4;
 using System.Threading;
 using System.Threading.Tasks;
+using Media3D = System.Windows.Media.Media3D;
 
 namespace BoneSkinDemo
 {
@@ -260,9 +261,9 @@ namespace BoneSkinDemo
 
                                 // Perform interpolation and reconstitute matrix
                                 boneInternal[frame.BoneIndex] =
-                                    Matrix.Scaling(MathUtil.Lerp(s1, s2, amount)) *
-                                    Matrix.RotationQuaternion(Quaternion.Slerp(q1, q2, amount)) *
-                                    Matrix.Translation(Vector3.Lerp(t1, t2, amount));
+                                    Matrix.CreateScale(MathUtil.Lerp(s1, s2, amount)) *
+                                    Matrix.CreateFromQuaternion(Quaternion.Slerp(q1, q2, amount)) *
+                                    Matrix.CreateTranslation(Vector3.Lerp(t1, t2, amount));
                             }
                         }
 

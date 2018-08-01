@@ -6,6 +6,7 @@ using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
 using System.IO;
 using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else

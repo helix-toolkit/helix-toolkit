@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP.Core
                 matricsChanged = true;
                 preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
                 boneSkinSBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.BoneSkinSB).Slot;
-                boneSkinSB = Collect(new DynamicBufferProxy(Matrix.SizeInBytes, global::SharpDX.Direct3D11.BindFlags.ShaderResource, global::SharpDX.Direct3D11.ResourceOptionFlags.BufferStructured));
+                boneSkinSB = Collect(new DynamicBufferProxy(MatrixHelper.SizeInBytes, global::SharpDX.Direct3D11.BindFlags.ShaderResource, global::SharpDX.Direct3D11.ResourceOptionFlags.BufferStructured));
                 boneSkinSB.Initialize(Device, BoneMatricesStruct.DefaultBones, BoneMatricesStruct.NumberOfBones);
                 boneSkinSBView = Collect(new ShaderResourceViewProxy(Device, boneSkinSB.Buffer));
                 boneSkinSBView.CreateTextureView();

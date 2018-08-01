@@ -4,6 +4,7 @@ using System.Linq;
 using System;
 using System.Collections.ObjectModel;
 using HelixToolkit.Mathematics;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP

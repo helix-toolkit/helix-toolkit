@@ -6,6 +6,7 @@ using HelixToolkit.Mathematics;
 using System.Numerics;
 using Matrix = System.Numerics.Matrix4x4;
 using System.Runtime.InteropServices;
+using System.Linq;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP

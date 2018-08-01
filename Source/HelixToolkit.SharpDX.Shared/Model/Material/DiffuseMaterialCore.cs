@@ -4,7 +4,9 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using SharpDX;
+using System.Numerics;
+using HelixToolkit.Mathematics;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -225,8 +227,8 @@ namespace HelixToolkit.UWP.Model
                     DisplacementMapScaleMask = material.DisplacementMapScaleMask,
                     RenderShadowMap = 0,
                     HasCubeMap = 0,
-                    UVTransformR1 = material.UVTransform.Column1,
-                    UVTransformR2 = material.UVTransform.Column2
+                    UVTransformR1 = material.UVTransform.Column1(),
+                    UVTransformR2 = material.UVTransform.Column2()
                 };
                 NeedUpdate = false;
             }

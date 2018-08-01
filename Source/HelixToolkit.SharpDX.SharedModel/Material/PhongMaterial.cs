@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using HelixToolkit.Mathematics;
 using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP

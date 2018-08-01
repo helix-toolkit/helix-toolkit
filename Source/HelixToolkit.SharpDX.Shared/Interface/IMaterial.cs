@@ -8,6 +8,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
