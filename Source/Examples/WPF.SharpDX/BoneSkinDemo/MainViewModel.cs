@@ -96,6 +96,23 @@ namespace BoneSkinDemo
 
         public IList<Matrix> Instances { get; private set; }
 
+        public BoneSkinnedMeshGeometry3D BoneMesh { private set; get; }
+
+        public Material BoneMaterial { get; } = DiffuseMaterials.Red;
+
+        private BoneMatricesStruct boneSkeletonStruct;
+        public BoneMatricesStruct BoneSkeletonStruct
+        {
+            set
+            {
+                SetValue(ref boneSkeletonStruct, value);
+            }
+            get
+            {
+                return boneSkeletonStruct;
+            }
+        }
+
         private const int numBonesInModel = 32;
 
         private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
@@ -153,7 +170,7 @@ namespace BoneSkinDemo
                     };
                     Models.Add(Model);
                     Mesh = obj3D.Geometry as BoneSkinnedMeshGeometry3D;
-                    
+                    BoneMesh = Mesh.CreateSkeletonMesh();
                 }
                 else if(obj3D.Geometry is MeshGeometry3D)
                 {
@@ -282,14 +299,16 @@ namespace BoneSkinDemo
                 }
 
                 // Change the bone transform from rest pose space into bone space (using the inverse of the bind/rest pose)
+                var newBones = boneInternal.ToArray();
                 for (var i = 0; i < Mesh.Bones.Count; i++)
                 {
-                    boneInternal[i] = Mesh.Bones[i].InvBindPose * boneInternal[i];
+                    newBones[i] = Mesh.Bones[i].InvBindPose * boneInternal[i];
                 }
-                var newBones = boneInternal.ToArray();
+                var skeleton = boneInternal.ToArray();
                 context.Post((o) => 
                 {
                     BoneStruct = new BoneMatricesStruct() { Bones = newBones };
+                    BoneSkeletonStruct = BoneStruct;
                 }, null);
                 // Check need to loop animation
                 if (CurrentAnimation.HasValue && CurrentAnimation.Value.EndTime <= time)
