@@ -39,6 +39,7 @@ namespace HelixToolkit.UWP
     using Ray3D = global::SharpDX.Ray;
     using Vector3D = global::SharpDX.Vector3;
     using Model;
+    using Core;
 
     public class Object3D
     {
@@ -74,6 +75,7 @@ namespace HelixToolkit.UWP
             this.DefaultColor = global::SharpDX.Color.Gold;
 
             this.Points = new List<Point3D>();
+            this.Colors = new List<Color4>();
             this.TextureCoordinates = new List<Point>();
             this.Normals = new List<Vector3D>();
 
@@ -383,7 +385,13 @@ namespace HelixToolkit.UWP
         /// Gets or sets the points.
         /// </summary>
         private IList<Point3D> Points { get; set; }
-
+        /// <summary>
+        /// Gets or sets the vertex colors.
+        /// </summary>
+        /// <value>
+        /// The colors.
+        /// </value>
+        private IList<Color4> Colors { set; get; }
         /// <summary>
         /// Gets or sets the stream reader.
         /// </summary>
@@ -544,6 +552,7 @@ namespace HelixToolkit.UWP
             var currentGroup = this.CurrentGroup;
             var builder = currentGroup.MeshBuilder;
             var positions = builder.Positions;
+            var colors = currentGroup.VertexColors;
             var textureCoordinates = builder.TextureCoordinates;
             var normals = builder.Normals;
 
@@ -667,7 +676,8 @@ namespace HelixToolkit.UWP
                 {
                     // add vertex
                     positions.Add(this.Points[vi - 1]);
-
+                    if (Colors.Count == Points.Count)
+                    { colors.Add(this.Colors[vi - 1]); }
                     // add texture coordinate (if enabled)
                     if (builder.HasTexCoords)
                     {
@@ -780,6 +790,17 @@ namespace HelixToolkit.UWP
             else
             {
                 this.Points.Add(new Point3D((float)fields[0], (float)fields[1], (float)fields[2]));
+            }
+            if(fields.Count >= 6)
+            {
+                if (fields.Count == 6)
+                {
+                    this.Colors.Add(new Color4((float)fields[3], (float)fields[4], (float)fields[5], 1f));
+                }
+                else
+                {
+                    this.Colors.Add(new Color4((float)fields[3], (float)fields[4], (float)fields[5], (float)fields[6]));
+                }
             }
         }
 
@@ -997,7 +1018,7 @@ namespace HelixToolkit.UWP
             /// List of mesh builders.
             /// </summary>
             private readonly IList<MeshBuilder> meshBuilders;
-
+            private readonly IList<Color4Collection> vertexColors;
             /// <summary>
             /// List of materials.
             /// </summary>
@@ -1014,6 +1035,7 @@ namespace HelixToolkit.UWP
                 this.Name = name;
                 this.meshBuilders = new List<MeshBuilder>();
                 this.materials = new List<PhongMaterialCore>();
+                this.vertexColors = new List<Color4Collection>();
                 this.AddMesh();
             }
 
@@ -1041,6 +1063,10 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            public Color4Collection VertexColors
+            {
+                get { return this.vertexColors[this.vertexColors.Count - 1]; }
+            }
             /// <summary>
             /// Gets or sets the group name.
             /// </summary>
@@ -1054,6 +1080,7 @@ namespace HelixToolkit.UWP
             {
                 var meshBuilder = new MeshBuilder(true, true);
                 this.meshBuilders.Add(meshBuilder);
+                this.vertexColors.Add(new Color4Collection());
                 this.materials.Add(new PhongMaterialCore() { DiffuseColor = new Color(0, 1, 0, 1) });
             }
 
@@ -1066,10 +1093,11 @@ namespace HelixToolkit.UWP
                 for (int i = 0; i < this.meshBuilders.Count; i++)
                 {
                     this.meshBuilders[i].ComputeNormalsAndTangents(info.Faces, true);
+                    var mesh = this.meshBuilders[i].ToMeshGeometry3D();
+                    mesh.Colors = this.vertexColors[i];
                     yield return new Object3D
                     {
-
-                        Geometry = this.meshBuilders[i].ToMeshGeometry3D(),
+                        Geometry = mesh,
                         Material = this.materials[i],
                         Transform = new List<Matrix>()
                     };
