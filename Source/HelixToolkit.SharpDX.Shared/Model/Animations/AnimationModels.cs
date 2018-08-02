@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Animations
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Keyframe
     {
-        public uint BoneIndex;
+        public int BoneIndex;
         public float Time;
         public Matrix Transform;
         public const int SizeInBytes = 4 * (2 + 4 * 4);

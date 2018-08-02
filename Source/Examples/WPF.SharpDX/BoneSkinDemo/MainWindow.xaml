@@ -49,7 +49,18 @@
             <hx:AmbientLight3D Color="#4B4B4B" />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
             <hx:GroupModel3D ItemsSource="{Binding Models}" />
-            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" />
+            <hx:BoneSkinMeshGeometryModel3D
+                x:Name="skeleton"
+                BoneMatrices="{Binding BoneSkeletonStruct}"
+                CullMode="Back"
+                Geometry="{Binding BoneMesh}"
+                Material="{Binding BoneMaterial}"
+                PostEffects="xray" />
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                Geometry="{Binding FloorModel}"
+                Material="{Binding FloorMaterial}" />
+            <hx:PostEffectMeshXRayGrid EffectName="xray" BlendingFactor="0.6" GridDensity="3"/>
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"
@@ -57,6 +68,7 @@
             Orientation="Vertical">
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
+            <CheckBox IsChecked="{Binding IsRendering, ElementName=skeleton}">Skeleton</CheckBox>
         </StackPanel>
     </Grid>
 </Window>

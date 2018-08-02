@@ -70,71 +70,45 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The bone names.
         /// </value>
         public IList<string> BoneNames { set; get; }
-        /// <summary>
-        /// Merge meshes into one
-        /// </summary>
-        /// <param name="meshes"></param>
-        /// <returns></returns>
-        public static BoneSkinnedMeshGeometry3D Merge(params BoneSkinnedMeshGeometry3D[] meshes)
+
+
+        public BoneSkinnedMeshGeometry3D CreateSkeletonMesh(float scale = 0.02f)
         {
-            var positions = new Vector3Collection();
-            var indices = new IntCollection();
+            var builder = new MeshBuilder(true, false);
+            builder.AddPyramid(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY, scale, 0, true);
+            var singleBone = builder.ToMesh();
+            var boneIds = new List<BoneIds>();
+            var positions = new Vector3Collection(Bones.Count * singleBone.Positions.Count);
+            var tris = new IntCollection(Bones.Count * singleBone.Indices.Count);
 
-            var normals = meshes.All(x => x.Normals != null) ? new Vector3Collection() : null;
-            var colors = meshes.All(x => x.Colors != null) ? new Color4Collection() : null;
-            var textureCoods = meshes.All(x => x.TextureCoordinates != null) ? new Vector2Collection() : null;
-            var tangents = meshes.All(x => x.Tangents != null) ? new Vector3Collection() : null;
-            var bitangents = meshes.All(x => x.BiTangents != null) ? new Vector3Collection() : null;
-            var vertexIds = meshes.All(x => x.VertexBoneIds != null) ? new List<BoneIds>() : null;
-            int index = 0;
-            foreach (var part in meshes)
+            int offset = 0;
+            for(int i=0; i < Bones.Count; ++i)
             {
-                positions.AddRange(part.Positions);
-                indices.AddRange(part.Indices.Select(x => x + index));
-                index += part.Positions.Count;
+                if(Bones[i].ParentIndex >= 0)
+                {
+                    int currPos = positions.Count;
+                    tris.AddRange(singleBone.Indices.Select(x => x + offset));
+                    int j = 0;
+                    for (; j < singleBone.Positions.Count - 6; j += 3)
+                    {
+                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], Bones[i].BindPose));
+                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j + 1], Bones[i].BindPose));
+                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j + 2], Bones[Bones[i].ParentIndex].BindPose));
+                        boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
+                        boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
+                        boneIds.Add(new BoneIds() { Bone1 = Bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
+                    }
+                    for (; j < singleBone.Positions.Count; ++j)
+                    {
+                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], Bones[i].BindPose));
+                        boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
+                    }
+                    offset += singleBone.Positions.Count;
+                }
             }
-
-            if (normals != null)
-            {
-                normals = new Vector3Collection(meshes.SelectMany(x => x.Normals));
-            }
-
-            if (colors != null)
-            {
-                colors = new Color4Collection(meshes.SelectMany(x => x.Colors));
-            }
-
-            if (textureCoods != null)
-            {
-                textureCoods = new Vector2Collection(meshes.SelectMany(x => x.TextureCoordinates));
-            }
-
-            if (tangents != null)
-            {
-                tangents = new Vector3Collection(meshes.SelectMany(x => x.Tangents));
-            }
-
-            if (bitangents != null)
-            {
-                bitangents = new Vector3Collection(meshes.SelectMany(x => x.BiTangents));
-            }
-
-            if(vertexIds != null)
-            {
-                vertexIds = new List<BoneIds>(meshes.SelectMany(x => x.VertexBoneIds));
-            }
-
-            var mesh = new BoneSkinnedMeshGeometry3D()
-            {
-                Positions = positions,
-                Indices = indices,
-                Normals = normals,
-                Colors = colors,
-                TextureCoordinates = textureCoods,
-                Tangents = tangents,
-                BiTangents = bitangents,
-                VertexBoneIds = vertexIds,
-            };
+            
+            var mesh = new BoneSkinnedMeshGeometry3D() { Positions = positions, Indices = tris, VertexBoneIds = boneIds };
+            mesh.Normals = mesh.CalculateNormals();
             return mesh;
         }
     }
