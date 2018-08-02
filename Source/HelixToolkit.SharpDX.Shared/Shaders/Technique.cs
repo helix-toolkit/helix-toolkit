@@ -18,6 +18,14 @@ namespace HelixToolkit.UWP.Shaders
     using ShaderManager;
     public sealed class Technique :  DisposeObject, IRenderTechnique
     {
+        public static IRenderTechnique NullTechnique { get; } = new Technique(new TechniqueDescription() { IsNull = true }, null, null);
+        /// <summary>
+        /// Gets the unique identifier.
+        /// </summary>
+        /// <value>
+        /// The unique identifier.
+        /// </value>
+        public Guid GUID { get; } = Guid.NewGuid();
         /// <summary>
         /// Gets or sets the description.
         /// </summary>
@@ -79,7 +87,7 @@ namespace HelixToolkit.UWP.Shaders
                 {
                     foreach(var desc in description.PassDescriptions)
                     {
-                        var pass = new Lazy<ShaderPass>(()=> { return Collect(new ShaderPass(desc, manager)); }, true);
+                        var pass = new Lazy<ShaderPass>(()=> { return Collect(new ShaderPass(desc, Layout, manager)); }, true);
                         passDict.Add(desc.Name, pass);
                         passList.Add(pass);
                     }

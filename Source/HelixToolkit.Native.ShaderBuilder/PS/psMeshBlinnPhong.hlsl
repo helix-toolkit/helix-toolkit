@@ -39,13 +39,13 @@ float3 calcNormal(PSInput input)
 // Blinn-Phong Lighting Reflection Model
 //--------------------------------------------------------------------------------------
 // Returns the sum of the diffuse and specular terms in the Blinn-Phong reflection model.
-float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, float4 diffuse, float3 L, float3 H)
+float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, float4 diffuse, float3 L, float3 H, float4 specular, float shininess)
 {
     //float4 Id = vMaterialTexture * diffuse * saturate(dot(N, L));
     //float4 Is = vMaterialSpecular * pow(saturate(dot(N, H)), sMaterialShininess);
-    float4 f = lit(dot(N, L), dot(N, H), sMaterialShininess);
+    float4 f = lit(dot(N, L), dot(N, H), shininess);
     float4 Id = f.y * vMaterialTexture * diffuse;
-    float4 Is = min(f.z, vMaterialTexture.w) * vMaterialSpecular;
+    float4 Is = min(f.z, vMaterialTexture.w) * specular;
     return (Id + Is) * LColor;
 }
 
@@ -53,12 +53,12 @@ float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, 
 //--------------------------------------------------------------------------------------
 // reflectance mapping
 //--------------------------------------------------------------------------------------
-float4 cubeMapReflection(PSInput input, float4 I)
+float4 cubeMapReflection(PSInput input, float4 I, float4 reflectColor)
 {
     float a = I.a;
     float3 v = normalize((float3) input.wp - vEyePos);
     float3 r = reflect(v, input.n);
-    I = (1.0f - vMaterialReflect) * I + vMaterialReflect * texCubeMap.Sample(samplerCube, r);
+    I = (1.0f - reflectColor) * I + reflectColor * texCubeMap.Sample(samplerCube, r);
     I.a = a;
     return I;
 }
@@ -101,6 +101,15 @@ float4 main(PSInput input) : SV_Target
         vMaterialTexture *= color;
     }
     float4 DI = float4(0, 0, 0, 0);
+    float4 specular = vMaterialSpecular;
+    float shininess = sMaterialShininess;
+    float4 reflectColor = vMaterialReflect;
+    if (bBatched)
+    {
+        specular = FloatToRGB(input.c.z);
+        shininess = input.c.x;
+        reflectColor = FloatToRGB(input.c.w);
+    }
     // compute lighting
     for (int i = 0; i < NumLights; ++i)
     {
@@ -108,7 +117,7 @@ float4 main(PSInput input) : SV_Target
         {
             float3 d = normalize((float3) Lights[i].vLightDir); // light dir	
             float3 h = normalize(eye + d);
-            DI += calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
+            DI += calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h, specular, shininess);
         }
         else if (Lights[i].iLightType == 2)  // point
         {
@@ -121,7 +130,7 @@ float4 main(PSInput input) : SV_Target
             d = d / dl; // normalized light dir						
             float3 h = normalize(eye + d); // half direction for specular
             float att = 1.0f / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
-            DI = mad(att, calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h), DI);
+            DI = mad(att, calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h, specular, shininess), DI);
         }
         else if (Lights[i].iLightType == 3)  // spot
         {
@@ -135,19 +144,19 @@ float4 main(PSInput input) : SV_Target
             float3 h = normalize(eye + d); // half direction for specular
             float3 sd = normalize((float3) Lights[i].vLightDir); // missuse the vLightDir variable for spot-dir
 
-														    /* --- this is the OpenGL 1.2 version (not so nice) --- */
-														    //float spot = (dot(-d, sd));
-														    //if(spot > cos(vLightSpot[i].x))
-														    //	spot = pow( spot, vLightSpot[i].y );
-														    //else
-														    //	spot = 0.0f;	
-														    /* --- */
+														/* --- this is the OpenGL 1.2 version (not so nice) --- */
+														//float spot = (dot(-d, sd));
+														//if(spot > cos(vLightSpot[i].x))
+														//	spot = pow( spot, vLightSpot[i].y );
+														//else
+														//	spot = 0.0f;	
+														/* --- */
 
-														    /* --- this is the  DirectX9 version (better) --- */
+														/* --- this is the  DirectX9 version (better) --- */
             float rho = dot(-d, sd);
             float spot = pow(saturate((rho - Lights[i].vLightSpot.x) / (Lights[i].vLightSpot.y - Lights[i].vLightSpot.x)), Lights[i].vLightSpot.z);
             float att = spot / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
-            DI = mad(att, calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h), DI);
+            DI = mad(att, calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h, specular, shininess), DI);
         }
     }
     DI.rgb *= s;
@@ -162,7 +171,7 @@ float4 main(PSInput input) : SV_Target
     // get reflection-color
     if (bHasCubeMap)
     {
-        I = cubeMapReflection(input, I);
+        I = cubeMapReflection(input, I, reflectColor);
     }
 
     return I;

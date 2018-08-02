@@ -30,6 +30,12 @@ namespace HelixToolkit.UWP
                 NormalMapSampler = core.NormalMapSampler,
                 DisplacementMapScaleMask = core.DisplacementMapScaleMask,
                 Name = core.Name,
+                UVTransform = core.UVTransform,
+                EnableTessellation = core.EnableTessellation,
+                MaxDistanceTessellationFactor = core.MaxDistanceTessellationFactor,
+                MaxTessellationDistance = core.MaxTessellationDistance,
+                MinDistanceTessellationFactor = core.MinDistanceTessellationFactor,
+                MinTessellationDistance = core.MinTessellationDistance,                
             };
         }
 
@@ -71,6 +77,7 @@ namespace HelixToolkit.UWP
             targetMaterial.RenderDiffuseMap = material.RenderDiffuseMap;
             targetMaterial.RenderDisplacementMap = material.RenderDisplacementMap;
             targetMaterial.RenderNormalMap = material.RenderNormalMap;
+            targetMaterial.UVTransform = material.UVTransform;
         }
 
         public static void AssignTo(this DiffuseMaterial material, DiffuseMaterial targetMaterial)
@@ -78,6 +85,7 @@ namespace HelixToolkit.UWP
             targetMaterial.DiffuseColor = material.DiffuseColor;
             targetMaterial.DiffuseMap = material.DiffuseMap;
             targetMaterial.DiffuseMapSampler = material.DiffuseMapSampler;
+            targetMaterial.UVTransform = material.UVTransform;
         }
     }
 }

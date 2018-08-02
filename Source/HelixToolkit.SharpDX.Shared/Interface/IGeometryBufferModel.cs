@@ -15,22 +15,8 @@ namespace HelixToolkit.UWP
     using Render;
     using System.Collections.Generic;
     using Utilities;
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IGeometryBufferModel : IGUID, IDisposable
+    public interface IAttachableBufferModel : IGUID, IDisposable
     {
-        /// <summary>
-        /// Occurs when [on invalidate renderer].
-        /// </summary>
-        event EventHandler<EventArgs> OnInvalidateRender;
-        /// <summary>
-        /// Gets or sets the geometry.
-        /// </summary>
-        /// <value>
-        /// The geometry.
-        /// </value>
-        Geometry3D Geometry { get; set; }
         /// <summary>
         /// Gets or sets the topology.
         /// </summary>
@@ -64,22 +50,40 @@ namespace HelixToolkit.UWP
         /// Attaches the buffers.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferStartSlot">The vertex buffer slot. It will be changed to next available slot after binding.</param>
         /// <param name="deviceResources"></param>
         /// <returns></returns>
-        bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
+        bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
+        /// <summary>
+        /// Updates the buffers.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceResources">The device resources.</param>
+        /// <returns>True if buffer updated.</returns>
+        bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources);
+    }
 
-        ///// <summary>
-        ///// Attaches the render host.
-        ///// </summary>
-        ///// <param name="host">The host.</param>
-        //void AttachRenderHost(IRenderHost host);
-        ///// <summary>
-        ///// Detaches the render host.
-        ///// </summary>
-        ///// <param name="host">The host.</param>
-        //void DetachRenderHost(IRenderHost host);
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IGeometryBufferModel : IAttachableBufferModel
+    {
+        event EventHandler OnVertexBufferUpdated;
+        event EventHandler OnIndexBufferUpdated;
+        /// <summary>
+        /// Gets or sets the effects manager.
+        /// </summary>
+        /// <value>
+        /// The effects manager.
+        /// </value>
+        IEffectsManager EffectsManager { set; get; }
+        /// <summary>
+        /// Gets or sets the geometry.
+        /// </summary>
+        /// <value>
+        /// The geometry.
+        /// </value>
+        Geometry3D Geometry { get; set; }
     }
     /// <summary>
     /// 
@@ -100,5 +104,30 @@ namespace HelixToolkit.UWP
         /// The type.
         /// </value>
         BillboardType Type { get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IBoneSkinMeshBufferModel : IGeometryBufferModel
+    {
+        event EventHandler OnBoneIdBufferUpdated;
+        IElementsBufferProxy BoneIdBuffer { get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IBoneSkinPreComputehBufferModel
+    {
+        bool CanPreCompute { get; }
+        /// <summary>
+        /// Binds the skinned vertex buffer to output.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void BindSkinnedVertexBufferToOutput(DeviceContextProxy context);
+        /// <summary>
+        /// Uns the bind skinned vertex buffer to output.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void UnBindSkinnedVertexBufferToOutput(DeviceContextProxy context);
     }
 }

@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderTechnique : IDisposable
+    public interface IRenderTechnique : IDisposable, IGUID
     {
         /// <summary>
         /// 

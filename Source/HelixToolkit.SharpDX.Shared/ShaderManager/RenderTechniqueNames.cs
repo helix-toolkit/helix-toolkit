@@ -18,6 +18,8 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Blinn = "RenderBlinn";
+
+        public const string BlinnBatched = "RenderBlinnBatch";
         ///// <summary>
         ///// 
         ///// </summary>
@@ -70,10 +72,6 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string InstancingBlinn = "RenderInstancingBlinn";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string BoneSkinBlinn = "RenderBoneSkinBlinn";
         /// <summary>
         /// 
         /// </summary>
@@ -139,6 +137,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string Diffuse = "RenderDiffuse";
         /// <summary>
+        /// The diffuse oit
+        /// </summary>
+        public const string DiffuseOIT = "RenderDiffuseOIT";
+        /// <summary>
         /// 
         /// </summary>
         public const string Colors = "RenderColors";
@@ -196,6 +198,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string MeshOutline = "RenderMeshOutline";
+        /// <summary>
+        /// The mesh bone skinned
+        /// </summary>
+        public const string PreComputeMeshBoneSkinned = "MeshBoneSkinned";
 
         /// <summary>
         /// 

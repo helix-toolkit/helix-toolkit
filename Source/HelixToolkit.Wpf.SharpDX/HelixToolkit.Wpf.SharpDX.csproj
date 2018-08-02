@@ -175,11 +175,6 @@
     <Compile Include="Model\Scene\SceneNode.cs" />
     <Compile Include="Model\Scene\SceneNode2D.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Model\Elements3D\CompositeModel3D.cs" />
     <Compile Include="Model\Elements3D\DraggableGeometryModel3D.cs">
       <SubType>Code</SubType>
@@ -201,6 +196,7 @@
     <Compile Include="Model\Lights3D\SpotLight3D.cs" />
     <Compile Include="Model\Interfaces.cs" />
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Utilities\Exporter.cs" />
     <Compile Include="Utilities\IExporter.cs" />
     <Compile Include="Utilities\ObjExporter.cs" />
@@ -216,11 +212,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -230,6 +221,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Properties\Resources.resx" />
     <EmbeddedResource Include="Textures\arial.fnt" />
     <None Include="Resources\csParticleInsert.cso" />
     <None Include="Resources\csParticleUpdate.cso" />
@@ -237,6 +229,7 @@
     <None Include="Resources\gsBillboard.cso" />
     <None Include="Resources\gsLine.cso" />
     <None Include="Resources\gsMeshNormalVector.cso" />
+    <None Include="Resources\gsMeshSkinnedOut.cso" />
     <None Include="Resources\gsParticle.cso" />
     <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\hsMeshTriTessellation.cso" />
@@ -268,6 +261,7 @@
     <None Include="Resources\psMeshClipPlaneBackface.cso" />
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
     <None Include="Resources\psMeshColorStripe.cso" />
+    <None Include="Resources\psMeshDiffuseMapOIT.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />
@@ -282,11 +276,11 @@
     <None Include="Resources\psWireframeOIT.cso" />
     <None Include="Resources\vsBillboard.cso" />
     <None Include="Resources\vsBillboardInstancing.cso" />
-    <None Include="Resources\vsBoneSkinning.cso" />
-    <None Include="Resources\vsBoneSkinningShadow.cso" />
-    <None Include="Resources\vsBoneSkinningTessellation.cso" />
-    <None Include="Resources\vsBoneSkinningWireframe.cso" />
+    <None Include="Resources\vsBoneSkinningBasic.cso" />
     <None Include="Resources\vsCubeMap.cso" />
+    <None Include="Resources\vsMeshBatched.cso" />
+    <None Include="Resources\vsMeshBatchedShadow.cso" />
+    <None Include="Resources\vsMeshBatchedWireframe.cso" />
     <None Include="Resources\vsMeshClipPlane.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />
     <None Include="Resources\vsMeshDefault.cso" />

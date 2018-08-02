@@ -31,7 +31,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private BlendStateProxy currBlendState = null;
         private Color4? currBlendFactor = null;
         private uint currSampleMask = uint.MaxValue;
-
         public readonly bool IsDeferred = false;
 
         #region Properties
@@ -121,6 +120,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             currBlendFactor = null;
             currSampleMask = uint.MaxValue;
             currStencilRef = 0;
+            currInputLayout = null;
+            currPrimitiveTopology = PrimitiveTopology.Undefined;
         }
 
         /// <summary>

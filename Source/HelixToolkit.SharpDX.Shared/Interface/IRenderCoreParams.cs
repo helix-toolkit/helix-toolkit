@@ -21,13 +21,6 @@ namespace HelixToolkit.UWP.Core
     public interface IGeometryRenderCore
     {
         /// <summary>
-        /// Gets the vertex layout.
-        /// </summary>
-        /// <value>
-        /// The vertex layout.
-        /// </value>
-        InputLayout VertexLayout { get; }
-        /// <summary>
         /// Gets or sets the instance buffer.
         /// </summary>
         /// <value>
@@ -40,7 +33,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The geometry buffer.
         /// </value>
-        IGeometryBufferModel GeometryBuffer { set; get; }
+        IAttachableBufferModel GeometryBuffer { set; get; }
         /// <summary>
         /// Gets or sets the raster description.
         /// </summary>
@@ -56,23 +49,12 @@ namespace HelixToolkit.UWP.Core
     public interface IMaterialRenderParams
     {
         /// <summary>
-        /// Gets or sets the material.
+        /// Gets or sets the material variables used for rendering.
         /// </summary>
         /// <value>
-        /// The material.
+        /// The material variable.
         /// </value>
-        MaterialCore Material { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render shadow map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render shadow map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderShadowMap { set; get; }
-        /// <summary>
-        /// Reflect the environment cube map
-        /// </summary>
-        bool RenderEnvironmentMap { set; get; }
+        MaterialVariable MaterialVariables { set; get; }
     }
 
     /// <summary>
@@ -140,31 +122,16 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         SamplerStateDescription SamplerDescription { set; get; }
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IBoneSkinRenderParams
-    {
-        /// <summary>
-        /// Gets or sets the vertex bone identifier buffer.
-        /// </summary>
-        /// <value>
-        /// The vertex bone identifier buffer.
-        /// </value>
-        IElementsBufferModel VertexBoneIdBuffer { set; get; }
-        /// <summary>
-        /// Gets or sets the bone matrices.
-        /// </summary>
-        /// <value>
-        /// The bone matrices.
-        /// </value>
-        BoneMatricesStruct BoneMatrices { set; get; }
-    }
+
     /// <summary>
     /// 
     /// </summary>
     public interface ICrossSectionRenderParams
     {
+        /// <summary>
+        /// Cutting operation, intersects or substract
+        /// </summary>
+        CuttingOperation CuttingOperation { set; get; }
         /// <summary>
         /// Gets or sets the color of the section.
         /// </summary>

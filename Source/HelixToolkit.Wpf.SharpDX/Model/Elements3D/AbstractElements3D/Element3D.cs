@@ -108,6 +108,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsHitTestVisibleProperty);
             }
         }
+
+
+        /// <summary>
+        /// Gets or sets the manual render order.
+        /// </summary>
+        /// <value>
+        /// The render order.
+        /// </value>
+        public int RenderOrder
+        {
+            get { return (int)GetValue(RenderOrderProperty); }
+            set { SetValue(RenderOrderProperty, value); }
+        }
+
+        /// <summary>
+        /// The render order property
+        /// </summary>
+        public static readonly DependencyProperty RenderOrderProperty =
+            DependencyProperty.Register("RenderOrder", typeof(int), typeof(Element3D), new PropertyMetadata(0, (d,e) =>
+            {
+                (d as Element3D).SceneNode.RenderOrder = (ushort)Math.Max(0, Math.Min(ushort.MaxValue, (int)e.NewValue));
+            }));
         #endregion
 
         #region Events

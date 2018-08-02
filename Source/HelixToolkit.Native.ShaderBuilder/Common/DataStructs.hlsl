@@ -22,6 +22,23 @@ struct LightStruct
     matrix mLightProj; //56
 };
 
+struct VSSkinnedInput
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+    int4 bones : BONEIDS;
+    float4 boneWeights : BONEWEIGHTS;
+};
+
+struct VSSkinnedOutput
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+};
 
 struct VSInput
 {
@@ -30,12 +47,22 @@ struct VSInput
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
 	float2 t : TEXCOORD;
-	float4 c : COLOR;
-
+    float4 c : COLOR;
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
 	float4 mr2 : TEXCOORD3;
 	float4 mr3 : TEXCOORD4;
+};
+
+struct VSInputBatched
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+    float2 t : TEXCOORD;
+    float4 c : COLOR; // if batched x: diffuse, y: emissive, z: specular, w: reflect
+    float4 c1 : COLOR1; // if batched x: ambient, y: specular shininess, z: diffuse alpha
 };
 
 struct VSBoneSkinInput

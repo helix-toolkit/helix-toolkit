@@ -496,8 +496,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.targetAdorner = null;
 
-            // the adorner sometimes leaves some 'dust', so refresh the viewport
-            this.RefreshViewport();
+            InvalidateRender();
         }
 
         /// <summary>
@@ -518,7 +517,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.rectangleAdorner = null;
 
-            this.RefreshViewport();
+            InvalidateRender();
         }
 
         /// <summary>
@@ -649,6 +648,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                 this.renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
                 this.renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
+                this.renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
                 if (ShowFrameRate)
                 {
                     this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
@@ -823,6 +823,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.rectangleAdorner != null)
             {
+                rectangleAdorner.Rectangle = rect;
                 return;
             }
 
@@ -1420,14 +1421,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 projectionCamera.CopyTo(this.Camera);
             }
-        }
-
-        /// <summary>
-        ///   Refreshes viewport.
-        /// </summary>
-        private void RefreshViewport()
-        {
-            // todo
         }
 
         /// <summary>

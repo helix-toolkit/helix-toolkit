@@ -62,7 +62,6 @@
                     x:Name="model"
                     Geometry="{Binding Model}"
                     Material="{Binding ModelMaterial}"
-                    RenderEnvironmentMap="True"
                     Transform="{Binding ModelTransform}" />
             </hx:DynamicReflectionMap3D>
 
@@ -70,20 +69,17 @@
                 CullMode="Back"
                 Geometry="{Binding Model1}"
                 Instances="{Binding Instances1}"
-                Material="{Binding ModelMaterial1}"
-                RenderEnvironmentMap="True" />
+                Material="{Binding ModelMaterial1}" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Model1}"
                 Instances="{Binding Instances2}"
-                Material="{Binding ModelMaterial2}"
-                RenderEnvironmentMap="True" />
+                Material="{Binding ModelMaterial2}" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Model1}"
                 Instances="{Binding Instances3}"
-                Material="{Binding ModelMaterial3}"
-                RenderEnvironmentMap="True" />
+                Material="{Binding ModelMaterial3}" />
         </hx:Viewport3DX>
 
         <StackPanel>
@@ -105,7 +101,7 @@
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
                 <StackPanel Orientation="Vertical">
-                    <CheckBox Margin="{StaticResource MarginSmall}" IsChecked="{Binding RenderEnvironmentMap, ElementName=model}">
+                    <CheckBox Margin="{StaticResource MarginSmall}" IsChecked="{Binding ModelMaterial.RenderEnvironmentMap}">
                         Reflect Environment Map
                     </CheckBox>
                     <CheckBox Margin="{StaticResource MarginSmall}" IsChecked="{Binding IsRendering, ElementName=envMap}">

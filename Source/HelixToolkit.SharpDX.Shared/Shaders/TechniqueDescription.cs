@@ -238,6 +238,12 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
+        /// <summary>
+        /// Input Layout
+        /// </summary>
+        [DataMember(Name = @"InputLayoutDescription")]
+        public InputLayoutDescription InputLayoutDescription { set; get; } = null;
+
         public ShaderPassDescription() { }
 
         public ShaderPassDescription(string name)

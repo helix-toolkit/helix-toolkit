@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using HelixToolkit.Logger;
     using Model.Scene;
     using Model.Scene2D;
-    
+
 
     /// <summary>
     /// 
@@ -97,7 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public override IEnumerable<LightNode> PerFrameLights
         {
-            get { return lightNodes.Select(x=>x as LightNode); }
+            get { return lightNodes.Select(x => x as LightNode); }
         }
         /// <summary>
         /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
@@ -137,6 +137,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private int numRendered = 0;
 
+        private static readonly Comparison<SceneNode> sortingDelegate = delegate (SceneNode a, SceneNode b) { return a.RenderOrderKey.Key > b.RenderOrderKey.Key ? 1 : a.RenderOrderKey.Key < b.RenderOrderKey.Key ? -1 : 0; };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
@@ -173,12 +175,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Debug.WriteLine("Flatten Scene Graph");
 #endif
             }
+            int sceneCount = perFrameFlattenedScene.Count;
             if (invalidatePerFrameRenderables)
             {
 #if DEBUG
                 Debug.WriteLine("Get PerFrameRenderables");
-#endif
-                for (int i = 0; i < perFrameFlattenedScene.Count;)
+#endif               
+                for (int i = 0; i < sceneCount;)
                 {
                     var renderable = perFrameFlattenedScene[i];
                     renderable.Value.Update(context);
@@ -188,7 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         //Skip scene graph depth larger than current node
                         int depth = renderable.Key;
                         ++i;
-                        for (; i < perFrameFlattenedScene.Count; ++i)
+                        for (; i < sceneCount; ++i)
                         {
                             if (perFrameFlattenedScene[i].Key <= depth)
                             {
@@ -228,10 +231,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                             break;
                     }
                 }
+                if (RenderConfiguration.EnableRenderOrder)
+                {
+                    for (int i = 0; i < opaqueNodes.Count; ++i)
+                    {
+                        opaqueNodes[i].UpdateRenderOrderKey();
+                    }
+                    opaqueNodes.Sort(sortingDelegate);
+                    for (int i = 0; i < postProcNodes.Count; ++i)
+                    {
+                        postProcNodes[i].UpdateRenderOrderKey();
+                    }
+                    postProcNodes.Sort(sortingDelegate);
+                    for (int i = 0; i < particleNodes.Count; ++i)
+                    {
+                        particleNodes[i].UpdateRenderOrderKey();
+                    }
+                    particleNodes.Sort(sortingDelegate);
+                }
             }
             else
             {
-                for (int i = 0; i < perFrameFlattenedScene.Count;)
+                for (int i = 0; i < sceneCount;)
                 {
                     var renderable = perFrameFlattenedScene[i];
                     renderable.Value.Update(context);
@@ -240,7 +261,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         //Skip scene graph depth larger than current node
                         int depth = renderable.Key;
                         ++i;
-                        for (; i < perFrameFlattenedScene.Count; ++i)
+                        for (; i < sceneCount; ++i)
                         {
                             if (perFrameFlattenedScene[i].Key <= depth)
                             {
@@ -257,15 +278,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     ++i;
                 }
             }
-
             //Get RenderCores with post effect specified.
-            if(postProcNodes.Count > 0)
+            if (postProcNodes.Count > 0)
             {
-                if(opaqueNodes.Count + transparentNodes.Count > 50)
+                if (opaqueNodes.Count + transparentNodes.Count > 50)
                 {
                     getPostEffectCoreTask = Task.Run(() =>
                     {
-                        for(int i = 0; i < opaqueNodes.Count; ++i)
+                        for (int i = 0; i < opaqueNodes.Count; ++i)
                         {
                             if (opaqueNodes[i].HasAnyPostEffect)
                             {
@@ -319,20 +339,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 getTriangleCountTask = Task.Factory.StartNew(() =>
                 {
                     int count = 0;
-                    foreach(var core in opaqueNodes.Select(x=>x.RenderCore))
+                    foreach (var core in opaqueNodes.Select(x => x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
-                            if(c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
-                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                            if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                                count += geo.Geometry.Indices.Count / 3;
                         }
                     }
                     foreach (var core in transparentNodes.Select(x => x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
-                            if (c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
-                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                            if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                                count += geo.Geometry.Indices.Count / 3;
                         }
                     }
                     renderStatistics.NumTriangles = count;
@@ -359,7 +379,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             };
             renderer.SetRenderTargets(ref renderParameter);
             renderer.UpdateGlobalVariables(RenderContext, lightNodes, ref renderParameter);
-            for(int i=0; i < needUpdateCores.Count; ++i)
+            for (int i = 0; i < needUpdateCores.Count; ++i)
             {
                 needUpdateCores[i].Update(RenderContext, renderer.ImmediateContext);
             }
@@ -367,10 +387,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             numRendered += renderer.RenderOpaque(RenderContext, opaqueNodes, ref renderParameter);
             numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter);
             numRendered += renderer.RenderTransparent(RenderContext, transparentNodes, ref renderParameter);
-                 
+
             getPostEffectCoreTask?.Wait();
             getPostEffectCoreTask = null;
-            if(RenderConfiguration.FXAALevel != FXAALevel.None || postProcNodes.Count > 0)
+            if (RenderConfiguration.FXAALevel != FXAALevel.None || postProcNodes.Count > 0)
             {
                 renderer.RenderToPingPongBuffer(RenderContext, ref renderParameter);
                 renderParameter.IsMSAATexture = false;
@@ -378,7 +398,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
                 renderParameter.RenderTargetView = new global::SharpDX.Direct3D11.RenderTargetView[] { RenderBuffer.FullResPPBuffer.CurrentRTV };
             }
-           
+
             renderer.RenderScreenSpaced(RenderContext, screenSpacedNodes, ref renderParameter);
             renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
             numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
@@ -415,13 +435,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 renderD2D = true;
                 d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
                 d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
-            }                
-            if(!renderD2D)
+            }
+            if (!renderD2D)
             {
                 return;
-            }        
+            }
             viewportRenderable2D.AddRange(Viewport.D2DRenderables);
-            renderer.UpdateSceneGraph2D(RenderContext2D, viewportRenderable2D);      
+            renderer.UpdateSceneGraph2D(RenderContext2D, viewportRenderable2D);
 
             for (int i = 0; i < viewportRenderable2D.Count; ++i)
             {
@@ -451,14 +471,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 perFrameFlattenedScene.Clear();
             }
             if (clearPerFrameRenderables)
-            {                
+            {
                 opaqueNodes.Clear();
                 transparentNodes.Clear();
                 particleNodes.Clear();
                 lightNodes.Clear();
                 postProcNodes.Clear();
                 preProcNodes.Clear();
-                screenSpacedNodes.Clear();               
+                screenSpacedNodes.Clear();
             }
         }
 
@@ -467,7 +487,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected override void OnEndingD3D()
         {
-            Logger.Log(LogLevel.Information, "", nameof(DefaultRenderHost));            
+            Logger.Log(LogLevel.Information, "", nameof(DefaultRenderHost));
             asyncTask?.Wait();
             getTriangleCountTask?.Wait();
             getPostEffectCoreTask?.Wait();

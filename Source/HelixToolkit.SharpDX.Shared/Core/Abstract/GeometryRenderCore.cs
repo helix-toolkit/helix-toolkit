@@ -28,10 +28,6 @@ namespace HelixToolkit.UWP.Core
         private RasterizerStateProxy invertCullModeState = null;
         public RasterizerStateProxy InvertCullModeState { get { return invertCullModeState; } }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public InputLayout VertexLayout { private set; get; }
         private IElementsBufferModel instanceBuffer;
         /// <summary>
         /// 
@@ -40,16 +36,16 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (instanceBuffer != value)
+                var old = instanceBuffer;
+                if(SetAffectsCanRenderFlag(ref instanceBuffer, value))
                 {
-                    if (instanceBuffer != null)
+                    if (old != null)
                     {
-                        instanceBuffer.OnElementChanged -= InvalidateRenderEvent;
+                        old.OnElementChanged -= OnElementChanged;
                     }
-                    instanceBuffer = value;
                     if (instanceBuffer != null)
                     {
-                        instanceBuffer.OnElementChanged += InvalidateRenderEvent;
+                        instanceBuffer.OnElementChanged += OnElementChanged;
                     }
                 }
             }
@@ -59,28 +55,18 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private IGeometryBufferModel geometryBuffer;
+        private IAttachableBufferModel geometryBuffer;
         /// <summary>
         /// 
         /// </summary>
-        public IGeometryBufferModel GeometryBuffer
+        public IAttachableBufferModel GeometryBuffer
         {
             set
             {
-                if(geometryBuffer == value)
+                if(SetAffectsCanRenderFlag(ref geometryBuffer, value))
                 {
-                    return;
+                    OnGeometryBufferChanged(value);
                 }
-                if(geometryBuffer != null)
-                {
-                    geometryBuffer.OnInvalidateRender -= InvalidateRenderEvent;
-                }
-                geometryBuffer = value;
-                if (geometryBuffer != null)
-                {
-                    geometryBuffer.OnInvalidateRender += InvalidateRenderEvent;
-                }
-                OnGeometryBufferChanged(value);
             }
             get { return geometryBuffer; }
         }
@@ -224,7 +210,6 @@ namespace HelixToolkit.UWP.Core
             {
                 DefaultShaderPass = technique[DefaultShaderPassName];
                 ShadowPass = technique[DefaultShadowPassName];
-                this.VertexLayout = technique.Layout;
                 CreateRasterState(rasterDescription, true);       
                 return true;
             }
@@ -252,7 +237,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [geometry buffer changed].
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        protected virtual void OnGeometryBufferChanged(IGeometryBufferModel buffer) { }
+        protected virtual void OnGeometryBufferChanged(IAttachableBufferModel buffer) { }
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>
@@ -276,18 +261,17 @@ namespace HelixToolkit.UWP.Core
         /// <param name="vertStartSlot"></param>
         protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
-            bool succ = GeometryBuffer.AttachBuffers(context, this.VertexLayout, ref vertStartSlot, EffectTechnique.EffectsManager);
+            bool succ = GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager);
             InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);
             return succ;
         }
         /// <summary>
-        /// 
+        /// Called when [update can render flag].
         /// </summary>
-        /// <param name="context"></param>
         /// <returns></returns>
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && GeometryBuffer != null;
+            return base.OnUpdateCanRenderFlag() && GeometryBuffer != null;
         }
 
         /// <summary>
@@ -301,11 +285,11 @@ namespace HelixToolkit.UWP.Core
             {
                 if (instanceModel == null || !instanceModel.HasElements)
                 {
-                    context.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0);
+                    context.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, 0, 0);
                 }
                 else
                 {
-                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.Buffer.Offset);
+                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0, 0);
                 }
             }
             else if (GeometryBuffer.VertexBuffer.Length > 0)
@@ -317,7 +301,7 @@ namespace HelixToolkit.UWP.Core
                 else
                 {
                     context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
-                        0, instanceModel.Buffer.Offset);
+                        0, 0);
                 }
             }
         }
@@ -336,7 +320,13 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
         }
 
-        protected void InvalidateRenderEvent(object sender, EventArgs e)
+        protected void OnElementChanged(object sender, EventArgs e)
+        {
+            UpdateCanRenderFlag();
+            InvalidateRenderer();
+        }
+
+        protected void OnInvalidateRendererEvent(object sender, EventArgs e)
         {
             InvalidateRenderer();
         }

@@ -138,7 +138,8 @@ namespace SimpleDemoW10
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
                 SpecularShininess = 10f,
-                ReflectiveColor = new Color4(0.2f, 0.2f, 0.2f, 0.5f)
+                ReflectiveColor = new Color4(0.2f, 0.2f, 0.2f, 0.5f),
+                RenderEnvironmentMap= true
             };
             Material.DiffuseMap = LoadTexture("TextureCheckerboard2.jpg");
             Material.NormalMap = LoadTexture("TextureCheckerboard2_dot3.jpg");
@@ -146,6 +147,8 @@ namespace SimpleDemoW10
             Material1.ReflectiveColor = Color.Silver;
             Material1.RenderDiffuseMap = false;
             Material1.RenderNormalMap = false;
+            Material1.RenderEnvironmentMap = true;
+           
             var lineBuilder = new LineBuilder();
             lineBuilder.AddLine(Vector3.Zero, new Vector3(5, 0, 0));
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 5, 0));

@@ -185,6 +185,24 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as IPhongMaterial).RenderDisplacementMap = (bool)e.NewValue;
                 }));
+        /// <summary>
+        /// The render environment map property
+        /// </summary>
+        public static readonly DependencyProperty RenderEnvironmentMapProperty =
+            DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    ((d as Material).Core as IPhongMaterial).RenderEnvironmentMap = (bool)e.NewValue;
+                }));
+        /// <summary>
+        /// The render shadow map property
+        /// </summary>
+        public static readonly DependencyProperty RenderShadowMapProperty =
+            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    ((d as Material).Core as IPhongMaterial).RenderShadowMap = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// The enable tessellation property
@@ -215,6 +233,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MinTessellationDistanceProperty =
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
             { ((d as Material).Core as IPhongMaterial).MinTessellationDistance = (float)(double)e.NewValue; }));
+
+
+        /// <summary>
+        /// The uv transform property
+        /// </summary>
+        public static readonly DependencyProperty UVTransformProperty =
+            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(PhongMaterial), new PropertyMetadata(Matrix.Identity, (d,e)=>
+            {
+                ((d as Material).Core as IPhongMaterial).UVTransform = (Matrix)e.NewValue;
+            }));
+
 
         /// <summary>
         /// Constructs a Shading Material which correspnds with 
@@ -394,6 +423,29 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [render environment map]. Default is false
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render environment map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderEnvironmentMap
+        {
+            get { return (bool)GetValue(RenderEnvironmentMapProperty); }
+            set { SetValue(RenderEnvironmentMapProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [render shadow map]. Default is false
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render shadow map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderShadowMap
+        {
+            get { return (bool)GetValue(RenderShadowMapProperty); }
+            set { SetValue(RenderShadowMapProperty, value); }
+        }
+        /// <summary>
         /// Gets or sets a value indicating whether [enable tessellation].
         /// </summary>
         /// <value>
@@ -454,6 +506,17 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)GetValue(MinTessellationDistanceProperty); }
             set { SetValue(MinTessellationDistanceProperty, value); }
         }
+        /// <summary>
+        /// Gets or sets the texture uv transform.
+        /// </summary>
+        /// <value>
+        /// The uv transform.
+        /// </value>
+        public Matrix UVTransform
+        {
+            get { return (Matrix)GetValue(UVTransformProperty); }
+            set { SetValue(UVTransformProperty, value); }
+        }
 
         public PhongMaterial Clone()
         {
@@ -483,7 +546,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
                 RenderDiffuseMap = RenderDiffuseMap,
                 RenderDisplacementMap = RenderDisplacementMap,
-                RenderNormalMap = RenderNormalMap
+                RenderNormalMap = RenderNormalMap,
+                RenderEnvironmentMap = RenderEnvironmentMap,
+                RenderShadowMap = RenderShadowMap,
+                UVTransform = UVTransform,
             };
         }
 
@@ -515,7 +581,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
                 RenderDiffuseMap = RenderDiffuseMap,
                 RenderDisplacementMap = RenderDisplacementMap,
-                RenderNormalMap = RenderNormalMap
+                RenderNormalMap = RenderNormalMap,
+                RenderEnvironmentMap = RenderEnvironmentMap,
+                RenderShadowMap = RenderShadowMap,
+                UVTransform = UVTransform
             };
         }
     }

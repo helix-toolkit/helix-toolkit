@@ -58,17 +58,19 @@ namespace HelixToolkit.UWP.Utilities
         ///
         /// </summary>
         public ResourceOptionFlags OptionFlags { private set; get; }
-
+        public ResourceUsage Usage { private set; get; } = ResourceUsage.Immutable;
         /// <summary>
         ///
         /// </summary>
         /// <param name="structureSize"></param>
         /// <param name="bindFlags"></param>
         /// <param name="optionFlags"></param>
-        public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None)
+        /// <param name="usage"></param>
+        public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None, ResourceUsage usage = ResourceUsage.Immutable)
             : base(structureSize, bindFlags)
         {
             OptionFlags = optionFlags;
+            Usage = usage;
         }
 
         /// <summary>
@@ -107,7 +109,7 @@ namespace HelixToolkit.UWP.Utilities
                 OptionFlags = this.OptionFlags,
                 SizeInBytes = StructureSize * count,
                 StructureByteStride = StructureSize,
-                Usage = ResourceUsage.Immutable
+                Usage = Usage
             };
             buffer = Collect(Buffer.Create(context, data.GetArrayByType(), buffdesc));
         }
@@ -122,7 +124,20 @@ namespace HelixToolkit.UWP.Utilities
         ///
         /// </summary>
         public ResourceOptionFlags OptionFlags { private set; get; }
-
+        /// <summary>
+        /// Gets the capacity in bytes.
+        /// </summary>
+        /// <value>
+        /// The capacity.
+        /// </value>
+        public int Capacity { private set; get; }
+        /// <summary>
+        /// Gets the capacity used in bytes.
+        /// </summary>
+        /// <value>
+        /// The capacity used.
+        /// </value>
+        public int CapacityUsed { private set; get; }
         /// <summary>
         ///
         /// </summary>
@@ -159,31 +174,63 @@ namespace HelixToolkit.UWP.Utilities
         public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset, int minBufferCount = default(int)) where T : struct
         {
             ElementCount = count;
+            int newSizeInBytes = StructureSize * count;
             if (count == 0)
             {
                 return;
             }
-            else if (buffer == null || buffer.Description.SizeInBytes < StructureSize * count)
+            else if (buffer == null || Capacity < newSizeInBytes)
             {
-                RemoveAndDispose(ref buffer);
-                var buffdesc = new BufferDescription()
+                Initialize(context, data, count, offset, minBufferCount);
+            }
+            if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred)
+            {
+                Offset = CapacityUsed;
+                context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
+                using (stream)
                 {
-                    BindFlags = this.BindFlags,
-                    CpuAccessFlags = CpuAccessFlags.Write,
-                    OptionFlags = this.OptionFlags,
-                    SizeInBytes = StructureSize * System.Math.Max(count, minBufferCount),
-                    StructureByteStride = StructureSize,
-                    Usage = ResourceUsage.Dynamic
-                };
-                //buffer = Collect(SDX11::Buffer.Create(context, data.GetArrayByType(), buffdesc));
-                buffer = Collect(new Buffer(context, buffdesc));
+                    stream.Position = Offset;
+                    stream.WriteRange(data.GetArrayByType(), offset, count);                    
+                }
+                context.UnmapSubresource(this.buffer, 0);
+                CapacityUsed += newSizeInBytes;
             }
-            context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-            using (stream)
+            else
             {
-                stream.WriteRange(data.GetArrayByType(), offset, count);                    
+                context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+                using (stream)
+                {
+                    stream.WriteRange(data.GetArrayByType(), offset, count);
+                }
+                context.UnmapSubresource(this.buffer, 0);
+                Offset = CapacityUsed = 0;
             }
-            context.UnmapSubresource(this.buffer, 0);
+        }
+
+        /// <summary>
+        /// Initializes the specified device.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="device">The device.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="count">The count.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="minBufferCount">The minimum buffer count.</param>
+        public void Initialize<T>(Device device, IList<T> data, int count, int offset = default(int), int minBufferCount = default(int)) where T : struct
+        {
+            RemoveAndDispose(ref buffer);
+            var buffdesc = new BufferDescription()
+            {
+                BindFlags = this.BindFlags,
+                CpuAccessFlags = CpuAccessFlags.Write,
+                OptionFlags = this.OptionFlags,
+                SizeInBytes = StructureSize * System.Math.Max(count, minBufferCount),
+                StructureByteStride = StructureSize,
+                Usage = ResourceUsage.Dynamic
+            };
+            Capacity = buffdesc.SizeInBytes;
+            CapacityUsed = 0;
+            buffer = Collect(new Buffer(device, buffdesc));
         }
     }
 }

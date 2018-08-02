@@ -25,7 +25,7 @@ float4 main(PSInput input) : SV_Target
     input.n = normalize(n);
 
     // get per pixel vector to eye-position
-    float3 eye = input.vEye;
+    float3 eye = input.vEye.xyz;
     float4 DI = float4(0, 0, 0, 0);
     // compute lighting
     for (int i = 0; i < NumLights; ++i)

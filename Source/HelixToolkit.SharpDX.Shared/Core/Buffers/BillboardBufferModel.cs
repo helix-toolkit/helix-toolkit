@@ -92,28 +92,28 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        /// <summary>
-        /// Called when [attach buffer].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="vertexLayout">The vertex layout.</param>
-        /// <param name="vertexBufferStartSlot">The vertex buffer start slot. Returns next available bind slot</param>
-        /// <returns></returns>
-        protected override bool OnAttachBuffer(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
-        {
-            context.PrimitiveTopology = Topology;
-            context.InputLayout = vertexLayout;
-            if (VertexBuffer.Length > 0)
-            {
-                context.SetVertexBuffers(vertexBufferStartSlot, VertexBuffer.Select(x=> new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset)).ToArray());
-                vertexBufferStartSlot += VertexBuffer.Length;
-            }
-            else
-            {
-                context.SetIndexBuffer(null, Format.Unknown, 0);
-            }
-            return true;
-        }
+        ///// <summary>
+        ///// Called when [attach buffer].
+        ///// </summary>
+        ///// <param name="context">The context.</param>
+        ///// <param name="vertexLayout">The vertex layout.</param>
+        ///// <param name="vertexBufferStartSlot">The vertex buffer start slot. Returns next available bind slot</param>
+        ///// <returns></returns>
+        //protected override bool OnAttachBuffer(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
+        //{
+        //    context.PrimitiveTopology = Topology;
+        //    context.InputLayout = vertexLayout;
+        //    if (VertexBuffer.Length > 0)
+        //    {
+        //        context.SetVertexBuffers(vertexBufferStartSlot, VertexBuffer.Select(x=> new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset)).ToArray());
+        //        vertexBufferStartSlot += VertexBuffer.Length;
+        //    }
+        //    else
+        //    {
+        //        context.SetIndexBuffer(null, Format.Unknown, 0);
+        //    }
+        //    return true;
+        //}
     }
 
     /// <summary>

@@ -587,7 +587,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
-            model.World = ModelMatrix * context.WorldMatrix;
+            model.World = ModelMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             model.BoolParams.X = HasTexture;
             FrameVariables.RandomVector = VectorGenerator.RandomVector3;
@@ -673,6 +673,7 @@ namespace HelixToolkit.UWP.Core
             UpdateInsertThrottle();
             isInitialParticleChanged = false;
             isRestart = true;
+            UpdateCanRenderFlag();
         }
 
         private void DisposeBuffers()
@@ -728,16 +729,10 @@ namespace HelixToolkit.UWP.Core
             blendState = Collect(EffectTechnique.EffectsManager.StateManager.Register(blendDesc));
         }
 
-        /// <summary>
-        /// Determines whether this instance can render the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanRender(RenderContext context)
+
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && BufferProxies != null && !isInitialParticleChanged;
+            return base.OnUpdateCanRenderFlag() && !isInitialParticleChanged;
         }
 
         /// <summary>

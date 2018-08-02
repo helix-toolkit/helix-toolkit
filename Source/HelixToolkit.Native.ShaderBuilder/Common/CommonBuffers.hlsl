@@ -39,7 +39,12 @@ cbuffer cbMeshModel : register(b1)
     bool bHasBones = false;
     float4 vParams = float4(0, 0, 0, 0); //Shared with models
     float4 vColor = float4(1, 1, 1, 1); //Shared with models
-    bool4 bParams = bool4(false, false, false, false); // Shared with models for enable/disable features
+    bool3 bParams = bool3(false, false, false); // Shared with models for enable/disable features
+    bool bBatched = false;
+    bool bRenderOIT = false;
+    float3 padding1 = float3(0,0,0);
+    float4 wireframeColor = float4(0,0,1,1);
+
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;
@@ -57,9 +62,10 @@ cbuffer cbMeshModel : register(b1)
     bool bHasDisplacementMap = false;
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
-    bool bRenderOIT = false;
+    float padding2;
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
-    float4 wireframeColor = float4(0,0,1,1);
+    float4 uvTransformR1;
+    float4 uvTransformR2;
 };
 #endif
 
@@ -71,16 +77,6 @@ cbuffer cbMeshModel : register(b1)
         float4 CursorVertCoord[4];
     };
 #endif
-
-#define MaxBones 128
-
-static const int4 minBoneV = { 0, 0, 0, 0 };
-static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
-
-cbuffer cbBoneSkinning : register(b2)
-{
-    matrix skinMatrices[MaxBones];
-};
 
 cbuffer cbLights : register(b3)
 {
@@ -117,6 +113,8 @@ cbuffer cbClipping : register(b6)
 {
     bool4 EnableCrossPlane;
     float4 CrossSectionColors;
+    int CuttingOperation;
+    float3 paddingClipping;
 	// Format:
 	// M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
 	// M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
@@ -194,6 +192,8 @@ Texture2D texOITAlpha : register(t11);
 
 Texture1D texColorStripe1DX : register(t12);
 Texture1D texColorStripe1DY : register(t13);
+
+StructuredBuffer<matrix> skinMatrices : register(t20);
 ///------------------Samplers-------------------
 SamplerState samplerDiffuse : register(s0);
 

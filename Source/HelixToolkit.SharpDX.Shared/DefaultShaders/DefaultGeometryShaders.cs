@@ -10,6 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using global::SharpDX;
     using Helper;
     /// <summary>
     /// 
@@ -19,57 +20,47 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] GSPoint
+        public static string GSPoint
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsPoint");
-            }
-        }
+            get;
+        } = "gsPoint";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] GSLine
+        public static string GSLine
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsLine");
-            }
-        }
+            get;
+        } = "gsLine";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] GSBillboard
+        public static string GSBillboard
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsBillboard");
-            }
-        }
+            get;
+        } = "gsBillboard";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] GSParticle
+        public static string GSParticle
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsParticle");
-            }
-        }
+            get;
+        } = "gsParticle";
         /// <summary>
         /// Gets the gs mesh normal vector.
         /// </summary>
         /// <value>
         /// The gs mesh normal vector.
         /// </value>
-        public static byte[] GSMeshNormalVector
+        public static string GSMeshNormalVector
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsMeshNormalVector");
-            }
-        }
+            get;
+        } = "gsMeshNormalVector";
+
+        public static string GSMeshBoneSkinnedOut
+        {
+            get;
+        } = "gsMeshSkinnedOut";
     }
 
 
@@ -104,5 +95,25 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription GSMeshNormalVector = new ShaderDescription(nameof(GSMeshNormalVector), ShaderStage.Geometry, new ShaderReflector(),
             DefaultGSShaderByteCodes.GSMeshNormalVector);
+
+        /// <summary>
+        /// The gs mesh bone skinned out
+        /// </summary>
+        public static ShaderDescription GSMeshBoneSkinnedOut = new ShaderDescription(nameof(GSMeshBoneSkinnedOut), ShaderStage.Geometry, new ShaderReflector(),
+            DefaultGSShaderByteCodes.GSMeshBoneSkinnedOut)
+        {
+            IsGSStreamOut = true,
+            GSSOElement = new global::SharpDX.Direct3D11.StreamOutputElement[]
+            {
+                new global::SharpDX.Direct3D11.StreamOutputElement(0, "POSITION", 0, 0, 4, 0),
+                new global::SharpDX.Direct3D11.StreamOutputElement(0, "NORMAL", 0, 0, 3, 0),
+                new global::SharpDX.Direct3D11.StreamOutputElement(0, "TANGENT", 0, 0, 3, 0),
+                new global::SharpDX.Direct3D11.StreamOutputElement(0, "BINORMAL", 0, 0, 3, 0),
+            },
+            GSSOStrides = new int[] 
+            {
+                DefaultVertex.SizeInBytes
+            }
+        };
     }
 }

@@ -74,13 +74,11 @@ namespace HelixToolkit.UWP
         /// </value>
         public CameraCore CameraCore { get { return this.Camera; } }
         /// <summary>
-        /// Gets the world matrix.
+        /// Gets the items.
         /// </summary>
         /// <value>
-        /// The world matrix.
+        /// The items.
         /// </value>
-        public Matrix WorldMatrix { get; } = Matrix.Identity;
-
         public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
         /// <summary>
         /// Gets the renderables.
@@ -307,6 +305,7 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                     renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
                     renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
+                    renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
                     renderHostInternal.OnRendered -= this.OnRendered;
                     renderHostInternal.OnRendered += this.OnRendered;
                     renderHostInternal.ExceptionOccurred -= RenderHostInternal_ExceptionOccurred;

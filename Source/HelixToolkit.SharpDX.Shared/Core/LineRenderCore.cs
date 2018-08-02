@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
-            model.World = ModelMatrix * context.WorldMatrix;
+            model.World = ModelMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
         }
 

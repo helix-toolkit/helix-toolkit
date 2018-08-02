@@ -433,6 +433,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psMeshDiffuseMapOIT {
+            get {
+                object obj = ResourceManager.GetObject("psMeshDiffuseMapOIT", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psMeshXRay {
             get {
                 object obj = ResourceManager.GetObject("psMeshXRay", resourceCulture);
@@ -616,6 +626,36 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsCubeMap {
             get {
                 object obj = ResourceManager.GetObject("vsCubeMap", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshBatched {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshBatched", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshBatchedShadow {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshBatchedShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshBatchedWireframe {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshBatchedWireframe", resourceCulture);
                 return ((byte[])(obj));
             }
         }
