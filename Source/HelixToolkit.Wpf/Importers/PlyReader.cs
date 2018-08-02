@@ -13,8 +13,8 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Polygon File Format Reader.
     /// </summary>
-    /// <see cref="https://www.cc.gatech.edu/projects/large_models/ply.html"/>
-    /// <see cref="http://graphics.stanford.edu/data/3Dscanrep/"/>
+    /// cref="https://www.cc.gatech.edu/projects/large_models/ply.html"
+    /// cref="http://graphics.stanford.edu/data/3Dscanrep/"
     /// <remarks>
     /// This reader only reads ascii ply formats.
     /// This was initially meant to read models exported by Blender 3D Software <see cref=""/>.
