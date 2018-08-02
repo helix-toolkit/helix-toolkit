@@ -75,14 +75,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public BoneSkinnedMeshGeometry3D CreateSkeletonMesh(float scale = 0.02f)
         {
             var builder = new MeshBuilder(true, false);
-            builder.AddPyramid(Vector3.Zero, Vector3.UnitZ, Vector3.UnitY, scale, 0, true);
+            builder.AddPyramid(new Vector3(0, scale / 2, 0), Vector3.UnitZ, Vector3.UnitY, scale, 0, true);
             var singleBone = builder.ToMesh();
             var boneIds = new List<BoneIds>();
             var positions = new Vector3Collection(Bones.Count * singleBone.Positions.Count);
             var tris = new IntCollection(Bones.Count * singleBone.Indices.Count);
 
             int offset = 0;
-            for(int i=0; i < Bones.Count; ++i)
+            
+            for (int i=0; i < Bones.Count; ++i)
             {
                 if(Bones[i].ParentIndex >= 0)
                 {
@@ -91,22 +92,34 @@ namespace HelixToolkit.Wpf.SharpDX
                     int j = 0;
                     for (; j < singleBone.Positions.Count - 6; j += 3)
                     {
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], Bones[i].BindPose));
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j + 1], Bones[i].BindPose));
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j + 2], Bones[Bones[i].ParentIndex].BindPose));
-                        boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
-                        boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
+                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], Bones[Bones[i].ParentIndex].BindPose));
+                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j + 1], Bones[Bones[i].ParentIndex].BindPose));
+                        positions.Add(Bones[i].BindPose.TranslationVector);
                         boneIds.Add(new BoneIds() { Bone1 = Bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
+                        boneIds.Add(new BoneIds() { Bone1 = Bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
+                        boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
                     }
                     for (; j < singleBone.Positions.Count; ++j)
                     {
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], Bones[i].BindPose));
-                        boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
+                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], Bones[Bones[i].ParentIndex].BindPose));
+                        boneIds.Add(new BoneIds() { Bone1 = Bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
                     }
                     offset += singleBone.Positions.Count;
+                }                
+            }
+
+            builder = new MeshBuilder(true, false);
+            for (int i=0; i < Bones.Count; ++i)
+            {
+                int currPos = builder.Positions.Count;
+                builder.AddSphere(Bones[i].BindPose.TranslationVector, scale / 2, 8, 8);
+                for (int j = currPos; j < builder.Positions.Count; ++j)
+                {
+                    boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
                 }
             }
-            
+            positions.AddRange(builder.Positions);
+            tris.AddRange(builder.TriangleIndices.Select(x => x + offset));
             var mesh = new BoneSkinnedMeshGeometry3D() { Positions = positions, Indices = tris, VertexBoneIds = boneIds };
             mesh.Normals = mesh.CalculateNormals();
             return mesh;
