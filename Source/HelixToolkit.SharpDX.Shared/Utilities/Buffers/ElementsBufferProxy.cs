@@ -120,6 +120,7 @@ namespace HelixToolkit.UWP.Utilities
     /// </summary>
     public sealed class DynamicBufferProxy : BufferProxyBase, IElementsBufferProxy
     {
+        private readonly bool CanOverwrite = false;
         /// <summary>
         ///
         /// </summary>
@@ -147,6 +148,7 @@ namespace HelixToolkit.UWP.Utilities
         public DynamicBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None)
             : base(structureSize, bindFlags)
         {
+            CanOverwrite = (bindFlags & (BindFlags.VertexBuffer | BindFlags.IndexBuffer)) != 0;
             this.OptionFlags = optionFlags;
         }
 
@@ -183,7 +185,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 Initialize(context, data, count, offset, minBufferCount);
             }
-            if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred)
+            if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred && CanOverwrite)
             {
                 Offset = CapacityUsed;
                 context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
