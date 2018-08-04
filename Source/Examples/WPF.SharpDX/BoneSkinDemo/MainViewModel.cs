@@ -3,6 +3,7 @@ using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Animations;
 using SharpDX;
 using SharpDX.Direct3D11;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -19,7 +20,7 @@ namespace BoneSkinDemo
     public class MainViewModel : BaseViewModel
     {
         public ObservableElement3DCollection Models { get; } = new ObservableElement3DCollection();
-
+        public ObservableElement3DCollection BoneModels { get; } = new ObservableElement3DCollection();
         public MeshGeometry3D FloorModel
         {
             private set;get;
@@ -33,22 +34,6 @@ namespace BoneSkinDemo
         {
             get;
         } = PhongMaterials.Indigo;
-
-        private BoneMatricesStruct boneStruct;
-        public BoneMatricesStruct BoneStruct
-        {
-            set
-            {
-                if(SetValue(ref boneStruct, value))
-                {
-                    Model.BoneMatrices = value;
-                }
-            }
-            get
-            {
-                return boneStruct;
-            }
-        }
 
         private bool showWireframe = false;
         public bool ShowWireframe
@@ -96,22 +81,28 @@ namespace BoneSkinDemo
 
         public IList<Matrix> Instances { get; private set; }
 
-        public BoneSkinnedMeshGeometry3D BoneMesh { private set; get; }
-
         public Material BoneMaterial { get; } = DiffuseMaterials.Red;
 
-        private BoneMatricesStruct boneSkeletonStruct;
-        public BoneMatricesStruct BoneSkeletonStruct
+        private string selectedAnimation;
+        public string SelectedAnimation
         {
             set
             {
-                SetValue(ref boneSkeletonStruct, value);
+                if(SetValue(ref selectedAnimation, value))
+                {
+                    if(loader.UniqueAnimations.TryGetValue(value, out List<Guid> animations))
+                    {
+                        CurrentAnimation = animations.Select(x => loader.Animations[x]).ToArray();
+                    }
+                    else { CurrentAnimation = new Animation[0]; }
+                }
             }
-            get
-            {
-                return boneSkeletonStruct;
-            }
+            get { return selectedAnimation; }
         }
+
+        public Media3D.Transform3D ModelTransform { private set; get; }
+
+        public string[] Animations { private set; get; }
 
         private const int numBonesInModel = 32;
 
@@ -122,9 +113,10 @@ namespace BoneSkinDemo
         private const int Theta = 24;
         private CancellationTokenSource cts = new CancellationTokenSource();
         private SynchronizationContext context = SynchronizationContext.Current;
-        private BoneSkinnedMeshGeometry3D Mesh;
-        private BoneSkinMeshGeometryModel3D Model;
-        private Animation? CurrentAnimation;
+        private Dictionary<Guid, BoneSkinnedMeshGeometry3D> BoneSkinMeshes = new Dictionary<Guid, BoneSkinnedMeshGeometry3D>();
+        private Dictionary<Guid, BoneSkinMeshGeometryModel3D[]> MeshModelDictionary = new Dictionary<Guid, BoneSkinMeshGeometryModel3D[]>();
+        private Animation[] CurrentAnimation = new Animation[0];
+        private CMOReader loader;
 
         public MainViewModel()
         {
@@ -149,48 +141,55 @@ namespace BoneSkinDemo
             var builder = new MeshBuilder(true, true, false);
             builder.AddBox(new Vector3(0, -1, 0), 5, 0.1, 5, BoxFaces.All);
             FloorModel = builder.ToMesh();
-
             LoadFile();
             StartAnimation();
         }
+
         private void LoadFile()
         {
-            var loader = new CMOReader();
-            var obj3Ds = loader.Read("Character.cmo");
+            loader = new CMOReader();
+            var obj3Ds = loader.Read("robot.cmo");
             foreach(var obj3D in obj3Ds)
             {
-                if(obj3D.Geometry is BoneSkinnedMeshGeometry3D)
+                if(obj3D.Geometry is BoneSkinnedMeshGeometry3D boneMesh)
                 {
-                    Model = new BoneSkinMeshGeometryModel3D()
+                    var model = new BoneSkinMeshGeometryModel3D()
                     {
                         Geometry = obj3D.Geometry,
                         FrontCounterClockwise = false,
-                        Material = obj3D.Material.ConvertToMaterial(),
                         CullMode = CullMode.Back
                     };
-                    Models.Add(Model);
-                    Mesh = obj3D.Geometry as BoneSkinnedMeshGeometry3D;
-                    BoneMesh = Mesh.CreateSkeletonMesh();
+                    Models.Add(model);
+                    BoneSkinMeshes.Add(obj3D.Geometry.GUID, boneMesh);
+                    var boneModel = new BoneSkinMeshGeometryModel3D()
+                    {
+                        Geometry = boneMesh.CreateSkeletonMesh(),
+                        CullMode = CullMode.Back,
+                        Material = BoneMaterial, PostEffects = "xray"
+                    };
+                    MeshModelDictionary.Add(obj3D.Geometry.GUID, new[] { model, boneModel });
+                    BoneModels.Add(boneModel);
                 }
                 else if(obj3D.Geometry is MeshGeometry3D)
                 {
                     Models.Add(new MeshGeometryModel3D()
                     {
                         Geometry = obj3D.Geometry,
-                        Material = obj3D.Material.ConvertToMaterial(),
                         CullMode = CullMode.Back, FrontCounterClockwise=false
                     });
                 }
             }
-            using(var texFile = File.OpenRead("Character.png"))
+            
+            ///Since the model material is using Physics based rendering, not support yet. Use a default material for now
+            var material = new PhongMaterial { DiffuseColor = Colors.Silver.ToColor4() };
+            foreach(var model in Models)
             {
-                var memory = new MemoryStream();
-                texFile.CopyTo(memory);
-                foreach(var model in Models)
-                {
-                    ((model as MaterialGeometryModel3D).Material as PhongMaterial).DiffuseMap = memory;
-                }
+                (model as MaterialGeometryModel3D).Material = material;
             }
+
+            Animations = loader.UniqueAnimations.Keys.ToArray();
+
+            ModelTransform = new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Media3D.Vector3D(1, 0, 0), -90));
         }
 
         private void StartAnimation()
@@ -199,7 +198,7 @@ namespace BoneSkinDemo
             cts.Dispose();
             cts = new CancellationTokenSource();
             var token = cts.Token;
-            CurrentAnimation = Mesh.Animations.Values.First();
+            SelectedAnimation = loader.UniqueAnimations.Keys.First();
             Task.Run(() =>
             {
                 lastTime = Stopwatch.GetTimestamp();
@@ -210,31 +209,37 @@ namespace BoneSkinDemo
                 }
             }, token);
         }
+
+
         long lastTime;
         private void Timer_Tick()
         {
             var curr = Stopwatch.GetTimestamp();
             var time = (float)(curr - lastTime) / Stopwatch.Frequency;
-
-            if (Mesh.Bones != null)
+            float maxEndTime = 0;
+            foreach(var ani in CurrentAnimation)
             {
-                // Retrieve each bone's local transform
-                for (var i = 0; i < Mesh.Bones.Count; i++)
+                maxEndTime = Math.Max(ani.EndTime, maxEndTime);
+                var allMeshes = loader.AnimationMeshRelation[ani.GUID].Select(x => BoneSkinMeshes[x]);
+                var bones = allMeshes.First().Bones;
+                if (bones != null)
                 {
-                    boneInternal[i] = Mesh.Bones[i].BoneLocalTransform;
-                }
+                    // Retrieve each bone's local transform
+                    for (var i = 0; i < bones.Count; i++)
+                    {
+                        boneInternal[i] = bones[i].BoneLocalTransform;
+                    }
 
-                // Load bone transforms from animation frames
-                if (CurrentAnimation.HasValue)
-                {
+                    // Load bone transforms from animation frames
+
                     // Keep track of the last key-frame used for each bone
-                    Keyframe?[] lastKeyForBones = new Keyframe?[Mesh.Bones.Count];
+                    Keyframe?[] lastKeyForBones = new Keyframe?[bones.Count];
                     // Keep track of whether a bone has been interpolated
-                    bool[] lerpedBones = new bool[Mesh.Bones.Count];
-                    for (var i = 0; i < CurrentAnimation.Value.Keyframes.Count; i++)
+                    bool[] lerpedBones = new bool[bones.Count];
+                    for (var i = 0; i < ani.Keyframes.Count; i++)
                     {
                         // Retrieve current key-frame
-                        var frame = CurrentAnimation.Value.Keyframes[i];
+                        var frame = ani.Keyframes[i];
 
                         // If the current frame is not in the future
                         if (frame.Time <= time)
@@ -281,40 +286,45 @@ namespace BoneSkinDemo
                                     Matrix.Translation(Vector3.Lerp(t1, t2, amount));
                             }
                         }
-
                     }
-                }
 
-                // Apply parent bone transforms
-                // We assume here that the first bone has no parent
-                // and that each parent bone appears before children
-                for (var i = 1; i < Mesh.Bones.Count; i++)
-                {
-                    var bone = Mesh.Bones[i];
-                    if (bone.ParentIndex > -1)
+                    // Apply parent bone transforms
+                    // We assume here that the first bone has no parent
+                    // and that each parent bone appears before children
+                    for (var i = 1; i < bones.Count; i++)
                     {
-                        var parentTransform = boneInternal[bone.ParentIndex];
-                        boneInternal[i] = (boneInternal[i] * parentTransform);
+                        var bone = bones[i];
+                        if (bone.ParentIndex > -1)
+                        {
+                            var parentTransform = boneInternal[bone.ParentIndex];
+                            boneInternal[i] = (boneInternal[i] * parentTransform);
+                        }
                     }
-                }
 
-                // Change the bone transform from rest pose space into bone space (using the inverse of the bind/rest pose)
-                var newBones = boneInternal.ToArray();
-                for (var i = 0; i < Mesh.Bones.Count; i++)
-                {
-                    newBones[i] = Mesh.Bones[i].InvBindPose * boneInternal[i];
+                    // Change the bone transform from rest pose space into bone space (using the inverse of the bind/rest pose)
+                    var newBones = boneInternal.ToArray();
+                    for (var i = 0; i < bones.Count; i++)
+                    {
+                        newBones[i] = bones[i].InvBindPose * boneInternal[i];
+                    }
+                    var skeleton = boneInternal.ToArray();
+                    var meshGuids = allMeshes.Select(x => x.GUID).ToArray();
+                    context.Post((o) => 
+                    {
+                        foreach(var g in meshGuids)
+                        {
+                            foreach (var m in MeshModelDictionary[g])
+                            {
+                                m.BoneMatrices = new BoneMatricesStruct() { Bones = newBones };
+                            }
+                        }
+                    }, null);
                 }
-                var skeleton = boneInternal.ToArray();
-                context.Post((o) => 
-                {
-                    BoneStruct = new BoneMatricesStruct() { Bones = newBones };
-                    BoneSkeletonStruct = BoneStruct;
-                }, null);
-                // Check need to loop animation
-                if (CurrentAnimation.HasValue && CurrentAnimation.Value.EndTime <= time)
-                {
-                    lastTime = curr;
-                }
+            }
+            // Check need to loop animation
+            if (maxEndTime <= time)
+            {
+                lastTime = curr;
             }
         }
 

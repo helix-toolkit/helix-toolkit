@@ -48,14 +48,8 @@
             <hx:ShadowMap3D />
             <hx:AmbientLight3D Color="#4B4B4B" />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
-            <hx:GroupModel3D ItemsSource="{Binding Models}" />
-            <hx:BoneSkinMeshGeometryModel3D
-                x:Name="skeleton"
-                BoneMatrices="{Binding BoneSkeletonStruct}"
-                CullMode="Back"
-                Geometry="{Binding BoneMesh}"
-                Material="{Binding BoneMaterial}"
-                PostEffects="xray" />
+            <hx:GroupModel3D ItemsSource="{Binding Models}" Transform="{Binding ModelTransform}"/>
+            <hx:GroupModel3D ItemsSource="{Binding BoneModels}" Transform="{Binding ModelTransform}"/>
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
@@ -69,6 +63,7 @@
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
             <CheckBox IsChecked="{Binding IsRendering, ElementName=skeleton}">Skeleton</CheckBox>
+            <ComboBox ItemsSource="{Binding Animations}" SelectedItem="{Binding SelectedAnimation}"></ComboBox>
         </StackPanel>
     </Grid>
 </Window>

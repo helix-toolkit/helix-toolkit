@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
+using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Animations
 #else
@@ -31,10 +31,12 @@ namespace HelixToolkit.UWP.Animations
         public const int SizeInBytes = 4 * (2 + 4 * 4);
     };
 
-    public struct Animation
+    public class Animation
     {
-        public float StartTime;
-        public float EndTime;
-        public List<Keyframe> Keyframes;
+        public Guid GUID { set; get; } = Guid.NewGuid();
+        public string Name { set; get; }
+        public float StartTime { set; get; }
+        public float EndTime { set; get; }
+        public List<Keyframe> Keyframes { set; get; } = new List<Keyframe>();
     };
 }
