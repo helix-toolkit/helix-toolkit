@@ -178,6 +178,10 @@ namespace HelixToolkit.UWP
         /// The animation geometry relation. Multiple geometry may uses same animation.
         /// </summary>
         public Dictionary<Guid, List<Guid>> AnimationMeshRelation = new Dictionary<Guid, List<Guid>>();
+        /// <summary>
+        /// The bone mesh relation. Multiple geometry may uses same animation.
+        /// </summary>
+        public Dictionary<IList<Animations.Bone>, List<Guid>> BoneMeshRelation = new Dictionary<IList<Animations.Bone>, List<Guid>>();
         public const int MaxBoneInfluences = 4; // 4 bone influences are supported
         public const int MaxTextures = 8;  // 8 unique textures are supported.
         /// <summary>
@@ -361,6 +365,7 @@ namespace HelixToolkit.UWP
                 }
             }
             var obj3Ds = new List<Object3D>(subMeshCount);
+            
             for (int i=0; i < subMesh.Count; ++i)
             {
                 var sub = subMesh[i];
@@ -398,6 +403,11 @@ namespace HelixToolkit.UWP
                         }
                         AnimationMeshRelation[ani.Value.GUID].Add(boneskinmesh.GUID);
                     }
+                    if (!BoneMeshRelation.ContainsKey(bones))
+                    {
+                        BoneMeshRelation.Add(bones, new List<Guid>());
+                    }
+                    BoneMeshRelation[bones].Add(boneskinmesh.GUID);
                 }              
                 //Todo Load textures
                 obj3Ds.Add(new Object3D() { Geometry = meshGeo, Material = material, Name = name });

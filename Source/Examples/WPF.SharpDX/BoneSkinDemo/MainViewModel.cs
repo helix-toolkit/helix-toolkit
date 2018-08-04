@@ -1,4 +1,8 @@
-﻿using DemoCore;
+﻿/*
+Model: Sphere Bot Rusty Version. Author: 3DHaupt. Source : https://sketchfab.com/models/d18753fe3e494ddbbc52a8a2e58be7a4
+Model: Character. Source : https://github.com/spazzarama/Direct3D-Rendering-Cookbook
+*/
+using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Animations;
 using SharpDX;
@@ -25,15 +29,11 @@ namespace BoneSkinDemo
         {
             private set;get;
         }
-        public PhongMaterial Material
-        {
-            private set;get;
-        }
 
         public PhongMaterial FloorMaterial
         {
             get;
-        } = PhongMaterials.Indigo;
+        } = PhongMaterials.Gray;
 
         private bool showWireframe = false;
         public bool ShowWireframe
@@ -104,8 +104,6 @@ namespace BoneSkinDemo
 
         public string[] Animations { private set; get; }
 
-        private const int numBonesInModel = 32;
-
         private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
 
@@ -114,7 +112,8 @@ namespace BoneSkinDemo
         private CancellationTokenSource cts = new CancellationTokenSource();
         private SynchronizationContext context = SynchronizationContext.Current;
         private Dictionary<Guid, BoneSkinnedMeshGeometry3D> BoneSkinMeshes = new Dictionary<Guid, BoneSkinnedMeshGeometry3D>();
-        private Dictionary<Guid, BoneSkinMeshGeometryModel3D[]> MeshModelDictionary = new Dictionary<Guid, BoneSkinMeshGeometryModel3D[]>();
+        private Dictionary<Guid, BoneSkinMeshGeometryModel3D> MeshModelDictionary = new Dictionary<Guid, BoneSkinMeshGeometryModel3D>();
+        private Dictionary<Guid, BoneSkinMeshGeometryModel3D> BoneModelDictionary = new Dictionary<Guid, BoneSkinMeshGeometryModel3D>();
         private Animation[] CurrentAnimation = new Animation[0];
         private CMOReader loader;
 
@@ -127,19 +126,14 @@ namespace BoneSkinDemo
            
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
-                Position = new Media3D.Point3D(5, 5, 5),
-                LookDirection = new Media3D.Vector3D(-5, -5, -5),
+                Position = new Media3D.Point3D(50, 50, 50),
+                LookDirection = new Media3D.Vector3D(-50, -50, -50),
                 UpDirection = new Media3D.Vector3D(0, 1, 0)
             };
 
-            Material = new PhongMaterial()
-            {
-                DiffuseColor = Colors.SteelBlue.ToColor4(),
-                RenderShadowMap=true,
-            };
             FloorMaterial.RenderShadowMap = true;
             var builder = new MeshBuilder(true, true, false);
-            builder.AddBox(new Vector3(0, -1, 0), 5, 0.1, 5, BoxFaces.All);
+            builder.AddBox(new Vector3(0, 0, 0), 100, 0.1, 100, BoxFaces.All);
             FloorModel = builder.ToMesh();
             LoadFile();
             StartAnimation();
@@ -148,7 +142,7 @@ namespace BoneSkinDemo
         private void LoadFile()
         {
             loader = new CMOReader();
-            var obj3Ds = loader.Read("robot.cmo");
+            var obj3Ds = loader.Read("Sphere_Bot_test.cmo");
             foreach(var obj3D in obj3Ds)
             {
                 if(obj3D.Geometry is BoneSkinnedMeshGeometry3D boneMesh)
@@ -157,18 +151,13 @@ namespace BoneSkinDemo
                     {
                         Geometry = obj3D.Geometry,
                         FrontCounterClockwise = false,
-                        CullMode = CullMode.Back
+                        CullMode = CullMode.Back,
+                        Material = obj3D.Material.ConvertToMaterial(),
+                        IsThrowingShadow = true
                     };
                     Models.Add(model);
                     BoneSkinMeshes.Add(obj3D.Geometry.GUID, boneMesh);
-                    var boneModel = new BoneSkinMeshGeometryModel3D()
-                    {
-                        Geometry = boneMesh.CreateSkeletonMesh(),
-                        CullMode = CullMode.Back,
-                        Material = BoneMaterial, PostEffects = "xray"
-                    };
-                    MeshModelDictionary.Add(obj3D.Geometry.GUID, new[] { model, boneModel });
-                    BoneModels.Add(boneModel);
+                    MeshModelDictionary.Add(obj3D.Geometry.GUID, model);
                 }
                 else if(obj3D.Geometry is MeshGeometry3D)
                 {
@@ -179,17 +168,44 @@ namespace BoneSkinDemo
                     });
                 }
             }
-            
-            ///Since the model material is using Physics based rendering, not support yet. Use a default material for now
-            var material = new PhongMaterial { DiffuseColor = Colors.Silver.ToColor4() };
-            foreach(var model in Models)
+
+            foreach(var bone in loader.BoneMeshRelation)
             {
-                (model as MaterialGeometryModel3D).Material = material;
+                var boneModel = new BoneSkinMeshGeometryModel3D()
+                {
+                    Geometry = BoneSkinnedMeshGeometry3D.CreateSkeletonMesh(bone.Key, 0.1f),
+                    CullMode = CullMode.Back,
+                    Material = BoneMaterial,
+                    PostEffects = "xray"
+                };
+                BoneModelDictionary.Add(bone.Value.FirstOrDefault(), boneModel);
+                BoneModels.Add(boneModel);
+            }
+            
+            var diffuse = new MemoryStream();
+            using (var file = File.OpenRead(@"Sphere_Bot_Rusty_UVMap_color.png"))
+            {
+                
+                file.CopyTo(diffuse);
+            }
+
+            var normal = new MemoryStream();
+            using (var file = File.OpenRead(@"Sphere_Bot_Rusty_UVMap_nmap.png"))
+            {
+                file.CopyTo(normal);
+            }
+            foreach (var model in Models)
+            {
+                var m = (model as MaterialGeometryModel3D).Material as PhongMaterial;
+                m.EmissiveColor = Colors.Black.ToColor4();                
+                m.DiffuseMap = diffuse;
+                m.NormalMap = normal;
+                m.RenderShadowMap = true;
             }
 
             Animations = loader.UniqueAnimations.Keys.ToArray();
 
-            ModelTransform = new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Media3D.Vector3D(1, 0, 0), -90));
+            ModelTransform = new Media3D.MatrixTransform3D((Matrix.Scaling(10,10,10) * Matrix.RotationAxis(Vector3.UnitX, -(float)Math.PI / 2)).ToMatrix3D());
         }
 
         private void StartAnimation()
@@ -307,16 +323,21 @@ namespace BoneSkinDemo
                     {
                         newBones[i] = bones[i].InvBindPose * boneInternal[i];
                     }
-                    var skeleton = boneInternal.ToArray();
+
                     var meshGuids = allMeshes.Select(x => x.GUID).ToArray();
                     context.Post((o) => 
                     {
                         foreach(var g in meshGuids)
                         {
-                            foreach (var m in MeshModelDictionary[g])
+                            MeshModelDictionary[g].BoneMatrices = new BoneMatricesStruct() { Bones = newBones };
+                        }
+                        foreach(var g in meshGuids)
+                        {
+                            if(BoneModelDictionary.TryGetValue(g, out BoneSkinMeshGeometryModel3D model))
                             {
-                                m.BoneMatrices = new BoneMatricesStruct() { Bones = newBones };
+                                model.BoneMatrices = new BoneMatricesStruct() { Bones = newBones };
                             }
+                            
                         }
                     }, null);
                 }
