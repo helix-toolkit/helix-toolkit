@@ -34,8 +34,7 @@ namespace HelixToolkit.UWP.Core
             get { return boneMatrices; }
         }
 
-        private ShaderResourceViewProxy boneSkinSBView;
-        private DynamicBufferProxy boneSkinSB;
+        private StructuredBufferProxy boneSkinSB;
         private int boneSkinSBSlot;
         private ShaderPass preComputeBoneSkinPass;
         private IBoneSkinPreComputehBufferModel preComputeBoneBuffer;
@@ -53,10 +52,7 @@ namespace HelixToolkit.UWP.Core
                 matricsChanged = true;
                 preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
                 boneSkinSBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.BoneSkinSB).Slot;
-                boneSkinSB = Collect(new DynamicBufferProxy(Matrix.SizeInBytes, global::SharpDX.Direct3D11.BindFlags.ShaderResource, global::SharpDX.Direct3D11.ResourceOptionFlags.BufferStructured));
-                boneSkinSB.Initialize(Device, BoneMatricesStruct.DefaultBones, BoneMatricesStruct.NumberOfBones);
-                boneSkinSBView = Collect(new ShaderResourceViewProxy(Device, boneSkinSB.Buffer));
-                boneSkinSBView.CreateTextureView();
+                boneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes));
                 return true;
             }
             else
@@ -81,7 +77,7 @@ namespace HelixToolkit.UWP.Core
             preComputeBoneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
             boneSkinSB.UploadDataToBuffer(deviceContext, BoneMatrices, BoneMatrices.Length);
             preComputeBoneSkinPass.BindShader(deviceContext);
-            deviceContext.SetShaderResource(VertexShader.Type, boneSkinSBSlot, boneSkinSBView);
+            deviceContext.SetShaderResource(VertexShader.Type, boneSkinSBSlot, boneSkinSB);
             deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
             preComputeBoneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
             matricsChanged = false;         
@@ -90,7 +86,6 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDetach()
         {
             preComputeBoneBuffer = null;
-            boneSkinSBView = null;
             boneSkinSB = null;
             base.OnDetach();
         }

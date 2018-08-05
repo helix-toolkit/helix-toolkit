@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP.Utilities
     /// <summary>
     ///
     /// </summary>
-    public sealed class DynamicBufferProxy : BufferProxyBase, IElementsBufferProxy
+    public class DynamicBufferProxy : BufferProxyBase, IElementsBufferProxy
     {
         private readonly bool CanOverwrite = false;
         /// <summary>
@@ -233,6 +233,40 @@ namespace HelixToolkit.UWP.Utilities
             Capacity = buffdesc.SizeInBytes;
             CapacityUsed = 0;
             buffer = Collect(new Buffer(device, buffdesc));
+            OnBufferChanged(buffer);
+        }
+
+        protected virtual void OnBufferChanged(Buffer newBuffer) { }
+    }
+
+    public sealed class StructuredBufferProxy : DynamicBufferProxy
+    {
+        private ShaderResourceViewProxy srv;
+        public ShaderResourceViewProxy SRV
+        {
+            get { return srv; }
+        }
+
+        public StructuredBufferProxy(int structureSize) : base(structureSize, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured)
+        {
+
+        }
+
+        protected override void OnBufferChanged(Buffer newBuffer)
+        {
+            RemoveAndDispose(ref srv);
+            srv = Collect(new ShaderResourceViewProxy(newBuffer.Device, newBuffer));
+            srv.CreateTextureView();
+        }
+
+        public static implicit operator ShaderResourceViewProxy(StructuredBufferProxy proxy)
+        {
+            return proxy.srv;
+        }
+
+        public static implicit operator ShaderResourceView(StructuredBufferProxy proxy)
+        {
+            return proxy.srv;
         }
     }
 }
