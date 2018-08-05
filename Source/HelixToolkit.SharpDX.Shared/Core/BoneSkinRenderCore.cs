@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Core
                     matricsChanged = true;
                     if(value == null)
                     {
-                        boneMatrices = BoneMatricesStruct.DefaultBones;
+                        boneMatrices = new Matrix[0];
                     }
                 }
             }
@@ -52,7 +52,7 @@ namespace HelixToolkit.UWP.Core
                 matricsChanged = true;
                 preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
                 boneSkinSBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.BoneSkinSB).Slot;
-                boneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes));
+                boneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes, false));
                 return true;
             }
             else

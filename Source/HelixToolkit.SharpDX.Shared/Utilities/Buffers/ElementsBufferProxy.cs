@@ -120,7 +120,8 @@ namespace HelixToolkit.UWP.Utilities
     /// </summary>
     public class DynamicBufferProxy : BufferProxyBase, IElementsBufferProxy
     {
-        private readonly bool CanOverwrite = false;
+        public readonly bool CanOverwrite = false;
+        public readonly bool LazyResize = true;
         /// <summary>
         ///
         /// </summary>
@@ -145,11 +146,14 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="structureSize"></param>
         /// <param name="bindFlags"></param>
         /// <param name="optionFlags"></param>
-        public DynamicBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None)
+        /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing. Otherwise create a new buffer with exact same size</param>
+        public DynamicBufferProxy(int structureSize, BindFlags bindFlags, 
+            ResourceOptionFlags optionFlags = ResourceOptionFlags.None, bool lazyResize = true)
             : base(structureSize, bindFlags)
         {
             CanOverwrite = (bindFlags & (BindFlags.VertexBuffer | BindFlags.IndexBuffer)) != 0;
             this.OptionFlags = optionFlags;
+            LazyResize = lazyResize;
         }
 
         /// <summary>
@@ -181,7 +185,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 return;
             }
-            else if (buffer == null || Capacity < newSizeInBytes)
+            else if (buffer == null || Capacity < newSizeInBytes || (!LazyResize && Capacity != newSizeInBytes))
             {
                 Initialize(context, data, count, offset, minBufferCount);
             }
@@ -247,7 +251,13 @@ namespace HelixToolkit.UWP.Utilities
             get { return srv; }
         }
 
-        public StructuredBufferProxy(int structureSize) : base(structureSize, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StructuredBufferProxy"/> class.
+        /// </summary>
+        /// <param name="structureSize">Size of the structure.</param>
+        /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing. Otherwise create a new buffer with exact same size</param>
+        public StructuredBufferProxy(int structureSize, bool lazyResize = true) :
+            base(structureSize, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured, lazyResize)
         {
 
         }
