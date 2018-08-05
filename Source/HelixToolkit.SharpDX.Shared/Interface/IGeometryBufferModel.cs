@@ -129,5 +129,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context">The context.</param>
         void UnBindSkinnedVertexBufferToOutput(DeviceContextProxy context);
+        /// <summary>
+        /// Resets the skinned vertex buffer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void ResetSkinnedVertexBuffer(DeviceContextProxy context);
     }
 }

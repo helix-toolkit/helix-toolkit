@@ -73,13 +73,20 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
-            GeometryBuffer.UpdateBuffers(deviceContext, EffectTechnique.EffectsManager);
-            preComputeBoneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
-            boneSkinSB.UploadDataToBuffer(deviceContext, BoneMatrices, BoneMatrices.Length);
-            preComputeBoneSkinPass.BindShader(deviceContext);
-            deviceContext.SetShaderResource(VertexShader.Type, boneSkinSBSlot, boneSkinSB);
-            deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
-            preComputeBoneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
+            if(boneMatrices.Length == 0)
+            {
+                preComputeBoneBuffer.ResetSkinnedVertexBuffer(deviceContext);
+            }
+            else
+            {
+                GeometryBuffer.UpdateBuffers(deviceContext, EffectTechnique.EffectsManager);
+                preComputeBoneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
+                boneSkinSB.UploadDataToBuffer(deviceContext, BoneMatrices, BoneMatrices.Length);
+                preComputeBoneSkinPass.BindShader(deviceContext);
+                deviceContext.SetShaderResource(VertexShader.Type, boneSkinSBSlot, boneSkinSB);
+                deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
+                preComputeBoneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
+            }
             matricsChanged = false;         
         }
 
