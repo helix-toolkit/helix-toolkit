@@ -17,14 +17,18 @@ namespace HelixToolkit.UWP.Core
     public class BoneSkinRenderCore : MeshRenderCore
     {
         private bool matricsChanged = true;
-        private BoneMatricesStruct boneMatrices;
-        public BoneMatricesStruct BoneMatrices
+        private Matrix[] boneMatrices;
+        public Matrix[] BoneMatrices
         {
             set
             {
                 if(SetAffectsRender(ref boneMatrices, value))
                 {
                     matricsChanged = true;
+                    if(value == null)
+                    {
+                        boneMatrices = BoneMatricesStruct.DefaultBones;
+                    }
                 }
             }
             get { return boneMatrices; }
@@ -75,7 +79,7 @@ namespace HelixToolkit.UWP.Core
             }
             GeometryBuffer.UpdateBuffers(deviceContext, EffectTechnique.EffectsManager);
             preComputeBoneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
-            boneSkinSB.UploadDataToBuffer(deviceContext, BoneMatrices.Bones ?? BoneMatricesStruct.DefaultBones, BoneMatricesStruct.NumberOfBones);
+            boneSkinSB.UploadDataToBuffer(deviceContext, BoneMatrices, BoneMatrices.Length);
             preComputeBoneSkinPass.BindShader(deviceContext);
             deviceContext.SetShaderResource(VertexShader.Type, boneSkinSBSlot, boneSkinSBView);
             deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);

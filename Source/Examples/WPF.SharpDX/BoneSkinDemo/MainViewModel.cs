@@ -104,7 +104,7 @@ namespace BoneSkinDemo
 
         public string[] Animations { private set; get; }
 
-        private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
+        private Matrix[] boneInternal = new Matrix[0];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
 
         private const int NumSegments = 100;
@@ -238,6 +238,10 @@ namespace BoneSkinDemo
                 maxEndTime = Math.Max(ani.EndTime, maxEndTime);
                 var allMeshes = loader.AnimationMeshRelation[ani.GUID].Select(x => BoneSkinMeshes[x]);
                 var bones = allMeshes.First().Bones;
+                if(bones.Count > boneInternal.Length)
+                {
+                    boneInternal = new Matrix[bones.Count];
+                }
                 if (bones != null)
                 {
                     // Retrieve each bone's local transform
@@ -329,13 +333,13 @@ namespace BoneSkinDemo
                     {
                         foreach(var g in meshGuids)
                         {
-                            MeshModelDictionary[g].BoneMatrices = new BoneMatricesStruct() { Bones = newBones };
+                            MeshModelDictionary[g].BoneMatrices = newBones;
                         }
                         foreach(var g in meshGuids)
                         {
                             if(BoneModelDictionary.TryGetValue(g, out BoneSkinMeshGeometryModel3D model))
                             {
-                                model.BoneMatrices = new BoneMatricesStruct() { Bones = newBones };
+                                model.BoneMatrices = newBones;
                             }
                             
                         }
