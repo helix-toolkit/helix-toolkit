@@ -180,15 +180,6 @@ namespace HelixToolkit.UWP.Core
         }
 
         /// <summary>
-        /// Called when [render shadow].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext">The device context.</param>
-        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-
-        }
-        /// <summary>
         /// Called when [update per model structure].
         /// </summary>
         /// <param name="model">The model.</param>
@@ -215,6 +206,14 @@ namespace HelixToolkit.UWP.Core
                     buffer.UploadDataToBuffer(context, geometry.Positions, geometry.Positions.Count);
                 }
             }
+        }
+
+        protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        {
+        }
+
+        protected sealed override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
     }
 }

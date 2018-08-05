@@ -517,9 +517,31 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             RenderCore.Render(context, deviceContext);
+        }
+
+        /// <summary>
+        /// Renders the shadow.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            RenderCore.RenderShadow(context, deviceContext);
+        }
+        /// <summary>
+        /// Renders the custom.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            RenderCore.RenderCustom(context, deviceContext);
         }
         /// <summary>
         /// View frustum test.

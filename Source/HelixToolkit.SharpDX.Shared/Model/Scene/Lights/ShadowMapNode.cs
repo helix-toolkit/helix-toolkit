@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool CanRender(RenderContext context)
         {
-            return base.CanRender(context) && RenderHost.IsShadowMapEnabled && !context.IsShadowPass;
+            return base.CanRender(context) && RenderHost.IsShadowMapEnabled;
         }
 
         private void Core_OnUpdateLightSource(object sender, ShadowMapCore.UpdateLightSourceEventArgs e)

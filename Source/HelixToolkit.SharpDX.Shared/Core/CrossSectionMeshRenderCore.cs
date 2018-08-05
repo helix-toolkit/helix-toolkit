@@ -262,7 +262,7 @@ namespace HelixToolkit.UWP.Core
             deviceContext.SetRasterState(backfaceRasterState);
             drawBackfacePass.BindShader(deviceContext);
             drawBackfacePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(deviceContext, InstanceBuffer);
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
 
             //Draw full screen quad to fill cross section            
             deviceContext.SetRasterState(RasterState);

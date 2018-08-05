@@ -306,5 +306,13 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
         {
         }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
     }
 }

@@ -240,7 +240,6 @@ namespace HelixToolkit.UWP.Core
             deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
             BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
             var frustum = context.BoundingFrustum;
-            context.IsCustomPass = true;
             bool hasMesh = false;
             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
             {
@@ -267,11 +266,10 @@ namespace HelixToolkit.UWP.Core
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                    mesh.Render(context, deviceContext);
+                    mesh.RenderCustom(context, deviceContext);
                     hasMesh = true;
                 }
             }
-            context.IsCustomPass = false;
             #endregion
             if (hasMesh)
             {
@@ -331,6 +329,14 @@ namespace HelixToolkit.UWP.Core
             model.Param.M11 = scaleX;
             model.Param.M12 = ScaleY;
             modelStruct.Color = color;
+        }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
     }
 }
