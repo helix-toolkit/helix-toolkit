@@ -236,11 +236,19 @@ namespace HelixToolkit.UWP.Core
             deviceContext.Draw(4, 0);
         }
 
-        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        protected sealed override void OnUpdatePerModelStruct(ref int model, RenderContext context)
+        {
+        }
+
+        protected sealed override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
         }
     }

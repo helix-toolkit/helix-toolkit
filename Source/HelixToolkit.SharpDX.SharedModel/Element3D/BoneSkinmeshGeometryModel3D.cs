@@ -17,14 +17,14 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class BoneSkinMeshGeometryModel3D : MeshGeometryModel3D
     {
-        public static DependencyProperty BoneMatricesProperty = DependencyProperty.Register("BoneMatrices", typeof(BoneMatricesStruct), typeof(BoneSkinMeshGeometryModel3D),
-            new PropertyMetadata(new BoneMatricesStruct() { Bones = new Matrix[BoneMatricesStruct.NumberOfBones] },
+        public static DependencyProperty BoneMatricesProperty = DependencyProperty.Register("BoneMatrices", typeof(Matrix[]), typeof(BoneSkinMeshGeometryModel3D),
+            new PropertyMetadata(BoneMatricesStruct.DefaultBones,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as BoneSkinMeshNode).BoneMatrices = (BoneMatricesStruct)e.NewValue;
+                    ((d as Element3DCore).SceneNode as BoneSkinMeshNode).BoneMatrices = (Matrix[])e.NewValue;
                 }));
 
-        public BoneMatricesStruct BoneMatrices
+        public Matrix[] BoneMatrices
         {
             set
             {
@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (BoneMatricesStruct)GetValue(BoneMatricesProperty);
+                return (Matrix[])GetValue(BoneMatricesProperty);
             }
         }
 

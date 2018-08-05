@@ -39,7 +39,6 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            context.IsCustomPass = true;
             context.CustomPassName = DefaultPassNames.DepthPrepass;
             for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
@@ -53,11 +52,19 @@ namespace HelixToolkit.UWP.Core
                     }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                    core.Render(context, deviceContext);
+                    core.RenderCustom(context, deviceContext);
                 }
             }
-            context.IsCustomPass = false;
         }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
         /// <summary>
         /// Called when [update per model structure].
         /// </summary>

@@ -22,6 +22,9 @@ namespace HelixToolkit.UWP.Core
         public EmptyRenderCore() : base(RenderType.None)
         {
         }
+
+
+
         /// <summary>
         /// Gets the model constant buffer description.
         /// </summary>
@@ -39,6 +42,14 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
 
+        }
+
+        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
 
         /// <summary>

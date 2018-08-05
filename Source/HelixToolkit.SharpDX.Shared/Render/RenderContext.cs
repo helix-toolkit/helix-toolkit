@@ -182,14 +182,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public IRenderHost RenderHost { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether is shadow pass.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if is shadow pass; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsShadowPass { get; set; } = false;
-
-        /// <summary>
         /// Gets or sets a value indicating whether is deferred pass.
         /// </summary>
         /// <value>
@@ -197,13 +189,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsDeferredPass { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether is custom pass.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is custom pass; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsCustomPass { set; get; } = false;
         /// <summary>
         /// Gets or sets a value indicating whether is order independent transparent pass.
         /// </summary>
@@ -340,7 +325,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public RenderContext(IRenderHost renderHost)
         {
             this.RenderHost = renderHost;
-            this.IsShadowPass = false;
             this.IsDeferredPass = false;
             cbuffer = renderHost.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
             LightScene = Collect(new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool));

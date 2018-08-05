@@ -121,21 +121,6 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override void OnDraw(DeviceContextProxy context, IElementsBufferModel instanceModel)
-        {
-            if (GeometryBuffer.VertexBuffer.Length > 0)
-            {
-                if (instanceModel == null || !instanceModel.HasElements)
-                {
-                    context.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
-                }
-                else
-                {
-                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount, 0, 0);
-                }
-            }
-        }
-
         protected override void OnGeometryBufferChanged(IAttachableBufferModel buffer)
         {
             billboardBuffer = buffer as IBillboardBufferModel;
@@ -151,7 +136,7 @@ namespace HelixToolkit.UWP.Core
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, DefaultStateBinding);
             BindBillboardTexture(deviceContext, pass.PixelShader);
-            OnDraw(deviceContext, InstanceBuffer);
+            DrawPoints(deviceContext, GeometryBuffer.VertexBuffer[0], InstanceBuffer);
         }
 
         protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
@@ -162,7 +147,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             BindBillboardTexture(deviceContext, DefaultShaderPass.PixelShader);
-            base.OnRenderCustom(context, deviceContext, shaderPass);
+            DrawPoints(deviceContext, GeometryBuffer.VertexBuffer[0], InstanceBuffer);
         }
 
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)

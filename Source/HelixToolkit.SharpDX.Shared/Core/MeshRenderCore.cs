@@ -174,7 +174,7 @@ namespace HelixToolkit.UWP.Core
                 pass.PixelShader.BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
             }
             DynamicReflector?.BindCubeMap(deviceContext);
-            OnDraw(deviceContext, InstanceBuffer);
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
             DynamicReflector?.UnBindCubeMap(deviceContext);
             if (RenderWireframe && WireframePass != ShaderPass.NullPass)
             {
@@ -189,8 +189,22 @@ namespace HelixToolkit.UWP.Core
                 pass.BindShader(deviceContext, false);
                 pass.BindStates(deviceContext, DefaultStateBinding);
                 deviceContext.SetRasterState(RasterStateWireframe);
-                OnDraw(deviceContext, InstanceBuffer);
+                DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
             }
+        }
+
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        {
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+        }
+
+        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (!IsThrowingShadow || ShadowPass.IsNULL)
+            { return; }
+            ShadowPass.BindShader(deviceContext);
+            ShadowPass.BindStates(deviceContext, ShadowStateBinding);
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
     }
 }

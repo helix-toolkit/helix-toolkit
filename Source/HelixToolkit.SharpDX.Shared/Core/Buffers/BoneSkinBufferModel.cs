@@ -225,6 +225,14 @@ namespace HelixToolkit.UWP.Core
             return updated;
         }
 
+        public void ResetSkinnedVertexBuffer(DeviceContextProxy context)
+        {
+            if (skinnedVertexBuffer.Buffer != null && skinnedVertexBuffer.ElementCount == originalVertexBuffer.ElementCount)
+            {
+                context.CopyResource(originalVertexBuffer.Buffer, skinnedVertexBuffer.Buffer);
+            }
+        }
+
         protected override void OnDispose(bool disposeManagedResources)
         {
             MeshBuffer.OnBoneIdBufferUpdated -= MeshBuffer_OnBoneIdBufferUpdated;
