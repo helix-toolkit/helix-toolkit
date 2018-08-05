@@ -116,6 +116,46 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
+        /// Adds the pass.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
+        public bool AddPass(ShaderPassDescription description)
+        {
+            if (passDict.ContainsKey(description.Name))
+            {
+                return false;
+            }
+            var pass = new Lazy<ShaderPass>(() => { return Collect(new ShaderPass(description, Layout, EffectsManager)); }, true);
+            passDict.Add(description.Name, pass);
+            passList.Add(pass);
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool RemovePass(string name)
+        {
+            if (passDict.TryGetValue(name, out Lazy<ShaderPass> pass))
+            {
+                passDict.Remove(name);
+                passList.Remove(pass);
+                if (pass.IsValueCreated)
+                {
+                    var p = pass.Value;
+                    RemoveAndDispose(ref p);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
         /// <see cref="IRenderTechnique.GetPass(int)"/>
         /// </summary>
         /// <param name="index"></param>
