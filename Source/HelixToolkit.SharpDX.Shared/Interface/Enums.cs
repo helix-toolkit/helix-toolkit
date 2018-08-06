@@ -156,4 +156,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         Subtract = 1,
     }
+
+    public enum OutlineMode
+    {
+        Merged = 0,
+        Separated = 1
+    }
 }
