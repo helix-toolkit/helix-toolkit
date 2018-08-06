@@ -123,6 +123,13 @@ struct PSInput
     float4 cDiffuse : COLOR2; //vMaterialDiffuse
 };
 
+struct PSPlaneGridInput
+{
+    float4 p : SV_POSITION;
+    float4 vEye : POSITION0;
+    float2 uv : POSITION1;
+};
+
 struct PSWireframeInput
 {
     float4 p : SV_POSITION;

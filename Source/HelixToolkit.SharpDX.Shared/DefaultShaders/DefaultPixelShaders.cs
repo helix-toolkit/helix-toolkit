@@ -355,6 +355,18 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "psEffectMeshDiffuseXRayGrid";
+
+        /// <summary>
+        /// Gets the ps plane grid.
+        /// </summary>
+        /// <value>
+        /// The ps plane grid.
+        /// </value>
+        public static string PSPlaneGrid
+        {
+            get;
+        } = "psPlaneGrid";
+
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -583,6 +595,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSEffectDiffuseXRayGrid = new ShaderDescription(nameof(PSEffectDiffuseXRayGrid), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSEffectDiffuseXRayGrid);
+        /// <summary>
+        /// The ps plane grid
+        /// </summary>
+        public static ShaderDescription PSPlaneGrid = new ShaderDescription(nameof(PSPlaneGrid), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSPlaneGrid);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

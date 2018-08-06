@@ -112,10 +112,18 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string MeshOITQuad = "MeshOITQuad";
-
+        /// <summary>
+        /// The post effect fxaa
+        /// </summary>
         public const string PostEffectFXAA = "PostEffectFXAA";
-
+        /// <summary>
+        /// The post effect mesh x ray grid
+        /// </summary>
         public const string PostEffectMeshXRayGrid = "PostEffectMeshXRayGrid";
+        /// <summary>
+        /// The plane grid
+        /// </summary>
+        public const string PlaneGrid = "PlaneGrid";
 #if !NETFX_CORE
         /// <summary>
         /// 

@@ -53,10 +53,11 @@
                 x:Name="skeleton"
                 ItemsSource="{Binding BoneModels}"
                 Transform="{Binding ModelTransform}" />
-            <hx:MeshGeometryModel3D
+            <!--<hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
-                Material="{Binding FloorMaterial}" />
+                Material="{Binding FloorMaterial}" />-->
+            <hx:PlaneGridModel3D />
             <hx:PostEffectMeshXRayGrid
                 BlendingFactor="0.6"
                 EffectName="xray"
