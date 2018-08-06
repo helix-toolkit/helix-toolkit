@@ -129,7 +129,7 @@ namespace BoneSkinDemo
                 Position = new Media3D.Point3D(50, 50, 50),
                 LookDirection = new Media3D.Vector3D(-50, -50, -50),
                 UpDirection = new Media3D.Vector3D(0, 1, 0),
-                FarPlaneDistance = 10000
+                FarPlaneDistance = 2000
             };
 
             FloorMaterial.RenderShadowMap = true;

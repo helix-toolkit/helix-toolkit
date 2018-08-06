@@ -340,6 +340,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PlaneGridModelStruct
+    {
+        public Matrix World;
+        public Vector4 Params;
+        public Vector4 PlaneColor;
+        public Vector4 GridColor;
+        public bool hasShadowMap;
+        Vector3 padding;
+
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
+    }
     /// <summary>
     /// 
     /// </summary>

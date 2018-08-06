@@ -1,6 +1,6 @@
 #ifndef VSPLANEGRID_HLSL
 #define VSPLANEGRID_HLSL
-#define POINTLINE
+#define PLANEGRID
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\CommonBuffers.hlsl"
 #pragma pack_matrix( row_major )
@@ -16,13 +16,18 @@ static const float2 vertCoord[4] =
 
 PSPlaneGridInput main(uint vI : SV_VERTEXID)
 {
-    float2 vt = vertCoord[vI] * 10000 + vEyePos.xz;
+    float2 vt = vertCoord[vI] * vFrustum.w * pfParams.x + vEyePos.xz;
     float4 v = mul(float4(vt.x, 0, vt.y, 1), pWorld);
     PSPlaneGridInput output = (PSPlaneGridInput) 0;
-    output.uv = v.xz / pfParams.x;
+    output.uv = v.xz;
     output.p = mul(v, mViewProjection);
-    float3 vEye = vEyePos - v.xyz;
-    output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
+    output.p.z = min(0.99999, output.p.z / output.p.w) * output.p.w;
+    //float3 vEye = vEyePos - v.xyz;
+    //output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
+    if (bHasShadowMap)
+    {
+        output.sp = mul(v, vLightViewProjection);
+    }
     return output;
 }
 #endif

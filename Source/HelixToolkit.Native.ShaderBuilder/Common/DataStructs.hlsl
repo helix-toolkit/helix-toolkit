@@ -126,8 +126,8 @@ struct PSInput
 struct PSPlaneGridInput
 {
     float4 p : SV_POSITION;
-    float4 vEye : POSITION0;
-    float2 uv : POSITION1;
+    float2 uv : POSITION0;
+    float4 sp : POSITION1;
 };
 
 struct PSWireframeInput

@@ -13,22 +13,69 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
 
-    public class PlaneGridCore : RenderCoreBase<PointLineModelStruct>
+    public class PlaneGridCore : RenderCoreBase<PlaneGridModelStruct>
     {
         private ShaderPass DefaultShaderPass;
 
+        private bool autoSpacing = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [automatic spacing].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [automatic spacing]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AutoSpacing
+        {
+            set
+            {
+                if (SetAffectsRender(ref autoSpacing, value))
+                {
+                    if (!value)
+                    {
+                        modelStruct.Params.X = GridSpacing;
+                    }
+                }
+            }
+            get { return autoSpacing; }
+        }
+        /// <summary>
+        /// Gets the acutal spacing.
+        /// </summary>
+        /// <value>
+        /// The acutal spacing.
+        /// </value>
+        public float AcutalSpacing
+        {
+            get { return modelStruct.Params.X; }
+        }
+
+        private float gridSpacing;
+        /// <summary>
+        /// Gets or sets the grid spacing.
+        /// </summary>
+        /// <value>
+        /// The grid spacing.
+        /// </value>
         public float GridSpacing
         {
             set
             {
-                SetAffectsRender(ref modelStruct.Params.X, value);
+                if(SetAffectsRender(ref gridSpacing, value))
+                {
+                    modelStruct.Params.X = value;
+                }
             }
             get
             {
-                return modelStruct.Params.X;
+                return gridSpacing;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the grid thickness.
+        /// </summary>
+        /// <value>
+        /// The grid thickness.
+        /// </value>
         public float GridThickness
         {
             set
@@ -40,7 +87,12 @@ namespace HelixToolkit.UWP.Core
                 return modelStruct.Params.Y;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the fading factor.
+        /// </summary>
+        /// <value>
+        /// The fading factor.
+        /// </value>
         public float FadingFactor
         {
             set
@@ -49,16 +101,57 @@ namespace HelixToolkit.UWP.Core
             }
             get { return modelStruct.Params.Z; }
         }
-
+        /// <summary>
+        /// Gets or sets the color of the plane.
+        /// </summary>
+        /// <value>
+        /// The color of the plane.
+        /// </value>
+        public Color4 PlaneColor
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.PlaneColor, value);
+            }
+            get { return modelStruct.PlaneColor.ToColor4(); }
+        }
+        /// <summary>
+        /// Gets or sets the color of the grid.
+        /// </summary>
+        /// <value>
+        /// The color of the grid.
+        /// </value>
+        public Color4 GridColor
+        {
+            set { SetAffectsRender(ref modelStruct.GridColor, value); }
+            get { return modelStruct.GridColor.ToColor4(); }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [render shadow map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render shadow map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderShadowMap
+        {
+            set { SetAffectsRender(ref modelStruct.hasShadowMap, value); }
+            get { return modelStruct.hasShadowMap; }
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlaneGridCore"/> class.
+        /// </summary>
         public PlaneGridCore() : base(RenderType.Opaque)
         {
-            modelStruct = new PointLineModelStruct()
+            modelStruct = new PlaneGridModelStruct()
             {
                 World = Matrix.Identity,                
             };
             GridSpacing = 10;
-            GridThickness = 0.1f;
-            FadingFactor = 0.1f;
+            GridThickness = 0.05f;
+            FadingFactor = 0.6f;
+            PlaneColor = Color.Gray;
+            GridColor = new Color4(0.2f, 0.2f, 0.2f, 1);
+            RenderShadowMap = true;
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
@@ -69,7 +162,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
+            return new ConstantBufferDescription(DefaultBufferNames.PlaneGridModelCB, PlaneGridModelStruct.SizeInBytes);
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
@@ -79,10 +172,29 @@ namespace HelixToolkit.UWP.Core
             deviceContext.Draw(4, 0);
         }
 
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PlaneGridModelStruct model, RenderContext context)
         {
             model.World = ModelMatrix;
-            model.Params.X = GridSpacing;
+            if (autoSpacing)
+            {
+                var p = new Plane(Vector3.UnitY, 0);
+                var r = new Ray(context.Camera.Position, Vector3.Normalize(context.Camera.LookDirection));
+                if (r.Intersects(ref p, out float l))
+                {
+                    l /= 5;
+                    int n = 1;
+                    while (n < 1e6)
+                    {
+                        if(n > l)
+                        {
+                            n /= 10;
+                            break;
+                        }
+                        n *= 10;
+                    }
+                    model.Params.X = n;
+                }
+            }
             model.Params.Y = GridThickness;
         }
 
