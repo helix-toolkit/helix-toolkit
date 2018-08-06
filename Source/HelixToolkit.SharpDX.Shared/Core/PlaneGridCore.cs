@@ -151,7 +151,6 @@ namespace HelixToolkit.UWP.Core
             FadingFactor = 0.6f;
             PlaneColor = Color.Gray;
             GridColor = new Color4(0.2f, 0.2f, 0.2f, 1);
-            RenderShadowMap = true;
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
