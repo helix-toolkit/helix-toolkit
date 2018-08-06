@@ -21,15 +21,16 @@
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
-            BackgroundColor="Black"
+            BackgroundColor="Gray"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableDesignModeRendering="True"
+            EnableDesignModeRendering="False"
             EnableSwapChainRendering="False"
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
+            FXAALevel="Medium"
             ShowFrameRate="True"
             TextBrush="Black"
             UseDefaultGestures="False">

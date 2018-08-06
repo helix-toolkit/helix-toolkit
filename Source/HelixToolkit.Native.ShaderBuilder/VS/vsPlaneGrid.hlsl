@@ -21,7 +21,7 @@ PSPlaneGridInput main(uint vI : SV_VERTEXID)
     PSPlaneGridInput output = (PSPlaneGridInput) 0;
     output.uv = v.xz;
     output.p = mul(v, mViewProjection);
-    output.p.z = min(0.99999, output.p.z / output.p.w) * output.p.w;
+    //output.p.z = max(0, min(0.9, output.p.z / output.p.w)) * output.p.w;
     //float3 vEye = vEyePos - v.xyz;
     //output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
     if (bHasShadowMap)

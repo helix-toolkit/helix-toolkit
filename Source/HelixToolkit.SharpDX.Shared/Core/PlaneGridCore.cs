@@ -12,10 +12,14 @@ namespace HelixToolkit.UWP.Core
 {
     using Render;
     using Shaders;
+    using Utilities;
 
     public class PlaneGridCore : RenderCoreBase<PlaneGridModelStruct>
     {
         private ShaderPass DefaultShaderPass;
+        private SamplerStateProxy shadowSampler;
+        private int samplerSlot;
+        private int shadowMapSlot;
 
         private bool autoSpacing = true;
         /// <summary>
@@ -148,15 +152,22 @@ namespace HelixToolkit.UWP.Core
             };
             GridSpacing = 10;
             GridThickness = 0.05f;
-            FadingFactor = 0.6f;
+            FadingFactor = 0.2f;
             PlaneColor = Color.Gray;
             GridColor = new Color4(0.2f, 0.2f, 0.2f, 1);
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            DefaultShaderPass = technique[DefaultPassNames.Default];
-            return base.OnAttach(technique);
+            if (base.OnAttach(technique))
+            {
+                DefaultShaderPass = technique[DefaultPassNames.Default];
+                samplerSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.ShadowMapSampler);
+                shadowMapSlot = DefaultShaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.ShadowMapTB);
+                shadowSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.ShadowSampler));
+                return true;
+            }
+            else { return false; }
         }
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
@@ -168,6 +179,11 @@ namespace HelixToolkit.UWP.Core
         {
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+            if(RenderShadowMap && context.SharedResource.ShadowView != null)
+            {
+                DefaultShaderPass.PixelShader.BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
+                DefaultShaderPass.PixelShader.BindSampler(deviceContext, samplerSlot, shadowSampler);
+            }
             deviceContext.Draw(4, 0);
         }
 

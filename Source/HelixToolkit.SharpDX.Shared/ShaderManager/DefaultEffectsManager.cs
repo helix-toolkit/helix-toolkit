@@ -1537,8 +1537,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSPlaneGrid
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
-                        RasterStateDescription = DefaultRasterDescriptions.RSSkybox,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
+                        RasterStateDescription = DefaultRasterDescriptions.RSPlaneGrid,
                         Topology = PrimitiveTopology.TriangleStrip
                     }
                 }

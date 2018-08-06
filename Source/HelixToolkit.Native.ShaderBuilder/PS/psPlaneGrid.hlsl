@@ -10,8 +10,10 @@
 float4 main(PSPlaneGridInput input) : SV_TARGET
 {
     float grid = whengt(whenle(frac(input.uv.x / pfParams.x), pfParams.y) + whenle(frac(input.uv.y / pfParams.x), pfParams.y), 0);
-    float4 gridColor = lerp(gColor, pColor, clamp(length(input.uv - vEyePos.xz) / (pfParams.z * pfParams.x * 100), 0, 1));
-    float4 color = (1 - grid) * pColor + grid * gridColor;
+    float dist = length(float3(input.uv.x, 0, input.uv.y) - vEyePos.xyz);
+    float4 color = (1 - grid) * pColor + grid * gColor;
+    color.a = lerp(color.a, 0, clamp(abs(vFrustum.w * pfParams.z) / max(vFrustum.w - dist, 0), 0, 1));
+
     if (hasShadowMap)
     {
         float s = shadowStrength(input.sp);

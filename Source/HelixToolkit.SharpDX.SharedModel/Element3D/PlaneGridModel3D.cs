@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The fading factor property
         /// </summary>
         public static readonly DependencyProperty FadingFactorProperty =
-            DependencyProperty.Register("FadingFactor", typeof(double), typeof(PlaneGridModel3D), new PropertyMetadata(0.6, (d, e) =>
+            DependencyProperty.Register("FadingFactor", typeof(double), typeof(PlaneGridModel3D), new PropertyMetadata(0.2, (d, e) =>
             {
                 ((d as Element3D).SceneNode as PlaneGridNode).FadingFactor = (float)(double)e.NewValue;
             }));
