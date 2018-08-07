@@ -104,6 +104,8 @@ namespace BoneSkinDemo
 
         public string[] Animations { private set; get; }
 
+        public GridPattern[] GridTypes { get; } = new GridPattern[] { GridPattern.Tile, GridPattern.Grid };
+
         private Matrix[] boneInternal = new Matrix[0];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
 

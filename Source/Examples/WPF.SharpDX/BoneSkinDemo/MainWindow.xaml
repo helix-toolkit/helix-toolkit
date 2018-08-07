@@ -27,10 +27,10 @@
             EffectsManager="{Binding EffectsManager}"
             EnableDesignModeRendering="False"
             EnableSwapChainRendering="False"
+            FXAALevel="Medium"
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
-            FXAALevel="Medium"
             ShowFrameRate="True"
             TextBrush="Black"
             UseDefaultGestures="False">
@@ -54,7 +54,7 @@
                 x:Name="skeleton"
                 ItemsSource="{Binding BoneModels}"
                 Transform="{Binding ModelTransform}" />
-            <hx:AxisPlaneGridModel3D RenderShadowMap="True"/>
+            <hx:AxisPlaneGridModel3D x:Name="plane" RenderShadowMap="True" />
             <hx:PostEffectMeshXRayGrid
                 BlendingFactor="0.6"
                 EffectName="xray"
@@ -68,8 +68,10 @@
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
             <CheckBox IsChecked="{Binding IsRendering, ElementName=skeleton}">Skeleton</CheckBox>
-            <TextBlock>Animation List:</TextBlock>
+            <TextBlock Margin="0,4,0,0">Animation List:</TextBlock>
             <ComboBox ItemsSource="{Binding Animations}" SelectedItem="{Binding SelectedAnimation}" />
+            <TextBlock Margin="0,4,0,0">Grid Pattern:</TextBlock>
+            <ComboBox ItemsSource="{Binding GridTypes}" SelectedItem="{Binding ElementName=plane, Path=GridPattern}" />
         </StackPanel>
     </Grid>
 </Window>

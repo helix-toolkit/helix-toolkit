@@ -169,7 +169,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             set { (RenderCore as AxisPlaneGridCore).Offset = value; }
             get { return (RenderCore as AxisPlaneGridCore).Offset; }
         }
-
+        /// <summary>
+        /// Gets or sets the type of the grid.
+        /// </summary>
+        /// <value>
+        /// The type of the grid.
+        /// </value>
+        public GridPattern GridPattern
+        {
+            set { (RenderCore as AxisPlaneGridCore).GridPattern = value; }
+            get { return (RenderCore as AxisPlaneGridCore).GridPattern; }
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisPlaneGridNode"/> class.
         /// </summary>

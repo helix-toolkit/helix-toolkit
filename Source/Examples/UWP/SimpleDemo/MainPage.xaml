@@ -193,7 +193,7 @@
             ShowCoordinateSystem="true">
             <hx:DirectionalLight3D Direction="{Binding ElementName=viewport1, Path=Camera.LookDirection}" Color="White" />
             <!--<hx:AxisPlaneGridModel3D Offset="-20" AutoSpacing="False" PlaneColor="#003E3E3E" GridThickness="0.02"/>-->
-            <hx:AxisPlaneGridModel3D Offset="-20" AutoSpacing="False" PlaneColor="#FFBDBDBD" UpAxis="Z"/>
+            <hx:AxisPlaneGridModel3D Offset="-20" PlaneColor="#FFBDBDBD" UpAxis="Z"/>
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
         <TextBlock

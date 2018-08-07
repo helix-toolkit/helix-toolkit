@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty GridColorProperty =
             DependencyProperty.Register("GridColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D), 
-                new PropertyMetadata(Media.Colors.Black,
+                new PropertyMetadata(Media.Colors.DarkGray,
                 (d, e) =>
                 {
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).GridColor = ((Media.Color)e.NewValue).ToColor4();
@@ -246,6 +246,18 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).Offset = (float)(double)e.NewValue;
                 }));
 
+        public GridPattern GridPattern
+        {
+            get { return (GridPattern)GetValue(GridPatternProperty); }
+            set { SetValue(GridPatternProperty, value); }
+        }
+
+        public static readonly DependencyProperty GridPatternProperty =
+            DependencyProperty.Register("GridPattern", typeof(GridPattern), typeof(AxisPlaneGridModel3D), new PropertyMetadata(GridPattern.Tile,
+                (d, e) =>
+                {
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).GridPattern = (GridPattern)e.NewValue;
+                }));
 
 
         protected override SceneNode OnCreateSceneNode()
@@ -267,6 +279,7 @@ namespace HelixToolkit.Wpf.SharpDX
             n.UpAxis = UpAxis;
             n.Offset = (float)Offset;
             n.AutoSpacingRate = (float)AutoSpacingRate;
+            n.GridPattern = GridPattern;
         }
     }
 }

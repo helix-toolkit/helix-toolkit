@@ -169,8 +169,16 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public enum Axis
     {
-        X,
-        Y,
-        Z
+        X = 0,
+        Y = 1,
+        Z = 2
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum GridPattern
+    {
+        Tile = 0,
+        Grid = 1
     }
 }

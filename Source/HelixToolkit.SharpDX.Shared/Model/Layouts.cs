@@ -353,7 +353,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 GridColor;
         public bool HasShadowMap;
         public int Axis;
-        Vector2 pad;
+        public int Type;
+        float pad;
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
     }
     /// <summary>

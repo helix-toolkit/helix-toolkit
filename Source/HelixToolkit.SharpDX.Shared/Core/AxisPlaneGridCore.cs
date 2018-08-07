@@ -200,6 +200,17 @@ namespace HelixToolkit.UWP.Core
             get { return modelStruct.PlaneD; }
         }
 
+        private GridPattern gridType = GridPattern.Tile;
+        public GridPattern GridPattern
+        {
+            set {
+                if (SetAffectsRender(ref gridType, value))
+                {
+                    modelStruct.Type = (int)value;
+                }
+            }
+            get { return gridType; }
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisPlaneGridCore"/> class.
         /// </summary>
@@ -214,7 +225,7 @@ namespace HelixToolkit.UWP.Core
             GridThickness = 0.05f;
             FadingFactor = 0.2f;
             PlaneColor = Color.Gray;
-            GridColor = new Color4(0.2f, 0.2f, 0.2f, 1);
+            GridColor = Color.DarkGray;
         }
 
         protected override bool OnAttach(IRenderTechnique technique)

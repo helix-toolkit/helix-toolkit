@@ -111,7 +111,8 @@ cbuffer cbPlaneGridModel : register(b4)
     float4 gColor;
     bool hasShadowMap;
     int axis;
-    float2 padding3;
+    int type;
+    float padding3;
 };
 #endif
 cbuffer cbShadow : register(b5)
