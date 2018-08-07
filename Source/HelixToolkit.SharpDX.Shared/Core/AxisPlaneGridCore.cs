@@ -214,7 +214,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisPlaneGridCore"/> class.
         /// </summary>
-        public AxisPlaneGridCore() : base(RenderType.Opaque)
+        public AxisPlaneGridCore() : base(RenderType.Particle)
         {
             modelStruct = new PlaneGridModelStruct()
             {

@@ -48,7 +48,6 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
-            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" />
             <hx:CrossSectionMeshGeometryModel3D
                 x:Name="crossModel"
                 CrossSectionColor="GreenYellow"
@@ -75,6 +74,7 @@
                 EdgeThicknessScale="4"
                 IsRendering="{Binding EnablePlane2}"
                 SizeScale="10" />
+            <hx:AxisPlaneGridModel3D/>
             <!--<hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Plane1Model}"

@@ -51,11 +51,10 @@
                 IsThrowingShadow="False"
                 Material="{Binding SelectedMaterial}"
                 Transform="{Binding SelectedTransform}" />
-            <hx:MeshGeometryModel3D
-                CullMode="Back"
-                Geometry="{Binding FloorModel}"
-                IsHitTestVisible="False"
-                Material="{Binding FloorMaterial}" />
+            <hx:AxisPlaneGridModel3D
+                AutoSpacing="false"
+                RenderShadowMap="true"
+                Offset="-65" />
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <CheckBox IsChecked="{Binding ElementName=batchedMesh, Path=RenderWireframe}">Wireframe</CheckBox>
