@@ -1,4 +1,6 @@
-﻿#if NETFX_CORE
+﻿using SharpDX;
+
+#if NETFX_CORE
 using Windows.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
@@ -15,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model.Scene;
 
-    public class PlaneGridModel3D : Element3D
+    public class AxisPlaneGridModel3D : Element3D
     {
         /// <summary>
         /// Gets or sets a value indicating whether [automatic spacing].
@@ -33,12 +35,34 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The automatic spacing property
         /// </summary>
         public static readonly DependencyProperty AutoSpacingProperty =
-            DependencyProperty.Register("AutoSpacing", typeof(bool), typeof(PlaneGridModel3D), new PropertyMetadata(true,
+            DependencyProperty.Register("AutoSpacing", typeof(bool), typeof(AxisPlaneGridModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3D).SceneNode as PlaneGridNode).AutoSpacing = (bool)e.NewValue;
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).AutoSpacing = (bool)e.NewValue;
                 }));
 
+
+        /// <summary>
+        /// Gets or sets the automatic spacing rate. Default perspective camera =5. If using Orthographic camera, increase the rate to > 15
+        /// </summary>
+        /// <value>
+        /// The automatic spacing rate.
+        /// </value>
+        public double AutoSpacingRate
+        {
+            get { return (double)GetValue(AutoSpacingRateProperty); }
+            set { SetValue(AutoSpacingRateProperty, value); }
+        }
+
+        /// <summary>
+        /// The automatic spacing rate property
+        /// </summary>
+        public static readonly DependencyProperty AutoSpacingRateProperty =
+            DependencyProperty.Register("AutoSpacingRate", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(5.0,
+                (d, e) =>
+                {
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).AutoSpacingRate = (float)(double)e.NewValue;
+                }));
 
         /// <summary>
         /// Gets or sets the grid spacing.
@@ -56,10 +80,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The grid spacing property
         /// </summary>
         public static readonly DependencyProperty GridSpacingProperty =
-            DependencyProperty.Register("GridSpacing", typeof(double), typeof(PlaneGridModel3D), new PropertyMetadata(10.0,
+            DependencyProperty.Register("GridSpacing", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(10.0,
                 (d,e)=> 
                 {
-                    ((d as Element3D).SceneNode as PlaneGridNode).GridSpacing = (float)(double)e.NewValue;
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).GridSpacing = (float)(double)e.NewValue;
                 }));
 
 
@@ -79,10 +103,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The grid thickness property
         /// </summary>
         public static readonly DependencyProperty GridThicknessProperty =
-            DependencyProperty.Register("GridThickness", typeof(double), typeof(PlaneGridModel3D), new PropertyMetadata(0.05,
+            DependencyProperty.Register("GridThickness", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(0.05,
                 (d, e) =>
                 {
-                    ((d as Element3D).SceneNode as PlaneGridNode).GridThickness = (float)(double)e.NewValue;
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).GridThickness = (float)(double)e.NewValue;
                 }));
 
 
@@ -102,9 +126,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The fading factor property
         /// </summary>
         public static readonly DependencyProperty FadingFactorProperty =
-            DependencyProperty.Register("FadingFactor", typeof(double), typeof(PlaneGridModel3D), new PropertyMetadata(0.2, (d, e) =>
+            DependencyProperty.Register("FadingFactor", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(0.2, (d, e) =>
             {
-                ((d as Element3D).SceneNode as PlaneGridNode).FadingFactor = (float)(double)e.NewValue;
+                ((d as Element3D).SceneNode as AxisPlaneGridNode).FadingFactor = (float)(double)e.NewValue;
             }));
 
 
@@ -123,11 +147,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The plane color property
         /// </summary>
         public static readonly DependencyProperty PlaneColorProperty =
-            DependencyProperty.Register("PlaneColor", typeof(Media.Color), typeof(PlaneGridModel3D), 
+            DependencyProperty.Register("PlaneColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D), 
                 new PropertyMetadata(Media.Colors.Gray,
                 (d, e) =>
                 {
-                    ((d as Element3D).SceneNode as PlaneGridNode).PlaneColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).PlaneColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
 
@@ -146,11 +170,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The grid color property
         /// </summary>
         public static readonly DependencyProperty GridColorProperty =
-            DependencyProperty.Register("GridColor", typeof(Media.Color), typeof(PlaneGridModel3D), 
+            DependencyProperty.Register("GridColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D), 
                 new PropertyMetadata(Media.Colors.Black,
                 (d, e) =>
                 {
-                    ((d as Element3D).SceneNode as PlaneGridNode).GridColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).GridColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
 
@@ -170,21 +194,69 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render shadow map property
         /// </summary>
         public static readonly DependencyProperty RenderShadowMapProperty =
-            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(PlaneGridModel3D), new PropertyMetadata(false,
+            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(AxisPlaneGridModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    ((d as Element3D).SceneNode as PlaneGridNode).RenderShadowMap = (bool)e.NewValue;
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).RenderShadowMap = (bool)e.NewValue;
                 }));
+
+
+        /// <summary>
+        /// Gets or sets up axis.
+        /// </summary>
+        /// <value>
+        /// Up axis.
+        /// </value>
+        public Axis UpAxis
+        {
+            get { return (Axis)GetValue(UpAxisProperty); }
+            set { SetValue(UpAxisProperty, value); }
+        }
+
+        /// <summary>
+        /// Up axis property
+        /// </summary>
+        public static readonly DependencyProperty UpAxisProperty =
+            DependencyProperty.Register("UpAxis", typeof(Axis), typeof(AxisPlaneGridModel3D), new PropertyMetadata(Axis.Y,
+                (d, e) => 
+                {
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).UpAxis = (Axis)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the offset.
+        /// </summary>
+        /// <value>
+        /// The offset.
+        /// </value>
+        public double Offset
+        {
+            get { return (double)GetValue(OffsetProperty); }
+            set { SetValue(OffsetProperty, value); }
+        }
+
+        /// <summary>
+        /// The offset property
+        /// </summary>
+        public static readonly DependencyProperty OffsetProperty =
+            DependencyProperty.Register("Offset", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(0.0,
+                (d, e) =>
+                {
+                    ((d as Element3D).SceneNode as AxisPlaneGridNode).Offset = (float)(double)e.NewValue;
+                }));
+
+
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new PlaneGridNode();
+            return new AxisPlaneGridNode();
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
             base.AssignDefaultValuesToSceneNode(node);
-            var n = node as PlaneGridNode;
+            var n = node as AxisPlaneGridNode;
             n.AutoSpacing = AutoSpacing;
             n.GridSpacing = (float)GridSpacing;
             n.GridThickness = (float)GridThickness;
@@ -192,6 +264,9 @@ namespace HelixToolkit.Wpf.SharpDX
             n.PlaneColor = PlaneColor.ToColor4();
             n.GridColor = GridColor.ToColor4();
             n.RenderShadowMap = RenderShadowMap;
+            n.UpAxis = UpAxis;
+            n.Offset = (float)Offset;
+            n.AutoSpacingRate = (float)AutoSpacingRate;
         }
     }
 }

@@ -54,7 +54,7 @@
                 x:Name="skeleton"
                 ItemsSource="{Binding BoneModels}"
                 Transform="{Binding ModelTransform}" />
-            <hx:PlaneGridModel3D RenderShadowMap="True" />
+            <hx:AxisPlaneGridModel3D RenderShadowMap="True"/>
             <hx:PostEffectMeshXRayGrid
                 BlendingFactor="0.6"
                 EffectName="xray"

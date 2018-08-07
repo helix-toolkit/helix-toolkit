@@ -12,15 +12,16 @@ namespace HelixToolkit.UWP.Core
 {
     using Render;
     using Shaders;
+    using System;
     using Utilities;
 
-    public class PlaneGridCore : RenderCoreBase<PlaneGridModelStruct>
+    public class AxisPlaneGridCore : RenderCoreBase<PlaneGridModelStruct>
     {
         private ShaderPass DefaultShaderPass;
         private SamplerStateProxy shadowSampler;
         private int samplerSlot;
         private int shadowMapSlot;
-
+        private Vector3 upDirection = Vector3.UnitY;
         private bool autoSpacing = true;
         /// <summary>
         /// Gets or sets a value indicating whether [automatic spacing].
@@ -36,11 +37,25 @@ namespace HelixToolkit.UWP.Core
                 {
                     if (!value)
                     {
-                        modelStruct.Params.X = GridSpacing;
+                        modelStruct.GridSpacing = GridSpacing;
                     }
                 }
             }
             get { return autoSpacing; }
+        }
+
+        private float autoSpacingChangeRate = 5;
+
+        /// <summary>
+        /// Gets or sets the automatic spacing rate. Default is 5 for perspective camera. If using orthographic camera, increase the rate value to for example > 15.
+        /// </summary>
+        /// <value>
+        /// The automatic spacing rate.
+        /// </value>
+        public float AutoSpacingRate
+        {
+            set { SetAffectsRender(ref autoSpacingChangeRate, value); }
+            get { return autoSpacingChangeRate; }
         }
         /// <summary>
         /// Gets the acutal spacing.
@@ -50,7 +65,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public float AcutalSpacing
         {
-            get { return modelStruct.Params.X; }
+            get { return modelStruct.GridSpacing; }
         }
 
         private float gridSpacing;
@@ -66,7 +81,7 @@ namespace HelixToolkit.UWP.Core
             {
                 if(SetAffectsRender(ref gridSpacing, value))
                 {
-                    modelStruct.Params.X = value;
+                    modelStruct.GridSpacing = value;
                 }
             }
             get
@@ -84,11 +99,11 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                SetAffectsRender(ref modelStruct.Params.Y, value);
+                SetAffectsRender(ref modelStruct.GridThickenss, value);
             }
             get
             {
-                return modelStruct.Params.Y;
+                return modelStruct.GridThickenss;
             }
         }
         /// <summary>
@@ -101,9 +116,9 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                SetAffectsRender(ref modelStruct.Params.Z, value);
+                SetAffectsRender(ref modelStruct.FadingFactor, value);
             }
-            get { return modelStruct.Params.Z; }
+            get { return modelStruct.FadingFactor; }
         }
         /// <summary>
         /// Gets or sets the color of the plane.
@@ -138,17 +153,62 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public bool RenderShadowMap
         {
-            set { SetAffectsRender(ref modelStruct.hasShadowMap, value); }
-            get { return modelStruct.hasShadowMap; }
+            set { SetAffectsRender(ref modelStruct.HasShadowMap, value); }
+            get { return modelStruct.HasShadowMap; }
         }
+
+        private Axis upAxis = Axis.Y;
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlaneGridCore"/> class.
+        /// Gets or sets Up Axis. Default is Y
         /// </summary>
-        public PlaneGridCore() : base(RenderType.Opaque)
+        /// <value>
+        /// The plane.
+        /// </value>
+        public Axis UpAxis
+        {
+            set
+            {
+                if (SetAffectsRender(ref upAxis, value))
+                {
+                    modelStruct.Axis = (int)value;
+                    switch (value)
+                    {
+                        case Axis.X:
+                            upDirection = Vector3.UnitX;
+                            break;
+                        case Axis.Y:
+                            upDirection = Vector3.UnitY;
+                            break;
+                        case Axis.Z:
+                            upDirection = Vector3.UnitZ;
+                            break;
+                    }
+                }
+            }
+            get { return upAxis; }
+        }
+
+        /// <summary>
+        /// Gets or sets the axis plane offset.
+        /// </summary>
+        /// <value>
+        /// The offset.
+        /// </value>
+        public float Offset
+        {
+            set { SetAffectsRender(ref modelStruct.PlaneD, value); }
+            get { return modelStruct.PlaneD; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AxisPlaneGridCore"/> class.
+        /// </summary>
+        public AxisPlaneGridCore() : base(RenderType.Opaque)
         {
             modelStruct = new PlaneGridModelStruct()
             {
-                World = Matrix.Identity,                
+                World = Matrix.Identity,
+                Axis = 1,
             };
             GridSpacing = 10;
             GridThickness = 0.05f;
@@ -189,14 +249,13 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref PlaneGridModelStruct model, RenderContext context)
         {
-            model.World = ModelMatrix;
             if (autoSpacing)
             {
-                var p = new Plane(Vector3.UnitY, 0);
                 var r = new Ray(context.Camera.Position, Vector3.Normalize(context.Camera.LookDirection));
-                if (r.Intersects(ref p, out float l))
+                var plane = new Plane(upDirection, model.PlaneD);
+                if (r.Intersects(ref plane, out float l))
                 {
-                    l /= 5;
+                    l /= autoSpacingChangeRate;
                     int n = 1;
                     while (n < 1e6)
                     {
@@ -207,10 +266,9 @@ namespace HelixToolkit.UWP.Core
                         }
                         n *= 10;
                     }
-                    model.Params.X = n;
+                    model.GridSpacing = n;
                 }
             }
-            model.Params.Y = GridThickness;
         }
 
         public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)

@@ -16,14 +16,29 @@ static const float2 vertCoord[4] =
 
 PSPlaneGridInput main(uint vI : SV_VERTEXID)
 {
-    float2 vt = vertCoord[vI] * vFrustum.w * pfParams.x + vEyePos.xz;
-    float4 v = mul(float4(vt.x, 0, vt.y, 1), pWorld);
+    float2 vt = (float2) 0;
+    float4 v = (float4) 0;
     PSPlaneGridInput output = (PSPlaneGridInput) 0;
-    output.uv = v.xz;
-    output.p = mul(v, mViewProjection);
-    //output.p.z = max(0, min(0.9, output.p.z / output.p.w)) * output.p.w;
-    //float3 vEye = vEyePos - v.xyz;
-    //output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
+    if (axis == 0)
+    {
+        vt = vertCoord[vI] * vFrustum.w * gridSpacing + vEyePos.yz;
+        v = float4(planeD, vt.x, vt.y, 1);
+        output.uv = v.yz;
+    }
+    else if (axis == 1)
+    {
+        vt = vertCoord[vI] * vFrustum.w * gridSpacing + vEyePos.xz;
+        v = float4(vt.x, planeD, vt.y, 1);
+        output.uv = v.xz;
+    }
+    else if (axis == 2)
+    {
+        vt = vertCoord[vI] * vFrustum.w * gridSpacing + vEyePos.xy;
+        v = float4(vt.x, vt.y, planeD, 1);
+        output.uv = v.xy;
+    }
+    output.wp = v;
+    output.p = mul(v, mViewProjection);    
     if (bHasShadowMap)
     {
         output.sp = mul(v, vLightViewProjection);

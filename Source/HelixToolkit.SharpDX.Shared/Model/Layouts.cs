@@ -345,12 +345,15 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct PlaneGridModelStruct
     {
         public Matrix World;
-        public Vector4 Params;
+        public float GridSpacing;
+        public float GridThickenss;
+        public float FadingFactor;
+        public float PlaneD;
         public Vector4 PlaneColor;
         public Vector4 GridColor;
-        public bool hasShadowMap;
-        Vector3 padding;
-
+        public bool HasShadowMap;
+        public int Axis;
+        Vector2 pad;
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
     }
     /// <summary>

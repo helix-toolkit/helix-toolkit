@@ -103,11 +103,15 @@ cbuffer cbPointLineModel : register(b4)
 cbuffer cbPlaneGridModel : register(b4)
 {
     float4x4 pWorld;
-    float4 pfParams; 
+    float gridSpacing; 
+    float gridThickness;
+    float fadingFactor;
+    float planeD;
     float4 pColor;
     float4 gColor;
     bool hasShadowMap;
-    float3 padding2;
+    int axis;
+    float2 padding3;
 };
 #endif
 cbuffer cbShadow : register(b5)

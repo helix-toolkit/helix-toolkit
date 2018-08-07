@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     ///
     /// </summary>
-    public class PlaneGridNode : SceneNode
+    public class AxisPlaneGridNode : SceneNode
     {
         /// <summary>
         /// Gets or sets a value indicating whether [automatic spacing].
@@ -29,9 +29,20 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             set
             {
-                (RenderCore as PlaneGridCore).AutoSpacing = value;
+                (RenderCore as AxisPlaneGridCore).AutoSpacing = value;
             }
-            get { return (RenderCore as PlaneGridCore).AutoSpacing; }
+            get { return (RenderCore as AxisPlaneGridCore).AutoSpacing; }
+        }
+        /// <summary>
+        /// Gets or sets the automatic spacing rate.
+        /// </summary>
+        /// <value>
+        /// The automatic spacing rate.
+        /// </value>
+        public float AutoSpacingRate
+        {
+            set { (RenderCore as AxisPlaneGridCore).AutoSpacingRate = value; }
+            get { return (RenderCore as AxisPlaneGridCore).AutoSpacingRate; }
         }
 
         /// <summary>
@@ -42,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public float AcutalSpacing
         {
-            get { return (RenderCore as PlaneGridCore).AcutalSpacing; }
+            get { return (RenderCore as AxisPlaneGridCore).AcutalSpacing; }
         }
 
         /// <summary>
@@ -55,11 +66,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             set
             {
-                (RenderCore as PlaneGridCore).GridSpacing = value;
+                (RenderCore as AxisPlaneGridCore).GridSpacing = value;
             }
             get
             {
-                return (RenderCore as PlaneGridCore).GridSpacing;
+                return (RenderCore as AxisPlaneGridCore).GridSpacing;
             }
         }
 
@@ -73,11 +84,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             set
             {
-                (RenderCore as PlaneGridCore).GridThickness = value;
+                (RenderCore as AxisPlaneGridCore).GridThickness = value;
             }
             get
             {
-                return (RenderCore as PlaneGridCore).GridThickness;
+                return (RenderCore as AxisPlaneGridCore).GridThickness;
             }
         }
 
@@ -91,9 +102,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             set
             {
-                (RenderCore as PlaneGridCore).FadingFactor = value;
+                (RenderCore as AxisPlaneGridCore).FadingFactor = value;
             }
-            get { return (RenderCore as PlaneGridCore).FadingFactor; }
+            get { return (RenderCore as AxisPlaneGridCore).FadingFactor; }
         }
 
         /// <summary>
@@ -106,9 +117,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             set
             {
-                (RenderCore as PlaneGridCore).PlaneColor = value;
+                (RenderCore as AxisPlaneGridCore).PlaneColor = value;
             }
-            get { return (RenderCore as PlaneGridCore).PlaneColor; }
+            get { return (RenderCore as AxisPlaneGridCore).PlaneColor; }
         }
 
         /// <summary>
@@ -119,8 +130,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public Color4 GridColor
         {
-            set { (RenderCore as PlaneGridCore).GridColor = value; }
-            get { return (RenderCore as PlaneGridCore).GridColor; }
+            set { (RenderCore as AxisPlaneGridCore).GridColor = value; }
+            get { return (RenderCore as AxisPlaneGridCore).GridColor; }
         }
 
         /// <summary>
@@ -131,21 +142,45 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public bool RenderShadowMap
         {
-            set { (RenderCore as PlaneGridCore).RenderShadowMap = value; }
-            get { return (RenderCore as PlaneGridCore).RenderShadowMap; }
+            set { (RenderCore as AxisPlaneGridCore).RenderShadowMap = value; }
+            get { return (RenderCore as AxisPlaneGridCore).RenderShadowMap; }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlaneGridNode"/> class.
+        /// Gets or sets up axis.
         /// </summary>
-        public PlaneGridNode()
+        /// <value>
+        /// Up axis.
+        /// </value>
+        public Axis UpAxis
+        {
+            set { (RenderCore as AxisPlaneGridCore).UpAxis = value; }
+            get { return (RenderCore as AxisPlaneGridCore).UpAxis; }
+        }
+
+        /// <summary>
+        /// Gets or sets the axis plane offset.
+        /// </summary>
+        /// <value>
+        /// The offset.
+        /// </value>
+        public float Offset
+        {
+            set { (RenderCore as AxisPlaneGridCore).Offset = value; }
+            get { return (RenderCore as AxisPlaneGridCore).Offset; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AxisPlaneGridNode"/> class.
+        /// </summary>
+        public AxisPlaneGridNode()
         {
             RenderOrder = 1000;
         }
 
         protected override RenderCore OnCreateRenderCore()
         {
-            return new PlaneGridCore();
+            return new AxisPlaneGridCore();
         }
 
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
