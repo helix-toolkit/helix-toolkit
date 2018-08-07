@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Model
 
         public override string DefaultShaderPassName { set; get; }
 
-        public EmptyMaterialVariable() : base(null, null)
+        public EmptyMaterialVariable() : base(null, null, null)
         {
 
         }
@@ -39,7 +39,11 @@ namespace HelixToolkit.UWP.Model
             return MaterialPass;
         }
 
-        protected override void AssignVariables(ref ModelStruct model)
+        protected override void UpdateInternalVariables(DeviceContextProxy context)
+        {
+        }
+
+        protected override void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream)
         {
         }
     }

@@ -30,7 +30,7 @@ cbuffer cbTransforms : register(b0)
 
 #if defined(MESH)
 //Per model
-cbuffer cbMeshModel : register(b1)
+cbuffer cbMeshPhongMaterial : register(b1)
 {
     float4x4 mWorld;
     bool bInvertNormal = false;

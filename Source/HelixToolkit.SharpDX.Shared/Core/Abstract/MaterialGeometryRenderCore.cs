@@ -19,7 +19,6 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class MaterialGeometryRenderCore : GeometryRenderCore<ModelStruct>, IMaterialRenderParams
     {
-        private bool needMaterialUpdate = false;
         private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
         /// <summary>
         /// Used to wrap all material resources
@@ -31,16 +30,7 @@ namespace HelixToolkit.UWP.Core
                 var old = materialVariables;
                 if(Set(ref materialVariables, value))
                 {
-                    if (old != null)
-                    {
-                        old.OnUpdateNeeded -= MaterialVariables_OnUpdateNeeded;
-                    }
-                    if (value != null)
-                    {
-                        value.OnUpdateNeeded += MaterialVariables_OnUpdateNeeded;
-                        needMaterialUpdate = true;
-                    }
-                    else
+                    if (value == null)
                     {
                         materialVariables = EmptyMaterialVariable.EmptyVariable;
                     }
@@ -53,35 +43,12 @@ namespace HelixToolkit.UWP.Core
         }
 
         /// <summary>
-        /// <see cref="RenderCoreBase{TModelStruct}.OnAttach(IRenderTechnique)"/>
-        /// </summary>
-        /// <param name="technique"></param>
-        /// <returns></returns>
-        protected override bool OnAttach(IRenderTechnique technique)
-        {
-            if(base.OnAttach(technique))
-            {
-                needMaterialUpdate = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private void MaterialVariables_OnUpdateNeeded(object sender, System.EventArgs e)
-        {
-            needMaterialUpdate = true;
-        }
-
-        /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.GetModelConstantBufferDescription"/>
         /// </summary>
         /// <returns></returns>
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
+            return null;
         }
 
         /// <summary>
@@ -93,13 +60,13 @@ namespace HelixToolkit.UWP.Core
         {
             model.World = ModelMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            if (needMaterialUpdate)
-            {
-                MaterialVariables.UpdateMaterialStruct(ref model);
-                needMaterialUpdate = false;
-            }
         }
 
+
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
+        {
+            //Use material to update constant buffer.
+        }
         /// <summary>
         /// 
         /// </summary>

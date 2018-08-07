@@ -169,6 +169,7 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
+            MaterialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
             if (context.RenderHost.IsShadowMapEnabled)
             {
                 pass.PixelShader.BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
@@ -176,7 +177,7 @@ namespace HelixToolkit.UWP.Core
             DynamicReflector?.BindCubeMap(deviceContext);
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
             DynamicReflector?.UnBindCubeMap(deviceContext);
-            if (RenderWireframe && WireframePass != ShaderPass.NullPass)
+            if (RenderWireframe && !WireframePass.IsNULL)
             {
                 if (RenderType == RenderType.Transparent && context.IsOITPass)
                 {
@@ -195,6 +196,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
+            MaterialVariables.UpdateModelStructOnly(deviceContext, ref modelStruct);
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
 
@@ -202,6 +204,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (!IsThrowingShadow || ShadowPass.IsNULL)
             { return; }
+            MaterialVariables.UpdateModelStructOnly(deviceContext, ref modelStruct);
             ShadowPass.BindShader(deviceContext);
             ShadowPass.BindStates(deviceContext, ShadowStateBinding);
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
