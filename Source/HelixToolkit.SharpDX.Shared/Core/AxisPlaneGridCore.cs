@@ -201,6 +201,12 @@ namespace HelixToolkit.UWP.Core
         }
 
         private GridPattern gridType = GridPattern.Tile;
+        /// <summary>
+        /// Gets or sets the grid pattern.
+        /// </summary>
+        /// <value>
+        /// The grid pattern.
+        /// </value>
         public GridPattern GridPattern
         {
             set {

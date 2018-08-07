@@ -16,7 +16,9 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model.Scene;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class AxisPlaneGridModel3D : Element3D
     {
         /// <summary>
@@ -245,13 +247,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).Offset = (float)(double)e.NewValue;
                 }));
-
+        /// <summary>
+        /// Gets or sets the grid pattern.
+        /// </summary>
+        /// <value>
+        /// The grid pattern.
+        /// </value>
         public GridPattern GridPattern
         {
             get { return (GridPattern)GetValue(GridPatternProperty); }
             set { SetValue(GridPatternProperty, value); }
         }
 
+        /// <summary>
+        /// The grid pattern property
+        /// </summary>
         public static readonly DependencyProperty GridPatternProperty =
             DependencyProperty.Register("GridPattern", typeof(GridPattern), typeof(AxisPlaneGridModel3D), new PropertyMetadata(GridPattern.Tile,
                 (d, e) =>
