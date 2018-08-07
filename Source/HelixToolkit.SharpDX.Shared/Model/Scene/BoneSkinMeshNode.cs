@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The bone matrices.
         /// </value>
-        public BoneMatricesStruct BoneMatrices
+        public Matrix[] BoneMatrices
         {
             set
             {

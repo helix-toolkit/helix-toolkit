@@ -52,6 +52,25 @@ namespace OrderIndependentTransparentRendering
             }
         }
 
+        public OutlineMode DrawMode
+        {
+            set; get;
+        } = OutlineMode.Merged;
+
+        private bool highlightSeparated = false;
+        public bool HighlightSeparated
+        {
+            set
+            {
+                if (SetValue(ref highlightSeparated, value))
+                {
+                    DrawMode = value ? OutlineMode.Separated : OutlineMode.Merged;
+                    OnPropertyChanged(nameof(DrawMode));
+                }
+            }
+            get { return highlightSeparated; }
+        }
+
         public OITWeightMode[] OITWeights { get; } = new OITWeightMode[] { OITWeightMode.Linear0, OITWeightMode.Linear1, OITWeightMode.Linear2, OITWeightMode.NonLinear };
 
         public ICommand ResetCameraCommand

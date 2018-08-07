@@ -176,7 +176,6 @@ namespace HelixToolkit.UWP.Core
                 depthPrepassCore.Render(context, deviceContext);
             }
             var frustum = context.BoundingFrustum;
-            context.IsCustomPass = true;
             //First pass, draw onto stencil buffer
             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
             {
@@ -193,7 +192,7 @@ namespace HelixToolkit.UWP.Core
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                    mesh.Render(context, deviceContext);
+                    mesh.RenderCustom(context, deviceContext);
                 }
             }
             //Second pass, remove not covered part from stencil buffer
@@ -205,7 +204,7 @@ namespace HelixToolkit.UWP.Core
                 if (pass.IsNULL) { continue; }
                 pass.BindShader(deviceContext);
                 pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                mesh.Render(context, deviceContext);
+                mesh.RenderCustom(context, deviceContext);
             }
 
             deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
@@ -228,14 +227,13 @@ namespace HelixToolkit.UWP.Core
                 if (pass.IsNULL) { continue; }
                 pass.BindShader(deviceContext);
                 pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                mesh.Render(context, deviceContext);
+                mesh.RenderCustom(context, deviceContext);
             }
             if (hasMSAA)
             {
                 deviceContext.ClearRenderTagetBindings();
                 buffer.FullResDepthStencilPool.Put(Format.D32_Float_S8X24_UInt, depthStencilBuffer);
             }
-            context.IsCustomPass = false;
             currentCores.Clear();
         }
 
@@ -257,6 +255,14 @@ namespace HelixToolkit.UWP.Core
             context.SetRenderTargets(dsv, targetView == null ? null : new RenderTargetView[] { targetView });
             context.SetViewport(0, 0, width, height);
             context.SetScissorRectangle(0, 0, width, height);
+        }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
     }
 }

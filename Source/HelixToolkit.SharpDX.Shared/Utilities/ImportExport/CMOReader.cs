@@ -168,7 +168,22 @@ namespace HelixToolkit.UWP
     public class CMOReader : IModelReader
     {
         public List<Object3D> Meshes = new List<Object3D>();
-        public Dictionary<string, Animation> Animations = new Dictionary<string, Animation>();
+        /// <summary>
+        /// All the animations
+        /// </summary>
+        public Dictionary<Guid, Animation> Animations = new Dictionary<Guid, Animation>();
+        /// <summary>
+        /// The unique animations by animation name and corresponding animations by their guid
+        /// </summary>
+        public Dictionary<string, List<Guid>> UniqueAnimations = new Dictionary<string, List<Guid>>();
+        /// <summary>
+        /// The animation geometry relation. Multiple geometry may uses same animation.
+        /// </summary>
+        public Dictionary<Guid, List<Guid>> AnimationMeshRelation = new Dictionary<Guid, List<Guid>>();
+        /// <summary>
+        /// The bone mesh relation. Multiple geometry may uses same animation.
+        /// </summary>
+        public Dictionary<IList<Animations.Bone>, List<Guid>> BoneMeshRelation = new Dictionary<IList<Animations.Bone>, List<Guid>>();
         public const int MaxBoneInfluences = 4; // 4 bone influences are supported
         public const int MaxTextures = 8;  // 8 unique textures are supported.
         /// <summary>
@@ -333,23 +348,30 @@ namespace HelixToolkit.UWP
                 animations = new Dictionary<string, Animation>(animationCount);
                 for (var i = 0; i < animationCount; i++)
                 {
-                    Animation animation;
+                    Animation animation = new Animation();
                     string animationName = reader.ReadCMO_wchar();
                     animation.StartTime = reader.ReadSingle();
                     animation.EndTime = reader.ReadSingle();
+                    animation.Name = animationName;
                     int keyframeCount = (int)reader.ReadUInt32();
-                    animation.Keyframes = new List<Keyframe>(keyframeCount);
                     for (var j = 0; j < keyframeCount; j++)
                         animation.Keyframes.Add(reader.ReadStructure<Keyframe>());
 
                     animations.Add(animationName, animation);
+                    Animations.Add(animation.GUID, animation);
+                    if (!UniqueAnimations.ContainsKey(animation.Name))
+                    {
+                        UniqueAnimations.Add(animation.Name, new List<Guid>());
+                    }
+                    UniqueAnimations[animation.Name].Add(animation.GUID);
                 }
             }
             var obj3Ds = new List<Object3D>(subMeshCount);
+            
             for (int i=0; i < subMesh.Count; ++i)
             {
                 var sub = subMesh[i];
-                var material = materials[(int)sub.MaterialIndex];
+                var material = materials.Count == 0 ? new PhongMaterial() : materials[(int)sub.MaterialIndex].Item1;
                 var vertexCollection = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x=>x.Position));
                 var normal = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Normal));
                 var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.UV));
@@ -375,9 +397,22 @@ namespace HelixToolkit.UWP
                     boneskinmesh.Bones = bones;
                     boneskinmesh.BoneNames = boneNames;
                     meshGeo = boneskinmesh;
+                    foreach(var ani in animations)
+                    {
+                        if (!AnimationMeshRelation.ContainsKey(ani.Value.GUID))
+                        {
+                            AnimationMeshRelation.Add(ani.Value.GUID, new List<Guid>());                            
+                        }
+                        AnimationMeshRelation[ani.Value.GUID].Add(boneskinmesh.GUID);
+                    }
+                    if (!BoneMeshRelation.ContainsKey(bones))
+                    {
+                        BoneMeshRelation.Add(bones, new List<Guid>());
+                    }
+                    BoneMeshRelation[bones].Add(boneskinmesh.GUID);
                 }              
                 //Todo Load textures
-                obj3Ds.Add(new Object3D() { Geometry = meshGeo, Material = material.Item1, Name = name });
+                obj3Ds.Add(new Object3D() { Geometry = meshGeo, Material = material, Name = name });
             }
             return obj3Ds;
         }

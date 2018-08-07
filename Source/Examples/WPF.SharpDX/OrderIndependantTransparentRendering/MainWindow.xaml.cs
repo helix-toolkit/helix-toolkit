@@ -33,11 +33,11 @@ namespace OrderIndependentTransparentRendering
                 {
                     return;
                 }
-                if (selectedModel != null)
-                {
-                    selectedModel.PostEffects = null;
-                    selectedModel = null;
-                }
+                //if (selectedModel != null)
+                //{
+                //    selectedModel.PostEffects = null;
+                //    selectedModel = null;
+                //}
                 selectedModel = arg.HitTestResult.ModelHit as GeometryModel3D;
                 if (selectedModel != null)
                 {

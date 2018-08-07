@@ -304,7 +304,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return float.IsNaN(v.X) && float.IsNaN(v.Y) && float.IsNaN(v.Z);
         }
 
-#if !NETFX_CORE
+#if !CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color4 ToColor4(this Media.Color color)
         {
@@ -312,11 +312,13 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static System.Windows.Media.Color ToColor(this Color4 color)
+        public static Media.Color ToColor(this Color4 color)
         {
-            return System.Windows.Media.Color.FromArgb((byte)(color.Alpha * 255), (byte)(color.Red * 255), (byte)(color.Green * 255), (byte)(color.Blue * 255));
+            return Media.Color.FromArgb((byte)(color.Alpha * 255), (byte)(color.Red * 255), (byte)(color.Green * 255), (byte)(color.Blue * 255));
             //return System.Windows.Media.Color.FromScRgb(color.Alpha, color.Red, color.Green, color.Blue);
         }
+#endif
+#if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Transform3D AppendTransform(this Transform3D t1, Transform3D t2)
         {
@@ -334,13 +336,6 @@ namespace HelixToolkit.Wpf.SharpDX
             return g;
         }
 #else
-#if !CORE
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Color4 ToColor4(this Media.Color color)
-        {
-            return new Color4((float)color.R / 255, (float)color.G / 255, (float)color.B / 255, (float)color.A / 255);
-        }
-#endif
 #endif
     }
 

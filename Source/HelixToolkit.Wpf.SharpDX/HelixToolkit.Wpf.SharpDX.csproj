@@ -267,6 +267,7 @@
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />
     <None Include="Resources\psParticleOIT.cso" />
+    <None Include="Resources\psPlaneGrid.cso" />
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
     <None Include="Resources\psScreenDup.cso" />
@@ -293,6 +294,7 @@
     <None Include="Resources\vsMeshTessellation.cso" />
     <None Include="Resources\vsMeshWireframe.cso" />
     <None Include="Resources\vsParticle.cso" />
+    <None Include="Resources\vsPlaneGrid.cso" />
     <None Include="Resources\vsPoint.cso" />
     <None Include="Resources\vsPointShadow.cso" />
     <None Include="Resources\vsScreenDup.cso" />

@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP.Core
             {
                 OutlineShaderPass.BindShader(deviceContext);
                 OutlineShaderPass.BindStates(deviceContext, DefaultStateBinding);
-                OnDraw(deviceContext, InstanceBuffer);
+                DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
             }
             if (DrawMesh)
             {
@@ -168,7 +168,7 @@ namespace HelixToolkit.UWP.Core
             {
                 OutlineShaderPass.BindShader(deviceContext);
                 OutlineShaderPass.BindStates(deviceContext, DefaultStateBinding);
-                OnDraw(deviceContext, InstanceBuffer);
+                DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
             }
         }
     }

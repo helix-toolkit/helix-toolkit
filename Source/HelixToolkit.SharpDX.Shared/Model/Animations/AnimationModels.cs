@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using Matrix = System.Numerics.Matrix4x4;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
+using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Animations
 #else
@@ -25,16 +25,18 @@ namespace HelixToolkit.UWP.Animations
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Keyframe
     {
-        public uint BoneIndex;
+        public int BoneIndex;
         public float Time;
         public Matrix Transform;
         public const int SizeInBytes = 4 * (2 + 4 * 4);
     };
 
-    public struct Animation
+    public class Animation
     {
-        public float StartTime;
-        public float EndTime;
-        public List<Keyframe> Keyframes;
+        public Guid GUID { set; get; } = Guid.NewGuid();
+        public string Name { set; get; }
+        public float StartTime { set; get; }
+        public float EndTime { set; get; }
+        public List<Keyframe> Keyframes { set; get; } = new List<Keyframe>();
     };
 }

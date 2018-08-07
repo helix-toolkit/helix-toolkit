@@ -466,6 +466,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             base.OnDetach();
         }
 
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
         private sealed class DuplicationInfo
         {
             public readonly OutputDescription OutputDesc;

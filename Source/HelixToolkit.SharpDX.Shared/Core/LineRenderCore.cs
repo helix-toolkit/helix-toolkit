@@ -80,7 +80,21 @@ namespace HelixToolkit.UWP.Core
         {
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);
-            OnDraw(deviceContext, InstanceBuffer);
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+        }
+
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        {
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+        }
+
+        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (!IsThrowingShadow || ShadowPass.IsNULL)
+            { return; }
+            ShadowPass.BindShader(deviceContext);
+            ShadowPass.BindStates(deviceContext, ShadowStateBinding);
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
     }
 }

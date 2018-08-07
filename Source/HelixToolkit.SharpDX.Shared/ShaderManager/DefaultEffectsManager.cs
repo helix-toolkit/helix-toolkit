@@ -1523,6 +1523,26 @@ namespace HelixToolkit.UWP
             };
             #endregion
 
+            var planeGrid = new TechniqueDescription(DefaultRenderTechniqueNames.PlaneGrid)
+            {
+                InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSPlaneGrid,
+                            DefaultPSShaderDescriptions.PSPlaneGrid
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
+                        RasterStateDescription = DefaultRasterDescriptions.RSPlaneGrid,
+                        Topology = PrimitiveTopology.TriangleStrip
+                    }
+                }
+            };
+
 #if !NETFX_CORE
             var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
             {
@@ -1572,6 +1592,7 @@ namespace HelixToolkit.UWP
             yield return bloomPostEffect;
             yield return fxaaPostEffect;
             yield return meshOITQuad;
+            yield return planeGrid;
 #if !NETFX_CORE
             yield return renderScreenDup;
 #endif

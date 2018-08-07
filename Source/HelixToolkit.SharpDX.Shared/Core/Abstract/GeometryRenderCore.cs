@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
 using SharpDX.Direct3D11;
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -13,6 +14,8 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Render;
     using Shaders;
+    
+
     /// <summary>
     /// 
     /// </summary>
@@ -274,51 +277,61 @@ namespace HelixToolkit.UWP.Core
             return base.OnUpdateCanRenderFlag() && GeometryBuffer != null;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DrawIndexed(DeviceContextProxy context, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
+        {
+            if (instanceModel == null || !instanceModel.HasElements)
+            {
+                context.DrawIndexed(indexBuffer.ElementCount, 0, 0);
+            }
+            else
+            {
+                context.DrawIndexedInstanced(indexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0, 0);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DrawPoints(DeviceContextProxy context, IElementsBufferProxy vertexBuffer, IElementsBufferModel instanceModel)
+        {
+            if (instanceModel == null || !instanceModel.HasElements)
+            {
+                context.Draw(vertexBuffer.ElementCount, 0);
+            }
+            else
+            {
+                context.DrawInstanced(vertexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0);
+            }
+        }
+
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (PreRender(context, deviceContext))
+            {
+                OnRenderShadow(context, deviceContext);
+            }
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (PreRender(context, deviceContext))
+            {
+                OnRenderCustom(context, deviceContext, null);
+            }
+        }
+
+
         /// <summary>
-        /// Draw call
+        /// Render function for custom shader pass. Used to do special effects
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="instanceModel"></param>
-        protected virtual void OnDraw(DeviceContextProxy context, IElementsBufferModel instanceModel)
-        {
-            if (GeometryBuffer.IndexBuffer != null)
-            {
-                if (instanceModel == null || !instanceModel.HasElements)
-                {
-                    context.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, 0, 0);
-                }
-                else
-                {
-                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0, 0);
-                }
-            }
-            else if (GeometryBuffer.VertexBuffer.Length > 0)
-            {
-                if (instanceModel == null || !instanceModel.HasElements)
-                {
-                    context.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
-                }
-                else
-                {
-                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
-                        0, 0);
-                }
-            }
-        }
+        protected abstract void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass);
 
-        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-            if (!IsThrowingShadow || ShadowPass.IsNULL)
-            { return; }
-            ShadowPass.BindShader(deviceContext);
-            ShadowPass.BindStates(deviceContext, ShadowStateBinding);
-            OnDraw(deviceContext, InstanceBuffer);
-        }
-
-        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
-        {
-            OnDraw(deviceContext, InstanceBuffer);
-        }
+        /// <summary>
+        /// Called when [render shadow].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext"></param>
+        protected abstract void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext);
 
         protected void OnElementChanged(object sender, EventArgs e)
         {

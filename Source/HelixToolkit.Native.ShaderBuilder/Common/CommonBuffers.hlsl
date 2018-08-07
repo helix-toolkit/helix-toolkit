@@ -99,7 +99,22 @@ cbuffer cbPointLineModel : register(b4)
 	bool4 pbParams = bool4(false, false, false, false);
 };
 #endif
-
+#if defined(PLANEGRID) 
+cbuffer cbPlaneGridModel : register(b4)
+{
+    float4x4 pWorld;
+    float gridSpacing; 
+    float gridThickness;
+    float fadingFactor;
+    float planeD;
+    float4 pColor;
+    float4 gColor;
+    bool hasShadowMap;
+    int axis;
+    int type;
+    float padding3;
+};
+#endif
 cbuffer cbShadow : register(b5)
 {
     float2 vShadowMapSize = float2(1024, 1024);

@@ -127,14 +127,14 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct BoneMatricesStruct
+    //[StructLayout(LayoutKind.Sequential, Pack = 4)]
+    internal static class BoneMatricesStruct
     {
-        public const int NumberOfBones = 128;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = NumberOfBones)]
-        public Matrix[] Bones;
-        public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
-        public static readonly Matrix[] DefaultBones = Enumerable.Repeat(Matrix.Identity, NumberOfBones).ToArray();
+        //public const int NumberOfBones = 128;
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = NumberOfBones)]
+        //public Matrix[] Bones;
+        //public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
+        public static readonly Matrix[] DefaultBones = Enumerable.Repeat(Matrix.Identity, 1).ToArray();
     }
 
     /// <summary>
@@ -340,6 +340,23 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 Color;
         public Bool4 BoolParams;
 
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PlaneGridModelStruct
+    {
+        public Matrix World;
+        public float GridSpacing;
+        public float GridThickenss;
+        public float FadingFactor;
+        public float PlaneD;
+        public Vector4 PlaneColor;
+        public Vector4 GridColor;
+        public bool HasShadowMap;
+        public int Axis;
+        public int Type;
+        float pad;
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
     }
     /// <summary>

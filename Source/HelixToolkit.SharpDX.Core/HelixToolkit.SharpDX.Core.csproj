@@ -76,6 +76,7 @@
     <None Remove="Resources\psNormals.cso" />
     <None Remove="Resources\psParticle.cso" />
     <None Remove="Resources\psParticleOIT.cso" />
+    <None Remove="Resources\psPlaneGrid.cso" />
     <None Remove="Resources\psPoint.cso" />
     <None Remove="Resources\psPositions.cso" />
     <None Remove="Resources\psScreenDup.cso" />
@@ -102,6 +103,7 @@
     <None Remove="Resources\vsMeshTessellation.cso" />
     <None Remove="Resources\vsMeshWireframe.cso" />
     <None Remove="Resources\vsParticle.cso" />
+    <None Remove="Resources\vsPlaneGrid.cso" />
     <None Remove="Resources\vsPoint.cso" />
     <None Remove="Resources\vsPointShadow.cso" />
     <None Remove="Resources\vsScreenDup.cso" />
@@ -154,6 +156,7 @@
     <EmbeddedResource Include="Resources\psNormals.cso" />
     <EmbeddedResource Include="Resources\psParticle.cso" />
     <EmbeddedResource Include="Resources\psParticleOIT.cso" />
+    <EmbeddedResource Include="Resources\psPlaneGrid.cso" />
     <EmbeddedResource Include="Resources\psPoint.cso" />
     <EmbeddedResource Include="Resources\psPositions.cso" />
     <EmbeddedResource Include="Resources\psScreenDup.cso" />
@@ -180,6 +183,7 @@
     <EmbeddedResource Include="Resources\vsMeshTessellation.cso" />
     <EmbeddedResource Include="Resources\vsMeshWireframe.cso" />
     <EmbeddedResource Include="Resources\vsParticle.cso" />
+    <EmbeddedResource Include="Resources\vsPlaneGrid.cso" />
     <EmbeddedResource Include="Resources\vsPoint.cso" />
     <EmbeddedResource Include="Resources\vsPointShadow.cso" />
     <EmbeddedResource Include="Resources\vsScreenDup.cso" />

@@ -839,5 +839,13 @@ namespace HelixToolkit.UWP.Core
             context.UnmapSubresource(particleCountStaging, 0);
             return CurrentParticleCount;
         }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
     }
 }

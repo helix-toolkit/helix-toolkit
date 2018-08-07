@@ -338,13 +338,6 @@ namespace HelixToolkit.UWP.Core
         {
             SetScreenSpacedCoordinates(renderContext, deviceContext);
         }
-        /// <summary>
-        /// Posts the render.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected override void PostRender(RenderContext context)
-        {
-        }
 
         /// <summary>
         /// Sets the screen spaced coordinates.
@@ -394,6 +387,14 @@ namespace HelixToolkit.UWP.Core
             int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
             deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
             deviceContext.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
+        }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
     }
 }

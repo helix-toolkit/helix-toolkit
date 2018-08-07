@@ -118,8 +118,10 @@ namespace HelixToolkit.UWP.Utilities
     /// <summary>
     ///
     /// </summary>
-    public sealed class DynamicBufferProxy : BufferProxyBase, IElementsBufferProxy
+    public class DynamicBufferProxy : BufferProxyBase, IElementsBufferProxy
     {
+        public readonly bool CanOverwrite = false;
+        public readonly bool LazyResize = true;
         /// <summary>
         ///
         /// </summary>
@@ -144,10 +146,14 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="structureSize"></param>
         /// <param name="bindFlags"></param>
         /// <param name="optionFlags"></param>
-        public DynamicBufferProxy(int structureSize, BindFlags bindFlags, ResourceOptionFlags optionFlags = ResourceOptionFlags.None)
+        /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing. Otherwise create a new buffer with exact same size</param>
+        public DynamicBufferProxy(int structureSize, BindFlags bindFlags, 
+            ResourceOptionFlags optionFlags = ResourceOptionFlags.None, bool lazyResize = true)
             : base(structureSize, bindFlags)
         {
+            CanOverwrite = (bindFlags & (BindFlags.VertexBuffer | BindFlags.IndexBuffer)) != 0;
             this.OptionFlags = optionFlags;
+            LazyResize = lazyResize;
         }
 
         /// <summary>
@@ -179,11 +185,11 @@ namespace HelixToolkit.UWP.Utilities
             {
                 return;
             }
-            else if (buffer == null || Capacity < newSizeInBytes)
+            else if (buffer == null || Capacity < newSizeInBytes || (!LazyResize && Capacity != newSizeInBytes))
             {
                 Initialize(context, data, count, offset, minBufferCount);
             }
-            if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred)
+            if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred && CanOverwrite)
             {
                 Offset = CapacityUsed;
                 context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
@@ -231,6 +237,46 @@ namespace HelixToolkit.UWP.Utilities
             Capacity = buffdesc.SizeInBytes;
             CapacityUsed = 0;
             buffer = Collect(new Buffer(device, buffdesc));
+            OnBufferChanged(buffer);
+        }
+
+        protected virtual void OnBufferChanged(Buffer newBuffer) { }
+    }
+
+    public sealed class StructuredBufferProxy : DynamicBufferProxy
+    {
+        private ShaderResourceViewProxy srv;
+        public ShaderResourceViewProxy SRV
+        {
+            get { return srv; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StructuredBufferProxy"/> class.
+        /// </summary>
+        /// <param name="structureSize">Size of the structure.</param>
+        /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing. Otherwise create a new buffer with exact same size</param>
+        public StructuredBufferProxy(int structureSize, bool lazyResize = true) :
+            base(structureSize, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured, lazyResize)
+        {
+
+        }
+
+        protected override void OnBufferChanged(Buffer newBuffer)
+        {
+            RemoveAndDispose(ref srv);
+            srv = Collect(new ShaderResourceViewProxy(newBuffer.Device, newBuffer));
+            srv.CreateTextureView();
+        }
+
+        public static implicit operator ShaderResourceViewProxy(StructuredBufferProxy proxy)
+        {
+            return proxy.srv;
+        }
+
+        public static implicit operator ShaderResourceView(StructuredBufferProxy proxy)
+        {
+            return proxy.srv;
         }
     }
 }

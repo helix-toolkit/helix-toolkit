@@ -230,7 +230,12 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        protected sealed override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            
+        }
+
+        protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             
         }

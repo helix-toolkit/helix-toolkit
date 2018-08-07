@@ -73,6 +73,46 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             get { return orthoWidth; }
         }
+
+        private float farField = 500;
+        /// <summary>
+        /// Gets or sets the far field.
+        /// </summary>
+        /// <value>
+        /// The far field.
+        /// </value>
+        public float FarField
+        {
+            set
+            {
+                if(SetAffectsRender(ref farField, value))
+                {
+                    orthoCamera.FarPlaneDistance = value;
+                    persCamera.FarPlaneDistance = value;
+                }
+            }
+            get { return farField; }
+        }
+
+        private float nearField = 500;
+        /// <summary>
+        /// Gets or sets the near field.
+        /// </summary>
+        /// <value>
+        /// The far field.
+        /// </value>
+        public float NearField
+        {
+            set
+            {
+                if(SetAffectsRender(ref nearField, value))
+                {
+                    orthoCamera.NearPlaneDistance = value;
+                    persCamera.NearPlaneDistance = value;
+                }
+            }
+            get { return nearField; }
+        }
         /// <summary>
         /// Distance of the directional light from origin
         /// </summary>
@@ -133,7 +173,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool CanRender(RenderContext context)
         {
-            return base.CanRender(context) && RenderHost.IsShadowMapEnabled && !context.IsShadowPass;
+            return base.CanRender(context) && RenderHost.IsShadowMapEnabled;
         }
 
         private void Core_OnUpdateLightSource(object sender, ShadowMapCore.UpdateLightSourceEventArgs e)
