@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using global::SharpDX;
-
+using System.Numerics;
+using HelixToolkit.Mathematics;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -92,16 +92,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     int j = 0;
                     for (; j < singleBone.Positions.Count - 6; j += 3)
                     {
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j + 1], bones[bones[i].ParentIndex].BindPose));
-                        positions.Add(bones[i].BindPose.TranslationVector);
+                        positions.Add(Vector3Helper.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
+                        positions.Add(Vector3Helper.TransformCoordinate(singleBone.Positions[j + 1], bones[bones[i].ParentIndex].BindPose));
+                        positions.Add(bones[i].BindPose.Translation);
                         boneIds.Add(new BoneIds() { Bone1 = bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
                         boneIds.Add(new BoneIds() { Bone1 = bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
                         boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
                     }
                     for (; j < singleBone.Positions.Count; ++j)
                     {
-                        positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
+                        positions.Add(Vector3Helper.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
                         boneIds.Add(new BoneIds() { Bone1 = bones[i].ParentIndex, Weights = new Vector4(1, 0, 0, 0) });
                     }
                     offset += singleBone.Positions.Count;
@@ -115,7 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 builder.AddSphere(Vector3.Zero, scale / 2, 12, 12);
                 for (int j = currPos; j < builder.Positions.Count; ++j)
                 {
-                    builder.Positions[j] = Vector3.TransformCoordinate(builder.Positions[j], bones[i].BindPose);
+                    builder.Positions[j] = Vector3Helper.TransformCoordinate(builder.Positions[j], bones[i].BindPose);
                     boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
                 }
             }

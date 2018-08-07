@@ -210,7 +210,7 @@ namespace BoneSkinDemo
 
             Animations = loader.UniqueAnimations.Keys.ToArray();
 
-            ModelTransform = new Media3D.MatrixTransform3D((Matrix.Scaling(10,10,10) * Matrix.RotationAxis(Vector3.UnitX, -(float)Math.PI / 2)).ToMatrix3D());
+            ModelTransform = new Media3D.MatrixTransform3D((Matrix.CreateScale(10,10,10) * Matrix.CreateFromAxisAngle(Vector3.UnitX, -(float)Math.PI / 2)).ToMatrix3D());
         }
 
         private void StartAnimation()

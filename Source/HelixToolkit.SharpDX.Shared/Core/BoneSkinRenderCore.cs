@@ -3,7 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using HelixToolkit.Mathematics;
-
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -52,7 +52,7 @@ namespace HelixToolkit.UWP.Core
                 matricsChanged = true;
                 preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
                 boneSkinSBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.BoneSkinSB).Slot;
-                boneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes, false));
+                boneSkinSB = Collect(new StructuredBufferProxy(MatrixHelper.SizeInBytes, false));
                 return true;
             }
             else

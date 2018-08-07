@@ -13,6 +13,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Matrix = System.Numerics.Matrix4x4;
+using HelixToolkit.Mathematics;
 #if !NETFX_CORE
 //using System.Windows.Media.Imaging;
 namespace HelixToolkit.Wpf.SharpDX
@@ -27,6 +28,7 @@ namespace HelixToolkit.UWP
     using PhongMaterial = Model.PhongMaterialCore;
 #endif
     using Model;
+    using Core;
     using Color = Mathematics.Color4;
     using Object3DGroup = System.Collections.Generic.List<Object3D>;
     using Point = System.Numerics.Vector2;

@@ -1,11 +1,9 @@
-﻿using SharpDX;
+﻿using System.Numerics;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
-using Vector3D = SharpDX.Vector3;
-
 namespace HelixToolkit.UWP
 #else
 using System.Windows;

@@ -9,6 +9,7 @@ namespace HelixToolkit.UWP.Model.Scene
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
+    using Core;
     /// <summary>
     /// 
     /// </summary>
