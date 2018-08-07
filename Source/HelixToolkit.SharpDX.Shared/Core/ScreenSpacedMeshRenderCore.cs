@@ -385,6 +385,24 @@ namespace HelixToolkit.UWP.Core
             GlobalTransform = globalTrans;
             int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
             int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
+            offX = Math.Max(0, Math.Min(offX, (int)(Width - viewportSize)));
+            offY = Math.Max(0, Math.Min(offY, (int)(Height - viewportSize)));
+            //if(offX + viewportSize > Width)
+            //{
+            //    offX = (int)(Width - viewportSize);
+            //}
+            //else if(offX < 0)
+            //{
+            //    offX = 0;
+            //}
+            //if(offY + viewportSize > Height)
+            //{
+            //    offY = (int)(Height - viewportSize);
+            //}
+            //else if(offY < 0)
+            //{
+            //    offY = 0;
+            //}
             deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
             deviceContext.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
         }
