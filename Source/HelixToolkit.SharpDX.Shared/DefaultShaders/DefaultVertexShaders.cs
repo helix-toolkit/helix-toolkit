@@ -178,6 +178,16 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshOutlineScreenQuad";
 
+        /// <summary>
+        /// Gets the vs plane grid.
+        /// </summary>
+        /// <value>
+        /// The vs plane grid.
+        /// </value>
+        public static string VSPlaneGrid
+        {
+            get;
+        } = "vsPlaneGrid";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -477,6 +487,10 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs mesh outline pass1
         /// </summary>
         public static ShaderDescription VSMeshOutlineScreenQuad = new ShaderDescription(nameof(VSMeshOutlineScreenQuad), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshOutlineScreenQuad);
+        /// <summary>
+        /// The vs plane grid
+        /// </summary>
+        public static ShaderDescription VSPlaneGrid = new ShaderDescription(nameof(VSPlaneGrid), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSPlaneGrid);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

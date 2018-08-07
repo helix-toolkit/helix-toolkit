@@ -156,4 +156,29 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         Subtract = 1,
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum OutlineMode
+    {
+        Merged = 0,
+        Separated = 1
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum Axis
+    {
+        X = 0,
+        Y = 1,
+        Z = 2
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum GridPattern
+    {
+        Tile = 0,
+        Grid = 1
+    }
 }

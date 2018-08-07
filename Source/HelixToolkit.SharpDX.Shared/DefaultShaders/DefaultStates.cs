@@ -516,6 +516,20 @@ namespace HelixToolkit.UWP.Shaders
             IsMultisampleEnabled = false,
             IsAntialiasedLineEnabled = false,
         };
+
+        public readonly static RasterizerStateDescription RSPlaneGrid = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+            DepthBias = 0,
+            DepthBiasClamp = 0,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+            IsDepthClipEnabled = false,
+            IsScissorEnabled = true
+        };
 #if !NETFX_CORE        
         /// <summary>
         /// The screen duplication RasterizerState

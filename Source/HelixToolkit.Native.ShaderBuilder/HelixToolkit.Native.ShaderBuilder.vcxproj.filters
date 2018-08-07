@@ -270,5 +270,11 @@
     <FxCompile Include="VS\vsBoneSkinningBasic.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
+    <FxCompile Include="PS\psPlaneGrid.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsPlaneGrid.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

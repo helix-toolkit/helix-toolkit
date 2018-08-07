@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string ModelCB = "cbMeshModel";
         public static string MeshPhongCB = "cbMeshPhongMaterial";
         public static string PointLineModelCB = "cbPointLineModel";
+        public static string PlaneGridModelCB = "cbPlaneGridModel";
         public static string LightCB = "cbLights";
         public static string ClipParamsCB = "cbClipping";
         public static string BorderEffectCB = "cbBorderEffect";

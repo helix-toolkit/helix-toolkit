@@ -104,6 +104,8 @@ namespace BoneSkinDemo
 
         public string[] Animations { private set; get; }
 
+        public GridPattern[] GridTypes { get; } = new GridPattern[] { GridPattern.Tile, GridPattern.Grid };
+
         private Matrix[] boneInternal = new Matrix[0];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
 
@@ -128,7 +130,8 @@ namespace BoneSkinDemo
             {
                 Position = new Media3D.Point3D(50, 50, 50),
                 LookDirection = new Media3D.Vector3D(-50, -50, -50),
-                UpDirection = new Media3D.Vector3D(0, 1, 0)
+                UpDirection = new Media3D.Vector3D(0, 1, 0),
+                FarPlaneDistance = 2000
             };
 
             FloorMaterial.RenderShadowMap = true;

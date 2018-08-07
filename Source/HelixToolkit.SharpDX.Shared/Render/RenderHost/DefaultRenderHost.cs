@@ -233,6 +233,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
                 if (RenderConfiguration.EnableRenderOrder)
                 {
+                    for (int i = 0; i < preProcNodes.Count; ++i)
+                    {
+                        preProcNodes[i].UpdateRenderOrderKey();
+                    }
+                    preProcNodes.Sort(sortingDelegate);
                     for (int i = 0; i < opaqueNodes.Count; ++i)
                     {
                         opaqueNodes[i].UpdateRenderOrderKey();

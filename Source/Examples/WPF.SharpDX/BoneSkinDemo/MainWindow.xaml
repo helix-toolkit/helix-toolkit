@@ -21,12 +21,13 @@
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
-            BackgroundColor="Black"
+            BackgroundColor="Gray"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableDesignModeRendering="True"
+            EnableDesignModeRendering="False"
             EnableSwapChainRendering="False"
+            FXAALevel="Medium"
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
@@ -45,7 +46,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:ShadowMap3D />
+            <hx:ShadowMap3D OrthoWidth="200" />
             <hx:AmbientLight3D Color="#4B4B4B" />
             <hx:DirectionalLight3D Direction="0, -1, -1" Color="White" />
             <hx:GroupModel3D ItemsSource="{Binding Models}" Transform="{Binding ModelTransform}" />
@@ -53,10 +54,7 @@
                 x:Name="skeleton"
                 ItemsSource="{Binding BoneModels}"
                 Transform="{Binding ModelTransform}" />
-            <hx:MeshGeometryModel3D
-                CullMode="Back"
-                Geometry="{Binding FloorModel}"
-                Material="{Binding FloorMaterial}" />
+            <hx:AxisPlaneGridModel3D x:Name="plane" RenderShadowMap="True" />
             <hx:PostEffectMeshXRayGrid
                 BlendingFactor="0.6"
                 EffectName="xray"
@@ -70,8 +68,10 @@
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
             <CheckBox IsChecked="{Binding IsRendering, ElementName=skeleton}">Skeleton</CheckBox>
-            <TextBlock>Animation List:</TextBlock>
+            <TextBlock Margin="0,4,0,0">Animation List:</TextBlock>
             <ComboBox ItemsSource="{Binding Animations}" SelectedItem="{Binding SelectedAnimation}" />
+            <TextBlock Margin="0,4,0,0">Grid Pattern:</TextBlock>
+            <ComboBox ItemsSource="{Binding GridTypes}" SelectedItem="{Binding ElementName=plane, Path=GridPattern}" />
         </StackPanel>
     </Grid>
 </Window>
