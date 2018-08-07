@@ -120,7 +120,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="technique"></param>
         /// <param name="material"></param>
         private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
-            : base(manager, technique)
+            : base(manager, technique, DefaultMeshConstantBufferDesc)
         {
             this.material = material;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
@@ -206,7 +206,7 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        protected override void AssignVariables(ref ModelStruct model)
+        protected override void UpdateInternalVariables(DeviceContextProxy context)
         {
             if (NeedUpdate)
             {
@@ -230,7 +230,11 @@ namespace HelixToolkit.UWP.Model
                 };
                 NeedUpdate = false;
             }
-            model.Material = materialStruct;
+        }
+
+        protected override void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream)
+        {
+            cbStream.Write(materialStruct);
         }
 
         protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)

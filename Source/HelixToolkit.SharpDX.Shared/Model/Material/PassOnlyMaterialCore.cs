@@ -67,7 +67,8 @@ namespace HelixToolkit.UWP.Model
         public override string DefaultShaderPassName { set; get; }
 
         private readonly string passName;
-        public PassOnlyMaterialVariable(string passName, IRenderTechnique technique) : base(null, technique)
+        public PassOnlyMaterialVariable(string passName, IRenderTechnique technique)
+            : base(technique.EffectsManager, technique, DefaultMeshConstantBufferDesc)
         {
             this.passName = passName;
             MaterialPass = technique[passName];
@@ -83,7 +84,11 @@ namespace HelixToolkit.UWP.Model
             return MaterialPass;
         }
 
-        protected override void AssignVariables(ref ModelStruct model)
+        protected override void UpdateInternalVariables(DeviceContextProxy context)
+        {
+        }
+
+        protected override void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream)
         {
         }
     }
