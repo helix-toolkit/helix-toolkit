@@ -17,5 +17,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return NormalVectorMaterialCore.Core;
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new NormalVectorMaterial()
+            {
+                Name = Name
+            };
+        }
+#endif
     }
 }
