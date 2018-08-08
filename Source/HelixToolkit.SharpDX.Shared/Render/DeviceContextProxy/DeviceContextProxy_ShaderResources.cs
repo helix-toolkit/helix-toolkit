@@ -15,8 +15,30 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Shaders;
     public partial class DeviceContextProxy
     {
-        #region Set Shaders and Constant Buffers
+        public const int ConstantBufferCount = CommonShaderStage.ConstantBufferApiSlotCount;
+        public const int SamplerStateCount = CommonShaderStage.SamplerSlotCount;
+        public const int ShaderResourceViewCount = CommonShaderStage.InputResourceSlotCount;
+        public const int SimultaneousRenderTargetCount = OutputMergerStage.SimultaneousRenderTargetCount;
+        public const int StageCount = 6;
+        public const int UnorderedAcccesViewCount = ComputeShaderStage.UnorderedAccessViewSlotCount;
+        #region Constant Buffer Check
+        private readonly object[] ConstantBufferCheck = new object[ConstantBufferCount * StageCount]; //Used to store current bind constant buffers. Reduce API call and state change.
+        private readonly object[] SamplerStateCheck = new object[SamplerStateCount * StageCount];//Used to store current bind sampler states. Reduce API Call and state change.
+        private const int CBCheckVertexShaderStartIdx = Constants.VertexIdx * ConstantBufferCount;
+        private const int CBCheckHullShaderStartIdx = Constants.HullIdx * ConstantBufferCount;
+        private const int CBCheckDomainShaderStartIdx = Constants.DomainIdx * ConstantBufferCount;
+        private const int CBCheckGeometryShaderStartIdx = Constants.GeometryIdx * ConstantBufferCount;
+        private const int CBCheckPixelShaderStartIdx = Constants.PixelIdx * ConstantBufferCount;
+        private const int CBCheckComputeShaderStartIdx = Constants.ComputeIdx * ConstantBufferCount;
 
+        private const int SamplerCheckVertexShaderStartIdx = Constants.VertexIdx * SamplerStateCount;
+        private const int SamplerCheckHullShaderStartIdx = Constants.HullIdx * SamplerStateCount;
+        private const int SamplerCheckDomainShaderStartIdx = Constants.DomainIdx * SamplerStateCount;
+        private const int SamplerCheckGeometryShaderStartIdx = Constants.GeometryIdx * SamplerStateCount;
+        private const int SamplerCheckPixelShaderStartIdx = Constants.PixelIdx * SamplerStateCount;
+        private const int SamplerCheckComputeShaderStartIdx = Constants.ComputeIdx * SamplerStateCount;
+        #endregion
+        #region Set Shaders and Constant Buffers
         /// <summary>
         /// Sets the vertex shader.
         /// </summary>
@@ -30,7 +52,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 foreach (var buff in shader.ConstantBufferMapping.Mappings)
                 {
-                    deviceContext.VertexShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    int idx = CBCheckVertexShaderStartIdx + buff.Key;
+                    if(ConstantBufferCheck[idx] != buff.Value)
+                    {
+                        ConstantBufferCheck[idx] = buff.Value;
+                        deviceContext.VertexShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    }
                 }
             }
         }
@@ -48,7 +75,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 foreach (var buff in shader.ConstantBufferMapping.Mappings)
                 {
-                    deviceContext.HullShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    int idx = CBCheckHullShaderStartIdx + buff.Key;
+                    if(ConstantBufferCheck[idx] != buff.Value)
+                    {
+                        ConstantBufferCheck[idx] = buff.Value;
+                        deviceContext.HullShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    }
                 }
             }
         }
@@ -66,7 +98,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 foreach (var buff in shader.ConstantBufferMapping.Mappings)
                 {
-                    deviceContext.DomainShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    int idx = CBCheckDomainShaderStartIdx + buff.Key;
+                    if(ConstantBufferCheck[idx] != buff.Value)
+                    {
+                        ConstantBufferCheck[idx] = buff.Value;
+                        deviceContext.DomainShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    }
                 }
             }
         }
@@ -84,7 +121,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 foreach (var buff in shader.ConstantBufferMapping.Mappings)
                 {
-                    deviceContext.GeometryShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    int idx = CBCheckGeometryShaderStartIdx + buff.Key;
+                    if(ConstantBufferCheck[idx] != buff.Value)
+                    {
+                        ConstantBufferCheck[idx] = buff.Value;
+                        deviceContext.GeometryShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    }
                 }
             }
         }
@@ -102,7 +144,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 foreach (var buff in shader.ConstantBufferMapping.Mappings)
                 {
-                    deviceContext.PixelShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    int idx = CBCheckPixelShaderStartIdx + buff.Key;
+                    if(ConstantBufferCheck[idx] != buff.Value)
+                    {
+                        ConstantBufferCheck[idx] = buff.Value;
+                        deviceContext.PixelShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    }
                 }
             }
         }
@@ -120,7 +167,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 foreach (var buff in shader.ConstantBufferMapping.Mappings)
                 {
-                    deviceContext.ComputeShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    int idx = CBCheckComputeShaderStartIdx + buff.Key;
+                    if(ConstantBufferCheck[idx] != buff.Value)
+                    {
+                        ConstantBufferCheck[idx] = buff.Value;
+                        deviceContext.ComputeShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                    }
                 }
             }
         }
@@ -181,7 +233,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (slot < 0)
             { return; }
-            deviceContext.VertexShader.SetSampler(slot, sampler);
+            int idx = SamplerCheckVertexShaderStartIdx + slot;
+            if(SamplerStateCheck[idx] != sampler)
+            {
+                SamplerStateCheck[idx] = sampler;
+                deviceContext.VertexShader.SetSampler(slot, sampler);
+            }
         }
 
         /// <summary>
@@ -195,7 +252,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (slot < 0)
             { return; }
-            deviceContext.VertexShader.SetSamplers(slot, samplers);
+            int idx = SamplerCheckVertexShaderStartIdx + slot;
+            bool needUpdate = false;
+            for(int i = 0; i < samplers.Length; ++i)
+            {
+                if(SamplerStateCheck[idx+i] != samplers[i])
+                {
+                    needUpdate = true;
+                    break;
+                }           
+            }
+            if (needUpdate)
+            {
+                for(int i = 0; i < samplers.Length; ++i)
+                {
+                    SamplerStateCheck[idx + i] = samplers[i];
+                }
+                deviceContext.VertexShader.SetSamplers(slot, samplers);
+            }
         }
         /// <summary>
         /// Gets the sampler. Use <see cref="VertexShader.Type"/>
@@ -263,7 +337,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (slot < 0)
             { return; }
-            deviceContext.DomainShader.SetSampler(slot, sampler);
+            int idx = SamplerCheckDomainShaderStartIdx + slot;
+            if(SamplerStateCheck[idx] != sampler)
+            {
+                SamplerStateCheck[idx] = sampler;
+                deviceContext.DomainShader.SetSampler(slot, sampler);
+            }
         }
 
         /// <summary>
@@ -277,7 +356,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (slot < 0)
             { return; }
-            deviceContext.DomainShader.SetSamplers(slot, samplers);
+            int idx = SamplerCheckDomainShaderStartIdx + slot;
+            bool needUpdate = false;
+            for (int i = 0; i < samplers.Length; ++i)
+            {
+                if (SamplerStateCheck[idx + i] != samplers[i])
+                {
+                    needUpdate = true;
+                    break;
+                }
+            }
+            if (needUpdate)
+            {
+                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    SamplerStateCheck[idx + i] = samplers[i];
+                }
+                deviceContext.DomainShader.SetSamplers(slot, samplers);
+            }
         }
         /// <summary>
         /// Gets the sampler. Use <see cref="DomainShader.Type"/>
@@ -292,6 +388,214 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return deviceContext.DomainShader.GetSamplers(startSlot, num);
         }
         #endregion Domain Shader
+
+        #region Hull Shader
+
+        /// <summary>
+        /// Binds the texture. Use <see cref="HullShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="HullShader.Type"/></param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShaderResource(HullShaderType shaderType, int slot, ShaderResourceView texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.HullShader.SetShaderResource(slot, texture);
+        }
+
+        /// <summary>
+        /// Binds the texture. Use <see cref="HullShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="HullShader.Type"/></param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShaderResources(HullShaderType shaderType, int slot, ShaderResourceView[] texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.HullShader.SetShaderResources(slot, texture);
+        }
+        /// <summary>
+        /// Gets the texture. Use <see cref="HullShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="HullShader.Type"/></param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceView[] GetShaderResources(HullShaderType shaderType, int startSlot, int num)
+        {
+            return deviceContext.HullShader.GetShaderResources(startSlot, num);
+        }
+        /// <summary>
+        /// Binds the sampler. Use <see cref="HullShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="HullShader.Type"/></param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="sampler">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetSampler(HullShaderType shaderType, int slot, SamplerState sampler)
+        {
+            if (slot < 0)
+            { return; }
+            int idx = SamplerCheckHullShaderStartIdx + slot;
+            if (SamplerStateCheck[idx] != sampler)
+            {
+                SamplerStateCheck[idx] = sampler;
+                deviceContext.HullShader.SetSampler(slot, sampler);
+            }
+        }
+
+        /// <summary>
+        /// Binds the sampler. Use <see cref="HullShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="HullShader.Type"/></param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="samplers">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetSamplers(HullShaderType shaderType, int slot, SamplerState[] samplers)
+        {
+            if (slot < 0)
+            { return; }
+            int idx = SamplerCheckHullShaderStartIdx + slot;
+            bool needUpdate = false;
+            for (int i = 0; i < samplers.Length; ++i)
+            {
+                if (SamplerStateCheck[idx + i] != samplers[i])
+                {
+                    needUpdate = true;
+                    break;
+                }
+            }
+            if (needUpdate)
+            {
+                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    SamplerStateCheck[idx + i] = samplers[i];
+                }
+                deviceContext.HullShader.SetSamplers(slot, samplers);
+            }
+        }
+        /// <summary>
+        /// Gets the sampler. Use <see cref="HullShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="HullShader.Type"/></param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SamplerState[] GetSampler(HullShaderType shaderType, int startSlot, int num)
+        {
+            return deviceContext.HullShader.GetSamplers(startSlot, num);
+        }
+        #endregion Hull Shader
+
+        #region Geometry Shader
+
+        /// <summary>
+        /// Binds the texture. Use <see cref="GeometryShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="GeometryShader.Type"/></param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShaderResource(GeometryShaderType shaderType, int slot, ShaderResourceView texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.GeometryShader.SetShaderResource(slot, texture);
+        }
+
+        /// <summary>
+        /// Binds the texture. Use <see cref="GeometryShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="GeometryShader.Type"/></param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShaderResources(GeometryShaderType shaderType, int slot, ShaderResourceView[] texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.GeometryShader.SetShaderResources(slot, texture);
+        }
+        /// <summary>
+        /// Gets the texture. Use <see cref="GeometryShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="GeometryShader.Type"/></param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceView[] GetShaderResources(GeometryShaderType shaderType, int startSlot, int num)
+        {
+            return deviceContext.GeometryShader.GetShaderResources(startSlot, num);
+        }
+        /// <summary>
+        /// Binds the sampler. Use <see cref="GeometryShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="GeometryShader.Type"/></param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="sampler">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetSampler(GeometryShaderType shaderType, int slot, SamplerState sampler)
+        {
+            if (slot < 0)
+            { return; }
+            int idx = SamplerCheckGeometryShaderStartIdx + slot;
+            if (SamplerStateCheck[idx] != sampler)
+            {
+                SamplerStateCheck[idx] = sampler;
+                deviceContext.GeometryShader.SetSampler(slot, sampler);
+            }
+        }
+
+        /// <summary>
+        /// Binds the sampler. Use <see cref="GeometryShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="GeometryShader.Type"/></param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="samplers">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetSamplers(GeometryShaderType shaderType, int slot, SamplerState[] samplers)
+        {
+            if (slot < 0)
+            { return; }
+            int idx = SamplerCheckGeometryShaderStartIdx + slot;
+            bool needUpdate = false;
+            for (int i = 0; i < samplers.Length; ++i)
+            {
+                if (SamplerStateCheck[idx + i] != samplers[i])
+                {
+                    needUpdate = true;
+                    break;
+                }
+            }
+            if (needUpdate)
+            {
+                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    SamplerStateCheck[idx + i] = samplers[i];
+                }
+                deviceContext.GeometryShader.SetSamplers(slot, samplers);
+            }
+        }
+        /// <summary>
+        /// Gets the sampler. Use <see cref="GeometryShader.Type"/>
+        /// </summary>
+        /// <param name="shaderType">The shaderType. Use <see cref="GeometryShader.Type"/></param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SamplerState[] GetSampler(GeometryShaderType shaderType, int startSlot, int num)
+        {
+            return deviceContext.GeometryShader.GetSamplers(startSlot, num);
+        }
+        #endregion Geometry Shader
 
         #region Pixel Shader
 
@@ -345,7 +649,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (slot < 0)
             { return; }
-            deviceContext.PixelShader.SetSampler(slot, sampler);
+            int idx = SamplerCheckPixelShaderStartIdx + slot;
+            if(SamplerStateCheck[idx] != sampler)
+            {
+                SamplerStateCheck[idx] = sampler;
+                deviceContext.PixelShader.SetSampler(slot, sampler);
+            }
         }
 
         /// <summary>
@@ -359,7 +668,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (slot < 0)
             { return; }
-            deviceContext.PixelShader.SetSamplers(slot, samplers);
+            int idx = SamplerCheckPixelShaderStartIdx + slot;
+            bool needUpdate = false;
+            for (int i = 0; i < samplers.Length; ++i)
+            {
+                if (SamplerStateCheck[idx + i] != samplers[i])
+                {
+                    needUpdate = true;
+                    break;
+                }
+            }
+            if (needUpdate)
+            {
+                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    SamplerStateCheck[idx + i] = samplers[i];
+                }
+                deviceContext.PixelShader.SetSamplers(slot, samplers);
+            }           
         }
         /// <summary>
         /// Gets the sampler. Use <see cref="PixelShader.Type"/>
@@ -466,7 +792,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (slot < 0)
             { return; }
-            deviceContext.ComputeShader.SetSampler(slot, sampler);
+            int idx = SamplerCheckComputeShaderStartIdx + slot;
+            if(SamplerStateCheck[idx] != sampler)
+            {
+                SamplerStateCheck[idx] = sampler;
+                deviceContext.ComputeShader.SetSampler(slot, sampler);
+            }
         }
 
         /// <summary>
@@ -480,7 +811,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (slot < 0)
             { return; }
-            deviceContext.ComputeShader.SetSamplers(slot, samplers);
+            int idx = SamplerCheckComputeShaderStartIdx + slot;
+            bool needUpdate = false;
+            for (int i = 0; i < samplers.Length; ++i)
+            {
+                if (SamplerStateCheck[idx + i] != samplers[i])
+                {
+                    needUpdate = true;
+                    break;
+                }
+            }
+            if (needUpdate)
+            {
+                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    SamplerStateCheck[idx + i] = samplers[i];
+                }
+                deviceContext.ComputeShader.SetSamplers(slot, samplers);
+            }            
         }
         /// <summary>
         /// Gets the sampler. Use <see cref="ComputeShader.Type"/>
