@@ -196,7 +196,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
-            MaterialVariables.UpdateModelStructOnly(deviceContext, ref modelStruct);
+            MaterialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
 
