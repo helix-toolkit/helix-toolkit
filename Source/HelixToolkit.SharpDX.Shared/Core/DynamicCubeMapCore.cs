@@ -419,7 +419,7 @@ namespace HelixToolkit.UWP.Core
                         node.Render(context, ctx);
                     }
                 }
-                commands[index] = ctx.FinishCommandList(false);
+                commands[index] = ctx.FinishCommandList(true);
                 contextPool.Put(ctx);
             }
 #if !TEST
