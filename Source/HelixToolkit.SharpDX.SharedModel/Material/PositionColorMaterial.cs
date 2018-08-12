@@ -17,5 +17,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return PositionMaterialCore.Core;
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new PositionColorMaterial()
+            {
+                Name = Name
+            };
+        }
+#endif
     }
 }

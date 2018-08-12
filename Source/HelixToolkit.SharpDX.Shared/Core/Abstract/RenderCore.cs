@@ -55,10 +55,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         ///   <c>true</c> if this instance can render; otherwise, <c>false</c>.
         /// </value>
-        public bool CanRenderFlag
-        {
-            private set; get;
-        } = false;
+        internal bool CanRenderFlag;
         /// <summary>
         /// Indicate whether render host should call <see cref="Update(RenderContext, DeviceContextProxy)"/> before <see cref="Render(RenderContext, DeviceContextProxy)"/>
         /// <para><see cref="Update(RenderContext, DeviceContextProxy)"/> is used to run such as compute shader before rendering. </para>
@@ -104,7 +101,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Model matrix
         /// </summary>
-        public Matrix ModelMatrix { set; get; } = Matrix.Identity;
+        public Matrix ModelMatrix = Matrix.Identity;
         /// <summary>
         /// 
         /// </summary>

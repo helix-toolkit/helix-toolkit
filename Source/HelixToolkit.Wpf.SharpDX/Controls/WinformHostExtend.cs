@@ -18,7 +18,15 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             add { this.AddHandler(FormMouseMoveEvent, value); }
             remove { this.RemoveHandler(FormMouseMoveEvent, value); }
         }
+        public delegate void FormMouseWheelEventHandler(object sender, FormMouseWheelEventArgs e);
+        public static readonly RoutedEvent FormMouseWheelEvent =
+            EventManager.RegisterRoutedEvent("FormMouseWheel", RoutingStrategy.Bubble, typeof(FormMouseWheelEventHandler), typeof(WinformHostExtend));
 
+        public event FormMouseWheelEventHandler FormMouseWheel
+        {
+            add { this.AddHandler(FormMouseWheelEvent, value); }
+            remove { this.RemoveHandler(FormMouseWheelEvent, value); }
+        }
         protected UIElement ParentControl { set; get; }
 
         public double DPIXScale { set; get; } = 1;
@@ -56,9 +64,8 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 
         private void OnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            RaiseEvent(new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, e.Delta)
+            RaiseEvent(new FormMouseWheelEventArgs(FormMouseWheelEvent, Mouse.PrimaryDevice, Environment.TickCount, e.Delta)
             {
-                RoutedEvent = Mouse.MouseWheelEvent,
                 Source = this,
             });
         }
@@ -121,11 +128,14 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 case MouseButtons.XButton2:
                     return MouseButton.XButton2;
                 default:
-                    throw new ArgumentOutOfRangeException("winformButton");
+                    return null;
             }
         }
-
-        public class FormMouseMoveEventArgs : RoutedEventArgs
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <seealso cref="System.Windows.RoutedEventArgs" />
+        public sealed class FormMouseMoveEventArgs : RoutedEventArgs
         {
             //
             // Summary:
@@ -158,6 +168,14 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             // Returns:
             //     The y-coordinate of the mouse, in pixels.
             public int Y { get; private set; }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="FormMouseMoveEventArgs"/> class.
+            /// </summary>
+            /// <param name="routedEvent">The routed event.</param>
+            /// <param name="p">The p.</param>
+            /// <param name="x">The x.</param>
+            /// <param name="y">The y.</param>
+            /// <param name="delta">The delta.</param>
             public FormMouseMoveEventArgs(RoutedEvent routedEvent, Point p, int x, int y, int delta)
                 :base(routedEvent)
             {
@@ -165,6 +183,34 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 X = x;
                 Y = y;
                 Delta = delta;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <seealso cref="System.Windows.Input.MouseWheelEventArgs" />
+        public sealed class FormMouseWheelEventArgs : RoutedEventArgs
+        {
+            public readonly int Delta;
+            public readonly int Timestamp;
+            public readonly MouseDevice Mouse;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="FormMouseWheelEventArgs"/> class.
+            /// </summary>
+            /// <param name="routedEvent"></param>
+            /// <param name="mouse">The mouse device associated with this event.</param>
+            /// <param name="timestamp">The time when the input occurred.</param>
+            /// <param name="delta">The amount the wheel has changed.</param>
+            public FormMouseWheelEventArgs(RoutedEvent routedEvent, MouseDevice mouse, int timestamp, int delta):base(routedEvent)
+            {
+                Delta = delta;
+                Timestamp = timestamp;
+                Mouse = mouse;
+            }
+
+            public static implicit operator MouseWheelEventArgs(FormMouseWheelEventArgs args)
+            {
+                return new MouseWheelEventArgs(args.Mouse, args.Timestamp, args.Delta) { RoutedEvent = MouseWheelEvent };
             }
         }
     }

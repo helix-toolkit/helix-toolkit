@@ -148,5 +148,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 ColorStripeYEnabled = ColorStripeYEnabled
             };
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new ColorStripeMaterial()
+            {
+                DiffuseColor = DiffuseColor,
+                ColorStripeSampler = ColorStripeSampler,
+                ColorStripeX = ColorStripeX,
+                ColorStripeXEnabled = ColorStripeXEnabled,
+                ColorStripeY = ColorStripeY,
+                ColorStripeYEnabled = ColorStripeYEnabled,
+                Name = Name
+            };
+        }
+#endif
     }
 }

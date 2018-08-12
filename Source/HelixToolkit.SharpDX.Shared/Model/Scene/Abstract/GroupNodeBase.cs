@@ -127,11 +127,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool OnAttach(IRenderHost host)
         {
-            for (int i = 0; i < Items.Count; ++i)
+            if (base.OnAttach(host))
             {
-                Items[i].Attach(host);
+                for (int i = 0; i < Items.Count; ++i)
+                {
+                    Items[i].Attach(host);
+                }
+                return true;
             }
-            return true;
+            else { return false; }
         }
         /// <summary>
         /// Called when [detach].

@@ -17,5 +17,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return ColorMaterialCore.Core;
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new VertColorMaterial()
+            {
+                Name = Name
+            };
+        }
+#endif
     }
 }

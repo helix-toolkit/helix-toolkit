@@ -43,11 +43,17 @@ namespace BoneSkinDemo
                 showWireframe = value;
                 OnPropertyChanged();
                  
-                foreach(var model in Models)
+                foreach(var group in Models)
                 {
-                    if(model is MeshGeometryModel3D m)
+                    if(group is GroupModel3D g)
                     {
-                        m.RenderWireframe = value;
+                        foreach(var model in g.Children)
+                        {
+                            if(model is MeshGeometryModel3D m)
+                            {
+                                m.RenderWireframe = value;
+                            }     
+                        }                  
                     }
                 }
             }
@@ -88,14 +94,7 @@ namespace BoneSkinDemo
         {
             set
             {
-                if(SetValue(ref selectedAnimation, value))
-                {
-                    if(loader.UniqueAnimations.TryGetValue(value, out List<Guid> animations))
-                    {
-                        CurrentAnimation = animations.Select(x => loader.Animations[x]).ToArray();
-                    }
-                    else { CurrentAnimation = new Animation[0]; }
-                }
+                SetValue(ref selectedAnimation, value);
             }
             get { return selectedAnimation; }
         }
@@ -113,10 +112,7 @@ namespace BoneSkinDemo
         private const int Theta = 24;
         private CancellationTokenSource cts = new CancellationTokenSource();
         private SynchronizationContext context = SynchronizationContext.Current;
-        private Dictionary<Guid, BoneSkinnedMeshGeometry3D> BoneSkinMeshes = new Dictionary<Guid, BoneSkinnedMeshGeometry3D>();
-        private Dictionary<Guid, BoneSkinMeshGeometryModel3D> MeshModelDictionary = new Dictionary<Guid, BoneSkinMeshGeometryModel3D>();
-        private Dictionary<Guid, BoneSkinMeshGeometryModel3D> BoneModelDictionary = new Dictionary<Guid, BoneSkinMeshGeometryModel3D>();
-        private Animation[] CurrentAnimation = new Animation[0];
+        private Dictionary<Guid, List<BoneGroupModel3D>> BoneGroupsDictionary = new Dictionary<Guid, List<BoneGroupModel3D>>();
         private CMOReader loader;
 
         public MainViewModel()
@@ -146,43 +142,46 @@ namespace BoneSkinDemo
         {
             loader = new CMOReader();
             var obj3Ds = loader.Read("Sphere_Bot_test.cmo");
-            foreach(var obj3D in obj3Ds)
+            foreach(var group in loader.AnimationHierarchy)
             {
-                if(obj3D.Geometry is BoneSkinnedMeshGeometry3D boneMesh)
+                var boneGroup = new BoneGroupModel3D();
+                var skeletonGroup = new BoneGroupModel3D();
+                foreach (var obj3D in group.Meshes)
                 {
-                    var model = new BoneSkinMeshGeometryModel3D()
+                    if (obj3D.Geometry is BoneSkinnedMeshGeometry3D boneMesh)
                     {
-                        Geometry = obj3D.Geometry,
-                        FrontCounterClockwise = false,
-                        CullMode = CullMode.Back,
-                        Material = obj3D.Material.ConvertToMaterial(),
-                        IsThrowingShadow = true
-                    };
-                    Models.Add(model);
-                    BoneSkinMeshes.Add(obj3D.Geometry.GUID, boneMesh);
-                    MeshModelDictionary.Add(obj3D.Geometry.GUID, model);
-                }
-                else if(obj3D.Geometry is MeshGeometry3D)
-                {
-                    Models.Add(new MeshGeometryModel3D()
+                        var model = new BoneSkinMeshGeometryModel3D()
+                        {
+                            Geometry = obj3D.Geometry,
+                            FrontCounterClockwise = false,
+                            CullMode = CullMode.Back,
+                            Material = obj3D.Material.ConvertToMaterial(),
+                            IsThrowingShadow = true
+                        };
+                        boneGroup.Children.Add(model);
+                    }
+                    else if (obj3D.Geometry is MeshGeometry3D)
                     {
-                        Geometry = obj3D.Geometry,
-                        CullMode = CullMode.Back, FrontCounterClockwise=false
-                    });
+                        Models.Add(new MeshGeometryModel3D()
+                        {
+                            Geometry = obj3D.Geometry,
+                            CullMode = CullMode.Back,
+                            FrontCounterClockwise = false
+                        });
+                    }
                 }
-            }
-
-            foreach(var bone in loader.BoneMeshRelation)
-            {
-                var boneModel = new BoneSkinMeshGeometryModel3D()
+               
+                var skeletonModel = new BoneSkinMeshGeometryModel3D()
                 {
-                    Geometry = BoneSkinnedMeshGeometry3D.CreateSkeletonMesh(bone.Key, 0.1f),
+                    Geometry = BoneSkinnedMeshGeometry3D.CreateSkeletonMesh(group.Bones, 0.1f),
                     CullMode = CullMode.Back,
                     Material = BoneMaterial,
                     PostEffects = "xray"
                 };
-                BoneModelDictionary.Add(bone.Value.FirstOrDefault(), boneModel);
-                BoneModels.Add(boneModel);
+                skeletonGroup.Children.Add(skeletonModel);
+                Models.Add(boneGroup);
+                BoneModels.Add(skeletonGroup);
+                BoneGroupsDictionary.Add(group.GUID, new List<BoneGroupModel3D>() { boneGroup, skeletonGroup });
             }
             
             var diffuse = new MemoryStream();
@@ -197,13 +196,22 @@ namespace BoneSkinDemo
             {
                 file.CopyTo(normal);
             }
-            foreach (var model in Models)
+            foreach (var group in Models)
             {
-                var m = (model as MaterialGeometryModel3D).Material as PhongMaterial;
-                m.EmissiveColor = Colors.Black.ToColor4();                
-                m.DiffuseMap = diffuse;
-                m.NormalMap = normal;
-                m.RenderShadowMap = true;
+                if(group is GroupElement3D g)
+                {
+                    foreach(var subModel in g.Children)
+                    {
+                        if(subModel is MaterialGeometryModel3D model)
+                        {
+                            var m = model.Material as PhongMaterial;
+                            m.EmissiveColor = Colors.Black.ToColor4();                
+                            m.DiffuseMap = diffuse;
+                            m.NormalMap = normal;
+                            m.RenderShadowMap = true;
+                        }
+                    }
+                }
             }
 
             Animations = loader.UniqueAnimations.Keys.ToArray();
@@ -236,11 +244,11 @@ namespace BoneSkinDemo
             var curr = Stopwatch.GetTimestamp();
             var time = (float)(curr - lastTime) / Stopwatch.Frequency;
             float maxEndTime = 0;
-            foreach(var ani in CurrentAnimation)
+            foreach(var group in loader.AnimationHierarchy)
             {
+                var ani = group.Animations[selectedAnimation];
                 maxEndTime = Math.Max(ani.EndTime, maxEndTime);
-                var allMeshes = loader.AnimationMeshRelation[ani.GUID].Select(x => BoneSkinMeshes[x]);
-                var bones = allMeshes.First().Bones;
+                var bones = group.Bones;
                 if(bones.Count > boneInternal.Length)
                 {
                     boneInternal = new Matrix[bones.Count];
@@ -331,24 +339,17 @@ namespace BoneSkinDemo
                         newBones[i] = bones[i].InvBindPose * boneInternal[i];
                     }
 
-                    var meshGuids = allMeshes.Select(x => x.GUID).ToArray();
                     context.Post((o) => 
                     {
-                        foreach(var g in meshGuids)
+                        var groups = BoneGroupsDictionary[group.GUID];
+                        foreach(var g in groups)
                         {
-                            MeshModelDictionary[g].BoneMatrices = newBones;
-                        }
-                        foreach(var g in meshGuids)
-                        {
-                            if(BoneModelDictionary.TryGetValue(g, out BoneSkinMeshGeometryModel3D model))
-                            {
-                                model.BoneMatrices = newBones;
-                            }
-                            
+                            g.BoneMatrices = newBones;
                         }
                     }, null);
                 }
             }
+
             // Check need to loop animation
             if (maxEndTime <= time)
             {
