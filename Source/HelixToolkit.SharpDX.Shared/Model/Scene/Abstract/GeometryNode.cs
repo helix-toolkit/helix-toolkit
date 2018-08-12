@@ -131,14 +131,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The bound manager.
         /// </value>
-        public GeometryBoundManager BoundManager { private set; get; }
+        public readonly GeometryBoundManager BoundManager;
         /// <summary>
         /// Gets the original bound from the geometry. Same as <see cref="Geometry3D.Bound"/>
         /// </summary>
         /// <value>
         /// The original bound.
         /// </value>
-        public override BoundingBox OriginalBounds
+        public sealed override BoundingBox OriginalBounds
         {
             get { return BoundManager.OriginalBounds; }
         }
@@ -148,7 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The original bound sphere.
         /// </value>
-        public override BoundingSphere OriginalBoundsSphere
+        public sealed override BoundingSphere OriginalBoundsSphere
         {
             get { return BoundManager.OriginalBoundsSphere; }
         }
@@ -159,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The bounds.
         /// </value>
-        public override BoundingBox Bounds
+        public sealed override BoundingBox Bounds
         {
             get { return BoundManager.Bounds; }
         }
@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The bounds with transform.
         /// </value>
-        public override BoundingBox BoundsWithTransform
+        public sealed override BoundingBox BoundsWithTransform
         {
             get { return BoundManager.BoundsWithTransform; }
         }

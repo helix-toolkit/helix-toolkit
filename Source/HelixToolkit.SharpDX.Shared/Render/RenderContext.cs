@@ -29,20 +29,15 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public sealed class RenderContext : DisposeObject
     {
-        private Matrix viewMatrix;
-        private Matrix projectionMatrix;
-
         /// <summary>
         /// Gets or sets the bounding frustum.
         /// </summary>
         /// <value>
         /// The bounding frustum.
         /// </value>
-        public BoundingFrustum BoundingFrustum { set; get; }
+        public BoundingFrustum BoundingFrustum;
 
         private CameraCore camera;
-
-        private bool matrixChanged = true;
 
         /// <summary>
         /// Gets the view matrix.
@@ -50,16 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The view matrix.
         /// </value>
-        public Matrix ViewMatrix
-        {
-            get { return viewMatrix; }
-            private set
-            {
-                if (viewMatrix == value) { return; }
-                viewMatrix = value;
-                matrixChanged = true;
-            }
-        }
+        public Matrix ViewMatrix;
 
         /// <summary>
         /// Gets or sets the projection matrix.
@@ -67,19 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The projection matrix.
         /// </value>
-        public Matrix ProjectionMatrix
-        {
-            get { return projectionMatrix; }
-            set
-            {
-                if (projectionMatrix == value)
-                {
-                    return;
-                }
-                projectionMatrix = value;
-                matrixChanged = true;
-            }
-        }
+        public Matrix ProjectionMatrix;
 
         /// <summary>
         /// Gets the viewport matrix.
@@ -120,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if [enable bounding frustum]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableBoundingFrustum { set; get; } = false;
+        public bool EnableBoundingFrustum = false;
 
         /// <summary>
         /// Gets the actual width.
@@ -159,8 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 1f/(float)ActualWidth, 1f/(float)ActualHeight);
                     var ar = globalTransform.Viewport.X / globalTransform.Viewport.Y;
 
-                    var pc = c as PerspectiveCameraCore;
-                    var fov = (pc != null) ? pc.FieldOfView : 90f;
+                    var fov = (c is PerspectiveCameraCore pc) ? pc.FieldOfView : 90f;
 
                     var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
                     var zf = c.FarPlaneDistance + 0.0;
@@ -187,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if this instance is deferred pass; otherwise, <c>false</c>.
         /// </value>
-        public bool IsDeferredPass { get; set; }
+        public bool IsDeferredPass;
 
         /// <summary>
         /// Gets or sets a value indicating whether is order independent transparent pass.
@@ -195,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if this instance is oit pass; otherwise, <c>false</c>.
         /// </value>
-        public bool IsOITPass { set; get; } = false;
+        public bool IsOITPass = false;
 
         /// <summary>
         /// Gets or sets the name of the custom pass.
@@ -203,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The name of the custom pass.
         /// </value>
-        public string CustomPassName { set; get; } = "";
+        public string CustomPassName = "";
 
         /// <summary>
         /// Gets or sets the time stamp.
@@ -211,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The time stamp.
         /// </value>
-        public TimeSpan TimeStamp { set; get; }
+        public TimeSpan TimeStamp;
 
         /// <summary>
         /// Gets or sets the light scene.
@@ -219,9 +192,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The light scene.
         /// </value>
-        public Light3DSceneShared LightScene { private set; get; }
+        public readonly Light3DSceneShared LightScene;
 
-        private ConstantBufferProxy cbuffer;
+        private readonly ConstantBufferProxy cbuffer;
 
         private GlobalTransformStruct globalTransform;
 
@@ -239,10 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The shared resource.
         /// </value>
-        public ContextSharedResource SharedResource
-        {
-            private set; get;
-        }
+        public readonly ContextSharedResource SharedResource;
 
         /// <summary>
         /// Gets or sets a value indicating whether [update octree] automatically.
@@ -250,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if [update octree]; otherwise, <c>false</c>.
         /// </value>
-        public bool AutoUpdateOctree { set; get; } = true;
+        public bool AutoUpdateOctree = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether this render pass is using inverted cull mode.
@@ -260,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> Set invert cullmode flag; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInvertCullMode { set; get; } = false;
+        public bool IsInvertCullMode = false;
 
         /// <summary>
         /// Gets or sets the oit weight power used for color weight calculation. Default = 3;
@@ -361,14 +331,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (updateGlobalTransform)
             {
-                if (matrixChanged)
-                {
-                    globalTransform.View = ViewMatrix;
-                    globalTransform.Projection = ProjectionMatrix;
-                    globalTransform.ViewProjection = globalTransform.View * globalTransform.Projection;
-                    screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
-                    matrixChanged = false;
-                }
+                globalTransform.View = ViewMatrix;
+                globalTransform.Projection = ProjectionMatrix;
+                globalTransform.ViewProjection = ViewMatrix * ProjectionMatrix;
+                screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                 cbuffer.UploadDataToBuffer(deviceContext, ref globalTransform);
             }
             if (updateLights)

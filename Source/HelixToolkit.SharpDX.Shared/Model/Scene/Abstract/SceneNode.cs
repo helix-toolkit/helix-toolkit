@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         ///   <c>true</c> if [need matrix update]; otherwise, <c>false</c>.
         /// </value>
-        protected bool NeedMatrixUpdate { private set; get; } = true;
+        protected bool NeedMatrixUpdate = true;
 
         private Matrix modelMatrix = Matrix.Identity;
 
@@ -509,7 +509,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected virtual bool CanRender(RenderContext context)
         {
-            return Visible && IsAttached;
+            return visible && IsAttached;
         }
 
         /// <summary>
