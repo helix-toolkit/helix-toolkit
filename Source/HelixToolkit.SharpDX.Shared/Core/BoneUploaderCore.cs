@@ -39,9 +39,9 @@ namespace HelixToolkit.UWP.Core
 
         public StructuredBufferProxy BoneSkinSB { private set; get; }
 
-        public BoneUploaderCore() : base(RenderType.PreProc)
+        public BoneUploaderCore() : base(RenderType.None)
         {
-            NeedUpdate = true;
+            NeedUpdate = false;
         }
 
         public override void Render(RenderContext context, DeviceContextProxy deviceContext)
