@@ -43,11 +43,17 @@ namespace BoneSkinDemo
                 showWireframe = value;
                 OnPropertyChanged();
                  
-                foreach(var model in Models)
+                foreach(var group in Models)
                 {
-                    if(model is MeshGeometryModel3D m)
+                    if(group is GroupModel3D g)
                     {
-                        m.RenderWireframe = value;
+                        foreach(var model in g.Children)
+                        {
+                            if(model is MeshGeometryModel3D m)
+                            {
+                                m.RenderWireframe = value;
+                            }     
+                        }                  
                     }
                 }
             }
