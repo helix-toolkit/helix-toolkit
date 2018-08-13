@@ -31,29 +31,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         public Guid GUID { get { return RenderCore.GUID; } }
 
-        private Matrix totalModelMatrix = Matrix.Identity;
-        protected bool forceUpdateTransform = false;
-
         /// <summary>
-        ///
+        /// Do not assgin this field. This is updated by <see cref="ComputeTransformMatrix"/>.
+        /// Used as field only for performance consideration.
         /// </summary>
-        public Matrix TotalModelMatrix
-        {
-            private set
-            {
-                if (Set(ref totalModelMatrix, value) || forceUpdateTransform)
-                {
-                    TransformChanged(ref value);
-                    OnTransformChanged?.Invoke(this, new TransformArgs(ref value));
-                    RenderCore.ModelMatrix = value;
-                    forceUpdateTransform = false;
-                }
-            }
-            get
-            {
-                return totalModelMatrix;
-            }
-        }
+        public Matrix TotalModelMatrix = Matrix.Identity;
+
         /// <summary>
         /// Gets or sets the order key.
         /// </summary>
@@ -115,27 +98,21 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             get { return modelMatrix; }
         }
 
-        private Matrix parentMatrix = Matrix.Identity;
-
-        /// <summary>
-        /// Gets or sets the parent matrix.
-        /// </summary>
-        /// <value>
-        /// The parent matrix.
-        /// </value>
-        public Matrix ParentMatrix
+        private SceneNode parent = NullSceneNode.NullNode;
+        public SceneNode Parent
         {
-            set
+            internal set
             {
-                if (Set(ref parentMatrix, value))
+                if(Set(ref parent, value))
                 {
                     NeedMatrixUpdate = true;
+                    if (value == null)
+                    {
+                        value = NullSceneNode.NullNode;
+                    }
                 }
             }
-            get
-            {
-                return parentMatrix;
-            }
+            get { return parent; }
         }
 
         private bool visible = true;
@@ -261,10 +238,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="totalTransform">The total transform.</param>
         protected virtual void TransformChanged(ref Matrix totalTransform)
         {
-            for (int i = 0; i < Items.Count; ++i)
-            {
-                Items[i].ParentMatrix = totalTransform;
-            }
         }
 
         /// <summary>
@@ -347,6 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         #endregion Events
 
+        private RenderCore core;
         /// <summary>
         /// Initializes a new instance of the <see cref="SceneNode"/> class.
         /// </summary>
@@ -355,9 +329,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             WrapperSource = this;
             renderCore = new Lazy<RenderCore>(() => 
             {
-                var c = OnCreateRenderCore();
-                c.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
-                return c;
+                core = OnCreateRenderCore();
+                core.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
+                return core;
             }, true);
         }
 
@@ -387,6 +361,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             IsAttached = OnAttach(host);
             if (IsAttached)
             {
+                NeedMatrixUpdate = true;
                 Attached();
                 OnAttached?.Invoke(this, EventArgs.Empty);
             }
@@ -476,10 +451,22 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return;
             }
-            if (NeedMatrixUpdate || forceUpdateTransform)
+            ComputeTransformMatrix();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void ComputeTransformMatrix()
+        {
+            if (NeedMatrixUpdate)
             {
-                TotalModelMatrix = modelMatrix * parentMatrix;
+                core.ModelMatrix = TotalModelMatrix = modelMatrix * parent.TotalModelMatrix;
+                for (int i = 0; i < Items.Count; ++i)
+                {
+                    Items[i].NeedMatrixUpdate = true;
+                }
                 NeedMatrixUpdate = false;
+                TransformChanged(ref TotalModelMatrix);
+                OnTransformChanged?.Invoke(this, new TransformArgs(ref TotalModelMatrix));               
             }
         }
         /// <summary>
@@ -520,7 +507,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
-            RenderCore.Render(context, deviceContext);
+            core.Render(context, deviceContext);
         }
 
         /// <summary>
@@ -531,7 +518,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
-            RenderCore.RenderShadow(context, deviceContext);
+            core.RenderShadow(context, deviceContext);
         }
         /// <summary>
         /// Renders the custom.
@@ -541,7 +528,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
-            RenderCore.RenderCustom(context, deviceContext);
+            core.RenderCustom(context, deviceContext);
         }
         /// <summary>
         /// View frustum test.
@@ -567,7 +554,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             if (CanHitTest(context))
             {
-                return OnHitTest(context, totalModelMatrix, ref ray, ref hits);
+                return OnHitTest(context, TotalModelMatrix, ref ray, ref hits);
             }
             else
             {
@@ -878,6 +865,16 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             this.RaisePropertyChanged(propertyName);
             InvalidateSceneGraph();
             return true;
+        }
+    }
+
+    public sealed class NullSceneNode : SceneNode
+    {
+        public static readonly NullSceneNode NullNode = new NullSceneNode();
+
+        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            return false;
         }
     }
 }
