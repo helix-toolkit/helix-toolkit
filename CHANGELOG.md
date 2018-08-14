@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## Next Release
 ### Added
+1. Axis aligned plane grid. (WPF.SharpDX and UWP)
+2. CMO Reader. (WPF.SharpDX and UWP)
 
 ### Improvement and Changes
 1. Move render environment map and render shadow map into PhongMaterial. (WPF.SharpDX and UWP)
