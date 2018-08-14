@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 1. Move render environment map and render shadow map into PhongMaterial. (WPF.SharpDX and UWP)
 2. Includes material sorting if EnableRenderOrder = true. Update RenderOrder to ushort. Update sorting key to be uint = [RenderOrder, MaterialID]. (WPF.SharpDX and UWP)
 3. MaterialVariable pooling. (WPF.SharpDX and UWP)
-4. Obsolete BoneMatrices struct. Improve BoneSkinnedGeomerty3D. Directly Martix array binding for bones. Add BoneGroupModel3D for bone sharing. Implemented basic key frame animation support and Demo. (WPF.SharpDX and UWP)
+4. Obsolete BoneMatrices struct. Improve BoneSkinnedGeomerty3D. Directly Martix array binding for bones. Add BoneGroupModel3D for bone sharing. Implemented basic key frame animation support and [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/BoneSkinDemo). (WPF.SharpDX and UWP)
 
 
 ### Fixed
