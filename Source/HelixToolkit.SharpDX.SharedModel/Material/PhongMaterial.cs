@@ -518,7 +518,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(UVTransformProperty, value); }
         }
 
-        public PhongMaterial Clone()
+        public PhongMaterial CloneMaterial()
         {
             return new PhongMaterial()
             {
