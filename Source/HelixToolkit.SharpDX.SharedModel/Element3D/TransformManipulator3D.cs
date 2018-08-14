@@ -621,7 +621,15 @@ namespace HelixToolkit.Wpf.SharpDX
             m.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);
             scaleMatrix = Matrix.Scaling(scale);
             rotationMatrix = Matrix.RotationQuaternion(rotation);
-            translationVector = translation;
+            if (centerOffset != Vector3.Zero)
+            {
+                var org = Matrix.Translation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.Translation(centerOffset);
+                translationVector = translation - org.TranslationVector;
+            }
+            else
+            {
+                translationVector = m.TranslationVector;
+            }
             OnUpdateSelfTransform();
             //OnUpdateTargetMatrix();
         }
