@@ -223,6 +223,10 @@ namespace HelixToolkit.UWP.Core
                 if (pass.IsNULL) { continue; }
                 pass.BindShader(deviceContext);
                 pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                if(mesh.RenderCore is IMaterialRenderParams material)
+                {
+                    material.MaterialVariables.BindMaterial(context, deviceContext, pass);
+                }
                 mesh.RenderCustom(context, deviceContext);
             }
             if (hasMSAA)

@@ -129,7 +129,7 @@ namespace HelixToolkit.UWP.Core
             DrawPoints(deviceContext, GeometryBuffer.VertexBuffer[0], InstanceBuffer);
         }
 
-        protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
             DrawPoints(deviceContext, GeometryBuffer.VertexBuffer[0], InstanceBuffer);
         }
