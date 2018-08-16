@@ -172,9 +172,9 @@
                     <CheckBox Margin="3" IsChecked="{Binding IsThrowingShadow, ElementName=model2}">Model 2</CheckBox>
                     <CheckBox Margin="3" IsChecked="{Binding IsThrowingShadow, ElementName=model3}">Model 3</CheckBox>
                     <CheckBox Margin="3" IsChecked="{Binding IsThrowingShadow, ElementName=lines}">Bounding Box</CheckBox>
-                    <CheckBox Margin="3" IsChecked="{Binding RenderShadowMap, ElementName=model1}">Model 1 RenderShadow</CheckBox>
-                    <CheckBox Margin="3" IsChecked="{Binding RenderShadowMap, ElementName=model2}">Model 2 RenderShadow</CheckBox>
-                    <CheckBox Margin="3" IsChecked="{Binding RenderShadowMap, ElementName=model3}">Model 3 RenderShadow</CheckBox>
+                    <CheckBox Margin="3" IsChecked="{Binding RedMaterial.RenderShadowMap}">Model 1 RenderShadow</CheckBox>
+                    <CheckBox Margin="3" IsChecked="{Binding BlueMaterial.RenderShadowMap}">Model 2 RenderShadow</CheckBox>
+                    <CheckBox Margin="3" IsChecked="{Binding GreenMaterial.RenderShadowMap}">Model 3 RenderShadow</CheckBox>
                     <Separator />
                     <CheckBox Margin="3" IsChecked="{Binding IsShadowMappingEnabled, ElementName=view1}">Shadow Mapping</CheckBox>
                     <StackPanel

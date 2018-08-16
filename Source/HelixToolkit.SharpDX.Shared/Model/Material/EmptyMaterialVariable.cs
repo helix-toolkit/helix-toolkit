@@ -29,12 +29,12 @@ namespace HelixToolkit.UWP.Model
             return false;
         }
 
-        protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
+        protected override bool OnBindMaterialTextures(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             return false;
         }
 
-        public override ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
             return MaterialPass;
         }

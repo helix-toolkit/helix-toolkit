@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Shaders;
     using Render;
-
+    using Components;
     /// <summary>
     /// 
     /// </summary>
@@ -411,8 +411,9 @@ namespace HelixToolkit.UWP.Core
         private ShaderPass insertPass;
         private ShaderPass renderPass;
 
-        private ConstantBufferProxy perFrameCB;
-        private ConstantBufferProxy insertCB;
+        private readonly ConstantBufferComponent perFrameCB;
+        private readonly ConstantBufferComponent insertCB;
+        private readonly ConstantBufferComponent modelCB;
 
         private ShaderResourceViewProxy textureView;
         private SamplerStateProxy textureSampler;
@@ -569,14 +570,12 @@ namespace HelixToolkit.UWP.Core
 
         private readonly object lockObject = new object();
 
-        public ParticleRenderCore() : base(RenderType.Particle) { NeedUpdate = true; }
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        public ParticleRenderCore() : base(RenderType.Particle)
         {
-            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes)));
+            perFrameCB = AddComponent(new ConstantBufferComponent(DefaultBufferNames.ParticleFrameCB, ParticlePerFrame.SizeInBytes));
+            insertCB = AddComponent(new ConstantBufferComponent(DefaultBufferNames.ParticleCreateParameters, ParticleInsertParameters.SizeInBytes));
+            NeedUpdate = true;
         }
 
 
@@ -594,50 +593,32 @@ namespace HelixToolkit.UWP.Core
         }
 
         /// <summary>
-        /// Called when [upload per model constant buffers].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-            base.OnUploadPerModelConstantBuffers(context);
-        }
-
-        /// <summary>
         /// Called when [attach].
         /// </summary>
         /// <param name="technique">The technique.</param>
         /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            if (base.OnAttach(technique))
-            {
-                VertexLayout = technique.Layout;
-                updatePass = technique[DefaultParticlePassNames.Update];
-                insertPass = technique[DefaultParticlePassNames.Insert];
-                renderPass = technique[DefaultParticlePassNames.Default];
-                #region Get binding slots
-                currentStateSlot = updatePass.GetShader(ShaderStage.Compute).UnorderedAccessViewMapping.TryGetBindSlot(CurrentSimStateUAVBufferName);
-                newStateSlot = updatePass.GetShader(ShaderStage.Compute).UnorderedAccessViewMapping.TryGetBindSlot(NewSimStateUAVBufferName);
+            VertexLayout = technique.Layout;
+            updatePass = technique[DefaultParticlePassNames.Update];
+            insertPass = technique[DefaultParticlePassNames.Insert];
+            renderPass = technique[DefaultParticlePassNames.Default];
+            #region Get binding slots
+            currentStateSlot = updatePass.GetShader(ShaderStage.Compute).UnorderedAccessViewMapping.TryGetBindSlot(CurrentSimStateUAVBufferName);
+            newStateSlot = updatePass.GetShader(ShaderStage.Compute).UnorderedAccessViewMapping.TryGetBindSlot(NewSimStateUAVBufferName);
 
-                renderStateSlot = renderPass.GetShader(ShaderStage.Vertex).ShaderResourceViewMapping.TryGetBindSlot(SimStateBufferName);
-                textureSlot = renderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureBufferName);
-                samplerSlot = renderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
-                #endregion
-                perFrameCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleFrameCB, ParticlePerFrame.SizeInBytes);
-                insertCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleCreateParameters, ParticleInsertParameters.SizeInBytes);
-                if (isInitialParticleChanged)
-                {
-                    OnInitialParticleChanged(ParticleCount);
-                }
-                textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
-                OnTextureChanged();
-                OnBlendStateChanged();
-                return true;
-            }
-            else
+            renderStateSlot = renderPass.GetShader(ShaderStage.Vertex).ShaderResourceViewMapping.TryGetBindSlot(SimStateBufferName);
+            textureSlot = renderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureBufferName);
+            samplerSlot = renderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
+            #endregion
+            if (isInitialParticleChanged)
             {
-                return false;
+                OnInitialParticleChanged(ParticleCount);
             }
+            textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+            OnTextureChanged();
+            OnBlendStateChanged();
+            return true;
         }
 
         /// <summary>
@@ -755,7 +736,7 @@ namespace HelixToolkit.UWP.Core
             if (isRestart)
             {
                 FrameVariables.NumParticles = 0;
-                perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
+                perFrameCB.Upload(deviceContext, ref FrameVariables);
                 // Call ComputeShader to add initial particles
                 deviceContext.Dispatch(1, 1, 1);
                 isRestart = false;
@@ -767,7 +748,7 @@ namespace HelixToolkit.UWP.Core
                 //Due to some intel integrated graphic card having issue copy structure count directly into constant buffer.
                 //Has to use staging buffer to read and pass into constant buffer              
                 FrameVariables.NumParticles = (uint)ReadCount("", deviceContext, BufferProxies[0]);
-                perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
+                perFrameCB.Upload(deviceContext, ref FrameVariables);
                 #endregion
 
                 deviceContext.Dispatch(Math.Max(1, (int)Math.Ceiling((double)FrameVariables.NumParticles / 512)), 1, 1);
@@ -782,7 +763,7 @@ namespace HelixToolkit.UWP.Core
 
             if (totalElapsed > InsertElapseThrottle)
             {
-                insertCB.UploadDataToBuffer(deviceContext, ref InsertVariables);
+                insertCB.Upload(deviceContext, ref InsertVariables);
                 // Add more particles 
                 insertPass.BindShader(deviceContext);
                 insertPass.ComputeShader.BindUAV(deviceContext, newStateSlot, BufferProxies[1]);
@@ -805,7 +786,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
+            perFrameCB.Upload(deviceContext, ref FrameVariables);
+            modelCB.Upload(deviceContext, ref modelStruct);
             // Clear binding
             updatePass.ComputeShader.BindUAV(deviceContext, currentStateSlot, null);
             updatePass.ComputeShader.BindUAV(deviceContext, newStateSlot, null);
@@ -829,12 +811,15 @@ namespace HelixToolkit.UWP.Core
         private int ReadCount(string src, DeviceContextProxy context, UnorderedAccessView uav)
         {
             context.CopyStructureCount(particleCountStaging, 0, uav);
-            DataStream ds;
-            var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None, out ds);
-            int CurrentParticleCount = ds.ReadInt();
+            var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None, out DataStream ds);
+            int CurrentParticleCount = 0;
+            using (ds)
+            {
+                CurrentParticleCount = ds.ReadInt();
 #if OUTPUTDEBUGGING
-            Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
+                Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
 #endif
+            }
             context.UnmapSubresource(particleCountStaging, 0);
             return CurrentParticleCount;
         }

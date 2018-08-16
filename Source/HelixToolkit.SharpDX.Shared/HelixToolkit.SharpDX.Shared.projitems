@@ -25,7 +25,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\PathRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\RectangleRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\GeometryRenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\MaterialGeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCoreBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\DefaultMeshBatchingBuffer.cs" />
@@ -41,6 +40,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\LineBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\MeshBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\PointBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\CoreComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Components\ConstantBufferComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\CrossSectionMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\DepthPrepassCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\DynamicCubeMapCore.cs" />

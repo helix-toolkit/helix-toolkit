@@ -12,6 +12,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
     using Render;
+    using Components;
     /// <summary>
     /// 
     /// </summary>
@@ -22,6 +23,7 @@ namespace HelixToolkit.UWP.Core
         private int textureSamplerSlot;
         private int shaderTextureSlot;
         private SamplerStateProxy textureSampler;
+        private readonly ConstantBufferComponent modelCB;
         #endregion
         private bool fixedSize = true;
         /// <summary>
@@ -90,9 +92,13 @@ namespace HelixToolkit.UWP.Core
         }
 
         protected ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardRenderCore"/> class.
+        /// </summary>
+        public BillboardRenderCore()
         {
-            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes)));
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
@@ -133,6 +139,7 @@ namespace HelixToolkit.UWP.Core
             {
                 pass = TransparentPass;
             }
+            modelCB.Upload(deviceContext, ref modelStruct);
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, DefaultStateBinding);
             BindBillboardTexture(deviceContext, pass.PixelShader);

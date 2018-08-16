@@ -287,7 +287,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (OITWeightMode)globalTransform.OITWeightMode;
             }
         }
-
+        /// <summary>
+        /// Gets a value indicating whether this instance is shadow map enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is shadow map enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsShadowMapEnabled => RenderHost.IsShadowMapEnabled;
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>

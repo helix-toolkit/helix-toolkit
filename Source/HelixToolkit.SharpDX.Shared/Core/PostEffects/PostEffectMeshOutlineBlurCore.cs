@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
     using Model;
-    
+    using Components;
 
     /// <summary>
     /// 
@@ -88,6 +88,8 @@ namespace HelixToolkit.UWP.Core
             CpuAccessFlags = CpuAccessFlags.None,
             ArraySize = 1,
         };
+
+        private readonly ConstantBufferComponent modelCB;
         #endregion
         #region Properties
         private string effectName = DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur;
@@ -191,32 +193,21 @@ namespace HelixToolkit.UWP.Core
         public PostEffectMeshOutlineBlurCore() : base(RenderType.PostProc)
         {
             Color = global::SharpDX.Color.Red;
-        }
-
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes);
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            if (base.OnAttach(technique))
-            {
-                screenQuadPass = technique.GetPass(DefaultPassNames.ScreenQuad);
-                blurPassVertical = technique.GetPass(DefaultPassNames.EffectBlurVertical);
-                blurPassHorizontal = technique.GetPass(DefaultPassNames.EffectBlurHorizontal);
-                screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
-                textureSlot = screenOutlinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-                samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
-                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
-                blurCore = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical,
-                    blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager));
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            screenQuadPass = technique.GetPass(DefaultPassNames.ScreenQuad);
+            blurPassVertical = technique.GetPass(DefaultPassNames.EffectBlurVertical);
+            blurPassHorizontal = technique.GetPass(DefaultPassNames.EffectBlurHorizontal);
+            screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
+            textureSlot = screenOutlinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
+            samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+            sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
+            blurCore = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical,
+                blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager));
+            return true;
         }
 
         protected override bool OnUpdateCanRenderFlag()
@@ -259,6 +250,7 @@ namespace HelixToolkit.UWP.Core
                     }
                     BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
                     deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
+                    modelCB.Upload(deviceContext, ref modelStruct);
                     if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                     {
                         var color = Color;
@@ -269,7 +261,7 @@ namespace HelixToolkit.UWP.Core
                         if (modelStruct.Color != color)
                         {
                             modelStruct.Color = color;
-                            OnUploadPerModelConstantBuffers(deviceContext);
+                            modelCB.Upload(deviceContext, ref modelStruct);
                         }
                         context.CustomPassName = DefaultPassNames.EffectOutlineP1;
                         var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
@@ -305,7 +297,7 @@ namespace HelixToolkit.UWP.Core
                         if (modelStruct.Color != color)
                         {
                             modelStruct.Color = color;
-                            OnUploadPerModelConstantBuffers(deviceContext);
+                            modelCB.Upload(deviceContext, ref modelStruct);
                         }
                         context.CustomPassName = DefaultPassNames.EffectOutlineP1;
                         var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];

@@ -21,15 +21,15 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
     using Utilities;
-
+    using Components;
     /// <summary>
     ///
     /// </summary>
     public class DynamicCubeMapCore : RenderCoreBase<GlobalTransformStruct>, IDynamicReflector
     {
         #region
-        private Vector3[] targets = new Vector3[6];
-        private Vector3[] upVectors = new Vector3[6] { Vector3.UnitY, Vector3.UnitY, -Vector3.UnitZ, Vector3.UnitZ, Vector3.UnitY, Vector3.UnitY };
+        private readonly Vector3[] targets = new Vector3[6];
+        private readonly Vector3[] upVectors = new Vector3[6] { Vector3.UnitY, Vector3.UnitY, -Vector3.UnitZ, Vector3.UnitZ, Vector3.UnitY, Vector3.UnitY };
         private CubeFaceCamerasStruct cubeFaceCameras = new CubeFaceCamerasStruct() { Cameras = new CubeFaceCamera[6] };
         // Create the cube map TextureCube (array of 6 textures)
         private Texture2DDescription textureDesc = new Texture2DDescription()
@@ -61,12 +61,13 @@ namespace HelixToolkit.UWP.Core
         private int textureSamplerSlot;
         private ShaderResourceViewProxy cubeDSV;
         // The RTVs, one for each face of cubemap
-        private RenderTargetView[] cubeRTVs = new RenderTargetView[6];
+        private readonly RenderTargetView[] cubeRTVs = new RenderTargetView[6];
         // The DSVs, one for each face of cubemap
-        private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
+        private readonly DepthStencilView[] cubeDSVs = new DepthStencilView[6];
         private SamplerStateProxy textureSampler;
         private IDeviceContextPool contextPool;
         private readonly CommandList[] commands = new CommandList[6];
+        private readonly ConstantBufferComponent modelCB;
         #endregion
         #region Properties
 
@@ -275,11 +276,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public DynamicCubeMapCore() : base(RenderType.PreProc)
         {
-        }
-
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes)));
         }
 
         private bool CreateCubeMapResources()
@@ -338,18 +335,11 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            if (base.OnAttach(technique))
-            {
-                DefaultShaderPass = technique[DefaultShaderPassName];
-                contextPool = technique.EffectsManager.DeviceContextPool;
-                textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
-                CreateCubeMapResources();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            DefaultShaderPass = technique[DefaultShaderPassName];
+            contextPool = technique.EffectsManager.DeviceContextPool;
+            textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+            CreateCubeMapResources();
+            return true;
         }
 
         protected override void OnDetach()
@@ -398,7 +388,7 @@ namespace HelixToolkit.UWP.Core
                 transforms.Viewport = new Vector4(FaceSize, FaceSize, 1/FaceSize, 1/FaceSize);
                 transforms.ViewProjection = transforms.View * transforms.Projection;
 
-                ModelConstBuffer.UploadDataToBuffer(ctx, ref transforms);
+                modelCB.Upload(ctx, ref transforms);
 
                 var frustum = new BoundingFrustum(transforms.ViewProjection);
                 //Render opaque
@@ -453,9 +443,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-        }
         public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
         }

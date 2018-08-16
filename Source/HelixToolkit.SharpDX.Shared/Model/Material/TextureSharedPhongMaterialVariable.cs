@@ -11,10 +11,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
-    using Core;    
+    using Core;
     using Render;
     using ShaderManager;
-    using Shaders;    
+    using Shaders;
     using Utilities;
 
     /// <summary>
@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP.Model
         private readonly ShaderResourceViewProxy[] TextureResources = new ShaderResourceViewProxy[NUMTEXTURES];
         private readonly SamplerStateProxy[] SamplerResources = new SamplerStateProxy[NUMSAMPLERS];
 
-        private int texDiffuseSlot, texAlphaSlot, texNormalSlot, texDisplaceSlot;
+        private int texDiffuseSlot, texAlphaSlot, texNormalSlot, texDisplaceSlot, texShadowSlot;
         private int samplerDiffuseSlot, samplerAlphaSlot, samplerNormalSlot, samplerDisplaceSlot, samplerShadowSlot;
         private uint textureIndex = 0;
         private PhongMaterialStruct materialStruct = new PhongMaterialStruct() { UVTransformR1 = new Vector4(1, 0, 0, 0), UVTransformR2 = new Vector4(0, 1, 0, 0) };
@@ -62,6 +62,13 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         public string ShaderDisplaceTexName { set; get; } = DefaultBufferNames.DisplacementMapTB;
+        /// <summary>
+        /// Gets or sets the name of the shader shadow tex.
+        /// </summary>
+        /// <value>
+        /// The name of the shader shadow tex.
+        /// </value>
+        public string ShaderShadowTexName { set; get; } = DefaultBufferNames.ShadowMapTB;
 
         /// <summary>
         /// 
@@ -165,7 +172,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="technique"></param>
         /// <param name="material"></param>
         public TextureSharedPhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
-            :base(manager, technique, DefaultMeshConstantBufferDesc)
+            : base(manager, technique, DefaultMeshConstantBufferDesc)
         {
             this.material = material;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
@@ -334,17 +341,18 @@ namespace HelixToolkit.UWP.Model
             cbStream.Write(materialStruct);
         }
 
-        protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
+        protected override bool OnBindMaterialTextures(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             if (HasTextures)
             {
-                OnBindMaterialTextures(context, shaderPass.VertexShader);
-                OnBindMaterialTextures(context, shaderPass.DomainShader);
-                OnBindMaterialTextures(context, shaderPass.PixelShader);
+                OnBindMaterialTextures(deviceContext, shaderPass.VertexShader);
+                OnBindMaterialTextures(deviceContext, shaderPass.DomainShader);
+                OnBindMaterialTextures(context, deviceContext, shaderPass.PixelShader);
             }
-            if (material.RenderShadowMap)
+            if (material.RenderShadowMap && context.IsShadowMapEnabled)
             {
-                shaderPass.PixelShader.BindSampler(context, samplerShadowSlot, SamplerResources[NUMSAMPLERS - 1]);
+                shaderPass.PixelShader.BindTexture(deviceContext, texShadowSlot, context.SharedResource.ShadowView);
+                shaderPass.PixelShader.BindSampler(deviceContext, samplerShadowSlot, SamplerResources[ShadowIdx]);
             }
             return true;
         }
@@ -380,23 +388,23 @@ namespace HelixToolkit.UWP.Model
         /// Actual bindings
         /// </summary>
         /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
         /// <param name="shader"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void OnBindMaterialTextures(DeviceContextProxy context, PixelShader shader)
+        private void OnBindMaterialTextures(RenderContext context, DeviceContextProxy deviceContext, PixelShader shader)
         {
             if (shader.IsNULL)
             {
                 return;
             }
             int idx = shader.ShaderStageIndex;
-            shader.BindTexture(context, texDiffuseSlot, TextureResources[DiffuseIdx]);
-            shader.BindTexture(context, texNormalSlot, TextureResources[NormalIdx]);
-            shader.BindTexture(context, texAlphaSlot, TextureResources[AlphaIdx]);
+            shader.BindTexture(deviceContext, texDiffuseSlot, TextureResources[DiffuseIdx]);
+            shader.BindTexture(deviceContext, texNormalSlot, TextureResources[NormalIdx]);
+            shader.BindTexture(deviceContext, texAlphaSlot, TextureResources[AlphaIdx]);
 
-            shader.BindSampler(context, samplerDiffuseSlot, SamplerResources[DiffuseIdx]);
-            shader.BindSampler(context, samplerNormalSlot, SamplerResources[NormalIdx]);
-            shader.BindSampler(context, samplerAlphaSlot, SamplerResources[AlphaIdx]);
-            shader.BindSampler(context, samplerShadowSlot, SamplerResources[ShadowIdx]);
+            shader.BindSampler(deviceContext, samplerDiffuseSlot, SamplerResources[DiffuseIdx]);
+            shader.BindSampler(deviceContext, samplerNormalSlot, SamplerResources[NormalIdx]);
+            shader.BindSampler(deviceContext, samplerAlphaSlot, SamplerResources[AlphaIdx]);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -406,7 +414,7 @@ namespace HelixToolkit.UWP.Model
             texAlphaSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderAlphaTexName);
             texNormalSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderNormalTexName);
             texDisplaceSlot = shaderPass.VertexShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDisplaceTexName);
-
+            texShadowSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowTexName);
             samplerDiffuseSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerDiffuseTexName);
             samplerAlphaSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerAlphaTexName);
             samplerNormalSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerNormalTexName);
@@ -437,9 +445,9 @@ namespace HelixToolkit.UWP.Model
             base.OnDispose(disposeManagedResources);
         }
 
-        public override ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
-            return core.RenderType == RenderType.Transparent && context.IsOITPass ? TransparentPass : MaterialPass;
+            return renderType == RenderType.Transparent && context.IsOITPass ? TransparentPass : MaterialPass;
         }
     }
 }

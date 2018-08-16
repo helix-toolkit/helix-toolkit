@@ -3,8 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 #define MSAASEPARATE
-using SharpDX.Direct3D11;
 using SharpDX;
+using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 
 #if !NETFX_CORE
@@ -13,12 +13,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using global::SharpDX.Direct3D;
     using Render;
     using Shaders;
     using System.Runtime.CompilerServices;
     using Utilities;
-    public class OrderIndependentTransparentRenderCore : RenderCoreBase<int>
+    public sealed class OrderIndependentTransparentRenderCore : RenderCoreBase<int>
     {
         #region Variables
         private ShaderResourceViewProxy colorTarget;
@@ -158,25 +157,15 @@ namespace HelixToolkit.UWP.Core
 #endif
         }
 
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return null;
-        }
-
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            if (base.OnAttach(technique))
-            {
-                screenQuadPass = technique[DefaultPassNames.Default];
-                colorTexIndex = screenQuadPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITColorTB);
-                alphaTexIndex = screenQuadPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITAlphaTB);
-                samplerIndex = screenQuadPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
-                targetSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerWrapAni1));
-                RenderCount = 0;
-                return true;
-            }
-            else
-            { return false; }
+            screenQuadPass = technique[DefaultPassNames.Default];
+            colorTexIndex = screenQuadPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITColorTB);
+            alphaTexIndex = screenQuadPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITAlphaTB);
+            samplerIndex = screenQuadPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+            targetSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerWrapAni1));
+            RenderCount = 0;
+            return true;
         }
 
         protected override void OnDetach()
@@ -245,10 +234,6 @@ namespace HelixToolkit.UWP.Core
         }
 
         protected sealed override void OnUpdatePerModelStruct(ref int model, RenderContext context)
-        {
-        }
-
-        protected sealed override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
         }
     }

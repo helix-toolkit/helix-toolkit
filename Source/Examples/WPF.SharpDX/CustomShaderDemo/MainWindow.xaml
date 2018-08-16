@@ -42,6 +42,8 @@
             Title="{Binding Title}" Grid.Column="0"
             Grid.Row="1" BackgroundColor="Black"
             Camera="{Binding Camera}"
+            EnableSwapChainRendering="True"
+            EnableD2DRendering="False"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             MSAA="Two"
@@ -65,7 +67,6 @@
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
             <local:CustomMeshGeometryModel3D
                 x:Name="dataVisual"
-                ColorGradient="{Binding ColorGradient}"
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding Model}"
                 Material="{Binding ModelMaterial}" RenderWireframe="True" WireframeColor="#3F3B3B3B"/>
