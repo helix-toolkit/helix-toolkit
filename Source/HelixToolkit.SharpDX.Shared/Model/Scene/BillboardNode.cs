@@ -55,6 +55,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
+        /// <summary>
+        /// Gets or sets the sampler description.
+        /// </summary>
+        /// <value>
+        /// The sampler description.
+        /// </value>
+        public SamplerStateDescription SamplerDescription
+        {
+            set
+            {
+                (RenderCore as IBillboardRenderParams).SamplerDescription = value;
+            }
+            get
+            {
+                return (RenderCore as IBillboardRenderParams).SamplerDescription;
+            }
+        }
 
         /// <summary>
         /// Called when [create render core].

@@ -1065,6 +1065,11 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnMouseWheel(e);
         }
 
+        private void Viewport3DX_FormMouseWheel(object sender, WinformHostExtend.FormMouseWheelEventArgs e)
+        {
+            cameraController.OnMouseWheel(this, e);
+            base.OnMouseWheel(e);
+        }
         /// <inheritdoc/>
         protected override void OnTouchUp(TouchEventArgs e)
         {
@@ -1312,7 +1317,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.ZoomExtents();
                 }));              
             }
-            FormMouseMove += Viewport3DX_FormMouseMove;
+            if (EnableSwapChainRendering)
+            {
+                FormMouseMove += Viewport3DX_FormMouseMove;
+                FormMouseWheel += Viewport3DX_FormMouseWheel;
+            }
         }
 
         private void ParentWindow_Closed(object sender, EventArgs e)
@@ -1337,6 +1346,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void ControlUnloaded(object sender, RoutedEventArgs e)
         {
             FormMouseMove -= Viewport3DX_FormMouseMove;
+            FormMouseWheel -= Viewport3DX_FormMouseWheel;
             if (parentWindow != null)
             {
                 parentWindow.Closed -= ParentWindow_Closed;

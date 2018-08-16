@@ -9,8 +9,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Render;
     using Shaders;
+    using Render;
+    using Components;
+
     /// <summary>
     /// 
     /// </summary>
@@ -86,11 +88,15 @@ namespace HelixToolkit.UWP.Core
                 return modelStruct.Color.ToColor4();
             }
         }
+
+        private readonly ConstantBufferComponent modelCB;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PointRenderCore"/> class.
         /// </summary>
         public PointRenderCore()
         {
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes)));
             Width = 0.5f;
             Height = 0.5f;
             Figure = PointFigure.Ellipse;
@@ -108,14 +114,7 @@ namespace HelixToolkit.UWP.Core
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             modelStruct.Color = PointColor;
         }
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
-        }
+
         /// <summary>
         /// Called when [render].
         /// </summary>
@@ -123,8 +122,9 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            modelCB.Upload(deviceContext, ref modelStruct);
             DefaultShaderPass.BindShader(deviceContext);
-            DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);
+            DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);          
             DrawPoints(deviceContext, GeometryBuffer.VertexBuffer[0], InstanceBuffer);
         }
 

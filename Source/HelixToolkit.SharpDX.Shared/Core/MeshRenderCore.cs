@@ -13,7 +13,9 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
     using Utilities;
-    public class MeshRenderCore : MaterialGeometryRenderCore, IMeshRenderParams, IDynamicReflectable
+    using Model;
+
+    public class MeshRenderCore : GeometryRenderCore<ModelStruct>, IMeshRenderParams, IDynamicReflectable
     {
         #region Variables
         /// <summary>
@@ -25,14 +27,12 @@ namespace HelixToolkit.UWP.Core
         protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
         private RasterizerStateProxy rasterStateWireframe = null;
 
-        private int shadowMapSlot;
         #endregion
 
         #region Properties
         protected ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
         protected ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
 
-        public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
         /// <summary>
         /// 
         /// </summary>
@@ -103,6 +103,29 @@ namespace HelixToolkit.UWP.Core
         {
             set; get;
         } = false;
+
+        private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
+        /// <summary>
+        /// Used to wrap all material resources
+        /// </summary>
+        public MaterialVariable MaterialVariables
+        {
+            set
+            {
+                var old = materialVariables;
+                if (Set(ref materialVariables, value))
+                {
+                    if (value == null)
+                    {
+                        materialVariables = EmptyMaterialVariable.EmptyVariable;
+                    }
+                }
+            }
+            get
+            {
+                return materialVariables;
+            }
+        }
         #endregion
 
         protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
@@ -145,38 +168,31 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override void OnDefaultPassChanged(ShaderPass pass)
-        {
-            base.OnDefaultPassChanged(pass);
-            shadowMapSlot = pass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
-        }
-
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
-            base.OnUpdatePerModelStruct(ref model, context);
+            model.World = ModelMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             model.RenderOIT = context.IsOITPass ? 1 : 0;
             model.Batched = Batched ? 1 : 0;
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            ShaderPass pass = MaterialVariables.GetPass(this, context);
+            ShaderPass pass = MaterialVariables.GetPass(RenderType, context);
             if (pass.IsNULL)
             { return; }
+            MaterialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, DefaultStateBinding);
-            if (!BindMaterialTextures(deviceContext, pass))
+            if (!materialVariables.BindMaterial(context, deviceContext, pass))
             {
                 return;
             }
-            if (context.RenderHost.IsShadowMapEnabled)
-            {
-                pass.PixelShader.BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
-            }
+
             DynamicReflector?.BindCubeMap(deviceContext);
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
             DynamicReflector?.UnBindCubeMap(deviceContext);
-            if (RenderWireframe && WireframePass != ShaderPass.NullPass)
+            if (RenderWireframe && !WireframePass.IsNULL)
             {
                 if (RenderType == RenderType.Transparent && context.IsOITPass)
                 {
@@ -195,6 +211,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
+            MaterialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
 
@@ -202,6 +219,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (!IsThrowingShadow || ShadowPass.IsNULL)
             { return; }
+            MaterialVariables.UpdateModelStructOnly(deviceContext, ref modelStruct);
             ShadowPass.BindShader(deviceContext);
             ShadowPass.BindStates(deviceContext, ShadowStateBinding);
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);

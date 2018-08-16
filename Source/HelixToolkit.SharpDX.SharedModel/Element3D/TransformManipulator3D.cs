@@ -620,10 +620,18 @@ namespace HelixToolkit.Wpf.SharpDX
         private void SceneNode_OnTransformChanged(object sender, TransformArgs e)
         {
             var m = e.Transform;
-            Matrix.Decompose(m, out Vector3 scale, out Quaternion rotation, out Vector3 translation);
-            scaleMatrix = Matrix.CreateScale(scale);
-            rotationMatrix = Matrix.CreateFromQuaternion(rotation);
-            translationVector = translation;
+            m.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);
+            scaleMatrix = Matrix.Scaling(scale);
+            rotationMatrix = Matrix.RotationQuaternion(rotation);
+            if (centerOffset != Vector3.Zero)
+            {
+                var org = Matrix.Translation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.Translation(centerOffset);
+                translationVector = translation - org.TranslationVector;
+            }
+            else
+            {
+                translationVector = m.TranslationVector;
+            }
             OnUpdateSelfTransform();
             //OnUpdateTargetMatrix();
         }

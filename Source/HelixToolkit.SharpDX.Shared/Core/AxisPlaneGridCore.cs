@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Render;
     using Shaders;
-    using System;
+    using Components;
     using Utilities;
 
     public class AxisPlaneGridCore : RenderCoreBase<PlaneGridModelStruct>
@@ -218,11 +218,14 @@ namespace HelixToolkit.UWP.Core
             }
             get { return gridType; }
         }
+
+        private readonly ConstantBufferComponent modelCB;
         /// <summary>
         /// Initializes a new instance of the <see cref="AxisPlaneGridCore"/> class.
         /// </summary>
         public AxisPlaneGridCore() : base(RenderType.Particle)
         {
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.PlaneGridModelCB, PlaneGridModelStruct.SizeInBytes)));
             modelStruct = new PlaneGridModelStruct()
             {
                 World = Matrix.Identity,
@@ -237,24 +240,16 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            if (base.OnAttach(technique))
-            {
-                DefaultShaderPass = technique[DefaultPassNames.Default];
-                samplerSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.ShadowMapSampler);
-                shadowMapSlot = DefaultShaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.ShadowMapTB);
-                shadowSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.ShadowSampler));
-                return true;
-            }
-            else { return false; }
-        }
-
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.PlaneGridModelCB, PlaneGridModelStruct.SizeInBytes);
+            DefaultShaderPass = technique[DefaultPassNames.Default];
+            samplerSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.ShadowMapSampler);
+            shadowMapSlot = DefaultShaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.ShadowMapTB);
+            shadowSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.ShadowSampler));
+            return true;
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            modelCB.Upload(deviceContext, ref modelStruct);
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
             if(RenderShadowMap && context.SharedResource.ShadowView != null)

@@ -1,6 +1,5 @@
 #ifndef VSMESHDEFAULT_HLSL
 #define VSMESHDEFAULT_HLSL
-#define MATERIAL
 #define MESH
 #include"Common.hlsl"
 #include"DataStructs.hlsl"
@@ -13,29 +12,6 @@ PSInput main(VSInput input)
     float3 inputn = input.n;
     float3 inputt1 = input.t1;
     float3 inputt2 = input.t2;
-    if (bInvertNormal)
-    {
-        inputn = -inputn;
-    }
-
-    // compose instance matrix
-    if (bHasInstances)
-    {
-        matrix mInstance =
-        {
-            input.mr0,
-            input.mr1,
-            input.mr2,
-            input.mr3
-        };
-        inputp = mul(input.p, mInstance);
-        inputn = mul(inputn, (float3x3) mInstance);
-        if (bHasNormalMap)
-        {
-            inputt1 = mul(inputt1, (float3x3) mInstance);
-            inputt2 = mul(inputt2, (float3x3) mInstance);
-        }
-    }
 
     //set position into world space	
     output.p = mul(inputp, mWorld);

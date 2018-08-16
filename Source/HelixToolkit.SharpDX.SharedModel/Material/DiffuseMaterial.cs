@@ -102,6 +102,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMapSampler = DiffuseMapSampler
             };
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new DiffuseMaterial()
+            {
+                DiffuseColor = DiffuseColor,
+                DiffuseMap = DiffuseMap,
+                DiffuseMapSampler = DiffuseMapSampler,
+                UVTransform = UVTransform,
+                Name = Name
+            };
+        }
+#endif
     }
 
     public class DiffuseMaterialCollection : ObservableCollection<DiffuseMaterial>

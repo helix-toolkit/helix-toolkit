@@ -17,6 +17,8 @@ namespace ShadowMapDemo
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using System.Diagnostics;
+    using System.Windows;
 
     public class MainViewModel : BaseViewModel
     {
@@ -45,10 +47,10 @@ namespace ShadowMapDemo
         //public Vector3 DirectionalLightDirection { get; private set; }
         public Media.Color DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
-        public Vector2 ShadowMapResolution { get; private set; }
+        public Size ShadowMapResolution { get; private set; }
 
         public double XValue { get { return this.xvalue; } set { this.SetXValue(value); } }
-        public Camera Camera1 { private set; get; }
+        public ProjectionCamera Camera1 { private set; get; }
         //public Camera Camera2 { private set; get; }
 
         public MainViewModel()
@@ -64,7 +66,7 @@ namespace ShadowMapDemo
             this.DirectionalLightColor = Media.Colors.White;
             //this.DirectionalLightDirection = new Vector3(-1, -1, -1);
            // this.LightDirectionTransform = CreateAnimatedTransform(-DirectionalLightDirection.ToVector3D(), new Vector3D(0, 1, -1), 24);
-            this.ShadowMapResolution = new Vector2(2048, 2048);
+            this.ShadowMapResolution = new Size(2048, 2048);
 
             // camera setup
             this.Camera = new PerspectiveCamera { Position =new Point3D(0,1,1), LookDirection = new Vector3D(0,-1,-1), UpDirection = new Vector3D(0, 1, 0) };

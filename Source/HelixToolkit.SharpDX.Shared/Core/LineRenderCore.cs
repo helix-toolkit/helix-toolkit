@@ -9,8 +9,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Render;
     using Shaders;
+    using Render;
+    using Components;
     /// <summary>
     /// 
     /// </summary>
@@ -58,8 +59,11 @@ namespace HelixToolkit.UWP.Core
 
         #endregion
 
+        private readonly ConstantBufferComponent modelCB;
+
         public LineRenderCore()
         {
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes)));
             LineColor = Color.Black;
             Thickness = 0.5f;
             Smoothness = 0;
@@ -71,13 +75,9 @@ namespace HelixToolkit.UWP.Core
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
         }
 
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
-        }
-
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            modelCB.Upload(deviceContext, ref modelStruct);
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);

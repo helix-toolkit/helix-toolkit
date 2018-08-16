@@ -37,7 +37,7 @@ PSPlaneGridInput main(uint vI : SV_VERTEXID)
         v = float4(vt.x, vt.y, planeD, 1);
         output.uv = v.xy;
     }
-    output.wp = v;
+    output.wp = v.xyz;
     output.p = mul(v, mViewProjection);    
     if (bHasShadowMap)
     {

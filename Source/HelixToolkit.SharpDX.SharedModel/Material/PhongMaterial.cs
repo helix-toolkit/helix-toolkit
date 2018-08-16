@@ -519,7 +519,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(UVTransformProperty, value); }
         }
 
-        public PhongMaterial Clone()
+        public PhongMaterial CloneMaterial()
         {
             return new PhongMaterial()
             {
@@ -553,6 +553,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 UVTransform = UVTransform,
             };
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return Clone();
+        }
+#endif
 
         protected override MaterialCore OnCreateCore()
         {

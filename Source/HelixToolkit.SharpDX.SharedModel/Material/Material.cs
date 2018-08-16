@@ -16,7 +16,11 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
 
     [DataContract]
+#if NETFX_CORE
     public abstract class Material : DependencyObject
+#else
+    public abstract class Material : Freezable
+#endif
     {
         private MaterialCore core;
 

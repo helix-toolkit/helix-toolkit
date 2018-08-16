@@ -3,9 +3,6 @@
 #include"Common.hlsl"
 #include"CommonBuffers.hlsl"
 
-Texture1D texData : register(t0);
-SamplerState texDataSampler : register(s0);
-
 //--------------------------------------------------------------------------------------
 // Blinn-Phong Lighting Reflection Model
 //--------------------------------------------------------------------------------------
@@ -17,7 +14,7 @@ float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, 
 
 float4 main(PSInput input) : SV_Target
 {    
-    float4 vMaterialTexture = texData.Sample(texDataSampler, input.t.x);
+    float4 vMaterialTexture = texColorStripe1DX.Sample(samplerDiffuse, input.t.x);
     float3 ddxPos = ddx(input.vEye.xyz);
     float3 ddyPos = ddy(input.vEye.xyz);
     float3 n = cross(ddxPos, ddyPos);

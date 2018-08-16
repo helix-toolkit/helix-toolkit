@@ -24,13 +24,6 @@ namespace HelixToolkit.UWP.Core
         /// The model structure
         /// </summary>
         protected TModelStruct modelStruct;
-        /// <summary>
-        /// Gets or sets the model cb.
-        /// </summary>
-        /// <value>
-        /// The model cb.
-        /// </value>
-        protected ConstantBufferProxy ModelConstBuffer { private set; get; }
         #endregion
 
         /// <summary>
@@ -40,23 +33,6 @@ namespace HelixToolkit.UWP.Core
         public RenderCoreBase(RenderType renderType) : base(renderType)
         {
         }
-
-        /// <summary>
-        /// During attatching render core. Create all local resources. Use Collect(resource) to let object be released automatically during Detach().
-        /// </summary>
-        /// <param name="technique"></param>
-        /// <returns></returns>
-        protected override bool OnAttach(IRenderTechnique technique)
-        {
-            ModelConstBuffer = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription());
-            return true;
-        }        
-
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected abstract ConstantBufferDescription GetModelConstantBufferDescription();
 
         /// <summary>
         /// Trigger OnRender function delegate if CanRender()==true
@@ -82,7 +58,6 @@ namespace HelixToolkit.UWP.Core
                 {
                     return false;
                 }
-                OnUploadPerModelConstantBuffers(deviceContext);
                 OnBindRasterState(deviceContext, context.IsInvertCullMode);
             }
             return CanRenderFlag;
@@ -132,14 +107,5 @@ namespace HelixToolkit.UWP.Core
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
         protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, RenderContext context);
-
-        /// <summary>
-        /// Called when [upload per model constant buffers].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected virtual void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-            ModelConstBuffer.UploadDataToBuffer(context, ref modelStruct);
-        }
     }
 }

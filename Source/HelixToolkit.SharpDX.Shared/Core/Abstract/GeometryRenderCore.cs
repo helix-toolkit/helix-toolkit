@@ -209,14 +209,10 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(technique))
-            {
-                DefaultShaderPass = technique[DefaultShaderPassName];
-                ShadowPass = technique[DefaultShadowPassName];
-                CreateRasterState(rasterDescription, true);       
-                return true;
-            }
-            return false;
+            DefaultShaderPass = technique[DefaultShaderPassName];
+            ShadowPass = technique[DefaultShadowPassName];
+            CreateRasterState(rasterDescription, true);       
+            return true;
         }
 
         protected override void OnDetach()
