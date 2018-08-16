@@ -30,7 +30,7 @@ namespace CustomShaderDemo
         public MeshGeometry3D SphereModel { get; private set; }
         public LineGeometry3D AxisModel { get; private set; }
         public BillboardText3D AxisLabel { private set; get; }
-        public PhongMaterial ModelMaterial { get; private set; } = PhongMaterials.White;
+        public ColorStripeMaterial ModelMaterial { get; private set; } = new ColorStripeMaterial();
         public PhongMaterial SphereMaterial { private set; get; } = PhongMaterials.Copper;
 
         private Color startColor;
@@ -95,7 +95,10 @@ namespace CustomShaderDemo
         {
             private set
             {
-                SetValue(ref colorGradient, value);
+                if(SetValue(ref colorGradient, value))
+                {
+                    ModelMaterial.ColorStripeX = value;
+                }
             }
             get { return colorGradient; }
         }
