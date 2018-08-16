@@ -84,7 +84,7 @@ namespace HelixToolkit.UWP.Core
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
 
-        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
             DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
