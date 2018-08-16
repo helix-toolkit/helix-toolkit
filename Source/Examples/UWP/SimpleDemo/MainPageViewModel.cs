@@ -143,7 +143,7 @@ namespace SimpleDemoW10
             };
             Material.DiffuseMap = LoadTexture("TextureCheckerboard2.jpg");
             Material.NormalMap = LoadTexture("TextureCheckerboard2_dot3.jpg");
-            Material1 = Material.Clone();
+            Material1 = Material.CloneMaterial();
             Material1.ReflectiveColor = Color.Silver;
             Material1.RenderDiffuseMap = false;
             Material1.RenderNormalMap = false;

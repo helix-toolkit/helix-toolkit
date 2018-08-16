@@ -13,18 +13,19 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
     using Utilities;
-
+    using Components;
     public class CrossSectionMeshRenderCore : MeshRenderCore, ICrossSectionRenderParams
     {
         private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
         #region Shader Variables
-        private ConstantBufferProxy clipParamCB;
         private ShaderPass drawBackfacePass;
         private ShaderPass drawScreenQuadPass;
         /// <summary>
         /// Used to draw back faced triangles onto stencil buffer
         /// </summary>
         private RasterizerStateProxy backfaceRasterState;
+
+        private readonly ConstantBufferComponent clipParamCB;
         #endregion
         #region Properties
         private CuttingOperation cuttingOperation = CuttingOperation.Intersect;
@@ -199,11 +200,15 @@ namespace HelixToolkit.UWP.Core
 
         #endregion
 
+        public CrossSectionMeshRenderCore()
+        {
+            clipParamCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.ClipParamsCB, ClipPlaneStruct.SizeInBytes)));
+        }
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
             {
-                clipParamCB = technique.ConstantBufferPool.Register(GetClipParamsCBDescription());
                 drawBackfacePass = technique[DefaultPassNames.Backface];
                 drawScreenQuadPass = technique[DefaultPassNames.ScreenQuad];
                 return true;
@@ -215,11 +220,6 @@ namespace HelixToolkit.UWP.Core
         {
             backfaceRasterState = null;
             base.OnDetach();
-        }
-
-        protected virtual ConstantBufferDescription GetClipParamsCBDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.ClipParamsCB, ClipPlaneStruct.SizeInBytes);
         }
 
         protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
@@ -246,14 +246,9 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-            base.OnUploadPerModelConstantBuffers(context);
-            clipParamCB.UploadDataToBuffer(context, ref clipParameter);
-        }
-
         protected override void OnRender(RenderContext renderContext, DeviceContextProxy deviceContext)
         {
+            clipParamCB.Upload(deviceContext, ref clipParameter);
             base.OnRender(renderContext, deviceContext);
             // Draw backface into stencil buffer
             var dsView = renderContext.RenderHost.DepthStencilBufferView;

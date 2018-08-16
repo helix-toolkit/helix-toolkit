@@ -139,22 +139,6 @@ namespace HelixToolkit.UWP.Core
             cubeTextureRes = null;
             base.OnDetach();
         }
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return null;
-        }
-        /// <summary>
-        /// Called when [upload per model constant buffers].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-
-        }
 
         /// <summary>
         /// Called when [default pass changed].

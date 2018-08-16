@@ -135,7 +135,7 @@ namespace HelixToolkit.UWP.Model
         private readonly string defaultShaderPassName = DefaultPassNames.ColorStripe1D;
         public override string DefaultShaderPassName
         {
-            set;get;
+            set; get;
         }
 
         private readonly ColorStripeMaterialCore material;
@@ -191,7 +191,7 @@ namespace HelixToolkit.UWP.Model
             RemoveAndDispose(ref textures[which]);
             textures[which] = (colors == null || colors.Count == 0) ? null : Collect(new ShaderResourceViewProxy(deviceResources.Device));
             textures[which]?.CreateViewFromColorArray(colors.ToArray());
-            if(textures[which] != null)
+            if (textures[which] != null)
             {
                 textureIndex |= 1u << which;
             }
@@ -248,11 +248,11 @@ namespace HelixToolkit.UWP.Model
             cbStream.Write(materialStruct);
         }
 
-        protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
+        protected override bool OnBindMaterialTextures(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             if (textureIndex != 0)
             {
-                OnBindMaterialTextures(context, shaderPass.PixelShader);
+                OnBindMaterialTextures(deviceContext, shaderPass.PixelShader);
             }
             return true;
         }
@@ -292,7 +292,7 @@ namespace HelixToolkit.UWP.Model
             if (disposeManagedResources)
             {
                 material.PropertyChanged -= Material_OnMaterialPropertyChanged;
-                for(int i =0; i < textures.Length; ++i)
+                for (int i = 0; i < textures.Length; ++i)
                 {
                     textures[i] = null;
                 }
@@ -302,7 +302,7 @@ namespace HelixToolkit.UWP.Model
             base.OnDispose(disposeManagedResources);
         }
 
-        public override ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
             return MaterialPass;
         }
