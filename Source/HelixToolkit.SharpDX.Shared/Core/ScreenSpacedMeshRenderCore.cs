@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Render;
     using Components;
+    using Mathematics;
     /// <summary>
     /// 
     /// </summary>

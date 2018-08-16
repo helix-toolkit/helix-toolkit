@@ -190,7 +190,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public PostEffectMeshOutlineBlurCore() : base(RenderType.PostProc)
         {
-            Color = global::SharpDX.Color.Red;
+            Color = Mathematics.Color.Red;
             modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
         }
 

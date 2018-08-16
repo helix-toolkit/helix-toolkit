@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using SharpDX;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene

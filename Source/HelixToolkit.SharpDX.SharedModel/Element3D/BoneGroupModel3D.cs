@@ -1,4 +1,4 @@
-﻿using SharpDX;
+﻿using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;

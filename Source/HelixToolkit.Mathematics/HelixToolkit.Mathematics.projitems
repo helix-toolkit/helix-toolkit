@@ -34,7 +34,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Matrix.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Matrix3x2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Matrix3x3.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OrientedBoundingBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plane.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Point.cs" />

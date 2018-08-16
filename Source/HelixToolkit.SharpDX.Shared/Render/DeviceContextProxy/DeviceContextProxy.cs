@@ -1,4 +1,5 @@
 using HelixToolkit.Mathematics;
+using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 
 #if DX11_1

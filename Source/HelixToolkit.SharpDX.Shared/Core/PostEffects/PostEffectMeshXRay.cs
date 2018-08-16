@@ -123,7 +123,7 @@ namespace HelixToolkit.UWP.Core
         public PostEffectMeshXRayCore() : base(RenderType.PostProc)
         {
             modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
-            Color = global::SharpDX.Color.Blue;           
+            Color = Mathematics.Color.Blue;           
         }
 
 

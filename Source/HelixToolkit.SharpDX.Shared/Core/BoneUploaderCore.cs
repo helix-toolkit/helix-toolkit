@@ -2,8 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
 using System;
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Utilities;
     using Shaders;
+    using Mathematics;
 
     public sealed class BoneUploaderCore : RenderCore
     {
@@ -68,7 +69,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            BoneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes, false));
+            BoneSkinSB = Collect(new StructuredBufferProxy(MatrixHelper.SizeInBytes, false));
             return true;
         }
 
