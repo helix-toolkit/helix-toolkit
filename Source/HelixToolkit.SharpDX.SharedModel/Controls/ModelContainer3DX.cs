@@ -21,6 +21,7 @@ using System.Windows.Controls;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using System.ComponentModel;
     using Core2D;
     using HelixToolkit.Logger;
     using Render;
@@ -311,6 +312,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color of the clear.
         /// </value>
         /// <exception cref="NotImplementedException"></exception>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 ClearColor
         {
             get
