@@ -14,6 +14,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Shaders;
     using System.Collections.Generic;
+    using System.ComponentModel;
+    using Utilities;
 
     /// <summary>
     /// 
@@ -34,6 +36,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets the diffuse color for the material.
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 DiffuseColor
         {
             get { return (Color4)this.GetValue(DiffuseColorProperty); }
