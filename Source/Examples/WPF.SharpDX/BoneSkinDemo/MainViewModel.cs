@@ -103,11 +103,26 @@ namespace BoneSkinDemo
             get { return selectedAnimation; }
         }
 
+        private AnimationRepeatMode selectedRepeatMode = AnimationRepeatMode.Loop;
+        public AnimationRepeatMode SelectedRepeatMode
+        {
+            set
+            {
+                if(SetValue(ref selectedRepeatMode, value))
+                {
+                    reset = true;
+                }
+            }
+            get { return selectedRepeatMode; }
+        }
+
         public Media3D.Transform3D ModelTransform { private set; get; }
 
         public string[] Animations { private set; get; }
 
         public GridPattern[] GridTypes { get; } = new GridPattern[] { GridPattern.Tile, GridPattern.Grid };
+
+        public AnimationRepeatMode[] RepeatModes { get; } = new AnimationRepeatMode[] { AnimationRepeatMode.Loop, AnimationRepeatMode.PlayOnce, AnimationRepeatMode.PlayOnceHold };
 
         private Matrix[] boneInternal = new Matrix[0];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
@@ -254,6 +269,7 @@ namespace BoneSkinDemo
                         reset = false;
                         foreach(var updater in selectedUpdaters)
                         {
+                            updater.Value.RepeatMode = selectedRepeatMode;
                             updater.Value.Reset();
                         }
                     }
@@ -261,7 +277,7 @@ namespace BoneSkinDemo
                     {
                         Timer_Tick();
                     }
-                    Task.Delay(16).Wait();
+                    Task.Delay(10).Wait();
                 }
             }, token);
         }

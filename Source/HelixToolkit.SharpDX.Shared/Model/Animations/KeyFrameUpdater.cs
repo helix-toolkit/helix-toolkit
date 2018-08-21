@@ -6,6 +6,8 @@ using SharpDX;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System;
+using System.Linq;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Animations
 #else
@@ -30,7 +32,7 @@ namespace HelixToolkit.UWP.Animations
         public AnimationRepeatMode RepeatMode
         {
             set; get;
-        } = AnimationRepeatMode.Loop;
+        } = AnimationRepeatMode.PlayOnce;
 
         public float StartTime { get; }
 
@@ -39,6 +41,8 @@ namespace HelixToolkit.UWP.Animations
         private readonly Keyframe?[] tempKeyframes;
 
         private readonly Matrix[] tempBones;
+
+        private readonly Matrix[] currentBones;
 
         private readonly List<int> timeRange = new List<int>();
 
@@ -52,6 +56,7 @@ namespace HelixToolkit.UWP.Animations
             BoneCount = bones.Count;
             tempKeyframes = new Keyframe?[BoneCount];
             tempBones = new Matrix[BoneCount];
+            currentBones = new Matrix[BoneCount];
             Bones = bones;
             EndTime = animation.EndTime;
             StartTime = animation.StartTime;
@@ -84,9 +89,13 @@ namespace HelixToolkit.UWP.Animations
             var timeElpased = Math.Max(0, timeStamp - currentTime);
             if(timeElpased > Animation.EndTime)
             {
-                if(RepeatMode == AnimationRepeatMode.PlayOnceHold || RepeatMode == AnimationRepeatMode.PlayOnce)
+                switch (RepeatMode)
                 {
-                    return;
+                    case AnimationRepeatMode.PlayOnce:
+                        return;
+                    case AnimationRepeatMode.PlayOnceHold:
+                        OutputBones(ref bones);
+                        return;
                 }
             }
             //Search for time range
@@ -153,15 +162,13 @@ namespace HelixToolkit.UWP.Animations
                 }
             }
 
-            if (bones == null || bones.Length != BoneCount)
-            {
-                bones = new Matrix[BoneCount];
-            }
             // Change the bone transform from rest pose space into bone space (using the inverse of the bind/rest pose)
             for (var i = 0; i < BoneCount; i++)
             {
-                bones[i] = Bones[i].InvBindPose * tempBones[i];
+                currentBones[i] = Bones[i].InvBindPose * tempBones[i];
             }
+
+            OutputBones(ref bones);
 
             if(RepeatMode == AnimationRepeatMode.Loop)
             {
@@ -170,6 +177,19 @@ namespace HelixToolkit.UWP.Animations
                     CurrentRangeIndex = 0;
                     currentTime = 0;
                 }
+            }
+        }
+
+
+        private void OutputBones(ref Matrix[] bones)
+        {
+            if (bones == null || bones.Length != BoneCount)
+            {
+                bones = currentBones.ToArray();
+            }
+            else
+            {
+                currentBones.CopyTo(bones, 0);
             }
         }
 

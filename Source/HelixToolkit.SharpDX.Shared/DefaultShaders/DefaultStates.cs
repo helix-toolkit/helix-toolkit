@@ -523,11 +523,11 @@ namespace HelixToolkit.UWP.Shaders
             CullMode = CullMode.None,
             DepthBias = 0,
             DepthBiasClamp = 0,
-            SlopeScaledDepthBias = +0,
+            SlopeScaledDepthBias = 0,
             IsFrontCounterClockwise = true,
             IsMultisampleEnabled = false,
             IsAntialiasedLineEnabled = false,
-            IsDepthClipEnabled = false,
+            IsDepthClipEnabled = true,
             IsScissorEnabled = true
         };
 #if !NETFX_CORE        
