@@ -80,7 +80,6 @@ namespace HelixToolkit.UWP.Animations
             if(currentTime == 0)
             {
                 currentTime = timeStamp;
-                return;
             }
             var timeElpased = Math.Max(0, timeStamp - currentTime);
             if(timeElpased > Animation.EndTime)
@@ -124,9 +123,9 @@ namespace HelixToolkit.UWP.Animations
                         var amount = timeDiff / frameLength;
                         // Interpolation using Lerp on scale and translation, and Slerp on Rotation (Quaternion)
                         // Decompose the previous key-frame's transform
-                        nextFrame.Transform.DecomposeUniformScale(out float s1, out Quaternion q1, out Vector3 t1);
+                        currFrame.Value.Transform.DecomposeUniformScale(out float s1, out Quaternion q1, out Vector3 t1);
                         // Decompose the current key-frame's transform
-                        currFrame.Value.Transform.DecomposeUniformScale(out float s2, out Quaternion q2, out Vector3 t2);
+                        nextFrame.Transform.DecomposeUniformScale(out float s2, out Quaternion q2, out Vector3 t2);
 
                         // Perform interpolation and reconstitute matrix
                         tempBones[nextFrame.BoneIndex] =
@@ -166,10 +165,10 @@ namespace HelixToolkit.UWP.Animations
 
             if(RepeatMode == AnimationRepeatMode.Loop)
             {
-                CurrentRangeIndex %= timeRange.Count;
                 if(timeElpased > EndTime)
                 {
-                    currentTime = timeStamp;
+                    CurrentRangeIndex = 0;
+                    currentTime = 0;
                 }
             }
         }
