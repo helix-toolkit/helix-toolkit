@@ -94,7 +94,11 @@ namespace BoneSkinDemo
         {
             set
             {
-                SetValue(ref selectedAnimation, value);
+                if(SetValue(ref selectedAnimation, value))
+                {
+                    reset = true;
+                    selectedUpdaters = keyframeUpdaters[value];
+                }
             }
             get { return selectedAnimation; }
         }
@@ -114,6 +118,9 @@ namespace BoneSkinDemo
         private SynchronizationContext context = SynchronizationContext.Current;
         private Dictionary<Guid, List<BoneGroupModel3D>> BoneGroupsDictionary = new Dictionary<Guid, List<BoneGroupModel3D>>();
         private CMOReader loader;
+        private Dictionary<string, List<KeyValuePair<Guid, KeyFrameUpdater>>> keyframeUpdaters = new Dictionary<string, List<KeyValuePair<Guid, KeyFrameUpdater>>>();
+        private List<KeyValuePair<Guid, KeyFrameUpdater>> selectedUpdaters;
+        private bool reset = true;
 
         public MainViewModel()
         {
@@ -217,6 +224,18 @@ namespace BoneSkinDemo
             Animations = loader.UniqueAnimations.Keys.ToArray();
 
             ModelTransform = new Media3D.MatrixTransform3D((Matrix.Scaling(10,10,10) * Matrix.RotationAxis(Vector3.UnitX, -(float)Math.PI / 2)).ToMatrix3D());
+
+            foreach(var group in loader.AnimationHierarchy)
+            {
+                foreach (var ani in group.Animations)
+                {
+                    if (!keyframeUpdaters.ContainsKey(ani.Key))
+                    {
+                        keyframeUpdaters.Add(ani.Key, new List<KeyValuePair<Guid, KeyFrameUpdater>>());
+                    }
+                    keyframeUpdaters[ani.Key].Add(new KeyValuePair<Guid, KeyFrameUpdater>(group.GUID, new KeyFrameUpdater(ani.Value, group.Bones)));
+                }
+            }
         }
 
         private void StartAnimation()
@@ -228,133 +247,164 @@ namespace BoneSkinDemo
             SelectedAnimation = loader.UniqueAnimations.Keys.First();
             Task.Run(() =>
             {
-                lastTime = Stopwatch.GetTimestamp();
                 while (!token.IsCancellationRequested)
                 {
-                    Timer_Tick();
+                    if (reset)
+                    {
+                        reset = false;
+                        foreach(var updater in selectedUpdaters)
+                        {
+                            updater.Value.Reset();
+                        }
+                    }
+                    else
+                    {
+                        Timer_Tick();
+                    }
                     Task.Delay(16).Wait();
                 }
             }, token);
         }
 
-
-        long lastTime;
         private void Timer_Tick()
         {
-            var curr = Stopwatch.GetTimestamp();
-            var time = (float)(curr - lastTime) / Stopwatch.Frequency;
-            float maxEndTime = 0;
-            foreach(var group in loader.AnimationHierarchy)
+            var curr = (float)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
+
+            foreach(var updater in selectedUpdaters)
             {
-                var ani = group.Animations[selectedAnimation];
-                maxEndTime = Math.Max(ani.EndTime, maxEndTime);
-                var bones = group.Bones;
-                if(bones.Count > boneInternal.Length)
+                var newbone = updater.Value.Update(curr);
+                context.Post((o) =>
                 {
-                    boneInternal = new Matrix[bones.Count];
-                }
-                if (bones != null)
-                {
-                    // Retrieve each bone's local transform
-                    for (var i = 0; i < bones.Count; i++)
+                    var groups = BoneGroupsDictionary[updater.Key];
+                    foreach (var g in groups)
                     {
-                        boneInternal[i] = bones[i].BoneLocalTransform;
+                        g.BoneMatrices = newbone;
                     }
-
-                    // Load bone transforms from animation frames
-
-                    // Keep track of the last key-frame used for each bone
-                    Keyframe?[] lastKeyForBones = new Keyframe?[bones.Count];
-                    // Keep track of whether a bone has been interpolated
-                    bool[] lerpedBones = new bool[bones.Count];
-                    for (var i = 0; i < ani.Keyframes.Count; i++)
-                    {
-                        // Retrieve current key-frame
-                        var frame = ani.Keyframes[i];
-
-                        // If the current frame is not in the future
-                        if (frame.Time <= time)
-                        {
-                            // Keep track of last key-frame for bone
-                            lastKeyForBones[frame.BoneIndex] = frame;
-                            // Retrieve transform from current key-frame
-                            boneInternal[frame.BoneIndex] = frame.Transform;
-                        }
-                        // Frame is in the future, check if we should interpolate
-                        else
-                        {
-                            // Only interpolate a bone's key-frames ONCE
-                            if (!lerpedBones[frame.BoneIndex])
-                            {
-                                // Retrieve the previous key-frame if exists
-                                Keyframe prevFrame;
-                                if (lastKeyForBones[frame.BoneIndex] != null)
-                                    prevFrame = lastKeyForBones[frame.BoneIndex].Value;
-                                else
-                                    continue; // nothing to interpolate
-                                // Make sure we only interpolate with 
-                                // one future frame for this bone
-                                lerpedBones[frame.BoneIndex] = true;
-
-                                // Calculate time difference between frames
-                                var frameLength = frame.Time - prevFrame.Time;
-                                var timeDiff = time - prevFrame.Time;
-                                var amount = timeDiff / frameLength;
-
-                                // Interpolation using Lerp on scale and translation, and Slerp on Rotation (Quaternion)
-                                Vector3 t1, t2;   // Translation
-                                Quaternion q1, q2;// Rotation
-                                float s1, s2;     // Scale
-                                // Decompose the previous key-frame's transform
-                                prevFrame.Transform.DecomposeUniformScale(out s1, out q1, out t1);
-                                // Decompose the current key-frame's transform
-                                frame.Transform.DecomposeUniformScale(out s2, out q2, out t2);
-
-                                // Perform interpolation and reconstitute matrix
-                                boneInternal[frame.BoneIndex] =
-                                    Matrix.Scaling(MathUtil.Lerp(s1, s2, amount)) *
-                                    Matrix.RotationQuaternion(Quaternion.Slerp(q1, q2, amount)) *
-                                    Matrix.Translation(Vector3.Lerp(t1, t2, amount));
-                            }
-                        }
-                    }
-
-                    // Apply parent bone transforms
-                    // We assume here that the first bone has no parent
-                    // and that each parent bone appears before children
-                    for (var i = 1; i < bones.Count; i++)
-                    {
-                        var bone = bones[i];
-                        if (bone.ParentIndex > -1)
-                        {
-                            var parentTransform = boneInternal[bone.ParentIndex];
-                            boneInternal[i] = (boneInternal[i] * parentTransform);
-                        }
-                    }
-
-                    // Change the bone transform from rest pose space into bone space (using the inverse of the bind/rest pose)
-                    var newBones = boneInternal.ToArray();
-                    for (var i = 0; i < bones.Count; i++)
-                    {
-                        newBones[i] = bones[i].InvBindPose * boneInternal[i];
-                    }
-
-                    context.Post((o) => 
-                    {
-                        var groups = BoneGroupsDictionary[group.GUID];
-                        foreach(var g in groups)
-                        {
-                            g.BoneMatrices = newBones;
-                        }
-                    }, null);
-                }
+                }, null);
             }
+            //float maxEndTime = 0;
+
+            //foreach(var group in loader.AnimationHierarchy)
+            //{
+            //    var ani = group.Animations[selectedAnimation];
+            //    maxEndTime = Math.Max(ani.EndTime, maxEndTime);
+            //    var bones = group.Bones;
+            //    if(bones.Count > boneInternal.Length)
+            //    {
+            //        boneInternal = new Matrix[bones.Count];
+            //    }
+            //    if (bones != null)
+            //    {
+            //        // Retrieve each bone's local transform
+            //        for (var i = 0; i < bones.Count; i++)
+            //        {
+            //            boneInternal[i] = bones[i].BoneLocalTransform;
+            //        }
+
+            //        // Load bone transforms from animation frames
+
+            //        // Keep track of the last key-frame used for each bone
+            //        Keyframe?[] lastKeyForBones = new Keyframe?[bones.Count];
+            //        // Keep track of whether a bone has been interpolated
+            //        bool[] lerpedBones = new bool[bones.Count];
+            //        for(int i=currKeyFrame; i < ani.Keyframes.Count; i += bones.Count)
+            //        {
+            //            if(ani.Keyframes[i].Time > time)
+            //            {
+            //                currKeyFrame = i - bones.Count;
+            //                break;
+            //            }
+            //        }
+            //        for (int i = currKeyFrame; i < currKeyFrame + bones.Count; i++)
+            //        {
+            //            // Retrieve current key-frame
+            //            var frame = ani.Keyframes[i];
+
+            //            // If the current frame is not in the future
+            //            if (frame.Time <= time)
+            //            {
+            //                // Keep track of last key-frame for bone
+            //                lastKeyForBones[frame.BoneIndex] = frame;
+            //                // Retrieve transform from current key-frame
+            //                boneInternal[frame.BoneIndex] = frame.Transform;
+            //            }
+            //            // Frame is in the future, check if we should interpolate
+            //            else
+            //            {
+            //                // Only interpolate a bone's key-frames ONCE
+            //                if (!lerpedBones[frame.BoneIndex])
+            //                {
+            //                    // Retrieve the previous key-frame if exists
+            //                    Keyframe prevFrame;
+            //                    if (lastKeyForBones[frame.BoneIndex] != null)
+            //                        prevFrame = lastKeyForBones[frame.BoneIndex].Value;
+            //                    else
+            //                        continue; // nothing to interpolate
+            //                    // Make sure we only interpolate with 
+            //                    // one future frame for this bone
+            //                    lerpedBones[frame.BoneIndex] = true;
+
+            //                    // Calculate time difference between frames
+            //                    var frameLength = frame.Time - prevFrame.Time;
+            //                    var timeDiff = time - prevFrame.Time;
+            //                    var amount = timeDiff / frameLength;
+
+            //                    // Interpolation using Lerp on scale and translation, and Slerp on Rotation (Quaternion)
+            //                    Vector3 t1, t2;   // Translation
+            //                    Quaternion q1, q2;// Rotation
+            //                    float s1, s2;     // Scale
+            //                    // Decompose the previous key-frame's transform
+            //                    prevFrame.Transform.DecomposeUniformScale(out s1, out q1, out t1);
+            //                    // Decompose the current key-frame's transform
+            //                    frame.Transform.DecomposeUniformScale(out s2, out q2, out t2);
+
+            //                    // Perform interpolation and reconstitute matrix
+            //                    boneInternal[frame.BoneIndex] =
+            //                        Matrix.Scaling(MathUtil.Lerp(s1, s2, amount)) *
+            //                        Matrix.RotationQuaternion(Quaternion.Slerp(q1, q2, amount)) *
+            //                        Matrix.Translation(Vector3.Lerp(t1, t2, amount));
+            //                }
+            //            }
+
+            //        }
+            //        currKeyFrame += bones.Count;
+            //        // Apply parent bone transforms
+            //        // We assume here that the first bone has no parent
+            //        // and that each parent bone appears before children
+            //        for (var i = 1; i < bones.Count; i++)
+            //        {
+            //            var bone = bones[i];
+            //            if (bone.ParentIndex > -1)
+            //            {
+            //                var parentTransform = boneInternal[bone.ParentIndex];
+            //                boneInternal[i] = (boneInternal[i] * parentTransform);
+            //            }
+            //        }
+
+            //        // Change the bone transform from rest pose space into bone space (using the inverse of the bind/rest pose)
+            //        var newBones = boneInternal.ToArray();
+            //        for (var i = 0; i < bones.Count; i++)
+            //        {
+            //            newBones[i] = bones[i].InvBindPose * boneInternal[i];
+            //        }
+
+            //        context.Post((o) => 
+            //        {
+            //            var groups = BoneGroupsDictionary[group.GUID];
+            //            foreach(var g in groups)
+            //            {
+            //                g.BoneMatrices = newBones;
+            //            }
+            //        }, null);
+            //    }
+            //}
 
             // Check need to loop animation
-            if (maxEndTime <= time)
-            {
-                lastTime = curr;
-            }
+            //if (maxEndTime <= time)
+            //{
+            //    lastTime = curr;
+            //    currKeyFrame = 0;
+            //}
         }
 
         protected override void Dispose(bool disposing)
