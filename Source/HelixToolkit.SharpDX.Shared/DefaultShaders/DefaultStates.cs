@@ -521,8 +521,8 @@ namespace HelixToolkit.UWP.Shaders
         {
             FillMode = FillMode.Solid,
             CullMode = CullMode.None,
-            DepthBias = 0,
-            DepthBiasClamp = 0,
+            DepthBias = 10,
+            DepthBiasClamp = 1000,
             SlopeScaledDepthBias = 0,
             IsFrontCounterClockwise = true,
             IsMultisampleEnabled = false,
