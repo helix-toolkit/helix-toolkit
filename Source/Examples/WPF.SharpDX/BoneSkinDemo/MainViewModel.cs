@@ -277,27 +277,27 @@ namespace BoneSkinDemo
                     {
                         Timer_Tick();
                     }
-                    Task.Delay(10).Wait();
+                    Task.Delay(15).Wait();
                 }
             }, token);
         }
 
         private void Timer_Tick()
         {
-            var curr = (float)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
-
-            foreach(var updater in selectedUpdaters)
+            var curr = Stopwatch.GetTimestamp();
+            var bones = selectedUpdaters.Select(x => { return new KeyValuePair<Guid, Matrix[]>(x.Key, x.Value.Update(curr, Stopwatch.Frequency)); }).ToArray();
+            context.Send((o) =>
             {
-                var newbone = updater.Value.Update(curr);
-                context.Post((o) =>
+                foreach(var b in bones)
                 {
-                    var groups = BoneGroupsDictionary[updater.Key];
+                    var groups = BoneGroupsDictionary[b.Key];
                     foreach (var g in groups)
                     {
-                        g.BoneMatrices = newbone;
+                        g.BoneMatrices = b.Value;
                     }
-                }, null);
-            }
+                }
+
+            }, null);
             //float maxEndTime = 0;
 
             //foreach(var group in loader.AnimationHierarchy)
