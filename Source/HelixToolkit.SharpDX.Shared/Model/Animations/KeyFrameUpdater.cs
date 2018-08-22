@@ -3,9 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 #if !NETFX_CORE
@@ -14,13 +13,18 @@ namespace HelixToolkit.Wpf.SharpDX.Animations
 namespace HelixToolkit.UWP.Animations
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public enum AnimationRepeatMode
     {
         PlayOnce,
         Loop,
         PlayOnceHold,
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class KeyFrameUpdater
     {
         public Animation Animation { get; }
@@ -48,8 +52,12 @@ namespace HelixToolkit.UWP.Animations
 
         private readonly int BoneCount;
 
-        private float currentTime;
-
+        private long currentTime;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyFrameUpdater"/> class.
+        /// </summary>
+        /// <param name="animation">The animation.</param>
+        /// <param name="bones">The bones.</param>
         public KeyFrameUpdater(Animation animation, IList<Bone> bones)
         {
             Animation = animation;
@@ -73,20 +81,32 @@ namespace HelixToolkit.UWP.Animations
             timeRange.Add(animation.Keyframes.Count);
         }
 
-        public Matrix[] Update(float timeStamp)
+        /// <summary>
+        /// Updates the animation by specified time stamp (ticks) and frequency (ticks per second).
+        /// </summary>
+        /// <param name="timeStamp">The time stamp (ticks).</param>
+        /// <param name="frequency">The frequency (ticks per second).</param>
+        /// <returns></returns>
+        public Matrix[] Update(long timeStamp, long frequency)
         {
             Matrix[] bones = null;
-            Update(timeStamp, ref bones);
+            Update(timeStamp, frequency, ref bones);
             return bones;
         }
-
-        public void Update(float timeStamp, ref Matrix[] bones)
+        /// <summary>
+        /// Updates the animation by specified time stamp (ticks) and frequency (ticks per second).
+        /// </summary>
+        /// <param name="timeStamp">The time stamp (ticks).</param>
+        /// <param name="frequency">The frequency (ticks per second).</param>
+        /// <param name="bones">The bones.</param>
+        public void Update(long timeStamp, long frequency, ref Matrix[] bones)
         {
             if(currentTime == 0)
             {
                 currentTime = timeStamp;
             }
-            var timeElpased = Math.Max(0, timeStamp - currentTime);
+            var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency;
+
             if(timeElpased > Animation.EndTime)
             {
                 switch (RepeatMode)
@@ -107,7 +127,7 @@ namespace HelixToolkit.UWP.Animations
                     break;
                 }
             }
-
+            //Console.WriteLine("CurrentRangeIndex: " + CurrentRangeIndex);
             var start = timeRange[CurrentRangeIndex];
             var end = timeRange[CurrentRangeIndex + 1];
             for (int i = start; i < end; ++i)
@@ -116,20 +136,20 @@ namespace HelixToolkit.UWP.Animations
                 tempBones[frame.BoneIndex] = frame.Transform;
                 tempKeyframes[frame.BoneIndex] = frame;
             }
-            if (timeElpased != Animation.Keyframes[start].Time)
+            if (timeElpased > Animation.Keyframes[start].Time)
             {
-                start = end;
-                end = timeRange[Math.Min(CurrentRangeIndex + 2, timeRange.Count - 1)];
-                for (int i = start; i < end; ++i)
+                var startNext = end;
+                var endNext = timeRange[Math.Min(CurrentRangeIndex + 2, timeRange.Count - 1)];
+                // Calculate time difference between frames
+                var frameLength = Animation.Keyframes[startNext].Time - Animation.Keyframes[start].Time;
+                var timeDiff = timeElpased - Animation.Keyframes[start].Time;
+                var amount = timeDiff / frameLength;
+                for (int i = startNext; i < endNext; ++i)
                 {
                     var nextFrame = Animation.Keyframes[i];
                     var currFrame = tempKeyframes[nextFrame.BoneIndex];
                     if (currFrame.HasValue)
                     {
-                        // Calculate time difference between frames
-                        var frameLength = nextFrame.Time - currFrame.Value.Time;
-                        var timeDiff = timeElpased - currFrame.Value.Time;
-                        var amount = timeDiff / frameLength;
                         // Interpolation using Lerp on scale and translation, and Slerp on Rotation (Quaternion)
                         // Decompose the previous key-frame's transform
                         currFrame.Value.Transform.DecomposeUniformScale(out float s1, out Quaternion q1, out Vector3 t1);
@@ -158,16 +178,14 @@ namespace HelixToolkit.UWP.Animations
                 if (bone.ParentIndex > -1)
                 {
                     var parentTransform = tempBones[bone.ParentIndex];
-                    tempBones[i] = (tempBones[i] * parentTransform);
+                    tempBones[i] = tempBones[i] * parentTransform;
                 }
             }
-
             // Change the bone transform from rest pose space into bone space (using the inverse of the bind/rest pose)
             for (var i = 0; i < BoneCount; i++)
             {
                 currentBones[i] = Bones[i].InvBindPose * tempBones[i];
             }
-
             OutputBones(ref bones);
 
             if(RepeatMode == AnimationRepeatMode.Loop)
