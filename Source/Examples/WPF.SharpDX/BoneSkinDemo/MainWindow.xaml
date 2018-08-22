@@ -54,7 +54,7 @@
                 x:Name="skeleton"
                 ItemsSource="{Binding BoneModels}"
                 Transform="{Binding ModelTransform}" />
-            <hx:AxisPlaneGridModel3D x:Name="plane" RenderShadowMap="True" />
+            <hx:AxisPlaneGridModel3D x:Name="plane" RenderShadowMap="True" Offset="-0.8"/>
             <hx:PostEffectMeshXRayGrid
                 BlendingFactor="0.6"
                 EffectName="xray"
@@ -70,6 +70,8 @@
             <CheckBox IsChecked="{Binding IsRendering, ElementName=skeleton}">Skeleton</CheckBox>
             <TextBlock Margin="0,4,0,0">Animation List:</TextBlock>
             <ComboBox ItemsSource="{Binding Animations}" SelectedItem="{Binding SelectedAnimation}" />
+            <TextBlock Margin="0,4,0,0">Repeat Mode:</TextBlock>
+            <ComboBox ItemsSource="{Binding RepeatModes}" SelectedItem="{Binding SelectedRepeatMode}" />
             <TextBlock Margin="0,4,0,0">Grid Pattern:</TextBlock>
             <ComboBox ItemsSource="{Binding GridTypes}" SelectedItem="{Binding ElementName=plane, Path=GridPattern}" />
         </StackPanel>
