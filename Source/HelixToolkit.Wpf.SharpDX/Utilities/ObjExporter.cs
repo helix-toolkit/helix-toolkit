@@ -151,24 +151,42 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected override void ExportModel(MeshNode model, Transform3D transform)
         {
-            this.writer.WriteLine(string.Format("o object{0}", this.objectNo++));
-            this.writer.WriteLine(string.Format("g group{0}", this.groupNo++));
-
-            if (this.exportedMaterials.ContainsKey(model.Material))
+            if(model.GeometryValid && model.Material != null)
             {
-                string matName = this.exportedMaterials[model.Material];
-                this.writer.WriteLine(string.Format("usemtl {0}", matName));
-            }
-            else
-            {
-                string matName = string.Format("mat{0}", this.matNo++);
-                this.writer.WriteLine(string.Format("usemtl {0}", matName));
-                this.ExportMaterial(matName, model.Material);
-                this.exportedMaterials.Add(model.Material, matName);
-            }
+                if(transform == null)
+                {
+                    transform = Transform3D.Identity;
+                }
+                this.writer.WriteLine(string.Format("o object{0}", this.objectNo++));
+                this.writer.WriteLine(string.Format("g group{0}", this.groupNo++));
 
-            var mesh = model.Geometry as MeshGeometry3D;
-            this.ExportMesh(mesh, transform);
+                if (this.exportedMaterials.ContainsKey(model.Material))
+                {
+                    string matName = this.exportedMaterials[model.Material];
+                    this.writer.WriteLine(string.Format("usemtl {0}", matName));
+                }
+                else
+                {
+                    string matName = string.Format("mat{0}", this.matNo++);
+                    this.writer.WriteLine(string.Format("usemtl {0}", matName));
+                    this.ExportMaterial(matName, model.Material);
+                    this.exportedMaterials.Add(model.Material, matName);
+                }
+
+                var mesh = model.Geometry as MeshGeometry3D;
+                if (model.HasInstances)
+                {
+                    var m = transform.ToMatrix();
+                    for(int i=0; i<model.Instances.Count; ++i)
+                    {
+                        this.ExportMesh(mesh, model.Instances[i] * m);
+                    }
+                }
+                else
+                {
+                    this.ExportMesh(mesh, transform.ToMatrix());
+                }
+            }
         }
 
         /// <summary>
@@ -180,7 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="t">
         /// The t.
         /// </param>
-        public void ExportMesh(MeshGeometry3D m, Transform3D t)
+        public void ExportMesh(MeshGeometry3D m, Matrix t)
         {
             if (m == null)
             {
@@ -203,7 +221,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 foreach (var v in m.Positions)
                 {
                     vertexIndexMap.Add(index++, this.vertexIndex++);
-                    var p = t.Transform(v.ToPoint3D());
+                    var p = Vector3.TransformCoordinate(v, t);
                     this.writer.WriteLine(
                         string.Format(
                             CultureInfo.InvariantCulture,

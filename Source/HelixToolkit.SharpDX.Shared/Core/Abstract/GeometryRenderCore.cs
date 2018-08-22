@@ -312,7 +312,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (PreRender(context, deviceContext))
             {
-                OnRenderCustom(context, deviceContext, null);
+                OnRenderCustom(context, deviceContext);
             }
         }
 
@@ -320,7 +320,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Render function for custom shader pass. Used to do special effects
         /// </summary>
-        protected abstract void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass);
+        protected abstract void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext);
 
         /// <summary>
         /// Called when [render shadow].

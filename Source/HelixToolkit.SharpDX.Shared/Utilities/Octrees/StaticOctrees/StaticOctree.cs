@@ -161,9 +161,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             /// <param name="length">The length.</param>
             public OctantArray(BoundingBox bound, int length)
             {
-                var octant = new Octant(-1, 0, ref bound);
-                octant.Start = 0;
-                octant.End = length;
+                var octant = new Octant(-1, 0, ref bound)
+                {
+                    Start = 0,
+                    End = length
+                };
                 array[0] = octant;
                 ++Count;
                 //var size = System.Runtime.InteropServices.Marshal.SizeOf(octant);

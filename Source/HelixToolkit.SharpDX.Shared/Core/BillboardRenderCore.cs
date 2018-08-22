@@ -151,7 +151,7 @@ namespace HelixToolkit.UWP.Core
 
         }
 
-        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
             BindBillboardTexture(deviceContext, DefaultShaderPass.PixelShader);
             DrawPoints(deviceContext, GeometryBuffer.VertexBuffer[0], InstanceBuffer);

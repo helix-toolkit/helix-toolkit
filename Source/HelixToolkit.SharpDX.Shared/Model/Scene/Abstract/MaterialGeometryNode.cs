@@ -75,6 +75,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return OrderKey.Create(RenderOrder, materialVariable == null ? (ushort)0 : materialVariable.ID);
         }
 
+        protected override bool CanRender(RenderContext context)
+        {
+            return base.CanRender(context) && materialVariable != null;
+        }
+
         protected override bool OnAttach(IRenderHost host)
         {
             if (base.OnAttach(host))

@@ -192,7 +192,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
         }
 
