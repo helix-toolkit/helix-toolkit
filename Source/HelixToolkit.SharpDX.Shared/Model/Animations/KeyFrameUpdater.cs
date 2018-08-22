@@ -2,7 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -158,9 +160,9 @@ namespace HelixToolkit.UWP.Animations
 
                         // Perform interpolation and reconstitute matrix
                         tempBones[nextFrame.BoneIndex] =
-                            Matrix.Scaling(MathUtil.Lerp(s1, s2, amount)) *
-                            Matrix.RotationQuaternion(Quaternion.Slerp(q1, q2, amount)) *
-                            Matrix.Translation(Vector3.Lerp(t1, t2, amount));
+                            Matrix.CreateScale(MathUtil.Lerp(s1, s2, amount)) *
+                            Matrix.CreateFromQuaternion(Quaternion.Slerp(q1, q2, amount)) *
+                            Matrix.CreateTranslation(Vector3.Lerp(t1, t2, amount));
                     }
                     else
                     {

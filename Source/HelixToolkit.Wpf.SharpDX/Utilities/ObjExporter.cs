@@ -2,7 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using HelixToolkit.Mathematics;
@@ -221,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 foreach (var v in m.Positions)
                 {
                     vertexIndexMap.Add(index++, this.vertexIndex++);
-                    var p = Vector3.TransformCoordinate(v, t);
+                    var p = Vector3Helper.TransformCoordinate(v, t);
                     this.writer.WriteLine(
                         string.Format(
                             CultureInfo.InvariantCulture,
