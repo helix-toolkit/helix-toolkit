@@ -15,6 +15,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Components;
     using Utilities;
+    using System;
 
     public class AxisPlaneGridCore : RenderCoreBase<PlaneGridModelStruct>
     {
@@ -264,7 +265,15 @@ namespace HelixToolkit.UWP.Core
         {
             if (autoSpacing)
             {
-                var r = new Ray(context.Camera.Position, Vector3.Normalize(context.Camera.LookDirection));
+                //Disable auto spacing if view angle larger than 60 degree of plane normal
+                var lookDir = Vector3.Normalize(context.Camera.LookDirection);
+                var angle = Math.Acos(Math.Abs(Vector3.Dot(upDirection, lookDir)));
+                if (angle > Math.PI / 6 * 2)
+                {
+                    return;
+                }
+
+                var r = new Ray(context.Camera.Position, lookDir);
                 var plane = new Plane(upDirection, model.PlaneD);
                 if (r.Intersects(ref plane, out float l))
                 {
