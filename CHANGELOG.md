@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Axis aligned plane grid. (WPF.SharpDX and UWP)
 2. CMO Reader. (WPF.SharpDX and UWP)
+3. Animation KeyframeUpdater. (WPF.SharpDX and UWP)
 
 ### Improvement and Changes
 1. Move render environment map and render shadow map into PhongMaterial. (WPF.SharpDX and UWP)
@@ -16,6 +17,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 1. Fix bug on DisposeAndClear not called during detaching scene node. (WPF.SharpDX and UWP)
 2. Fix bug on invalidate scene graph not working on detaching scene node. (WPF.SharpDX and UWP)
+3. Instanced models are not properly exported using ObjExporter #902 (WPF.SharpDX)
+4. Coordinate system and view cube are clipped when resizing the Viewport3DX #892 (WPF.SharpDX and UWP)
+5. Wrong Y texture coordinate #870 (WPF.SharpDX and UWP)
+6. ObjExporter export MeshGeometryModel3D fails #857 (WPF.SharpDX)
 
 ## [2.3.0] - 2018-7-22
 ### Added
