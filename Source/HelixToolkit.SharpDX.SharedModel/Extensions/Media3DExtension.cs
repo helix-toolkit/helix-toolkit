@@ -5,9 +5,11 @@ using Media = System.Windows.Media;
 using System.Windows.Media.Media3D;
 using Point = System.Windows.Point;
 #endif
-using global::SharpDX;
+using SharpDX.Mathematics.Interop;
+using System.Numerics;
+using HelixToolkit.Mathematics;
 using System.Runtime.CompilerServices;
-
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -196,6 +198,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Vector2 ToVector2(this Point vector)
         {
             return new Vector2((float)vector.X, (float)vector.Y);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RawVector2 ToVector2Raw(this Point vector)
+        {
+            return new RawVector2((float)vector.X, (float)vector.Y);
         }
 #endif
 

@@ -3,8 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using HelixToolkit.Mathematics;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 #if !CORE
 using System;
 using D2D = SharpDX.Direct2D1;

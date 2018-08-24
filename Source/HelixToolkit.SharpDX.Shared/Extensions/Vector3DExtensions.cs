@@ -2,12 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using HelixToolkit.Mathematics;
+using SharpDX;
 using System;
 using System.Numerics;
-using global::SharpDX;
-using HelixToolkit.Mathematics;
-using Matrix = System.Numerics.Matrix4x4;
-using global::SharpDX.Mathematics.Interop;
+using System.Runtime.CompilerServices;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -86,32 +85,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Color4 ToColor4(this Vector2 vector, float z = 1f, float w = 1f)
         {
             return new Color4((float)vector.X, (float)vector.Y, z, w);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 Normalized(this Vector3 vector)
-        {
-            vector.Normalize();
-            return vector;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector4 Normalized(this Vector4 vector)
-        {
-            vector.Normalize();
-            return vector;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Color4 Normalized(this Color4 vector)
-        {
-            var v = vector.ToVector3();
-            v.Normalize();
-            return v.ToColor4();
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix Inverted(this Matrix m)
-        {
-            m.Invert();
-            return m;
         }
 
         /// <summary>
