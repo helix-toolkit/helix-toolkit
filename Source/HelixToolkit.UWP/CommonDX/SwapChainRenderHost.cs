@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP
             using (global::SharpDX.DXGI.ISwapChainPanelNative nativeObject = global::SharpDX.ComObject.As<global::SharpDX.DXGI.ISwapChainPanelNative>(this))
             {
                 // Set its swap chain.
-                nativeObject.SetSwapChain((renderHost.RenderBuffer as DX11SwapChainCompositionRenderBufferProxy).SwapChain);
+                nativeObject.SwapChain = (renderHost.RenderBuffer as DX11SwapChainCompositionRenderBufferProxy).SwapChain;
             }
         }
 
@@ -144,8 +144,7 @@ namespace HelixToolkit.UWP
         {
             EndD3D();
 
-            var sdxException = exception as SharpDXException;
-            if (sdxException != null &&
+            if (exception is SharpDXException sdxException &&
                 (sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceRemoved ||
                  sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceReset))
             {
