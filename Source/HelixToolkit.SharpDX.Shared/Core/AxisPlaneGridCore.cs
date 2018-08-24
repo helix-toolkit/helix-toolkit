@@ -3,7 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-
+using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -262,7 +262,14 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdatePerModelStruct(ref PlaneGridModelStruct model, RenderContext context)
         {
             if (autoSpacing)
-            {
+            {                
+                //Disable auto spacing if view angle larger than 60 degree of plane normal
+                var lookDir = Vector3.Normalize(context.Camera.LookDirection);
+                var angle = Math.Acos(Math.Abs(Vector3.Dot(upDirection, lookDir)));
+                if (angle > Math.PI / 3)
+                {
+                    return;
+                }
                 var r = new Ray(context.Camera.Position, Vector3.Normalize(context.Camera.LookDirection));
                 var plane = new Plane(upDirection, model.PlaneD);
                 if (r.Intersects(ref plane, out float l))

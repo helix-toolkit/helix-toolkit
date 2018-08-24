@@ -3,13 +3,10 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-using SharpDX.DirectWrite;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -234,10 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         internal static object GetNamedColor(string name)
         {
-            object color;
-            // First, check to see if this is a standard name.
-            //
-            Colors.TryGetValue(name, out color);
+            Colors.TryGetValue(name, out object color);
             return color;
         }
     }

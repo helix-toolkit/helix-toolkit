@@ -844,10 +844,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
-            if (this.cameraHistory.IsFull())
-            {
-                this.cameraHistory.RemoveFirst();
-            }
         }
 
         /// <summary>
