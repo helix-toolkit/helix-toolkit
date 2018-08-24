@@ -7,14 +7,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 #if NETFX_CORE
-namespace HelixToolkit.UWP.Core
+namespace HelixToolkit.UWP.Model.Components
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX.Model.Components
 #endif
 {
-    using Model.Scene;
     using System;
-    using BoundingSphere = global::SharpDX.BoundingSphere;
+    using Scene;
 
     public sealed class GeometryBoundManager : IDisposable
     {

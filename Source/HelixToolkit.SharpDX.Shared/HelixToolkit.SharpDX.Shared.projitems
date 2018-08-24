@@ -124,9 +124,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\EffectAttributes.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryBoundManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Components\GeometryBoundManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BoneSkinnedMeshGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\ColorStripeMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\DiffuseMaterialCore.cs" />
@@ -351,6 +349,7 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Model\Collection\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Model\Components\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\Renderer\" />
   </ItemGroup>
 </Project>

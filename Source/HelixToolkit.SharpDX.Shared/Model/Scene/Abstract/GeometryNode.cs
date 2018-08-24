@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+    using Components;
 
     public abstract class GeometryNode : SceneNode, IHitable, IThrowingShadow, IInstancing, IBoundable
     {

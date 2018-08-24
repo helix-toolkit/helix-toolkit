@@ -16,6 +16,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Camera\ProjectionCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HelixItemsControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ModelContainer3DX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element2D\Element2DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\GeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\MaterialGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BatchedMeshGeometryModel3D.cs" />
