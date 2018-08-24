@@ -20,7 +20,9 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model.Scene;
     using System;
+    using System.ComponentModel;
     using System.Diagnostics;
+    using Utilities;
 
     public class TransformManipulator3D : GroupElement3D
     {
@@ -123,7 +125,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
 
-
+#if !NETFX_CORE
+        [TypeConverter(typeof(Vector3Converter))]
+#endif
         public Vector3 CenterOffset
         {
             get { return (Vector3)GetValue(CenterOffsetProperty); }

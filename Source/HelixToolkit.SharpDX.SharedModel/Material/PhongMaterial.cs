@@ -11,9 +11,11 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using System.ComponentModel;
     using Model;
     using Shaders;
-   
+    using Utilities;
+
     /// <summary>
     /// Implments a phong-material with its all properties
     /// Includes Diffuse, Normal, Displacement, Specular, etc. maps
@@ -255,6 +257,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 AmbientColor
         {
             get { return (Color4)this.GetValue(AmbientColorProperty); }
@@ -265,6 +270,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 DiffuseColor
         {
             get { return (Color4)this.GetValue(DiffuseColorProperty); }
@@ -275,6 +283,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the emissive color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 EmissiveColor
         {
             get { return (Color4)this.GetValue(EmissiveColorProperty); }
@@ -284,6 +295,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// A fake parameter for reflectivity of the environment map
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 ReflectiveColor
         {
             get { return (Color4)this.GetValue(ReflectiveColorProperty); }
@@ -294,6 +308,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the specular color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 SpecularColor
         {
             get { return (Color4)this.GetValue(SpecularColorProperty); }
@@ -379,6 +396,9 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DisplacementMapSamplerProperty, value); }
         }
 
+#if !NETFX_CORE
+        [TypeConverter(typeof(Vector4Converter))]
+#endif
         public Vector4 DisplacementMapScaleMask
         {
             set { SetValue(DisplacementMapScaleMaskProperty, value); }
