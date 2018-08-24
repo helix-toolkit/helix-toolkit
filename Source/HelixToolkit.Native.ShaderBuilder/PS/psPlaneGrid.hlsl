@@ -13,7 +13,7 @@ float4 main(PSPlaneGridInput input) : SV_TARGET
     if (type == 0)
     {
         float g = floor(input.uv.x / gridSpacing) + floor(input.uv.y / gridSpacing);
-        g = (int) abs(g) % 2;
+        g = (uint) abs(g) % 2;
         grid = whengt(g, 0);
     }
     else

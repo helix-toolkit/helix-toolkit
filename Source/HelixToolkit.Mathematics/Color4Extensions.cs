@@ -226,10 +226,7 @@ namespace HelixToolkit.Mathematics
 
         internal static object GetNamedColor(string name)
         {
-            object color;
-            // First, check to see if this is a standard name.
-            //
-            Colors.TryGetValue(name, out color);
+            Colors.TryGetValue(name, out object color);
             return color;
         }
     }
