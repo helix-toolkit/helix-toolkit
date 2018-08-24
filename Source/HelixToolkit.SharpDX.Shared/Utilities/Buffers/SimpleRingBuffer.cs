@@ -37,20 +37,16 @@ namespace HelixToolkit.UWP.Utilities
         /// </summary>
         /// <param name="item"></param>
         /// <returns>If buffer full, return false</returns>
-        public bool Add(T item)
+        public void Add(T item)
         {
-            if (!IsFull())
+            if (IsFull())
             {
-                buffer[next] = item;
-                last = next;
-                next = IncLast();
-                ++count;
-                return true;
+                RemoveFirst();
             }
-            else
-            {
-                return false;
-            }
+            buffer[next] = item;
+            last = next;
+            next = IncLast();
+            ++count;
         }
         /// <summary>
         /// Remove the last element added into the buffer

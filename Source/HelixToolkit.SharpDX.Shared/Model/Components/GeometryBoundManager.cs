@@ -10,9 +10,9 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
-namespace HelixToolkit.UWP.Core
+namespace HelixToolkit.UWP.Model.Components
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX.Model.Components
 #endif
 {
     using Model.Scene;

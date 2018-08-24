@@ -224,6 +224,7 @@ namespace HelixToolkit.UWP
             startTick = Stopwatch.GetTimestamp();
             inv = Camera.CreateLeftHandSystem ? -1 : 1;
             Controller.StopAnimations();
+            Controller.PushCameraSetting();
         }
 
         /// <summary>

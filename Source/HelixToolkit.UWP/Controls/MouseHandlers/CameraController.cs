@@ -926,11 +926,11 @@ namespace HelixToolkit.UWP
         /// </summary>
         public void PushCameraSetting()
         {
-            this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
-            if (this.cameraHistory.IsFull())
+            if (ActualCamera == null)
             {
-                this.cameraHistory.RemoveFirst();
+                return;
             }
+            this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
         }
 
         /// <summary>

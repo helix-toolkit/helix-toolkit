@@ -226,6 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX
             startTick = Stopwatch.GetTimestamp();
             Inv = Camera.CreateLeftHandSystem ? -1 : 1;
             Controller.StopAnimations();
+            Controller.PushCameraSetting();
         }
 
         /// <summary>
