@@ -121,15 +121,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\ColorStripeMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\DiffuseMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PassOnlyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\EffectAttributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Components\GeometryBoundManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BoneSkinnedMeshGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\ColorStripeMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\DiffuseMaterialCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\EmptyMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\EmptyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialVariableBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\MaterialVariableBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PassOnlyMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />
@@ -155,7 +158,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\TextureSharedPhongMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\TextureSharedPhongMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector3Collection.cs" />
@@ -348,7 +351,7 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Model\Collection\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Model\Components\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Model\Material\Variables\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\Renderer\" />
   </ItemGroup>
 </Project>
