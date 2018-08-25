@@ -20,11 +20,13 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public abstract class MaterialVariable : ReferenceCountDisposeObject
     {
-        public abstract string DefaultShaderPassName { set; get; }
-
         public static readonly ConstantBufferDescription DefaultMeshConstantBufferDesc
             = new ConstantBufferDescription(DefaultBufferNames.MeshPhongCB,
                       ModelStruct.SizeInBytes + PhongMaterialStruct.SizeInBytes);
+
+        public static readonly ConstantBufferDescription DefaultPointLineConstantBufferDesc
+            = new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB,
+              PointLineModelStruct.SizeInBytes);
 
         public event EventHandler OnUpdateNeeded;
         /// <summary>
@@ -78,9 +80,42 @@ namespace HelixToolkit.UWP.Model
         protected abstract void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream);
 
         protected virtual bool CanUpdateMaterial() { return !IsDisposed; }
-
+        /// <summary>
+        /// Gets the pass.
+        /// </summary>
+        /// <param name="renderType">Type of the render.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         public abstract ShaderPass GetPass(RenderType renderType, RenderContext context);
-
+        /// <summary>
+        /// Gets the shadow pass.
+        /// </summary>
+        /// <param name="renderType"></param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public abstract ShaderPass GetShadowPass(RenderType renderType, RenderContext context);
+        /// <summary>
+        /// Gets the wireframe pass.
+        /// </summary>
+        /// <param name="renderType"></param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public abstract ShaderPass GetWireframePass(RenderType renderType, RenderContext context);
+        /// <summary>
+        /// Gets the name of the pass by.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public ShaderPass GetPassByName(string name)
+        {
+            return Technique[name];
+        }
+        /// <summary>
+        /// Updates the material structure.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context">The context.</param>
+        /// <param name="model">The model.</param>
         public void UpdateMaterialStruct<T>(DeviceContextProxy context, ref T model) where T : struct
         {
             UpdateInternalVariables(context);
@@ -91,12 +126,25 @@ namespace HelixToolkit.UWP.Model
             }
             ConstantBuffer.Unmap(context);
         }
-
+        /// <summary>
+        /// Updates the model structure only.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context">The context.</param>
+        /// <param name="model">The model.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UpdateModelStructOnly<T>(DeviceContextProxy context, ref T model) where T : struct
         {
             ConstantBuffer.UploadDataToBuffer(context, ref model);
         }
+        ///
+        /// <summary>
+        /// Draws the specified device context.
+        /// </summary>
+        /// <param name="deviceContext">The device context.</param>
+        /// <param name="indexBuffer">The index buffer.</param>
+        /// <param name="instanceModel">The instance model.</param>
+        public abstract void Draw(DeviceContextProxy deviceContext, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel);
 
         /// <summary>
         /// 
@@ -133,6 +181,32 @@ namespace HelixToolkit.UWP.Model
             NeedUpdate = true;
             OnUpdateNeeded?.Invoke(this, EventArgs.Empty);
             InvalidateRenderer();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DrawIndexed(DeviceContextProxy context, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
+        {
+            if (instanceModel == null || !instanceModel.HasElements)
+            {
+                context.DrawIndexed(indexBuffer.ElementCount, 0, 0);
+            }
+            else
+            {
+                context.DrawIndexedInstanced(indexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0, 0);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void DrawPoints(DeviceContextProxy context, IElementsBufferProxy vertexBuffer, IElementsBufferModel instanceModel)
+        {
+            if (instanceModel == null || !instanceModel.HasElements)
+            {
+                context.Draw(vertexBuffer.ElementCount, 0);
+            }
+            else
+            {
+                context.DrawInstanced(vertexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0);
+            }
         }
     }
 }

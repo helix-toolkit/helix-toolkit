@@ -97,83 +97,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private string defaultPassName = DefaultPassNames.Default;
-        /// <summary>
-        /// Name of the default pass inside a technique.
-        /// <para>Default: <see cref="DefaultPassNames.Default"/></para>
-        /// </summary>
-        public string DefaultShaderPassName
-        {
-            set
-            {
-                if(Set(ref defaultPassName, value) && IsAttached)
-                {
-                    DefaultShaderPass = EffectTechnique[value];
-                }
-            }
-            get
-            {
-                return defaultPassName;
-            }
-        }
-
-        private string defaultShadowPassName = DefaultPassNames.ShadowPass;
-        /// <summary>
-        /// 
-        /// </summary>
-        public string DefaultShadowPassName
-        {
-            set
-            {
-                if (Set(ref defaultShadowPassName, value) && IsAttached)
-                {
-                    ShadowPass = EffectTechnique[value];
-                }
-            }
-            get
-            {
-                return defaultShadowPassName;
-            }
-        }
-        private ShaderPass defaultShaderPass = ShaderPass.NullPass;
-        /// <summary>
-        /// 
-        /// </summary>
-        protected ShaderPass DefaultShaderPass
-        {
-            private set
-            {
-                if(Set(ref defaultShaderPass, value))
-                {
-                    OnDefaultPassChanged(value);
-                    InvalidateRenderer();
-                }
-            }
-            get
-            {
-                return defaultShaderPass;
-            }
-        }
-
-        private ShaderPass shadowPass = ShaderPass.NullPass;
-        /// <summary>
-        /// 
-        /// </summary>
-        protected ShaderPass ShadowPass
-        {
-            private set
-            {
-                if(Set(ref shadowPass, value))
-                {
-                    OnShadowPassChanged(value);
-                    InvalidateRenderer();
-                }
-            }
-            get
-            {
-                return shadowPass;
-            }
-        }
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
         /// </summary>
@@ -209,8 +132,6 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            DefaultShaderPass = technique[DefaultShaderPassName];
-            ShadowPass = technique[DefaultShadowPassName];
             CreateRasterState(rasterDescription, true);       
             return true;
         }

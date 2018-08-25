@@ -30,9 +30,6 @@ namespace HelixToolkit.UWP.Core
         #endregion
 
         #region Properties
-        protected ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
-        protected ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
-
         /// <summary>
         /// 
         /// </summary>
@@ -147,20 +144,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool OnAttach(IRenderTechnique technique)
-        {
-            if (base.OnAttach(technique))
-            {
-                WireframePass = technique.GetPass(DefaultPassNames.Wireframe);
-                WireframeOITPass = technique.GetPass(DefaultPassNames.WireframeOITPass);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         protected override void OnDetach()
         {
             DynamicReflector = null;
@@ -190,39 +173,38 @@ namespace HelixToolkit.UWP.Core
             }
 
             DynamicReflector?.BindCubeMap(deviceContext);
-            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+            materialVariables.Draw(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
             DynamicReflector?.UnBindCubeMap(deviceContext);
-            if (RenderWireframe && !WireframePass.IsNULL)
+
+            if (RenderWireframe)
             {
-                if (RenderType == RenderType.Transparent && context.IsOITPass)
+                pass = materialVariables.GetWireframePass(RenderType, context);
+                if (pass.IsNULL)
                 {
-                    pass = WireframeOITPass;
-                }
-                else
-                {
-                    pass = WireframePass;
+                    return;
                 }
                 pass.BindShader(deviceContext, false);
                 pass.BindStates(deviceContext, DefaultStateBinding);
                 deviceContext.SetRasterState(RasterStateWireframe);
-                DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+                materialVariables.Draw(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
             }
         }
 
         protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
             MaterialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
-            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+            materialVariables.Draw(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
 
         protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
-            if (!IsThrowingShadow || ShadowPass.IsNULL)
+            var pass = materialVariables.GetShadowPass(RenderType, context);
+            if (!IsThrowingShadow || pass.IsNULL)
             { return; }
             MaterialVariables.UpdateModelStructOnly(deviceContext, ref modelStruct);
-            ShadowPass.BindShader(deviceContext);
-            ShadowPass.BindStates(deviceContext, ShadowStateBinding);
-            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+            pass.BindShader(deviceContext);
+            pass.BindStates(deviceContext, ShadowStateBinding);
+            materialVariables.Draw(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
     }
 }

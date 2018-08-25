@@ -2,23 +2,21 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
 namespace HelixToolkit.UWP.Model
 #endif
 {
-    using Shaders;
     using Render;
+    using Shaders;
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
     public sealed class PassOnlyMaterialVariable : MaterialVariable
     {
-        public ShaderPass MaterialPass { private set; get; }
-
-        public override string DefaultShaderPassName { set; get; }
+        public ShaderPass MaterialPass { get; }
 
         private readonly string passName;
         public PassOnlyMaterialVariable(string passName, IRenderTechnique technique)
@@ -37,13 +35,26 @@ namespace HelixToolkit.UWP.Model
         {
             return MaterialPass;
         }
+        public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
+        {
+            return ShaderPass.NullPass;
+        }
 
+        public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
+        {
+            return ShaderPass.NullPass;
+        }
         protected override void UpdateInternalVariables(DeviceContextProxy context)
         {
         }
 
         protected override void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream)
         {
+        }
+
+        public override void Draw(DeviceContextProxy deviceContext, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
+        {
+            DrawIndexed(deviceContext, indexBuffer, instanceModel);
         }
     }
 }

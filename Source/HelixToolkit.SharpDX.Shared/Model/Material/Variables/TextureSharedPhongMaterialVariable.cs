@@ -45,7 +45,10 @@ namespace HelixToolkit.UWP.Model
         }
 
         public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
-        public ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass MaterialOITPass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass ShadowPass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -91,12 +94,12 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string ShaderSamplerShadowMapName { set; get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
-        private string defaultShaderPassName = DefaultPassNames.Default;
-        public override string DefaultShaderPassName
+        private string materialShaderPassName = DefaultPassNames.Default;
+        public string MaterialShaderPassName
         {
             set
             {
-                if (!fixedPassName && Set(ref defaultShaderPassName, value))
+                if (!fixedPassName && Set(ref materialShaderPassName, value))
                 {
                     MaterialPass = Technique[value];
                     UpdateMappings(MaterialPass);
@@ -104,7 +107,39 @@ namespace HelixToolkit.UWP.Model
             }
             get
             {
-                return defaultShaderPassName;
+                return materialShaderPassName;
+            }
+        }
+
+        private string shadowPassName = DefaultPassNames.ShadowPass;
+        public string ShadowPassName
+        {
+            set
+            {
+                if (Set(ref shadowPassName, value))
+                {
+                    ShadowPass = Technique[value];
+                }
+            }
+            get
+            {
+                return shadowPassName;
+            }
+        }
+
+        private string wireframePassName = DefaultPassNames.Wireframe;
+        public string WireframePassName
+        {
+            set
+            {
+                if (Set(ref wireframePassName, value))
+                {
+                    WireframePass = Technique[value];
+                }
+            }
+            get
+            {
+                return wireframePassName;
             }
         }
 
@@ -121,12 +156,28 @@ namespace HelixToolkit.UWP.Model
             {
                 if (!fixedPassName && Set(ref transparentPassName, value))
                 {
-                    TransparentPass = Technique[value];
+                    MaterialOITPass = Technique[value];
                 }
             }
             get
             {
                 return transparentPassName;
+            }
+        }
+
+        private string wireframeOITPassName = DefaultPassNames.WireframeOITPass;
+        public string WireframeOITPassName
+        {
+            set
+            {
+                if (Set(ref wireframeOITPassName, value))
+                {
+                    WireframeOITPass = Technique[value];
+                }
+            }
+            get
+            {
+                return wireframeOITPassName;
             }
         }
 
@@ -142,17 +193,17 @@ namespace HelixToolkit.UWP.Model
                         switch (material.MeshType)
                         {
                             case MeshTopologyEnum.PNTriangles:
-                                DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
+                                MaterialShaderPassName = DefaultPassNames.MeshTriTessellation;
                                 TransparentPassName = DefaultPassNames.MeshTriTessellationOIT;
                                 break;
                             case MeshTopologyEnum.PNQuads:
-                                DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
+                                MaterialShaderPassName = DefaultPassNames.MeshQuadTessellation;
                                 break;
                         }
                     }
                     else
                     {
-                        DefaultShaderPassName = DefaultPassNames.Default;
+                        MaterialShaderPassName = DefaultPassNames.Default;
                         TransparentPassName = DefaultPassNames.OITPass;
                     }
                 }
@@ -180,8 +231,8 @@ namespace HelixToolkit.UWP.Model
             samplerDiffuseSlot = samplerAlphaSlot = samplerDisplaceSlot = samplerNormalSlot = samplerShadowSlot = -1;
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
-            MaterialPass = technique[DefaultShaderPassName];
-            TransparentPass = technique[TransparentPassName];
+            MaterialPass = technique[MaterialShaderPassName];
+            MaterialOITPass = technique[TransparentPassName];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
@@ -198,7 +249,7 @@ namespace HelixToolkit.UWP.Model
         public TextureSharedPhongMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
             : this(manager, technique, material)
         {
-            DefaultShaderPassName = passName;
+            MaterialShaderPassName = passName;
             fixedPassName = true;
         }
 
@@ -447,7 +498,22 @@ namespace HelixToolkit.UWP.Model
 
         public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
-            return renderType == RenderType.Transparent && context.IsOITPass ? TransparentPass : MaterialPass;
+            return renderType == RenderType.Transparent && context.IsOITPass ? MaterialOITPass : MaterialPass;
+        }
+
+        public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
+        {
+            return ShadowPass;
+        }
+
+        public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
+        {
+            return renderType == RenderType.Transparent && context.IsOITPass ? WireframeOITPass : WireframePass;
+        }
+
+        public override void Draw(DeviceContextProxy deviceContext, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
+        {
+            DrawIndexed(deviceContext, indexBuffer, instanceModel);
         }
     }
 }

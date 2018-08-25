@@ -34,6 +34,7 @@ namespace HelixToolkit.UWP.Model
         private uint textureIndex = 0;
 
         public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
+        public ShaderPass WireframePass { get; private set; } = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -45,10 +46,7 @@ namespace HelixToolkit.UWP.Model
         public string ShaderSamplerDiffuseTexName { set; get; } = DefaultSamplerStateNames.DiffuseMapSampler;
 
         private readonly string defaultShaderPassName = DefaultPassNames.ColorStripe1D;
-        public override string DefaultShaderPassName
-        {
-            set; get;
-        }
+        private readonly string wireframePassName = DefaultPassNames.Wireframe;
 
         private readonly ColorStripeMaterialCore material;
         private readonly IDevice3DResources deviceResources;
@@ -70,6 +68,7 @@ namespace HelixToolkit.UWP.Model
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
             MaterialPass = technique[defaultShaderPassName];
+            WireframePass = technique[wireframePassName];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
@@ -217,6 +216,20 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
             return MaterialPass;
+        }
+        public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
+        {
+            return ShaderPass.NullPass;
+        }
+
+        public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
+        {
+            return WireframePass;
+        }
+
+        public override void Draw(DeviceContextProxy deviceContext, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
+        {
+            DrawIndexed(deviceContext, indexBuffer, instanceModel);
         }
     }
 }

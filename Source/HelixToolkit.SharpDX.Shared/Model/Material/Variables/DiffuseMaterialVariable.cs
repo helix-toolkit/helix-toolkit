@@ -44,6 +44,9 @@ namespace HelixToolkit.UWP.Model
 
         public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
         public ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass ShadowPass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -59,7 +62,7 @@ namespace HelixToolkit.UWP.Model
         public string ShaderSamplerShadowMapName { set; get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
         private string defaultShaderPassName = DefaultPassNames.Default;
-        public override string DefaultShaderPassName
+        public string DefaultShaderPassName
         {
             set
             {
@@ -72,6 +75,39 @@ namespace HelixToolkit.UWP.Model
             get
             {
                 return defaultShaderPassName;
+            }
+        }
+
+
+        private string shadowPassName = DefaultPassNames.ShadowPass;
+        public string ShadowPassName
+        {
+            set
+            {
+                if (Set(ref shadowPassName, value))
+                {
+                    ShadowPass = Technique[value];
+                }
+            }
+            get
+            {
+                return shadowPassName;
+            }
+        }
+
+        private string wireframePassName = DefaultPassNames.Wireframe;
+        public string WireframePassName
+        {
+            set
+            {
+                if (Set(ref wireframePassName, value))
+                {
+                    WireframePass = Technique[value];
+                }
+            }
+            get
+            {
+                return wireframePassName;
             }
         }
 
@@ -96,6 +132,23 @@ namespace HelixToolkit.UWP.Model
                 return transparentPassName;
             }
         }
+
+        private string wireframeOITPassName = DefaultPassNames.WireframeOITPass;
+        public string WireframeOITPassName
+        {
+            set
+            {
+                if (Set(ref wireframeOITPassName, value))
+                {
+                    WireframeOITPass = Technique[value];
+                }
+            }
+            get
+            {
+                return wireframeOITPassName;
+            }
+        }
+
         private readonly PhongMaterialCore material;
         private readonly bool fixedPassName = false;
         private PhongMaterialStruct materialStruct = new PhongMaterialStruct() { UVTransformR1 = new Vector4(1, 0, 0, 0), UVTransformR2 = new Vector4(0, 1, 0, 0) };
@@ -283,6 +336,21 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
             return renderType == RenderType.Transparent && context.IsOITPass ? TransparentPass : MaterialPass;
+        }
+
+        public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
+        {
+            return ShadowPass;
+        }
+
+        public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
+        {
+            return renderType == RenderType.Transparent && context.IsOITPass ? WireframeOITPass : WireframePass;
+        }
+
+        public override void Draw(DeviceContextProxy deviceContext, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
+        {
+            DrawIndexed(deviceContext, indexBuffer, instanceModel);
         }
     }
 }
