@@ -53,7 +53,6 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 ## News
 
-
 #### 2018-08-26
 [V2.4.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.4.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.4.0)
@@ -61,19 +60,6 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.4.0)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
-### Added
-1. Axis aligned plane grid. (WPF.SharpDX and UWP)
-2. CMO Reader. (WPF.SharpDX and UWP)
-3. Animation KeyframeUpdater. (WPF.SharpDX and UWP)
-4. Added UV Transform in PhongMaterial/DiffuseMaterial (WPF.SharpDX and UWP).
-5. Added custom billboard texture sampler.
-
-### Improvement and Changes
-1. Move render environment map and render shadow map properties into PhongMaterial. (WPF.SharpDX and UWP)
-2. Includes material sorting if EnableRenderOrder = true. Update RenderOrder to ushort. Update sorting key to be uint = [RenderOrder, MaterialID]. (WPF.SharpDX and UWP)
-3. MaterialVariable pooling. (WPF.SharpDX and UWP)
-4. Obsolete BoneMatrices struct. Improve BoneSkinnedGeomerty3D. Directly Martix array binding for bones. Add BoneGroupModel3D for bone sharing. Implemented basic key frame animation support and [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/BoneSkinDemo). (WPF.SharpDX and UWP)
-5. Performance improvement.
 
 #### 2018-07-22
 [V2.3.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.3.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
@@ -86,8 +72,5 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.2.0)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.2.0)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.2.0)
-
-#### 2018-05-04
-[V2.1.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.1.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 
 ##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](https://github.com/helix-toolkit/helix-toolkit/blob/develop/CHANGELOG.md)
