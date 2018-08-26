@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -24,13 +24,6 @@ namespace HelixToolkit.UWP.Core
         /// The model structure
         /// </summary>
         protected TModelStruct modelStruct;
-        /// <summary>
-        /// Gets or sets the model cb.
-        /// </summary>
-        /// <value>
-        /// The model cb.
-        /// </value>
-        protected ConstantBufferProxy ModelConstBuffer { private set; get; }
         #endregion
 
         /// <summary>
@@ -42,66 +35,32 @@ namespace HelixToolkit.UWP.Core
         }
 
         /// <summary>
-        /// During attatching render core. Create all local resources. Use Collect(resource) to let object be released automatically during Detach().
-        /// </summary>
-        /// <param name="technique"></param>
-        /// <returns></returns>
-        protected override bool OnAttach(IRenderTechnique technique)
-        {
-            ModelConstBuffer = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription());
-            return true;
-        }        
-
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected abstract ConstantBufferDescription GetModelConstantBufferDescription();
-
-        /// <summary>
         /// Trigger OnRender function delegate if CanRender()==true
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
         public sealed override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
+            if (PreRender(context, deviceContext))
+            {
+                OnRender(context, deviceContext);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected bool PreRender(RenderContext context, DeviceContextProxy deviceContext)
+        {
             if (CanRenderFlag)
             {
                 OnUpdatePerModelStruct(ref modelStruct, context);
                 int vertStartSlot = 0;
-                if(!OnAttachBuffers(deviceContext, ref vertStartSlot))
+                if (!OnAttachBuffers(deviceContext, ref vertStartSlot))
                 {
-                    return;
+                    return false;
                 }
-                OnUploadPerModelConstantBuffers(deviceContext);
                 OnBindRasterState(deviceContext, context.IsInvertCullMode);
-                switch (context.IsShadowPass)
-                {
-                    case true:
-                        switch (context.IsCustomPass)
-                        {
-                            case true:
-                                OnRenderCustom(context, deviceContext, null);
-                                break;
-                            default:
-                                OnRenderShadow(context, deviceContext);
-                                break;
-                        }
-                        break;
-                    default:
-                        switch (context.IsCustomPass)
-                        {
-                            case true:
-                                OnRenderCustom(context, deviceContext, null);
-                                break;
-                            default:
-                                OnRender(context, deviceContext);
-                                break;
-                        }
-                        break;
-                }
-                PostRender(context);
             }
+            return CanRenderFlag;
         }
 
         public sealed override void Update(RenderContext context, DeviceContextProxy deviceContext)
@@ -111,14 +70,6 @@ namespace HelixToolkit.UWP.Core
                 OnUpdate(context, deviceContext);
             }
         }
-
-        /// <summary>
-        /// Called when [render shadow].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext"></param>
-        protected virtual void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        { }
 
         /// <summary>
         /// Attach vertex buffer routine
@@ -151,32 +102,10 @@ namespace HelixToolkit.UWP.Core
         protected virtual void OnUpdate(RenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
-        /// Render function for custom shader pass. Used to do special effects
-        /// </summary>
-        protected virtual void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
-        { }
-
-        /// <summary>
         /// Called when [update per model structure].
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
         protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, RenderContext context);
-
-        /// <summary>
-        /// Called when [upload per model constant buffers].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected virtual void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-            ModelConstBuffer.UploadDataToBuffer(context, ref modelStruct);
-        }
-
-        /// <summary>
-        /// After calling OnRender. Restore some variables, such as HasInstance etc.
-        /// </summary>
-        /// <param name="context"></param>
-        protected virtual void PostRender(RenderContext context)
-        { }
     }
 }

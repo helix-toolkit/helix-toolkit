@@ -5,6 +5,7 @@ Copyright(c) 2018 Helix Toolkit contributors
 
 using SharpDX;
 using System.Collections.Generic;
+using System.Linq;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
@@ -12,6 +13,7 @@ namespace HelixToolkit.UWP.Model.Scene
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
+    using System;
     using Core;
     /// <summary>
     /// 
@@ -19,26 +21,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     public class BoneSkinMeshNode : MeshNode
     {
         /// <summary>
-        /// Gets or sets the vertex bone ids.
-        /// </summary>
-        /// <value>
-        /// The vertex bone ids.
-        /// </value>
-        public IList<BoneIds> VertexBoneIds
-        {
-            set
-            {
-                bonesBufferModel.Elements = value;
-            }
-            get { return bonesBufferModel.Elements; }
-        }
-        /// <summary>
         /// Gets or sets the bone matrices.
         /// </summary>
         /// <value>
         /// The bone matrices.
         /// </value>
-        public BoneMatricesStruct BoneMatrices
+        public Matrix[] BoneMatrices
         {
             set
             {
@@ -49,23 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as BoneSkinRenderCore).BoneMatrices;
             }
         }
-        /// <summary>
-        /// The bones buffer model
-        /// </summary>
-        protected readonly IElementsBufferModel<BoneIds> bonesBufferModel = new VertexBoneIdBufferModel<BoneIds>(BoneIds.SizeInBytes);
-        private IBoneSkinRenderParams boneSkinRenderCore
-        {
-            get { return (IBoneSkinRenderParams)RenderCore; }
-        }
-        /// <summary>
-        /// Called when [create render technique].
-        /// </summary>
-        /// <param name="host">The host.</param>
-        /// <returns></returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.BoneSkinBlinn];
-        }
+
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -74,42 +46,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return new BoneSkinRenderCore();
         }
-        /// <summary>
-        /// Assigns the default values to core.
-        /// </summary>
-        /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(RenderCore core)
-        {
-            base.AssignDefaultValuesToCore(core);
-            boneSkinRenderCore.BoneMatrices = BoneMatrices;
-        }
-        /// <summary>
-        /// Called when [attach].
-        /// </summary>
-        /// <param name="host">The host.</param>
-        /// <returns></returns>
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
-            {
-                bonesBufferModel.Initialize();
-                boneSkinRenderCore.VertexBoneIdBuffer = bonesBufferModel;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Called when [detach].
-        /// </summary>
-        protected override void OnDetach()
-        {
-            bonesBufferModel.DisposeAndClear();
-            base.OnDetach();
-        }
 
+        protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        {
+            return !(EffectsManager.GeometryBufferManager.Register<BoneSkinnedMeshBufferModel>(modelGuid, geometry) is IBoneSkinMeshBufferModel buffer) ? 
+                EmptyGeometryBufferModel.Empty : new BoneSkinPreComputeBufferModel(buffer, buffer.VertexStructSize.FirstOrDefault()) as IAttachableBufferModel;
+        }
         /// <summary>
         /// Views the frustum test.
         /// </summary>

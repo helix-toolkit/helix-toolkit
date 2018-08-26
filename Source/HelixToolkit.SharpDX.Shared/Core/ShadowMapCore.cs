@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
     using Render;
+    using Components;
 
     /// <summary>
     /// 
@@ -97,6 +98,8 @@ namespace HelixToolkit.UWP.Core
                 };
             }
         }
+
+        private readonly ConstantBufferComponent modelCB;
         #endregion
         #region Properties
         /// <summary>
@@ -183,23 +186,14 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public ShadowMapCore() : base(RenderType.PreProc)
         {
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.ShadowParamCB, ShadowMapParamStruct.SizeInBytes)));
             Bias = 0.0015f;
             Intensity = 0.5f;
             Width = Height = 1024;
         }
 
-
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.ShadowParamCB, ShadowMapParamStruct.SizeInBytes);
-        }
-
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            if (context.IsShadowPass)
-            {
-                return;
-            }
             OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
             ++currentFrame;
             currentFrame %= Math.Max(1, UpdateFrequency);
@@ -217,7 +211,6 @@ namespace HelixToolkit.UWP.Core
             }
 
             deviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
-            context.IsShadowPass = true;
             var orgFrustum = context.BoundingFrustum;
             var frustum = new BoundingFrustum(LightViewProjectMatrix);
             context.BoundingFrustum = frustum;
@@ -225,21 +218,25 @@ namespace HelixToolkit.UWP.Core
             deviceContext.SetViewport(0, 0, Width, Height);
 
             deviceContext.SetDepthStencilOnly(viewResource.DepthStencilView);
+            modelCB.Upload(deviceContext, ref modelStruct);
             for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
                 //Only support opaque object for throwing shadows.
                 var core = context.RenderHost.PerFrameOpaqueNodes[i];
                 if (core.RenderCore.IsThrowingShadow && core.TestViewFrustum(ref frustum))
                 {
-                    core.Render(context, deviceContext);
+                    core.RenderShadow(context, deviceContext);
                 }
             }
-
-            context.IsShadowPass = false;
             context.BoundingFrustum = orgFrustum;
             context.RenderHost.SetDefaultRenderTargets(false);
             context.SharedResource.ShadowView = viewResource;
 #endif
+        }
+
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            return true;
         }
 
         protected override void OnDetach()
@@ -251,6 +248,14 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, RenderContext context)
         {
             model.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
+        }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
     }
 }

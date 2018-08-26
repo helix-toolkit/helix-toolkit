@@ -28,6 +28,13 @@ namespace HelixToolkit.UWP.ShaderManager
     {
         private readonly Dictionary<TKEY, StateProxy<TVALUE>> pool = new Dictionary<TKEY, StateProxy<TVALUE>>();
         /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
+        public int Count { get { return pool.Count; } }
+        /// <summary>
         /// 
         /// </summary>
         public Device Device { private set; get; }
@@ -153,7 +160,9 @@ namespace HelixToolkit.UWP.ShaderManager
         /// 
         /// </summary>
         public Device Device { private set; get; }
+        public int Count { get { return pool.Count; } }
         protected readonly LogWrapper logger;
+
         /// <summary>
         /// 
         /// </summary>

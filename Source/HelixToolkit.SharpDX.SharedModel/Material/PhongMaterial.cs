@@ -11,9 +11,11 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using System.ComponentModel;
     using Model;
     using Shaders;
-   
+    using Utilities;
+
     /// <summary>
     /// Implments a phong-material with its all properties
     /// Includes Diffuse, Normal, Displacement, Specular, etc. maps
@@ -185,6 +187,24 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as IPhongMaterial).RenderDisplacementMap = (bool)e.NewValue;
                 }));
+        /// <summary>
+        /// The render environment map property
+        /// </summary>
+        public static readonly DependencyProperty RenderEnvironmentMapProperty =
+            DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    ((d as Material).Core as IPhongMaterial).RenderEnvironmentMap = (bool)e.NewValue;
+                }));
+        /// <summary>
+        /// The render shadow map property
+        /// </summary>
+        public static readonly DependencyProperty RenderShadowMapProperty =
+            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    ((d as Material).Core as IPhongMaterial).RenderShadowMap = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// The enable tessellation property
@@ -216,6 +236,17 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
             { ((d as Material).Core as IPhongMaterial).MinTessellationDistance = (float)(double)e.NewValue; }));
 
+
+        /// <summary>
+        /// The uv transform property
+        /// </summary>
+        public static readonly DependencyProperty UVTransformProperty =
+            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(PhongMaterial), new PropertyMetadata(Matrix.Identity, (d,e)=>
+            {
+                ((d as Material).Core as IPhongMaterial).UVTransform = (Matrix)e.NewValue;
+            }));
+
+
         /// <summary>
         /// Constructs a Shading Material which correspnds with 
         /// the Phong and BlinnPhong lighting models.
@@ -226,6 +257,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 AmbientColor
         {
             get { return (Color4)this.GetValue(AmbientColorProperty); }
@@ -236,6 +270,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 DiffuseColor
         {
             get { return (Color4)this.GetValue(DiffuseColorProperty); }
@@ -246,6 +283,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the emissive color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 EmissiveColor
         {
             get { return (Color4)this.GetValue(EmissiveColorProperty); }
@@ -255,6 +295,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// A fake parameter for reflectivity of the environment map
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 ReflectiveColor
         {
             get { return (Color4)this.GetValue(ReflectiveColorProperty); }
@@ -265,6 +308,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the specular color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 SpecularColor
         {
             get { return (Color4)this.GetValue(SpecularColorProperty); }
@@ -350,6 +396,9 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DisplacementMapSamplerProperty, value); }
         }
 
+#if !NETFX_CORE
+        [TypeConverter(typeof(Vector4Converter))]
+#endif
         public Vector4 DisplacementMapScaleMask
         {
             set { SetValue(DisplacementMapScaleMaskProperty, value); }
@@ -393,6 +442,29 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RenderDisplacementMapProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [render environment map]. Default is false
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render environment map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderEnvironmentMap
+        {
+            get { return (bool)GetValue(RenderEnvironmentMapProperty); }
+            set { SetValue(RenderEnvironmentMapProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [render shadow map]. Default is false
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render shadow map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderShadowMap
+        {
+            get { return (bool)GetValue(RenderShadowMapProperty); }
+            set { SetValue(RenderShadowMapProperty, value); }
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [enable tessellation].
         /// </summary>
@@ -454,8 +526,19 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)GetValue(MinTessellationDistanceProperty); }
             set { SetValue(MinTessellationDistanceProperty, value); }
         }
+        /// <summary>
+        /// Gets or sets the texture uv transform.
+        /// </summary>
+        /// <value>
+        /// The uv transform.
+        /// </value>
+        public Matrix UVTransform
+        {
+            get { return (Matrix)GetValue(UVTransformProperty); }
+            set { SetValue(UVTransformProperty, value); }
+        }
 
-        public PhongMaterial Clone()
+        public PhongMaterial CloneMaterial()
         {
             return new PhongMaterial()
             {
@@ -483,9 +566,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
                 RenderDiffuseMap = RenderDiffuseMap,
                 RenderDisplacementMap = RenderDisplacementMap,
-                RenderNormalMap = RenderNormalMap
+                RenderNormalMap = RenderNormalMap,
+                RenderEnvironmentMap = RenderEnvironmentMap,
+                RenderShadowMap = RenderShadowMap,
+                UVTransform = UVTransform,
             };
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return Clone();
+        }
+#endif
 
         protected override MaterialCore OnCreateCore()
         {
@@ -515,7 +608,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
                 RenderDiffuseMap = RenderDiffuseMap,
                 RenderDisplacementMap = RenderDisplacementMap,
-                RenderNormalMap = RenderNormalMap
+                RenderNormalMap = RenderNormalMap,
+                RenderEnvironmentMap = RenderEnvironmentMap,
+                RenderShadowMap = RenderShadowMap,
+                UVTransform = UVTransform
             };
         }
     }

@@ -31,6 +31,22 @@ namespace HelixToolkit.UWP.Shaders
             Shader = Collect(new global::SharpDX.Direct3D11.GeometryShader(device, byteCode));
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeometryShader"/> class. This is used for stream out geometry shader
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="byteCode">The byte code.</param>
+        /// <param name="streamOutputElements">The stream output elements.</param>
+        /// <param name="bufferStrides">The buffer strides.</param>
+        /// <param name="rasterizedStream">The rasterized stream.</param>
+        public GeometryShader(Device device, string name, byte[] byteCode, StreamOutputElement[] streamOutputElements, int[] bufferStrides, 
+            int rasterizedStream = global::SharpDX.Direct3D11.GeometryShader.StreamOutputNoRasterizedStream)
+            : base(name, ShaderStage.Geometry)
+        {
+            Shader = Collect(new global::SharpDX.Direct3D11.GeometryShader(device, byteCode, streamOutputElements, bufferStrides, rasterizedStream));
+        }
+
         private GeometryShader(string name)
             :base(name, ShaderStage.Geometry, true)
         {

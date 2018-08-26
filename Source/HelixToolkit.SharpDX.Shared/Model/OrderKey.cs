@@ -12,21 +12,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// </summary>
     public struct OrderKey : IComparable<OrderKey>
     {
-        public ulong Key;
+        public uint Key;
 
-        public OrderKey(ulong key)
+        public OrderKey(uint key)
         {
             Key = key;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static OrderKey Create(uint order, float cameraDistance)
+        public static OrderKey Create(ushort order, ushort materialID)
         {
-            uint distInt = (uint)Math.Min(uint.MaxValue, (cameraDistance * 1e4f));
-
-            return new OrderKey(
-                ((ulong)order << 32) +
-                distInt);
+            return new OrderKey(((uint)order << 32) | materialID);
         }
 
         public int CompareTo(OrderKey other)

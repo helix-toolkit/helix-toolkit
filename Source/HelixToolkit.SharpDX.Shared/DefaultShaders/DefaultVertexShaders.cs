@@ -71,29 +71,10 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshInstancingTessellation";
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string VSMeshBoneSkinning
+        public static string VSMeshBoneSkinningBasic
         {
             get;
-        } = "vsBoneSkinning";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string VSMeshBoneSkinningShadow
-        {
-            get;
-        } = "vsBoneSkinningShadow";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string VSMeshBoneSkinningTessellation
-        {
-            get;
-        } = "vsBoneSkinningTessellation";
+        } = "vsBoneSkinningBasic";
 
         /// <summary>
         /// 
@@ -197,6 +178,16 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshOutlineScreenQuad";
 
+        /// <summary>
+        /// Gets the vs plane grid.
+        /// </summary>
+        /// <value>
+        /// The vs plane grid.
+        /// </value>
+        public static string VSPlaneGrid
+        {
+            get;
+        } = "vsPlaneGrid";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -270,25 +261,23 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("COLOR", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
         };
+
         /// <summary>
-        /// 
+        /// Gets the vs input bone skinned basic.
         /// </summary>
-        public static InputElement[] VSInputBoneSkinning { get; } = new InputElement[]
+        /// <value>
+        /// The vs input bone skinned basic.
+        /// </value>
+        public static InputElement[] VSInputBoneSkinnedBasic { get; } = new InputElement[]
         {
             new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
             new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 1),
-            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2),
-            //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
-            new InputElement("BONEIDS", 0, Format.R32G32B32A32_SInt, InputElement.AppendAligned, 4),
-            new InputElement("BONEWEIGHTS", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4),
+            new InputElement("BONEIDS", 0, Format.R32G32B32A32_SInt, InputElement.AppendAligned, 1),
+            new InputElement("BONEWEIGHTS", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1),
         };
+
         /// <summary>
         /// 
         /// </summary>
@@ -421,23 +410,11 @@ namespace HelixToolkit.UWP.Shaders
             DefaultVSShaderByteCodes.VSMeshInstancingTessellation);
 
         /// <summary>
-        /// 
+        /// The vs mesh bone skinned basic
         /// </summary>
-        public static ShaderDescription VSMeshBoneSkinning = new ShaderDescription(nameof(VSMeshBoneSkinning), ShaderStage.Vertex,
-            new ShaderReflector(),
-            DefaultVSShaderByteCodes.VSMeshBoneSkinning);
-        /// <summary>
-        /// 
-        /// </summary>
-        public static ShaderDescription VSMeshBoneSkinningTessellation = new ShaderDescription(nameof(VSMeshBoneSkinningTessellation), ShaderStage.Vertex,
-            new ShaderReflector(),
-            DefaultVSShaderByteCodes.VSMeshBoneSkinningTessellation);
-        /// <summary>
-        /// 
-        /// </summary>
-        public static ShaderDescription VSMeshBoneSkinningShadow = new ShaderDescription(nameof(VSMeshBoneSkinningShadow), ShaderStage.Vertex,
-            new ShaderReflector(),
-            DefaultVSShaderByteCodes.VSMeshBoneSkinningShadow);
+        public static ShaderDescription VSMeshBoneSkinnedBasic = new ShaderDescription(nameof(VSMeshBoneSkinnedBasic), ShaderStage.Vertex,
+            new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshBoneSkinningBasic);
+
         /// <summary>
         /// 
         /// </summary>
@@ -510,6 +487,10 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs mesh outline pass1
         /// </summary>
         public static ShaderDescription VSMeshOutlineScreenQuad = new ShaderDescription(nameof(VSMeshOutlineScreenQuad), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshOutlineScreenQuad);
+        /// <summary>
+        /// The vs plane grid
+        /// </summary>
+        public static ShaderDescription VSPlaneGrid = new ShaderDescription(nameof(VSPlaneGrid), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSPlaneGrid);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

@@ -22,26 +22,39 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
+            IsShadowMappingEnabled="True"
             ShowFrameDetails="True"
-            ShowViewCube="True" IsShadowMappingEnabled="True">
+            ShowViewCube="True">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:ShadowMap3D OrthoWidth="300"/>
-            <hx:AmbientLight3D Color="DarkGray"/>
+            <hx:ShadowMap3D OrthoWidth="300" />
+            <hx:AmbientLight3D Color="DarkGray" />
             <hx:DirectionalLight3D Direction="50, -200, -100" />
             <hx:BatchedMeshGeometryModel3D
                 x:Name="batchedMesh"
-                BatchedGeometries="{Binding BatchedMeshes}" IsThrowingShadow="True" RenderShadowMap="True"
-                BatchedMaterials="{Binding BatchedMaterials}" Transform="{Binding BatchedTransform}"
-                Material="{Binding MainMaterial}" CullMode="Back" Mouse3DDown="BatchedMeshGeometryModel3D_Mouse3DDown"/>
-            <hx:MeshGeometryModel3D IsHitTestVisible="False" Geometry="{Binding SelectedGeometry}" Material="{Binding SelectedMaterial}"
-                                    IsThrowingShadow="False" RenderShadowMap="False"
-                                    Transform="{Binding SelectedTransform}" CullMode="Back" DepthBias="-100"/>
-            <hx:MeshGeometryModel3D IsHitTestVisible="False" CullMode="Back" Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" RenderShadowMap="True"/>
+                BatchedGeometries="{Binding BatchedMeshes}"
+                BatchedMaterials="{Binding BatchedMaterials}"
+                CullMode="Back"
+                IsThrowingShadow="True"
+                Material="{Binding MainMaterial}"
+                Mouse3DDown="BatchedMeshGeometryModel3D_Mouse3DDown"
+                Transform="{Binding BatchedTransform}" />
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                DepthBias="-100"
+                Geometry="{Binding SelectedGeometry}"
+                IsHitTestVisible="False"
+                IsThrowingShadow="False"
+                Material="{Binding SelectedMaterial}"
+                Transform="{Binding SelectedTransform}" />
+            <hx:AxisPlaneGridModel3D
+                AutoSpacing="false"
+                RenderShadowMap="true"
+                Offset="-65" />
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <CheckBox IsChecked="{Binding ElementName=batchedMesh, Path=RenderWireframe}">Wireframe</CheckBox>

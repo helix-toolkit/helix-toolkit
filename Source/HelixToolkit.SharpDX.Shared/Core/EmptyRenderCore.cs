@@ -10,25 +10,16 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Render;
-    using Shaders;
     /// <summary>
     /// 
     /// </summary>
-    public sealed class EmptyRenderCore : RenderCoreBase<ModelStruct>
+    public sealed class EmptyRenderCore : RenderCoreBase<int>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmptyRenderCore"/> class.
         /// </summary>
         public EmptyRenderCore() : base(RenderType.None)
         {
-        }
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
         }
 
         /// <summary>
@@ -41,14 +32,27 @@ namespace HelixToolkit.UWP.Core
 
         }
 
+        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
         /// <summary>
         /// Called when [update per model structure].
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
+        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
         {
            
+        }
+
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            return true;
         }
     }
 }

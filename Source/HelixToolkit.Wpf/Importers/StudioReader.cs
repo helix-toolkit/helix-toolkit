@@ -522,10 +522,10 @@ namespace HelixToolkit.Wpf
                             }
 
                             var actualTexturePath = this.TexturePath ?? string.Empty;
-                            string path = Path.Combine(actualTexturePath, texture);
+                            string path = Path.GetFullPath(Path.Combine(actualTexturePath, texture));
                             if (File.Exists(path))
                             {
-                                var img = new BitmapImage(new Uri(path, UriKind.Relative));
+                                var img = new BitmapImage(new Uri(path));
                                 var textureBrush = new ImageBrush(img)
                                                        {
                                                            ViewportUnits = BrushMappingMode.Absolute,

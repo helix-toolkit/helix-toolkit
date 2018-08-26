@@ -17,7 +17,7 @@ cbuffer cbTransforms : register(b0)
 	// [fov,asepct-ratio,near,far]
     float4 vFrustum;
 	// viewport:
-	// [w,h,0,0]
+	// [w,h,1/w,1/h]
     float4 vViewport;
 	// camera position
     float3 vEyePos;
@@ -30,7 +30,7 @@ cbuffer cbTransforms : register(b0)
 
 #if defined(MESH)
 //Per model
-cbuffer cbMeshModel : register(b1)
+cbuffer cbMeshPhongMaterial : register(b1)
 {
     float4x4 mWorld;
     bool bInvertNormal = false;
@@ -39,7 +39,12 @@ cbuffer cbMeshModel : register(b1)
     bool bHasBones = false;
     float4 vParams = float4(0, 0, 0, 0); //Shared with models
     float4 vColor = float4(1, 1, 1, 1); //Shared with models
-    bool4 bParams = bool4(false, false, false, false); // Shared with models for enable/disable features
+    bool3 bParams = bool3(false, false, false); // Shared with models for enable/disable features
+    bool bBatched = false;
+    bool bRenderOIT = false;
+    float3 padding1 = float3(0,0,0);
+    float4 wireframeColor = float4(0,0,1,1);
+
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;
@@ -57,9 +62,10 @@ cbuffer cbMeshModel : register(b1)
     bool bHasDisplacementMap = false;
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
-    float paddingMaterial0;
+    float padding2;
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
-    float4 wireframeColor = float4(0,0,1,1);
+    float4 uvTransformR1;
+    float4 uvTransformR2;
 };
 #endif
 
@@ -68,18 +74,9 @@ cbuffer cbMeshModel : register(b1)
     {
         float4 VertCoord[4];
         float4 TextureCoord[4];
+        float4 CursorVertCoord[4];
     };
 #endif
-
-#define MaxBones 128
-
-static const int4 minBoneV = { 0, 0, 0, 0 };
-static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
-
-cbuffer cbBoneSkinning : register(b2)
-{
-    matrix skinMatrices[MaxBones];
-};
 
 cbuffer cbLights : register(b3)
 {
@@ -102,7 +99,22 @@ cbuffer cbPointLineModel : register(b4)
 	bool4 pbParams = bool4(false, false, false, false);
 };
 #endif
-
+#if defined(PLANEGRID) 
+cbuffer cbPlaneGridModel : register(b4)
+{
+    float4x4 pWorld;
+    float gridSpacing; 
+    float gridThickness;
+    float fadingFactor;
+    float planeD;
+    float4 pColor;
+    float4 gColor;
+    bool hasShadowMap;
+    int axis;
+    int type;
+    float padding3;
+};
+#endif
 cbuffer cbShadow : register(b5)
 {
     float2 vShadowMapSize = float2(1024, 1024);
@@ -111,11 +123,13 @@ cbuffer cbShadow : register(b5)
     float4 vShadowMapInfo = float4(0.005, 1.0, 0.5, 0.0);
     float4x4 vLightViewProjection;
 };
-
+#if defined(CLIPPLANE)
 cbuffer cbClipping : register(b6)
 {
     bool4 EnableCrossPlane;
     float4 CrossSectionColors;
+    int CuttingOperation;
+    float3 paddingClipping;
 	// Format:
 	// M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
 	// M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
@@ -123,6 +137,17 @@ cbuffer cbClipping : register(b6)
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
     float4x4 CrossPlaneParams;
 }
+#endif
+
+#if defined(BORDEREFFECTS)
+
+cbuffer cbBorderEffect : register(b6)
+{
+    float4 Color;
+    float4x4 Param;
+};
+#endif
+
 #if defined(PARTICLE)
 cbuffer cbParticleFrame : register(b7)
 {
@@ -146,7 +171,8 @@ cbuffer cbParticleFrame : register(b7)
     uint NumTexRow;
     bool AnimateByEnergyLevel;
     float2 ParticleSize;
-    float2 pad0;
+    float Turbulance;
+    float pad0;
 };
 
 cbuffer cbParticleCreateParameters : register(b8)
@@ -176,6 +202,13 @@ Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
 Texture2D billboardTexture : register(t0);; // billboard text image
 
+Texture2D texOITColor : register(t10);
+Texture2D texOITAlpha : register(t11);
+
+Texture1D texColorStripe1DX : register(t12);
+Texture1D texColorStripe1DY : register(t13);
+
+StructuredBuffer<matrix> skinMatrices : register(t20);
 ///------------------Samplers-------------------
 SamplerState samplerDiffuse : register(s0);
 
@@ -192,7 +225,6 @@ SamplerComparisonState samplerShadow : register(s5);
 SamplerState samplerParticle : register(s6);
 
 SamplerState samplerBillboard : register(s7);
-
 ///---------------------UAV-----------------------------
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);

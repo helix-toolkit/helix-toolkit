@@ -68,11 +68,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 itemHashSet.Add(node.GUID, node);
                 Items.Add(node);
+                if(node.Parent != NullSceneNode.NullNode && node.Parent != this)
+                {
+                    throw new ArgumentException("SceneNode already attach to a different node");
+                }
+                node.Parent = this;
                 if (IsAttached)
                 {
                     node.Attach(RenderHost);
                 }
-                forceUpdateTransform = true;
                 OnAddChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
                 return true;
             }
@@ -86,6 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             for (int i = 0; i < Items.Count; ++i)
             {
                 Items[i].Detach();
+                Items[i].Parent = null;
             }
             Items.Clear();
             itemHashSet.Clear();
@@ -100,8 +105,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             if (itemHashSet.Remove(node.GUID))
             {
-                node.Detach();
+                node.Detach();             
                 Items.Remove(node);
+                node.Parent = null;
                 OnRemoveChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
                 return true;
             }
@@ -127,11 +133,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool OnAttach(IRenderHost host)
         {
-            for (int i = 0; i < Items.Count; ++i)
+            if (base.OnAttach(host))
             {
-                Items[i].Attach(host);
+                for (int i = 0; i < Items.Count; ++i)
+                {
+                    Items[i].Attach(host);
+                }
+                return true;
             }
-            return true;
+            else { return false; }
         }
         /// <summary>
         /// Called when [detach].

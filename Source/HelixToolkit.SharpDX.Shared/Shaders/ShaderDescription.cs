@@ -123,6 +123,40 @@ namespace HelixToolkit.UWP.Shaders
         public IShaderReflector ShaderReflector { set; get; }
 
         private readonly IShaderByteCodeReader byteCodeReader;
+        #region GS Stream output Only
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is gs stream out.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is gs stream out; otherwise, <c>false</c>.
+        /// </value>
+        [DataMember]
+        public bool IsGSStreamOut { set; get; } = false;
+        /// <summary>
+        /// Gets or sets the gs stream output element.
+        /// </summary>
+        /// <value>
+        /// The gsso element.
+        /// </value>
+        [DataMember]
+        public StreamOutputElement[] GSSOElement { set; get; } = null;
+        /// <summary>
+        /// Gets or sets the gs stream output strides.
+        /// </summary>
+        /// <value>
+        /// The gsso strides.
+        /// </value>
+        [DataMember]
+        public int[] GSSOStrides { set; get; } = null;
+        /// <summary>
+        /// Gets or sets the gs stream output rasterized stream index.
+        /// </summary>
+        /// <value>
+        /// The gsso rasterized stream index.
+        /// </value>
+        [DataMember]
+        public int GSSORasterized { set; get; } = -1;
+        #endregion
         /// <summary>
         /// Create a empty description
         /// </summary>
@@ -242,7 +276,14 @@ namespace HelixToolkit.UWP.Shaders
                     shader = new HullShader(device, Name, ByteCode);
                     break;
                 case ShaderStage.Geometry:
-                    shader = new GeometryShader(device, Name, ByteCode);
+                    if (IsGSStreamOut)
+                    {
+                        shader = new GeometryShader(device, Name, ByteCode, GSSOElement, GSSOStrides, GSSORasterized);
+                    }
+                    else
+                    {
+                        shader = new GeometryShader(device, Name, ByteCode);
+                    }
                     break;
                 default:
                     break;

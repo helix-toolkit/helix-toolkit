@@ -14,6 +14,14 @@
         <local:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
+        <hx:PhongMaterial
+            x:Key="RedMaterial"
+            Name="Red"
+            AmbientColor="0.1,0.1,0.1,1.0"
+            DiffuseColor="Red"
+            SpecularColor="0.0225,0.0225,0.0225,1.0"
+            EmissiveColor="0.0,0.0,0.0,1.0"
+            SpecularShininess="12.8"/>
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
         <hx:MeshGeometry3D
             x:Key="Model"
@@ -105,7 +113,7 @@
             </hx:GroupModel3D>
             <hx:MeshGeometryModel3D
                 Geometry="{StaticResource Model}"
-                Material="{x:Static hx:PhongMaterials.Red}"
+                Material="{StaticResource RedMaterial}"
                 Transform="{StaticResource Model1Transform}" />
         </hx:Viewport3DX>
 

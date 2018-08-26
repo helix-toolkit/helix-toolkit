@@ -12,6 +12,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Render;
+    using Components;
     /// <summary>
     /// 
     /// </summary>
@@ -59,8 +60,11 @@ namespace HelixToolkit.UWP.Core
 
         #endregion
 
+        private readonly ConstantBufferComponent modelCB;
+
         public LineRenderCore()
         {
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes)));
             LineColor = Color.Black;
             Thickness = 0.5f;
             Smoothness = 0;
@@ -72,16 +76,26 @@ namespace HelixToolkit.UWP.Core
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
         }
 
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
-        }
-
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            modelCB.Upload(deviceContext, ref modelStruct);
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);
-            OnDraw(deviceContext, InstanceBuffer);
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+        }
+
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+        }
+
+        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (!IsThrowingShadow || ShadowPass.IsNULL)
+            { return; }
+            ShadowPass.BindShader(deviceContext);
+            ShadowPass.BindStates(deviceContext, ShadowStateBinding);
+            DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
         }
     }
 }

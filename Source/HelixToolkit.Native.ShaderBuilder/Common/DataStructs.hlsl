@@ -22,6 +22,23 @@ struct LightStruct
     matrix mLightProj; //56
 };
 
+struct VSSkinnedInput
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+    int4 bones : BONEIDS;
+    float4 boneWeights : BONEWEIGHTS;
+};
+
+struct VSSkinnedOutput
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+};
 
 struct VSInput
 {
@@ -104,6 +121,14 @@ struct PSInput
 	float4 c : COLOR; // solid color (for debug)
     float4 c2 : COLOR1; //vMaterialEmissive + vMaterialAmbient * vLightAmbient
     float4 cDiffuse : COLOR2; //vMaterialDiffuse
+};
+
+struct PSPlaneGridInput
+{
+    float4 p : SV_POSITION;
+    float2 uv : POSITION0;
+    float3 wp : POSITION1;
+    float4 sp : POSITION2;
 };
 
 struct PSWireframeInput

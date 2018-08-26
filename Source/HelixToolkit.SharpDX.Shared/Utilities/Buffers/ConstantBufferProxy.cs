@@ -193,6 +193,19 @@ namespace HelixToolkit.UWP.Utilities
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public DataStream Map(DeviceContextProxy context)
+        {
+            context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+            return stream;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Unmap(DeviceContextProxy context)
+        {
+            context.UnmapSubresource(buffer, 0);
+        }
+
         /// <summary>
         /// Special function to recreate existing constant buffer to new size.
         /// </summary>

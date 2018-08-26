@@ -51,12 +51,11 @@
             <hx:AmbientLight3D Color="#515151" />
             <hx:DirectionalLight3D Direction="-1, -1, 0" Color="White" />
             <hx:ShadowMap3D />
-            <hx:MeshGeometryModel3D
+            <!--<hx:MeshGeometryModel3D
                 x:Name="floor"
                 CullMode="Back"
                 Geometry="{Binding Floor}"
-                Material="{Binding FloorMaterial}"
-                RenderShadowMap="True" />
+                Material="{Binding FloorMaterial}" />-->
             <hx:GroupModel3D
                 x:Name="model1"
                 ItemsSource="{Binding Model1}"
@@ -91,6 +90,7 @@
                 Geometry="{Binding MeshTitles}"
                 Transform="{Binding TitleTransform}" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
+            <hx:AxisPlaneGridModel3D AutoSpacing="false" Offset="-4" RenderShadowMap="True"/>
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1">
             <CheckBox

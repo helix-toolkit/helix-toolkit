@@ -14,9 +14,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     public abstract class MaterialGeometryNode : GeometryNode
     {
         private bool isTransparent = false;
-
-        private MaterialCore material;
-
         /// <summary>
         /// Specifiy if model material is transparent.
         /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
@@ -35,7 +32,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        private MaterialVariable materialVariable;
+        private MaterialCore material;
         /// <summary>
         ///
         /// </summary>
@@ -46,7 +44,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 if (Set(ref material, value))
                 {
-                    (RenderCore as IMaterialRenderParams).Material = material;
                     if (RenderHost != null)
                     {
                         if (IsAttached)
@@ -56,53 +53,54 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                         }
                         else
                         {
-                            var host = RenderHost;
                             Detach();
-                            Attach(host);
+                            Attach(RenderHost);
                         }
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// Render environment map on this mesh if has environment map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderEnvironmentMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderEnvironmentMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderEnvironmentMap = value; }
-        }
-
-        /// <summary>
-        /// Render shadow on this mesh if has shadow map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderShadowMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderShadowMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderShadowMap = value; }
-        }
-        /// <summary>
-        ///
-        /// </summary>
         protected virtual void AttachMaterial()
         {
-            var core = RenderCore as IMaterialRenderParams;
-            core.Material = this.Material;
+            RemoveAndDispose(ref materialVariable);
+            if(material != null && RenderCore is IMaterialRenderParams core)
+            {
+                materialVariable = core.MaterialVariables = Collect(EffectsManager.MaterialVariableManager.Register(material, EffectTechnique));
+            }
+        }
+
+        protected override OrderKey OnUpdateRenderOrderKey()
+        {
+            return OrderKey.Create(RenderOrder, materialVariable == null ? (ushort)0 : materialVariable.ID);
+        }
+
+        protected override bool CanRender(RenderContext context)
+        {
+            return base.CanRender(context) && materialVariable != null;
         }
 
         protected override bool OnAttach(IRenderHost host)
         {
-            // --- attach
-            if (!base.OnAttach(host))
+            if (base.OnAttach(host))
+            {
+                AttachMaterial();
+                return true;
+            }
+            else
             {
                 return false;
             }
-            // --- material
-            this.AttachMaterial();
-            return true;
+        }
+
+        protected override void OnDetach()
+        {
+            materialVariable = null;
+            if (RenderCore is IMaterialRenderParams core)
+            {
+                core.MaterialVariables = null;
+            }
+            base.OnDetach();
         }
     }
 }

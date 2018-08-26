@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using SharpDX.Direct3D11;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
@@ -12,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     using Model.Scene;
-
+    using Shaders;
     /// <summary>
     /// 
     /// </summary>
@@ -68,6 +69,27 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsTransparentProperty); }
             set { SetValue(IsTransparentProperty, value); }
         }
+
+        /// <summary>
+        /// Gets or sets the sampler description.
+        /// </summary>
+        /// <value>
+        /// The sampler description.
+        /// </value>
+        public SamplerStateDescription SamplerDescription
+        {
+            get { return (SamplerStateDescription)GetValue(SamplerDescriptionProperty); }
+            set { SetValue(SamplerDescriptionProperty, value); }
+        }
+
+        /// <summary>
+        /// The sampler description property
+        /// </summary>
+        public static readonly DependencyProperty SamplerDescriptionProperty =
+            DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(BillboardTextModel3D), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d,e) =>
+            {
+                ((d as Element3DCore).SceneNode as BillboardNode).SamplerDescription = (SamplerStateDescription)e.NewValue;
+            }));
         #endregion
 
         #region Overridable Methods        
@@ -89,6 +111,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (core is BillboardNode n)
             {
                 n.FixedSize = FixedSize;
+                n.IsTransparent = IsTransparent;
+                n.SamplerDescription = SamplerDescription;
             }
             base.AssignDefaultValuesToSceneNode(core);       
         }

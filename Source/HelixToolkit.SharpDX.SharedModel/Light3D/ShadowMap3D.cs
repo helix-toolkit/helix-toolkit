@@ -76,6 +76,27 @@ namespace HelixToolkit.Wpf.SharpDX
                 ((d as Element3DCore).SceneNode as ShadowMapNode).Distance = (float)(double)e.NewValue;
             }));
 
+
+        /// <summary>
+        /// The far field distance property
+        /// </summary>
+        public static readonly DependencyProperty FarFieldDistanceProperty =
+            DependencyProperty.Register("FarFieldDistance", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(500.0, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ShadowMapNode).FarField = (float)(double)e.NewValue;
+            }));
+
+
+        /// <summary>
+        /// The near field distance property
+        /// </summary>
+        public static readonly DependencyProperty NearFieldDistanceProperty =
+            DependencyProperty.Register("NearFieldDistance", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(1.0, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ShadowMapNode).NearField = (float)(double)e.NewValue;
+            }));
+
+
         /// <summary>
         /// Gets or sets the distance for shadow caster.
         /// </summary>
@@ -127,6 +148,30 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)this.GetValue(IntensityProperty); }
             set { this.SetValue(IntensityProperty, value); }
         }
+
+        /// <summary>
+        /// Gets or sets the near field distance.
+        /// </summary>
+        /// <value>
+        /// The near field distance.
+        /// </value>
+        public double NearFieldDistance
+        {
+            get { return (double)GetValue(NearFieldDistanceProperty); }
+            set { SetValue(NearFieldDistanceProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the far field distance.
+        /// </summary>
+        /// <value>
+        /// The far field distance.
+        /// </value>
+        public double FarFieldDistance
+        {
+            get { return (double)GetValue(FarFieldDistanceProperty); }
+            set { SetValue(FarFieldDistanceProperty, value); }
+        }
         /// <summary>
         /// Distance of the directional light from origin
         /// </summary>
@@ -154,6 +199,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.Resolution = new Size2((int)(Resolution.Width), (int)(Resolution.Height));
                 n.Distance = (float)Distance;
                 n.OrthoWidth = (float)OrthoWidth;
+                n.FarField = (float)FarFieldDistance;
+                n.NearField = (float)NearFieldDistance;
             }
             base.AssignDefaultValuesToSceneNode(core);
         }

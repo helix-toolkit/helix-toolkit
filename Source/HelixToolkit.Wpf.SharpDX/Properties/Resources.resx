@@ -139,9 +139,6 @@
   <data name="psMeshXRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshxray.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsBoneSkinning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsboneskinning.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="vsCubeMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vscubemap.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -193,9 +190,6 @@
   <data name="vsBillboardInstancing" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsbillboardinstancing.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsBoneSkinningTessellation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsboneskinningtessellation.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="csParticleInsert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\csparticleinsert.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -223,9 +217,6 @@
   <data name="psShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsBoneSkinningShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsboneskinningshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="vsMeshShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -249,9 +240,6 @@
   </data>
   <data name="vsMeshWireframe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshwireframe.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="vsBoneSkinningWireframe" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsboneskinningwireframe.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="psDepthStencilOnly" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psdepthstencilonly.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -345,5 +333,17 @@
   </data>
   <data name="vsMeshBatchedShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshbatchedshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gsMeshSkinnedOut" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gsmeshskinnedout.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsBoneSkinningBasic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsboneskinningbasic.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psPlaneGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psplanegrid.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsPlaneGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsplanegrid.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

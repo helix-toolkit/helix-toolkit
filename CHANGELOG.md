@@ -1,7 +1,30 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.4.0] - 2018-8-26
+### Added
+1. Axis aligned plane grid. (WPF.SharpDX and UWP)
+2. CMO Reader. (WPF.SharpDX and UWP)
+3. Animation KeyframeUpdater. (WPF.SharpDX and UWP)
+4. Added UV Transform in PhongMaterial/DiffuseMaterial (WPF.SharpDX and UWP).
+5. Added custom billboard texture sampler.
+
+### Improvement and Changes
+1. Move render environment map and render shadow map properties into PhongMaterial. (WPF.SharpDX and UWP)
+2. Includes material sorting if EnableRenderOrder = true. Update RenderOrder to ushort. Update sorting key to be uint = [RenderOrder, MaterialID]. (WPF.SharpDX and UWP)
+3. MaterialVariable pooling. (WPF.SharpDX and UWP)
+4. Obsolete BoneMatrices struct. Improve BoneSkinnedGeomerty3D. Directly Martix array binding for bones. Add BoneGroupModel3D for bone sharing. Implemented basic key frame animation support and [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/BoneSkinDemo). (WPF.SharpDX and UWP)
+5. Performance improvement.
+
+### Fixed
+1. Fix bug on DisposeAndClear not called during detaching scene node. (WPF.SharpDX and UWP)
+2. Fix bug on invalidate scene graph not working on detaching scene node. (WPF.SharpDX and UWP)
+3. Instanced models are not properly exported using ObjExporter #902 (WPF.SharpDX)
+4. Coordinate system and view cube are clipped when resizing the Viewport3DX #892 (WPF.SharpDX and UWP)
+5. Wrong Y texture coordinate #870 (WPF.SharpDX and UWP)
+6. ObjExporter export MeshGeometryModel3D fails #857 (WPF.SharpDX)
+
+## [2.3.0] - 2018-7-22
 ### Added
 1. Dynamic Buffer Support for geometry data streaming. (WPF.SharpDX and UWP) [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki/Dynamic-Geometry3D-for-Data-Streaming)
 2. New TransformManipulator. See Manipulator Demo. (WPF.SharpDX and UWP)

@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
     /// </summary>
     public interface IShaderPoolManager
     {
+        int Count { get; }
         /// <summary>
         /// Registers the shader. Shader object live time is managed by ShaderPoolManager. Shader should not be disposed manually.
         /// </summary>
@@ -34,6 +35,35 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
     /// </summary>
     public interface IStatePoolManager
     {
+        /// <summary>
+        /// Gets the blend state pool.
+        /// </summary>
+        /// <value>
+        /// The blend state pool.
+        /// </value>
+        BlendStatePool BlendStatePool { get; }
+        /// <summary>
+        /// Gets the raster state pool.
+        /// </summary>
+        /// <value>
+        /// The raster state pool.
+        /// </value>
+        RasterStatePool RasterStatePool { get; }
+        /// <summary>
+        /// Gets the depth stencil state pool.
+        /// </summary>
+        /// <value>
+        /// The depth stencil state pool.
+        /// </value>
+        DepthStencilStatePool DepthStencilStatePool { get; }
+
+        /// <summary>
+        /// Gets the sampler state pool.
+        /// </summary>
+        /// <value>
+        /// The sampler state pool.
+        /// </value>
+        SamplerStatePool SamplerStatePool { get; }
         /// <summary>
         /// Registers the specified desc. This function increments state proxy internal reference counter. Must be disposed if not used.
         /// </summary>

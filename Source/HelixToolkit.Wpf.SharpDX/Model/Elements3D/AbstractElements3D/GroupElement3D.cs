@@ -130,7 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void AttachChildren(IEnumerable children)
         {
-            var node = SceneNode as GroupNode;
+            var node = SceneNode as GroupNodeBase;
             foreach (Element3D c in children)
             {
                 if (c.Parent == null)
@@ -143,7 +143,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void DetachChildren(IEnumerable children)
         {
-            var node = SceneNode as GroupNode;
+            var node = SceneNode as GroupNodeBase;
             foreach (Element3D c in children)
             {
                 node.RemoveChildNode(c);

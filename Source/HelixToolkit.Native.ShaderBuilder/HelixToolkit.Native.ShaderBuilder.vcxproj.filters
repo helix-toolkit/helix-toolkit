@@ -42,18 +42,6 @@
     <FxCompile Include="VS\vsBillboardInstancing.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
-    <FxCompile Include="VS\vsBoneSkinning.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsBoneSkinningShadow.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsBoneSkinningTessellation.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsBoneSkinningWireframe.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
     <FxCompile Include="VS\vsCubeMap.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
@@ -274,6 +262,18 @@
       <Filter>VS</Filter>
     </FxCompile>
     <FxCompile Include="VS\vsMeshBatchedShadow.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="GS\gsMeshSkinnedOut.hlsl">
+      <Filter>GS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsBoneSkinningBasic.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psPlaneGrid.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsPlaneGrid.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
   </ItemGroup>

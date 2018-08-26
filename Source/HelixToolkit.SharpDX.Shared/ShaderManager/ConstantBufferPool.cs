@@ -22,6 +22,13 @@ namespace HelixToolkit.UWP.ShaderManager
     public interface IConstantBufferPool
     {
         /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
+        int Count { get; }
+        /// <summary>
         /// Gets the device.
         /// </summary>
         /// <value>

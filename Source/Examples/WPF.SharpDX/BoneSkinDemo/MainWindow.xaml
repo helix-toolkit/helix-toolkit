@@ -7,24 +7,31 @@
     xmlns:local="clr-namespace:BoneSkinDemo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
-    Width="525"
-    Height="350"
+    Width="1000"
+    Height="800"
     mc:Ignorable="d">
     <Window.DataContext>
-        <local:MainViewModel/>
+        <local:MainViewModel />
     </Window.DataContext>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
+            BackgroundColor="Gray"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
+            EnableDesignModeRendering="False"
             EnableSwapChainRendering="False"
+            FXAALevel="Medium"
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
-            ShowFrameRate="True" EnableDesignModeRendering="True"
+            ShowFrameRate="True"
             TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
@@ -39,31 +46,34 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:ShadowMap3D />
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <hx:BoneSkinMeshGeometryModel3D
-                x:Name="model"
-                BoneMatrices="{Binding Bones}"
-                CullMode="Back"
-                FillMode="{Binding FillMode}"
-                Geometry="{Binding Model}"
-                Instances="{Binding Instances}"
-                IsThrowingShadow="True"
-                Material="{Binding Material}"
-                RenderShadowMap="True"
-                VertexBoneIds="{Binding VertexBoneParams}" />
-            <hx:MeshGeometryModel3D
-                Geometry="{Binding FloorModel}"
-                Material="{Binding FloorMaterial}"
-                RenderShadowMap="True" />
+            <hx:ShadowMap3D OrthoWidth="200" />
+            <hx:AmbientLight3D Color="#4B4B4B" />
+            <hx:DirectionalLight3D Direction="0, -1, -1" Color="White" />
+            <hx:GroupModel3D ItemsSource="{Binding Models}" Transform="{Binding ModelTransform}" />
+            <hx:GroupModel3D
+                x:Name="skeleton"
+                ItemsSource="{Binding BoneModels}"
+                Transform="{Binding ModelTransform}" />
+            <hx:AxisPlaneGridModel3D x:Name="plane" RenderShadowMap="True" Offset="-0.8"/>
+            <hx:PostEffectMeshXRayGrid
+                BlendingFactor="0.6"
+                EffectName="xray"
+                GridDensity="3" />
         </hx:Viewport3DX>
         <StackPanel
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
+            Grid.Column="1"
+            Width="160"
+            VerticalAlignment="Top"
             Orientation="Vertical">
-            <CheckBox IsChecked="{Binding ElementName=model, Path=RenderWireframe}">Show Wireframe</CheckBox>
+            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
+            <CheckBox IsChecked="{Binding IsRendering, ElementName=skeleton}">Skeleton</CheckBox>
+            <TextBlock Margin="0,4,0,0">Animation List:</TextBlock>
+            <ComboBox ItemsSource="{Binding Animations}" SelectedItem="{Binding SelectedAnimation}" />
+            <TextBlock Margin="0,4,0,0">Repeat Mode:</TextBlock>
+            <ComboBox ItemsSource="{Binding RepeatModes}" SelectedItem="{Binding SelectedRepeatMode}" />
+            <TextBlock Margin="0,4,0,0">Grid Pattern:</TextBlock>
+            <ComboBox ItemsSource="{Binding GridTypes}" SelectedItem="{Binding ElementName=plane, Path=GridPattern}" />
         </StackPanel>
     </Grid>
 </Window>

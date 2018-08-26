@@ -77,8 +77,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Started(Point e)
         {
             base.Started(e);
-            this.zoomRectangle = new Rect(this.MouseDownPoint, this.MouseDownPoint);
-            this.Viewport.ShowZoomRectangle(this.zoomRectangle);
         }
 
         /// <summary>
@@ -98,7 +96,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
             this.Viewport.ZoomToRectangle(rectangle);
         }
 

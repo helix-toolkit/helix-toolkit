@@ -16,9 +16,10 @@ namespace HelixToolkit.UWP.Shaders
     {
         public static string GlobalTransformCB = "cbTransforms";
         public static string ModelCB = "cbMeshModel";
+        public static string MeshPhongCB = "cbMeshPhongMaterial";
         public static string PointLineModelCB = "cbPointLineModel";
+        public static string PlaneGridModelCB = "cbPlaneGridModel";
         public static string LightCB = "cbLights";
-        public static string BoneCB = "cbBoneSkinning";
         public static string ClipParamsCB = "cbClipping";
         public static string BorderEffectCB = "cbBorderEffect";
         public static string DynamicCubeMapCB = "cbDynamicCubeMap";
@@ -47,6 +48,8 @@ namespace HelixToolkit.UWP.Shaders
         //----------Order Independent Transparent-----------
         public static string OITColorTB = "texOITColor";
         public static string OITAlphaTB = "texOITAlpha";
+        //----------Bone Skin--------------
+        public static string BoneSkinSB = "skinMatrices"; // Structured Buffer
     }
 
     public static class DefaultSamplerStateNames

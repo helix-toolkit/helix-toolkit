@@ -76,6 +76,14 @@ namespace HelixToolkit.Wpf.SharpDX
             remove { this.RemoveHandler(WinformHostExtend.FormMouseMoveEvent, value); }
         }
         /// <summary>
+        /// Occurs when [form mouse wheel].
+        /// </summary>
+        public event WinformHostExtend.FormMouseWheelEventHandler FormMouseWheel
+        {
+            add { this.AddHandler(WinformHostExtend.FormMouseWheelEvent, value); }
+            remove { this.RemoveHandler(WinformHostExtend.FormMouseWheelEvent, value); }
+        }
+        /// <summary>
         /// The camera inertia factor property.
         /// </summary>
         public static readonly DependencyProperty CameraInertiaFactorProperty = DependencyProperty.Register(

@@ -139,22 +139,6 @@ namespace HelixToolkit.UWP.Core
             cubeTextureRes = null;
             base.OnDetach();
         }
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return null;
-        }
-        /// <summary>
-        /// Called when [upload per model constant buffers].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-
-        }
 
         /// <summary>
         /// Called when [default pass changed].
@@ -179,15 +163,6 @@ namespace HelixToolkit.UWP.Core
             deviceContext.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, 0, 0);
         }
 
-        /// <summary>
-        /// Called when [render shadow].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext">The device context.</param>
-        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-
-        }
         /// <summary>
         /// Called when [update per model structure].
         /// </summary>
@@ -215,6 +190,14 @@ namespace HelixToolkit.UWP.Core
                     buffer.UploadDataToBuffer(context, geometry.Positions, geometry.Positions.Count);
                 }
             }
+        }
+
+        protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        protected sealed override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
     }
 }

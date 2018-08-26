@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
     /// Do a depth prepass before rendering.
     /// <para>Must customize the DefaultEffectsManager and set DepthStencilState to DefaultDepthStencilDescriptions.DSSDepthEqualNoWrite in default ShaderPass from EffectsManager to achieve best performance.</para>
     /// </summary>
-    public class DepthPrepassCore : RenderCoreBase<bool>
+    public sealed class DepthPrepassCore : RenderCoreBase<bool>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DepthPrepassCore"/> class.
@@ -24,14 +24,7 @@ namespace HelixToolkit.UWP.Core
         public DepthPrepassCore() : base(RenderType.PreProc)
         {
         }
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return null;
-        }
+
         /// <summary>
         /// Called when [render].
         /// </summary>
@@ -39,7 +32,6 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            context.IsCustomPass = true;
             context.CustomPassName = DefaultPassNames.DepthPrepass;
             for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
@@ -53,11 +45,19 @@ namespace HelixToolkit.UWP.Core
                     }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                    core.Render(context, deviceContext);
+                    core.RenderCustom(context, deviceContext);
                 }
             }
-            context.IsCustomPass = false;
         }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
         /// <summary>
         /// Called when [update per model structure].
         /// </summary>
@@ -66,13 +66,10 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdatePerModelStruct(ref bool model, RenderContext context)
         {
         }
-        /// <summary>
-        /// Called when [upload per model constant buffers].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
+
+        protected override bool OnAttach(IRenderTechnique technique)
         {
-            
+            return true;
         }
     }
 }

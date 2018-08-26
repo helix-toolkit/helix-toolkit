@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
     using Render;
+    using Components;
     /// <summary>
     /// 
     /// </summary>
@@ -85,8 +86,8 @@ namespace HelixToolkit.UWP.Core
     public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>, IScreenSpacedRenderParams
     {
         public event EventHandler<BoolArgs> OnCoordinateSystemChanged;
-
-        private ConstantBufferProxy globalTransformCB;
+        
+        private readonly ConstantBufferComponent globalTransformCB;
         private Matrix projectionMatrix;
         public GlobalTransformStruct GlobalTransform { private set; get; }
         public float ScreenRatio { private set; get; } = 1f;
@@ -210,16 +211,19 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenSpacedMeshRenderCore"/> class.
         /// </summary>
-        public ScreenSpacedMeshRenderCore() : base(RenderType.ScreenSpaced) { }
-
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        public ScreenSpacedMeshRenderCore() : base(RenderType.ScreenSpaced)
         {
-            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
+            globalTransformCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes)));
         }
+
+        ///// <summary>
+        ///// Gets the model constant buffer description.
+        ///// </summary>
+        ///// <returns></returns>
+        //protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        //{
+        //    return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
+        //}
 
         /// <summary>
         /// Creates the state of the raster.
@@ -243,16 +247,9 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            if(base.OnAttach(technique))
-            {
-                globalTransformCB = technique.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
-                CreateRasterState(rasterDescription, true);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+               // globalTransformCB = technique.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
+            CreateRasterState(rasterDescription, true);
+            return true;
         }
 
         protected override void OnDetach()
@@ -338,13 +335,6 @@ namespace HelixToolkit.UWP.Core
         {
             SetScreenSpacedCoordinates(renderContext, deviceContext);
         }
-        /// <summary>
-        /// Posts the render.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected override void PostRender(RenderContext context)
-        {
-        }
 
         /// <summary>
         /// Sets the screen spaced coordinates.
@@ -368,10 +358,9 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
-            DepthStencilView dsView;
             if (clearDepthBuffer)
             {
-                deviceContext.GetDepthStencilView(out dsView);
+                deviceContext.GetDepthStencilView(out DepthStencilView dsView);
                 if (dsView == null)
                 {
                     return;
@@ -388,12 +377,38 @@ namespace HelixToolkit.UWP.Core
             globalTrans.Projection = projectionMatrix;
             globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
             globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 1f / viewportSize, 1f / viewportSize);
-            globalTransformCB.UploadDataToBuffer(deviceContext, ref globalTrans);
+            globalTransformCB.Upload(deviceContext, ref globalTrans);
             GlobalTransform = globalTrans;
             int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
             int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
+            offX = Math.Max(0, Math.Min(offX, (int)(Width - viewportSize)));
+            offY = Math.Max(0, Math.Min(offY, (int)(Height - viewportSize)));
+            //if(offX + viewportSize > Width)
+            //{
+            //    offX = (int)(Width - viewportSize);
+            //}
+            //else if(offX < 0)
+            //{
+            //    offX = 0;
+            //}
+            //if(offY + viewportSize > Height)
+            //{
+            //    offY = (int)(Height - viewportSize);
+            //}
+            //else if(offY < 0)
+            //{
+            //    offY = 0;
+            //}
             deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
             deviceContext.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
+        }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
     }
 }

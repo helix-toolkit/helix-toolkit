@@ -95,7 +95,6 @@
                 Instances="{Binding Instances}"
                 IsThrowingShadow="True"
                 Material="{Binding RedMaterial}"
-                RenderShadowMap="True"
                 Transform="{Binding Model1Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model2"
@@ -104,7 +103,6 @@
                 Instances="{Binding Instances}"
                 IsThrowingShadow="True"
                 Material="{Binding GreenMaterial}"
-                RenderShadowMap="True"
                 Transform="{Binding Model2Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model3"
@@ -112,7 +110,6 @@
                 Geometry="{Binding Model}"
                 IsThrowingShadow="True"
                 Material="{Binding BlueMaterial}"
-                RenderShadowMap="True"
                 Transform="{Binding Model3Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="plane"
@@ -120,7 +117,6 @@
                 Geometry="{Binding Plane}"
                 IsThrowingShadow="false"
                 Material="{Binding GrayMaterial}"
-                RenderShadowMap="True"
                 Transform="{Binding PlaneTransform}" />
             <hx:LineGeometryModel3D
                 x:Name="lines"
@@ -176,9 +172,9 @@
                     <CheckBox Margin="3" IsChecked="{Binding IsThrowingShadow, ElementName=model2}">Model 2</CheckBox>
                     <CheckBox Margin="3" IsChecked="{Binding IsThrowingShadow, ElementName=model3}">Model 3</CheckBox>
                     <CheckBox Margin="3" IsChecked="{Binding IsThrowingShadow, ElementName=lines}">Bounding Box</CheckBox>
-                    <CheckBox Margin="3" IsChecked="{Binding RenderShadowMap, ElementName=model1}">Model 1 RenderShadow</CheckBox>
-                    <CheckBox Margin="3" IsChecked="{Binding RenderShadowMap, ElementName=model2}">Model 2 RenderShadow</CheckBox>
-                    <CheckBox Margin="3" IsChecked="{Binding RenderShadowMap, ElementName=model3}">Model 3 RenderShadow</CheckBox>
+                    <CheckBox Margin="3" IsChecked="{Binding RedMaterial.RenderShadowMap}">Model 1 RenderShadow</CheckBox>
+                    <CheckBox Margin="3" IsChecked="{Binding BlueMaterial.RenderShadowMap}">Model 2 RenderShadow</CheckBox>
+                    <CheckBox Margin="3" IsChecked="{Binding GreenMaterial.RenderShadowMap}">Model 3 RenderShadow</CheckBox>
                     <Separator />
                     <CheckBox Margin="3" IsChecked="{Binding IsShadowMappingEnabled, ElementName=view1}">Shadow Mapping</CheckBox>
                     <StackPanel

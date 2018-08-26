@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Model;
+    using Components;
     using Render;
     /// <summary>
     /// 
@@ -55,10 +55,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         ///   <c>true</c> if this instance can render; otherwise, <c>false</c>.
         /// </value>
-        public bool CanRenderFlag
-        {
-            private set; get;
-        } = false;
+        internal bool CanRenderFlag;
         /// <summary>
         /// Indicate whether render host should call <see cref="Update(RenderContext, DeviceContextProxy)"/> before <see cref="Render(RenderContext, DeviceContextProxy)"/>
         /// <para><see cref="Update(RenderContext, DeviceContextProxy)"/> is used to run such as compute shader before rendering. </para>
@@ -104,7 +101,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Model matrix
         /// </summary>
-        public Matrix ModelMatrix { set; get; } = Matrix.Identity;
+        public Matrix ModelMatrix = Matrix.Identity;
         /// <summary>
         /// 
         /// </summary>
@@ -119,7 +116,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public bool IsAttached { private set; get; } = false;
         #endregion
-
+        private readonly List<CoreComponent> components = new List<CoreComponent>();
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderCoreBase{TModelStruct}"/> class.
         /// </summary>
@@ -127,6 +124,13 @@ namespace HelixToolkit.UWP.Core
         public RenderCore(RenderType renderType)
         {
             RenderType = renderType;
+        }
+
+        protected T AddComponent<T>(T component) where T : CoreComponent
+        {
+            components.Add(component);
+            component.OnInvalidateRender += (s, e) => { InvalidateRenderer(); };
+            return component;
         }
         /// <summary>
         /// Call to attach the render core.
@@ -140,6 +144,13 @@ namespace HelixToolkit.UWP.Core
             }
             EffectTechnique = technique;
             IsAttached = OnAttach(technique);
+            if (IsAttached)
+            {
+                foreach (var comp in components)
+                {
+                    comp.Attach(technique);
+                }
+            }
             UpdateCanRenderFlag();
         }
 
@@ -157,6 +168,10 @@ namespace HelixToolkit.UWP.Core
         {
             IsAttached = false;
             OnDetach();
+            foreach (var comp in components)
+            {
+                comp.Detach();
+            }
             UpdateCanRenderFlag();
         }
         /// <summary>
@@ -172,7 +187,18 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
         public abstract void Render(RenderContext context, DeviceContextProxy deviceContext);
-
+        /// <summary>
+        /// Renders the shadow pass. Used to generate shadow map.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        public abstract void RenderShadow(RenderContext context, DeviceContextProxy deviceContext);
+        /// <summary>
+        /// Renders the custom pass. Must apply render pass externally. Usually used during PostEffect rendering.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        public abstract void RenderCustom(RenderContext context, DeviceContextProxy deviceContext);
         /// <summary>
         /// Update routine. Only used to run update computation such as compute shader in particle system. 
         /// <para>Compute shader can be run at the beginning of any other <see cref="Render(RenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
@@ -262,6 +288,18 @@ namespace HelixToolkit.UWP.Core
             UpdateCanRenderFlag();
             InvalidateRenderer();
             return true;
+        }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            if (disposeManagedResources)
+            {
+                foreach (var comp in components)
+                {
+                    comp.Dispose();
+                }
+            }
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

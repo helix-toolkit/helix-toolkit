@@ -11,18 +11,6 @@ namespace CustomShaderDemo
 {
     public class CustomMeshNode : MeshNode
     {
-        public Color4Collection ColorGradients
-        {
-            set
-            {
-                (RenderCore as CustomMeshCore).ColorGradients = value;
-            }
-            get
-            {
-                return (RenderCore as CustomMeshCore).ColorGradients;
-            }
-        }
-
         public float HeightScale
         {
             set

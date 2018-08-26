@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -9,6 +10,9 @@ using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class MaterialCore : ObservableObject, IMaterial
     {
         private string name;
@@ -24,6 +28,13 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public abstract IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager);
+        public Guid Guid { get; } = Guid.NewGuid();
+        /// <summary>
+        /// Creates the material variables.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        /// <returns></returns>
+        public abstract MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique);
     }
 }

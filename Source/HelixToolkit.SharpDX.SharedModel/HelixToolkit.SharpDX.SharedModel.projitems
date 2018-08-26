@@ -16,10 +16,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Camera\ProjectionCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HelixItemsControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ModelContainer3DX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element2D\Element2DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\GeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\MaterialGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BatchedMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BillboardTextModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneGroupModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneSkinmeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CrossSectionMeshGeometryModel3D.cs" />
@@ -34,6 +37,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\MeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\OutLineMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\ParticleStormModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\AxisPlaneGridModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectBloom.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
@@ -42,7 +46,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\ScreenSpacedGroup3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\TransformManipulator3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Media3DExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Light3D\ShadowMap3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\ColorStripeMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\DiffuseMaterial.cs" />

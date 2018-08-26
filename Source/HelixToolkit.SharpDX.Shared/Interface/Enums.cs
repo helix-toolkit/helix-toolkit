@@ -140,4 +140,45 @@ namespace HelixToolkit.Wpf.SharpDX
             return (option & flag) != 0;
         }
     }
+
+    /// <summary>
+    /// Defines the cutting operation.
+    /// </summary>
+    public enum CuttingOperation
+    {
+        /// <summary>
+        /// The intersect operation.
+        /// </summary>
+        Intersect = 0,
+
+        /// <summary>
+        /// The subtract operation.
+        /// </summary>
+        Subtract = 1,
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum OutlineMode
+    {
+        Merged = 0,
+        Separated = 1
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum Axis
+    {
+        X = 0,
+        Y = 1,
+        Z = 2
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum GridPattern
+    {
+        Tile = 0,
+        Grid = 1
+    }
 }

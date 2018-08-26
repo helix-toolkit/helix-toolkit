@@ -70,12 +70,6 @@
                     <hx:GeometryModel3DOctreeManager />
                 </hx:ItemsModel3D.OctreeManager>
             </hx:ItemsModel3D>
-            <hx:LineGeometryModel3D
-                Geometry="{Binding OITVM.GridModel}"
-                IsHitTestVisible="False"
-                Thickness="0.5"
-                Transform3D="{Binding OITVM.GridTransform}"
-                Color="#4F4E4E" />
         </hx:ModelContainer3DX>
         <hx:Viewport3DX
             x:Name="viewport"
@@ -104,9 +98,7 @@
                         CullMode="Back"
                         Geometry="{Binding Sphere}"
                         IsThrowingShadow="True"
-                        Material="{Binding Material1}"
-                        RenderEnvironmentMap="True"
-                        RenderShadowMap="True" />
+                        Material="{Binding Material1}" />
                 </hx:DynamicReflectionMap3D>
                 <hx:LineGeometryModel3D
                     Geometry="{Binding LineGeometry}"
@@ -123,24 +115,18 @@
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform1}" />
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform2}" />
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform3}" />
             </hx:GroupModel3D>
             <hx:GroupModel3D Transform3D="{Binding Transform4}">
@@ -154,8 +140,7 @@
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
                 IsHitTestVisible="False"
-                Material="{Binding FloorMaterial}"
-                RenderShadowMap="True" />
+                Material="{Binding FloorMaterial}" />
             <hx:ParticleStormModel3D
                 Acceleration="{Binding Acceleration}"
                 AnimateSpriteByEnergy="False"
@@ -179,6 +164,12 @@
                 SourceAlphaBlend="{Binding SourceAlphaBlendOption}"
                 SourceBlend="{Binding SourceBlendOption}"
                 Turbulance="20" />
+            <hx:LineGeometryModel3D
+                Geometry="{Binding OITVM.GridModel}"
+                IsHitTestVisible="False"
+                Thickness="0.5"
+                Transform3D="{Binding OITVM.GridTransform}"
+                Color="#4F4E4E" />
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
         <hx:Viewport3DX
@@ -186,10 +177,10 @@
             Grid.Row="1"
             Grid.Column="1"
             Background="Black"
-            BackgroundColor="#C8C8C8"
+            BackgroundColor="Silver"
             Camera="{Binding Camera1}"
             CameraMode="Inspect"
-            CameraRotationMode="Trackball"
+            CameraRotationMode="Turntable"
             EnableAutoOctreeUpdate="True"
             EnableDeferredRendering="True"
             EnableDesignModeRendering="True"
@@ -201,6 +192,8 @@
             SharedModelContainer="{Binding ElementName=sharedModel}"
             ShowCoordinateSystem="true">
             <hx:DirectionalLight3D Direction="{Binding ElementName=viewport1, Path=Camera.LookDirection}" Color="White" />
+            <!--<hx:AxisPlaneGridModel3D Offset="-20" AutoSpacing="False" PlaneColor="#003E3E3E" GridThickness="0.02"/>-->
+            <hx:AxisPlaneGridModel3D Offset="-20" PlaneColor="#FFBDBDBD" UpAxis="Z"/>
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
         <TextBlock

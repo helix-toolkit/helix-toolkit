@@ -38,6 +38,7 @@
     <None Remove="Resources\gsBillboard.cso" />
     <None Remove="Resources\gsLine.cso" />
     <None Remove="Resources\gsMeshNormalVector.cso" />
+    <None Remove="Resources\gsMeshSkinnedOut.cso" />
     <None Remove="Resources\gsParticle.cso" />
     <None Remove="Resources\gsPoint.cso" />
     <None Remove="Resources\hsMeshTriTessellation.cso" />
@@ -74,6 +75,7 @@
     <None Remove="Resources\psNormals.cso" />
     <None Remove="Resources\psParticle.cso" />
     <None Remove="Resources\psParticleOIT.cso" />
+    <None Remove="Resources\psPlaneGrid.cso" />
     <None Remove="Resources\psPoint.cso" />
     <None Remove="Resources\psPositions.cso" />
     <None Remove="Resources\psScreenDup.cso" />
@@ -84,10 +86,7 @@
     <None Remove="Resources\psWireframeOIT.cso" />
     <None Remove="Resources\vsBillboard.cso" />
     <None Remove="Resources\vsBillboardInstancing.cso" />
-    <None Remove="Resources\vsBoneSkinning.cso" />
-    <None Remove="Resources\vsBoneSkinningShadow.cso" />
-    <None Remove="Resources\vsBoneSkinningTessellation.cso" />
-    <None Remove="Resources\vsBoneSkinningWireframe.cso" />
+    <None Remove="Resources\vsBoneSkinningBasic.cso" />
     <None Remove="Resources\vsCubeMap.cso" />
     <None Remove="Resources\vsMeshBatched.cso" />
     <None Remove="Resources\vsMeshBatchedShadow.cso" />
@@ -103,6 +102,7 @@
     <None Remove="Resources\vsMeshTessellation.cso" />
     <None Remove="Resources\vsMeshWireframe.cso" />
     <None Remove="Resources\vsParticle.cso" />
+    <None Remove="Resources\vsPlaneGrid.cso" />
     <None Remove="Resources\vsPoint.cso" />
     <None Remove="Resources\vsPointShadow.cso" />
     <None Remove="Resources\vsScreenDup.cso" />
@@ -118,6 +118,7 @@
     <EmbeddedResource Include="Resources\gsBillboard.cso" />
     <EmbeddedResource Include="Resources\gsLine.cso" />
     <EmbeddedResource Include="Resources\gsMeshNormalVector.cso" />
+    <EmbeddedResource Include="Resources\gsMeshSkinnedOut.cso" />
     <EmbeddedResource Include="Resources\gsParticle.cso" />
     <EmbeddedResource Include="Resources\gsPoint.cso" />
     <EmbeddedResource Include="Resources\hsMeshTriTessellation.cso" />
@@ -154,6 +155,7 @@
     <EmbeddedResource Include="Resources\psNormals.cso" />
     <EmbeddedResource Include="Resources\psParticle.cso" />
     <EmbeddedResource Include="Resources\psParticleOIT.cso" />
+    <EmbeddedResource Include="Resources\psPlaneGrid.cso" />
     <EmbeddedResource Include="Resources\psPoint.cso" />
     <EmbeddedResource Include="Resources\psPositions.cso" />
     <EmbeddedResource Include="Resources\psScreenDup.cso" />
@@ -164,10 +166,7 @@
     <EmbeddedResource Include="Resources\psWireframeOIT.cso" />
     <EmbeddedResource Include="Resources\vsBillboard.cso" />
     <EmbeddedResource Include="Resources\vsBillboardInstancing.cso" />
-    <EmbeddedResource Include="Resources\vsBoneSkinning.cso" />
-    <EmbeddedResource Include="Resources\vsBoneSkinningShadow.cso" />
-    <EmbeddedResource Include="Resources\vsBoneSkinningTessellation.cso" />
-    <EmbeddedResource Include="Resources\vsBoneSkinningWireframe.cso" />
+    <EmbeddedResource Include="Resources\vsBoneSkinningBasic.cso" />
     <EmbeddedResource Include="Resources\vsCubeMap.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatched.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatchedShadow.cso" />
@@ -183,6 +182,7 @@
     <EmbeddedResource Include="Resources\vsMeshTessellation.cso" />
     <EmbeddedResource Include="Resources\vsMeshWireframe.cso" />
     <EmbeddedResource Include="Resources\vsParticle.cso" />
+    <EmbeddedResource Include="Resources\vsPlaneGrid.cso" />
     <EmbeddedResource Include="Resources\vsPoint.cso" />
     <EmbeddedResource Include="Resources\vsPointShadow.cso" />
     <EmbeddedResource Include="Resources\vsScreenDup.cso" />

@@ -13,8 +13,10 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using System.ComponentModel;
     using Model;
     using Shaders;
+    using Utilities;
 
 
     public sealed class DiffuseMaterial : Material
@@ -33,6 +35,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 DiffuseColor
         {
             get { return (Color4)this.GetValue(DiffuseColorProperty); }
@@ -72,11 +77,50 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty); }
             set { this.SetValue(DiffuseMapSamplerProperty, value); }
         }
+        /// <summary>
+        /// The uv transform property
+        /// </summary>
+        public static readonly DependencyProperty UVTransformProperty =
+            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(DiffuseMaterial), new PropertyMetadata(Matrix.Identity, (d, e) =>
+            {
+                ((d as Material).Core as IPhongMaterial).UVTransform = (Matrix)e.NewValue;
+            }));
+        /// <summary>
+        /// Gets or sets the texture uv transform.
+        /// </summary>
+        /// <value>
+        /// The uv transform.
+        /// </value>
+        public Matrix UVTransform
+        {
+            get { return (Matrix)GetValue(UVTransformProperty); }
+            set { SetValue(UVTransformProperty, value); }
+        }
 
         protected override MaterialCore OnCreateCore()
         {
-            return new DiffuseMaterialCore();
+            return new DiffuseMaterialCore()
+            {
+                DiffuseColor = DiffuseColor,
+                DiffuseMap = DiffuseMap,
+                UVTransform = UVTransform,
+                DiffuseMapSampler = DiffuseMapSampler
+            };
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new DiffuseMaterial()
+            {
+                DiffuseColor = DiffuseColor,
+                DiffuseMap = DiffuseMap,
+                DiffuseMapSampler = DiffuseMapSampler,
+                UVTransform = UVTransform,
+                Name = Name
+            };
+        }
+#endif
     }
 
     public class DiffuseMaterialCollection : ObservableCollection<DiffuseMaterial>

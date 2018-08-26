@@ -2,6 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using SharpDX;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -10,54 +12,60 @@ namespace HelixToolkit.UWP.Core
 {
     using Render;
     using Shaders;
-    using Utilities;
 
-    public class BoneSkinRenderCore : MeshRenderCore, IBoneSkinRenderParams
-    {
-        private IElementsBufferModel vertexBoneIdBuffer;
-        /// <summary>
-        /// Gets or sets the vertex bone identifier buffer.
-        /// </summary>
-        /// <value>
-        /// The vertex bone identifier buffer.
-        /// </value>
-        public IElementsBufferModel VertexBoneIdBuffer
+    public class BoneSkinRenderCore : MeshRenderCore
+    {       
+        private bool matricsChanged = true;
+        public Matrix[] BoneMatrices
         {
             set
             {
-                var old = vertexBoneIdBuffer;
-                if(SetAffectsCanRenderFlag(ref vertexBoneIdBuffer, value))
+                internalBoneBuffer.BoneMatrices = value;
+            }
+            get { return internalBoneBuffer.BoneMatrices; }
+        }
+
+        private BoneUploaderCore sharedBoneBuffer;
+        public BoneUploaderCore SharedBoneBuffer
+        {
+            set
+            {
+                var old = sharedBoneBuffer;
+                if(Set(ref sharedBoneBuffer, value))
                 {
-                    if(old != null)
+                    if (old != null)
                     {
-                        old.OnElementChanged -= OnElementChanged;
+                        old.OnBoneChanged -= OnBoneChanged;
                     }
-                    if (vertexBoneIdBuffer != null)
+                    if (value != null)
                     {
-                        vertexBoneIdBuffer.OnElementChanged += OnElementChanged;
+                        value.OnBoneChanged += OnBoneChanged;
                     }
-                }              
+                    matricsChanged = true;
+                }
             }
-            get { return vertexBoneIdBuffer; }
+            get { return sharedBoneBuffer; }
         }
 
-        private BoneMatricesStruct boneMatrices;
-        public BoneMatricesStruct BoneMatrices
+        private int boneSkinSBSlot;
+        private ShaderPass preComputeBoneSkinPass;
+        private IBoneSkinPreComputehBufferModel preComputeBoneBuffer;
+        private readonly BoneUploaderCore internalBoneBuffer = new BoneUploaderCore();
+
+        public BoneSkinRenderCore()
         {
-            set
-            {
-                SetAffectsRender(ref boneMatrices, value);
-            }
-            get { return boneMatrices; }
+            NeedUpdate = true;
+            internalBoneBuffer.OnBoneChanged += OnBoneChanged;
         }
-
-        private ConstantBufferProxy boneCB;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
             {
-                boneCB = technique.ConstantBufferPool.Register(new ConstantBufferDescription(DefaultBufferNames.BoneCB, BoneMatricesStruct.SizeInBytes));
+                matricsChanged = true;
+                preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
+                boneSkinSBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.BoneSkinSB).Slot;
+                internalBoneBuffer.Attach(technique);
                 return true;
             }
             else
@@ -66,37 +74,47 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool OnUpdateCanRenderFlag()
+        private void OnBoneChanged(object sender, System.EventArgs e)
         {
-            return base.OnUpdateCanRenderFlag() && VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
+            matricsChanged = true;
         }
 
-        protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
+        protected override void OnGeometryBufferChanged(IAttachableBufferModel buffer)
         {
-            if (base.OnAttachBuffers(context, ref vertStartSlot))
+            base.OnGeometryBufferChanged(buffer);
+            preComputeBoneBuffer = buffer as IBoneSkinPreComputehBufferModel;
+        }
+
+        protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (preComputeBoneSkinPass.IsNULL || preComputeBoneBuffer == null || !preComputeBoneBuffer.CanPreCompute || !matricsChanged)
             {
-                VertexBoneIdBuffer?.AttachBuffer(context, ref vertStartSlot);
-                return true;
+                return;
+            }
+            var buffer = sharedBoneBuffer ?? internalBoneBuffer;
+
+            if(buffer.BoneMatrices.Length == 0)
+            {
+                preComputeBoneBuffer.ResetSkinnedVertexBuffer(deviceContext);
             }
             else
             {
-                return false;
+                GeometryBuffer.UpdateBuffers(deviceContext, EffectTechnique.EffectsManager);
+                preComputeBoneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
+                buffer.Update(context, deviceContext);
+                preComputeBoneSkinPass.BindShader(deviceContext);
+                buffer.BindBuffer(deviceContext, boneSkinSBSlot);
+                deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
+                preComputeBoneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
             }
+            matricsChanged = false;         
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
+        protected override void OnDetach()
         {
-            base.OnUpdatePerModelStruct(ref model, context);     
-            model.HasBones = BoneMatrices.Bones != null ? 1 : 0;                 
-        }
-
-        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
-        {
-            base.OnUploadPerModelConstantBuffers(context);
-            if (BoneMatrices.Bones != null)
-            {
-                boneCB.UploadDataToBuffer(context, BoneMatrices.Bones, BoneMatricesStruct.NumberOfBones);
-            }
+            preComputeBoneBuffer = null;
+            internalBoneBuffer.Detach();
+            base.OnDetach();
         }
     }
 }
