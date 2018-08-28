@@ -111,7 +111,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
-            return true;
+            return false;
         }
         /// <summary>
         /// Attaches the render host.
