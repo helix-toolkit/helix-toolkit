@@ -461,7 +461,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public void BindCubeMap(DeviceContextProxy deviceContext)
         {
-            currSampler = deviceContext.GetSampler(PixelShader.Type, cubeTextureSlot, 1);
+            currSampler = deviceContext.GetSampler(PixelShader.Type, textureSamplerSlot, 1);
             currRes = deviceContext.GetShaderResources(PixelShader.Type, cubeTextureSlot, 1);
             if (EnableReflector)
             {
