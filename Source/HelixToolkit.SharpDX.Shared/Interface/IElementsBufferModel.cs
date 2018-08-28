@@ -28,6 +28,13 @@ namespace HelixToolkit.UWP
         /// </value>
         bool HasElements { get; }
         /// <summary>
+        /// Gets the element count.
+        /// </summary>
+        /// <value>
+        /// The element count.
+        /// </value>
+        int ElementCount { get; }
+        /// <summary>
         /// Disposes internal buffer and reuse the object
         /// </summary>
         void DisposeAndClear();

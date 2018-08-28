@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class SkyBoxRenderCore : GeometryRenderCore<int>, ISkyboxRenderParams
+    public class SkyBoxRenderCore : GeometryRenderCore, ISkyboxRenderParams
     {
         #region Default Mesh
         private static readonly Vector3Collection BoxPositions = new Vector3Collection()
@@ -73,6 +73,7 @@ namespace HelixToolkit.UWP.Core
         private int cubeTextureSlot;
         private SamplerStateProxy textureSampler;
         private int textureSamplerSlot;
+        private ShaderPass DefaultShaderPass;
         #endregion
 
         #region Properties
@@ -152,6 +153,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
+                DefaultShaderPass = technique[DefaultPassNames.Default];
                 var buffer = Collect(new SkyBoxBufferModel());
                 buffer.Geometry = new PointGeometry3D() { Positions = BoxPositions };
                 buffer.Topology = PrimitiveTopology.TriangleList;
@@ -222,15 +224,6 @@ namespace HelixToolkit.UWP.Core
         protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
             
-        }
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
-        {
-
         }
 
         /// <summary>

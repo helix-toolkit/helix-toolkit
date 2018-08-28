@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP.Model
 
         public static readonly ConstantBufferDescription DefaultPointLineConstantBufferDesc
             = new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB,
-              PointLineModelStruct.SizeInBytes);
+              PointLineModelStruct.SizeInBytes + PointLineMaterialStruct.SizeInBytes);
 
         public event EventHandler OnUpdateNeeded;
         /// <summary>
@@ -37,9 +37,10 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public ushort ID { set; get; } = 0;
 
-        protected IRenderTechnique Technique { private set; get; }
+        protected IRenderTechnique Technique { get; }
+        protected IEffectsManager EffectsManager { get; }
         protected bool NeedUpdate { set; get; } = true;
-        protected ConstantBufferProxy ConstantBuffer { private set; get; }
+        protected ConstantBufferProxy ConstantBuffer { get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialVariable"/> class.
         /// </summary>
@@ -49,37 +50,24 @@ namespace HelixToolkit.UWP.Model
         public MaterialVariable(IEffectsManager manager, IRenderTechnique technique, ConstantBufferDescription meshConstantBufferDesc)
         {
             Technique = technique;
+            EffectsManager = manager;
             if (meshConstantBufferDesc != null)
             {
                 ConstantBuffer = manager.ConstantBufferPool.Register(meshConstantBufferDesc);
             }
         }
         /// <summary>
-        /// Binds the material.
+        /// Binds the material textures, samplers, etc,.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext">The device context.</param>
         /// <param name="shaderPass">The shader pass.</param>
         /// <returns></returns>
-        public bool BindMaterial(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
-        {
-            if (CanUpdateMaterial())
-            {
-                return OnBindMaterialTextures(context, deviceContext, shaderPass);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected abstract bool OnBindMaterialTextures(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass);
+        public abstract bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass);
 
         protected abstract void UpdateInternalVariables(DeviceContextProxy deviceContext);
 
         protected abstract void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream);
-
-        protected virtual bool CanUpdateMaterial() { return !IsDisposed; }
         /// <summary>
         /// Gets the pass.
         /// </summary>
@@ -126,25 +114,14 @@ namespace HelixToolkit.UWP.Model
             }
             ConstantBuffer.Unmap(context);
         }
-        /// <summary>
-        /// Updates the model structure only.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="context">The context.</param>
-        /// <param name="model">The model.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UpdateModelStructOnly<T>(DeviceContextProxy context, ref T model) where T : struct
-        {
-            ConstantBuffer.UploadDataToBuffer(context, ref model);
-        }
-        ///
+
         /// <summary>
         /// Draws the specified device context.
         /// </summary>
         /// <param name="deviceContext">The device context.</param>
-        /// <param name="indexBuffer">The index buffer.</param>
-        /// <param name="instanceModel">The instance model.</param>
-        public abstract void Draw(DeviceContextProxy deviceContext, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel);
+        /// <param name="bufferModel">Geometry buffer model.</param>
+        /// <param name="instanceCount">The instance count.</param>
+        public abstract void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount);
 
         /// <summary>
         /// 
@@ -153,7 +130,6 @@ namespace HelixToolkit.UWP.Model
         protected override void OnDispose(bool disposeManagedResources)
         {
             OnUpdateNeeded = null;
-            ConstantBuffer = null;
             base.OnDispose(disposeManagedResources);
         }
 
@@ -184,28 +160,28 @@ namespace HelixToolkit.UWP.Model
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void DrawIndexed(DeviceContextProxy context, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
+        public static void DrawIndexed(DeviceContextProxy context, int indexCount, int instanceCount)
         {
-            if (instanceModel == null || !instanceModel.HasElements)
+            if (instanceCount <= 0)
             {
-                context.DrawIndexed(indexBuffer.ElementCount, 0, 0);
+                context.DrawIndexed(indexCount, 0, 0);
             }
             else
             {
-                context.DrawIndexedInstanced(indexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0, 0);
+                context.DrawIndexedInstanced(indexCount, instanceCount, 0, 0, 0);
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void DrawPoints(DeviceContextProxy context, IElementsBufferProxy vertexBuffer, IElementsBufferModel instanceModel)
+        public static void DrawPoints(DeviceContextProxy context, int vertexCount, int instanceCount)
         {
-            if (instanceModel == null || !instanceModel.HasElements)
+            if (instanceCount <= 0)
             {
-                context.Draw(vertexBuffer.ElementCount, 0);
+                context.Draw(vertexCount, 0);
             }
             else
             {
-                context.DrawInstanced(vertexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0);
+                context.DrawInstanced(vertexCount, instanceCount, 0, 0);
             }
         }
     }

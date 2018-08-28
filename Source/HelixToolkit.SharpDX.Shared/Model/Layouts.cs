@@ -271,7 +271,7 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     /// <summary>
-    /// 
+    /// Used combine with <see cref="PhongMaterialStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ModelStruct
@@ -292,7 +292,7 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     /// <summary>
-    /// 
+    /// Used combine with <see cref="ModelStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PhongMaterialStruct
@@ -322,8 +322,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
         public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2);
     }
+
     /// <summary>
-    /// 
+    /// Used combine with <see cref="PointLineMaterialStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PointLineModelStruct
@@ -332,11 +333,34 @@ namespace HelixToolkit.Wpf.SharpDX
         public int HasInstances;
         public int HasInstanceParams;
         Vector2 padding;
+        public const int SizeInBytes = 4 * (4 * 4 + 4);
+    }
+
+    /// <summary>
+    /// Used combine with <see cref="PointLineMaterialStruct"/>
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PointLineMaterialStruct
+    {
         public Vector4 Params;
         public Vector4 Color;
         public Bool4 BoolParams;
 
-        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
+        public const int SizeInBytes = 4 * (3 * 4);
+    }
+
+    /// <summary>
+    /// Used combine with <see cref="PointLineMaterialStruct"/>
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ParticleModelStruct
+    {
+        public Matrix World;
+        public int HasInstances;
+        public int HasInstanceParams;
+        public int HasTexture;
+        int padding;
+        public const int SizeInBytes = 4 * (4 * 4 + 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

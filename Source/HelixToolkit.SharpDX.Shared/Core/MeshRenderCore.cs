@@ -2,6 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using global::SharpDX.Direct3D11;
+using global::SharpDX;
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -10,12 +13,11 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Render;
-    using global::SharpDX.Direct3D11;
-    using global::SharpDX;
     using Utilities;
     using Model;
+    
 
-    public class MeshRenderCore : GeometryRenderCore<ModelStruct>, IMeshRenderParams, IDynamicReflectable
+    public class MeshRenderCore : GeometryRenderCore, IMeshRenderParams, IDynamicReflectable
     {
         #region Variables
         /// <summary>
@@ -125,6 +127,8 @@ namespace HelixToolkit.UWP.Core
         }
         #endregion
 
+        protected ModelStruct modelStruct;
+
         protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
             if (base.CreateRasterState(description, force))
@@ -151,12 +155,12 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
+        protected virtual void OnUpdatePerModelStruct(RenderContext context)
         {
-            model.World = ModelMatrix;
-            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            model.RenderOIT = context.IsOITPass ? 1 : 0;
-            model.Batched = Batched ? 1 : 0;
+            modelStruct.World = ModelMatrix;
+            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            modelStruct.RenderOIT = context.IsOITPass ? 1 : 0;
+            modelStruct.Batched = Batched ? 1 : 0;
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
@@ -164,16 +168,17 @@ namespace HelixToolkit.UWP.Core
             ShaderPass pass = MaterialVariables.GetPass(RenderType, context);
             if (pass.IsNULL)
             { return; }
-            MaterialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
+            OnUpdatePerModelStruct(context);
+            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, DefaultStateBinding);
-            if (!materialVariables.BindMaterial(context, deviceContext, pass))
+            if (!materialVariables.BindMaterialResources(context, deviceContext, pass))
             {
                 return;
             }
 
             DynamicReflector?.BindCubeMap(deviceContext);
-            materialVariables.Draw(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+            materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
             DynamicReflector?.UnBindCubeMap(deviceContext);
 
             if (RenderWireframe)
@@ -186,14 +191,14 @@ namespace HelixToolkit.UWP.Core
                 pass.BindShader(deviceContext, false);
                 pass.BindStates(deviceContext, DefaultStateBinding);
                 deviceContext.SetRasterState(RasterStateWireframe);
-                materialVariables.Draw(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+                materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
             }
         }
 
         protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
-            MaterialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
-            materialVariables.Draw(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
+            materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
         }
 
         protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
@@ -201,10 +206,10 @@ namespace HelixToolkit.UWP.Core
             var pass = materialVariables.GetShadowPass(RenderType, context);
             if (!IsThrowingShadow || pass.IsNULL)
             { return; }
-            MaterialVariables.UpdateModelStructOnly(deviceContext, ref modelStruct);
+            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, ShadowStateBinding);
-            materialVariables.Draw(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+            materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
         }
     }
 }

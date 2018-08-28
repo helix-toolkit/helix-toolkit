@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using System.Runtime.CompilerServices;
     using Utilities;
-    public sealed class OrderIndependentTransparentRenderCore : RenderCoreBase<int>
+    public sealed class OrderIndependentTransparentRenderCore : RenderCoreBase
     {
         #region Variables
         private ShaderResourceViewProxy colorTarget;
@@ -230,10 +230,6 @@ namespace HelixToolkit.UWP.Core
         }
 
         public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        protected sealed override void OnUpdatePerModelStruct(ref int model, RenderContext context)
         {
         }
     }

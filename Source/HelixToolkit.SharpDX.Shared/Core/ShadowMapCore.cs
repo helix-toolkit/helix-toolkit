@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>, IShadowMapRenderParams
+    public class ShadowMapCore : RenderCoreBase, IShadowMapRenderParams
     {
         public sealed class UpdateLightSourceEventArgs : EventArgs
         {
@@ -38,6 +38,7 @@ namespace HelixToolkit.UWP.Core
         private ShaderResourceViewProxy viewResource;
         private int currentFrame = 0;
         private bool resolutionChanged = true;
+        private ShadowMapParamStruct modelStruct;
         /// <summary>
         /// 
         /// </summary>
@@ -218,6 +219,7 @@ namespace HelixToolkit.UWP.Core
             deviceContext.SetViewport(0, 0, Width, Height);
 
             deviceContext.SetDepthStencilOnly(viewResource.DepthStencilView);
+            modelStruct.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
             modelCB.Upload(deviceContext, ref modelStruct);
             for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
@@ -243,11 +245,6 @@ namespace HelixToolkit.UWP.Core
         {
             viewResource = null;
             base.OnDetach();
-        }
-
-        protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, RenderContext context)
-        {
-            model.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
         }
 
         public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)

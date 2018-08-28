@@ -19,8 +19,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="MODELSTRUCT"></typeparam>
-    public abstract class GeometryRenderCore<MODELSTRUCT> : RenderCoreBase<MODELSTRUCT>, IGeometryRenderCore where MODELSTRUCT : struct
+    public abstract class GeometryRenderCore : RenderCoreBase, IGeometryRenderCore
     {
         private RasterizerStateProxy rasterState = null;
         /// <summary>
@@ -31,7 +30,7 @@ namespace HelixToolkit.UWP.Core
         private RasterizerStateProxy invertCullModeState = null;
         public RasterizerStateProxy InvertCullModeState { get { return invertCullModeState; } }
 
-        private IElementsBufferModel instanceBuffer;
+        private IElementsBufferModel instanceBuffer = MatrixInstanceBufferModel.Empty;
         /// <summary>
         /// 
         /// </summary>
@@ -49,6 +48,10 @@ namespace HelixToolkit.UWP.Core
                     if (instanceBuffer != null)
                     {
                         instanceBuffer.OnElementChanged += OnElementChanged;
+                    }
+                    else
+                    {
+                        instanceBuffer = MatrixInstanceBufferModel.Empty;
                     }
                 }
             }
@@ -98,11 +101,11 @@ namespace HelixToolkit.UWP.Core
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
+        /// Initializes a new instance of the <see cref="GeometryRenderCore"/> class.
         /// </summary>
         public GeometryRenderCore() : base(RenderType.Opaque) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
+        /// Initializes a new instance of the <see cref="GeometryRenderCore"/> class.
         /// </summary>
         /// <param name="renderType">Type of the render.</param>
         public GeometryRenderCore(RenderType renderType) : base(renderType) { }

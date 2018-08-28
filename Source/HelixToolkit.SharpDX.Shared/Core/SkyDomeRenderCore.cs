@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class SkyDomeRenderCore : GeometryRenderCore<int>, ISkyboxRenderParams
+    public class SkyDomeRenderCore : GeometryRenderCore, ISkyboxRenderParams
     {
         #region Default Mesh
         private static readonly MeshGeometry3D SphereMesh;
@@ -37,6 +37,7 @@ namespace HelixToolkit.UWP.Core
         private int cubeTextureSlot;
         private SamplerStateProxy textureSampler;
         private int textureSamplerSlot;
+        private ShaderPass DefaultShaderPass;
         #endregion
 
         #region Properties
@@ -116,6 +117,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
+                DefaultShaderPass = technique[DefaultPassNames.Default];
                 var buffer = Collect(new SkyDomeBufferModel());
                 buffer.Geometry = SphereMesh;
                 GeometryBuffer = buffer;
@@ -161,16 +163,6 @@ namespace HelixToolkit.UWP.Core
             DefaultShaderPass.PixelShader.BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
             DefaultShaderPass.PixelShader.BindSampler(deviceContext, textureSamplerSlot, textureSampler);
             deviceContext.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, 0, 0);
-        }
-
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
-        {
-
         }
 
         /// <summary>

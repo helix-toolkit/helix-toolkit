@@ -29,7 +29,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCoreBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\DefaultMeshBatchingBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\StaticGeometryBatchingBufferBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\BillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoneSkinRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoneUploaderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\BillboardBufferModel.cs" />
@@ -53,14 +52,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\LightCoreBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\PointLightCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\SpotLightCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\LineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\Device2DProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshOutlineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\OrderIndependantTransparentRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PointLineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBlurCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBoomCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectFXAA.cs" />
@@ -121,8 +119,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\BillboardMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\LineMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PointMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\BillboardMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\ColorStripeMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\DiffuseMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\LineMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PassOnlyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\EffectAttributes.cs" />

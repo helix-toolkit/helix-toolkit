@@ -35,7 +35,7 @@ namespace HelixToolkit.UWP.Core
     /// Outline blur effect
     /// <para>Must not put in shared model across multiple viewport, otherwise may causes performance issue if each viewport sizes are different.</para>
     /// </summary>
-    public class PostEffectBloomCore : RenderCoreBase<BorderEffectStruct>, IPostEffectBloom
+    public class PostEffectBloomCore : RenderCoreBase, IPostEffectBloom
     {
         #region Variables
         private SamplerStateProxy sampler;
@@ -58,6 +58,8 @@ namespace HelixToolkit.UWP.Core
         private int width, height;
 
         private readonly ConstantBufferComponent modelCB;
+
+        private BorderEffectStruct modelStruct;
         #endregion
         #region Properties   
         private string effectName = DefaultRenderTechniqueNames.PostEffectBloom;
@@ -294,10 +296,6 @@ namespace HelixToolkit.UWP.Core
             context.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
             context.SetViewport(0, 0, width, height);
             context.SetScissorRectangle(0, 0, width, height);
-        }
-
-        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
-        {
         }
 
         public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)

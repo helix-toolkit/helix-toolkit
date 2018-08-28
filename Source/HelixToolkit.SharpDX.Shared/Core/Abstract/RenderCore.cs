@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP.Core
         #endregion
         private readonly List<CoreComponent> components = new List<CoreComponent>();
         /// <summary>
-        /// Initializes a new instance of the <see cref="RenderCoreBase{TModelStruct}"/> class.
+        /// Initializes a new instance of the <see cref="RenderCoreBase"/> class.
         /// </summary>
         /// <param name="renderType">Type of the render.</param>
         public RenderCore(RenderType renderType)

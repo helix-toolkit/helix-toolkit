@@ -17,17 +17,10 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// Base class for all render core classes
     /// </summary>
-    public abstract class RenderCoreBase<TModelStruct> : RenderCore where TModelStruct : struct
+    public abstract class RenderCoreBase : RenderCore
     {
-        #region Properties
         /// <summary>
-        /// The model structure
-        /// </summary>
-        protected TModelStruct modelStruct;
-        #endregion
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RenderCoreBase{TModelStruct}"/> class.
+        /// Initializes a new instance of the <see cref="RenderCoreBase"/> class.
         /// </summary>
         /// <param name="renderType">Type of the render.</param>
         public RenderCoreBase(RenderType renderType) : base(renderType)
@@ -52,7 +45,6 @@ namespace HelixToolkit.UWP.Core
         {
             if (CanRenderFlag)
             {
-                OnUpdatePerModelStruct(ref modelStruct, context);
                 int vertStartSlot = 0;
                 if (!OnAttachBuffers(deviceContext, ref vertStartSlot))
                 {
@@ -100,12 +92,5 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
         protected virtual void OnUpdate(RenderContext context, DeviceContextProxy deviceContext) { }
-
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, RenderContext context);
     }
 }

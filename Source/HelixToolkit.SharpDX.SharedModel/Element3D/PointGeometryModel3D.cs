@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as PointNode).Color = ((Media.Color)e.NewValue).ToColor4();
+                    (d as PointGeometryModel3D).material.PointColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public static readonly DependencyProperty SizeProperty =
@@ -38,27 +38,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
-                    ((d as Element3DCore).SceneNode as PointNode).Size = new Size2F((float)size.Width, (float)size.Height);
+                    (d as PointGeometryModel3D).material.Width = (float)size.Width;
+                    (d as PointGeometryModel3D).material.Height = (float)size.Height;
                 }));
 
         public static readonly DependencyProperty FigureProperty =
             DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new PropertyMetadata(PointFigure.Rect,
                 (d, e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as PointNode).Figure = (PointFigure)e.NewValue;
+                    (d as PointGeometryModel3D).material.Figure = (PointFigure)e.NewValue;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
             DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.25,
                 (d, e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as PointNode).FigureRatio = (float)(double)e.NewValue;
+                    (d as PointGeometryModel3D).material.FigureRatio = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(4.0, (d, e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as PointNode).HitTestThickness = (float)(double)e.NewValue;
+                    ((d as PointGeometryModel3D).SceneNode as PointNode).HitTestThickness = (float)(double)e.NewValue;
                 }));
 
         public Media.Color Color
@@ -95,14 +96,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
-
+        private readonly PointMaterialCore material = new PointMaterialCore();
         /// <summary>
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new PointNode();
+            return new PointNode() { Material = material };
         }
         /// <summary>
         /// Assigns the default values to core.
@@ -110,14 +111,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            if (core is PointNode n)
-            {
-                n.Size = new Size2F((float)Size.Width, (float)Size.Height);
-                n.Figure = Figure;
-                n.FigureRatio = (float)FigureRatio;
-                n.Color = Color.ToColor4();
-            }
-
+            material.Width = (float)Size.Width;
+            material.Height = (float)Size.Height;
+            material.Figure = Figure;
+            material.FigureRatio = (float)FigureRatio;
+            material.PointColor = Color.ToColor4();
             base.AssignDefaultValuesToSceneNode(core);
         }
     }

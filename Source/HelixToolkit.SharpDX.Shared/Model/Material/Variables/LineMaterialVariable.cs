@@ -11,64 +11,51 @@ namespace HelixToolkit.UWP.Model
 {
     using Render;
     using Shaders;
-    using Utilities;
-    using Core;
-
-    public sealed class PointMaterialVariable : MaterialVariable
-    {        
+    public sealed class LineMaterialVariable : MaterialVariable
+    {
         private PointLineMaterialStruct materialStruct;
-        private PointMaterialCore materialCore;
+        private readonly LineMaterialCore materialCore;
 
-        public ShaderPass PointPass { get; }
+        public ShaderPass LinePass { get; }
         public ShaderPass ShadowPass { get; }
 
-        public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore core)
+        public LineMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineMaterialCore core) 
             : base(manager, technique, DefaultPointLineConstantBufferDesc)
         {
-            PointPass = technique[DefaultPassNames.Default];
+            LinePass = technique[DefaultPassNames.Default];
             ShadowPass = technique[DefaultPassNames.ShadowPass];
             materialCore = core;
-            materialStruct.Color = core.PointColor;
-            materialStruct.Params.X = core.Width;
-            materialStruct.Params.Y = core.Height;
-            materialStruct.Params.Z = (int)core.Figure;
-            materialStruct.Params.W = core.FigureRatio;
+            materialStruct.Color = core.LineColor;
+            materialStruct.Params.X = core.Thickness;
+            materialStruct.Params.Y = core.Smoothness;
             core.PropertyChanged += Core_PropertyChanged;
         }
 
         private void Core_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
+            if (e.PropertyName.Equals(nameof(LineMaterialCore.LineColor)))
             {
-                materialStruct.Color = materialCore.PointColor;
+                materialStruct.Color = materialCore.LineColor;
             }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.Width)))
+            else if (e.PropertyName.Equals(nameof(LineMaterialCore.Thickness)))
             {
-                materialStruct.Params.X = materialCore.Width;
+                materialStruct.Params.X = materialCore.Thickness;
             }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.Height)))
+            else if (e.PropertyName.Equals(nameof(LineMaterialCore.Smoothness)))
             {
-                materialStruct.Params.Y = materialCore.Height;
-            }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
-            {
-                materialStruct.Params.Z = (int)materialCore.Figure;
-            }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
-            {
-                materialStruct.Params.W = materialCore.FigureRatio;
+                materialStruct.Params.Y = materialCore.Smoothness;
             }
             InvalidateRenderer();
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
         {
-            DrawPoints(deviceContext, bufferModel.VertexBuffer[0].ElementCount, instanceCount);
+            DrawIndexed(deviceContext, bufferModel.IndexBuffer.ElementCount, instanceCount);
         }
 
         public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
-            return PointPass;
+            return LinePass;
         }
 
         public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)

@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class ParticleRenderCore : RenderCoreBase<PointLineModelStruct>
+    public class ParticleRenderCore : RenderCoreBase
     {
 #pragma warning disable 1591
         public static readonly int DefaultParticleCount = 512;
@@ -419,6 +419,7 @@ namespace HelixToolkit.UWP.Core
         private SamplerStateProxy textureSampler;
         private BlendStateProxy blendState;
         private double totalElapsed = 0;
+        private ParticleModelStruct modelStruct;
         #endregion
         #region Buffers        
         /// <summary>
@@ -578,17 +579,11 @@ namespace HelixToolkit.UWP.Core
             NeedUpdate = true;
         }
 
-
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
+        private void OnUpdatePerModelStruct(RenderContext context)
         {
-            model.World = ModelMatrix;
-            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            model.BoolParams.X = HasTexture;
+            modelStruct.World = ModelMatrix;
+            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            modelStruct.HasTexture = HasTexture ? 1 : 0;
             FrameVariables.RandomVector = VectorGenerator.RandomVector3;
         }
 

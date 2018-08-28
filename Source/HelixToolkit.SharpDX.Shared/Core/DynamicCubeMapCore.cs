@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     ///
     /// </summary>
-    public class DynamicCubeMapCore : RenderCoreBase<GlobalTransformStruct>, IDynamicReflector
+    public class DynamicCubeMapCore : RenderCoreBase, IDynamicReflector
     {
         #region
         private readonly Vector3[] targets = new Vector3[6];
@@ -425,7 +425,7 @@ namespace HelixToolkit.UWP.Core
             context.UpdatePerFrameData(true, false, deviceContext);
         }
 
-        protected override void OnUpdatePerModelStruct(ref GlobalTransformStruct model, RenderContext context)
+        private void OnUpdatePerModelStruct(RenderContext context)
         {
             var camPos = Center;
             targets[0] = camPos + Vector3.UnitX;

@@ -108,6 +108,13 @@ namespace HelixToolkit.UWP.Core
     public interface IBillboardRenderParams
     {
         /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        BillboardType Type { set; get; }
+        /// <summary>
         /// Gets or sets a value indicating whether [fixed size].
         /// </summary>
         /// <value>

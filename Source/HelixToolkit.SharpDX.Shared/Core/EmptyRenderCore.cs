@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public sealed class EmptyRenderCore : RenderCoreBase<int>
+    public sealed class EmptyRenderCore : RenderCoreBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmptyRenderCore"/> class.
@@ -38,16 +38,6 @@ namespace HelixToolkit.UWP.Core
 
         public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
-        }
-
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
-        {
-           
         }
 
         protected override bool OnAttach(IRenderTechnique technique)

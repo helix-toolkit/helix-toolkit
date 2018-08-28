@@ -83,7 +83,7 @@ namespace HelixToolkit.UWP.Core
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
     /// <para>Usage: Call SetScreenSpacedCoordinates(RenderHost) to move coordinate system. Call other render functions for sub models. Finally call RestoreCoordinates(RenderHost) to restore original coordinate system.</para>
     /// </summary>
-    public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>, IScreenSpacedRenderParams
+    public class ScreenSpacedMeshRenderCore : RenderCoreBase, IScreenSpacedRenderParams
     {
         public event EventHandler<BoolArgs> OnCoordinateSystemChanged;
         
@@ -314,16 +314,6 @@ namespace HelixToolkit.UWP.Core
                 Height = height;
                 OnCreateProjectionMatrix(SizeScale);
             }
-        }
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
-        {
-            model.World = Matrix.Identity;
-            model.HasInstances = 0;
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP.Model
             MaterialPass = technique[passName];
         }
 
-        protected override bool OnBindMaterialTextures(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             return true;
         }
@@ -52,9 +52,9 @@ namespace HelixToolkit.UWP.Model
         {
         }
 
-        public override void Draw(DeviceContextProxy deviceContext, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
+        public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
         {
-            DrawIndexed(deviceContext, indexBuffer, instanceModel);
+            DrawIndexed(deviceContext, bufferModel.IndexBuffer.ElementCount, instanceCount);
         }
     }
 }
