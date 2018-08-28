@@ -35,6 +35,8 @@ namespace HelixToolkit.UWP.Model
 
         public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
         public ShaderPass WireframePass { get; private set; } = ShaderPass.NullPass;
+
+        public ShaderPass ShadowPass { get; private set; } = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -47,6 +49,7 @@ namespace HelixToolkit.UWP.Model
 
         private readonly string defaultShaderPassName = DefaultPassNames.ColorStripe1D;
         private readonly string wireframePassName = DefaultPassNames.Wireframe;
+        private readonly string shadowPassName = DefaultPassNames.ShadowPass;
 
         private readonly ColorStripeMaterialCore material;
         private readonly IDevice3DResources deviceResources;
@@ -69,6 +72,7 @@ namespace HelixToolkit.UWP.Model
             statePoolManager = manager.StateManager;
             MaterialPass = technique[defaultShaderPassName];
             WireframePass = technique[wireframePassName];
+            ShadowPass = technique[shadowPassName];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
@@ -219,7 +223,7 @@ namespace HelixToolkit.UWP.Model
         }
         public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
         {
-            return ShaderPass.NullPass;
+            return ShadowPass;
         }
 
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)

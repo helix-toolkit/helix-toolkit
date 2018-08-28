@@ -18,12 +18,18 @@ namespace HelixToolkit.UWP.Model
     {
         public ShaderPass MaterialPass { get; }
 
+        public ShaderPass ShadowPass { get; }
+
+        public ShaderPass WireframePass { get; }
+
         private readonly string passName;
         public PassOnlyMaterialVariable(string passName, IRenderTechnique technique)
             : base(technique.EffectsManager, technique, DefaultMeshConstantBufferDesc)
         {
             this.passName = passName;
             MaterialPass = technique[passName];
+            ShadowPass = technique[DefaultPassNames.ShadowPass];
+            WireframePass = technique[DefaultPassNames.Wireframe];
         }
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
@@ -37,12 +43,12 @@ namespace HelixToolkit.UWP.Model
         }
         public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
         {
-            return ShaderPass.NullPass;
+            return ShadowPass;
         }
 
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
         {
-            return ShaderPass.NullPass;
+            return WireframePass;
         }
         protected override void UpdateInternalVariables(DeviceContextProxy context)
         {

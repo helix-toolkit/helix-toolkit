@@ -154,6 +154,7 @@ namespace HelixToolkit.UWP.Core
             if (base.OnAttach(technique))
             {
                 DefaultShaderPass = technique[DefaultPassNames.Default];
+                OnDefaultPassChanged(DefaultShaderPass);
                 var buffer = Collect(new SkyBoxBufferModel());
                 buffer.Geometry = new PointGeometry3D() { Positions = BoxPositions };
                 buffer.Topology = PrimitiveTopology.TriangleList;

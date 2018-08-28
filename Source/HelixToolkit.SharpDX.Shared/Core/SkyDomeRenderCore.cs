@@ -118,6 +118,7 @@ namespace HelixToolkit.UWP.Core
             if (base.OnAttach(technique))
             {
                 DefaultShaderPass = technique[DefaultPassNames.Default];
+                OnDefaultPassChanged(DefaultShaderPass);
                 var buffer = Collect(new SkyDomeBufferModel());
                 buffer.Geometry = SphereMesh;
                 GeometryBuffer = buffer;

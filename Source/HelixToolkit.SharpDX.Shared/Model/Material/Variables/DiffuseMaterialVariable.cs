@@ -169,6 +169,9 @@ namespace HelixToolkit.UWP.Model
             statePoolManager = manager.StateManager;
             MaterialPass = technique[DefaultShaderPassName];
             TransparentPass = technique[TransparentPassName];
+            ShadowPass = technique[ShadowPassName];
+            WireframePass = technique[WireframePassName];
+            WireframeOITPass = technique[WireframeOITPassName];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
