@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
             set
             {
                 var old = materialVariables;
-                if (Set(ref materialVariables, value))
+                if (SetAffectsCanRenderFlag(ref materialVariables, value))
                 {
                     if (value == null)
                     {
@@ -45,6 +45,11 @@ namespace HelixToolkit.UWP.Core
         {
             modelStruct.World = ModelMatrix;
             modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+        }
+
+        protected override bool OnUpdateCanRenderFlag()
+        {
+            return base.OnUpdateCanRenderFlag() && materialVariables != EmptyMaterialVariable.EmptyVariable;
         }
 
         /// <summary>
