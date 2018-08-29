@@ -16,13 +16,13 @@ namespace HelixToolkit.UWP.Shaders
     {
         public FeatureLevel FeatureLevel { get; private set; }
 
-        public IDictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; } = new Dictionary<string, ConstantBufferMapping>();
+        public Dictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; } = new Dictionary<string, ConstantBufferMapping>();
 
-        public IDictionary<string, TextureMapping> TextureMappings { get; } = new Dictionary<string, TextureMapping>();
+        public Dictionary<string, TextureMapping> TextureMappings { get; } = new Dictionary<string, TextureMapping>();
 
-        public IDictionary<string, UAVMapping> UAVMappings { get; } = new Dictionary<string, UAVMapping>();
+        public Dictionary<string, UAVMapping> UAVMappings { get; } = new Dictionary<string, UAVMapping>();
 
-        public IDictionary<string, SamplerMapping> SamplerMappings { get; } = new Dictionary<string, SamplerMapping>();
+        public Dictionary<string, SamplerMapping> SamplerMappings { get; } = new Dictionary<string, SamplerMapping>();
         
         public ShaderReflector()
         {

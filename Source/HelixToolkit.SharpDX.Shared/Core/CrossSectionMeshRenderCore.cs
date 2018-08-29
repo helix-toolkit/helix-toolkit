@@ -16,7 +16,6 @@ namespace HelixToolkit.UWP.Core
     using Components;
     public class CrossSectionMeshRenderCore : MeshRenderCore, ICrossSectionRenderParams
     {
-        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
         #region Shader Variables
         private ShaderPass drawBackfacePass;
         private ShaderPass drawScreenQuadPass;
@@ -26,6 +25,8 @@ namespace HelixToolkit.UWP.Core
         private RasterizerStateProxy backfaceRasterState;
 
         private readonly ConstantBufferComponent clipParamCB;
+
+        private bool needsAssignVariables = true;
         #endregion
         #region Properties
         private CuttingOperation cuttingOperation = CuttingOperation.Intersect;
@@ -41,11 +42,13 @@ namespace HelixToolkit.UWP.Core
             {
                 if(SetAffectsRender(ref cuttingOperation, value))
                 {
-                    clipParameter.CuttingOperation = (int)value;
+                    clipParamCB.WriteValueByName(ClipPlaneStruct.CuttingOperationStr, (int)value);
                 }
             }
             get { return cuttingOperation; }
         }
+
+        private Color4 sectionColor = Color.Green;
         /// <summary>
         /// Defines the sectionColor
         /// </summary>       
@@ -53,75 +56,28 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                SetAffectsRender(ref clipParameter.CrossSectionColors, value);
+                if(SetAffectsRender(ref sectionColor, value))
+                {
+                    clipParamCB.WriteValueByName(ClipPlaneStruct.CrossSectionColorStr, value);
+                }
             }
-            get { return clipParameter.CrossSectionColors.ToColor4(); }
+            get { return sectionColor; }
         }
 
-        /// <summary>
-        /// Defines the plane1Enabled
-        /// </summary>
-        public bool Plane1Enabled
+        private Bool4 planeEnabled;
+        public Bool4 PlaneEnabled
         {
             set
             {
-                if(clipParameter.EnableCrossPlane.X != value)
+                if(SetAffectsRender(ref planeEnabled, value))
                 {
-                    clipParameter.EnableCrossPlane.X = value;
-                    InvalidateRenderer();
+                    clipParamCB.WriteValueByName(ClipPlaneStruct.EnableCrossPlaneStr, value);
                 }
             }
-            get { return clipParameter.EnableCrossPlane.X; }
+            get { return planeEnabled; }
         }
 
-        /// <summary>
-        /// Defines the plane2Enabled
-        /// </summary>
-        public bool Plane2Enabled
-        {
-            set
-            {
-                if (clipParameter.EnableCrossPlane.Y != value)
-                {
-                    clipParameter.EnableCrossPlane.Y = value;
-                    InvalidateRenderer();
-                }
-            }
-            get { return clipParameter.EnableCrossPlane.Y; }
-        }
-
-        /// <summary>
-        /// Defines the plane3Enabled
-        /// </summary>
-        public bool Plane3Enabled
-        {
-            set
-            {
-                if (clipParameter.EnableCrossPlane.Z != value)
-                {
-                    clipParameter.EnableCrossPlane.Z = value;
-                    InvalidateRenderer();
-                }
-            }
-            get { return clipParameter.EnableCrossPlane.Z; }
-        }
-
-        /// <summary>
-        /// Defines the plane4Enabled
-        /// </summary>
-        public bool Plane4Enabled
-        {
-            set
-            {
-                if (clipParameter.EnableCrossPlane.W != value)
-                {
-                    clipParameter.EnableCrossPlane.W = value;
-                    InvalidateRenderer();
-                }
-            }
-            get { return clipParameter.EnableCrossPlane.W; }
-        }
-
+        private Vector4 plane1Params;
         /// <summary>
         /// Defines the plane 1(Normal + d)
         /// </summary>
@@ -129,18 +85,18 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(clipParameter.CrossPlaneParams.Row1 != value)
+                if(SetAffectsRender(ref plane1Params, value))
                 {
-                    clipParameter.CrossPlaneParams.Row1 = value;
-                    InvalidateRenderer();
+                    clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane1ParamsStr, value);
                 }
             }
             get
             {
-                return clipParameter.CrossPlaneParams.Row1;
+                return plane1Params;
             }
         }
 
+        private Vector4 plane2Params;
         /// <summary>
         /// Defines the plane 2(Normal + d)
         /// </summary>
@@ -148,18 +104,18 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (clipParameter.CrossPlaneParams.Row2 != value)
+                if (SetAffectsRender(ref plane2Params, value))
                 {
-                    clipParameter.CrossPlaneParams.Row2 = value;
-                    InvalidateRenderer();
+                    clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane2ParamsStr, value);
                 }
             }
             get
             {
-                return clipParameter.CrossPlaneParams.Row2;
+                return plane2Params;
             }
         }
 
+        private Vector4 plane3Params;
         /// <summary>
         /// Defines the plane 3(Normal + d)
         /// </summary>
@@ -167,18 +123,18 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (clipParameter.CrossPlaneParams.Row3 != value)
+                if (SetAffectsRender(ref plane3Params, value))
                 {
-                    clipParameter.CrossPlaneParams.Row3 = value;
-                    InvalidateRenderer();
+                    clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane3ParamsStr, value);
                 }
             }
             get
             {
-                return clipParameter.CrossPlaneParams.Row3;
+                return plane3Params;
             }
         }
 
+        private Vector4 plane4Params;
         /// <summary>
         /// Defines the plane 4(Normal + d)
         /// </summary>
@@ -186,15 +142,14 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (clipParameter.CrossPlaneParams.Row4 != value)
+                if (SetAffectsRender(ref plane4Params, value))
                 {
-                    clipParameter.CrossPlaneParams.Row4 = value;
-                    InvalidateRenderer();
+                    clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane4ParamsStr, value);
                 }
             }
             get
             {
-                return clipParameter.CrossPlaneParams.Row4;
+                return plane4Params;
             }
         }
 
@@ -209,6 +164,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
+                needsAssignVariables = true;
                 drawBackfacePass = technique[DefaultPassNames.Backface];
                 drawScreenQuadPass = technique[DefaultPassNames.ScreenQuad];
                 return true;
@@ -218,7 +174,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
-            backfaceRasterState = null;
+            backfaceRasterState = null;          
             base.OnDetach();
         }
 
@@ -248,7 +204,24 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(RenderContext renderContext, DeviceContextProxy deviceContext)
         {
-            clipParamCB.Upload(deviceContext, ref clipParameter);
+            if (needsAssignVariables)
+            {
+                lock (clipParamCB)
+                {
+                    if (needsAssignVariables)
+                    {
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CuttingOperationStr, (int)cuttingOperation);
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossSectionColorStr, sectionColor);
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.EnableCrossPlaneStr, planeEnabled);
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane1ParamsStr, plane1Params);
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane2ParamsStr, plane2Params);
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane3ParamsStr, plane3Params);
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane4ParamsStr, plane4Params);
+                        needsAssignVariables = false;
+                    }
+                }
+            }
+            clipParamCB.Upload(deviceContext);
             base.OnRender(renderContext, deviceContext);
             // Draw backface into stencil buffer
             var dsView = renderContext.RenderHost.DepthStencilBufferView;

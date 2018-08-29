@@ -4,7 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using global::SharpDX.Direct3D11;
 using global::SharpDX;
-using System.Runtime.CompilerServices;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -112,7 +112,7 @@ namespace HelixToolkit.UWP.Core
             set
             {
                 var old = materialVariables;
-                if (Set(ref materialVariables, value))
+                if (SetAffectsCanRenderFlag(ref materialVariables, value))
                 {
                     if (value == null)
                     {
@@ -153,6 +153,11 @@ namespace HelixToolkit.UWP.Core
             DynamicReflector = null;
             rasterStateWireframe = null;
             base.OnDetach();
+        }
+
+        protected override bool OnUpdateCanRenderFlag()
+        {
+            return base.OnUpdateCanRenderFlag() && materialVariables != EmptyMaterialVariable.EmptyVariable;
         }
 
         protected virtual void OnUpdatePerModelStruct(RenderContext context)

@@ -143,14 +143,11 @@ namespace HelixToolkit.UWP.Core
                 return;
             }
             EffectTechnique = technique;
-            IsAttached = OnAttach(technique);
-            if (IsAttached)
+            foreach (var comp in components)
             {
-                foreach (var comp in components)
-                {
-                    comp.Attach(technique);
-                }
+                comp.Attach(technique);
             }
+            IsAttached = OnAttach(technique);
             UpdateCanRenderFlag();
         }
 

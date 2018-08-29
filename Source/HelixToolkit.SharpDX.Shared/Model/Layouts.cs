@@ -309,29 +309,29 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PhongMaterialStruct
     {
-        public float MinTessDistance; // Minimum distance to do tessellation
-        public float MaxTessDistance; // Maximum distance to do tessellation
-        public float MinDistTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
-        public float MaxDistTessFactor; // Tessellation factor when at maximum distance
-        /// <summary>
-        /// Material variables
-        /// </summary>
-        public Color4 Ambient;
-        public Color4 Diffuse;
-        public Color4 Emissive;
-        public Color4 Specular;
-        public Color4 Reflect;
-        public float Shininess;
-        public int HasDiffuseMap;
-        public int HasDiffuseAlphaMap;
-        public int HasNormalMap;
-        public int HasDisplacementMap;
-        public int HasCubeMap;
-        public int RenderShadowMap;
-        float padding;
-        public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
-        public Vector4 UVTransformR1; //Make sure to convert column majo into Row major. Pass into shader
-        public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
+        //public float MinTessDistance; // Minimum distance to do tessellation
+        //public float MaxTessDistance; // Maximum distance to do tessellation
+        //public float MinDistTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
+        //public float MaxDistTessFactor; // Tessellation factor when at maximum distance
+        ///// <summary>
+        ///// Material variables
+        ///// </summary>
+        //public Color4 Ambient;
+        //public Color4 Diffuse;
+        //public Color4 Emissive;
+        //public Color4 Specular;
+        //public Color4 Reflect;
+        //public float Shininess;
+        //public int HasDiffuseMap;
+        //public int HasDiffuseAlphaMap;
+        //public int HasNormalMap;
+        //public int HasDisplacementMap;
+        //public int HasCubeMap;
+        //public int RenderShadowMap;
+        //float padding;
+        //public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
+        //public Vector4 UVTransformR1; //Make sure to convert column majo into Row major. Pass into shader
+        //public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
         public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2);
 
         public const string MinTessDistanceStr = "minTessDistance";
@@ -374,9 +374,9 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PointLineMaterialStruct
     {
-        public Vector4 Params;
-        public Vector4 Color;
-        public Bool4 BoolParams;
+        //public Vector4 Params;
+        //public Vector4 Color;
+        //public Bool4 BoolParams;
 
         public const int SizeInBytes = 4 * (3 * 4);
 
@@ -438,10 +438,10 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ClipPlaneStruct
     {
-        public Bool4 EnableCrossPlane;
-        public Vector4 CrossSectionColors;
-        public int CuttingOperation;
-        Vector3 padding;
+        //public Bool4 EnableCrossPlane;
+        //public Vector4 CrossSectionColors;
+        //public int CuttingOperation;
+        //Vector3 padding;
         // Format:
         // M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
         // M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
@@ -455,8 +455,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin</para>
         /// <para>M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin</para>
         /// </summary>
-        public Matrix CrossPlaneParams;
+        //public Matrix CrossPlaneParams;
         public const int SizeInBytes = 4 * (4 * 3 + 4 * 4);
+
+        public const string EnableCrossPlaneStr = "EnableCrossPlane";
+        public const string CrossSectionColorStr = "CrossSectionColors";
+        public const string CuttingOperationStr = "CuttingOperation";
+        public const string CrossPlane1ParamsStr = "CrossPlane1Params";
+        public const string CrossPlane2ParamsStr = "CrossPlane2Params";
+        public const string CrossPlane3ParamsStr = "CrossPlane3Params";
+        public const string CrossPlane4ParamsStr = "CrossPlane4Params";
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

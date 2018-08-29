@@ -135,7 +135,10 @@ cbuffer cbClipping : register(b6)
 	// M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
 	// M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
-    float4x4 CrossPlaneParams;
+    float4 CrossPlane1Params;
+    float4 CrossPlane2Params;
+    float4 CrossPlane3Params;
+    float4 CrossPlane4Params;
 }
 #endif
 

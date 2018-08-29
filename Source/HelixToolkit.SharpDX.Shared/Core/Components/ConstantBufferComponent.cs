@@ -23,8 +23,8 @@ namespace HelixToolkit.UWP.Core.Components
         /// </value>
         public ConstantBufferProxy ModelConstBuffer { private set; get; }
         private readonly ConstantBufferDescription bufferDesc;
-        private byte[] internalByteArray;
-        public readonly bool IsValid;
+        private readonly byte[] internalByteArray;
+        private bool IsValid;
         /// <summary>
         /// Initializes a new instance of the <see cref="ConstantBufferComponent"/> class.
         /// </summary>
@@ -32,7 +32,10 @@ namespace HelixToolkit.UWP.Core.Components
         public ConstantBufferComponent(ConstantBufferDescription desc)
         {
             bufferDesc = desc;
-            IsValid = desc != null;
+            if (desc != null)
+            {
+                internalByteArray = new byte[desc.StructSize];
+            }
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ConstantBufferComponent"/> class.
@@ -42,21 +45,21 @@ namespace HelixToolkit.UWP.Core.Components
         public ConstantBufferComponent(string name, int structSize)
         {
             bufferDesc = new ConstantBufferDescription(name, structSize);
+            internalByteArray = new byte[structSize];
         }
 
         protected override void OnAttach(IRenderTechnique technique)
         {
-            if(IsValid)
+            if(bufferDesc != null)
             {
-                ModelConstBuffer = technique.ConstantBufferPool.Register(bufferDesc);
-                internalByteArray = new byte[ModelConstBuffer.StructureSize];
+                ModelConstBuffer = technique.ConstantBufferPool.Register(bufferDesc);              
             }
+            IsValid = bufferDesc != null;
         }
 
         protected override void OnDetach()
         {
             ModelConstBuffer = null;
-            internalByteArray = null;
         }
         /// <summary>
         /// Uploads the specified device context.
@@ -117,11 +120,10 @@ namespace HelixToolkit.UWP.Core.Components
         /// <param name="name">The variable name.</param>
         /// <param name="value">The value.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void WriteValue<T>(string name, T value) where T : struct
+        public void WriteValueByName<T>(string name, T value) where T : struct
         {
-            if (IsValid)
+            if (IsValid && ModelConstBuffer.TryGetVariableByName(name, out ConstantBufferVariable variable))
             {
-                var variable = ModelConstBuffer[name];
                 if(global::SharpDX.Utilities.SizeOf<T>() > variable.Size)
                 {
                     int structSize = global::SharpDX.Utilities.SizeOf<T>();

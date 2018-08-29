@@ -82,23 +82,23 @@ PSInputClip main(VSInput input)
     output.clipPlane = float4(0, 0, 0, 0);
     if (EnableCrossPlane.x)
     {
-        float3 p = output.wp.xyz - CrossPlaneParams._m00_m01_m02 * CrossPlaneParams._m03;
-        output.clipPlane.x = dot(CrossPlaneParams._m00_m01_m02, p);
+        float3 p = output.wp.xyz - CrossPlane1Params.xyz * CrossPlane1Params.w;
+        output.clipPlane.x = dot(CrossPlane1Params.xyz, p);
     }
     if (EnableCrossPlane.y)
     {
-        float3 p = output.wp.xyz - CrossPlaneParams._m10_m11_m12 * CrossPlaneParams._m13;
-        output.clipPlane.y = dot(CrossPlaneParams._m10_m11_m12, p);
+        float3 p = output.wp.xyz - CrossPlane2Params.xyz * CrossPlane2Params.w;
+        output.clipPlane.y = dot(CrossPlane2Params.xyz, p);
     }
     if (EnableCrossPlane.z)
     {
-        float3 p = output.wp.xyz - CrossPlaneParams._m20_m21_m22 * CrossPlaneParams._m23;
-        output.clipPlane.z = dot(CrossPlaneParams._m20_m21_m22, p);
+        float3 p = output.wp.xyz - CrossPlane3Params.xyz * CrossPlane3Params.w;
+        output.clipPlane.z = dot(CrossPlane3Params.xyz, p);
     }
     if (EnableCrossPlane.w)
     {
-        float3 p = output.wp.xyz - CrossPlaneParams._m30_m31_m32 * CrossPlaneParams._m33;
-        output.clipPlane.w = dot(CrossPlaneParams._m20_m21_m22, p);
+        float3 p = output.wp.xyz - CrossPlane4Params.xyz * CrossPlane4Params.w;
+        output.clipPlane.w = dot(CrossPlane4Params.xyz, p);
     }
     if (CuttingOperation == 1)
     {

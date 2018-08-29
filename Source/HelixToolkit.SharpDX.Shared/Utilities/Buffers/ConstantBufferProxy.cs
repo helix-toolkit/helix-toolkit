@@ -30,9 +30,9 @@ namespace HelixToolkit.UWP.Utilities
         /// </summary>
         public bool Initialized { get { return buffer != null; } }
 
-        private BufferDescription bufferDesc;
+        internal BufferDescription bufferDesc;
 
-        private Dictionary<string, ConstantBufferVariable> VariableDictionary { get; } = new Dictionary<string, ConstantBufferVariable>();
+        internal Dictionary<string, ConstantBufferVariable> VariableDictionary { get; } = new Dictionary<string, ConstantBufferVariable>();
         /// <summary>
         ///
         /// </summary>
@@ -227,15 +227,38 @@ namespace HelixToolkit.UWP.Utilities
             bufferDesc.SizeInBytes = structSize;
             buffer = Collect(new SDX11.Buffer(device, bufferDesc));
         }
-
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="ConstantBufferProxy"/> to <see cref="SDX11.Buffer"/>.
+        /// </summary>
+        /// <param name="proxy">The proxy.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator SDX11.Buffer(ConstantBufferProxy proxy)
         {
             return proxy?.buffer;
         }
-
+        /// <summary>
+        /// Gets the <see cref="ConstantBufferVariable"/> with the specified name.
+        /// </summary>
+        /// <value>
+        /// The <see cref="ConstantBufferVariable"/>.
+        /// </value>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public ConstantBufferVariable this[string name]
         {
             get => VariableDictionary[name];
+        }
+        /// <summary>
+        /// Tries the name of the get variable by.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="variable">The variable.</param>
+        /// <returns></returns>
+        public bool TryGetVariableByName(string name, out ConstantBufferVariable variable)
+        {
+            return VariableDictionary.TryGetValue(name, out variable);
         }
     }
 }

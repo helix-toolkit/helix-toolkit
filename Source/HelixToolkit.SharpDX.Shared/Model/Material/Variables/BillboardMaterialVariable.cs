@@ -54,19 +54,19 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitializeParameters()
         {
             base.OnInitializeParameters();
-            ConstantBuffer.WriteValue(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
-            ConstantBuffer.WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
+            ConstantBuffer.WriteValueByName(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
+            ConstantBuffer.WriteValueByName(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
         }
 
         private void Core_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals(nameof(BillboardMaterialCore.FixedSize)))
             {
-                ConstantBuffer.WriteValue(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
+                ConstantBuffer.WriteValueByName(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
             }
             else if (e.PropertyName.Equals(nameof(BillboardMaterialCore.Type)))
             {
-                ConstantBuffer.WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
+                ConstantBuffer.WriteValueByName(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
             }
             else if (e.PropertyName.Equals(nameof(BillboardMaterialCore.SamplerDescription)))
             {

@@ -205,7 +205,7 @@ namespace HelixToolkit.UWP.Model
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteValue<T>(string name, ref T value) where T : struct
         {
-            ConstantBuffer.WriteValue(name, value);
+            ConstantBuffer.WriteValueByName(name, value);
         }
         /// <summary>
         /// Writes the value to internal buffer array
@@ -216,7 +216,7 @@ namespace HelixToolkit.UWP.Model
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteValue<T>(string name, T value) where T : struct
         {
-            ConstantBuffer.WriteValue(name, value);
+            ConstantBuffer.WriteValueByName(name, value);
         }
         /// <summary>
         /// Writes the value to internal buffer array with offset
