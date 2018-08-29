@@ -369,6 +369,7 @@ namespace HelixToolkit.UWP.Core
                 InvalidateRenderer();
                 return; // Skip this frame if texture resized to reduce latency.
             }
+            OnUpdatePerModelStruct(context);
             context.IsInvertCullMode = true;
 #if TEST
             for (int index = 0; index < 6; ++index)
