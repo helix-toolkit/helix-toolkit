@@ -53,7 +53,6 @@ namespace HelixToolkit.UWP.Model
 
         private readonly ColorStripeMaterialCore material;
         private readonly IDevice3DResources deviceResources;
-        private PhongMaterialStruct materialStruct = new PhongMaterialStruct() { UVTransformR1 = new Vector4(1, 0, 0, 0), UVTransformR2 = new Vector4(0, 1, 0, 0) };
         /// <summary>
         /// 
         /// </summary>
@@ -78,26 +77,42 @@ namespace HelixToolkit.UWP.Model
             CreateSamplers();
         }
 
+        protected override void OnInitializeParameters()
+        {
+            base.OnInitializeParameters();
+            WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor);
+            WriteValue(PhongMaterialStruct.UVTransformR1Str, new Vector4(1, 0, 0, 0));
+            WriteValue(PhongMaterialStruct.UVTransformR2Str, new Vector4(0, 1, 0, 0));
+            WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0);
+            WriteValue(PhongMaterialStruct.HasDiffuseAlphaMapStr, material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0);
+        }
+
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (IsDisposed)
             {
                 return;
             }
-            if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.ColorStripeX)))
+            if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.DiffuseColor)))
+            {
+                WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor);
+            }
+            else if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.ColorStripeX)))
             {
                 CreateTextureView((sender as ColorStripeMaterialCore).ColorStripeX, 0);
+                WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0);
             }
             else if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.ColorStripeY)))
             {
                 CreateTextureView((sender as ColorStripeMaterialCore).ColorStripeY, 1);
+                WriteValue(PhongMaterialStruct.HasDiffuseAlphaMapStr, material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0);
             }
             else if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.ColorStripeSampler)))
             {
                 RemoveAndDispose(ref sampler);
                 sampler = Collect(statePoolManager.Register((sender as ColorStripeMaterialCore).ColorStripeSampler));
             }
-            NotifyUpdateNeeded();
+            InvalidateRenderer();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -140,27 +155,6 @@ namespace HelixToolkit.UWP.Model
             {
                 sampler = Collect(statePoolManager.Register(material.ColorStripeSampler));
             }
-        }
-
-        protected override void UpdateInternalVariables(DeviceContextProxy context)
-        {
-            if (NeedUpdate)
-            {
-                materialStruct = new PhongMaterialStruct
-                {
-                    Diffuse = material.DiffuseColor,
-                    HasDiffuseMap = material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0,
-                    HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0,
-                    UVTransformR1 = new Vector4(1, 0, 0, 0),
-                    UVTransformR2 = new Vector4(0, 1, 0, 0)
-                };
-                NeedUpdate = false;
-            }
-        }
-
-        protected override void WriteMaterialDataToConstantBuffer(DataStream cbStream)
-        {
-            cbStream.Write(materialStruct);
         }
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)

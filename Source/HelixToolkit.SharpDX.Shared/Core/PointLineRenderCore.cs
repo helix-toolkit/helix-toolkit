@@ -60,7 +60,10 @@ namespace HelixToolkit.UWP.Core
                 return;
             }
             OnUpdatePerModelStruct();
-            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
+            if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+            {
+                return;
+            }
             if(materialVariables.BindMaterialResources(context, deviceContext, shaderPass))
             {
                 shaderPass.BindShader(deviceContext);
@@ -71,7 +74,10 @@ namespace HelixToolkit.UWP.Core
 
         protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
-            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
+            if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+            {
+                return;
+            }
             materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
         }
 
@@ -80,7 +86,10 @@ namespace HelixToolkit.UWP.Core
             var pass = materialVariables.GetShadowPass(RenderType, context);
             if (!IsThrowingShadow || pass.IsNULL)
             { return; }
-            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
+            if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+            {
+                return;
+            }
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, ShadowStateBinding); 
             materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);

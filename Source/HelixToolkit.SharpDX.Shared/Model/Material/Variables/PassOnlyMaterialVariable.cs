@@ -54,10 +54,6 @@ namespace HelixToolkit.UWP.Model
         {
         }
 
-        protected override void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream)
-        {
-        }
-
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
         {
             DrawIndexed(deviceContext, bufferModel.IndexBuffer.ElementCount, instanceCount);

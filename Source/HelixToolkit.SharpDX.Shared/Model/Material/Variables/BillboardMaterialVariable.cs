@@ -34,7 +34,7 @@ namespace HelixToolkit.UWP.Model
         private readonly int textureSamplerSlot;
         private readonly int shaderTextureSlot;
         private SamplerStateProxy textureSampler;
-        private PointLineMaterialStruct materialStruct;
+        //private PointLineMaterialStruct materialStruct;
         private readonly BillboardMaterialCore materialCore;
         #endregion
 
@@ -49,19 +49,24 @@ namespace HelixToolkit.UWP.Model
             shaderTextureSlot = MaterialPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
             textureSamplerSlot = MaterialPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
             textureSampler = Collect(EffectsManager.StateManager.Register(core.SamplerDescription));
-            materialStruct.BoolParams.X = core.FixedSize;
-            materialStruct.Params.X = (int)core.Type;
+        }
+
+        protected override void OnInitializeParameters()
+        {
+            base.OnInitializeParameters();
+            ConstantBuffer.WriteValue(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
+            ConstantBuffer.WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
         }
 
         private void Core_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals(nameof(BillboardMaterialCore.FixedSize)))
             {
-                materialStruct.BoolParams.X = materialCore.FixedSize;
+                ConstantBuffer.WriteValue(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
             }
             else if (e.PropertyName.Equals(nameof(BillboardMaterialCore.Type)))
             {
-                materialStruct.Params.X = (int)materialCore.Type;
+                ConstantBuffer.WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
             }
             else if (e.PropertyName.Equals(nameof(BillboardMaterialCore.SamplerDescription)))
             {
@@ -75,11 +80,6 @@ namespace HelixToolkit.UWP.Model
         {           
             shaderPass.PixelShader.BindSampler(deviceContext, textureSamplerSlot, textureSampler);
             return true;
-        }
-
-        protected override void WriteMaterialDataToConstantBuffer(DataStream cbStream)
-        {
-            cbStream.Write(materialStruct);
         }
 
         public override ShaderPass GetPass(RenderType renderType, RenderContext context)

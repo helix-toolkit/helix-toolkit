@@ -289,6 +289,18 @@ namespace HelixToolkit.Wpf.SharpDX
         Vector3 padding;
         public Color4 WireframeColor;
         public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 * 2 + 4 + 4 * 2);
+
+        public const string WorldStr = "mWorld";
+        public const string InvertNormalStr = "bInvertNormal";
+        public const string HasInstancesStr = "bHasInstances";
+        public const string HasInstanceParamsStr = "bHasInstanceParams";
+        public const string HasBonesStr = "bHasBones";
+        public const string ParamsStr = "vParams";
+        public const string ColorStr = "vColor";
+        public const string BoolParamsStr = "bParams";
+        public const string BatchedStr = "bBatched";
+        public const string RenderOITStr = "bRenderOIT";
+        public const string WireframeColorStr = "wireframeColor";
     }
 
     /// <summary>
@@ -321,6 +333,26 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 UVTransformR1; //Make sure to convert column majo into Row major. Pass into shader
         public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
         public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2);
+
+        public const string MinTessDistanceStr = "minTessDistance";
+        public const string MaxTessDistanceStr = "maxTessDistance";
+        public const string MinDistTessFactorStr = "minTessFactor";
+        public const string MaxDistTessFactorStr = "maxTessFactor";
+        public const string AmbientStr = "vMaterialAmbient";
+        public const string DiffuseStr = "vMaterialDiffuse";
+        public const string EmissiveStr = "vMaterialEmissive";
+        public const string SpecularStr = "vMaterialSpecular";
+        public const string ReflectStr = "vMaterialReflect";
+        public const string ShininessStr = "sMaterialShininess";
+        public const string HasDiffuseMapStr = "bHasDiffuseMap";
+        public const string HasDiffuseAlphaMapStr = "bHasAlphaMap";
+        public const string HasNormalMapStr = "bHasNormalMap";
+        public const string HasDisplacementMapStr = "bHasDisplacementMap";
+        public const string HasCubeMapStr = "bHasCubeMap";
+        public const string RenderShadowMapStr = "bRenderShadowMap";
+        public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";
+        public const string UVTransformR1Str = "uvTransformR1";
+        public const string UVTransformR2Str = "uvTransformR2";
     }
 
     /// <summary>
@@ -347,6 +379,10 @@ namespace HelixToolkit.Wpf.SharpDX
         public Bool4 BoolParams;
 
         public const int SizeInBytes = 4 * (3 * 4);
+
+        public const string ParamsStr = "pfParams";
+        public const string ColorStr = "pColor";
+        public const string BoolParamsStr = "pbParams";
     }
 
     /// <summary>

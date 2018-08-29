@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP.Utilities
     using Shaders;
     using System.Runtime.CompilerServices;
     using Render;
+    using System.Collections.Generic;
 
     /// <summary>
     ///
@@ -31,6 +32,7 @@ namespace HelixToolkit.UWP.Utilities
 
         private BufferDescription bufferDesc;
 
+        private Dictionary<string, ConstantBufferVariable> VariableDictionary { get; } = new Dictionary<string, ConstantBufferVariable>();
         /// <summary>
         ///
         /// </summary>
@@ -80,6 +82,10 @@ namespace HelixToolkit.UWP.Utilities
                 Usage = description.Usage,
                 StructureByteStride = description.StrideSize
             };
+            foreach (var var in description.Variables)
+            {
+                VariableDictionary.Add(var.Name, var);
+            }
         }
 
         /// <summary>
@@ -119,7 +125,7 @@ namespace HelixToolkit.UWP.Utilities
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
                 using (stream)
                 {
-                    stream.Write(data);                   
+                    stream.Write(data);
                 }
                 context.UnmapSubresource(buffer, 0);
             }
@@ -158,7 +164,7 @@ namespace HelixToolkit.UWP.Utilities
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
                 using (stream)
                 {
-                    stream.WriteRange(data, offset, count);                   
+                    stream.WriteRange(data, offset, count);
                 }
                 context.UnmapSubresource(buffer, 0);
             }
@@ -181,7 +187,7 @@ namespace HelixToolkit.UWP.Utilities
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
                 using (stream)
                 {
-                    writeFuc?.Invoke(stream);                    
+                    writeFuc?.Invoke(stream);
                 }
                 context.UnmapSubresource(buffer, 0);
             }
@@ -225,6 +231,11 @@ namespace HelixToolkit.UWP.Utilities
         public static implicit operator SDX11.Buffer(ConstantBufferProxy proxy)
         {
             return proxy?.buffer;
+        }
+
+        public ConstantBufferVariable this[string name]
+        {
+            get => VariableDictionary[name];
         }
     }
 }

@@ -169,7 +169,10 @@ namespace HelixToolkit.UWP.Core
             if (pass.IsNULL)
             { return; }
             OnUpdatePerModelStruct(context);
-            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
+            if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, ModelStruct.SizeInBytes))
+            {
+                return;
+            }
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, DefaultStateBinding);
             if (!materialVariables.BindMaterialResources(context, deviceContext, pass))
@@ -197,7 +200,10 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
-            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
+            if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, ModelStruct.SizeInBytes))
+            {
+                return;
+            }
             materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
         }
 
@@ -206,7 +212,10 @@ namespace HelixToolkit.UWP.Core
             var pass = materialVariables.GetShadowPass(RenderType, context);
             if (!IsThrowingShadow || pass.IsNULL)
             { return; }
-            materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct);
+            if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, ModelStruct.SizeInBytes))
+            {
+                return;
+            }
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, ShadowStateBinding);
             materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);

@@ -16,7 +16,6 @@ namespace HelixToolkit.UWP.Model
 
     public sealed class PointMaterialVariable : MaterialVariable
     {        
-        private PointLineMaterialStruct materialStruct;
         private PointMaterialCore materialCore;
 
         public ShaderPass PointPass { get; }
@@ -28,11 +27,6 @@ namespace HelixToolkit.UWP.Model
             PointPass = technique[DefaultPassNames.Default];
             ShadowPass = technique[DefaultPassNames.ShadowPass];
             materialCore = core;
-            materialStruct.Color = core.PointColor;
-            materialStruct.Params.X = core.Width;
-            materialStruct.Params.Y = core.Height;
-            materialStruct.Params.Z = (int)core.Figure;
-            materialStruct.Params.W = core.FigureRatio;
             core.PropertyChanged += Core_PropertyChanged;
         }
 
@@ -40,25 +34,21 @@ namespace HelixToolkit.UWP.Model
         {
             if (e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
             {
-                materialStruct.Color = materialCore.PointColor;
+                WriteValue(PointLineMaterialStruct.ColorStr, materialCore.PointColor);
             }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.Width)))
+            else if (e.PropertyName.Equals(nameof(PointMaterialCore.Width)) || e.PropertyName.Equals(nameof(PointMaterialCore.Height))
+                || e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)) || e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
             {
-                materialStruct.Params.X = materialCore.Width;
-            }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.Height)))
-            {
-                materialStruct.Params.Y = materialCore.Height;
-            }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
-            {
-                materialStruct.Params.Z = (int)materialCore.Figure;
-            }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
-            {
-                materialStruct.Params.W = materialCore.FigureRatio;
+                WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(materialCore.Width, materialCore.Height, (int)materialCore.Figure, materialCore.FigureRatio));
             }
             InvalidateRenderer();
+        }
+
+        protected override void OnInitializeParameters()
+        {
+            base.OnInitializeParameters();
+            WriteValue(PointLineMaterialStruct.ColorStr, materialCore.PointColor);
+            WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(materialCore.Width, materialCore.Height, (int)materialCore.Figure, materialCore.FigureRatio));
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
@@ -88,12 +78,6 @@ namespace HelixToolkit.UWP.Model
 
         protected override void UpdateInternalVariables(DeviceContextProxy deviceContext)
         {
-
-        }
-
-        protected override void WriteMaterialDataToConstantBuffer(DataStream cbStream)
-        {
-            cbStream.Write(materialStruct);
         }
 
         protected override void OnDispose(bool disposeManagedResources)

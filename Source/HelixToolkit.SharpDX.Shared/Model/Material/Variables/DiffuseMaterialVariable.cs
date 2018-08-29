@@ -61,97 +61,35 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string ShaderSamplerShadowMapName { set; get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
-        private string defaultShaderPassName = DefaultPassNames.Default;
+
         public string DefaultShaderPassName
         {
-            set
-            {
-                if (!fixedPassName && SetAffectsRender(ref defaultShaderPassName, value))
-                {
-                    MaterialPass = Technique[value];
-                    UpdateMappings(MaterialPass);
-                }
-            }
-            get
-            {
-                return defaultShaderPassName;
-            }
-        }
+            get;
+        } = DefaultPassNames.Diffuse;
 
 
-        private string shadowPassName = DefaultPassNames.ShadowPass;
         public string ShadowPassName
         {
-            set
-            {
-                if (Set(ref shadowPassName, value))
-                {
-                    ShadowPass = Technique[value];
-                }
-            }
-            get
-            {
-                return shadowPassName;
-            }
-        }
+            get;
+        } = DefaultPassNames.ShadowPass;
 
-        private string wireframePassName = DefaultPassNames.Wireframe;
         public string WireframePassName
         {
-            set
-            {
-                if (Set(ref wireframePassName, value))
-                {
-                    WireframePass = Technique[value];
-                }
-            }
-            get
-            {
-                return wireframePassName;
-            }
-        }
+            get;
+        } = DefaultPassNames.Wireframe;
 
-        private string transparentPassName = DefaultPassNames.DiffuseOIT;
-        /// <summary>
-        /// Gets or sets the name of the mesh transparent pass.
-        /// </summary>
-        /// <value>
-        /// The name of the transparent pass.
-        /// </value>
         public string TransparentPassName
         {
-            set
-            {
-                if (!fixedPassName && Set(ref transparentPassName, value))
-                {
-                    TransparentPass = Technique[value];
-                }
-            }
-            get
-            {
-                return transparentPassName;
-            }
-        }
+            get;
+        } = DefaultPassNames.DiffuseOIT;
 
-        private string wireframeOITPassName = DefaultPassNames.WireframeOITPass;
         public string WireframeOITPassName
         {
-            set
-            {
-                if (Set(ref wireframeOITPassName, value))
-                {
-                    WireframeOITPass = Technique[value];
-                }
-            }
-            get
-            {
-                return wireframeOITPassName;
-            }
-        }
+            get;
+        } = DefaultPassNames.WireframeOITPass;
 
         private readonly PhongMaterialCore material;
         private readonly bool fixedPassName = false;
-        private PhongMaterialStruct materialStruct = new PhongMaterialStruct() { UVTransformR1 = new Vector4(1, 0, 0, 0), UVTransformR2 = new Vector4(0, 1, 0, 0) };
         /// <summary>
         /// 
         /// </summary>
@@ -187,6 +125,7 @@ namespace HelixToolkit.UWP.Model
             : this(manager, technique, material)
         {
             DefaultShaderPassName = passName;
+            MaterialPass = technique[DefaultShaderPassName];
             fixedPassName = true;
         }
 
@@ -196,16 +135,36 @@ namespace HelixToolkit.UWP.Model
             {
                 return;
             }
-            if (e.PropertyName.Equals(nameof(PhongMaterialCore.DiffuseMap)))
+            if (e.PropertyName.Equals(nameof(PhongMaterialCore.DiffuseColor)))
+            {
+                WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor);
+            }
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.UVTransform)))
+            {
+                WriteValue(PhongMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
+                WriteValue(PhongMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
+            }
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.DiffuseMap)))
             {
                 CreateTextureView((sender as PhongMaterialCore).DiffuseMap, DiffuseIdx);
+                WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0);
             }
             else if (e.PropertyName.Equals(nameof(PhongMaterialCore.DiffuseMapSampler)))
             {
                 RemoveAndDispose(ref SamplerResources[DiffuseIdx]);
                 SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register((sender as PhongMaterialCore).DiffuseMapSampler));
             }
-            NotifyUpdateNeeded();
+         
+            InvalidateRenderer();
+        }
+
+        protected override void OnInitializeParameters()
+        {
+            base.OnInitializeParameters();
+            WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor);
+            WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0);
+            WriteValue(PhongMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
+            WriteValue(PhongMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -246,37 +205,6 @@ namespace HelixToolkit.UWP.Model
             {
                 SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register(material.DiffuseMapSampler));
             }
-        }
-
-        protected override void UpdateInternalVariables(DeviceContextProxy context)
-        {
-            if (NeedUpdate)
-            {
-                materialStruct = new PhongMaterialStruct
-                {
-                    Ambient = material.AmbientColor,
-                    Diffuse = material.DiffuseColor,
-                    Emissive = material.EmissiveColor,
-                    Reflect = material.ReflectiveColor,
-                    Specular = material.SpecularColor,
-                    Shininess = material.SpecularShininess,
-                    HasDiffuseMap = material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0,
-                    HasDiffuseAlphaMap = 0,
-                    HasNormalMap = 0,
-                    HasDisplacementMap = 0,
-                    DisplacementMapScaleMask = material.DisplacementMapScaleMask,
-                    RenderShadowMap = 0,
-                    HasCubeMap = 0,
-                    UVTransformR1 = material.UVTransform.Column1,
-                    UVTransformR2 = material.UVTransform.Column2
-                };
-                NeedUpdate = false;
-            }
-        }
-
-        protected override void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream)
-        {
-            cbStream.Write(materialStruct);
         }
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)

@@ -8,13 +8,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
-    using Core;
     using Render;
     using Shaders;
     using System;
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
-    using Utilities;
+    using Core.Components;
     /// <summary>
     /// 
     /// </summary>
@@ -39,8 +38,10 @@ namespace HelixToolkit.UWP.Model
 
         protected IRenderTechnique Technique { get; }
         protected IEffectsManager EffectsManager { get; }
-        protected bool NeedUpdate { set; get; } = true;
-        protected ConstantBufferProxy ConstantBuffer { get; }
+        protected bool NeedUpdate { private set; get; } = true;
+        protected ConstantBufferComponent ConstantBuffer { private set; get; }
+        private readonly object updateLock = new object();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialVariable"/> class.
         /// </summary>
@@ -51,11 +52,16 @@ namespace HelixToolkit.UWP.Model
         {
             Technique = technique;
             EffectsManager = manager;
-            if (meshConstantBufferDesc != null)
-            {
-                ConstantBuffer = manager.ConstantBufferPool.Register(meshConstantBufferDesc);
-            }
+            ConstantBuffer = new ConstantBufferComponent(meshConstantBufferDesc);
         }
+
+        internal void Initialize()
+        {
+            ConstantBuffer.Attach(Technique);
+            OnInitializeParameters();
+        }
+
+        protected virtual void OnInitializeParameters() { }
         /// <summary>
         /// Binds the material textures, samplers, etc,.
         /// </summary>
@@ -65,9 +71,8 @@ namespace HelixToolkit.UWP.Model
         /// <returns></returns>
         public abstract bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass);
 
-        protected abstract void UpdateInternalVariables(DeviceContextProxy deviceContext);
+        protected virtual void UpdateInternalVariables(DeviceContextProxy deviceContext) { }
 
-        protected abstract void WriteMaterialDataToConstantBuffer(global::SharpDX.DataStream cbStream);
         /// <summary>
         /// Gets the pass.
         /// </summary>
@@ -98,21 +103,28 @@ namespace HelixToolkit.UWP.Model
         {
             return Technique[name];
         }
+
         /// <summary>
-        /// Updates the material structure.
+        /// Updates the material structure. And upload data to constant buffer
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context">The context.</param>
         /// <param name="model">The model.</param>
-        public void UpdateMaterialStruct<T>(DeviceContextProxy context, ref T model) where T : struct
+        /// <param name="structSize"></param>
+        public bool UpdateMaterialStruct<T>(DeviceContextProxy context, ref T model, int structSize) where T : struct
         {
-            UpdateInternalVariables(context);
-            using (var dataStream = ConstantBuffer.Map(context))
+            if (NeedUpdate)
             {
-                dataStream.Write(model);
-                WriteMaterialDataToConstantBuffer(dataStream);
+                lock (updateLock)
+                {
+                    if (NeedUpdate)
+                    {
+                        UpdateInternalVariables(context);
+                        NeedUpdate = false;
+                    }
+                }
             }
-            ConstantBuffer.Unmap(context);
+            return ConstantBuffer.Upload(context, ref model, structSize);
         }
 
         /// <summary>
@@ -183,6 +195,45 @@ namespace HelixToolkit.UWP.Model
             {
                 context.DrawInstanced(vertexCount, instanceCount, 0, 0);
             }
+        }
+        /// <summary>
+        /// Writes the value to internal buffer array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void WriteValue<T>(string name, ref T value) where T : struct
+        {
+            ConstantBuffer.WriteValue(name, value);
+        }
+        /// <summary>
+        /// Writes the value to internal buffer array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void WriteValue<T>(string name, T value) where T : struct
+        {
+            ConstantBuffer.WriteValue(name, value);
+        }
+        /// <summary>
+        /// Writes the value to internal buffer array with offset
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value">The value.</param>
+        /// <param name="offset">The offset.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void WriteValue<T>(ref T value, int offset) where T : struct
+        {
+            ConstantBuffer.WriteValue(value, offset);
+        }
+
+        public override void DisposeAndClear()
+        {
+            ConstantBuffer.Detach();
+            base.DisposeAndClear();
         }
     }
 }

@@ -13,7 +13,6 @@ namespace HelixToolkit.UWP.Model
     using Shaders;
     public sealed class LineMaterialVariable : MaterialVariable
     {
-        private PointLineMaterialStruct materialStruct;
         private readonly LineMaterialCore materialCore;
 
         public ShaderPass LinePass { get; }
@@ -25,9 +24,6 @@ namespace HelixToolkit.UWP.Model
             LinePass = technique[DefaultPassNames.Default];
             ShadowPass = technique[DefaultPassNames.ShadowPass];
             materialCore = core;
-            materialStruct.Color = core.LineColor;
-            materialStruct.Params.X = core.Thickness;
-            materialStruct.Params.Y = core.Smoothness;
             core.PropertyChanged += Core_PropertyChanged;
         }
 
@@ -35,17 +31,20 @@ namespace HelixToolkit.UWP.Model
         {
             if (e.PropertyName.Equals(nameof(LineMaterialCore.LineColor)))
             {
-                materialStruct.Color = materialCore.LineColor;
+                WriteValue(PointLineMaterialStruct.ColorStr, materialCore.LineColor);
             }
-            else if (e.PropertyName.Equals(nameof(LineMaterialCore.Thickness)))
+            else if (e.PropertyName.Equals(nameof(LineMaterialCore.Thickness)) || e.PropertyName.Equals(nameof(LineMaterialCore.Smoothness)))
             {
-                materialStruct.Params.X = materialCore.Thickness;
-            }
-            else if (e.PropertyName.Equals(nameof(LineMaterialCore.Smoothness)))
-            {
-                materialStruct.Params.Y = materialCore.Smoothness;
+                WriteValue(PointLineMaterialStruct.ParamsStr, new Vector2(materialCore.Thickness, materialCore.Smoothness));
             }
             InvalidateRenderer();
+        }
+
+        protected override void OnInitializeParameters()
+        {
+            base.OnInitializeParameters();
+            WriteValue(PointLineMaterialStruct.ColorStr, materialCore.LineColor);
+            WriteValue(PointLineMaterialStruct.ParamsStr, new Vector2(materialCore.Thickness, materialCore.Smoothness));
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
@@ -76,11 +75,6 @@ namespace HelixToolkit.UWP.Model
         protected override void UpdateInternalVariables(DeviceContextProxy deviceContext)
         {
 
-        }
-
-        protected override void WriteMaterialDataToConstantBuffer(DataStream cbStream)
-        {
-            cbStream.Write(materialStruct);
         }
 
         protected override void OnDispose(bool disposeManagedResources)
