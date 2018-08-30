@@ -369,7 +369,7 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     /// <summary>
-    /// Used combine with <see cref="PointLineMaterialStruct"/>
+    /// Used combine with <see cref="PointLineModelStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PointLineMaterialStruct

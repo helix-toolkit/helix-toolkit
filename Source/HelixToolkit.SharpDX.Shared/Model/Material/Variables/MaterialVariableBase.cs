@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP.Model
         protected IRenderTechnique Technique { get; }
         protected IEffectsManager EffectsManager { get; }
         protected bool NeedUpdate { private set; get; } = true;
-        protected ConstantBufferComponent ConstantBuffer { private set; get; }
+        protected ConstantBufferComponent ConstantBuffer { get; }
         private readonly object updateLock = new object();
 
         /// <summary>

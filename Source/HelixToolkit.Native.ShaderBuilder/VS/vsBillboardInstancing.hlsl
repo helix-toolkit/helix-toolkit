@@ -11,7 +11,7 @@ GSInputBT main(VSInputBTInstancing input)
     output.p = input.p;
     output.offBR = input.offBR;
     output.offTL = input.offTL;
-	if (pHasInstances)
+	if (bHasInstances)
 	{
         matrix mInstance =
         {
@@ -24,7 +24,7 @@ GSInputBT main(VSInputBTInstancing input)
         output.offTL *= mInstance._m00_m11; // 2d scaling x
         output.offBR *= mInstance._m00_m11; // 2d scaling x
 
-        if (pHasInstanceParams)
+        if (bHasInstanceParams)
         {
             output.t0 = mad(input.tScale, input.t0, input.tOffset);
             output.t3 = mad(input.tScale, input.t3, input.tOffset);
@@ -32,7 +32,7 @@ GSInputBT main(VSInputBTInstancing input)
         }
     }
 	// Translate position into clip space
-    float4 ndcPosition = mul(output.p, pWorld);
+    float4 ndcPosition = mul(output.p, mWorld);
     output.p = mul(ndcPosition, mView);
 	return output;
 }

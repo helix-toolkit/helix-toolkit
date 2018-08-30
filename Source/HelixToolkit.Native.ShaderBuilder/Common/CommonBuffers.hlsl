@@ -90,9 +90,9 @@ cbuffer cbLights : register(b3)
 //Per model
 cbuffer cbPointLineModel : register(b4)
 {
-    float4x4 pWorld;
-    bool pHasInstances = false;
-    bool pHasInstanceParams = false;
+    float4x4 mWorld;
+    bool bHasInstances = false;
+    bool bHasInstanceParams = false;
 	float2 padding1;
     float4 pfParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
     float4 pColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
@@ -103,17 +103,17 @@ cbuffer cbPointLineModel : register(b4)
 //Per model
 cbuffer cbParticleModel : register(b4)
 {
-    float4x4 pWorld;
-    bool pHasInstances = false;
-    bool pHasInstanceParams = false;
-    bool hasTexture = false;
+    float4x4 mWorld;
+    bool bHasInstances = false;
+    bool bHasInstanceParams = false;
+    bool bHasTexture = false;
 	float padding1;
 };
 #endif
 #if defined(PLANEGRID) 
 cbuffer cbPlaneGridModel : register(b4)
 {
-    float4x4 pWorld;
+    float4x4 mWorld;
     float gridSpacing; 
     float gridThickness;
     float fadingFactor;
