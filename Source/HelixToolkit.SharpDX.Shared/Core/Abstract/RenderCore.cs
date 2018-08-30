@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP.Core
         #endregion
         private readonly List<CoreComponent> components = new List<CoreComponent>();
         /// <summary>
-        /// Initializes a new instance of the <see cref="RenderCoreBase"/> class.
+        /// Initializes a new instance of the <see cref="RenderCore"/> class.
         /// </summary>
         /// <param name="renderType">Type of the render.</param>
         public RenderCore(RenderType renderType)
@@ -202,7 +202,20 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
-        public virtual void Update(RenderContext context, DeviceContextProxy deviceContext) { }
+        public void Update(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (CanRenderFlag)
+            {
+                OnUpdate(context, deviceContext);
+            }
+        }
+
+        /// <summary>
+        /// Only used for running compute shader such as in particle system.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
+        protected virtual void OnUpdate(RenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
         /// Updates the can render flag.

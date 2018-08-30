@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class ShadowMapCore : RenderCoreBase, IShadowMapRenderParams
+    public class ShadowMapCore : RenderCore, IShadowMapRenderParams
     {
         public sealed class UpdateLightSourceEventArgs : EventArgs
         {
@@ -193,7 +193,7 @@ namespace HelixToolkit.UWP.Core
             Width = Height = 1024;
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
             ++currentFrame;

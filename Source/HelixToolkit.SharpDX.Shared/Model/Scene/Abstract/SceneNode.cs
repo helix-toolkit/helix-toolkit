@@ -507,7 +507,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
-            core.Render(context, deviceContext);
+            if (core.CanRenderFlag)
+            {
+                core.Render(context, deviceContext);
+            }
         }
 
         /// <summary>
@@ -518,7 +521,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
-            core.RenderShadow(context, deviceContext);
+            if (core.CanRenderFlag)
+            {
+                core.RenderShadow(context, deviceContext);
+            }
         }
         /// <summary>
         /// Renders the custom.
@@ -528,7 +534,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
-            core.RenderCustom(context, deviceContext);
+            if (core.CanRenderFlag)
+            {
+                core.RenderCustom(context, deviceContext);
+            }
         }
         /// <summary>
         /// View frustum test.

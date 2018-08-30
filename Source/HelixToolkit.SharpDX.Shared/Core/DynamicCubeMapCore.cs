@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     ///
     /// </summary>
-    public class DynamicCubeMapCore : RenderCoreBase, IDynamicReflector
+    public class DynamicCubeMapCore : RenderCore, IDynamicReflector
     {
         #region
         private readonly Vector3[] targets = new Vector3[6];
@@ -362,7 +362,7 @@ namespace HelixToolkit.UWP.Core
             return base.OnUpdateCanRenderFlag() && EnableReflector;
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (CreateCubeMapResources())
             {

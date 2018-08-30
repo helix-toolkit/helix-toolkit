@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP.Core
     /// Outline blur effect
     /// <para>Must not put in shared model across multiple viewport, otherwise may causes performance issue if each viewport sizes are different.</para>
     /// </summary>
-    public class PostEffectMeshOutlineBlurCore : RenderCoreBase, IPostEffectOutlineBlur
+    public class PostEffectMeshOutlineBlurCore : RenderCore, IPostEffectOutlineBlur
     {
         #region Variables
         private SamplerStateProxy sampler;
@@ -216,7 +216,7 @@ namespace HelixToolkit.UWP.Core
             return IsAttached && !string.IsNullOrEmpty(EffectName);
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             #region Initialize textures
             var buffer = context.RenderHost.RenderBuffer;

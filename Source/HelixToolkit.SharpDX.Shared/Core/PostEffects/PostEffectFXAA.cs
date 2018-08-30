@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Components;
 
-    public sealed class PostEffectFXAA : RenderCoreBase, IPostEffect
+    public sealed class PostEffectFXAA : RenderCore, IPostEffect
     {
         private string effectName = DefaultRenderTechniqueNames.PostEffectFXAA;
         public string EffectName
@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP.Core
             return IsAttached && !string.IsNullOrEmpty(EffectName) && FXAALevel != FXAALevel.None;
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             var buffer = context.RenderHost.RenderBuffer;
             deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.NextRTV });

@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class PostEffectMeshXRayCore : RenderCoreBase, IPostEffectMeshXRay
+    public class PostEffectMeshXRayCore : RenderCore, IPostEffectMeshXRay
     {
         #region Variables
         private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
@@ -146,8 +146,8 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
-        {         
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        {
             var buffer = context.RenderHost.RenderBuffer;
             bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
             var dPass = DoublePass;

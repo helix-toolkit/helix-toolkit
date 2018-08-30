@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     /// the clone window must reside in those monitors which is rendered by external graphics card, or error will be occurred.
     /// Ref: https://support.microsoft.com/en-us/help/3019314/error-generated-when-desktop-duplication-api-capable-application-is-ru
     /// </summary>
-    public class ScreenCloneRenderCore : RenderCoreBase, IScreenClone
+    public class ScreenCloneRenderCore : RenderCore, IScreenClone
     {
         private int output = 0;
         /// <summary>
@@ -199,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             bool succ = duplicationResource.Initialize();
             if (!succ)

@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class ParticleRenderCore : RenderCoreBase
+    public class ParticleRenderCore : RenderCore
     {
 #pragma warning disable 1591
         public static readonly int DefaultParticleCount = 512;
@@ -795,7 +795,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             OnUpdatePerModelStruct(context);
             perFrameCB.Upload(deviceContext, ref FrameVariables);

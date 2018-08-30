@@ -26,7 +26,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\RectangleRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\GeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCoreBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\DefaultMeshBatchingBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\StaticGeometryBatchingBufferBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoneSkinRenderCore.cs" />

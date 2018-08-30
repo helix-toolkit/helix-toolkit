@@ -73,6 +73,7 @@ namespace HelixToolkit.UWP.Core
             {
                 shaderPass.BindShader(deviceContext);
                 shaderPass.BindStates(deviceContext, DefaultStateBinding);
+                OnBindRasterState(deviceContext, context.IsInvertCullMode);
                 materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
             }
         }

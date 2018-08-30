@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Core
     using Components;
     using Utilities;
 
-    public class AxisPlaneGridCore : RenderCoreBase
+    public class AxisPlaneGridCore : RenderCore
     {
         private ShaderPass DefaultShaderPass;
         private SamplerStateProxy shadowSampler;
@@ -247,7 +247,7 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             OnUpdatePerModelStruct(context);
             modelCB.Upload(deviceContext, ref modelStruct);

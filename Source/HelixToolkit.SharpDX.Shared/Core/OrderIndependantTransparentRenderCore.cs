@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using System.Runtime.CompilerServices;
     using Utilities;
-    public sealed class OrderIndependentTransparentRenderCore : RenderCoreBase
+    public sealed class OrderIndependentTransparentRenderCore : RenderCore
     {
         #region Variables
         private ShaderResourceViewProxy colorTarget;
@@ -179,7 +179,7 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             RenderCount = 0;
             if(context.RenderHost.PerFrameTransparentNodes.Count == 0)

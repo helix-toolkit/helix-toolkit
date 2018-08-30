@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public abstract class GeometryRenderCore : RenderCoreBase, IGeometryRenderCore
+    public abstract class GeometryRenderCore : RenderCore, IGeometryRenderCore
     {
         private RasterizerStateProxy rasterState = null;
         /// <summary>
@@ -161,32 +161,34 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         protected virtual void OnGeometryBufferChanged(IAttachableBufferModel buffer) { }
+
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="isInvertCullMode"></param>
-        protected override void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
         {
-            if (isInvertCullMode && invertCullModeState != null)
-            {
-                context.SetRasterState(invertCullModeState);
-            }
-            else
-            {
-                context.SetRasterState(rasterState);
-            }
+            context.SetRasterState(!isInvertCullMode ? rasterState : invertCullModeState);                
         }
+
         /// <summary>
         /// Attach vertex buffer routine
         /// </summary>
         /// <param name="context"></param>
         /// <param name="vertStartSlot"></param>
-        protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
+        protected virtual bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
-            bool succ = GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager);
-            InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);
-            return succ;
+            if(GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager))
+            {
+                InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         /// <summary>
         /// Called when [update can render flag].
@@ -223,11 +225,39 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected bool PreRender(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (CanRenderFlag)
+            {
+                int vertStartSlot = 0;
+                if (!OnAttachBuffers(deviceContext, ref vertStartSlot))
+                {
+                    return false;
+                }
+                OnBindRasterState(deviceContext, context.IsInvertCullMode);
+            }
+            return CanRenderFlag;
+        }
+
+        /// <summary>
+        /// Trigger OnRender function delegate if CanRender()==true
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
+        public sealed override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (PreRender(context, deviceContext))
+            {
+                OnRender(context, deviceContext);
+            }
+        }
+
 
         public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (PreRender(context, deviceContext))
-            {
+            {               
                 OnRenderShadow(context, deviceContext);
             }
         }
@@ -240,6 +270,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        protected abstract void OnRender(RenderContext context, DeviceContextProxy deviceContext);
 
         /// <summary>
         /// Render function for custom shader pass. Used to do special effects

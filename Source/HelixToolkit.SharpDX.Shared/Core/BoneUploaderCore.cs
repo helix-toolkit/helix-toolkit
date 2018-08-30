@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP.Core
 
         }
 
-        public override void Update(RenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (matricsChanged)
             {
