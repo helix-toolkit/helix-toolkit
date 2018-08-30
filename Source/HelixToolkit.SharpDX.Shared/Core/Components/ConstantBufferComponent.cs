@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP.Core.Components
             ModelConstBuffer = null;
         }
         /// <summary>
-        /// Uploads the specified device context.
+        /// Uploads the specified device context. This uploads struct only. Ignores internal byte buffer.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="deviceContext">The device context.</param>
@@ -74,7 +74,7 @@ namespace HelixToolkit.UWP.Core.Components
         }
 
         /// <summary>
-        /// Uploads the specified device context.
+        /// Uploads the specified device context. This uploads internal byte buffer only.
         /// </summary>
         /// <param name="deviceContext">The device context.</param>
         public bool Upload(DeviceContextProxy deviceContext)
@@ -84,7 +84,7 @@ namespace HelixToolkit.UWP.Core.Components
         }
 
         /// <summary>
-        /// Uploads the specified device context. This function writes a external struct and writes remains byte array by offset = input struct size/>
+        /// Uploads the specified device context. This function writes a external struct and writes remains byte buffer by offset = input struct size/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="deviceContext">The device context.</param>
@@ -114,7 +114,7 @@ namespace HelixToolkit.UWP.Core.Components
             return false;
         }
         /// <summary>
-        /// Writes the value.
+        /// Writes the value into internal byte buffer
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name">The variable name.</param>
@@ -137,7 +137,7 @@ namespace HelixToolkit.UWP.Core.Components
             }
         }
         /// <summary>
-        /// Writes the value.
+        /// Writes the value into internal byte buffer
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value">The value.</param>
