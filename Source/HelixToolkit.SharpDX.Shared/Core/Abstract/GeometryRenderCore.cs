@@ -200,7 +200,7 @@ namespace HelixToolkit.UWP.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DrawIndexed(DeviceContextProxy context, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
         {
-            if (instanceModel == null || !instanceModel.HasElements)
+            if (!instanceModel.HasElements)
             {
                 context.DrawIndexed(indexBuffer.ElementCount, 0, 0);
             }
@@ -213,7 +213,7 @@ namespace HelixToolkit.UWP.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DrawPoints(DeviceContextProxy context, IElementsBufferProxy vertexBuffer, IElementsBufferModel instanceModel)
         {
-            if (instanceModel == null || !instanceModel.HasElements)
+            if (!instanceModel.HasElements)
             {
                 context.Draw(vertexBuffer.ElementCount, 0);
             }

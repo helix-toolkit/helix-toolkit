@@ -44,7 +44,7 @@ namespace HelixToolkit.UWP.Core
         protected virtual void OnUpdatePerModelStruct()
         {
             modelStruct.World = ModelMatrix;
-            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            modelStruct.HasInstances = InstanceBuffer.HasElements ? 1 : 0;
         }
 
         protected override bool OnUpdateCanRenderFlag()

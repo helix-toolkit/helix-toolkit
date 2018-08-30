@@ -163,7 +163,7 @@ namespace HelixToolkit.UWP.Core
         protected virtual void OnUpdatePerModelStruct(RenderContext context)
         {
             modelStruct.World = ModelMatrix;
-            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            modelStruct.HasInstances = InstanceBuffer.HasElements ? 1 : 0;
             modelStruct.RenderOIT = context.IsOITPass ? 1 : 0;
             modelStruct.Batched = Batched ? 1 : 0;
         }
