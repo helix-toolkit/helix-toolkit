@@ -11,21 +11,29 @@ namespace HelixToolkit.UWP.Model
 {
     using Render;
     using Shaders;
-    using Utilities;
-    using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class PointMaterialVariable : MaterialVariable
     {        
         private PointMaterialCore materialCore;
 
         public ShaderPass PointPass { get; }
         public ShaderPass ShadowPass { get; }
-
-        public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore core)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointMaterialVariable"/> class.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        /// <param name="core">The core.</param>
+        /// <param name="pointPassName">Name of the point pass.</param>
+        /// <param name="shadowPassName">Name of the shadow pass.</param>
+        public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore core,
+            string pointPassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass)
             : base(manager, technique, DefaultPointLineConstantBufferDesc)
         {
-            PointPass = technique[DefaultPassNames.Default];
-            ShadowPass = technique[DefaultPassNames.ShadowPass];
+            PointPass = technique[pointPassName];
+            ShadowPass = technique[shadowPassName];
             materialCore = core;
             core.PropertyChanged += Core_PropertyChanged;
         }

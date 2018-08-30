@@ -23,13 +23,21 @@ namespace HelixToolkit.UWP.Model
         public ShaderPass WireframePass { get; }
 
         private readonly string passName;
-        public PassOnlyMaterialVariable(string passName, IRenderTechnique technique)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PassOnlyMaterialVariable"/> class.
+        /// </summary>
+        /// <param name="passName">Name of the pass.</param>
+        /// <param name="technique">The technique.</param>
+        /// <param name="shadowPassName">Name of the shadow pass.</param>
+        /// <param name="wireframePassName">Name of the wireframe pass.</param>
+        public PassOnlyMaterialVariable(string passName, IRenderTechnique technique, string shadowPassName = DefaultPassNames.ShadowPass, string wireframePassName = DefaultPassNames.Wireframe)
             : base(technique.EffectsManager, technique, DefaultMeshConstantBufferDesc)
         {
             this.passName = passName;
             MaterialPass = technique[passName];
-            ShadowPass = technique[DefaultPassNames.ShadowPass];
-            WireframePass = technique[DefaultPassNames.Wireframe];
+            ShadowPass = technique[shadowPassName];
+            WireframePass = technique[wireframePassName];
         }
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)

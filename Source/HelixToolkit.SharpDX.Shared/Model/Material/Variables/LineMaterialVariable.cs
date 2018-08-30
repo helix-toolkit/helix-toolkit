@@ -11,18 +11,29 @@ namespace HelixToolkit.UWP.Model
 {
     using Render;
     using Shaders;
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class LineMaterialVariable : MaterialVariable
     {
         private readonly LineMaterialCore materialCore;
 
         public ShaderPass LinePass { get; }
         public ShaderPass ShadowPass { get; }
-
-        public LineMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineMaterialCore core) 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineMaterialVariable"/> class.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        /// <param name="core">The core.</param>
+        /// <param name="linePassName">Name of the line pass.</param>
+        /// <param name="shadowPassName">Name of the shadow pass.</param>
+        public LineMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineMaterialCore core,
+            string linePassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass) 
             : base(manager, technique, DefaultPointLineConstantBufferDesc)
         {
-            LinePass = technique[DefaultPassNames.Default];
-            ShadowPass = technique[DefaultPassNames.ShadowPass];
+            LinePass = technique[linePassName];
+            ShadowPass = technique[shadowPassName];
             materialCore = core;
             core.PropertyChanged += Core_PropertyChanged;
         }

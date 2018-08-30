@@ -89,7 +89,6 @@ namespace HelixToolkit.UWP.Model
         } = DefaultPassNames.WireframeOITPass;
 
         private readonly PhongMaterialCore material;
-        private readonly bool fixedPassName = false;
         /// <summary>
         /// 
         /// </summary>
@@ -126,7 +125,6 @@ namespace HelixToolkit.UWP.Model
         {
             DefaultShaderPassName = passName;
             MaterialPass = technique[DefaultShaderPassName];
-            fixedPassName = true;
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -10,9 +10,8 @@ namespace HelixToolkit.UWP.Model
 #endif
 {
     using Render;
-    using Utilities;
     using Shaders;
-    using System.IO;
+    using Utilities;
 
     public sealed class BillboardMaterialVariable : MaterialVariable
     {
@@ -25,29 +24,34 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string ShaderTextureSamplerName { get; } = DefaultSamplerStateNames.BillboardTextureSampler;
 
-        public ShaderPass MaterialPass { get; }
-        public ShaderPass ShadowPass { get; }
+        public ShaderPass BillboardPass { get; }
 
-        public ShaderPass MaterialOITPass { get; }
+        public ShaderPass BillboardOITPass { get; }
 
         #region Private Variables
         private readonly int textureSamplerSlot;
         private readonly int shaderTextureSlot;
         private SamplerStateProxy textureSampler;
-        //private PointLineMaterialStruct materialStruct;
         private readonly BillboardMaterialCore materialCore;
-        #endregion
-
-        public BillboardMaterialVariable(IEffectsManager manager, IRenderTechnique technique, BillboardMaterialCore core)
+        #endregion        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardMaterialVariable"/> class.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        /// <param name="core">The core.</param>
+        /// <param name="billboardPassName">Name of the billboard pass.</param>
+        /// <param name="billboardOITPassName">Name of the billboard oit pass.</param>
+        public BillboardMaterialVariable(IEffectsManager manager, IRenderTechnique technique, BillboardMaterialCore core,
+            string billboardPassName = DefaultPassNames.Default, string billboardOITPassName = DefaultPassNames.OITPass)
             : base(manager, technique, DefaultPointLineConstantBufferDesc)
         {
-            MaterialPass = technique[DefaultPassNames.Default];
-            ShadowPass = technique[DefaultPassNames.ShadowPass];
-            MaterialOITPass = technique[DefaultPassNames.OITPass];
+            BillboardPass = technique[billboardPassName];
+            BillboardOITPass = technique[billboardOITPassName];
             materialCore = core;
             core.PropertyChanged += Core_PropertyChanged;
-            shaderTextureSlot = MaterialPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
-            textureSamplerSlot = MaterialPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
+            shaderTextureSlot = BillboardPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
+            textureSamplerSlot = BillboardPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
             textureSampler = Collect(EffectsManager.StateManager.Register(core.SamplerDescription));
         }
 
@@ -84,12 +88,12 @@ namespace HelixToolkit.UWP.Model
 
         public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
-            return renderType == RenderType.Transparent && context.IsOITPass ? MaterialOITPass : MaterialPass;
+            return renderType == RenderType.Transparent && context.IsOITPass ? BillboardOITPass : BillboardPass;
         }
 
         public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
         {
-            return ShadowPass;
+            return ShaderPass.NullPass;
         }
 
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
@@ -111,10 +115,6 @@ namespace HelixToolkit.UWP.Model
             textureSampler = null;
             materialCore.PropertyChanged -= Core_PropertyChanged;
             base.OnDispose(disposeManagedResources);
-        }
-
-        protected override void UpdateInternalVariables(DeviceContextProxy deviceContext)
-        {
         }
     }
 }
