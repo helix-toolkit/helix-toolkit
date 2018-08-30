@@ -99,13 +99,13 @@ namespace CoreTest
             for(int i=0; i< NumItems; ++i)
             {
                 var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                groupPoints.AddChildNode(new PointNode() { Geometry = points, ModelMatrix = transform, Color = Color.Red, Size = new Size2F(0.5f, 0.5f) });
+                groupPoints.AddChildNode(new PointNode() { Geometry = points, ModelMatrix = transform, Material = new PointMaterialCore() { PointColor = Color.Red } });
             }
 
             for (int i = 0; i < NumItems; ++i)
             {
                 var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Color = Color.LightBlue, Thickness = 0.5f });
+                groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } });
             }
 
             viewport.Items.Add(groupSphere);
