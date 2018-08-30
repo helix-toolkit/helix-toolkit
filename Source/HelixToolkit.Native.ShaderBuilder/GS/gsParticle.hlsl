@@ -1,7 +1,6 @@
 #ifndef GSPARTICLE_HLSL
 #define GSPARTICLE_HLSL
 #define PARTICLE
-#define POINTLINE
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 static float2 one = float2(1, 1);

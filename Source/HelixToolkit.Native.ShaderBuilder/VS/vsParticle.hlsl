@@ -1,7 +1,6 @@
 #ifndef VSPARTICLE_HLSL
 #define VSPARTICLE_HLSL
 #define PARTICLE
-#define POINTLINE
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 

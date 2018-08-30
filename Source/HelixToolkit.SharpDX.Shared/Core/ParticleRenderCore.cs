@@ -422,13 +422,30 @@ namespace HelixToolkit.UWP.Core
         private ParticleModelStruct modelStruct;
         #endregion
         #region Buffers        
+        private IElementsBufferModel instanceBuffer = MatrixInstanceBufferModel.Empty;
         /// <summary>
         /// Gets or sets the instance buffer.
         /// </summary>
         /// <value>
         /// The instance buffer.
         /// </value>
-        public IElementsBufferModel InstanceBuffer { set; get; }
+        public IElementsBufferModel InstanceBuffer
+        {
+            set
+            {
+                if(Set(ref instanceBuffer, value))
+                {
+                    if (value == null)
+                    {
+                        instanceBuffer = MatrixInstanceBufferModel.Empty;
+                    }
+                }
+            }
+            get
+            {
+                return instanceBuffer;
+            }
+        }
 
         private BufferDescription bufferDesc = new BufferDescription()
         {
@@ -573,7 +590,7 @@ namespace HelixToolkit.UWP.Core
 
         public ParticleRenderCore() : base(RenderType.Particle)
         {
-            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes)));
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.ParticleModelCB, ParticleModelStruct.SizeInBytes)));
             perFrameCB = AddComponent(new ConstantBufferComponent(DefaultBufferNames.ParticleFrameCB, ParticlePerFrame.SizeInBytes));
             insertCB = AddComponent(new ConstantBufferComponent(DefaultBufferNames.ParticleCreateParameters, ParticleInsertParameters.SizeInBytes));
             NeedUpdate = true;
@@ -582,7 +599,7 @@ namespace HelixToolkit.UWP.Core
         private void OnUpdatePerModelStruct(RenderContext context)
         {
             modelStruct.World = ModelMatrix;
-            modelStruct.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            modelStruct.HasInstances = InstanceBuffer.HasElements ? 1 : 0;
             modelStruct.HasTexture = HasTexture ? 1 : 0;
             FrameVariables.RandomVector = VectorGenerator.RandomVector3;
         }
@@ -720,14 +737,13 @@ namespace HelixToolkit.UWP.Core
         {        
             UpdateTime(context, ref totalElapsed);
             //Set correct instance count from instance buffer
-            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.ElementCount;
+            drawArgument.InstanceCount = !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.ElementCount;
             //Upload the draw argument
             particleCountGSIABuffer.UploadDataToBuffer(deviceContext, ref drawArgument);
 
             updatePass.BindShader(deviceContext);
             updatePass.ComputeShader.BindUAV(deviceContext, currentStateSlot, BufferProxies[0]);
             updatePass.ComputeShader.BindUAV(deviceContext, newStateSlot, BufferProxies[1]);
-
             if (isRestart)
             {
                 FrameVariables.NumParticles = 0;
@@ -781,6 +797,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            OnUpdatePerModelStruct(context);
             perFrameCB.Upload(deviceContext, ref FrameVariables);
             modelCB.Upload(deviceContext, ref modelStruct);
             // Clear binding

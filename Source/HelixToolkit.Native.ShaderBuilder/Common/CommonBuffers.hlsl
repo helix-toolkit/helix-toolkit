@@ -99,6 +99,17 @@ cbuffer cbPointLineModel : register(b4)
 	bool4 pbParams = bool4(false, false, false, false);
 };
 #endif
+#if defined(PARTICLE) // model for line, point and billboard
+//Per model
+cbuffer cbParticleModel : register(b4)
+{
+    float4x4 pWorld;
+    bool pHasInstances = false;
+    bool pHasInstanceParams = false;
+    bool hasTexture = false;
+	float padding1;
+};
+#endif
 #if defined(PLANEGRID) 
 cbuffer cbPlaneGridModel : register(b4)
 {
