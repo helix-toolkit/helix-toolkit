@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private SamplerStateDescription samplerDescription = DefaultSamplers.CubeSampler;
+        private SamplerStateDescription samplerDescription = DefaultSamplers.EnvironmentSampler;
         /// <summary>
         /// Gets or sets the sampler description.
         /// </summary>

@@ -286,7 +286,7 @@ namespace HelixToolkit.UWP.Model
             get { return displacementMapSampler; }
         }
 
-        private SamplerStateDescription iblSampler = DefaultSamplers.LinearSamplerClampAni1;
+        private SamplerStateDescription iblSampler = DefaultSamplers.IBLSampler;
         /// <summary>
         /// Gets or sets the IBL sampler.
         /// </summary>
