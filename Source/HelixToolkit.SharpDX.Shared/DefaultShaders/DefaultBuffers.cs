@@ -59,7 +59,7 @@ namespace HelixToolkit.UWP.Shaders
 
     public static class DefaultSamplerStateNames
     {
-        public static string SurfaceSampler = "samplerDiffuse";
+        public static string SurfaceSampler = "samplerSurface";
         public static string IBLSampler = "samplerIBL";
         public static string DisplacementMapSampler = "samplerDisplace";
         public static string CubeMapSampler = "samplerCube";
