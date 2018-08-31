@@ -7,31 +7,16 @@
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #include"psCommon.hlsl"
-//--------------------------------------------------------------------------------------
-// normal mapping
-//--------------------------------------------------------------------------------------
-// This function returns the normal in world coordinates.
-// The input struct contains tangent (t1), bitangent (t2) and normal (n) of the
-// unperturbed surface in world coordinates. The perturbed normal in tangent space
-// can be read from texNormalMap.
-// The RGB values in this texture need to be normalized from (0, +1) to (-1, +1).
+
 float3 calcNormal(PSInput input)
 {
+    float3 normal = normalize(input.n);
     if (bHasNormalMap)
     {
-		// Normalize the per-pixel interpolated tangent-space
-        input.n = normalize(input.n);
-        input.t1 = normalize(input.t1);
-        input.t2 = normalize(input.t2);
-
-		// Sample the texel in the bump map.
-        float4 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
-		// Expand the range of the normal value from (0, +1) to (-1, +1).
-        bumpMap = mad(2.0f, bumpMap, -1.0f);
-		// Calculate the normal from the data in the bump map.
-        input.n += mad(bumpMap.x, input.t1, bumpMap.y * input.t2);
+        float3 localNormal = BiasX2(texNormalMap.Sample(samplerSurface, input.t).xyz);
+        normal = PeturbNormal(localNormal, input.wp.xyz, normal, input.t);
     }
-    return normalize(input.n);
+    return normal;
 }
 
 float3 LightSurface(in float4 wp,

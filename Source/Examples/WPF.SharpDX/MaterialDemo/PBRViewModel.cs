@@ -59,7 +59,21 @@ namespace MaterialDemo
             }
             get { return renderEnvironment; }
         }
-
+        private bool renderNormalMap = true;
+        public bool RenderNormalMap
+        {
+            set
+            {
+                if (SetValue(ref renderNormalMap, value))
+                {
+                    foreach (var m in materials)
+                    {
+                        m.RenderNormalMap = value;
+                    }
+                }
+            }
+            get { return renderNormalMap; }
+        }
         public PBRViewModel(IEffectsManager manager)
         {
             EffectsManager = manager;
@@ -67,7 +81,8 @@ namespace MaterialDemo
             var builder = new MeshBuilder();
             builder.AddSphere(Vector3.Zero, 2);
             SphereModel = builder.ToMesh();
-            for(int i = -Row; i < Row; ++i)
+            var normalMap = LoadFileToMemory(new System.Uri("TextureNoise1_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString());
+            for (int i = -Row; i < Row; ++i)
             {
 
                 for(int j=-Col; j<Col; ++j)
@@ -77,7 +92,8 @@ namespace MaterialDemo
                         AlbedoColor = albedoColor.ToColor4(),
                         RoughnessFactor = 1.0 / (2 * Row) * Math.Abs(i + Row),
                         MetallicFactor = 1.0 / (2 * Col) * Math.Abs(j + Col),
-                        RenderEnvironmentMap = true
+                        RenderEnvironmentMap = true,
+                        NormalMap = normalMap
                     };
                     materials.Add(m);
                     Models.Add(new MeshGeometryModel3D()
