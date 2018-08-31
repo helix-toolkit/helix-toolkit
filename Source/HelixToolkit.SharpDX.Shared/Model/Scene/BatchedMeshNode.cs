@@ -478,7 +478,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager[DefaultRenderTechniqueNames.BlinnBatched];
+            return host.EffectsManager[DefaultRenderTechniqueNames.MeshBatched];
         }
 
         /// <summary>

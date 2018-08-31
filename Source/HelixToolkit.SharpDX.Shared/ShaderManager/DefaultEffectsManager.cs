@@ -67,7 +67,7 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         private IEnumerable<TechniqueDescription> LoadTechniqueDescriptions()
         {
-            var renderBlinn = new TechniqueDescription(DefaultRenderTechniqueNames.Blinn)
+            var renderMesh = new TechniqueDescription(DefaultRenderTechniqueNames.Mesh)
             {
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
                 PassDescriptions = new[]
@@ -78,6 +78,16 @@ namespace HelixToolkit.UWP
                         {
                             DefaultVSShaderDescriptions.VSMeshDefault,
                             DefaultPSShaderDescriptions.PSMeshBlinnPhong
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
+                    },
+                    new ShaderPassDescription(DefaultPassNames.PBR)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshPBR,
+                            DefaultPSShaderDescriptions.PSMeshPBR
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
@@ -343,7 +353,7 @@ namespace HelixToolkit.UWP
                 }
             };
 
-            var renderBlinnBatched = new TechniqueDescription(DefaultRenderTechniqueNames.BlinnBatched)
+            var renderMeshBatched = new TechniqueDescription(DefaultRenderTechniqueNames.MeshBatched)
             {
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshBatched, DefaultInputLayout.VSMeshBatchedInput),
                 PassDescriptions = new[]
@@ -610,7 +620,7 @@ namespace HelixToolkit.UWP
             };
 
 
-            var renderBlinnInstancing = new TechniqueDescription(DefaultRenderTechniqueNames.InstancingBlinn)
+            var renderMeshInstancing = new TechniqueDescription(DefaultRenderTechniqueNames.InstancingMesh)
             {
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshInstancing, DefaultInputLayout.VSInputInstancing),
                 PassDescriptions = new[]
@@ -1322,6 +1332,7 @@ namespace HelixToolkit.UWP
                     }
                 }
             };
+
             #region Post Effects
             var meshOutlineBlurPostEffect = new TechniqueDescription(DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur)
             {
@@ -1578,9 +1589,9 @@ namespace HelixToolkit.UWP
                 }
             };
 #endif
-            yield return renderBlinn;
-            yield return renderBlinnBatched;
-            yield return renderBlinnInstancing;
+            yield return renderMesh;
+            yield return renderMeshBatched;
+            yield return renderMeshInstancing;
             yield return renderPoint;
             yield return renderLine;
             yield return renderBillboardText;

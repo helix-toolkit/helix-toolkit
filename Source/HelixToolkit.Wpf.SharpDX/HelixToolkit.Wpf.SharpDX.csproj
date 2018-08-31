@@ -262,6 +262,7 @@
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
     <None Include="Resources\psMeshColorStripe.cso" />
     <None Include="Resources\psMeshDiffuseMapOIT.cso" />
+    <None Include="Resources\psMeshPBR.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />
@@ -282,6 +283,7 @@
     <None Include="Resources\vsMeshBatched.cso" />
     <None Include="Resources\vsMeshBatchedShadow.cso" />
     <None Include="Resources\vsMeshBatchedWireframe.cso" />
+    <None Include="Resources\vsMeshBPR.cso" />
     <None Include="Resources\vsMeshClipPlane.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />
     <None Include="Resources\vsMeshDefault.cso" />

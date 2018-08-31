@@ -153,7 +153,7 @@ namespace PolygonTriangulationDemo
         {
             // Render Setup
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
             // Window Setup
             this.Title = "Polygon Triangulation Demo";
             this.SubTitle = null;

@@ -202,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     {
                         effectsManager.OnDisposeResources += OnManagerDisposed;
                         effectsManager.OnInvalidateRenderer += EffectsManager_OnInvalidateRenderer;
-                        RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+                        RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Mesh] : viewport.RenderTechnique;
                         FeatureLevel = effectsManager.Device.FeatureLevel;
 #if DX11_1
                         immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext1, effectsManager.Device));

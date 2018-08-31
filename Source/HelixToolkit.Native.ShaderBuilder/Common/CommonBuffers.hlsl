@@ -32,6 +32,7 @@ cbuffer cbTransforms : register(b0)
 //Per model
 cbuffer cbMeshPhongMaterial : register(b1)
 {
+// Common Parameters
     float4x4 mWorld;
     bool bInvertNormal = false;
     bool bHasInstances = false;
@@ -45,6 +46,8 @@ cbuffer cbMeshPhongMaterial : register(b1)
     float3 padding1 = float3(0,0,0);
     float4 wireframeColor = float4(0,0,1,1);
 
+// Material Parameters changable
+#if !defined(PBR)
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;
@@ -66,6 +69,23 @@ cbuffer cbMeshPhongMaterial : register(b1)
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
     float4 uvTransformR1;
     float4 uvTransformR2;
+#endif
+#if defined(PBR)
+    float4 ConstantAlbedo;
+    float ConstantMetallic;
+    float ConstantRoughness;
+    int NumRadianceMipLevels;
+    float padding2;
+    bool bHasAlbedoMap;
+    bool bHasNormalMap;
+    bool bHasRMAMap;
+    bool bHasEmissiveMap;
+    bool bHasRadianceMap;
+    bool bHasIrradianceMap;
+    float2 padding3;
+    float4 uvTransformR1;
+    float4 uvTransformR2;
+#endif
 };
 #endif
 
@@ -205,12 +225,14 @@ cbuffer cbParticleCreateParameters : register(b8)
 };
 #endif
 ///------------------Textures---------------------
+#if !defined(PBR)
 Texture2D texDiffuseMap : register(t0);
 Texture2D texAlphaMap : register(t1);
 Texture2D texNormalMap : register(t2);
 Texture2D texDisplacementMap : register(t3);
-TextureCube texCubeMap : register(t4);
-Texture2D texShadowMap : register(t5);
+#endif
+TextureCube texCubeMap : register(t20);
+Texture2D texShadowMap : register(t21);
 
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
@@ -244,5 +266,17 @@ SamplerState samplerBillboard : register(s7);
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
 AppendStructuredBuffer<Particle> NewSimulationState : register(u1);
 
+#if defined(PBR)
+Texture2D texDiffuseMap : register(t0);
+Texture2D texNormalMap : register(t2);
+Texture2D texRMAMap    : register(t4);
 
+Texture2D texEmissiveMap : register(t5);
+
+TextureCube texRadianceMap   : register(t6);
+TextureCube texIrradianceMap : register(t7);
+
+sampler SurfaceSampler : register(s0);
+sampler IBLSampler     : register(s1);
+#endif
 #endif

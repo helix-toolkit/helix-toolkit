@@ -188,6 +188,17 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsPlaneGrid";
+
+        /// <summary>
+        /// Gets the vs mesh PBR.
+        /// </summary>
+        /// <value>
+        /// The vs mesh PBR.
+        /// </value>
+        public static string VSMeshPBR
+        {
+            get;
+        } = "vsMeshPBR";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -491,6 +502,11 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs plane grid
         /// </summary>
         public static ShaderDescription VSPlaneGrid = new ShaderDescription(nameof(VSPlaneGrid), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSPlaneGrid);
+
+        /// <summary>
+        /// The vs mesh PBR
+        /// </summary>
+        public static ShaderDescription VSMeshPBR = new ShaderDescription(nameof(VSMeshPBR), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshPBR);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

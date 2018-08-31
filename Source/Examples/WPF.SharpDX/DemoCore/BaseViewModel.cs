@@ -112,7 +112,7 @@ namespace DemoCore
             }
         }
 
-        private string renderTechniqueName = DefaultRenderTechniqueNames.Blinn;
+        private string renderTechniqueName = DefaultRenderTechniqueNames.Mesh;
         public string RenderTechniqueName
         {
             set

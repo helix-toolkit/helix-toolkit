@@ -71,6 +71,7 @@
     <None Remove="Resources\psMeshClipPlaneQuad.cso" />
     <None Remove="Resources\psMeshColorStripe.cso" />
     <None Remove="Resources\psMeshDiffuseMapOIT.cso" />
+    <None Remove="Resources\psMeshPBR.cso" />
     <None Remove="Resources\psMeshXRay.cso" />
     <None Remove="Resources\psNormals.cso" />
     <None Remove="Resources\psParticle.cso" />
@@ -91,6 +92,7 @@
     <None Remove="Resources\vsMeshBatched.cso" />
     <None Remove="Resources\vsMeshBatchedShadow.cso" />
     <None Remove="Resources\vsMeshBatchedWireframe.cso" />
+    <None Remove="Resources\vsMeshBPR.cso" />
     <None Remove="Resources\vsMeshClipPlane.cso" />
     <None Remove="Resources\vsMeshClipPlaneQuad.cso" />
     <None Remove="Resources\vsMeshDefault.cso" />
@@ -108,6 +110,9 @@
     <None Remove="Resources\vsScreenDup.cso" />
     <None Remove="Resources\vsScreenDupCursor.cso" />
     <None Remove="Resources\vsSkybox.cso" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\vsMeshBPR.cso" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\arial.fnt" />
@@ -151,6 +156,7 @@
     <EmbeddedResource Include="Resources\psMeshClipPlaneQuad.cso" />
     <EmbeddedResource Include="Resources\psMeshColorStripe.cso" />
     <EmbeddedResource Include="Resources\psMeshDiffuseMapOIT.cso" />
+    <EmbeddedResource Include="Resources\psMeshPBR.cso" />
     <EmbeddedResource Include="Resources\psMeshXRay.cso" />
     <EmbeddedResource Include="Resources\psNormals.cso" />
     <EmbeddedResource Include="Resources\psParticle.cso" />

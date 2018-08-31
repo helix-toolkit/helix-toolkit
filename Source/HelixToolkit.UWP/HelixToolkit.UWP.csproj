@@ -457,6 +457,12 @@
     <Content Include="Resources\vsPlaneGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\psMeshPBR.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\vsMeshBPR.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />

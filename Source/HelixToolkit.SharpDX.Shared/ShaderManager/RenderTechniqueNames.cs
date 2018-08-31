@@ -17,9 +17,9 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string Blinn = "RenderBlinn";
+        public const string Mesh = "RenderMesh";
 
-        public const string BlinnBatched = "RenderBlinnBatch";
+        public const string MeshBatched = "RenderMeshBatch";
         ///// <summary>
         ///// 
         ///// </summary>
@@ -71,7 +71,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string InstancingBlinn = "RenderInstancingBlinn";
+        public const string InstancingMesh = "RenderInstancingMesh";
         /// <summary>
         /// 
         /// </summary>
@@ -140,6 +140,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Default = "Default";
+        /// <summary>
+        /// The PBR
+        /// </summary>
+        public const string PBR = "PhysicsBasedRendering";
         /// <summary>
         /// 
         /// </summary>
