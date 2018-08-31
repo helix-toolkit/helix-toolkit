@@ -114,7 +114,7 @@ namespace HelixToolkit.UWP.Model
             CreateSamplers();
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureSharedPhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
+        /// Initializes a new instance of the <see cref="PhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
         /// </summary>
         /// <param name="passName">Name of the pass.</param>
         /// <param name="manager">The manager.</param>
@@ -156,9 +156,9 @@ namespace HelixToolkit.UWP.Model
             InvalidateRenderer();
         }
 
-        protected override void OnInitializeParameters()
+        protected override void OnInitialPropertyBindings()
         {
-            base.OnInitializeParameters();
+            base.OnInitialPropertyBindings();
             WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor);
             WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0);
             WriteValue(PhongMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);

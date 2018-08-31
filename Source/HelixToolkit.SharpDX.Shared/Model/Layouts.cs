@@ -332,7 +332,7 @@ namespace HelixToolkit.Wpf.SharpDX
         //public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
         //public Vector4 UVTransformR1; //Make sure to convert column majo into Row major. Pass into shader
         //public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
-        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2);
+        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2) + ModelStruct.SizeInBytes;
 
         public const string MinTessDistanceStr = "minTessDistance";
         public const string MaxTessDistanceStr = "maxTessDistance";
@@ -350,6 +350,35 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string HasDisplacementMapStr = "bHasDisplacementMap";
         public const string HasCubeMapStr = "bHasCubeMap";
         public const string RenderShadowMapStr = "bRenderShadowMap";
+        public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";
+        public const string UVTransformR1Str = "uvTransformR1";
+        public const string UVTransformR2Str = "uvTransformR2";
+    }
+
+    /// <summary>
+    /// Used combine with <see cref="ModelStruct"/>
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PBRMaterialStruct
+    {
+        public const int SizeInBytes = 4 * (4 + 4 + 4 + 4 + 4 + 4 * 3) + ModelStruct.SizeInBytes;
+
+        public const string MinTessDistanceStr = "minTessDistance";
+        public const string MaxTessDistanceStr = "maxTessDistance";
+        public const string MinDistTessFactorStr = "minTessFactor";
+        public const string MaxDistTessFactorStr = "maxTessFactor";
+        public const string ConstantAlbedoStr = "ConstantAlbedo";
+        public const string ConstantMetallicStr = "ConstantMetallic";
+        public const string ConstantRoughnessStr = "ConstantRoughness";
+        public const string NumRadianceMipLevelsStr = "NumRadianceMipLevels";
+        public const string HasAlbedoMapStr = "bHasAlbedoMap";
+        public const string HasNormalMapStr = "bHasNormalMap";
+        public const string HasRMAMapStr = "bHasRMAMap";
+        public const string HasEmissiveMapStr = "bHasEmissiveMap";
+        public const string HasRadianceMapStr = "bHasCubeMap";
+        public const string HasIrradianceMapStr = "bHasIrradianceMap";
+        public const string RenderShadowMapStr = "bRenderShadowMap";
+        public const string HasDisplacementMapStr = "bHasDisplacementMap";
         public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";
         public const string UVTransformR1Str = "uvTransformR1";
         public const string UVTransformR2Str = "uvTransformR2";
@@ -378,7 +407,7 @@ namespace HelixToolkit.Wpf.SharpDX
         //public Vector4 Color;
         //public Bool4 BoolParams;
 
-        public const int SizeInBytes = 4 * (3 * 4);
+        public const int SizeInBytes = 4 * (3 * 4) + PointLineModelStruct.SizeInBytes;
 
         public const string ParamsStr = "pfParams";
         public const string ColorStr = "pColor";

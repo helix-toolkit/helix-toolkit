@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP.Core
                 cubeTextureRes = Collect(new ShaderResourceViewProxy(Device));
                 if (cubeTexture != null)
                 {
-                    cubeTextureRes.CreateView(cubeTexture, true);
+                    cubeTextureRes.CreateView(cubeTexture);
                 }
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
                 return true;
@@ -205,6 +205,7 @@ namespace HelixToolkit.UWP.Core
                 InvalidateRenderer();
                 return;
             }
+            context.SharedResource.EnvironementMap = cubeTextureRes;
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             DefaultShaderPass.PixelShader.BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);

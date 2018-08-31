@@ -100,6 +100,7 @@
     <None Remove="Resources\vsMeshInstancingTessellation.cso" />
     <None Remove="Resources\vsMeshOutlinePass1.cso" />
     <None Remove="Resources\vsMeshOutlineScreenQuad.cso" />
+    <None Remove="Resources\vsMeshPBR.cso" />
     <None Remove="Resources\vsMeshShadow.cso" />
     <None Remove="Resources\vsMeshTessellation.cso" />
     <None Remove="Resources\vsMeshWireframe.cso" />
@@ -184,6 +185,7 @@
     <EmbeddedResource Include="Resources\vsMeshInstancingTessellation.cso" />
     <EmbeddedResource Include="Resources\vsMeshOutlinePass1.cso" />
     <EmbeddedResource Include="Resources\vsMeshOutlineScreenQuad.cso" />
+    <EmbeddedResource Include="Resources\vsMeshPBR.cso" />
     <EmbeddedResource Include="Resources\vsMeshShadow.cso" />
     <EmbeddedResource Include="Resources\vsMeshTessellation.cso" />
     <EmbeddedResource Include="Resources\vsMeshWireframe.cso" />

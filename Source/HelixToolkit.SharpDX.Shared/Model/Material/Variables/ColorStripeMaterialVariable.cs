@@ -77,9 +77,9 @@ namespace HelixToolkit.UWP.Model
             CreateSamplers();
         }
 
-        protected override void OnInitializeParameters()
+        protected override void OnInitialPropertyBindings()
         {
-            base.OnInitializeParameters();
+            base.OnInitialPropertyBindings();
             WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor);
             WriteValue(PhongMaterialStruct.UVTransformR1Str, new Vector4(1, 0, 0, 0));
             WriteValue(PhongMaterialStruct.UVTransformR2Str, new Vector4(0, 1, 0, 0));

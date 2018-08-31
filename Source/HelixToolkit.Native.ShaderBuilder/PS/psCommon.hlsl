@@ -162,7 +162,7 @@ float3 Specular_IBL(in float3 N, in float3 V, in float lodBias)
 {
     float mip = lodBias * NumRadianceMipLevels;
     float3 dir = reflect(-V, N);
-    return texRadianceMap.SampleLevel(IBLSampler, dir, mip).rgb;
+    return texCubeMap.SampleLevel(IBLSampler, dir, mip).rgb;
 }
 #endif
 #endif

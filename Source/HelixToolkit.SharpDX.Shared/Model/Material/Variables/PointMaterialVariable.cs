@@ -52,9 +52,9 @@ namespace HelixToolkit.UWP.Model
             InvalidateRenderer();
         }
 
-        protected override void OnInitializeParameters()
+        protected override void OnInitialPropertyBindings()
         {
-            base.OnInitializeParameters();
+            base.OnInitialPropertyBindings();
             WriteValue(PointLineMaterialStruct.ColorStr, materialCore.PointColor);
             WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(materialCore.Width, materialCore.Height, (int)materialCore.Figure, materialCore.FigureRatio));
         }

@@ -25,7 +25,7 @@ float3 calcNormal(PSInput input)
         input.t2 = normalize(input.t2);
 
 		// Sample the texel in the bump map.
-        float4 bumpMap = texNormalMap.Sample(samplerNormal, input.t);
+        float4 bumpMap = texNormalMap.Sample(SurfaceSampler, input.t);
 		// Expand the range of the normal value from (0, +1) to (-1, +1).
         bumpMap = mad(2.0f, bumpMap, -1.0f);
 		// Calculate the normal from the data in the bump map.
@@ -56,7 +56,7 @@ float3 LightSurface(
     for (int i = 0; i < NumLights; i++)
     {
         // light vector (to light)
-        const float3 L = normalize(-Lights[i].vLightDir);
+        const float3 L = normalize(Lights[i].vLightDir.xyz);
 
         // Half vector
         const float3 H = normalize(L + V);
@@ -73,15 +73,19 @@ float3 LightSurface(
         // Directional light
         acc_color += NdotL * Lights[i].vLightColor.rgb * (((c_diff * diffuse_factor) + specular));
     }
+    if (bHasIrradianceMap)
+    {
+        // Add diffuse irradiance
+        float3 diffuse_env = Diffuse_IBL(N);
+        acc_color += c_diff * diffuse_env;
+    }
 
-    // Add diffuse irradiance
-    float3 diffuse_env = Diffuse_IBL(N);
-    acc_color += c_diff * diffuse_env;
-
-    // Add specular radiance 
-    float3 specular_env = Specular_IBL(N, V, roughness);
-    acc_color += c_spec * specular_env;
-
+    if (bHasCubeMap)
+    {
+        // Add specular radiance 
+        float3 specular_env = Specular_IBL(N, V, roughness);
+        acc_color += c_spec * specular_env;
+    }
     return acc_color;
 }
 
@@ -109,7 +113,13 @@ float4 main(PSInput input) : SV_Target
     }
 
     color = LightSurface(V, N, ConstantAlbedo.rgb, RMA.g, RMA.b, RMA.r);
-
+    float s = 1;
+    if (bHasShadowMap)
+    {
+        if (bRenderShadowMap)
+            s = shadowStrength(input.sp);
+    }
+    color.rgb *= s;
     if (bHasEmissiveMap)
     {
         color += texEmissiveMap.Sample(SurfaceSampler, input.t).rgb;

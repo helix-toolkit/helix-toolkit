@@ -46,13 +46,13 @@ PSInput main(VSInput input)
     output.n = normalize(mul(inputn, (float3x3) mWorld));
 	//set texture coords
     output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
-    //if (bHasDisplacementMap)
-    //{
-    //    const float mipInterval = 20;
-    //    float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-    //    float4 h = texDisplacementMap.SampleLevel(samplerDisplace, output.t, mipLevel);
-    //    output.p.xyz += output.n * mul(h, displacementMapScaleMask);
-    //}
+    if (bHasDisplacementMap)
+    {
+        const float mipInterval = 20;
+        float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
+        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, output.t, mipLevel);
+        output.p.xyz += output.n * mul(h, displacementMapScaleMask);
+    }
     output.wp = output.p;
 	//set position into clip space	
     output.p = mul(output.p, mViewProjection);

@@ -409,7 +409,7 @@ namespace HelixToolkit.UWP.Model
 
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new TextureSharedPhongMaterialVariables(manager, technique, this);
+            return new PhongMaterialVariables(manager, technique, this);
         }
     }
 }

@@ -14,6 +14,8 @@ namespace HelixToolkit.UWP.Model
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
     using Core.Components;
+    using System.ComponentModel;
+
     /// <summary>
     /// 
     /// </summary>
@@ -21,11 +23,15 @@ namespace HelixToolkit.UWP.Model
     {
         public static readonly ConstantBufferDescription DefaultMeshConstantBufferDesc
             = new ConstantBufferDescription(DefaultBufferNames.MeshPhongCB,
-                      ModelStruct.SizeInBytes + PhongMaterialStruct.SizeInBytes);
+                      PhongMaterialStruct.SizeInBytes);
 
         public static readonly ConstantBufferDescription DefaultPointLineConstantBufferDesc
             = new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB,
-              PointLineModelStruct.SizeInBytes + PointLineMaterialStruct.SizeInBytes);
+                        PointLineMaterialStruct.SizeInBytes);
+
+        public static readonly ConstantBufferDescription DefaultMeshPBRConstantBufferDesc
+            = new ConstantBufferDescription(DefaultBufferNames.MeshPBRCB,
+                      PBRMaterialStruct.SizeInBytes);
 
         public event EventHandler OnUpdateNeeded;
         /// <summary>
@@ -58,10 +64,14 @@ namespace HelixToolkit.UWP.Model
         internal void Initialize()
         {
             ConstantBuffer.Attach(Technique);
-            OnInitializeParameters();
+            OnInitialPropertyBindings();
+            foreach(var v in propertyBindings.Values)
+            {
+                v.Invoke();
+            }
         }
 
-        protected virtual void OnInitializeParameters() { }
+        protected virtual void OnInitialPropertyBindings() { }
         /// <summary>
         /// Binds the material textures, samplers, etc,.
         /// </summary>
@@ -233,7 +243,31 @@ namespace HelixToolkit.UWP.Model
         public override void DisposeAndClear()
         {
             ConstantBuffer.Detach();
+            propertyBindings.Clear();
             base.DisposeAndClear();
         }
+
+        #region Material Property Bindings
+        private readonly Dictionary<string, Action> propertyBindings = new Dictionary<string, Action>();
+
+        protected void AddPropertyBinding(string propertyName, Action action)
+        {
+            propertyBindings.Add(propertyName, action);
+        }
+
+        protected void TriggerPropertyAction(string propertyName)
+        {
+            if (propertyBindings.TryGetValue(propertyName, out Action act))
+            {
+                act.Invoke();
+            }
+        }
+
+        protected void MaterialCore_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            TriggerPropertyAction(e.PropertyName);
+            InvalidateRenderer();
+        }
+        #endregion
     }
 }

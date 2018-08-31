@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// Default PhongMaterial Variables
     /// </summary>
-    public sealed class TextureSharedPhongMaterialVariables : MaterialVariable
+    public sealed class PhongMaterialVariables : MaterialVariable
     {
         private const int NUMTEXTURES = 4;
         private const int NUMSAMPLERS = 5;
@@ -222,7 +222,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="manager"></param>
         /// <param name="technique"></param>
         /// <param name="material"></param>
-        public TextureSharedPhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
+        public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
             : base(manager, technique, DefaultMeshConstantBufferDesc)
         {
             this.material = material;
@@ -243,13 +243,13 @@ namespace HelixToolkit.UWP.Model
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureSharedPhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
+        /// Initializes a new instance of the <see cref="PhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
         /// </summary>
         /// <param name="passName">Name of the pass.</param>
         /// <param name="manager">The manager.</param>
         /// <param name="technique"></param>
         /// <param name="material">The material.</param>
-        public TextureSharedPhongMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
+        public PhongMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
             : this(manager, technique, material)
         {
             MaterialShaderPassName = passName;
@@ -382,9 +382,9 @@ namespace HelixToolkit.UWP.Model
             InvalidateRenderer();
         }
 
-        protected override void OnInitializeParameters()
+        protected override void OnInitialPropertyBindings()
         {
-            base.OnInitializeParameters();
+            base.OnInitialPropertyBindings();
             WriteValue(PhongMaterialStruct.AmbientStr, material.AmbientColor);
             WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor);
             WriteValue(PhongMaterialStruct.EmissiveStr, material.EmissiveColor);

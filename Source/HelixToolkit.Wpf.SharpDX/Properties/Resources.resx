@@ -349,7 +349,7 @@
   <data name="psMeshPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsMeshBPR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsmeshbpr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="vsMeshPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -53,6 +53,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Material\ColorStripeMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\DiffuseMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\NormalVectorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\PBRMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\PositionColorMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\VertColorMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\Material.cs" />

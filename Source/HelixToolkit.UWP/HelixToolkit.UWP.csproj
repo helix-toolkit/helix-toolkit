@@ -460,7 +460,7 @@
     <Content Include="Resources\psMeshPBR.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\vsMeshBPR.cso">
+    <Content Include="Resources\vsMeshPBR.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

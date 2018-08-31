@@ -276,11 +276,11 @@
     <FxCompile Include="VS\vsPlaneGrid.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
-    <FxCompile Include="VS\vsMeshBPR.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
     <FxCompile Include="PS\psMeshPBR.hlsl">
       <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsMeshPBR.hlsl">
+      <Filter>VS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

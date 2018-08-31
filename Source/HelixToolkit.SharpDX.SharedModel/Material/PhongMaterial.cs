@@ -2,6 +2,7 @@
 using SharpDX.Direct3D11;
 using System.IO;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -11,9 +12,8 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using System.ComponentModel;
     using Model;
-    using Shaders;
+    using Shaders;   
     using Utilities;
 
     /// <summary>

@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string GlobalTransformCB = "cbTransforms";
         public static string ModelCB = "cbMeshModel";
         public static string MeshPhongCB = "cbMeshPhongMaterial";
+        public static string MeshPBRCB = "cbMeshPBRMaterial";
         public static string PointLineModelCB = "cbPointLineModel";
         public static string ParticleModelCB = "cbParticleModel";
         public static string PlaneGridModelCB = "cbPlaneGridModel";
@@ -37,6 +38,9 @@ namespace HelixToolkit.UWP.Shaders
         public static string BillboardTB = "billboardTexture";
         public static string ColorStripe1DXTB = "texColorStripe1DX";
         public static string ColorStripe1DYTB = "texColorStripe1DY";
+        public static string RMAMapTB = "texRMAMap";
+        public static string EmissiveTB = "texEmissiveMap";
+        public static string IrradianceMap = "texIrradianceMap";
         //----------Particle--------------
         public static string ParticleFrameCB = "cbParticleFrame";
         public static string ParticleCreateParameters = "cbParticleCreateParameters";
@@ -63,5 +67,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string ShadowMapSampler = "samplerShadow";
         public static string ParticleTextureSampler = "samplerParticle";
         public static string BillboardTextureSampler = "samplerBillboard";
+        public static string SurfaceSampler = "SurfaceSampler";
+        public static string IBLSampler = "IBLSampler";
     }
 }

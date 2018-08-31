@@ -55,9 +55,9 @@ namespace HelixToolkit.UWP.Model
             textureSampler = Collect(EffectsManager.StateManager.Register(core.SamplerDescription));
         }
 
-        protected override void OnInitializeParameters()
+        protected override void OnInitialPropertyBindings()
         {
-            base.OnInitializeParameters();
+            base.OnInitialPropertyBindings();
             ConstantBuffer.WriteValueByName(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
             ConstantBuffer.WriteValueByName(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
         }

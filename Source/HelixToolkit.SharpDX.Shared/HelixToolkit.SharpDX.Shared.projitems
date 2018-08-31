@@ -120,6 +120,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\BillboardMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\LineMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PBRMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PointMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\BillboardMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\ColorStripeMaterialVariable.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Layouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\Light3DSceneShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\LightsBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PBRMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PointMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\OrderKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\ParametricSurface3DNode.cs" />
@@ -161,7 +163,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\TextureSharedPhongMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PhongMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector3Collection.cs" />
