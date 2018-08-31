@@ -60,22 +60,6 @@ namespace MaterialDemo
             get { return renderEnvironment; }
         }
 
-        private int numRadianceMipLevels = 0;
-        public int NumRadianceMipLevels
-        {
-            set
-            {
-                if (SetValue(ref numRadianceMipLevels, value))
-                {
-                    foreach (var m in materials)
-                    {
-                        m.NumRadianceMipLevels = value;
-                    }
-                }
-            }
-            get { return numRadianceMipLevels; }
-        }
-
         public PBRViewModel(IEffectsManager manager)
         {
             EffectsManager = manager;
@@ -93,8 +77,7 @@ namespace MaterialDemo
                         AlbedoColor = albedoColor.ToColor4(),
                         RoughnessFactor = 1.0 / (2 * Row) * Math.Abs(i + Row),
                         MetallicFactor = 1.0 / (2 * Col) * Math.Abs(j + Col),
-                        RenderEnvironmentMap = true,
-                        NumRadianceMipLevels = 1
+                        RenderEnvironmentMap = true
                     };
                     materials.Add(m);
                     Models.Add(new MeshGeometryModel3D()

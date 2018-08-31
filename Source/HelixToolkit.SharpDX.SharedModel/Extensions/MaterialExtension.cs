@@ -43,7 +43,6 @@ namespace HelixToolkit.UWP
                 AlbedoColor = core.AlbedoColor,
                 MetallicFactor = core.MetallicFactor,
                 RoughnessFactor = core.RoughnessFactor,
-                NumRadianceMipLevels = core.NumRadianceMipLevels,
                 AlbedoMap = core.AlbedoMap,
                 NormalMap = core.NormalMap,
                 EmissiveMap = core.EmissiveMap,

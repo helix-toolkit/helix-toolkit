@@ -111,7 +111,7 @@ namespace HelixToolkit.UWP.Shaders
             AddressV = TextureAddressMode.Clamp,
             AddressW = TextureAddressMode.Clamp,
             Filter = Filter.MinMagLinearMipPoint,
-            MaximumAnisotropy = 2,
+            MaximumAnisotropy = 1,
             MaximumLod = 0
         };
 
@@ -124,7 +124,7 @@ namespace HelixToolkit.UWP.Shaders
             AddressV = TextureAddressMode.Clamp,
             AddressW = TextureAddressMode.Clamp,
             Filter = Filter.MinMagLinearMipPoint,
-            MaximumAnisotropy = 2,
+            MaximumAnisotropy = 1,
             MaximumLod = float.MaxValue
         };
         /// <summary>

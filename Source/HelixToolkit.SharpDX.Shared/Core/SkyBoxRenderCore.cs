@@ -90,7 +90,7 @@ namespace HelixToolkit.UWP.Core
             {
                 if(SetAffectsRender(ref cubeTexture, value) && IsAttached)
                 {
-                    cubeTextureRes.CreateView(value, true);
+                    UpdateTexture();
                 }
             }
             get
@@ -98,6 +98,13 @@ namespace HelixToolkit.UWP.Core
                 return cubeTexture;
             }
         }
+        /// <summary>
+        /// Gets the mip map levels for current cube texture.
+        /// </summary>
+        /// <value>
+        /// The mip map levels.
+        /// </value>
+        public int MipMapLevels { private set; get; } = 0;
 
         private SamplerStateDescription samplerDescription = DefaultSamplers.EnvironmentSampler;
         /// <summary>
@@ -160,10 +167,7 @@ namespace HelixToolkit.UWP.Core
                 buffer.Topology = PrimitiveTopology.TriangleList;
                 GeometryBuffer = buffer;
                 cubeTextureRes = Collect(new ShaderResourceViewProxy(Device));
-                if (cubeTexture != null)
-                {
-                    cubeTextureRes.CreateView(cubeTexture);
-                }
+                UpdateTexture();
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
                 return true;
             }
@@ -173,8 +177,26 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private void UpdateTexture()
+        {
+            MipMapLevels = 0;
+            if (cubeTexture != null)
+            {
+                cubeTextureRes.CreateView(cubeTexture);
+                if(cubeTextureRes.TextureView != null && cubeTextureRes.TextureView.Description.Dimension == ShaderResourceViewDimension.TextureCube)
+                {
+                    MipMapLevels = cubeTextureRes.TextureView.Description.TextureCube.MipLevels;
+                }
+            }
+            else
+            {
+                cubeTextureRes.DisposeAndClear();
+            }
+        }
+
         protected override void OnDetach()
         {
+            MipMapLevels = 0;
             textureSampler = null;
             cubeTextureRes = null;
             base.OnDetach();
@@ -206,6 +228,7 @@ namespace HelixToolkit.UWP.Core
                 return;
             }
             context.SharedResource.EnvironementMap = cubeTextureRes;
+            context.SharedResource.EnvironmentMapMipLevels = MipMapLevels;
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             DefaultShaderPass.PixelShader.BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);

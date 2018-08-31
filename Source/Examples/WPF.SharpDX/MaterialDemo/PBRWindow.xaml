@@ -59,19 +59,6 @@
             <Label>Albedo Color</Label>
             <pt:ColorPicker SelectedColor="{Binding AlbedoColor}" />
             <CheckBox IsChecked="{Binding RenderEnvironment}">Render Environment Map</CheckBox>
-            <Label>RadianceMipLevel</Label>
-            <ComboBox SelectedIndex="{Binding NumRadianceMipLevels}">
-                <ComboBoxItem>0</ComboBoxItem>
-                <ComboBoxItem>1</ComboBoxItem>
-                <ComboBoxItem>2</ComboBoxItem>
-                <ComboBoxItem>3</ComboBoxItem>
-                <ComboBoxItem>4</ComboBoxItem>
-                <ComboBoxItem>5</ComboBoxItem>
-                <ComboBoxItem>6</ComboBoxItem>
-                <ComboBoxItem>7</ComboBoxItem>
-                <ComboBoxItem>8</ComboBoxItem>
-                <ComboBoxItem>9</ComboBoxItem>
-            </ComboBox>
         </StackPanel>
     </Grid>
 </Window>

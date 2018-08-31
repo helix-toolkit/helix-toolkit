@@ -55,19 +55,6 @@ namespace HelixToolkit.UWP.Model
             get => roughnessFactor; 
         }
 
-        private int numRadianceMipLevels;
-        /// <summary>
-        /// Gets or sets the number radiance mip levels.
-        /// </summary>
-        /// <value>
-        /// The number radiance mip levels.
-        /// </value>
-        public int NumRadianceMipLevels
-        {
-            set => Set(ref numRadianceMipLevels, value);
-            get => numRadianceMipLevels;
-        }
-
         private bool renderAlbodoMap = true;
         public bool RenderAlbedoMap
         {

@@ -51,16 +51,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         /// <summary>
-        ///         
-        /// </summary>
-        public static readonly DependencyProperty NumRadianceMipLevelsProperty =
-            DependencyProperty.Register("NumRadianceMipLevels", typeof(int), typeof(PBRMaterial), new PropertyMetadata(1,
-                (d, e) =>
-                {
-                    ((d as Material).Core as PBRMaterialCore).NumRadianceMipLevels = (int)e.NewValue;
-                }));
-
-        /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty AlbedoMapProperty =
@@ -265,12 +255,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (double)this.GetValue(RoughnessFactorProperty); }
             set { this.SetValue(RoughnessFactorProperty, value); }
-        }
-
-        public int NumRadianceMipLevels
-        {
-            get { return (int)this.GetValue(NumRadianceMipLevelsProperty); }
-            set { this.SetValue(NumRadianceMipLevelsProperty, value); }
         }
 
         public Stream AlbedoMap
@@ -504,7 +488,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 AlbedoColor = AlbedoColor,
                 MetallicFactor = (float)MetallicFactor,
                 RoughnessFactor = (float)RoughnessFactor,
-                NumRadianceMipLevels = NumRadianceMipLevels,
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,
@@ -549,7 +532,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 AlbedoColor = AlbedoColor,
                 MetallicFactor = MetallicFactor,
                 RoughnessFactor = RoughnessFactor,
-                NumRadianceMipLevels = NumRadianceMipLevels,
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,

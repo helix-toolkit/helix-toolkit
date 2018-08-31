@@ -48,6 +48,7 @@ namespace HelixToolkit.UWP.Model
         public ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
         public ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
 
+        private int numRadianceMipLevels = 0;
 
         public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core)
             : base(manager, technique, DefaultMeshPBRConstantBufferDesc, core)
@@ -78,7 +79,6 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapScaleMask), () => { WriteValue(PBRMaterialStruct.DisplacementMapScaleMaskStr, material.DisplacementMapScaleMask); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderShadowMap), () => { WriteValue(PBRMaterialStruct.RenderShadowMapStr, material.RenderShadowMap ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderEnvironmentMap), () => { WriteValue(PBRMaterialStruct.HasRadianceMapStr, material.RenderEnvironmentMap ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.NumRadianceMipLevels), () => { WriteValue(PBRMaterialStruct.NumRadianceMipLevelsStr, material.NumRadianceMipLevels); });
             AddPropertyBinding(nameof(PBRMaterialCore.MaxTessellationDistance), () => { WriteValue(PBRMaterialStruct.MaxTessDistanceStr, material.MaxTessellationDistance); });
             AddPropertyBinding(nameof(PBRMaterialCore.MinTessellationDistance), () => { WriteValue(PBRMaterialStruct.MinTessDistanceStr, material.MinTessellationDistance); });
             AddPropertyBinding(nameof(PBRMaterialCore.MaxDistanceTessellationFactor), () => { WriteValue(PBRMaterialStruct.MaxDistTessFactorStr, material.MaxDistanceTessellationFactor); });
@@ -161,6 +161,12 @@ namespace HelixToolkit.UWP.Model
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
+            if(numRadianceMipLevels != context.SharedResource.EnvironmentMapMipLevels)
+            {
+                numRadianceMipLevels = context.SharedResource.EnvironmentMapMipLevels;
+                WriteValue(PBRMaterialStruct.NumRadianceMipLevelsStr, numRadianceMipLevels);
+                InvalidateRenderer();
+            }
             if (HasTextures)
             {
                 OnBindMaterialTextures(deviceContext, shaderPass.VertexShader);
