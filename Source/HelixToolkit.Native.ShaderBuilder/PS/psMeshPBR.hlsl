@@ -34,7 +34,7 @@ float3 calcNormal(PSInput input)
     return normalize(input.n);
 }
 
-float3 LightSurface(
+float3 LightSurface(in float4 wp,
     in float3 V, in float3 N, in float3 albedo, in float roughness, in float metallic, in float ambientOcclusion)
 {
     // Specular coefficiant - fixed reflectance value for non-metals
@@ -55,23 +55,78 @@ float3 LightSurface(
     // Accumulate light values
     for (int i = 0; i < NumLights; i++)
     {
-        // light vector (to light)
-        const float3 L = normalize(Lights[i].vLightDir.xyz);
 
-        // Half vector
-        const float3 H = normalize(L + V);
 
-        // products
-        const float NdotL = saturate(dot(N, L));
-        const float LdotH = saturate(dot(L, H));
-        const float NdotH = saturate(dot(N, H));
+        if (Lights[i].iLightType == 1)
+        {
+            // light vector (to light)
+            const float3 L = normalize(Lights[i].vLightDir.xyz);
 
-        // Diffuse & specular factors
-        float diffuse_factor = Diffuse_Burley(NdotL, NdotV, LdotH, roughness);
-        float3 specular = Specular_BRDF(alpha, c_spec, NdotV, NdotL, LdotH, NdotH);
+            // Half vector
+            const float3 H = normalize(L + V);
 
-        // Directional light
-        acc_color += NdotL * Lights[i].vLightColor.rgb * (((c_diff * diffuse_factor) + specular));
+            // products
+            const float NdotL = saturate(dot(N, L));
+            const float LdotH = saturate(dot(L, H));
+            const float NdotH = saturate(dot(N, H));
+            // Diffuse & specular factors
+            float diffuse_factor = Diffuse_Burley(NdotL, NdotV, LdotH, roughness);
+            float3 specular = Specular_BRDF(alpha, c_spec, NdotV, NdotL, LdotH, NdotH, N, H);
+            // Directional light
+            acc_color += NdotL * Lights[i].vLightColor.rgb * (((c_diff * diffuse_factor) + specular));
+        }
+        else if (Lights[i].iLightType == 2)
+        {
+            float3 L = (float3) (Lights[i].vLightPos - wp); // light dir
+            float dl = length(L); // light distance
+            if (Lights[i].vLightAtt.w < dl)
+            {
+                continue;
+            }
+            L = L / dl; // normalized light dir						
+            const float3 H = normalize(V + L); // half direction for specular
+            // products
+            const float NdotL = saturate(dot(N, L));
+            const float LdotH = saturate(dot(L, H));
+            const float NdotH = saturate(dot(N, H));
+            // Diffuse & specular factors
+            float diffuse_factor = Diffuse_Burley(NdotL, NdotV, LdotH, roughness);
+            float3 specular = Specular_BRDF(alpha, c_spec, NdotV, NdotL, LdotH, NdotH, N, H);
+            float att = 1.0f / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
+            acc_color = mad(att, NdotL * Lights[i].vLightColor.rgb * (((c_diff * diffuse_factor) + specular)), acc_color);
+        }
+        else if (Lights[i].iLightType == 3)
+        {
+            float3 L = (float3) (Lights[i].vLightPos - wp); // light dir
+            float dl = length(L); // light distance
+            if (Lights[i].vLightAtt.w < dl)
+            {
+                continue;
+            }
+            L = L / dl; // normalized light dir					
+            float3 H = normalize(V + L); // half direction for specular
+            float3 sd = normalize((float3) Lights[i].vLightDir); // missuse the vLightDir variable for spot-dir
+
+            const float NdotL = saturate(dot(N, L));
+            const float LdotH = saturate(dot(L, H));
+            const float NdotH = saturate(dot(N, H));
+            // Diffuse & specular factors
+            float diffuse_factor = Diffuse_Burley(NdotL, NdotV, LdotH, roughness);
+            float3 specular = Specular_BRDF(alpha, c_spec, NdotV, NdotL, LdotH, NdotH, N, H);
+		    /* --- this is the OpenGL 1.2 version (not so nice) --- */
+		    //float spot = (dot(-d, sd));
+		    //if(spot > cos(vLightSpot[i].x))
+		    //	spot = pow( spot, vLightSpot[i].y );
+		    //else
+		    //	spot = 0.0f;	
+		    /* --- */
+
+		    /* --- this is the  DirectX9 version (better) --- */
+            float rho = dot(-L, sd);
+            float spot = pow(saturate((rho - Lights[i].vLightSpot.x) / (Lights[i].vLightSpot.y - Lights[i].vLightSpot.x)), Lights[i].vLightSpot.z);
+            float att = spot / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
+            acc_color = mad(att, NdotL * Lights[i].vLightColor.rgb * (((c_diff * diffuse_factor) + specular)), acc_color);
+        }
     }
     if (bHasIrradianceMap)
     {
@@ -112,7 +167,7 @@ float4 main(PSInput input) : SV_Target
         RMA = texRMAMap.Sample(samplerSurface, input.t).rgb;
     }
 
-    color = LightSurface(V, N, ConstantAlbedo.rgb, RMA.g, RMA.b, RMA.r);
+    color = LightSurface(input.wp, V, N, ConstantAlbedo.rgb, RMA.g, RMA.b, RMA.r);
     float s = 1;
     if (bHasShadowMap)
     {

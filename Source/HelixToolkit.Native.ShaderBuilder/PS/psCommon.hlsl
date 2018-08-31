@@ -99,12 +99,19 @@ float3 Fresnel_Shlick(in float3 f0, in float3 f90, in float x)
     return f0 + (f90 - f0) * pow(1.f - x, 5.f);
 }
 
+// https://google.github.io/filament/Filament.md.html#toc4.4
+float3 Filament_F_Schlick(float3 f0, float VoH) {
+    float f = pow(1.0 - VoH, 5.0);
+    return f + f0 * (1.0 - f);
+}
+
 // Burley B. "Physically Based Shading at Disney"
 // SIGGRAPH 2012 Course: Practical Physically Based Shading in Film and Game Production, 2012.
 float Diffuse_Burley(in float NdotL, in float NdotV, in float LdotH, in float roughness)
 {
-    float fd90 = 0.5f + 2.f * roughness * LdotH * LdotH;
-    return Fresnel_Shlick(1, fd90, NdotL).x * Fresnel_Shlick(1, fd90, NdotV).x;
+    return Filament_F_Schlick(1, NdotL).x * Filament_F_Schlick(1, NdotV).x;
+    //float fd90 = 0.5f + 2.f * roughness * LdotH * LdotH;
+    //return Fresnel_Shlick(1, fd90, NdotL).x * Fresnel_Shlick(1, fd90, NdotV).x;
 }
 
 // GGX specular D (normal distribution)
@@ -114,6 +121,17 @@ float Specular_D_GGX(in float alpha, in float NdotH)
     const float alpha2 = alpha * alpha;
     const float lower = (NdotH * NdotH * (alpha2 - 1)) + 1;
     return alpha2 / max(EPSILON, PI * lower * lower);
+}
+
+#define MEDIUMP_FLT_MAX    65504.0
+#define saturateMediump(x) min(x, MEDIUMP_FLT_MAX)
+// https://google.github.io/filament/Filament.md.html#toc4.4
+float Filament_D_GGX(in float linearRoughness, in float NoH, in float3 n, in float3 h) {
+    float3 NxH = cross(n, h);
+    float a = NoH * linearRoughness;
+    float k = linearRoughness / (dot(NxH, NxH) + a * a);
+    float d = k * k * (1.0 / PI);
+    return saturateMediump(d);
 }
 
 // Schlick-Smith specular G (visibility) with Hable's LdotH optimization
@@ -136,13 +154,13 @@ float G_Shlick_Smith_Hable(float alpha, float LdotH)
 //      V - eye normal
 //      L - light normal
 //      H - half vector between L & V.
-float3 Specular_BRDF(in float alpha, in float3 specularColor, in float NdotV, in float NdotL, in float LdotH, in float NdotH)
+float3 Specular_BRDF(in float alpha, in float3 specularColor, in float NdotV, in float NdotL, in float LdotH, in float NdotH, in float3 N, in float3 H)
 {
     // Specular D (microfacet normal distribution) component
-    float specular_D = Specular_D_GGX(alpha, NdotH);
+    float specular_D = Filament_D_GGX(alpha, NdotH, N, H);//Specular_D_GGX(alpha, NdotH);
 
     // Specular Fresnel
-    float3 specular_F = Fresnel_Shlick(specularColor, 1, LdotH);
+    float3 specular_F = Filament_F_Schlick(specularColor, LdotH);//Fresnel_Shlick(specularColor, 1, LdotH);
 
     // Specular G (visibility) component
     float specular_G = G_Shlick_Smith_Hable(alpha, LdotH);
