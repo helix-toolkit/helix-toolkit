@@ -174,6 +174,16 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
                     },
+                    new ShaderPassDescription(DefaultPassNames.PBROIT)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshPBR,
+                            DefaultPSShaderDescriptions.PSMeshPBROIT
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
+                    },
                     new ShaderPassDescription(DefaultPassNames.DiffuseOIT)
                     {
                         ShaderList = new[]

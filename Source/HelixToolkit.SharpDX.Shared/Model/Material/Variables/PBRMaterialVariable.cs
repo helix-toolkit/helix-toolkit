@@ -57,6 +57,7 @@ namespace HelixToolkit.UWP.Model
             statePoolManager = manager.StateManager;
             material = core;
             MaterialPass = technique[DefaultPassNames.PBR];
+            MaterialOITPass = technique[DefaultPassNames.PBROIT];
             WireframePass = technique[DefaultPassNames.Wireframe];
             WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
             UpdateMappings(MaterialPass);
@@ -254,7 +255,7 @@ namespace HelixToolkit.UWP.Model
 
         public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
-            return MaterialPass;
+            return renderType == RenderType.Transparent && context.IsOITPass ? MaterialOITPass : MaterialPass;
         }
 
         public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)

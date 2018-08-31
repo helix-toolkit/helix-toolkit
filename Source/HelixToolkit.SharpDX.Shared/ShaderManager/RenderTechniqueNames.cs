@@ -144,6 +144,8 @@ namespace HelixToolkit.UWP
         /// The PBR
         /// </summary>
         public const string PBR = "PhysicsBasedRendering";
+
+        public const string PBROIT = "PhysicsBasedRenderingOIT";
         /// <summary>
         /// 
         /// </summary>

@@ -122,18 +122,29 @@ namespace HelixToolkit.UWP.Core.Components
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteValueByName<T>(string name, T value) where T : struct
         {
-            if (IsValid && ModelConstBuffer.TryGetVariableByName(name, out ConstantBufferVariable variable))
+            if (IsValid)
             {
-                if(global::SharpDX.Utilities.SizeOf<T>() > variable.Size)
+                if (ModelConstBuffer.TryGetVariableByName(name, out ConstantBufferVariable variable))
                 {
-                    int structSize = global::SharpDX.Utilities.SizeOf<T>();
-                    throw new ArgumentException($"Input struct size {structSize} is larger than shader variable {variable.Name} size {variable.Size}");
+                    if(global::SharpDX.Utilities.SizeOf<T>() > variable.Size)
+                    {
+                        int structSize = global::SharpDX.Utilities.SizeOf<T>();
+                        throw new ArgumentException($"Input struct size {structSize} is larger than shader variable {variable.Name} size {variable.Size}");
+                    }
+                    global::SharpDX.Utilities.Pin(internalByteArray, (ptr) =>
+                    {
+                        var offPtr = global::SharpDX.Utilities.IntPtrAdd(ptr, variable.StartOffset);
+                        global::SharpDX.Utilities.Write(offPtr, ref value);
+                    });
                 }
-                global::SharpDX.Utilities.Pin(internalByteArray, (ptr) =>
+                else
                 {
-                    var offPtr = global::SharpDX.Utilities.IntPtrAdd(ptr, variable.StartOffset);
-                    global::SharpDX.Utilities.Write(offPtr, ref value);
-                });
+#if DEBUG
+                    throw new ArgumentException($"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
+#else
+                    Technique.EffectsManager.Logger.Log(Logger.LogLevel.Warning, $"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
+#endif
+                }
             }
         }
         /// <summary>

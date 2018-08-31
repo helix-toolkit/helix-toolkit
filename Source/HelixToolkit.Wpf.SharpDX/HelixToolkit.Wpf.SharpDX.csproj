@@ -263,6 +263,7 @@
     <None Include="Resources\psMeshColorStripe.cso" />
     <None Include="Resources\psMeshDiffuseMapOIT.cso" />
     <None Include="Resources\psMeshPBR.cso" />
+    <None Include="Resources\psMeshPBROIT.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />
