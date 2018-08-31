@@ -153,7 +153,7 @@ float3 Specular_BRDF(in float alpha, in float3 specularColor, in float NdotV, in
 // Diffuse irradiance
 float3 Diffuse_IBL(in float3 N)
 {
-    return texIrradianceMap.Sample(IBLSampler, N).rgb;
+    return texIrradianceMap.Sample(samplerIBL, N).rgb;
 }
 
 // Approximate specular image based lighting by sampling radiance map at lower mips 
@@ -162,7 +162,7 @@ float3 Specular_IBL(in float3 N, in float3 V, in float lodBias)
 {
     float mip = lodBias * NumRadianceMipLevels;
     float3 dir = reflect(-V, N);
-    return texCubeMap.SampleLevel(IBLSampler, dir, mip).rgb;
+    return texCubeMap.SampleLevel(samplerIBL, dir, mip).rgb;
 }
 #endif
 #endif

@@ -47,17 +47,23 @@ namespace HelixToolkit.UWP.Model
         protected bool NeedUpdate { private set; get; } = true;
         protected ConstantBufferComponent ConstantBuffer { get; }
         private readonly object updateLock = new object();
-
+        private readonly MaterialCore material;
         /// <summary>
         /// Initializes a new instance of the <see cref="MaterialVariable"/> class.
         /// </summary>
         /// <param name="manager">The manager.</param>
         /// <param name="technique">The technique.</param>
         /// <param name="meshConstantBufferDesc">The Constant Buffer description</param>
-        public MaterialVariable(IEffectsManager manager, IRenderTechnique technique, ConstantBufferDescription meshConstantBufferDesc)
+        /// <param name="materialCore"></param>
+        public MaterialVariable(IEffectsManager manager, IRenderTechnique technique, ConstantBufferDescription meshConstantBufferDesc, MaterialCore materialCore)
         {
             Technique = technique;
             EffectsManager = manager;
+            if(materialCore != null)
+            {
+                material = materialCore;
+                material.PropertyChanged += MaterialCore_PropertyChanged;
+            }
             ConstantBuffer = new ConstantBufferComponent(meshConstantBufferDesc);
         }
 
@@ -145,16 +151,6 @@ namespace HelixToolkit.UWP.Model
         /// <param name="instanceCount">The instance count.</param>
         public abstract void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="disposeManagedResources"></param>
-        protected override void OnDispose(bool disposeManagedResources)
-        {
-            OnUpdateNeeded = null;
-            base.OnDispose(disposeManagedResources);
-        }
-
         protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
@@ -240,11 +236,23 @@ namespace HelixToolkit.UWP.Model
             ConstantBuffer.WriteValue(value, offset);
         }
 
-        public override void DisposeAndClear()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="disposeManagedResources"></param>
+        protected override void OnDispose(bool disposeManagedResources)
         {
-            ConstantBuffer.Detach();
-            propertyBindings.Clear();
-            base.DisposeAndClear();
+            if (disposeManagedResources)
+            {
+                OnUpdateNeeded = null;
+                if(material != null)
+                {
+                    material.PropertyChanged -= MaterialCore_PropertyChanged;
+                }
+                ConstantBuffer.Detach();
+                propertyBindings.Clear();
+            }
+            base.OnDispose(disposeManagedResources);
         }
 
         #region Material Property Bindings
@@ -263,7 +271,7 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        protected void MaterialCore_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void MaterialCore_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             TriggerPropertyAction(e.PropertyName);
             InvalidateRenderer();

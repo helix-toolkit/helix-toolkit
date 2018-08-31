@@ -10,7 +10,6 @@ namespace HelixToolkit.UWP.Model
 {
     using Render;
     using Shaders;
-    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -32,7 +31,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="shadowPassName">Name of the shadow pass.</param>
         /// <param name="wireframePassName">Name of the wireframe pass.</param>
         public PassOnlyMaterialVariable(string passName, IRenderTechnique technique, string shadowPassName = DefaultPassNames.ShadowPass, string wireframePassName = DefaultPassNames.Wireframe)
-            : base(technique.EffectsManager, technique, DefaultMeshConstantBufferDesc)
+            : base(technique.EffectsManager, technique, DefaultMeshConstantBufferDesc, null)
         {
             this.passName = passName;
             MaterialPass = technique[passName];
@@ -57,9 +56,6 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
         {
             return WireframePass;
-        }
-        protected override void UpdateInternalVariables(DeviceContextProxy context)
-        {
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

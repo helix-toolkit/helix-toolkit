@@ -253,11 +253,8 @@ Texture1D texColorStripe1DY : register(t13);
 
 StructuredBuffer<matrix> skinMatrices : register(t20);
 ///------------------Samplers-------------------
-SamplerState samplerDiffuse : register(s0);
-
-SamplerState samplerAlpha : register(s1);
-
-SamplerState samplerNormal : register(s2);
+SamplerState samplerSurface : register(s0);
+SamplerState samplerIBL : register(s1);
 
 SamplerState samplerDisplace : register(s3);
 
@@ -282,8 +279,5 @@ Texture2D texDisplacementMap : register(t4);
 
 TextureCube texCubeMap : register(t20); // Radiance Map
 TextureCube texIrradianceMap : register(t21);
-
-sampler SurfaceSampler : register(s0);
-sampler IBLSampler     : register(s4);
 #endif
 #endif

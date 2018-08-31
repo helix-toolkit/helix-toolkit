@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// 
     /// </summary>
-    public partial class PhongMaterialCore : MaterialCore, IPhongMaterial
+    public partial class PhongMaterialCore : MaterialCore
     {
         private Color4 ambientColor = Color.DarkGray;
         /// <summary>
@@ -197,34 +197,6 @@ namespace HelixToolkit.UWP.Model
         {
             set { Set(ref diffuseMapSampler, value); }
             get { return diffuseMapSampler; }
-        }
-
-
-        private SamplerStateDescription normalMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
-        /// <summary>
-        /// Gets or sets the NormalMapSampler.
-        /// </summary>
-        /// <value>
-        /// NormalMapSampler
-        /// </value>
-        public SamplerStateDescription NormalMapSampler
-        {
-            set { Set(ref normalMapSampler, value); }
-            get { return normalMapSampler; }
-        }
-
-
-        private SamplerStateDescription diffuseAlphaMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
-        /// <summary>
-        /// Gets or sets the DiffuseAlphaMapSampler.
-        /// </summary>
-        /// <value>
-        /// DiffuseAlphaMapSampler
-        /// </value>
-        public SamplerStateDescription DiffuseAlphaMapSampler
-        {
-            set { Set(ref diffuseAlphaMapSampler, value); }
-            get { return diffuseAlphaMapSampler; }
         }
 
 

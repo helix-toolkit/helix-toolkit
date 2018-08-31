@@ -5,6 +5,6 @@
 // Pixel shader: bloom (extract)
 float4 psBloomExtract(MeshOutlinePS_INPUT pin) : SV_Target0
 {
-    float4 c = texDiffuseMap.Sample(samplerDiffuse, pin.Tex);
+    float4 c = texDiffuseMap.Sample(samplerSurface, pin.Tex);
     return saturate((c - Color) / (1 - Color) * Param._m00); //Color as threshold
 }

@@ -50,12 +50,11 @@ namespace HelixToolkit.UWP.Model
 
 
         public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core)
-            : base(manager, technique, DefaultMeshPBRConstantBufferDesc)
+            : base(manager, technique, DefaultMeshPBRConstantBufferDesc, core)
         {
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
             material = core;
-            material.PropertyChanged += MaterialCore_PropertyChanged;
             MaterialPass = technique[DefaultPassNames.PBR];
             WireframePass = technique[DefaultPassNames.Wireframe];
             WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
@@ -232,6 +231,7 @@ namespace HelixToolkit.UWP.Model
             texDiffuseSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
             texEmissiveSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.EmissiveTB);
             texNormalSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.NormalMapTB);
+            texRMASlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.RMAMapTB);
             texDisplaceSlot = shaderPass.VertexShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DisplacementMapTB);
             texShadowSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.ShadowMapTB);
             texIrradianceSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.IrradianceMap);
@@ -259,12 +259,6 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
         {
             return renderType == RenderType.Transparent && context.IsOITPass ? WireframeOITPass : WireframePass;
-        }
-
-        protected override void OnDispose(bool disposeManagedResources)
-        {
-            material.PropertyChanged -= MaterialCore_PropertyChanged;
-            base.OnDispose(disposeManagedResources);
         }
     }
 }

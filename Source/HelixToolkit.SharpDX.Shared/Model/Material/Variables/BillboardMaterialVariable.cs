@@ -39,45 +39,30 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         /// <param name="manager">The manager.</param>
         /// <param name="technique">The technique.</param>
-        /// <param name="core">The core.</param>
+        /// <param name="materialCore">The core.</param>
         /// <param name="billboardPassName">Name of the billboard pass.</param>
         /// <param name="billboardOITPassName">Name of the billboard oit pass.</param>
-        public BillboardMaterialVariable(IEffectsManager manager, IRenderTechnique technique, BillboardMaterialCore core,
+        public BillboardMaterialVariable(IEffectsManager manager, IRenderTechnique technique, BillboardMaterialCore materialCore,
             string billboardPassName = DefaultPassNames.Default, string billboardOITPassName = DefaultPassNames.OITPass)
-            : base(manager, technique, DefaultPointLineConstantBufferDesc)
+            : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
         {
             BillboardPass = technique[billboardPassName];
             BillboardOITPass = technique[billboardOITPassName];
-            materialCore = core;
-            core.PropertyChanged += Core_PropertyChanged;
+            this.materialCore = materialCore;
             shaderTextureSlot = BillboardPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
             textureSamplerSlot = BillboardPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
-            textureSampler = Collect(EffectsManager.StateManager.Register(core.SamplerDescription));
+            textureSampler = Collect(EffectsManager.StateManager.Register(materialCore.SamplerDescription));
         }
 
         protected override void OnInitialPropertyBindings()
         {
             base.OnInitialPropertyBindings();
-            ConstantBuffer.WriteValueByName(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
-            ConstantBuffer.WriteValueByName(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
-        }
-
-        private void Core_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName.Equals(nameof(BillboardMaterialCore.FixedSize)))
-            {
-                ConstantBuffer.WriteValueByName(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false));
-            }
-            else if (e.PropertyName.Equals(nameof(BillboardMaterialCore.Type)))
-            {
-                ConstantBuffer.WriteValueByName(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0));
-            }
-            else if (e.PropertyName.Equals(nameof(BillboardMaterialCore.SamplerDescription)))
-            {
+            AddPropertyBinding(nameof(BillboardMaterialCore.FixedSize), () => { WriteValue(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false)); });
+            AddPropertyBinding(nameof(BillboardMaterialCore.Type), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0)); });
+            AddPropertyBinding(nameof(BillboardMaterialCore.SamplerDescription), () => {
                 RemoveAndDispose(ref textureSampler);
                 textureSampler = Collect(EffectsManager.StateManager.Register(materialCore.SamplerDescription));
-            }
-            InvalidateRenderer();
+            });
         }
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
@@ -113,7 +98,6 @@ namespace HelixToolkit.UWP.Model
         protected override void OnDispose(bool disposeManagedResources)
         {
             textureSampler = null;
-            materialCore.PropertyChanged -= Core_PropertyChanged;
             base.OnDispose(disposeManagedResources);
         }
     }

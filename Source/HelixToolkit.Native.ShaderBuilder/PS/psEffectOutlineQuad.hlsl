@@ -2,5 +2,5 @@
 
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
-    return texDiffuseMap.Sample(samplerDiffuse, input.Tex);
+    return texDiffuseMap.Sample(samplerSurface, input.Tex);
 }

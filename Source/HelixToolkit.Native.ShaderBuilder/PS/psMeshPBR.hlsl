@@ -25,7 +25,7 @@ float3 calcNormal(PSInput input)
         input.t2 = normalize(input.t2);
 
 		// Sample the texel in the bump map.
-        float4 bumpMap = texNormalMap.Sample(SurfaceSampler, input.t);
+        float4 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
 		// Expand the range of the normal value from (0, +1) to (-1, +1).
         bumpMap = mad(2.0f, bumpMap, -1.0f);
 		// Calculate the normal from the data in the bump map.
@@ -105,11 +105,11 @@ float4 main(PSInput input) : SV_Target
     float3 RMA = float3(AO, ConstantRoughness, ConstantMetallic);
     if (bHasAlbedoMap)
     {
-        albedo = texDiffuseMap.Sample(SurfaceSampler, input.t);
+        albedo = texDiffuseMap.Sample(samplerSurface, input.t);
     }
     if (bHasRMAMap)
     {
-        RMA = texRMAMap.Sample(SurfaceSampler, input.t).rgb;
+        RMA = texRMAMap.Sample(samplerSurface, input.t).rgb;
     }
 
     color = LightSurface(V, N, ConstantAlbedo.rgb, RMA.g, RMA.b, RMA.r);
@@ -122,7 +122,7 @@ float4 main(PSInput input) : SV_Target
     color.rgb *= s;
     if (bHasEmissiveMap)
     {
-        color += texEmissiveMap.Sample(SurfaceSampler, input.t).rgb;
+        color += texEmissiveMap.Sample(samplerSurface, input.t).rgb;
     }
     return float4(color, albedo.a * alpha);
 }

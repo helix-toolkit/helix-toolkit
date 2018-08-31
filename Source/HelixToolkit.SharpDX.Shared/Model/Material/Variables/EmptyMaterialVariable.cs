@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="EmptyMaterialVariable"/> class.
         /// </summary>
-        public EmptyMaterialVariable() : base(null, null, null)
+        public EmptyMaterialVariable() : base(null, null, null, null)
         {
 
         }

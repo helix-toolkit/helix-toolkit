@@ -12,12 +12,12 @@ float4 main(PSInput input) : SV_Target
     float blend = 0;
     if (bHasDiffuseMap)
     {
-        c += texColorStripe1DX.Sample(samplerDiffuse, input.t.x);
+        c += texColorStripe1DX.Sample(samplerSurface, input.t.x);
         blend = 0.5;
     }
     if (bHasAlphaMap)
     {
-        c = c * blend + (1 - blend) * texColorStripe1DY.Sample(samplerDiffuse, input.t.y);
+        c = c * blend + (1 - blend) * texColorStripe1DY.Sample(samplerSurface, input.t.y);
     }
     
     c *= input.cDiffuse;

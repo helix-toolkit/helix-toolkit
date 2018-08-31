@@ -177,7 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             DefaultShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.Default];
             CursorShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.ScreenQuad];
             textureBindSlot = DefaultShaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-            samplerBindSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+            samplerBindSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
             textureSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.ScreenDupSampler));
             return Initialize(technique.EffectsManager);
         }

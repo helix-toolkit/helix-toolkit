@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public sealed class PointMaterialVariable : MaterialVariable
     {        
-        private PointMaterialCore materialCore;
+        private PointMaterialCore material;
 
         public ShaderPass PointPass { get; }
         public ShaderPass ShadowPass { get; }
@@ -25,29 +25,29 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         /// <param name="manager">The manager.</param>
         /// <param name="technique">The technique.</param>
-        /// <param name="core">The core.</param>
+        /// <param name="materialCore">The material core.</param>
         /// <param name="pointPassName">Name of the point pass.</param>
         /// <param name="shadowPassName">Name of the shadow pass.</param>
-        public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore core,
+        public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore materialCore,
             string pointPassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass)
-            : base(manager, technique, DefaultPointLineConstantBufferDesc)
+            : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
         {
             PointPass = technique[pointPassName];
             ShadowPass = technique[shadowPassName];
-            materialCore = core;
-            core.PropertyChanged += Core_PropertyChanged;
+            this.material = materialCore;
+            materialCore.PropertyChanged += Core_PropertyChanged;
         }
 
         private void Core_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
             {
-                WriteValue(PointLineMaterialStruct.ColorStr, materialCore.PointColor);
+                WriteValue(PointLineMaterialStruct.ColorStr, material.PointColor);
             }
             else if (e.PropertyName.Equals(nameof(PointMaterialCore.Width)) || e.PropertyName.Equals(nameof(PointMaterialCore.Height))
                 || e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)) || e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
             {
-                WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(materialCore.Width, materialCore.Height, (int)materialCore.Figure, materialCore.FigureRatio));
+                WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio));
             }
             InvalidateRenderer();
         }
@@ -55,8 +55,8 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitialPropertyBindings()
         {
             base.OnInitialPropertyBindings();
-            WriteValue(PointLineMaterialStruct.ColorStr, materialCore.PointColor);
-            WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(materialCore.Width, materialCore.Height, (int)materialCore.Figure, materialCore.FigureRatio));
+            WriteValue(PointLineMaterialStruct.ColorStr, material.PointColor);
+            WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio));
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
@@ -90,7 +90,7 @@ namespace HelixToolkit.UWP.Model
 
         protected override void OnDispose(bool disposeManagedResources)
         {
-            materialCore.PropertyChanged -= Core_PropertyChanged;
+            material.PropertyChanged -= Core_PropertyChanged;
             base.OnDispose(disposeManagedResources);
         }
     }
