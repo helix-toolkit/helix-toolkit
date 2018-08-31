@@ -35,28 +35,15 @@ namespace HelixToolkit.UWP.Model
             PointPass = technique[pointPassName];
             ShadowPass = technique[shadowPassName];
             this.material = materialCore;
-            materialCore.PropertyChanged += Core_PropertyChanged;
-        }
-
-        private void Core_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
-            {
-                WriteValue(PointLineMaterialStruct.ColorStr, material.PointColor);
-            }
-            else if (e.PropertyName.Equals(nameof(PointMaterialCore.Width)) || e.PropertyName.Equals(nameof(PointMaterialCore.Height))
-                || e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)) || e.PropertyName.Equals(nameof(PointMaterialCore.PointColor)))
-            {
-                WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio));
-            }
-            InvalidateRenderer();
         }
 
         protected override void OnInitialPropertyBindings()
         {
-            base.OnInitialPropertyBindings();
-            WriteValue(PointLineMaterialStruct.ColorStr, material.PointColor);
-            WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio));
+            AddPropertyBinding(nameof(PointMaterialCore.PointColor), () => { WriteValue(PointLineMaterialStruct.ColorStr, material.PointColor); });
+            AddPropertyBinding(nameof(PointMaterialCore.Width), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio)); });
+            AddPropertyBinding(nameof(PointMaterialCore.Height), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio)); });
+            AddPropertyBinding(nameof(PointMaterialCore.Figure), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio)); });
+            AddPropertyBinding(nameof(PointMaterialCore.FigureRatio), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio)); });
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
@@ -86,12 +73,6 @@ namespace HelixToolkit.UWP.Model
 
         protected override void UpdateInternalVariables(DeviceContextProxy deviceContext)
         {
-        }
-
-        protected override void OnDispose(bool disposeManagedResources)
-        {
-            material.PropertyChanged -= Core_PropertyChanged;
-            base.OnDispose(disposeManagedResources);
         }
     }
 }
