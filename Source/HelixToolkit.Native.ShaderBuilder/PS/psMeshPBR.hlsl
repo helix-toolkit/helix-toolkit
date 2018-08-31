@@ -152,10 +152,9 @@ float4 main(PSInput input) : SV_Target
     float3 N = calcNormal(input);
     
     const float AO = 1; // ambient term
-    float alpha = ConstantAlbedo.a;
     float3 color = (float3) 0;
 
-    float4 albedo = ConstantAlbedo;
+    float4 albedo = float4(ConstantAlbedo.xyz, 1);
     // glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel
     float3 RMA = float3(AO, ConstantRoughness, ConstantMetallic);
     if (bHasAlbedoMap)
@@ -167,7 +166,7 @@ float4 main(PSInput input) : SV_Target
         RMA = texRMAMap.Sample(samplerSurface, input.t).rgb;
     }
 
-    color = LightSurface(input.wp, V, N, ConstantAlbedo.rgb, RMA.g, RMA.b, RMA.r);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r);
     float s = 1;
     if (bHasShadowMap)
     {
@@ -179,6 +178,6 @@ float4 main(PSInput input) : SV_Target
     {
         color += texEmissiveMap.Sample(samplerSurface, input.t).rgb;
     }
-    return float4(color, albedo.a * alpha);
+    return float4(color, albedo.a * ConstantAlbedo.a);
 }
 #endif

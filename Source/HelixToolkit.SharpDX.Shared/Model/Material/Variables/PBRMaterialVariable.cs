@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PBRMaterialCore.MetallicFactor), () => { WriteValue(PBRMaterialStruct.ConstantMetallicStr, material.MetallicFactor); });
             AddPropertyBinding(nameof(PBRMaterialCore.RoughnessFactor), () => { WriteValue(PBRMaterialStruct.ConstantRoughnessStr, material.RoughnessFactor); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderAlbedoMap), () => { WriteValue(PBRMaterialStruct.HasAlbedoMapStr, material.RenderAlbedoMap && TextureResources[AlbedoMapIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderEmissiveMap), () => { WriteValue(PBRMaterialStruct.HasEmissiveMapStr, material.RenderEnvironmentMap && TextureResources[EmissiveMapIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderEmissiveMap), () => { WriteValue(PBRMaterialStruct.HasEmissiveMapStr, material.RenderEmissiveMap && TextureResources[EmissiveMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderNormalMap), () => { WriteValue(PBRMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderDisplacementMap), () => { WriteValue(PBRMaterialStruct.HasDisplacementMapStr, material.RenderDisplacementMap && TextureResources[DisplaceMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderIrradianceMap), () => { WriteValue(PBRMaterialStruct.HasIrradianceMapStr, material.RenderIrradianceMap && TextureResources[IrradianceMapIdx] != null ? 1 : 0); });
@@ -90,11 +90,11 @@ namespace HelixToolkit.UWP.Model
                 WriteValue(PBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
             });
             AddPropertyBinding(nameof(PBRMaterialCore.AlbedoMap), () => { CreateTextureView(material.AlbedoMap, AlbedoMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderAlbedoMap)); });
-            AddPropertyBinding(nameof(PBRMaterialCore.EmissiveMap), () => { CreateTextureView(material.AlbedoMap, EmissiveMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderEmissiveMap)); });
-            AddPropertyBinding(nameof(PBRMaterialCore.NormalMap), () => { CreateTextureView(material.AlbedoMap, NormalMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderNormalMap)); });
-            AddPropertyBinding(nameof(PBRMaterialCore.IrradianceMap), () => { CreateTextureView(material.AlbedoMap, IrradianceMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderIrradianceMap)); });
-            AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMap), () => { CreateTextureView(material.AlbedoMap, DisplaceMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderDisplacementMap)); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RMAMap), () => { CreateTextureView(material.AlbedoMap, RMAMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderRMAMap)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.EmissiveMap), () => { CreateTextureView(material.EmissiveMap, EmissiveMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderEmissiveMap)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.NormalMap), () => { CreateTextureView(material.NormalMap, NormalMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderNormalMap)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.IrradianceMap), () => { CreateTextureView(material.IrradianceMap, IrradianceMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderIrradianceMap)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMap), () => { CreateTextureView(material.DisplacementMap, DisplaceMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderDisplacementMap)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RMAMap), () => { CreateTextureView(material.RMAMap, RMAMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderRMAMap)); });
             AddPropertyBinding(nameof(PBRMaterialCore.SurfaceMapSampler), () => { CreateSampler(material.SurfaceMapSampler, SurfaceSamplerIdx); });
             AddPropertyBinding(nameof(PBRMaterialCore.IBLSampler), () => { CreateSampler(material.IBLSampler, IBLSamplerIdx); });
             AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapSampler), () => { CreateSampler(material.DisplacementMapSampler, DisplaceSamplerIdx); });
@@ -195,7 +195,7 @@ namespace HelixToolkit.UWP.Model
             }
             int idx = shader.ShaderStageIndex;
             shader.BindTexture(context, texDisplaceSlot, TextureResources[DisplaceMapIdx]);
-            shader.BindSampler(context, samplerDisplaceSlot, SamplerResources[DisplaceMapIdx]);
+            shader.BindSampler(context, samplerDisplaceSlot, SamplerResources[DisplaceSamplerIdx]);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void OnBindMaterialTextures(DeviceContextProxy context, DomainShader shader)
@@ -206,7 +206,7 @@ namespace HelixToolkit.UWP.Model
             }
             int idx = shader.ShaderStageIndex;
             shader.BindTexture(context, texDisplaceSlot, TextureResources[DisplaceMapIdx]);
-            shader.BindSampler(context, samplerDisplaceSlot, SamplerResources[DisplaceMapIdx]);
+            shader.BindSampler(context, samplerDisplaceSlot, SamplerResources[DisplaceSamplerIdx]);
         }
         /// <summary>
         /// Actual bindings
