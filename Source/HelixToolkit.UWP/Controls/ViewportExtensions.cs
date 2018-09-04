@@ -365,6 +365,15 @@ namespace HelixToolkit.UWP
         /// <returns>The bounding box.</returns>
         public static BoundingBox FindBounds(this Viewport3DX viewport)
         {
+            if (viewport.RenderHost != null && viewport.RenderHost.IsRendering)
+            {
+                viewport.RenderHost.UpdateAndRender();
+            }
+            return FindBoundsInternal(viewport);
+        }
+
+        internal static BoundingBox FindBoundsInternal(this Viewport3DX viewport)
+        {
             var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var firstModel = viewport.Renderables.PreorderDFT((r) =>
             {
@@ -410,7 +419,6 @@ namespace HelixToolkit.UWP
             }
             return bounds;
         }
-
         /// <summary>
         /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
         /// </summary>
