@@ -703,7 +703,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             view.Width = width;
             view.Height = height;
-            if (double.IsNaN(width) || double.IsNaN(height) || view.RenderHost != null || !view.RenderHost.IsRendering)
+            if (double.IsNaN(width) || double.IsNaN(height) || view.RenderHost == null || !view.RenderHost.IsRendering)
             {
                 return;
             }            
