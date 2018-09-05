@@ -271,7 +271,7 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     /// <summary>
-    /// Used combine with <see cref="PhongMaterialStruct"/>
+    /// Used combine with <see cref="PhongPBRMaterialStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ModelStruct
@@ -283,12 +283,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public int HasBones;
         public Vector4 Params;
         public Vector4 Color;
+        public Color4 WireframeColor;
+
         public Int3 BoolParams;
         public int Batched;
-        public int RenderOIT;
-        Vector3 padding;
-        public Color4 WireframeColor;
-        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 * 2 + 4 + 4 * 2);
+        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 * 2 + 4 + 4);
 
         public const string WorldStr = "mWorld";
         public const string InvertNormalStr = "bInvertNormal";
@@ -299,7 +298,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string ColorStr = "vColor";
         public const string BoolParamsStr = "bParams";
         public const string BatchedStr = "bBatched";
-        public const string RenderOITStr = "bRenderOIT";
         public const string WireframeColorStr = "wireframeColor";
     }
 
@@ -307,82 +305,39 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Used combine with <see cref="ModelStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct PhongMaterialStruct
+    public struct PhongPBRMaterialStruct
     {
-        //public float MinTessDistance; // Minimum distance to do tessellation
-        //public float MaxTessDistance; // Maximum distance to do tessellation
-        //public float MinDistTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
-        //public float MaxDistTessFactor; // Tessellation factor when at maximum distance
-        ///// <summary>
-        ///// Material variables
-        ///// </summary>
-        //public Color4 Ambient;
-        //public Color4 Diffuse;
-        //public Color4 Emissive;
-        //public Color4 Specular;
-        //public Color4 Reflect;
-        //public float Shininess;
-        //public int HasDiffuseMap;
-        //public int HasDiffuseAlphaMap;
-        //public int HasNormalMap;
-        //public int HasDisplacementMap;
-        //public int HasCubeMap;
-        //public int RenderShadowMap;
-        //float padding;
-        //public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
-        //public Vector4 UVTransformR1; //Make sure to convert column majo into Row major. Pass into shader
-        //public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
-        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2) + ModelStruct.SizeInBytes;
+        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 + 4 + 4 + 4 * 3) + ModelStruct.SizeInBytes;
 
-        public const string MinTessDistanceStr = "minTessDistance";
-        public const string MaxTessDistanceStr = "maxTessDistance";
-        public const string MinDistTessFactorStr = "minTessFactor";
-        public const string MaxDistTessFactorStr = "maxTessFactor";
-        public const string AmbientStr = "vMaterialAmbient";
-        public const string DiffuseStr = "vMaterialDiffuse";
-        public const string EmissiveStr = "vMaterialEmissive";
-        public const string SpecularStr = "vMaterialSpecular";
-        public const string ReflectStr = "vMaterialReflect";
-        public const string ShininessStr = "sMaterialShininess";
-        public const string HasDiffuseMapStr = "bHasDiffuseMap";
-        public const string HasDiffuseAlphaMapStr = "bHasAlphaMap";
-        public const string HasNormalMapStr = "bHasNormalMap";
-        public const string HasDisplacementMapStr = "bHasDisplacementMap";
-        public const string HasCubeMapStr = "bHasCubeMap";
-        public const string RenderShadowMapStr = "bRenderShadowMap";
-        public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";
-        public const string UVTransformR1Str = "uvTransformR1";
-        public const string UVTransformR2Str = "uvTransformR2";
-    }
+        public const string MinTessDistanceStr = "minTessDistance"; //float
+        public const string MaxTessDistanceStr = "maxTessDistance";//float
+        public const string MinDistTessFactorStr = "minTessFactor";//float
+        public const string MaxDistTessFactorStr = "maxTessFactor";//float
+        public const string DiffuseStr = "vMaterialDiffuse";//float4
+        public const string AmbientStr = "vMaterialAmbient";//float4
+        public const string EmissiveStr = "vMaterialEmissive";//float4
+        public const string SpecularStr = "vMaterialSpecular";//float4
+        public const string ReflectStr = "vMaterialReflect";//float4
 
-    /// <summary>
-    /// Used combine with <see cref="ModelStruct"/>
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct PBRMaterialStruct
-    {
-        public const int SizeInBytes = 4 * (4 + 4 + 4 + 4 + 4 + 4 * 3) + ModelStruct.SizeInBytes;
+        public const string HasDiffuseMapStr = "bHasDiffuseMap";//bool
+        public const string HasNormalMapStr = "bHasNormalMap";//bool
+        public const string HasCubeMapStr = "bHasCubeMap";//bool
+        public const string RenderShadowMapStr = "bRenderShadowMap";//bool
 
-        public const string MinTessDistanceStr = "minTessDistance";
-        public const string MaxTessDistanceStr = "maxTessDistance";
-        public const string MinDistTessFactorStr = "minTessFactor";
-        public const string MaxDistTessFactorStr = "maxTessFactor";
-        public const string ConstantAlbedoStr = "vMaterialDiffuse";
-        public const string ConstantMetallicStr = "ConstantMetallic";
-        public const string ConstantRoughnessStr = "ConstantRoughness";
-        public const string ConstantAOStr = "ConstantAO";
-        public const string NumRadianceMipLevelsStr = "NumRadianceMipLevels";
-        public const string HasAlbedoMapStr = "bHasAlbedoMap";
-        public const string HasNormalMapStr = "bHasNormalMap";
-        public const string HasRMAMapStr = "bHasRMAMap";
-        public const string HasEmissiveMapStr = "bHasEmissiveMap";
-        public const string HasRadianceMapStr = "bHasCubeMap";
-        public const string HasIrradianceMapStr = "bHasIrradianceMap";
-        public const string RenderShadowMapStr = "bRenderShadowMap";
-        public const string HasDisplacementMapStr = "bHasDisplacementMap";
-        public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";
-        public const string UVTransformR1Str = "uvTransformR1";
-        public const string UVTransformR2Str = "uvTransformR2";
+        public const string HasDiffuseAlphaMapStr = "bHasAlphaMap";//bool
+        public const string HasRMAMapStr = "bHasRMAMap";//bool
+        public const string HasEmissiveMapStr = "bHasEmissiveMap";//bool
+        public const string HasIrradianceMapStr = "bHasIrradianceMap";//bool
+
+        public const string HasDisplacementMapStr = "bHasDisplacementMap";//bool
+        public const string RenderPBR = "bRenderPBR";//bool
+        public const string NumRadianceMipLevels = "NumRadianceMipLevels";//int
+        public const string ShininessStr = "sMaterialShininess";//float
+
+        public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";//float4
+
+        public const string UVTransformR1Str = "uvTransformR1";//float4
+        public const string UVTransformR2Str = "uvTransformR2";//float4
     }
 
     /// <summary>

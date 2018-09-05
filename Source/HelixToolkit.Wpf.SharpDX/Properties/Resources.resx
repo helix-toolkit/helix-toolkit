@@ -355,19 +355,4 @@
   <data name="psMeshPBROIT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshpbroit.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsMeshInstancingPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsmeshinstancingpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="vsMeshInstancingTessellationPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsmeshinstancingtessellationpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="vsMeshTessellationPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsmeshtessellationpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="vsMeshBatchedPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsmeshbatchedpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="vsMeshPBRClipPlane" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsmeshpbrclipplane.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
 </root>

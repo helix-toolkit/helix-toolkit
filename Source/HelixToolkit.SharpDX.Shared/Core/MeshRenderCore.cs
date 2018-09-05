@@ -164,7 +164,6 @@ namespace HelixToolkit.UWP.Core
         {
             modelStruct.World = ModelMatrix;
             modelStruct.HasInstances = InstanceBuffer.HasElements ? 1 : 0;
-            modelStruct.RenderOIT = context.IsOITPass ? 1 : 0;
             modelStruct.Batched = Batched ? 1 : 0;
         }
 

@@ -247,29 +247,29 @@ namespace HelixToolkit.UWP.Model
 
         protected override void OnInitialPropertyBindings()
         {
-            AddPropertyBinding(nameof(PhongMaterialCore.DiffuseColor), () => { WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor); });
-            AddPropertyBinding(nameof(PhongMaterialCore.AmbientColor), () => { WriteValue(PhongMaterialStruct.AmbientStr, material.AmbientColor); });
-            AddPropertyBinding(nameof(PhongMaterialCore.EmissiveColor), () => { WriteValue(PhongMaterialStruct.EmissiveStr, material.EmissiveColor); });
-            AddPropertyBinding(nameof(PhongMaterialCore.ReflectiveColor), () => { WriteValue(PhongMaterialStruct.ReflectStr, material.ReflectiveColor); });
-            AddPropertyBinding(nameof(PhongMaterialCore.SpecularColor), () => { WriteValue(PhongMaterialStruct.SpecularStr, material.SpecularColor); });
-            AddPropertyBinding(nameof(PhongMaterialCore.SpecularShininess), () => { WriteValue(PhongMaterialStruct.ShininessStr, material.SpecularShininess); });
-            AddPropertyBinding(nameof(PhongMaterialCore.DisplacementMapScaleMask), () => { WriteValue(PhongMaterialStruct.DisplacementMapScaleMaskStr, material.DisplacementMapScaleMask); });
-            AddPropertyBinding(nameof(PhongMaterialCore.RenderShadowMap), ()=> { WriteValue(PhongMaterialStruct.RenderShadowMapStr, material.RenderShadowMap ? 1 : 0); });
-            AddPropertyBinding(nameof(PhongMaterialCore.RenderEnvironmentMap), () => { WriteValue(PhongMaterialStruct.HasCubeMapStr, material.RenderEnvironmentMap ? 1 : 0); });
+            AddPropertyBinding(nameof(PhongMaterialCore.DiffuseColor), () => { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor); });
+            AddPropertyBinding(nameof(PhongMaterialCore.AmbientColor), () => { WriteValue(PhongPBRMaterialStruct.AmbientStr, material.AmbientColor); });
+            AddPropertyBinding(nameof(PhongMaterialCore.EmissiveColor), () => { WriteValue(PhongPBRMaterialStruct.EmissiveStr, material.EmissiveColor); });
+            AddPropertyBinding(nameof(PhongMaterialCore.ReflectiveColor), () => { WriteValue(PhongPBRMaterialStruct.ReflectStr, material.ReflectiveColor); });
+            AddPropertyBinding(nameof(PhongMaterialCore.SpecularColor), () => { WriteValue(PhongPBRMaterialStruct.SpecularStr, material.SpecularColor); });
+            AddPropertyBinding(nameof(PhongMaterialCore.SpecularShininess), () => { WriteValue(PhongPBRMaterialStruct.ShininessStr, material.SpecularShininess); });
+            AddPropertyBinding(nameof(PhongMaterialCore.DisplacementMapScaleMask), () => { WriteValue(PhongPBRMaterialStruct.DisplacementMapScaleMaskStr, material.DisplacementMapScaleMask); });
+            AddPropertyBinding(nameof(PhongMaterialCore.RenderShadowMap), ()=> { WriteValue(PhongPBRMaterialStruct.RenderShadowMapStr, material.RenderShadowMap ? 1 : 0); });
+            AddPropertyBinding(nameof(PhongMaterialCore.RenderEnvironmentMap), () => { WriteValue(PhongPBRMaterialStruct.HasCubeMapStr, material.RenderEnvironmentMap ? 1 : 0); });
             AddPropertyBinding(nameof(PhongMaterialCore.UVTransform), () => 
             {
-                WriteValue(PhongMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
-                WriteValue(PhongMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
+                WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
+                WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
             });
 
-            AddPropertyBinding(nameof(PhongMaterialCore.MaxTessellationDistance), () => { WriteValue(PhongMaterialStruct.MaxTessDistanceStr, material.MaxTessellationDistance); });
-            AddPropertyBinding(nameof(PhongMaterialCore.MaxDistanceTessellationFactor), () => { WriteValue(PhongMaterialStruct.MaxDistTessFactorStr, material.MaxDistanceTessellationFactor); });
-            AddPropertyBinding(nameof(PhongMaterialCore.MinTessellationDistance), () => { WriteValue(PhongMaterialStruct.MinTessDistanceStr, material.MinTessellationDistance); });
-            AddPropertyBinding(nameof(PhongMaterialCore.MinDistanceTessellationFactor), () => { WriteValue(PhongMaterialStruct.MinDistTessFactorStr, material.MinDistanceTessellationFactor); });
-            AddPropertyBinding(nameof(PhongMaterialCore.RenderDiffuseMap), () => { WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PhongMaterialCore.RenderDiffuseAlphaMap), () => { WriteValue(PhongMaterialStruct.HasDiffuseAlphaMapStr, material.RenderDiffuseAlphaMap && TextureResources[AlphaIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PhongMaterialCore.RenderNormalMap), () => { WriteValue(PhongMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PhongMaterialCore.RenderDisplacementMap), () => { WriteValue(PhongMaterialStruct.HasDisplacementMapStr, material.RenderDisplacementMap && TextureResources[DisplaceIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PhongMaterialCore.MaxTessellationDistance), () => { WriteValue(PhongPBRMaterialStruct.MaxTessDistanceStr, material.MaxTessellationDistance); });
+            AddPropertyBinding(nameof(PhongMaterialCore.MaxDistanceTessellationFactor), () => { WriteValue(PhongPBRMaterialStruct.MaxDistTessFactorStr, material.MaxDistanceTessellationFactor); });
+            AddPropertyBinding(nameof(PhongMaterialCore.MinTessellationDistance), () => { WriteValue(PhongPBRMaterialStruct.MinTessDistanceStr, material.MinTessellationDistance); });
+            AddPropertyBinding(nameof(PhongMaterialCore.MinDistanceTessellationFactor), () => { WriteValue(PhongPBRMaterialStruct.MinDistTessFactorStr, material.MinDistanceTessellationFactor); });
+            AddPropertyBinding(nameof(PhongMaterialCore.RenderDiffuseMap), () => { WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PhongMaterialCore.RenderDiffuseAlphaMap), () => { WriteValue(PhongPBRMaterialStruct.HasDiffuseAlphaMapStr, material.RenderDiffuseAlphaMap && TextureResources[AlphaIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PhongMaterialCore.RenderNormalMap), () => { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PhongMaterialCore.RenderDisplacementMap), () => { WriteValue(PhongPBRMaterialStruct.HasDisplacementMapStr, material.RenderDisplacementMap && TextureResources[DisplaceIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PhongMaterialCore.DiffuseMap), () => 
             {
                 CreateTextureView(material.DiffuseMap, DiffuseIdx);

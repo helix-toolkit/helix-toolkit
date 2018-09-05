@@ -49,24 +49,28 @@ PSInput main(VSInstancingInput input)
     {
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
         output.cDiffuse = vMaterialDiffuse;
-#if !defined(PBR)
-        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
-#endif
-#if defined(PBR)
-        output.c2 = float4(ConstantAO, ConstantRoughness, ConstantMetallic, 0);
-#endif
+        if (!bRenderPBR)
+        {
+            output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+        }
+        else
+        {
+            output.c2 = vMaterialAmbient;
+        }
     }
     else
     {
 		//set texture coords and color
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy + input.tOffset;
         output.cDiffuse = input.diffuseC;
-#if !defined(PBR)
-        output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
-#endif
-#if defined(PBR)
-        output.c2 = float4(ConstantAO, ConstantRoughness, ConstantMetallic, 0);
-#endif
+        if (!bRenderPBR)
+        {
+            output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
+        }
+        else
+        {
+            output.c2 = input.ambientC;
+        }
     }
 
     if (bHasDisplacementMap)

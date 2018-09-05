@@ -44,12 +44,14 @@ HSInput main(VSInput input)
     output.t1 = inputt1;
     output.t2 = inputt2;
     output.c = input.c;
-#if !defined(PBR)
-    output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
-#endif
-#if defined(PBR)
-    output.c2 = float4(ConstantAO, ConstantRoughness, ConstantMetallic, 0);
-#endif
+    if (!bRenderPBR)
+    {
+        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+    }
+    else
+    {
+        output.c2 = vMaterialAmbient;
+    }
     float tess = saturate((minTessDistance - distance(output.p, vEyePos)) / (minTessDistance - maxTessDistance));
     output.tessF = mad(tess, (maxTessFactor - minTessFactor), minTessFactor);
     return output;

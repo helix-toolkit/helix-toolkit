@@ -275,26 +275,8 @@
     <FxCompile Include="PS\psMeshPBR.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
-    <FxCompile Include="VS\vsMeshPBR.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
     <FxCompile Include="PS\psMeshPBROIT.hlsl">
       <Filter>PS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsMeshInstancingPBR.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsMeshTessellationPBR.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsMeshInstancingTessellationPBR.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsMeshBatchedPBR.hlsl">
-      <Filter>VS</Filter>
-    </FxCompile>
-    <FxCompile Include="VS\vsMeshPBRClipPlane.hlsl">
-      <Filter>VS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

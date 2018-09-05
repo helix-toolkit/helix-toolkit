@@ -348,7 +348,7 @@ namespace HelixToolkit.UWP.Model
 
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new PBRMaterialVariable(manager, manager[DefaultRenderTechniqueNames.MeshPBR], this);
+            return new PBRMaterialVariable(manager, technique, this);
         }
     }
 }

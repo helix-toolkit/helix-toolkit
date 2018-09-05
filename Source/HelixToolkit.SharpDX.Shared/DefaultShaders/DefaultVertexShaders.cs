@@ -25,17 +25,6 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshDefault";
 
-
-        /// <summary>
-        /// Gets the vs mesh PBR.
-        /// </summary>
-        /// <value>
-        /// The vs mesh PBR.
-        /// </value>
-        public static string VSMeshPBR
-        {
-            get;
-        } = "vsMeshPBR";
         /// <summary>
         /// Gets the vs mesh batched.
         /// </summary>
@@ -47,10 +36,6 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshBatched";
 
-        public static string VSMeshBatchedPBR
-        {
-            get;
-        } = "vsMeshBatchedPBR";
         /// <summary>
         /// 
         /// </summary>
@@ -58,11 +43,6 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshTessellation";
-
-        public static string VSMeshTessellationPBR
-        {
-            get;
-        } = "vsMeshTessellationPBR";
 
         /// <summary>
         /// 
@@ -86,10 +66,6 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshInstancing";
 
-        public static string VSMeshInstancingPBR
-        {
-            get;
-        } = "vsMeshInstancingPBR";
         /// <summary>
         /// 
         /// </summary>
@@ -97,11 +73,6 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshInstancingTessellation";
-
-        public static string VSMeshInstancingTessellationPBR
-        {
-            get;
-        } = "vsMeshInstancingTessellationPBR";
 
         public static string VSMeshBoneSkinningBasic
         {
@@ -145,10 +116,6 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshClipPlane";
 
-        public static string VSMeshPBRClipPlane
-        {
-            get;
-        } = "vsMeshPBRClipPlane";
         /// <summary>
         /// 
         /// </summary>
@@ -529,21 +496,6 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs plane grid
         /// </summary>
         public static ShaderDescription VSPlaneGrid = new ShaderDescription(nameof(VSPlaneGrid), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSPlaneGrid);
-
-        /// <summary>
-        /// The vs mesh PBR
-        /// </summary>
-        public static ShaderDescription VSMeshPBR = new ShaderDescription(nameof(VSMeshPBR), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshPBR);
-
-        public static ShaderDescription VSMeshPBRClipPlane = new ShaderDescription(nameof(VSMeshPBRClipPlane), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshPBRClipPlane);
-
-        public static ShaderDescription VSMeshBatchedPBR = new ShaderDescription(nameof(VSMeshBatchedPBR), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshBatchedPBR);
-
-        public static ShaderDescription VSMeshTessellationPBR = new ShaderDescription(nameof(VSMeshTessellationPBR), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshTessellationPBR);
-
-        public static ShaderDescription VSMeshInstancingPBR = new ShaderDescription(nameof(VSMeshInstancingPBR), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshInstancingPBR);
-
-        public static ShaderDescription VSMeshInstancingTessellationPBR = new ShaderDescription(nameof(VSMeshInstancingTessellationPBR), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshInstancingTessellationPBR);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

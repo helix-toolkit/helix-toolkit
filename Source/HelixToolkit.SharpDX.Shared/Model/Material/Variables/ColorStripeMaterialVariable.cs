@@ -80,17 +80,17 @@ namespace HelixToolkit.UWP.Model
         {
             AddPropertyBinding(nameof(ColorStripeMaterialCore.DiffuseColor), () => 
             {
-                WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor);
+                WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor);
             });
             AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeX), () => 
             {
                 CreateTextureView(material.ColorStripeX, 0);
-                WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0);
+                WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0);
             });
             AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeY), () => 
             {
                 CreateTextureView(material.ColorStripeY, 1);
-                WriteValue(PhongMaterialStruct.HasDiffuseAlphaMapStr, material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0);
+                WriteValue(PhongPBRMaterialStruct.HasDiffuseAlphaMapStr, material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0);
             });
             AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeSampler), () => 
             {
@@ -99,15 +99,15 @@ namespace HelixToolkit.UWP.Model
             });
             AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeXEnabled), () =>
             {
-                WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0);
+                WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0);
             });
             AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeYEnabled), () =>
             {
-                WriteValue(PhongMaterialStruct.HasDiffuseAlphaMapStr, material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0);
+                WriteValue(PhongPBRMaterialStruct.HasDiffuseAlphaMapStr, material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0);
             });
 
-            WriteValue(PhongMaterialStruct.UVTransformR1Str, new Vector4(1, 0, 0, 0));
-            WriteValue(PhongMaterialStruct.UVTransformR2Str, new Vector4(0, 1, 0, 0));
+            WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, new Vector4(1, 0, 0, 0));
+            WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, new Vector4(0, 1, 0, 0));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

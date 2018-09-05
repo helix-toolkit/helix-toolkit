@@ -64,16 +64,18 @@ PSInput main(VSInputBatched input)
 
 	//set color
     output.c = input.c;
-#if !defined(PBR)
-    output.cDiffuse = FloatToRGB(input.c.x);
-    output.cDiffuse.a = input.c1.z;
-    output.c2 = mad(FloatToRGB(input.c1.x), vLightAmbient, FloatToRGB(input.c.y));
-    output.c.x = input.c1.y; // switch element to shininess
-#endif
-#if defined(PBR)
-    output.cDiffuse = input.c;
-    output.c2 = input.c1;
-#endif
+    if (!bRenderPBR)
+    {
+        output.cDiffuse = FloatToRGB(input.c.x);
+        output.cDiffuse.a = input.c1.z;
+        output.c2 = mad(FloatToRGB(input.c1.x), vLightAmbient, FloatToRGB(input.c.y));
+        output.c.x = input.c1.y; // switch element to shininess
+    }
+    else
+    {
+        output.cDiffuse = input.c;
+        output.c2 = input.c1;
+    }
 
     if (bHasNormalMap)
     {

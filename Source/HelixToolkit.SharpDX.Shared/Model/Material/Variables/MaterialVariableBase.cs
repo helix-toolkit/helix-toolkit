@@ -22,16 +22,12 @@ namespace HelixToolkit.UWP.Model
     public abstract class MaterialVariable : ReferenceCountDisposeObject
     {
         public static readonly ConstantBufferDescription DefaultMeshConstantBufferDesc
-            = new ConstantBufferDescription(DefaultBufferNames.MeshPhongCB,
-                      PhongMaterialStruct.SizeInBytes);
+            = new ConstantBufferDescription(DefaultBufferNames.ModelCB,
+                      PhongPBRMaterialStruct.SizeInBytes);
 
         public static readonly ConstantBufferDescription DefaultPointLineConstantBufferDesc
             = new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB,
                         PointLineMaterialStruct.SizeInBytes);
-
-        public static readonly ConstantBufferDescription DefaultMeshPBRConstantBufferDesc
-            = new ConstantBufferDescription(DefaultBufferNames.MeshPBRCB,
-                      PBRMaterialStruct.SizeInBytes);
 
         public event EventHandler OnUpdateNeeded;
         /// <summary>

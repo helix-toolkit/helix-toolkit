@@ -141,7 +141,7 @@ float4 main(PSInput input) : SV_Target
     float4 albedo = float4(input.cDiffuse.xyz, 1);
     // glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel
     float3 RMA = input.c2.rgb;
-    if (bHasAlbedoMap)
+    if (bHasDiffuseMap)
     {
         albedo = texDiffuseMap.Sample(samplerSurface, input.t);
     }

@@ -9,7 +9,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 #else
 namespace HelixToolkit.UWP.Model
 #endif
-{   
+{
+    using global::SharpDX;
     using Render;
     using ShaderManager;
     using Shaders;
@@ -42,22 +43,22 @@ namespace HelixToolkit.UWP.Model
 
         private readonly PBRMaterialCore material;
 
-        public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
-        public ShaderPass MaterialOITPass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass ShadowPass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass MaterialPass { get; }
+        public ShaderPass MaterialOITPass { get; }
+        public ShaderPass ShadowPass { get; }
+        public ShaderPass WireframePass { get; } 
+        public ShaderPass WireframeOITPass { get; }
 
         private int numRadianceMipLevels = 0;
 
         public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core)
-            : base(manager, technique, DefaultMeshPBRConstantBufferDesc, core)
+            : base(manager, technique, DefaultMeshConstantBufferDesc, core)
         {
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
             material = core;
-            MaterialPass = technique[DefaultPassNames.Default];
-            MaterialOITPass = technique[DefaultPassNames.OITPass];
+            MaterialPass = technique[DefaultPassNames.PBR];
+            MaterialOITPass = technique[DefaultPassNames.PBROITPass];
             WireframePass = technique[DefaultPassNames.Wireframe];
             WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
             UpdateMappings(MaterialPass);
@@ -68,27 +69,30 @@ namespace HelixToolkit.UWP.Model
 
         protected override void OnInitialPropertyBindings()
         {
-            AddPropertyBinding(nameof(PBRMaterialCore.AlbedoColor), () => { WriteValue(PBRMaterialStruct.ConstantAlbedoStr, material.AlbedoColor); });
-            AddPropertyBinding(nameof(PBRMaterialCore.MetallicFactor), () => { WriteValue(PBRMaterialStruct.ConstantMetallicStr, material.MetallicFactor); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RoughnessFactor), () => { WriteValue(PBRMaterialStruct.ConstantRoughnessStr, material.RoughnessFactor); });
-            AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcclusionFactor), () => { WriteValue(PBRMaterialStruct.ConstantAOStr, material.AmbientOcclusionFactor); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderAlbedoMap), () => { WriteValue(PBRMaterialStruct.HasAlbedoMapStr, material.RenderAlbedoMap && TextureResources[AlbedoMapIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderEmissiveMap), () => { WriteValue(PBRMaterialStruct.HasEmissiveMapStr, material.RenderEmissiveMap && TextureResources[EmissiveMapIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderNormalMap), () => { WriteValue(PBRMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalMapIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderDisplacementMap), () => { WriteValue(PBRMaterialStruct.HasDisplacementMapStr, material.RenderDisplacementMap && TextureResources[DisplaceMapIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderIrradianceMap), () => { WriteValue(PBRMaterialStruct.HasIrradianceMapStr, material.RenderIrradianceMap && TextureResources[IrradianceMapIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderRMAMap), () => { WriteValue(PBRMaterialStruct.HasRMAMapStr, material.RenderRMAMap && TextureResources[RMAMapIdx] != null ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapScaleMask), () => { WriteValue(PBRMaterialStruct.DisplacementMapScaleMaskStr, material.DisplacementMapScaleMask); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderShadowMap), () => { WriteValue(PBRMaterialStruct.RenderShadowMapStr, material.RenderShadowMap ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.RenderEnvironmentMap), () => { WriteValue(PBRMaterialStruct.HasRadianceMapStr, material.RenderEnvironmentMap ? 1 : 0); });
-            AddPropertyBinding(nameof(PBRMaterialCore.MaxTessellationDistance), () => { WriteValue(PBRMaterialStruct.MaxTessDistanceStr, material.MaxTessellationDistance); });
-            AddPropertyBinding(nameof(PBRMaterialCore.MinTessellationDistance), () => { WriteValue(PBRMaterialStruct.MinTessDistanceStr, material.MinTessellationDistance); });
-            AddPropertyBinding(nameof(PBRMaterialCore.MaxDistanceTessellationFactor), () => { WriteValue(PBRMaterialStruct.MaxDistTessFactorStr, material.MaxDistanceTessellationFactor); });
-            AddPropertyBinding(nameof(PBRMaterialCore.MinDistanceTessellationFactor), () => { WriteValue(PBRMaterialStruct.MinDistTessFactorStr, material.MinDistanceTessellationFactor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.AlbedoColor), () => { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.AlbedoColor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.MetallicFactor), () =>
+            {
+                WriteValue(PhongPBRMaterialStruct.AmbientStr, new Vector4(material.AmbientOcclusionFactor, material.RoughnessFactor, material.MetallicFactor, 0));
+            });
+            AddPropertyBinding(nameof(PBRMaterialCore.RoughnessFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcclusionFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderAlbedoMap), () => { WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.RenderAlbedoMap && TextureResources[AlbedoMapIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderEmissiveMap), () => { WriteValue(PhongPBRMaterialStruct.HasEmissiveMapStr, material.RenderEmissiveMap && TextureResources[EmissiveMapIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderNormalMap), () => { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalMapIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderDisplacementMap), () => { WriteValue(PhongPBRMaterialStruct.HasDisplacementMapStr, material.RenderDisplacementMap && TextureResources[DisplaceMapIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderIrradianceMap), () => { WriteValue(PhongPBRMaterialStruct.HasIrradianceMapStr, material.RenderIrradianceMap && TextureResources[IrradianceMapIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderRMAMap), () => { WriteValue(PhongPBRMaterialStruct.HasRMAMapStr, material.RenderRMAMap && TextureResources[RMAMapIdx] != null ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapScaleMask), () => { WriteValue(PhongPBRMaterialStruct.DisplacementMapScaleMaskStr, material.DisplacementMapScaleMask); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderShadowMap), () => { WriteValue(PhongPBRMaterialStruct.RenderShadowMapStr, material.RenderShadowMap ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RenderEnvironmentMap), () => { WriteValue(PhongPBRMaterialStruct.HasCubeMapStr, material.RenderEnvironmentMap ? 1 : 0); });
+            AddPropertyBinding(nameof(PBRMaterialCore.MaxTessellationDistance), () => { WriteValue(PhongPBRMaterialStruct.MaxTessDistanceStr, material.MaxTessellationDistance); });
+            AddPropertyBinding(nameof(PBRMaterialCore.MinTessellationDistance), () => { WriteValue(PhongPBRMaterialStruct.MinTessDistanceStr, material.MinTessellationDistance); });
+            AddPropertyBinding(nameof(PBRMaterialCore.MaxDistanceTessellationFactor), () => { WriteValue(PhongPBRMaterialStruct.MaxDistTessFactorStr, material.MaxDistanceTessellationFactor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.MinDistanceTessellationFactor), () => { WriteValue(PhongPBRMaterialStruct.MinDistTessFactorStr, material.MinDistanceTessellationFactor); });
             AddPropertyBinding(nameof(PBRMaterialCore.UVTransform), () => 
             {
-                WriteValue(PBRMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
-                WriteValue(PBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
+                WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
+                WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
             });
             AddPropertyBinding(nameof(PBRMaterialCore.AlbedoMap), () => { CreateTextureView(material.AlbedoMap, AlbedoMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderAlbedoMap)); });
             AddPropertyBinding(nameof(PBRMaterialCore.EmissiveMap), () => { CreateTextureView(material.EmissiveMap, EmissiveMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderEmissiveMap)); });
@@ -100,6 +104,8 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PBRMaterialCore.IBLSampler), () => { CreateSampler(material.IBLSampler, IBLSamplerIdx); });
             AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapSampler), () => { CreateSampler(material.DisplacementMapSampler, DisplaceSamplerIdx); });
             AddPropertyBinding(nameof(PBRMaterialCore.EnableTessellation), () => { });
+
+            WriteValue(PhongPBRMaterialStruct.RenderPBR, true); // Make sure to set this flag
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -166,7 +172,7 @@ namespace HelixToolkit.UWP.Model
             if(numRadianceMipLevels != context.SharedResource.EnvironmentMapMipLevels)
             {
                 numRadianceMipLevels = context.SharedResource.EnvironmentMapMipLevels;
-                WriteValue(PBRMaterialStruct.NumRadianceMipLevelsStr, numRadianceMipLevels);
+                WriteValue(PhongPBRMaterialStruct.NumRadianceMipLevels, numRadianceMipLevels);
                 InvalidateRenderer();
             }
             if (HasTextures)

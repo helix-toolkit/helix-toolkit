@@ -129,16 +129,16 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitialPropertyBindings()
         {
             base.OnInitialPropertyBindings();
-            AddPropertyBinding(nameof(PhongMaterialCore.DiffuseColor), () => { WriteValue(PhongMaterialStruct.DiffuseStr, material.DiffuseColor); });
+            AddPropertyBinding(nameof(PhongMaterialCore.DiffuseColor), () => { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor); });
             AddPropertyBinding(nameof(PhongMaterialCore.UVTransform), () => 
             {
-                WriteValue(PhongMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
-                WriteValue(PhongMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
+                WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
+                WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
             });
             AddPropertyBinding(nameof(PhongMaterialCore.DiffuseMap), () =>
             {
                 CreateTextureView(material.DiffuseMap, DiffuseIdx);
-                WriteValue(PhongMaterialStruct.HasDiffuseMapStr, material.RenderDiffuseMap && TextureResource != null ? 1 : 0);
+                WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.RenderDiffuseMap && TextureResource != null ? 1 : 0);
             });
             AddPropertyBinding(nameof(PhongMaterialCore.DiffuseMapSampler), () =>
             {
