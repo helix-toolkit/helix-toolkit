@@ -625,12 +625,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 hostPresenter.Content = new DPFCanvas(EnableDeferredRendering);
             }
+
+            if (this.renderHostInternal != null)
+            {
+                this.renderHostInternal.OnRendered -= this.OnRenderHostInternalOnRendered;
+                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
+            }
+
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
             if (this.renderHostInternal != null)
             {
-                this.renderHostInternal.OnRendered -= this.OnRendered;
-                this.renderHostInternal.OnRendered += this.OnRendered;
-                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
+                this.renderHostInternal.OnRendered += this.OnRenderHostInternalOnRendered;
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.ClearColor = BackgroundColor.ToColor4();
                 this.renderHostInternal.IsShadowMapEnabled = IsShadowMappingEnabled;
@@ -1735,6 +1740,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
                 }
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void OnRenderHostInternalOnRendered(object sender, EventArgs e)
+        {
+            this.OnRendered?.Invoke(sender, e);
         }
 
         public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
