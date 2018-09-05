@@ -221,7 +221,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Textures\arial.fnt" />
     <None Include="Resources\csParticleInsert.cso" />
     <None Include="Resources\csParticleUpdate.cso" />
@@ -291,7 +293,6 @@
     <None Include="Resources\vsMeshInstancingTessellation.cso" />
     <None Include="Resources\vsMeshOutlinePass1.cso" />
     <None Include="Resources\vsMeshOutlineScreenQuad.cso" />
-    <None Include="Resources\vsMeshPBR.cso" />
     <None Include="Resources\vsMeshShadow.cso" />
     <None Include="Resources\vsMeshTessellation.cso" />
     <None Include="Resources\vsMeshWireframe.cso" />

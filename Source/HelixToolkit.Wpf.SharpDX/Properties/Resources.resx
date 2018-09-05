@@ -349,9 +349,6 @@
   <data name="psMeshPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsMeshPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsmeshpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="psMeshPBROIT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshpbroit.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
