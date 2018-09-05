@@ -142,6 +142,9 @@ float G_Shlick_Smith_Hable(float alpha, float LdotH)
     return rcp(lerp(LdotH * LdotH, 1, alpha * alpha * 0.25f));
 }
 
+float V_Kelemen(float LoH) {
+    return 0.25 / (LoH * LoH);
+}
 // A microfacet based BRDF.
 //
 // alpha:           This is roughness * roughness as in the "Disney" PBR model by Burley et al.
@@ -165,7 +168,7 @@ float3 Specular_BRDF(in float alpha, in float3 specularColor, in float NdotV, in
     // Specular G (visibility) component
     float specular_G = G_Shlick_Smith_Hable(alpha, LdotH);
 
-    return specular_D * specular_F * specular_G;
+    return specular_D * specular_G * specular_F;
 }
 
 // Diffuse irradiance

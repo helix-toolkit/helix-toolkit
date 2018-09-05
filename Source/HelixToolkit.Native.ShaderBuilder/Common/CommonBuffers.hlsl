@@ -54,7 +54,7 @@ cbuffer cbMesh : register(b1)
     float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient. If using PBR, vMaterialAmbient = float4(ConstantAO, ConstantRoughness, ConstantMetallic, ConstantReflectance);
 
     float4 vMaterialEmissive = 0.0f; //Ke := surface material's emissive coefficient
-    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient
+    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient. If using PBR, vMaterialSpecular = float4(ClearCoat, ClearCoatRoughness, 0, 0)
     float4 vMaterialReflect = 0.0f; //Kr := surface material's reflectivity coefficient
 
     bool bHasDiffuseMap = false;

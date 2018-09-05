@@ -85,6 +85,16 @@
                 Maximum="1"
                 Minimum="0"
                 Value="{Binding Material.ReflectanceFactor}" />
+            <Label>ClearCoatStrength</Label>
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding Material.ClearCoatStrength}" />
+            <Label>ClearCoatRoughness</Label>
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding Material.ClearCoatRoughness}" />
         </StackPanel>
     </Grid>
 </Window>

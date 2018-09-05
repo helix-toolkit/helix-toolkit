@@ -78,6 +78,13 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcclusionFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
             AddPropertyBinding(nameof(PBRMaterialCore.ReflectanceFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
 
+            AddPropertyBinding(nameof(PBRMaterialCore.ClearCoatStrength), () =>
+            {
+                WriteValue(PhongPBRMaterialStruct.ReflectStr, new Vector4(material.ClearCoatStrength, material.ClearCoatRoughness, 0, 0));
+            });
+
+            AddPropertyBinding(nameof(PBRMaterialCore.ClearCoatRoughness), () => { TriggerPropertyAction(nameof(PBRMaterialCore.ClearCoatStrength)); });
+
             AddPropertyBinding(nameof(PBRMaterialCore.RenderAlbedoMap), () => { WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.RenderAlbedoMap && TextureResources[AlbedoMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderEmissiveMap), () => { WriteValue(PhongPBRMaterialStruct.HasEmissiveMapStr, material.RenderEmissiveMap && TextureResources[EmissiveMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderNormalMap), () => { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalMapIdx] != null ? 1 : 0); });

@@ -68,6 +68,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as PBRMaterialCore).ReflectanceFactor = (float)(double)e.NewValue;
                 }));
+
+        /// <summary>
+        ///         
+        /// </summary>
+        public static readonly DependencyProperty ClearCoatStrengthProperty =
+            DependencyProperty.Register("ClearCoatStrength", typeof(double), typeof(PBRMaterial), new PropertyMetadata(0.0,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PBRMaterialCore).ClearCoatStrength = (float)(double)e.NewValue;
+                }));
+
+        /// <summary>
+        ///         
+        /// </summary>
+        public static readonly DependencyProperty ClearCoatRoughnessProperty =
+            DependencyProperty.Register("ClearCoatRoughness", typeof(double), typeof(PBRMaterial), new PropertyMetadata(0.0,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PBRMaterialCore).ClearCoatRoughness = (float)(double)e.NewValue;
+                }));
         /// <summary>
         /// 
         /// </summary>
@@ -285,6 +305,20 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (double)this.GetValue(ReflectanceFactorProperty); }
             set { this.SetValue(ReflectanceFactorProperty, value); }
+        }
+
+
+        public double ClearCoatStrength
+        {
+            get { return (double)this.GetValue(ClearCoatStrengthProperty); }
+            set { this.SetValue(ClearCoatStrengthProperty, value); }
+        }
+
+
+        public double ClearCoatRoughness
+        {
+            get { return (double)this.GetValue(ClearCoatRoughnessProperty); }
+            set { this.SetValue(ClearCoatRoughnessProperty, value); }
         }
 
         public Stream AlbedoMap
@@ -520,6 +554,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 RoughnessFactor = (float)RoughnessFactor,
                 AmbientOcclusionFactor = (float)AmbientOcclusionFactor,
                 ReflectanceFactor = (float)ReflectanceFactor,
+                ClearCoatStrength = (float)ClearCoatStrength,
+                ClearCoatRoughness = (float)ClearCoatRoughness,
+
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,
@@ -566,6 +603,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 RoughnessFactor = RoughnessFactor,
                 AmbientOcclusionFactor = AmbientOcclusionFactor,
                 ReflectanceFactor = ReflectanceFactor,
+                ClearCoatStrength = ClearCoatStrength,
+                ClearCoatRoughness = ClearCoatRoughness,
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,

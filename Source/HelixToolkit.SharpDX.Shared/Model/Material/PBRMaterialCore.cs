@@ -81,6 +81,32 @@ namespace HelixToolkit.UWP.Model
             get => reflectanceFactor;
         }
 
+        private float clearCoatStrength = 0;
+        /// <summary>
+        /// Gets or sets the clear coat strength.
+        /// </summary>
+        /// <value>
+        /// The clear coat strength.
+        /// </value>
+        public float ClearCoatStrength
+        {
+            set => Set(ref clearCoatStrength, value);
+            get => clearCoatStrength;
+        }
+
+        private float clearCoatRoughness = 0;
+        /// <summary>
+        /// Gets or sets the clear coat roughness.
+        /// </summary>
+        /// <value>
+        /// The clear coat roughness.
+        /// </value>
+        public float ClearCoatRoughness
+        {
+            set => Set(ref clearCoatRoughness, value);
+            get => clearCoatRoughness;
+        }
+
         private bool renderAlbodoMap = true;
         public bool RenderAlbedoMap
         {
