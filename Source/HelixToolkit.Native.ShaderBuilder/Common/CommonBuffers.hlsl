@@ -51,7 +51,7 @@ cbuffer cbMesh : register(b1)
 	float maxTessFactor = 1;
 
     float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
-    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient. If using PBR, vMaterialAmbient = float4(ConstantAO, ConstantRoughness, ConstantMetallic);
+    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient. If using PBR, vMaterialAmbient = float4(ConstantAO, ConstantRoughness, ConstantMetallic, ConstantReflectance);
 
     float4 vMaterialEmissive = 0.0f; //Ke := surface material's emissive coefficient
     float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient

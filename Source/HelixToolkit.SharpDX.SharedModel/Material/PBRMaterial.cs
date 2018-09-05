@@ -58,6 +58,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as PBRMaterialCore).AmbientOcclusionFactor = (float)(double)e.NewValue;
                 }));
+
+        /// <summary>
+        ///         
+        /// </summary>
+        public static readonly DependencyProperty ReflectanceFactorProperty =
+            DependencyProperty.Register("ReflectanceFactor", typeof(double), typeof(PBRMaterial), new PropertyMetadata(0.0,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PBRMaterialCore).ReflectanceFactor = (float)(double)e.NewValue;
+                }));
         /// <summary>
         /// 
         /// </summary>
@@ -269,6 +279,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (double)this.GetValue(AmbientOcclusionFactorProperty); }
             set { this.SetValue(AmbientOcclusionFactorProperty, value); }
+        }
+
+        public double ReflectanceFactor
+        {
+            get { return (double)this.GetValue(ReflectanceFactorProperty); }
+            set { this.SetValue(ReflectanceFactorProperty, value); }
         }
 
         public Stream AlbedoMap
@@ -503,6 +519,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MetallicFactor = (float)MetallicFactor,
                 RoughnessFactor = (float)RoughnessFactor,
                 AmbientOcclusionFactor = (float)AmbientOcclusionFactor,
+                ReflectanceFactor = (float)ReflectanceFactor,
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,
@@ -548,6 +565,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MetallicFactor = MetallicFactor,
                 RoughnessFactor = RoughnessFactor,
                 AmbientOcclusionFactor = AmbientOcclusionFactor,
+                ReflectanceFactor = ReflectanceFactor,
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,
@@ -577,5 +595,31 @@ namespace HelixToolkit.Wpf.SharpDX
                 MinTessellationDistance = MinTessellationDistance,
             };
         }
+    }
+
+    /// <summary>
+    /// https://google.github.io/filament/images/material_chart.jpg
+    /// </summary>
+    public static class PBRSampleColors
+    {
+        // Metallic
+        public static readonly Color4 Silver = new Color4(250 / 255f, 249 / 255f, 245 / 255f, 1);
+        public static readonly Color4 Aluminum = new Color4(244 / 255f, 245 / 255f, 245 / 255f, 1);
+        public static readonly Color4 Platinum = new Color4(214 / 255f, 209 / 255f, 200 / 255f, 1);
+        public static readonly Color4 Iron = new Color4(192 / 255f, 189 / 255f, 186 / 255f, 1);
+        public static readonly Color4 Titanium = new Color4(206 / 255f, 200 / 255f, 194 / 255f, 1);
+        public static readonly Color4 Copper = new Color4(251 / 255f, 216 / 255f, 184 / 255f, 1);
+        public static readonly Color4 Gold = new Color4(255 / 255f, 220 / 255f, 157 / 255f, 1);
+        public static readonly Color4 Brass = new Color4(244 / 255f, 228 / 255f, 173 / 255f, 1);
+
+        //non metallic samples
+        public static readonly Color4 Coal = new Color4(50 / 255f, 50 / 255f, 50 / 255f, 1);
+        public static readonly Color4 Rubber = new Color4(53 / 255f, 53 / 255f, 53 / 255f, 1);
+        public static readonly Color4 Mud = new Color4(85 / 255f, 61 / 255f, 49 / 255f, 1);
+        public static readonly Color4 Wood = new Color4(135 / 255f, 92 / 255f, 60 / 255f, 1);
+        public static readonly Color4 Vegetation = new Color4(123 / 255f, 130 / 255f, 78 / 255f, 1);
+        public static readonly Color4 Brick = new Color4(148 / 255f, 125 / 255f, 117 / 255f, 1);
+        public static readonly Color4 Sand = new Color4(177 / 255f, 168 / 255f, 132 / 255f, 1);
+        public static readonly Color4 Concrete = new Color4(192 / 255f, 191 / 255f, 187 / 255f, 1);
     }
 }

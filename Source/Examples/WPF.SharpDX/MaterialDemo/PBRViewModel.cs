@@ -28,6 +28,9 @@ namespace MaterialDemo
         public Stream EnvironmentMap { set; get; }
         public ObservableElement3DCollection Models { get; } = new ObservableElement3DCollection();
         private List<PBRMaterial> materials = new List<PBRMaterial>();
+        public Geometry3D Model { get; }
+        public Transform3D ModelTransform { get; }
+        public PBRMaterial Material { get; }
         private Color albedoColor = Colors.Gold;
         public Color AlbedoColor
         {
@@ -39,6 +42,8 @@ namespace MaterialDemo
                     {
                         m.AlbedoColor = value.ToColor4();
                     }
+
+                    Material.AlbedoColor = value.ToColor4();
                 }
             }
             get { return albedoColor; }
@@ -55,6 +60,8 @@ namespace MaterialDemo
                     {
                         m.RenderEnvironmentMap = value;
                     }
+
+                    Material.RenderEnvironmentMap = value;
                 }
             }
             get { return renderEnvironment; }
@@ -70,6 +77,8 @@ namespace MaterialDemo
                     {
                         m.RenderNormalMap = value;
                     }
+
+                    Material.RenderNormalMap = value;
                 }
             }
             get { return renderNormalMap; }
@@ -98,12 +107,21 @@ namespace MaterialDemo
                     materials.Add(m);
                     Models.Add(new MeshGeometryModel3D()
                     {
+                        CullMode = SharpDX.Direct3D11.CullMode.Back,
                         Geometry = SphereModel,
                         Material = m,
                         Transform = new Media3D.TranslateTransform3D(new Vector3D(i * 6, j * 6, 0))
                     });
                 }
             }
+            Model = SphereModel;
+            Material = new PBRMaterial()
+            {               
+                AlbedoColor = albedoColor.ToColor4(),
+                RenderEnvironmentMap=true,
+                NormalMap = normalMap
+            };
+            ModelTransform = new Media3D.MatrixTransform3D((Matrix.Scaling(4) * Matrix.Translation(0, 0, 10)).ToMatrix3D());
         }
     }
 }

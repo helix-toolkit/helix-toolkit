@@ -72,10 +72,12 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PBRMaterialCore.AlbedoColor), () => { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.AlbedoColor); });
             AddPropertyBinding(nameof(PBRMaterialCore.MetallicFactor), () =>
             {
-                WriteValue(PhongPBRMaterialStruct.AmbientStr, new Vector4(material.AmbientOcclusionFactor, material.RoughnessFactor, material.MetallicFactor, 0));
+                WriteValue(PhongPBRMaterialStruct.AmbientStr, new Vector4(material.AmbientOcclusionFactor, material.RoughnessFactor, material.MetallicFactor, material.ReflectanceFactor));
             });
             AddPropertyBinding(nameof(PBRMaterialCore.RoughnessFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
             AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcclusionFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.ReflectanceFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
+
             AddPropertyBinding(nameof(PBRMaterialCore.RenderAlbedoMap), () => { WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.RenderAlbedoMap && TextureResources[AlbedoMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderEmissiveMap), () => { WriteValue(PhongPBRMaterialStruct.HasEmissiveMapStr, material.RenderEmissiveMap && TextureResources[EmissiveMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderNormalMap), () => { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalMapIdx] != null ? 1 : 0); });

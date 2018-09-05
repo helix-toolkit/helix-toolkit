@@ -68,6 +68,19 @@ namespace HelixToolkit.UWP.Model
             get => ambientOcclusionFactor;
         }
 
+        private float reflectanceFactor = 0;
+        /// <summary>
+        /// Gets or sets the reflectance factor.
+        /// </summary>
+        /// <value>
+        /// The reflectance factor.
+        /// </value>
+        public float ReflectanceFactor
+        {
+            set => Set(ref reflectanceFactor, value);
+            get => reflectanceFactor;
+        }
+
         private bool renderAlbodoMap = true;
         public bool RenderAlbedoMap
         {

@@ -50,6 +50,11 @@
             <hx:DirectionalLight3D Direction="1, -1, -1" Color="White" />
             <!--<hx:ShadowMap3D />-->
             <hx:GroupModel3D ItemsSource="{Binding Models}" />
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                Geometry="{Binding Model}"
+                Material="{Binding Material}"
+                Transform="{Binding ModelTransform}" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
         </hx:Viewport3DX>
         <StackPanel
@@ -60,6 +65,26 @@
             <pt:ColorPicker SelectedColor="{Binding AlbedoColor}" />
             <CheckBox IsChecked="{Binding RenderNormalMap}">Render Normal Map</CheckBox>
             <CheckBox IsChecked="{Binding RenderEnvironment}">Render Environment Map</CheckBox>
+            <Label>Metallic</Label>
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding Material.MetallicFactor}" />
+            <Label>Roughness</Label>
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding Material.RoughnessFactor}" />
+            <Label>AmbientOcclusion</Label>
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding Material.AmbientOcclusionFactor}" />
+            <Label>Reflectance</Label>
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding Material.ReflectanceFactor}" />
         </StackPanel>
     </Grid>
 </Window>

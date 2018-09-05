@@ -20,11 +20,8 @@ float3 calcNormal(PSInput input)
 }
 
 float3 LightSurface(in float4 wp,
-    in float3 V, in float3 N, in float3 albedo, in float roughness, in float metallic, in float ambientOcclusion)
+    in float3 V, in float3 N, in float3 albedo, in float roughness, in float metallic, in float ambientOcclusion, in float reflectance)
 {
-    // Specular coefficiant - fixed reflectance value for non-metals
-    static const float kSpecularCoefficient = 0.04;
-
     const float NdotV = saturate(dot(N, V));
 
     // Burley roughness bias
@@ -32,7 +29,7 @@ float3 LightSurface(in float4 wp,
 
     // Blend base colors
     const float3 c_diff = lerp(albedo, float3(0, 0, 0), metallic) * ambientOcclusion;
-    const float3 c_spec = lerp(kSpecularCoefficient, albedo, metallic) * ambientOcclusion;
+    const float3 c_spec = 0.16 * reflectance * reflectance * (1 - metallic) + albedo * metallic; //lerp(reflectance, albedo, metallic) * ambientOcclusion;
 
     // Output color
     float3 acc_color = 0;
@@ -150,7 +147,7 @@ float4 main(PSInput input) : SV_Target
         RMA = texRMAMap.Sample(samplerSurface, input.t).rgb;
     }
 
-    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a);
     float s = 1;
     if (bHasShadowMap)
     {
