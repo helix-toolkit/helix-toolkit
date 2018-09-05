@@ -3,6 +3,7 @@
 
 #define MESH
 #define PBR
+#define CLEARCOAT
 
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
@@ -30,9 +31,11 @@ float3 LightSurface(in float4 wp,
     // Blend base colors
     const float3 c_diff = lerp(albedo, float3(0, 0, 0), metallic) * ambientOcclusion;
     const float3 c_spec = 0.16 * reflectance * reflectance * (1 - metallic) + albedo * metallic; //lerp(reflectance, albedo, metallic) * ambientOcclusion;
+#if defined(CLEARCOAT)
     // remapping and linearization of clear coat roughness
     clearCoatRoughness = lerp(0.089, 0.6, clearCoatRoughness);
     float clearCoatLinearRoughness = clearCoatRoughness * clearCoatRoughness;
+#endif
     // Output color
     float3 acc_color = 0;
 
@@ -58,13 +61,17 @@ float3 LightSurface(in float4 wp,
             float3 diffuse = c_diff * diffuse_factor;
             float3 specular = Specular_BRDF(alpha, c_spec, NdotV, NdotL, LdotH, NdotH, N, H);
           
-
+#if defined(CLEARCOAT)
             float Dc = Filament_D_GGX(clearCoatLinearRoughness, NdotH, N, H);
             float Vc = V_Kelemen(LdotH);
             float Fc = Filament_F_Schlick(0.04, LdotH) * clearCoat; // clear coat strength
             float Frc = (Dc * Vc) * Fc;
             // Directional light
             acc_color += NdotL * Lights[i].vLightColor.rgb * ((diffuse + specular * (1 - Fc)) * (1 - Fc) + Frc);
+#endif
+#if !defined(CLEARCOAT)
+            acc_color += NdotL * Lights[i].vLightColor.rgb * (diffuse + specular);
+#endif
         }
         else if (Lights[i].iLightType == 2)
         {
@@ -84,13 +91,17 @@ float3 LightSurface(in float4 wp,
             float diffuse_factor = Diffuse_Burley(NdotL, NdotV, LdotH, roughness);
             float3 diffuse = c_diff * diffuse_factor;
             float3 specular = Specular_BRDF(alpha, c_spec, NdotV, NdotL, LdotH, NdotH, N, H);
+            float att = 1.0f / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
+#if defined(CLEARCOAT)
             float Dc = Filament_D_GGX(clearCoatLinearRoughness, NdotH, N, H);
             float Vc = V_Kelemen(LdotH);
             float Fc = Filament_F_Schlick(0.04, LdotH) * clearCoat; // clear coat strength
             float Frc = (Dc * Vc) * Fc;
-
-            float att = 1.0f / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
             acc_color = mad(att, NdotL * Lights[i].vLightColor.rgb * ((diffuse + specular * (1 - Fc)) * (1 - Fc) + Frc), acc_color);
+#endif
+#if !defined(CLEARCOAT)
+            acc_color = mad(att, NdotL * Lights[i].vLightColor.rgb * (diffuse + specular), acc_color);
+#endif
         }
         else if (Lights[i].iLightType == 3)
         {
@@ -111,10 +122,6 @@ float3 LightSurface(in float4 wp,
             float diffuse_factor = Diffuse_Burley(NdotL, NdotV, LdotH, roughness);
             float3 diffuse = c_diff * diffuse_factor;
             float3 specular = Specular_BRDF(alpha, c_spec, NdotV, NdotL, LdotH, NdotH, N, H);
-            float Dc = Filament_D_GGX(clearCoatLinearRoughness, NdotH, N, H);
-            float Vc = V_Kelemen(LdotH);
-            float Fc = Filament_F_Schlick(0.04, LdotH) * clearCoat; // clear coat strength
-            float Frc = (Dc * Vc) * Fc;
 		    /* --- this is the OpenGL 1.2 version (not so nice) --- */
 		    //float spot = (dot(-d, sd));
 		    //if(spot > cos(vLightSpot[i].x))
@@ -127,7 +134,16 @@ float3 LightSurface(in float4 wp,
             float rho = dot(-L, sd);
             float spot = pow(saturate((rho - Lights[i].vLightSpot.x) / (Lights[i].vLightSpot.y - Lights[i].vLightSpot.x)), Lights[i].vLightSpot.z);
             float att = spot / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
+#if defined(CLEARCOAT)
+            float Dc = Filament_D_GGX(clearCoatLinearRoughness, NdotH, N, H);
+            float Vc = V_Kelemen(LdotH);
+            float Fc = Filament_F_Schlick(0.04, LdotH) * clearCoat; // clear coat strength
+            float Frc = (Dc * Vc) * Fc;
             acc_color = mad(att, NdotL * Lights[i].vLightColor.rgb * ((diffuse + specular * (1 - Fc)) * (1 - Fc) + Frc), acc_color);
+#endif
+#if !defined(CLEARCOAT)
+            acc_color = mad(att, NdotL * Lights[i].vLightColor.rgb * (diffuse + specular), acc_color);
+#endif
         }
     }
     if (bHasIrradianceMap)
@@ -142,6 +158,11 @@ float3 LightSurface(in float4 wp,
         // Add specular radiance 
         float3 specular_env = Specular_IBL(N, V, roughness);
         acc_color += c_spec * specular_env;
+#if defined(CLEARCOAT)
+        float Fc = Filament_F_Schlick(0.04, NdotV) * clearCoat;
+        acc_color *= sqrt(1 - Fc);
+        acc_color += Specular_IBL(N, V, clearCoatRoughness) * Fc;
+#endif
     }
     return acc_color;
 }

@@ -96,7 +96,12 @@ static const float EPSILON = 1e-6f;
 // https://en.wikipedia.org/wiki/Schlick%27s_approximation
 float3 Fresnel_Shlick(in float3 f0, in float3 f90, in float x)
 {
-    return f0 + (f90 - f0) * pow(1.f - x, 5.f);
+    return f0 + (f90 - f0) * pow(1.f - x, 5);
+}
+
+float Filament_F_Schlick(float f0, float VoH) {
+    float f = pow(1.0 - VoH, 5.0);
+    return f + f0 * (1.0 - f);
 }
 
 // https://google.github.io/filament/Filament.md.html#toc4.4
