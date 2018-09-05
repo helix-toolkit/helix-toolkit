@@ -76,11 +76,11 @@ cbuffer cbMeshPBRMaterial : register(b1)
     float4 uvTransformR2;
 #endif
 #if defined(PBR)
-    float4 ConstantAlbedo;
+    float4 vMaterialDiffuse;
     float ConstantMetallic;
     float ConstantRoughness;
     int NumRadianceMipLevels;
-    float padding2;
+    float ConstantAO;
     bool bHasAlbedoMap;
     bool bHasNormalMap;
     bool bHasRMAMap;

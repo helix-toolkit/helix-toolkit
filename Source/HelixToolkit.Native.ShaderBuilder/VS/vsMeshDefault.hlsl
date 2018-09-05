@@ -65,9 +65,12 @@ PSInput main(VSInput input)
     //set color
 	output.c = input.c;
     output.cDiffuse = vMaterialDiffuse;
+#if !defined(PBR)
     output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
-
-
+#endif
+#if defined(PBR)
+    output.c2 = float4(ConstantAO, ConstantRoughness, ConstantMetallic, 0);
+#endif
 	if (bHasNormalMap)
 	{
 		// transform the tangents by the world matrix and normalize

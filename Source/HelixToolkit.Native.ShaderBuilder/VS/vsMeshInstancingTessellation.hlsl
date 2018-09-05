@@ -42,14 +42,25 @@ HSInput main(VSInstancingInput input)
     {
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
         output.c = vMaterialDiffuse;
+#if !defined(PBR)
         output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+#endif
+#if defined(PBR)
+        output.c2 = float4(ConstantAO, ConstantRoughness, ConstantMetallic, 0);
+#endif
     }
     else
     {
 		//set texture coords and color
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy + input.tOffset;
         output.c = input.diffuseC;
+        
+#if !defined(PBR)
         output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
+#endif
+#if defined(PBR)
+        output.c2 = float4(ConstantAO, ConstantRoughness, ConstantMetallic, 0);
+#endif
     }
     output.p = mul(inputp, mWorld).xyz;
 	output.n = inputn;

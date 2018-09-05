@@ -55,6 +55,19 @@ namespace HelixToolkit.UWP.Model
             get => roughnessFactor; 
         }
 
+        private float ambientOcclusionFactor = 1;
+        /// <summary>
+        /// Gets or sets the ambient occlusion factor.
+        /// </summary>
+        /// <value>
+        /// The ambient occlusion factor.
+        /// </value>
+        public float AmbientOcclusionFactor
+        {
+            set => Set(ref ambientOcclusionFactor, value);
+            get => ambientOcclusionFactor;
+        }
+
         private bool renderAlbodoMap = true;
         public bool RenderAlbedoMap
         {
@@ -82,11 +95,8 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public bool RenderDisplacementMap
         {
-            set
-            {
-                Set(ref renderDisplacementMap, value);
-            }
-            get { return renderDisplacementMap; }
+            set => Set(ref renderDisplacementMap, value);
+            get => renderDisplacementMap;
         }
 
         private bool renderShadowMap = false;
@@ -95,11 +105,8 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public bool RenderShadowMap
         {
-            set
-            {
-                Set(ref renderShadowMap, value);
-            }
-            get { return renderShadowMap; }
+            set => Set(ref renderShadowMap, value);
+            get => renderShadowMap; 
         }
 
         private bool renderEnvironmentMap = false;
@@ -108,11 +115,8 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public bool RenderEnvironmentMap
         {
-            set
-            {
-                Set(ref renderEnvironmentMap, value);
-            }
-            get { return renderEnvironmentMap; }
+            set => Set(ref renderEnvironmentMap, value);
+            get => renderEnvironmentMap;
         }
 
         private bool renderIrradianceMap = true;
@@ -124,8 +128,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public bool RenderIrradianceMap
         {
-            set { Set(ref renderIrradianceMap, value); }
-            get { return renderIrradianceMap; }
+            set => Set(ref renderIrradianceMap, value);
+            get => renderIrradianceMap;
         }
 
         private bool renderEmissiveMap = true;
@@ -137,8 +141,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public bool RenderEmissiveMap
         {
-            set { Set(ref renderEmissiveMap, value); }
-            get { return renderEmissiveMap; }
+            set => Set(ref renderEmissiveMap, value); 
+            get => renderEmissiveMap; 
         }
 
         private Stream albedoMap;
@@ -150,8 +154,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public Stream AlbedoMap
         {
-            set { Set(ref albedoMap, value); }
-            get { return albedoMap; }
+            set => Set(ref albedoMap, value);
+            get => albedoMap;
         }
 
         private Stream emissiveMap;
@@ -163,8 +167,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public Stream EmissiveMap
         {
-            set { Set(ref emissiveMap, value); }
-            get { return emissiveMap; }
+            set => Set(ref emissiveMap, value);
+            get => emissiveMap; 
         }
 
 
@@ -177,8 +181,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public Stream NormalMap
         {
-            set { Set(ref normalMap, value); }
-            get { return normalMap; }
+            set => Set(ref normalMap, value); 
+            get => normalMap; 
         }
 
 
@@ -191,8 +195,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public Stream DisplacementMap
         {
-            set { Set(ref displacementMap, value); }
-            get { return displacementMap; }
+            set => Set(ref displacementMap, value); 
+            get => displacementMap; 
         }
 
         private Stream irradianceMap;
@@ -204,8 +208,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public Stream IrradianceMap
         {
-            set { Set(ref irradianceMap, value); }
-            get { return irradianceMap; }
+            set => Set(ref irradianceMap, value);
+            get => irradianceMap; 
         }
 
         private Stream rmaMap;
@@ -217,8 +221,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public Stream RMAMap
         {
-            set { Set(ref rmaMap, value); }
-            get { return rmaMap; }
+            set => Set(ref rmaMap, value); 
+            get => rmaMap; 
         }
 
         private Vector4 displacementMapScaleMask;
@@ -230,8 +234,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public Vector4 DisplacementMapScaleMask
         {
-            set { Set(ref displacementMapScaleMask, value); }
-            get { return displacementMapScaleMask; }
+            set => Set(ref displacementMapScaleMask, value); 
+            get => displacementMapScaleMask; 
         }
 
         private Matrix uvTransform = Matrix.Identity;
@@ -243,8 +247,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public Matrix UVTransform
         {
-            set { Set(ref uvTransform, value); }
-            get { return uvTransform; }
+            set => Set(ref uvTransform, value); 
+            get => uvTransform; 
         }
 
         private SamplerStateDescription surfaceMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
@@ -256,8 +260,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public SamplerStateDescription SurfaceMapSampler
         {
-            set { Set(ref surfaceMapSampler, value); }
-            get { return surfaceMapSampler; }
+            set => Set(ref surfaceMapSampler, value); 
+            get => surfaceMapSampler; 
         }
 
         private SamplerStateDescription displacementMapSampler = DefaultSamplers.LinearSamplerWrapAni1;
@@ -269,8 +273,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public SamplerStateDescription DisplacementMapSampler
         {
-            set { Set(ref displacementMapSampler, value); }
-            get { return displacementMapSampler; }
+            set => Set(ref displacementMapSampler, value); 
+            get => displacementMapSampler; 
         }
 
         private SamplerStateDescription iblSampler = DefaultSamplers.IBLSampler;
@@ -282,28 +286,22 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public SamplerStateDescription IBLSampler
         {
-            set { Set(ref iblSampler, value); }
-            get { return iblSampler; }
+            set => Set(ref iblSampler, value); 
+            get => iblSampler; 
         }
 
         private float minTessellationDistance = 10;
         public float MinTessellationDistance
         {
-            set
-            {
-                Set(ref minTessellationDistance, value);
-            }
-            get { return minTessellationDistance; }
+            set => Set(ref minTessellationDistance, value);
+            get => minTessellationDistance; 
         }
 
         private float maxTessellationDistance = 100;
         public float MaxTessellationDistance
         {
-            set
-            {
-                Set(ref maxTessellationDistance, value);
-            }
-            get { return maxTessellationDistance; }
+            set =>  Set(ref maxTessellationDistance, value);
+            get => maxTessellationDistance; 
         }
 
         private float minDistanceTessellationFactor = 2;
@@ -315,14 +313,8 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public float MinDistanceTessellationFactor
         {
-            set
-            {
-                Set(ref minDistanceTessellationFactor, value);
-            }
-            get
-            {
-                return minDistanceTessellationFactor;
-            }
+            set =>  Set(ref minDistanceTessellationFactor, value);
+            get => minDistanceTessellationFactor;
         }
 
         private float maxDistanceTessellationFactor = 1;
@@ -334,47 +326,29 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public float MaxDistanceTessellationFactor
         {
-            set
-            {
-                Set(ref maxDistanceTessellationFactor, value);
-            }
-            get
-            {
-                return maxDistanceTessellationFactor;
-            }
+            set => Set(ref maxDistanceTessellationFactor, value);
+            get => maxDistanceTessellationFactor;
         }
 
         private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
         public MeshTopologyEnum MeshType
         {
-            set
-            {
-                Set(ref meshType, value);
-            }
-            get
-            {
-                return meshType;
-            }
+            set => Set(ref meshType, value);
+            get => meshType;
         }
 
         private bool enableTessellation = false;
         public bool EnableTessellation
         {
-            set
-            {
-                Set(ref enableTessellation, value);
-            }
-            get
-            {
-                return enableTessellation;
-            }
+            set => Set(ref enableTessellation, value);
+            get => enableTessellation;
         }
 
 
 
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new PBRMaterialVariable(manager, technique, this);
+            return new PBRMaterialVariable(manager, manager[DefaultRenderTechniqueNames.MeshPBR], this);
         }
     }
 }

@@ -20,6 +20,10 @@ namespace HelixToolkit.UWP
         public const string Mesh = "RenderMesh";
 
         public const string MeshBatched = "RenderMeshBatch";
+
+        public const string MeshPBR = "RenderMeshPhysicsBased";
+
+        public const string MeshPBRBatched = "RenderMeshPhysicsBasedBatch";
         ///// <summary>
         ///// 
         ///// </summary>
@@ -72,6 +76,8 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string InstancingMesh = "RenderInstancingMesh";
+
+        public const string InstancingMeshPBR = "RenderInstancingMeshPhysicsBased";
         /// <summary>
         /// 
         /// </summary>
@@ -80,6 +86,8 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string CrossSection = "RenderCrossSectionBlinn";
+
+        public const string CrossSectionPBR = "RenderCrossSectionPhysicsBased";
         /// <summary>
         /// 
         /// </summary>
@@ -140,12 +148,6 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Default = "Default";
-        /// <summary>
-        /// The PBR
-        /// </summary>
-        public const string PBR = "PhysicsBasedRendering";
-
-        public const string PBROIT = "PhysicsBasedRenderingOIT";
         /// <summary>
         /// 
         /// </summary>

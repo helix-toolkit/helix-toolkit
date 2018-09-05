@@ -367,9 +367,10 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string MaxTessDistanceStr = "maxTessDistance";
         public const string MinDistTessFactorStr = "minTessFactor";
         public const string MaxDistTessFactorStr = "maxTessFactor";
-        public const string ConstantAlbedoStr = "ConstantAlbedo";
+        public const string ConstantAlbedoStr = "vMaterialDiffuse";
         public const string ConstantMetallicStr = "ConstantMetallic";
         public const string ConstantRoughnessStr = "ConstantRoughness";
+        public const string ConstantAOStr = "ConstantAO";
         public const string NumRadianceMipLevelsStr = "NumRadianceMipLevels";
         public const string HasAlbedoMapStr = "bHasAlbedoMap";
         public const string HasNormalMapStr = "bHasNormalMap";

@@ -49,7 +49,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as PBRMaterialCore).RoughnessFactor = (float)(double)e.NewValue;
                 }));
-
+        /// <summary>
+        ///         
+        /// </summary>
+        public static readonly DependencyProperty AmbientOcclusionFactorProperty =
+            DependencyProperty.Register("AmbientOcclusionFactor", typeof(double), typeof(PBRMaterial), new PropertyMetadata(1.0,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PBRMaterialCore).AmbientOcclusionFactor = (float)(double)e.NewValue;
+                }));
         /// <summary>
         /// 
         /// </summary>
@@ -255,6 +263,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (double)this.GetValue(RoughnessFactorProperty); }
             set { this.SetValue(RoughnessFactorProperty, value); }
+        }
+
+        public double AmbientOcclusionFactor
+        {
+            get { return (double)this.GetValue(AmbientOcclusionFactorProperty); }
+            set { this.SetValue(AmbientOcclusionFactorProperty, value); }
         }
 
         public Stream AlbedoMap
@@ -488,6 +502,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 AlbedoColor = AlbedoColor,
                 MetallicFactor = (float)MetallicFactor,
                 RoughnessFactor = (float)RoughnessFactor,
+                AmbientOcclusionFactor = (float)AmbientOcclusionFactor,
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,
@@ -532,6 +547,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 AlbedoColor = AlbedoColor,
                 MetallicFactor = MetallicFactor,
                 RoughnessFactor = RoughnessFactor,
+                AmbientOcclusionFactor = AmbientOcclusionFactor,
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,

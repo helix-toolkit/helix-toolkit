@@ -56,8 +56,8 @@ namespace HelixToolkit.UWP.Model
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
             material = core;
-            MaterialPass = technique[DefaultPassNames.PBR];
-            MaterialOITPass = technique[DefaultPassNames.PBROIT];
+            MaterialPass = technique[DefaultPassNames.Default];
+            MaterialOITPass = technique[DefaultPassNames.OITPass];
             WireframePass = technique[DefaultPassNames.Wireframe];
             WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
             UpdateMappings(MaterialPass);
@@ -71,6 +71,7 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PBRMaterialCore.AlbedoColor), () => { WriteValue(PBRMaterialStruct.ConstantAlbedoStr, material.AlbedoColor); });
             AddPropertyBinding(nameof(PBRMaterialCore.MetallicFactor), () => { WriteValue(PBRMaterialStruct.ConstantMetallicStr, material.MetallicFactor); });
             AddPropertyBinding(nameof(PBRMaterialCore.RoughnessFactor), () => { WriteValue(PBRMaterialStruct.ConstantRoughnessStr, material.RoughnessFactor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcclusionFactor), () => { WriteValue(PBRMaterialStruct.ConstantAOStr, material.AmbientOcclusionFactor); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderAlbedoMap), () => { WriteValue(PBRMaterialStruct.HasAlbedoMapStr, material.RenderAlbedoMap && TextureResources[AlbedoMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderEmissiveMap), () => { WriteValue(PBRMaterialStruct.HasEmissiveMapStr, material.RenderEmissiveMap && TextureResources[EmissiveMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderNormalMap), () => { WriteValue(PBRMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalMapIdx] != null ? 1 : 0); });

@@ -136,12 +136,11 @@ float4 main(PSInput input) : SV_Target
 
     float3 N = calcNormal(input);
     
-    const float AO = 1; // ambient term
     float3 color = (float3) 0;
 
-    float4 albedo = float4(ConstantAlbedo.xyz, 1);
+    float4 albedo = float4(input.cDiffuse.xyz, 1);
     // glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel
-    float3 RMA = float3(AO, ConstantRoughness, ConstantMetallic);
+    float3 RMA = input.c2.rgb;
     if (bHasAlbedoMap)
     {
         albedo = texDiffuseMap.Sample(samplerSurface, input.t);
@@ -163,6 +162,6 @@ float4 main(PSInput input) : SV_Target
     {
         color += texEmissiveMap.Sample(samplerSurface, input.t).rgb;
     }
-    return float4(color, albedo.a * ConstantAlbedo.a);
+    return float4(color, albedo.a * input.cDiffuse.a);
 }
 #endif
