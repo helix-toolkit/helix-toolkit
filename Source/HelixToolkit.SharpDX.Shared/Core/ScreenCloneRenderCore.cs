@@ -204,7 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             bool succ = duplicationResource.Initialize();
             if (!succ)
             {
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return;
             }
             context.RenderHost.RenderConfiguration = config;
@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 duplicationResource.ReleaseFrame();
             }
-            InvalidateRenderer();
+            RaiseInvalidateRender();
         }
 
 #region Draw Cursor

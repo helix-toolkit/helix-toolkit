@@ -123,7 +123,7 @@ namespace HelixToolkit.UWP.Core
                     alphaTargetNoMSAA.CreateTextureView();
                 }
 #endif
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return true; // Skip this frame if texture resized to reduce latency.
             }
             return false;
@@ -188,7 +188,7 @@ namespace HelixToolkit.UWP.Core
             }
             else if(CreateTextureResources(context, deviceContext))
             {
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return; // Skip this frame if texture resized to reduce latency.
             }
             Bind(context, deviceContext);

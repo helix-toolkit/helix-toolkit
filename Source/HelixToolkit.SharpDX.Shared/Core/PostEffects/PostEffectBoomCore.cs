@@ -221,7 +221,7 @@ namespace HelixToolkit.UWP.Core
                     ++count;
                 }
                 //Skip this frame to avoid performance hit due to texture creation
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return;
             }
             #endregion

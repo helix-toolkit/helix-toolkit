@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when each render frame finished rendering.
         /// </summary>
-        public event EventHandler OnRendered;
+        public event EventHandler Rendered;
 #pragma warning restore 0067
         /// <summary>
         /// Gets the unique identifier.

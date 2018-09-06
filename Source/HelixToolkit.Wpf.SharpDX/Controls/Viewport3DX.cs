@@ -628,8 +628,8 @@ namespace HelixToolkit.Wpf.SharpDX
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
             if (this.renderHostInternal != null)
             {
-                this.renderHostInternal.OnRendered -= this.OnRendered;
-                this.renderHostInternal.OnRendered += this.OnRendered;
+                this.renderHostInternal.Rendered -= this.OnRendered;
+                this.renderHostInternal.Rendered += this.OnRendered;
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.ClearColor = BackgroundColor.ToColor4();

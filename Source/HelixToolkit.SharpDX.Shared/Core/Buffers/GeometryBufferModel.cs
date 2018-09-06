@@ -23,8 +23,8 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class GeometryBufferModel : ReferenceCountDisposeObject, IGUID, IGeometryBufferModel
     {
-        public event EventHandler OnVertexBufferUpdated;
-        public event EventHandler OnIndexBufferUpdated;
+        public event EventHandler VertexBufferUpdated;
+        public event EventHandler IndexBufferUpdated;
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
@@ -172,7 +172,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         protected void InvalidateRenderer()
         {
-            EffectsManager?.InvalidateRenderer();
+            EffectsManager?.RaiseInvalidateRender();
         }
         /// <summary>
         /// Determines whether [is vertex buffer changed] [the specified property name].
@@ -243,7 +243,7 @@ namespace HelixToolkit.UWP.Core
                     {
                         VertexBufferBindings = OnCreateVertexBufferBinding();
                         updateVBinding = false;
-                        OnVertexBufferUpdated?.Invoke(this, EventArgs.Empty);
+                        VertexBufferUpdated?.Invoke(this, EventArgs.Empty);
                         bufferUpdated = true;
                     }
                 }
@@ -258,7 +258,7 @@ namespace HelixToolkit.UWP.Core
                         bufferUpdated = true;
                     }
                     IndexChanged = false;                    
-                    OnIndexBufferUpdated?.Invoke(this, EventArgs.Empty);
+                    IndexBufferUpdated?.Invoke(this, EventArgs.Empty);
                 }               
             }
             return bufferUpdated;

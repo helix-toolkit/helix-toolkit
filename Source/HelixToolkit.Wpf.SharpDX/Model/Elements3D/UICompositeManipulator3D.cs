@@ -176,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             OnSceneNodeCreated += (s, e) =>
             {
-                e.Node.OnAttached += SceneNode_OnAttached;
+                e.Node.Attached += SceneNode_OnAttached;
             };
             this.translateX = new UITranslateManipulator3D { Direction = new Vector3(1, 0, 0), Material = DiffuseMaterials.Red };
             this.translateY = new UITranslateManipulator3D { Direction = new Vector3(0, 1, 0), Material = DiffuseMaterials.Green };

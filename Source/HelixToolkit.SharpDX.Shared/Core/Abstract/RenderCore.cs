@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
+        public event EventHandler<EventArgs> InvalidateRender;
         /// <summary>
         /// <see cref="IGUID.GUID"/>
         /// </summary>
@@ -129,7 +129,7 @@ namespace HelixToolkit.UWP.Core
         protected T AddComponent<T>(T component) where T : CoreComponent
         {
             components.Add(component);
-            component.OnInvalidateRender += (s, e) => { InvalidateRenderer(); };
+            component.InvalidateRender += (s, e) => { RaiseInvalidateRender(); };
             return component;
         }
         /// <summary>
@@ -226,7 +226,7 @@ namespace HelixToolkit.UWP.Core
             if(CanRenderFlag != flag)
             {
                 CanRenderFlag = flag;
-                InvalidateRenderer();
+                RaiseInvalidateRender();
             }
         }
 
@@ -243,16 +243,16 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public void ResetInvalidateHandler()
         {
-            OnInvalidateRenderer = null;
+            InvalidateRender = null;
         }
 
         /// <summary>
         /// Invalidates the renderer.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void InvalidateRenderer()
+        protected void RaiseInvalidateRender()
         {
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+            InvalidateRender?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace HelixToolkit.UWP.Core
 
             backingField = value;
             this.RaisePropertyChanged(propertyName);
-            InvalidateRenderer();
+            RaiseInvalidateRender();
             return true;
         }
 
@@ -296,7 +296,7 @@ namespace HelixToolkit.UWP.Core
             backingField = value;
             this.RaisePropertyChanged(propertyName);
             UpdateCanRenderFlag();
-            InvalidateRenderer();
+            RaiseInvalidateRender();
             return true;
         }
 

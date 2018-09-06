@@ -230,7 +230,7 @@ namespace HelixToolkit.UWP.Core
                     depthdesc.Width / downSamplingScale,
                     depthdesc.Height / downSamplingScale);
                 //Skip this frame to avoid performance hit due to texture creation
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return;
             }
             #endregion

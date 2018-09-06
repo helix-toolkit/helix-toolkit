@@ -177,7 +177,7 @@ namespace CrossSectionDemo
             EdgeMaterial = DiffuseMaterials.Blue;
 
             UpdateScaling((float)CornerScale, (float)EdgeThicknessScale, (float)SizeScale);
-            this.SceneNode.OnVisibleChanged += SceneNode_OnVisibleChanged;
+            this.SceneNode.VisibleChanged += SceneNode_OnVisibleChanged;
         }
 
         private void UpdateScaling(float cornerScale, float edgeThicknessScale, float sizeScale)

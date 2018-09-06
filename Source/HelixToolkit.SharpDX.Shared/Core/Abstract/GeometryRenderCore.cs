@@ -43,11 +43,11 @@ namespace HelixToolkit.UWP.Core
                 {
                     if (old != null)
                     {
-                        old.OnElementChanged -= OnElementChanged;
+                        old.ElementChanged -= OnElementChanged;
                     }
                     if (instanceBuffer != null)
                     {
-                        instanceBuffer.OnElementChanged += OnElementChanged;
+                        instanceBuffer.ElementChanged += OnElementChanged;
                     }
                     else
                     {
@@ -292,12 +292,12 @@ namespace HelixToolkit.UWP.Core
         protected void OnElementChanged(object sender, EventArgs e)
         {
             UpdateCanRenderFlag();
-            InvalidateRenderer();
+            RaiseInvalidateRender();
         }
 
         protected void OnInvalidateRendererEvent(object sender, EventArgs e)
         {
-            InvalidateRenderer();
+            RaiseInvalidateRender();
         }
     }
 }

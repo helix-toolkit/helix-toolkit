@@ -149,7 +149,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     cubeTextureSlot = value.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
                     textureSamplerSlot = value.PixelShader.SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
-                    InvalidateRenderer();
+                    RaiseInvalidateRender();
                 }
             }
             get
@@ -366,7 +366,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (CreateCubeMapResources())
             {
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return; // Skip this frame if texture resized to reduce latency.
             }
             OnUpdatePerModelStruct(context);

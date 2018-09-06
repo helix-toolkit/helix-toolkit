@@ -264,7 +264,7 @@ namespace HelixToolkit.UWP.Core
                 if (FrameVariables.DomainBoundsMin != value)
                 {
                     FrameVariables.DomainBoundsMin = value;
-                    InvalidateRenderer();
+                    RaiseInvalidateRender();
                 }
             }
             get
@@ -816,7 +816,7 @@ namespace HelixToolkit.UWP.Core
             InstanceBuffer?.AttachBuffer(deviceContext, ref firstSlot);
             deviceContext.SetBlendState(blendState, blendFactor, sampleMask);
             deviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
-            InvalidateRenderer();//Since particle is running all the time. Invalidate once finished rendering
+            RaiseInvalidateRender();//Since particle is running all the time. Invalidate once finished rendering
         }
 
 

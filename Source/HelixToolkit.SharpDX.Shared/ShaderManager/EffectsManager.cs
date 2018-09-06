@@ -47,11 +47,11 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
-        public event EventHandler<EventArgs> OnDisposeResources;
+        public event EventHandler<EventArgs> DisposingResources;
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
+        public event EventHandler<EventArgs> InvalidateRender;
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
@@ -492,7 +492,7 @@ namespace HelixToolkit.UWP
         [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "False positive.")]
         protected override void OnDispose(bool disposeManagedResources)
         {
-            OnDisposeResources?.Invoke(this, EventArgs.Empty);
+            DisposingResources?.Invoke(this, EventArgs.Empty);
             foreach(var technique in techniqueDict.Values.ToArray())
             {
                 if (technique.IsValueCreated)
@@ -522,7 +522,7 @@ namespace HelixToolkit.UWP
         public void OnDeviceError()
         {
             techniqueDict.Clear();
-            OnDisposeResources?.Invoke(this, EventArgs.Empty);
+            DisposingResources?.Invoke(this, EventArgs.Empty);
             this.DisposeAndClear();
             Disposer.RemoveAndDispose(ref device);
             Initialized = false;
@@ -553,9 +553,9 @@ namespace HelixToolkit.UWP
             Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
         }
 
-        public void InvalidateRenderer()
+        public void RaiseInvalidateRender()
         {
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+            InvalidateRender?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

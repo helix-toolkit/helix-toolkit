@@ -306,8 +306,8 @@ namespace HelixToolkit.Wpf.SharpDX
             };
             (xrayEffect.SceneNode as NodePostEffectXRayGrid).XRayDrawingPassName = DefaultPassNames.EffectMeshDiffuseXRayGridP3;
             Children.Add(xrayEffect);
-            SceneNode.OnAttached += SceneNode_OnAttached;
-            SceneNode.OnDetached += SceneNode_OnDetached;
+            SceneNode.Attached += SceneNode_OnAttached;
+            SceneNode.Detached += SceneNode_OnDetached;
         }
 
         private void SceneNode_OnDetached(object sender, EventArgs e)

@@ -224,7 +224,7 @@ namespace HelixToolkit.UWP.Core
                 var desc = RasterDescription;
                 desc.IsFrontCounterClockwise = false;
                 RasterDescription = desc;
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return;
             }
             context.SharedResource.EnvironementMap = cubeTextureRes;

@@ -115,12 +115,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 {
                     if (renderCore != null)
                     {
-                        renderCore.OnInvalidateRenderer -= RenderCore_OnInvalidateRenderer;
+                        renderCore.InvalidateRender -= RenderCore_OnInvalidateRenderer;
                     }
                     renderCore = value;
                     if (renderCore != null)
                     {
-                        renderCore.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
+                        renderCore.InvalidateRender += RenderCore_OnInvalidateRenderer;
                     }
                 }
             }
@@ -301,7 +301,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             IsAttached = OnAttach(host);
             if (IsAttached)
             {
-                OnAttached?.Invoke(this, EventArgs.Empty);
+                Attached?.Invoke(this, EventArgs.Empty);
             }
             InvalidateAll();
         }
@@ -328,7 +328,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 RenderCore.Detach();
                 Disposer.RemoveAndDispose(ref bitmapCache);
                 OnDetach();
-                OnDetached?.Invoke(this, EventArgs.Empty);
+                Detached?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -346,7 +346,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// <param name="context">The context.</param>
         public virtual void Update(RenderContext2D context)
         {
-            OnUpdate?.Invoke(this, new UpdateEventArgs(context));
+            UpdateRequested?.Invoke(this, new UpdateEventArgs(context));
             IsRenderable = CanRender(context);
         }
 
@@ -372,17 +372,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// <summary>
         /// Occurs when [on attached].
         /// </summary>
-        public event EventHandler OnAttached;
+        public event EventHandler Attached;
 
         /// <summary>
         /// Occurs when [on detached].
         /// </summary>
-        public event EventHandler OnDetached;
+        public event EventHandler Detached;
 
         /// <summary>
         /// Occurs when [on update].
         /// </summary>
-        public event EventHandler<UpdateEventArgs> OnUpdate;
+        public event EventHandler<UpdateEventArgs> UpdateRequested;
 
         #endregion Events;
 

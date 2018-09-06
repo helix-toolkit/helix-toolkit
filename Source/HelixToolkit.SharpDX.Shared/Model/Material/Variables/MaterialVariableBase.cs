@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.Model
             = new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB,
                         PointLineMaterialStruct.SizeInBytes);
 
-        public event EventHandler OnUpdateNeeded;
+        public event EventHandler UpdateNeeded;
         /// <summary>
         /// Gets or sets the identifier. Used for material sorting
         /// </summary>
@@ -163,13 +163,13 @@ namespace HelixToolkit.UWP.Model
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void InvalidateRenderer()
         {
-            Technique?.EffectsManager?.InvalidateRenderer();
+            Technique?.EffectsManager?.RaiseInvalidateRender();
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void NotifyUpdateNeeded()
         {
             NeedUpdate = true;
-            OnUpdateNeeded?.Invoke(this, EventArgs.Empty);
+            UpdateNeeded?.Invoke(this, EventArgs.Empty);
             InvalidateRenderer();
         }
 
@@ -240,7 +240,7 @@ namespace HelixToolkit.UWP.Model
         {
             if (disposeManagedResources)
             {
-                OnUpdateNeeded = null;
+                UpdateNeeded = null;
                 if(material != null)
                 {
                     material.PropertyChanged -= MaterialCore_PropertyChanged;

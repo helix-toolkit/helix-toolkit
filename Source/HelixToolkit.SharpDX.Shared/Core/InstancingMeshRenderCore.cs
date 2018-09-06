@@ -23,11 +23,11 @@ namespace HelixToolkit.UWP.Core
                 {
                     if (old != null)
                     {
-                        old.OnElementChanged -= OnElementChanged;
+                        old.ElementChanged -= OnElementChanged;
                     }
                     if (parameterBufferModel != null)
                     {
-                        parameterBufferModel.OnElementChanged += OnElementChanged;
+                        parameterBufferModel.ElementChanged += OnElementChanged;
                     }
                 }
             }

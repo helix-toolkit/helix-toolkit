@@ -235,7 +235,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <summary>
         ///
         /// </summary>
-        public event EventHandler<EventArgs> OnHit;
+        public event EventHandler<EventArgs> Hit;
 
         private OctantArray octants;
 
@@ -622,7 +622,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             else
             {
                 hits.AddRange(modelHits);
-                OnHit?.Invoke(this, EventArgs.Empty);
+                Hit?.Invoke(this, EventArgs.Empty);
             }
             return isHit;
         }
