@@ -1,6 +1,23 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+### Added
+1. Physics Based Rendering Material. (WPF.SharpDX and UWP)
+
+### Improvement and Changes
+1. Clean up render core. Obsolete RenderCoreBase. Move to material based rendering. (WPF.SharpDX and UWP)
+2. Remove "On" prefix from events. #924 (WPF.SharpDX and UWP)
+3. Upgrade SharpDX version to 4.2.0. (WPF.SharpDX and UWP)
+4. Shader common buffer and sampler changes. Use single surface sampler for all surface maps in pixel shader. Obsolete NormalMapSampler, AlphaMapSampler etc. in PhongMaterial. Please update common.hlsl if you are using custom shaders. (WPF.SharpDX and UWP)
+5. Improve MaterialVariable. (WPF.SharpDX and UWP)
+
+### Fixed
+1. Transparency of the material SharpDX UWP bug #925  (WPF.SharpDX and UWP)
+2. stl material issue #917 (WPF)
+3. Is it possible to render the content of a Viewport3DX to an image (png/bmp) with higher DPI? #920 (WPF.SharpDX and UWP)
+
+
 ## [2.4.0] - 2018-8-26
 ### Added
 1. Axis aligned plane grid. (WPF.SharpDX and UWP)
