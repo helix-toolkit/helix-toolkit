@@ -43,7 +43,7 @@ float4 main(PSInput input) : SV_Target
     if (bHasDiffuseMap)
     {
 	    // SamplerState is defined in Common.fx.
-        vMaterialTexture *= texDiffuseMap.Sample(samplerDiffuse, input.t);
+        vMaterialTexture *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
 
     float alpha = 1;

@@ -1,7 +1,6 @@
 #ifndef PSPARTICLEOIT_HLSL
 #define PSPARTICLEOIT_HLSL
 #define PARTICLE
-#define POINTLINE
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #include"psParticle.hlsl"

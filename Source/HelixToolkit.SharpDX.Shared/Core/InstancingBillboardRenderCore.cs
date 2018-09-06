@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Render;
 
-    public class InstancingBillboardRenderCore : BillboardRenderCore
+    public class InstancingBillboardRenderCore : PointLineRenderCore
     {
         private IElementsBufferModel parameterBufferModel;
         public IElementsBufferModel ParameterBuffer
@@ -23,11 +23,11 @@ namespace HelixToolkit.UWP.Core
                 {
                     if (old != null)
                     {
-                        old.OnElementChanged -= OnElementChanged;
+                        old.ElementChanged -= OnElementChanged;
                     }
                     if (parameterBufferModel != null)
                     {
-                        parameterBufferModel.OnElementChanged += OnElementChanged;
+                        parameterBufferModel.ElementChanged += OnElementChanged;
                     }
                 }                
             }
@@ -39,10 +39,10 @@ namespace HelixToolkit.UWP.Core
             return base.OnUpdateCanRenderFlag() && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
+        protected override void OnUpdatePerModelStruct()
         {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
+            base.OnUpdatePerModelStruct();
+            modelStruct.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
         }
 
         protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)

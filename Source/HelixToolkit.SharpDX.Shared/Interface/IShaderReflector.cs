@@ -27,18 +27,18 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// Get constant buffer mapping.
         /// </summary>
-        IDictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; }
+        Dictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; }
         /// <summary>
         /// Get texture buffer mapping.
         /// </summary>
-        IDictionary<string, TextureMapping> TextureMappings { get; }
+        Dictionary<string, TextureMapping> TextureMappings { get; }
         /// <summary>
         /// Get Unordered Access View buffer mapping.
         /// </summary>
-        IDictionary<string, UAVMapping> UAVMappings { get; }
+        Dictionary<string, UAVMapping> UAVMappings { get; }
         /// <summary>
         /// Get Sampler mapping
         /// </summary>
-        IDictionary<string, SamplerMapping> SamplerMappings { get; }
+        Dictionary<string, SamplerMapping> SamplerMappings { get; }
     }
 }

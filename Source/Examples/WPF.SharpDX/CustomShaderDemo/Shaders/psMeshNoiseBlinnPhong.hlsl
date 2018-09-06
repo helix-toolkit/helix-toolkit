@@ -26,7 +26,7 @@ float3 calcNormal(PSInput input)
         input.t2 = normalize(input.t2);
 
 		// Sample the texel in the bump map.
-        float4 bumpMap = texNormalMap.Sample(samplerNormal, input.t);
+        float4 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
 		// Expand the range of the normal value from (0, +1) to (-1, +1).
         bumpMap = (bumpMap * 2.0f) - 1.0f;
 		// Calculate the normal from the data in the bump map.
@@ -93,13 +93,13 @@ float4 main(PSInput input) : SV_Target
     if (bHasDiffuseMap)
     {
 	    // SamplerState is defined in Common.fx.
-        vMaterialTexture *= texDiffuseMap.Sample(samplerDiffuse, input.t);
+        vMaterialTexture *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
 
     float alpha = 1;
     if (bHasAlphaMap)
     {
-        float4 color = texAlphaMap.Sample(samplerAlpha, input.t);
+        float4 color = texAlphaMap.Sample(samplerSurface, input.t);
         alpha = color[3];
         color[3] = 1;
         vMaterialTexture *= color;

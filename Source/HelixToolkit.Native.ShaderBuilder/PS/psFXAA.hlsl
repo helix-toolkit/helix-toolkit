@@ -2138,8 +2138,8 @@ Texture2D    InputTexture : register(t0);
 
 float4 main(MeshOutlinePS_INPUT Input) : SV_Target
 {
-    //return texDiffuseMap.Sample(samplerDiffuse, Input.Tex.xy);
-    FxaaTex InputFXAATex = { samplerDiffuse, texDiffuseMap };
+    //return texDiffuseMap.Sample(samplerSurface, Input.Tex.xy);
+    FxaaTex InputFXAATex = { samplerSurface, texDiffuseMap };
     float4 c = FxaaPixelShader(
         Input.Tex.xy, // FxaaFloat2 pos,
         FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f), // FxaaFloat4 fxaaConsolePosPos,

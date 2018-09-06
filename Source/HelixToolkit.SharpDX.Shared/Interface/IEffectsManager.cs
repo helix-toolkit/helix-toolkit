@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
-        event EventHandler<EventArgs> OnDisposeResources;
+        event EventHandler<EventArgs> DisposingResources;
     }
     /// <summary>
     /// 
@@ -188,11 +188,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
-        event EventHandler<EventArgs> OnInvalidateRenderer;
+        event EventHandler<EventArgs> InvalidateRender;
         /// <summary>
         /// Invalidates the renderer.
         /// </summary>
-        void InvalidateRenderer();
+        void RaiseInvalidateRender();
         /// <summary>
         /// Outputs the resource count summary.
         /// </summary>

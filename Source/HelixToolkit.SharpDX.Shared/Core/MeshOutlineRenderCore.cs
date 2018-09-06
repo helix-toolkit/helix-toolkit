@@ -140,12 +140,11 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Called when [update per model structure].
         /// </summary>
-        /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
+        protected override void OnUpdatePerModelStruct(RenderContext context)
         {            
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.Params.Y = OutlineFadingFactor;
+            base.OnUpdatePerModelStruct(context);
+            modelStruct.Params.Y = OutlineFadingFactor;
         }
         /// <summary>
         /// Called when [render].

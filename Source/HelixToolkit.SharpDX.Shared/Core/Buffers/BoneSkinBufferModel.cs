@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public sealed class BoneSkinnedMeshBufferModel : DefaultMeshGeometryBufferModel, IBoneSkinMeshBufferModel
     {
-        public event EventHandler OnBoneIdBufferUpdated;
+        public event EventHandler BoneIdBufferUpdated;
         public IElementsBufferProxy BoneIdBuffer { get; private set; }
         private bool boneIdChanged = true;
 
@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP.Core
                             BoneIdBuffer.UploadDataToBuffer(context, new BoneIds[0], 0);
                         }
                         boneIdChanged = false;
-                        OnBoneIdBufferUpdated?.Invoke(this, EventArgs.Empty);
+                        BoneIdBufferUpdated?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
@@ -102,8 +102,8 @@ namespace HelixToolkit.UWP.Core
         public BoneSkinPreComputeBufferModel(IBoneSkinMeshBufferModel meshBuffer, int structSize)
         {
             MeshBuffer = Collect(meshBuffer);
-            MeshBuffer.OnVertexBufferUpdated += MeshBuffer_OnVertexBufferUpdated;
-            MeshBuffer.OnBoneIdBufferUpdated += MeshBuffer_OnBoneIdBufferUpdated;
+            MeshBuffer.VertexBufferUpdated += MeshBuffer_OnVertexBufferUpdated;
+            MeshBuffer.BoneIdBufferUpdated += MeshBuffer_OnBoneIdBufferUpdated;
             skinnedVertexBuffer = Collect(new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer | BindFlags.StreamOutput, ResourceOptionFlags.None, ResourceUsage.Default));
         }
 
@@ -235,8 +235,8 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDispose(bool disposeManagedResources)
         {
-            MeshBuffer.OnBoneIdBufferUpdated -= MeshBuffer_OnBoneIdBufferUpdated;
-            MeshBuffer.OnVertexBufferUpdated -= MeshBuffer_OnVertexBufferUpdated;
+            MeshBuffer.BoneIdBufferUpdated -= MeshBuffer_OnBoneIdBufferUpdated;
+            MeshBuffer.VertexBufferUpdated -= MeshBuffer_OnVertexBufferUpdated;
             base.OnDispose(disposeManagedResources);        
         }
     }

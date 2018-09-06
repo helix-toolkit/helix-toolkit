@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     ///
     /// </summary>
-    public class DynamicCubeMapCore : RenderCoreBase<GlobalTransformStruct>, IDynamicReflector
+    public class DynamicCubeMapCore : RenderCore, IDynamicReflector
     {
         #region
         private readonly Vector3[] targets = new Vector3[6];
@@ -149,7 +149,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     cubeTextureSlot = value.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
                     textureSamplerSlot = value.PixelShader.SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
-                    InvalidateRenderer();
+                    RaiseInvalidateRender();
                 }
             }
             get
@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private SamplerStateDescription samplerDescription = DefaultSamplers.CubeSampler;
+        private SamplerStateDescription samplerDescription = DefaultSamplers.IBLSampler;
 
         /// <summary>
         /// Gets or sets the sampler description.
@@ -362,13 +362,14 @@ namespace HelixToolkit.UWP.Core
             return base.OnUpdateCanRenderFlag() && EnableReflector;
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (CreateCubeMapResources())
             {
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return; // Skip this frame if texture resized to reduce latency.
             }
+            OnUpdatePerModelStruct(context);
             context.IsInvertCullMode = true;
 #if TEST
             for (int index = 0; index < 6; ++index)
@@ -425,7 +426,7 @@ namespace HelixToolkit.UWP.Core
             context.UpdatePerFrameData(true, false, deviceContext);
         }
 
-        protected override void OnUpdatePerModelStruct(ref GlobalTransformStruct model, RenderContext context)
+        private void OnUpdatePerModelStruct(RenderContext context)
         {
             var camPos = Center;
             targets[0] = camPos + Vector3.UnitX;
@@ -461,7 +462,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public void BindCubeMap(DeviceContextProxy deviceContext)
         {
-            currSampler = deviceContext.GetSampler(PixelShader.Type, cubeTextureSlot, 1);
+            currSampler = deviceContext.GetSampler(PixelShader.Type, textureSamplerSlot, 1);
             currRes = deviceContext.GetShaderResources(PixelShader.Type, cubeTextureSlot, 1);
             if (EnableReflector)
             {

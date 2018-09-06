@@ -24,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         ///
         /// </summary>
-        event EventHandler<EventArgs> OnHit;
+        event EventHandler<EventArgs> Hit;
 
         /// <summary>
         /// Output the hit path of the tree traverse. Only for debugging

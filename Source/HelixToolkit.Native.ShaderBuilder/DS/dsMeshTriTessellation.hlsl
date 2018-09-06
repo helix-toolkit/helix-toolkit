@@ -85,19 +85,16 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
 
     if (bHasNormalMap)
     {
-			// Compute tangent-space
-        output.t1 = normalize(inputPatch[0].t1 * barycentricCoords.z + inputPatch[1].t1 * barycentricCoords.x + inputPatch[2].t1 * barycentricCoords.y);
-        output.t2 = normalize(inputPatch[0].t2 * barycentricCoords.z + inputPatch[1].t2 * barycentricCoords.x + inputPatch[2].t2 * barycentricCoords.y);
-		// transform the tangents by the world matrix and normalize
-        output.t1 = normalize(mul(output.t1, (float3x3) mWorld));
-        output.t2 = normalize(mul(output.t2, (float3x3) mWorld));
+        if (!bAutoTengent)
+        {
+			    // Compute tangent-space
+            output.t1 = normalize(inputPatch[0].t1 * barycentricCoords.z + inputPatch[1].t1 * barycentricCoords.x + inputPatch[2].t1 * barycentricCoords.y);
+            output.t2 = normalize(inputPatch[0].t2 * barycentricCoords.z + inputPatch[1].t2 * barycentricCoords.x + inputPatch[2].t2 * barycentricCoords.y);
+		    // transform the tangents by the world matrix and normalize
+            output.t1 = normalize(mul(output.t1, (float3x3) mWorld));
+            output.t2 = normalize(mul(output.t2, (float3x3) mWorld));
+        }
     }
-    else
-    {
-        output.t1 = 0.0f;
-        output.t2 = 0.0f;
-    }
-
     return output;
 }
 #endif

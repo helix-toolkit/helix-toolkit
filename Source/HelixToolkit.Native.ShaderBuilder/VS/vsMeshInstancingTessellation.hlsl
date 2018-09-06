@@ -34,22 +34,40 @@ HSInput main(VSInstancingInput input)
 		inputn = mul(inputn, (float3x3) mInstance);
 		if (bHasNormalMap)
 		{
-			inputt1 = mul(inputt1, (float3x3) mInstance);
-			inputt2 = mul(inputt2, (float3x3) mInstance);
+            if (!bAutoTengent)
+            {
+			    inputt1 = mul(inputt1, (float3x3) mInstance);
+			    inputt2 = mul(inputt2, (float3x3) mInstance);
+            }
 		}
 	}
     if (!bHasInstanceParams)
     {
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
         output.c = vMaterialDiffuse;
-        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+        if (!bRenderPBR)
+        {
+            output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+        }
+        else
+        {
+            output.c2 = vMaterialAmbient;
+        }
     }
     else
     {
 		//set texture coords and color
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy + input.tOffset;
         output.c = input.diffuseC;
-        output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
+        
+        if (!bRenderPBR)
+        {
+            output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
+        }
+        else
+        {
+            output.c2 = input.ambientC;
+        }
     }
     output.p = mul(inputp, mWorld).xyz;
 	output.n = inputn;

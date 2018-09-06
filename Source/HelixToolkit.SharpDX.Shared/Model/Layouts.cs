@@ -271,7 +271,7 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     /// <summary>
-    /// 
+    /// Used combine with <see cref="PhongPBRMaterialStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ModelStruct
@@ -283,47 +283,66 @@ namespace HelixToolkit.Wpf.SharpDX
         public int HasBones;
         public Vector4 Params;
         public Vector4 Color;
+        public Color4 WireframeColor;
+
         public Int3 BoolParams;
         public int Batched;
-        public int RenderOIT;
-        Vector3 padding;
-        public Color4 WireframeColor;
-        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 * 2 + 4 + 4 * 2);
+        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 * 2 + 4 + 4);
+
+        public const string WorldStr = "mWorld";
+        public const string InvertNormalStr = "bInvertNormal";
+        public const string HasInstancesStr = "bHasInstances";
+        public const string HasInstanceParamsStr = "bHasInstanceParams";
+        public const string HasBonesStr = "bHasBones";
+        public const string ParamsStr = "vParams";
+        public const string ColorStr = "vColor";
+        public const string BoolParamsStr = "bParams";
+        public const string BatchedStr = "bBatched";
+        public const string WireframeColorStr = "wireframeColor";
     }
 
     /// <summary>
-    /// 
+    /// Used combine with <see cref="ModelStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct PhongMaterialStruct
+    public struct PhongPBRMaterialStruct
     {
-        public float MinTessDistance; // Minimum distance to do tessellation
-        public float MaxTessDistance; // Maximum distance to do tessellation
-        public float MinDistTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
-        public float MaxDistTessFactor; // Tessellation factor when at maximum distance
-        /// <summary>
-        /// Material variables
-        /// </summary>
-        public Color4 Ambient;
-        public Color4 Diffuse;
-        public Color4 Emissive;
-        public Color4 Specular;
-        public Color4 Reflect;
-        public float Shininess;
-        public int HasDiffuseMap;
-        public int HasDiffuseAlphaMap;
-        public int HasNormalMap;
-        public int HasDisplacementMap;
-        public int HasCubeMap;
-        public int RenderShadowMap;
-        float padding;
-        public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
-        public Vector4 UVTransformR1; //Make sure to convert column majo into Row major. Pass into shader
-        public Vector4 UVTransformR2; //Make sure to Convert column majo into Row major. Pass into shader
-        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 * 2 + 4 + 4 * 2);
+        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 + 4 + 4 + 4 * 3) + ModelStruct.SizeInBytes;
+
+        public const string MinTessDistanceStr = "minTessDistance"; //float
+        public const string MaxTessDistanceStr = "maxTessDistance";//float
+        public const string MinDistTessFactorStr = "minTessFactor";//float
+        public const string MaxDistTessFactorStr = "maxTessFactor";//float
+        public const string DiffuseStr = "vMaterialDiffuse";//float4
+        public const string AmbientStr = "vMaterialAmbient";//float4
+        public const string EmissiveStr = "vMaterialEmissive";//float4
+        public const string SpecularStr = "vMaterialSpecular";//float4
+        public const string ReflectStr = "vMaterialReflect";//float4
+
+        public const string HasDiffuseMapStr = "bHasDiffuseMap";//bool
+        public const string HasNormalMapStr = "bHasNormalMap";//bool
+        public const string HasCubeMapStr = "bHasCubeMap";//bool
+        public const string RenderShadowMapStr = "bRenderShadowMap";//bool
+
+        public const string HasDiffuseAlphaMapStr = "bHasAlphaMap";//bool
+        public const string HasRMAMapStr = "bHasAlphaMap";//bool Use the same variable as has alpha map in phong material
+        public const string HasEmissiveMapStr = "bHasEmissiveMap";//bool
+        public const string HasIrradianceMapStr = "bHasIrradianceMap";//bool
+        public const string EnableAutoTangent = "bAutoTengent";//bool
+
+        public const string HasDisplacementMapStr = "bHasDisplacementMap";//bool
+        public const string RenderPBR = "bRenderPBR";//bool
+        public const string NumRadianceMipLevels = "NumRadianceMipLevels";//int
+        public const string ShininessStr = "sMaterialShininess";//float
+
+        public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";//float4
+
+        public const string UVTransformR1Str = "uvTransformR1";//float4
+        public const string UVTransformR2Str = "uvTransformR2";//float4
     }
+
     /// <summary>
-    /// 
+    /// Used combine with <see cref="PointLineMaterialStruct"/>
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PointLineModelStruct
@@ -332,11 +351,38 @@ namespace HelixToolkit.Wpf.SharpDX
         public int HasInstances;
         public int HasInstanceParams;
         Vector2 padding;
-        public Vector4 Params;
-        public Vector4 Color;
-        public Bool4 BoolParams;
+        public const int SizeInBytes = 4 * (4 * 4 + 4);
+    }
 
-        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
+    /// <summary>
+    /// Used combine with <see cref="PointLineModelStruct"/>
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PointLineMaterialStruct
+    {
+        //public Vector4 Params;
+        //public Vector4 Color;
+        //public Bool4 BoolParams;
+
+        public const int SizeInBytes = 4 * (3 * 4) + PointLineModelStruct.SizeInBytes;
+
+        public const string ParamsStr = "pfParams";
+        public const string ColorStr = "pColor";
+        public const string BoolParamsStr = "pbParams";
+    }
+
+    /// <summary>
+    /// Used combine with <see cref="PointLineMaterialStruct"/>
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ParticleModelStruct
+    {
+        public Matrix World;
+        public int HasInstances;
+        public int HasInstanceParams;
+        public int HasTexture;
+        int padding;
+        public const int SizeInBytes = 4 * (4 * 4 + 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -378,10 +424,10 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ClipPlaneStruct
     {
-        public Bool4 EnableCrossPlane;
-        public Vector4 CrossSectionColors;
-        public int CuttingOperation;
-        Vector3 padding;
+        //public Bool4 EnableCrossPlane;
+        //public Vector4 CrossSectionColors;
+        //public int CuttingOperation;
+        //Vector3 padding;
         // Format:
         // M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
         // M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
@@ -395,8 +441,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin</para>
         /// <para>M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin</para>
         /// </summary>
-        public Matrix CrossPlaneParams;
+        //public Matrix CrossPlaneParams;
         public const int SizeInBytes = 4 * (4 * 3 + 4 * 4);
+
+        public const string EnableCrossPlaneStr = "EnableCrossPlane";
+        public const string CrossSectionColorStr = "CrossSectionColors";
+        public const string CuttingOperationStr = "CuttingOperation";
+        public const string CrossPlane1ParamsStr = "CrossPlane1Params";
+        public const string CrossPlane2ParamsStr = "CrossPlane2Params";
+        public const string CrossPlane3ParamsStr = "CrossPlane3Params";
+        public const string CrossPlane4ParamsStr = "CrossPlane4Params";
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP.Core
     /// Outline blur effect
     /// <para>Must not put in shared model across multiple viewport, otherwise may causes performance issue if each viewport sizes are different.</para>
     /// </summary>
-    public class PostEffectMeshOutlineBlurCore : RenderCoreBase<BorderEffectStruct>, IPostEffectOutlineBlur
+    public class PostEffectMeshOutlineBlurCore : RenderCore, IPostEffectOutlineBlur
     {
         #region Variables
         private SamplerStateProxy sampler;
@@ -90,6 +90,7 @@ namespace HelixToolkit.UWP.Core
         };
 
         private readonly ConstantBufferComponent modelCB;
+        private BorderEffectStruct modelStruct;
         #endregion
         #region Properties
         private string effectName = DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur;
@@ -203,7 +204,7 @@ namespace HelixToolkit.UWP.Core
             blurPassHorizontal = technique.GetPass(DefaultPassNames.EffectBlurHorizontal);
             screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
             textureSlot = screenOutlinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-            samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+            samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
             sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
             blurCore = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical,
                 blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager));
@@ -215,7 +216,7 @@ namespace HelixToolkit.UWP.Core
             return IsAttached && !string.IsNullOrEmpty(EffectName);
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             #region Initialize textures
             var buffer = context.RenderHost.RenderBuffer;
@@ -229,7 +230,7 @@ namespace HelixToolkit.UWP.Core
                     depthdesc.Width / downSamplingScale,
                     depthdesc.Height / downSamplingScale);
                 //Skip this frame to avoid performance hit due to texture creation
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return;
             }
             #endregion
@@ -238,6 +239,7 @@ namespace HelixToolkit.UWP.Core
             var renderTargetFull = buffer.FullResPPBuffer.NextRTV;
             
             var frustum = context.BoundingFrustum;
+            OnUpdatePerModelStruct(context);
             if (drawMode == OutlineMode.Separated)
             {
                 for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
@@ -369,10 +371,10 @@ namespace HelixToolkit.UWP.Core
             context.SetScissorRectangle(0, 0, width, height);
         }
 
-        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
+        private void OnUpdatePerModelStruct(RenderContext context)
         {
-            model.Param.M11 = scaleX;
-            model.Param.M12 = ScaleY;
+            modelStruct.Param.M11 = scaleX;
+            modelStruct.Param.M12 = ScaleY;
             modelStruct.Color = color;
         }
 

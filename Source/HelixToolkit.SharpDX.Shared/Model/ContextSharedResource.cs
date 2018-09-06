@@ -20,6 +20,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             set; get;
         }
 
+        public ShaderResourceViewProxy EnvironementMap
+        {
+            set;get;
+        }
+
+        public int EnvironmentMapMipLevels
+        {
+            set;get;
+        }
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 

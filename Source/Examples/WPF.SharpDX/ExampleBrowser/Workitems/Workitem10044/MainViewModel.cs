@@ -20,7 +20,7 @@
             this.SubTitle = "Please note that this scene is defined completely in XAML.";
 
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
         }
     }
 }

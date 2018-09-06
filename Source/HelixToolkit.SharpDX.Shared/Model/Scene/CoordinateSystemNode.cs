@@ -153,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             get { return labelZ; }
         }
 
-        private readonly BillboardNode axisBillboard = new BillboardNode();
+        private readonly BillboardNode axisBillboard = new BillboardNode() { Material = new BillboardMaterialCore() };
         private readonly MeshNode arrowMeshModel = new MeshNode() { EnableViewFrustumCheck = false };
         private static readonly float arrowSize = 5.5f;
         private static readonly float arrowWidth = 0.6f;

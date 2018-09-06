@@ -29,9 +29,10 @@ cbuffer cbTransforms : register(b0)
 };
 
 #if defined(MESH)
-//Per model
-cbuffer cbMeshPhongMaterial : register(b1)
+//Per model shares between Phong material and PBR material
+cbuffer cbMesh : register(b1) 
 {
+// Common Parameters
     float4x4 mWorld;
     bool bInvertNormal = false;
     bool bHasInstances = false;
@@ -39,30 +40,38 @@ cbuffer cbMeshPhongMaterial : register(b1)
     bool bHasBones = false;
     float4 vParams = float4(0, 0, 0, 0); //Shared with models
     float4 vColor = float4(1, 1, 1, 1); //Shared with models
-    bool3 bParams = bool3(false, false, false); // Shared with models for enable/disable features
+    float4 wireframeColor;
+    bool3 bParams; // Shared with models for enable/disable features
     bool bBatched = false;
-    bool bRenderOIT = false;
-    float3 padding1 = float3(0,0,0);
-    float4 wireframeColor = float4(0,0,1,1);
 
+// Material Parameters changable
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;
 	float maxTessFactor = 1;
-    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient
+
     float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
+    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient. If using PBR, vMaterialAmbient = float4(ConstantAO, ConstantRoughness, ConstantMetallic, ConstantReflectance);
+
     float4 vMaterialEmissive = 0.0f; //Ke := surface material's emissive coefficient
-    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient
+    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient. If using PBR, vMaterialSpecular = float4(ClearCoat, ClearCoatRoughness, 0, 0)
     float4 vMaterialReflect = 0.0f; //Kr := surface material's reflectivity coefficient
-    float sMaterialShininess = 1.0f; //Ps := surface material's shininess
-	
+
     bool bHasDiffuseMap = false;
-    bool bHasAlphaMap = false;
     bool bHasNormalMap = false;
-    bool bHasDisplacementMap = false;
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
-    float padding2;
+
+    bool bHasAlphaMap = false; // If using PBR, this is used as HasRMAMap.
+    bool bHasEmissiveMap;
+    bool bHasIrradianceMap; 
+    bool bAutoTengent;
+
+    bool bHasDisplacementMap = false;
+    bool bRenderPBR = false;  
+    int NumRadianceMipLevels;
+    float sMaterialShininess = 1.0f; //Ps := surface material's shininess
+
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
     float4 uvTransformR1;
     float4 uvTransformR2;
@@ -90,19 +99,30 @@ cbuffer cbLights : register(b3)
 //Per model
 cbuffer cbPointLineModel : register(b4)
 {
-    float4x4 pWorld;
-    bool pHasInstances = false;
-    bool pHasInstanceParams = false;
+    float4x4 mWorld;
+    bool bHasInstances = false;
+    bool bHasInstanceParams = false;
 	float2 padding1;
     float4 pfParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
     float4 pColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
 	bool4 pbParams = bool4(false, false, false, false);
 };
 #endif
+#if defined(PARTICLE) // model for line, point and billboard
+//Per model
+cbuffer cbParticleModel : register(b4)
+{
+    float4x4 mWorld;
+    bool bHasInstances = false;
+    bool bHasInstanceParams = false;
+    bool bHasTexture = false;
+	float padding1;
+};
+#endif
 #if defined(PLANEGRID) 
 cbuffer cbPlaneGridModel : register(b4)
 {
-    float4x4 pWorld;
+    float4x4 mWorld;
     float gridSpacing; 
     float gridThickness;
     float fadingFactor;
@@ -135,7 +155,10 @@ cbuffer cbClipping : register(b6)
 	// M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
 	// M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
-    float4x4 CrossPlaneParams;
+    float4 CrossPlane1Params;
+    float4 CrossPlane2Params;
+    float4 CrossPlane3Params;
+    float4 CrossPlane4Params;
 }
 #endif
 
@@ -192,11 +215,19 @@ cbuffer cbParticleCreateParameters : register(b8)
 #endif
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
-Texture2D texAlphaMap : register(t1);
-Texture2D texNormalMap : register(t2);
-Texture2D texDisplacementMap : register(t3);
-TextureCube texCubeMap : register(t4);
-Texture2D texShadowMap : register(t5);
+Texture2D texNormalMap : register(t1);
+#if !defined(PBR)
+Texture2D texAlphaMap : register(t2);
+#endif
+#if defined(PBR)
+Texture2D texRMAMap    : register(t2);
+Texture2D texEmissiveMap : register(t3);
+TextureCube texIrradianceMap : register(t21);
+#endif
+Texture2D texDisplacementMap : register(t4);
+TextureCube texCubeMap : register(t20); // Radiance Map
+
+Texture2D texShadowMap : register(t30);
 
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
@@ -210,11 +241,8 @@ Texture1D texColorStripe1DY : register(t13);
 
 StructuredBuffer<matrix> skinMatrices : register(t20);
 ///------------------Samplers-------------------
-SamplerState samplerDiffuse : register(s0);
-
-SamplerState samplerAlpha : register(s1);
-
-SamplerState samplerNormal : register(s2);
+SamplerState samplerSurface : register(s0);
+SamplerState samplerIBL : register(s1);
 
 SamplerState samplerDisplace : register(s3);
 

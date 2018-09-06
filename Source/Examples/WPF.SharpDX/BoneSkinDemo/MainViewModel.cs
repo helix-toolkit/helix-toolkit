@@ -142,7 +142,7 @@ namespace BoneSkinDemo
             this.Title = "BoneSkin Demo";
             this.SubTitle = "WPF & SharpDX";
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
            
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {

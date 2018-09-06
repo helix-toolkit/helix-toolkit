@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as BillboardNode).FixedSize = (bool)e.NewValue;
+                    (d as BillboardTextModel3D).material.FixedSize = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -88,19 +88,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty SamplerDescriptionProperty =
             DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(BillboardTextModel3D), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d,e) =>
             {
-                ((d as Element3DCore).SceneNode as BillboardNode).SamplerDescription = (SamplerStateDescription)e.NewValue;
+                (d as BillboardTextModel3D).material.SamplerDescription = (SamplerStateDescription)e.NewValue;
             }));
         #endregion
 
         #region Overridable Methods        
 
+        private readonly BillboardMaterialCore material = new BillboardMaterialCore();
         /// <summary>
         /// Called when [create scene node].
         /// </summary>
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new BillboardNode();
+            return new BillboardNode() { Material = material };
         }
         /// <summary>
         /// Assigns the default values to core.
@@ -110,9 +111,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (core is BillboardNode n)
             {
-                n.FixedSize = FixedSize;
+                material.FixedSize = FixedSize;
                 n.IsTransparent = IsTransparent;
-                n.SamplerDescription = SamplerDescription;
+                material.SamplerDescription = SamplerDescription;
             }
             base.AssignDefaultValuesToSceneNode(core);       
         }

@@ -19,8 +19,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="MODELSTRUCT"></typeparam>
-    public abstract class GeometryRenderCore<MODELSTRUCT> : RenderCoreBase<MODELSTRUCT>, IGeometryRenderCore where MODELSTRUCT : struct
+    public abstract class GeometryRenderCore : RenderCore, IGeometryRenderCore
     {
         private RasterizerStateProxy rasterState = null;
         /// <summary>
@@ -31,7 +30,7 @@ namespace HelixToolkit.UWP.Core
         private RasterizerStateProxy invertCullModeState = null;
         public RasterizerStateProxy InvertCullModeState { get { return invertCullModeState; } }
 
-        private IElementsBufferModel instanceBuffer;
+        private IElementsBufferModel instanceBuffer = MatrixInstanceBufferModel.Empty;
         /// <summary>
         /// 
         /// </summary>
@@ -44,11 +43,15 @@ namespace HelixToolkit.UWP.Core
                 {
                     if (old != null)
                     {
-                        old.OnElementChanged -= OnElementChanged;
+                        old.ElementChanged -= OnElementChanged;
                     }
                     if (instanceBuffer != null)
                     {
-                        instanceBuffer.OnElementChanged += OnElementChanged;
+                        instanceBuffer.ElementChanged += OnElementChanged;
+                    }
+                    else
+                    {
+                        instanceBuffer = MatrixInstanceBufferModel.Empty;
                     }
                 }
             }
@@ -97,89 +100,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private string defaultPassName = DefaultPassNames.Default;
         /// <summary>
-        /// Name of the default pass inside a technique.
-        /// <para>Default: <see cref="DefaultPassNames.Default"/></para>
-        /// </summary>
-        public string DefaultShaderPassName
-        {
-            set
-            {
-                if(Set(ref defaultPassName, value) && IsAttached)
-                {
-                    DefaultShaderPass = EffectTechnique[value];
-                }
-            }
-            get
-            {
-                return defaultPassName;
-            }
-        }
-
-        private string defaultShadowPassName = DefaultPassNames.ShadowPass;
-        /// <summary>
-        /// 
-        /// </summary>
-        public string DefaultShadowPassName
-        {
-            set
-            {
-                if (Set(ref defaultShadowPassName, value) && IsAttached)
-                {
-                    ShadowPass = EffectTechnique[value];
-                }
-            }
-            get
-            {
-                return defaultShadowPassName;
-            }
-        }
-        private ShaderPass defaultShaderPass = ShaderPass.NullPass;
-        /// <summary>
-        /// 
-        /// </summary>
-        protected ShaderPass DefaultShaderPass
-        {
-            private set
-            {
-                if(Set(ref defaultShaderPass, value))
-                {
-                    OnDefaultPassChanged(value);
-                    InvalidateRenderer();
-                }
-            }
-            get
-            {
-                return defaultShaderPass;
-            }
-        }
-
-        private ShaderPass shadowPass = ShaderPass.NullPass;
-        /// <summary>
-        /// 
-        /// </summary>
-        protected ShaderPass ShadowPass
-        {
-            private set
-            {
-                if(Set(ref shadowPass, value))
-                {
-                    OnShadowPassChanged(value);
-                    InvalidateRenderer();
-                }
-            }
-            get
-            {
-                return shadowPass;
-            }
-        }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
+        /// Initializes a new instance of the <see cref="GeometryRenderCore"/> class.
         /// </summary>
         public GeometryRenderCore() : base(RenderType.Opaque) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
+        /// Initializes a new instance of the <see cref="GeometryRenderCore"/> class.
         /// </summary>
         /// <param name="renderType">Type of the render.</param>
         public GeometryRenderCore(RenderType renderType) : base(renderType) { }
@@ -209,8 +135,6 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            DefaultShaderPass = technique[DefaultShaderPassName];
-            ShadowPass = technique[DefaultShadowPassName];
             CreateRasterState(rasterDescription, true);       
             return true;
         }
@@ -237,32 +161,34 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         protected virtual void OnGeometryBufferChanged(IAttachableBufferModel buffer) { }
+
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="isInvertCullMode"></param>
-        protected override void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
         {
-            if (isInvertCullMode && invertCullModeState != null)
-            {
-                context.SetRasterState(invertCullModeState);
-            }
-            else
-            {
-                context.SetRasterState(rasterState);
-            }
+            context.SetRasterState(!isInvertCullMode ? rasterState : invertCullModeState);                
         }
+
         /// <summary>
         /// Attach vertex buffer routine
         /// </summary>
         /// <param name="context"></param>
         /// <param name="vertStartSlot"></param>
-        protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
+        protected virtual bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
-            bool succ = GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager);
-            InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);
-            return succ;
+            if(GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager))
+            {
+                InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         /// <summary>
         /// Called when [update can render flag].
@@ -276,7 +202,7 @@ namespace HelixToolkit.UWP.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DrawIndexed(DeviceContextProxy context, IElementsBufferProxy indexBuffer, IElementsBufferModel instanceModel)
         {
-            if (instanceModel == null || !instanceModel.HasElements)
+            if (!instanceModel.HasElements)
             {
                 context.DrawIndexed(indexBuffer.ElementCount, 0, 0);
             }
@@ -289,7 +215,7 @@ namespace HelixToolkit.UWP.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DrawPoints(DeviceContextProxy context, IElementsBufferProxy vertexBuffer, IElementsBufferModel instanceModel)
         {
-            if (instanceModel == null || !instanceModel.HasElements)
+            if (!instanceModel.HasElements)
             {
                 context.Draw(vertexBuffer.ElementCount, 0);
             }
@@ -299,11 +225,39 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected bool PreRender(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (CanRenderFlag)
+            {
+                int vertStartSlot = 0;
+                if (!OnAttachBuffers(deviceContext, ref vertStartSlot))
+                {
+                    return false;
+                }
+                OnBindRasterState(deviceContext, context.IsInvertCullMode);
+            }
+            return CanRenderFlag;
+        }
+
+        /// <summary>
+        /// Trigger OnRender function delegate if CanRender()==true
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
+        public sealed override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (PreRender(context, deviceContext))
+            {
+                OnRender(context, deviceContext);
+            }
+        }
+
 
         public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (PreRender(context, deviceContext))
-            {
+            {               
                 OnRenderShadow(context, deviceContext);
             }
         }
@@ -316,6 +270,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        protected abstract void OnRender(RenderContext context, DeviceContextProxy deviceContext);
 
         /// <summary>
         /// Render function for custom shader pass. Used to do special effects
@@ -332,12 +292,12 @@ namespace HelixToolkit.UWP.Core
         protected void OnElementChanged(object sender, EventArgs e)
         {
             UpdateCanRenderFlag();
-            InvalidateRenderer();
+            RaiseInvalidateRender();
         }
 
         protected void OnInvalidateRendererEvent(object sender, EventArgs e)
         {
-            InvalidateRenderer();
+            RaiseInvalidateRender();
         }
     }
 }

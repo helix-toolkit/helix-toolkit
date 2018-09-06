@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP.Core
         where BatchedGeometry : struct, IBatchedGeometry where VertStruct : struct
     {
         public Guid GUID { get; } = Guid.NewGuid();
-        public event EventHandler<EventArgs> OnInvalidateRender;
+        public event EventHandler<EventArgs> InvalidateRender;
         private bool isGeometryChanged = true;
         private static readonly VertStruct[] EmptyArray = new VertStruct[0];
         private static readonly int[] EmptyIntArray = new int[0];
@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP.Core
         public void InvalidateGeometries()
         {
             isGeometryChanged = true;
-            OnInvalidateRender?.Invoke(this, EventArgs.Empty);
+            InvalidateRender?.Invoke(this, EventArgs.Empty);
         }
 
         public StaticGeometryBatchingBufferBase(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
@@ -97,7 +97,7 @@ namespace HelixToolkit.UWP.Core
                     {
                         OnSubmitGeometries(deviceContext);
                         isGeometryChanged = false;
-                        OnInvalidateRender?.Invoke(this, EventArgs.Empty);
+                        InvalidateRender?.Invoke(this, EventArgs.Empty);
                         return true;
                     }
                 }
@@ -233,7 +233,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDispose(bool disposeManagedResources)
         {
             base.OnDispose(disposeManagedResources);
-            OnInvalidateRender = null;           
+            InvalidateRender = null;           
         }
     }
 }

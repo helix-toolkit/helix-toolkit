@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager[DefaultRenderTechniqueNames.InstancingBlinn];
+            return host.EffectsManager[DefaultRenderTechniqueNames.InstancingMesh];
         }
         /// <summary>
         /// Called when [create render core].

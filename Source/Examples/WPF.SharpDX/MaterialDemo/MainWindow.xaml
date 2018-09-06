@@ -27,7 +27,7 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             EnableDesignModeRendering="False"
-            EnableSwapChainRendering="True"
+            EnableSwapChainRendering="False"
             FXAALevel="Low"
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
@@ -90,7 +90,10 @@
                 Geometry="{Binding MeshTitles}"
                 Transform="{Binding TitleTransform}" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
-            <hx:AxisPlaneGridModel3D AutoSpacing="false" Offset="-4" RenderShadowMap="True"/>
+            <hx:AxisPlaneGridModel3D
+                AutoSpacing="false"
+                RenderShadowMap="True"
+                Offset="-4" />
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1">
             <CheckBox
@@ -102,6 +105,8 @@
             </CheckBox>
             <CheckBox IsChecked="{Binding ColorStripeMaterial.ColorStripeXEnabled}">Enable StripeX</CheckBox>
             <CheckBox IsChecked="{Binding ColorStripeMaterial.ColorStripeYEnabled}">Enable StripeY</CheckBox>
+            <Separator />
+            <Button Command="{Binding OpenPBRSampleCommand}">Open PBR Samples</Button>
         </StackPanel>
     </Grid>
 </Window>

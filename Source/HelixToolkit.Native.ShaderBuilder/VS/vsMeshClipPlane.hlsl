@@ -32,8 +32,11 @@ PSInputClip main(VSInput input)
         inputn = mul(inputn, (float3x3) mInstance);
         if (bHasNormalMap)
         {
-            inputt1 = mul(inputt1, (float3x3) mInstance);
-            inputt2 = mul(inputt2, (float3x3) mInstance);
+            if (!bAutoTengent)
+            {
+                inputt1 = mul(inputt1, (float3x3) mInstance);
+                inputt2 = mul(inputt2, (float3x3) mInstance);
+            }
         }
     }
 
@@ -65,40 +68,45 @@ PSInputClip main(VSInput input)
 	//set color
     output.c = input.c;
     output.cDiffuse = vMaterialDiffuse;
-    output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
-
-
-    if (bHasNormalMap)
+    if (!bRenderPBR)
     {
-		// transform the tangents by the world matrix and normalize
-        output.t1 = normalize(mul(inputt1, (float3x3) mWorld));
-        output.t2 = normalize(mul(inputt2, (float3x3) mWorld));
+        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
     }
     else
     {
-        output.t1 = 0.0f;
-        output.t2 = 0.0f;
+        output.c2 = vMaterialAmbient;
     }
+
+    if (bHasNormalMap)
+    {
+        if (!bAutoTengent)
+        {
+		    // transform the tangents by the world matrix and normalize
+            output.t1 = normalize(mul(inputt1, (float3x3) mWorld));
+            output.t2 = normalize(mul(inputt2, (float3x3) mWorld));
+        }
+    }
+
     output.clipPlane = float4(0, 0, 0, 0);
     if (EnableCrossPlane.x)
     {
-        float3 p = output.wp.xyz - CrossPlaneParams._m00_m01_m02 * CrossPlaneParams._m03;
-        output.clipPlane.x = dot(CrossPlaneParams._m00_m01_m02, p);
+        float3 p = output.wp.xyz - CrossPlane1Params.xyz * CrossPlane1Params.w;
+        output.clipPlane.x = dot(CrossPlane1Params.xyz, p);
     }
     if (EnableCrossPlane.y)
     {
-        float3 p = output.wp.xyz - CrossPlaneParams._m10_m11_m12 * CrossPlaneParams._m13;
-        output.clipPlane.y = dot(CrossPlaneParams._m10_m11_m12, p);
+        float3 p = output.wp.xyz - CrossPlane2Params.xyz * CrossPlane2Params.w;
+        output.clipPlane.y = dot(CrossPlane2Params.xyz, p);
     }
     if (EnableCrossPlane.z)
     {
-        float3 p = output.wp.xyz - CrossPlaneParams._m20_m21_m22 * CrossPlaneParams._m23;
-        output.clipPlane.z = dot(CrossPlaneParams._m20_m21_m22, p);
+        float3 p = output.wp.xyz - CrossPlane3Params.xyz * CrossPlane3Params.w;
+        output.clipPlane.z = dot(CrossPlane3Params.xyz, p);
     }
     if (EnableCrossPlane.w)
     {
-        float3 p = output.wp.xyz - CrossPlaneParams._m30_m31_m32 * CrossPlaneParams._m33;
-        output.clipPlane.w = dot(CrossPlaneParams._m20_m21_m22, p);
+        float3 p = output.wp.xyz - CrossPlane4Params.xyz * CrossPlane4Params.w;
+        output.clipPlane.w = dot(CrossPlane4Params.xyz, p);
     }
     if (CuttingOperation == 1)
     {
