@@ -70,9 +70,10 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitialPropertyBindings()
         {
             AddPropertyBinding(nameof(PBRMaterialCore.AlbedoColor), () => { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.AlbedoColor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.EmissiveColor), () => { WriteValue(PhongPBRMaterialStruct.EmissiveStr, material.EmissiveColor); });
             AddPropertyBinding(nameof(PBRMaterialCore.MetallicFactor), () =>
             {
-                WriteValue(PhongPBRMaterialStruct.AmbientStr, new Vector4(material.AmbientOcclusionFactor, material.RoughnessFactor, material.MetallicFactor, material.ReflectanceFactor));
+                WriteValue(PhongPBRMaterialStruct.SpecularStr, new Vector4(material.AmbientOcclusionFactor, material.RoughnessFactor, material.MetallicFactor, material.ReflectanceFactor));
             });
             AddPropertyBinding(nameof(PBRMaterialCore.RoughnessFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
             AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcclusionFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });

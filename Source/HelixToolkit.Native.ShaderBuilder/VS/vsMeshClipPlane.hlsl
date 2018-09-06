@@ -74,7 +74,7 @@ PSInputClip main(VSInput input)
     }
     else
     {
-        output.c2 = vMaterialAmbient;
+        output.c2 = vMaterialSpecular;
     }
 
     if (bHasNormalMap)

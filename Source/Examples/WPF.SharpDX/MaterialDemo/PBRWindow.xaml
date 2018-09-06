@@ -46,7 +46,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <!--<hx:AmbientLight3D Color="#515151" />-->
+            <hx:AmbientLight3D x:Name="ambientLight" Color="#A5A5A5" />
             <hx:DirectionalLight3D Direction="1, -1, -1" Color="White" />
             <!--<hx:ShadowMap3D />-->
             <hx:GroupModel3D ItemsSource="{Binding Models}" />
@@ -65,6 +65,8 @@
             <pt:ColorPicker SelectedColor="{Binding AlbedoColor}" />
             <CheckBox IsChecked="{Binding RenderNormalMap}">Render Normal Map</CheckBox>
             <CheckBox IsChecked="{Binding RenderEnvironment}">Render Environment Map</CheckBox>
+            <Label>Ambient Color</Label>
+            <pt:ColorPicker SelectedColor="{Binding ElementName=ambientLight, Path=Color}" />
             <Label>Metallic</Label>
             <Slider
                 Maximum="1"

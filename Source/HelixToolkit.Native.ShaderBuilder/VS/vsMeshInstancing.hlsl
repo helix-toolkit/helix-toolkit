@@ -58,7 +58,7 @@ PSInput main(VSInstancingInput input)
         }
         else
         {
-            output.c2 = vMaterialAmbient;
+            output.c2 = vMaterialSpecular;
         }
     }
     else

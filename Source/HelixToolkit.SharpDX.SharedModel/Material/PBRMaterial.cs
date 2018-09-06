@@ -29,7 +29,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as PBRMaterialCore).AlbedoColor = (Color4)e.NewValue;
                 }));
-
+        /// <summary>
+        /// The albedo color property
+        /// </summary>
+        public static readonly DependencyProperty EmissiveColorProperty =
+            DependencyProperty.Register("EmissiveColor", typeof(Color4), typeof(PBRMaterial), new PropertyMetadata((Color4)Color.Black,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PBRMaterialCore).EmissiveColor = (Color4)e.NewValue;
+                }));
         /// <summary>
         ///         
         /// </summary>
@@ -291,6 +299,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (Color4)this.GetValue(AlbedoColorProperty); }
             set { this.SetValue(AlbedoColorProperty, value); }
+        }
+
+        public Color4 EmissiveColor
+        {
+            get { return (Color4)this.GetValue(EmissiveColorProperty); }
+            set { this.SetValue(EmissiveColorProperty, value); }
         }
 
         public double MetallicFactor
