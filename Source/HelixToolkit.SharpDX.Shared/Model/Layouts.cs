@@ -325,9 +325,10 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string RenderShadowMapStr = "bRenderShadowMap";//bool
 
         public const string HasDiffuseAlphaMapStr = "bHasAlphaMap";//bool
-        public const string HasRMAMapStr = "bHasRMAMap";//bool
+        public const string HasRMAMapStr = "bHasAlphaMap";//bool Use the same variable as has alpha map in phong material
         public const string HasEmissiveMapStr = "bHasEmissiveMap";//bool
         public const string HasIrradianceMapStr = "bHasIrradianceMap";//bool
+        public const string EnableAutoTangent = "bAutoTengent";//bool
 
         public const string HasDisplacementMapStr = "bHasDisplacementMap";//bool
         public const string RenderPBR = "bRenderPBR";//bool

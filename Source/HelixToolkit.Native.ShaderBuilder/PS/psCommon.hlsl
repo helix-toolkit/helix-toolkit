@@ -190,7 +190,7 @@ float3 Specular_IBL(in float3 N, in float3 V, in float lodBias)
     float3 dir = reflect(-V, N);
     return texCubeMap.SampleLevel(samplerIBL, dir, mip).rgb;
 }
-
+#endif
 // Christian Schüler, "Normal Mapping without Precomputed Tangents", ShaderX 5, Chapter 2.6, pp. 131 – 140
 // See also follow-up blog post: http://www.thetenthplanet.de/archives/1180
 float3x3 CalculateTBN(float3 p, float3 n, float2 tex)
@@ -221,5 +221,4 @@ float3 PeturbNormal(float3 localNormal, float3 position, float3 normal, float2 t
     const float3x3 TBN = CalculateTBN(position, normal, texCoord);
     return normalize(mul(localNormal, TBN));
 }
-#endif
 #endif

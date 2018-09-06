@@ -62,10 +62,10 @@ cbuffer cbMesh : register(b1)
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
 
-    bool bHasAlphaMap = false;
-    bool bHasRMAMap;
+    bool bHasAlphaMap = false; // If using PBR, this is used as HasRMAMap.
     bool bHasEmissiveMap;
-    bool bHasIrradianceMap;   
+    bool bHasIrradianceMap; 
+    bool bAutoTengent;
 
     bool bHasDisplacementMap = false;
     bool bRenderPBR = false;  

@@ -79,16 +79,13 @@ PSInput main(VSInputBatched input)
 
     if (bHasNormalMap)
     {
-		// transform the tangents by the world matrix and normalize
-        output.t1 = normalize(mul(inputt1, (float3x3) mWorld));
-        output.t2 = normalize(mul(inputt2, (float3x3) mWorld));
+        if (!bAutoTengent)
+        {
+		    // transform the tangents by the world matrix and normalize
+            output.t1 = normalize(mul(inputt1, (float3x3) mWorld));
+            output.t2 = normalize(mul(inputt2, (float3x3) mWorld));
+        }
     }
-    else
-    {
-        output.t1 = 0.0f;
-        output.t2 = 0.0f;
-    }
-
     return output;
 }
 

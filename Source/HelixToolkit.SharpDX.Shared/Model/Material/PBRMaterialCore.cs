@@ -184,6 +184,19 @@ namespace HelixToolkit.UWP.Model
             get => renderEmissiveMap; 
         }
 
+        private bool enableAutoTangent = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable automatic tangent].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic tangent]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoTangent
+        {
+            set => Set(ref enableAutoTangent, value);
+            get => enableAutoTangent;
+        }
+
         private Stream albedoMap;
         /// <summary>
         /// Gets or sets the albedo map.

@@ -34,8 +34,11 @@ HSInput main(VSInstancingInput input)
 		inputn = mul(inputn, (float3x3) mInstance);
 		if (bHasNormalMap)
 		{
-			inputt1 = mul(inputt1, (float3x3) mInstance);
-			inputt2 = mul(inputt2, (float3x3) mInstance);
+            if (!bAutoTengent)
+            {
+			    inputt1 = mul(inputt1, (float3x3) mInstance);
+			    inputt2 = mul(inputt2, (float3x3) mInstance);
+            }
 		}
 	}
     if (!bHasInstanceParams)

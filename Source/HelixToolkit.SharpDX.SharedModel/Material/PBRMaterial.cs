@@ -231,6 +231,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         /// <summary>
+        /// The enable automatic tangent
+        /// </summary>
+        public static readonly DependencyProperty EnableAutoTangentProperty =
+            DependencyProperty.Register("EnableAutoTangent", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PBRMaterialCore).EnableAutoTangent = (bool)e.NewValue;
+                }));
+
+        /// <summary>
         /// The enable tessellation property
         /// </summary>
         public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(PBRMaterial),
@@ -473,6 +483,17 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(RenderShadowMapProperty, value); }
         }
         /// <summary>
+        /// Gets or sets a value indicating whether [enable automatic tangent].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic tangent]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoTangent
+        {
+            get { return (bool)GetValue(EnableAutoTangentProperty); }
+            set { SetValue(EnableAutoTangentProperty, value); }
+        }
+        /// <summary>
         /// Gets or sets a value indicating whether [enable tessellation].
         /// </summary>
         /// <value>
@@ -575,7 +596,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderNormalMap = RenderNormalMap,
                 RenderRMAMap = RenderRMAMap,
                 RenderShadowMap = RenderShadowMap,
-
+                EnableAutoTangent = EnableAutoTangent,
                 DisplacementMapScaleMask = DisplacementMapScaleMask,
                 UVTransform = UVTransform,
 
@@ -623,7 +644,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderNormalMap = RenderNormalMap,
                 RenderRMAMap = RenderRMAMap,
                 RenderShadowMap = RenderShadowMap,
-
+                EnableAutoTangent = EnableAutoTangent,
                 DisplacementMapScaleMask = DisplacementMapScaleMask,
                 UVTransform = UVTransform,
 

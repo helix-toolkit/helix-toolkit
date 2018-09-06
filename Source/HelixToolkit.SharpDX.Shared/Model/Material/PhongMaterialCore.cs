@@ -269,6 +269,19 @@ namespace HelixToolkit.UWP.Model
             get { return renderDisplacementMap; }
         }
 
+        private bool enableAutoTangent = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable automatic tangent].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic tangent]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoTangent
+        {
+            set => Set(ref enableAutoTangent, value);
+            get => enableAutoTangent;
+        }
+
         private float minTessellationDistance = 10;
         public float MinTessellationDistance
         {
