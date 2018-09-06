@@ -403,7 +403,7 @@ namespace HelixToolkit.UWP
         public static void ZoomExtents(
             this Camera camera, Viewport3DX viewport, double animationTime = 0)
         {
-            var bounds = viewport.FindBounds();
+            var bounds = viewport.FindBoundsInternal();
 
             if (bounds.Maximum.IsUndefined() || bounds.Maximum == bounds.Minimum)
             {

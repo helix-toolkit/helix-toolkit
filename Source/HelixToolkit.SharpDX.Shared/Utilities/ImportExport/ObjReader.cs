@@ -1255,7 +1255,7 @@ namespace HelixToolkit.UWP
                     AmbientColor = this.Ambient,
                     //AmbientMap = this.AmbientMap,
 
-                    DiffuseColor = this.Diffuse,
+                    DiffuseColor = new Color4(this.Diffuse.Red, this.Diffuse.Green, this.Diffuse.Blue, (float)Dissolved),
                     DiffuseMap = diffuseMapMS,
 
                     SpecularColor = this.Specular,
