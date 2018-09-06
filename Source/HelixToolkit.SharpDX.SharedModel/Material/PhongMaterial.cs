@@ -12,8 +12,9 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using System.ComponentModel;
     using Model;
-    using Shaders;   
+    using Shaders;
     using Utilities;
 
     /// <summary>

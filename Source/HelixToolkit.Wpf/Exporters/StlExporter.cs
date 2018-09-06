@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf
 {
     using System.IO;
     using System.Text;
+    using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     /// <summary>
@@ -130,6 +131,35 @@ namespace HelixToolkit.Wpf
             matrix.OffsetZ = 0;
             var normalTransform = new MatrixTransform3D(matrix);
 
+            var material = model.Material;
+            var dm = material as DiffuseMaterial;
+
+            var mg = material as MaterialGroup;
+            if (mg != null)
+            {
+                foreach (var m in mg.Children)
+                {
+                    if (m is DiffuseMaterial)
+                    {
+                        dm = m as DiffuseMaterial;
+                    }
+                }
+            }
+
+            ushort attribute = 0;
+
+            if (dm != null)
+            {
+                var scb = dm.Brush as SolidColorBrush;
+                if (scb != null)
+                {
+                    byte r = scb.Color.R;
+                    byte g = scb.Color.G;
+                    byte b = scb.Color.B;
+                    attribute = (ushort)((1 << 15) | ((r >> 3) << 10) | ((g >> 3) << 5) | (b >> 3));
+                }
+            }
+
             for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
                 int i0 = mesh.TriangleIndices[i + 0];
@@ -147,7 +177,6 @@ namespace HelixToolkit.Wpf
                 WriteVertex(writer, t.Transform(mesh.Positions[i2]));
 
                 // Attributes
-                const ushort attribute = 0;
                 writer.Write(attribute);
             }
         }
