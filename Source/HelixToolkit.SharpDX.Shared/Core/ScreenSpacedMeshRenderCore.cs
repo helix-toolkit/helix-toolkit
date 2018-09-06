@@ -83,7 +83,7 @@ namespace HelixToolkit.UWP.Core
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
     /// <para>Usage: Call SetScreenSpacedCoordinates(RenderHost) to move coordinate system. Call other render functions for sub models. Finally call RestoreCoordinates(RenderHost) to restore original coordinate system.</para>
     /// </summary>
-    public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>, IScreenSpacedRenderParams
+    public class ScreenSpacedMeshRenderCore : RenderCore, IScreenSpacedRenderParams
     {
         public event EventHandler<BoolArgs> OnCoordinateSystemChanged;
         
@@ -186,28 +186,6 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public float Fov { get; } = (float)(45 * Math.PI / 180);
 
-        private RasterizerStateProxy rasterState;
-
-        private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
-        {
-            FillMode = FillMode.Solid,
-            CullMode = CullMode.None,
-        };
-        public RasterizerStateDescription RasterDescription
-        {
-            set
-            {
-                if(SetAffectsRender(ref rasterDescription, value) && IsAttached)
-                {
-                    CreateRasterState(value, false);
-                }
-            }
-            get
-            {
-                return RasterDescription;
-            }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenSpacedMeshRenderCore"/> class.
         /// </summary>
@@ -216,56 +194,11 @@ namespace HelixToolkit.UWP.Core
             globalTransformCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes)));
         }
 
-        ///// <summary>
-        ///// Gets the model constant buffer description.
-        ///// </summary>
-        ///// <returns></returns>
-        //protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        //{
-        //    return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
-        //}
-
-        /// <summary>
-        /// Creates the state of the raster.
-        /// </summary>
-        /// <param name="description">The description.</param>
-        /// <param name="force">if set to <c>true</c> [force].</param>
-        /// <returns></returns>
-        protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
-        {
-            if (!IsAttached && !force)
-            { return false; }
-            RemoveAndDispose(ref rasterState);
-            rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
-            return true;
-        }
-
-        /// <summary>
-        /// Called when [attach].
-        /// </summary>
-        /// <param name="technique">The technique.</param>
-        /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
-               // globalTransformCB = technique.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
-            CreateRasterState(rasterDescription, true);
             return true;
         }
 
-        protected override void OnDetach()
-        {
-            rasterState = null;
-            base.OnDetach();
-        }
-        /// <summary>
-        /// Called when [bind raster state].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="isInvertCullMode"></param>
-        protected override void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
-        {
-            context.SetRasterState(rasterState);
-        }
         /// <summary>
         /// Creates the view matrix.
         /// </summary>
@@ -315,23 +248,13 @@ namespace HelixToolkit.UWP.Core
                 OnCreateProjectionMatrix(SizeScale);
             }
         }
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
-        {
-            model.World = Matrix.Identity;
-            model.HasInstances = 0;
-        }
 
         /// <summary>
         /// Called when [render].
         /// </summary>
         /// <param name="renderContext">The render context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(RenderContext renderContext, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext renderContext, DeviceContextProxy deviceContext)
         {
             SetScreenSpacedCoordinates(renderContext, deviceContext);
         }

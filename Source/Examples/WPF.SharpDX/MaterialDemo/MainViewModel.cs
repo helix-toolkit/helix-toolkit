@@ -17,6 +17,7 @@ using Color4 = SharpDX.Color4;
 using System.IO;
 using System.Threading;
 using HelixToolkit.Wpf.SharpDX.Model;
+using System.Windows.Input;
 
 namespace MaterialDemo
 {
@@ -62,6 +63,8 @@ namespace MaterialDemo
 
         public Transform3D TitleTransform { get; } = new Media3D.TranslateTransform3D(0, 10, 0);
 
+        public ICommand OpenPBRSampleCommand { get; }
+
         private Random rnd = new Random();
         private SynchronizationContext context = SynchronizationContext.Current;
         public MainViewModel()
@@ -93,6 +96,12 @@ namespace MaterialDemo
             MeshTitles.TextInfo.Add(new TextInfo("VertexColor", Transform5.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
             MeshTitles.TextInfo.Add(new TextInfo("ColorStripe", Transform6.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
             (FloorMaterial as PhongMaterial).RenderShadowMap = true;
+
+            OpenPBRSampleCommand = new RelayCommand((o) => 
+            {
+                PBRWindow w = new PBRWindow() { DataContext = new PBRViewModel(this.EffectsManager) { EnvironmentMap = this.EnvironmentMap } };
+                w.Show();
+            });
         }
 
         public void LoadObj(string path)

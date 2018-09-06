@@ -10,7 +10,7 @@ namespace HelixToolkit.UWP.Core.Components
 {
     public abstract class CoreComponent : DisposeObject
     {
-        public event EventHandler OnInvalidateRender;
+        public event EventHandler InvalidateRender;
         public bool IsAttached { private set; get; } = false;
         public IRenderTechnique Technique { private set; get; }
 
@@ -53,13 +53,13 @@ namespace HelixToolkit.UWP.Core.Components
 
             backingField = value;
             this.RaisePropertyChanged(propertyName);
-            InvalidateRender();
+            RaiseInvalidateRender();
             return true;
         }
 
-        public void InvalidateRender()
+        public void RaiseInvalidateRender()
         {
-            OnInvalidateRender?.Invoke(this, EventArgs.Empty);
+            InvalidateRender?.Invoke(this, EventArgs.Empty);
         }
     }
 }

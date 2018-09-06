@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// 
     /// </summary>
-    public partial class PhongMaterialCore : MaterialCore, IPhongMaterial
+    public partial class PhongMaterialCore : MaterialCore
     {
         private Color4 ambientColor = Color.DarkGray;
         /// <summary>
@@ -200,34 +200,6 @@ namespace HelixToolkit.UWP.Model
         }
 
 
-        private SamplerStateDescription normalMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
-        /// <summary>
-        /// Gets or sets the NormalMapSampler.
-        /// </summary>
-        /// <value>
-        /// NormalMapSampler
-        /// </value>
-        public SamplerStateDescription NormalMapSampler
-        {
-            set { Set(ref normalMapSampler, value); }
-            get { return normalMapSampler; }
-        }
-
-
-        private SamplerStateDescription diffuseAlphaMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
-        /// <summary>
-        /// Gets or sets the DiffuseAlphaMapSampler.
-        /// </summary>
-        /// <value>
-        /// DiffuseAlphaMapSampler
-        /// </value>
-        public SamplerStateDescription DiffuseAlphaMapSampler
-        {
-            set { Set(ref diffuseAlphaMapSampler, value); }
-            get { return diffuseAlphaMapSampler; }
-        }
-
-
         private SamplerStateDescription displacementMapSampler = DefaultSamplers.LinearSamplerWrapAni1;
         /// <summary>
         /// Gets or sets the DisplacementMapSampler.
@@ -295,6 +267,19 @@ namespace HelixToolkit.UWP.Model
                 Set(ref renderDisplacementMap, value);
             }
             get { return renderDisplacementMap; }
+        }
+
+        private bool enableAutoTangent = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable automatic tangent].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic tangent]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoTangent
+        {
+            set => Set(ref enableAutoTangent, value);
+            get => enableAutoTangent;
         }
 
         private float minTessellationDistance = 10;
@@ -409,7 +394,7 @@ namespace HelixToolkit.UWP.Model
 
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new TextureSharedPhongMaterialVariables(manager, technique, this);
+            return new PhongMaterialVariables(manager, technique, this);
         }
     }
 }

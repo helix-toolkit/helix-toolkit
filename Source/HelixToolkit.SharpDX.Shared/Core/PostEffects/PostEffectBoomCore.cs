@@ -35,7 +35,7 @@ namespace HelixToolkit.UWP.Core
     /// Outline blur effect
     /// <para>Must not put in shared model across multiple viewport, otherwise may causes performance issue if each viewport sizes are different.</para>
     /// </summary>
-    public class PostEffectBloomCore : RenderCoreBase<BorderEffectStruct>, IPostEffectBloom
+    public class PostEffectBloomCore : RenderCore, IPostEffectBloom
     {
         #region Variables
         private SamplerStateProxy sampler;
@@ -58,6 +58,8 @@ namespace HelixToolkit.UWP.Core
         private int width, height;
 
         private readonly ConstantBufferComponent modelCB;
+
+        private BorderEffectStruct modelStruct;
         #endregion
         #region Properties   
         private string effectName = DefaultRenderTechniqueNames.PostEffectBloom;
@@ -178,7 +180,7 @@ namespace HelixToolkit.UWP.Core
             blurPassHorizontal = technique.GetPass(DefaultPassNames.EffectBlurHorizontal);
             screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
             textureSlot = screenOutlinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-            samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+            samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
             sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
             return true;
         }
@@ -188,7 +190,7 @@ namespace HelixToolkit.UWP.Core
             return IsAttached && !string.IsNullOrEmpty(EffectName);
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             var buffer = context.RenderHost.RenderBuffer;
             #region Initialize textures
@@ -219,7 +221,7 @@ namespace HelixToolkit.UWP.Core
                     ++count;
                 }
                 //Skip this frame to avoid performance hit due to texture creation
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return;
             }
             #endregion
@@ -294,10 +296,6 @@ namespace HelixToolkit.UWP.Core
             context.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
             context.SetViewport(0, 0, width, height);
             context.SetScissorRectangle(0, 0, width, height);
-        }
-
-        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
-        {
         }
 
         public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)

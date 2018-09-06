@@ -8,6 +8,7 @@ namespace ScreenSpaceDemo
 {
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Model;
     using HelixToolkit.Wpf.SharpDX.Extensions;
 
     using SharpDX;
@@ -29,7 +30,7 @@ namespace ScreenSpaceDemo
 
     public class MainViewModel : BaseViewModel
     {
-        public Element3DCollection ModelGeometry { get; private set; }
+        public ObservableElement3DCollection ModelGeometry { get; private set; }
         public MeshGeometry3D Model { get; private set; }
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
@@ -76,11 +77,53 @@ namespace ScreenSpaceDemo
             var reader = new ObjReader();
             var objModel = reader.Read(@"./Media/CornellBox-Glossy.obj");                              
                         
-            this.ModelGeometry = new Element3DCollection();
-            this.ModelGeometry.AddRange(objModel.Select(x => new MeshGeometryModel3D() { Geometry = x.Geometry as MeshGeometry3D, Material = x.Material, }));            
+            this.ModelGeometry = new ObservableElement3DCollection();
+            foreach(var model in objModel.Select(x => new MeshGeometryModel3D() { Geometry = x.Geometry as MeshGeometry3D, Material = GetMaterialFromMaterialCore(x.Material as PhongMaterialCore), }))
+            {
+              this.ModelGeometry.Add(model);
+            }
                           
             // model trafos
             this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);            
+        }
+
+        private static Material GetMaterialFromMaterialCore(PhongMaterialCore material)
+        {
+            if (material == null)
+            {
+                return null;
+            }
+
+            var mat = new PhongMaterial
+            {
+                Name = material.Name,
+                SpecularColor = material.SpecularColor,
+                SpecularShininess = material.SpecularShininess,
+                AmbientColor = material.AmbientColor,
+                DiffuseColor = material.DiffuseColor,
+                DiffuseMap = material.DiffuseMap,
+                DiffuseMapSampler = material.DiffuseMapSampler,
+                DiffuseAlphaMap = material.DiffuseAlphaMap,
+                DiffuseAlphaMapSampler = material.DiffuseAlphaMapSampler,
+                DisplacementMap = material.DisplacementMap,
+                DisplacementMapSampler = material.DisplacementMapSampler,
+                DisplacementMapScaleMask = material.DisplacementMapScaleMask,
+                EmissiveColor = material.EmissiveColor,
+                EnableTessellation = material.EnableTessellation,
+                MaxDistanceTessellationFactor = material.MaxDistanceTessellationFactor,
+                MaxTessellationDistance = material.MaxTessellationDistance,
+                MinDistanceTessellationFactor = material.MinDistanceTessellationFactor,
+                MinTessellationDistance = material.MinTessellationDistance,
+                NormalMap = material.NormalMap,
+                NormalMapSampler = material.NormalMapSampler,
+                ReflectiveColor = material.ReflectiveColor,
+                RenderDiffuseAlphaMap = material.RenderDiffuseAlphaMap,
+                RenderDiffuseMap = material.RenderDiffuseMap,
+                RenderDisplacementMap = material.RenderDisplacementMap,
+                RenderNormalMap = material.RenderNormalMap,
+            };
+
+            return mat;
         }
     }
 }

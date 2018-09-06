@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Occurs when [on device lost].
         /// </summary>
-        public event EventHandler<EventArgs> OnDeviceLost;
+        public event EventHandler<EventArgs> DeviceLost;
         /// <summary>
         /// The color buffer
         /// </summary>
@@ -81,15 +81,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The height of the target.
         /// </value>
         public int TargetHeight { private set; get; }
-
-        private IDeviceContextPool deviceContextPool;
         /// <summary>
         /// Gets the device context pool.
         /// </summary>
         /// <value>
         /// The device context pool.
         /// </value>
-        public IDeviceContextPool DeviceContextPool { get { return deviceContextPool; } }
+        public IDeviceContextPool DeviceContextPool { get; private set; }
 
         private PingPongColorBuffers fullResPPBuffer;
         public PingPongColorBuffers FullResPPBuffer { get { return fullResPPBuffer; } }
@@ -126,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public Device Device
         {
-            get { return deviceResources.Device; }
+            get { return DeviceResources.Device; }
         }
         /// <summary>
         /// Gets the device2 d.
@@ -134,21 +132,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The device2 d.
         /// </value>
-        public global::SharpDX.Direct2D1.Device Device2D { get { return deviceResources.Device2D; } }
+        public global::SharpDX.Direct2D1.Device Device2D { get { return DeviceResources.Device2D; } }
         /// <summary>
         /// Gets the device context2 d.
         /// </summary>
         /// <value>
         /// The device context2 d.
         /// </value>
-        public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return deviceResources.DeviceContext2D; } }
+        public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return DeviceResources.DeviceContext2D; } }
         /// <summary>
         /// Gets or sets the device resources.
         /// </summary>
         /// <value>
         /// The device resources.
         /// </value>
-        protected IDeviceResources deviceResources { private set; get; }
+        protected IDeviceResources DeviceResources { private set; get; }
         /// <summary>
         /// Gets or sets a value indicating whether [use depth stencil buffer].
         /// </summary>
@@ -172,8 +170,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="useDepthStencilBuffer"></param>
         public DX11RenderBufferProxyBase(IDeviceResources deviceResource, bool useDepthStencilBuffer = true)
         {
-            this.deviceResources = deviceResource;
-            deviceContextPool = Collect(new DeviceContextPool(Device));
+            this.DeviceResources = deviceResource;
+            DeviceContextPool = Collect(new DeviceContextPool(Device));
             this.UseDepthStencilBuffer = useDepthStencilBuffer;
         }
 
@@ -189,8 +187,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer, out colorBuffer, out depthStencilBuffer);
             backBuffer = OnCreateBackBuffer(width, height);
             backBuffer.CreateRenderTargetView();
-            fullResPPBuffer = Collect(new PingPongColorBuffers(Format, width, height, this.deviceResources));
-            fullResDepthStencilPool = Collect(new TexturePool(this.deviceResources, new Texture2DDescription()
+            fullResPPBuffer = Collect(new PingPongColorBuffers(Format, width, height, this.DeviceResources));
+            fullResDepthStencilPool = Collect(new TexturePool(this.DeviceResources, new Texture2DDescription()
             {
                 Width = width,
                 Height = height,
@@ -409,7 +407,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void OnDispose(bool disposeManagedResources)
         {
             OnNewBufferCreated = null;
-            OnDeviceLost = null;
+            DeviceLost = null;
             Initialized = false;
             base.OnDispose(disposeManagedResources);
         }
@@ -420,7 +418,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected void RaiseOnDeviceLost()
         {
-            OnDeviceLost?.Invoke(this, EventArgs.Empty);
+            DeviceLost?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

@@ -61,7 +61,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when each render frame finished rendering.
         /// </summary>
-        event EventHandler OnRendered;
+        event EventHandler Rendered;
         /// <summary>
         /// Gets the device.
         /// </summary>

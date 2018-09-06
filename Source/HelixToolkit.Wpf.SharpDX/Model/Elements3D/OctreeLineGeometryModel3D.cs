@@ -18,11 +18,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     var d = (s as OctreeLineGeometryModel3D);
                     if (e.OldValue != null)
                     {
-                        (e.OldValue as IOctreeBasic).OnHit -= d.OctreeLineGeometryModel3D_OnHit;
+                        (e.OldValue as IOctreeBasic).Hit -= d.OctreeLineGeometryModel3D_OnHit;
                     }
                     if (e.NewValue != null)
                     {
-                        (e.NewValue as IOctreeBasic).OnHit += d.OctreeLineGeometryModel3D_OnHit;
+                        (e.NewValue as IOctreeBasic).Hit += d.OctreeLineGeometryModel3D_OnHit;
                     }
                     d.CreateOctreeLines();
                 }));
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
             OctreeVisual.Thickness = 0;
             OctreeVisual.FillMode = global::SharpDX.Direct3D11.FillMode.Wireframe;
             HitVisual.Thickness = 1.5;
-            this.SceneNode.OnVisibleChanged += OctreeLineGeometryModel3D_OnVisibleChanged;
+            this.SceneNode.VisibleChanged += OctreeLineGeometryModel3D_OnVisibleChanged;
         }
 
         private void OctreeLineGeometryModel3D_OnVisibleChanged(object sender, BoolArgs e)

@@ -34,8 +34,11 @@ HSInput main(VSInput input)
         inputn = mul(inputn, (float3x3) mInstance);
         if (bHasNormalMap)
         {
-            inputt1 = mul(inputt1, (float3x3) mInstance);
-            inputt2 = mul(inputt2, (float3x3) mInstance);
+            if (!bAutoTengent)
+            {
+                inputt1 = mul(inputt1, (float3x3) mInstance);
+                inputt2 = mul(inputt2, (float3x3) mInstance);
+            }
         }
     }
     output.p = mul(inputp, mWorld).xyz;
@@ -44,7 +47,14 @@ HSInput main(VSInput input)
     output.t1 = inputt1;
     output.t2 = inputt2;
     output.c = input.c;
-    output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+    if (!bRenderPBR)
+    {
+        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+    }
+    else
+    {
+        output.c2 = vMaterialAmbient;
+    }
     float tess = saturate((minTessDistance - distance(output.p, vEyePos)) / (minTessDistance - maxTessDistance));
     output.tessF = mad(tess, (maxTessFactor - minTessFactor), minTessFactor);
     return output;

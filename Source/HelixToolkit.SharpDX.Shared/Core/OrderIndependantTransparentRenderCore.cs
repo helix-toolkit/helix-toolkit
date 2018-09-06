@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using System.Runtime.CompilerServices;
     using Utilities;
-    public sealed class OrderIndependentTransparentRenderCore : RenderCoreBase<int>
+    public sealed class OrderIndependentTransparentRenderCore : RenderCore
     {
         #region Variables
         private ShaderResourceViewProxy colorTarget;
@@ -123,7 +123,7 @@ namespace HelixToolkit.UWP.Core
                     alphaTargetNoMSAA.CreateTextureView();
                 }
 #endif
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return true; // Skip this frame if texture resized to reduce latency.
             }
             return false;
@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP.Core
             screenQuadPass = technique[DefaultPassNames.Default];
             colorTexIndex = screenQuadPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITColorTB);
             alphaTexIndex = screenQuadPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITAlphaTB);
-            samplerIndex = screenQuadPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+            samplerIndex = screenQuadPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
             targetSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerWrapAni1));
             RenderCount = 0;
             return true;
@@ -179,7 +179,7 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             RenderCount = 0;
             if(context.RenderHost.PerFrameTransparentNodes.Count == 0)
@@ -188,7 +188,7 @@ namespace HelixToolkit.UWP.Core
             }
             else if(CreateTextureResources(context, deviceContext))
             {
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return; // Skip this frame if texture resized to reduce latency.
             }
             Bind(context, deviceContext);
@@ -230,10 +230,6 @@ namespace HelixToolkit.UWP.Core
         }
 
         public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        protected sealed override void OnUpdatePerModelStruct(ref int model, RenderContext context)
         {
         }
     }

@@ -62,9 +62,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                             sceneNode = OnCreateSceneNode();
                             AssignDefaultValuesToSceneNode(sceneNode);
                             sceneNode.WrapperSource = this;
-                            sceneNode.OnAttached += SceneNode_OnAttached;
-                            sceneNode.OnDetached += SceneNode_OnDetached;
-                            sceneNode.OnUpdate += SceneNode_OnUpdate;
+                            sceneNode.Attached += SceneNode_OnAttached;
+                            sceneNode.Detached += SceneNode_OnDetached;
+                            sceneNode.UpdateRequested += SceneNode_OnUpdate;
                             OnSceneNodeCreated?.Invoke(this, new SceneNode2DCreatedEventArgs(sceneNode));
                         }
                     }

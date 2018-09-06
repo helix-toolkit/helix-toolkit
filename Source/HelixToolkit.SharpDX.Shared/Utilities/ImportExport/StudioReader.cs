@@ -554,7 +554,7 @@ namespace HelixToolkit.UWP
             {
                 float x = reader.ReadSingle();
                 float y = reader.ReadSingle();
-                pts.Add(new Vector2(x, y));
+                pts.Add(new Vector2(x,1- y));
             }
             return pts;
         }
@@ -722,11 +722,11 @@ namespace HelixToolkit.UWP
                     texture = Path.ChangeExtension(texture, ".png");
                 }
                 var actualTexturePath = this.TexturePath ?? string.Empty;
-                string path = Path.Combine(actualTexturePath, texture);
+                string path = Path.GetFullPath(Path.Combine(actualTexturePath, texture));
                 if (File.Exists(path))
                 {
                     var stream = new MemoryStream();
-                    using (var fileStream = File.OpenRead(new Uri(path, UriKind.Relative).AbsolutePath))
+                    using (var fileStream = File.OpenRead(path))
                     {
                         fileStream.CopyTo(stream);
                         return stream;

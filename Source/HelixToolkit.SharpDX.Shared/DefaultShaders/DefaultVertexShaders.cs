@@ -24,6 +24,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshDefault";
+
         /// <summary>
         /// Gets the vs mesh batched.
         /// </summary>
@@ -34,6 +35,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshBatched";
+
         /// <summary>
         /// 
         /// </summary>
@@ -41,6 +43,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshTessellation";
+
         /// <summary>
         /// 
         /// </summary>
@@ -112,6 +115,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshClipPlane";
+
         /// <summary>
         /// 
         /// </summary>
@@ -188,6 +192,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsPlaneGrid";
+
 #if !NETFX_CORE
         /// <summary>
         /// 

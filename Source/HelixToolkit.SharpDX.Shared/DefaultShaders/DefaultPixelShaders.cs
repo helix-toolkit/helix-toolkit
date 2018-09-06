@@ -367,6 +367,27 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "psPlaneGrid";
 
+        /// <summary>
+        /// Gets the ps mesh PBR.
+        /// </summary>
+        /// <value>
+        /// The ps mesh PBR.
+        /// </value>
+        public static string PSMeshPBR
+        {
+            get;
+        } = "psMeshPBR";
+
+        /// <summary>
+        /// Gets the ps mesh PBR OIT.
+        /// </summary>
+        /// <value>
+        /// The ps mesh PBR.
+        /// </value>
+        public static string PSMeshPBROIT
+        {
+            get;
+        } = "psMeshPBROIT";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -600,6 +621,18 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSPlaneGrid = new ShaderDescription(nameof(PSPlaneGrid), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSPlaneGrid);
+
+        /// <summary>
+        /// The ps mesh PBR
+        /// </summary>
+        public static ShaderDescription PSMeshPBR = new ShaderDescription(nameof(PSMeshPBR), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshPBR);
+
+        /// <summary>
+        /// The ps mesh PBR
+        /// </summary>
+        public static ShaderDescription PSMeshPBROIT = new ShaderDescription(nameof(PSMeshPBROIT), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshPBROIT);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

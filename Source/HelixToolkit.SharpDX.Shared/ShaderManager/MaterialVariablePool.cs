@@ -37,7 +37,8 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    var v = material.CreateMaterialVariables(effectsManager, technique);                  
+                    var v = material.CreateMaterialVariables(effectsManager, technique);
+                    v.Initialize();
                     v.Disposed += (s, e) => 
                     {
                         lock (dictionary)

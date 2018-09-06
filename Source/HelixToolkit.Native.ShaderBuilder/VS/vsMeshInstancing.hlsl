@@ -34,8 +34,11 @@ PSInput main(VSInstancingInput input)
         inputn = mul(inputn, (float3x3) mInstance);
         if (bHasNormalMap)
         {
-            inputt1 = mul(inputt1, (float3x3) mInstance);
-            inputt2 = mul(inputt2, (float3x3) mInstance);
+            if (!bAutoTengent)
+            {
+                inputt1 = mul(inputt1, (float3x3) mInstance);
+                inputt2 = mul(inputt2, (float3x3) mInstance);
+            }
         }
     }
 
@@ -49,14 +52,28 @@ PSInput main(VSInstancingInput input)
     {
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
         output.cDiffuse = vMaterialDiffuse;
-        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+        if (!bRenderPBR)
+        {
+            output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+        }
+        else
+        {
+            output.c2 = vMaterialAmbient;
+        }
     }
     else
     {
 		//set texture coords and color
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy + input.tOffset;
         output.cDiffuse = input.diffuseC;
-        output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
+        if (!bRenderPBR)
+        {
+            output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
+        }
+        else
+        {
+            output.c2 = input.ambientC;
+        }
     }
 
     if (bHasDisplacementMap)
@@ -79,14 +96,12 @@ PSInput main(VSInstancingInput input)
 
     if (bHasNormalMap)
     {
-		// transform the tangents by the world matrix and normalize
-        output.t1 = normalize(mul(inputt1, (float3x3) mWorld));
-        output.t2 = normalize(mul(inputt2, (float3x3) mWorld));
-    }
-    else
-    {
-        output.t1 = 0.0f;
-        output.t2 = 0.0f;
+        if (!bAutoTengent)
+        {
+		    // transform the tangents by the world matrix and normalize
+            output.t1 = normalize(mul(inputt1, (float3x3) mWorld));
+            output.t2 = normalize(mul(inputt2, (float3x3) mWorld));
+        }
     }
 
     return output;

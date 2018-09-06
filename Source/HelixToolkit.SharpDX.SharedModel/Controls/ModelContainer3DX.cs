@@ -21,6 +21,7 @@ using System.Windows.Controls;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using System.ComponentModel;
     using Core2D;
     using HelixToolkit.Logger;
     using Render;
@@ -100,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when each render frame finished rendering.
         /// </summary>
-        public event EventHandler OnRendered;
+        public event EventHandler Rendered;
 #pragma warning restore 0067
         /// <summary>
         /// Gets the unique identifier.
@@ -311,6 +312,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color of the clear.
         /// </value>
         /// <exception cref="NotImplementedException"></exception>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 ClearColor
         {
             get

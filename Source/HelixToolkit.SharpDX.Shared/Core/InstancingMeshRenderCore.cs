@@ -23,11 +23,11 @@ namespace HelixToolkit.UWP.Core
                 {
                     if (old != null)
                     {
-                        old.OnElementChanged -= OnElementChanged;
+                        old.ElementChanged -= OnElementChanged;
                     }
                     if (parameterBufferModel != null)
                     {
-                        parameterBufferModel.OnElementChanged += OnElementChanged;
+                        parameterBufferModel.ElementChanged += OnElementChanged;
                     }
                 }
             }
@@ -43,10 +43,10 @@ namespace HelixToolkit.UWP.Core
             return base.OnUpdateCanRenderFlag() && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
+        protected override void OnUpdatePerModelStruct(RenderContext context)
         {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
+            base.OnUpdatePerModelStruct(context);
+            modelStruct.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
         }
 
         protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)

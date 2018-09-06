@@ -14,7 +14,7 @@ float4 AdjustSaturation(float4 color, float saturation)
 float4 main(MeshOutlinePS_INPUT pin) : SV_Target
 {
     // Uses sampleWeights[0].x as base saturation, sampleWeights[0].y as bloom saturation
-    float4 bloom = texDiffuseMap.Sample(samplerDiffuse, pin.Tex);
+    float4 bloom = texDiffuseMap.Sample(samplerSurface, pin.Tex);
     bloom = AdjustSaturation(bloom, Param._m02) * Param._m03;
     return bloom;
 }

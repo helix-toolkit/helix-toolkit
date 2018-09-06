@@ -19,58 +19,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class PointNode : GeometryNode
+    public class PointNode : MaterialGeometryNode
     {
         #region Properties
-        /// <summary>
-        /// Gets or sets the color.
-        /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
-        public Color4 Color
-        {
-            get { return (RenderCore as IPointRenderParams).PointColor; }
-            set { (RenderCore as IPointRenderParams).PointColor = value; }
-        }
-        /// <summary>
-        /// Gets or sets the size.
-        /// </summary>
-        /// <value>
-        /// The size.
-        /// </value>
-        public Size2F Size
-        {
-            get { return new Size2F((RenderCore as IPointRenderParams).Width, (RenderCore as IPointRenderParams).Height); }
-            set
-            {
-                (RenderCore as IPointRenderParams).Width = value.Width;
-                (RenderCore as IPointRenderParams).Height = value.Height;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the figure.
-        /// </summary>
-        /// <value>
-        /// The figure.
-        /// </value>
-        public PointFigure Figure
-        {
-            get { return (RenderCore as IPointRenderParams).Figure; }
-            set { (RenderCore as IPointRenderParams).Figure = value; }
-        }
-        /// <summary>
-        /// Gets or sets the figure ratio.
-        /// </summary>
-        /// <value>
-        /// The figure ratio.
-        /// </value>
-        public float FigureRatio
-        {
-            get { return (RenderCore as IPointRenderParams).FigureRatio; }
-            set { (RenderCore as IPointRenderParams).FigureRatio = value; }
-        }
-
         /// <summary>
         /// Used only for point/line hit test
         /// </summary>
@@ -117,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override RenderCore OnCreateRenderCore()
         {
-            return new PointRenderCore();
+            return new PointLineRenderCore();
         }
 
         /// <summary>

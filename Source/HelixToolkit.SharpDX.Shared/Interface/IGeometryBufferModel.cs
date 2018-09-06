@@ -68,8 +68,8 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IGeometryBufferModel : IAttachableBufferModel
     {
-        event EventHandler OnVertexBufferUpdated;
-        event EventHandler OnIndexBufferUpdated;
+        event EventHandler VertexBufferUpdated;
+        event EventHandler IndexBufferUpdated;
         /// <summary>
         /// Gets or sets the effects manager.
         /// </summary>
@@ -110,7 +110,7 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IBoneSkinMeshBufferModel : IGeometryBufferModel
     {
-        event EventHandler OnBoneIdBufferUpdated;
+        event EventHandler BoneIdBufferUpdated;
         IElementsBufferProxy BoneIdBuffer { get; }
     }
     /// <summary>

@@ -194,15 +194,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     Log(LogLevel.Information, $"Set new EffectsManager;");
                     if (currentManager != null)
                     {
-                        currentManager.OnDisposeResources -= OnManagerDisposed;
-                        currentManager.OnInvalidateRenderer -= EffectsManager_OnInvalidateRenderer;
+                        currentManager.DisposingResources -= OnManagerDisposed;
+                        currentManager.InvalidateRender -= EffectsManager_OnInvalidateRenderer;
                     }
                     RemoveAndDispose(ref immediateDeviceContext);
                     if (effectsManager != null)
                     {
-                        effectsManager.OnDisposeResources += OnManagerDisposed;
-                        effectsManager.OnInvalidateRenderer += EffectsManager_OnInvalidateRenderer;
-                        RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+                        effectsManager.DisposingResources += OnManagerDisposed;
+                        effectsManager.InvalidateRender += EffectsManager_OnInvalidateRenderer;
+                        RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Mesh] : viewport.RenderTechnique;
                         FeatureLevel = effectsManager.Device.FeatureLevel;
 #if DX11_1
                         immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext1, effectsManager.Device));
@@ -515,7 +515,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Occurs when each render frame finished rendering.
         /// </summary>
-        public event EventHandler OnRendered;
+        public event EventHandler Rendered;
 
         private readonly Func<IDevice3DResources, IRenderer> createRendererFunction;
 #endregion
@@ -649,7 +649,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 {
                     var desc = ResultDescriptor.Find(ex.ResultCode);
                     if (desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset 
-                        || desc == global::SharpDX.DXGI.ResultCode.DeviceHung
+                        || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
                         || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                     {
                         Log(LogLevel.Warning, $"Device Lost, code = {desc.Code}");
@@ -675,7 +675,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }                
                 lastRenderingDuration = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp() / Stopwatch.Frequency) - t0;
                 RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);
-                OnRendered?.Invoke(this, EventArgs.Empty);
+                Rendered?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -793,7 +793,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             RemoveAndDispose(ref renderBuffer);
             renderBuffer = Collect(CreateRenderBuffer());
             renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
-            renderBuffer.OnDeviceLost += RenderBuffer_OnDeviceLost;
+            renderBuffer.DeviceLost += RenderBuffer_OnDeviceLost;
             renderer?.Detach();
             RemoveAndDispose(ref renderer);
             renderer = Collect(CreateRenderer());
@@ -921,7 +921,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (renderBuffer != null)
             {
                 renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
-                renderBuffer.OnDeviceLost -= RenderBuffer_OnDeviceLost;
+                renderBuffer.DeviceLost -= RenderBuffer_OnDeviceLost;
             }
             renderer?.Detach();
             RemoveAndDispose(ref renderer);
@@ -990,7 +990,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 ExceptionOccurred = null;
                 StartRenderLoop = null;
                 StopRenderLoop = null;
-                OnRendered = null;                
+                Rendered = null;                
             }
             base.OnDispose(disposeManagedResources);
         }

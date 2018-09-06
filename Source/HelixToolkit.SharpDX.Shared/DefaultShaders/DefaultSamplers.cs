@@ -105,16 +105,28 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// The cube sampler
         /// </summary>
-        public static SamplerStateDescription CubeSampler = new SamplerStateDescription()
+        public static SamplerStateDescription EnvironmentSampler = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Clamp,
             AddressV = TextureAddressMode.Clamp,
             AddressW = TextureAddressMode.Clamp,
             Filter = Filter.MinMagLinearMipPoint,
-            MaximumAnisotropy = 2,
-            MaximumLod = float.MaxValue
+            MaximumAnisotropy = 1,
+            MaximumLod = 0
         };
 
+        /// <summary>
+        /// The cube sampler
+        /// </summary>
+        public static SamplerStateDescription IBLSampler = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Clamp,
+            AddressV = TextureAddressMode.Clamp,
+            AddressW = TextureAddressMode.Clamp,
+            Filter = Filter.MinMagLinearMipPoint,
+            MaximumAnisotropy = 1,
+            MaximumLod = float.MaxValue
+        };
         /// <summary>
         /// The linear sampler clamp ani4
         /// </summary>

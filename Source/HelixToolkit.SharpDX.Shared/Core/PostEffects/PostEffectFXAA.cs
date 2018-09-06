@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Components;
 
-    public sealed class PostEffectFXAA : RenderCoreBase<BorderEffectStruct>, IPostEffect
+    public sealed class PostEffectFXAA : RenderCore, IPostEffect
     {
         private string effectName = DefaultRenderTechniqueNames.PostEffectFXAA;
         public string EffectName
@@ -44,6 +44,7 @@ namespace HelixToolkit.UWP.Core
         private ShaderPass FXAAPass;
         private ShaderPass LUMAPass;
         private readonly ConstantBufferComponent modelCB;
+        private BorderEffectStruct modelStruct;
 
         public PostEffectFXAA() : base(RenderType.PostProc)
         {
@@ -55,7 +56,7 @@ namespace HelixToolkit.UWP.Core
             FXAAPass = technique[DefaultPassNames.FXAAPass];
             LUMAPass = technique[DefaultPassNames.LumaPass];
             textureSlot = FXAAPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-            samplerSlot = FXAAPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+            samplerSlot = FXAAPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
             sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
             return true;
         }
@@ -71,12 +72,13 @@ namespace HelixToolkit.UWP.Core
             return IsAttached && !string.IsNullOrEmpty(EffectName) && FXAALevel != FXAALevel.None;
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             var buffer = context.RenderHost.RenderBuffer;
             deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.NextRTV });
             deviceContext.SetViewport(0, 0, buffer.TargetWidth, buffer.TargetHeight, 0.0f, 1.0f);
             deviceContext.SetScissorRectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight);
+            OnUpdatePerModelStruct(context);
             modelCB.Upload(deviceContext, ref modelStruct);
             LUMAPass.BindShader(deviceContext);
             LUMAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
@@ -91,31 +93,31 @@ namespace HelixToolkit.UWP.Core
             FXAAPass.PixelShader.BindTexture(deviceContext, textureSlot, null);
         }
 
-        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
+        private void OnUpdatePerModelStruct(RenderContext context)
         {
-            model.Color.Red = (float)(1 / context.ActualWidth);
-            model.Color.Green = (float)(1 / context.ActualHeight);
+            modelStruct.Color.Red = (float)(1 / context.ActualWidth);
+            modelStruct.Color.Green = (float)(1 / context.ActualHeight);
             switch (FXAALevel)
             {
                 case FXAALevel.Low:
-                    model.Param.M11 = 0.25f; //fxaaQualitySubpix
-                    model.Param.M12 = 0.250f; // FxaaFloat fxaaQualityEdgeThreshold,
-                    model.Param.M13 = 0.0833f; // FxaaFloat fxaaQualityEdgeThresholdMin,
+                    modelStruct.Param.M11 = 0.25f; //fxaaQualitySubpix
+                    modelStruct.Param.M12 = 0.250f; // FxaaFloat fxaaQualityEdgeThreshold,
+                    modelStruct.Param.M13 = 0.0833f; // FxaaFloat fxaaQualityEdgeThresholdMin,
                     break;
                 case FXAALevel.Medium:
-                    model.Param.M11 = 0.50f;
-                    model.Param.M12 = 0.166f;
-                    model.Param.M13 = 0.0625f;
+                    modelStruct.Param.M11 = 0.50f;
+                    modelStruct.Param.M12 = 0.166f;
+                    modelStruct.Param.M13 = 0.0625f;
                     break;
                 case FXAALevel.High:
-                    model.Param.M11 = 0.75f;
-                    model.Param.M12 = 0.125f;
-                    model.Param.M13 = 0.0625f;
+                    modelStruct.Param.M11 = 0.75f;
+                    modelStruct.Param.M12 = 0.125f;
+                    modelStruct.Param.M13 = 0.0625f;
                     break;
                 case FXAALevel.Ultra:
-                    model.Param.M11 = 1.00f;
-                    model.Param.M12 = 0.063f;
-                    model.Param.M13 = 0.0312f;
+                    modelStruct.Param.M11 = 1.00f;
+                    modelStruct.Param.M12 = 0.063f;
+                    modelStruct.Param.M13 = 0.0312f;
                     break;
             }
         }

@@ -18,53 +18,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class LineNode : GeometryNode
-    {
-        #region Properties
-        /// <summary>
-        /// Gets or sets the color.
-        /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
-        public Color4 Color
-        {
-            get { return (RenderCore as ILineRenderParams).LineColor; }
-            set { (RenderCore as ILineRenderParams).LineColor = value; }
-        }
-        /// <summary>
-        /// Gets or sets the thickness.
-        /// </summary>
-        /// <value>
-        /// The thickness.
-        /// </value>
-        public float Thickness
-        {
-            get { return (RenderCore as ILineRenderParams).Thickness; }
-            set { (RenderCore as ILineRenderParams).Thickness = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the smoothness.
-        /// </summary>
-        /// <value>
-        /// The smoothness.
-        /// </value>
-        public float Smoothness
-        {
-            get { return (RenderCore as ILineRenderParams).Smoothness; }
-            set { (RenderCore as ILineRenderParams).Smoothness = value; }
-        }
-
+    public class LineNode : MaterialGeometryNode
+    {        
         /// <summary>
         /// Used only for point/line hit test
         /// </summary>
         public double HitTestThickness
         {
             set; get;
-        } = 1.0; 
-        #endregion
-
+        } = 1.0;
         /// <summary>
         /// Called when [create buffer model].
         /// </summary>
@@ -83,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override RenderCore OnCreateRenderCore()
         {
-            return new LineRenderCore();
+            return new PointLineRenderCore();
         }
 
         /// <summary>

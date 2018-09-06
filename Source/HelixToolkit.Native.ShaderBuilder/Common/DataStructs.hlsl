@@ -61,8 +61,8 @@ struct VSInputBatched
     float3 t1 : TANGENT;
     float3 t2 : BINORMAL;
     float2 t : TEXCOORD;
-    float4 c : COLOR; // if batched x: diffuse, y: emissive, z: specular, w: reflect
-    float4 c1 : COLOR1; // if batched x: ambient, y: specular shininess, z: diffuse alpha
+    float4 c : COLOR; // if batched x: diffuse, y: emissive, z: specular, w: reflect; PBR : albedo
+    float4 c1 : COLOR1; // if batched x: ambient, y: specular shininess, z: diffuse alpha; PBR : AO, Roughtness, Metallic
 };
 
 struct VSBoneSkinInput

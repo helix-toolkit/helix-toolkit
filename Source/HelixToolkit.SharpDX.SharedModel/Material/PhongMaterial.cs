@@ -2,6 +2,7 @@
 using SharpDX.Direct3D11;
 using System.IO;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -12,8 +13,9 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-    using Shaders;
-   
+    using Shaders;   
+    using Utilities;
+
     /// <summary>
     /// Implments a phong-material with its all properties
     /// Includes Diffuse, Normal, Displacement, Specular, etc. maps
@@ -29,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black, 
                 (d, e)=> 
                 {
-                    ((d as Material).Core as IPhongMaterial).AmbientColor = (Color4)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).AmbientColor = (Color4)e.NewValue;
                 }));
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.White,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).DiffuseColor = (Color4)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).DiffuseColor = (Color4)e.NewValue;
                 }));
 
         /// <summary>
@@ -50,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EmissiveColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).EmissiveColor = (Color4)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).EmissiveColor = (Color4)e.NewValue;
                 }));
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("SpecularColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Gray,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).SpecularColor = (Color4)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).SpecularColor = (Color4)e.NewValue;
                 }));
 
         /// <summary>
@@ -70,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("SpecularShininess", typeof(float), typeof(PhongMaterial), new PropertyMetadata(30f,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).SpecularShininess = (float)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).SpecularShininess = (float)e.NewValue;
                 }));
 
         /// <summary>
@@ -80,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("ReflectiveColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata(new Color4(0.1f, 0.1f, 0.1f, 1.0f),
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).ReflectiveColor = (Color4)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).ReflectiveColor = (Color4)e.NewValue;
                 }));
 
         /// <summary>
@@ -88,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
             DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DiffuseMap = e.NewValue as Stream; }));
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// Supports alpha channel image, such as PNG.
@@ -98,56 +100,42 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseAlphaMapProperty =
             DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null, 
-                (d,e)=> { ((d as Material).Core as IPhongMaterial).DiffuseAlphaMap = e.NewValue as Stream; }));
+                (d,e)=> { ((d as Material).Core as PhongMaterialCore).DiffuseAlphaMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapProperty =
             DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).NormalMap = e.NewValue as Stream; }));
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).NormalMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapProperty =
             DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DisplacementMap = e.NewValue as Stream; }));
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapScaleMaskProperty =
             DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new PropertyMetadata(new Vector4(0,0,0,1),
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DisplacementMapScaleMask = (Vector4)e.NewValue; }));
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMapScaleMask = (Vector4)e.NewValue; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapSamplerProperty =
             DependencyProperty.Register("DiffuseMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DiffuseMapSampler = (SamplerStateDescription)e.NewValue; }));
-
-        /// <summary>
-        ///
-        /// </summary>
-        public static readonly DependencyProperty DiffuseAlphaMapSamplerProperty =
-            DependencyProperty.Register("DiffuseAlphaMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DiffuseAlphaMapSampler = (SamplerStateDescription)e.NewValue; }));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty NormalMapSamplerProperty =
-            DependencyProperty.Register("NormalMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).NormalMapSampler = (SamplerStateDescription)e.NewValue; }));
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMapSampler = (SamplerStateDescription)e.NewValue; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapSamplerProperty =
             DependencyProperty.Register("DisplacementMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni1,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DisplacementMapSampler = (SamplerStateDescription)e.NewValue; }));
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMapSampler = (SamplerStateDescription)e.NewValue; }));
 
         /// <summary>
         /// 
@@ -156,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).RenderDiffuseMap = (bool)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).RenderDiffuseMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -165,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).RenderDiffuseAlphaMap = (bool)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).RenderDiffuseAlphaMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -174,7 +162,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).RenderNormalMap = (bool)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).RenderNormalMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -183,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).RenderDisplacementMap = (bool)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).RenderDisplacementMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// The render environment map property
@@ -192,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).RenderEnvironmentMap = (bool)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).RenderEnvironmentMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// The render shadow map property
@@ -201,38 +189,47 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).RenderShadowMap = (bool)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).RenderShadowMap = (bool)e.NewValue;
                 }));
 
+        /// <summary>
+        /// The enable automatic tangent
+        /// </summary>
+        public static readonly DependencyProperty EnableAutoTangentProperty =
+            DependencyProperty.Register("EnableAutoTangent", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PhongMaterialCore).EnableAutoTangent = (bool)e.NewValue;
+                }));
         /// <summary>
         /// The enable tessellation property
         /// </summary>
         public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(PhongMaterial),
-            new PropertyMetadata(false, (d, e) => { ((d as Material).Core as IPhongMaterial).EnableTessellation = (bool)e.NewValue; }));
+            new PropertyMetadata(false, (d, e) => { ((d as Material).Core as PhongMaterialCore).EnableTessellation = (bool)e.NewValue; }));
         /// <summary>
         /// The tessellation factor at <see cref="MaxTessellationDistance"/> property
         /// </summary>
         public static readonly DependencyProperty MaxDistanceTessellationFactorProperty =
             DependencyProperty.Register("MaxDistanceTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Material).Core as IPhongMaterial).MaxDistanceTessellationFactor = (float)(double)e.NewValue; }));
+            { ((d as Material).Core as PhongMaterialCore).MaxDistanceTessellationFactor = (float)(double)e.NewValue; }));
         /// <summary>
         /// The tessellation factor at <see cref="MinTessellationDistance"/> property
         /// </summary>
         public static readonly DependencyProperty MinDistanceTessellationFactorProperty =
             DependencyProperty.Register("MinDistanceTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(2.0, (d, e) =>
-            { ((d as Material).Core as IPhongMaterial).MinDistanceTessellationFactor = (float)(double)e.NewValue; }));
+            { ((d as Material).Core as PhongMaterialCore).MinDistanceTessellationFactor = (float)(double)e.NewValue; }));
         /// <summary>
         /// The maximum tessellation distance property
         /// </summary>
         public static readonly DependencyProperty MaxTessellationDistanceProperty =
             DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(50.0, (d, e) =>
-            { ((d as Material).Core as IPhongMaterial).MaxTessellationDistance = (float)(double)e.NewValue; }));
+            { ((d as Material).Core as PhongMaterialCore).MaxTessellationDistance = (float)(double)e.NewValue; }));
         /// <summary>
         /// The minimum tessellation distance property
         /// </summary>
         public static readonly DependencyProperty MinTessellationDistanceProperty =
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Material).Core as IPhongMaterial).MinTessellationDistance = (float)(double)e.NewValue; }));
+            { ((d as Material).Core as PhongMaterialCore).MinTessellationDistance = (float)(double)e.NewValue; }));
 
 
         /// <summary>
@@ -241,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty UVTransformProperty =
             DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(PhongMaterial), new PropertyMetadata(Matrix.Identity, (d,e)=>
             {
-                ((d as Material).Core as IPhongMaterial).UVTransform = (Matrix)e.NewValue;
+                ((d as Material).Core as PhongMaterialCore).UVTransform = (Matrix)e.NewValue;
             }));
 
 
@@ -255,6 +252,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 AmbientColor
         {
             get { return (Color4)this.GetValue(AmbientColorProperty); }
@@ -265,6 +265,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 DiffuseColor
         {
             get { return (Color4)this.GetValue(DiffuseColorProperty); }
@@ -275,6 +278,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the emissive color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 EmissiveColor
         {
             get { return (Color4)this.GetValue(EmissiveColorProperty); }
@@ -284,6 +290,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// A fake parameter for reflectivity of the environment map
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 ReflectiveColor
         {
             get { return (Color4)this.GetValue(ReflectiveColorProperty); }
@@ -294,6 +303,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the specular color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 SpecularColor
         {
             get { return (Color4)this.GetValue(SpecularColorProperty); }
@@ -356,29 +368,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public SamplerStateDescription DiffuseAlphaMapSampler
-        {
-            get { return (SamplerStateDescription)this.GetValue(DiffuseAlphaMapSamplerProperty); }
-            set { this.SetValue(DiffuseAlphaMapSamplerProperty, value); }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public SamplerStateDescription NormalMapSampler
-        {
-            get { return (SamplerStateDescription)this.GetValue(NormalMapSamplerProperty); }
-            set { this.SetValue(NormalMapSamplerProperty, value); }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
         public SamplerStateDescription DisplacementMapSampler
         {
             get { return (SamplerStateDescription)this.GetValue(DisplacementMapSamplerProperty); }
             set { this.SetValue(DisplacementMapSamplerProperty, value); }
         }
 
+#if !NETFX_CORE
+        [TypeConverter(typeof(Vector4Converter))]
+#endif
         public Vector4 DisplacementMapScaleMask
         {
             set { SetValue(DisplacementMapScaleMaskProperty, value); }
@@ -444,6 +442,18 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)GetValue(RenderShadowMapProperty); }
             set { SetValue(RenderShadowMapProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable automatic tangent].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic tangent]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoTangent
+        {
+            get { return (bool)GetValue(EnableAutoTangentProperty); }
+            set { SetValue(EnableAutoTangentProperty, value); }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [enable tessellation].
@@ -534,10 +544,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMap = this.DiffuseMap,
                 DiffuseAlphaMap = this.DiffuseAlphaMap,
                 DisplacementMapScaleMask = this.DisplacementMapScaleMask,
-                DiffuseAlphaMapSampler = this.DiffuseAlphaMapSampler,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
-                NormalMapSampler = this.NormalMapSampler,
                 MaxTessellationDistance = (float)this.MaxTessellationDistance,
                 MinTessellationDistance = (float)this.MinTessellationDistance,
                 MaxDistanceTessellationFactor = (float)this.MaxDistanceTessellationFactor,
@@ -549,6 +557,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderNormalMap = RenderNormalMap,
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderShadowMap = RenderShadowMap,
+                EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform,
             };
         }
@@ -576,10 +585,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMap = this.DiffuseMap,
                 DiffuseAlphaMap = this.DiffuseAlphaMap,
                 DisplacementMapScaleMask = this.DisplacementMapScaleMask,
-                DiffuseAlphaMapSampler = this.DiffuseAlphaMapSampler,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
-                NormalMapSampler = this.NormalMapSampler,
                 MaxTessellationDistance = (float)this.MaxTessellationDistance,
                 MinTessellationDistance = (float)this.MinTessellationDistance,
                 MaxDistanceTessellationFactor = (float)this.MaxDistanceTessellationFactor,
@@ -591,6 +598,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderNormalMap = RenderNormalMap,
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderShadowMap = RenderShadowMap,
+                EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform
             };
         }

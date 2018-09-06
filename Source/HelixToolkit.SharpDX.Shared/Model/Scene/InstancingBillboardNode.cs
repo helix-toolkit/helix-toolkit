@@ -49,27 +49,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            if ((Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this, FixedSize))
-            {
-                Debug.WriteLine("Billboard hit");
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Override this function to set render technique during Attach Host.
         /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
         /// </summary>

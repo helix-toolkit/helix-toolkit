@@ -15,6 +15,8 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     using Shaders;
+    using System.ComponentModel;
+    using Utilities;
 
 
     public sealed class DiffuseMaterial : Material
@@ -26,13 +28,16 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(DiffuseMaterial), new PropertyMetadata((Color4)Color.White,
                 (d, e) =>
                 {
-                    ((d as Material).Core as IPhongMaterial).DiffuseColor = (Color4)e.NewValue;
+                    ((d as Material).Core as PhongMaterialCore).DiffuseColor = (Color4)e.NewValue;
                 }));
 
         /// <summary>
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
+#if !NETFX_CORE
+        [TypeConverter(typeof(Color4Converter))]
+#endif
         public Color4 DiffuseColor
         {
             get { return (Color4)this.GetValue(DiffuseColorProperty); }
@@ -44,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
             DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(DiffuseMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DiffuseMap = e.NewValue as Stream; }));
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// Gets or sets the diffuse map.
@@ -63,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseMapSamplerProperty =
             DependencyProperty.Register("DiffuseMapSampler", typeof(SamplerStateDescription), typeof(DiffuseMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DiffuseMapSampler = (SamplerStateDescription)e.NewValue; }));
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMapSampler = (SamplerStateDescription)e.NewValue; }));
         /// <summary>
         /// 
         /// </summary>
@@ -78,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty UVTransformProperty =
             DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(DiffuseMaterial), new PropertyMetadata(Matrix.Identity, (d, e) =>
             {
-                ((d as Material).Core as IPhongMaterial).UVTransform = (Matrix)e.NewValue;
+                ((d as Material).Core as PhongMaterialCore).UVTransform = (Matrix)e.NewValue;
             }));
         /// <summary>
         /// Gets or sets the texture uv transform.

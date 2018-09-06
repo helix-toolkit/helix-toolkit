@@ -67,7 +67,7 @@ namespace SimpleDemo
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
             // titles
             Title = "Simple Demo";
             SubTitle = "WPF & SharpDX";

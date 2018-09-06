@@ -99,6 +99,13 @@ namespace HelixToolkit.UWP.ShaderManager
                     $"Potential Causes: Different Constant buffer header has been used.\n" +
                     $"Please refer and update to latest HelixToolkit.SharpDX.ShaderBuilder.CommonBuffers.hlsl. Link: https://github.com/helix-toolkit/helix-toolkit");
             }
+            if (value.VariableDictionary.Count == 0 && description.Variables.Count > 0)
+            {
+                foreach(var variable in description.Variables)
+                {
+                    value.VariableDictionary.Add(variable.Name, variable);
+                }
+            }
         }
 
         /// <summary>

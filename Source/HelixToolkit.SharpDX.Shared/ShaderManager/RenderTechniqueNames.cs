@@ -17,37 +17,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string Blinn = "RenderBlinn";
+        public const string Mesh = "RenderMesh";
 
-        public const string BlinnBatched = "RenderBlinnBatch";
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public const string Diffuse = "RenderDiffuse";
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public const string Colors = "RenderColors";
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public const string Positions = "RenderPositions";
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public const string Normals = "RenderNormals";
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public const string PerturbedNormals = "RenderPerturbedNormals";
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public const string Tangents = "RenderTangents";
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public const string TexCoords = "RenderTexCoords";
+        public const string MeshBatched = "RenderMeshBatch";
+
         /// <summary>
         /// 
         /// </summary>
@@ -71,7 +44,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string InstancingBlinn = "RenderInstancingBlinn";
+        public const string InstancingMesh = "RenderInstancingMesh";
         /// <summary>
         /// 
         /// </summary>
@@ -141,6 +114,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string Default = "Default";
         /// <summary>
+        /// The Physics Based Rendering
+        /// </summary>
+        public const string PBR = "PhysicsBasedRendering";
+        /// <summary>
         /// 
         /// </summary>
         public const string Diffuse = "RenderDiffuse";
@@ -188,6 +165,10 @@ namespace HelixToolkit.UWP
         /// The mesh transparent
         /// </summary>
         public const string OITPass = "MeshOITPass";
+        /// <summary>
+        /// The oit pass PBR
+        /// </summary>
+        public const string PBROITPass = "MeshPhysicsBasedOITPass";
         /// <summary>
         /// 
         /// </summary>

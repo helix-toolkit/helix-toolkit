@@ -26,10 +26,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\RectangleRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\GeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCoreBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\DefaultMeshBatchingBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\StaticGeometryBatchingBufferBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\BillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoneSkinRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoneUploaderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\BillboardBufferModel.cs" />
@@ -53,14 +51,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\LightCoreBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\PointLightCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\SpotLightCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\LineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\Device2DProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshOutlineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\OrderIndependantTransparentRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PointLineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBlurCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBoomCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectFXAA.cs" />
@@ -121,15 +118,24 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\BillboardMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\LineMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PBRMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PointMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\BillboardMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\ColorStripeMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\DiffuseMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\LineMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PassOnlyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\EffectAttributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Components\GeometryBoundManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BoneSkinnedMeshGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\ColorStripeMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\DiffuseMaterialCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\EmptyMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\EmptyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialVariableBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\MaterialVariableBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PassOnlyMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />
@@ -146,6 +152,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Layouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\Light3DSceneShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\LightsBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PBRMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PointMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\OrderKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\ParametricSurface3DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\BatchedMeshNode.cs" />
@@ -155,7 +163,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\TextureSharedPhongMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PhongMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector3Collection.cs" />
@@ -348,7 +356,6 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Model\Collection\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Model\Components\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\Renderer\" />
   </ItemGroup>
 </Project>
