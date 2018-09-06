@@ -628,14 +628,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.renderHostInternal != null)
             {
-                this.renderHostInternal.OnRendered -= this.OnRenderHostInternalOnRendered;
+                this.renderHostInternal.Rendered -= this.RaiseRenderHostRendered;
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
             }
 
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
             if (this.renderHostInternal != null)
             {
-                this.renderHostInternal.OnRendered += this.OnRenderHostInternalOnRendered;
+                this.renderHostInternal.Rendered += this.RaiseRenderHostRendered;
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.ClearColor = BackgroundColor.ToColor4();
                 this.renderHostInternal.IsShadowMapEnabled = IsShadowMappingEnabled;
@@ -1743,7 +1743,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void OnRenderHostInternalOnRendered(object sender, EventArgs e)
+        private void RaiseRenderHostRendered(object sender, EventArgs e)
         {
             this.OnRendered?.Invoke(sender, e);
         }

@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
-    using HelixToolkit.Logger;
+    using Logger;
     using Utilities;
     /// <summary>
     /// Use to store state resources for dynamic creation/destory. Each register will increase the reference counter/>
@@ -113,7 +113,7 @@ namespace HelixToolkit.UWP.ShaderManager
                         var arr = pool.Values.ToArray();
                         foreach (var item in arr)
                         {
-                            item.ForceDispose();
+                            item?.ForceDispose();
                         }
                         pool.Clear();
                     }
@@ -261,7 +261,7 @@ namespace HelixToolkit.UWP.ShaderManager
                         var arr = pool.Values.ToArray();
                         foreach (var item in arr)
                         {
-                            item.Dispose();
+                            item?.Dispose();
                         }
                         pool.Clear();
                     }

@@ -44,7 +44,7 @@ namespace Workitem10048
         protected override SceneNode OnCreateSceneNode()
         {
             var sn = base.OnCreateSceneNode();
-            sn.OnAttached += this.OnSceneNodeOnAttached;
+            sn.Attached += this.OnSceneNodeOnAttached;
             return sn;
         }
 
