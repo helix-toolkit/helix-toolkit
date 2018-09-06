@@ -527,7 +527,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static void ZoomExtents(
             this Camera camera, Viewport3DX viewport, double animationTime = 0)
         {
-            var bounds = viewport.FindBounds();
+            var bounds = viewport.FindBoundsInternal();
             var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
 
             if (bounds.IsEmpty || diagonal.LengthSquared.Equals(0))
