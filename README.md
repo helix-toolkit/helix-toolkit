@@ -53,28 +53,24 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 ## News
 
+#### 2018-08-26
+[V2.4.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.4.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.4.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.4.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.4.0)
+
+#### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
+
 #### 2018-07-22
 [V2.3.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.3.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.3.0)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.3.0)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.3.0)
 
-#### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
-1. Dynamic Buffer Support for geometry data streaming. (WPF.SharpDX and UWP) [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki/Dynamic-Geometry3D-for-Data-Streaming)
-2. New TransformManipulator. See Manipulator Demo. (WPF.SharpDX and UWP)
-3. Ply format reader. (All)
-4. Support Order Independent Transparency for DiffuseMaterial. (WPF.SharpDX and UWP)
-5. Add BatchedMeshGeometryModel3D for mesh batching, supports multiple material color properties.(WPF.SharpDX and UWP)
-6. Add SharpDX.Core simple viewport and performance tester (SharpDX.Core).
-7. Support Manual Render Ordering. (WPF.SharpDX and UWP)
-
 #### 2018-06-17
 [V2.2.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.2.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.2.0)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.2.0)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.2.0)
-
-#### 2018-05-04
-[V2.1.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.1.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 
 ##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](https://github.com/helix-toolkit/helix-toolkit/blob/develop/CHANGELOG.md)
