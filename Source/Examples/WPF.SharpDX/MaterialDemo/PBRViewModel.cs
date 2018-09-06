@@ -102,6 +102,7 @@ namespace MaterialDemo
                         RoughnessFactor = 1.0 / (2 * Row) * Math.Abs(i + Row),
                         MetallicFactor = 1.0 / (2 * Col) * Math.Abs(j + Col),
                         RenderEnvironmentMap = true,
+                        EnableAutoTangent = true,
                         NormalMap = normalMap
                     };
                     materials.Add(m);
@@ -119,7 +120,8 @@ namespace MaterialDemo
             {               
                 AlbedoColor = albedoColor.ToColor4(),
                 RenderEnvironmentMap=true,
-                NormalMap = normalMap
+                NormalMap = normalMap,
+                EnableAutoTangent=true,
             };
             ModelTransform = new Media3D.MatrixTransform3D((Matrix.Scaling(4) * Matrix.Translation(0, 0, 10)).ToMatrix3D());
         }

@@ -269,7 +269,7 @@ namespace HelixToolkit.UWP.Model
             get { return renderDisplacementMap; }
         }
 
-        private bool enableAutoTangent = true;
+        private bool enableAutoTangent = false;
         /// <summary>
         /// Gets or sets a value indicating whether [enable automatic tangent].
         /// </summary>

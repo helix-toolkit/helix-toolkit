@@ -234,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The enable automatic tangent
         /// </summary>
         public static readonly DependencyProperty EnableAutoTangentProperty =
-            DependencyProperty.Register("EnableAutoTangent", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(true,
+            DependencyProperty.Register("EnableAutoTangent", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(false,
                 (d, e) =>
                 {
                     ((d as Material).Core as PBRMaterialCore).EnableAutoTangent = (bool)e.NewValue;
