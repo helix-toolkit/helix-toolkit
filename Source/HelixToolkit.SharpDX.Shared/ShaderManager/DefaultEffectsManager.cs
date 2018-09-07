@@ -242,6 +242,32 @@ namespace HelixToolkit.UWP
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
                         Topology = PrimitiveTopology.PatchListWith3ControlPoints
                     },
+                    new ShaderPassDescription(DefaultPassNames.MeshPBRTriTessellation)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshTessellation,
+                            DefaultHullShaderDescriptions.HSMeshTessellation,
+                            DefaultDomainShaderDescriptions.DSMeshTessellation,
+                            DefaultPSShaderDescriptions.PSMeshPBR
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual,
+                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshPBRTriTessellationOIT)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshTessellation,
+                            DefaultHullShaderDescriptions.HSMeshTessellation,
+                            DefaultDomainShaderDescriptions.DSMeshTessellation,
+                            DefaultPSShaderDescriptions.PSMeshPBROIT
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
+                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
+                    },
                     new ShaderPassDescription(DefaultPassNames.MeshOutline)
                     {
                         ShaderList = new[]

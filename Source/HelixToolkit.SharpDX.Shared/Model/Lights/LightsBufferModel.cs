@@ -47,6 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         public void ResetLightCount()
         {
             LightCount = 0;
+            AmbientLight = new Color4(0, 0, 0, 1);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UploadToBuffer(IBufferProxy buffer, DeviceContextProxy context)

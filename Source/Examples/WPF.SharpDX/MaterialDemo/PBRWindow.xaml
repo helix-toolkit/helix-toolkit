@@ -27,8 +27,7 @@
             EnableDesignModeRendering="False"
             EnableSwapChainRendering="False"
             FXAALevel="Medium"
-            IsShadowMappingEnabled="False"
-            RenderTechnique="{Binding RenderTechnique}"
+            IsShadowMappingEnabled="True"
             ShowCoordinateSystem="False"
             ShowFrameDetails="True"
             SubTitle="{Binding SubTitle}"
@@ -47,15 +46,22 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D x:Name="ambientLight" Color="#A5A5A5" />
-            <hx:DirectionalLight3D Direction="1, -1, -1" Color="White" />
-            <!--<hx:ShadowMap3D />-->
+            <hx:DirectionalLight3D x:Name="directional1" Direction="1, -1, -1" Color="White" />
+            <hx:PointLight3D x:Name="pointLight1" Position="35, 10, 35" Color="Red" Range="80" Attenuation="0.8, 0.01, 0"/>
+            <hx:PointLight3D x:Name="pointLight2" Position="-35, 10, 35" Color="Blue" Range="80" Attenuation="0.8, 0.01, 0"/>
+            <hx:PointLight3D x:Name="pointLight3" Position="35, 10, -35" Color="Green" Range="80" Attenuation="0.8, 0.01, 0"/>
+            <hx:ShadowMap3D />
             <hx:GroupModel3D ItemsSource="{Binding Models}" />
-            <hx:MeshGeometryModel3D
-                CullMode="Back"
-                Geometry="{Binding Model}"
-                Material="{Binding Material}"
-                Transform="{Binding ModelTransform}" />
-            <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
+            <hx:DynamicReflectionMap3D>
+                <hx:MeshGeometryModel3D
+                    x:Name="sphereControl"
+                    CullMode="Back"
+                    Geometry="{Binding Model}"
+                    Material="{Binding Material}"
+                    Transform="{Binding ModelTransform}" />
+            </hx:DynamicReflectionMap3D>
+            <hx:MeshGeometryModel3D CullMode="Back" Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" Transform="{Binding FloorModelTransform}"/>
+            <hx:EnvironmentMap3D IsRendering="{Binding RenderEnvironment}" Texture="{Binding EnvironmentMap}" />
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"
@@ -67,6 +73,8 @@
             <CheckBox IsChecked="{Binding RenderEnvironment}">Render Environment Map</CheckBox>
             <Label>Ambient Color</Label>
             <pt:ColorPicker SelectedColor="{Binding ElementName=ambientLight, Path=Color}" />
+            <Separator/>
+            <Label>Property Controls</Label>
             <Label>Metallic</Label>
             <Slider
                 Maximum="1"
@@ -97,6 +105,15 @@
                 Maximum="1"
                 Minimum="0"
                 Value="{Binding Material.ClearCoatRoughness}" />
+            <CheckBox IsChecked="{Binding Material.RenderNormalMap}">Render Normal Map</CheckBox>
+            <CheckBox IsChecked="{Binding Material.RenderAlbedoMap}">Render Albedo Map</CheckBox>
+            <CheckBox IsChecked="{Binding Material.RenderDisplacementMap}">Render Displace Map</CheckBox>
+            <Separator/>
+            <CheckBox IsChecked="{Binding ElementName=ambientLight, Path=IsRendering}">Ambient Light</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=directional1, Path=IsRendering}">Directional Light</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=pointLight1, Path=IsRendering}">PointLight 1</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=pointLight2, Path=IsRendering}">PointLight 2</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=pointLight3, Path=IsRendering}">PointLight 3</CheckBox>
         </StackPanel>
     </Grid>
 </Window>

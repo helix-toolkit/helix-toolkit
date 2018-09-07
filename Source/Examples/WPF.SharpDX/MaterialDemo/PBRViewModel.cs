@@ -29,8 +29,11 @@ namespace MaterialDemo
         public ObservableElement3DCollection Models { get; } = new ObservableElement3DCollection();
         private List<PBRMaterial> materials = new List<PBRMaterial>();
         public Geometry3D Model { get; }
+        public Geometry3D FloorModel { get; }
         public Transform3D ModelTransform { get; }
         public PBRMaterial Material { get; }
+        public PBRMaterial FloorMaterial { get; }
+        public Transform3D FloorModelTransform { get; }
         private Color albedoColor = Colors.Gold;
         public Color AlbedoColor
         {
@@ -59,9 +62,7 @@ namespace MaterialDemo
                     foreach (var m in materials)
                     {
                         m.RenderEnvironmentMap = value;
-                    }
-
-                    Material.RenderEnvironmentMap = value;
+                    }                   
                 }
             }
             get { return renderEnvironment; }
@@ -77,8 +78,6 @@ namespace MaterialDemo
                     {
                         m.RenderNormalMap = value;
                     }
-
-                    Material.RenderNormalMap = value;
                 }
             }
             get { return renderNormalMap; }
@@ -103,7 +102,8 @@ namespace MaterialDemo
                         MetallicFactor = 1.0 / (2 * Col) * Math.Abs(j + Col),
                         RenderEnvironmentMap = true,
                         EnableAutoTangent = true,
-                        NormalMap = normalMap
+                        NormalMap = normalMap,
+                        RenderShadowMap = true
                     };
                     materials.Add(m);
                     Models.Add(new MeshGeometryModel3D()
@@ -111,19 +111,46 @@ namespace MaterialDemo
                         CullMode = SharpDX.Direct3D11.CullMode.Back,
                         Geometry = SphereModel,
                         Material = m,
-                        Transform = new Media3D.TranslateTransform3D(new Vector3D(i * 6, j * 6, 0))
+                        IsThrowingShadow = true,
+                        Transform = new Media3D.TranslateTransform3D(new Vector3D(i * 6, 0, j * 6))
                     });
                 }
             }
-            Model = SphereModel;
+            builder = new MeshBuilder();
+            builder.AddSphere(Vector3.Zero, 8, 64, 64);
+            Model = builder.ToMesh();
             Material = new PBRMaterial()
-            {               
+            {
                 AlbedoColor = albedoColor.ToColor4(),
-                RenderEnvironmentMap=true,
-                NormalMap = normalMap,
-                EnableAutoTangent=true,
+                RenderEnvironmentMap = true,
+                AlbedoMap = LoadFileToMemory("Engraved_Metal_COLOR.jpg"),
+                NormalMap = LoadFileToMemory("Engraved_Metal_NORM.jpg"),
+                DisplacementMap = LoadFileToMemory("Engraved_Metal_DISP.png"),
+                DisplacementMapScaleMask = new Vector4(0.1f, 0.1f, 0.1f, 0),
+                EnableAutoTangent =true,
             };
-            ModelTransform = new Media3D.MatrixTransform3D((Matrix.Scaling(4) * Matrix.Translation(0, 0, 10)).ToMatrix3D());
+            ModelTransform = new Media3D.MatrixTransform3D(Matrix.Translation(0, 30, 0).ToMatrix3D());
+
+            builder = new MeshBuilder();
+            builder.AddBox(Vector3.Zero, 100, 0.5, 100);
+            var floorGeo = builder.ToMesh();
+            for (int i = 0; i < floorGeo.TextureCoordinates.Count; ++i)
+            {
+                floorGeo.TextureCoordinates[i] *= 5;
+            }
+            FloorModel = floorGeo;
+            FloorMaterial = new PBRMaterial()
+            {
+                AlbedoMap = LoadFileToMemory("Wood_Planks_COLOR.jpg"),
+                NormalMap = LoadFileToMemory("Wood_Planks_NORM.jpg"),
+                DisplacementMap = LoadFileToMemory("Wood_Planks_DISP.png"),
+                DisplacementMapScaleMask = new Vector4(1f, 1f, 1f, 0),
+                RoughnessFactor = 0.8,
+                MetallicFactor = 0.2,                
+                RenderShadowMap = true,
+                EnableAutoTangent = true,
+            };
+            FloorModelTransform = new Media3D.MatrixTransform3D(Matrix.Translation(0, -5, 0).ToMatrix3D());
         }
     }
 }

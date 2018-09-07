@@ -130,6 +130,36 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+      <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_COLOR.jpg">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_DISP.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_NORM.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_OCC.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_ROUGH.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_COLOR.jpg">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_DISP.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_NORM.jpg">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_OCC.jpg">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_ROUGH.jpg">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     <Content Include="..\..\..\..\Images\EnvironmentMaps\Cubemap_Grandcanyon.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -43,8 +43,8 @@ namespace HelixToolkit.UWP.Model
 
         private readonly PBRMaterialCore material;
 
-        public ShaderPass MaterialPass { get; }
-        public ShaderPass MaterialOITPass { get; }
+        public ShaderPass MaterialPass { private set; get; }
+        public ShaderPass MaterialOITPass { private set; get; }
         public ShaderPass ShadowPass { get; }
         public ShaderPass WireframePass { get; } 
         public ShaderPass WireframeOITPass { get; }
@@ -57,10 +57,11 @@ namespace HelixToolkit.UWP.Model
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
             material = core;
-            MaterialPass = technique[DefaultPassNames.PBR];
-            MaterialOITPass = technique[DefaultPassNames.PBROITPass];
+            MaterialPass = technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellation : DefaultPassNames.PBR];
+            MaterialOITPass = technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellationOIT : DefaultPassNames.PBROITPass];
             WireframePass = technique[DefaultPassNames.Wireframe];
             WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
+            ShadowPass = technique[DefaultPassNames.ShadowPass];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
@@ -108,7 +109,11 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PBRMaterialCore.SurfaceMapSampler), () => { CreateSampler(material.SurfaceMapSampler, SurfaceSamplerIdx); });
             AddPropertyBinding(nameof(PBRMaterialCore.IBLSampler), () => { CreateSampler(material.IBLSampler, IBLSamplerIdx); });
             AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapSampler), () => { CreateSampler(material.DisplacementMapSampler, DisplaceSamplerIdx); });
-            AddPropertyBinding(nameof(PBRMaterialCore.EnableTessellation), () => { });
+            AddPropertyBinding(nameof(PBRMaterialCore.EnableTessellation), () =>
+            {
+                MaterialPass = Technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellation : DefaultPassNames.PBR];
+                MaterialOITPass = Technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellationOIT : DefaultPassNames.PBROITPass];
+            });
 
             WriteValue(PhongPBRMaterialStruct.RenderPBR, true); // Make sure to set this flag
         }

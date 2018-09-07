@@ -182,6 +182,12 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
+        public const string MeshPBRTriTessellation = "MeshPBRTriTessellation";
+
+        public const string MeshPBRTriTessellationOIT = "MeshPBRTriTessellationOIT";
+        /// <summary>
+        /// 
+        /// </summary>
         public const string MeshQuadTessellation = "MeshQuadTessellation";
         /// <summary>
         /// 

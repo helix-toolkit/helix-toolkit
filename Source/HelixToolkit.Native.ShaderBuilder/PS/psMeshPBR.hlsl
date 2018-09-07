@@ -206,7 +206,7 @@ float4 main(PSInput input) : SV_Target
     float3 RMA = input.c2.rgb;
     if (bHasDiffuseMap)
     {
-        albedo = texDiffuseMap.Sample(samplerSurface, input.t);
+        albedo *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
     if (bHasRMAMap)
     {
