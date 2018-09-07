@@ -52,12 +52,14 @@
             <hx:PointLight3D x:Name="pointLight3" Position="35, 10, -35" Color="Green" Range="80" Attenuation="0.8, 0.01, 0"/>
             <hx:ShadowMap3D />
             <hx:GroupModel3D ItemsSource="{Binding Models}" />
-            <hx:MeshGeometryModel3D
-                x:Name="sphereControl"
-                CullMode="Back"
-                Geometry="{Binding Model}"
-                Material="{Binding Material}"
-                Transform="{Binding ModelTransform}" />
+            <hx:DynamicReflectionMap3D>
+                <hx:MeshGeometryModel3D
+                    x:Name="sphereControl"
+                    CullMode="Back"
+                    Geometry="{Binding Model}"
+                    Material="{Binding Material}"
+                    Transform="{Binding ModelTransform}" />
+            </hx:DynamicReflectionMap3D>
             <hx:MeshGeometryModel3D CullMode="Back" Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" Transform="{Binding FloorModelTransform}"/>
             <hx:EnvironmentMap3D IsRendering="{Binding RenderEnvironment}" Texture="{Binding EnvironmentMap}" />
         </hx:Viewport3DX>

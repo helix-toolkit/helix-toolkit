@@ -62,9 +62,7 @@ namespace MaterialDemo
                     foreach (var m in materials)
                     {
                         m.RenderEnvironmentMap = value;
-                    }
-
-                    Material.RenderEnvironmentMap = value;
+                    }                   
                 }
             }
             get { return renderEnvironment; }
