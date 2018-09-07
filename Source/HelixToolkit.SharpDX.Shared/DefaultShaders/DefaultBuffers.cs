@@ -33,6 +33,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string DisplacementMapTB = "texDisplacementMap";
         public static string CubeMapTB = "texCubeMap";
         public static string ShadowMapTB = "texShadowMap";
+        public static string SpecularTB = "texSpecularMap";
         public static string BillboardTB = "billboardTexture";
         public static string ColorStripe1DXTB = "texColorStripe1DX";
         public static string ColorStripe1DYTB = "texColorStripe1DY";

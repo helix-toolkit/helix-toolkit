@@ -29,6 +29,19 @@ namespace HelixToolkit.UWP.Model
             get => albedoColor; 
         }
 
+        private Color4 emissiveColor = Color.Black;
+        /// <summary>
+        /// Gets or sets the color of the emissive.
+        /// </summary>
+        /// <value>
+        /// The color of the emissive.
+        /// </value>
+        public Color4 EmissiveColor
+        {
+            set => Set(ref emissiveColor, value);
+            get => emissiveColor;
+        }
+
         private float metallicFactor = 0;
         /// <summary>
         /// Gets or sets the metallic factor.
@@ -184,7 +197,7 @@ namespace HelixToolkit.UWP.Model
             get => renderEmissiveMap; 
         }
 
-        private bool enableAutoTangent = true;
+        private bool enableAutoTangent = false;
         /// <summary>
         /// Gets or sets a value indicating whether [enable automatic tangent].
         /// </summary>

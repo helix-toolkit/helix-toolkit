@@ -53,7 +53,7 @@ HSInput main(VSInput input)
     }
     else
     {
-        output.c2 = vMaterialAmbient;
+        output.c2 = vMaterialSpecular;
     }
     float tess = saturate((minTessDistance - distance(output.p, vEyePos)) / (minTessDistance - maxTessDistance));
     output.tessF = mad(tess, (maxTessFactor - minTessFactor), minTessFactor);

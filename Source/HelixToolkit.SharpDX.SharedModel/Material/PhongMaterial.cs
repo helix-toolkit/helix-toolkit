@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Utilities;
 
     /// <summary>
-    /// Implments a phong-material with its all properties
+    /// Implements a phong-material with its all properties
     /// Includes Diffuse, Normal, Displacement, Specular, etc. maps
     /// </summary>
     [DataContract]
@@ -109,7 +109,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty NormalMapProperty =
             DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
                 (d, e) => { ((d as Material).Core as PhongMaterialCore).NormalMap = e.NewValue as Stream; }));
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty SpecularColorMapProperty =
+            DependencyProperty.Register("SpecularColorMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).SpecularColorMap = e.NewValue as Stream; }));
         /// <summary>
         /// 
         /// </summary>
@@ -168,6 +173,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
+        public static readonly DependencyProperty RenderSpecularColorMapProperty =
+            DependencyProperty.Register("RenderSpecularColorMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PhongMaterialCore).RenderSpecularColorMap = (bool)e.NewValue;
+                }));
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly DependencyProperty RenderDisplacementMapProperty =
             DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
                 (d, e) =>
@@ -197,7 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The enable automatic tangent
         /// </summary>
         public static readonly DependencyProperty EnableAutoTangentProperty =
-            DependencyProperty.Register("EnableAutoTangent", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
+            DependencyProperty.Register("EnableAutoTangent", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false,
                 (d, e) =>
                 {
                     ((d as Material).Core as PhongMaterialCore).EnableAutoTangent = (bool)e.NewValue;
@@ -348,6 +362,15 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Stream)this.GetValue(NormalMapProperty); }
             set { this.SetValue(NormalMapProperty, value); }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Stream SpecularColorMap
+        {
+            get { return (Stream)this.GetValue(SpecularColorMapProperty); }
+            set { this.SetValue(SpecularColorMapProperty, value); }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -401,7 +424,14 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)this.GetValue(RenderNormalMapProperty); }
             set { this.SetValue(RenderNormalMapProperty, value); }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderSpecularColorMap
+        {
+            get { return (bool)this.GetValue(RenderSpecularColorMapProperty); }
+            set { this.SetValue(RenderSpecularColorMapProperty, value); }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -544,6 +574,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 SpecularShininess = this.SpecularShininess,
                 DiffuseMap = this.DiffuseMap,
                 DiffuseAlphaMap = this.DiffuseAlphaMap,
+                SpecularColorMap = this.SpecularColorMap,
                 DisplacementMapScaleMask = this.DisplacementMapScaleMask,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
@@ -558,6 +589,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderNormalMap = RenderNormalMap,
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderShadowMap = RenderShadowMap,
+                RenderSpecularColorMap = RenderSpecularColorMap,
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform,
             };
@@ -585,6 +617,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 SpecularShininess = this.SpecularShininess,
                 DiffuseMap = this.DiffuseMap,
                 DiffuseAlphaMap = this.DiffuseAlphaMap,
+                SpecularColorMap = this.SpecularColorMap,
                 DisplacementMapScaleMask = this.DisplacementMapScaleMask,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
@@ -599,6 +632,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderNormalMap = RenderNormalMap,
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderShadowMap = RenderShadowMap,
+                RenderSpecularColorMap = RenderSpecularColorMap,
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform
             };

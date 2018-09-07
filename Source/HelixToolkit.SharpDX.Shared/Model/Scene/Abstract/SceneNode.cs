@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     NeedMatrixUpdate = true;
                     if (value == null)
                     {
-                        value = NullSceneNode.NullNode;
+                        parent = NullSceneNode.NullNode;
                     }
                 }
             }

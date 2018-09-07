@@ -29,7 +29,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as PBRMaterialCore).AlbedoColor = (Color4)e.NewValue;
                 }));
-
+        /// <summary>
+        /// The albedo color property
+        /// </summary>
+        public static readonly DependencyProperty EmissiveColorProperty =
+            DependencyProperty.Register("EmissiveColor", typeof(Color4), typeof(PBRMaterial), new PropertyMetadata((Color4)Color.Black,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PBRMaterialCore).EmissiveColor = (Color4)e.NewValue;
+                }));
         /// <summary>
         ///         
         /// </summary>
@@ -234,7 +242,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The enable automatic tangent
         /// </summary>
         public static readonly DependencyProperty EnableAutoTangentProperty =
-            DependencyProperty.Register("EnableAutoTangent", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(true,
+            DependencyProperty.Register("EnableAutoTangent", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(false,
                 (d, e) =>
                 {
                     ((d as Material).Core as PBRMaterialCore).EnableAutoTangent = (bool)e.NewValue;
@@ -291,6 +299,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (Color4)this.GetValue(AlbedoColorProperty); }
             set { this.SetValue(AlbedoColorProperty, value); }
+        }
+
+        public Color4 EmissiveColor
+        {
+            get { return (Color4)this.GetValue(EmissiveColorProperty); }
+            set { this.SetValue(EmissiveColorProperty, value); }
         }
 
         public double MetallicFactor

@@ -169,18 +169,26 @@ float3 LightSurface(in float4 wp,
         float3 diffuse_env = Diffuse_IBL(N);
         acc_color += c_diff * diffuse_env;
     }
-
+    float3 specular_env = vLightAmbient.rgb * ambientOcclusion;
+#if defined(CLEARCOAT)
+    float3 clearCoatColor = (float3) 0;
+    float Fc = Filament_F_Schlick(0.04, NdotV) * clearCoat;
+#endif
     if (bHasCubeMap)
     {
         // Add specular radiance 
-        float3 specular_env = Specular_IBL(N, V, roughness);
-        acc_color += c_spec * specular_env;
+        specular_env = Specular_IBL(N, V, roughness);
 #if defined(CLEARCOAT)
-        float Fc = Filament_F_Schlick(0.04, NdotV) * clearCoat;
-        acc_color *= sqrt(1 - Fc);
-        acc_color += Specular_IBL(N, V, clearCoatRoughness) * Fc;
+        clearCoatColor = Specular_IBL(N, V, clearCoatRoughness) * Fc;
 #endif
     }
+
+    acc_color += c_spec * specular_env;
+
+#if defined(CLEARCOAT)
+    acc_color *= sqrt(1 - Fc);
+    acc_color += clearCoatColor;
+#endif
     return acc_color;
 }
 
@@ -200,12 +208,12 @@ float4 main(PSInput input) : SV_Target
     {
         albedo = texDiffuseMap.Sample(samplerSurface, input.t);
     }
-    if (bHasAlphaMap)
+    if (bHasRMAMap)
     {
         RMA = texRMAMap.Sample(samplerSurface, input.t).rgb;
     }
 
-    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, vMaterialReflect.x, vMaterialReflect.y);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, ClearCoat, ClearCoatRoughness);
     float s = 1;
     if (bHasShadowMap)
     {
@@ -217,6 +225,7 @@ float4 main(PSInput input) : SV_Target
     {
         color += texEmissiveMap.Sample(samplerSurface, input.t).rgb;
     }
+    color += vMaterialEmissive.rgb;
     return float4(color, albedo.a * input.cDiffuse.a);
 }
 #endif

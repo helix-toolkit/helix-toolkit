@@ -145,6 +145,18 @@ namespace HelixToolkit.UWP.Model
             get { return normalMap; }
         }
 
+        private Stream specularColorMap;
+        /// <summary>
+        /// Gets or sets the specular color map.
+        /// </summary>
+        /// <value>
+        /// The specular color map.
+        /// </value>
+        public Stream SpecularColorMap
+        {
+            set { Set(ref specularColorMap, value); }
+            get { return specularColorMap; }
+        }
 
         private Stream displacementMap;
         /// <summary>
@@ -256,6 +268,20 @@ namespace HelixToolkit.UWP.Model
                 return renderNormalMap;
             }
         }
+
+        private bool renderSpecularColorMap = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [render specular color map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render specular color map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderSpecularColorMap
+        {
+            set { Set(ref renderSpecularColorMap, value); }
+            get { return renderSpecularColorMap; }
+        }
+
         private bool renderDisplacementMap = true;
         /// <summary>
         /// 
@@ -269,7 +295,7 @@ namespace HelixToolkit.UWP.Model
             get { return renderDisplacementMap; }
         }
 
-        private bool enableAutoTangent = true;
+        private bool enableAutoTangent = false;
         /// <summary>
         /// Gets or sets a value indicating whether [enable automatic tangent].
         /// </summary>

@@ -51,22 +51,36 @@ cbuffer cbMesh : register(b1)
 	float maxTessFactor = 1;
 
     float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
-    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient. If using PBR, vMaterialAmbient = float4(ConstantAO, ConstantRoughness, ConstantMetallic, ConstantReflectance);
-
+    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient.
     float4 vMaterialEmissive = 0.0f; //Ke := surface material's emissive coefficient
-    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient. If using PBR, vMaterialSpecular = float4(ClearCoat, ClearCoatRoughness, 0, 0)
-    float4 vMaterialReflect = 0.0f; //Kr := surface material's reflectivity coefficient
-
+#if !defined(PBR)
+    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient. If using PBR, vMaterialReflect = float4(ConstantAO, ConstantRoughness, ConstantMetallic, ConstantReflectance);
+    float4 vMaterialReflect = 0.0f; //Kr := surface material's reflectivity coefficient. If using PBR, vMaterialSpecular = float4(ClearCoat, ClearCoatRoughness, 0, 0)
+#endif
+#if defined(PBR)
+    float ConstantAO;
+    float ConstantRoughness;
+    float ConstantMetallic;
+    float ConstantReflectance;
+    float ClearCoat;
+    float ClearCoatRoughness;
+    float2 padding1;
+#endif
     bool bHasDiffuseMap = false;
     bool bHasNormalMap = false;
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
-
+#if !defined(PBR)
     bool bHasAlphaMap = false; // If using PBR, this is used as HasRMAMap.
+    bool bHasSpecularMap;
+    float padding2;
+#endif
+#if defined(PBR)
+    bool bHasRMAMap;
     bool bHasEmissiveMap;
     bool bHasIrradianceMap; 
+#endif
     bool bAutoTengent;
-
     bool bHasDisplacementMap = false;
     bool bRenderPBR = false;  
     int NumRadianceMipLevels;
@@ -218,6 +232,7 @@ Texture2D texDiffuseMap : register(t0);
 Texture2D texNormalMap : register(t1);
 #if !defined(PBR)
 Texture2D texAlphaMap : register(t2);
+Texture2D texSpecularMap : register(t3);
 #endif
 #if defined(PBR)
 Texture2D texRMAMap    : register(t2);

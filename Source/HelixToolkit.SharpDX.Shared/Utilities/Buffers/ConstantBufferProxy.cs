@@ -84,7 +84,20 @@ namespace HelixToolkit.UWP.Utilities
             };
             foreach (var var in description.Variables)
             {
+                AddVariable(var);
+            }
+        }
+
+        public void AddVariable(ConstantBufferVariable var)
+        {
+            if (!VariableDictionary.TryGetValue(var.Name, out var v))
+            {
                 VariableDictionary.Add(var.Name, var);
+            }
+            else if(v.StartOffset != var.StartOffset || v.Size != var.Size)
+            {
+                throw new ArgumentException($"Variable {var.Name} already exists in constant buffer definition. " +
+                                            $"But start offset {var.StartOffset} and {v.StartOffset} or sizes {var.Size} and {v.Size} are not match");
             }
         }
 

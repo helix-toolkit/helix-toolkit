@@ -70,20 +70,15 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitialPropertyBindings()
         {
             AddPropertyBinding(nameof(PBRMaterialCore.AlbedoColor), () => { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.AlbedoColor); });
-            AddPropertyBinding(nameof(PBRMaterialCore.MetallicFactor), () =>
-            {
-                WriteValue(PhongPBRMaterialStruct.AmbientStr, new Vector4(material.AmbientOcclusionFactor, material.RoughnessFactor, material.MetallicFactor, material.ReflectanceFactor));
-            });
-            AddPropertyBinding(nameof(PBRMaterialCore.RoughnessFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
-            AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcclusionFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
-            AddPropertyBinding(nameof(PBRMaterialCore.ReflectanceFactor), () => { TriggerPropertyAction(nameof(PBRMaterialCore.MetallicFactor)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.EmissiveColor), () => { WriteValue(PhongPBRMaterialStruct.EmissiveStr, material.EmissiveColor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.MetallicFactor), () => { WriteValue(PhongPBRMaterialStruct.ConstantMetallic, material.MetallicFactor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.RoughnessFactor), () => { WriteValue(PhongPBRMaterialStruct.RoughnessStr, material.RoughnessFactor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcclusionFactor), () => { WriteValue(PhongPBRMaterialStruct.AmbientOcclusionStr, material.AmbientOcclusionFactor); });
+            AddPropertyBinding(nameof(PBRMaterialCore.ReflectanceFactor), () => { WriteValue(PhongPBRMaterialStruct.ReflectanceStr, material.ReflectanceFactor); });
 
-            AddPropertyBinding(nameof(PBRMaterialCore.ClearCoatStrength), () =>
-            {
-                WriteValue(PhongPBRMaterialStruct.ReflectStr, new Vector4(material.ClearCoatStrength, material.ClearCoatRoughness, 0, 0));
-            });
+            AddPropertyBinding(nameof(PBRMaterialCore.ClearCoatStrength), () => { WriteValue(PhongPBRMaterialStruct.ClearCoatStr, material.ClearCoatStrength); });
 
-            AddPropertyBinding(nameof(PBRMaterialCore.ClearCoatRoughness), () => { TriggerPropertyAction(nameof(PBRMaterialCore.ClearCoatStrength)); });
+            AddPropertyBinding(nameof(PBRMaterialCore.ClearCoatRoughness), () => { WriteValue(PhongPBRMaterialStruct.ClearCoatRoughnessStr, material.ClearCoatRoughness); });
 
             AddPropertyBinding(nameof(PBRMaterialCore.RenderAlbedoMap), () => { WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.RenderAlbedoMap && TextureResources[AlbedoMapIdx] != null ? 1 : 0); });
             AddPropertyBinding(nameof(PBRMaterialCore.RenderEmissiveMap), () => { WriteValue(PhongPBRMaterialStruct.HasEmissiveMapStr, material.RenderEmissiveMap && TextureResources[EmissiveMapIdx] != null ? 1 : 0); });
