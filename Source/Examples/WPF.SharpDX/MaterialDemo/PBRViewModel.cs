@@ -80,8 +80,6 @@ namespace MaterialDemo
                     {
                         m.RenderNormalMap = value;
                     }
-
-                    Material.RenderNormalMap = value;
                 }
             }
             get { return renderNormalMap; }
@@ -120,15 +118,20 @@ namespace MaterialDemo
                     });
                 }
             }
-            Model = SphereModel;
+            builder = new MeshBuilder();
+            builder.AddSphere(Vector3.Zero, 8, 64, 64);
+            Model = builder.ToMesh();
             Material = new PBRMaterial()
-            {               
+            {
                 AlbedoColor = albedoColor.ToColor4(),
                 RenderEnvironmentMap = true,
-                NormalMap = normalMap,
-                EnableAutoTangent=true,
+                AlbedoMap = LoadFileToMemory("Engraved_Metal_COLOR.jpg"),
+                NormalMap = LoadFileToMemory("Engraved_Metal_NORM.jpg"),
+                DisplacementMap = LoadFileToMemory("Engraved_Metal_DISP.png"),
+                DisplacementMapScaleMask = new Vector4(0.1f, 0.1f, 0.1f, 0),
+                EnableAutoTangent =true,
             };
-            ModelTransform = new Media3D.MatrixTransform3D((Matrix.Scaling(4) * Matrix.Translation(0, 30, 0)).ToMatrix3D());
+            ModelTransform = new Media3D.MatrixTransform3D(Matrix.Translation(0, 30, 0).ToMatrix3D());
 
             builder = new MeshBuilder();
             builder.AddBox(Vector3.Zero, 100, 0.5, 100);
@@ -143,6 +146,7 @@ namespace MaterialDemo
                 AlbedoMap = LoadFileToMemory("Wood_Planks_COLOR.jpg"),
                 NormalMap = LoadFileToMemory("Wood_Planks_NORM.jpg"),
                 DisplacementMap = LoadFileToMemory("Wood_Planks_DISP.png"),
+                DisplacementMapScaleMask = new Vector4(1f, 1f, 1f, 0),
                 RoughnessFactor = 0.8,
                 MetallicFactor = 0.2,                
                 RenderShadowMap = true,

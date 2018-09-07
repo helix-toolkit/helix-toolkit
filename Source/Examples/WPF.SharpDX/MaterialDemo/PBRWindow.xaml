@@ -53,6 +53,7 @@
             <hx:ShadowMap3D />
             <hx:GroupModel3D ItemsSource="{Binding Models}" />
             <hx:MeshGeometryModel3D
+                x:Name="sphereControl"
                 CullMode="Back"
                 Geometry="{Binding Model}"
                 Material="{Binding Material}"
@@ -70,6 +71,8 @@
             <CheckBox IsChecked="{Binding RenderEnvironment}">Render Environment Map</CheckBox>
             <Label>Ambient Color</Label>
             <pt:ColorPicker SelectedColor="{Binding ElementName=ambientLight, Path=Color}" />
+            <Separator/>
+            <Label>Property Controls</Label>
             <Label>Metallic</Label>
             <Slider
                 Maximum="1"
@@ -100,6 +103,10 @@
                 Maximum="1"
                 Minimum="0"
                 Value="{Binding Material.ClearCoatRoughness}" />
+            <CheckBox IsChecked="{Binding Material.RenderNormalMap}">Render Normal Map</CheckBox>
+            <CheckBox IsChecked="{Binding Material.RenderAlbedoMap}">Render Albedo Map</CheckBox>
+            <CheckBox IsChecked="{Binding Material.RenderDisplacementMap}">Render Displace Map</CheckBox>
+            <Separator/>
             <CheckBox IsChecked="{Binding ElementName=ambientLight, Path=IsRendering}">Ambient Light</CheckBox>
             <CheckBox IsChecked="{Binding ElementName=directional1, Path=IsRendering}">Directional Light</CheckBox>
             <CheckBox IsChecked="{Binding ElementName=pointLight1, Path=IsRendering}">PointLight 1</CheckBox>
