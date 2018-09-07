@@ -119,6 +119,10 @@ float4 main(PSInput input) : SV_Target
         shininess = input.c.x;
         reflectColor = FloatToRGB(input.c.w);
     }
+    if (bHasSpecularMap)
+    {
+        specular = texSpecularMap.Sample(samplerSurface, input.t);
+    }
     // compute lighting
     for (int i = 0; i < NumLights; ++i)
     {
@@ -153,15 +157,15 @@ float4 main(PSInput input) : SV_Target
             float3 h = normalize(eye + d); // half direction for specular
             float3 sd = normalize((float3) Lights[i].vLightDir); // missuse the vLightDir variable for spot-dir
 
-														/* --- this is the OpenGL 1.2 version (not so nice) --- */
-														//float spot = (dot(-d, sd));
-														//if(spot > cos(vLightSpot[i].x))
-														//	spot = pow( spot, vLightSpot[i].y );
-														//else
-														//	spot = 0.0f;	
-														/* --- */
+													/* --- this is the OpenGL 1.2 version (not so nice) --- */
+													//float spot = (dot(-d, sd));
+													//if(spot > cos(vLightSpot[i].x))
+													//	spot = pow( spot, vLightSpot[i].y );
+													//else
+													//	spot = 0.0f;	
+													/* --- */
 
-														/* --- this is the  DirectX9 version (better) --- */
+													/* --- this is the  DirectX9 version (better) --- */
             float rho = dot(-d, sd);
             float spot = pow(saturate((rho - Lights[i].vLightSpot.x) / (Lights[i].vLightSpot.y - Lights[i].vLightSpot.x)), Lights[i].vLightSpot.z);
             float att = spot / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);

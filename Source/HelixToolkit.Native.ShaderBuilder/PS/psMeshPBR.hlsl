@@ -208,12 +208,12 @@ float4 main(PSInput input) : SV_Target
     {
         albedo = texDiffuseMap.Sample(samplerSurface, input.t);
     }
-    if (bHasAlphaMap)
+    if (bHasRMAMap)
     {
         RMA = texRMAMap.Sample(samplerSurface, input.t).rgb;
     }
 
-    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, vMaterialReflect.x, vMaterialReflect.y);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, ClearCoat, ClearCoatRoughness);
     float s = 1;
     if (bHasShadowMap)
     {

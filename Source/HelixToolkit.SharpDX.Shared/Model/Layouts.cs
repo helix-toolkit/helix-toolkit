@@ -323,9 +323,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string HasNormalMapStr = "bHasNormalMap";//bool
         public const string HasCubeMapStr = "bHasCubeMap";//bool
         public const string RenderShadowMapStr = "bRenderShadowMap";//bool
-
+        public const string HasSpecularColorMap = "bHasSpecularMap";
         public const string HasDiffuseAlphaMapStr = "bHasAlphaMap";//bool
-        public const string HasRMAMapStr = "bHasAlphaMap";//bool Use the same variable as has alpha map in phong material
+
+        public const string AmbientOcclusionStr = "ConstantAO";
+        public const string RoughnessStr = "ConstantRoughness";
+        public const string ConstantMetallic = "ConstantMetallic";
+        public const string ReflectanceStr = "ConstantReflectance";
+        public const string ClearCoatStr = "ClearCoat";
+        public const string ClearCoatRoughnessStr = "ClearCoatRoughness";
+
+        public const string HasRMAMapStr = "bHasRMAMap";//bool
         public const string HasEmissiveMapStr = "bHasEmissiveMap";//bool
         public const string HasIrradianceMapStr = "bHasIrradianceMap";//bool
         public const string EnableAutoTangent = "bAutoTengent";//bool

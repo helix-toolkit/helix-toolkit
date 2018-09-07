@@ -1250,6 +1250,15 @@ namespace HelixToolkit.UWP
                         fs.CopyTo(alphaMapMS);
                     }
                 }
+                MemoryStream specularMapMS = null;
+                if (SpecularMap != null)
+                {
+                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.SpecularMap)), FileMode.Open))
+                    {
+                        specularMapMS = new MemoryStream();
+                        fs.CopyTo(specularMapMS);
+                    }
+                }
                 var mat = new PhongMaterialCore()
                 {
                     AmbientColor = this.Ambient,
@@ -1260,7 +1269,7 @@ namespace HelixToolkit.UWP
 
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
-                    //SpecularMap = this.SpecularMap,
+                    SpecularColorMap = specularMapMS,
 
                     NormalMap = bumpMapMS,
                     DiffuseAlphaMap = alphaMapMS,

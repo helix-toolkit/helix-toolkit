@@ -21,6 +21,15 @@ namespace HelixToolkit.UWP
                 SpecularShininess = core.SpecularShininess,
                 DiffuseAlphaMap = core.DiffuseAlphaMap,
                 DiffuseMap = core.DiffuseMap,
+                SpecularColorMap = core.SpecularColorMap,
+                RenderDiffuseMap = core.RenderDiffuseMap,
+                RenderDiffuseAlphaMap = core.RenderDiffuseAlphaMap,
+                RenderDisplacementMap = core.RenderDisplacementMap,
+                RenderEnvironmentMap = core.RenderEnvironmentMap,
+                RenderNormalMap = core.RenderNormalMap,
+                RenderShadowMap = core.RenderShadowMap,
+                RenderSpecularColorMap = core.RenderSpecularColorMap,
+                EnableAutoTangent = core.EnableAutoTangent,
                 DiffuseMapSampler = core.DiffuseMapSampler,
                 DisplacementMap = core.DisplacementMap,
                 DisplacementMapSampler = core.DisplacementMapSampler,
@@ -52,7 +61,13 @@ namespace HelixToolkit.UWP
                 SurfaceMapSampler = core.SurfaceMapSampler,
                 IBLSampler = core.IBLSampler,
                 DisplacementMapSampler = core.DisplacementMapSampler,
-
+                AmbientOcclusionFactor = core.AmbientOcclusionFactor,
+                ClearCoatRoughness = core.ClearCoatRoughness,
+                ClearCoatStrength = core.ClearCoatStrength,
+                EmissiveColor = core.EmissiveColor,
+                EnableAutoTangent = core.EnableAutoTangent,
+                Name = core.Name,
+                ReflectanceFactor = core.ReflectanceFactor,
                 RenderAlbedoMap = core.RenderAlbedoMap,
                 RenderDisplacementMap = core.RenderDisplacementMap,
                 RenderEmissiveMap = core.RenderEmissiveMap,
@@ -106,6 +121,7 @@ namespace HelixToolkit.UWP
             targetMaterial.MinTessellationDistance = material.MinTessellationDistance;
             targetMaterial.MinDistanceTessellationFactor = material.MinDistanceTessellationFactor;
             targetMaterial.NormalMap = material.NormalMap;
+            targetMaterial.SpecularColorMap = material.SpecularColorMap;
             targetMaterial.ReflectiveColor = material.ReflectiveColor;
             targetMaterial.SpecularColor = material.SpecularColor;
             targetMaterial.SpecularShininess = material.SpecularShininess;
@@ -113,6 +129,8 @@ namespace HelixToolkit.UWP
             targetMaterial.RenderDiffuseMap = material.RenderDiffuseMap;
             targetMaterial.RenderDisplacementMap = material.RenderDisplacementMap;
             targetMaterial.RenderNormalMap = material.RenderNormalMap;
+            targetMaterial.RenderSpecularColorMap = material.RenderSpecularColorMap;
+            targetMaterial.EnableAutoTangent = material.EnableAutoTangent;
             targetMaterial.UVTransform = material.UVTransform;
         }
 
