@@ -210,7 +210,7 @@ float4 main(PSInput input) : SV_Target
     }
     if (bHasRMAMap)
     {
-        RMA = texRMAMap.Sample(samplerSurface, input.t).rgb;
+        RMA = texRMAMap.Sample(samplerSurface, input.t).bgr;
     }
 
     color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, ClearCoat, ClearCoatRoughness);
