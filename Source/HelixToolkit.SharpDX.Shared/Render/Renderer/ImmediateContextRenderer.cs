@@ -296,13 +296,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter)
         {
+            ImmediateContext.Flush();
             var buffer = context.RenderHost.RenderBuffer;
             if (parameter.IsMSAATexture)
             {
                 ImmediateContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.BackBuffer.Resource, 0, buffer.Format);
             }
             else
-            {
+            {                
                 ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.BackBuffer.Resource);
             }
         }
