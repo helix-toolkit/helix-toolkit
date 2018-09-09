@@ -29,6 +29,7 @@ namespace HelixToolkit.UWP.Core
     {
         #region
         private readonly Vector3[] targets = new Vector3[6];
+        private readonly Vector3[] lookVector = new Vector3[6] { Vector3.UnitX, -Vector3.UnitX, Vector3.UnitY, -Vector3.UnitY, Vector3.UnitZ, -Vector3.UnitZ };
         private readonly Vector3[] upVectors = new Vector3[6] { Vector3.UnitY, Vector3.UnitY, -Vector3.UnitZ, Vector3.UnitZ, Vector3.UnitY, Vector3.UnitY };
         private CubeFaceCamerasStruct cubeFaceCameras = new CubeFaceCamerasStruct() { Cameras = new CubeFaceCamera[6] };
         // Create the cube map TextureCube (array of 6 textures)
@@ -194,7 +195,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                SetAffectsRender(ref isleftHanded, value);
+                if (SetAffectsRender(ref isleftHanded, value))
+                {
+                    UpdateTargets();
+                }
             }
             get
             {
@@ -214,7 +218,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                SetAffectsRender(ref nearField, value);
+                if (SetAffectsRender(ref nearField, value))
+                {
+                    UpdateTargets();
+                }
             }
             get
             {
@@ -234,7 +241,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                SetAffectsRender(ref farField, value);
+                if (SetAffectsRender(ref farField, value))
+                {
+                    UpdateTargets();
+                }
             }
             get
             {
@@ -242,6 +252,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private Vector3 center = Vector3.Zero;
         /// <summary>
         /// Gets or sets the center.
         /// </summary>
@@ -250,7 +261,14 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public Vector3 Center
         {
-            set; get;
+            set
+            {
+                if (SetAffectsRender(ref center, value))
+                {
+                    UpdateTargets();
+                }
+            }
+            get { return center; }
         }
 
         /// <summary>
@@ -277,6 +295,7 @@ namespace HelixToolkit.UWP.Core
         public DynamicCubeMapCore() : base(RenderType.PreProc)
         {
             modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes)));
+            UpdateTargets();
         }
 
         private bool CreateCubeMapResources()
@@ -369,8 +388,8 @@ namespace HelixToolkit.UWP.Core
                 RaiseInvalidateRender();
                 return; // Skip this frame if texture resized to reduce latency.
             }
-            OnUpdatePerModelStruct(context);
             context.IsInvertCullMode = true;
+            var camLook = Vector3.Normalize(context.Camera.LookDirection);
 #if TEST
             for (int index = 0; index < 6; ++index)
 #else
@@ -419,28 +438,24 @@ namespace HelixToolkit.UWP.Core
             context.IsInvertCullMode = false;
             for (int i = 0; i < commands.Length; ++i)
             {
-                Device.ImmediateContext.ExecuteCommandList(commands[i], true);
-                commands[i].Dispose();
+                if (commands[i] != null)
+                {
+                    Device.ImmediateContext.ExecuteCommandList(commands[i], true);
+                    Disposer.RemoveAndDispose(ref commands[i]);
+                }
             }
             deviceContext.GenerateMips(CubeMap);
             context.UpdatePerFrameData(true, false, deviceContext);
         }
 
-        private void OnUpdatePerModelStruct(RenderContext context)
+        private void UpdateTargets()
         {
-            var camPos = Center;
-            targets[0] = camPos + Vector3.UnitX;
-            targets[1] = camPos - Vector3.UnitX;
-            targets[2] = camPos + Vector3.UnitY;
-            targets[3] = camPos - Vector3.UnitY;
-            targets[4] = camPos + Vector3.UnitZ;
-            targets[5] = camPos - Vector3.UnitZ;
-
             for (int i = 0; i < 6; ++i)
             {
-                cubeFaceCameras.Cameras[i].View = (IsLeftHanded ? Matrix.LookAtLH(camPos, targets[i], upVectors[i]) : Matrix.LookAtRH(camPos, targets[i], upVectors[i])) * Matrix.Scaling(-1, 1, 1);
+                targets[i] = center + lookVector[i];
+                cubeFaceCameras.Cameras[i].View = (IsLeftHanded ? Matrix.LookAtLH(center, targets[i], upVectors[i]) : Matrix.LookAtRH(center, targets[i], upVectors[i])) * Matrix.Scaling(-1, 1, 1);
                 cubeFaceCameras.Cameras[i].Projection = IsLeftHanded ? Matrix.PerspectiveFovLH((float)Math.PI * 0.5f, 1, NearField, FarField)
-                    : Matrix.PerspectiveFovRH((float)Math.PI * 0.5f, 1, NearField, FarField);
+                : Matrix.PerspectiveFovRH((float)Math.PI * 0.5f, 1, NearField, FarField);
             }
         }
 
