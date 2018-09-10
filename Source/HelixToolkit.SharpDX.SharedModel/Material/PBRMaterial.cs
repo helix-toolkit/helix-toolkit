@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EmissiveMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
                 (d, e) => { ((d as Material).Core as PBRMaterialCore).EmissiveMap = e.NewValue as Stream; }));
         /// <summary>
-        /// 
+        /// glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel
         /// </summary>
         public static readonly DependencyProperty RMAMapProperty =
             DependencyProperty.Register("RMAMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
@@ -357,7 +357,12 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Stream)this.GetValue(EmissiveMapProperty); }
             set { this.SetValue(EmissiveMapProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the Roughness, Metallic, Ambient Occlusion map. glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel
+        /// </summary>
+        /// <value>
+        /// The rma map.
+        /// </value>
         public Stream RMAMap
         {
             get { return (Stream)this.GetValue(RMAMapProperty); }

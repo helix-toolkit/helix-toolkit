@@ -279,7 +279,7 @@ namespace HelixToolkit.UWP.Model
 
         private Stream rmaMap;
         /// <summary>
-        /// Gets or sets the roughness, metallic, ambient map.
+        /// Gets or sets the Roughness, Metallic, Ambient Occlusion map. glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel
         /// </summary>
         /// <value>
         /// The rma map.
