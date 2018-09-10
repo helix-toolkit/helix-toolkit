@@ -47,7 +47,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:ShadowMap3D OrthoWidth="200" />
-            <hx:AmbientLight3D Color="#4B4B4B" />
+            <hx:AmbientLight3D Color="#828282" />
             <hx:DirectionalLight3D Direction="0, -1, -1" Color="White" />
             <hx:GroupModel3D ItemsSource="{Binding Models}" Transform="{Binding ModelTransform}" />
             <hx:GroupModel3D
