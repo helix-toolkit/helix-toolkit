@@ -26,7 +26,7 @@ float3 calcNormal(PSInput input)
             float3 biTangent = normalize(input.t2);
 
 		    // Sample the texel in the bump map.
-            float4 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
+            float3 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
 		    // Expand the range of the normal value from (0, +1) to (-1, +1).
             bumpMap = mad(2.0f, bumpMap, -1.0f);
 		    // Calculate the normal from the data in the bump map.

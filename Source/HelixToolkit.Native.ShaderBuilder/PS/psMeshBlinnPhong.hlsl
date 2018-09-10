@@ -32,7 +32,7 @@ float3 calcNormal(PSInput input)
             float3 biTangent = normalize(input.t2);
 
 		    // Sample the texel in the bump map.
-            float4 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
+            float3 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
 		    // Expand the range of the normal value from (0, +1) to (-1, +1).
             bumpMap = mad(2.0f, bumpMap, -1.0f);
 		    // Calculate the normal from the data in the bump map.
@@ -62,14 +62,11 @@ float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, 
 //--------------------------------------------------------------------------------------
 // reflectance mapping
 //--------------------------------------------------------------------------------------
-float4 cubeMapReflection(PSInput input, float4 I, float4 reflectColor)
+float3 cubeMapReflection(PSInput input, const in float3 I, const in float3 reflectColor)
 {
-    float a = I.a;
     float3 v = normalize((float3) input.wp - vEyePos);
     float3 r = reflect(v, input.n);
-    I = (1.0f - reflectColor) * I + reflectColor * texCubeMap.Sample(samplerCube, r);
-    I.a = a;
-    return I;
+    return (1.0f - reflectColor) * I + reflectColor * texCubeMap.Sample(samplerCube, r);
 }
 
 //--------------------------------------------------------------------------------------
@@ -184,7 +181,7 @@ float4 main(PSInput input) : SV_Target
     // get reflection-color
     if (bHasCubeMap)
     {
-        I = cubeMapReflection(input, I, reflectColor);
+        I.rgb = cubeMapReflection(input, I.rgb, reflectColor.rgb);
     }
 
     return I;

@@ -49,8 +49,8 @@ PSInput main(VSInputBatched input)
     {
         const float mipInterval = 20;
         float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, output.t, mipLevel);
-        output.p.xyz += output.n * mul(h, displacementMapScaleMask);
+        float3 h = texDisplacementMap.SampleLevel(samplerDisplace, output.t, mipLevel);
+        output.p.xyz += output.n * mul(h, displacementMapScaleMask.xyz);
     }
     output.wp = output.p;
 	//set position into clip space	

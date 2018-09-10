@@ -229,20 +229,20 @@ cbuffer cbParticleCreateParameters : register(b8)
 #endif
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
-Texture2D texNormalMap : register(t1);
+Texture2D<float3> texNormalMap : register(t1);
 #if !defined(PBR)
 Texture2D texAlphaMap : register(t2);
 Texture2D texSpecularMap : register(t3);
 #endif
 #if defined(PBR)
-Texture2D texRMAMap    : register(t2);
-Texture2D texEmissiveMap : register(t3);
-TextureCube texIrradianceMap : register(t21);
+Texture2D<float3> texRMAMap    : register(t2);
+Texture2D<float3> texEmissiveMap : register(t3);
+TextureCube<float3> texIrradianceMap : register(t21);
 #endif
-Texture2D texDisplacementMap : register(t4);
-TextureCube texCubeMap : register(t20); // Radiance Map
+Texture2D<float3> texDisplacementMap : register(t4);
+TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 
-Texture2D texShadowMap : register(t30);
+Texture2D<float> texShadowMap : register(t30);
 
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);

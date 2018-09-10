@@ -1,11 +1,11 @@
 #ifndef VSBILLBOARDINSTANCING_HLSL
 #define VSBILLBOARDINSTANCING_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#define INSTANCINGPARAM
+#include"vsBillboard.hlsl"
 #pragma pack_matrix( row_major )
 
-GSInputBT main(VSInputBTInstancing input)
+GSInputBT mainInstancing(VSInputBTInstancing input)
 {
     GSInputBT output = (GSInputBT) 0;
     output.p = input.p;
