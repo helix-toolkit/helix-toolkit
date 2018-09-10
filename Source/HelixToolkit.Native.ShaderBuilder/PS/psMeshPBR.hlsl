@@ -202,7 +202,7 @@ float4 main(PSInput input) : SV_Target
     float3 color = (float3) 0;
 
     float4 albedo = float4(input.cDiffuse.xyz, 1);
-    // glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel
+    // glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel 
     float3 RMA = input.c2.rgb;
     if (bHasDiffuseMap)
     {
@@ -210,7 +210,7 @@ float4 main(PSInput input) : SV_Target
     }
     if (bHasRMAMap)
     {
-        RMA = texRMAMap.Sample(samplerSurface, input.t).bgr;
+        RMA = texRMAMap.Sample(samplerSurface, input.t).rgb;
     }
 
     color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, ClearCoat, ClearCoatRoughness);

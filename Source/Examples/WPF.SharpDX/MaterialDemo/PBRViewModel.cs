@@ -85,7 +85,7 @@ namespace MaterialDemo
         public PBRViewModel(IEffectsManager manager)
         {
             EffectsManager = manager;
-            this.Camera = new PerspectiveCamera { Position = new Point3D(0, 0, 30), LookDirection = new Vector3D(0, 0, -30), UpDirection = new Vector3D(0, 1, 0) };
+            this.Camera = new PerspectiveCamera { Position = new Point3D(0, 60, 60), LookDirection = new Vector3D(0, -60, -60), UpDirection = new Vector3D(0, 1, 0) };
             var builder = new MeshBuilder();
             builder.AddSphere(Vector3.Zero, 2);
             SphereModel = builder.ToMesh();
@@ -126,6 +126,7 @@ namespace MaterialDemo
                 AlbedoMap = LoadFileToMemory("Engraved_Metal_COLOR.jpg"),
                 NormalMap = LoadFileToMemory("Engraved_Metal_NORM.jpg"),
                 DisplacementMap = LoadFileToMemory("Engraved_Metal_DISP.png"),
+                RMAMap = LoadFileToMemory("Engraved_Metal_RMC.png"),
                 DisplacementMapScaleMask = new Vector4(0.1f, 0.1f, 0.1f, 0),
                 EnableAutoTangent =true,
             };
@@ -144,6 +145,7 @@ namespace MaterialDemo
                 AlbedoMap = LoadFileToMemory("Wood_Planks_COLOR.jpg"),
                 NormalMap = LoadFileToMemory("Wood_Planks_NORM.jpg"),
                 DisplacementMap = LoadFileToMemory("Wood_Planks_DISP.png"),
+                RMAMap = LoadFileToMemory("Wood_Planks_RMA.png"),
                 DisplacementMapScaleMask = new Vector4(1f, 1f, 1f, 0),
                 RoughnessFactor = 0.8,
                 MetallicFactor = 0.2,                

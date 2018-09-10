@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:local="clr-namespace:MaterialDemo"
+    xmlns:demo="clr-namespace:DemoCore;assembly=DemoCore"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
     Title="PBRWindow"
@@ -12,6 +13,9 @@
     Height="800"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Resources>
+            <demo:InverseBoolConverter x:Key="reverseBoolConverter"/>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -75,21 +79,25 @@
             <pt:ColorPicker SelectedColor="{Binding ElementName=ambientLight, Path=Color}" />
             <Separator/>
             <Label>Property Controls</Label>
-            <Label>Metallic</Label>
-            <Slider
-                Maximum="1"
-                Minimum="0"
-                Value="{Binding Material.MetallicFactor}" />
-            <Label>Roughness</Label>
-            <Slider
-                Maximum="1"
-                Minimum="0"
-                Value="{Binding Material.RoughnessFactor}" />
-            <Label>AmbientOcclusion</Label>
-            <Slider
-                Maximum="1"
-                Minimum="0"
-                Value="{Binding Material.AmbientOcclusionFactor}" />
+            <CheckBox x:Name="renderRMAMap" IsChecked="{Binding Material.RenderRMAMap}">Render RMA Map</CheckBox>
+            <StackPanel IsEnabled="{Binding ElementName=renderRMAMap, Path=IsChecked, Converter={StaticResource reverseBoolConverter}}">
+                <Label>Metallic</Label>
+                <Slider
+                    Maximum="1"
+                    Minimum="0"
+                    Value="{Binding Material.MetallicFactor}" />
+                <Label>Roughness</Label>
+                <Slider
+                    Maximum="1"
+                    Minimum="0"
+                    Value="{Binding Material.RoughnessFactor}" />
+                <Label>AmbientOcclusion</Label>
+                <Slider
+                    Maximum="1"
+                    Minimum="0"
+                    Value="{Binding Material.AmbientOcclusionFactor}" />                
+            </StackPanel>
+
             <Label>Reflectance</Label>
             <Slider
                 Maximum="1"
