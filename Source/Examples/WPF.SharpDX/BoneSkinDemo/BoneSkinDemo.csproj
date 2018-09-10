@@ -126,12 +126,18 @@
     <None Include="..\..\..\..\Models\CMO\HumanCharacter\Character.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+      <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_UVMap_color.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_Rusty_UVMap_color.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_Rusty_UVMap_nmap.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+      <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_Rusty_UVMap_RMA.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

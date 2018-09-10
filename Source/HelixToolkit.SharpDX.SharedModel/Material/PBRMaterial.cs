@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EmissiveMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
                 (d, e) => { ((d as Material).Core as PBRMaterialCore).EmissiveMap = e.NewValue as Stream; }));
         /// <summary>
-        /// 
+        /// glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel
         /// </summary>
         public static readonly DependencyProperty RMAMapProperty =
             DependencyProperty.Register("RMAMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
@@ -306,19 +306,34 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Color4)this.GetValue(EmissiveColorProperty); }
             set { this.SetValue(EmissiveColorProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the metallic factor. If RMA map is used, for each pixel, metallic factor = max(<see cref="MetallicFactor"/>, RMA map B Channel)
+        /// </summary>
+        /// <value>
+        /// The metallic factor.
+        /// </value>
         public double MetallicFactor
         {
             get { return (double)this.GetValue(MetallicFactorProperty); }
             set { this.SetValue(MetallicFactorProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the roughness factor. If RMA map is used, for each pixel, roughness factor = max(<see cref="RoughnessFactor"/>, RMA map G Channel)
+        /// </summary>
+        /// <value>
+        /// The roughness factor.
+        /// </value>
         public double RoughnessFactor
         {
             get { return (double)this.GetValue(RoughnessFactorProperty); }
             set { this.SetValue(RoughnessFactorProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the ambient occlusion factor. If RMA map is used, for each pixel, ambient occlusion factor = min(<see cref="AmbientOcclusionFactor"/>, RMA map R Channel)
+        /// </summary>
+        /// <value>
+        /// The ambient occlusion factor.
+        /// </value>
         public double AmbientOcclusionFactor
         {
             get { return (double)this.GetValue(AmbientOcclusionFactorProperty); }
@@ -357,7 +372,12 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Stream)this.GetValue(EmissiveMapProperty); }
             set { this.SetValue(EmissiveMapProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the Roughness, Metallic, Ambient Occlusion map. glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel
+        /// </summary>
+        /// <value>
+        /// The rma map.
+        /// </value>
         public Stream RMAMap
         {
             get { return (Stream)this.GetValue(RMAMapProperty); }
