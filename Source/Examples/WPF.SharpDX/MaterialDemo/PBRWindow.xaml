@@ -80,7 +80,7 @@
             <Separator/>
             <Label>Property Controls</Label>
             <CheckBox x:Name="renderRMAMap" IsChecked="{Binding Material.RenderRMAMap}">Render RMA Map</CheckBox>
-            <StackPanel IsEnabled="{Binding ElementName=renderRMAMap, Path=IsChecked, Converter={StaticResource reverseBoolConverter}}">
+            <StackPanel>
                 <Label>Metallic</Label>
                 <Slider
                     Maximum="1"
