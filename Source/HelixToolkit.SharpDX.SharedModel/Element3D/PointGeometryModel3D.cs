@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using global::SharpDX;
 #if NETFX_CORE
 using Windows.Foundation;
 using Windows.UI.Xaml;

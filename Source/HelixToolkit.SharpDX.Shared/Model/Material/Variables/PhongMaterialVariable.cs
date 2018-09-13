@@ -114,7 +114,6 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        private readonly bool fixedPassName = false;
         private readonly PhongMaterialCore material;
         private ShaderPass currentMaterialPass = ShaderPass.NullPass;
         private ShaderPass currentOITPass = ShaderPass.NullPass;
@@ -170,7 +169,6 @@ namespace HelixToolkit.UWP.Model
             : this(manager, technique, material)
         {
             MaterialPass = technique[passName];
-            fixedPassName = true;
         }
 
         protected override void OnInitialPropertyBindings()
