@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public sealed class PointMaterialVariable : MaterialVariable
     {        
-        private PointMaterialCore material;
+        private readonly PointMaterialCore material;
 
         public ShaderPass PointPass { get; }
         public ShaderPass ShadowPass { get; }
