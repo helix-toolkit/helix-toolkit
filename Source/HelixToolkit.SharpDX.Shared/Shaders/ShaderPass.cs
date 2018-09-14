@@ -375,7 +375,9 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="blendStateDesc">The blend state desc.</param>
         public void SetState(BlendStateDescription? blendStateDesc)
-        {          
+        {
+            if (IsNULL)
+            { return; }
             if (BlendState != BlendStateProxy.Empty)
             {
                 var state = BlendState;
@@ -390,7 +392,9 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="depthStencilStateDesc">The depth stencil state desc.</param>
         public void SetState(DepthStencilStateDescription? depthStencilStateDesc)
         {
-            if(DepthStencilState != DepthStencilStateProxy.Empty)
+            if (IsNULL)
+            { return; }
+            if (DepthStencilState != DepthStencilStateProxy.Empty)
             {
                 var state = DepthStencilState;
                 RemoveAndDispose(ref state);
@@ -404,6 +408,8 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="rasterizerStateDesc">The rasterizer state desc.</param>
         public void SetState(RasterizerStateDescription? rasterizerStateDesc)
         {
+            if (IsNULL)
+            { return; }
             if (RasterState != RasterizerStateProxy.Empty)
             {
                 var state = RasterState;
