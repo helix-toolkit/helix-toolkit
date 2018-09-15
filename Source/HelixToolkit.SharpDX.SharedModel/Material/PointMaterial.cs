@@ -51,28 +51,102 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as PointMaterial).Core as PointMaterialCore).FigureRatio = (float)(double)e.NewValue;
                 }));
 
+        public static readonly DependencyProperty EnableDistanceFadingProperty =
+            DependencyProperty.Register("EnableDistanceFading", typeof(bool), typeof(PointMaterial), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    ((d as PointMaterial).Core as PointMaterialCore).EnableDistanceFading = (bool)e.NewValue;
+                }));
+
+        public static readonly DependencyProperty FadingNearDistanceProperty =
+            DependencyProperty.Register("FadingNearDistance", typeof(double), typeof(PointMaterial), new PropertyMetadata(0.0,
+                (d, e) =>
+                {
+                    ((d as PointMaterial).Core as PointMaterialCore).FadingNearDistance = (float)(double)e.NewValue;
+                }));
+
+        public static readonly DependencyProperty FadingFarDistanceProperty =
+            DependencyProperty.Register("FadingFarDistance", typeof(double), typeof(PointMaterial), new PropertyMetadata(100.0,
+                (d, e) =>
+                {
+                    ((d as PointMaterial).Core as PointMaterialCore).FadingFarDistance = (float)(double)e.NewValue;
+                }));
+        /// <summary>
+        /// Gets or sets the point color.
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
         public Media.Color Color
         {
             get { return (Media.Color)this.GetValue(ColorProperty); }
             set { this.SetValue(ColorProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the size.
+        /// </summary>
+        /// <value>
+        /// The size.
+        /// </value>
         public Size Size
         {
             get { return (Size)this.GetValue(SizeProperty); }
             set { this.SetValue(SizeProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the figure.
+        /// </summary>
+        /// <value>
+        /// The figure.
+        /// </value>
         public PointFigure Figure
         {
             get { return (PointFigure)this.GetValue(FigureProperty); }
             set { this.SetValue(FigureProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the figure ratio.
+        /// </summary>
+        /// <value>
+        /// The figure ratio.
+        /// </value>
         public double FigureRatio
         {
             get { return (double)this.GetValue(FigureRatioProperty); }
             set { this.SetValue(FigureRatioProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable distance fading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable distance fading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableDistanceFading
+        {
+            set { SetValue(EnableDistanceFadingProperty, value); }
+            get { return (bool)GetValue(EnableDistanceFadingProperty); }
+        }
+        /// <summary>
+        /// Gets or sets the fading near distance.
+        /// </summary>
+        /// <value>
+        /// The fading near distance.
+        /// </value>
+        public double FadingNearDistance
+        {
+            get { return (double)this.GetValue(FadingNearDistanceProperty); }
+            set { this.SetValue(FadingNearDistanceProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the fading far distance.
+        /// </summary>
+        /// <value>
+        /// The fading far distance.
+        /// </value>
+        public double FadingFarDistance
+        {
+            get { return (double)this.GetValue(FadingFarDistanceProperty); }
+            set { this.SetValue(FadingFarDistanceProperty, value); }
         }
         #endregion
 
@@ -85,7 +159,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 Height = (float)Size.Height,
                 Figure = Figure,
                 FigureRatio = (float)FigureRatio,
-                Name = Name
+                Name = Name,
+                EnableDistanceFading = EnableDistanceFading,
+                FadingNearDistance = (float)FadingNearDistance,
+                FadingFarDistance = (float)FadingFarDistance
             };
         }
 

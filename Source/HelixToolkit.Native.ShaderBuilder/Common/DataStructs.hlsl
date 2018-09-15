@@ -268,6 +268,7 @@ struct GSInputPS
 {
 	float4 p : POSITION;
 	float4 c : COLOR;
+    float4 vEye : POSITION1;
 };
 
 struct PSInputPS
@@ -276,6 +277,7 @@ struct PSInputPS
 	noperspective
 		float3 t : TEXCOORD;
 	float4 c : COLOR;
+    float4 vEye : POSITION0;
 };
 
 //--------------------------------------------------------------------------------------

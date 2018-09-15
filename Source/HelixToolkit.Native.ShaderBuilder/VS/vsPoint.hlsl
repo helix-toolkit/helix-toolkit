@@ -23,6 +23,8 @@ GSInputPS main(VSInputPS input)
 
 	//set position into clip space	
 	output.p = mul(output.p, mWorld);
+    float3 vEye = vEyePos - output.p.xyz;
+    output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
 	output.p = mul(output.p, mViewProjection);
 	output.c = input.c * pColor;
 	return output;

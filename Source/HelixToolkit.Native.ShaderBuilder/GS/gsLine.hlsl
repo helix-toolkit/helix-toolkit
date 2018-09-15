@@ -43,6 +43,7 @@ void main(line GSInputPS input[2], inout TriangleStream<PSInputPS> outStream)
 	output.t[0] = +1;
 	output.t[1] = +1;
 	output.t[2] = 1;
+    output.vEye = input[0].vEye;
 	outStream.Append(output);
 	
 	output.p = lineCorners[1];
@@ -57,6 +58,7 @@ void main(line GSInputPS input[2], inout TriangleStream<PSInputPS> outStream)
 	output.t[0] = -1;
 	output.t[1] = +1;
 	output.t[2] = 1;
+    output.vEye = input[1].vEye;
 	outStream.Append(output);
 	
 	output.p = lineCorners[3];
@@ -64,6 +66,7 @@ void main(line GSInputPS input[2], inout TriangleStream<PSInputPS> outStream)
 	output.t[0] = -1;
 	output.t[1] = -1;
 	output.t[2] = 1;
+    output.vEye = input[1].vEye;
 	outStream.Append(output);
 	
 	outStream.RestartStrip();

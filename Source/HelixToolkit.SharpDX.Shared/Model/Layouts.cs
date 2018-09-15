@@ -372,8 +372,10 @@ namespace HelixToolkit.Wpf.SharpDX
         //public Vector4 Color;
         //public Bool4 BoolParams;
 
-        public const int SizeInBytes = 4 * (3 * 4) + PointLineModelStruct.SizeInBytes;
-
+        public const int SizeInBytes = 4 * (4 * 4) + PointLineModelStruct.SizeInBytes;
+        public const string FadeNearDistance = "fadeNearDistance";
+        public const string FadeFarDistance = "fadeFarDistance";
+        public const string EnableDistanceFading = "enableDistanceFading";
         public const string ParamsStr = "pfParams";
         public const string ColorStr = "pColor";
         public const string BoolParamsStr = "pbParams";

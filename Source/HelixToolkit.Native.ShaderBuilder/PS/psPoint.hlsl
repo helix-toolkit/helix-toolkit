@@ -21,7 +21,11 @@ float4 main(PSInputPS input) : SV_Target
         if (alpha < 0.1)
             discard;
     }
-
+    float alpha = 1;
+    if (enableDistanceFading)
+    {
+        input.c.a = 1 - clamp((input.vEye.w - fadeNearDistance) / (fadeFarDistance - fadeNearDistance), 0, 1);
+    }
     return input.c;
 }
 

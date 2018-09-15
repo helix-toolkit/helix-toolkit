@@ -120,6 +120,10 @@ cbuffer cbPointLineModel : register(b4)
     float4 pfParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
     float4 pColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
 	bool4 pbParams = bool4(false, false, false, false);
+    bool enableDistanceFading;
+    float fadeNearDistance;
+    float fadeFarDistance;
+    float padding2;
 };
 #endif
 #if defined(PARTICLE) // model for line, point and billboard

@@ -56,6 +56,29 @@ namespace HelixToolkit.UWP.Model
             get { return lineColor; }
         }
 
+        private bool enableDistanceFading = false;
+        public bool EnableDistanceFading
+        {
+            set
+            {
+                Set(ref enableDistanceFading, value);
+            }
+            get { return enableDistanceFading; }
+        }
+
+        private float fadingNearDistance = 100;
+        public float FadingNearDistance
+        {
+            set { Set(ref fadingNearDistance, value); }
+            get { return fadingNearDistance; }
+        }
+
+        private float fadingFarDistance = 0;
+        public float FadingFarDistance
+        {
+            set { Set(ref fadingFarDistance, value); }
+            get { return fadingFarDistance; }
+        }
         #endregion
 
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
