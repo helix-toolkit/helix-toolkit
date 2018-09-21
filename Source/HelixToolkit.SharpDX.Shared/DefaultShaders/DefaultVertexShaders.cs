@@ -193,6 +193,10 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsPlaneGrid";
 
+        public static string VSScreenQuad
+        {
+            get;
+        } = "vsScreenQuad";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -456,7 +460,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex,
+        public static ShaderDescription VSFullScreenQuad = new ShaderDescription(nameof(VSFullScreenQuad), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshClipPlaneQuad);
 
@@ -496,6 +500,10 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs plane grid
         /// </summary>
         public static ShaderDescription VSPlaneGrid = new ShaderDescription(nameof(VSPlaneGrid), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSPlaneGrid);
+        /// <summary>
+        /// The vs screen quad
+        /// </summary>
+        public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSScreenQuad);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

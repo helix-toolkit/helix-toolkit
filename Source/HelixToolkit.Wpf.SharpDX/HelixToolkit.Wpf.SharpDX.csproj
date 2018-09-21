@@ -302,6 +302,7 @@
     <None Include="Resources\vsPointShadow.cso" />
     <None Include="Resources\vsScreenDup.cso" />
     <None Include="Resources\vsScreenDupCursor.cso" />
+    <None Include="Resources\vsScreenQuad.cso" />
     <None Include="Resources\vsSkybox.cso" />
   </ItemGroup>
   <ItemGroup>

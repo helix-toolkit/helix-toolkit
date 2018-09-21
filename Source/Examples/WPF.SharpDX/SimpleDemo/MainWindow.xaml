@@ -21,8 +21,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <!--<RowDefinition Height="Auto"/>-->
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0" VerticalAlignment="Top">
@@ -67,6 +67,8 @@
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding DirectionalLightColor}" />
+            <hx:ScreenQuadModel3D Texture="{Binding BackgroundTexture}" />
+
             <hx:MeshGeometryModel3D
                 x:Name="model1"
                 Geometry="{Binding Model}"
@@ -110,7 +112,7 @@
                 Transform="{Binding GridTransform}" />
         </hx:Viewport3DX>
 
-        <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
+        <StatusBar Grid.Row="2" VerticalAlignment="Bottom">
             <StatusBar.Background>
                 <SolidColorBrush Opacity="0.5" Color="WhiteSmoke" />
             </StatusBar.Background>

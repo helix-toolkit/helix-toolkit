@@ -113,6 +113,7 @@
     <None Remove="Resources\vsPointShadow.cso" />
     <None Remove="Resources\vsScreenDup.cso" />
     <None Remove="Resources\vsScreenDupCursor.cso" />
+    <None Remove="Resources\vsScreenQuad.cso" />
     <None Remove="Resources\vsSkybox.cso" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +198,7 @@
     <EmbeddedResource Include="Resources\vsPointShadow.cso" />
     <EmbeddedResource Include="Resources\vsScreenDup.cso" />
     <EmbeddedResource Include="Resources\vsScreenDupCursor.cso" />
+    <EmbeddedResource Include="Resources\vsScreenQuad.cso" />
     <EmbeddedResource Include="Resources\vsSkybox.cso" />
   </ItemGroup>
   <ItemGroup>

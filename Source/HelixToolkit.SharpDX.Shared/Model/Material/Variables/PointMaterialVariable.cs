@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public sealed class PointMaterialVariable : MaterialVariable
     {        
-        private PointMaterialCore material;
+        private readonly PointMaterialCore material;
 
         public ShaderPass PointPass { get; }
         public ShaderPass ShadowPass { get; }
@@ -44,6 +44,9 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PointMaterialCore.Height), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio)); });
             AddPropertyBinding(nameof(PointMaterialCore.Figure), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio)); });
             AddPropertyBinding(nameof(PointMaterialCore.FigureRatio), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4(material.Width, material.Height, (int)material.Figure, material.FigureRatio)); });
+            AddPropertyBinding(nameof(PointMaterialCore.EnableDistanceFading), () => { WriteValue(PointLineMaterialStruct.EnableDistanceFading, material.EnableDistanceFading ? 1 : 0); });
+            AddPropertyBinding(nameof(PointMaterialCore.FadingNearDistance), () => { WriteValue(PointLineMaterialStruct.FadeNearDistance, material.FadingNearDistance); });
+            AddPropertyBinding(nameof(PointMaterialCore.FadingFarDistance), () => { WriteValue(PointLineMaterialStruct.FadeFarDistance, material.FadingFarDistance); });
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

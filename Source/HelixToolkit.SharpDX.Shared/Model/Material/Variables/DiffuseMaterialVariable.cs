@@ -42,11 +42,11 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
-        public ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass ShadowPass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass MaterialPass { get; } = ShaderPass.NullPass;
+        public ShaderPass TransparentPass { get; } = ShaderPass.NullPass;
+        public ShaderPass ShadowPass { get; } = ShaderPass.NullPass;
+        public ShaderPass WireframePass { get; } = ShaderPass.NullPass;
+        public ShaderPass WireframeOITPass { get; } = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -61,41 +61,22 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string SamplerShadowMapName {  get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
-
-        public string DefaultShaderPassName
-        {
-            get;
-        } = DefaultPassNames.Diffuse;
-
-
-        public string ShadowPassName
-        {
-            get;
-        } = DefaultPassNames.ShadowPass;
-
-        public string WireframePassName
-        {
-            get;
-        } = DefaultPassNames.Wireframe;
-
-        public string TransparentPassName
-        {
-            get;
-        } = DefaultPassNames.DiffuseOIT;
-
-        public string WireframeOITPassName
-        {
-            get;
-        } = DefaultPassNames.WireframeOITPass;
-
         private readonly PhongMaterialCore material;
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="DiffuseMaterialVariables"/> class.
         /// </summary>
-        /// <param name="manager"></param>
-        /// <param name="technique"></param>
-        /// <param name="materialCore"></param>
-        private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore)
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        /// <param name="materialCore">The material core.</param>
+        /// <param name="materialPassName">Name of the material pass.</param>
+        /// <param name="wireframePassName">Name of the wireframe pass.</param>
+        /// <param name="materialOITPassName">Name of the material oit pass.</param>
+        /// <param name="wireframeOITPassName">Name of the wireframe oit pass.</param>
+        /// <param name="shadowPassName">Name of the shadow pass.</param>
+        private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore,
+            string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
+            string materialOITPassName = DefaultPassNames.OITPass, string wireframeOITPassName = DefaultPassNames.OITPass,
+            string shadowPassName = DefaultPassNames.ShadowPass)
             : base(manager, technique, DefaultMeshConstantBufferDesc, materialCore)
         {
             this.material = materialCore;
@@ -103,11 +84,11 @@ namespace HelixToolkit.UWP.Model
             samplerDiffuseSlot = samplerShadowSlot = -1;
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
-            MaterialPass = technique[DefaultShaderPassName];
-            TransparentPass = technique[TransparentPassName];
-            ShadowPass = technique[ShadowPassName];
-            WireframePass = technique[WireframePassName];
-            WireframeOITPass = technique[WireframeOITPassName];
+            MaterialPass = technique[materialPassName];
+            TransparentPass = technique[materialOITPassName];
+            ShadowPass = technique[shadowPassName];
+            WireframePass = technique[wireframePassName];
+            WireframeOITPass = technique[wireframeOITPassName];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
@@ -122,8 +103,7 @@ namespace HelixToolkit.UWP.Model
         public DiffuseMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
             : this(manager, technique, material)
         {
-            DefaultShaderPassName = passName;
-            MaterialPass = technique[DefaultShaderPassName];
+            MaterialPass = technique[passName];
         }
 
         protected override void OnInitialPropertyBindings()

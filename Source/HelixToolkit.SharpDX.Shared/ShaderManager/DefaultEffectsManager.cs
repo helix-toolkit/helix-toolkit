@@ -1233,7 +1233,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSScreenQuad,
+                            DefaultVSShaderDescriptions.VSFullScreenQuad,
                             DefaultPSShaderDescriptions.PSMeshClipScreenQuad
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
@@ -1625,6 +1625,25 @@ namespace HelixToolkit.UWP
                 }
             };
 
+            var screenQuad = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenQuad)
+            {
+                InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSScreenQuad,
+                            DefaultPSShaderDescriptions.PSScreenDup,                           
+                        },
+                        Topology = PrimitiveTopology.TriangleStrip,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual,
+                        RasterStateDescription = DefaultRasterDescriptions.RSSkybox,
+                    }
+                }
+            };
 #if !NETFX_CORE
             var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
             {
@@ -1675,6 +1694,7 @@ namespace HelixToolkit.UWP
             yield return fxaaPostEffect;
             yield return meshOITQuad;
             yield return planeGrid;
+            yield return screenQuad;
 #if !NETFX_CORE
             yield return renderScreenDup;
 #endif

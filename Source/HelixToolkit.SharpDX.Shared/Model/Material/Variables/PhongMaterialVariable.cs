@@ -47,11 +47,13 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
-        public ShaderPass MaterialOITPass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass ShadowPass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
-        public ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
+        public ShaderPass MaterialPass { get; } = ShaderPass.NullPass;
+        public ShaderPass MaterialOITPass { get; } = ShaderPass.NullPass;
+        public ShaderPass ShadowPass { get; } = ShaderPass.NullPass;
+        public ShaderPass WireframePass { get; } = ShaderPass.NullPass;
+        public ShaderPass WireframeOITPass { get; } = ShaderPass.NullPass;
+        public ShaderPass TessellationPass { get; } = ShaderPass.NullPass;
+        public ShaderPass TessellationOITPass { get; } = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -95,93 +97,6 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string ShaderSamplerShadowMapName { get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
-        private string materialShaderPassName = DefaultPassNames.Default;
-        public string MaterialShaderPassName
-        {
-            set
-            {
-                if (!fixedPassName && Set(ref materialShaderPassName, value))
-                {
-                    MaterialPass = Technique[value];
-                    UpdateMappings(MaterialPass);
-                }
-            }
-            get
-            {
-                return materialShaderPassName;
-            }
-        }
-
-        private string shadowPassName = DefaultPassNames.ShadowPass;
-        public string ShadowPassName
-        {
-            set
-            {
-                if (Set(ref shadowPassName, value))
-                {
-                    ShadowPass = Technique[value];
-                }
-            }
-            get
-            {
-                return shadowPassName;
-            }
-        }
-
-        private string wireframePassName = DefaultPassNames.Wireframe;
-        public string WireframePassName
-        {
-            set
-            {
-                if (Set(ref wireframePassName, value))
-                {
-                    WireframePass = Technique[value];
-                }
-            }
-            get
-            {
-                return wireframePassName;
-            }
-        }
-
-        private string transparentPassName = DefaultPassNames.OITPass;
-        /// <summary>
-        /// Gets or sets the name of the mesh transparent pass.
-        /// </summary>
-        /// <value>
-        /// The name of the transparent pass.
-        /// </value>
-        public string TransparentPassName
-        {
-            set
-            {
-                if (!fixedPassName && Set(ref transparentPassName, value))
-                {
-                    MaterialOITPass = Technique[value];
-                }
-            }
-            get
-            {
-                return transparentPassName;
-            }
-        }
-
-        private string wireframeOITPassName = DefaultPassNames.WireframeOITPass;
-        public string WireframeOITPassName
-        {
-            set
-            {
-                if (Set(ref wireframeOITPassName, value))
-                {
-                    WireframeOITPass = Technique[value];
-                }
-            }
-            get
-            {
-                return wireframeOITPassName;
-            }
-        }
-
         private bool enableTessellation = false;
         public bool EnableTessellation
         {
@@ -189,24 +104,8 @@ namespace HelixToolkit.UWP.Model
             {
                 if (SetAffectsRender(ref enableTessellation, value))
                 {
-                    if (enableTessellation)
-                    {
-                        switch (material.MeshType)
-                        {
-                            case MeshTopologyEnum.PNTriangles:
-                                MaterialShaderPassName = DefaultPassNames.MeshTriTessellation;
-                                TransparentPassName = DefaultPassNames.MeshTriTessellationOIT;
-                                break;
-                            case MeshTopologyEnum.PNQuads:
-                                MaterialShaderPassName = DefaultPassNames.MeshQuadTessellation;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        MaterialShaderPassName = DefaultPassNames.Default;
-                        TransparentPassName = DefaultPassNames.OITPass;
-                    }
+                    currentMaterialPass = value ? TessellationPass : MaterialPass;
+                    currentOITPass = value ? TessellationOITPass : MaterialOITPass;
                 }
             }
             get
@@ -215,15 +114,29 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        private readonly bool fixedPassName = false;
         private readonly PhongMaterialCore material;
+        private ShaderPass currentMaterialPass = ShaderPass.NullPass;
+        private ShaderPass currentOITPass = ShaderPass.NullPass;
+
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PhongMaterialVariables"/> class.
         /// </summary>
-        /// <param name="manager"></param>
-        /// <param name="technique"></param>
-        /// <param name="materialCore"></param>
-        public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore)
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        /// <param name="materialCore">The material core.</param>
+        /// <param name="materialPassName">Name of the material pass.</param>
+        /// <param name="wireframePassName">Name of the wireframe pass.</param>
+        /// <param name="materialOITPassName">Name of the material oit pass.</param>
+        /// <param name="wireframeOITPassName">Name of the wireframe oit pass.</param>
+        /// <param name="shadowPassName">Name of the shadow pass.</param>
+        /// <param name="tessellationPassName">Name of the tessellation pass.</param>
+        /// <param name="tessellationOITPassName">Name of the tessellation oit pass.</param>
+        public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore,
+            string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
+            string materialOITPassName = DefaultPassNames.OITPass, string wireframeOITPassName = DefaultPassNames.OITPass,
+            string shadowPassName = DefaultPassNames.ShadowPass,
+            string tessellationPassName = DefaultPassNames.MeshTriTessellation,
+            string tessellationOITPassName = DefaultPassNames.MeshTriTessellationOIT)
             : base(manager, technique, DefaultMeshConstantBufferDesc, materialCore)
         {
             this.material = materialCore;
@@ -231,13 +144,18 @@ namespace HelixToolkit.UWP.Model
             samplerDiffuseSlot = samplerDisplaceSlot = samplerShadowSlot = -1;
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
-            MaterialPass = technique[MaterialShaderPassName];
-            MaterialOITPass = technique[TransparentPassName];
-            ShadowPass = technique[ShadowPassName];
-            WireframePass = technique[WireframePassName];
-            WireframeOITPass = technique[WireframeOITPassName];
+            
+            MaterialPass = technique[materialPassName];
+            MaterialOITPass = technique[materialOITPassName];
+            ShadowPass = technique[shadowPassName];
+            WireframePass = technique[wireframePassName];
+            WireframeOITPass = technique[wireframeOITPassName];
+            TessellationPass = technique[tessellationPassName];
+            TessellationOITPass = technique[tessellationOITPassName];
             UpdateMappings(MaterialPass);
             EnableTessellation = materialCore.EnableTessellation;
+            currentMaterialPass = EnableTessellation ? TessellationPass : MaterialPass;
+            currentOITPass = EnableTessellation ? TessellationOITPass : MaterialOITPass;
         }
 
         /// <summary>
@@ -250,8 +168,7 @@ namespace HelixToolkit.UWP.Model
         public PhongMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
             : this(manager, technique, material)
         {
-            MaterialShaderPassName = passName;
-            fixedPassName = true;
+            MaterialPass = technique[passName];
         }
 
         protected override void OnInitialPropertyBindings()
@@ -437,7 +354,7 @@ namespace HelixToolkit.UWP.Model
 
         public override ShaderPass GetPass(RenderType renderType, RenderContext context)
         {
-            return renderType == RenderType.Transparent && context.IsOITPass ? MaterialOITPass : MaterialPass;
+            return renderType == RenderType.Transparent && context.IsOITPass ? currentOITPass : currentMaterialPass;
         }
 
         public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)

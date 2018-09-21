@@ -372,8 +372,10 @@ namespace HelixToolkit.Wpf.SharpDX
         //public Vector4 Color;
         //public Bool4 BoolParams;
 
-        public const int SizeInBytes = 4 * (3 * 4) + PointLineModelStruct.SizeInBytes;
-
+        public const int SizeInBytes = 4 * (4 * 4) + PointLineModelStruct.SizeInBytes;
+        public const string FadeNearDistance = "fadeNearDistance";
+        public const string FadeFarDistance = "fadeFarDistance";
+        public const string EnableDistanceFading = "enableDistanceFading";
         public const string ParamsStr = "pfParams";
         public const string ColorStr = "pColor";
         public const string BoolParamsStr = "pbParams";
@@ -484,6 +486,27 @@ namespace HelixToolkit.Wpf.SharpDX
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
         public CubeFaceCamera[] Cameras;
         public const int SizeInBytes = CubeFaceCamera.SizeInBytes * 6;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ScreenQuadModelStruct
+    {
+        public Matrix mWorld;
+        public Vector4 BottomLeft;
+        public Vector4 BottomRight;
+        public Vector4 TopLeft;
+        public Vector4 TopRight;
+        
+        public Vector2 TexTopLeft;
+        Vector2 pad2;
+        public Vector2 TexTopRight;
+        Vector2 pad3;        
+        public Vector2 TexBottomLeft;       
+        Vector2 pad0;
+        public Vector2 TexBottomRight;
+        Vector2 pad1;
+
+        public const int SizeInBytes = 4 * ( 4 * 4 + 4 * 8 );
     }
 #if !NETFX_CORE
     /// <summary>

@@ -59,7 +59,7 @@ namespace SimpleDemo
         public Color AmbientLightColor { get; private set; }
 
         public Vector3D UpDirection { set; get; } = new Vector3D(0, 1, 0);
-
+        public Stream BackgroundTexture { get; }
         public ICommand UpXCommand { private set; get; }
         public ICommand UpYCommand { private set; get; }
         public ICommand UpZCommand { private set; get; }
@@ -208,6 +208,13 @@ namespace SimpleDemo
             UpXCommand = new RelayCommand(x => { UpDirection = new Vector3D(1, 0, 0); });
             UpYCommand = new RelayCommand(x => { UpDirection = new Vector3D(0, 1, 0); });
             UpZCommand = new RelayCommand(x => { UpDirection = new Vector3D(0, 0, 1); });
+            BackgroundTexture =
+                BitmapExtensions.CreateLinearGradientBitmapStream(EffectsManager, 128, 128, Direct2DImageFormat.Bmp,
+                new Vector2(0, 0), new Vector2(0, 128), new SharpDX.Direct2D1.GradientStop[]
+                {
+                    new SharpDX.Direct2D1.GradientStop(){ Color = Colors.White.ToColor4(), Position = 0f },
+                    new SharpDX.Direct2D1.GradientStop(){ Color = Colors.DarkGray.ToColor4(), Position = 1f }
+                });
         }
 
         private BitmapSource CreateBitmapSample()

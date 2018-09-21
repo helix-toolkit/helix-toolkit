@@ -4,8 +4,12 @@
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
-
+#if !defined(INSTANCINGPARAM)
 GSInputBT main(VSInputBT input)
+#endif
+#if defined(INSTANCINGPARAM)
+GSInputBT main(VSInputBTInstancing input)
+#endif
 {
     GSInputBT output = (GSInputBT) 0;
     output.p = input.p;
@@ -27,6 +31,14 @@ GSInputBT main(VSInputBT input)
         output.p = mul(input.p, mInstance);
         output.offTL = input.offTL * mInstance._m00_m11; // 2d scaling x
         output.offBR = input.offBR * mInstance._m00_m11; // 2d scaling x
+#if defined(INSTANCINGPARAM)
+        if (bHasInstanceParams)
+        {
+            output.t0 = mad(input.tScale, input.t0, input.tOffset);
+            output.t3 = mad(input.tScale, input.t3, input.tOffset);
+            output.background = input.background * input.diffuseC;
+        }
+#endif
     }
 	// Translate position into clip space
     float4 ndcPosition = mul(output.p, mWorld);

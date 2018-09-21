@@ -28,7 +28,10 @@ float4 main(PSInputPS input) : SV_Target
 	
 	//color = texDiffuseMap.Sample(SSLinearSamplerWrap, input.t.xy);	
     color.a = alpha;
-	
+    if (enableDistanceFading)
+    {
+        color.a *= 1 - clamp((input.vEye.w - fadeNearDistance) / (fadeFarDistance - fadeNearDistance), 0, 1);
+    }
     return color;
 }
 

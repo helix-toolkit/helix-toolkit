@@ -388,7 +388,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "psMeshPBROIT";
-#if !NETFX_CORE
+
         /// <summary>
         /// 
         /// </summary>
@@ -396,7 +396,6 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "psScreenDup";
-#endif
     }
 
 
@@ -633,12 +632,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshPBROIT = new ShaderDescription(nameof(PSMeshPBROIT), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshPBROIT);
-#if !NETFX_CORE
+
         /// <summary>
         /// The ps screen dup
         /// </summary>
         public static ShaderDescription PSScreenDup = new ShaderDescription(nameof(PSScreenDup), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSScreenDup);
-#endif
     }
 }

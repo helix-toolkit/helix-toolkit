@@ -42,6 +42,9 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(LineMaterialCore.LineColor), () => { WriteValue(PointLineMaterialStruct.ColorStr, material.LineColor); });
             AddPropertyBinding(nameof(LineMaterialCore.Thickness), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector2(material.Thickness, material.Smoothness)); });
             AddPropertyBinding(nameof(LineMaterialCore.Smoothness), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector2(material.Thickness, material.Smoothness)); });
+            AddPropertyBinding(nameof(LineMaterialCore.EnableDistanceFading), () => { WriteValue(PointLineMaterialStruct.EnableDistanceFading, material.EnableDistanceFading ? 1 : 0); });
+            AddPropertyBinding(nameof(LineMaterialCore.FadingNearDistance), () => { WriteValue(PointLineMaterialStruct.FadeNearDistance, material.FadingNearDistance); });
+            AddPropertyBinding(nameof(LineMaterialCore.FadingFarDistance), () => { WriteValue(PointLineMaterialStruct.FadeFarDistance, material.FadingFarDistance); });
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

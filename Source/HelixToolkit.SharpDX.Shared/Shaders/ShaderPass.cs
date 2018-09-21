@@ -35,10 +35,7 @@ namespace HelixToolkit.UWP.Shaders
         public PixelShader PixelShader { private set; get; } = PixelShader.NullPixelShader;
         public GeometryShader GeometryShader { private set; get; } = GeometryShader.NullGeometryShader;
         public ComputeShader ComputeShader { private set; get; } = ComputeShader.NullComputeShader;
-        /// <summary>
-        /// <see cref="ShaderPass.BlendState"/>
-        /// </summary>
-        public BlendStateProxy BlendState { private set; get; } = null;
+
         /// <summary>
         /// Gets or sets the blend factor.
         /// </summary>
@@ -61,13 +58,17 @@ namespace HelixToolkit.UWP.Shaders
         /// </value>
         public int StencilRef { private set; get; } = 0;
         /// <summary>
+        /// <see cref="ShaderPass.BlendState"/>
+        /// </summary>
+        public BlendStateProxy BlendState { private set; get; } = BlendStateProxy.Empty;
+        /// <summary>
         /// <see cref="ShaderPass.DepthStencilState"/>
         /// </summary>
-        public DepthStencilStateProxy DepthStencilState { private set; get; } = null;
+        public DepthStencilStateProxy DepthStencilState { private set; get; } = DepthStencilStateProxy.Empty;
         /// <summary>
         /// <see cref="ShaderPass.RasterState"/>
         /// </summary>
-        public RasterizerStateProxy RasterState { private set; get; } = null;
+        public RasterizerStateProxy RasterState { private set; get; } = RasterizerStateProxy.Empty;
         /// <summary>
         /// Gets or sets the input layout. This is customized layout used for this ShaderPass only.
         /// If this is not set, default is using <see cref="Technique.Layout"/> from <see cref="TechniqueDescription.InputLayoutDescription"/>
@@ -86,6 +87,8 @@ namespace HelixToolkit.UWP.Shaders
         {
             set; get;
         } = global::SharpDX.Direct3D.PrimitiveTopology.Undefined;
+
+        private readonly IEffectsManager effectsManager;
         /// <summary>
         /// 
         /// </summary>
@@ -95,7 +98,7 @@ namespace HelixToolkit.UWP.Shaders
         public ShaderPass(ShaderPassDescription passDescription, InputLayout layout, IEffectsManager manager)
         {
             Name = passDescription.Name;
-
+            effectsManager = manager;
             if (passDescription.ShaderList != null)
             {
                 foreach (var shader in passDescription.ShaderList)
@@ -366,6 +369,54 @@ namespace HelixToolkit.UWP.Shaders
             {
                 context.SetRasterState(RasterState);
             }
+        }
+        /// <summary>
+        /// Sets the state.
+        /// </summary>
+        /// <param name="blendStateDesc">The blend state desc.</param>
+        public void SetState(BlendStateDescription? blendStateDesc)
+        {
+            if (IsNULL)
+            { return; }
+            if (BlendState != BlendStateProxy.Empty)
+            {
+                var state = BlendState;
+                RemoveAndDispose(ref state);
+            }
+            BlendState = blendStateDesc != null ?
+                Collect(effectsManager.StateManager.Register(blendStateDesc.Value)) : BlendStateProxy.Empty;
+        }
+        /// <summary>
+        /// Sets the state.
+        /// </summary>
+        /// <param name="depthStencilStateDesc">The depth stencil state desc.</param>
+        public void SetState(DepthStencilStateDescription? depthStencilStateDesc)
+        {
+            if (IsNULL)
+            { return; }
+            if (DepthStencilState != DepthStencilStateProxy.Empty)
+            {
+                var state = DepthStencilState;
+                RemoveAndDispose(ref state);
+            }
+            DepthStencilState = depthStencilStateDesc != null ?
+                Collect(effectsManager.StateManager.Register(depthStencilStateDesc.Value)) : DepthStencilStateProxy.Empty;
+        }
+        /// <summary>
+        /// Sets the state.
+        /// </summary>
+        /// <param name="rasterizerStateDesc">The rasterizer state desc.</param>
+        public void SetState(RasterizerStateDescription? rasterizerStateDesc)
+        {
+            if (IsNULL)
+            { return; }
+            if (RasterState != RasterizerStateProxy.Empty)
+            {
+                var state = RasterState;
+                RemoveAndDispose(ref state);
+            }
+            RasterState = rasterizerStateDesc != null ?
+                Collect(effectsManager.StateManager.Register(rasterizerStateDesc.Value)) : RasterizerStateProxy.Empty;
         }
     }
 }

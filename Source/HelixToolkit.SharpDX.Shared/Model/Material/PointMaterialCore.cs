@@ -92,7 +92,29 @@ namespace HelixToolkit.UWP.Model
                 return pointColor;
             }
         }
+        private bool enableDistanceFading = false;
+        public bool EnableDistanceFading
+        {
+            set
+            {
+                Set(ref enableDistanceFading, value);
+            }
+            get { return enableDistanceFading; }
+        }
 
+        private float fadingNearDistance = 0;
+        public float FadingNearDistance
+        {
+            set { Set(ref fadingNearDistance, value); }
+            get { return fadingNearDistance; }
+        }
+
+        private float fadingFarDistance = 100;
+        public float FadingFarDistance
+        {
+            set { Set(ref fadingFarDistance, value); }
+            get { return fadingFarDistance; }
+        }
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
             return new PointMaterialVariable(manager, technique, this);

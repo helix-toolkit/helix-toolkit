@@ -97,6 +97,8 @@ namespace HelixToolkit.UWP
         /// The plane grid
         /// </summary>
         public const string PlaneGrid = "PlaneGrid";
+
+        public const string ScreenQuad = "ScreenQuad";
 #if !NETFX_CORE
         /// <summary>
         /// 

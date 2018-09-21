@@ -40,8 +40,8 @@ PSWireframeInput main(VSInputBatched input)
         inputn = normalize(mul(inputn, (float3x3) mWorld));
         const float mipInterval = 20;
         float mipLevel = clamp((distance(inputp.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, t, mipLevel);
-        inputp.xyz += inputn * mul(h, displacementMapScaleMask);
+        float3 h = texDisplacementMap.SampleLevel(samplerDisplace, t, mipLevel);
+        inputp.xyz += inputn * mul(h, displacementMapScaleMask.xyz);
     }
     PSWireframeInput output = (PSWireframeInput) 0;
 	//set position into clip space	

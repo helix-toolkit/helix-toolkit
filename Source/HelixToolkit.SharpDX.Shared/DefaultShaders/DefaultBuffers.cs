@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string ClipParamsCB = "cbClipping";
         public static string BorderEffectCB = "cbBorderEffect";
         public static string DynamicCubeMapCB = "cbDynamicCubeMap";
+        public static string ScreenQuadCB = "cbScreenQuad";
 #if !NETFX_CORE
         public static string ScreenDuplicationCB = "cbScreenClone";
 #endif

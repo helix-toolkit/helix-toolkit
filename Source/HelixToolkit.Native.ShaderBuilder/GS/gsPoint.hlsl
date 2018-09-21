@@ -28,7 +28,7 @@ void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
 void main(point GSInputPS input[1], inout TriangleStream<PSInputPS> outStream)
 {
     PSInputPS output = (PSInputPS) 0;
-        
+    output.vEye = input[0].vEye;    
     float4 spriteCorners[4];
     makeQuad(spriteCorners, input[0].p, pfParams.x, pfParams.y);
 
@@ -36,7 +36,7 @@ void main(point GSInputPS input[1], inout TriangleStream<PSInputPS> outStream)
     output.c = input[0].c;
     output.t[0] = +1;
     output.t[1] = +1;
-    output.t[2] = 1;
+    output.t[2] = 1;   
     outStream.Append(output);
     
     output.p = spriteCorners[1];
