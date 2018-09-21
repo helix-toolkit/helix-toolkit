@@ -278,5 +278,8 @@
     <FxCompile Include="PS\psMeshPBROIT.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="VS\vsScreenQuad.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

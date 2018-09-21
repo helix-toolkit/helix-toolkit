@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRayGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\ScreenQuadModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\ScreenSpacedGroup3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\TransformManipulator3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />

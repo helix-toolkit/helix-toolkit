@@ -100,7 +100,14 @@ cbuffer cbMesh : register(b1)
         float4 CursorVertCoord[4];
     };
 #endif
-
+#if defined(SCREENQUAD)
+    cbuffer cbScreenQuad : register(b9)
+    {
+        float4x4 mWorld;
+        float4 VertCoord[4];
+        float4 TextureCoord[4];
+    };
+#endif
 cbuffer cbLights : register(b3)
 {
     LightStruct Lights[LIGHTS];

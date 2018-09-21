@@ -42,6 +42,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\ConstantBufferComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\CrossSectionMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\DepthPrepassCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DrawScreenQuadCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\DynamicCubeMapCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\EmptyRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\AxisPlaneGridCore.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\DynamicCodeSurface3DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\AxisPlaneGridNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenQuadNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PhongMaterialVariable.cs" />

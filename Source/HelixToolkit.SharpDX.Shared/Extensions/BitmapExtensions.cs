@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using global::SharpDX.Direct2D1;
+    using global::SharpDX.Mathematics.Interop;
     using global::SharpDX.WIC;
     using System;
     public enum Direct2DImageFormat
@@ -121,6 +122,53 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
+        }
+
+        public static MemoryStream CreateSolidColorBitmapStream(IDevice2DResources deviceResources,
+            int width, int height, Direct2DImageFormat imageType, Color4 color)
+        {
+            return CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
+            {
+                using (var brush = new SolidColorBrush(target, color, new BrushProperties() { Opacity = color.Alpha }))
+                {
+                    target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
+                }
+            });
+        }
+
+        public static MemoryStream CreateLinearGradientBitmapStream(IDevice2DResources deviceResources, 
+            int width, int height, Direct2DImageFormat imageType, Vector2 startPoint, Vector2 endPoint, GradientStop[] gradients,
+            ExtendMode extendMode = ExtendMode.Clamp, Gamma gamma = Gamma.StandardRgb)
+        {        
+            return CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
+            {
+                using (var brush = new LinearGradientBrush(target, new LinearGradientBrushProperties()
+                {
+                    StartPoint = startPoint,
+                    EndPoint = endPoint
+                }, new GradientStopCollection(target, gradients, gamma, extendMode)))
+                {
+                    target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
+                }
+            });
+        }
+
+        public static MemoryStream CreateRadiusGradientBitmapStream(IDevice2DResources deviceResources,
+            int width, int height, Direct2DImageFormat imageType, Vector2 center, Vector2 gradientOriginOffset, 
+            float radiusX, float radiusY, GradientStop[] gradients,
+            ExtendMode extendMode = ExtendMode.Clamp, Gamma gamma = Gamma.StandardRgb)
+        {
+            return CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
+            {
+                using (var brush = new RadialGradientBrush(target, new RadialGradientBrushProperties()
+                {
+                    Center = center, GradientOriginOffset = gradientOriginOffset,
+                    RadiusX = radiusX, RadiusY = radiusY,
+                }, new GradientStopCollection(target, gradients, gamma, extendMode)))
+                {
+                    target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
+                }
+            });
         }
 
         public static MemoryStream CreateViewBoxTexture(IDevice2DResources deviceResources, string front, string back, string left, string right, string top, string down, 
