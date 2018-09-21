@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Next Release
 ### Added
 1. Physics Based Rendering Material. (WPF.SharpDX and UWP)
+2. ScreenQuadModel3D for background full screen texture rendering.(WPF.SharpDX and UWP)
 
 ### Improvement and Changes
 1. Clean up render core. Obsolete RenderCoreBase. Move to material based rendering. (WPF.SharpDX and UWP)
