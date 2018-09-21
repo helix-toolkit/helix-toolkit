@@ -20,7 +20,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model.Scene;
     using Shaders;
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class ScreenQuadModel3D : Element3D
     {
         public Stream Texture
