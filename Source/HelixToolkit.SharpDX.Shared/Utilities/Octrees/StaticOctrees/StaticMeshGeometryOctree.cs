@@ -209,6 +209,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         var d = (cloestPoint - sphere.Center).Length();
                         if (tempResult.Distance > d)
                         {
+                            var n = Vector3.Normalize(Vector3.Cross(v1 - v0, v2 - v0));
+                            tempResult.NormalAtHit = n;
                             tempResult.Distance = d;
                             tempResult.IsValid = true;
                             tempResult.PointHit = cloestPoint;
