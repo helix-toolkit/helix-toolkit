@@ -120,12 +120,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\BillboardMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\GenericMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\LineMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PBRMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PointMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\BillboardMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\ColorStripeMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\DiffuseMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\GenericMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\LineMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PassOnlyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
