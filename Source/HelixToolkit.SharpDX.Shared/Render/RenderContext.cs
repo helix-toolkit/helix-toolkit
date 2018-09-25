@@ -288,6 +288,26 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
+        /// Gets or sets a value indicating whether [update scene graph requested] in this frame.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [update scene graph requested]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UpdateSceneGraphRequested
+        {
+            internal set;get;
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [update per frame renderable requested] in this frame.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [update per frame renderable requested]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UpdatePerFrameRenderableRequested
+        {
+            internal set;get;
+        }
+        /// <summary>
         /// Gets a value indicating whether this instance is shadow map enabled.
         /// </summary>
         /// <value>

@@ -630,6 +630,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
                 bool updateSceneGraph = UpdateSceneGraphRequested;
                 bool updatePerFrameRenderable = UpdatePerFrameRenderableRequested;
+                renderContext.UpdateSceneGraphRequested = UpdateSceneGraphRequested;
+                renderContext.UpdatePerFrameRenderableRequested = UpdatePerFrameRenderableRequested;
                 UpdateSceneGraphRequested = false;
                 UpdatePerFrameRenderableRequested = false;
                 PreRender(updateSceneGraph, updatePerFrameRenderable);
