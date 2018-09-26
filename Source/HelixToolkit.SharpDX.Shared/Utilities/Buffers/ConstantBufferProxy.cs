@@ -32,17 +32,20 @@ namespace HelixToolkit.UWP.Utilities
 
         internal BufferDescription bufferDesc;
 
+        public string Name { private set; get; }
+
         internal Dictionary<string, ConstantBufferVariable> VariableDictionary { get; } = new Dictionary<string, ConstantBufferVariable>();
         /// <summary>
         ///
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="structSize"></param>
         /// <param name="bindFlags"></param>
         /// <param name="cpuAccessFlags"></param>
         /// <param name="optionFlags"></param>
         /// <param name="usage"></param>
         /// <param name="strideSize"></param>
-        public ConstantBufferProxy(int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer,
+        public ConstantBufferProxy(string name, int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer,
             CpuAccessFlags cpuAccessFlags = CpuAccessFlags.None, ResourceOptionFlags optionFlags = ResourceOptionFlags.None,
             ResourceUsage usage = ResourceUsage.Default, int strideSize = 0)
             : base(structSize, bindFlags)
@@ -51,6 +54,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 throw new ArgumentException("Constant buffer struct size must be multiple of 16 bytes");
             }
+            Name = name;
             bufferDesc = new BufferDescription()
             {
                 SizeInBytes = structSize,
@@ -73,6 +77,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 throw new ArgumentException("Constant buffer struct size must be multiple of 16 bytes");
             }
+            Name = description.Name;
             bufferDesc = new BufferDescription()
             {
                 SizeInBytes = description.StructSize,

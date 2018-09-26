@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.IO;
 using global::SharpDX;
 using SharpDX.Direct3D11;
+using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -55,21 +56,48 @@ namespace HelixToolkit.UWP.Model
         [DataMember]
         public string WireframePassName { set; get; } = DefaultPassNames.Wireframe;
 
-        public ConstantBufferDescription ConstantBufferDesc { set; get; } = MaterialVariable.DefaultMeshConstantBufferDesc;
+        public string[] PropertieNames { get; }
+        public string[] TextureNames { get; }
+        public string[] SamplerNames { get; }
+
+        protected readonly ConstantBufferDescription cbDescription;
 
         public GenericMaterialCore(
             string materialShaderPassName,
             string shadowShaderPassName,
-            string wireframePassName)
+            string wireframePassName, 
+            ConstantBufferDescription constantBufferDesc)
         {
             this.MaterialPassName = materialShaderPassName;
             this.ShadowPassName = shadowShaderPassName;
             this.WireframePassName = wireframePassName;
+            cbDescription = constantBufferDesc;
         }
 
-        public GenericMaterialCore()
+        public GenericMaterialCore(ConstantBufferDescription constantBufferDesc)
         {
+            cbDescription = constantBufferDesc;
+        }
 
+        public GenericMaterialCore(ShaderPass shaderPass)
+        {
+            if (shaderPass.IsNULL || shaderPass.PixelShader.IsNULL)
+            {
+                return;
+            }
+            List<string> properties = new List<string>();
+            var cb = shaderPass.PixelShader.ConstantBufferMapping.Mappings
+                .Where(x => x.Value.Name != DefaultBufferNames.GlobalTransformCB && x.Value.Name != DefaultBufferNames.LightCB).FirstOrDefault();
+
+            if (cb.Value != null)
+            {
+                cbDescription = new ConstantBufferDescription(cb.Value.Name, cb.Value.bufferDesc.SizeInBytes);
+                properties.AddRange(cb.Value.VariableDictionary.Keys);
+            }                       
+            
+            PropertieNames = properties.ToArray();
+            TextureNames = shaderPass.PixelShader.ShaderResourceViewMapping.Mappings.Select(x => x.Value.Description.Name).ToArray();
+            SamplerNames = shaderPass.PixelShader.SamplerMapping.Mappings.Select(x => x.Value.Name).ToArray();
         }
 
         public void SetTexture(string name, Stream texture)
@@ -219,27 +247,58 @@ namespace HelixToolkit.UWP.Model
 
     public sealed class GenericMeshMaterialCore : GenericMaterialCore
     {
+        public GenericMeshMaterialCore()
+            :base(MaterialVariable.DefaultMeshConstantBufferDesc)
+        {
+
+        }
+
+        public GenericMeshMaterialCore(ShaderPass shaderPass)
+            :base(shaderPass)
+        {
+
+        }
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new GenericMeshMaterialVariable(manager, technique, this, MaterialVariable.DefaultMeshConstantBufferDesc,
+            return new GenericMeshMaterialVariable(manager, technique, this, cbDescription,
                 MaterialPassName, ShadowPassName, WireframePassName);
         }
     }
 
     public sealed class GenericLineMaterialCore : GenericMaterialCore
     {
+        public GenericLineMaterialCore()
+            :base(MaterialVariable.DefaultPointLineConstantBufferDesc)
+        {
+
+        }
+        public GenericLineMaterialCore(ShaderPass shaderPass)
+            : base(shaderPass)
+        {
+
+        }
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new GenericMeshMaterialVariable(manager, technique, this, MaterialVariable.DefaultPointLineConstantBufferDesc,
+            return new GenericMeshMaterialVariable(manager, technique, this, cbDescription,
                 MaterialPassName, ShadowPassName, "");
         }
     }
 
     public sealed class GenericPointMaterialCore : GenericMaterialCore
     {
+        public GenericPointMaterialCore()
+            :base(MaterialVariable.DefaultPointLineConstantBufferDesc)
+        {
+
+        }
+        public GenericPointMaterialCore(ShaderPass shaderPass)
+            : base(shaderPass)
+        {
+
+        }
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new GenericPointMaterialVariable(manager, technique, this, MaterialVariable.DefaultPointLineConstantBufferDesc,
+            return new GenericPointMaterialVariable(manager, technique, this, cbDescription,
                 MaterialPassName, ShadowPassName);
         }
     }
