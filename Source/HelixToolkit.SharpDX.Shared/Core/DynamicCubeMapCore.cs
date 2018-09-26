@@ -286,6 +286,8 @@ namespace HelixToolkit.UWP.Core
         /// The name of the shader cube texture sampler.
         /// </value>
         public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
+
+        private bool isDynamicScene = false;
         /// <summary>
         /// Gets or sets a value indicating whether this scene is dynamic scene.
         /// If true, reflection map will be updated in each frame. Otherwise it will only be updated if scene graph or visibility changed.
@@ -293,7 +295,14 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         ///   <c>true</c> if this instance is dynamic scene; otherwise, <c>false</c>.
         /// </value>
-        public bool IsDynamicScene { set; get; }
+        public bool IsDynamicScene
+        {
+            set
+            {
+                SetAffectsRender(ref isDynamicScene, value);
+            }
+            get { return isDynamicScene; }
+        }
         #endregion Properties
 
         /// <summary>
