@@ -78,8 +78,12 @@ namespace HelixToolkit.UWP.Model
         {
             cbDescription = constantBufferDesc;
         }
-
-        public GenericMaterialCore(ShaderPass shaderPass)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericMaterialCore"/> class.
+        /// </summary>
+        /// <param name="shaderPass">The shader pass. Currently only supports pixel shader parameter properties</param>
+        /// <param name="modelMaterialConstantBufferName">Name of the model material constant buffer in pixel shader.</param>
+        public GenericMaterialCore(ShaderPass shaderPass, string modelMaterialConstantBufferName)
         {
             if (shaderPass.IsNULL || shaderPass.PixelShader.IsNULL)
             {
@@ -87,7 +91,7 @@ namespace HelixToolkit.UWP.Model
             }
             List<string> properties = new List<string>();
             var cb = shaderPass.PixelShader.ConstantBufferMapping.Mappings
-                .Where(x => x.Value.Name != DefaultBufferNames.GlobalTransformCB && x.Value.Name != DefaultBufferNames.LightCB).FirstOrDefault();
+                .Where(x => x.Value.Name == modelMaterialConstantBufferName).FirstOrDefault();
 
             if (cb.Value != null)
             {
@@ -252,9 +256,13 @@ namespace HelixToolkit.UWP.Model
         {
 
         }
-
-        public GenericMeshMaterialCore(ShaderPass shaderPass)
-            :base(shaderPass)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericMeshMaterialCore"/> class.
+        /// </summary>
+        /// <param name="shaderPass">The shader pass. Currently only supports pixel shader parameter properties</param>
+        /// <param name="modelMaterialConstantBufferName">Name of the model material constant buffer in pixel shader.</param>
+        public GenericMeshMaterialCore(ShaderPass shaderPass, string modelMaterialConstantBufferName)
+            :base(shaderPass, modelMaterialConstantBufferName)
         {
 
         }
@@ -272,8 +280,13 @@ namespace HelixToolkit.UWP.Model
         {
 
         }
-        public GenericLineMaterialCore(ShaderPass shaderPass)
-            : base(shaderPass)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericLineMaterialCore"/> class.
+        /// </summary>
+        /// <param name="shaderPass">The shader pass. Currently only supports pixel shader parameter properties</param>
+        /// <param name="modelMaterialConstantBufferName">Name of the model material constant buffer in pixel shader.</param>
+        public GenericLineMaterialCore(ShaderPass shaderPass, string modelMaterialConstantBufferName)
+            : base(shaderPass, modelMaterialConstantBufferName)
         {
 
         }
@@ -291,8 +304,13 @@ namespace HelixToolkit.UWP.Model
         {
 
         }
-        public GenericPointMaterialCore(ShaderPass shaderPass)
-            : base(shaderPass)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericPointMaterialCore"/> class.
+        /// </summary>
+        /// <param name="shaderPass">The shader pass. Currently only supports pixel shader parameter properties</param>
+        /// <param name="modelMaterialConstantBufferName">Name of the model material constant buffer in pixel shader.</param>
+        public GenericPointMaterialCore(ShaderPass shaderPass, string modelMaterialConstantBufferName)
+            : base(shaderPass, modelMaterialConstantBufferName)
         {
 
         }
