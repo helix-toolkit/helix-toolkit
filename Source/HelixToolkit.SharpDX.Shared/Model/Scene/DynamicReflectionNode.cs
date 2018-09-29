@@ -121,6 +121,20 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
+        private bool isDynamicScene = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether this scene is dynamic scene.
+        /// If true, reflection map will be updated in each frame. Otherwise it will only be updated if scene graph or visibility changed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is dynamic scene; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDynamicScene
+        {
+            set { (RenderCore as IDynamicReflector).IsDynamicScene = value; }
+            get { return (RenderCore as IDynamicReflector).IsDynamicScene; }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicReflectionNode"/> class.
         /// </summary>
@@ -222,6 +236,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public void UnBindCubeMap(DeviceContextProxy deviceContext)
         {
             (RenderCore as IDynamicReflector).UnBindCubeMap(deviceContext);
+        }
+
+        protected override bool CanRender(RenderContext context)
+        {
+            return base.CanRender(context);
         }
     }
 }

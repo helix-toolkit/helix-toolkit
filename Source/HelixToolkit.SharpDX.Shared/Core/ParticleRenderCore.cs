@@ -458,11 +458,11 @@ namespace HelixToolkit.UWP.Core
 
         //Buffer indirectArgsBuffer;
         private readonly ConstantBufferProxy particleCountGSIABuffer 
-            = new ConstantBufferProxy(ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, 
+            = new ConstantBufferProxy("particleCount", ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, 
                 ResourceOptionFlags.DrawIndirectArguments);
 
         private ConstantBufferProxy particleCountStaging
-            = new ConstantBufferProxy(4 * sizeof(int), BindFlags.None, CpuAccessFlags.Read, ResourceOptionFlags.None, ResourceUsage.Staging);
+            = new ConstantBufferProxy("particleStaging", 4 * sizeof(int), BindFlags.None, CpuAccessFlags.Read, ResourceOptionFlags.None, ResourceUsage.Staging);
 
         private UnorderedAccessViewDescription UAVBufferViewDesc = new UnorderedAccessViewDescription()
         {

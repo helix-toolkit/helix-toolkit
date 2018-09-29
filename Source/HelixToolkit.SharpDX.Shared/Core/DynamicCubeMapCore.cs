@@ -287,6 +287,22 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
 
+        private bool isDynamicScene = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether this scene is dynamic scene.
+        /// If true, reflection map will be updated in each frame. Otherwise it will only be updated if scene graph or visibility changed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is dynamic scene; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDynamicScene
+        {
+            set
+            {
+                SetAffectsRender(ref isDynamicScene, value);
+            }
+            get { return isDynamicScene; }
+        }
         #endregion Properties
 
         /// <summary>
@@ -387,6 +403,10 @@ namespace HelixToolkit.UWP.Core
             {
                 RaiseInvalidateRender();
                 return; // Skip this frame if texture resized to reduce latency.
+            }
+            else if(!(IsDynamicScene || context.UpdateSceneGraphRequested || context.UpdatePerFrameRenderableRequested))
+            {
+                return;
             }
             context.IsInvertCullMode = true;
             var camLook = Vector3.Normalize(context.Camera.LookDirection);

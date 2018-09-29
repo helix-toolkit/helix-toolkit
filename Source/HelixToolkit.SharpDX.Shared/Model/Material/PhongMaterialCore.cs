@@ -171,6 +171,18 @@ namespace HelixToolkit.UWP.Model
             get { return displacementMap; }
         }
 
+        private Stream emissiveMap;
+        /// <summary>
+        /// Gets or sets the emissive map.
+        /// </summary>
+        /// <value>
+        /// The emissive map.
+        /// </value>
+        public Stream EmissiveMap
+        {
+            set { Set(ref emissiveMap, value); }
+            get { return emissiveMap; }
+        }
 
         private Vector4 displacementMapScaleMask;
         /// <summary>
@@ -293,6 +305,19 @@ namespace HelixToolkit.UWP.Model
                 Set(ref renderDisplacementMap, value);
             }
             get { return renderDisplacementMap; }
+        }
+
+        private bool renderEmissiveMap = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [render emissive map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render emissive map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderEmissiveMap
+        {
+            set { Set(ref renderEmissiveMap, value); }
+            get { return renderEmissiveMap; }
         }
 
         private bool enableAutoTangent = false;

@@ -116,7 +116,7 @@
                     IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
                     Material="{Binding ModelMaterial}"
                     Transform="{Binding ModelTransform}" />
-                <hx:DynamicReflectionMap3D>
+                <hx:DynamicReflectionMap3D IsDynamicScene="True">
                     <hx:MeshGeometryModel3D
                         x:Name="model1"
                         CullMode="Back"

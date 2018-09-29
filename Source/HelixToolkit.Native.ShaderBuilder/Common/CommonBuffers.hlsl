@@ -70,14 +70,13 @@ cbuffer cbMesh : register(b1)
     bool bHasNormalMap = false;
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
+    bool bHasEmissiveMap = false;
 #if !defined(PBR)
     bool bHasAlphaMap = false; // If using PBR, this is used as HasRMAMap.
-    bool bHasSpecularMap;
-    float padding2;
+    bool bHasSpecularMap;    
 #endif
 #if defined(PBR)
-    bool bHasRMAMap;
-    bool bHasEmissiveMap;
+    bool bHasRMAMap;    
     bool bHasIrradianceMap; 
 #endif
     bool bAutoTengent;
@@ -241,9 +240,11 @@ cbuffer cbParticleCreateParameters : register(b8)
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D<float3> texNormalMap : register(t1);
+
 #if !defined(PBR)
 Texture2D texAlphaMap : register(t2);
 Texture2D texSpecularMap : register(t3);
+Texture2D<float3> texEmissiveMap : register(t5);
 #endif
 #if defined(PBR)
 Texture2D<float3> texRMAMap    : register(t2);
