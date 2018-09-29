@@ -121,7 +121,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty DisplacementMapProperty =
             DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
                 (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMap = e.NewValue as Stream; }));
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty EmissiveMapProperty =
+            DependencyProperty.Register("EmissiveMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).EmissiveMap = e.NewValue as Stream; }));
         /// <summary>
         /// 
         /// </summary>
@@ -206,7 +211,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as PhongMaterialCore).RenderShadowMap = (bool)e.NewValue;
                 }));
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty RenderEmissiveMapProperty =
+            DependencyProperty.Register("RenderEmissiveMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PhongMaterialCore).RenderEmissiveMap = (bool)e.NewValue;
+                }));
         /// <summary>
         /// The enable automatic tangent
         /// </summary>
@@ -379,7 +392,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Stream)this.GetValue(DisplacementMapProperty); }
             set { this.SetValue(DisplacementMapProperty, value); }
         }
-
+        public Stream EmissiveMap
+        {
+            get { return (Stream)this.GetValue(EmissiveMapProperty); }
+            set { this.SetValue(EmissiveMapProperty, value); }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -474,7 +491,14 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(RenderShadowMapProperty); }
             set { SetValue(RenderShadowMapProperty, value); }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderEmissiveMap
+        {
+            get { return (bool)this.GetValue(RenderEmissiveMapProperty); }
+            set { this.SetValue(RenderEmissiveMapProperty, value); }
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [enable automatic tangent].
         /// </summary>
@@ -575,6 +599,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMap = this.DiffuseMap,
                 DiffuseAlphaMap = this.DiffuseAlphaMap,
                 SpecularColorMap = this.SpecularColorMap,
+                EmissiveMap = this.EmissiveMap,
                 DisplacementMapScaleMask = this.DisplacementMapScaleMask,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
@@ -590,6 +615,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderShadowMap = RenderShadowMap,
                 RenderSpecularColorMap = RenderSpecularColorMap,
+                RenderEmissiveMap = RenderEmissiveMap,
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform,
             };
@@ -618,6 +644,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMap = this.DiffuseMap,
                 DiffuseAlphaMap = this.DiffuseAlphaMap,
                 SpecularColorMap = this.SpecularColorMap,
+                EmissiveMap = this.EmissiveMap,
                 DisplacementMapScaleMask = this.DisplacementMapScaleMask,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
@@ -633,6 +660,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderShadowMap = RenderShadowMap,
                 RenderSpecularColorMap = RenderSpecularColorMap,
+                RenderEmissiveMap = RenderEmissiveMap,
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform
             };
