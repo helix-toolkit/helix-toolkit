@@ -121,7 +121,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        private bool isDynamicScene = false;
         /// <summary>
         /// Gets or sets a value indicating whether this scene is dynamic scene.
         /// If true, reflection map will be updated in each frame. Otherwise it will only be updated if scene graph or visibility changed.
