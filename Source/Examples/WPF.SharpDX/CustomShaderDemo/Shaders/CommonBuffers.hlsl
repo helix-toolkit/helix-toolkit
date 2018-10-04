@@ -51,22 +51,35 @@ cbuffer cbMesh : register(b1)
 	float maxTessFactor = 1;
 
     float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
-    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient. If using PBR, vMaterialAmbient = float4(ConstantAO, ConstantRoughness, ConstantMetallic, ConstantReflectance);
-
+    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient.
     float4 vMaterialEmissive = 0.0f; //Ke := surface material's emissive coefficient
-    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient. If using PBR, vMaterialSpecular = float4(ClearCoat, ClearCoatRoughness, 0, 0)
-    float4 vMaterialReflect = 0.0f; //Kr := surface material's reflectivity coefficient
-
+#if !defined(PBR)
+    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient. If using PBR, vMaterialReflect = float4(ConstantAO, ConstantRoughness, ConstantMetallic, ConstantReflectance);
+    float4 vMaterialReflect = 0.0f; //Kr := surface material's reflectivity coefficient. If using PBR, vMaterialSpecular = float4(ClearCoat, ClearCoatRoughness, 0, 0)
+#endif
+#if defined(PBR)
+    float ConstantAO;
+    float ConstantRoughness;
+    float ConstantMetallic;
+    float ConstantReflectance;
+    float ClearCoat;
+    float ClearCoatRoughness;
+    float2 padding1;
+#endif
     bool bHasDiffuseMap = false;
     bool bHasNormalMap = false;
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
-
+    bool bHasEmissiveMap = false;
+#if !defined(PBR)
     bool bHasAlphaMap = false; // If using PBR, this is used as HasRMAMap.
-    bool bHasEmissiveMap;
+    bool bHasSpecularMap;    
+#endif
+#if defined(PBR)
+    bool bHasRMAMap;    
     bool bHasIrradianceMap; 
+#endif
     bool bAutoTengent;
-
     bool bHasDisplacementMap = false;
     bool bRenderPBR = false;  
     int NumRadianceMipLevels;
@@ -86,7 +99,14 @@ cbuffer cbMesh : register(b1)
         float4 CursorVertCoord[4];
     };
 #endif
-
+#if defined(SCREENQUAD)
+    cbuffer cbScreenQuad : register(b9)
+    {
+        float4x4 mWorld;
+        float4 VertCoord[4];
+        float4 TextureCoord[4];
+    };
+#endif
 cbuffer cbLights : register(b3)
 {
     LightStruct Lights[LIGHTS];
@@ -106,6 +126,10 @@ cbuffer cbPointLineModel : register(b4)
     float4 pfParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
     float4 pColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
 	bool4 pbParams = bool4(false, false, false, false);
+    bool enableDistanceFading;
+    float fadeNearDistance;
+    float fadeFarDistance;
+    float padding2;
 };
 #endif
 #if defined(PARTICLE) // model for line, point and billboard
@@ -215,19 +239,22 @@ cbuffer cbParticleCreateParameters : register(b8)
 #endif
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
-Texture2D texNormalMap : register(t1);
+Texture2D<float3> texNormalMap : register(t1);
+
 #if !defined(PBR)
 Texture2D texAlphaMap : register(t2);
+Texture2D texSpecularMap : register(t3);
+Texture2D<float3> texEmissiveMap : register(t5);
 #endif
 #if defined(PBR)
-Texture2D texRMAMap    : register(t2);
-Texture2D texEmissiveMap : register(t3);
-TextureCube texIrradianceMap : register(t21);
+Texture2D<float3> texRMAMap    : register(t2);
+Texture2D<float3> texEmissiveMap : register(t3);
+TextureCube<float3> texIrradianceMap : register(t21);
 #endif
-Texture2D texDisplacementMap : register(t4);
-TextureCube texCubeMap : register(t20); // Radiance Map
+Texture2D<float3> texDisplacementMap : register(t4);
+TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 
-Texture2D texShadowMap : register(t30);
+Texture2D<float> texShadowMap : register(t30);
 
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
