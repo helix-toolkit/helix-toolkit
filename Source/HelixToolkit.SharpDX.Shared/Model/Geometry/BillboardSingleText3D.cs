@@ -365,6 +365,8 @@ using Core;
             var visualToScreen = context.ScreenViewProjectionMatrix;
             var screenPoint3D = Vector3.TransformCoordinate(rayWS.Position, visualToScreen);
             var screenPoint = new Vector2(screenPoint3D.X, screenPoint3D.Y);
+            var scale3D = modelMatrix.ScaleVector;
+            var scale = new Vector2(scale3D.X, scale3D.Y);
             for (int i = 0; i < count; ++i)
             {
                 var vert = BillboardVertices[i];
@@ -375,7 +377,7 @@ using Core;
                 {
                     continue;
                 }
-                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen);
+                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, ref scale);
                 if (quad.IsPointInQuad2D(ref screenPoint))
                 {
                     h = true;
@@ -416,6 +418,8 @@ using Core;
             };
             var viewMatrix = context.ViewMatrix;
             var viewMatrixInv = viewMatrix.PsudoInvert();
+            var scale3D = modelMatrix.ScaleVector;
+            var scale = new Vector2(scale3D.X, scale3D.Y);
             for (int i = 0; i < count; ++i)
             {
                 var vert = BillboardVertices[i];
@@ -426,7 +430,7 @@ using Core;
                 {
                     continue;
                 }
-                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv);
+                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv, ref scale);
                 if (Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.TR, ref quad.BR, out Vector3 hitPoint)
                     || Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.BR, ref quad.BL, out hitPoint))
                 {

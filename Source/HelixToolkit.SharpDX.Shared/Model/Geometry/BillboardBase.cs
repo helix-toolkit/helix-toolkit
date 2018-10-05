@@ -208,16 +208,16 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
-            ref Matrix viewMatrix, ref Matrix viewMatrixInv)
+            ref Matrix viewMatrix, ref Matrix viewMatrixInv, ref Vector2 scale)
         {
             var vcenter = Vector3.Transform(center, viewMatrix);
             var vcX = vcenter.X;
             var vcY = vcenter.Y;
 
-            var bl = new Vector4(vcX + BL.X, vcY + BL.Y, vcenter.Z, vcenter.W);
-            var br = new Vector4(vcX + BR.X, vcY + BR.Y, vcenter.Z, vcenter.W);
-            var tr = new Vector4(vcX + TR.X, vcY + TR.Y, vcenter.Z, vcenter.W);
-            var tl = new Vector4(vcX + TL.X, vcY + TL.Y, vcenter.Z, vcenter.W);
+            var bl = new Vector4(vcX + BL.X * scale.X, vcY + BL.Y * scale.X, vcenter.Z, vcenter.W);
+            var br = new Vector4(vcX + BR.X * scale.X, vcY + BR.Y * scale.Y, vcenter.Z, vcenter.W);
+            var tr = new Vector4(vcX + TR.X * scale.X, vcY + TR.Y * scale.Y, vcenter.Z, vcenter.W);
+            var tl = new Vector4(vcX + TL.X * scale.X, vcY + TL.Y * scale.Y, vcenter.Z, vcenter.W);
 
             bl = Vector4.Transform(bl, viewMatrixInv);
             bl /= bl.W;
@@ -231,14 +231,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
-            ref Matrix screenViewProjection)
+            ref Matrix screenViewProjection, ref Vector2 scale)
         {
             var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
             Vector2 p = new Vector2(vcenter.X, vcenter.Y);
-            var tl = p + TL;
-            var tr = p + TR;
-            var bl = p + BL;
-            var br = p + BR;
+            var tl = p + TL * scale;
+            var tr = p + TR * scale;
+            var bl = p + BL * scale;
+            var br = p + BR * scale;
             return new Quad2D(ref tl, ref tr, ref bl, ref br);
         }
     }
