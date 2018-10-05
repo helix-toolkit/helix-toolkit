@@ -6,6 +6,8 @@ using SharpDX;
 using System;
 using System.IO;
 using SharpDX.Toolkit.Graphics;
+using System.Collections.Generic;
+using System.Diagnostics;
 #if NETFX_CORE
 
 #else
@@ -150,6 +152,132 @@ namespace HelixToolkit.Wpf.SharpDX
                 OffBL = Matrix3x2.TransformPoint(transform, bl),
                 OffTR = Matrix3x2.TransformPoint(transform, tr)
             });
+        }
+
+        /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
+        /// <returns></returns>
+        public override bool HitTest(RenderContext context, Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, bool fixedSize)
+        {
+            if (!IsInitialized || context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
+            {
+                return false;
+            }
+
+            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, BillboardVertices.Count)
+                : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, BillboardVertices.Count);
+        }
+
+        /// <summary>
+        /// Hits the size of the test fixed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardVertices"/>.</param>
+        /// <returns></returns>
+        protected bool HitTestFixedSize(RenderContext context, ref Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, int count)
+        {
+            var h = false;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
+            var visualToScreen = context.ScreenViewProjectionMatrix;
+            var screenPoint3D = Vector3.TransformCoordinate(rayWS.Position, visualToScreen);
+            var screenPoint = new Vector2(screenPoint3D.X, screenPoint3D.Y);
+            for (int i = 0; i < count; ++i)
+            {
+                var vert = BillboardVertices[i];
+                var pos = vert.Position.ToVector3();
+                var c = Vector3.TransformCoordinate(pos, modelMatrix);
+                var dir = c - rayWS.Position;
+                if (Vector3.Dot(dir, rayWS.Direction) < 0)
+                {
+                    continue;
+                }
+                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen);
+                if (quad.IsPointInQuad2D(ref screenPoint))
+                {
+                    h = true;
+                    result.ModelHit = originalSource;
+                    result.IsValid = true;
+                    result.PointHit = c;
+                    result.Distance = (rayWS.Position - c).Length();
+                    result.Geometry = this;
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
+                    break;
+                }
+            }
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
+        }
+        /// <summary>
+        /// Hits the size of the test non fixed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardVertices"/>.</param>
+        /// <returns></returns>
+        protected bool HitTestNonFixedSize(RenderContext context, ref Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, int count)
+        {
+            var h = false;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
+            var viewMatrix = context.ViewMatrix;
+            var viewMatrixInv = viewMatrix.PsudoInvert();
+            for (int i = 0; i < count; ++i)
+            {
+                var vert = BillboardVertices[i];
+                var pos = vert.Position.ToVector3();
+                var c = Vector3.TransformCoordinate(pos, modelMatrix);
+                var dir = c - rayWS.Position;
+                if (Vector3.Dot(dir, rayWS.Direction) < 0)
+                {
+                    continue;
+                }
+                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv);
+                if (Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.TR, ref quad.BR, out Vector3 hitPoint)
+                    || Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.BR, ref quad.BL, out hitPoint))
+                {
+                    h = true;
+                    result.ModelHit = originalSource;
+                    result.IsValid = true;
+                    result.PointHit = hitPoint;
+                    result.Distance = (rayWS.Position - hitPoint).Length();
+                    result.Geometry = this;
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0};", result.PointHit));
+                    break;
+                }
+            }
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
         }
     }
 }
