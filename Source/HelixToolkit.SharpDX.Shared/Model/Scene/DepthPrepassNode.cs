@@ -25,28 +25,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return new DepthPrepassCore();
         }
 
-        /// <summary>
-        /// Determines whether this instance [can hit test] the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanHitTest(RenderContext context)
+        public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }
 
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

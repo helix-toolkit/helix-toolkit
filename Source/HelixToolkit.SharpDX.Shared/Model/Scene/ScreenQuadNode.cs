@@ -71,7 +71,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return EffectsManager[DefaultRenderTechniqueNames.ScreenQuad];
         }
 
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+        {
+            return false;
+        }
+
+        protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }
