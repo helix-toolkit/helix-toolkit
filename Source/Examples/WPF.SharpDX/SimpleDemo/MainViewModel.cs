@@ -171,7 +171,7 @@ namespace SimpleDemo
 
             Billboard1Model = new BillboardSingleText3D()
             {
-                TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)) { Angle = (float)Math.PI / 4},
+                TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)) { Angle = 0},
                 FontColor =Colors.Blue.ToColor4(),
                 FontSize=12,
                 BackgroundColor =Colors.Plum.ToColor4(),
@@ -194,7 +194,7 @@ namespace SimpleDemo
             background.A = (byte)50;
             Billboard3Model = new BillboardSingleText3D(2,0.8f)
             {
-                TextInfo = new TextInfo("Model 3", new Vector3(-2, 1, 0)) { Angle = (float)Math.PI / 4 },
+                TextInfo = new TextInfo("Model 3", new Vector3(-2, 1, 0)) { Angle = -(float)Math.PI / 6 },
                 FontSize = 12,
                 FontColor = Colors.Red.ToColor4(),
                 BackgroundColor = background.ToColor4(),
