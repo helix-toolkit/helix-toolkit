@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Physics Based Rendering Material. (WPF.SharpDX and UWP)
 2. ScreenQuadModel3D for background full screen texture rendering.(WPF.SharpDX and UWP)
+3. Supports EmissiveMap for PhongMaterial. (WPF.SharpDX and UWP)
+4. Supports Billboard 2D Rotation. Added Angle property in TextInfo and BillboardSingleImage. (WPF.SharpDX and UWP)
 
 ### Improvement and Changes
 1. Clean up render core. Obsolete RenderCoreBase. Move to material based rendering. (WPF.SharpDX and UWP)
@@ -12,7 +14,6 @@ All notable changes to this project will be documented in this file.
 3. Upgrade SharpDX version to 4.2.0. (WPF.SharpDX and UWP)
 4. Shader common buffer and sampler changes. Use single surface sampler for all surface maps in pixel shader. Obsolete NormalMapSampler, AlphaMapSampler etc. in PhongMaterial. Please update common.hlsl if you are using custom shaders. (WPF.SharpDX and UWP)
 5. Improve MaterialVariable. (WPF.SharpDX and UWP)
-6. Supports Billboard 2D Rotation. Added Angle property in TextInfo and BillboardSingleImage. (WPF.SharpDX and UWP)
 
 ### Fixed
 1. Transparency of the material SharpDX UWP bug #925  (WPF.SharpDX and UWP)
