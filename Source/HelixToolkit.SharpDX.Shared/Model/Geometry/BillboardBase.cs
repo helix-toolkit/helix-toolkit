@@ -114,132 +114,132 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="originalSource">The original source.</param>
         /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
         /// <returns></returns>
-        public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
-            object originalSource, bool fixedSize)
+        public abstract bool HitTest(RenderContext context, Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, bool fixedSize);
+
+
+        protected struct Quad
         {
-            var h = false;
-            var result = new BillboardHitResult
+            public Vector3 TL;
+            public Vector3 TR;
+            public Vector3 BL;
+            public Vector3 BR;
+            
+            public Quad(ref Vector3 tl, ref Vector3 tr, ref Vector3 bl, ref Vector3 br)
             {
-                Distance = double.MaxValue
-            };
+                TL = tl;
+                TR = tr;
+                BL = bl;
+                BR = br;
+            }
 
-            if (context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
+            public Quad(Vector3 tl, Vector3 tr, Vector3 bl, Vector3 br)
             {
-                return false;
+                TL = tl;
+                TR = tr;
+                BL = bl;
+                BR = br;
             }
-            var scale = modelMatrix.ScaleVector;
-            var left = -(Width * scale.X) / 2;
-            var right = -left;
-            var top = -(Height * scale.Y) / 2;
-            var bottom = -top;
-            var projectionMatrix = context.ProjectionMatrix;
-            var viewMatrix = context.ViewMatrix;
-            var viewMatrixInv = viewMatrix.PsudoInvert();
-            var visualToScreen = context.ScreenViewProjectionMatrix;
-            foreach(var center in BillboardVertices.Select(x=>x.Position))
-            {
-                var c = Vector3.TransformCoordinate(center.ToVector3(), modelMatrix);
-                var dir = c - rayWS.Position;
-                dir.Normalize();
-                if(Vector3.Dot(dir, rayWS.Direction.Normalized()) < 0)
-                {
-                    continue;
-                }
-
-                var b = GetHitTestBound(c, 
-                    left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
-                    fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
-                if (rayWS.Intersects(ref b))
-                {
-                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out float distance))
-                    {
-                        h = true;
-                        result.ModelHit = originalSource;
-                        result.IsValid = true;
-                        result.PointHit = rayWS.Position + (rayWS.Direction * distance);
-                        result.Distance = distance;
-                        result.Geometry = this;
-                        Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Bound={1}; Distance={2}", result.PointHit, b, distance));
-                        break;
-                    }
-                }
-            }
-            if (h)
-            {
-                hits.Add(result);
-            }
-            return h;
         }
 
-        protected virtual BoundingBox GetHitTestBound(Vector3 center, float left, float right, float top, float bottom, 
-            ref Matrix projectionMatrix, ref Matrix viewMatrix, ref Matrix viewMatrixInv, ref Matrix visualToScreen,
-            bool fixedSize, float viewportWidth, float viewportHeight)
+        protected struct Quad2D
         {
-            if (fixedSize)
+            public Vector2 TL;
+            public Vector2 TR;
+            public Vector2 BL;
+            public Vector2 BR;
+
+            public Quad2D(ref Vector2 tl, ref Vector2 tr, ref Vector2 bl, ref Vector2 br)
             {
-                var screenPoint = Vector3.Transform(center, visualToScreen);
-                var spw = screenPoint.W;
-                var spx = screenPoint.X;
-                var spy = screenPoint.Y;
-                var spz = screenPoint.Z / spw / projectionMatrix.M33;
-
-                Vector3 v = new Vector3();
-
-                var x = spx + left * spw;
-                var y = spy + bottom * spw;
-                v.X = (2 * x / viewportWidth / spw - 1) / projectionMatrix.M11;
-                v.Y = -(2 * y / viewportHeight / spw - 1) / projectionMatrix.M22;
-                v.Z = spz;
-
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out Vector3 bl);
-
-
-                x = spx + right * spw;
-                y = spy + bottom * spw;
-                v.X = (2 * x / viewportWidth / spw - 1) / projectionMatrix.M11;
-                v.Y = -(2 * y / viewportHeight / spw - 1) / projectionMatrix.M22;
-                v.Z = spz;
-
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out Vector3 br);
-
-                x = spx + right * spw;
-                y = spy + top * spw;
-                v.X = (2 * x / viewportWidth / spw - 1) / projectionMatrix.M11;
-                v.Y = -(2 * y / viewportHeight / spw - 1) / projectionMatrix.M22;
-                v.Z = spz;
-
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out Vector3 tr);
-
-                x = spx + left * spw;
-                y = spy + top * spw;
-                v.X = (2 * x / viewportWidth / spw - 1) / projectionMatrix.M11;
-                v.Y = -(2 * y / viewportHeight / spw - 1) / projectionMatrix.M22;
-                v.Z = spz;
-
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out Vector3 tl);
-                return BoundingBox.FromPoints(new Vector3[] { tl, tr, bl, br });
+                TL = tl;
+                TR = tr;
+                BL = bl;
+                BR = br;
             }
-            else
+
+            public Quad2D(Vector2 tl, Vector2 tr, Vector2 bl, Vector2 br)
             {
-                var vcenter = Vector3.Transform(center, viewMatrix);
-                var vcX = vcenter.X;
-                var vcY = vcenter.Y;
-
-                var bl = new Vector4(vcX + left, vcY + bottom, vcenter.Z, vcenter.W);
-                var br = new Vector4(vcX + right, vcY + bottom, vcenter.Z, vcenter.W);
-                var tr = new Vector4(vcX + right, vcY + top, vcenter.Z, vcenter.W);
-                var tl = new Vector4(vcX + left, vcY + top, vcenter.Z, vcenter.W);
-
-                bl = Vector4.Transform(bl, viewMatrixInv);
-                bl /= bl.W;
-                br = Vector4.Transform(br, viewMatrixInv);
-                br /= br.W;
-                tr = Vector4.Transform(tr, viewMatrixInv);
-                tr /= tr.W;
-                tl = Vector4.Transform(tl, viewMatrixInv);
-                tl /= tl.W;
-                return BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() });
+                TL = tl;
+                TR = tr;
+                BL = bl;
+                BR = br;
             }
+
+
+            public bool IsPointInQuad2D(Vector2 point)
+            {
+                return IsPointInQuad2D(ref point);
+            }
+
+
+            public bool IsPointInQuad2D(ref Vector2 point)
+            {
+                //var v1 = point - TL;
+                //var t1 = BL - TL;
+                //if(Vector2.Dot(v1, t1) < 0)
+                //{
+                //    return false;
+                //}
+                //var v2 = point - BL;
+                //var t2 = BR - BL;
+                //if (Vector2.Dot(v2, t2) < 0)
+                //{
+                //    return false;
+                //}
+
+                //var v3 = point - BR;
+                //var t3 = TR - BR;
+                //if (Vector2.Dot(v3, t3) < 0)
+                //{
+                //    return false;
+                //}
+
+                //var v4 = point - TR;
+                //var t4 = TL - TR;
+                //if (Vector2.Dot(v4, t4) < 0)
+                //{
+                //    return false;
+                //}
+                //return true;
+                return Vector2.Dot(point - TL, BL - TL) >= 0 && Vector2.Dot(point - BL, BR - BL) >= 0 
+                    && Vector2.Dot(point - BR, TR - BR) >= 0 && Vector2.Dot(point - TR, TL - TR) >= 0;
+            }
+        }
+
+        protected Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
+            ref Matrix viewMatrix, ref Matrix viewMatrixInv, ref Vector2 scale)
+        {
+            var vcenter = Vector3.Transform(center, viewMatrix);
+            var vcX = vcenter.X;
+            var vcY = vcenter.Y;
+
+            var bl = new Vector4(vcX + BL.X * scale.X, vcY + BL.Y * scale.X, vcenter.Z, vcenter.W);
+            var br = new Vector4(vcX + BR.X * scale.X, vcY + BR.Y * scale.Y, vcenter.Z, vcenter.W);
+            var tr = new Vector4(vcX + TR.X * scale.X, vcY + TR.Y * scale.Y, vcenter.Z, vcenter.W);
+            var tl = new Vector4(vcX + TL.X * scale.X, vcY + TL.Y * scale.Y, vcenter.Z, vcenter.W);
+
+            bl = Vector4.Transform(bl, viewMatrixInv);
+            bl /= bl.W;
+            br = Vector4.Transform(br, viewMatrixInv);
+            br /= br.W;
+            tr = Vector4.Transform(tr, viewMatrixInv);
+            tr /= tr.W;
+            tl = Vector4.Transform(tl, viewMatrixInv);
+            tl /= tl.W;
+            return new Quad(tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3());
+        }
+
+        protected Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
+            ref Matrix screenViewProjection, ref Vector2 scale)
+        {
+            var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
+            Vector2 p = new Vector2(vcenter.X, vcenter.Y);
+            var tl = p + TL * scale;
+            var tr = p + TR * scale;
+            var bl = p + BL * scale;
+            var br = p + BR * scale;
+            return new Quad2D(ref tl, ref tr, ref bl, ref br);
         }
     }
 }

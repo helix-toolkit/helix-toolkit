@@ -19,6 +19,8 @@ GSInputBT main(VSInputBTInstancing input)
     output.t3 = input.t3;
     output.offBR = input.offBR;
     output.offTL = input.offTL;
+    output.offBL = input.offBL;
+    output.offTR = input.offTR;
     if (bHasInstances)
     {
         matrix mInstance =
@@ -31,6 +33,8 @@ GSInputBT main(VSInputBTInstancing input)
         output.p = mul(input.p, mInstance);
         output.offTL = input.offTL * mInstance._m00_m11; // 2d scaling x
         output.offBR = input.offBR * mInstance._m00_m11; // 2d scaling x
+        output.offBL = input.offBL * mInstance._m00_m11;
+        output.offTR = input.offTR * mInstance._m00_m11;
 #if defined(INSTANCINGPARAM)
         if (bHasInstanceParams)
         {

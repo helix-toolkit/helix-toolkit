@@ -43,6 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public float AcutalHeight { protected set; get; }
 
         public float Scale { set; get; } = 1;
+        /// <summary>
+        /// Gets or sets the rotation angle in radians.
+        /// </summary>
+        /// <value>
+        /// The angle in radians.
+        /// </value>
+        public float Angle { set; get; } = 0;
 
         public TextInfo()
         {
@@ -170,9 +177,10 @@ namespace HelixToolkit.Wpf.SharpDX
             Height = 0;
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
             var tempList = new List<BillboardVertex>(100);
+
             foreach (var textInfo in TextInfo)
             {
-                tempList.Clear();
+                int tempPrevCount = tempList.Count;
                 int x = 0;
                 int y = 0;
                 var w = BitmapFont.TextureSize.Width;
@@ -205,29 +213,40 @@ namespace HelixToolkit.Wpf.SharpDX
                         rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
                     }
                 }
+                var transform = textInfo.Angle != 0 ? Matrix3x2.Rotation(textInfo.Angle) : Matrix3x2.Identity;
                 var halfW = rect.Width / 2;
                 var halfH = rect.Height / 2;
+                //Add backbround vertex first. This also used for hit test
                 BillboardVertices.Add(new BillboardVertex()
                 {
                     Position = textInfo.Origin.ToVector4(),
                     Background = textInfo.Background,
                     TexTL = Vector2.Zero,
                     TexBR = Vector2.Zero,
-                    OffTL = new Vector2(-halfW, halfH),
-                    OffBR = new Vector2(halfW, -halfH),
+                    OffTL = Matrix3x2.TransformPoint(transform, new Vector2(-halfW, halfH)),
+                    OffBR = Matrix3x2.TransformPoint(transform, new Vector2(halfW, -halfH)),
+                    OffTR = Matrix3x2.TransformPoint(transform, new Vector2(-halfW, -halfH)),
+                    OffBL = Matrix3x2.TransformPoint(transform, new Vector2(halfW, halfH)),
                 });
 
                 textInfo.UpdateTextInfo(rect.Width, rect.Height);
 
-                foreach(var vert in tempList)
+                for(int k = tempPrevCount; k < tempList.Count; ++k)
                 {
-                    var v = vert;
-                    v.OffTL += new Vector2(-halfW, halfH);
-                    v.OffBR += new Vector2(-halfW, halfH);
-                    BillboardVertices.Add(v);
+                    var v = tempList[k];
+                    v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + new Vector2(-halfW, halfH));
+                    v.OffBR = Matrix3x2.TransformPoint(transform, v.OffBR + new Vector2(-halfW, halfH));
+                    v.OffTR = Matrix3x2.TransformPoint(transform, v.OffTR + new Vector2(-halfW, halfH));
+                    v.OffBL = Matrix3x2.TransformPoint(transform, v.OffBL + new Vector2(-halfW, halfH));
+                    tempList[k] = v;
                 }
                 Width += rect.Width;
                 Height += rect.Height;
+            }
+
+            foreach(var v in tempList)
+            {
+                BillboardVertices.Add(v);
             }
         }
 
@@ -260,10 +279,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var cv = character.Bounds.Top;
             var tl = new Vector2(origin.X + kerning, origin.Y );
             var br = new Vector2(origin.X + cw + kerning, origin.Y - ch);
-
+            var offTL = tl * info.Scale * textureScale;
+            var offBR = br * info.Scale * textureScale;
+            var offTR = new Vector2(offBR.X, offTL.Y);
+            var offBL = new Vector2(offTL.X, offBR.Y);
             var uv_tl = new Vector2(cu / w, cv / h);
             var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
-
+            
             return new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
@@ -271,68 +293,135 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = Color.Transparent,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl * info.Scale * textureScale,
-                OffBR = br * info.Scale * textureScale
+                OffTL = offTL,
+                OffBL = offBL,
+                OffBR = offBR,
+                OffTR = offTR
             };
         }
 
         public override bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
             object originalSource, bool fixedSize)
         {
+            if (!IsInitialized || context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
+            {
+                return false;
+            }
+
+            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, textInfo.Count)
+                : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, textInfo.Count);
+        }
+
+        /// <summary>
+        /// Hits the size of the test fixed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
+        /// <returns></returns>
+        protected bool HitTestFixedSize(RenderContext context, ref Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, int count)
+        {
             var h = false;
             var result = new BillboardHitResult
             {
                 Distance = double.MaxValue
             };
-
-            if (context == null || Width == 0 || Height == 0)
+            var visualToScreen = context.ScreenViewProjectionMatrix;
+            var screenPoint3D = Vector3.TransformCoordinate(rayWS.Position, visualToScreen);
+            var screenPoint = new Vector2(screenPoint3D.X, screenPoint3D.Y);
+            var scale3D = modelMatrix.ScaleVector;
+            var scale = new Vector2(scale3D.X, scale3D.Y);
+            for (int i = 0; i < count; ++i)
             {
-                return false;
+                var vert = BillboardVertices[i];
+                var pos = vert.Position.ToVector3();
+                var c = Vector3.TransformCoordinate(pos, modelMatrix);
+                var dir = c - rayWS.Position;
+                if (Vector3.Dot(dir, rayWS.Direction) < 0)
+                {
+                    continue;
+                }
+                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, ref scale);
+                if (quad.IsPointInQuad2D(ref screenPoint))
+                {
+                    var dist = (rayWS.Position - c).Length();
+                    if(dist > result.Distance)
+                    {
+                        continue;
+                    }
+                    h = true;
+                    result.ModelHit = originalSource;
+                    result.IsValid = true;
+                    result.PointHit = c;
+                    result.Distance = dist;
+                    result.Geometry = this;
+                    result.TextInfo = TextInfo[i];
+                    result.TextInfoIndex = i;
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
+                }
             }
-            var scale = modelMatrix.ScaleVector;
-            var projectionMatrix = context.ProjectionMatrix;
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
+        }
+        /// <summary>
+        /// Hits the size of the test non fixed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
+        /// <returns></returns>
+        protected bool HitTestNonFixedSize(RenderContext context, ref Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, int count)
+        {
+            var h = false;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
             var viewMatrix = context.ViewMatrix;
             var viewMatrixInv = viewMatrix.PsudoInvert();
-            var visualToScreen = context.ScreenViewProjectionMatrix;
-            int index = -1;
-            foreach (var info in TextInfo)
+            var scale3D = modelMatrix.ScaleVector;
+            var scale = new Vector2(scale3D.X, scale3D.Y);
+            for (int i = 0; i < count; ++i)
             {
-                ++index;
-                var c = Vector3.TransformCoordinate(info.Origin, modelMatrix);
+                var vert = BillboardVertices[i];
+                var pos = vert.Position.ToVector3();
+                var c = Vector3.TransformCoordinate(pos, modelMatrix);
                 var dir = c - rayWS.Position;
-                dir.Normalize();
-                if (Vector3.Dot(dir, rayWS.Direction.Normalized()) < 0)
+                if (Vector3.Dot(dir, rayWS.Direction) < 0)
                 {
                     continue;
                 }
-
-                if (!fixedSize && !info.BoundSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS))
+                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv, ref scale);
+                if (Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.TR, ref quad.BR, out Vector3 hitPoint)
+                    || Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.BR, ref quad.BL, out hitPoint))
                 {
-                    continue;
-                }
-                var left = -(info.ActualWidth * scale.X) / 2;
-                var right = -left;
-                var top = -(info.AcutalHeight * scale.Y) / 2;
-                var bottom = -top;
-                var b = GetHitTestBound(c, 
-                    left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
-                    fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
-
-                if (rayWS.Intersects(ref b))
-                {
-                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out float distance))
+                    var dist = (rayWS.Position - hitPoint).Length();
+                    if (dist > result.Distance)
                     {
-                        h = true;
-                        result.ModelHit = originalSource;
-                        result.IsValid = true;
-                        result.PointHit = rayWS.Position + (rayWS.Direction * distance);
-                        result.Distance = distance;
-                        result.TextInfo = info;
-                        result.TextInfoIndex = index;
-                        result.Geometry = this;
-                        Debug.WriteLine($"Hit; Text:{info.Text}; HitPoint:{result.PointHit};");
-                        break;
+                        continue;
                     }
+                    h = true;
+                    result.ModelHit = originalSource;
+                    result.IsValid = true;
+                    result.PointHit = hitPoint;
+                    result.Distance = dist;
+                    result.Geometry = this;
+                    result.TextInfo = TextInfo[i];
+                    result.TextInfoIndex = i;
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
                 }
             }
             if (h)

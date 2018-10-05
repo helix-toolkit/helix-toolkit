@@ -3,7 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-
+using System.Collections.Generic;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+
     /// <summary>
     /// 
     /// </summary>
@@ -37,20 +38,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return (RenderCore as LightCoreBase).LightType; }
         }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref System.Collections.Generic.List<HitTestResult> hits)
+
+        public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }
 
-        protected override bool CanHitTest(RenderContext context)
+        protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

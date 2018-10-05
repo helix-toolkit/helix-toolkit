@@ -153,56 +153,59 @@ namespace SimpleDemo
                 "SharpDX",
                 "DirectX"
             };
+            float angle = 0;
             for (var i = 0; i < numRows; i++)
             {
                 for (var j = 0; j < numColumns; j++)
                 {
+                    angle += (float)Math.PI / 10;
                     Text.TextInfo.Add(new TextInfo(texts[(i + j) % texts.Length], new Vector3((i - numRows / 2), 0.0f, (j - numColumns / 2)))
                     {
                         Foreground = new Color4((float)i / numRows, 0, 0, 1f),
                         Background = new Color4(0, (float)(numColumns - j) / numColumns, 1, 0.8f),
                         Scale = Math.Max(0.01f, (float)i / numRows * 0.02f),
+                        Angle = angle
                     });
                 }
             }
 
             Billboard1Model = new BillboardSingleText3D()
             {
-                TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)),
+                TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)) { Angle = 0},
                 FontColor =Colors.Blue.ToColor4(),
                 FontSize=12,
                 BackgroundColor =Colors.Plum.ToColor4(),
                 FontStyle= System.Windows.FontStyles.Italic,
-                Padding = new System.Windows.Thickness(2)
+                Padding = new System.Windows.Thickness(2), 
             };
 
             var background = Colors.Blue;
             background.A = (byte)120;
             Billboard2Model = new BillboardSingleText3D()
             {
-                TextInfo = new TextInfo("Model 2", new Vector3(2, 1, 0)),
+                TextInfo = new TextInfo("Model 2", new Vector3(2, 1, 0)) { Angle = -(float)Math.PI / 3 },
                 FontSize =12,
                 FontColor = Colors.Green.ToColor4(),
                 BackgroundColor = background.ToColor4(),
                 FontWeight = System.Windows.FontWeights.Bold,
-                Padding = new System.Windows.Thickness(2)
+                Padding = new System.Windows.Thickness(2), 
             };
             background = Colors.Purple;
             background.A = (byte)50;
             Billboard3Model = new BillboardSingleText3D(2,0.8f)
             {
-                TextInfo = new TextInfo("Model 3", new Vector3(-2, 1, 0)),
+                TextInfo = new TextInfo("Model 3", new Vector3(-2, 1, 0)) { Angle = -(float)Math.PI / 6 },
                 FontSize = 12,
                 FontColor = Colors.Red.ToColor4(),
                 BackgroundColor = background.ToColor4(),
                 FontFamily = "Times New Roman",
                 FontStyle= System.Windows.FontStyles.Italic,
-                Padding = new System.Windows.Thickness(2)
+                Padding = new System.Windows.Thickness(2),               
             };
 
 
             //BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
-            BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample(), 1, 1);
+            BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample(), 1, 1) { Angle = -(float)Math.PI / 5 };
             BillboardImageModel.Center = new Vector3(2, 2, 0);
 
             UpXCommand = new RelayCommand(x => { UpDirection = new Vector3D(1, 0, 0); });

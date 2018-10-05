@@ -204,11 +204,13 @@ struct VSInputBT
     float2 t0 : TEXCOORD0;
     float2 t3 : TEXCOORD1;
     float2 offTL : TEXCOORD2;
-    float2 offBR : TEXCOORD3;
-    float4 mr0 : TEXCOORD4;
-    float4 mr1 : TEXCOORD5;
-    float4 mr2 : TEXCOORD6;
-    float4 mr3 : TEXCOORD7;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
+    float4 mr0 : TEXCOORD6;
+    float4 mr1 : TEXCOORD7;
+    float4 mr2 : TEXCOORD8;
+    float4 mr3 : TEXCOORD9;
 };
 
 struct GSInputBT
@@ -219,7 +221,9 @@ struct GSInputBT
     float2 t0 : TEXCOORD0;
     float2 t3 : TEXCOORD1;
     float2 offTL : TEXCOORD2;
-    float2 offBR : TEXCOORD3;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
 };
 
 struct VSInputBTInstancing
@@ -230,15 +234,17 @@ struct VSInputBTInstancing
     float2 t0 : TEXCOORD0;
     float2 t3 : TEXCOORD1;
     float2 offTL : TEXCOORD2;
-    float2 offBR : TEXCOORD3;
-    float4 mr0 : TEXCOORD4;
-    float4 mr1 : TEXCOORD5;
-    float4 mr2 : TEXCOORD6;
-    float4 mr3 : TEXCOORD7;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
+    float4 mr0 : TEXCOORD6;
+    float4 mr1 : TEXCOORD7;
+    float4 mr2 : TEXCOORD8;
+    float4 mr3 : TEXCOORD9;
 
 	float4 diffuseC : COLOR2;
-	float2 tScale : TEXCOORD8;
-	float2 tOffset : TEXCOORD9;
+	float2 tScale : TEXCOORD10;
+	float2 tOffset : TEXCOORD11;
 };
 
 struct PSInputBT

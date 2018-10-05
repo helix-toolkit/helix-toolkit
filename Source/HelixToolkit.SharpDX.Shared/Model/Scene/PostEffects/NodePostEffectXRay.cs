@@ -98,11 +98,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return new PostEffectMeshXRayCore();
         }
 
-        protected override bool CanHitTest(RenderContext context)
+        public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+
+        protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }
