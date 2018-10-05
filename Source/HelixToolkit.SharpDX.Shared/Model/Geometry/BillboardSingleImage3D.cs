@@ -36,24 +36,40 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private Vector3 center = Vector3.Zero;
         /// <summary>
         /// Billboard center location
         /// </summary>
         public Vector3 Center
         {
-            set;
-            get;
+            set
+            {
+                if(Set(ref center, value))
+                {
+                    IsInitialized = false;
+                }
+            }
+            get { return center; }
         }
 
+        private Color4 maskColor = Color.Transparent;
         /// <summary>
         /// If color in image is equal to the mask color, the color will set to transparent in image.
         /// Default color is Transparent, which did not mask any color.
         /// </summary>
         public Color4 MaskColor
         {
-            set;get;
-        } = Color.Transparent;
+            set
+            {
+                if(Set(ref maskColor, value))
+                {
+                    IsInitialized = false;
+                }
+            }
+            get { return maskColor; }
+        }
 
+        private float angle = 0;
         /// <summary>
         /// Gets or sets the rotation angle in radians.
         /// </summary>
@@ -62,8 +78,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public float Angle
         {
-            set; get;
-        } = 0;
+            set
+            {
+                if(Set(ref angle, value))
+                {
+                    IsInitialized = false;
+                }
+            }
+            get { return angle; }
+        }
 #if !NETFX_CORE        
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
