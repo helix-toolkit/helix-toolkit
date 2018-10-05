@@ -320,7 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS">The ray ws.</param>
         /// <param name="hits">The hits.</param>
         /// <param name="originalSource">The original source.</param>
-        /// <param name="count">The count of vertices in <see cref="BillboardVertices"/>.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
         /// <returns></returns>
         protected bool HitTestFixedSize(RenderContext context, ref Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits,
@@ -379,7 +379,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS">The ray ws.</param>
         /// <param name="hits">The hits.</param>
         /// <param name="originalSource">The original source.</param>
-        /// <param name="count">The count of vertices in <see cref="BillboardVertices"/>.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
         /// <returns></returns>
         protected bool HitTestNonFixedSize(RenderContext context, ref Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits,
