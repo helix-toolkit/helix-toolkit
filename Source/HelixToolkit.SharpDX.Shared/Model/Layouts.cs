@@ -82,8 +82,10 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector2 TexTL;
         public Vector2 TexBR;
         public Vector2 OffTL;
+        public Vector2 OffTR;
+        public Vector2 OffBL;
         public Vector2 OffBR;
-        public const int SizeInBytes = 4 * (4  * 3 + 2 * 4);
+        public const int SizeInBytes = 4 * (4  * 3 + 2 * 6);
     }
     /// <summary>
     /// 

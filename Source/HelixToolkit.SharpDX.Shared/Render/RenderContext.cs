@@ -66,13 +66,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return new Matrix((float)(ActualWidth / 2), 0, 0, 0,
-                    0, (float)(-ActualHeight / 2), 0, 0,
+                    0, (float)(ActualHeight / 2), 0, 0,
                     0, 0, 1, 0,
                     (float)((ActualWidth - 1) / 2), (float)((ActualHeight - 1) / 2), 0, 1);
             }
         }
-
-        private Matrix screenViewProjectionMatrix = Matrix.Identity;
 
         /// <summary>
         /// Gets the screen view projection matrix.
@@ -80,13 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The screen view projection matrix.
         /// </value>
-        public Matrix ScreenViewProjectionMatrix
-        {
-            get
-            {
-                return GetScreenViewProjectionMatrix();
-            }
-        }
+        public Matrix ScreenViewProjectionMatrix { get; private set; } = Matrix.Identity;
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable bounding frustum].
@@ -337,7 +329,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Matrix GetScreenViewProjectionMatrix()
         {
-            return screenViewProjectionMatrix;
+            return ScreenViewProjectionMatrix;
         }
 
         /// <summary>
@@ -360,7 +352,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 globalTransform.View = ViewMatrix;
                 globalTransform.Projection = ProjectionMatrix;
                 globalTransform.ViewProjection = ViewMatrix * ProjectionMatrix;
-                screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
+                ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                 cbuffer.UploadDataToBuffer(deviceContext, ref globalTransform);
             }
             if (updateLights)

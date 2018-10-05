@@ -52,6 +52,16 @@ namespace HelixToolkit.Wpf.SharpDX
             set;get;
         } = Color.Transparent;
 
+        /// <summary>
+        /// Gets or sets the rotation angle in radians.
+        /// </summary>
+        /// <value>
+        /// The angle in radians.
+        /// </value>
+        public float Angle
+        {
+            set; get;
+        } = 0;
 #if !NETFX_CORE        
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
@@ -125,7 +135,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var uv_tl = new Vector2(0, 0);
             var uv_br = new Vector2(1, 1);
-
+            var transform = Angle != 0 ? Matrix3x2.Rotation(Angle) : Matrix3x2.Identity;
+            var tr = new Vector2(br.X, tl.Y);
+            var bl = new Vector2(tl.X, br.Y);
             BillboardVertices.Add(new BillboardVertex()
             {
                 Position = Center.ToVector4(),
@@ -133,8 +145,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = MaskColor,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl,
-                OffBR = br
+                OffTL = Matrix3x2.TransformPoint(transform, tl),
+                OffBR = Matrix3x2.TransformPoint(transform, br),
+                OffBL = Matrix3x2.TransformPoint(transform, bl),
+                OffTR = Matrix3x2.TransformPoint(transform, tr)
             });
         }
     }

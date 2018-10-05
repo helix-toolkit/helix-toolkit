@@ -212,6 +212,7 @@ using Core;
                 return mPadding;
             }
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleText3D"/> class.
         /// </summary>
@@ -298,7 +299,11 @@ using Core;
 
             var uv_tl = new Vector2(0, 0);
             var uv_br = new Vector2(1, 1);
-
+            var transform = info.Angle != 0 ? Matrix3x2.Rotation(info.Angle) : Matrix3x2.Identity;
+            var offTL = tl * info.Scale;
+            var offBR = br * info.Scale;
+            var offTR = new Vector2(offBR.X, offTL.Y);
+            var offBL = new Vector2(offTL.X, offBR.Y);
             BillboardVertices.Add(new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
@@ -306,8 +311,10 @@ using Core;
                 Background = BackgroundColor,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl * info.Scale,
-                OffBR = br * info.Scale
+                OffTL = Matrix3x2.TransformPoint(transform, offTL),
+                OffBL = Matrix3x2.TransformPoint(transform, offBL),
+                OffBR = Matrix3x2.TransformPoint(transform, offBR),
+                OffTR = Matrix3x2.TransformPoint(transform, offTR)
             });
         }
     }

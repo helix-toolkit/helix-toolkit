@@ -43,6 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public float AcutalHeight { protected set; get; }
 
         public float Scale { set; get; } = 1;
+        /// <summary>
+        /// Gets or sets the rotation angle in radians.
+        /// </summary>
+        /// <value>
+        /// The angle in radians.
+        /// </value>
+        public float Angle { set; get; } = 0;
 
         public TextInfo()
         {
@@ -205,6 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
                     }
                 }
+                var transform = textInfo.Angle != 0 ? Matrix3x2.Rotation(textInfo.Angle) : Matrix3x2.Identity;
                 var halfW = rect.Width / 2;
                 var halfH = rect.Height / 2;
                 BillboardVertices.Add(new BillboardVertex()
@@ -213,8 +221,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     Background = textInfo.Background,
                     TexTL = Vector2.Zero,
                     TexBR = Vector2.Zero,
-                    OffTL = new Vector2(-halfW, halfH),
-                    OffBR = new Vector2(halfW, -halfH),
+                    OffTL = Matrix3x2.TransformPoint(transform, new Vector2(-halfW, halfH)),
+                    OffBR = Matrix3x2.TransformPoint(transform, new Vector2(halfW, -halfH)),
+                    OffTR = Matrix3x2.TransformPoint(transform, new Vector2(-halfW, -halfH)),
+                    OffBL = Matrix3x2.TransformPoint(transform, new Vector2(halfW, halfH)),
                 });
 
                 textInfo.UpdateTextInfo(rect.Width, rect.Height);
@@ -222,8 +232,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 foreach(var vert in tempList)
                 {
                     var v = vert;
-                    v.OffTL += new Vector2(-halfW, halfH);
-                    v.OffBR += new Vector2(-halfW, halfH);
+                    v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + new Vector2(-halfW, halfH));
+                    v.OffBR = Matrix3x2.TransformPoint(transform, v.OffBR + new Vector2(-halfW, halfH));
+                    v.OffTR = Matrix3x2.TransformPoint(transform, v.OffTR + new Vector2(-halfW, halfH));
+                    v.OffBL = Matrix3x2.TransformPoint(transform, v.OffBL + new Vector2(-halfW, halfH));
                     BillboardVertices.Add(v);
                 }
                 Width += rect.Width;
@@ -260,10 +272,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var cv = character.Bounds.Top;
             var tl = new Vector2(origin.X + kerning, origin.Y );
             var br = new Vector2(origin.X + cw + kerning, origin.Y - ch);
-
+            var offTL = tl * info.Scale * textureScale;
+            var offBR = br * info.Scale * textureScale;
+            var offTR = new Vector2(offBR.X, offTL.Y);
+            var offBL = new Vector2(offTL.X, offBR.Y);
             var uv_tl = new Vector2(cu / w, cv / h);
             var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
-
+            
             return new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
@@ -271,8 +286,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = Color.Transparent,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl * info.Scale * textureScale,
-                OffBR = br * info.Scale * textureScale
+                OffTL = offTL,
+                OffBL = offBL,
+                OffBR = offBR,
+                OffTR = offTR
             };
         }
 
@@ -314,26 +331,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 var right = -left;
                 var top = -(info.AcutalHeight * scale.Y) / 2;
                 var bottom = -top;
-                var b = GetHitTestBound(c, 
-                    left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
-                    fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
+                //var b = GetHitTestBound(c, 
+                //    left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
+                //    fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
 
-                if (rayWS.Intersects(ref b))
-                {
-                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out float distance))
-                    {
-                        h = true;
-                        result.ModelHit = originalSource;
-                        result.IsValid = true;
-                        result.PointHit = rayWS.Position + (rayWS.Direction * distance);
-                        result.Distance = distance;
-                        result.TextInfo = info;
-                        result.TextInfoIndex = index;
-                        result.Geometry = this;
-                        Debug.WriteLine($"Hit; Text:{info.Text}; HitPoint:{result.PointHit};");
-                        break;
-                    }
-                }
+                //if (rayWS.Intersects(ref b))
+                //{
+                //    if (Collision.RayIntersectsBox(ref rayWS, ref b, out float distance))
+                //    {
+                //        h = true;
+                //        result.ModelHit = originalSource;
+                //        result.IsValid = true;
+                //        result.PointHit = rayWS.Position + (rayWS.Direction * distance);
+                //        result.Distance = distance;
+                //        result.TextInfo = info;
+                //        result.TextInfoIndex = index;
+                //        result.Geometry = this;
+                //        Debug.WriteLine($"Hit; Text:{info.Text}; HitPoint:{result.PointHit};");
+                //        break;
+                //    }
+                //}
             }
             if (h)
             {
