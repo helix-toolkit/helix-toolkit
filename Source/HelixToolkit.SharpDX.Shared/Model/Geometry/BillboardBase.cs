@@ -210,24 +210,20 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
             ref Matrix viewMatrix, ref Matrix viewMatrixInv, ref Vector2 scale)
         {
-            var vcenter = Vector3.Transform(center, viewMatrix);
+            var vcenter = Vector3.TransformCoordinate(center, viewMatrix);
             var vcX = vcenter.X;
             var vcY = vcenter.Y;
 
-            var bl = new Vector4(vcX + BL.X * scale.X, vcY + BL.Y * scale.X, vcenter.Z, vcenter.W);
-            var br = new Vector4(vcX + BR.X * scale.X, vcY + BR.Y * scale.Y, vcenter.Z, vcenter.W);
-            var tr = new Vector4(vcX + TR.X * scale.X, vcY + TR.Y * scale.Y, vcenter.Z, vcenter.W);
-            var tl = new Vector4(vcX + TL.X * scale.X, vcY + TL.Y * scale.Y, vcenter.Z, vcenter.W);
+            var bl = new Vector3(vcX + BL.X * scale.X, vcY + BL.Y * scale.X, vcenter.Z);
+            var br = new Vector3(vcX + BR.X * scale.X, vcY + BR.Y * scale.Y, vcenter.Z);
+            var tr = new Vector3(vcX + TR.X * scale.X, vcY + TR.Y * scale.Y, vcenter.Z);
+            var tl = new Vector3(vcX + TL.X * scale.X, vcY + TL.Y * scale.Y, vcenter.Z);
 
-            bl = Vector4.Transform(bl, viewMatrixInv);
-            bl /= bl.W;
-            br = Vector4.Transform(br, viewMatrixInv);
-            br /= br.W;
-            tr = Vector4.Transform(tr, viewMatrixInv);
-            tr /= tr.W;
-            tl = Vector4.Transform(tl, viewMatrixInv);
-            tl /= tl.W;
-            return new Quad(tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3());
+            bl = Vector3.TransformCoordinate(bl, viewMatrixInv);
+            br = Vector3.TransformCoordinate(br, viewMatrixInv);
+            tr = Vector3.TransformCoordinate(tr, viewMatrixInv);
+            tl = Vector3.TransformCoordinate(tl, viewMatrixInv);
+            return new Quad(ref tl, ref tr, ref bl, ref br);
         }
 
         protected Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
