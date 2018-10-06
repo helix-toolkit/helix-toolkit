@@ -101,9 +101,11 @@ namespace HelixToolkit.Wpf.SharpDX
             if(target is BillboardBase billboard)
             {
                 billboard.Texture = Texture;
-                IsInitialized = false;
+                billboard.IsInitialized = false;
             }
         }
+
+        #region HitTest
         /// <summary>
         /// Hits the test.
         /// </summary>
@@ -119,7 +121,131 @@ namespace HelixToolkit.Wpf.SharpDX
             object originalSource, bool fixedSize);
 
 
-        protected struct Quad
+        /// <summary>
+        /// Hits the size of the test fixed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
+        /// <returns></returns>
+        protected bool HitTestFixedSize(RenderContext context, ref Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, int count)
+        {
+            var h = false;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
+            var visualToScreen = context.ScreenViewProjectionMatrix;
+            var screenPoint3D = Vector3.TransformCoordinate(rayWS.Position, visualToScreen);
+            var screenPoint = new Vector2(screenPoint3D.X, screenPoint3D.Y);
+            var scale3D = modelMatrix.ScaleVector;
+            var scale = new Vector2(scale3D.X, scale3D.Y);
+            for (int i = 0; i < count; ++i)
+            {
+                var vert = BillboardVertices[i];
+                var pos = vert.Position.ToVector3();
+                var c = Vector3.TransformCoordinate(pos, modelMatrix);
+                var dir = c - rayWS.Position;
+                if (Vector3.Dot(dir, rayWS.Direction) < 0)
+                {
+                    continue;
+                }
+                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, ref scale);
+                if (quad.IsPointInQuad2D(ref screenPoint))
+                {
+                    var v = c - rayWS.Position;
+                    var dist = Vector3.Dot(rayWS.Direction, v);
+                    if (dist > result.Distance)
+                    {
+                        continue;
+                    }
+                    h = true;
+
+                    result.ModelHit = originalSource;
+                    result.IsValid = true;
+                    result.PointHit = rayWS.Position + rayWS.Direction * dist;
+                    result.Distance = dist;
+                    result.Geometry = this;
+                    AssignResultAdditional(result, i);
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
+                }
+            }
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
+        }
+
+        protected virtual void AssignResultAdditional(BillboardHitResult result, int index)
+        {
+            result.Type = Type;
+        }
+        /// <summary>
+        /// Hits the size of the test non fixed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
+        /// <returns></returns>
+        protected bool HitTestNonFixedSize(RenderContext context, ref Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, int count)
+        {
+            var h = false;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
+            var viewMatrix = context.ViewMatrix;
+            var viewMatrixInv = viewMatrix.PsudoInvert();
+            var scale3D = modelMatrix.ScaleVector;
+            var scale = new Vector2(scale3D.X, scale3D.Y);
+            for (int i = 0; i < count; ++i)
+            {
+                var vert = BillboardVertices[i];
+                var pos = vert.Position.ToVector3();
+                var c = Vector3.TransformCoordinate(pos, modelMatrix);
+                var dir = c - rayWS.Position;
+                if (Vector3.Dot(dir, rayWS.Direction) < 0)
+                {
+                    continue;
+                }
+                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv, ref scale);
+                if (Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.TR, ref quad.BR, out Vector3 hitPoint)
+                    || Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.BR, ref quad.BL, out hitPoint))
+                {
+                    var dist = (rayWS.Position - hitPoint).Length();
+                    if (dist > result.Distance)
+                    {
+                        continue;
+                    }
+                    h = true;
+                    result.ModelHit = originalSource;
+                    result.IsValid = true;
+                    result.PointHit = hitPoint;
+                    result.Distance = dist;
+                    result.Geometry = this;
+                    AssignResultAdditional(result, i);
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo == null ? Type.ToString() : result.TextInfo.Text));
+                }
+            }
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
+        }
+
+        private struct Quad
         {
             public Vector3 TL;
             public Vector3 TR;
@@ -143,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected struct Quad2D
+        private struct Quad2D
         {
             public Vector2 TL;
             public Vector2 TR;
@@ -207,7 +333,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
+        private static Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
             ref Matrix viewMatrix, ref Matrix viewMatrixInv, ref Vector2 scale)
         {
             var vcenter = Vector3.TransformCoordinate(center, viewMatrix);
@@ -226,7 +352,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new Quad(ref tl, ref tr, ref bl, ref br);
         }
 
-        protected Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
+        private static Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
             ref Matrix screenViewProjection, ref Vector2 scale)
         {
             var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
@@ -237,5 +363,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var br = p + BR * scale;
             return new Quad2D(ref tl, ref tr, ref bl, ref br);
         }
+        #endregion
     }
 }

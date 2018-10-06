@@ -119,6 +119,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardImage3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\BillboardMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\GenericMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\LineMaterialCore.cs" />
