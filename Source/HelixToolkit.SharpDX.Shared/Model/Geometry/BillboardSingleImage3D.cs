@@ -238,10 +238,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (quad.IsPointInQuad2D(ref screenPoint))
                 {
                     h = true;
+                    var v = c - rayWS.Position;
+                    var dist = Vector3.Dot(rayWS.Direction, v);
                     result.ModelHit = originalSource;
                     result.IsValid = true;
-                    result.PointHit = c;
-                    result.Distance = (rayWS.Position - c).Length();
+                    result.PointHit = rayWS.Position + rayWS.Direction * dist; ;
+                    result.Distance = dist;
                     result.Geometry = this;
                     Debug.WriteLine(string.Format("Hit; HitPoint:{0};", result.PointHit));
                     break;

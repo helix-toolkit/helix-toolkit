@@ -349,15 +349,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, ref scale);
                 if (quad.IsPointInQuad2D(ref screenPoint))
                 {
-                    var dist = (rayWS.Position - c).Length();
-                    if(dist > result.Distance)
+                    var v = c - rayWS.Position;
+                    var dist = Vector3.Dot(rayWS.Direction, v);
+                    if (dist > result.Distance)
                     {
                         continue;
                     }
                     h = true;
+
                     result.ModelHit = originalSource;
                     result.IsValid = true;
-                    result.PointHit = c;
+                    result.PointHit = rayWS.Position + rayWS.Direction * dist;
                     result.Distance = dist;
                     result.Geometry = this;
                     result.TextInfo = TextInfo[i];
