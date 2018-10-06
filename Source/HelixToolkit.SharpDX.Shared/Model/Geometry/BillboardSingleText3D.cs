@@ -381,10 +381,13 @@ using Core;
                 if (quad.IsPointInQuad2D(ref screenPoint))
                 {
                     h = true;
+                    var v = c - rayWS.Position;
+                    var dist = Vector3.Dot(rayWS.Direction, v);
                     result.ModelHit = originalSource;
                     result.IsValid = true;
                     result.PointHit = c;
-                    result.Distance = (rayWS.Position - c).Length();
+                    result.Distance = dist;
+                    result.PointHit = rayWS.Position + rayWS.Direction * dist;
                     result.Geometry = this;
                     result.TextInfo = TextInfo;
                     Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
