@@ -84,7 +84,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 Debug.WriteLine($"Billboard DrawTexture");
                 BillboardVertices.Clear();
                 OnUpdateTextureAndBillboardVertices(deviceResources);
-                RaisePropertyChanged(VertexBuffer);
                 UpdateBounds();
             }
             isInitialized = true;           

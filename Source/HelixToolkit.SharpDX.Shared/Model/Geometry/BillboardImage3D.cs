@@ -2,20 +2,15 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Collections.Generic;
 using SharpDX;
-using System.IO;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 #if NETFX_CORE
-
 #else
 using System.Windows.Media.Imaging;
 #endif
-
-
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -61,14 +56,10 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return imageInfos; }
         }
 
-        public BillboardImage3D()
-        {
-            imageInfos.CollectionChanged += CollectionChanged;
-        }
-
-        public BillboardImage3D(Stream imageStream) : base()
+        public BillboardImage3D(Stream imageStream)
         {
             Texture = imageStream;
+            imageInfos.CollectionChanged += CollectionChanged;
         }
 
         private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

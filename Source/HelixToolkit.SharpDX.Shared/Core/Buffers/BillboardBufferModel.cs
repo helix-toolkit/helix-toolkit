@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Render;
+    using System.IO;
     using Utilities;
     /// <summary>
     /// 
@@ -41,6 +42,8 @@ namespace HelixToolkit.UWP.Core
         /// The type.
         /// </value>
         public BillboardType Type { private set; get; }
+
+        private Stream textureStream;
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardBufferModel{VertexStruct}"/> class.
         /// </summary>
@@ -73,47 +76,31 @@ namespace HelixToolkit.UWP.Core
         /// <param name="bufferIndex"></param>
         protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
         {           
-            var billboardGeometry = geometry as IBillboardText;
-            billboardGeometry.DrawTexture(deviceResources);
-            if (billboardGeometry != null && billboardGeometry.BillboardVertices != null && billboardGeometry.BillboardVertices.Count > 0)
+            if(geometry is IBillboardText billboardGeometry)
             {
-                Type = billboardGeometry.Type;              
-                buffer.UploadDataToBuffer(context, billboardGeometry.BillboardVertices, billboardGeometry.BillboardVertices.Count, 0, geometry.PreDefinedVertexCount);
-                RemoveAndDispose(ref textureView);
-                if (billboardGeometry.Texture != null)
+                billboardGeometry.DrawTexture(deviceResources);
+                if (billboardGeometry.BillboardVertices != null && billboardGeometry.BillboardVertices.Count > 0)
                 {
-                    textureView = Collect(deviceResources.MaterialTextureManager.Register(billboardGeometry.Texture));
+                    Type = billboardGeometry.Type;              
+                    buffer.UploadDataToBuffer(context, billboardGeometry.BillboardVertices, billboardGeometry.BillboardVertices.Count, 0, geometry.PreDefinedVertexCount);
+                    if(textureStream != billboardGeometry.Texture)
+                    {
+                        RemoveAndDispose(ref textureView);
+                        textureStream = billboardGeometry.Texture;
+                        if (textureStream != null)
+                        {
+                            textureView = Collect(deviceResources.MaterialTextureManager.Register(textureStream));
+                        }
+                    }
+                }
+                else
+                {
+                    RemoveAndDispose(ref textureView);
+                    textureStream = null;
+                    buffer.UploadDataToBuffer(context, emptyVerts, 0);
                 }
             }
-            else
-            {
-                textureView = null;
-                buffer.UploadDataToBuffer(context, emptyVerts, 0);
-            }
         }
-
-        ///// <summary>
-        ///// Called when [attach buffer].
-        ///// </summary>
-        ///// <param name="context">The context.</param>
-        ///// <param name="vertexLayout">The vertex layout.</param>
-        ///// <param name="vertexBufferStartSlot">The vertex buffer start slot. Returns next available bind slot</param>
-        ///// <returns></returns>
-        //protected override bool OnAttachBuffer(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
-        //{
-        //    context.PrimitiveTopology = Topology;
-        //    context.InputLayout = vertexLayout;
-        //    if (VertexBuffer.Length > 0)
-        //    {
-        //        context.SetVertexBuffers(vertexBufferStartSlot, VertexBuffer.Select(x=> new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset)).ToArray());
-        //        vertexBufferStartSlot += VertexBuffer.Length;
-        //    }
-        //    else
-        //    {
-        //        context.SetIndexBuffer(null, Format.Unknown, 0);
-        //    }
-        //    return true;
-        //}
     }
 
     /// <summary>
