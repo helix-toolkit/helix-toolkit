@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool IsInitialized
         {
-            set
+            protected set
             {
                 isInitialized = value;
                 if (!isInitialized)
@@ -99,6 +99,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 billboard.Texture = Texture;
                 billboard.IsInitialized = false;
             }
+        }
+
+        public void Invalidate()
+        {
+            IsInitialized = false;
         }
 
         #region HitTest

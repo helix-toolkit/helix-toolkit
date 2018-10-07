@@ -163,7 +163,7 @@ namespace BillboardDemo
                     BackupLocColor(LandmarkBillboards.TextInfo[res.TextInfoIndex]);
                     highlightedLoc.Background = Color.Yellow;
                     highlightedLoc.Foreground = Color.Black;
-                    LandmarkBillboards.IsInitialized = false;
+                    LandmarkBillboards.Invalidate();
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace BillboardDemo
             {
                 highlightedLoc.Background = prevLocBackColor;
                 highlightedLoc.Foreground = prevLocColor;
-                LandmarkBillboards.IsInitialized = false;
+                LandmarkBillboards.Invalidate();
             }
             highlightedLoc = null;
         }
