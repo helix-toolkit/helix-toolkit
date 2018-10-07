@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool IsInitialized
         {
-            protected set
+            set
             {
                 isInitialized = value;
                 if (!isInitialized)

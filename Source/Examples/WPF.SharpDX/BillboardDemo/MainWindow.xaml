@@ -31,6 +31,7 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             FXAALevel="Low"
+            IsPanEnabled="False"
             ModelUpDirection="0,0,1"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
@@ -64,8 +65,12 @@
                 CullMode="Back"
                 Geometry="{Binding SphereModel}"
                 Material="{Binding EarthMaterial}" />
-            <hx:BillboardTextModel3D FixedSize="{Binding FixedSize}" Geometry="{Binding FlagsBillboard}" />
-            <hx:BillboardTextModel3D FixedSize="{Binding FixedSize}" Geometry="{Binding SelectedFlagBillboard}" />
+            <hx:BillboardTextModel3D FixedSize="False" Geometry="{Binding FlagsBillboard}" />
+            <hx:BillboardTextModel3D
+                FixedSize="False"
+                Geometry="{Binding SelectedFlagBillboard}"
+                IsHitTestVisible="False" />
+            <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards}" />
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <TextBlock Margin="2" Foreground="Blue">Drag Flag onto Earth</TextBlock>

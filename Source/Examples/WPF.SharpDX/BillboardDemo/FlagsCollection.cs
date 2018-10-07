@@ -26,6 +26,8 @@ namespace BillboardDemo
                 new Flag("South Korea", new Vector3(), GetCoordRowColumn(2, 1)),
                 new Flag("Australia", new Vector3(), GetCoordRowColumn(3, 0)),
                 new Flag("United Kingdom", new Vector3(), GetCoordRowColumn(7, 0)),
+                new Flag("Russia", new Vector3(), GetCoordRowColumn(4, 6)),
+                new Flag("Turkey", new Vector3(), GetCoordRowColumn(4, 3)),
             };
         }
 
@@ -46,8 +48,8 @@ namespace BillboardDemo
             Position = pos;
             UV_TopLeft = new Vector2(coord.X, coord.Y);
             UV_BottomRight = new Vector2(coord.Z, coord.W);
-            Width = 80;
-            Height = 60;
+            Width = 0.5f;
+            Height = 0.4f;
         }
     }
 }

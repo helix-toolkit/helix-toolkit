@@ -19,12 +19,20 @@ namespace BillboardDemo
         public Geometry3D SphereModel { get; }
         public PhongMaterial EarthMaterial { get; }
         public BillboardImage3D FlagsBillboard { get; }
-        private BillboardSingleText3D selectedFlagBillboard;
         public BillboardSingleText3D SelectedFlagBillboard
         {
-            set { SetValue(ref selectedFlagBillboard, value); }
-            get { return selectedFlagBillboard; }
-        }
+            get;
+        } = new BillboardSingleText3D()
+            {
+                FontColor = Color.Blue,
+                FontWeight = FontWeights.Bold,
+                BackgroundColor = new Color4(0.8f, 0.8f, 0.8f, 0.8f),
+                Padding = new Thickness(2),
+                IsDynamic = true // Mark dynamic because it will change frequently
+            };
+        public BillboardText3D LandmarkBillboards { get; }
+            = new BillboardText3D() { IsDynamic = true };// Mark dynamic because it will change frequently
+
         public Stream BackgroundTexture { get; }
         public Flag[] Flags { get => FlagsCollection.Flags; }
         private bool fixedSize = true;
@@ -44,6 +52,10 @@ namespace BillboardDemo
             get { return selectedFlag; }
         }
 
+        private Color4 prevLocColor;
+        private Color4 prevLocBackColor;
+        private TextInfo highlightedLoc;
+
         public MainViewModel()
         {
             Title = "HelixToolkit Billboard Demo";
@@ -54,7 +66,9 @@ namespace BillboardDemo
                 Position = new System.Windows.Media.Media3D.Point3D(0, -10, 0),
                 LookDirection = new System.Windows.Media.Media3D.Vector3D(0, 10, 0),
                 UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 0, 1),
-                FarPlaneDistance = 1000, NearPlaneDistance = 0.1, Width = 10
+                FarPlaneDistance = 1000,
+                NearPlaneDistance = 0.1,
+                Width = 10
             };
             var builder = new MeshBuilder();
             builder.AddSphere(Vector3.Zero, 4, 16, 16);
@@ -83,24 +97,49 @@ namespace BillboardDemo
                 });
 
             FlagsBillboard = new BillboardImage3D(LoadFileToMemory("Flags.jpg"));
-            foreach (var info in FlagsCollection.Flags.Where(x=>x.Position != Vector3.Zero))
+            foreach (var info in FlagsCollection.Flags.Where(x => x.Position != Vector3.Zero))
             {
                 FlagsBillboard.ImageInfos.Add(info);
             }
 
-            SelectedFlagBillboard = new BillboardSingleText3D()
-            {
-                FontColor = Color.Blue, FontWeight = FontWeights.Bold,
-                BackgroundColor = new Color4(0.8f, 0.8f, 0.8f, 0.8f),
-                Padding = new Thickness(2)
-            };
+            AddLocations();
+        }
+
+        private void AddLocations()
+        {
+            float offset = 4.5f;
+            float scale = 0.8f;
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Arctic", Vector3.UnitZ * offset)
+            { Foreground = Color.Red, Scale = scale * 2 });
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Antarctica", Vector3.UnitZ * -offset)
+            { Foreground = Color.Blue, Scale = scale * 2 });
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Equator",
+                new Vector3(0, offset, 0))
+            { Foreground = Color.White, Scale = scale });
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Equator",
+                new Vector3((float)Math.Cos(Math.PI / 6) * offset, -(float)Math.Sin(Math.PI / 6) * offset, 0))
+            { Foreground = Color.White, Scale = scale });
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Equator",
+                new Vector3(-(float)Math.Cos(Math.PI / 6) * offset, -(float)Math.Sin(Math.PI / 6) * offset, 0))
+            { Foreground = Color.White, Scale = scale });
+
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Pacific", new Vector3(3.922917f, 0.2635128f, 2.084114f))
+            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Indian", new Vector3(-0.8591346f, -4.321474f, -0.2010482f))
+            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Atlantic", new Vector3(-2.595731f, 1.984212f, 3.021353f))
+            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Southern", new Vector3(0.08587439f, -2.127402f, -3.936893f))
+            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            LandmarkBillboards.TextInfo.Add(new TextInfo("Arctic Ocean", new Vector3(-0.7553688f, -0.6352348f, 4.379822f))
+            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
         }
 
         private void UpdateSelectedFlagBillboard(Flag flag)
         {
             if (flag.Position != Vector3.Zero)
             {
-                SelectedFlagBillboard.TextInfo = new TextInfo(flag.Name, flag.Position);
+                SelectedFlagBillboard.TextInfo = new TextInfo(flag.Name, flag.Position) { Scale = 0.015f };
             }
             else
             {
@@ -110,16 +149,46 @@ namespace BillboardDemo
 
         public void OnMouseUpHandler(object sender, MouseUp3DEventArgs e)
         {
-            if (e.HitTestResult != null && e.HitTestResult.ModelHit is BillboardTextModel3D model 
+            RestoreLocColor();
+            if (e.HitTestResult != null && e.HitTestResult.ModelHit is BillboardTextModel3D model
                 && e.HitTestResult is BillboardHitResult res)
             {
-                SelectedFlag = FlagsBillboard.ImageInfos[res.TextInfoIndex] as Flag;
+
+                if (model.Geometry == FlagsBillboard)
+                {
+                    SelectedFlag = FlagsBillboard.ImageInfos[res.TextInfoIndex] as Flag;
+                }
+                else if (model.Geometry == LandmarkBillboards)
+                {
+                    BackupLocColor(LandmarkBillboards.TextInfo[res.TextInfoIndex]);
+                    highlightedLoc.Background = Color.Yellow;
+                    highlightedLoc.Foreground = Color.Black;
+                    LandmarkBillboards.IsInitialized = false;
+                }
             }
+        }
+
+        private void BackupLocColor(TextInfo loc)
+        {
+            highlightedLoc = loc;
+            prevLocBackColor = highlightedLoc.Background;
+            prevLocColor = highlightedLoc.Foreground;
+        }
+
+        private void RestoreLocColor()
+        {
+            if (highlightedLoc != null)
+            {
+                highlightedLoc.Background = prevLocBackColor;
+                highlightedLoc.Foreground = prevLocColor;
+                LandmarkBillboards.IsInitialized = false;
+            }
+            highlightedLoc = null;
         }
 
         public void OnFlag_Drop(object sender, DragEventArgs e)
         {
-            if(e.Data.GetData("Flag") is Flag flag && sender is Viewport3DX viewport)
+            if (e.Data.GetData("Flag") is Flag flag && sender is Viewport3DX viewport)
             {
                 var point = e.GetPosition(sender as IInputElement);
                 var hits = viewport.FindHits(point);
@@ -127,7 +196,7 @@ namespace BillboardDemo
                 {
                     return;
                 }
-                if(hits[0].ModelHit is GeometryModel3D model && model.Geometry == SphereModel)
+                if (hits[0].ModelHit is GeometryModel3D model && model.Geometry == SphereModel)
                 {
                     var pos = hits[0].PointHit;
                     var normal = hits[0].NormalAtHit;
@@ -147,10 +216,10 @@ namespace BillboardDemo
 
         public void ListBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if(e.MouseDevice.LeftButton == MouseButtonState.Pressed)
+            if (e.MouseDevice.LeftButton == MouseButtonState.Pressed)
             {
                 var parent = sender as ListBox;
-                if(parent == null || parent != dragSource)
+                if (parent == null || parent != dragSource)
                 {
                     return;
                 }
@@ -159,7 +228,7 @@ namespace BillboardDemo
                     DataObject dragData = new DataObject("Flag", flag);
                     DragDrop.DoDragDrop(dragSource, dragData, DragDropEffects.Move);
                     dragSource = null;
-                }               
+                }
             }
 
         }
