@@ -61,9 +61,10 @@ namespace BillboardDemo
             SphereModel = builder.ToMesh();
             SphereModel.UpdateOctree();
             EarthMaterial = PhongMaterials.White;
-            EarthMaterial.SpecularShininess = 1;
+            EarthMaterial.SpecularShininess = 10;
+            EarthMaterial.SpecularColor = new Color4(0.3f, 0.3f, 0.3f, 1);
             EarthMaterial.DiffuseMap = LoadFileToMemory("earthmap.jpg");
-            //EarthMaterial.SpecularColorMap = LoadFileToMemory("earthspec.jpg");
+            EarthMaterial.SpecularColorMap = LoadFileToMemory("earthspec.jpg");
             EarthMaterial.DisplacementMap = LoadFileToMemory("earthbump.jpg");
             EarthMaterial.NormalMap = LoadFileToMemory("earthNormal.jpg");
             EarthMaterial.DisplacementMapScaleMask = new Vector4(0.2f, 0.2f, 0.2f, 0);
