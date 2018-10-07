@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 2. ScreenQuadModel3D for background full screen texture rendering.(WPF.SharpDX and UWP)
 3. Supports EmissiveMap for PhongMaterial. (WPF.SharpDX and UWP)
 4. Supports Billboard 2D Rotation. Added Angle property in TextInfo and BillboardSingleImage. (WPF.SharpDX and UWP)
-5. Add BillboardImage to support sub image texture billboard.
+5. Add BillboardImage3D to support sub image texture billboard. (WPF.SharpDX and UWP)
 
 ### Improvement and Changes
 1. Clean up render core. Obsolete RenderCoreBase. Move to material based rendering. (WPF.SharpDX and UWP)
