@@ -168,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     result.Distance = dist;
                     result.Geometry = this;
                     AssignResultAdditional(result, i);
-                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo == null ? Type.ToString() : result.TextInfo.Text));
                 }
             }
             if (h)
@@ -180,6 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void AssignResultAdditional(BillboardHitResult result, int index)
         {
+            result.TextInfoIndex = index;
             result.Type = Type;
         }
         /// <summary>

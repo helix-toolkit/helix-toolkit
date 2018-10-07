@@ -238,8 +238,16 @@ using Core;
         /// </summary>
         public override void UpdateBounds()
         {
-            BoundingSphere = new BoundingSphere(TextInfo.Origin, (float)Math.Sqrt(Width * Width + Height * Height) / 2);
-            Bound = BoundingBox.FromSphere(BoundingSphere);
+            if(TextInfo == null)
+            {
+                BoundingSphere = new BoundingSphere();
+                Bound = new BoundingBox();
+            }
+            else
+            {
+                BoundingSphere = new BoundingSphere(TextInfo.Origin, (float)Math.Sqrt(Width * Width + Height * Height) / 2);
+                Bound = BoundingBox.FromSphere(BoundingSphere);
+            }
         }
 
         protected override void OnAssignTo(Geometry3D target)
@@ -263,7 +271,7 @@ using Core;
         /// <param name="deviceResources">The device resources.</param>
         protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
-            if (!string.IsNullOrEmpty(TextInfo.Text))
+            if (TextInfo != null && !string.IsNullOrEmpty(TextInfo.Text))
             {
                 var w = Width;
                 var h = Height;
@@ -290,7 +298,7 @@ using Core;
                     Height = 0;
                 }
             }
-            TextInfo.UpdateTextInfo(Width, Height);
+            TextInfo?.UpdateTextInfo(Width, Height);
         }
 
         private void DrawCharacter(string text, Vector3 origin, float w, float h, TextInfo info)
