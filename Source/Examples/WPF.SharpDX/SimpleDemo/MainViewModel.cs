@@ -161,8 +161,8 @@ namespace SimpleDemo
                     angle += (float)Math.PI / 10;
                     Text.TextInfo.Add(new TextInfo(texts[(i + j) % texts.Length], new Vector3((i - numRows / 2), 0.0f, (j - numColumns / 2)))
                     {
-                        Foreground = new Color4((float)i / numRows, 0, 0, 1f),
-                        Background = new Color4(0, (float)(numColumns - j) / numColumns, 1, 0.8f),
+                        Foreground = new Color4((float)i / numRows, 1- (float)i / numRows, (float)(numColumns - j) / numColumns, 1f),
+                        Background = new Color4(1 - (float)i / numRows, (float)(numColumns - j) / numColumns, (float)i / numRows, 0.8f),
                         Scale = Math.Max(0.01f, (float)i / numRows * 0.02f),
                         Angle = angle
                     });

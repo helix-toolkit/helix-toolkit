@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
             IsInitialized = false;
         }
 
-        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
             Texture = TextureStatic;
             Width = 0;
@@ -312,126 +312,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, textInfo.Count);
         }
 
-        /// <summary>
-        /// Hits the size of the test fixed.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="modelMatrix">The model matrix.</param>
-        /// <param name="rayWS">The ray ws.</param>
-        /// <param name="hits">The hits.</param>
-        /// <param name="originalSource">The original source.</param>
-        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
-        /// <returns></returns>
-        protected bool HitTestFixedSize(RenderContext context, ref Matrix modelMatrix,
-            ref Ray rayWS, ref List<HitTestResult> hits,
-            object originalSource, int count)
+        protected override void AssignResultAdditional(BillboardHitResult result, int index)
         {
-            var h = false;
-            var result = new BillboardHitResult
-            {
-                Distance = double.MaxValue
-            };
-            var visualToScreen = context.ScreenViewProjectionMatrix;
-            var screenPoint3D = Vector3.TransformCoordinate(rayWS.Position, visualToScreen);
-            var screenPoint = new Vector2(screenPoint3D.X, screenPoint3D.Y);
-            var scale3D = modelMatrix.ScaleVector;
-            var scale = new Vector2(scale3D.X, scale3D.Y);
-            for (int i = 0; i < count; ++i)
-            {
-                var vert = BillboardVertices[i];
-                var pos = vert.Position.ToVector3();
-                var c = Vector3.TransformCoordinate(pos, modelMatrix);
-                var dir = c - rayWS.Position;
-                if (Vector3.Dot(dir, rayWS.Direction) < 0)
-                {
-                    continue;
-                }
-                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, ref scale);
-                if (quad.IsPointInQuad2D(ref screenPoint))
-                {
-                    var v = c - rayWS.Position;
-                    var dist = Vector3.Dot(rayWS.Direction, v);
-                    if (dist > result.Distance)
-                    {
-                        continue;
-                    }
-                    h = true;
-
-                    result.ModelHit = originalSource;
-                    result.IsValid = true;
-                    result.PointHit = rayWS.Position + rayWS.Direction * dist;
-                    result.Distance = dist;
-                    result.Geometry = this;
-                    result.TextInfo = TextInfo[i];
-                    result.TextInfoIndex = i;
-                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
-                }
-            }
-            if (h)
-            {
-                hits.Add(result);
-            }
-            return h;
-        }
-        /// <summary>
-        /// Hits the size of the test non fixed.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="modelMatrix">The model matrix.</param>
-        /// <param name="rayWS">The ray ws.</param>
-        /// <param name="hits">The hits.</param>
-        /// <param name="originalSource">The original source.</param>
-        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
-        /// <returns></returns>
-        protected bool HitTestNonFixedSize(RenderContext context, ref Matrix modelMatrix,
-            ref Ray rayWS, ref List<HitTestResult> hits,
-            object originalSource, int count)
-        {
-            var h = false;
-            var result = new BillboardHitResult
-            {
-                Distance = double.MaxValue
-            };
-            var viewMatrix = context.ViewMatrix;
-            var viewMatrixInv = viewMatrix.PsudoInvert();
-            var scale3D = modelMatrix.ScaleVector;
-            var scale = new Vector2(scale3D.X, scale3D.Y);
-            for (int i = 0; i < count; ++i)
-            {
-                var vert = BillboardVertices[i];
-                var pos = vert.Position.ToVector3();
-                var c = Vector3.TransformCoordinate(pos, modelMatrix);
-                var dir = c - rayWS.Position;
-                if (Vector3.Dot(dir, rayWS.Direction) < 0)
-                {
-                    continue;
-                }
-                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv, ref scale);
-                if (Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.TR, ref quad.BR, out Vector3 hitPoint)
-                    || Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.BR, ref quad.BL, out hitPoint))
-                {
-                    var dist = (rayWS.Position - hitPoint).Length();
-                    if (dist > result.Distance)
-                    {
-                        continue;
-                    }
-                    h = true;
-                    result.ModelHit = originalSource;
-                    result.IsValid = true;
-                    result.PointHit = hitPoint;
-                    result.Distance = dist;
-                    result.Geometry = this;
-                    result.TextInfo = TextInfo[i];
-                    result.TextInfoIndex = i;
-                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
-                }
-            }
-            if (h)
-            {
-                hits.Add(result);
-            }
-            return h;
+            base.AssignResultAdditional(result, index);
+            result.TextInfo = textInfo[index];
+            result.TextInfoIndex = index;
         }
     }
-
 }

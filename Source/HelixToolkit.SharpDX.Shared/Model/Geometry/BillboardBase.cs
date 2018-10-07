@@ -83,17 +83,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 Debug.WriteLine($"Billboard DrawTexture");
                 BillboardVertices.Clear();
-                OnDrawTexture(deviceResources);
-                RaisePropertyChanged(VertexBuffer);
+                OnUpdateTextureAndBillboardVertices(deviceResources);
                 UpdateBounds();
             }
             isInitialized = true;           
         }
 
-        protected virtual void OnDrawTexture(IDeviceResources deviceResources)
-        {
-
-        }
+        protected abstract void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources);
 
         protected override void OnAssignTo(Geometry3D target)
         {
@@ -101,9 +97,11 @@ namespace HelixToolkit.Wpf.SharpDX
             if(target is BillboardBase billboard)
             {
                 billboard.Texture = Texture;
-                IsInitialized = false;
+                billboard.IsInitialized = false;
             }
         }
+
+        #region HitTest
         /// <summary>
         /// Hits the test.
         /// </summary>
@@ -119,7 +117,131 @@ namespace HelixToolkit.Wpf.SharpDX
             object originalSource, bool fixedSize);
 
 
-        protected struct Quad
+        /// <summary>
+        /// Hits the size of the test fixed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
+        /// <returns></returns>
+        protected bool HitTestFixedSize(RenderContext context, ref Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, int count)
+        {
+            var h = false;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
+            var visualToScreen = context.ScreenViewProjectionMatrix;
+            var screenPoint3D = Vector3.TransformCoordinate(rayWS.Position, visualToScreen);
+            var screenPoint = new Vector2(screenPoint3D.X, screenPoint3D.Y);
+            var scale3D = modelMatrix.ScaleVector;
+            var scale = new Vector2(scale3D.X, scale3D.Y);
+            for (int i = 0; i < count; ++i)
+            {
+                var vert = BillboardVertices[i];
+                var pos = vert.Position.ToVector3();
+                var c = Vector3.TransformCoordinate(pos, modelMatrix);
+                var dir = c - rayWS.Position;
+                if (Vector3.Dot(dir, rayWS.Direction) < 0)
+                {
+                    continue;
+                }
+                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, ref scale);
+                if (quad.IsPointInQuad2D(ref screenPoint))
+                {
+                    var v = c - rayWS.Position;
+                    var dist = Vector3.Dot(rayWS.Direction, v);
+                    if (dist > result.Distance)
+                    {
+                        continue;
+                    }
+                    h = true;
+
+                    result.ModelHit = originalSource;
+                    result.IsValid = true;
+                    result.PointHit = rayWS.Position + rayWS.Direction * dist;
+                    result.Distance = dist;
+                    result.Geometry = this;
+                    AssignResultAdditional(result, i);
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo.Text));
+                }
+            }
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
+        }
+
+        protected virtual void AssignResultAdditional(BillboardHitResult result, int index)
+        {
+            result.Type = Type;
+        }
+        /// <summary>
+        /// Hits the size of the test non fixed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
+        /// <returns></returns>
+        protected bool HitTestNonFixedSize(RenderContext context, ref Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, int count)
+        {
+            var h = false;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
+            var viewMatrix = context.ViewMatrix;
+            var viewMatrixInv = viewMatrix.PsudoInvert();
+            var scale3D = modelMatrix.ScaleVector;
+            var scale = new Vector2(scale3D.X, scale3D.Y);
+            for (int i = 0; i < count; ++i)
+            {
+                var vert = BillboardVertices[i];
+                var pos = vert.Position.ToVector3();
+                var c = Vector3.TransformCoordinate(pos, modelMatrix);
+                var dir = c - rayWS.Position;
+                if (Vector3.Dot(dir, rayWS.Direction) < 0)
+                {
+                    continue;
+                }
+                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv, ref scale);
+                if (Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.TR, ref quad.BR, out Vector3 hitPoint)
+                    || Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.BR, ref quad.BL, out hitPoint))
+                {
+                    var dist = (rayWS.Position - hitPoint).Length();
+                    if (dist > result.Distance)
+                    {
+                        continue;
+                    }
+                    h = true;
+                    result.ModelHit = originalSource;
+                    result.IsValid = true;
+                    result.PointHit = hitPoint;
+                    result.Distance = dist;
+                    result.Geometry = this;
+                    AssignResultAdditional(result, i);
+                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo == null ? Type.ToString() : result.TextInfo.Text));
+                }
+            }
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
+        }
+
+        private struct Quad
         {
             public Vector3 TL;
             public Vector3 TR;
@@ -143,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected struct Quad2D
+        private struct Quad2D
         {
             public Vector2 TL;
             public Vector2 TR;
@@ -207,30 +329,26 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
+        private static Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
             ref Matrix viewMatrix, ref Matrix viewMatrixInv, ref Vector2 scale)
         {
-            var vcenter = Vector3.Transform(center, viewMatrix);
+            var vcenter = Vector3.TransformCoordinate(center, viewMatrix);
             var vcX = vcenter.X;
             var vcY = vcenter.Y;
 
-            var bl = new Vector4(vcX + BL.X * scale.X, vcY + BL.Y * scale.X, vcenter.Z, vcenter.W);
-            var br = new Vector4(vcX + BR.X * scale.X, vcY + BR.Y * scale.Y, vcenter.Z, vcenter.W);
-            var tr = new Vector4(vcX + TR.X * scale.X, vcY + TR.Y * scale.Y, vcenter.Z, vcenter.W);
-            var tl = new Vector4(vcX + TL.X * scale.X, vcY + TL.Y * scale.Y, vcenter.Z, vcenter.W);
+            var bl = new Vector3(vcX + BL.X * scale.X, vcY + BL.Y * scale.X, vcenter.Z);
+            var br = new Vector3(vcX + BR.X * scale.X, vcY + BR.Y * scale.Y, vcenter.Z);
+            var tr = new Vector3(vcX + TR.X * scale.X, vcY + TR.Y * scale.Y, vcenter.Z);
+            var tl = new Vector3(vcX + TL.X * scale.X, vcY + TL.Y * scale.Y, vcenter.Z);
 
-            bl = Vector4.Transform(bl, viewMatrixInv);
-            bl /= bl.W;
-            br = Vector4.Transform(br, viewMatrixInv);
-            br /= br.W;
-            tr = Vector4.Transform(tr, viewMatrixInv);
-            tr /= tr.W;
-            tl = Vector4.Transform(tl, viewMatrixInv);
-            tl /= tl.W;
-            return new Quad(tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3());
+            bl = Vector3.TransformCoordinate(bl, viewMatrixInv);
+            br = Vector3.TransformCoordinate(br, viewMatrixInv);
+            tr = Vector3.TransformCoordinate(tr, viewMatrixInv);
+            tl = Vector3.TransformCoordinate(tl, viewMatrixInv);
+            return new Quad(ref tl, ref tr, ref bl, ref br);
         }
 
-        protected Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
+        private static Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
             ref Matrix screenViewProjection, ref Vector2 scale)
         {
             var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
@@ -241,5 +359,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var br = p + BR * scale;
             return new Quad2D(ref tl, ref tr, ref bl, ref br);
         }
+        #endregion
     }
 }

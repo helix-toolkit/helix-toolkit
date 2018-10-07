@@ -117,7 +117,7 @@ namespace MaterialDemo
                 }
             }
             builder = new MeshBuilder();
-            builder.AddSphere(Vector3.Zero, 8, 64, 64);
+            builder.AddSphere(Vector3.Zero, 8, 12, 12);
             Model = builder.ToMesh();
             Material = new PBRMaterial()
             {
@@ -128,7 +128,7 @@ namespace MaterialDemo
                 DisplacementMap = LoadFileToMemory("Engraved_Metal_DISP.png"),
                 RMAMap = LoadFileToMemory("Engraved_Metal_RMC.png"),
                 DisplacementMapScaleMask = new Vector4(0.1f, 0.1f, 0.1f, 0),
-                EnableAutoTangent =true,
+                EnableAutoTangent =true, EnableTessellation = true, MaxDistanceTessellationFactor = 2, MinDistanceTessellationFactor = 4
             };
             ModelTransform = new Media3D.MatrixTransform3D(Matrix.Translation(0, 30, 0).ToMatrix3D());
 

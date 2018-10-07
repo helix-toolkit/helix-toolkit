@@ -112,6 +112,7 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(PBRMaterialCore.EnableTessellation), () =>
             {
                 MaterialPass = Technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellation : DefaultPassNames.PBR];
+                UpdateMappings(MaterialPass);
                 MaterialOITPass = Technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellationOIT : DefaultPassNames.PBROITPass];
             });
 
@@ -256,13 +257,23 @@ namespace HelixToolkit.UWP.Model
             texEmissiveSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.EmissiveTB);
             texNormalSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.NormalMapTB);
             texRMASlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.RMAMapTB);
-            texDisplaceSlot = shaderPass.VertexShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DisplacementMapTB);
+            
             texShadowSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.ShadowMapTB);
             texIrradianceSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.IrradianceMap);
             samplerSurfaceSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
             samplerIBLSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.IBLSampler);
             samplerShadowSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.ShadowMapSampler);
-            samplerDisplaceSlot = shaderPass.VertexShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DisplacementMapSampler);
+            
+            if (!shaderPass.DomainShader.IsNULL && material.EnableTessellation)
+            {
+                texDisplaceSlot = shaderPass.DomainShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DisplacementMapTB);
+                samplerDisplaceSlot = shaderPass.DomainShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DisplacementMapSampler);
+            }
+            else
+            {
+                texDisplaceSlot = shaderPass.VertexShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DisplacementMapTB);
+                samplerDisplaceSlot = shaderPass.VertexShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DisplacementMapSampler);
+            }
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

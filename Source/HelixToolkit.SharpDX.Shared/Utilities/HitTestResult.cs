@@ -103,6 +103,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public int TextInfoIndex { set; get; } = 0;
         public TextInfo TextInfo { set; get; } = null;
+        public BillboardType Type { set; get; }
     }
 
     /// <summary>
