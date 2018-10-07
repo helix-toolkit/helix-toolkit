@@ -139,6 +139,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.SharpDX.Core.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.UWP.Tests", "HelixToolkit.UWP.Tests\HelixToolkit.UWP.Tests.csproj", "{9D7F4F28-6177-4EE3-BF1C-2583E1E17324}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillboardDemo", "Examples\WPF.SharpDX\BillboardDemo\BillboardDemo.csproj", "{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
@@ -975,6 +977,22 @@ Global
 		{9D7F4F28-6177-4EE3-BF1C-2583E1E17324}.Release|ARM.ActiveCfg = Release|ARM
 		{9D7F4F28-6177-4EE3-BF1C-2583E1E17324}.Release|x64.ActiveCfg = Release|x64
 		{9D7F4F28-6177-4EE3-BF1C-2583E1E17324}.Release|x86.ActiveCfg = Release|x86
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Debug|x64.Build.0 = Debug|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Debug|x86.Build.0 = Debug|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|ARM.Build.0 = Release|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|x64.ActiveCfg = Release|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|x64.Build.0 = Release|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|x86.ActiveCfg = Release|Any CPU
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1037,6 +1055,7 @@ Global
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0} = {8F0A8E1D-B76B-4C42-A5BB-6E096BE40441}
 		{D193D2A0-64E9-4762-911A-A81476FAA2D4} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
 		{9D7F4F28-6177-4EE3-BF1C-2583E1E17324} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
+		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D} = {8DB21D26-08EA-4A24-BDE8-FFE08F2C30EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDED8F31-C7C8-41E4-ACAC-293F326BAE9F}

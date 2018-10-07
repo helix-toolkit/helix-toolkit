@@ -121,7 +121,7 @@ float4 main(PSInput input) : SV_Target
     }
     if (bHasSpecularMap)
     {
-        specular = texSpecularMap.Sample(samplerSurface, input.t);
+        specular *= texSpecularMap.Sample(samplerSurface, input.t);
     }
     // compute lighting
     for (int i = 0; i < NumLights; ++i)
