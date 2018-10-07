@@ -76,7 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX
             IsInitialized = false;
         }
 
-        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
             foreach(var img in ImageInfos)
             {

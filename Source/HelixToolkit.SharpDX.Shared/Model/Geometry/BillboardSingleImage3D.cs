@@ -150,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Called when [draw texture].
         /// </summary>
         /// <param name="deviceResources">The device resources.</param>
-        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
             var w = Width;
             var h = Height;

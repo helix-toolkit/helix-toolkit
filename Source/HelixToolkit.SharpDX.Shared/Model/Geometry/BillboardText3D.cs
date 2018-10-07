@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
             IsInitialized = false;
         }
 
-        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
             Texture = TextureStatic;
             Width = 0;

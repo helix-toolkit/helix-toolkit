@@ -261,7 +261,7 @@ using Core;
         /// Called when [draw texture].
         /// </summary>
         /// <param name="deviceResources">The device resources.</param>
-        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
             if (!string.IsNullOrEmpty(TextInfo.Text))
             {
