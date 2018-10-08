@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion        
 
-        private readonly LineMaterialCore material = new LineMaterialCore();
+        protected readonly LineMaterialCore material = new LineMaterialCore();
         /// <summary>
         /// Called when [create scene node].
         /// </summary>
