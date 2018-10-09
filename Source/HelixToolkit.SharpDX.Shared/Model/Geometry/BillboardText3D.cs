@@ -10,7 +10,6 @@ using System.IO;
 using System.Reflection;
 using Cyotek.Drawing.BitmapFont;
 #if CORE
-
 #else
 #if NETFX_CORE
 using Media = Windows.UI.Xaml.Media;
