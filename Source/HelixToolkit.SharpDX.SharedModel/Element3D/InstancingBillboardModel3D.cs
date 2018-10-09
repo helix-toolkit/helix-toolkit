@@ -35,7 +35,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
         #endregion
-        private readonly BillboardMaterialCore material = new BillboardMaterialCore();
         /// <summary>
         /// Called when [create scene node].
         /// </summary>

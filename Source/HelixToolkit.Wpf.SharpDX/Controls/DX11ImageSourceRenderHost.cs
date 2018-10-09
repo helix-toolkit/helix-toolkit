@@ -46,6 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 
         protected override void DisposeBuffers()
         {
+            surfaceD3D?.SetRenderTargetDX11(null);
             RemoveAndDispose(ref surfaceD3D);
             base.DisposeBuffers();
         }

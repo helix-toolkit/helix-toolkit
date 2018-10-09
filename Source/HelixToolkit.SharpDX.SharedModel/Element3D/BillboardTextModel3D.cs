@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Overridable Methods        
 
-        private readonly BillboardMaterialCore material = new BillboardMaterialCore();
+        protected readonly BillboardMaterialCore material = new BillboardMaterialCore();
         /// <summary>
         /// Called when [create scene node].
         /// </summary>

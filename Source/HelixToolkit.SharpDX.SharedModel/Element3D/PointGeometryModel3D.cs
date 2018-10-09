@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
-        private readonly PointMaterialCore material = new PointMaterialCore();
+        protected readonly PointMaterialCore material = new PointMaterialCore();
         /// <summary>
         /// Called when [create render core].
         /// </summary>

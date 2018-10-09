@@ -221,6 +221,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     else
                     {
                         RenderTechnique = null;
+                        EndD3D();
                     }
                 }
             }
@@ -889,7 +890,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void EndD3D()
         {
             Log(LogLevel.Information, "");
-            isLoaded = false;
             StopRendering();
             IsInitialized = false;
             OnEndingD3D();
@@ -987,6 +987,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (disposeManagedResources)
             {
                 EffectsManager = null;
+                isLoaded = false;
                 IsInitialized = false;
                 OnNewRenderTargetTexture = null;
                 ExceptionOccurred = null;

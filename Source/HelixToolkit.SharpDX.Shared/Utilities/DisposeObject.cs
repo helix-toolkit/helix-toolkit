@@ -122,16 +122,16 @@ namespace HelixToolkit.UWP
 
         #region IDisposible
 
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="DisposeObject"/> is reclaimed by garbage collection.
-        /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
-        ~DisposeObject()
-        {
-            // Finalizer calls Dispose(false)
-            Dispose(false);
-        }
+        ///// <summary>
+        ///// Releases unmanaged resources and performs other cleanup operations before the
+        ///// <see cref="DisposeObject"/> is reclaimed by garbage collection.
+        ///// </summary>
+        //[SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
+        //~DisposeObject()
+        //{
+        //    // Finalizer calls Dispose(false)
+        //    Dispose(false);
+        //}
 
         /// <summary>
         /// Gets a value indicating whether this instance is disposed.
@@ -161,7 +161,7 @@ namespace HelixToolkit.UWP
                 Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
 
                 OnDispose(disposing);
-                GC.SuppressFinalize(this);
+                //GC.SuppressFinalize(this);
 
                 IsDisposed = true;
 
@@ -353,16 +353,16 @@ namespace HelixToolkit.UWP
 
         #region IDisposible
 
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="ReferenceCountDisposeObject"/> is reclaimed by garbage collection.
-        /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
-        ~ReferenceCountDisposeObject()
-        {
-            // Finalizer calls Dispose(false)
-            Dispose(false);
-        }
+        ///// <summary>
+        ///// Releases unmanaged resources and performs other cleanup operations before the
+        ///// <see cref="ReferenceCountDisposeObject"/> is reclaimed by garbage collection.
+        ///// </summary>
+        //[SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
+        //~ReferenceCountDisposeObject()
+        //{
+        //    // Finalizer calls Dispose(false)
+        //    Dispose(false);
+        //}
 
         /// <summary>
         /// Gets a value indicating whether this instance is disposed.
@@ -406,7 +406,7 @@ namespace HelixToolkit.UWP
                 Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
 
                 OnDispose(disposing);
-                GC.SuppressFinalize(this);
+                //GC.SuppressFinalize(this);
 
                 IsDisposed = true;
 
