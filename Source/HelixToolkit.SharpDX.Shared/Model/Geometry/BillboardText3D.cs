@@ -124,12 +124,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public virtual BitmapFont BitmapFont
+        public BitmapFont BitmapFont
         {
-            get
-            {
-                return bmpFont;
-            }
+            get;
         }
 
         private ObservableCollection<TextInfo> textInfo = new ObservableCollection<TextInfo>();
@@ -154,6 +151,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public BillboardText3D()
         {
             textInfo.CollectionChanged += CollectionChanged;
+            Texture = TextureStatic;
+            BitmapFont = bmpFont;
+        }
+
+        public BillboardText3D(BitmapFont bitmapFont, Stream fontTexture)
+        {
+            textInfo.CollectionChanged += CollectionChanged;
+            Texture = fontTexture;
+            BitmapFont = bitmapFont;
         }
 
         protected override void OnAssignTo(Geometry3D target)
@@ -171,8 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
-        {
-            Texture = TextureStatic;
+        {           
             Width = 0;
             Height = 0;
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp

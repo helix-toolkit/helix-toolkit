@@ -1,5 +1,6 @@
 ﻿//Flag.jpg image is created by Luis_molinero - Freepik.com
 
+using Cyotek.Drawing.BitmapFont;
 using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using System;
@@ -32,7 +33,7 @@ namespace BillboardDemo
             };
         public BillboardText3D LandmarkBillboards { get; }
             = new BillboardText3D() { IsDynamic = true };// Mark dynamic because it will change frequently
-
+        public BillboardText3D LandmarkBillboards2 { get; }
         public Stream BackgroundTexture { get; }
         public Flag[] Flags { get => FlagsCollection.Flags; }
         private bool fixedSize = true;
@@ -52,9 +53,9 @@ namespace BillboardDemo
             get { return selectedFlag; }
         }
 
-        private Color4 prevLocColor;
-        private Color4 prevLocBackColor;
-        private TextInfo highlightedLoc;
+        private Color4 prevLocColor, prevLocColor2;
+        private Color4 prevLocBackColor, prevLocBackColor2;
+        private TextInfo highlightedLoc, highlightedLoc2;
 
         public MainViewModel()
         {
@@ -102,6 +103,9 @@ namespace BillboardDemo
                 FlagsBillboard.ImageInfos.Add(info);
             }
 
+            var segoeFont = new BitmapFont();
+            segoeFont.Load(@"Fonts\SegoeScript.fnt");
+            LandmarkBillboards2 = new BillboardText3D(segoeFont, LoadFileToMemory(@"Fonts\SegoeScript.dds"));
             AddLocations();
         }
 
@@ -133,6 +137,17 @@ namespace BillboardDemo
             { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Arctic Ocean", new Vector3(-0.7553688f, -0.6352348f, 4.379822f))
             { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+
+            LandmarkBillboards2.TextInfo.Add(new TextInfo("Asia", new Vector3(-0.8280244f, -3.665166f, 2.356252f))
+            { Foreground = Color.Red, Background = Color.DarkGray, Scale = 1});
+            LandmarkBillboards2.TextInfo.Add(new TextInfo("Europe", new Vector3(-2.531648f, -1.158762f, 3.501563f))
+            { Foreground = Color.Blue, Background = Color.DarkGray, Scale = 1 });
+            LandmarkBillboards2.TextInfo.Add(new TextInfo("North America", new Vector3(0.1436681f, 3.24761f, 3.080247f))
+            { Foreground = Color.Red, Background = Color.DarkGray, Scale = 1 });
+            LandmarkBillboards2.TextInfo.Add(new TextInfo("South America", new Vector3(-1.96404f, 3.929909f, -0.6905473f))
+            { Foreground = Color.Orchid, Background = Color.DarkGray, Scale = 1 });
+            LandmarkBillboards2.TextInfo.Add(new TextInfo("Oceania", new Vector3(2.306917f, -3.398433f, -1.661219f))
+            { Foreground = Color.Green, Background = Color.DarkGray, Scale = 1 });
         }
 
         private void UpdateSelectedFlagBillboard(Flag flag)
@@ -149,7 +164,7 @@ namespace BillboardDemo
 
         public void OnMouseUpHandler(object sender, MouseUp3DEventArgs e)
         {
-            RestoreLocColor();
+            
             if (e.HitTestResult != null && e.HitTestResult.ModelHit is BillboardTextModel3D model
                 && e.HitTestResult is BillboardHitResult res)
             {
@@ -160,10 +175,19 @@ namespace BillboardDemo
                 }
                 else if (model.Geometry == LandmarkBillboards)
                 {
+                    RestoreLocColor();
                     BackupLocColor(LandmarkBillboards.TextInfo[res.TextInfoIndex]);
                     highlightedLoc.Background = Color.Yellow;
                     highlightedLoc.Foreground = Color.Black;
                     LandmarkBillboards.Invalidate();
+                }
+                else if(model.Geometry == LandmarkBillboards2)
+                {
+                    RestoreLocColor2();
+                    BackupLocColor2(LandmarkBillboards2.TextInfo[res.TextInfoIndex]);
+                    highlightedLoc2.Background = Color.Yellow;
+                    highlightedLoc2.Foreground = Color.Black;
+                    LandmarkBillboards2.Invalidate();
                 }
             }
         }
@@ -184,6 +208,25 @@ namespace BillboardDemo
                 LandmarkBillboards.Invalidate();
             }
             highlightedLoc = null;
+        }
+
+
+        private void BackupLocColor2(TextInfo loc)
+        {
+            highlightedLoc2 = loc;
+            prevLocBackColor2 = highlightedLoc2.Background;
+            prevLocColor2 = highlightedLoc2.Foreground;
+        }
+
+        private void RestoreLocColor2()
+        {
+            if (highlightedLoc2 != null)
+            {
+                highlightedLoc2.Background = prevLocBackColor2;
+                highlightedLoc2.Foreground = prevLocColor2;
+                LandmarkBillboards2.Invalidate();
+            }
+            highlightedLoc2 = null;
         }
 
         public void OnFlag_Drop(object sender, DragEventArgs e)
