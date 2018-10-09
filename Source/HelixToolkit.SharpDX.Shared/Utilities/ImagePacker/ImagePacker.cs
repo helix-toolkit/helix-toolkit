@@ -111,9 +111,11 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             int maximumHeight,
             int imagePadding,
             bool generateMap,
-            out Bitmap outputImage,
+            out Bitmap outputImage, out int imageWidth, out int imageHeight,
             out Dictionary<int, RectangleF> outputMap)
         {
+            imageWidth = 0;
+            imageHeight = 0;
             if(deviceRes2D.Device2D==null || deviceRes2D.Device2D.IsDisposed)
             {
                 outputImage = null;
@@ -216,7 +218,8 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             // clear our dictionaries just to free up some memory
             imageSizes.Clear();
             imagePlacement.Clear();
-
+            imageWidth = outputWidth;
+            imageHeight = outputHeight;
             return 0;
         }
 
@@ -227,9 +230,11 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             int maximumHeight,
             int imagePadding,
             bool generateMap,
-            out Bitmap outputImage,
+            out Bitmap outputImage, out int imageWidth, out int imageHeight,
             out Dictionary<int, RectangleF> outputMap)
         {
+            imageWidth = 0;
+            imageHeight = 0;
             if (deviceRes2D.Device2D == null || deviceRes2D.Device2D.IsDisposed)
             {
                 outputImage = null;
@@ -343,7 +348,8 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             textInfos = null;
             imageSizes.Clear();
             imagePlacement.Clear();
-
+            imageWidth = outputWidth;
+            imageHeight = outputHeight;
             return 0;
         }
 
