@@ -196,6 +196,7 @@ namespace HelixToolkit.UWP.Core.Components
                     throw new ArgumentException($"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
 #else
                     Technique.EffectsManager.Logger.Log(Logger.LogLevel.Warning, $"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
+                    value = v;
                     return false;
 #endif
                 }
