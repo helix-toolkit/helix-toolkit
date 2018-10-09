@@ -169,5 +169,67 @@ namespace HelixToolkit.UWP.Core.Components
                 });
             }
         }
+
+        public bool ReadValueByName<T>(string name, out T value) where T : struct
+        {
+            var v = default(T);
+            if (IsValid)
+            {
+                if (ModelConstBuffer.TryGetVariableByName(name, out ConstantBufferVariable variable))
+                {
+                    if (global::SharpDX.Utilities.SizeOf<T>() > variable.Size)
+                    {
+                        int structSize = global::SharpDX.Utilities.SizeOf<T>();
+                        throw new ArgumentException($"Input struct size {structSize} is larger than shader variable {variable.Name} size {variable.Size}");
+                    }
+                    global::SharpDX.Utilities.Pin(internalByteArray, (ptr) =>
+                    {
+                        var offPtr = global::SharpDX.Utilities.IntPtrAdd(ptr, variable.StartOffset);
+                        global::SharpDX.Utilities.Read(offPtr, ref v);                     
+                    });
+                    value = v;
+                    return true;
+                }
+                else
+                {
+#if DEBUG
+                    throw new ArgumentException($"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
+#else
+                    Technique.EffectsManager.Logger.Log(Logger.LogLevel.Warning, $"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
+                    return false;
+#endif
+                }
+            }
+            else
+            {
+                value = v;
+                return false;
+            }
+        }
+
+        public bool ReadValue<T>(int offset, out T value) where T : struct
+        {
+            var v = default(T);
+            if (IsValid)
+            {
+                if (global::SharpDX.Utilities.SizeOf<T>() > internalByteArray.Length - offset)
+                {
+                    int structSize = global::SharpDX.Utilities.SizeOf<T>();
+                    throw new ArgumentOutOfRangeException($"Try to read value out of range. StructureSize {structSize} + Offset {offset} > Internal Buffer Size {internalByteArray.Length}");
+                }
+                global::SharpDX.Utilities.Pin(internalByteArray, (ptr) =>
+                {
+                    var offPtr = global::SharpDX.Utilities.IntPtrAdd(ptr, offset);                  
+                    global::SharpDX.Utilities.Read(offPtr, ref v);                    
+                });
+                value = v;
+                return true;
+            }
+            else
+            {
+                value = v;
+                return false;
+            }
+        }
     }
 }
