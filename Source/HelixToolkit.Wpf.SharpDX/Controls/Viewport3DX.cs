@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public CameraCore CameraCore { get { return this.Camera; } }
+        public CameraCore CameraCore { get { return CameraController.ActualCamera; } }
 
         public IRenderHost RenderHost { get { return this.renderHostInternal; } }
 

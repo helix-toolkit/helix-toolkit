@@ -221,6 +221,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     else
                     {
                         RenderTechnique = null;
+                        EndD3D();
                     }
                 }
             }

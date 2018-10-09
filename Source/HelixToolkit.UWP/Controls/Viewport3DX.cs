@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The camera core.
         /// </value>
-        public CameraCore CameraCore { get { return this.Camera; } }
+        public CameraCore CameraCore { get { return this.cameraController.ActualCamera; } }
         /// <summary>
         /// Gets the items.
         /// </summary>

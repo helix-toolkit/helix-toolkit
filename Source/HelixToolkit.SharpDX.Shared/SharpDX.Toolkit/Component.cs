@@ -73,7 +73,7 @@ namespace SharpDX.Toolkit
                 Disposing?.Invoke(this, EventArgs.Empty);             
                 Dispose(true);
                 IsDisposed = true;
-                GC.SuppressFinalize(this);
+                //GC.SuppressFinalize(this);
             }
         }
 

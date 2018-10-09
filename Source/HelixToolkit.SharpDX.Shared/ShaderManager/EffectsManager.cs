@@ -484,7 +484,13 @@ namespace HelixToolkit.UWP
                 return GetTechnique(name);
             }           
         }
-
+        /// <summary>
+        /// Finalizes an instance of the <see cref="EffectsManager"/> class.
+        /// </summary>
+        ~EffectsManager()
+        {
+            Dispose();
+        }
         /// <summary>
         /// <see cref="DisposeObject.OnDispose(bool)"/>
         /// </summary>
@@ -513,6 +519,7 @@ namespace HelixToolkit.UWP
 #if DEBUGMEMORY
             ReportResources();
 #endif
+            GC.SuppressFinalize(this);
         }
 
 #region Handle Device Error        

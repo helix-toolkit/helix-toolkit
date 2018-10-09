@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
+            //GC.SuppressFinalize(this);
         }
 
         /// <summary>
