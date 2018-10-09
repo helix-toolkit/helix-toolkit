@@ -16,6 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Mathematics.Interop;
     using global::SharpDX.WIC;
     using System;
+    using System.Collections.Generic;
+
     public enum Direct2DImageFormat
     {
         Png, Gif, Ico, Jpeg, Wmp, Tiff, Bmp
@@ -41,14 +43,17 @@ namespace HelixToolkit.Wpf.SharpDX
                     height = width / scale;
                 }
 
-                return CreateBitmapStream(deviceResources, (int)width, (int)height, Direct2DImageFormat.Bmp, (target) =>
+                using (var bitmap = CreateBitmapStream(deviceResources, (int)width, (int)height, Direct2DImageFormat.Bmp, (target) =>
+                 {
+                     target.Clear(background);
+                     using (var brush = new SolidColorBrush(target, foreground))
+                     {
+                         target.DrawTextLayout(new Vector2(padding.X, padding.Y), layout, brush);
+                     }
+                 }))
                 {
-                    target.Clear(background);
-                    using (var brush = new SolidColorBrush(target, foreground))
-                    {
-                        target.DrawTextLayout(new Vector2(padding.X, padding.Y), layout, brush);
-                    }
-                });
+                    return bitmap.ToMemoryStream(deviceResources, Direct2DImageFormat.Bmp);
+                }
             }
         }
 
@@ -83,42 +88,47 @@ namespace HelixToolkit.Wpf.SharpDX
             throw new NotSupportedException();
         }
 
-        public static MemoryStream CreateBitmapStream(IDevice2DResources deviceResources, int width, int height, Direct2DImageFormat imageType, Action<RenderTarget> drawingAction)
+        public static global::SharpDX.WIC.Bitmap CreateBitmapStream(IDevice2DResources deviceResources, int width, int height, Direct2DImageFormat imageType, Action<RenderTarget> drawingAction)
         {
-            using (var bitmap = new global::SharpDX.WIC.Bitmap(deviceResources.WICImgFactory, (int)width, (int)height, global::SharpDX.WIC.PixelFormat.Format32bppBGR,
-                BitmapCreateCacheOption.CacheOnDemand))
+            var bitmap = new global::SharpDX.WIC.Bitmap(deviceResources.WICImgFactory, width, height, global::SharpDX.WIC.PixelFormat.Format32bppBGR,
+                BitmapCreateCacheOption.CacheOnDemand);
+            using (var target = new WicRenderTarget(deviceResources.Factory2D, bitmap,
+                new RenderTargetProperties()
+                {
+                    DpiX = 96,
+                    DpiY = 96,
+                    MinLevel = FeatureLevel.Level_DEFAULT,
+                    PixelFormat = new global::SharpDX.Direct2D1.PixelFormat(global::SharpDX.DXGI.Format.Unknown, AlphaMode.Unknown)
+                }))
             {
+                target.Transform = Matrix3x2.Identity;
+                target.BeginDraw();
+                drawingAction(target);
+                target.EndDraw();
+            }
+            return bitmap;
+        }
 
-                using (var target = new WicRenderTarget(deviceResources.Factory2D, bitmap,
-                    new RenderTargetProperties()
-                    {
-                        DpiX = 96,
-                        DpiY = 96,
-                        MinLevel = FeatureLevel.Level_DEFAULT,
-                        PixelFormat = new global::SharpDX.Direct2D1.PixelFormat(global::SharpDX.DXGI.Format.Unknown, AlphaMode.Unknown)
-                    }))
-                {
-                    target.Transform = Matrix3x2.Identity;
-                    target.BeginDraw();
-                    drawingAction(target);
-                    target.EndDraw();
-                }
-                var systemStream = new MemoryStream();
 
-                using (var stream = new WICStream(deviceResources.WICImgFactory, systemStream))
+        public static MemoryStream ToMemoryStream(this global::SharpDX.WIC.Bitmap bitmap,
+            IDevice2DResources deviceResources,
+            Direct2DImageFormat imageType = Direct2DImageFormat.Bmp)
+        {
+            var systemStream = new MemoryStream();
+
+            using (var stream = new WICStream(deviceResources.WICImgFactory, systemStream))
+            {
+                using (var encoder = new BitmapEncoder(deviceResources.WICImgFactory, imageType.ToWICImageFormat()))
                 {
-                    using (var encoder = new BitmapEncoder(deviceResources.WICImgFactory, imageType.ToWICImageFormat()))
+                    encoder.Initialize(stream);
+                    using (var frameEncoder = new BitmapFrameEncode(encoder))
                     {
-                        encoder.Initialize(stream);
-                        using (var frameEncoder = new BitmapFrameEncode(encoder))
-                        {
-                            frameEncoder.Initialize();
-                            frameEncoder.SetSize((int)width, (int)height);
-                            frameEncoder.WriteSource(bitmap);
-                            frameEncoder.Commit();
-                            encoder.Commit();
-                            return systemStream;
-                        }
+                        frameEncoder.Initialize();
+                        frameEncoder.SetSize(bitmap.Size.Width, bitmap.Size.Height);
+                        frameEncoder.WriteSource(bitmap);
+                        frameEncoder.Commit();
+                        encoder.Commit();
+                        return systemStream;
                     }
                 }
             }
@@ -127,30 +137,36 @@ namespace HelixToolkit.Wpf.SharpDX
         public static MemoryStream CreateSolidColorBitmapStream(IDevice2DResources deviceResources,
             int width, int height, Direct2DImageFormat imageType, Color4 color)
         {
-            return CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
+            using (var bmp = CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
             {
                 using (var brush = new SolidColorBrush(target, color, new BrushProperties() { Opacity = color.Alpha }))
                 {
                     target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
                 }
-            });
+            }))
+            {
+                return bmp.ToMemoryStream(deviceResources, imageType);
+            }
         }
 
         public static MemoryStream CreateLinearGradientBitmapStream(IDevice2DResources deviceResources, 
             int width, int height, Direct2DImageFormat imageType, Vector2 startPoint, Vector2 endPoint, GradientStop[] gradients,
             ExtendMode extendMode = ExtendMode.Clamp, Gamma gamma = Gamma.StandardRgb)
-        {        
-            return CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
+        {
+            using (var bmp = CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
+             {
+                 using (var brush = new LinearGradientBrush(target, new LinearGradientBrushProperties()
+                 {
+                     StartPoint = startPoint,
+                     EndPoint = endPoint
+                 }, new GradientStopCollection(target, gradients, gamma, extendMode)))
+                 {
+                     target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
+                 }
+             }))
             {
-                using (var brush = new LinearGradientBrush(target, new LinearGradientBrushProperties()
-                {
-                    StartPoint = startPoint,
-                    EndPoint = endPoint
-                }, new GradientStopCollection(target, gradients, gamma, extendMode)))
-                {
-                    target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
-                }
-            });
+                return bmp.ToMemoryStream(deviceResources, imageType);
+            }
         }
 
         public static MemoryStream CreateRadiusGradientBitmapStream(IDevice2DResources deviceResources,
@@ -158,7 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
             float radiusX, float radiusY, GradientStop[] gradients,
             ExtendMode extendMode = ExtendMode.Clamp, Gamma gamma = Gamma.StandardRgb)
         {
-            return CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
+            using (var bmp = CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
             {
                 using (var brush = new RadialGradientBrush(target, new RadialGradientBrushProperties()
                 {
@@ -168,7 +184,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
                 }
-            });
+            }))
+            {
+                return bmp.ToMemoryStream(deviceResources, imageType);
+            }
         }
 
         public static MemoryStream CreateViewBoxTexture(IDevice2DResources deviceResources, string front, string back, string left, string right, string top, string down, 
@@ -177,33 +196,36 @@ namespace HelixToolkit.Wpf.SharpDX
             string fontFamily = "Arial",
             FontWeight fontWeight = FontWeight.SemiBold, FontStyle fontStyle = FontStyle.Normal, int fontSize = 64, int faceSize = 100)
         {
-            return CreateBitmapStream(deviceResources, faceSize * 6, faceSize, Direct2DImageFormat.Bmp, (target) =>
+            using (var bmp = CreateBitmapStream(deviceResources, faceSize * 6, faceSize, Direct2DImageFormat.Bmp, (target) =>
+             {
+                 target.Clear(Color.Black);
+                 RectangleF faceRect = new RectangleF(0, 0, faceSize, faceSize);
+                 Color4[] faceColors = new Color4[] { frontFaceColor, backFaceColor, leftFaceColor, rightFaceColor, topFaceColor, bottomFaceColor };
+                 Color4[] textColors = new Color4[] { frontTextColor, backTextColor, leftTextColor, rightTextColor, topTextColor, bottomTextColor };
+                 string[] texts = new string[] { front, back, right, left, top, down };
+                 for (int i = 0; i < 6; ++i)
+                 {
+                     using (var layout = GetTextLayoutMetrices(texts[i], deviceResources, fontSize, fontFamily, fontWeight, fontStyle, faceSize, faceSize))
+                     {
+                         var metrices = layout.Metrics;
+                         var offset = new Vector2((faceSize - metrices.WidthIncludingTrailingWhitespace) / 2, (faceSize - metrices.Height) / 2);
+                         offset.X += faceRect.Left;
+                         using (var brush = new SolidColorBrush(target, faceColors[i]))
+                         {
+                             target.FillRectangle(faceRect, brush);
+                         }
+                         using (var brush = new SolidColorBrush(target, textColors[i]))
+                         {
+                             target.DrawTextLayout(offset, layout, brush);
+                         }
+                     }
+                     faceRect.Left += faceSize;
+                     faceRect.Width = faceSize;
+                 }
+             }))
             {
-                target.Clear(Color.Black);
-                RectangleF faceRect = new RectangleF(0, 0, faceSize, faceSize);
-                Color4[] faceColors = new Color4[] { frontFaceColor, backFaceColor, leftFaceColor, rightFaceColor, topFaceColor, bottomFaceColor };
-                Color4[] textColors = new Color4[] { frontTextColor, backTextColor, leftTextColor, rightTextColor, topTextColor, bottomTextColor };
-                string[] texts = new string[] { front, back, right, left, top, down };
-                for(int i=0; i<6; ++i)
-                {
-                    using (var layout = GetTextLayoutMetrices(texts[i], deviceResources, fontSize, fontFamily, fontWeight, fontStyle, faceSize, faceSize))
-                    {
-                        var metrices = layout.Metrics;
-                        var offset = new Vector2((faceSize - metrices.WidthIncludingTrailingWhitespace) / 2, (faceSize - metrices.Height) / 2);
-                        offset.X += faceRect.Left;
-                        using (var brush = new SolidColorBrush(target, faceColors[i]))
-                        {
-                            target.FillRectangle(faceRect, brush);
-                        }
-                        using (var brush = new SolidColorBrush(target, textColors[i]))
-                        {
-                            target.DrawTextLayout(offset, layout, brush);
-                        }
-                    }
-                    faceRect.Left += faceSize;
-                    faceRect.Width = faceSize;
-                }
-            });
+                return bmp.ToMemoryStream(deviceResources, Direct2DImageFormat.Bmp);
+            }
         }
     }
 }

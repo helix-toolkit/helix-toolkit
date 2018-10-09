@@ -321,6 +321,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ElementsBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\FrameStatistics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\ArevaloRectanglePacker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\ImagePacker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\MiscHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\OutOfSpaceException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\RectanglePacker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\CMOReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\IModelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ModelReader.cs" />
