@@ -397,6 +397,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 RenderCore.Detach();
                 OnDetach();
                 DisposeAndClear();
+                renderTechnique = null;
                 Detached?.Invoke(this, EventArgs.Empty);              
             }
         }

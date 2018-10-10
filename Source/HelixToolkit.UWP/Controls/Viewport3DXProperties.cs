@@ -54,30 +54,6 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// The Render Technique property
-        /// </summary>
-        public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(IRenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
-                (s, e) =>
-                {
-                    var viewport = s as Viewport3DX;
-                    if (viewport.renderHostInternal != null)
-                        viewport.renderHostInternal.RenderTechnique = e.NewValue as IRenderTechnique;
-                }));
-
-        public IRenderTechnique RenderTechnique
-        {
-            set
-            {
-                SetValue(RenderTechniqueProperty, value);
-            }
-            get
-            {
-                return (IRenderTechnique)GetValue(RenderTechniqueProperty);
-            }
-        }
-
-        /// <summary>
         /// The EffectsManager property.
         /// </summary>
         public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(

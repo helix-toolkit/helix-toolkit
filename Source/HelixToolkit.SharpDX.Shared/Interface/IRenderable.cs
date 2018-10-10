@@ -53,13 +53,6 @@ namespace HelixToolkit.UWP
         /// </value>
         IEffectsManager EffectsManager { set; get; }
         /// <summary>
-        /// Gets or sets the render technique.
-        /// </summary>
-        /// <value>
-        /// The render technique.
-        /// </value>
-        IRenderTechnique RenderTechnique { set; get; }
-        /// <summary>
         /// Gets the camera core.
         /// </summary>
         /// <value>

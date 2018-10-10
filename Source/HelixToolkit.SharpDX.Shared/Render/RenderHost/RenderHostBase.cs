@@ -201,14 +201,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     if (effectsManager != null)
                     {
                         effectsManager.DisposingResources += OnManagerDisposed;
-                        effectsManager.InvalidateRender += EffectsManager_OnInvalidateRenderer;
-                        RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Mesh] : viewport.RenderTechnique;
+                        effectsManager.InvalidateRender += EffectsManager_OnInvalidateRenderer;                        
                         FeatureLevel = effectsManager.Device.FeatureLevel;
-#if DX11_1
-                        immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext1, effectsManager.Device));
-#else
-                        immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext, effectsManager.Device));
-#endif
                         if (IsInitialized)
                         {
                             Restart(false);
@@ -770,6 +764,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Log(LogLevel.Information, $"EffectsManager is not valid");
                 return;
             }
+#if DX11_1
+            immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext1, effectsManager.Device));
+#else
+            immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext, effectsManager.Device));
+#endif
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
             CreateAndBindBuffers();
             IsInitialized = true;
             AttachRenderable(EffectsManager);
@@ -807,7 +807,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private void RenderBuffer_OnDeviceLost(object sender, EventArgs e)
         {
             EndD3D();
-            EffectsManager?.OnDeviceError();
+            EffectsManager?.DisposeAllResources();
+            EffectsManager?.Reinitialize();
             StartD3D(ActualWidth, ActualHeight);
         }
 
@@ -892,6 +893,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             Log(LogLevel.Information, "");
             StopRendering();
             IsInitialized = false;
+            immediateDeviceContext = null;
+            
             OnEndingD3D();
             DetachRenderable();
             DisposeBuffers();

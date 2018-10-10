@@ -56,7 +56,8 @@ namespace HelixToolkit.UWP
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
-        private IDictionary<string, Lazy<IRenderTechnique>> techniqueDict { get; } = new Dictionary<string, Lazy<IRenderTechnique>>();
+        private Dictionary<string, Lazy<IRenderTechnique>> techniqueDict { get; } = new Dictionary<string, Lazy<IRenderTechnique>>();
+        private readonly Dictionary<string, TechniqueDescription> techniqueDescriptions = new Dictionary<string, TechniqueDescription>();
         /// <summary>
         /// <see cref="IEffectsManager.RenderTechniques"/>
         /// </summary>
@@ -336,9 +337,34 @@ namespace HelixToolkit.UWP
             {
                 throw new ArgumentException($"Technique { description.Name } already exists.");
             }
+            techniqueDescriptions.Add(description.Name, description);
             techniqueDict.Add(description.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(description, Device, this)) : null; }, true));
         }
 
+        /// <summary>
+        /// Reinitializes all resources after calling <see cref="DisposeAllResources"/>.
+        /// </summary>
+        public void Reinitialize()
+        {
+            if (!Initialized)
+            {
+                Initialize();
+                foreach(var tech in techniqueDescriptions.Values)
+                {
+                    techniqueDict.Add(tech.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(tech, Device, this)) : null; }, true));
+                }
+            }
+        }
+        /// <summary>
+        /// Disposes all resources. This is used to handle such as DeviceLost or DeviceRemoved Error
+        /// </summary>
+        public void DisposeAllResources()
+        {
+            if (Initialized)
+            {
+                DisposeResources();
+            }
+        }
         /// <summary>
         /// Determines whether the specified name has technique.
         /// </summary>
@@ -364,6 +390,7 @@ namespace HelixToolkit.UWP
                     var v = t.Value;
                     RemoveAndDispose(ref v);
                 }
+                techniqueDescriptions.Remove(name);
                 return techniqueDict.Remove(name);
             }
             return false;
@@ -522,23 +549,30 @@ namespace HelixToolkit.UWP
             GC.SuppressFinalize(this);
         }
 
-#region Handle Device Error        
-        /// <summary>
-        /// Called when [device error].
-        /// </summary>
-        public void OnDeviceError()
+        private void DisposeResources()
         {
-            techniqueDict.Clear();
             DisposingResources?.Invoke(this, EventArgs.Empty);
-            this.DisposeAndClear();
-            Disposer.RemoveAndDispose(ref device);
+            foreach (var technique in techniqueDict.Values.ToArray())
+            {
+                if (technique.IsValueCreated)
+                {
+                    var t = technique.Value;
+                    RemoveAndDispose(ref t);
+                }
+            }
+            techniqueDict.Clear();
+            RemoveAndDispose(ref shaderPoolManager);
+            DisposeAndClear();
             Initialized = false;
+            global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
+#if DX11_1
+            Disposer.RemoveAndDispose(ref device1);
+#endif
+            Disposer.RemoveAndDispose(ref device);
 #if DEBUGMEMORY
             ReportResources();
 #endif
-            Initialize(AdapterIndex);
         }
-#endregion
 
 #if DEBUGMEMORY
         protected void ReportResources()
