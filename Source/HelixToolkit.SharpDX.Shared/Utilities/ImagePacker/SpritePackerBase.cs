@@ -67,8 +67,8 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
         // the input list of image files
         protected KeyValuePair<int, E>[] ItemArray { private set; get; }
         // some dictionaries to hold the image sizes and destination rectangles
-        protected readonly Dictionary<int, Size2F> imageSizes = new Dictionary<int, Size2F>();
-        protected readonly Dictionary<int, RectangleF> imagePlacement = new Dictionary<int, RectangleF>();
+        protected Size2F[] ImageSizes { private set; get; }
+        protected RectangleF[] ImagePlacement { private set; get; }
         protected readonly IDevice2DResources deviceRes2D;
 
         public SpritePackerBase(IDevice2DResources deviceResources)
@@ -89,7 +89,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
         /// <param name="outputMap">The resulting output map of placement rectangles for the images.</param>
         /// <returns>0 if the packing was successful, error code otherwise.</returns>
         public FailCode Pack(
-            IEnumerable<KeyValuePair<int, T>> items,
+            IEnumerable<T> items,
             bool requirePowerOfTwo,
             bool requireSquareImage,
             int maximumWidth,
@@ -118,15 +118,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             outputImage = null;
             outputMap = null;
 
-            // make sure our dictionaries are cleared before starting
-            imageSizes.Clear();
-            imagePlacement.Clear();
-
-            // get the sizes of all the images
-            foreach (var image in ItemArray)
-            {
-                imageSizes.Add(image.Key, GetSize(image.Value));
-            }
+            ImageSizes = ItemArray.Select(x => GetSize(x.Value)).ToArray();
 
             // sort our files by file size so we place large sprites first
             Array.Sort(ItemArray,
@@ -159,35 +151,28 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             {
                 // go through our image placements and replace the width/height found in there with
                 // each image's actual width/height (since the ones in imagePlacement will have padding)
-                int[] keys = new int[imagePlacement.Keys.Count];
-                imagePlacement.Keys.CopyTo(keys, 0);
-                foreach (var k in keys)
+                for(int i = 0; i < ImageSizes.Length; ++i)
                 {
                     // get the actual size
-                    var s = imageSizes[k];
-
-                    // get the placement rectangle
-                    RectangleF r = imagePlacement[k];
-
-                    // set the proper size
+                    var s = ImageSizes[i];
+                    var r = ImagePlacement[i];
                     r.Width = s.Width;
                     r.Height = s.Height;
-
                     // insert back into the dictionary
-                    imagePlacement[k] = r;
+                    ImagePlacement[i] = r;
                 }
 
                 // copy the placement dictionary to the output
                 outputMap = new Dictionary<int, RectangleF>();
-                foreach (var pair in imagePlacement)
+                for(int i = 0; i < ImagePlacement.Length; ++i)
                 {
-                    outputMap.Add(pair.Key, pair.Value);
+                    outputMap.Add(i, ImagePlacement[i]);
                 }
             }
             ItemArray = null;
             // clear our dictionaries just to free up some memory
-            imageSizes.Clear();
-            imagePlacement.Clear();
+            ImageSizes = null;
+            ImagePlacement = null;
             imageWidth = OutputWidth;
             imageHeight = OutputHeight;
             return 0;
@@ -198,15 +183,15 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
         private bool PackImageRectangles()
         {
             // create a dictionary for our test image placements
-            var testImagePlacement = new Dictionary<int, RectangleF>();
+            var testImagePlacement = new Dictionary<int, RectangleF>(ItemArray.Length);
 
             // get the size of our smallest image
             int smallestWidth = int.MaxValue;
             int smallestHeight = int.MaxValue;
-            foreach (var size in imageSizes)
+            foreach (var size in ImageSizes)
             {
-                smallestWidth = (int)Math.Ceiling(Math.Min(smallestWidth, size.Value.Width));
-                smallestHeight = (int)Math.Ceiling(Math.Min(smallestHeight, size.Value.Height));
+                smallestWidth = (int)Math.Ceiling(Math.Min(smallestWidth, size.Width));
+                smallestHeight = (int)Math.Ceiling(Math.Min(smallestHeight, size.Height));
             }
 
             // we need a couple values for testing
@@ -229,7 +214,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
                     // if we have no images in imagePlacement, i.e. we've never succeeded at PackImages,
                     // show an error and return false since there is no way to fit the images into our
                     // maximum size texture
-                    if (imagePlacement.Count == 0)
+                    if (ImagePlacement.Length == 0)
                         return false;
 
                     // otherwise return true to use our last good results
@@ -242,17 +227,17 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
                     continue;
                 }
 
-                // clear the imagePlacement dictionary and add our test results in
-                imagePlacement.Clear();
+                // create new image placement array and add our test results in
+                ImagePlacement = new RectangleF[testImagePlacement.Count];
                 foreach (var pair in testImagePlacement)
-                    imagePlacement.Add(pair.Key, pair.Value);
+                    ImagePlacement[pair.Key] = pair.Value;
 
                 // figure out the smallest bitmap that will hold all the images
                 testWidth = testHeight = 0;
-                foreach (var pair in imagePlacement)
+                foreach (var pair in ImagePlacement)
                 {
-                    testWidth = (int)Math.Ceiling(Math.Max(testWidth, pair.Value.Right));
-                    testHeight = (int)Math.Ceiling(Math.Max(testHeight, pair.Value.Bottom));
+                    testWidth = (int)Math.Ceiling(Math.Max(testWidth, pair.Right));
+                    testHeight = (int)Math.Ceiling(Math.Max(testHeight, pair.Bottom));
                 }
 
                 // subtract the extra padding on the right and bottom
@@ -302,7 +287,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             foreach (var image in ItemArray)
             {
                 // get the bitmap for this file
-                var size = imageSizes[image.Key];
+                var size = ImageSizes[image.Key];
 
                 // pack the image
                 if (!rectanglePacker.TryPack((int)Math.Ceiling(size.Width + padding), (int)Math.Ceiling(size.Height + padding), out Point origin))
@@ -350,7 +335,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
         /// </summary>
         /// <param name="items">The items.</param>
         /// <returns></returns>
-        protected abstract KeyValuePair<int, E>[] GetArray(IEnumerable<KeyValuePair<int, T>> items);
+        protected abstract KeyValuePair<int, E>[] GetArray(IEnumerable<T> items);
         /// <summary>
         /// Gets the size.
         /// </summary>

@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
         {
             foreach (var text in ItemArray)
             {
-                var location = imagePlacement[text.Key];
+                var location = ImagePlacement[text.Key];
                 var t = text.Value;
                 using (var brush = new SolidColorBrush(target, t.Background))
                     target.FillRectangle(location, brush);
@@ -46,15 +46,15 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             }
         }
 
-        protected override KeyValuePair<int, TextLayoutInfo>[] GetArray(IEnumerable<KeyValuePair<int, TextInfoExt>> items)
+        protected override KeyValuePair<int, TextLayoutInfo>[] GetArray(IEnumerable<TextInfoExt> items)
         {
-            return items.Select(x =>
+            return items.Select((x, i) =>
             {
                 var textLayout = BitmapExtensions
-                .GetTextLayoutMetrices(x.Value.Text, deviceRes2D, x.Value.Size, x.Value.FontFamily,
-                x.Value.FontWeight, x.Value.FontStyle);
-                return new KeyValuePair<int, TextLayoutInfo>(x.Key,
-                    new TextLayoutInfo(textLayout, x.Value.Foreground, x.Value.Background, x.Value.Padding));
+                .GetTextLayoutMetrices(x.Text, deviceRes2D, x.Size, x.FontFamily,
+                x.FontWeight, x.FontStyle);
+                return new KeyValuePair<int, TextLayoutInfo>(i,
+                    new TextLayoutInfo(textLayout, x.Foreground, x.Background, x.Padding));
             }).ToArray();
         }
 

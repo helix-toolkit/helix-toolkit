@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             // draw all the images into the output image
             foreach (var image in ItemArray)
             {
-                var location = imagePlacement[image.Key];
+                var location = ImagePlacement[image.Key];
                 var img = image.Value;
                 using (var bmp = global::SharpDX.Direct2D1.Bitmap.FromWicBitmap(target, img))
                 {
@@ -67,9 +67,9 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             }
         }
 
-        protected override KeyValuePair<int, Bitmap>[] GetArray(IEnumerable<KeyValuePair<int, Bitmap>> items)
+        protected override KeyValuePair<int, Bitmap>[] GetArray(IEnumerable<Bitmap> items)
         {
-            return items.ToArray();
+            return items.Select((x,i)=>new KeyValuePair<int, Bitmap>(i, x)).ToArray();
         }
 
         protected override Size2F GetSize(Bitmap value)
