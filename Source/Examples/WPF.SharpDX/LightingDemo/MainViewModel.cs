@@ -195,7 +195,6 @@ namespace LightingDemo
         {
             //    RenderTechniquesManager = new DefaultRenderTechniquesManager();           
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
             // ----------------------------------------------
             // titles
             this.Title = "Lighting Demo";

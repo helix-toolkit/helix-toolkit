@@ -28,8 +28,6 @@ namespace DemoCore
 
         private Camera camera;
 
-        private IRenderTechnique renderTechnique;
-
         private string subTitle;
 
         private string title;
@@ -55,18 +53,6 @@ namespace DemoCore
             set
             {
                 SetValue(ref subTitle, value, "SubTitle");
-            }
-        }
-
-        public IRenderTechnique RenderTechnique
-        {
-            get
-            {
-                return renderTechnique;
-            }
-            set
-            {
-                SetValue(ref renderTechnique, value, "RenderTechnique");
             }
         }
 
@@ -109,20 +95,6 @@ namespace DemoCore
             protected set
             {
                 SetValue(ref effectsManager, value);
-            }
-        }
-
-        private string renderTechniqueName = DefaultRenderTechniqueNames.Mesh;
-        public string RenderTechniqueName
-        {
-            set
-            {
-                renderTechniqueName = value;
-                RenderTechnique = EffectsManager[value];
-            }
-            get
-            {
-                return renderTechniqueName;
             }
         }
 

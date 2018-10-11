@@ -71,9 +71,8 @@
                 Geometry="{Binding SelectedFlagBillboard}"
                 IsHitTestVisible="False" />
             <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards}" />
-            <hx:BillboardTextModel3D
-                FixedSize="True"
-                Geometry="{Binding LandmarkBillboards2}" />
+            <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards2}" />
+            <!--<hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding BatchedText}" />-->
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <TextBlock Margin="2" Foreground="Blue">Drag Flag onto Earth</TextBlock>

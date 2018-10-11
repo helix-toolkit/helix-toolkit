@@ -31,7 +31,6 @@
             FixedRotationPoint="0,0,0"
             FixedRotationPointEnabled="True"
             MSAA="Disable"
-            RenderTechnique="{Binding RenderTechnique}"
             RotateAroundMouseDownPoint="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -74,7 +73,7 @@
                 EdgeThicknessScale="4"
                 IsRendering="{Binding EnablePlane2}"
                 SizeScale="10" />
-            <hx:AxisPlaneGridModel3D/>
+            <hx:AxisPlaneGridModel3D />
             <!--<hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Plane1Model}"

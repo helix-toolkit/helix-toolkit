@@ -24,8 +24,8 @@
             <!--<RowDefinition Height="Auto"/>-->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <Menu Grid.Row="0" VerticalAlignment="Top">
@@ -36,18 +36,19 @@
                 <MenuItem Command="hx:ViewportCommands.ZoomExtents" Header="Zoom extents" />
             </MenuItem>
         </Menu>
-        
+
         <hx:Viewport3DX
             x:Name="view1"
-            Title="{Binding Title}" Grid.Column="0"
-            Grid.Row="1" BackgroundColor="Black"
+            Title="{Binding Title}"
+            Grid.Row="1"
+            Grid.Column="0"
+            BackgroundColor="Black"
             Camera="{Binding Camera}"
-            EnableSwapChainRendering="True"
-            EnableD2DRendering="False"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
+            EnableD2DRendering="False"
+            EnableSwapChainRendering="True"
             MSAA="Two"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -69,9 +70,14 @@
                 x:Name="dataVisual"
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding Model}"
-                Material="{Binding ModelMaterial}" RenderWireframe="True" WireframeColor="#3F3B3B3B"/>
+                Material="{Binding ModelMaterial}"
+                RenderWireframe="True"
+                WireframeColor="#3F3B3B3B" />
             <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
-            <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" IsTransparent="True"/>
+            <hx:BillboardTextModel3D
+                x:Name="text"
+                Geometry="{Binding AxisLabel}"
+                IsTransparent="True" />
             <local:CustomNoiseMeshModel3D
                 CullMode="Back"
                 FillMode="{Binding FillMode}"
@@ -80,8 +86,8 @@
         </hx:Viewport3DX>
 
         <StackPanel
-            Grid.Column="1"
             Grid.Row="1"
+            Grid.Column="1"
             Margin="10"
             HorizontalAlignment="Right"
             Orientation="Vertical">

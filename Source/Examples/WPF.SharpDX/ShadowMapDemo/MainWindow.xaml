@@ -47,7 +47,6 @@
             EffectsManager="{Binding EffectsManager}"
             IsShadowMappingEnabled="True"
             ModelUpDirection="0,1,0"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"

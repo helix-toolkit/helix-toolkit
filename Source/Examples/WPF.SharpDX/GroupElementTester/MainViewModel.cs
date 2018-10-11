@@ -79,7 +79,6 @@ namespace GroupElementTester
         {
             //    RenderTechniquesManager = new DefaultRenderTechniquesManager();           
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
             // ----------------------------------------------
             // titles
             this.Title = "GroupElement Test";

@@ -29,7 +29,6 @@
             EnableSwapChainRendering="False"
             FXAALevel="Medium"
             IsShadowMappingEnabled="True"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameRate="True"
             TextBrush="Black"
@@ -54,7 +53,10 @@
                 x:Name="skeleton"
                 ItemsSource="{Binding BoneModels}"
                 Transform="{Binding ModelTransform}" />
-            <hx:AxisPlaneGridModel3D x:Name="plane" RenderShadowMap="True" Offset="-0.8"/>
+            <hx:AxisPlaneGridModel3D
+                x:Name="plane"
+                RenderShadowMap="True"
+                Offset="-0.8" />
             <hx:PostEffectMeshXRayGrid
                 BlendingFactor="0.6"
                 EffectName="xray"

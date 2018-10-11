@@ -31,7 +31,6 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             EnableRenderFrustum="false"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -54,8 +53,10 @@
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}">
                 <hx:InstancingMeshGeometryModel3D.OctreeManager>
-                    <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" 
-                                                       EnableOctreeOutput="True"/>
+                    <hx:InstancingModel3DOctreeManager
+                        x:Name="manager"
+                        EnableOctreeOutput="True"
+                        RecordHitPathBoundingBoxes="True" />
                 </hx:InstancingMeshGeometryModel3D.OctreeManager>
             </hx:InstancingMeshGeometryModel3D>
             <hx:OctreeLineGeometryModel3D

@@ -48,7 +48,6 @@
             EnableDesignModeRendering="True"
             FXAALevel="Low"
             ModelUpDirection="{Binding UpDirection}"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"

@@ -36,7 +36,6 @@
             FXAALevel="{Binding FXAA}"
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             ShowFrameDetails="True"
             ShowFrameRate="True"

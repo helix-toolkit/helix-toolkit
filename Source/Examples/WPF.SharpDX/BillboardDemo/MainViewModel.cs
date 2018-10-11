@@ -2,6 +2,7 @@
 
 using Cyotek.Drawing.BitmapFont;
 using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Utilities.ImagePacker;
 using SharpDX;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,8 @@ namespace BillboardDemo
         public BillboardText3D LandmarkBillboards { get; }
             = new BillboardText3D() { IsDynamic = true };// Mark dynamic because it will change frequently
         public BillboardText3D LandmarkBillboards2 { get; }
-        public Stream BackgroundTexture { get; }
+        public BillboardImage3D BatchedText { private set; get; }
+        public Stream BackgroundTexture { private set; get; }
         public Flag[] Flags { get => FlagsCollection.Flags; }
         private bool fixedSize = true;
         public bool FixedSize
@@ -107,6 +109,7 @@ namespace BillboardDemo
             segoeFont.Load(@"Fonts\SegoeScript.fnt");
             LandmarkBillboards2 = new BillboardText3D(segoeFont, LoadFileToMemory(@"Fonts\SegoeScript.dds"));
             AddLocations();
+            AddBatchedText();
         }
 
         private void AddLocations()
@@ -148,6 +151,46 @@ namespace BillboardDemo
             { Foreground = Color.Orchid, Background = Color.DarkGray, Scale = 1 });
             LandmarkBillboards2.TextInfo.Add(new TextInfo("Oceania", new Vector3(2.306917f, -3.398433f, -1.661219f))
             { Foreground = Color.Green, Background = Color.DarkGray, Scale = 1 });
+        }
+
+        private void AddBatchedText()
+        {
+            var texts = new TextInfoExt[]
+            {
+                new TextInfoExt(){ Text = "Text1", Foreground = Color.Red, Background = Color.Blue,
+                    Origin = new Vector3(0, 10, 0) },
+                new TextInfoExt(){ Text = "Text2", Foreground = Color.Green, Background = Color.White,
+                    FontStyle = SharpDX.DirectWrite.FontStyle.Italic, Origin = new Vector3(0, 10, 4) },
+                new TextInfoExt(){ Text = "Text3", Foreground = Color.Blue, Background = Color.Green,
+                    FontWeight = SharpDX.DirectWrite.FontWeight.Bold, Origin = new Vector3(0, 10, 8) },
+                new TextInfoExt(){ Text = "文字", Foreground = Color.White, Background = Color.Black,
+                    Origin = new Vector3(0, 10, 12) }
+            };
+            using (var imagePacker = new TextInfoExtPacker(EffectsManager))
+            {
+                imagePacker.Pack(texts, true, true, 1024, 1024, 2, true,
+                    out global::SharpDX.WIC.Bitmap bitmap, out int imageWidth, out int imageHeight, out Dictionary<int, RectangleF> map);
+                using (bitmap)
+                {
+                    var stream = bitmap.ToMemoryStream(EffectsManager);
+                    //BackgroundTexture = stream;
+                    OnPropertyChanged(nameof(BackgroundTexture));
+                    BatchedText = new BillboardImage3D(stream);
+                    for(int i=0; i<texts.Length; ++i)
+                    {
+                        var rect = map[i];
+                        BatchedText.ImageInfos.Add(new ImageInfo()
+                        {
+                            Width = rect.Width,
+                            Height = rect.Height,
+                            Position = texts[i].Origin,
+                            UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageWidth),
+                            UV_BottomRight = new Vector2(rect.Right/ imageWidth, rect.Bottom / imageWidth)
+                        });
+                    }
+                }
+            }
+            
         }
 
         private void UpdateSelectedFlagBillboard(Flag flag)
