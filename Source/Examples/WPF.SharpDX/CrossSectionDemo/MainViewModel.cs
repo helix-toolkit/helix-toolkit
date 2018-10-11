@@ -70,7 +70,6 @@
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
             // ----------------------------------------------
             // titles
             this.Title = "SwapChain Top Surface Rendering Demo";

@@ -42,13 +42,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
             "EffectsManager", typeof(IEffectsManager), typeof(ModelContainer3DX), new PropertyMetadata(null,
                 (s, e) => ((ModelContainer3DX)s).EffectsManagerPropertyChanged()));
-        /// <summary>
-        /// The Render Technique property
-        /// </summary>
-        public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(IRenderTechnique), typeof(ModelContainer3DX), new PropertyMetadata(null,
-                (s, e) => ((ModelContainer3DX)s).RenderTechniquePropertyChanged()));
-
 
         /// <summary>
         /// Gets or sets the <see cref="EffectsManagerProperty"/>.
@@ -60,17 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(EffectsManagerProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets value for the shading model shading is used
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
-        /// </value>
-        public IRenderTechnique RenderTechnique
-        {
-            get { return (IRenderTechnique)this.GetValue(RenderTechniqueProperty); }
-            set { this.SetValue(RenderTechniqueProperty, value); }
-        }
+        public IRenderTechnique RenderTechnique { set; get; }
+
         private static readonly LogWrapper NullLogger = new LogWrapper(new NullLogger());
         /// <summary>
         /// Gets the logger.
@@ -202,22 +186,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Handles the change of the render technique        
-        /// </summary>
-        private void RenderTechniquePropertyChanged()
-        {
-            foreach (var viewport in viewports)
-            {
-                viewport.RenderTechnique = this.RenderTechnique;
-            }
-        }
-        /// <summary>
         /// </summary>
         /// <param name="viewport"></param>
         public void AttachViewport3DX(IViewport3DX viewport)
         {
             viewports.Add(viewport);
-            viewport.RenderTechnique = this.RenderTechnique;
             viewport.EffectsManager = this.EffectsManager;
         }
         /// <summary>

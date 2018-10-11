@@ -36,7 +36,6 @@
             EnableDeferredRendering="True"
             EnableRenderFrustum="True"
             EnableSwapChainRendering="True"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameDetails="True"
             ShowFrameRate="True"

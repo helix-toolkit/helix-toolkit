@@ -31,7 +31,6 @@
             this.PropertyChanged += this.OnPropertyChanged;
 
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
         }
 
         /// <summary>

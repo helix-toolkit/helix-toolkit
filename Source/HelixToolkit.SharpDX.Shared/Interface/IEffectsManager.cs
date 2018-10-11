@@ -122,13 +122,13 @@ namespace HelixToolkit.Wpf.SharpDX
     public interface IDeviceResources : IDevice3DResources, IDevice2DResources, IDisposable
     {
         /// <summary>
-        /// Called when [device error].
-        /// </summary>
-        void OnDeviceError();
-        /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
         event EventHandler<EventArgs> DisposingResources;
+        /// <summary>
+        /// Occurs when [device created].
+        /// </summary>
+        event EventHandler<EventArgs> Reinitialized;
     }
     /// <summary>
     /// 
@@ -161,7 +161,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="name"></param>
         /// <returns></returns>
         IRenderTechnique this[string name] { get; }
-
+        /// <summary>
+        /// Reinitializes all resources after calling <see cref="DisposeAllResources"/>.
+        /// </summary>
+        void Reinitialize();
+        /// <summary>
+        /// Disposes all resources. This is used to handle such as DeviceLost or DeviceRemoved Error
+        /// </summary>
+        void DisposeAllResources();
         /// <summary>
         /// Add a technique by description
         /// </summary>

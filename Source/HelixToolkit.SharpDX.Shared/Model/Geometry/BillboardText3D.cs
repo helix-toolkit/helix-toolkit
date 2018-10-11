@@ -2,13 +2,13 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Collections.Generic;
+using Cyotek.Drawing.BitmapFont;
 using SharpDX;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using Cyotek.Drawing.BitmapFont;
 #if CORE
 #else
 #if NETFX_CORE
@@ -24,9 +24,17 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Core;
+    using global::SharpDX.DirectWrite;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
+
+    public class TextInfoExt : TextInfo
+    {
+        public string FontFamily = "Arial";
+        public FontWeight FontWeight = FontWeight.Normal;
+        public FontStyle FontStyle = FontStyle.Normal;
+        public Vector4 Padding = Vector4.Zero;
+        public int Size = 12;
+    }
 
     public class TextInfo
     {

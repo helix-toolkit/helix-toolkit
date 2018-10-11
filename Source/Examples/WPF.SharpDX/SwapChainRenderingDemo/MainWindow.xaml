@@ -33,7 +33,6 @@
             EnableDeferredRendering="False"
             EnableSwapChainRendering="True"
             FXAALevel="Low"
-            RenderTechnique="{Binding RenderTechnique}"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">

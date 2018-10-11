@@ -296,7 +296,6 @@ namespace HelixToolkit.UWP
                     renderHostInternal.Viewport = this;
                     renderHostInternal.IsRendering = Visibility == Visibility.Visible;
                     renderHostInternal.EffectsManager = this.EffectsManager;
-                    renderHostInternal.RenderTechnique = this.RenderTechnique;
                     renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
                     renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
                     renderHostInternal.IsShadowMapEnabled = this.IsShadowMappingEnabled;

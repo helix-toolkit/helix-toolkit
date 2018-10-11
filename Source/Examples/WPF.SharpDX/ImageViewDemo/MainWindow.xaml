@@ -39,7 +39,6 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            RenderTechnique="{Binding RenderTechnique}"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">

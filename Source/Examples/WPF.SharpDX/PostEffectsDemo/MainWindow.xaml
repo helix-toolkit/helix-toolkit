@@ -23,7 +23,6 @@
             EffectsManager="{Binding EffectsManager}"
             FXAALevel="Low"
             ModelUpDirection="0,0,1"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -73,7 +72,7 @@
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
                 Material="{Binding FloorMaterial}" />
-            <hx:PostEffectMeshXRayGrid EffectName="xrayGrid" GridDensity="4"/>
+            <hx:PostEffectMeshXRayGrid EffectName="xrayGrid" GridDensity="4" />
             <hx:PostEffectMeshOutlineBlur
                 EffectName="glow"
                 NumberOfBlurPass="6"

@@ -30,7 +30,6 @@
             EnableSwapChainRendering="False"
             FXAALevel="Low"
             IsShadowMappingEnabled="True"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameDetails="True"
             SubTitle="{Binding SubTitle}"

@@ -30,7 +30,8 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             RenderingEventArgs args = (RenderingEventArgs)e;
             if (args.RenderingTime == _last)
                 return;
-            _last = args.RenderingTime; _FrameUpdating(sender, args);
+            _last = args.RenderingTime;
+            _FrameUpdating?.Invoke(sender, args);
         }
 
         #region IDisposable Support

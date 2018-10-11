@@ -45,9 +45,13 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
         }
 
         protected override void DisposeBuffers()
-        {
-            surfaceD3D?.SetRenderTargetDX11(null);
-            RemoveAndDispose(ref surfaceD3D);
+        {           
+            //if(surfaceD3D != null)
+            //{
+            //    surfaceD3D?.SetRenderTargetDX11(null);
+            //    surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
+            //    RemoveAndDispose(ref surfaceD3D);
+            //}            
             base.DisposeBuffers();
         }
 
@@ -57,15 +61,49 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             {
                 Debug.WriteLine("Create new D3DImageSource");
                 surfaceD3D = Collect(new DX11ImageSource(EffectsManager.AdapterIndex));
+                surfaceD3D.IsFrontBufferAvailableChanged += SurfaceD3D_IsFrontBufferAvailableChanged;
             }
             surfaceD3D.SetRenderTargetDX11(e.Texture.Resource as Texture2D);
             OnImageSourceChanged(this, new DX11ImageSourceArgs(surfaceD3D));
         }
 
+        private void SurfaceD3D_IsFrontBufferAvailableChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                try
+                {
+                    EndD3D();
+                    if (surfaceD3D != null)
+                    {
+                        surfaceD3D?.SetRenderTargetDX11(null);
+                        surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
+                        RemoveAndDispose(ref surfaceD3D);
+                    }
+                    EffectsManager?.Reinitialize();
+                }
+                catch(Exception ex)
+                {
+                    Logger.Log(HelixToolkit.Logger.LogLevel.Error, ex.Message);
+                }
+            }
+            else
+            {
+                Logger.Log(HelixToolkit.Logger.LogLevel.Warning, "SurfaceD3D front buffer changed.");
+                EndD3D();
+                EffectsManager?.DisposeAllResources();
+            }
+        }
+
         protected override void OnDispose(bool disposeManagedResources)
         {
             OnImageSourceChanged = null;
-            surfaceD3D?.SetRenderTargetDX11(null);
+            if (surfaceD3D != null)
+            {
+                surfaceD3D?.SetRenderTargetDX11(null);
+                surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
+                RemoveAndDispose(ref surfaceD3D);
+            }
             base.OnDispose(disposeManagedResources);
         }
     }

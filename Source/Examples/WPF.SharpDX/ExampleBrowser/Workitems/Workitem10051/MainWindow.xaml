@@ -76,7 +76,6 @@
             EffectsManager="{Binding EffectsManager}"
             MessageText="{Binding ViewportMessage}"
             RenderException="{Binding RenderException, Mode=OneWayToSource}"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"

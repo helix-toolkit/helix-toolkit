@@ -55,7 +55,6 @@
             Camera="{StaticResource Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            RenderTechnique="{Binding RenderTechnique}"
             RotateAroundMouseDownPoint="True"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"

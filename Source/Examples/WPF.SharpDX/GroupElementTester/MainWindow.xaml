@@ -27,13 +27,12 @@
             CameraRotationMode="Trackball"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
+            EnableD2DRendering="False"
             EnableDeferredRendering="False"
             EnableRenderFrustum="False"
             EnableSwapChainRendering="True"
-            EnableD2DRendering="False"
             FixedRotationPoint="0,0,0"
             FixedRotationPointEnabled="True"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameDetails="True"
             ShowFrameRate="True"
@@ -52,7 +51,10 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
-            <hx:GroupModel3D x:Name="group1" ItemsSource="{Binding GroupModelSource}" Transform="{Binding GroupModel3DTransform}">
+            <hx:GroupModel3D
+                x:Name="group1"
+                ItemsSource="{Binding GroupModelSource}"
+                Transform="{Binding GroupModel3DTransform}">
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding SphereModel}"
                     Material="{Binding RedMaterial}"
@@ -70,7 +72,10 @@
                     Material="{Binding RedMaterial}"
                     Transform="{Binding Transform4}" />
             </hx:GroupModel3D>
-            <hx:ItemsModel3D x:Name="itemsModel1" ItemsSource="{Binding ItemsSource}" Transform="{Binding ItemsModel3DTransform}">
+            <hx:ItemsModel3D
+                x:Name="itemsModel1"
+                ItemsSource="{Binding ItemsSource}"
+                Transform="{Binding ItemsModel3DTransform}">
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
@@ -84,7 +89,7 @@
                 <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
                 <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" />
             </hx:CompositeModel3D>
-            <hx:GroupModel3D x:Name="sortingGroup1" ItemsSource="{Binding TransparentGroupModelSource}"/>
+            <hx:GroupModel3D x:Name="sortingGroup1" ItemsSource="{Binding TransparentGroupModelSource}" />
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"
@@ -102,7 +107,7 @@
             <Separator />
             <Button Command="{Binding AddTransparentGroupModelCommand}">Add Transparent Model</Button>
             <Button Command="{Binding RemoveTransparentGroupModelCommand}">Remove Transparent Model</Button>
-            <Separator/>
+            <Separator />
             <CheckBox IsChecked="{Binding ElementName=group1, Path=IsRendering}">Visibility Group1</CheckBox>
             <CheckBox IsChecked="{Binding ElementName=itemsModel1, Path=IsRendering}">Visibility ItemsGroup1</CheckBox>
             <CheckBox IsChecked="{Binding ElementName=sortingGroup1, Path=IsRendering}">Sorting Group1</CheckBox>

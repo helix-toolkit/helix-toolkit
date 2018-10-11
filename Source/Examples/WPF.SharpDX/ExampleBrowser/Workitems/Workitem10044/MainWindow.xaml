@@ -19,9 +19,9 @@
             Name="Red"
             AmbientColor="0.1,0.1,0.1,1.0"
             DiffuseColor="Red"
-            SpecularColor="0.0225,0.0225,0.0225,1.0"
             EmissiveColor="0.0,0.0,0.0,1.0"
-            SpecularShininess="12.8"/>
+            SpecularColor="0.0225,0.0225,0.0225,1.0"
+            SpecularShininess="12.8" />
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
         <hx:MeshGeometry3D
             x:Key="Model"
@@ -77,7 +77,6 @@
             Camera="{StaticResource Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
