@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             deviceRes2D = deviceResources;
         }
         /// <summary>
-        /// Packs a collection of images into a single image.
+        /// Packs a collection of items into a single image.
         /// </summary>
         /// <param name="items">The list of file paths of the images to be combined.</param>
         /// <param name="requirePowerOfTwo">Whether or not the output image must have a power of two size.</param>
@@ -87,6 +87,8 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
         /// <param name="generateMap">Whether or not to generate the map dictionary.</param>
         /// <param name="outputImage">The resulting output image.</param>
         /// <param name="outputMap">The resulting output map of placement rectangles for the images.</param>
+        /// <param name="imageHeight">Output the merged image height</param>
+        /// <param name="imageWidth">Output the merged image width</param>
         /// <returns>0 if the packing was successful, error code otherwise.</returns>
         public FailCode Pack(
             IEnumerable<T> items,
