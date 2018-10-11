@@ -125,6 +125,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Occurs when [on dispose resources].
         /// </summary>
         event EventHandler<EventArgs> DisposingResources;
+        /// <summary>
+        /// Occurs when [device created].
+        /// </summary>
+        event EventHandler<EventArgs> Reinitialized;
     }
     /// <summary>
     /// 

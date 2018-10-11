@@ -81,7 +81,6 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                         RemoveAndDispose(ref surfaceD3D);
                     }
                     EffectsManager?.Reinitialize();
-                    StartD3D(ActualWidth, ActualHeight);
                 }
                 catch(Exception ex)
                 {

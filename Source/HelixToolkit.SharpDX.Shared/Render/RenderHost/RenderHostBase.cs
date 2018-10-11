@@ -24,6 +24,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using HelixToolkit.Logger;
     using Core;
     using Model.Scene;
+    using System.Threading;
+
     /// <summary>
     /// 
     /// </summary>
@@ -195,13 +197,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     if (currentManager != null)
                     {
                         currentManager.DisposingResources -= OnManagerDisposed;
+                        effectsManager.Reinitialized -= EffectsManager_DeviceCreated;
                         currentManager.InvalidateRender -= EffectsManager_OnInvalidateRenderer;
                     }
                     RemoveAndDispose(ref immediateDeviceContext);
                     if (effectsManager != null)
                     {
                         effectsManager.DisposingResources += OnManagerDisposed;
-                        effectsManager.InvalidateRender += EffectsManager_OnInvalidateRenderer;                        
+                        effectsManager.InvalidateRender += EffectsManager_OnInvalidateRenderer;
+                        effectsManager.Reinitialized += EffectsManager_DeviceCreated;
                         FeatureLevel = effectsManager.Device.FeatureLevel;
                         if (IsInitialized)
                         {
@@ -223,11 +227,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return effectsManager;
             }
-        }
-
-        private void EffectsManager_OnInvalidateRenderer(object sender, EventArgs e)
-        {
-            InvalidateRender();
         }
 
         /// <summary>
@@ -536,6 +535,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private volatile bool UpdateSceneGraphRequested = true;
 
         private volatile bool UpdatePerFrameRenderableRequested = true;
+
+        private readonly SynchronizationContext syncContext = SynchronizationContext.Current;
 #endregion
 
         /// <summary>
@@ -756,6 +757,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void StartD3D(double width, double height)
         {
             Log(LogLevel.Information, $"Width = {width}; Height = {height};");
+            if (IsInitialized)
+            {
+                return;
+            }
             ActualWidth = width;
             ActualHeight = height;
             isLoaded = true;
@@ -809,7 +814,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             EndD3D();
             EffectsManager?.DisposeAllResources();
             EffectsManager?.Reinitialize();
-            StartD3D(ActualWidth, ActualHeight);
+            //StartD3D(ActualWidth, ActualHeight);
         }
 
         /// <summary>
@@ -969,7 +974,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         overlay.InvalidateAll();
                     }
                 }
-                StartRendering();
+                syncContext.Post((o) => { StartRendering(); }, null);                
             }
         }
         /// <summary>
@@ -981,6 +986,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             SetDefaultRenderTargets(immediateDeviceContext, clear);
         }
 
+        private void EffectsManager_DeviceCreated(object sender, EventArgs e)
+        {
+            if (isLoaded && !IsInitialized)
+            {
+                syncContext.Post((o) => 
+                {
+                    StartD3D(ActualWidth, ActualHeight);
+                }, null);
+            }
+        }
+
+        private void EffectsManager_OnInvalidateRenderer(object sender, EventArgs e)
+        {
+            InvalidateRender();
+        }
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

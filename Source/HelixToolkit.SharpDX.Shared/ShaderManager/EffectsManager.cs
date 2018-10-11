@@ -49,6 +49,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public event EventHandler<EventArgs> DisposingResources;
         /// <summary>
+        /// Occurs when [device created].
+        /// </summary>
+        public event EventHandler<EventArgs> Reinitialized;
+        /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
         public event EventHandler<EventArgs> InvalidateRender;
@@ -325,6 +329,7 @@ namespace HelixToolkit.UWP
                 deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
             }
             Initialized = true;
+            
         }
 
         /// <summary>
@@ -353,6 +358,7 @@ namespace HelixToolkit.UWP
                 {
                     techniqueDict.Add(tech.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(tech, Device, this)) : null; }, true));
                 }
+                Reinitialized?.Invoke(this, EventArgs.Empty);
             }
         }
         /// <summary>
