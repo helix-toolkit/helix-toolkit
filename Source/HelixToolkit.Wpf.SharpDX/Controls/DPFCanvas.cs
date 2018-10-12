@@ -255,8 +255,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             EndD3D();
 
-            var sdxException = exception as SharpDXException;
-            if (sdxException != null &&
+            if (exception is SharpDXException sdxException &&
                 (sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceRemoved ||
                  sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceReset))
             {
