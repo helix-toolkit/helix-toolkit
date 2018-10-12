@@ -76,7 +76,6 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
         /// <param name="maximumWidth">The maximum width of the output image.</param>
         /// <param name="maximumHeight">The maximum height of the output image.</param>
         /// <param name="imagePadding">The amount of blank space to insert in between individual images.</param>
-        /// <param name="generateMap">Whether or not to generate the map dictionary.</param>
         /// <param name="outputImage">The resulting output image.</param>
         /// <param name="outputMap">The resulting output map of placement rectangles for the images.</param>
         /// <param name="imageHeight">Output the merged image height</param>
