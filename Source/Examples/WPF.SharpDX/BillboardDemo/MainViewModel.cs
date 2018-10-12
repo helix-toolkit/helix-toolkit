@@ -157,40 +157,111 @@ namespace BillboardDemo
         {
             var texts = new TextInfoExt[]
             {
-                new TextInfoExt(){ Text = "Text1", Foreground = Color.Red, Background = Color.Blue,
-                    Origin = new Vector3(0, 10, 0) },
-                new TextInfoExt(){ Text = "Text2", Foreground = Color.Green, Background = Color.White,
-                    FontStyle = SharpDX.DirectWrite.FontStyle.Italic, Origin = new Vector3(0, 10, 4) },
-                new TextInfoExt(){ Text = "Text3", Foreground = Color.Blue, Background = Color.Green,
-                    FontWeight = SharpDX.DirectWrite.FontWeight.Bold, Origin = new Vector3(0, 10, 8) },
-                new TextInfoExt(){ Text = "文字", Foreground = Color.White, Background = Color.Black,
-                    Origin = new Vector3(0, 10, 12) }
-            };
-            using (var imagePacker = new TextInfoExtPacker(EffectsManager))
-            {
-                imagePacker.Pack(texts, true, true, 1024, 1024, 2, true,
-                    out global::SharpDX.WIC.Bitmap bitmap, out int imageWidth, out int imageHeight, out Dictionary<int, RectangleF> map);
-                using (bitmap)
+                new TextInfoExt()
                 {
-                    var stream = bitmap.ToMemoryStream(EffectsManager);
-                    //BackgroundTexture = stream;
-                    OnPropertyChanged(nameof(BackgroundTexture));
-                    BatchedText = new BillboardImage3D(stream);
-                    for(int i=0; i<texts.Length; ++i)
-                    {
-                        var rect = map[i];
-                        BatchedText.ImageInfos.Add(new ImageInfo()
-                        {
-                            Width = rect.Width,
-                            Height = rect.Height,
-                            Position = texts[i].Origin,
-                            UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageWidth),
-                            UV_BottomRight = new Vector2(rect.Right/ imageWidth, rect.Bottom / imageWidth)
-                        });
-                    }
+                    Text = "English",
+                    Foreground = Color.Indigo,
+                    Background = Color.LightCoral,
+                    FontWeight = SharpDX.DirectWrite.FontWeight.Light,
+                    FontFamily = "Segoe UI",
+                    Padding = new Vector4(4),
+                    Origin = new Vector3(-10, 0, -4),
+                    Size = 18
+                },
+                new TextInfoExt()
+                {
+                    Text = "中文",
+                    Foreground = Color.Green,
+                    Background = Color.White,
+                    FontStyle = SharpDX.DirectWrite.FontStyle.Italic,
+                    Origin = new Vector3(-10, 0, -2),
+                    Padding = new Vector4(4,2,4,2),
+                    FontFamily = "Microsoft YaHei",
+                    Size = 16
+                },
+                new TextInfoExt()
+                {
+                    Text = "日本語",
+                    Foreground = Color.Blue,
+                    Background = Color.Green,
+                    FontWeight = SharpDX.DirectWrite.FontWeight.Bold,
+                    Origin = new Vector3(-10, 0, 0),
+                    Padding = new Vector4(2,4,2,4),
+                    Size = 18
+                },
+                new TextInfoExt()
+                {
+                    Text = "Français",
+                    Foreground = Color.White,
+                    Background = Color.Black,
+                    Origin = new Vector3(-10, 0, 2),
+                    Padding = new Vector4(8,4,2,4),
+                    FontFamily = "Calibri",
+                    Size = 20
+                },
+                new TextInfoExt()
+                {
+                    Text = "Español",
+                    Foreground = Color.DarkSeaGreen,
+                    Background = Color.LightCyan,
+                    Origin = new Vector3(-10, 0, 4),
+                    Padding = new Vector4(6),
+                    FontFamily = "Times New Roman",
+                    Size = 22
+                },
+                new TextInfoExt()
+                {
+                    Text = "繁體中文",
+                    Foreground = Color.Red,
+                    Background = Color.Blue,
+                    Padding = new Vector4(2,2,2,2),
+                    Origin = new Vector3(-14, 0, -4),
+                    FontStyle = SharpDX.DirectWrite.FontStyle.Oblique,
+                    Size = 14
+                },
+                new TextInfoExt()
+                {
+                    Text = "한국어",
+                    Foreground = Color.LightSalmon,
+                    Background = Color.DarkSlateBlue,
+                    
+                    Origin = new Vector3(-14, 0, -2),
+                    Padding = new Vector4(4,2,4,2),
+                    Size = 16
+                },
+                new TextInfoExt()
+                {
+                    Text = "Deutsch",
+                    Foreground = Color.Blue,
+                    Background = Color.White,
+                    FontWeight = SharpDX.DirectWrite.FontWeight.Bold,
+                    Origin = new Vector3(-14, 0, 0),
+                    Padding = new Vector4(2,4,2,4),
+                    FontFamily = "Garamond",
+                    Size = 18
+                },
+                new TextInfoExt()
+                {
+                    Text = "Português",
+                    Foreground = Color.DarkRed,
+                    Background = Color.Lavender,
+                    Origin = new Vector3(-14, 0, 2),
+                    Padding = new Vector4(8,4,2,4),
+                    FontFamily = "Tahoma",
+                    Size = 20
+                },
+                new TextInfoExt()
+                {
+                    Text = "Below are batched \ntexts rendering \nwith different styles",
+                    Foreground = Color.PaleGoldenrod,
+                    Background = Color.DarkSlateGray,
+                    Origin = new Vector3(-12, 0, 8),
+                    Padding = new Vector4(6),
+                    FontFamily = "Consolas",
+                    Size = 24
                 }
-            }
-            
+            };
+            BatchedText = texts.ToBillboardImage3D(EffectsManager);           
         }
 
         private void UpdateSelectedFlagBillboard(Flag flag)

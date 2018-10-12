@@ -42,7 +42,8 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
                 using (var brush = new SolidColorBrush(target, t.Background))
                     target.FillRectangle(location, brush);
                 using (var brush = new SolidColorBrush(target, t.Foreground))
-                    target.DrawTextLayout(new Vector2(location.Left, location.Top), t.TextLayout, brush, DrawTextOptions.None);
+                    target.DrawTextLayout(new Vector2(location.Left + text.Value.Padding.X, location.Top + text.Value.Padding.Y),
+                        t.TextLayout, brush, DrawTextOptions.None);
             }
         }
 
@@ -60,7 +61,8 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
 
         protected override Size2F GetSize(TextLayoutInfo value)
         {
-            return new Size2F(value.TextLayout.Metrics.Width, value.TextLayout.Metrics.Height);
+            return new Size2F(value.TextLayout.Metrics.Width + value.Padding.X + value.Padding.Z, 
+                value.TextLayout.Metrics.Height + value.Padding.Y + value.Padding.W);
         }
     }
 }

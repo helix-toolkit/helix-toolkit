@@ -69,18 +69,31 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 
         private void SurfaceD3D_IsFrontBufferAvailableChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
+            if(EffectsManager == null)
+            {
+                return;
+            }
             if ((bool)e.NewValue)
             {
                 try
                 {
-                    EndD3D();
-                    if (surfaceD3D != null)
+                    if (EffectsManager.Device.DeviceRemovedReason.Success)
                     {
-                        surfaceD3D?.SetRenderTargetDX11(null);
-                        surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
-                        RemoveAndDispose(ref surfaceD3D);
+                        StartRendering();
                     }
-                    EffectsManager?.Reinitialize();
+                    else
+                    {
+                        EndD3D();
+                        if (surfaceD3D != null)
+                        {
+                            surfaceD3D.SetRenderTargetDX11(null);
+                            surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
+                            RemoveAndDispose(ref surfaceD3D);
+                        }
+
+                        EffectsManager.DisposeAllResources();
+                        EffectsManager.Reinitialize();
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -90,8 +103,14 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             else
             {
                 Logger.Log(HelixToolkit.Logger.LogLevel.Warning, "SurfaceD3D front buffer changed.");
-                EndD3D();
-                EffectsManager?.DisposeAllResources();
+                if (EffectsManager.Device.DeviceRemovedReason.Success)
+                {
+                    StopRendering();
+                }
+                else
+                {
+                    EndD3D();
+                }
             }
         }
 
