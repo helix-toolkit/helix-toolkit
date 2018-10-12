@@ -5,6 +5,12 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using SharpDX.DirectWrite;
 using System.IO;
+using System;
+using System.Collections.Generic;
+using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
+using SharpDX.WIC;
+using System.Linq;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -12,11 +18,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using global::SharpDX.Direct2D1;
-    using global::SharpDX.Mathematics.Interop;
-    using global::SharpDX.WIC;
-    using System;
-    using System.Collections.Generic;
+    using Utilities.ImagePacker;
 
     public enum Direct2DImageFormat
     {
@@ -57,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static TextLayout GetTextLayoutMetrices(this string text, IDevice2DResources deviceResources, int fontSize, string fontFamily, FontWeight fontWeight, FontStyle fontStyle, 
+        public static TextLayout GetTextLayoutMetrices(this string text, IDevice2DResources deviceResources, int fontSize, string fontFamily, FontWeight fontWeight, FontStyle fontStyle,
             float maxWidth = float.MaxValue, float maxHeight = float.MaxValue)
         {
             using (var format = new TextFormat(deviceResources.DirectWriteFactory, fontFamily, fontWeight, fontStyle, fontSize))
@@ -149,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static MemoryStream CreateLinearGradientBitmapStream(IDevice2DResources deviceResources, 
+        public static MemoryStream CreateLinearGradientBitmapStream(IDevice2DResources deviceResources,
             int width, int height, Direct2DImageFormat imageType, Vector2 startPoint, Vector2 endPoint, GradientStop[] gradients,
             ExtendMode extendMode = ExtendMode.Clamp, Gamma gamma = Gamma.StandardRgb)
         {
@@ -170,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static MemoryStream CreateRadiusGradientBitmapStream(IDevice2DResources deviceResources,
-            int width, int height, Direct2DImageFormat imageType, Vector2 center, Vector2 gradientOriginOffset, 
+            int width, int height, Direct2DImageFormat imageType, Vector2 center, Vector2 gradientOriginOffset,
             float radiusX, float radiusY, GradientStop[] gradients,
             ExtendMode extendMode = ExtendMode.Clamp, Gamma gamma = Gamma.StandardRgb)
         {
@@ -178,8 +180,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 using (var brush = new RadialGradientBrush(target, new RadialGradientBrushProperties()
                 {
-                    Center = center, GradientOriginOffset = gradientOriginOffset,
-                    RadiusX = radiusX, RadiusY = radiusY,
+                    Center = center,
+                    GradientOriginOffset = gradientOriginOffset,
+                    RadiusX = radiusX,
+                    RadiusY = radiusY,
                 }, new GradientStopCollection(target, gradients, gamma, extendMode)))
                 {
                     target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
@@ -190,7 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static MemoryStream CreateViewBoxTexture(IDevice2DResources deviceResources, string front, string back, string left, string right, string top, string down, 
+        public static MemoryStream CreateViewBoxTexture(IDevice2DResources deviceResources, string front, string back, string left, string right, string top, string down,
             Color4 frontFaceColor, Color4 backFaceColor, Color4 leftFaceColor, Color4 rightFaceColor, Color4 topFaceColor, Color4 bottomFaceColor,
             Color4 frontTextColor, Color4 backTextColor, Color4 leftTextColor, Color4 rightTextColor, Color4 topTextColor, Color4 bottomTextColor,
             string fontFamily = "Arial",
@@ -225,6 +229,55 @@ namespace HelixToolkit.Wpf.SharpDX
              }))
             {
                 return bmp.ToMemoryStream(deviceResources, Direct2DImageFormat.Bmp);
+            }
+        }
+
+        /// <summary>
+        /// Create a <see cref="BillboardImage3D"/> from a list of <see cref="TextInfoExt"/>
+        /// <para>
+        /// This is used to create a batched text billboard with a single merged texture. 
+        /// And use <see cref="BillboardImage3D"/> for rendering.
+        /// </para>
+        /// <para>This is designed to substitute <see cref="BillboardSingleText3D"/> or <see cref="BillboardText3D"/>
+        /// when user needs to render many different texts with different text properties (such as font style, font size, etc) and languages
+        /// </para>
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="effectsManager">The effects manager.</param>
+        /// <param name="maxWidth">The maximum width.</param>
+        /// <param name="maxHeight">The maximum height.</param>
+        /// <param name="squareImage">if set to <c>true</c> [square image].</param>
+        /// <returns></returns>
+        public static BillboardImage3D ToBillboardImage3D(this IEnumerable<TextInfoExt> items,
+            IEffectsManager effectsManager, int maxWidth = 2048, int maxHeight = 2048, bool squareImage = true)
+        {
+            using (var imagePacker = new TextInfoExtPacker(effectsManager))
+            {
+                imagePacker.Pack(items, true, squareImage, maxWidth, maxHeight, 2, true,
+                    out global::SharpDX.WIC.Bitmap bitmap, out int imageWidth, out int imageHeight,
+                    out Dictionary<int, RectangleF> map);
+                using (bitmap)
+                {
+                    var stream = bitmap.ToMemoryStream(effectsManager);
+                    var model = new BillboardImage3D(stream);
+                    foreach (var imageInfo in items.Select((x, i) =>
+                     {
+                         var rect = map[i];
+                         return new ImageInfo()
+                         {
+                             Width = rect.Width,
+                             Height = rect.Height,
+                             Position = x.Origin,
+                             UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageWidth),
+                             UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageWidth)
+                         };
+                     }))
+                    {
+
+                        model.ImageInfos.Add(imageInfo);
+                    }
+                    return model;
+                }
             }
         }
     }
