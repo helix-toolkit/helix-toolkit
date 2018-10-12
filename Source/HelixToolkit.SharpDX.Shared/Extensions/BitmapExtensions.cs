@@ -270,8 +270,8 @@ namespace HelixToolkit.Wpf.SharpDX
                                  Width = rect.Width,
                                  Height = rect.Height,
                                  Position = x.Origin,
-                                 UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageWidth),
-                                 UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageWidth)
+                                 UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageHeight),
+                                 UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageHeight)
                              };
                          }))
                         {
