@@ -160,11 +160,13 @@ namespace BillboardDemo
                 new TextInfoExt()
                 {
                     Text = "English",
-                    Foreground = Color.Red,
-                    Background = Color.Blue,
-                    Padding = new Vector4(2,2,2,2),
+                    Foreground = Color.Indigo,
+                    Background = Color.LightCoral,
+                    FontWeight = SharpDX.DirectWrite.FontWeight.Light,
+                    FontFamily = "Segoe UI",
+                    Padding = new Vector4(4),
                     Origin = new Vector3(-10, 0, -4),
-                    Size = 14
+                    Size = 18
                 },
                 new TextInfoExt()
                 {
@@ -174,6 +176,7 @@ namespace BillboardDemo
                     FontStyle = SharpDX.DirectWrite.FontStyle.Italic,
                     Origin = new Vector3(-10, 0, -2),
                     Padding = new Vector4(4,2,4,2),
+                    FontFamily = "Microsoft YaHei",
                     Size = 16
                 },
                 new TextInfoExt()
@@ -193,6 +196,7 @@ namespace BillboardDemo
                     Background = Color.Black,
                     Origin = new Vector3(-10, 0, 2),
                     Padding = new Vector4(8,4,2,4),
+                    FontFamily = "Calibri",
                     Size = 20
                 },
                 new TextInfoExt()
@@ -202,14 +206,56 @@ namespace BillboardDemo
                     Background = Color.LightCyan,
                     Origin = new Vector3(-10, 0, 4),
                     Padding = new Vector4(6),
+                    FontFamily = "Times New Roman",
                     Size = 22
+                },
+                new TextInfoExt()
+                {
+                    Text = "繁體中文",
+                    Foreground = Color.Red,
+                    Background = Color.Blue,
+                    Padding = new Vector4(2,2,2,2),
+                    Origin = new Vector3(-14, 0, -4),
+                    FontStyle = SharpDX.DirectWrite.FontStyle.Oblique,
+                    Size = 14
+                },
+                new TextInfoExt()
+                {
+                    Text = "한국어",
+                    Foreground = Color.LightSalmon,
+                    Background = Color.DarkSlateBlue,
+                    
+                    Origin = new Vector3(-14, 0, -2),
+                    Padding = new Vector4(4,2,4,2),
+                    Size = 16
+                },
+                new TextInfoExt()
+                {
+                    Text = "Deutsch",
+                    Foreground = Color.Blue,
+                    Background = Color.White,
+                    FontWeight = SharpDX.DirectWrite.FontWeight.Bold,
+                    Origin = new Vector3(-14, 0, 0),
+                    Padding = new Vector4(2,4,2,4),
+                    FontFamily = "Garamond",
+                    Size = 18
+                },
+                new TextInfoExt()
+                {
+                    Text = "Português",
+                    Foreground = Color.DarkRed,
+                    Background = Color.Lavender,
+                    Origin = new Vector3(-14, 0, 2),
+                    Padding = new Vector4(8,4,2,4),
+                    FontFamily = "Tahoma",
+                    Size = 20
                 },
                 new TextInfoExt()
                 {
                     Text = "Below are batched \ntexts rendering \nwith different styles",
                     Foreground = Color.PaleGoldenrod,
                     Background = Color.DarkSlateGray,
-                    Origin = new Vector3(-10, 0, 6),
+                    Origin = new Vector3(-12, 0, 8),
                     Padding = new Vector4(6),
                     FontFamily = "Consolas",
                     Size = 24
