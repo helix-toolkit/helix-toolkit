@@ -213,7 +213,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             {
                 var bitmap =
                     new Bitmap(deviceRes2D.WICImgFactory, OutputWidth, OutputHeight,
-                    global::SharpDX.WIC.PixelFormat.Format32bppBGR,
+                    global::SharpDX.WIC.PixelFormat.Format32bppPBGRA,
                         BitmapCreateCacheOption.CacheOnDemand);
                 using (var target = new WicRenderTarget(deviceRes2D.Factory2D, bitmap,
                     new RenderTargetProperties()

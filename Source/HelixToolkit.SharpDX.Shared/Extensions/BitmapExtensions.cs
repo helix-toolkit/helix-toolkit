@@ -260,7 +260,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     using (bitmap)
                     {
-                        var stream = bitmap.ToMemoryStream(effectsManager);
+                        var stream = bitmap.ToMemoryStream(effectsManager, Direct2DImageFormat.Png);
                         var model = new BillboardImage3D(stream);
                         foreach (var imageInfo in items.Select((x, i) =>
                          {
