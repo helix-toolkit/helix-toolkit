@@ -253,30 +253,38 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             using (var imagePacker = new TextInfoExtPacker(effectsManager))
             {
-                imagePacker.Pack(items, true, squareImage, maxWidth, maxHeight, 2, true,
+                var code = imagePacker.Pack(items, true, squareImage, maxWidth, maxHeight, 2,
                     out global::SharpDX.WIC.Bitmap bitmap, out int imageWidth, out int imageHeight,
-                    out Dictionary<int, RectangleF> map);
-                using (bitmap)
+                    out var map);
+                if(code == ImagePackReturnCode.Succeed)
                 {
-                    var stream = bitmap.ToMemoryStream(effectsManager);
-                    var model = new BillboardImage3D(stream);
-                    foreach (var imageInfo in items.Select((x, i) =>
-                     {
-                         var rect = map[i];
-                         return new ImageInfo()
-                         {
-                             Width = rect.Width,
-                             Height = rect.Height,
-                             Position = x.Origin,
-                             UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageWidth),
-                             UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageWidth)
-                         };
-                     }))
+                    using (bitmap)
                     {
+                        var stream = bitmap.ToMemoryStream(effectsManager);
+                        var model = new BillboardImage3D(stream);
+                        foreach (var imageInfo in items.Select((x, i) =>
+                         {
+                             var rect = map[i];
+                             return new ImageInfo()
+                             {
+                                 Width = rect.Width,
+                                 Height = rect.Height,
+                                 Position = x.Origin,
+                                 UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageWidth),
+                                 UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageWidth)
+                             };
+                         }))
+                        {
 
-                        model.ImageInfos.Add(imageInfo);
+                            model.ImageInfos.Add(imageInfo);
+                        }
+                        return model;
                     }
-                    return model;
+                }
+                else
+                {
+                    effectsManager.Logger.Log(Logger.LogLevel.Error, $"Failed to pack TextInfoExts, Error Code = {code.ToString()}");
+                    return null;
                 }
             }
         }
