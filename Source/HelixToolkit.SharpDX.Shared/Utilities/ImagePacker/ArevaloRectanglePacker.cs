@@ -114,10 +114,10 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
 		}
 
 		#endregion
-
+        public int ActualPackingAreaHeight { get => actualPackingAreaHeight; }
 		/// <summary>Current height of the packing area</summary>
 		private int actualPackingAreaHeight = 1;
-
+        public int ActualPackingAreaWidth { get => actualPackingAreaWidth; }
 		/// <summary>Current width of the packing area</summary>
 		private int actualPackingAreaWidth = 1;
 

@@ -254,7 +254,7 @@ namespace BillboardDemo
                 {
                     Text = "Below are batched \ntexts rendering \nwith different styles",
                     Foreground = Color.PaleGoldenrod,
-                    Background = Color.DarkSlateGray,
+                    Background = Color.Transparent,
                     Origin = new Vector3(-12, 0, 8),
                     Padding = new Vector4(6),
                     FontFamily = "Consolas",

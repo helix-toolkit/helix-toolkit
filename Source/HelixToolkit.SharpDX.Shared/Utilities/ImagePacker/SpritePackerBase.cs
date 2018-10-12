@@ -40,22 +40,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities.ImagePacker
 namespace HelixToolkit.UWP.Utilities.ImagePacker
 #endif
 {
-    public enum FailCode
+    public enum ImagePackReturnCode
     {
-        FailedParsingArguments = 1,
-        ImageExporter,
-        MapExporter,
-        NoImages,
-        ImageNameCollision,
-
-        FailedToLoadImage,
+        Succeed = 0,
         FailedToPackImage,
         FailedToCreateImage,
-        FailedToSaveImage,
-        FailedToSaveMap,
         DeviceFailed
     }
-    
+
     public abstract class SpritePackerBase<T, E> : IDisposable
     {
         // various properties of the resulting image
@@ -84,22 +76,20 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
         /// <param name="maximumWidth">The maximum width of the output image.</param>
         /// <param name="maximumHeight">The maximum height of the output image.</param>
         /// <param name="imagePadding">The amount of blank space to insert in between individual images.</param>
-        /// <param name="generateMap">Whether or not to generate the map dictionary.</param>
         /// <param name="outputImage">The resulting output image.</param>
         /// <param name="outputMap">The resulting output map of placement rectangles for the images.</param>
         /// <param name="imageHeight">Output the merged image height</param>
         /// <param name="imageWidth">Output the merged image width</param>
         /// <returns>0 if the packing was successful, error code otherwise.</returns>
-        public FailCode Pack(
+        public ImagePackReturnCode Pack(
             IEnumerable<T> items,
             bool requirePowerOfTwo,
             bool requireSquareImage,
             int maximumWidth,
             int maximumHeight,
             int imagePadding,
-            bool generateMap,
             out Bitmap outputImage, out int imageWidth, out int imageHeight,
-            out Dictionary<int, RectangleF> outputMap)
+            out RectangleF[] outputMap)
         {
             imageWidth = 0;
             imageHeight = 0;
@@ -107,7 +97,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             {
                 outputImage = null;
                 outputMap = null;
-                return FailCode.DeviceFailed;
+                return ImagePackReturnCode.DeviceFailed;
             }
             ItemArray = GetArray(items);
 
@@ -121,11 +111,11 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             outputMap = null;
 
             ImageSizes = ItemArray.Select(x => GetSize(x.Value)).ToArray();
-
+            ImagePlacement = new RectangleF[ItemArray.Length];
             // sort our files by file size so we place large sprites first
             Array.Sort(ItemArray,
                 (f1, f2) =>
-                {                    
+                {
                     var b1 = GetSize(f1.Value);
                     var b2 = GetSize(f2.Value);
 
@@ -142,148 +132,59 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
 
             // try to pack the images
             if (!PackImageRectangles())
-                return FailCode.FailedToPackImage;
+                return ImagePackReturnCode.FailedToPackImage;
 
             // make our output image
             outputImage = CreateOutputImage(DrawOntoOutputTarget);
             if (outputImage == null)
-                return FailCode.FailedToSaveImage;
+                return ImagePackReturnCode.FailedToCreateImage;
 
-            if (generateMap)
-            {
-                // go through our image placements and replace the width/height found in there with
-                // each image's actual width/height (since the ones in imagePlacement will have padding)
-                for(int i = 0; i < ImageSizes.Length; ++i)
-                {
-                    // get the actual size
-                    var s = ImageSizes[i];
-                    var r = ImagePlacement[i];
-                    r.Width = s.Width;
-                    r.Height = s.Height;
-                    // insert back into the dictionary
-                    ImagePlacement[i] = r;
-                }
-
-                // copy the placement dictionary to the output
-                outputMap = new Dictionary<int, RectangleF>();
-                for(int i = 0; i < ImagePlacement.Length; ++i)
-                {
-                    outputMap.Add(i, ImagePlacement[i]);
-                }
-            }
-            ItemArray = null;
-            // clear our dictionaries just to free up some memory
-            ImageSizes = null;
-            ImagePlacement = null;
+            // copy the placement dictionary to the output
+            outputMap = ImagePlacement;
             imageWidth = OutputWidth;
             imageHeight = OutputHeight;
-            return 0;
+            return ImagePackReturnCode.Succeed;
         }
 
         // This method does some trickery type stuff where we perform the TestPackingImages method over and over, 
         // trying to reduce the image size until we have found the smallest possible image we can fit.
         private bool PackImageRectangles()
         {
-            // create a dictionary for our test image placements
-            var testImagePlacement = new Dictionary<int, RectangleF>(ItemArray.Length);
-
-            // get the size of our smallest image
-            int smallestWidth = int.MaxValue;
-            int smallestHeight = int.MaxValue;
-            foreach (var size in ImageSizes)
-            {
-                smallestWidth = (int)Math.Ceiling(Math.Min(smallestWidth, size.Width));
-                smallestHeight = (int)Math.Ceiling(Math.Min(smallestHeight, size.Height));
-            }
-
             // we need a couple values for testing
             int testWidth = OutputWidth;
             int testHeight = OutputHeight;
-
-            bool shrinkVertical = false;
-
-            // just keep looping...
-            while (true)
+           
+            // try to pack the images into our current test size
+            if (!TestPackingImages(testWidth, testHeight, ImagePlacement, out int packedWidth, out int packedHeight))
             {
-                // make sure our test dictionary is empty
-                testImagePlacement.Clear();
-
-                // try to pack the images into our current test size
-                if (!TestPackingImages(testWidth, testHeight, testImagePlacement))
-                {
-                    // if that failed...
-
-                    // if we have no images in imagePlacement, i.e. we've never succeeded at PackImages,
-                    // show an error and return false since there is no way to fit the images into our
-                    // maximum size texture
-                    if (ImagePlacement.Length == 0)
-                        return false;
-
-                    // otherwise return true to use our last good results
-                    if (shrinkVertical)
-                        return true;
-
-                    shrinkVertical = true;
-                    testWidth += smallestWidth + padding + padding;
-                    testHeight += smallestHeight + padding + padding;
-                    continue;
-                }
-
-                // create new image placement array and add our test results in
-                ImagePlacement = new RectangleF[testImagePlacement.Count];
-                foreach (var pair in testImagePlacement)
-                    ImagePlacement[pair.Key] = pair.Value;
-
-                // figure out the smallest bitmap that will hold all the images
-                testWidth = testHeight = 0;
-                foreach (var pair in ImagePlacement)
-                {
-                    testWidth = (int)Math.Ceiling(Math.Max(testWidth, pair.Right));
-                    testHeight = (int)Math.Ceiling(Math.Max(testHeight, pair.Bottom));
-                }
-
-                // subtract the extra padding on the right and bottom
-                if (!shrinkVertical)
-                    testWidth -= padding;
-                testHeight -= padding;
-
-                // if we require a power of two texture, find the next power of two that can fit this image
-                if (requirePow2)
-                {
-                    testWidth = MiscHelper.FindNextPowerOfTwo(testWidth);
-                    testHeight = MiscHelper.FindNextPowerOfTwo(testHeight);
-                }
-
-                // if we require a square texture, set the width and height to the larger of the two
-                if (requireSquare)
-                {
-                    int max = Math.Max(testWidth, testHeight);
-                    testWidth = testHeight = max;
-                }
-
-                // if the test results are the same as our last output results, we've reached an optimal size,
-                // so we can just be done
-                if (testWidth == OutputWidth && testHeight == OutputHeight)
-                {
-                    if (shrinkVertical)
-                        return true;
-
-                    shrinkVertical = true;
-                }
-
-                // save the test results as our last known good results
-                OutputWidth = testWidth;
-                OutputHeight = testHeight;
-
-                // subtract the smallest image size out for the next test iteration
-                if (!shrinkVertical)
-                    testWidth -= smallestWidth;
-                testHeight -= smallestHeight;
+                return false;
             }
+            testWidth = packedWidth;
+            testHeight = packedHeight;
+            // if we require a power of two texture, find the next power of two that can fit this image
+            if (requirePow2)
+            {
+                testWidth = MiscHelper.FindNextPowerOfTwo(testWidth);
+                testHeight = MiscHelper.FindNextPowerOfTwo(testHeight);
+            }
+
+            // if we require a square texture, set the width and height to the larger of the two
+            if (requireSquare)
+            {
+                int max = Math.Max(testWidth, testHeight);
+                testWidth = testHeight = max;
+            }
+
+            // save the test results as our last known good results
+            OutputWidth = testWidth;
+            OutputHeight = testHeight;
+            return true;
         }
 
-        private bool TestPackingImages(int testWidth, int testHeight, Dictionary<int, RectangleF> testImagePlacement)
+        private bool TestPackingImages(int testWidth, int testHeight, RectangleF[] testImagePlacement,
+            out int packedWidth, out int packedHeight)
         {
+            packedWidth = packedHeight = 0;
             // create the rectangle packer
             var rectanglePacker = new ArevaloRectanglePacker(testWidth, testHeight);
             foreach (var image in ItemArray)
@@ -298,8 +199,10 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
                 }
 
                 // add the destination rectangle to our dictionary
-                testImagePlacement.Add(image.Key, new RectangleF(origin.X, origin.Y, size.Width + padding, size.Height + padding));
-            }           
+                testImagePlacement[image.Key] = new RectangleF(origin.X, origin.Y, size.Width, size.Height);
+            }
+            packedWidth = rectanglePacker.ActualPackingAreaWidth;
+            packedHeight = rectanglePacker.ActualPackingAreaHeight;
             return true;
         }
 
@@ -309,7 +212,7 @@ namespace HelixToolkit.UWP.Utilities.ImagePacker
             {
                 var bitmap =
                     new Bitmap(deviceRes2D.WICImgFactory, OutputWidth, OutputHeight,
-                    global::SharpDX.WIC.PixelFormat.Format32bppBGR,
+                    global::SharpDX.WIC.PixelFormat.Format32bppPBGRA,
                         BitmapCreateCacheOption.CacheOnDemand);
                 using (var target = new WicRenderTarget(deviceRes2D.Factory2D, bitmap,
                     new RenderTargetProperties()
