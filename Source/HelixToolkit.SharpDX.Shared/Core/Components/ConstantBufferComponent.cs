@@ -60,6 +60,7 @@ namespace HelixToolkit.UWP.Core.Components
         protected override void OnDetach()
         {
             ModelConstBuffer = null;
+            IsValid = false;
         }
         /// <summary>
         /// Uploads the specified device context. This uploads struct only. Ignores internal byte buffer.
@@ -71,7 +72,7 @@ namespace HelixToolkit.UWP.Core.Components
         {
             if(IsValid && IsAttached)
             {
-                ModelConstBuffer?.UploadDataToBuffer(deviceContext, ref data);
+                ModelConstBuffer.UploadDataToBuffer(deviceContext, ref data);
                 return true;
             }
 
@@ -131,7 +132,7 @@ namespace HelixToolkit.UWP.Core.Components
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void WriteValueByName<T>(string name, T value) where T : struct
         {
-            if (IsValid)
+            if (IsValid && IsAttached)
             {
                 if (ModelConstBuffer.TryGetVariableByName(name, out ConstantBufferVariable variable))
                 {
@@ -182,7 +183,7 @@ namespace HelixToolkit.UWP.Core.Components
         public bool ReadValueByName<T>(string name, out T value) where T : struct
         {
             var v = default(T);
-            if (IsValid)
+            if (IsValid && IsAttached)
             {
                 if (ModelConstBuffer.TryGetVariableByName(name, out ConstantBufferVariable variable))
                 {
