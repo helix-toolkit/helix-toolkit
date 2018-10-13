@@ -185,10 +185,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     if (light.LightType == LightType.Directional)
                     {
                         var dlight = light.RenderCore as DirectionalLightCore;
-                        var dir = Vector4.Transform(dlight.Direction.ToVector4(0), dlight.ModelMatrix).Normalized() * distance;
-                        var pos = -dir;
-                        orthoCamera.LookDirection = new Vector3(dir.X, dir.Y, dir.Z);
-                        orthoCamera.Position = new Vector3(pos.X, pos.Y, pos.Z);
+                        var dir = Vector3.TransformNormal(dlight.Direction, dlight.ModelMatrix).Normalized() * distance;
+                        orthoCamera.LookDirection = dir;
+                        orthoCamera.Position = -dir;
                         orthoCamera.UpDirection = Vector3.UnitZ;
                         orthoCamera.Width = orthoWidth;
                         camera = orthoCamera;
@@ -198,8 +197,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     {
                         var splight = light.RenderCore as SpotLightCore;
                         persCamera.Position = (splight.Position + splight.ModelMatrix.Row4.ToVector3());
-                        var look = Vector4.Transform(splight.Direction.ToVector4(0), splight.ModelMatrix);
-                        persCamera.LookDirection = new Vector3(look.X, look.Y, look.Z);
+                        var look = Vector3.TransformNormal(splight.Direction, splight.ModelMatrix);
+                        persCamera.LookDirection = look;
                         persCamera.FarPlaneDistance = (float)splight.Range;
                         persCamera.FieldOfView = (float)splight.OuterAngle;
                         persCamera.UpDirection = Vector3.UnitZ;
