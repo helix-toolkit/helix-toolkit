@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(Light3DSceneShared lightScene, int index)
         {
             base.OnRender(lightScene, index);
-            lightScene.LightModels.Lights[index].LightDir = -Vector4.Transform(direction.ToVector4(0f), ModelMatrix).Normalized();
+            lightScene.LightModels.Lights[index].LightDir = -Vector3.TransformNormal(direction, ModelMatrix).Normalized().ToVector4(0);
         }
     }
 }

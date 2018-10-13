@@ -127,9 +127,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 {
                     var svpm = context.ScreenViewProjectionMatrix;
                     smvpm = modelMatrix * svpm;
-                    var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-                    Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-                    clickPoint = clickPoint4.ToVector3();
+                    var clickPoint3 = rayWS.Position + rayWS.Direction;
+                    Vector3.TransformCoordinate(ref clickPoint3, ref svpm, out clickPoint);
                     needRecalculate = false;
                 }
                 isIntersect = true;
