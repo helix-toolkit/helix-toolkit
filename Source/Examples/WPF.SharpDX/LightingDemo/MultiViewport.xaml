@@ -1,12 +1,15 @@
-﻿<Window x:Class="LightingDemo.MultiViewport"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LightingDemo"
-        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        mc:Ignorable="d"
-        Title="MultiViewport" Height="600" Width="600">
+﻿<Window
+    x:Class="LightingDemo.MultiViewport"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:local="clr-namespace:LightingDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MultiViewport"
+    Width="600"
+    Height="600"
+    mc:Ignorable="d">
     <Window.Resources>
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
     </Window.Resources>
@@ -16,11 +19,10 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <hx:ModelContainer3DX x:Name="sharedContainer" EffectsManager="{Binding EffectsManager}"
-                              RenderTechnique="{Binding RenderTechnique}">
+        <hx:ModelContainer3DX x:Name="sharedContainer" EffectsManager="{Binding EffectsManager}">
             <hx:ShadowMap3D />
 
 
@@ -60,14 +62,18 @@
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
-            Grid.Row="0" Grid.Column="0" MSAA="Four"
+            Grid.Row="0"
+            Grid.Column="0"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
+            EnableSharedModelMode="True"
             IsShadowMappingEnabled="True"
+            MSAA="Four"
+            SharedModelContainer="{Binding ElementName=sharedContainer}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
-            UseDefaultGestures="False" EnableSharedModelMode="True" SharedModelContainer="{Binding ElementName=sharedContainer}">
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -94,14 +100,18 @@
         <hx:Viewport3DX
             x:Name="view2"
             Title="{Binding Title}"
-            Grid.Row="0" Grid.Column="1" MSAA="Four"
+            Grid.Row="0"
+            Grid.Column="1"
             Camera="{Binding Camera2}"
             CoordinateSystemLabelForeground="White"
+            EnableSharedModelMode="True"
             IsShadowMappingEnabled="True"
+            MSAA="Four"
+            SharedModelContainer="{Binding ElementName=sharedContainer}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
-            UseDefaultGestures="False" EnableSharedModelMode="True" SharedModelContainer="{Binding ElementName=sharedContainer}">
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -122,14 +132,18 @@
         <hx:Viewport3DX
             x:Name="view3"
             Title="{Binding Title}"
-            Grid.Row="1" Grid.Column="0" MSAA="Four"
+            Grid.Row="1"
+            Grid.Column="0"
             Camera="{Binding Camera3}"
             CoordinateSystemLabelForeground="White"
+            EnableSharedModelMode="True"
             IsShadowMappingEnabled="True"
+            MSAA="Four"
+            SharedModelContainer="{Binding ElementName=sharedContainer}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
-            UseDefaultGestures="False" EnableSharedModelMode="True" SharedModelContainer="{Binding ElementName=sharedContainer}">
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -156,14 +170,18 @@
         <hx:Viewport3DX
             x:Name="view4"
             Title="{Binding Title}"
-            Grid.Row="1" Grid.Column="1" MSAA="Four"
+            Grid.Row="1"
+            Grid.Column="1"
             Camera="{Binding Camera4}"
             CoordinateSystemLabelForeground="White"
+            EnableSharedModelMode="True"
             IsShadowMappingEnabled="True"
+            MSAA="Four"
+            SharedModelContainer="{Binding ElementName=sharedContainer}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
-            UseDefaultGestures="False" EnableSharedModelMode="True" SharedModelContainer="{Binding ElementName=sharedContainer}">
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
