@@ -335,12 +335,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             var p = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
             var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
             float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
-            var px = p.X - (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
-            var py = p.Y - (float)(context.ActualHeight / 2 * (1 + screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
+            var offx = (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
+            var offy = (float)(context.ActualHeight / 2 * (1 + screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
+            offx = Math.Max(0, Math.Min(offx, (int)(context.ActualWidth - viewportSize)));
+            offy = Math.Max(0, Math.Min(offy, (int)(context.ActualHeight - viewportSize)));
+            var px = p.X - offx;
+            var py = p.Y - offy;
+
             if (px < 0 || py < 0 || px > viewportSize || py > viewportSize)
             {
                 return false;
             }
+
             var viewMatrix = screenSpaceCore.GlobalTransform.View;
             Vector3 v = new Vector3();
 
