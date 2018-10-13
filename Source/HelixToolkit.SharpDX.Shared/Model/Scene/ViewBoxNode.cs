@@ -332,19 +332,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            var p = Vector4.Transform(new Vector4(ray.Position, 1), context.ScreenViewProjectionMatrix);
-            if (Math.Abs(p.W) > 1e-7)
-            {
-                p /= p.W;
-            }
-            else
-            {
-                return false;
-            }
+            var p = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
             var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
             float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
             var px = p.X - (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
-            var py = p.Y - (float)(context.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
+            var py = p.Y - (float)(context.ActualHeight / 2 * (1 + screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
             if (px < 0 || py < 0 || px > viewportSize || py > viewportSize)
             {
                 return false;
@@ -357,7 +349,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             var projMatrix = screenSpaceCore.GlobalTransform.Projection;
             Vector3 zn;
             v.X = (2 * px / viewportSize - 1) / projMatrix.M11;
-            v.Y = -(2 * py / viewportSize - 1) / projMatrix.M22;
+            v.Y = (2 * py / viewportSize - 1) / projMatrix.M22;
             v.Z = 1 / projMatrix.M33;
             Vector3.TransformCoordinate(ref v, ref matrix, out Vector3 zf);
             if (screenSpaceCore.IsPerspective)
