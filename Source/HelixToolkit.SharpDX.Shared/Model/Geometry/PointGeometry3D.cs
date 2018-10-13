@@ -53,15 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 var svpm = context.ScreenViewProjectionMatrix;
                 var smvpm = modelMatrix * svpm;
 
-                var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-                var pos4 = new Vector4(rayWS.Position, 1);
-                // var dir3 = new Vector3();
-                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-                Vector4.Transform(ref pos4, ref svpm, out pos4);
-                //Vector3.TransformNormal(ref rayWS.Direction, ref svpm, out dir3);
-                //dir3.Normalize();
-
-                var clickPoint = clickPoint4.ToVector3();
+                var clickPoint3 = rayWS.Position + rayWS.Direction;
+                Vector3.TransformCoordinate(ref clickPoint3, ref svpm, out var clickPoint);
 
                 var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
                 var maxDist = hitThickness;
@@ -77,9 +70,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         lastDist = dist;
                         var lp0 = point;
-                        Vector3.Transform(ref lp0, ref modelMatrix, out Vector4 res);
-                        var pvv = res.ToVector3();
-                        result.Distance = (rayWS.Position - res.ToVector3()).Length();
+                        Vector3.TransformCoordinate(ref lp0, ref modelMatrix, out var pvv);
+                        result.Distance = (rayWS.Position - pvv).Length();
                         result.PointHit = pvv;
                         result.ModelHit = originalSource;
                         result.IsValid = true;
