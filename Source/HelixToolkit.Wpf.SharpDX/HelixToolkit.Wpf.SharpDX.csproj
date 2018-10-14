@@ -131,8 +131,6 @@
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\DX11ImageSource.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
     <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />

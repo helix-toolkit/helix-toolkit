@@ -145,8 +145,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public CameraController(Viewport3DX viewport)
         {
-            this.InitializeBindings();
-            this.Viewport = viewport;
+            InitializeBindings();
+            Viewport = viewport;
+            Viewport.SizeChanged += (s, e) =>
+            {
+                Width = (int)e.NewSize.Width;
+                Height = (int)e.NewSize.Height;
+            };
+            Width = (int)viewport.Width;
+            Height = (int)viewport.Height;
         }
 
         private Camera actualCamera;
@@ -185,10 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets CameraMode.
         /// </summary>
-        public CameraMode CameraMode
-        {
-            set; get;
-        } = CameraMode.Inspect;
+        public CameraMode CameraMode = CameraMode.Inspect;
 
         /// <summary>
         /// Gets or sets CameraPosition.
@@ -209,10 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets CameraRotationMode.
         /// </summary>
-        public CameraRotationMode CameraRotationMode
-        {
-            set; get;
-        } = CameraRotationMode.Turntable;
+        public CameraRotationMode CameraRotationMode = CameraRotationMode.Turntable;
 
         /// <summary>
         /// Gets or sets CameraTarget.
@@ -250,85 +251,55 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the change field of view cursor.
         /// </summary>
         /// <value> The change field of view cursor. </value>
-        public Cursor ChangeFieldOfViewCursor
-        {
-            set; get;
-        } = Cursors.ScrollNS;
+        public Cursor ChangeFieldOfViewCursor = Cursors.ScrollNS;
 
         /// <summary>
         /// Gets or sets the default camera (used when resetting the view).
         /// </summary>
         /// <value> The default camera. </value>
-        public ProjectionCamera DefaultCamera
-        {
-            set; get;
-        }
+        public ProjectionCamera DefaultCamera;
 
         /// <summary>
         /// Gets or sets InertiaFactor.
         /// </summary>
-        public double InertiaFactor
-        {
-            set; get;
-        } = 0.93;
+        public double InertiaFactor = 0.93;
 
         /// <summary>
         /// Gets or sets a value indicating whether InfiniteSpin.
         /// </summary>
-        public bool InfiniteSpin
-        {
-            set; get;
-        } = false;
+        public bool InfiniteSpin = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether field of view can be changed.
         /// </summary>
-        public bool IsChangeFieldOfViewEnabled
-        {
-            set; get;
-        } = true;
+        public bool IsChangeFieldOfViewEnabled = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
         /// </summary>
         /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
-        public bool IsInertiaEnabled
-        {
-            set; get;
-        } = true;
+        public bool IsInertiaEnabled = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether move is enabled.
         /// </summary>
         /// <value> <c>true</c> if move is enabled; otherwise, <c>false</c> . </value>
-        public bool IsMoveEnabled
-        {
-            set; get;
-        } = true;
+        public bool IsMoveEnabled = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether pan is enabled.
         /// </summary>
-        public bool IsPanEnabled
-        {
-            set; get;
-        } = true;
+        public bool IsPanEnabled = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether IsRotationEnabled.
         /// </summary>
-        public bool IsRotationEnabled
-        {
-            set; get;
-        } = true;
+        public bool IsRotationEnabled = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether IsZoomEnabled.
         /// </summary>
-        public bool IsZoomEnabled
-        {
-            set; get;
-        } = true;
+        public bool IsZoomEnabled = true;
 
         /// <summary>
         /// Gets or sets the sensitivity for pan by the left and right keys.
@@ -337,10 +308,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Use -1 to invert the pan direction.
         /// </remarks>
-        public double LeftRightPanSensitivity
-        {
-            set; get;
-        } = 1.0;
+        public double LeftRightPanSensitivity = 1.0;
 
         /// <summary>
         /// Gets or sets the sensitivity for rotation by the left and right keys.
@@ -349,45 +317,30 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Use -1 to invert the rotation direction.
         /// </remarks>
-        public double LeftRightRotationSensitivity
-        {
-            set; get;
-        } = 1.0;
+        public double LeftRightRotationSensitivity = 1.0;
 
         /// <summary>
         /// Gets or sets the maximum field of view.
         /// </summary>
         /// <value> The maximum field of view. </value>
-        public double MaximumFieldOfView
-        {
-            set; get;
-        } = 120.0;
+        public double MaximumFieldOfView = 120.0;
 
         /// <summary>
         /// Gets or sets the minimum field of view.
         /// </summary>
         /// <value> The minimum field of view. </value>
-        public double MinimumFieldOfView
-        {
-            set; get;
-        } = 10.0;
+        public double MinimumFieldOfView = 10.0;
 
         /// <summary>
         /// Gets or sets the model up direction.
         /// </summary>
-        public Vector3 ModelUpDirection
-        {
-            set; get;
-        } = new Vector3(0, 1, 0);
+        public Vector3 ModelUpDirection = new Vector3(0, 1, 0);
 
         /// <summary>
         /// Gets or sets the move sensitivity.
         /// </summary>
         /// <value> The move sensitivity. </value>
-        public double MoveSensitivity
-        {
-            set; get;
-        } = 1.0;
+        public double MoveSensitivity = 1.0;
 
         /// <summary>
         /// Gets or sets the sensitivity for zoom by the page up and page down keys.
@@ -396,54 +349,36 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Use -1 to invert the zoom direction.
         /// </remarks>
-        public double PageUpDownZoomSensitivity
-        {
-            set; get;
-        } = 1.0;
+        public double PageUpDownZoomSensitivity = 1.0;
 
         /// <summary>
         /// Gets or sets the pan cursor.
         /// </summary>
         /// <value> The pan cursor. </value>
-        public Cursor PanCursor
-        {
-            set; get;
-        } = Cursors.Hand;
+        public Cursor PanCursor = Cursors.Hand;
 
         /// <summary>
         /// Gets or sets a value indicating whether to rotate around the mouse down point.
         /// </summary>
         /// <value> <c>true</c> if rotation around the mouse down point is enabled; otherwise, <c>false</c> . </value>
-        public bool RotateAroundMouseDownPoint
-        {
-            set; get;
-        } = false;
+        public bool RotateAroundMouseDownPoint = false;
 
         /// <summary>
         /// Gets or sets the rotate cursor.
         /// </summary>
         /// <value> The rotate cursor. </value>
-        public Cursor RotateCursor
-        {
-            set; get;
-        } = Cursors.SizeAll;
+        public Cursor RotateCursor = Cursors.SizeAll;
 
         /// <summary>
         /// Gets or sets the rotation sensitivity (degrees/pixel).
         /// </summary>
         /// <value> The rotation sensitivity. </value>
-        public double RotationSensitivity
-        {
-            set; get;
-        } = 1.0;
+        public double RotationSensitivity = 1.0;
 
         /// <summary>
         /// Gets or sets a value indicating whether to show a target adorner when manipulating the camera.
         /// </summary>
-        public bool ShowCameraTarget
-        {
-            set; get;
-        } = true;
+        public bool ShowCameraTarget = true;
 
         /// <summary>
         /// Gets or sets the max duration of mouse drag to activate spin.
@@ -451,10 +386,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// If the time between mouse down and mouse up is less than this value, spin is activated.
         /// </remarks>
-        public int SpinReleaseTime
-        {
-            set; get;
-        } = 200;
+        public int SpinReleaseTime = 200;
 
         /// <summary>
         /// Gets or sets the sensitivity for pan by the up and down keys.
@@ -463,10 +395,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Use -1 to invert the pan direction.
         /// </remarks>
-        public double UpDownPanSensitivity
-        {
-            set; get;
-        } = 1.0;
+        public double UpDownPanSensitivity = 1.0;
 
         /// <summary>
         /// Gets or sets the sensitivity for rotation by the up and down keys.
@@ -475,10 +404,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Use -1 to invert the rotation direction.
         /// </remarks>
-        public double UpDownRotationSensitivity
-        {
-            set; get;
-        } = 1.0;
+        public double UpDownRotationSensitivity = 1.0;
 
         /// <summary>
         /// Gets or sets Viewport.
@@ -492,51 +418,42 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets a value indicating whether to zoom around mouse down point.
         /// </summary>
         /// <value> <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . </value>
-        public bool ZoomAroundMouseDownPoint
-        {
-            set; get;
-        } = false;
+        public bool ZoomAroundMouseDownPoint = false;
 
         /// <summary>
         /// Gets or sets the zoom cursor.
         /// </summary>
         /// <value> The zoom cursor. </value>
-        public Cursor ZoomCursor
-        {
-            set; get;
-        } = Cursors.SizeNS;
+        public Cursor ZoomCursor = Cursors.SizeNS;
 
         /// <summary>
         /// Gets or sets the zoom rectangle cursor.
         /// </summary>
         /// <value> The zoom rectangle cursor. </value>
-        public Cursor ZoomRectangleCursor
-        {
-            set; get;
-        } = Cursors.SizeNWSE;
+        public Cursor ZoomRectangleCursor = Cursors.SizeNWSE;
 
         /// <summary>
         /// Gets or sets ZoomSensitivity.
         /// </summary>
-        public double ZoomSensitivity
-        {
-            set; get;
-        } = 1.0;
+        public double ZoomSensitivity = 1.0;
         /// <summary>
         /// Gets or sets the zoom distance limit far.
         /// </summary>
         /// <value>
         /// The zoom distance limit far.
         /// </value>
-        public double ZoomDistanceLimitFar { set; get; } = double.PositiveInfinity;
+        public double ZoomDistanceLimitFar = double.PositiveInfinity;
         /// <summary>
         /// Gets or sets the zoom distance limit near.
         /// </summary>
         /// <value>
         /// The zoom distance limit near.
         /// </value>
-        public double ZoomDistanceLimitNear { set; get; } = 0.001;
+        public double ZoomDistanceLimitNear = 0.001;
 
+        internal int Width;
+
+        internal int Height;
         /// <summary>
         /// Gets a value indicating whether IsOrthographicCamera.
         /// </summary>

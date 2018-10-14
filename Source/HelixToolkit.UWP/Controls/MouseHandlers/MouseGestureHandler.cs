@@ -83,19 +83,19 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets or sets the last point (in 2D screen coordinates).
         /// </summary>
-        protected Point LastPoint { get; set; }
+        protected Vector2 LastPoint;
 
         /// <summary>
         /// Gets or sets the last point (in 3D world coordinates).
         /// </summary>
-        protected Point3D? LastPoint3D { get; set; }
+        protected Point3D? LastPoint3D;
         /// <summary>
         /// Use to invert the left handed system
         /// </summary>
         /// <value>
         /// The inv.
         /// </value>
-        protected int inv { private set; get; } = 1;
+        protected int inv = 1;
         /// <summary>
         /// Gets the model up direction.
         /// </summary>
@@ -111,17 +111,17 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets or sets the mouse down point at the nearest hit element (3D world coordinates).
         /// </summary>
-        protected Point3D? MouseDownNearestPoint3D { get; set; }
+        protected Point3D? MouseDownNearestPoint3D;
 
         /// <summary>
         /// Gets or sets the mouse down point (2D screen coordinates).
         /// </summary>
-        protected Point MouseDownPoint { get; set; }
+        protected Vector2 MouseDownPoint;
 
         /// <summary>
         /// Gets or sets the mouse down point (3D world coordinates).
         /// </summary>
-        protected Point3D? MouseDownPoint3D { get; set; }
+        protected Point3D? MouseDownPoint3D;
 
         /// <summary>
         /// Gets the rotation sensitivity.
@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP
         /// Occurs when the manipulation is completed.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="Point"/> instance containing the event data.
+        /// The <see cref="Vector2"/> instance containing the event data.
         /// </param>
         public virtual void Completed(Point e)
         {
@@ -178,9 +178,9 @@ namespace HelixToolkit.UWP
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="Point"/> instance containing the event data.
+        /// The <see cref="Vector2"/> instance containing the event data.
         /// </param>
-        public virtual void Delta(Point e)
+        public virtual void Delta(Vector2 e)
         {
         }
 
@@ -254,6 +254,16 @@ namespace HelixToolkit.UWP
             return ray.PlaneIntersection(position, normal);
         }
 
+        public Point3D? UnProject(Vector2 p, Point3D position, Vector3D normal)
+        {
+            var ray = this.GetRay(p);
+            if (ray == null)
+            {
+                return null;
+            }
+
+            return ray.PlaneIntersection(position, normal);
+        }
         /// <summary>
         /// Un-projects a point from the screen (2D) to a point on the plane trough the camera target point.
         /// </summary>
@@ -301,6 +311,10 @@ namespace HelixToolkit.UWP
             return this.Controller.Viewport.UnProject(position);
         }
 
+        protected Ray GetRay(Vector2 position)
+        {
+            return this.Controller.Viewport.UnProject(position);
+        }
         /// <summary>
         /// Called when inertia is starting.
         /// </summary>
@@ -339,7 +353,7 @@ namespace HelixToolkit.UWP
         /// </param>
         protected virtual void OnMouseMove(object sender, PointerRoutedEventArgs e)
         {
-            this.Delta(e.GetCurrentPoint(this.Controller.Viewport).Position);
+            this.Delta(e.GetCurrentPoint(this.Controller.Viewport).Position.ToVector2());
         }
 
         /// <summary>
@@ -382,12 +396,10 @@ namespace HelixToolkit.UWP
         /// </param>
         private void SetMouseDownPoint(Point position)
         {
-            this.MouseDownPoint = position;
+            this.MouseDownPoint = position.ToVector2();
 
-            Point3D nearestPoint;
-            Vector3D normal;
-            Element3D visual;
-            if (!this.Controller.Viewport.FixedRotationPointEnabled && this.Controller.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
+            if (!this.Controller.Viewport.FixedRotationPointEnabled 
+                && this.Controller.Viewport.FindNearest(position, out var nearestPoint, out var normal, out var visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }
@@ -396,7 +408,7 @@ namespace HelixToolkit.UWP
                 this.MouseDownNearestPoint3D = null;
             }
 
-            this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);
+            this.MouseDownPoint3D = this.UnProject(position);
         }
     }
 }
