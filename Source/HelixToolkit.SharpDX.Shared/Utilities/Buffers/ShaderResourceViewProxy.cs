@@ -216,7 +216,8 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView<T>(T[] array, int width, int height, global::SharpDX.DXGI.Format format, int mipCount = 0, bool createSRV = true) where T : struct
         {
             this.DisposeAndClear();
-            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, mipCount, format));
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, 
+                format, array));
             if (createSRV)
             {
                 textureView = Collect(new ShaderResourceView(device, resource));

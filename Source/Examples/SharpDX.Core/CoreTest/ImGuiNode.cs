@@ -16,9 +16,41 @@ namespace HelixToolkit.SharpDX.Core.Model
     using UWP.Utilities;
     using UWP.Render;
     using System.Runtime.InteropServices;
+    using HelixToolkit.UWP.Shaders;
+    using global::SharpDX.DXGI;
 
     public class ImGuiNode : SceneNode
     {
+        #region Custom Render Technique
+        public const string ImGuiRenderTechnique = "ImGuiRender";
+        public static InputElement[] VSInputImGui2D { get; } = new InputElement[]
+        {
+            new InputElement("POSITION", 0, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm,  InputElement.AppendAligned, 0),
+        };
+
+        public static readonly TechniqueDescription RenderTechnique = new TechniqueDescription(ImGuiRenderTechnique)
+        {
+            InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSSprite2D,
+                VSInputImGui2D),
+            PassDescriptions = new[]
+            {
+                new ShaderPassDescription(DefaultPassNames.Default)
+                {
+                    ShaderList = new[]
+                    {
+                        DefaultVSShaderDescriptions.VSSprite2D,
+                        DefaultPSShaderDescriptions.PSSprite2D,
+                    },
+                    Topology = PrimitiveTopology.TriangleStrip,
+                    BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                    DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                    RasterStateDescription = DefaultRasterDescriptions.RSSpriteCW,
+                }
+            }
+        };
+        #endregion
         private ImGui2DBufferModel bufferModel;
 
         protected override RenderCore OnCreateRenderCore()
@@ -29,12 +61,13 @@ namespace HelixToolkit.SharpDX.Core.Model
         protected override void OnDetach()
         {
             bufferModel = null;
+            (RenderCore as Sprite2DRenderCore).TextureView = null;
             base.OnDetach();
         }
 
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager[DefaultRenderTechniqueNames.Sprite2D];
+            return host.EffectsManager[ImGuiRenderTechnique];
         }
 
         protected override bool CanRender(RenderContext context)
@@ -57,36 +90,34 @@ namespace HelixToolkit.SharpDX.Core.Model
             bufferModel = Collect(new ImGui2DBufferModel());
             bufferModel.Sprites = new DrawVert[1024];
             bufferModel.Indices = new ushort[2048];
+            (RenderCore as Sprite2DRenderCore).Buffer = bufferModel;
             var io = ImGui.GetIO();
+            
             var textureData = io.FontAtlas.GetTexDataAsRGBA32();
-            var stream = new MemoryStream(textureData.BytesPerPixel * textureData.Width * textureData.Height);
-            Texture2D texture = new Texture2D(EffectsManager.Device, new Texture2DDescription()
-            {
-                BindFlags = BindFlags.ShaderResource,
-                CpuAccessFlags = CpuAccessFlags.Write,
-                Width = textureData.Width,
-                Height = textureData.Height,
-                Format = global::SharpDX.DXGI.Format.R8G8B8A8_UNorm,
-                MipLevels = 1,
-                Usage = ResourceUsage.Default
-            });
+            var stream = new byte[textureData.BytesPerPixel * textureData.Width * textureData.Height];
+
             
             unsafe
             {
                 var ptr = textureData.Pixels;
-                for(int i=0; i < stream.Capacity; ++i)
+                for(int i=0; i < stream.Length; ++i)
                 {
-                    stream.WriteByte(*ptr++);
+                    stream[i] = *ptr++;
                 }
+       
             }
+            var textureView = Collect(new ShaderResourceViewProxy(EffectsManager.Device));
+            textureView.CreateView(stream, textureData.Width, textureData.Height,
+                global::SharpDX.DXGI.Format.R8G8B8A8_UNorm);    
             io.FontAtlas.ClearTexData();
-            (RenderCore as Sprite2DRenderCore).Texture = stream;
+            (RenderCore as Sprite2DRenderCore).TextureView = textureView;
             base.OnAttached();
         }
 
         public override void Update(RenderContext context)
         {
             base.Update(context);
+            ImGui.GetIO().DisplaySize = new System.Numerics.Vector2((float)context.ActualWidth, (float)context.ActualHeight);
             ImGui.NewFrame();
             ImGui.Text("Test ImGui");
             ImGui.Render();

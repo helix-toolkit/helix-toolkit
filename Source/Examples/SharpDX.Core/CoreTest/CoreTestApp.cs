@@ -7,6 +7,7 @@ using HelixToolkit.UWP.Cameras;
 using HelixToolkit.UWP.Core;
 using HelixToolkit.UWP.Model;
 using HelixToolkit.UWP.Model.Scene;
+using HelixToolkit.UWP.Shaders;
 using ImGuiNET;
 using SharpDX;
 using SharpDX.Windows;
@@ -43,6 +44,7 @@ namespace CoreTest
             window.Load += Window_Load;
             window.FormClosing += Window_FormClosing;
             effectsManager = new DefaultEffectsManager();
+            effectsManager.AddTechnique(ImGuiNode.RenderTechnique);
             viewport.EffectsManager = effectsManager;           
             viewport.OnStartRendering += Viewport_OnStartRendering;
             viewport.OnStopRendering += Viewport_OnStopRendering;
@@ -115,8 +117,8 @@ namespace CoreTest
             groupSphere.AddChildNode(groupPoints);
             groupSphere.AddChildNode(groupLines);
 
-            var viewbox = new ViewBoxNode();
-            viewport.Items.Add(viewbox);
+            //var viewbox = new ViewBoxNode();
+            //viewport.Items.Add(viewbox);
             viewport.Items.Add(new ImGuiNode());
 
         }

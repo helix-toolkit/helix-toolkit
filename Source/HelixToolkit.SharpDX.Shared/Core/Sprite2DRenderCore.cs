@@ -21,36 +21,19 @@ namespace HelixToolkit.UWP.Core
     public sealed class Sprite2DRenderCore : RenderCore
     {
         public IAttachableBufferModel Buffer { set; get; }
-
-        private Stream texture;
-        public Stream Texture
-        {
-            set
-            {
-                if(SetAffectsRender(ref texture, value) && IsAttached)
-                {
-                    RemoveAndDispose(ref textureView);
-                    if (value != null)
-                    {
-                        textureView = EffectTechnique.EffectsManager.MaterialTextureManager.Register(value, true);
-                    }
-                }
-            }
-            get { return texture; }
-        }
-
+       
         public Matrix ProjectionMatrix
         {
             set; get;
         } = Matrix.Identity;
+
+        public ShaderResourceViewProxy TextureView;
 
         private int texSlot;
 
         private int samplerSlot;
 
         private ShaderPass spritePass;
-
-        private ShaderResourceViewProxy textureView;
 
         private SamplerStateProxy sampler;
 
@@ -63,7 +46,7 @@ namespace HelixToolkit.UWP.Core
 
         public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
-            if(Buffer == null || textureView == null || spritePass.IsNULL)
+            if(Buffer == null || TextureView == null || spritePass.IsNULL)
             {
                 return;
             }
@@ -77,7 +60,7 @@ namespace HelixToolkit.UWP.Core
             globalTransformCB.Upload(deviceContext, ref globalTrans);
             spritePass.BindShader(deviceContext);
             spritePass.BindStates(deviceContext, StateType.All);
-            spritePass.PixelShader.BindTexture(deviceContext, texSlot, textureView);
+            spritePass.PixelShader.BindTexture(deviceContext, texSlot, TextureView);
             spritePass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
             deviceContext.SetViewport(0, 0, (float)context.ActualWidth, (float)context.ActualHeight);
             deviceContext.SetScissorRectangle(0, 0, (int)context.ActualWidth, (int)context.ActualHeight);
@@ -100,17 +83,13 @@ namespace HelixToolkit.UWP.Core
             spritePass = technique[DefaultPassNames.Default];
             texSlot = spritePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SpriteTB);
             samplerSlot = spritePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SpriteSampler);
-            if (texture != null)
-            {
-                textureView = Collect(EffectTechnique.EffectsManager.MaterialTextureManager.Register(texture, true));
-            }
             sampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
             return true;
         }
 
         protected override void OnDetach()
         {
-            textureView = null;
+            TextureView = null;
             sampler = null;
             base.OnDetach();
         }

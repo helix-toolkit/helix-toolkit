@@ -14,18 +14,25 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+    using Utilities;
+
     public class Sprite2DNode : SceneNode
     {
+        private Stream texture;
         public Stream Texture
         {
             set
             {
-                (RenderCore as Sprite2DRenderCore).Texture = value;
+                if (SetAffectsRender(ref texture, value) && IsAttached)
+                {
+                    RemoveAndDispose(ref textureView);
+                    if (value != null)
+                    {
+                        TextureView = EffectTechnique.EffectsManager.MaterialTextureManager.Register(value, true);
+                    }
+                }
             }
-            get
-            {
-                return (RenderCore as Sprite2DRenderCore).Texture;
-            }
+            get { return texture; }
         }
 
         public Matrix ProjectionMatrix
@@ -97,6 +104,19 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         private Sprite2DBufferModel bufferModel;
 
+        private ShaderResourceViewProxy textureView;
+        protected ShaderResourceViewProxy TextureView
+        {
+            set
+            {
+                if(SetAffectsRender(ref textureView, value))
+                {
+                    (RenderCore as Sprite2DRenderCore).TextureView = value;
+                }
+            }
+            get { return textureView; }
+        }
+
         protected override RenderCore OnCreateRenderCore()
         {
             return new Sprite2DRenderCore();
@@ -107,18 +127,24 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             bufferModel = Collect(new Sprite2DBufferModel());
             bufferModel.Sprites = Sprites;
             bufferModel.SpriteCount = SpriteCount;
+            if (texture != null)
+            {
+                TextureView = Collect(EffectTechnique.EffectsManager.MaterialTextureManager.Register(texture, true));
+            }
             base.OnAttached();
         }
 
         protected override void OnDetach()
         {
             bufferModel = null;
+            TextureView = null;
             base.OnDetach();
         }
 
         protected override bool CanRender(RenderContext context)
         {
-            return base.CanRender(context) && sprites != null && indices != null && spriteCount != 0 && indexCount != 0;
+            return base.CanRender(context) && sprites != null && indices != null 
+                && spriteCount != 0 && indexCount != 0 && textureView != null;
         }
 
         protected override bool CanHitTest(RenderContext context)

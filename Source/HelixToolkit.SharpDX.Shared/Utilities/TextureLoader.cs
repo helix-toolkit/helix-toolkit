@@ -78,16 +78,23 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         {
             using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory))
             {
-                if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
+                if(texture != null)
                 {
-                    using (var textureMipmap = GenerateMipMaps(device, texture))
+                    if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
                     {
-                        return new ShaderResourceView(device, textureMipmap);
+                        using (var textureMipmap = GenerateMipMaps(device, texture))
+                        {
+                            return new ShaderResourceView(device, textureMipmap);
+                        }
+                    }
+                    else
+                    {
+                        return new ShaderResourceView(device, texture);
                     }
                 }
                 else
                 {
-                    return new ShaderResourceView(device, texture);
+                    return null;
                 }
             }
         }
