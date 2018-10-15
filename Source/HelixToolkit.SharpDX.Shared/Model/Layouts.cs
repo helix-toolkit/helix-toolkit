@@ -510,6 +510,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * ( 4 * 4 + 4 * 8 );
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct SpriteStruct
+    {
+        public Vector2 Position;
+        public Vector2 UV;
+        public Vector4 Color;
+
+        public const int SizeInBytes = 4 * (2 + 2 + 4);
+    }
 #if !NETFX_CORE
     /// <summary>
     /// 

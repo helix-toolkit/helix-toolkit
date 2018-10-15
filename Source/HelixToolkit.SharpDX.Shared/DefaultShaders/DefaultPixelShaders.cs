@@ -390,6 +390,18 @@ namespace HelixToolkit.UWP.Shaders
         } = "psMeshPBROIT";
 
         /// <summary>
+        /// Gets the ps sprite.
+        /// </summary>
+        /// <value>
+        /// The ps sprite.
+        /// </value>
+        public static string PSSprite2D
+        {
+            get;
+        } = "psSprite";
+
+
+        /// <summary>
         /// 
         /// </summary>
         public static string PSScreenDup
@@ -489,7 +501,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSShadow = new ShaderDescription(nameof(PSShadow), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSShadow);
-        #region Mesh Clipping
+#region Mesh Clipping
         /// <summary>
         /// /
         /// </summary>
@@ -500,7 +512,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshClipScreenQuad = new ShaderDescription(nameof(PSMeshClipScreenQuad), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshClipPlaneQuad);
-        #endregion
+#endregion
         /// <summary>
         /// 
         /// </summary>
@@ -632,6 +644,12 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshPBROIT = new ShaderDescription(nameof(PSMeshPBROIT), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshPBROIT);
+
+        /// <summary>
+        /// The ps sprite
+        /// </summary>
+        public static ShaderDescription PSSprite2D = new ShaderDescription(nameof(PSSprite2D), ShaderStage.Pixel, new ShaderReflector(), 
+            DefaultPSShaderByteCodes.PSSprite2D);
 
         /// <summary>
         /// The ps screen dup

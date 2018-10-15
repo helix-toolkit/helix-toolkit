@@ -530,6 +530,20 @@ namespace HelixToolkit.UWP.Shaders
             IsDepthClipEnabled = true,
             IsScissorEnabled = true
         };
+
+        public readonly static RasterizerStateDescription RSSpriteCW = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+            DepthBias = 0,
+            DepthBiasClamp = 0,
+            SlopeScaledDepthBias = 0,
+            IsFrontCounterClockwise = false,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+            IsDepthClipEnabled = false,
+            IsScissorEnabled = true
+        };
 #if !NETFX_CORE        
         /// <summary>
         /// The screen duplication RasterizerState

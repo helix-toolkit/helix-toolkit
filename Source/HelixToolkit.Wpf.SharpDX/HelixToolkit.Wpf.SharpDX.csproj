@@ -274,6 +274,7 @@
     <None Include="Resources\psScreenDup.cso" />
     <None Include="Resources\psShadow.cso" />
     <None Include="Resources\psSkybox.cso" />
+    <None Include="Resources\psSprite.cso" />
     <None Include="Resources\psViewCube.cso" />
     <None Include="Resources\psWireframe.cso" />
     <None Include="Resources\psWireframeOIT.cso" />
@@ -302,6 +303,7 @@
     <None Include="Resources\vsScreenDupCursor.cso" />
     <None Include="Resources\vsScreenQuad.cso" />
     <None Include="Resources\vsSkybox.cso" />
+    <None Include="Resources\vsSprite.cso" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />

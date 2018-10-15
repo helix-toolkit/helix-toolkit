@@ -266,7 +266,9 @@ Texture2D texOITAlpha : register(t11);
 Texture1D texColorStripe1DX : register(t12);
 Texture1D texColorStripe1DY : register(t13);
 
-StructuredBuffer<matrix> skinMatrices : register(t20);
+StructuredBuffer<matrix> skinMatrices : register(t40);
+
+Texture2D texSprite : register(t50);
 ///------------------Samplers-------------------
 SamplerState samplerSurface : register(s0);
 SamplerState samplerIBL : register(s1);
@@ -280,6 +282,8 @@ SamplerComparisonState samplerShadow : register(s5);
 SamplerState samplerParticle : register(s6);
 
 SamplerState samplerBillboard : register(s7);
+
+SamplerState samplerSprite : register(s8);
 ///---------------------UAV-----------------------------
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);

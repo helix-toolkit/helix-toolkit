@@ -55,6 +55,8 @@ namespace HelixToolkit.UWP.Shaders
         public static string OITAlphaTB = "texOITAlpha";
         //----------Bone Skin--------------
         public static string BoneSkinSB = "skinMatrices"; // Structured Buffer
+
+        public static string SpriteTB = "texSprite";
     }
 
     public static class DefaultSamplerStateNames
@@ -66,5 +68,6 @@ namespace HelixToolkit.UWP.Shaders
         public static string ShadowMapSampler = "samplerShadow";
         public static string ParticleTextureSampler = "samplerParticle";
         public static string BillboardTextureSampler = "samplerBillboard";
+        public static string SpriteSampler = "samplerSprite";
     }
 }

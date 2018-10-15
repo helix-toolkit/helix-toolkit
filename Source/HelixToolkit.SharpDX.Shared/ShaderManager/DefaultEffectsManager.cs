@@ -1644,6 +1644,26 @@ namespace HelixToolkit.UWP
                     }
                 }
             };
+
+            var sprite2D = new TechniqueDescription(DefaultRenderTechniqueNames.Sprite2D)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSSprite2D, DefaultInputLayout.VSInputSprite2D),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSSprite2D,
+                            DefaultPSShaderDescriptions.PSSprite2D,
+                        },
+                        Topology = PrimitiveTopology.TriangleStrip,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSSpriteCW,
+                    }
+                }
+            };
 #if !NETFX_CORE
             var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
             {
@@ -1695,6 +1715,7 @@ namespace HelixToolkit.UWP
             yield return meshOITQuad;
             yield return planeGrid;
             yield return screenQuad;
+            yield return sprite2D;
 #if !NETFX_CORE
             yield return renderScreenDup;
 #endif
