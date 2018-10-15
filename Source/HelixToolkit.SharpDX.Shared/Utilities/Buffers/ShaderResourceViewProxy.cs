@@ -1,5 +1,6 @@
 using SharpDX;
 using SharpDX.Direct3D11;
+using System;
 using System.Threading;
 
 #if !NETFX_CORE
@@ -186,7 +187,6 @@ namespace HelixToolkit.UWP.Utilities
             depthStencilView = Collect(new DepthStencilView(device, resource));
         }
 
-
         /// <summary>
         /// Creates the 1D texture view from data array.
         /// </summary>
@@ -224,6 +224,34 @@ namespace HelixToolkit.UWP.Utilities
             }
         }
         /// <summary>
+        /// Creates the shader resource view from data ptr.
+        /// </summary>
+        /// <param name="dataPtr">The data PTR.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="mipCount">The mip count.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        public unsafe void CreateView(IntPtr dataPtr, int width, int height,
+            global::SharpDX.DXGI.Format format, int mipCount = 0, bool createSRV = true)
+        {
+            this.DisposeAndClear();
+            var ptr = (IntPtr)dataPtr;
+            global::SharpDX.Toolkit.Graphics.Image
+                .ComputePitch(format, width, height, 
+                out var rowPitch, out var slicePitch, out var widthCount, out var heightCount);
+                
+            var databox = new DataBox(ptr, rowPitch, slicePitch);
+
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, 1, format, 
+                new[] { databox }));
+
+            if (createSRV)
+            {
+                textureView = Collect(new ShaderResourceView(device, resource));
+            }
+        }
+        /// <summary>
         /// Creates the 1D texture view from color array.
         /// </summary>
         /// <param name="array">The array.</param>
@@ -243,6 +271,89 @@ namespace HelixToolkit.UWP.Utilities
         {
             CreateView(array, width, height, global::SharpDX.DXGI.Format.R32G32B32A32_Float, mipCount, createSRV);
         }
+
+        #region Static Creator        
+        /// <summary>
+        /// Creates the specified device.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="device">The device.</param>
+        /// <param name="array">The array.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy Create<T>(Device device, T[] array, global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(array, format, createSRV);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates the view.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="device">The device.</param>
+        /// <param name="array">The array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="mipCount">The mip count.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy CreateView<T>(Device device, T[] array, int width, int height, global::SharpDX.DXGI.Format format, int mipCount = 0, bool createSRV = true) where T : struct
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(array, width, height, format, mipCount, createSRV);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates the view.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="dataPtr">The data PTR.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="mipCount">The mip count.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <returns></returns>
+        public unsafe static ShaderResourceViewProxy CreateView(Device device, IntPtr dataPtr, int width, int height,
+            global::SharpDX.DXGI.Format format, int mipCount = 0, bool createSRV = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(dataPtr, width, height, format, mipCount, createSRV);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates the 1D texture view from color array.
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="array">The array.</param>
+        public static ShaderResourceViewProxy CreateViewFromColorArray(Device device, Color4[] array)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateViewFromColorArray(array);
+            return proxy;
+        }
+        /// <summary>
+        /// Creates the 2D texture view from color array.
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="array">The array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="mipCount">The mipCount. Default = 0 Auto</param>
+        /// <param name="createSRV"></param>
+        public static ShaderResourceViewProxy CreateViewFromColorArray(Device device, Color4[] array, int width, int height, int mipCount = 0, bool createSRV = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateViewFromColorArray(array, width, height, mipCount, createSRV);
+            return proxy;
+        }
+        #endregion
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="ShaderResourceView"/>.
         /// </summary>

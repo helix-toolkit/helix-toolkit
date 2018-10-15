@@ -180,6 +180,11 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
         /// <param name="p1">
         /// The point.
         /// </param>
+        /// <param name="camera"></param>
+        /// <param name="rotationAxisX"></param>
+        /// <param name="rotationAxisY"></param>
+        /// <param name="viewportHeight"></param>
+        /// <param name="viewportWidth"></param>
         public static void InitTurnballRotationAxes(Vector2 p1, int viewportWidth, int viewportHeight,
             CameraCore camera,
             out Vector3 rotationAxisX, out Vector3 rotationAxisY)
