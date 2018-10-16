@@ -61,7 +61,7 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string SamplerShadowMapName {  get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
-        private readonly PhongMaterialCore material;
+        private readonly DiffuseMaterialCore material;
         /// <summary>
         /// Initializes a new instance of the <see cref="DiffuseMaterialVariables"/> class.
         /// </summary>
@@ -73,7 +73,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="materialOITPassName">Name of the material oit pass.</param>
         /// <param name="wireframeOITPassName">Name of the wireframe oit pass.</param>
         /// <param name="shadowPassName">Name of the shadow pass.</param>
-        private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore,
+        private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, DiffuseMaterialCore materialCore,
             string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
             string materialOITPassName = DefaultPassNames.OITPass, string wireframeOITPassName = DefaultPassNames.OITPass,
             string shadowPassName = DefaultPassNames.ShadowPass)
@@ -94,13 +94,14 @@ namespace HelixToolkit.UWP.Model
             CreateSamplers();
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="PhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
+        /// Initializes a new instance of the <see cref="DiffuseMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
         /// </summary>
         /// <param name="passName">Name of the pass.</param>
         /// <param name="manager">The manager.</param>
         /// <param name="technique"></param>
         /// <param name="material">The material.</param>
-        public DiffuseMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
+        public DiffuseMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, 
+            DiffuseMaterialCore material)
             : this(manager, technique, material)
         {
             MaterialPass = technique[passName];
@@ -109,22 +110,25 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitialPropertyBindings()
         {
             base.OnInitialPropertyBindings();
-            AddPropertyBinding(nameof(PhongMaterialCore.DiffuseColor), () => { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor); });
-            AddPropertyBinding(nameof(PhongMaterialCore.UVTransform), () => 
+            AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseColor), () => 
+            { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor); });
+            AddPropertyBinding(nameof(DiffuseMaterialCore.UVTransform), () => 
             {
                 WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
                 WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
             });
-            AddPropertyBinding(nameof(PhongMaterialCore.DiffuseMap), () =>
+            AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseMap), () =>
             {
                 CreateTextureView(material.DiffuseMap, DiffuseIdx);
                 WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.RenderDiffuseMap && TextureResource != null ? 1 : 0);
             });
-            AddPropertyBinding(nameof(PhongMaterialCore.DiffuseMapSampler), () =>
+            AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseMapSampler), () =>
             {
                 RemoveAndDispose(ref SamplerResource);
                 SamplerResource = Collect(statePoolManager.Register(material.DiffuseMapSampler));
             });
+            AddPropertyBinding(nameof(DiffuseMaterialCore.EnableUnLit), () => 
+            { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.EnableUnLit); });
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

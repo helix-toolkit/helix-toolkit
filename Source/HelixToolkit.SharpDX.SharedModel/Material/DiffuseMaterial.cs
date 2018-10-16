@@ -13,9 +13,9 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using System.ComponentModel;
     using Model;
     using Shaders;
+    using System.ComponentModel;
     using Utilities;
 
 
@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(DiffuseMaterial), new PropertyMetadata((Color4)Color.White,
                 (d, e) =>
                 {
-                    ((d as Material).Core as PhongMaterialCore).DiffuseColor = (Color4)e.NewValue;
+                    ((d as Material).Core as DiffuseMaterialCore).DiffuseColor = (Color4)e.NewValue;
                 }));
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
             DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(DiffuseMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMap = e.NewValue as Stream; }));
+                (d, e) => { ((d as Material).Core as DiffuseMaterialCore).DiffuseMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// Gets or sets the diffuse map.
@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseMapSamplerProperty =
             DependencyProperty.Register("DiffuseMapSampler", typeof(SamplerStateDescription), typeof(DiffuseMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMapSampler = (SamplerStateDescription)e.NewValue; }));
+                (d, e) => { ((d as Material).Core as DiffuseMaterialCore).DiffuseMapSampler = (SamplerStateDescription)e.NewValue; }));
         /// <summary>
         /// 
         /// </summary>
@@ -83,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty UVTransformProperty =
             DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(DiffuseMaterial), new PropertyMetadata(Matrix.Identity, (d, e) =>
             {
-                ((d as Material).Core as PhongMaterialCore).UVTransform = (Matrix)e.NewValue;
+                ((d as Material).Core as DiffuseMaterialCore).UVTransform = (Matrix)e.NewValue;
             }));
         /// <summary>
         /// Gets or sets the texture uv transform.
@@ -97,6 +97,30 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(UVTransformProperty, value); }
         }
 
+
+        /// <summary>
+        /// Gets or sets a value indicating whether whether disable lighting. Directly render diffuse color and diffuse map.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable un lit]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableUnLit
+        {
+            get { return (bool)GetValue(EnableUnLitProperty); }
+            set { SetValue(EnableUnLitProperty, value); }
+        }
+
+        /// <summary>
+        /// The enable un lit property
+        /// </summary>
+        public static readonly DependencyProperty EnableUnLitProperty =
+            DependencyProperty.Register("EnableUnLit", typeof(bool), typeof(DiffuseMaterial), new PropertyMetadata(false,
+                (d,e)=> 
+                {
+                    ((d as Material).Core as DiffuseMaterialCore).EnableUnLit = (bool)e.NewValue;
+                }));
+
+
         protected override MaterialCore OnCreateCore()
         {
             return new DiffuseMaterialCore()
@@ -104,7 +128,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseColor = DiffuseColor,
                 DiffuseMap = DiffuseMap,
                 UVTransform = UVTransform,
-                DiffuseMapSampler = DiffuseMapSampler
+                DiffuseMapSampler = DiffuseMapSampler,
+                EnableUnLit = EnableUnLit,
             };
         }
 
@@ -117,7 +142,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMap = DiffuseMap,
                 DiffuseMapSampler = DiffuseMapSampler,
                 UVTransform = UVTransform,
-                Name = Name
+                Name = Name,
+                EnableUnLit = EnableUnLit,
             };
         }
 #endif

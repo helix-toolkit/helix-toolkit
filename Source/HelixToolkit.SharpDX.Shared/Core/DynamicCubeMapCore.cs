@@ -10,6 +10,7 @@ using SharpDX.DXGI;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 #if !NETFX_CORE
 
@@ -22,6 +23,8 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
     using Components;
+    
+
     /// <summary>
     ///
     /// </summary>
@@ -410,52 +413,65 @@ namespace HelixToolkit.UWP.Core
             }
             context.IsInvertCullMode = true;
             var camLook = Vector3.Normalize(context.Camera.LookDirection);
+
+            Exception exception = null;
 #if TEST
             for (int index = 0; index < 6; ++index)
 #else
             Parallel.For(0, 6, (index) =>
 #endif
-            {
-                var ctx = contextPool.Get();
-                ctx.ClearRenderTargetView(cubeRTVs[index], context.RenderHost.ClearColor);
-                ctx.ClearDepthStencilView(cubeDSVs[index], DepthStencilClearFlags.Depth, 1, 0);
-                ctx.SetRenderTarget(cubeDSVs[index], cubeRTVs[index]);
-                ctx.SetViewport(ref viewport);
-                ctx.SetScissorRectangle(0, 0, FaceSize, FaceSize);
-                var transforms = new GlobalTransformStruct();
-                transforms.Projection = cubeFaceCameras.Cameras[index].Projection;
-                transforms.View = cubeFaceCameras.Cameras[index].View;
-                transforms.Viewport = new Vector4(FaceSize, FaceSize, 1/FaceSize, 1/FaceSize);
-                transforms.ViewProjection = transforms.View * transforms.Projection;
-
-                modelCB.Upload(ctx, ref transforms);
-
-                var frustum = new BoundingFrustum(transforms.ViewProjection);
-                //Render opaque
-                for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
+            {               
+                try
                 {
-                    var node = context.RenderHost.PerFrameOpaqueNodes[i];
-                    if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
+                    var ctx = contextPool.Get();
+                    ctx.ClearRenderTargetView(cubeRTVs[index], context.RenderHost.ClearColor);
+                    ctx.ClearDepthStencilView(cubeDSVs[index], DepthStencilClearFlags.Depth, 1, 0);
+                    ctx.SetRenderTarget(cubeDSVs[index], cubeRTVs[index]);
+                    ctx.SetViewport(ref viewport);
+                    ctx.SetScissorRectangle(0, 0, FaceSize, FaceSize);
+                    var transforms = new GlobalTransformStruct();
+                    transforms.Projection = cubeFaceCameras.Cameras[index].Projection;
+                    transforms.View = cubeFaceCameras.Cameras[index].View;
+                    transforms.Viewport = new Vector4(FaceSize, FaceSize, 1/FaceSize, 1/FaceSize);
+                    transforms.ViewProjection = transforms.View * transforms.Projection;
+
+                    modelCB.Upload(ctx, ref transforms);
+
+                    var frustum = new BoundingFrustum(transforms.ViewProjection);
+                    //Render opaque
+                    for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
                     {
-                        node.Render(context, ctx);
+                        var node = context.RenderHost.PerFrameOpaqueNodes[i];
+                        if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
+                        {
+                            node.Render(context, ctx);
+                        }
                     }
+                    //Render particle
+                    for (int i = 0; i < context.RenderHost.PerFrameParticleNodes.Count; ++i)
+                    {
+                        var node = context.RenderHost.PerFrameParticleNodes[i];
+                        if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
+                        {
+                            node.Render(context, ctx);
+                        }
+                    }
+                    commands[index] = ctx.FinishCommandList(true);
+                    contextPool.Put(ctx);
                 }
-                //Render particle
-                for (int i = 0; i < context.RenderHost.PerFrameParticleNodes.Count; ++i)
+                catch(Exception ex)
                 {
-                    var node = context.RenderHost.PerFrameParticleNodes[i];
-                    if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
-                    {
-                        node.Render(context, ctx);
-                    }
-                }
-                commands[index] = ctx.FinishCommandList(true);
-                contextPool.Put(ctx);
+                    exception = ex;
+                }                
             }
 #if !TEST
             );
 #endif
             context.IsInvertCullMode = false;
+            if (exception != null)
+            {
+                throw exception;
+            }          
             for (int i = 0; i < commands.Length; ++i)
             {
                 if (commands[i] != null)

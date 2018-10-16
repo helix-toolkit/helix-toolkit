@@ -117,34 +117,45 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             outputCommands.Clear();
             int totalCount = 0;
             numRendered = 0;
-            
+            Exception exception = null;
             if (items.Count > schedulerParams.MinimumDrawCalls)
             {
                 var frustum = context.BoundingFrustum;
                 var partitionParams = Partitioner.Create(0, items.Count, items.Count/schedulerParams.MaxNumberOfTasks+1);
                 Parallel.ForEach(partitionParams, (range, state) =>
                 {
-                    int counter = 0;                    
-                    var deferred = pool.Get();
-                    SetRenderTargets(deferred, ref parameter);
-                    for(int i=range.Item1; i<range.Item2; ++i)
+                    try
                     {
-                        if (context.EnableBoundingFrustum && !items[i].TestViewFrustum(ref frustum))
+                        int counter = 0;                    
+                        var deferred = pool.Get();
+                        SetRenderTargets(deferred, ref parameter);
+                        for(int i=range.Item1; i<range.Item2; ++i)
                         {
-                            continue;
+                            if (context.EnableBoundingFrustum && !items[i].TestViewFrustum(ref frustum))
+                            {
+                                continue;
+                            }
+                            items[i].RenderCore.Render(context, deferred);
+                            ++counter;         
                         }
-                        items[i].RenderCore.Render(context, deferred);
-                        ++counter;         
+                        var command = deferred.FinishCommandList(true);
+                        pool.Put(deferred);
+                        lock (outputCommands)
+                        {
+                            outputCommands.Add(new KeyValuePair<int, CommandList>(range.Item1, command));
+                            totalCount += counter;
+                        }
                     }
-                    var command = deferred.FinishCommandList(true);
-                    pool.Put(deferred);
-                    lock (outputCommands)
+                    catch(Exception ex)
                     {
-                        outputCommands.Add(new KeyValuePair<int, CommandList>(range.Item1, command));
-                        totalCount += counter;
+                        exception = ex;
                     }
                 });
                 numRendered = totalCount;
+                if(exception != null)
+                {
+                    throw exception;
+                }
                 return true;
             }
             else
