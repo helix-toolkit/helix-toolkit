@@ -56,8 +56,6 @@ namespace HelixToolkit.SharpDX.Core.Model
         #endregion
         private ImGui2DBufferModel bufferModel;
 
-        private TimeSpan lastTime;
-
         public event EventHandler UpdatingImGuiUI;
 
         protected override RenderCore OnCreateRenderCore()
@@ -81,9 +79,6 @@ namespace HelixToolkit.SharpDX.Core.Model
         {
             base.Update(context);
             var io = ImGui.GetIO();
-            var elapse = context.TimeStamp - lastTime;
-            lastTime = context.TimeStamp;
-            io.DeltaTime = (float)elapse.TotalSeconds;
             io.DisplaySize = new System.Numerics.Vector2((int)context.ActualWidth, (int)context.ActualHeight);
             UpdatingImGuiUI?.Invoke(this, EventArgs.Empty);
         }
@@ -100,7 +95,6 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         protected override void OnAttached()
         {
-            lastTime = TimeSpan.Zero;
             bufferModel = Collect(new ImGui2DBufferModel());
             (RenderCore as ImGuiRenderCore).Buffer = bufferModel;
             var io = ImGui.GetIO();

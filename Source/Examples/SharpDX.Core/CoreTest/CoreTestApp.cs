@@ -48,6 +48,9 @@ namespace CoreTest
             window.MouseDown += Window_MouseDown;
             window.MouseUp += Window_MouseUp;
             window.MouseWheel += Window_MouseWheel;
+            window.KeyDown += Window_KeyDown;
+            window.KeyUp += Window_KeyUp;
+            window.KeyPress += Window_KeyPress;
             effectsManager = new DefaultEffectsManager();
             effectsManager.AddTechnique(ImGuiNode.RenderTechnique);
             viewport.EffectsManager = effectsManager;           
@@ -60,7 +63,6 @@ namespace CoreTest
             viewport.BackgroundColor = new Color4(0.45f, 0.55f, 0.6f, 1f);
             InitializeScene();
         }
-
 
 
         private void InitializeScene()
@@ -130,6 +132,19 @@ namespace CoreTest
             var imGui = new ImGuiNode();
             viewport.Items.Add(imGui);
             imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
+            io.KeyMap[GuiKey.Tab] = (int)Keys.Tab;
+            io.KeyMap[GuiKey.LeftArrow] = (int)Keys.Left;
+            io.KeyMap[GuiKey.RightArrow] = (int)Keys.Right;
+            io.KeyMap[GuiKey.UpArrow] = (int)Keys.Up;
+            io.KeyMap[GuiKey.DownArrow] = (int)Keys.Down;
+            io.KeyMap[GuiKey.PageUp] = (int)Keys.PageUp;
+            io.KeyMap[GuiKey.PageDown] = (int)Keys.PageDown;
+            io.KeyMap[GuiKey.Home] = (int)Keys.Home;
+            io.KeyMap[GuiKey.End] = (int)Keys.End;
+            io.KeyMap[GuiKey.Delete] = (int)Keys.Delete;
+            io.KeyMap[GuiKey.Backspace] = (int)Keys.Back;
+            io.KeyMap[GuiKey.Enter] = (int)Keys.Enter;
+            io.KeyMap[GuiKey.Escape] = (int)Keys.Escape;
         }
 
         private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
@@ -293,6 +308,28 @@ namespace CoreTest
         private void Window_MouseWheel(object sender, MouseEventArgs e)
         {
             io.MouseWheel = e.Delta;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {        
+            io.KeysDown[e.KeyValue] = true;
+            io.ShiftPressed = e.Shift;
+            io.CtrlPressed = e.Control;
+            io.AltPressed = e.Alt;
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            io.KeysDown[e.KeyValue] = false;
+            io.ShiftPressed = e.Shift;
+            io.CtrlPressed = e.Control;
+            io.AltPressed = e.Alt;
+        }
+
+
+        private void Window_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ImGui.AddInputCharacter(e.KeyChar);
         }
         #endregion
     }
