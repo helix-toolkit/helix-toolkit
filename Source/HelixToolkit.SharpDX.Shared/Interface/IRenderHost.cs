@@ -399,5 +399,12 @@ namespace HelixToolkit.UWP
         ///   <c>true</c> if [enable render order]; otherwise, <c>false</c>.
         /// </value>
         public bool EnableRenderOrder { set; get; } = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable vertical synchronize].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable v synchronize]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableVSync { set; get; } = true;
     }
 }

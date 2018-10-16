@@ -117,8 +117,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             private set; get;
         } = MSAALevel.Disable;
-#endif
-
+#endif        
+        /// <summary>
+        /// The vertical synchronize internal. Only valid under swapchain rendering mode. Default = 0
+        /// <para>0: disable; 1: Sync with frame; More detail: <see cref="SwapChain.Present(int, PresentFlags)"/></para>
+        /// </summary>
+        public int VSyncInterval = 1;
         /// <summary>
         /// The currently used Direct3D Device
         /// </summary>

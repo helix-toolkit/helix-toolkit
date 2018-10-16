@@ -624,12 +624,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     renderContext.OITWeightDepthSlope = RenderConfiguration.OITWeightDepthSlope;
                     renderContext.OITWeightMode = RenderConfiguration.OITWeightMode;
                 }
+                renderBuffer.VSyncInterval = RenderConfiguration.EnableVSync ? 1 : 0;
                 bool updateSceneGraph = UpdateSceneGraphRequested;
                 bool updatePerFrameRenderable = UpdatePerFrameRenderableRequested;
                 renderContext.UpdateSceneGraphRequested = UpdateSceneGraphRequested;
                 renderContext.UpdatePerFrameRenderableRequested = UpdatePerFrameRenderableRequested;
                 UpdateSceneGraphRequested = false;
-                UpdatePerFrameRenderableRequested = false;
+                UpdatePerFrameRenderableRequested = false;               
                 PreRender(updateSceneGraph, updatePerFrameRenderable);
                 try
                 {                    

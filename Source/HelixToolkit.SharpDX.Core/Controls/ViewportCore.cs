@@ -26,10 +26,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get { return effectsManager; }
             set
             {
-                if(effectsManager != value)
+                if (effectsManager != value)
                 {
                     effectsManager = value;
-                    if(RenderHost != null)
+                    if (RenderHost != null)
                     {
                         RenderHost.EffectsManager = value;
                     }
@@ -43,10 +43,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get => renderTechnique;
             set
             {
-                if(renderTechnique != value)
+                if (renderTechnique != value)
                 {
                     renderTechnique = value;
-                    if(RenderHost != null)
+                    if (RenderHost != null)
                     {
                         RenderHost.RenderTechnique = value;
                     }
@@ -142,6 +142,29 @@ namespace HelixToolkit.SharpDX.Core.Controls
             }
         }
 
+        private bool enableVSync = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable vertical synchronize].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable vertical synchronize]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableVSync
+        {
+            set
+            {
+                enableVSync = value;
+                if (RenderHost != null)
+                {
+                    RenderHost.RenderConfiguration.EnableVSync = value;
+                }
+            }
+            get
+            {
+                return enableVSync;
+            }
+        }
+
         private SceneNode2D root2D = new OverlayNode2D() { EnableBitmapCache = false };
 
         public ViewportCore(IntPtr nativeWindowPointer, bool deferred = false)
@@ -164,6 +187,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 };
             }
             BackgroundColor = Color.Black;
+            RenderHost.RenderConfiguration.EnableVSync = enableVSync;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
