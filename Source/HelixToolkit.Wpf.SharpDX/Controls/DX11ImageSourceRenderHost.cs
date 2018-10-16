@@ -28,6 +28,8 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 
         private DX11ImageSource surfaceD3D;
 
+        private bool frontBufferChange = false;
+
         public DX11ImageSourceRenderHost(Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
         {
             this.OnNewRenderTargetTexture += DX11ImageSourceRenderer_OnNewBufferCreated;
@@ -45,13 +47,16 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
         }
 
         protected override void DisposeBuffers()
-        {           
-            //if(surfaceD3D != null)
-            //{
-            //    surfaceD3D?.SetRenderTargetDX11(null);
-            //    surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
-            //    RemoveAndDispose(ref surfaceD3D);
-            //}            
+        {
+            if (surfaceD3D != null)
+            {
+                surfaceD3D.SetRenderTargetDX11(null);
+                if (!frontBufferChange)
+                {
+                    surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
+                }
+                RemoveAndDispose(ref surfaceD3D);
+            }
             base.DisposeBuffers();
         }
 
@@ -75,6 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             }
             if ((bool)e.NewValue)
             {
+                frontBufferChange = false;
                 try
                 {
                     if (EffectsManager.Device.DeviceRemovedReason.Success)
@@ -103,6 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             else
             {
                 Logger.Log(HelixToolkit.Logger.LogLevel.Warning, "SurfaceD3D front buffer changed.");
+                frontBufferChange = true;
                 if (EffectsManager.Device.DeviceRemovedReason.Success)
                 {
                     StopRendering();
