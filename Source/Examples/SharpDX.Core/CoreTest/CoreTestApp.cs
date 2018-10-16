@@ -35,6 +35,7 @@ namespace CoreTest
         private MaterialCore[] materialList;
         private long previousTime;
         private bool resizeRequested = false;
+        private IO io = ImGui.GetIO();
 
         public CoreTestApp(Form window)
         {
@@ -43,6 +44,10 @@ namespace CoreTest
             window.ResizeEnd += Window_ResizeEnd;
             window.Load += Window_Load;
             window.FormClosing += Window_FormClosing;
+            window.MouseMove += Window_MouseMove;
+            window.MouseDown += Window_MouseDown;
+            window.MouseUp += Window_MouseUp;
+            window.MouseWheel += Window_MouseWheel;
             effectsManager = new DefaultEffectsManager();
             effectsManager.AddTechnique(ImGuiNode.RenderTechnique);
             viewport.EffectsManager = effectsManager;           
@@ -55,6 +60,8 @@ namespace CoreTest
             viewport.BackgroundColor = new Color4(0.45f, 0.55f, 0.6f, 1f);
             InitializeScene();
         }
+
+
 
         private void InitializeScene()
         {
@@ -171,7 +178,7 @@ namespace CoreTest
             {
                 if (resizeRequested)
                 {
-                    viewport.Resize(window.Width, window.Height);
+                    viewport.Resize(window.ClientSize.Width, window.ClientSize.Height);
                     resizeRequested = false;
                     return;
                 }
@@ -242,7 +249,51 @@ namespace CoreTest
 
         private void Window_Load(object sender, EventArgs e)
         {
-            viewport.StartD3D(window.Width, window.Height);
+            viewport.StartD3D(window.ClientSize.Width, window.ClientSize.Height);
         }
+        #region Handle mouse event
+        private void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            io.MousePosition = new System.Numerics.Vector2(e.X, e.Y);
+            Debug.WriteLine("Mouse: " + e.Location);
+        }
+
+        private void Window_MouseUp(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    io.MouseDown[0] = false;
+                    break;
+                case MouseButtons.Right:
+                    io.MouseDown[1] = false;
+                    break;
+                case MouseButtons.Middle:
+                    io.MouseDown[2] = false;
+                    break;
+            }
+        }
+
+        private void Window_MouseDown(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    io.MouseDown[0] = true;
+                    break;
+                case MouseButtons.Right:
+                    io.MouseDown[1] = true;
+                    break;
+                case MouseButtons.Middle:
+                    io.MouseDown[2] = true;
+                    break;
+            }
+        }
+
+        private void Window_MouseWheel(object sender, MouseEventArgs e)
+        {
+            io.MouseWheel = e.Delta;
+        }
+        #endregion
     }
 }
