@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ImGuiNET;
-using System.Linq;
-using System.IO;
+﻿using ImGuiNET;
 using SharpDX;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HelixToolkit.SharpDX.Core.Model
 {
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
-    using UWP.Core;   
-    using UWP;
-    using UWP.Model.Scene;
-    using UWP.Utilities;
-    using UWP.Render;
-    using System.Runtime.InteropServices;
-    using HelixToolkit.UWP.Shaders;
     using global::SharpDX.DXGI;
+    using UWP.Core.Components;
+    using UWP.Shaders;
+    using UWP;
+    using UWP.Core;
+    using UWP.Model.Scene;
+    using UWP.Render;
+    using UWP.Utilities;
 
     public class ImGuiNode : SceneNode
     {
@@ -30,11 +28,15 @@ namespace HelixToolkit.SharpDX.Core.Model
             new InputElement("COLOR", 0, Format.R8G8B8A8_UNorm,  InputElement.AppendAligned, 0),
         };
 
-        public static readonly TechniqueDescription RenderTechnique = new TechniqueDescription(ImGuiRenderTechnique)
+        public static readonly TechniqueDescription RenderTechnique;
+
+        static ImGuiNode()
         {
-            InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSSprite2D,
+            RenderTechnique = new TechniqueDescription(ImGuiRenderTechnique)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSSprite2D,
                 VSInputImGui2D),
-            PassDescriptions = new[]
+                PassDescriptions = new[]
             {
                 new ShaderPassDescription(DefaultPassNames.Default)
                 {
@@ -43,25 +45,28 @@ namespace HelixToolkit.SharpDX.Core.Model
                         DefaultVSShaderDescriptions.VSSprite2D,
                         DefaultPSShaderDescriptions.PSSprite2D,
                     },
-                    Topology = PrimitiveTopology.TriangleStrip,
+                    Topology = PrimitiveTopology.TriangleList,
                     BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                     DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                     RasterStateDescription = DefaultRasterDescriptions.RSSpriteCW,
                 }
             }
-        };
+            };
+        }
         #endregion
         private ImGui2DBufferModel bufferModel;
 
+        private TimeSpan lastTime;
+
         protected override RenderCore OnCreateRenderCore()
         {
-            return new Sprite2DRenderCore();
+            return new ImGuiRenderCore();
         }
 
         protected override void OnDetach()
         {
             bufferModel = null;
-            (RenderCore as Sprite2DRenderCore).TextureView = null;
+            (RenderCore as ImGuiRenderCore).TextureView = null;
             base.OnDetach();
         }
 
@@ -70,9 +75,14 @@ namespace HelixToolkit.SharpDX.Core.Model
             return host.EffectsManager[ImGuiRenderTechnique];
         }
 
-        protected override bool CanRender(RenderContext context)
+        public override void Update(RenderContext context)
         {
-            return base.CanRender(context) && bufferModel.SpriteCount != 0 && bufferModel.IndexCount != 0;
+            base.Update(context);
+            var io = ImGui.GetIO();
+            var elapse = context.TimeStamp - lastTime;
+            lastTime = context.TimeStamp;
+            io.DeltaTime = (float)elapse.TotalSeconds;
+            io.DisplaySize = new System.Numerics.Vector2((int)context.ActualWidth, (int)context.ActualHeight);
         }
 
         protected override bool CanHitTest(RenderContext context)
@@ -87,100 +97,195 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         protected override void OnAttached()
         {
+            lastTime = TimeSpan.Zero;
             bufferModel = Collect(new ImGui2DBufferModel());
-            bufferModel.Sprites = new DrawVert[1024];
-            bufferModel.Indices = new ushort[2048];
-            (RenderCore as Sprite2DRenderCore).Buffer = bufferModel;
+            (RenderCore as ImGuiRenderCore).Buffer = bufferModel;
             var io = ImGui.GetIO();
-            
-            var textureData = io.FontAtlas.GetTexDataAsRGBA32();
-            var stream = new byte[textureData.BytesPerPixel * textureData.Width * textureData.Height];
 
-            
+            var textureData = io.FontAtlas.GetTexDataAsRGBA32();
+            var textureView = Collect(new ShaderResourceViewProxy(EffectsManager.Device));
             unsafe
             {
-                var ptr = textureData.Pixels;
-                for(int i=0; i < stream.Length; ++i)
-                {
-                    stream[i] = *ptr++;
-                }
-       
+                textureView.CreateView((IntPtr)textureData.Pixels, textureData.Width, textureData.Height, 
+                    Format.R8G8B8A8_UNorm);
             }
-            var textureView = Collect(new ShaderResourceViewProxy(EffectsManager.Device));
-            textureView.CreateView(stream, textureData.Width, textureData.Height,
-                global::SharpDX.DXGI.Format.R8G8B8A8_UNorm);    
+            io.FontAtlas.SetTexID(1);
             io.FontAtlas.ClearTexData();
-            (RenderCore as Sprite2DRenderCore).TextureView = textureView;
+            (RenderCore as ImGuiRenderCore).TextureView = textureView;
+            ImGui.NewFrame();
             base.OnAttached();
         }
+    }
 
-        public override void Update(RenderContext context)
+    public sealed class ImGuiRenderCore : RenderCore
+    {
+        public ImGui2DBufferModel Buffer { set; get; }
+
+        public Matrix ProjectionMatrix
         {
-            base.Update(context);
-            ImGui.GetIO().DisplaySize = new System.Numerics.Vector2((float)context.ActualWidth, (float)context.ActualHeight);
-            ImGui.NewFrame();
+            set; get;
+        } = Matrix.Identity;
+
+        public ShaderResourceViewProxy TextureView;
+
+        private int texSlot;
+
+        private int samplerSlot;
+
+        private ShaderPass spritePass;
+
+        private SamplerStateProxy sampler;
+
+        private readonly ConstantBufferComponent globalTransformCB;
+        public ImGuiRenderCore()
+            : base(RenderType.ScreenSpaced)
+        {
+            globalTransformCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes)));
+        }
+
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (Buffer == null || TextureView == null || spritePass.IsNULL)
+            {
+                return;
+            }
+            
             ImGui.Text("Test ImGui");
+            bool showDemo = true;
+            
+            ImGuiNative.igShowDemoWindow(ref showDemo);
+
             ImGui.Render();
+            if (!UpdateBuffer(deviceContext))
+            {
+                return;
+            }
+
+            IO io = ImGui.GetIO();
+
+            ProjectionMatrix = Matrix.OrthoOffCenterRH(
+                0f,
+                io.DisplaySize.X,
+                io.DisplaySize.Y,
+                0.0f,
+                -1.0f,
+                1.0f);
+
+            int slot = 0;
+            if (!Buffer.AttachBuffers(deviceContext, ref slot, EffectTechnique.EffectsManager))
+            {
+                return;
+            }
+            var globalTrans = context.GlobalTransform;
+            globalTrans.Projection = ProjectionMatrix;
+            globalTransformCB.Upload(deviceContext, ref globalTrans);
+            spritePass.BindShader(deviceContext);
+            spritePass.BindStates(deviceContext, StateType.All);
+            spritePass.PixelShader.BindTexture(deviceContext, texSlot, TextureView);
+            spritePass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
+            deviceContext.SetViewport(0, 0, io.DisplaySize.X, io.DisplaySize.Y);
+            #region Render
+            unsafe
+            {
+                var draw_data = ImGui.GetDrawData();
+                int idx_offset = 0;
+                int vtx_offset = 0;
+                for (int n = 0; n < draw_data->CmdListsCount; n++)
+                {
+                    NativeDrawList* cmd_list = draw_data->CmdLists[n];
+                    for (int cmd_i = 0; cmd_i < cmd_list->CmdBuffer.Size; cmd_i++)
+                    {
+                        DrawCmd* pcmd = &(((DrawCmd*)cmd_list->CmdBuffer.Data)[cmd_i]);
+                        if (pcmd->UserCallback != IntPtr.Zero)
+                        {
+
+                        }
+                        else
+                        {
+                            deviceContext.SetScissorRectangle(
+                                (int)pcmd->ClipRect.X,
+                                (int)pcmd->ClipRect.Y,
+                                (int)(pcmd->ClipRect.Z),
+                                (int)(pcmd->ClipRect.W));
+
+                            deviceContext.DrawIndexed((int)pcmd->ElemCount,
+                                idx_offset, vtx_offset);
+                        }
+
+                        idx_offset += (int)pcmd->ElemCount;
+                    }
+                    vtx_offset += cmd_list->VtxBuffer.Size;
+                }
+                #endregion
+            }
+            ImGui.NewFrame();
+            RaiseInvalidateRender();
+        }
+
+        private bool UpdateBuffer(DeviceContextProxy deviceContext)
+        {
             unsafe
             {
                 var data = ImGui.GetDrawData();
                 if (data->CmdListsCount == 0)
                 {
-                    return;
+                    return false;
                 }
-                bufferModel.SpriteCount = data->TotalVtxCount;
-                if(bufferModel.Sprites.Length < bufferModel.SpriteCount)
-                {
-                    bufferModel.Sprites = new DrawVert[bufferModel.SpriteCount];
-                }
-
-
-                bufferModel.IndexCount = data->TotalIdxCount;
-                if (bufferModel.Indices.Length < bufferModel.IndexCount)
-                {
-                    bufferModel.Indices = new ushort[bufferModel.IndexCount];
-                }
+                Buffer.SpriteCount = data->TotalVtxCount;
+                Buffer.IndexCount = data->TotalIdxCount;
                 
-                var vertArray = bufferModel.Sprites;
-                var idxArray = bufferModel.Indices;
-                int vertSize = bufferModel.SpriteCount * sizeof(DrawVert);
-                int idxSize = bufferModel.IndexCount * sizeof(ushort);
-                fixed(void* vertPtr = vertArray)
+                Buffer.VertexBufferInternal.EnsureBufferCapacity(deviceContext, data->TotalVtxCount, data->TotalVtxCount * 2);
+                Buffer.IndexBufferInternal.EnsureBufferCapacity(deviceContext, data->TotalIdxCount, data->TotalIdxCount * 2);
+                Buffer.VertexBufferInternal.MapBuffer(deviceContext, (stream) => 
                 {
-                    byte* vPtr = (byte*)vertPtr;
-                    fixed(void* idxPtr = idxArray)
+                    for (int i = 0; i < data->CmdListsCount; i++)
                     {
-                        byte* iPtr = (byte*)idxPtr;
-                        for (int i = 0; i < data->CmdListsCount; i++)
-                        {
-                            NativeDrawList* cmd_list = data->CmdLists[i];
-                            System.Buffer.MemoryCopy(cmd_list->VtxBuffer.Data, vPtr, 
-                                vertSize, cmd_list->VtxBuffer.Size * sizeof(DrawVert));
-                            vPtr += cmd_list->VtxBuffer.Size * sizeof(DrawVert);
-
-                            System.Buffer.MemoryCopy(cmd_list->IdxBuffer.Data, iPtr,
-                                idxSize, cmd_list->IdxBuffer.Size * sizeof(ushort));
-                            vertSize -= cmd_list->VtxBuffer.Size * sizeof(DrawVert);
-                            idxSize -= cmd_list->IdxBuffer.Size * sizeof(ushort);
-                        }
+                        NativeDrawList* cmd_list = data->CmdLists[i];
+                        int vCount = cmd_list->VtxBuffer.Size * sizeof(DrawVert);
+                        stream.WriteRange((IntPtr)cmd_list->VtxBuffer.Data, vCount);
                     }
-                }
-
-                IO io = ImGui.GetIO();
-
-                (RenderCore as Sprite2DRenderCore).ProjectionMatrix = Matrix.OrthoOffCenterLH(
-                    0f,
-                    io.DisplaySize.X,
-                    io.DisplaySize.Y,
-                    0.0f,
-                    -1.0f,
-                    1.0f);
+                });
+                Buffer.IndexBufferInternal.MapBuffer(deviceContext, (stream) => 
+                {
+                    for (int i = 0; i < data->CmdListsCount; i++)
+                    {
+                        NativeDrawList* cmd_list = data->CmdLists[i];
+                        int iCount = cmd_list->IdxBuffer.Size * sizeof(ushort);
+                        stream.WriteRange((IntPtr)cmd_list->IdxBuffer.Data, iCount);
+                    }
+                });
             }
+            return true;
+        }
 
+        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+
+        }
+
+        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+
+        }
+
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            spritePass = technique[DefaultPassNames.Default];
+            texSlot = spritePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SpriteTB);
+            samplerSlot = spritePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SpriteSampler);
+            sampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(DefaultSamplers.PointSamplerWrap));
+            return true;
+        }
+
+        protected override void OnDetach()
+        {
+            TextureView = null;
+            sampler = null;
+            base.OnDetach();
         }
     }
 
-    
+
     public sealed class ImGui2DBufferModel : ReferenceCountDisposeObject, IGUID, IAttachableBufferModel
     {
         public PrimitiveTopology Topology { get; set; } = PrimitiveTopology.TriangleList;
@@ -193,42 +298,34 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         public Guid GUID { get; } = Guid.NewGuid();
 
-        public DrawVert[] Sprites;
         public int SpriteCount;
-
-        public ushort[] Indices;
         public int IndexCount;
 
-        private readonly DynamicBufferProxy vertextBuffer;
+        internal readonly DynamicBufferProxy VertexBufferInternal;
+
+        internal readonly DynamicBufferProxy IndexBufferInternal;
 
         public ImGui2DBufferModel()
         {
-            vertextBuffer = Collect(new DynamicBufferProxy(global::SharpDX.Utilities.SizeOf<DrawVert>(), BindFlags.VertexBuffer));
-            VertexBuffer[0] = vertextBuffer;
-            IndexBuffer = Collect(new DynamicBufferProxy(sizeof(ushort), BindFlags.IndexBuffer));
+            VertexBufferInternal = Collect(new DynamicBufferProxy(Utilities.SizeOf<DrawVert>(), BindFlags.VertexBuffer));
+            VertexBuffer[0] = VertexBufferInternal;
+            IndexBuffer = IndexBufferInternal = Collect(new DynamicBufferProxy(sizeof(ushort), BindFlags.IndexBuffer));
         }
 
         public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
-            if (UpdateBuffers(context, deviceResources))
+            if (SpriteCount == 0 || IndexCount == 0)
             {
-                context.SetVertexBuffers(0, new VertexBufferBinding(vertextBuffer.Buffer, vertextBuffer.StructureSize, vertextBuffer.Offset));
-                context.SetIndexBuffer(IndexBuffer.Buffer, global::SharpDX.DXGI.Format.R16_UInt, IndexBuffer.Offset);
-                return true;
+                return false;
             }
-            return false;
+            context.SetVertexBuffers(0, new VertexBufferBinding(VertexBufferInternal.Buffer, VertexBufferInternal.StructureSize, VertexBufferInternal.Offset));
+            context.SetIndexBuffer(IndexBufferInternal.Buffer, Format.R16_UInt, IndexBufferInternal.Offset);
+            return true;
         }
 
         public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
         {
-            if (SpriteCount == 0 || IndexCount == 0 || Sprites == null || Indices == null || Sprites.Length < SpriteCount || Indices.Length < IndexCount)
-            {
-                return false;
-            }
-            vertextBuffer.UploadDataToBuffer(context, Sprites, SpriteCount);
-            IndexBuffer.UploadDataToBuffer(context, Indices, IndexCount);
             return true;
         }
     }
-
 }

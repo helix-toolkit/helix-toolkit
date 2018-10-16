@@ -1657,7 +1657,7 @@ namespace HelixToolkit.UWP
                             DefaultVSShaderDescriptions.VSSprite2D,
                             DefaultPSShaderDescriptions.PSSprite2D,
                         },
-                        Topology = PrimitiveTopology.TriangleStrip,
+                        Topology = PrimitiveTopology.TriangleList,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         RasterStateDescription = DefaultRasterDescriptions.RSSpriteCW,
