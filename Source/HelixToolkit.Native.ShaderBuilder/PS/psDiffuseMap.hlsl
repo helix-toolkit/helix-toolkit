@@ -14,6 +14,10 @@ float4 main(PSInput input) : SV_Target
     {
 		c *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
+    if (bHasNormalMap)
+    {
+        return c;
+    }
     float3 dir = normalize(vEyePos - input.wp.xyz);
     float f = clamp(0.5 + 0.5 * abs(dot(dir, normalize(input.n))), 0, 1);
     c.rgb *= f;
