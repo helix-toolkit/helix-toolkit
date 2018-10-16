@@ -58,6 +58,8 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         private TimeSpan lastTime;
 
+        public event EventHandler UpdatingImGuiUI;
+
         protected override RenderCore OnCreateRenderCore()
         {
             return new ImGuiRenderCore();
@@ -83,6 +85,7 @@ namespace HelixToolkit.SharpDX.Core.Model
             lastTime = context.TimeStamp;
             io.DeltaTime = (float)elapse.TotalSeconds;
             io.DisplaySize = new System.Numerics.Vector2((int)context.ActualWidth, (int)context.ActualHeight);
+            UpdatingImGuiUI?.Invoke(this, EventArgs.Empty);
         }
 
         protected override bool CanHitTest(RenderContext context)
@@ -148,12 +151,7 @@ namespace HelixToolkit.SharpDX.Core.Model
             if (Buffer == null || TextureView == null || spritePass.IsNULL)
             {
                 return;
-            }
-            
-            ImGui.Text("Test ImGui");
-            bool showDemo = true;
-            
-            ImGuiNative.igShowDemoWindow(ref showDemo);
+            }        
 
             ImGui.Render();
             if (!UpdateBuffer(deviceContext))

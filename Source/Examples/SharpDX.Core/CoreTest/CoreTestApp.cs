@@ -89,17 +89,17 @@ namespace CoreTest
             materialList = materials.Values.ToArray();
             var materialCount = materialList.Length;
 
-            //for (int i = 0; i < NumItems; ++i)
-            //{
-            //    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
-            //    groupSphere.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
-            //}
+            for (int i = 0; i < NumItems; ++i)
+            {
+                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
+                groupSphere.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+            }
 
-            //for (int i = 0; i < NumItems; ++i)
-            //{
-            //    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-            //    groupBox.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
-            //}
+            for (int i = 0; i < NumItems; ++i)
+            {
+                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                groupBox.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+            }
 
             //for(int i=0; i< NumItems; ++i)
             //{
@@ -118,10 +118,17 @@ namespace CoreTest
             groupSphere.AddChildNode(groupPoints);
             groupSphere.AddChildNode(groupLines);
 
-            //var viewbox = new ViewBoxNode();
-            //viewport.Items.Add(viewbox);
-            viewport.Items.Add(new ImGuiNode());
+            var viewbox = new ViewBoxNode();
+            viewport.Items.Add(viewbox);
+            var imGui = new ImGuiNode();
+            viewport.Items.Add(imGui);
+            imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
+        }
 
+        private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
+        {
+            bool open = true;
+            ImGuiNative.igShowDemoWindow(ref open);
         }
 
         private void InitializeMaterials()
