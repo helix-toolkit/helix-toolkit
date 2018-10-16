@@ -9,6 +9,8 @@ All notable changes to this project will be documented in this file.
 4. Supports Billboard 2D Rotation. Added Angle property in TextInfo and BillboardSingleImage. (WPF.SharpDX and UWP)
 5. Add BillboardImage3D to support sub image texture billboard. (WPF.SharpDX and UWP)
 6. Supports custom bitmap font for BillboardText3D. (WPF.SharpDX and UWP)
+7. Supports Billboard Text Batching [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki/Billboard-Types-and-Usage). (WPF.SharpDX and UWP)
+7. Supports UnLit for DiffuseMaterial. (WPF.SharpDX and UWP)
 
 ### Improvement and Changes
 1. Clean up render core. Obsolete RenderCoreBase. Move to material based rendering. (WPF.SharpDX and UWP)
@@ -21,7 +23,8 @@ All notable changes to this project will be documented in this file.
 1. Transparency of the material SharpDX UWP bug #925  (WPF.SharpDX and UWP)
 2. stl material issue #917 (WPF)
 3. Is it possible to render the content of a Viewport3DX to an image (png/bmp) with higher DPI? #920 (WPF.SharpDX and UWP)
-
+4. NullRef Exception in BufferComponent (SharpDX) SharpDX UWP bug taken #966  (WPF.SharpDX and UWP)
+5. 
 
 ## [2.4.0] - 2018-8-26
 ### Added
