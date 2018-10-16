@@ -339,7 +339,6 @@ namespace HelixToolkit.UWP.Utilities
         /// <summary>
         /// Initializes the specified device.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="device">The device.</param>
         /// <param name="count">The count.</param>
         /// <param name="minBufferCount">The minimum buffer count.</param>
