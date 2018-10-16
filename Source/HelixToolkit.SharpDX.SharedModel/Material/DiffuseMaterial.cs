@@ -128,7 +128,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseColor = DiffuseColor,
                 DiffuseMap = DiffuseMap,
                 UVTransform = UVTransform,
-                DiffuseMapSampler = DiffuseMapSampler
+                DiffuseMapSampler = DiffuseMapSampler,
+                EnableUnLit = EnableUnLit,
             };
         }
 
@@ -141,7 +142,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMap = DiffuseMap,
                 DiffuseMapSampler = DiffuseMapSampler,
                 UVTransform = UVTransform,
-                Name = Name
+                Name = Name,
+                EnableUnLit = EnableUnLit,
             };
         }
 #endif
