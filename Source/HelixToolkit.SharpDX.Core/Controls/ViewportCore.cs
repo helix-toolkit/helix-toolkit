@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using System;
 using System.Collections.Generic;
 using global::SharpDX;
 
@@ -142,6 +146,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
             }
         }
 
+        public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)RenderHost.ActualWidth, (int)RenderHost.ActualHeight); } }
+
+        public RenderContext RenderContext { get => RenderHost.RenderContext; }
+
         private bool enableVSync = true;
         /// <summary>
         /// Gets or sets a value indicating whether [enable vertical synchronize].
@@ -215,7 +223,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             RenderHost.UpdateAndRender();
         }
 
-        public void StartD3D(double width, double height)
+        public void StartD3D(int width, int height)
         {
             RenderHost.StartD3D(width, height);
         }
@@ -251,12 +259,12 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public void InvalidateRender()
         {
-            RenderHost?.InvalidateRender();
+            RenderHost.InvalidateRender();
         }
 
         public void InvalidateSceneGraph()
         {
-            RenderHost?.InvalidateSceneGraph();
+            RenderHost.InvalidateSceneGraph();
         }
 
         public void Update(TimeSpan timeStamp)
@@ -266,7 +274,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public void Resize(int width, int height)
         {
-            RenderHost?.Resize(width, height);
+            RenderHost.Resize(width, height);
         }
     }
 }

@@ -36,10 +36,12 @@ namespace CoreTest
         private long previousTime;
         private bool resizeRequested = false;
         private IO io = ImGui.GetIO();
+        private CameraController cameraController;
 
         public CoreTestApp(Form window)
         {
             viewport = new ViewportCore(window.Handle);
+            cameraController = new CameraController(viewport);
             this.window = window;
             window.ResizeEnd += Window_ResizeEnd;
             window.Load += Window_Load;
@@ -63,6 +65,7 @@ namespace CoreTest
             viewport.BackgroundColor = new Color4(0.45f, 0.55f, 0.6f, 1f);
             InitializeScene();
         }
+
 
 
         private void InitializeScene()
@@ -201,28 +204,30 @@ namespace CoreTest
                 var t = Stopwatch.GetTimestamp();
                 var elapse = t - previousTime;
                 previousTime = t;
-                var angle = ((double)elapse / Stopwatch.Frequency) * 0.05;
-                var camRotate = Matrix.RotationAxis(Vector3.UnitY, (float)(angle * Math.PI));
-                camera.Position = Vector3.TransformCoordinate(pos, camRotate);
-                camera.LookDirection = -camera.Position;
-                if (isGoingOut)
-                {
-                    camera.Position += 0.05f * Vector3.Normalize(camera.Position);
-                    if(camera.Position.LengthSquared() > 10000)
-                    {
-                        isGoingOut = false;
-                    }
-                }
-                else
-                {
-                    camera.Position -= 0.05f * Vector3.Normalize(camera.Position);
-                    if(camera.Position.LengthSquared() < 2500)
-                    {
-                        isGoingOut = true;
-                    }
-                }
+                //var angle = ((double)elapse / Stopwatch.Frequency) * 0.05;
+                //var camRotate = Matrix.RotationAxis(Vector3.UnitY, (float)(angle * Math.PI));
+                //camera.Position = Vector3.TransformCoordinate(pos, camRotate);
+                //camera.LookDirection = -camera.Position;
+                //if (isGoingOut)
+                //{
+                //    camera.Position += 0.05f * Vector3.Normalize(camera.Position);
+                //    if(camera.Position.LengthSquared() > 10000)
+                //    {
+                //        isGoingOut = false;
+                //    }
+                //}
+                //else
+                //{
+                //    camera.Position -= 0.05f * Vector3.Normalize(camera.Position);
+                //    if(camera.Position.LengthSquared() < 2500)
+                //    {
+                //        isGoingOut = true;
+                //    }
+                //}
+                cameraController.OnTimeStep();
                 viewport.Render();
-                viewport.InvalidateRender();
+                if(io.WantCaptureMouse || io.WantCaptureKeyboard || io.WantTextInput)
+                    viewport.InvalidateRender();
 #if TESTADDREMOVE
                 if (groupSphere.Items.Count > 0 && !isAddingNode)
                 {
@@ -269,8 +274,14 @@ namespace CoreTest
         #region Handle mouse event
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            io.MousePosition = new System.Numerics.Vector2(e.X, e.Y);
-            Debug.WriteLine("Mouse: " + e.Location);
+            if (!cameraController.IsMouseCaptured)
+            {
+                io.MousePosition = new System.Numerics.Vector2(e.X, e.Y);
+            }
+            else if (!io.WantCaptureMouse)
+            {
+                cameraController.MouseMove(new Vector2(e.X, e.Y));
+            }
         }
 
         private void Window_MouseUp(object sender, MouseEventArgs e)
@@ -287,27 +298,79 @@ namespace CoreTest
                     io.MouseDown[2] = false;
                     break;
             }
+            if (cameraController.IsMouseCaptured)
+            {
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        break;
+                    case MouseButtons.Right:
+                        cameraController.EndRotate(new Vector2(e.X, e.Y));
+                        break;
+                    case MouseButtons.Middle:
+                        cameraController.EndPan(new Vector2(e.X, e.Y));
+                        break;
+                }
+            }
         }
 
         private void Window_MouseDown(object sender, MouseEventArgs e)
         {
-            switch (e.Button)
+            if (!cameraController.IsMouseCaptured)
             {
-                case MouseButtons.Left:
-                    io.MouseDown[0] = true;
-                    break;
-                case MouseButtons.Right:
-                    io.MouseDown[1] = true;
-                    break;
-                case MouseButtons.Middle:
-                    io.MouseDown[2] = true;
-                    break;
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        io.MouseDown[0] = true;
+                        break;
+                    case MouseButtons.Right:
+                        io.MouseDown[1] = true;
+                        break;
+                    case MouseButtons.Middle:
+                        io.MouseDown[2] = true;
+                        break;
+                }
+                if (!io.WantCaptureMouse)
+                {
+                    switch (e.Button)
+                    {
+                        case MouseButtons.Left:
+                            break;
+                        case MouseButtons.Right:
+                            cameraController.StartRotate(new Vector2(e.X, e.Y));
+                            break;
+                        case MouseButtons.Middle:
+                            cameraController.StartPan(new Vector2(e.X, e.Y));
+                            break;
+                    }
+                }
+            }
+            else if(!io.WantCaptureMouse)
+            {
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        break;
+                    case MouseButtons.Right:
+                        cameraController.StartRotate(new Vector2(e.X, e.Y));
+                        break;
+                    case MouseButtons.Middle:
+                        cameraController.StartPan(new Vector2(e.X, e.Y));
+                        break;
+                }
             }
         }
 
         private void Window_MouseWheel(object sender, MouseEventArgs e)
         {
-            io.MouseWheel = e.Delta;
+            if (!cameraController.IsMouseCaptured)
+            {
+                io.MouseWheel = e.Delta;
+            }
+            if(!io.WantCaptureMouse)
+            {
+                cameraController.MouseWheel(-e.Delta, new Vector2(e.X, e.Y));
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
