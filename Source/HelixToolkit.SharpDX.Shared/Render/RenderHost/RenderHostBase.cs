@@ -213,7 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         }
                         else if(isLoaded)
                         {
-                            StartD3D(ActualWidth, ActualHeight);
+                            StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                         }
                     }
                     else
@@ -272,14 +272,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private int height = MinHeight;
+        private float height = MinHeight;
         /// <summary>
         /// Gets or sets the actual height.
         /// </summary>
         /// <value>
         /// The actual height.
         /// </value>
-        public int ActualHeight
+        public float ActualHeight
         {
             private set
             {
@@ -291,14 +291,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private int width = MinWidth;
+        private float width = MinWidth;
         /// <summary>
         /// Gets or sets the actual width.
         /// </summary>
         /// <value>
         /// The actual width.
         /// </value>
-        public int ActualWidth
+        public float ActualWidth
         {
             private set
             {
@@ -749,7 +749,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             else
             {
                 EndD3D();
-                StartD3D(this.ActualWidth, this.ActualHeight);
+                StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
             }
         }
         /// <summary>
@@ -965,7 +965,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (IsInitialized)
             {
                 StopRendering();
-                var texture = renderBuffer.Resize(ActualWidth, ActualHeight);
+                var texture = renderBuffer.Resize((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                 OnNewRenderTargetTexture?.Invoke(this, new Texture2DArgs(texture));
                 if (Viewport != null)
                 {
@@ -993,7 +993,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 syncContext.Post((o) => 
                 {
-                    StartD3D(ActualWidth, ActualHeight);
+                    StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                 }, null);
             }
         }

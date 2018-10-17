@@ -150,14 +150,14 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The actual height.
         /// </value>
-        int ActualHeight { get; }
+        float ActualHeight { get; }
         /// <summary>
         /// Gets the actual width.
         /// </summary>
         /// <value>
         /// The actual width.
         /// </value>
-        int ActualWidth { get; }
+        float ActualWidth { get; }
 
         /// <summary>
         /// Indicates if DPFCanvas busy on rendering.

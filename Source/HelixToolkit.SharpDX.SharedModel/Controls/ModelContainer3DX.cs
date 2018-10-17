@@ -127,12 +127,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return CurrentRenderHost != null ? CurrentRenderHost.Renderer : null;
+                return CurrentRenderHost?.Renderer;
             }
         }
 
-        public new int ActualWidth { get => 0; }
-        public new int ActualHeight { get => 0; }
+        public new float ActualWidth { get => 0; }
+        public new float ActualHeight { get => 0; }
 
         /// <summary>
         /// Gets the current frame renderables for rendering.
