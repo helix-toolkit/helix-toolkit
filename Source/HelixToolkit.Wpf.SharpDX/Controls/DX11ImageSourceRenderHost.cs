@@ -78,6 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             {
                 return;
             }
+            Logger.Log(HelixToolkit.Logger.LogLevel.Warning, $"SurfaceD3D front buffer changed. Value = {(bool)e.NewValue}");
             if ((bool)e.NewValue)
             {
                 frontBufferChange = false;
@@ -107,8 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 }
             }
             else
-            {
-                Logger.Log(HelixToolkit.Logger.LogLevel.Warning, "SurfaceD3D front buffer changed.");
+            {               
                 frontBufferChange = true;
                 if (EffectsManager.Device.DeviceRemovedReason.Success)
                 {
@@ -116,6 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 }
                 else
                 {
+                    surfaceD3D?.SetRenderTargetDX11(null);
                     EndD3D();
                 }
             }
