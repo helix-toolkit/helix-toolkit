@@ -100,7 +100,7 @@ namespace HelixToolkit.UWP
             {
                 try
                 {
-                    renderHost.Resize(ActualWidth, ActualHeight);
+                    renderHost.Resize((int)ActualWidth, (int)ActualHeight);
                 }
                 catch (Exception ex)
                 {
@@ -122,7 +122,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         private bool StartD3D()
         {
-            RenderHost.StartD3D(ActualWidth, ActualHeight);
+            RenderHost.StartD3D((int)ActualWidth, (int)ActualHeight);
             return true;
         }
 

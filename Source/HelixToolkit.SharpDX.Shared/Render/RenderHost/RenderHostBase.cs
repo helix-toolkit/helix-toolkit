@@ -272,14 +272,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private double height = MinHeight;
+        private int height = MinHeight;
         /// <summary>
         /// Gets or sets the actual height.
         /// </summary>
         /// <value>
         /// The actual height.
         /// </value>
-        public double ActualHeight
+        public int ActualHeight
         {
             private set
             {
@@ -291,14 +291,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private double width = MinWidth;
+        private int width = MinWidth;
         /// <summary>
         /// Gets or sets the actual width.
         /// </summary>
         /// <value>
         /// The actual width.
         /// </value>
-        public double ActualWidth
+        public int ActualWidth
         {
             private set
             {
@@ -755,7 +755,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// 
         /// </summary>
-        public void StartD3D(double width, double height)
+        public void StartD3D(int width, int height)
         {
             Log(LogLevel.Information, $"Width = {width}; Height = {height};");
             if (IsInitialized)
@@ -953,7 +953,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public void Resize(double width, double height)
+        public void Resize(int width, int height)
         {
             if(ActualWidth == width && ActualHeight == height)
             {
@@ -965,7 +965,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (IsInitialized)
             {
                 StopRendering();
-                var texture = renderBuffer.Resize((int)ActualWidth, (int)ActualHeight);
+                var texture = renderBuffer.Resize(ActualWidth, ActualHeight);
                 OnNewRenderTargetTexture?.Invoke(this, new Texture2DArgs(texture));
                 if (Viewport != null)
                 {

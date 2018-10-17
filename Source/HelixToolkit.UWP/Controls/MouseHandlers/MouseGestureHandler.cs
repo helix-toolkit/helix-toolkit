@@ -27,12 +27,12 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseGestureHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
+        /// <param name="cameraController">
         /// The viewport.
         /// </param>
-        protected MouseGestureHandler(CameraController viewport)
+        protected MouseGestureHandler(CameraController cameraController)
         {
-            this.Controller = viewport;
+            this.Controller = cameraController;
             //this.ManipulationWatch = new Stopwatch();
         }
 

@@ -98,6 +98,96 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
                         target.Y,
                         target.Z);
         }
+
+#if CORE
+        private Vector3 targetPosition;
+        private Vector3 targetLookDirection;
+        private Vector3 targetUpDirection;
+        private Vector3 oldPosition;
+        private Vector3 oldLookDir;
+        private Vector3 oldUpDir;
+        private float aniTime = 0;
+        private float accumTime = 0;
+        private long prevTicks = 0;
+        /// <summary>
+        /// Animates to.
+        /// </summary>
+        /// <param name="newPosition">The new position.</param>
+        /// <param name="newDirection">The new direction.</param>
+        /// <param name="newUpDirection">The new up direction.</param>
+        /// <param name="animationTime">The animation time.</param>
+        public void AnimateTo(
+            Vector3 newPosition,
+            Vector3 newDirection,
+            Vector3 newUpDirection,
+            float animationTime)
+        {
+            if (animationTime == 0)
+            {
+                Position = newPosition;
+                LookDirection = newDirection;
+                UpDirection = newUpDirection;
+                aniTime = 0;
+            }
+            else
+            {
+                targetPosition = newPosition;
+                targetLookDirection = newDirection;
+                targetUpDirection = newUpDirection;
+                oldPosition = Position;
+                oldLookDir = LookDirection;
+                oldUpDir = UpDirection;
+                aniTime = animationTime;
+                accumTime = 1;
+                prevTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+                OnUpdateAnimation(0);
+            }
+        }
+        /// <summary>
+        /// Called when [time step] to update camera animation.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool OnTimeStep()
+        {
+            var ticks = System.Diagnostics.Stopwatch.GetTimestamp();
+            var ellapsed = (float)(ticks - prevTicks) / System.Diagnostics.Stopwatch.Frequency * 1000;
+            prevTicks = ticks;
+            return OnUpdateAnimation(ellapsed);
+        }
+
+        protected virtual bool OnUpdateAnimation(float ellapsed)
+        {
+            if (aniTime == 0)
+            {
+                return false;
+            }
+            accumTime += ellapsed;
+            if (accumTime > aniTime)
+            {
+                Position = targetPosition;
+                LookDirection = targetLookDirection;
+                UpDirection = targetUpDirection;
+                aniTime = 0;
+                return false;
+            }
+            else
+            {
+                var l = accumTime / aniTime;
+                var nextPos = Vector3.Lerp(oldPosition, targetPosition, l);
+                var nextLook = Vector3.Lerp(oldLookDir, targetLookDirection, l);
+                var nextUp = Vector3.Lerp(oldUpDir, targetUpDirection, l);
+                Position = nextPos;
+                LookDirection = nextLook;
+                UpDirection = nextUp;
+                return true;
+            }
+        }
+
+        public void StopAnimation()
+        {
+            aniTime = 0;
+        }
+#endif
     }
 
     public class MatrixCameraCore : CameraCore
@@ -203,6 +293,51 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
         {
             return base.ToString() + "\n" + string.Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", Width);
         }
+
+#if CORE
+        private float oldWidth;
+        private float newWidth;
+        private float accumTime;
+        private float aniTime;
+
+        public void AnimateWidth(float newWidth, float animationTime)
+        {
+            if (animationTime == 0)
+            {
+                Width = newWidth;
+                animationTime = 0;
+            }
+            else
+            {
+                oldWidth = Width;
+                this.newWidth = newWidth;
+                accumTime = 1;
+                aniTime = animationTime;
+                OnUpdateAnimation(0);
+            }
+        }
+
+        protected override bool OnUpdateAnimation(float ellapsed)
+        {
+            bool res = base.OnUpdateAnimation(ellapsed);
+            if (aniTime == 0)
+            {
+                return res;
+            }
+            accumTime += ellapsed;
+            if (accumTime > aniTime)
+            {
+                Width = newWidth;
+                aniTime = 0;
+                return res;
+            }
+            else
+            {
+                Width = oldWidth + (newWidth - oldWidth) / (accumTime / aniTime);
+                return true;
+            }
+        }
+#endif
     }
 
     public class PerspectiveCameraCore : ProjectionCameraCore

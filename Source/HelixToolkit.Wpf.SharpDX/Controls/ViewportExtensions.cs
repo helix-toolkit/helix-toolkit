@@ -677,10 +677,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="height">The height.</param>
         /// <returns>A bitmap.</returns>
         public static BitmapSource RenderBitmap(
-            this Viewport3DX view, double width, double height)
+            this Viewport3DX view, int width, int height)
         {
-            double w = view.Width;
-            double h = view.Height;
+            var w = (int)view.Width;
+            var h = (int)view.Height;
             ResizeAndArrange(view, width, height);
             var rtb = RenderBitmap(view);
             ResizeAndArrange(view, w, h);
@@ -699,11 +699,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="height">
         /// The height.
         /// </param>
-        public static void ResizeAndArrange(this Viewport3DX view, double width, double height)
+        public static void ResizeAndArrange(this Viewport3DX view, int width, int height)
         {
             view.Width = width;
             view.Height = height;
-            if (double.IsNaN(width) || double.IsNaN(height) || view.RenderHost == null || !view.RenderHost.IsRendering)
+            if (view.RenderHost == null || !view.RenderHost.IsRendering)
             {
                 return;
             }            
