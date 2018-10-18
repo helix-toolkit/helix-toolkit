@@ -350,7 +350,7 @@ namespace CoreTest
             }
             if(!io.WantCaptureMouse)
             {
-                cameraController.MouseWheel(-e.Delta, new Vector2(e.X, e.Y));
+                cameraController.MouseWheel(e.Delta, new Vector2(e.X, e.Y));
             }
         }
 

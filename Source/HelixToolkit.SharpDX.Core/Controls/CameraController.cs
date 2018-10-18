@@ -288,7 +288,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
         public CameraController(ViewportCore viewport)
         {
             this.Viewport = viewport;
-            this.zoomHandler = new ZoomHandler(this, IsChangeFieldOfViewEnabled);
+            this.zoomHandler = new ZoomHandler(this);
             this.panHandler = new PanHandler(this);
             this.rotateHandler = new RotateHandler(this);
             rotateHandler.MouseCaptureRequested += (s, e) => { IsRotating = true; };
