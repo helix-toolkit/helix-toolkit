@@ -146,15 +146,15 @@ namespace HelixToolkit.SharpDX.Core.Model
             {
                 return;
             }        
-
+            
+            IO io = ImGui.GetIO();
+            float mouseWheel = io.MouseWheel;
             ImGui.Render();
             if (!UpdateBuffer(deviceContext))
             {
                 return;
             }
-
-            IO io = ImGui.GetIO();
-
+          
             ProjectionMatrix = Matrix.OrthoOffCenterRH(
                 0f,
                 io.DisplaySize.X,
@@ -210,7 +210,9 @@ namespace HelixToolkit.SharpDX.Core.Model
                 }
                 #endregion
             }
+            io.MouseWheel = mouseWheel;
             ImGui.NewFrame();
+            io.MouseWheel = 0;
             RaiseInvalidateRender();
         }
 

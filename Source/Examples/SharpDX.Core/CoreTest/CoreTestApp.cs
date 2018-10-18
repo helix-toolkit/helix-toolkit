@@ -29,7 +29,7 @@ namespace CoreTest
         private CameraCore camera;
         private Geometry3D box, sphere, points, lines;
         private GroupNode groupSphere, groupBox, groupPoints, groupLines;
-        private const int NumItems = 4000;
+        private const int NumItems = 40;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
         private MaterialCore[] materialList;
@@ -204,30 +204,11 @@ namespace CoreTest
                 var t = Stopwatch.GetTimestamp();
                 var elapse = t - previousTime;
                 previousTime = t;
-                //var angle = ((double)elapse / Stopwatch.Frequency) * 0.05;
-                //var camRotate = Matrix.RotationAxis(Vector3.UnitY, (float)(angle * Math.PI));
-                //camera.Position = Vector3.TransformCoordinate(pos, camRotate);
-                //camera.LookDirection = -camera.Position;
-                //if (isGoingOut)
-                //{
-                //    camera.Position += 0.05f * Vector3.Normalize(camera.Position);
-                //    if(camera.Position.LengthSquared() > 10000)
-                //    {
-                //        isGoingOut = false;
-                //    }
-                //}
-                //else
-                //{
-                //    camera.Position -= 0.05f * Vector3.Normalize(camera.Position);
-                //    if(camera.Position.LengthSquared() < 2500)
-                //    {
-                //        isGoingOut = true;
-                //    }
-                //}
                 cameraController.OnTimeStep();
+
                 viewport.Render();
-                if(io.WantCaptureMouse || io.WantCaptureKeyboard || io.WantTextInput)
-                    viewport.InvalidateRender();
+
+                
 #if TESTADDREMOVE
                 if (groupSphere.Items.Count > 0 && !isAddingNode)
                 {
@@ -365,7 +346,7 @@ namespace CoreTest
         {
             if (!cameraController.IsMouseCaptured)
             {
-                io.MouseWheel = e.Delta;
+                io.MouseWheel = (int)(e.Delta * 0.01f);
             }
             if(!io.WantCaptureMouse)
             {

@@ -172,6 +172,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             startTick = Stopwatch.GetTimestamp();
             inv = Camera.CreateLeftHandSystem ? -1 : 1;
             Controller.StopAnimations();
+            Controller.Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -269,6 +270,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
         public virtual void MouseMove(Vector2 e)
         {
             Delta(e);
+            Controller.Viewport.InvalidateRender();
         }
 
         /// <summary>
