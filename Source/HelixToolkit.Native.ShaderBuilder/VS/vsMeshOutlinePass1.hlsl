@@ -44,8 +44,8 @@ float4 VSMeshOutlineP1(VSInput input) : SV_POSITION
         float2 t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
         const float mipInterval = 20;
         float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, t, mipLevel);
-        output.p.xyz += output.n * mul(h, displacementMapScaleMask);
+        float3 h = texDisplacementMap.SampleLevel(samplerDisplace, t, mipLevel);
+        output.p.xyz += output.n * mul(h, displacementMapScaleMask.xyz);
     }
 	//set position into clip space	
     output.p = mul(output.p, mViewProjection);

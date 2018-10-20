@@ -6,6 +6,8 @@ using SharpDX;
 using System;
 using System.IO;
 using SharpDX.Toolkit.Graphics;
+using System.Collections.Generic;
+using System.Diagnostics;
 #if NETFX_CORE
 
 #else
@@ -30,28 +32,61 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return BillboardType.SingleImage;
+                return BillboardType.Image;
             }
         }
 
+        private Vector3 center = Vector3.Zero;
         /// <summary>
         /// Billboard center location
         /// </summary>
         public Vector3 Center
         {
-            set;
-            get;
+            set
+            {
+                if(Set(ref center, value))
+                {
+                    IsInitialized = false;
+                }
+            }
+            get { return center; }
         }
 
+        private Color4 maskColor = Color.Transparent;
         /// <summary>
         /// If color in image is equal to the mask color, the color will set to transparent in image.
         /// Default color is Transparent, which did not mask any color.
         /// </summary>
         public Color4 MaskColor
         {
-            set;get;
-        } = Color.Transparent;
+            set
+            {
+                if(Set(ref maskColor, value))
+                {
+                    IsInitialized = false;
+                }
+            }
+            get { return maskColor; }
+        }
 
+        private float angle = 0;
+        /// <summary>
+        /// Gets or sets the rotation angle in radians.
+        /// </summary>
+        /// <value>
+        /// The angle in radians.
+        /// </value>
+        public float Angle
+        {
+            set
+            {
+                if(Set(ref angle, value))
+                {
+                    IsInitialized = false;
+                }
+            }
+            get { return angle; }
+        }
 #if !NETFX_CORE        
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
@@ -115,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Called when [draw texture].
         /// </summary>
         /// <param name="deviceResources">The device resources.</param>
-        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
             var w = Width;
             var h = Height;
@@ -125,7 +160,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var uv_tl = new Vector2(0, 0);
             var uv_br = new Vector2(1, 1);
-
+            var transform = Angle != 0 ? Matrix3x2.Rotation(Angle) : Matrix3x2.Identity;
+            var tr = new Vector2(br.X, tl.Y);
+            var bl = new Vector2(tl.X, br.Y);
             BillboardVertices.Add(new BillboardVertex()
             {
                 Position = Center.ToVector4(),
@@ -133,9 +170,34 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = MaskColor,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl,
-                OffBR = br
+                OffTL = Matrix3x2.TransformPoint(transform, tl),
+                OffBR = Matrix3x2.TransformPoint(transform, br),
+                OffBL = Matrix3x2.TransformPoint(transform, bl),
+                OffTR = Matrix3x2.TransformPoint(transform, tr)
             });
+        }
+
+        /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
+        /// <returns></returns>
+        public override bool HitTest(RenderContext context, Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, bool fixedSize)
+        {
+            if (!IsInitialized || context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
+            {
+                return false;
+            }
+
+            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, BillboardVertices.Count)
+                : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, BillboardVertices.Count);
         }
     }
 }

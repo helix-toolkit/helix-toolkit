@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public MappingProxy<IBufferProxy> ConstantBufferMapping { get; } = new MappingProxy<IBufferProxy>();
+        public MappingProxy<ConstantBufferProxy> ConstantBufferMapping { get; } = new MappingProxy<ConstantBufferProxy>();
         /// <summary>
         /// 
         /// </summary>

@@ -113,7 +113,6 @@ namespace MeshSimplification
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
 
             // ----------------------------------------------
             // titles

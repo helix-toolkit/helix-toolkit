@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class SkyDomeRenderCore : GeometryRenderCore<int>, ISkyboxRenderParams
+    public class SkyDomeRenderCore : GeometryRenderCore, ISkyboxRenderParams
     {
         #region Default Mesh
         private static readonly MeshGeometry3D SphereMesh;
@@ -37,6 +37,7 @@ namespace HelixToolkit.UWP.Core
         private int cubeTextureSlot;
         private SamplerStateProxy textureSampler;
         private int textureSamplerSlot;
+        private ShaderPass DefaultShaderPass;
         #endregion
 
         #region Properties
@@ -53,7 +54,7 @@ namespace HelixToolkit.UWP.Core
             {
                 if (SetAffectsRender(ref cubeTexture, value) && IsAttached)
                 {
-                    cubeTextureRes.CreateView(value, true);
+                    UpdateTexture();
                 }
             }
             get
@@ -61,8 +62,15 @@ namespace HelixToolkit.UWP.Core
                 return cubeTexture;
             }
         }
+        /// <summary>
+        /// Gets the mip map levels for current cube texture.
+        /// </summary>
+        /// <value>
+        /// The mip map levels.
+        /// </value>
+        public int MipMapLevels { private set; get; } = 0;
 
-        private SamplerStateDescription samplerDescription = DefaultSamplers.CubeSampler;
+        private SamplerStateDescription samplerDescription = DefaultSamplers.EnvironmentSampler;
         /// <summary>
         /// Gets or sets the sampler description.
         /// </summary>
@@ -116,14 +124,13 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
+                DefaultShaderPass = technique[DefaultPassNames.Default];
+                OnDefaultPassChanged(DefaultShaderPass);
                 var buffer = Collect(new SkyDomeBufferModel());
                 buffer.Geometry = SphereMesh;
                 GeometryBuffer = buffer;
                 cubeTextureRes = Collect(new ShaderResourceViewProxy(Device));
-                if (cubeTexture != null)
-                {
-                    cubeTextureRes.CreateView(cubeTexture, true);
-                }
+                UpdateTexture();
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
                 return true;
             }
@@ -132,9 +139,25 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
-
+        private void UpdateTexture()
+        {
+            MipMapLevels = 0;
+            if (cubeTexture != null)
+            {
+                cubeTextureRes.CreateView(cubeTexture);
+                if (cubeTextureRes.TextureView != null && cubeTextureRes.TextureView.Description.Dimension == ShaderResourceViewDimension.TextureCube)
+                {
+                    MipMapLevels = cubeTextureRes.TextureView.Description.TextureCube.MipLevels;
+                }
+            }
+            else
+            {
+                cubeTextureRes.DisposeAndClear();
+            }
+        }
         protected override void OnDetach()
         {
+            MipMapLevels = 0;
             textureSampler = null;
             cubeTextureRes = null;
             base.OnDetach();
@@ -156,21 +179,12 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            context.SharedResource.EnvironementMap = cubeTextureRes;
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             DefaultShaderPass.PixelShader.BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
             DefaultShaderPass.PixelShader.BindSampler(deviceContext, textureSamplerSlot, textureSampler);
             deviceContext.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, 0, 0);
-        }
-
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
-        {
-
         }
 
         /// <summary>

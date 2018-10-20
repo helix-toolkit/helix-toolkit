@@ -35,14 +35,13 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
         #endregion
-
         /// <summary>
         /// Called when [create scene node].
         /// </summary>
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new InstancingBillboardNode();
+            return new InstancingBillboardNode() { Material = material };
         }
     }
 }

@@ -314,13 +314,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static DependencyProperty RenderExceptionProperty = DependencyProperty.Register(
             "RenderException", typeof(Exception), typeof(Viewport3DX), new PropertyMetadata(null));
 
-        /// <summary>
-        /// The Render Technique property
-        /// </summary>
-        public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(IRenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
-                (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged(e.NewValue as IRenderTechnique)));
-
         ///// <summary>
         ///// The is deferred shading enabled propery
         ///// </summary>
@@ -1606,17 +1599,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render host internal.
         /// </value>
         protected IRenderHost renderHostInternal;
-        /// <summary>
-        /// Gets or sets value for the shading model shading is used
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
-        /// </value>
-        public IRenderTechnique RenderTechnique
-        {
-            get { return (IRenderTechnique)this.GetValue(RenderTechniqueProperty); }
-            set { this.SetValue(RenderTechniqueProperty, value); }
-        }
 
         ///// <summary>
         ///// Gets or sets a value indicating whether deferred shading is used

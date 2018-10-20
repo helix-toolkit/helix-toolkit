@@ -92,8 +92,8 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public IEffectsManager EffectsManager { set; get; }
 #pragma warning disable CS0067
-        public event EventHandler OnVertexBufferUpdated;
-        public event EventHandler OnIndexBufferUpdated;
+        public event EventHandler VertexBufferUpdated;
+        public event EventHandler IndexBufferUpdated;
 #pragma warning restore CS0067
         /// <summary>
         /// Attaches this instance.
@@ -111,7 +111,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
-            return true;
+            return false;
         }
         /// <summary>
         /// Attaches the render host.

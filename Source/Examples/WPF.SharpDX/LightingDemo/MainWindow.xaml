@@ -36,7 +36,6 @@
             FXAALevel="{Binding FXAA}"
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             ShowFrameDetails="True"
             ShowFrameRate="True"
@@ -116,7 +115,7 @@
                     IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
                     Material="{Binding ModelMaterial}"
                     Transform="{Binding ModelTransform}" />
-                <hx:DynamicReflectionMap3D>
+                <hx:DynamicReflectionMap3D IsDynamicScene="True">
                     <hx:MeshGeometryModel3D
                         x:Name="model1"
                         CullMode="Back"

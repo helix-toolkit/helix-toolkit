@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
+        public event EventHandler<EventArgs> InvalidateRender;
         /// <summary>
         /// <see cref="IGUID.GUID"/>
         /// </summary>
@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP.Core
         #endregion
         private readonly List<CoreComponent> components = new List<CoreComponent>();
         /// <summary>
-        /// Initializes a new instance of the <see cref="RenderCoreBase{TModelStruct}"/> class.
+        /// Initializes a new instance of the <see cref="RenderCore"/> class.
         /// </summary>
         /// <param name="renderType">Type of the render.</param>
         public RenderCore(RenderType renderType)
@@ -129,7 +129,7 @@ namespace HelixToolkit.UWP.Core
         protected T AddComponent<T>(T component) where T : CoreComponent
         {
             components.Add(component);
-            component.OnInvalidateRender += (s, e) => { InvalidateRenderer(); };
+            component.InvalidateRender += (s, e) => { RaiseInvalidateRender(); };
             return component;
         }
         /// <summary>
@@ -143,14 +143,11 @@ namespace HelixToolkit.UWP.Core
                 return;
             }
             EffectTechnique = technique;
-            IsAttached = OnAttach(technique);
-            if (IsAttached)
+            foreach (var comp in components)
             {
-                foreach (var comp in components)
-                {
-                    comp.Attach(technique);
-                }
+                comp.Attach(technique);
             }
+            IsAttached = OnAttach(technique);
             UpdateCanRenderFlag();
         }
 
@@ -205,7 +202,20 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
-        public virtual void Update(RenderContext context, DeviceContextProxy deviceContext) { }
+        public void Update(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (CanRenderFlag)
+            {
+                OnUpdate(context, deviceContext);
+            }
+        }
+
+        /// <summary>
+        /// Only used for running compute shader such as in particle system.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
+        protected virtual void OnUpdate(RenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
         /// Updates the can render flag.
@@ -216,7 +226,7 @@ namespace HelixToolkit.UWP.Core
             if(CanRenderFlag != flag)
             {
                 CanRenderFlag = flag;
-                InvalidateRenderer();
+                RaiseInvalidateRender();
             }
         }
 
@@ -233,16 +243,16 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public void ResetInvalidateHandler()
         {
-            OnInvalidateRenderer = null;
+            InvalidateRender = null;
         }
 
         /// <summary>
         /// Invalidates the renderer.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void InvalidateRenderer()
+        protected void RaiseInvalidateRender()
         {
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+            InvalidateRender?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -263,7 +273,7 @@ namespace HelixToolkit.UWP.Core
 
             backingField = value;
             this.RaisePropertyChanged(propertyName);
-            InvalidateRenderer();
+            RaiseInvalidateRender();
             return true;
         }
 
@@ -286,7 +296,7 @@ namespace HelixToolkit.UWP.Core
             backingField = value;
             this.RaisePropertyChanged(propertyName);
             UpdateCanRenderFlag();
-            InvalidateRenderer();
+            RaiseInvalidateRender();
             return true;
         }
 

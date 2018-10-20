@@ -14,13 +14,13 @@
     <dependencies>
       <dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />
       <dependency id="HelixToolkit" version="[$version$]" />
-      <dependency id="SharpDX" version="4.1.0" />
-      <dependency id="SharpDX.D3DCompiler" version="4.1.0" />
-      <dependency id="SharpDX.Direct2D1" version="4.1.0" />
-      <dependency id="SharpDX.Direct3D11" version="4.1.0" />
-      <dependency id="SharpDX.Direct3D9" version="4.1.0" />
-      <dependency id="SharpDX.DXGI" version="4.1.0" />
-      <dependency id="SharpDX.Mathematics" version="4.1.0" />
+      <dependency id="SharpDX" version="4.2.0" />
+      <dependency id="SharpDX.D3DCompiler" version="4.2.0" />
+      <dependency id="SharpDX.Direct2D1" version="4.2.0" />
+      <dependency id="SharpDX.Direct3D11" version="4.2.0" />
+      <dependency id="SharpDX.Direct3D9" version="4.2.0" />
+      <dependency id="SharpDX.DXGI" version="4.2.0" />
+      <dependency id="SharpDX.Mathematics" version="4.2.0" />
     </dependencies>
   </metadata>
   <files>

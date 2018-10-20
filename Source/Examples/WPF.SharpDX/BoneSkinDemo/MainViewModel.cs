@@ -142,7 +142,6 @@ namespace BoneSkinDemo
             this.Title = "BoneSkin Demo";
             this.SubTitle = "WPF & SharpDX";
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
            
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
@@ -218,19 +217,29 @@ namespace BoneSkinDemo
             {
                 file.CopyTo(normal);
             }
+            var rma = new MemoryStream();
+            using (var file = File.OpenRead(@"Sphere_Bot_Rusty_UVMap_RMA.png"))
+            {
+                file.CopyTo(rma);
+            }
             foreach (var group in Models)
             {
-                if(group is GroupElement3D g)
+                if (group is GroupElement3D g)
                 {
-                    foreach(var subModel in g.Children)
+                    foreach (var subModel in g.Children)
                     {
-                        if(subModel is MaterialGeometryModel3D model)
+                        if (subModel is MaterialGeometryModel3D model)
                         {
                             var m = model.Material as PhongMaterial;
-                            m.EmissiveColor = Colors.Black.ToColor4();                
-                            m.DiffuseMap = diffuse;
-                            m.NormalMap = normal;
-                            m.RenderShadowMap = true;
+                            model.Material = new PBRMaterial()
+                            {
+                                AlbedoColor = m.DiffuseColor,
+                                AlbedoMap = diffuse,
+                                NormalMap = normal,
+                                RMAMap = rma,
+                                RenderShadowMap = true,
+                                UVTransform = m.UVTransform
+                            };
                         }
                     }
                 }

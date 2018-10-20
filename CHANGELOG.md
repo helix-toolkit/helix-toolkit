@@ -1,6 +1,31 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.5.0] - 2018-10-19
+### Added
+1. Physics Based Rendering Material. (WPF.SharpDX and UWP)
+2. ScreenQuadModel3D for background full screen texture rendering.(WPF.SharpDX and UWP)
+3. Supports EmissiveMap for PhongMaterial. (WPF.SharpDX and UWP)
+4. Supports Billboard 2D Rotation. Added Angle property in TextInfo and BillboardSingleImage. (WPF.SharpDX and UWP)
+5. Add BillboardImage3D to support sub image texture billboard. (WPF.SharpDX and UWP)
+6. Supports custom bitmap font for BillboardText3D. (WPF.SharpDX and UWP)
+7. Supports Billboard Text Batching [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki/Billboard-Types-and-Usage). (WPF.SharpDX and UWP)
+7. Supports UnLit for DiffuseMaterial. (WPF.SharpDX and UWP)
+
+### Improvement and Changes
+1. Clean up render core. Obsolete RenderCoreBase. Move to material based rendering. (WPF.SharpDX and UWP)
+2. Remove "On" prefix from events. #924 (WPF.SharpDX and UWP)
+3. Upgrade SharpDX version to 4.2.0. (WPF.SharpDX and UWP)
+4. Shader common buffer and sampler changes. Use single surface sampler for all surface maps in pixel shader. Obsolete NormalMapSampler, AlphaMapSampler etc. in PhongMaterial. Please update common.hlsl if you are using custom shaders. (WPF.SharpDX and UWP)
+5. Improve MaterialVariable. (WPF.SharpDX and UWP)
+
+### Fixed
+1. Transparency of the material SharpDX UWP bug #925  (WPF.SharpDX and UWP)
+2. stl material issue #917 (WPF)
+3. Is it possible to render the content of a Viewport3DX to an image (png/bmp) with higher DPI? #920 (WPF.SharpDX and UWP)
+4. NullRef Exception in BufferComponent (SharpDX) SharpDX UWP bug taken #966  (WPF.SharpDX and UWP)
+5. 
+
 ## [2.4.0] - 2018-8-26
 ### Added
 1. Axis aligned plane grid. (WPF.SharpDX and UWP)

@@ -19,15 +19,23 @@ namespace HelixToolkit.UWP
                 SpecularColor = core.SpecularColor,
                 ReflectiveColor = core.ReflectiveColor,
                 SpecularShininess = core.SpecularShininess,
-
                 DiffuseAlphaMap = core.DiffuseAlphaMap,
-                DiffuseAlphaMapSampler = core.DiffuseAlphaMapSampler,
                 DiffuseMap = core.DiffuseMap,
+                EmissiveMap = core.EmissiveMap,
+                SpecularColorMap = core.SpecularColorMap,
+                RenderDiffuseMap = core.RenderDiffuseMap,
+                RenderDiffuseAlphaMap = core.RenderDiffuseAlphaMap,
+                RenderDisplacementMap = core.RenderDisplacementMap,
+                RenderEnvironmentMap = core.RenderEnvironmentMap,
+                RenderNormalMap = core.RenderNormalMap,
+                RenderShadowMap = core.RenderShadowMap,
+                RenderSpecularColorMap = core.RenderSpecularColorMap,
+                RenderEmissiveMap = core.RenderEmissiveMap,
+                EnableAutoTangent = core.EnableAutoTangent,
                 DiffuseMapSampler = core.DiffuseMapSampler,
                 DisplacementMap = core.DisplacementMap,
                 DisplacementMapSampler = core.DisplacementMapSampler,
                 NormalMap = core.NormalMap,
-                NormalMapSampler = core.NormalMapSampler,
                 DisplacementMapScaleMask = core.DisplacementMapScaleMask,
                 Name = core.Name,
                 UVTransform = core.UVTransform,
@@ -39,11 +47,58 @@ namespace HelixToolkit.UWP
             };
         }
 
+        public static PBRMaterial ConvertToPBRMaterial(this PBRMaterialCore core)
+        {
+            return core == null ? null : new PBRMaterial()
+            {
+                AlbedoColor = core.AlbedoColor,
+                MetallicFactor = core.MetallicFactor,
+                RoughnessFactor = core.RoughnessFactor,
+                AlbedoMap = core.AlbedoMap,
+                NormalMap = core.NormalMap,
+                EmissiveMap = core.EmissiveMap,
+                RMAMap = core.RMAMap,
+                IrradianceMap = core.IrradianceMap,
+                DisplacementMap = core.DisplacementMap,
+                SurfaceMapSampler = core.SurfaceMapSampler,
+                IBLSampler = core.IBLSampler,
+                DisplacementMapSampler = core.DisplacementMapSampler,
+                AmbientOcclusionFactor = core.AmbientOcclusionFactor,
+                ClearCoatRoughness = core.ClearCoatRoughness,
+                ClearCoatStrength = core.ClearCoatStrength,
+                EmissiveColor = core.EmissiveColor,
+                EnableAutoTangent = core.EnableAutoTangent,
+                Name = core.Name,
+                ReflectanceFactor = core.ReflectanceFactor,
+                RenderAlbedoMap = core.RenderAlbedoMap,
+                RenderDisplacementMap = core.RenderDisplacementMap,
+                RenderEmissiveMap = core.RenderEmissiveMap,
+                RenderEnvironmentMap = core.RenderEnvironmentMap,
+                RenderIrradianceMap = core.RenderIrradianceMap,
+                RenderNormalMap = core.RenderNormalMap,
+                RenderRMAMap = core.RenderRMAMap,
+                RenderShadowMap = core.RenderShadowMap,
+
+                DisplacementMapScaleMask = core.DisplacementMapScaleMask,
+                UVTransform = core.UVTransform,
+
+                EnableTessellation = core.EnableTessellation,
+                MaxDistanceTessellationFactor = core.MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = core.MinDistanceTessellationFactor,
+                MaxTessellationDistance = core.MaxTessellationDistance,
+                MinTessellationDistance = core.MinTessellationDistance,
+            };
+        }
+
         public static Material ConvertToMaterial(this MaterialCore core)
         {
             if(core is PhongMaterialCore p)
             {
                 return p.ConvertToPhongMaterial();
+            }
+            else if(core is PBRMaterialCore pbr)
+            {
+                return pbr.ConvertToPBRMaterial();
             }
             else
             {
@@ -55,7 +110,6 @@ namespace HelixToolkit.UWP
         {
             targetMaterial.AmbientColor = material.AmbientColor;
             targetMaterial.DiffuseAlphaMap = material.DiffuseAlphaMap;
-            targetMaterial.DiffuseAlphaMapSampler = material.DiffuseAlphaMapSampler;
             targetMaterial.DiffuseColor = material.DiffuseColor;
             targetMaterial.DiffuseMap = material.DiffuseMap;
             targetMaterial.DiffuseMapSampler = material.DiffuseMapSampler;
@@ -69,7 +123,8 @@ namespace HelixToolkit.UWP
             targetMaterial.MinTessellationDistance = material.MinTessellationDistance;
             targetMaterial.MinDistanceTessellationFactor = material.MinDistanceTessellationFactor;
             targetMaterial.NormalMap = material.NormalMap;
-            targetMaterial.NormalMapSampler = material.NormalMapSampler;
+            targetMaterial.EmissiveMap = material.EmissiveMap;
+            targetMaterial.SpecularColorMap = material.SpecularColorMap;
             targetMaterial.ReflectiveColor = material.ReflectiveColor;
             targetMaterial.SpecularColor = material.SpecularColor;
             targetMaterial.SpecularShininess = material.SpecularShininess;
@@ -77,6 +132,9 @@ namespace HelixToolkit.UWP
             targetMaterial.RenderDiffuseMap = material.RenderDiffuseMap;
             targetMaterial.RenderDisplacementMap = material.RenderDisplacementMap;
             targetMaterial.RenderNormalMap = material.RenderNormalMap;
+            targetMaterial.RenderSpecularColorMap = material.RenderSpecularColorMap;
+            targetMaterial.RenderEmissiveMap = material.RenderEmissiveMap;
+            targetMaterial.EnableAutoTangent = material.EnableAutoTangent;
             targetMaterial.UVTransform = material.UVTransform;
         }
 
@@ -102,6 +160,13 @@ namespace HelixToolkit.UWP.Model
         public static implicit operator PhongMaterial(PhongMaterialCore core)
         {
             return MaterialExtension.ConvertToPhongMaterial(core);
+        }
+    }
+    public partial class PBRMaterialCore
+    {
+        public static implicit operator PBRMaterial(PBRMaterialCore core)
+        {
+            return MaterialExtension.ConvertToPBRMaterial(core);
         }
     }
 }

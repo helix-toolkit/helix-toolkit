@@ -30,7 +30,8 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             RenderingEventArgs args = (RenderingEventArgs)e;
             if (args.RenderingTime == _last)
                 return;
-            _last = args.RenderingTime; _FrameUpdating(sender, args);
+            _last = args.RenderingTime;
+            _FrameUpdating?.Invoke(sender, args);
         }
 
         #region IDisposable Support
@@ -66,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

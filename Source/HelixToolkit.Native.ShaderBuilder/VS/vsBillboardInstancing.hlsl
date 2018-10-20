@@ -1,17 +1,19 @@
 #ifndef VSBILLBOARDINSTANCING_HLSL
 #define VSBILLBOARDINSTANCING_HLSL
 #define POINTLINE
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#define INSTANCINGPARAM
+#include"vsBillboard.hlsl"
 #pragma pack_matrix( row_major )
 
-GSInputBT main(VSInputBTInstancing input)
+GSInputBT mainInstancing(VSInputBTInstancing input)
 {
     GSInputBT output = (GSInputBT) 0;
     output.p = input.p;
     output.offBR = input.offBR;
     output.offTL = input.offTL;
-	if (pHasInstances)
+    output.offBL = input.offBL;
+    output.offTR = input.offTR;
+	if (bHasInstances)
 	{
         matrix mInstance =
         {
@@ -23,8 +25,9 @@ GSInputBT main(VSInputBTInstancing input)
 		output.p = mul(output.p, mInstance);		
         output.offTL *= mInstance._m00_m11; // 2d scaling x
         output.offBR *= mInstance._m00_m11; // 2d scaling x
-
-        if (pHasInstanceParams)
+        output.offBL *= mInstance._m00_m11;
+        output.offTR *= mInstance._m00_m11;
+        if (bHasInstanceParams)
         {
             output.t0 = mad(input.tScale, input.t0, input.tOffset);
             output.t3 = mad(input.tScale, input.t3, input.tOffset);
@@ -32,7 +35,7 @@ GSInputBT main(VSInputBTInstancing input)
         }
     }
 	// Translate position into clip space
-    float4 ndcPosition = mul(output.p, pWorld);
+    float4 ndcPosition = mul(output.p, mWorld);
     output.p = mul(ndcPosition, mView);
 	return output;
 }

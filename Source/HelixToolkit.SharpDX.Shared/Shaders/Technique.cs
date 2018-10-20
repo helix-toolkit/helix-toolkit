@@ -102,7 +102,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public ShaderPass GetPass(string name)
         {
-            return passDict.ContainsKey(name) ? passDict[name].Value : ShaderPass.NullPass;
+            return !string.IsNullOrEmpty(name) && passDict.ContainsKey(name) ? passDict[name].Value : ShaderPass.NullPass;
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public ShaderPass GetPass(int index)
         {
-            return passList.Count > index ? passList[index].Value : ShaderPass.NullPass;
+            return index >= 0 && passList.Count > index ? passList[index].Value : ShaderPass.NullPass;
         }
 
         /// <summary>

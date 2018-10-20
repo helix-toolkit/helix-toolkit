@@ -131,8 +131,7 @@ namespace DynamicTextureDemo
         {            // titles
             this.Title = "DynamicTexture Demo";
             this.SubTitle = "WPF & SharpDX";
-            EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];            
+            EffectsManager = new DefaultEffectsManager();           
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
                 Position = new Point3D(10, 10, 10),

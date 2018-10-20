@@ -26,10 +26,10 @@ namespace CustomShaderDemo
             get { return dataHeightScale; }
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
+        protected override void OnUpdatePerModelStruct(RenderContext context)
         {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.Params.Y = dataHeightScale;
+            base.OnUpdatePerModelStruct(context);
+            modelStruct.Params.Y = dataHeightScale;
         }
     }
 }

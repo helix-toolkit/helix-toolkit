@@ -35,11 +35,11 @@ namespace HelixToolkit.UWP.Core
                 {
                     if (old != null)
                     {
-                        old.OnBoneChanged -= OnBoneChanged;
+                        old.BoneChanged -= OnBoneChanged;
                     }
                     if (value != null)
                     {
-                        value.OnBoneChanged += OnBoneChanged;
+                        value.BoneChanged += OnBoneChanged;
                     }
                     matricsChanged = true;
                 }
@@ -55,7 +55,7 @@ namespace HelixToolkit.UWP.Core
         public BoneSkinRenderCore()
         {
             NeedUpdate = true;
-            internalBoneBuffer.OnBoneChanged += OnBoneChanged;
+            internalBoneBuffer.BoneChanged += OnBoneChanged;
         }
 
         protected override bool OnAttach(IRenderTechnique technique)

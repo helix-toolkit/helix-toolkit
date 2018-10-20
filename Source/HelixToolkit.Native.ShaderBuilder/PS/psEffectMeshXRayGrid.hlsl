@@ -14,12 +14,8 @@
 // Returns the sum of the diffuse and specular terms in the Blinn-Phong reflection model.
 float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, float4 diffuse, float3 L, float3 H)
 {
-    //float4 Id = vMaterialTexture * diffuse * saturate(dot(N, L));
-    //float4 Is = vMaterialSpecular * pow(saturate(dot(N, H)), sMaterialShininess);
-    float4 f = lit(dot(N, L), dot(N, H), sMaterialShininess);
-    float4 Id = f.y * vMaterialTexture * diffuse;
-    float4 Is = min(f.z, vMaterialTexture.w) * vMaterialSpecular;
-    return (Id + Is) * LColor;
+    float4 Id = vMaterialTexture * diffuse * saturate(dot(N, L));
+    return Id * LColor;
 }
 
 //--------------------------------------------------------------------------------------
@@ -43,10 +39,9 @@ float4 main(PSInput input) : SV_Target
     if (bHasDiffuseMap)
     {
 	    // SamplerState is defined in Common.fx.
-        vMaterialTexture *= texDiffuseMap.Sample(samplerDiffuse, input.t);
+        vMaterialTexture *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
 
-    float alpha = 1;
     float4 DI = float4(0, 0, 0, 0);
     // compute lighting
     for (int i = 0; i < NumLights; ++i)
@@ -100,10 +95,6 @@ float4 main(PSInput input) : SV_Target
     DI.rgb *= s;
     I += DI;
     I.a = input.cDiffuse.a;
-    if (bHasAlphaMap)
-    {
-        I.a *= alpha;
-    }
     float dimming = Param._m01;
     I.rgb *= dimming;
     int density = Param._m00;   

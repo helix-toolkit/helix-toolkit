@@ -49,8 +49,8 @@ PSInput main(VSInputBatched input)
     {
         const float mipInterval = 20;
         float mipLevel = clamp((distance(output.p.xyz, vEyePos) - mipInterval) / mipInterval, 0, 6);
-        float4 h = texDisplacementMap.SampleLevel(samplerDisplace, output.t, mipLevel);
-        output.p.xyz += output.n * mul(h, displacementMapScaleMask);
+        float3 h = texDisplacementMap.SampleLevel(samplerDisplace, output.t, mipLevel);
+        output.p.xyz += output.n * mul(h, displacementMapScaleMask.xyz);
     }
     output.wp = output.p;
 	//set position into clip space	
@@ -64,24 +64,28 @@ PSInput main(VSInputBatched input)
 
 	//set color
     output.c = input.c;
-    output.cDiffuse = FloatToRGB(input.c.x);
-    output.cDiffuse.a = input.c1.z;
-    output.c2 = mad(FloatToRGB(input.c1.x), vLightAmbient, FloatToRGB(input.c.y));
-    output.c.x = input.c1.y; // switch element to shininess
-
-
-    if (bHasNormalMap)
+    if (!bRenderPBR)
     {
-		// transform the tangents by the world matrix and normalize
-        output.t1 = normalize(mul(inputt1, (float3x3) mWorld));
-        output.t2 = normalize(mul(inputt2, (float3x3) mWorld));
+        output.cDiffuse = FloatToRGB(input.c.x);
+        output.cDiffuse.a = input.c1.z;
+        output.c2 = mad(FloatToRGB(input.c1.x), vLightAmbient, FloatToRGB(input.c.y));
+        output.c.x = input.c1.y; // switch element to shininess
     }
     else
     {
-        output.t1 = 0.0f;
-        output.t2 = 0.0f;
+        output.cDiffuse = input.c;
+        output.c2 = input.c1;
     }
 
+    if (bHasNormalMap)
+    {
+        if (!bAutoTengent)
+        {
+		    // transform the tangents by the world matrix and normalize
+            output.t1 = normalize(mul(inputt1, (float3x3) mWorld));
+            output.t2 = normalize(mul(inputt2, (float3x3) mWorld));
+        }
+    }
     return output;
 }
 

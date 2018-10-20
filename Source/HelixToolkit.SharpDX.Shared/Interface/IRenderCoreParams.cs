@@ -71,6 +71,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface IDynamicReflector
     {
+        bool IsDynamicScene { set; get; }
         bool EnableReflector { set; get; }
         Vector3 Center { set; get; }
         int FaceSize { set; get; }
@@ -108,6 +109,13 @@ namespace HelixToolkit.UWP.Core
     public interface IBillboardRenderParams
     {
         /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        BillboardType Type { set; get; }
+        /// <summary>
         /// Gets or sets a value indicating whether [fixed size].
         /// </summary>
         /// <value>
@@ -140,33 +148,12 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         Color4 SectionColor { set; get; }
         /// <summary>
-        /// Gets or sets a value indicating whether [plane1 enabled].
+        /// Gets or sets a value indicating whether [plane1/plane2/plane3/plane4 enabled].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [plane1 enabled]; otherwise, <c>false</c>.
+        ///   <c>true</c> if [plane1/plane2/plane3/plane4 enabled]; otherwise, <c>false</c>.
         /// </value>
-        bool Plane1Enabled { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [plane2 enabled].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [plane2 enabled]; otherwise, <c>false</c>.
-        /// </value>
-        bool Plane2Enabled { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [plane3 enabled].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [plane3 enabled]; otherwise, <c>false</c>.
-        /// </value>
-        bool Plane3Enabled { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [plane4 enabled].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [plane4 enabled]; otherwise, <c>false</c>.
-        /// </value>
-        bool Plane4Enabled { set; get; }
+        Bool4 PlaneEnabled { set; get; }
 
         /// <summary>
         /// Defines the plane (Normal + d)

@@ -8,7 +8,7 @@
 GSInputPS main(VSInputPS input)
 {
     GSInputPS output = (GSInputPS) 0;
-    if (pHasInstances)
+    if (bHasInstances)
     {
         matrix mInstance =
         {
@@ -23,7 +23,7 @@ GSInputPS main(VSInputPS input)
     output.p = input.p;
 
 	//set position into clip space	
-    output.p = mul(output.p, mul(pWorld, vLightViewProjection));
+    output.p = mul(output.p, mul(mWorld, vLightViewProjection));
     return output;
 }
 

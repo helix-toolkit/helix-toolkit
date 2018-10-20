@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class ParticleRenderCore : RenderCoreBase<PointLineModelStruct>
+    public class ParticleRenderCore : RenderCore
     {
 #pragma warning disable 1591
         public static readonly int DefaultParticleCount = 512;
@@ -264,7 +264,7 @@ namespace HelixToolkit.UWP.Core
                 if (FrameVariables.DomainBoundsMin != value)
                 {
                     FrameVariables.DomainBoundsMin = value;
-                    InvalidateRenderer();
+                    RaiseInvalidateRender();
                 }
             }
             get
@@ -419,15 +419,33 @@ namespace HelixToolkit.UWP.Core
         private SamplerStateProxy textureSampler;
         private BlendStateProxy blendState;
         private double totalElapsed = 0;
+        private ParticleModelStruct modelStruct;
         #endregion
         #region Buffers        
+        private IElementsBufferModel instanceBuffer = MatrixInstanceBufferModel.Empty;
         /// <summary>
         /// Gets or sets the instance buffer.
         /// </summary>
         /// <value>
         /// The instance buffer.
         /// </value>
-        public IElementsBufferModel InstanceBuffer { set; get; }
+        public IElementsBufferModel InstanceBuffer
+        {
+            set
+            {
+                if(Set(ref instanceBuffer, value))
+                {
+                    if (value == null)
+                    {
+                        instanceBuffer = MatrixInstanceBufferModel.Empty;
+                    }
+                }
+            }
+            get
+            {
+                return instanceBuffer;
+            }
+        }
 
         private BufferDescription bufferDesc = new BufferDescription()
         {
@@ -440,11 +458,11 @@ namespace HelixToolkit.UWP.Core
 
         //Buffer indirectArgsBuffer;
         private readonly ConstantBufferProxy particleCountGSIABuffer 
-            = new ConstantBufferProxy(ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, 
+            = new ConstantBufferProxy("particleCount", ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, 
                 ResourceOptionFlags.DrawIndirectArguments);
 
         private ConstantBufferProxy particleCountStaging
-            = new ConstantBufferProxy(4 * sizeof(int), BindFlags.None, CpuAccessFlags.Read, ResourceOptionFlags.None, ResourceUsage.Staging);
+            = new ConstantBufferProxy("particleStaging", 4 * sizeof(int), BindFlags.None, CpuAccessFlags.Read, ResourceOptionFlags.None, ResourceUsage.Staging);
 
         private UnorderedAccessViewDescription UAVBufferViewDesc = new UnorderedAccessViewDescription()
         {
@@ -572,23 +590,17 @@ namespace HelixToolkit.UWP.Core
 
         public ParticleRenderCore() : base(RenderType.Particle)
         {
-            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes)));
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.ParticleModelCB, ParticleModelStruct.SizeInBytes)));
             perFrameCB = AddComponent(new ConstantBufferComponent(DefaultBufferNames.ParticleFrameCB, ParticlePerFrame.SizeInBytes));
             insertCB = AddComponent(new ConstantBufferComponent(DefaultBufferNames.ParticleCreateParameters, ParticleInsertParameters.SizeInBytes));
             NeedUpdate = true;
         }
 
-
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
+        private void OnUpdatePerModelStruct(RenderContext context)
         {
-            model.World = ModelMatrix;
-            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            model.BoolParams.X = HasTexture;
+            modelStruct.World = ModelMatrix;
+            modelStruct.HasInstances = InstanceBuffer.HasElements ? 1 : 0;
+            modelStruct.HasTexture = HasTexture ? 1 : 0;
             FrameVariables.RandomVector = VectorGenerator.RandomVector3;
         }
 
@@ -659,6 +671,7 @@ namespace HelixToolkit.UWP.Core
 
         private void DisposeBuffers()
         {
+            bufferDesc.SizeInBytes = 0;
             particleCountGSIABuffer.DisposeAndClear();
 
             particleCountStaging.DisposeAndClear();
@@ -678,6 +691,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDetach()
         {
             DisposeBuffers();
+            isInitialParticleChanged = true;
             textureSampler = null;
             blendState = null;
             textureView = null;
@@ -725,14 +739,13 @@ namespace HelixToolkit.UWP.Core
         {        
             UpdateTime(context, ref totalElapsed);
             //Set correct instance count from instance buffer
-            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.ElementCount;
+            drawArgument.InstanceCount = !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.ElementCount;
             //Upload the draw argument
             particleCountGSIABuffer.UploadDataToBuffer(deviceContext, ref drawArgument);
 
             updatePass.BindShader(deviceContext);
             updatePass.ComputeShader.BindUAV(deviceContext, currentStateSlot, BufferProxies[0]);
             updatePass.ComputeShader.BindUAV(deviceContext, newStateSlot, BufferProxies[1]);
-
             if (isRestart)
             {
                 FrameVariables.NumParticles = 0;
@@ -784,8 +797,9 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
+            OnUpdatePerModelStruct(context);
             perFrameCB.Upload(deviceContext, ref FrameVariables);
             modelCB.Upload(deviceContext, ref modelStruct);
             // Clear binding
@@ -804,7 +818,7 @@ namespace HelixToolkit.UWP.Core
             InstanceBuffer?.AttachBuffer(deviceContext, ref firstSlot);
             deviceContext.SetBlendState(blendState, blendFactor, sampleMask);
             deviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
-            InvalidateRenderer();//Since particle is running all the time. Invalidate once finished rendering
+            RaiseInvalidateRender();//Since particle is running all the time. Invalidate once finished rendering
         }
 
 

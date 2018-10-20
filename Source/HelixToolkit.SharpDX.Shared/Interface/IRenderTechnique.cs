@@ -75,5 +75,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="name"></param>
         /// <returns></returns>
         ShaderPass this[string name] { get; }
+        /// <summary>
+        /// Adds the pass.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
+        bool AddPass(ShaderPassDescription description);
+        /// <summary>
+        /// Removes the pass.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        bool RemovePass(string name);
     }
 }

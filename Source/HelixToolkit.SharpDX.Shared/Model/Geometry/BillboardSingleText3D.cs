@@ -29,6 +29,8 @@ namespace HelixToolkit.Wpf.SharpDX
 using Core;
     using Extensions;
     using System;
+    using System.Diagnostics;
+
     /// <summary>
     /// 
     /// </summary>
@@ -212,6 +214,7 @@ using Core;
                 return mPadding;
             }
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleText3D"/> class.
         /// </summary>
@@ -235,8 +238,16 @@ using Core;
         /// </summary>
         public override void UpdateBounds()
         {
-            BoundingSphere = new BoundingSphere(TextInfo.Origin, (float)Math.Sqrt(Width * Width + Height * Height) / 2);
-            Bound = BoundingBox.FromSphere(BoundingSphere);
+            if(TextInfo == null)
+            {
+                BoundingSphere = new BoundingSphere();
+                Bound = new BoundingBox();
+            }
+            else
+            {
+                BoundingSphere = new BoundingSphere(TextInfo.Origin, (float)Math.Sqrt(Width * Width + Height * Height) / 2);
+                Bound = BoundingBox.FromSphere(BoundingSphere);
+            }
         }
 
         protected override void OnAssignTo(Geometry3D target)
@@ -258,9 +269,9 @@ using Core;
         /// Called when [draw texture].
         /// </summary>
         /// <param name="deviceResources">The device resources.</param>
-        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
-            if (!string.IsNullOrEmpty(TextInfo.Text))
+            if (TextInfo != null && !string.IsNullOrEmpty(TextInfo.Text))
             {
                 var w = Width;
                 var h = Height;
@@ -287,7 +298,7 @@ using Core;
                     Height = 0;
                 }
             }
-            TextInfo.UpdateTextInfo(Width, Height);
+            TextInfo?.UpdateTextInfo(Width, Height);
         }
 
         private void DrawCharacter(string text, Vector3 origin, float w, float h, TextInfo info)
@@ -298,7 +309,11 @@ using Core;
 
             var uv_tl = new Vector2(0, 0);
             var uv_br = new Vector2(1, 1);
-
+            var transform = info.Angle != 0 ? Matrix3x2.Rotation(info.Angle) : Matrix3x2.Identity;
+            var offTL = tl * info.Scale;
+            var offBR = br * info.Scale;
+            var offTR = new Vector2(offBR.X, offTL.Y);
+            var offBL = new Vector2(offTL.X, offBR.Y);
             BillboardVertices.Add(new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
@@ -306,9 +321,41 @@ using Core;
                 Background = BackgroundColor,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl * info.Scale,
-                OffBR = br * info.Scale
+                OffTL = Matrix3x2.TransformPoint(transform, offTL),
+                OffBL = Matrix3x2.TransformPoint(transform, offBL),
+                OffBR = Matrix3x2.TransformPoint(transform, offBR),
+                OffTR = Matrix3x2.TransformPoint(transform, offTR)
             });
+        }
+
+        /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
+        /// <returns></returns>
+        public override bool HitTest(RenderContext context, Matrix modelMatrix,
+            ref Ray rayWS, ref List<HitTestResult> hits,
+            object originalSource, bool fixedSize)
+        {
+            if (!IsInitialized || context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
+            {
+                return false;
+            }
+
+            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, BillboardVertices.Count)
+                : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, BillboardVertices.Count);
+        }
+
+        protected override void AssignResultAdditional(BillboardHitResult result, int index)
+        {
+            base.AssignResultAdditional(result, index);
+            result.TextInfo = this.TextInfo;
+            result.TextInfoIndex = index;
         }
     }
 }

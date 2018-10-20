@@ -58,7 +58,6 @@ namespace MouseDragDemo
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
 
             // titles
             this.Title = "Mouse Drag Demo";

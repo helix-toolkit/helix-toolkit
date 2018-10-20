@@ -24,7 +24,6 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"

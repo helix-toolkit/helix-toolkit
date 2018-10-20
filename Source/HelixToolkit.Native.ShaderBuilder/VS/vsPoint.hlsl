@@ -7,7 +7,7 @@
 GSInputPS main(VSInputPS input)
 {
 	GSInputPS output = (GSInputPS) 0;
-	if (pHasInstances)
+	if (bHasInstances)
 	{
 		matrix mInstance =
 		{
@@ -22,7 +22,9 @@ GSInputPS main(VSInputPS input)
 	output.p = input.p;
 
 	//set position into clip space	
-	output.p = mul(output.p, pWorld);
+	output.p = mul(output.p, mWorld);
+    float3 vEye = vEyePos - output.p.xyz;
+    output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
 	output.p = mul(output.p, mViewProjection);
 	output.c = input.c * pColor;
 	return output;

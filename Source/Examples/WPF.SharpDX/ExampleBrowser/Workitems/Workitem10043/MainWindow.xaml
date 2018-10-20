@@ -40,7 +40,6 @@
                     Camera="{Binding Camera}"
                     CoordinateSystemLabelForeground="White"
                     EffectsManager="{Binding EffectsManager}"
-                    RenderTechnique="{Binding RenderTechnique}"
                     ShowCoordinateSystem="False"
                     SubTitle="{Binding SubTitle}"
                     TextBrush="Black"
@@ -90,7 +89,6 @@
                     Camera="{Binding Camera}"
                     CoordinateSystemLabelForeground="White"
                     EffectsManager="{Binding EffectsManager}"
-                    RenderTechnique="{Binding RenderTechnique}"
                     ShowCoordinateSystem="False"
                     SubTitle="{Binding SubTitle}"
                     TextBrush="Black"
@@ -134,38 +132,6 @@
                 </hx:Viewport3DX>
             </TabItem>
         </TabControl>
-
-        <StackPanel Grid.Row="1" Margin="0,24,0,0">
-            <Expander
-                x:Name="shadingPanel"
-                Width="150"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                BorderBrush="LightGray"
-                Header="Render Technique"
-                IsExpanded="True">
-                <Expander.Background>
-                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
-                </Expander.Background>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <ComboBox
-                        Grid.Row="0"
-                        Grid.ColumnSpan="2"
-                        Margin="3"
-                        DisplayMemberPath="Key"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}"
-                        SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}"
-                        SelectedValuePath="Value" />
-                </Grid>
-            </Expander>
-        </StackPanel>
 
         <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
             <StatusBar.Background>

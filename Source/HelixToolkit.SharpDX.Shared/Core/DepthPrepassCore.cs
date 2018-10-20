@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
     /// Do a depth prepass before rendering.
     /// <para>Must customize the DefaultEffectsManager and set DepthStencilState to DefaultDepthStencilDescriptions.DSSDepthEqualNoWrite in default ShaderPass from EffectsManager to achieve best performance.</para>
     /// </summary>
-    public sealed class DepthPrepassCore : RenderCoreBase<bool>
+    public sealed class DepthPrepassCore : RenderCore
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DepthPrepassCore"/> class.
@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             context.CustomPassName = DefaultPassNames.DepthPrepass;
             for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
@@ -55,15 +55,6 @@ namespace HelixToolkit.UWP.Core
         }
 
         public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">if set to <c>true</c> [model].</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref bool model, RenderContext context)
         {
         }
 

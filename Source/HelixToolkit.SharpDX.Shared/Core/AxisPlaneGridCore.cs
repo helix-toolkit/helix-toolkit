@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Core
     using Components;
     using Utilities;
 
-    public class AxisPlaneGridCore : RenderCoreBase<PlaneGridModelStruct>
+    public class AxisPlaneGridCore : RenderCore
     {
         private ShaderPass DefaultShaderPass;
         private SamplerStateProxy shadowSampler;
@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP.Core
         private int shadowMapSlot;
         private Vector3 upDirection = Vector3.UnitY;
         private bool autoSpacing = true;
+        private PlaneGridModelStruct modelStruct;
         /// <summary>
         /// Gets or sets a value indicating whether [automatic spacing].
         /// </summary>
@@ -246,8 +247,9 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
+            OnUpdatePerModelStruct(context);
             modelCB.Upload(deviceContext, ref modelStruct);
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
@@ -259,8 +261,9 @@ namespace HelixToolkit.UWP.Core
             deviceContext.Draw(4, 0);
         }
 
-        protected override void OnUpdatePerModelStruct(ref PlaneGridModelStruct model, RenderContext context)
+        private void OnUpdatePerModelStruct(RenderContext context)
         {
+            modelStruct.World = ModelMatrix;
             if (autoSpacing)
             {                
                 //Disable auto spacing if view angle larger than 60 degree of plane normal
@@ -271,7 +274,7 @@ namespace HelixToolkit.UWP.Core
                     return;
                 }
                 var r = new Ray(context.Camera.Position, Vector3.Normalize(context.Camera.LookDirection));
-                var plane = new Plane(upDirection, model.PlaneD);
+                var plane = new Plane(upDirection, modelStruct.PlaneD);
                 if (r.Intersects(ref plane, out float l))
                 {
                     l /= autoSpacingChangeRate;
@@ -285,7 +288,7 @@ namespace HelixToolkit.UWP.Core
                         }
                         n *= 10;
                     }
-                    model.GridSpacing = n;
+                    modelStruct.GridSpacing = n;
                 }
             }
         }

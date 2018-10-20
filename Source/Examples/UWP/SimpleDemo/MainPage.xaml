@@ -93,7 +93,7 @@
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="White" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
             <hx:GroupModel3D>
-                <hx:DynamicReflectionMap3D>
+                <hx:DynamicReflectionMap3D IsDynamicScene="True">
                     <hx:MeshGeometryModel3D
                         CullMode="Back"
                         Geometry="{Binding Sphere}"
@@ -193,7 +193,10 @@
             ShowCoordinateSystem="true">
             <hx:DirectionalLight3D Direction="{Binding ElementName=viewport1, Path=Camera.LookDirection}" Color="White" />
             <!--<hx:AxisPlaneGridModel3D Offset="-20" AutoSpacing="False" PlaneColor="#003E3E3E" GridThickness="0.02"/>-->
-            <hx:AxisPlaneGridModel3D Offset="-20" PlaneColor="#FFBDBDBD" UpAxis="Z"/>
+            <hx:AxisPlaneGridModel3D
+                PlaneColor="#FFBDBDBD"
+                UpAxis="Z"
+                Offset="-20" />
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
         <TextBlock

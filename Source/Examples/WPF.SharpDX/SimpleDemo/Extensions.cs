@@ -66,6 +66,11 @@
                 // Add the bottom triangle.
                 builder.AddTriangle(v2.Project(p0, u, v, z, 0), v1.Project(p0, u, v, z, 0), v0.Project(p0, u, v, z, 0));
             }
+            if (builder.CreateNormals)
+            {
+                builder.Normals = null;
+                builder.ComputeNormalsAndTangents(MeshFaces.Default, builder.HasTangents);
+            }
         }
 
         public static Point3D Project(this Vertex v, Point3D p0, Vector3D x, Vector3D y, Vector3D z, double h)

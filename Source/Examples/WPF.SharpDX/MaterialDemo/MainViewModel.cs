@@ -17,6 +17,7 @@ using Color4 = SharpDX.Color4;
 using System.IO;
 using System.Threading;
 using HelixToolkit.Wpf.SharpDX.Model;
+using System.Windows.Input;
 
 namespace MaterialDemo
 {
@@ -32,6 +33,9 @@ namespace MaterialDemo
         public ObservableElement3DCollection Model4 { get; } = new ObservableElement3DCollection();
         public ObservableElement3DCollection Model5 { get; } = new ObservableElement3DCollection();
         public ObservableElement3DCollection Model6 { get; } = new ObservableElement3DCollection();
+
+        public ObservableElement3DCollection Model7 { get; } = new ObservableElement3DCollection();
+
         public ObservableElement3DCollection ModelNormalVector { get; } = new ObservableElement3DCollection();
 
         public MeshGeometry3D Floor { get; private set; }
@@ -59,8 +63,10 @@ namespace MaterialDemo
         public Transform3D Transform5 { get; } = new Media3D.TranslateTransform3D(30, 0, 0);
 
         public Transform3D Transform6 { get; } = new Media3D.TranslateTransform3D(45, 0, 0);
-
+        public Transform3D Transform7 { get; } = new Media3D.TranslateTransform3D(-45, 0, 0);
         public Transform3D TitleTransform { get; } = new Media3D.TranslateTransform3D(0, 10, 0);
+
+        public ICommand OpenPBRSampleCommand { get; }
 
         private Random rnd = new Random();
         private SynchronizationContext context = SynchronizationContext.Current;
@@ -92,7 +98,14 @@ namespace MaterialDemo
             MeshTitles.TextInfo.Add(new TextInfo("Position", Transform4.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
             MeshTitles.TextInfo.Add(new TextInfo("VertexColor", Transform5.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
             MeshTitles.TextInfo.Add(new TextInfo("ColorStripe", Transform6.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
+            MeshTitles.TextInfo.Add(new TextInfo("PBR", Transform7.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
             (FloorMaterial as PhongMaterial).RenderShadowMap = true;
+
+            OpenPBRSampleCommand = new RelayCommand((o) => 
+            {
+                PBRWindow w = new PBRWindow() { DataContext = new PBRViewModel(this.EffectsManager) { EnvironmentMap = this.EnvironmentMap } };
+                w.Show();
+            });
         }
 
         public void LoadObj(string path)
@@ -124,12 +137,25 @@ namespace MaterialDemo
                     };
 
                     var diffuseMaterial = new DiffuseMaterial();
+                    PBRMaterial pbrMaterial = null;
                     if (ob.Material is PhongMaterialCore p)
                     {
-                        s.Material = p;
-                        (s.Material as PhongMaterial).RenderShadowMap = true;
+                        var phong = p.ConvertToPhongMaterial();
+                        phong.RenderEnvironmentMap = true;
+                        phong.RenderShadowMap = true;
+                        phong.RenderSpecularColorMap = false;
+                        s.Material = phong;
                         diffuseMaterial.DiffuseColor = p.DiffuseColor;
                         diffuseMaterial.DiffuseMap = p.DiffuseMap;
+                        pbrMaterial = new PBRMaterial()
+                        {
+                            AlbedoColor = p.DiffuseColor,
+                            AlbedoMap = p.DiffuseMap,
+                            NormalMap = p.NormalMap,
+                            RMAMap = p.SpecularColorMap,
+                            RenderShadowMap = true,
+                            RenderEnvironmentMap=true,
+                        };                      
                     }
                     //if (ob.Transform != null && ob.Transform.Count > 0)
                     //{
@@ -188,6 +214,15 @@ namespace MaterialDemo
                         IsThrowingShadow = true,
                         Material = ColorStripeMaterial,
                         Transform = scaleTransform
+                    });
+
+                    Model7.Add(new MeshGeometryModel3D
+                    {
+                        Geometry = ob.Geometry,
+                        CullMode = SharpDX.Direct3D11.CullMode.Back,
+                        IsThrowingShadow = true,
+                        Transform = scaleTransform,
+                        Material = pbrMaterial
                     });
                 }, null);
             }

@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class SkyBoxRenderCore : GeometryRenderCore<int>, ISkyboxRenderParams
+    public class SkyBoxRenderCore : GeometryRenderCore, ISkyboxRenderParams
     {
         #region Default Mesh
         private static readonly Vector3Collection BoxPositions = new Vector3Collection()
@@ -73,6 +73,7 @@ namespace HelixToolkit.UWP.Core
         private int cubeTextureSlot;
         private SamplerStateProxy textureSampler;
         private int textureSamplerSlot;
+        private ShaderPass DefaultShaderPass;
         #endregion
 
         #region Properties
@@ -89,7 +90,7 @@ namespace HelixToolkit.UWP.Core
             {
                 if(SetAffectsRender(ref cubeTexture, value) && IsAttached)
                 {
-                    cubeTextureRes.CreateView(value, true);
+                    UpdateTexture();
                 }
             }
             get
@@ -97,8 +98,15 @@ namespace HelixToolkit.UWP.Core
                 return cubeTexture;
             }
         }
+        /// <summary>
+        /// Gets the mip map levels for current cube texture.
+        /// </summary>
+        /// <value>
+        /// The mip map levels.
+        /// </value>
+        public int MipMapLevels { private set; get; } = 0;
 
-        private SamplerStateDescription samplerDescription = DefaultSamplers.CubeSampler;
+        private SamplerStateDescription samplerDescription = DefaultSamplers.EnvironmentSampler;
         /// <summary>
         /// Gets or sets the sampler description.
         /// </summary>
@@ -152,15 +160,14 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
+                DefaultShaderPass = technique[DefaultPassNames.Default];
+                OnDefaultPassChanged(DefaultShaderPass);
                 var buffer = Collect(new SkyBoxBufferModel());
                 buffer.Geometry = new PointGeometry3D() { Positions = BoxPositions };
                 buffer.Topology = PrimitiveTopology.TriangleList;
                 GeometryBuffer = buffer;
                 cubeTextureRes = Collect(new ShaderResourceViewProxy(Device));
-                if (cubeTexture != null)
-                {
-                    cubeTextureRes.CreateView(cubeTexture, true);
-                }
+                UpdateTexture();
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
                 return true;
             }
@@ -170,8 +177,26 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private void UpdateTexture()
+        {
+            MipMapLevels = 0;
+            if (cubeTexture != null)
+            {
+                cubeTextureRes.CreateView(cubeTexture);
+                if(cubeTextureRes.TextureView != null && cubeTextureRes.TextureView.Description.Dimension == ShaderResourceViewDimension.TextureCube)
+                {
+                    MipMapLevels = cubeTextureRes.TextureView.Description.TextureCube.MipLevels;
+                }
+            }
+            else
+            {
+                cubeTextureRes.DisposeAndClear();
+            }
+        }
+
         protected override void OnDetach()
         {
+            MipMapLevels = 0;
             textureSampler = null;
             cubeTextureRes = null;
             base.OnDetach();
@@ -199,9 +224,11 @@ namespace HelixToolkit.UWP.Core
                 var desc = RasterDescription;
                 desc.IsFrontCounterClockwise = false;
                 RasterDescription = desc;
-                InvalidateRenderer();
+                RaiseInvalidateRender();
                 return;
             }
+            context.SharedResource.EnvironementMap = cubeTextureRes;
+            context.SharedResource.EnvironmentMapMipLevels = MipMapLevels;
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             DefaultShaderPass.PixelShader.BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
@@ -222,15 +249,6 @@ namespace HelixToolkit.UWP.Core
         protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
             
-        }
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
-        {
-
         }
 
         /// <summary>

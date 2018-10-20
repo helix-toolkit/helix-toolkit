@@ -62,9 +62,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                             sceneNode = OnCreateSceneNode();
                             AssignDefaultValuesToSceneNode(sceneNode);
                             sceneNode.WrapperSource = this;
-                            sceneNode.OnAttached += SceneNode_OnAttached;
-                            sceneNode.OnDetached += SceneNode_OnDetached;
-                            sceneNode.OnUpdate += SceneNode_OnUpdate;
+                            sceneNode.Attached += SceneNode_OnAttached;
+                            sceneNode.Detached += SceneNode_OnDetached;
+                            sceneNode.UpdateRequested += SceneNode_OnUpdate;
                             OnSceneNodeCreated?.Invoke(this, new SceneNode2DCreatedEventArgs(sceneNode));
                         }
                     }
@@ -80,7 +80,28 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void SceneNode_OnDetached(object sender, EventArgs e)
         {
-            OnDetached();
+#if NETFX_CORE
+            if(Dispatcher != null)
+            {
+                if (Dispatcher.HasThreadAccess)
+                {
+                    OnDetached();
+                }
+            }
+
+#else
+            if(this.Dispatcher != null && this.Dispatcher.Thread.IsAlive)
+            {
+                if (this.Dispatcher.CheckAccess())
+                {
+                    OnDetached();
+                }
+                else
+                {
+                    Dispatcher.Invoke(() => { OnDetached(); });
+                }
+            }
+#endif
         }
 
         private void SceneNode_OnAttached(object sender, EventArgs e)

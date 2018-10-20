@@ -17,21 +17,30 @@
 // The RGB values in this texture need to be normalized from (0, +1) to (-1, +1).
 float3 calcNormal(PSInput input)
 {
+    float3 normal = normalize(input.n);
     if (bHasNormalMap)
-    {
-		// Normalize the per-pixel interpolated tangent-space
-        input.n = normalize(input.n);
-        input.t1 = normalize(input.t1);
-        input.t2 = normalize(input.t2);
+    {        
+        if (bAutoTengent)
+        {
+            float3 localNormal = BiasX2(texNormalMap.Sample(samplerSurface, input.t).xyz);
+            normal = PeturbNormal(localNormal, input.wp.xyz, normal, input.t);
+        }
+        else
+        {
+		    // Normalize the per-pixel interpolated tangent-space
+            float3 tangent = normalize(input.t1);
+            float3 biTangent = normalize(input.t2);
 
-		// Sample the texel in the bump map.
-        float4 bumpMap = texNormalMap.Sample(samplerNormal, input.t);
-		// Expand the range of the normal value from (0, +1) to (-1, +1).
-        bumpMap = mad(2.0f, bumpMap, -1.0f);
-		// Calculate the normal from the data in the bump map.
-        input.n += mad(bumpMap.x, input.t1, bumpMap.y * input.t2);
+		    // Sample the texel in the bump map.
+            float3 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
+		    // Expand the range of the normal value from (0, +1) to (-1, +1).
+            bumpMap = mad(2.0f, bumpMap, -1.0f);
+		    // Calculate the normal from the data in the bump map.
+            normal += mad(bumpMap.x, tangent, bumpMap.y * biTangent);
+            normal = normalize(normal);
+        }
     }
-    return normalize(input.n);
+    return normal;
 }
 
 
@@ -53,14 +62,11 @@ float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, 
 //--------------------------------------------------------------------------------------
 // reflectance mapping
 //--------------------------------------------------------------------------------------
-float4 cubeMapReflection(PSInput input, float4 I, float4 reflectColor)
+float3 cubeMapReflection(PSInput input, const in float3 I, const in float3 reflectColor)
 {
-    float a = I.a;
     float3 v = normalize((float3) input.wp - vEyePos);
     float3 r = reflect(v, input.n);
-    I = (1.0f - reflectColor) * I + reflectColor * texCubeMap.Sample(samplerCube, r);
-    I.a = a;
-    return I;
+    return (1.0f - reflectColor) * I + reflectColor * texCubeMap.Sample(samplerCube, r);
 }
 
 //--------------------------------------------------------------------------------------
@@ -76,7 +82,10 @@ float4 main(PSInput input) : SV_Target
 
     // light emissive intensity and add ambient light
     float4 I = input.c2;
-
+    if (bHasEmissiveMap)
+    {
+        I.rgb += texEmissiveMap.Sample(samplerSurface, input.t);
+    }
     // get shadow color
     float s = 1;
     if (bHasShadowMap)
@@ -89,13 +98,13 @@ float4 main(PSInput input) : SV_Target
     if (bHasDiffuseMap)
     {
 	    // SamplerState is defined in Common.fx.
-        vMaterialTexture *= texDiffuseMap.Sample(samplerDiffuse, input.t);
+        vMaterialTexture *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
 
     float alpha = 1;
     if (bHasAlphaMap)
     {
-        float4 color = texAlphaMap.Sample(samplerAlpha, input.t);
+        float4 color = texAlphaMap.Sample(samplerSurface, input.t);
         alpha = color[3];
         color[3] = 1;
         vMaterialTexture *= color;
@@ -109,6 +118,10 @@ float4 main(PSInput input) : SV_Target
         specular = FloatToRGB(input.c.z);
         shininess = input.c.x;
         reflectColor = FloatToRGB(input.c.w);
+    }
+    if (bHasSpecularMap)
+    {
+        specular *= texSpecularMap.Sample(samplerSurface, input.t);
     }
     // compute lighting
     for (int i = 0; i < NumLights; ++i)
@@ -144,15 +157,15 @@ float4 main(PSInput input) : SV_Target
             float3 h = normalize(eye + d); // half direction for specular
             float3 sd = normalize((float3) Lights[i].vLightDir); // missuse the vLightDir variable for spot-dir
 
-														/* --- this is the OpenGL 1.2 version (not so nice) --- */
-														//float spot = (dot(-d, sd));
-														//if(spot > cos(vLightSpot[i].x))
-														//	spot = pow( spot, vLightSpot[i].y );
-														//else
-														//	spot = 0.0f;	
-														/* --- */
+													/* --- this is the OpenGL 1.2 version (not so nice) --- */
+													//float spot = (dot(-d, sd));
+													//if(spot > cos(vLightSpot[i].x))
+													//	spot = pow( spot, vLightSpot[i].y );
+													//else
+													//	spot = 0.0f;	
+													/* --- */
 
-														/* --- this is the  DirectX9 version (better) --- */
+													/* --- this is the  DirectX9 version (better) --- */
             float rho = dot(-d, sd);
             float spot = pow(saturate((rho - Lights[i].vLightSpot.x) / (Lights[i].vLightSpot.y - Lights[i].vLightSpot.x)), Lights[i].vLightSpot.z);
             float att = spot / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
@@ -171,7 +184,7 @@ float4 main(PSInput input) : SV_Target
     // get reflection-color
     if (bHasCubeMap)
     {
-        I = cubeMapReflection(input, I, reflectColor);
+        I.rgb = cubeMapReflection(input, I.rgb, reflectColor.rgb);
     }
 
     return I;

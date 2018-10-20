@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public CameraCore CameraCore { get { return this.Camera; } }
+        public CameraCore CameraCore { get { return CameraController.ActualCamera; } }
 
         public IRenderHost RenderHost { get { return this.renderHostInternal; } }
 
@@ -625,12 +625,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 hostPresenter.Content = new DPFCanvas(EnableDeferredRendering);
             }
+
+            if (this.renderHostInternal != null)
+            {
+                this.renderHostInternal.Rendered -= this.RaiseRenderHostRendered;
+                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
+            }
+
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
             if (this.renderHostInternal != null)
             {
-                this.renderHostInternal.OnRendered -= this.OnRendered;
-                this.renderHostInternal.OnRendered += this.OnRendered;
-                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
+                this.renderHostInternal.Rendered += this.RaiseRenderHostRendered;
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.ClearColor = BackgroundColor.ToColor4();
                 this.renderHostInternal.IsShadowMapEnabled = IsShadowMappingEnabled;
@@ -1735,6 +1740,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
                 }
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void RaiseRenderHostRendered(object sender, EventArgs e)
+        {
+            this.OnRendered?.Invoke(sender, e);
         }
 
         public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject

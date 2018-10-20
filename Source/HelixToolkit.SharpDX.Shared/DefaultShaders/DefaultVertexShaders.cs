@@ -24,6 +24,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshDefault";
+
         /// <summary>
         /// Gets the vs mesh batched.
         /// </summary>
@@ -34,6 +35,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshBatched";
+
         /// <summary>
         /// 
         /// </summary>
@@ -41,6 +43,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshTessellation";
+
         /// <summary>
         /// 
         /// </summary>
@@ -112,6 +115,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsMeshClipPlane";
+
         /// <summary>
         /// 
         /// </summary>
@@ -188,6 +192,11 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsPlaneGrid";
+
+        public static string VSScreenQuad
+        {
+            get;
+        } = "vsScreenQuad";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -304,11 +313,13 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 1, Format.R32G32_Float,  InputElement.AppendAligned, 0),
             new InputElement("TEXCOORD", 2, Format.R32G32_Float,  InputElement.AppendAligned, 0),
             new InputElement("TEXCOORD", 3, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 4, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 5, Format.R32G32_Float,  InputElement.AppendAligned, 0),
             //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 5, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 6, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 7, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 8, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 9, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
         };
         /// <summary>
         /// Gets the vs input billboard instancing.
@@ -325,14 +336,16 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 1, Format.R32G32_Float,  InputElement.AppendAligned, 0),
             new InputElement("TEXCOORD", 2, Format.R32G32_Float,  InputElement.AppendAligned, 0),
             new InputElement("TEXCOORD", 3, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 4, Format.R32G32_Float,  InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 5, Format.R32G32_Float,  InputElement.AppendAligned, 0),
             //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 5, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 6, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 7, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 8, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 9, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
             new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 8, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 9, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 10, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 11, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
         };
         /// <summary>
         /// Gets the vs input particle.
@@ -451,7 +464,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex,
+        public static ShaderDescription VSFullScreenQuad = new ShaderDescription(nameof(VSFullScreenQuad), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshClipPlaneQuad);
 
@@ -491,6 +504,10 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs plane grid
         /// </summary>
         public static ShaderDescription VSPlaneGrid = new ShaderDescription(nameof(VSPlaneGrid), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSPlaneGrid);
+        /// <summary>
+        /// The vs screen quad
+        /// </summary>
+        public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSScreenQuad);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

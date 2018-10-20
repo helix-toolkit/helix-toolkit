@@ -18,67 +18,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class BillboardNode : GeometryNode
+    public class BillboardNode : MaterialGeometryNode
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether [fixed size].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
-        /// </value>
-        public bool FixedSize
-        {
-            set
-            {
-                (RenderCore as IBillboardRenderParams).FixedSize = value;
-            }
-            get { return (RenderCore as IBillboardRenderParams).FixedSize; }
-        }
-
-        private bool isTransparent = false;
-        /// <summary>
-        /// Specifiy if model material is transparent. 
-        /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
-        /// </summary>
-        public bool IsTransparent
-        {
-            get { return isTransparent; }
-            set
-            {
-                if (Set(ref isTransparent, value))
-                {
-                    if (RenderCore.RenderType == RenderType.Opaque || RenderCore.RenderType == RenderType.Transparent)
-                    {
-                        RenderCore.RenderType = value ? RenderType.Transparent : RenderType.Opaque;
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the sampler description.
-        /// </summary>
-        /// <value>
-        /// The sampler description.
-        /// </value>
-        public SamplerStateDescription SamplerDescription
-        {
-            set
-            {
-                (RenderCore as IBillboardRenderParams).SamplerDescription = value;
-            }
-            get
-            {
-                return (RenderCore as IBillboardRenderParams).SamplerDescription;
-            }
-        }
-
         /// <summary>
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
         protected override RenderCore OnCreateRenderCore()
         {
-            return new BillboardRenderCore();
+            return new PointLineRenderCore();
         }
 
         /// <summary>
@@ -89,8 +37,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            return geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicBillboardBufferModel>(modelGuid, geometry) 
+            var buffer = geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicBillboardBufferModel>(modelGuid, geometry) 
                 : EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);
+            if (geometry is IBillboardText b && Material is IBillboardRenderParams m)
+            {
+                m.Type = b.Type;
+            }
+            return buffer;
         }
 
         /// <summary>
@@ -156,7 +109,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, FixedSize);
+            if (Material is BillboardMaterialCore c)
+            {
+                return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, c.FixedSize);
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

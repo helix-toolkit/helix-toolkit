@@ -47,16 +47,21 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
-        public event EventHandler<EventArgs> OnDisposeResources;
+        public event EventHandler<EventArgs> DisposingResources;
+        /// <summary>
+        /// Occurs when [device created].
+        /// </summary>
+        public event EventHandler<EventArgs> Reinitialized;
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
+        public event EventHandler<EventArgs> InvalidateRender;
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
-        private IDictionary<string, Lazy<IRenderTechnique>> techniqueDict { get; } = new Dictionary<string, Lazy<IRenderTechnique>>();
+        private Dictionary<string, Lazy<IRenderTechnique>> techniqueDict { get; } = new Dictionary<string, Lazy<IRenderTechnique>>();
+        private readonly Dictionary<string, TechniqueDescription> techniqueDescriptions = new Dictionary<string, TechniqueDescription>();
         /// <summary>
         /// <see cref="IEffectsManager.RenderTechniques"/>
         /// </summary>
@@ -324,6 +329,7 @@ namespace HelixToolkit.UWP
                 deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
             }
             Initialized = true;
+            
         }
 
         /// <summary>
@@ -336,9 +342,35 @@ namespace HelixToolkit.UWP
             {
                 throw new ArgumentException($"Technique { description.Name } already exists.");
             }
+            techniqueDescriptions.Add(description.Name, description);
             techniqueDict.Add(description.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(description, Device, this)) : null; }, true));
         }
 
+        /// <summary>
+        /// Reinitializes all resources after calling <see cref="DisposeAllResources"/>.
+        /// </summary>
+        public void Reinitialize()
+        {
+            if (!Initialized)
+            {
+                Initialize();
+                foreach(var tech in techniqueDescriptions.Values)
+                {
+                    techniqueDict.Add(tech.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(tech, Device, this)) : null; }, true));
+                }
+                Reinitialized?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        /// <summary>
+        /// Disposes all resources. This is used to handle such as DeviceLost or DeviceRemoved Error
+        /// </summary>
+        public void DisposeAllResources()
+        {
+            if (Initialized)
+            {
+                DisposeResources();
+            }
+        }
         /// <summary>
         /// Determines whether the specified name has technique.
         /// </summary>
@@ -364,6 +396,7 @@ namespace HelixToolkit.UWP
                     var v = t.Value;
                     RemoveAndDispose(ref v);
                 }
+                techniqueDescriptions.Remove(name);
                 return techniqueDict.Remove(name);
             }
             return false;
@@ -484,7 +517,13 @@ namespace HelixToolkit.UWP
                 return GetTechnique(name);
             }           
         }
-
+        /// <summary>
+        /// Finalizes an instance of the <see cref="EffectsManager"/> class.
+        /// </summary>
+        ~EffectsManager()
+        {
+            Dispose();
+        }
         /// <summary>
         /// <see cref="DisposeObject.OnDispose(bool)"/>
         /// </summary>
@@ -492,7 +531,7 @@ namespace HelixToolkit.UWP
         [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "False positive.")]
         protected override void OnDispose(bool disposeManagedResources)
         {
-            OnDisposeResources?.Invoke(this, EventArgs.Empty);
+            DisposingResources?.Invoke(this, EventArgs.Empty);
             foreach(var technique in techniqueDict.Values.ToArray())
             {
                 if (technique.IsValueCreated)
@@ -513,25 +552,33 @@ namespace HelixToolkit.UWP
 #if DEBUGMEMORY
             ReportResources();
 #endif
+            GC.SuppressFinalize(this);
         }
 
-#region Handle Device Error        
-        /// <summary>
-        /// Called when [device error].
-        /// </summary>
-        public void OnDeviceError()
+        private void DisposeResources()
         {
+            DisposingResources?.Invoke(this, EventArgs.Empty);
+            foreach (var technique in techniqueDict.Values.ToArray())
+            {
+                if (technique.IsValueCreated)
+                {
+                    var t = technique.Value;
+                    RemoveAndDispose(ref t);
+                }
+            }
             techniqueDict.Clear();
-            OnDisposeResources?.Invoke(this, EventArgs.Empty);
-            this.DisposeAndClear();
-            Disposer.RemoveAndDispose(ref device);
+            RemoveAndDispose(ref shaderPoolManager);
+            DisposeAndClear();
             Initialized = false;
+            global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
+#if DX11_1
+            Disposer.RemoveAndDispose(ref device1);
+#endif
+            Disposer.RemoveAndDispose(ref device);
 #if DEBUGMEMORY
             ReportResources();
 #endif
-            Initialize(AdapterIndex);
         }
-#endregion
 
 #if DEBUGMEMORY
         protected void ReportResources()
@@ -553,9 +600,9 @@ namespace HelixToolkit.UWP
             Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
         }
 
-        public void InvalidateRenderer()
+        public void RaiseInvalidateRender()
         {
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+            InvalidateRender?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

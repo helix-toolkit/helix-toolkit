@@ -1,0 +1,99 @@
+﻿<Window
+    x:Class="BillboardDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:local="clr-namespace:BillboardDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="1200"
+    Height="800"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX
+            x:Name="view1"
+            Title="{Binding Title}"
+            Grid.Row="1"
+            AllowDrop="True"
+            BackgroundColor="White"
+            Camera="{Binding Camera}"
+            CameraRotationMode="Turntable"
+            CoordinateSystemLabelForeground="White"
+            EffectsManager="{Binding EffectsManager}"
+            FXAALevel="Low"
+            IsPanEnabled="False"
+            ModelUpDirection="0,0,1"
+            ShowCoordinateSystem="True"
+            SubTitle="{Binding SubTitle}"
+            TextBrush="Black"
+            UseDefaultGestures="False">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+            </hx:Viewport3DX.InputBindings>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseUp3D">
+                    <ie:CallMethodAction MethodName="OnMouseUpHandler" TargetObject="{Binding}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Drop">
+                    <ie:CallMethodAction MethodName="OnFlag_Drop" TargetObject="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
+            <hx:ScreenQuadModel3D Texture="{Binding BackgroundTexture}" />
+
+            <hx:MeshGeometryModel3D
+                x:Name="model1"
+                CullMode="Back"
+                Geometry="{Binding SphereModel}"
+                Material="{Binding EarthMaterial}" />
+            <hx:BillboardTextModel3D FixedSize="False" Geometry="{Binding FlagsBillboard}" />
+            <hx:BillboardTextModel3D
+                FixedSize="False"
+                Geometry="{Binding SelectedFlagBillboard}"
+                IsHitTestVisible="False" />
+            <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards}" />
+            <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards2}" />
+            <hx:BillboardTextModel3D
+                FixedSize="True"
+                Geometry="{Binding BatchedText}"
+                IsHitTestVisible="False" />
+        </hx:Viewport3DX>
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <TextBlock Margin="2" Foreground="Blue">Drag Flag onto Earth</TextBlock>
+            <Separator />
+            <ListBox
+                HorizontalAlignment="Stretch"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding Flags}"
+                SelectedItem="{Binding SelectedFlag}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <ie:CallMethodAction MethodName="ListBox_MouseLeftButtonDown" TargetObject="{Binding}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove">
+                        <ie:CallMethodAction MethodName="ListBox_MouseMove" TargetObject="{Binding}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -61,8 +61,8 @@ struct VSInputBatched
     float3 t1 : TANGENT;
     float3 t2 : BINORMAL;
     float2 t : TEXCOORD;
-    float4 c : COLOR; // if batched x: diffuse, y: emissive, z: specular, w: reflect
-    float4 c1 : COLOR1; // if batched x: ambient, y: specular shininess, z: diffuse alpha
+    float4 c : COLOR; // if batched x: diffuse, y: emissive, z: specular, w: reflect; PBR : albedo
+    float4 c1 : COLOR1; // if batched x: ambient, y: specular shininess, z: diffuse alpha; PBR : AO, Roughtness, Metallic
 };
 
 struct VSBoneSkinInput
@@ -204,11 +204,13 @@ struct VSInputBT
     float2 t0 : TEXCOORD0;
     float2 t3 : TEXCOORD1;
     float2 offTL : TEXCOORD2;
-    float2 offBR : TEXCOORD3;
-    float4 mr0 : TEXCOORD4;
-    float4 mr1 : TEXCOORD5;
-    float4 mr2 : TEXCOORD6;
-    float4 mr3 : TEXCOORD7;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
+    float4 mr0 : TEXCOORD6;
+    float4 mr1 : TEXCOORD7;
+    float4 mr2 : TEXCOORD8;
+    float4 mr3 : TEXCOORD9;
 };
 
 struct GSInputBT
@@ -219,7 +221,9 @@ struct GSInputBT
     float2 t0 : TEXCOORD0;
     float2 t3 : TEXCOORD1;
     float2 offTL : TEXCOORD2;
-    float2 offBR : TEXCOORD3;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
 };
 
 struct VSInputBTInstancing
@@ -230,15 +234,17 @@ struct VSInputBTInstancing
     float2 t0 : TEXCOORD0;
     float2 t3 : TEXCOORD1;
     float2 offTL : TEXCOORD2;
-    float2 offBR : TEXCOORD3;
-    float4 mr0 : TEXCOORD4;
-    float4 mr1 : TEXCOORD5;
-    float4 mr2 : TEXCOORD6;
-    float4 mr3 : TEXCOORD7;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
+    float4 mr0 : TEXCOORD6;
+    float4 mr1 : TEXCOORD7;
+    float4 mr2 : TEXCOORD8;
+    float4 mr3 : TEXCOORD9;
 
 	float4 diffuseC : COLOR2;
-	float2 tScale : TEXCOORD8;
-	float2 tOffset : TEXCOORD9;
+	float2 tScale : TEXCOORD10;
+	float2 tOffset : TEXCOORD11;
 };
 
 struct PSInputBT
@@ -268,6 +274,7 @@ struct GSInputPS
 {
 	float4 p : POSITION;
 	float4 c : COLOR;
+    float4 vEye : POSITION1;
 };
 
 struct PSInputPS
@@ -276,6 +283,7 @@ struct PSInputPS
 	noperspective
 		float3 t : TEXCOORD;
 	float4 c : COLOR;
+    float4 vEye : POSITION0;
 };
 
 //--------------------------------------------------------------------------------------

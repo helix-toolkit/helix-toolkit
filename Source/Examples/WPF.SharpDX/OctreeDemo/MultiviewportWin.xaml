@@ -20,10 +20,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <hx:ModelContainer3DX
-            x:Name="sharedModels"
-            EffectsManager="{Binding EffectsManager}"
-            RenderTechnique="{Binding RenderTechnique}">
+        <hx:ModelContainer3DX x:Name="sharedModels" EffectsManager="{Binding EffectsManager}">
             <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <!--<hx:MeshGeometryModel3D

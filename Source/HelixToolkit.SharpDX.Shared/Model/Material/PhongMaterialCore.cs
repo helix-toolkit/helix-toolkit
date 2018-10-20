@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// 
     /// </summary>
-    public partial class PhongMaterialCore : MaterialCore, IPhongMaterial
+    public partial class PhongMaterialCore : MaterialCore
     {
         private Color4 ambientColor = Color.DarkGray;
         /// <summary>
@@ -145,6 +145,18 @@ namespace HelixToolkit.UWP.Model
             get { return normalMap; }
         }
 
+        private Stream specularColorMap;
+        /// <summary>
+        /// Gets or sets the specular color map.
+        /// </summary>
+        /// <value>
+        /// The specular color map.
+        /// </value>
+        public Stream SpecularColorMap
+        {
+            set { Set(ref specularColorMap, value); }
+            get { return specularColorMap; }
+        }
 
         private Stream displacementMap;
         /// <summary>
@@ -159,6 +171,18 @@ namespace HelixToolkit.UWP.Model
             get { return displacementMap; }
         }
 
+        private Stream emissiveMap;
+        /// <summary>
+        /// Gets or sets the emissive map.
+        /// </summary>
+        /// <value>
+        /// The emissive map.
+        /// </value>
+        public Stream EmissiveMap
+        {
+            set { Set(ref emissiveMap, value); }
+            get { return emissiveMap; }
+        }
 
         private Vector4 displacementMapScaleMask;
         /// <summary>
@@ -197,34 +221,6 @@ namespace HelixToolkit.UWP.Model
         {
             set { Set(ref diffuseMapSampler, value); }
             get { return diffuseMapSampler; }
-        }
-
-
-        private SamplerStateDescription normalMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
-        /// <summary>
-        /// Gets or sets the NormalMapSampler.
-        /// </summary>
-        /// <value>
-        /// NormalMapSampler
-        /// </value>
-        public SamplerStateDescription NormalMapSampler
-        {
-            set { Set(ref normalMapSampler, value); }
-            get { return normalMapSampler; }
-        }
-
-
-        private SamplerStateDescription diffuseAlphaMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
-        /// <summary>
-        /// Gets or sets the DiffuseAlphaMapSampler.
-        /// </summary>
-        /// <value>
-        /// DiffuseAlphaMapSampler
-        /// </value>
-        public SamplerStateDescription DiffuseAlphaMapSampler
-        {
-            set { Set(ref diffuseAlphaMapSampler, value); }
-            get { return diffuseAlphaMapSampler; }
         }
 
 
@@ -284,6 +280,20 @@ namespace HelixToolkit.UWP.Model
                 return renderNormalMap;
             }
         }
+
+        private bool renderSpecularColorMap = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [render specular color map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render specular color map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderSpecularColorMap
+        {
+            set { Set(ref renderSpecularColorMap, value); }
+            get { return renderSpecularColorMap; }
+        }
+
         private bool renderDisplacementMap = true;
         /// <summary>
         /// 
@@ -295,6 +305,32 @@ namespace HelixToolkit.UWP.Model
                 Set(ref renderDisplacementMap, value);
             }
             get { return renderDisplacementMap; }
+        }
+
+        private bool renderEmissiveMap = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [render emissive map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render emissive map]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderEmissiveMap
+        {
+            set { Set(ref renderEmissiveMap, value); }
+            get { return renderEmissiveMap; }
+        }
+
+        private bool enableAutoTangent = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable automatic tangent].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic tangent]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoTangent
+        {
+            set => Set(ref enableAutoTangent, value);
+            get => enableAutoTangent;
         }
 
         private float minTessellationDistance = 10;
@@ -409,7 +445,7 @@ namespace HelixToolkit.UWP.Model
 
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new TextureSharedPhongMaterialVariables(manager, technique, this);
+            return new PhongMaterialVariables(manager, technique, this);
         }
     }
 }

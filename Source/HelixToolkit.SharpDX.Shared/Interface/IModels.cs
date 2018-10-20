@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [Flags]
     public enum BillboardType
     {
-        SingleText = 1, MultipleText = 2, SingleImage = 4
+        SingleText = 1, MultipleText = 2, Image = 4
     }
     /// <summary>
     /// 

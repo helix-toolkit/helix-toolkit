@@ -4,8 +4,12 @@
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
-
+#if !defined(INSTANCINGPARAM)
 GSInputBT main(VSInputBT input)
+#endif
+#if defined(INSTANCINGPARAM)
+GSInputBT main(VSInputBTInstancing input)
+#endif
 {
     GSInputBT output = (GSInputBT) 0;
     output.p = input.p;
@@ -15,7 +19,9 @@ GSInputBT main(VSInputBT input)
     output.t3 = input.t3;
     output.offBR = input.offBR;
     output.offTL = input.offTL;
-    if (pHasInstances)
+    output.offBL = input.offBL;
+    output.offTR = input.offTR;
+    if (bHasInstances)
     {
         matrix mInstance =
         {
@@ -27,9 +33,19 @@ GSInputBT main(VSInputBT input)
         output.p = mul(input.p, mInstance);
         output.offTL = input.offTL * mInstance._m00_m11; // 2d scaling x
         output.offBR = input.offBR * mInstance._m00_m11; // 2d scaling x
+        output.offBL = input.offBL * mInstance._m00_m11;
+        output.offTR = input.offTR * mInstance._m00_m11;
+#if defined(INSTANCINGPARAM)
+        if (bHasInstanceParams)
+        {
+            output.t0 = mad(input.tScale, input.t0, input.tOffset);
+            output.t3 = mad(input.tScale, input.t3, input.tOffset);
+            output.background = input.background * input.diffuseC;
+        }
+#endif
     }
 	// Translate position into clip space
-    float4 ndcPosition = mul(output.p, pWorld);
+    float4 ndcPosition = mul(output.p, mWorld);
     output.p = mul(ndcPosition, mView);
     return output;
 }
