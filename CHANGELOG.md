@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file.
 2. stl material issue #917 (WPF)
 3. Is it possible to render the content of a Viewport3DX to an image (png/bmp) with higher DPI? #920 (WPF.SharpDX and UWP)
 4. NullRef Exception in BufferComponent (SharpDX) SharpDX UWP bug taken #966  (WPF.SharpDX and UWP)
-5. 
+5. Recover from DXGI_ERROR_DEVICE_REMOVED / DXGI_ERROR_DEVICE_RESET #963 (WPF.SharpDX and UWP)
 
 ## [2.4.0] - 2018-8-26
 ### Added
