@@ -72,6 +72,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\SkyBoxRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\SkyDomeRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Sprite2DRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\VolumeRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultBuffers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultComputeShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultDomainShaders.cs" />
@@ -163,6 +164,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\LightsBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PBRMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PointMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\VolumeMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\VolumeTextureMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\OrderKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\ParametricSurface3DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\BatchedMeshNode.cs" />
@@ -172,6 +175,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenQuadNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Sprite2DNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\VolumeTextureNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PhongMaterialVariable.cs" />

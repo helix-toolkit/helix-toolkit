@@ -202,6 +202,11 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsSprite";
+
+        public static string VSVolume3D
+        {
+            get;
+        } = "vsVolume";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -387,6 +392,17 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 0, Format.R32G32_Float,  InputElement.AppendAligned, 0),
             new InputElement("COLOR", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
         };
+
+        /// <summary>
+        /// Gets the vs input volume3d.
+        /// </summary>
+        /// <value>
+        /// The vs input volume3d.
+        /// </value>
+        public static InputElement[] VSInputVolume3D { get; } = new InputElement[]
+        {
+            new InputElement("SV_POSITION", 0, Format.R32G32B32_Float, InputElement.AppendAligned, 0),
+        };
     }
 
     /// <summary>
@@ -529,6 +545,11 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs sprite
         /// </summary>
         public static ShaderDescription VSSprite2D = new ShaderDescription(nameof(VSSprite2D), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSprite2D);
+
+        /// <summary>
+        /// The vs volume3d
+        /// </summary>
+        public static ShaderDescription VSVolume3D = new ShaderDescription(nameof(VSVolume3D), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSVolume3D);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

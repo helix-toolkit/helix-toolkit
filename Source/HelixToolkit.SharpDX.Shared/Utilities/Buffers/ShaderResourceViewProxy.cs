@@ -101,7 +101,7 @@ namespace HelixToolkit.UWP.Utilities
             textureView = Collect(view);
         }
         /// <summary>
-        /// Creates the view.
+        /// Creates the view from common texture file stream. Supports Bmp, Jpg, DDS, Png.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="disableAutoGenMipMap">Disable auto mipmaps generation</param>
@@ -251,6 +251,28 @@ namespace HelixToolkit.UWP.Utilities
                 textureView = Collect(new ShaderResourceView(device, resource));
             }
         }
+
+        /// <summary>
+        /// Creates the view from 3D texture byte array.
+        /// </summary>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="mipCount">The mip count.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        public void CreateView(byte[] pixels, int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true)
+        {
+            this.DisposeAndClear();
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture3D.New(device, width, height, depth,
+                format, pixels));
+            if (createSRV)
+            {
+                textureView = Collect(new ShaderResourceView(device, resource));
+            }
+        }
         /// <summary>
         /// Creates the 1D texture view from color array.
         /// </summary>
@@ -274,7 +296,7 @@ namespace HelixToolkit.UWP.Utilities
 
         #region Static Creator        
         /// <summary>
-        /// Creates the specified device.
+        /// Creates ShaderResourceViewProxy from 2D texture array
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="device">The device.</param>
@@ -282,7 +304,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="format">The format.</param>
         /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
         /// <returns></returns>
-        public static ShaderResourceViewProxy Create<T>(Device device, T[] array, global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
+        public static ShaderResourceViewProxy CreateView<T>(Device device, T[] array, global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
         {
             var proxy = new ShaderResourceViewProxy(device);
             proxy.CreateView(array, format, createSRV);
@@ -290,7 +312,20 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// Creates the view.
+        /// Creates ShaderResourceViewProxy from common file formats such as Jpg, Bmp, DDS, Png, etc
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="texture">The texture.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy CreateView(Device device, System.IO.Stream texture, bool createSRV = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(texture, createSRV);
+            return proxy;
+        }
+        /// <summary>
+        /// Creates the 2D texture view from data array
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="device">The device.</param>
@@ -309,7 +344,7 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// Creates the view.
+        /// Creates the 2D texture view from raw pixel byte array
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="dataPtr">The data PTR.</param>
@@ -351,6 +386,25 @@ namespace HelixToolkit.UWP.Utilities
         {
             var proxy = new ShaderResourceViewProxy(device);
             proxy.CreateViewFromColorArray(array, width, height, mipCount, createSRV);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates the 3D texture view from raw pixel array
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy CreateViewFromPixelData(Device device, byte[] pixels, int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(pixels, width, height, depth, format, createSRV);
             return proxy;
         }
         #endregion

@@ -101,6 +101,8 @@ namespace HelixToolkit.UWP
         public const string ScreenQuad = "ScreenQuad";
 
         public const string Sprite2D = "Sprite2D";
+
+        public const string Volume3D = "Volume3D";
 #if !NETFX_CORE
         /// <summary>
         /// 

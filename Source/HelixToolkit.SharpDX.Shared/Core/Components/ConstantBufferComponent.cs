@@ -116,7 +116,10 @@ namespace HelixToolkit.UWP.Core.Components
                 using (var stream = ModelConstBuffer.Map(deviceContext))
                 {
                     stream.Write(data);
-                    stream.Write(internalByteArray, structSize, internalByteArray.Length - structSize);
+                    if (stream.RemainingLength > 0 && stream.RemainingLength >= internalByteArray.Length - structSize)
+                    {
+                        stream.Write(internalByteArray, structSize, internalByteArray.Length - structSize);
+                    }
                 }
                 ModelConstBuffer.Unmap(deviceContext);
                 return true;

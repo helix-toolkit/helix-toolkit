@@ -415,4 +415,11 @@ struct SpritePS_INPUT
     float4 Color : COLOR0;
     float2 UV : TEXCOORD0;   
 };
+
+struct VolumePS_INPUT
+{
+    float4 pos : SV_POSITION;
+    float4 wp : POSITION0;
+    float4 tex : TEXCOORD0;
+};
 #endif

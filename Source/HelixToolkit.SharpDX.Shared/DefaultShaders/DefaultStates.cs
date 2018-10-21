@@ -26,6 +26,7 @@ namespace HelixToolkit.UWP.Shaders
         public readonly static BlendStateDescription BSScreenDupCursorBlend;
         public readonly static BlendStateDescription BSOITBlend = new BlendStateDescription() { IndependentBlendEnable = true };
         public readonly static BlendStateDescription BSMeshOITBlendQuad;
+        public readonly static BlendStateDescription VolumeBlending;
 
         static DefaultBlendStateDescriptions()
         {
@@ -124,6 +125,19 @@ namespace HelixToolkit.UWP.Shaders
                 DestinationAlphaBlend = BlendOption.DestinationAlpha,
                 AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.Red | ColorWriteMaskFlags.Green | ColorWriteMaskFlags.Blue
+            };
+
+            VolumeBlending.RenderTarget[0] = new RenderTargetBlendDescription()
+            {
+                AlphaBlendOperation = BlendOperation.Add,
+                BlendOperation = BlendOperation.Add,
+                SourceBlend = BlendOption.SourceAlpha,
+                DestinationBlend = BlendOption.InverseSourceAlpha,
+
+                SourceAlphaBlend = BlendOption.InverseSourceAlpha,
+                DestinationAlphaBlend = BlendOption.Zero,
+                IsBlendEnabled = true,
+                RenderTargetWriteMask = ColorWriteMaskFlags.All
             };
         }
     }
@@ -543,6 +557,42 @@ namespace HelixToolkit.UWP.Shaders
             IsAntialiasedLineEnabled = false,
             IsDepthClipEnabled = false,
             IsScissorEnabled = true
+        };
+
+        public readonly static RasterizerStateDescription RSVolume = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+            DepthBias = 0,
+            DepthBiasClamp = 0,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+        };
+
+        public readonly static RasterizerStateDescription RSVolumeCubeFront = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.Back,
+            DepthBias = 0,
+            DepthBiasClamp = 0,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+        };
+
+        public readonly static RasterizerStateDescription RSVolumeCubeBack = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.Front,
+            DepthBias = 0,
+            DepthBiasClamp = 0,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
         };
 #if !NETFX_CORE        
         /// <summary>

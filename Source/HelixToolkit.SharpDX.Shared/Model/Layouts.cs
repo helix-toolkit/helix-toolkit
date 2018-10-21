@@ -520,6 +520,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * (2 + 2 + 4);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct VolumeParamsStruct
+    {
+        public Matrix World;
+        public Vector4 Color;
+        public float StepSize;
+        public int Iterations;
+        public Vector2 padding1;
+
+        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4);
+    }
 #if !NETFX_CORE
     /// <summary>
     /// 

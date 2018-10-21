@@ -408,6 +408,16 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "psScreenDup";
+
+        public static string PSVolume3D
+        {
+            get;
+        } = "psVolume";
+
+        public static string PSVolumeCube
+        {
+            get;
+        } = "psVolumeCube";
     }
 
 
@@ -656,5 +666,17 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSScreenDup = new ShaderDescription(nameof(PSScreenDup), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSScreenDup);
+
+        /// <summary>
+        /// The ps volume3d
+        /// </summary>
+        public static ShaderDescription PSVolume3D = new ShaderDescription(nameof(PSVolume3D), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSVolume3D);
+
+        /// <summary>
+        /// The ps volume cube
+        /// </summary>
+        public static ShaderDescription PSVolumeCube = new ShaderDescription(nameof(PSVolumeCube), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSVolumeCube);
     }
 }

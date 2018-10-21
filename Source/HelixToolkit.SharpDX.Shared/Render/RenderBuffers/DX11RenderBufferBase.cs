@@ -95,6 +95,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private TexturePool fullResDepthStencilPool;
         public TexturePool FullResDepthStencilPool { get { return fullResDepthStencilPool; } }
 
+        private TexturePool fullResRenderTargetPool;
+        public TexturePool FullResRenderTargetPool { get { return fullResRenderTargetPool; } }
         /// <summary>
         /// Gets or sets a value indicating whether this is initialized.
         /// </summary>
@@ -204,6 +206,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0)
             }));
+
+            fullResRenderTargetPool = Collect(new TexturePool(this.DeviceResources, new Texture2DDescription()
+            {
+                Width = width,
+                Height = height,
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.None,
+                Usage = ResourceUsage.Default,
+                ArraySize = 1,
+                MipLevels = 1,
+                OptionFlags = ResourceOptionFlags.None,
+                SampleDescription = new SampleDescription(1, 0)
+            }));
             Initialized = true;
             OnNewBufferCreated?.Invoke(this, new Texture2DArgs(backBuffer));
             return backBuffer;
@@ -216,6 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             DeviceContext2D.Target = null;
             RemoveAndDispose(ref fullResPPBuffer);
             RemoveAndDispose(ref fullResDepthStencilPool);
+            RemoveAndDispose(ref fullResRenderTargetPool);
             RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref colorBuffer);
             RemoveAndDispose(ref depthStencilBuffer);

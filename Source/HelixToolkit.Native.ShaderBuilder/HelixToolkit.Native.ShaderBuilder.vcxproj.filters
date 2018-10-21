@@ -287,5 +287,14 @@
     <FxCompile Include="PS\psSprite.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="VS\vsVolume.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psVolume.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psVolumeCube.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
