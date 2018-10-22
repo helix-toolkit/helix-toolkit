@@ -59,7 +59,7 @@ namespace HelixToolkit.UWP.Model
             get { return volumeTexture; }
         }
 
-        private global::SharpDX.Direct3D11.SamplerStateDescription sampler = DefaultSamplers.LinearSamplerClampAni1;
+        private global::SharpDX.Direct3D11.SamplerStateDescription sampler = DefaultSamplers.VolumeSampler;
         public global::SharpDX.Direct3D11.SamplerStateDescription Sampler
         {
             set { Set(ref sampler, value); }

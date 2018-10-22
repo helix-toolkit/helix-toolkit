@@ -46,13 +46,16 @@ namespace VolumeRendering
         {
             EffectsManager = new DefaultEffectsManager();
             Camera = new OrthographicCamera() { Position = new Point3D(0, 0, -5), LookDirection = new Vector3D(0, 0, 5), UpDirection = new Vector3D(0, 1, 0) };
-            VolumeMaterial = LoadSkull();//LoadTeapot();
+            VolumeMaterial = LoadTeapot();
         }
 
         private Material LoadTeapot()
         {
             var m = new VolumeTextureRawDataMaterial();
             m.Texture = VolumeTextureRawDataMaterialCore.LoadRAWFile("teapot256x256x178.raw", 256, 256, 178);
+            //var m = new VolumeTextureDiffuseMaterial();
+            //var data = VolumeTextureRawDataMaterialCore.LoadRAWFile("teapot256x256x178.raw", 256, 256, 178);
+            //m.Texture = ProcessData(data.VolumeTextures, data.Width, data.Height, data.Depth);
             m.Color = new Color4(1, 1, 1, 0.1f);
             m.GradientMap = GetGradients(Colors.Red.ToColor4(), Colors.Blue.ToColor4(), 128).ToArray();
             return m;

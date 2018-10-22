@@ -10,7 +10,7 @@ VolumePS_INPUT main(float3 input : SV_Position)
     output.mPos = float4(input, 1);
     output.wp = mul(output.mPos * scaleFactor, mWorld);
     output.pos = mul(output.wp, mViewProjection);
-    output.tex = output.pos;
+    output.tex = output.pos.xy / output.pos.w;
     return output;
 }
 #endif

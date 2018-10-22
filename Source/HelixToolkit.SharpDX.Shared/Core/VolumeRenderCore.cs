@@ -23,17 +23,42 @@ namespace HelixToolkit.UWP.Core
 
         static VolumeRenderCore()
         {
-            var builder = new MeshBuilder(false);
-            builder.AddBox(Vector3.Zero, 1, 1, 1);
-            BoxMesh = builder.ToMesh();
+            BoxMesh = new MeshGeometry3D()
+            {
+                Positions = new Vector3Collection()
+                {
+                     new Vector3(-0.5f, -0.5f, -0.5f),
+                     new Vector3(0.5f, -0.5f, -0.5f),
+                     new Vector3(-0.5f, 0.5f, -0.5f),
+                     new Vector3(0.5f, 0.5f, -0.5f),
+                     new Vector3(-0.5f, -0.5f, 0.5f),
+                     new Vector3(0.5f, -0.5f, 0.5f),
+                     new Vector3(-0.5f, 0.5f, 0.5f),
+                     new Vector3(0.5f, 0.5f, 0.5f),
+                },
+                Indices = new IntCollection()
+                {
+                    0,2,3,
+                    3,1,0,
+                    4,5,7,
+                    7,6,4,
+                    0,1,5,
+                    5,4,0,
+                    1,3,7,
+                    7,5,1,
+                    3,2,6,
+                    6,7,3,
+                    2,0,4,
+                    4,6,2
+                }
+            };
         }
 
         private VolumeCubeBufferModel buffer;
-
-        private ShaderPass cubeFrontPass;
+        
         private ShaderPass cubeBackPass;
         private ShaderPass volumePass;
-        private int frontTexSlot, backTexSlot;
+        private int backTexSlot;
 
         private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
         /// <summary>
@@ -68,7 +93,6 @@ namespace HelixToolkit.UWP.Core
             buffer = Collect(new VolumeCubeBufferModel());
             buffer.Geometry = BoxMesh;
             buffer.Topology = PrimitiveTopology.TriangleList;
-            cubeFrontPass = technique[DefaultPassNames.Positions];
             cubeBackPass = technique[DefaultPassNames.Backface];
             return true;
         }
@@ -87,12 +111,7 @@ namespace HelixToolkit.UWP.Core
             }
             int slot = 0;
             buffer.AttachBuffers(deviceContext, ref slot, EffectTechnique.EffectsManager);
-            
-            var front = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(global::SharpDX.DXGI.Format.R16G16B16A16_Float);
-            BindTarget(null, front, deviceContext, (int)context.ActualWidth, (int)context.ActualHeight);
-            cubeFrontPass.BindShader(deviceContext);
-            cubeFrontPass.BindStates(deviceContext, StateType.All);
-            deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
+            cubeBackPass.BindShader(deviceContext);
             cubeBackPass.BindStates(deviceContext, StateType.All);
             var back = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(global::SharpDX.DXGI.Format.R16G16B16A16_Float);
             BindTarget(null, back, deviceContext, (int)context.ActualWidth, (int)context.ActualHeight);
@@ -102,16 +121,13 @@ namespace HelixToolkit.UWP.Core
             if (pass != volumePass)
             {
                 volumePass = pass;
-                frontTexSlot = volumePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.VolumeFront);
                 backTexSlot = volumePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.VolumeBack);
             }
             materialVariables.BindMaterialResources(context, deviceContext, pass);
-            volumePass.PixelShader.BindTexture(deviceContext, frontTexSlot, front);
             volumePass.PixelShader.BindTexture(deviceContext, backTexSlot, back);
             volumePass.BindShader(deviceContext);
             volumePass.BindStates(deviceContext, StateType.All);
             deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
-            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, front);
             context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, back);
         }
 

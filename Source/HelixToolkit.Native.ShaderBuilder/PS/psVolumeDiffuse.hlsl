@@ -9,13 +9,15 @@ float4 main(VolumePS_INPUT input) : SV_Target
 {
     //calculate projective texture coordinates
     //used to project the front and back position textures onto the cube
-    float2 texC = input.tex.xy / input.tex.w;
+    float2 texC = input.tex.xy;
     texC.x = 0.5f * texC.x + 0.5f;
     texC.y = -0.5f * texC.y + 0.5f;
-    float3 front = texVolumeFront.Sample(samplerVolume, texC).xyz;
+    float3 front = input.mPos.xyz + float3(0.5, 0.5, 0.5);
     float3 back = texVolumeBack.Sample(samplerVolume, texC).xyz;
  
-    float3 dir = normalize(back - front);
+    float3 dir = back - front;
+    float dirLength = length(dir);
+    dir = normalize(dir);
 
     float4 pos = float4(front, 0);
  
@@ -27,6 +29,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
     float3 Step = dir * stepSize;
 
     float3 L = normalize(vEyePos - input.wp.xyz);
+    float lengthAccu = 0;
     [loop]
     for (uint i = 0; i < iterations; i++)
     {
@@ -48,7 +51,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
 		//distance of 1.0f). So we have to adjust the alpha accordingly.
         src.a = 1 - pow((1 - src.a), actualSampleDist / baseSampleDist);
 					  
-        float s = 1 - dot(normalize(value.xyz), L);
+        float s = 1-dot(normalize(value.xyz), L);
 				
 		//diffuse shading + fake ambient lighting
         src.rgb = s * src.rgb + .1f * src.rgb;
@@ -58,16 +61,14 @@ float4 main(VolumePS_INPUT input) : SV_Target
 		// dst.a   = dst.a   + (1 - dst.a) * src.a		
         src.rgb *= src.a;
         dst = (1.0f - dst.a) * src + dst;
-		
-		//break from the loop when alpha gets high enough
-        if (dst.a >= .95f)
-            break;
+	
 		
 		//advance the current position
         pos.xyz += Step;
 		
-		//break if the position is greater than <1, 1, 1>
-        if (pos.x > 1.0f || pos.y > 1.0f || pos.z > 1.0f)
+        lengthAccu += stepSize;
+        //break if the position is greater than <1, 1, 1>
+        if (lengthAccu > dirLength || dst.a >= 1)
             break;
     }
  

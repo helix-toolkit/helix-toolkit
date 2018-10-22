@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty SamplerProperty =
             DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureDDS3DMaterial), 
-                new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
+                new PropertyMetadata(DefaultSamplers.VolumeSampler, (d, e) =>
                 {
                     ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).Sampler = (SamplerStateDescription)e.NewValue;
                 }));
@@ -203,7 +203,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty SamplerProperty =
             DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureRawDataMaterial),
-                new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
+                new PropertyMetadata(DefaultSamplers.VolumeSampler, (d, e) =>
                 {
                     ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).Sampler = (SamplerStateDescription)e.NewValue;
                 }));
@@ -351,7 +351,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty SamplerProperty =
             DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureDiffuseMaterial),
-                new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
+                new PropertyMetadata(DefaultSamplers.VolumeSampler, (d, e) =>
                 {
                     ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).Sampler = (SamplerStateDescription)e.NewValue;
                 }));

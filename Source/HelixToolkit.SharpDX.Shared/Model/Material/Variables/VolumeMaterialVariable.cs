@@ -62,10 +62,9 @@ namespace HelixToolkit.UWP.Model
             if(texture != null && texture.TextureView != null && texture.Resource is Texture3D res)
             {
                 var desc = res.Description;
-                var steps = new Vector3(1f / desc.Width, 1f / desc.Height, 1f / desc.Depth);
-                steps *= material.SampleDistance;
                 var maxSize = Math.Max(desc.Width, Math.Max(desc.Height, desc.Depth));
-                var iteration = (int)Math.Min(material.MaxIterations, maxSize / material.SampleDistance);
+                var steps = 1f / maxSize * material.SampleDistance;
+                var iteration = (int)Math.Min((float)material.MaxIterations, (float)maxSize / material.SampleDistance);
                 var scale = Vector4.One / ((Vector4.One * maxSize) / new Vector4(desc.Width, desc.Height, desc.Depth, 1));
                 scale.W = 1;
                 WriteValue(VolumeParamsStruct.Iterations, iteration);
