@@ -17,22 +17,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     using Core;
     public class VolumeTextureNode : SceneNode
     {
-        private int samplingCount = 10;
-        /// <summary>
-        /// Gets or sets the sampling count.
-        /// </summary>
-        /// <value>
-        /// The sampling count.
-        /// </value>
-        public int SamplingCount
-        {
-            set { SetAffectsRender(ref samplingCount, value); }
-            get { return samplingCount; }
-        }
-
-        public Vector3 Size { set; get; } = Vector3.One;
-
-
         private MaterialCore material;
         /// <summary>
         ///

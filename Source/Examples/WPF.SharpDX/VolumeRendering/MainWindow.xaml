@@ -1,0 +1,29 @@
+﻿<Window
+    x:Class="VolumeRendering.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:local="clr-namespace:VolumeRendering"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="1000"
+    Height="800"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <local:MainViewModel x:Key="viewModel" />
+    </Window.Resources>
+    <Grid DataContext="{StaticResource viewModel}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX
+            BackgroundColor="Black"
+            Camera="{Binding Camera}" CameraRotationMode="Trackball"
+            EffectsManager="{Binding EffectsManager}">
+            <hx:VolumeTextureModel3D VolumeMaterial="{Binding VolumeMaterial}" />
+        </hx:Viewport3DX>
+        <StackPanel Grid.Column="1" Orientation="Vertical" />
+    </Grid>
+</Window>
