@@ -33,7 +33,6 @@ namespace HelixToolkit.UWP.Core
         private ShaderPass cubeFrontPass;
         private ShaderPass cubeBackPass;
         private ShaderPass volumePass;
-        private VolumeParamsStruct modelStruct = new VolumeParamsStruct() { StepSize = 0.1f, Iterations = 10 };
         private int frontTexSlot, backTexSlot;
 
         private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
@@ -82,9 +81,7 @@ namespace HelixToolkit.UWP.Core
 
         public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
-            modelStruct.World = ModelMatrix;
-            
-            if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, VolumeParamsStruct.SizeInBytes))
+            if (!materialVariables.UpdateMaterialStruct(deviceContext, ref ModelMatrix, Matrix.SizeInBytes))
             {
                 return;
             }

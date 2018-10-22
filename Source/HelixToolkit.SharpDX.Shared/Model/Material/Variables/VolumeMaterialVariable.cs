@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
 using SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
@@ -12,16 +13,19 @@ namespace HelixToolkit.UWP.Model
     using Render;
     using Shaders;
     using Utilities;
-    public sealed class VolumeMaterialVariable : MaterialVariable
+    public class VolumeMaterialVariable<T> : MaterialVariable
     {
-        private readonly VolumeTextureMaterial material;
+        private readonly VolumeTextureMaterialBase<T> material;
         private readonly ShaderPass volumePass;
         private readonly int texSlot;
         private readonly int samplerSlot;
         private ShaderResourceViewProxy texture;
         private SamplerStateProxy sampler;
+       
 
-        public VolumeMaterialVariable(IEffectsManager manager, IRenderTechnique technique, VolumeTextureMaterial material)
+        public Func<VolumeTextureMaterialBase<T>, IEffectsManager, ShaderResourceViewProxy> OnCreateTexture;
+
+        public VolumeMaterialVariable(IEffectsManager manager, IRenderTechnique technique, VolumeTextureMaterialBase<T> material)
             : base(manager, technique, DefaultVolumeConstantBufferDesc, material)
         {
             this.material = material;
@@ -33,21 +37,24 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitialPropertyBindings()
         {
             base.OnInitialPropertyBindings();
-            AddPropertyBinding(nameof(VolumeTextureMaterial.VolumeTexture), () => { UpdateTexture(); });
-            AddPropertyBinding(nameof(VolumeTextureMaterial.Sampler), () => 
+            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.VolumeTexture), () => { UpdateTexture(material); });
+            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.Sampler), () => 
             {
                 RemoveAndDispose(ref sampler);
                 sampler = Collect(EffectsManager.StateManager.Register(material.Sampler));
             });
+            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.StepSize),
+                () => WriteValue(VolumeParamsStruct.StepSize, material.StepSize));
+            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.Iteration),
+                () => WriteValue(VolumeParamsStruct.Iterations, material.Iteration));
+            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.Color),
+                () => WriteValue(VolumeParamsStruct.Color, material.Color));
         }
 
-        private void UpdateTexture()
+        private void UpdateTexture(VolumeTextureMaterialBase<T> material)
         {
             RemoveAndDispose(ref texture);
-            if(material.VolumeTexture != null)
-            {
-                texture = Collect(ShaderResourceViewProxy.CreateView(EffectsManager.Device, material.VolumeTexture));
-            }
+            texture = Collect(OnCreateTexture(material, EffectsManager));
         }
 
 

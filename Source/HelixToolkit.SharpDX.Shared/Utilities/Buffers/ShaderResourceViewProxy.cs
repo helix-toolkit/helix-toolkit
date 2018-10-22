@@ -273,6 +273,31 @@ namespace HelixToolkit.UWP.Utilities
                 textureView = Collect(new ShaderResourceView(device, resource));
             }
         }
+
+        /// <summary>
+        /// Creates the view.
+        /// </summary>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        public unsafe void CreateView(IntPtr dataPtr, int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true)
+        {
+            this.DisposeAndClear();
+            var ptr = (IntPtr)dataPtr;
+            var img = global::SharpDX.Toolkit.Graphics.Image.New3D(width, height, depth, global::SharpDX.Toolkit.Graphics.MipMapCount.Auto, format, dataPtr);
+            var databox = img.ToDataBox();
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture3D.New(device, width, height, depth, format,
+                databox));
+
+            if (createSRV)
+            {
+                textureView = Collect(new ShaderResourceView(device, resource));
+            }
+        }
         /// <summary>
         /// Creates the 1D texture view from color array.
         /// </summary>
@@ -401,6 +426,25 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
         /// <returns></returns>
         public static ShaderResourceViewProxy CreateViewFromPixelData(Device device, byte[] pixels, int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(pixels, width, height, depth, format, createSRV);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates the view from pixel data.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <returns></returns>
+        public unsafe static ShaderResourceViewProxy CreateViewFromPixelData(Device device, IntPtr pixels, int width, int height, int depth,
             global::SharpDX.DXGI.Format format, bool createSRV = true)
         {
             var proxy = new ShaderResourceViewProxy(device);

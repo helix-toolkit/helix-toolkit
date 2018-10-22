@@ -10,7 +10,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
     //used to project the front and back position textures onto the cube
     float2 texC = input.tex.xy / input.tex.w;
     texC.x = 0.5f * texC.x + 0.5f;
-    texC.y = 0.5f * texC.y + 0.5f;
+    texC.y = -0.5f * texC.y + 0.5f;
     float3 front = texVolumeFront.Sample(samplerVolume, texC).xyz;
     float3 back = texVolumeBack.Sample(samplerVolume, texC).xyz;
  
@@ -30,13 +30,12 @@ float4 main(VolumePS_INPUT input) : SV_Target
         pos.w = 0;
         value = texVolume.Sample(samplerVolume, pos.xyz).r;
              
-        src = (float4) value;
-        src.a *= .5f; //reduce the alpha to have a more transparent result 
+        src = float4(pColor.rgb * value, pColor.a * value);
+        //src.a *= .5f; //reduce the alpha to have a more transparent result 
          
         //Front to back blending
         // dst.rgb = dst.rgb + (1 - dst.a) * src.a * src.rgb
         // dst.a   = dst.a   + (1 - dst.a) * src.a     
-        src.rgb *= src.a;
         dst = (1.0f - dst.a) * src + dst;
      
         //break from the loop when alpha gets high enough

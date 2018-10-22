@@ -1678,7 +1678,7 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSVolume3D,
                         },
                         Topology = PrimitiveTopology.TriangleList,
-                        BlendStateDescription = DefaultBlendStateDescriptions.VolumeBlending,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeFront
                     },

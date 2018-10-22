@@ -7,8 +7,8 @@
 VolumePS_INPUT main(float3 input : SV_Position)
 {
     VolumePS_INPUT output = (VolumePS_INPUT) 0;
-    output.wp = mul(float4(input, 1), mWorld);
-    output.pos = mul(output.wp, mViewProjection);
+    output.wp = float4(input, 1);
+    output.pos = mul(mul(output.wp, mWorld), mViewProjection);
     output.tex = output.pos;
     return output;
 }
