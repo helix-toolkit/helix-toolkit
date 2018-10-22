@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Model
     using Utilities;
     public class VolumeMaterialVariable<T> : MaterialVariable
     {
-        private readonly VolumeTextureMaterialBase<T> material;
+        private readonly VolumeTextureMaterialCoreBase<T> material;
         private readonly ShaderPass volumePass;
         private readonly int texSlot;
         private readonly int samplerSlot;
@@ -23,9 +23,9 @@ namespace HelixToolkit.UWP.Model
         private SamplerStateProxy sampler;
        
 
-        public Func<VolumeTextureMaterialBase<T>, IEffectsManager, ShaderResourceViewProxy> OnCreateTexture;
+        public Func<VolumeTextureMaterialCoreBase<T>, IEffectsManager, ShaderResourceViewProxy> OnCreateTexture;
 
-        public VolumeMaterialVariable(IEffectsManager manager, IRenderTechnique technique, VolumeTextureMaterialBase<T> material)
+        public VolumeMaterialVariable(IEffectsManager manager, IRenderTechnique technique, VolumeTextureMaterialCoreBase<T> material)
             : base(manager, technique, DefaultVolumeConstantBufferDesc, material)
         {
             this.material = material;
@@ -37,21 +37,21 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitialPropertyBindings()
         {
             base.OnInitialPropertyBindings();
-            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.VolumeTexture), () => { UpdateTexture(material); });
-            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.Sampler), () => 
+            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.VolumeTexture), () => { UpdateTexture(material); });
+            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.Sampler), () => 
             {
                 RemoveAndDispose(ref sampler);
                 sampler = Collect(EffectsManager.StateManager.Register(material.Sampler));
             });
-            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.StepSize),
+            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.StepSize),
                 () => WriteValue(VolumeParamsStruct.StepSize, material.StepSize));
-            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.Iteration),
-                () => WriteValue(VolumeParamsStruct.Iterations, material.Iteration));
-            AddPropertyBinding(nameof(VolumeTextureMaterialBase<T>.Color),
+            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.Iterations),
+                () => WriteValue(VolumeParamsStruct.Iterations, material.Iterations));
+            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.Color),
                 () => WriteValue(VolumeParamsStruct.Color, material.Color));
         }
 
-        private void UpdateTexture(VolumeTextureMaterialBase<T> material)
+        private void UpdateTexture(VolumeTextureMaterialCoreBase<T> material)
         {
             RemoveAndDispose(ref texture);
             texture = Collect(OnCreateTexture(material, EffectsManager));

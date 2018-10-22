@@ -64,6 +64,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Material\Material.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\NormalMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\PhongMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\VolumeMaterials.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\IOctreeManagerWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
   </ItemGroup>
