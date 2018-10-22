@@ -105,11 +105,11 @@ namespace HelixToolkit.UWP.Model
             get { return color; }
         }
 
-        private Color4[] gradientMap;
-        public Color4[] GradientMap
+        private Color4[] transferMap;
+        public Color4[] TransferMap
         {
-            set { Set(ref gradientMap, value); }
-            get { return gradientMap; }
+            set { Set(ref transferMap, value); }
+            get { return transferMap; }
         }
 
         protected virtual string DefaultPassName { get; } = DefaultPassNames.Default;
@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP.Model
     {
         protected override ShaderResourceViewProxy OnCreateTexture(IEffectsManager manager)
         {
-            return manager.MaterialTextureManager.Register(VolumeTexture, true);
+            return manager.MaterialTextureManager.Register(VolumeTexture);
         }
     }
     /// <summary>

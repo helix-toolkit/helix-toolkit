@@ -12,6 +12,7 @@
     mc:Ignorable="d">
     <Window.Resources>
         <local:MainViewModel x:Key="viewModel" />
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
     </Window.Resources>
     <Grid DataContext="{StaticResource viewModel}">
         <Grid.ColumnDefinitions>
@@ -22,11 +23,33 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             CameraRotationMode="Trackball"
-            EffectsManager="{Binding EffectsManager}"
-            EnableD2DRendering="False"
-            EnableSwapChainRendering="true">
+            EffectsManager="{Binding EffectsManager}">
             <hx:VolumeTextureModel3D Transform="{Binding Transform}" VolumeMaterial="{Binding VolumeMaterial}" />
         </hx:Viewport3DX>
-        <StackPanel Grid.Column="1" Orientation="Vertical" />
+        <StackPanel
+            Grid.Column="1"
+            Width="120"
+            Orientation="Vertical">
+            <Button Margin="4" Command="{Binding LoadSkullCommand}">Load Skull</Button>
+            <Button Margin="4" Command="{Binding LoadTeapotCommand}">Load Teapot</Button>
+            <Button Margin="4" Command="{Binding LoadCloudCommand}">Load Noise</Button>
+        </StackPanel>
+        <Grid Grid.ColumnSpan="2" Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}">
+            <Rectangle
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Fill="#9A000000" />
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <TextBlock FontSize="18" Foreground="White">Loading and processing data.</TextBlock>
+                <ProgressBar
+                    Width="200"
+                    Height="20"
+                    Margin="10"
+                    IsIndeterminate="True" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

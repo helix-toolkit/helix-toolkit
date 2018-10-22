@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP.Model
         private readonly int texSlot, gradientSlot;
         private readonly int samplerSlot;
         private ShaderResourceViewProxy texture;
-        private ShaderResourceViewProxy gradientMap;
+        private ShaderResourceViewProxy transferMap;
         private SamplerStateProxy sampler;
        
 
@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP.Model
                 () => WriteValue(VolumeParamsStruct.MaxIterations, material.MaxIterations));
             AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.Color),
                 () => WriteValue(VolumeParamsStruct.Color, material.Color));
-            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.GradientMap),
+            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.TransferMap),
                 () => UpdateGradientMap());
         }
 
@@ -85,12 +85,12 @@ namespace HelixToolkit.UWP.Model
 
         public void UpdateGradientMap()
         {
-            RemoveAndDispose(ref gradientMap);
-            if(material.GradientMap != null)
+            RemoveAndDispose(ref transferMap);
+            if(material.TransferMap != null)
             {
-                gradientMap = Collect(ShaderResourceViewProxy.CreateViewFromColorArray(EffectsManager.Device, material.GradientMap));
+                transferMap = Collect(ShaderResourceViewProxy.CreateViewFromColorArray(EffectsManager.Device, material.TransferMap));
             }
-            WriteValue(VolumeParamsStruct.HasGradientMapX, material.GradientMap != null);
+            WriteValue(VolumeParamsStruct.HasGradientMapX, material.TransferMap != null);
         }
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
@@ -98,7 +98,7 @@ namespace HelixToolkit.UWP.Model
             if(texture != null)
             {
                 shaderPass.PixelShader.BindTexture(deviceContext, texSlot, texture);
-                shaderPass.PixelShader.BindTexture(deviceContext, gradientSlot, gradientMap);
+                shaderPass.PixelShader.BindTexture(deviceContext, gradientSlot, transferMap);
                 shaderPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                 return true;
             }

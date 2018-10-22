@@ -1,22 +1,15 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Model;
+using HelixToolkit.Wpf.SharpDX.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using SharpDX;
+using System.Windows.Input;
+using Color4 = SharpDX.Color4;
+using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
-using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using Color = System.Windows.Media.Color;
-using Plane = SharpDX.Plane;
-using Vector3 = SharpDX.Vector3;
-using Colors = System.Windows.Media.Colors;
-using Color4 = SharpDX.Color4;
-using HelixToolkit.Wpf.SharpDX.Model;
-using HelixToolkit.Wpf.SharpDX.Utilities;
 
 namespace VolumeRendering
 {
@@ -42,66 +35,147 @@ namespace VolumeRendering
             get { return transform; }
         }
 
+        private bool isLoading = false;
+        public bool IsLoading
+        {
+            private set
+            {
+                SetValue(ref isLoading, value);
+            }
+            get { return isLoading; }
+        }
+
+        public ICommand LoadTeapotCommand { get; }
+        public ICommand LoadSkullCommand { get; }
+        public ICommand LoadCloudCommand { get; }
+
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            Camera = new OrthographicCamera() { Position = new Point3D(0, 0, -5), LookDirection = new Vector3D(0, 0, 5), UpDirection = new Vector3D(0, 1, 0) };
-            VolumeMaterial = LoadTeapot();
+            Camera = new PerspectiveCamera() { Position = new Point3D(0, 0, -5), LookDirection = new Vector3D(0, 0, 5), UpDirection = new Vector3D(0, 1, 0) };
+            LoadTeapotCommand = new RelayCommand((o) => { Load(0); });
+            LoadSkullCommand = new RelayCommand((o) => { Load(1); });
+            LoadCloudCommand = new RelayCommand((o) => { Load(2); });
+            Load(0);
         }
 
-        private Material LoadTeapot()
+        private void Load(int idx)
         {
-            var m = new VolumeTextureRawDataMaterial();
-            m.Texture = VolumeTextureRawDataMaterialCore.LoadRAWFile("teapot256x256x178.raw", 256, 256, 178);
-            //var m = new VolumeTextureDiffuseMaterial();
-            //var data = VolumeTextureRawDataMaterialCore.LoadRAWFile("teapot256x256x178.raw", 256, 256, 178);
-            //m.Texture = ProcessData(data.VolumeTextures, data.Width, data.Height, data.Depth);
-            m.Color = new Color4(1, 1, 1, 0.1f);
-            m.GradientMap = GetGradients(Colors.Red.ToColor4(), Colors.Blue.ToColor4(), 128).ToArray();
-            return m;
+            if (IsLoading) { return; }
+            IsLoading = true;
+            Task.Run<Tuple<Material, Media3D.Transform3D>>(() => 
+            {
+                switch (idx)
+                {
+                    case 0:
+                        return LoadTeapot();
+                    case 1:
+                        return LoadSkull();
+                    case 2:
+                        return LoadNoise();
+                }
+                return null;
+            }).ContinueWith((result)=> 
+            {
+                VolumeMaterial = result.Result.Item1;
+                Transform = result.Result.Item2;
+                IsLoading = false;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private Material LoadSkull()
+        private Tuple<Material, Media3D.Transform3D> LoadTeapot()
+        {
+            //var m = new VolumeTextureRawDataMaterial();
+            //m.Texture = VolumeTextureRawDataMaterialCore.LoadRAWFile("teapot256x256x178.raw", 256, 256, 178);
+            var m = new VolumeTextureDiffuseMaterial();
+            var data = VolumeTextureRawDataMaterialCore.LoadRAWFile("teapot256x256x178.raw", 256, 256, 178);
+            m.Texture = ProcessData(data.VolumeTextures, data.Width, data.Height, data.Depth, out var transferMap);
+            m.Color = new Color4(1, 1, 1, 0.4f);
+            m.TransferMap = transferMap;
+            m.Freeze();
+            var transform = new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), 180));
+            transform.Freeze();
+            return new Tuple<Material, Media3D.Transform3D>(m, transform);
+        }
+
+        private Tuple<Material, Media3D.Transform3D> LoadSkull()
         {
             var m = new VolumeTextureDiffuseMaterial();
             var data = VolumeTextureRawDataMaterialCore.LoadRAWFile("male128x256x256.raw", 128, 256, 256);
-            m.Texture = ProcessData(data.VolumeTextures, data.Width, data.Height, data.Depth);
-            m.Color = new Color4(1, 1, 1, 1f);
-            m.GradientMap = GetGradients(new Color4(1, 0, 0, 0.1f), new Color4(1, 1f, 1, 1f), 128).ToArray();
-            return m;
+            m.Texture = ProcessData(data.VolumeTextures, data.Width, data.Height, data.Depth, out var transferMap);
+            m.Color = new Color4(1, 1, 1, 0.5f);
+            m.TransferMap = transferMap;
+            var transform = new Media3D.ScaleTransform3D(2, 1, 1);
+            m.Freeze();
+            transform.Freeze();
+            return new Tuple<Material, Media3D.Transform3D>(m, transform);
         }
 
-        private VolumeTextureGradientParams ProcessData(byte[] data, int width, int height, int depth)
+        private Tuple<Material, Media3D.Transform3D> LoadNoise()
         {
+            var m = new VolumeTextureDDS3DMaterial();
+            m.Texture = LoadFileToMemory("NoiseVolume.dds");
+            m.Color = new Color4(1, 1, 1, 0.01f);
+            m.Freeze();
+            var transform = new Media3D.ScaleTransform3D(4, 4, 4);
+            transform.Freeze();
+            return new Tuple<Material, Media3D.Transform3D>(m, transform);
+        }
+
+        private VolumeTextureGradientParams ProcessData(byte[] data, int width, int height, int depth, out Color4[] transferMap)
+        {
+            uint[] histogram = new uint[256];
+            
             float[] fdata = new float[data.Length];
             for(int i=0; i < data.Length; ++i)
             {
                 fdata[i] = (float) data[i] / byte.MaxValue;
+                histogram[data[i]]++;
             }
+            transferMap = GetTransferFunction(histogram, data.Length);
             var gradients = VolumeDataHelper.GenerateGradients(fdata, width, height, depth, 1);
-            VolumeDataHelper.FilterNxNxN(gradients, width, height, depth, 3);
+            VolumeDataHelper.FilterNxNxN(gradients, width, height, depth, 3);      
             return new VolumeTextureGradientParams(gradients, width, height, depth);
         }
 
-        public static IEnumerable<Color4> GetGradients(Color4 start, Color4 mid, Color4 end, int steps)
+        private static readonly Color4[] ColorCandidates = new Color4[]
         {
-            return GetGradients(start, mid, steps / 2).Concat(GetGradients(mid, end, steps / 2));
-        }
-
-        public static IEnumerable<Color4> GetGradients(Color4 start, Color4 end, int steps)
+            Colors.DarkSlateBlue.ToColor4(),
+            Colors.DarkGray.ToColor4(),
+            Colors.Yellow.ToColor4(),
+            Colors.Red.ToColor4(),
+            Colors.Green.ToColor4(),            
+        };
+       
+        public static Color4[] GetTransferFunction(uint[] histogram, int total)
         {
-            float stepA = ((end.Alpha - start.Alpha) / (steps - 1));
-            float stepR = ((end.Red - start.Red) / (steps - 1));
-            float stepG = ((end.Green - start.Green) / (steps - 1));
-            float stepB = ((end.Blue - start.Blue) / (steps - 1));
-
-            for (int i = 0; i < steps; i++)
+            float[] percentage = new float[histogram.Length];
+            for(int i=0; i < histogram.Length; ++i)
             {
-                yield return new Color4((start.Red + (stepR * i)),
-                                            (start.Green + (stepG * i)),
-                                            (start.Blue + (stepB * i)),
-                                            (start.Alpha + (stepA * i)));
+                percentage[i] = (float)histogram[i] / total;
+                if(percentage[i] > 0.0025f)
+                {
+                    percentage[i] = 255;
+                }
             }
+            Color4[] ret = new Color4[histogram.Length];
+            int counter = 0;
+            bool isZero = true;
+            for(int i=0; i < percentage.Length; ++i)
+            {
+                if(percentage[i] > 0 && percentage[i] != 255)
+                {
+                    ret[i] = ColorCandidates[counter];
+                    isZero = false;
+                }
+
+                if (!isZero && percentage[i] == 255)
+                {
+                    counter = (counter + 1) % ColorCandidates.Length;
+                    isZero = true;
+                }
+            }
+            return ret;
         }
     }
 }

@@ -121,23 +121,23 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
-        /// Gets or sets the gradient map.
+        /// Gets or sets the Color Transfer Map.
         /// </summary>
         /// <value>
         /// The gradient map.
         /// </value>
-        public Color4[] GradientMap
+        public Color4[] TransferMap
         {
-            get { return (Color4[])GetValue(GradientMapProperty); }
-            set { SetValue(GradientMapProperty, value); }
+            get { return (Color4[])GetValue(TransferMapProperty); }
+            set { SetValue(TransferMapProperty, value); }
         }
 
-        public static readonly DependencyProperty GradientMapProperty =
-            DependencyProperty.Register("GradientMap", typeof(Color4[]), typeof(VolumeTextureDDS3DMaterial),
+        public static readonly DependencyProperty TransferMapProperty =
+            DependencyProperty.Register("TransferMap", typeof(Color4[]), typeof(VolumeTextureDDS3DMaterial),
                 new PropertyMetadata(null,
                 (d, e) =>
                 {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).GradientMap = (Color4[])e.NewValue;
+                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).TransferMap = (Color4[])e.NewValue;
                 }));
 
 
@@ -151,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                GradientMap = GradientMap
+                TransferMap = TransferMap
             };
         }
 
@@ -270,23 +270,23 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         /// <summary>
-        /// Gets or sets the gradient map.
+        /// Gets or sets the Color Transfer Map.
         /// </summary>
         /// <value>
         /// The gradient map.
         /// </value>
-        public Color4[] GradientMap
+        public Color4[] TransferMap
         {
-            get { return (Color4[])GetValue(GradientMapProperty); }
-            set { SetValue(GradientMapProperty, value); }
+            get { return (Color4[])GetValue(TransferMapProperty); }
+            set { SetValue(TransferMapProperty, value); }
         }
 
-        public static readonly DependencyProperty GradientMapProperty =
-            DependencyProperty.Register("GradientMap", typeof(Color4[]), typeof(VolumeTextureRawDataMaterial),
+        public static readonly DependencyProperty TransferMapProperty =
+            DependencyProperty.Register("TransferMap", typeof(Color4[]), typeof(VolumeTextureRawDataMaterial),
                 new PropertyMetadata(null,
                 (d, e) =>
                 {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).GradientMap = (Color4[])e.NewValue;
+                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).TransferMap = (Color4[])e.NewValue;
                 }));
 
         protected override MaterialCore OnCreateCore()
@@ -298,7 +298,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                GradientMap = GradientMap
+                TransferMap = TransferMap
             };
         }
 
@@ -418,23 +418,23 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         /// <summary>
-        /// Gets or sets the gradient map.
+        /// Gets or sets the Color Transfer Map.
         /// </summary>
         /// <value>
-        /// The gradient map.
+        /// The transfer map.
         /// </value>
-        public Color4[] GradientMap
+        public Color4[] TransferMap
         {
-            get { return (Color4[])GetValue(GradientMapProperty); }
-            set { SetValue(GradientMapProperty, value); }
+            get { return (Color4[])GetValue(TransferMapProperty); }
+            set { SetValue(TransferMapProperty, value); }
         }
 
-        public static readonly DependencyProperty GradientMapProperty =
-            DependencyProperty.Register("GradientMap", typeof(Color4[]), typeof(VolumeTextureDiffuseMaterial),
+        public static readonly DependencyProperty TransferMapProperty =
+            DependencyProperty.Register("TransferMap", typeof(Color4[]), typeof(VolumeTextureDiffuseMaterial),
                 new PropertyMetadata(null,
                 (d, e) =>
                 {
-                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).GradientMap = (Color4[])e.NewValue;
+                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).TransferMap = (Color4[])e.NewValue;
                 }));
 
         protected override MaterialCore OnCreateCore()
@@ -446,7 +446,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                GradientMap = GradientMap
+                TransferMap = TransferMap
             };
         }
 
