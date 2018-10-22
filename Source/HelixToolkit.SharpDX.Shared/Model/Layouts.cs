@@ -524,12 +524,16 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct VolumeParamsStruct
     {
-        //public Matrix World; Separated from the struct in material
-        public const string Color = "pColor";
-        public const string StepSize = "stepSize";
-        public const string Iterations = "iterations";
-
-        public const int SizeInBytes = 4 * (4 + 4 + 4 * 4);
+        public const string World = "mWorld"; //Separated from the struct in material
+        public const string Color = "pColor"; // Vector4
+        public const string StepSize = "stepSize"; // Vector3
+        public const string Iterations = "iterations"; // int or uint
+        public const string HasGradientMapX = "bHasGradientMapX";// bool
+        public const string IsoValue = "isoValue"; // float
+        public const string BaseSampleDistance = "baseSampleDist"; //float
+        public const string ActualSampleDistance = "actualSampleDist"; //float
+        public const string ScaleFactor = "scaleFactor"; //Vector4
+        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 + 4 + 4);
     }
 #if !NETFX_CORE
     /// <summary>

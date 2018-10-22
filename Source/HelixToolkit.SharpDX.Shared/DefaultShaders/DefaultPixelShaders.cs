@@ -418,6 +418,11 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "psVolumeCube";
+
+        public static string PSVolumeDiffuse
+        {
+            get;
+        } = "psVolumeDiffuse";
     }
 
 
@@ -678,5 +683,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSVolumeCube = new ShaderDescription(nameof(PSVolumeCube), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSVolumeCube);
+
+        /// <summary>
+        /// The ps volume3d
+        /// </summary>
+        public static ShaderDescription PSVolumeDiffuse3D = new ShaderDescription(nameof(PSVolumeDiffuse3D), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSVolumeDiffuse);
     }
 }

@@ -96,10 +96,10 @@
     <Content Include="..\..\..\..\Images\Textures\3D Texture\teapot256x256x178.raw">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\Images\Textures\3D Texture\NoiseVolume.dds">
+    <Content Include="..\..\..\..\Images\Textures\3D Texture\male128x256x256.raw">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\..\Images\Textures\3D Texture\stagbeetle832x832x494.zip">
+    <Content Include="..\..\..\..\Images\Textures\3D Texture\NoiseVolume.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

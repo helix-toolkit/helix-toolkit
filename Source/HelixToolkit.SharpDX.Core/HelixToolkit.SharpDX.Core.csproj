@@ -87,6 +87,7 @@
     <None Remove="Resources\psViewCube.cso" />
     <None Remove="Resources\psVolume.cso" />
     <None Remove="Resources\psVolumeCube.cso" />
+    <None Remove="Resources\psVolumeDiffuse.cso" />
     <None Remove="Resources\psWireframe.cso" />
     <None Remove="Resources\psWireframeOIT.cso" />
     <None Remove="Resources\vsBillboard.cso" />
@@ -181,6 +182,7 @@
     <EmbeddedResource Include="Resources\psViewCube.cso" />
     <EmbeddedResource Include="Resources\psVolume.cso" />
     <EmbeddedResource Include="Resources\psVolumeCube.cso" />
+    <EmbeddedResource Include="Resources\psVolumeDiffuse.cso" />
     <EmbeddedResource Include="Resources\psWireframe.cso" />
     <EmbeddedResource Include="Resources\psWireframeOIT.cso" />
     <EmbeddedResource Include="Resources\vsBillboard.cso" />

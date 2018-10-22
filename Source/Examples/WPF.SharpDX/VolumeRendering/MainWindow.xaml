@@ -20,9 +20,10 @@
         </Grid.ColumnDefinitions>
         <hx:Viewport3DX
             BackgroundColor="Black"
-            Camera="{Binding Camera}" CameraRotationMode="Trackball"
+            Camera="{Binding Camera}"
+            CameraRotationMode="Trackball"
             EffectsManager="{Binding EffectsManager}">
-            <hx:VolumeTextureModel3D VolumeMaterial="{Binding VolumeMaterial}" />
+            <hx:VolumeTextureModel3D Transform="{Binding Transform}" VolumeMaterial="{Binding VolumeMaterial}" />
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical" />
     </Grid>

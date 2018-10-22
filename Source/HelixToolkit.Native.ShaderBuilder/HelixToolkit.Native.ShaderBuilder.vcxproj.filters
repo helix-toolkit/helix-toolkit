@@ -296,5 +296,8 @@
     <FxCompile Include="PS\psVolumeCube.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="PS\psVolumeDiffuse.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

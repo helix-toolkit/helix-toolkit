@@ -138,9 +138,13 @@ cbuffer cbVolumeModel : register(b4)
 {
     float4x4 mWorld;
     float4 pColor;
-    float stepSize;
+    float3 stepSize;
     uint iterations;
-    float2 padding1;
+    bool bHasGradientMapX;
+    float isoValue;
+    float baseSampleDist = .5f;
+    float actualSampleDist = .5f;
+    float4 scaleFactor;
 };
 #endif
 #if defined(PARTICLE) // model for line, point and billboard

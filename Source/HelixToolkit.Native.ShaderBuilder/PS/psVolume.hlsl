@@ -1,3 +1,4 @@
+//Reference https://graphicsrunner.blogspot.com/search/label/Volume%20Rendering
 #ifndef PSVOLUME_HLSL
 #define PSVOLUME_HLSL
 #define VOLUME
@@ -25,12 +26,16 @@ float4 main(VolumePS_INPUT input) : SV_Target
  
     float3 Step = dir * stepSize;
     [loop]
-    for (int i = 0; i < iterations; i++)
+    for (uint i = 0; i < iterations; i++)
     {
+        float4 color = pColor;
         pos.w = 0;
         value = texVolume.Sample(samplerVolume, pos.xyz).r;
-             
-        src = float4(pColor.rgb * value, pColor.a * value);
+        if (bHasGradientMapX)
+        {
+            color *= texColorStripe1DX.Sample(samplerVolume, value);
+        }
+        src = float4(color.rgb * value, color.a * value);
         //src.a *= .5f; //reduce the alpha to have a more transparent result 
          
         //Front to back blending
@@ -46,7 +51,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
         pos.xyz += Step;
      
         //break if the position is greater than <1, 1, 1>
-        if (pos.x > 1.0f &&
+        if ( pos.x > 1.0f &&
             pos.y > 1.0f &&
             pos.z > 1.0f)
             break;

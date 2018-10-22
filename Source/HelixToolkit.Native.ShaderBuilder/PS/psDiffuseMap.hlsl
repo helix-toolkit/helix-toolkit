@@ -14,7 +14,7 @@ float4 main(PSInput input) : SV_Target
     {
 		c *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
-    if (bHasNormalMap)
+    if (bHasNormalMap)//Used for Unlit
     {
         return c;
     }

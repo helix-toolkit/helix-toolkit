@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.IO;
+using SharpDX;
 using SharpDX.Direct3D11;
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -58,52 +59,99 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         /// <summary>
-        /// Gets or sets the size of the steps. Usually set to 1 / (Texture Depth/Slices)
+        /// Gets or sets the sample distance. Default = 1.0
         /// </summary>
         /// <value>
         /// The size of the step.
         /// </value>
-        public double StepSize
+        public double SampleDistance
         {
-            get { return (double)GetValue(StepSizeProperty); }
-            set { SetValue(StepSizeProperty, value); }
+            get { return (double)GetValue(SampleDistanceProperty); }
+            set { SetValue(SampleDistanceProperty, value); }
         }
         
-        public static readonly DependencyProperty StepSizeProperty =
-            DependencyProperty.Register("StepSize", typeof(double), typeof(VolumeTextureDDS3DMaterial), 
-                new PropertyMetadata(0.1, (d, e) =>
+        public static readonly DependencyProperty SampleDistanceProperty =
+            DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureDDS3DMaterial), 
+                new PropertyMetadata(1.0, (d, e) =>
                 {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).StepSize = (float)(double)e.NewValue;
+                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).SampleDistance = (float)(double)e.NewValue;
                 }));
 
 
         /// <summary>
-        /// Gets or sets the iterations. Usually equal to the Texture Depth.
+        /// Gets or sets the max iterations. Usually equal to the Texture Depth. Default = INT.MAX for automatic iteration
         /// </summary>
         /// <value>
         /// The iterations.
         /// </value>
-        public int Iterations
+        public int MaxIterations
         {
-            get { return (int)GetValue(IterationsProperty); }
-            set { SetValue(IterationsProperty, value); }
+            get { return (int)GetValue(MaxIterationsProperty); }
+            set { SetValue(MaxIterationsProperty, value); }
         }
 
-        public static readonly DependencyProperty IterationsProperty =
-            DependencyProperty.Register("Iterations", typeof(int), typeof(VolumeTextureDDS3DMaterial), 
-                new PropertyMetadata(10, (d, e) =>
+        public static readonly DependencyProperty MaxIterationsProperty =
+            DependencyProperty.Register("MaxIterations", typeof(int), typeof(VolumeTextureDDS3DMaterial), 
+                new PropertyMetadata(int.MaxValue, (d, e) =>
                 {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).Iterations = (int)e.NewValue;
+                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).MaxIterations = (int)e.NewValue;
                 }));
+
+
+        /// <summary>
+        /// Gets or sets the color. It can also used to adjust opacity
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
+        public Color4 Color
+        {
+            get { return (Color4)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color4", typeof(Color4), typeof(VolumeTextureDDS3DMaterial), 
+                new PropertyMetadata(new Color4(1,1,1,1),
+                (d, e) =>
+                {
+                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).Color = (Color4)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the gradient map.
+        /// </summary>
+        /// <value>
+        /// The gradient map.
+        /// </value>
+        public Color4[] GradientMap
+        {
+            get { return (Color4[])GetValue(GradientMapProperty); }
+            set { SetValue(GradientMapProperty, value); }
+        }
+
+        public static readonly DependencyProperty GradientMapProperty =
+            DependencyProperty.Register("GradientMap", typeof(Color4[]), typeof(VolumeTextureDDS3DMaterial),
+                new PropertyMetadata(null,
+                (d, e) =>
+                {
+                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).GradientMap = (Color4[])e.NewValue;
+                }));
+
+
 
         protected override MaterialCore OnCreateCore()
         {
             return new VolumeTextureDDS3DMaterialCore()
             {
                 VolumeTexture = Texture,
-                StepSize = (float)StepSize,
-                Iterations = Iterations,
-                Sampler = Sampler
+                SampleDistance = (float)SampleDistance,
+                MaxIterations = MaxIterations,
+                Sampler = Sampler,
+                Color = Color,
+                GradientMap = GradientMap
             };
         }
 
@@ -125,7 +173,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class VolumeTextureRawDataMaterial : Material
     {
         /// <summary>
-        /// Gets or sets the texture. Only supports 3D DDS texture stream
+        /// Gets or sets the texture.
         /// </summary>
         /// <value>
         /// The texture.
@@ -161,42 +209,84 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         /// <summary>
-        /// Gets or sets the size of the steps. Usually set to 1 / (Texture Depth/Slices)
+        /// Gets or sets the sample distance. Default = 1.0
         /// </summary>
         /// <value>
         /// The size of the step.
         /// </value>
-        public double StepSize
+        public double SampleDistance
         {
-            get { return (double)GetValue(StepSizeProperty); }
-            set { SetValue(StepSizeProperty, value); }
+            get { return (double)GetValue(SampleDistanceProperty); }
+            set { SetValue(SampleDistanceProperty, value); }
         }
 
-        public static readonly DependencyProperty StepSizeProperty =
-            DependencyProperty.Register("StepSize", typeof(double), typeof(VolumeTextureRawDataMaterial),
-                new PropertyMetadata(0.1, (d, e) =>
+        public static readonly DependencyProperty SampleDistanceProperty =
+            DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureRawDataMaterial),
+                new PropertyMetadata(1.0, (d, e) =>
                 {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).StepSize = (float)(double)e.NewValue;
+                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).SampleDistance = (float)(double)e.NewValue;
                 }));
 
 
         /// <summary>
-        /// Gets or sets the iterations. Usually equal to the Texture Depth.
+        /// Gets or sets the max iterations. Usually equal to the Texture Depth. Default = INT.MAX for automatic iteration
         /// </summary>
         /// <value>
         /// The iterations.
         /// </value>
-        public int Iterations
+        public int MaxIterations
         {
-            get { return (int)GetValue(IterationsProperty); }
-            set { SetValue(IterationsProperty, value); }
+            get { return (int)GetValue(MaxIterationsProperty); }
+            set { SetValue(MaxIterationsProperty, value); }
         }
 
-        public static readonly DependencyProperty IterationsProperty =
-            DependencyProperty.Register("Iterations", typeof(int), typeof(VolumeTextureRawDataMaterial),
-                new PropertyMetadata(10, (d, e) =>
+        public static readonly DependencyProperty MaxIterationsProperty =
+            DependencyProperty.Register("MaxIterations", typeof(int), typeof(VolumeTextureRawDataMaterial),
+                new PropertyMetadata(int.MaxValue, (d, e) =>
                 {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).Iterations = (int)e.NewValue;
+                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).MaxIterations = (int)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the color. It can also used to adjust opacity
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
+        public Color4 Color
+        {
+            get { return (Color4)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color4", typeof(Color4), typeof(VolumeTextureRawDataMaterial), 
+                new PropertyMetadata(new Color4(1, 1, 1, 1),
+                (d, e) =>
+                {
+                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).Color = (Color4)e.NewValue;
+                }));
+
+        /// <summary>
+        /// Gets or sets the gradient map.
+        /// </summary>
+        /// <value>
+        /// The gradient map.
+        /// </value>
+        public Color4[] GradientMap
+        {
+            get { return (Color4[])GetValue(GradientMapProperty); }
+            set { SetValue(GradientMapProperty, value); }
+        }
+
+        public static readonly DependencyProperty GradientMapProperty =
+            DependencyProperty.Register("GradientMap", typeof(Color4[]), typeof(VolumeTextureRawDataMaterial),
+                new PropertyMetadata(null,
+                (d, e) =>
+                {
+                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).GradientMap = (Color4[])e.NewValue;
                 }));
 
         protected override MaterialCore OnCreateCore()
@@ -204,9 +294,159 @@ namespace HelixToolkit.Wpf.SharpDX
             return new VolumeTextureRawDataMaterialCore()
             {
                 VolumeTexture = Texture,
-                StepSize = (float)StepSize,
-                Iterations = Iterations,
-                Sampler = Sampler
+                SampleDistance = (float)SampleDistance,
+                MaxIterations = MaxIterations,
+                Sampler = Sampler,
+                Color = Color,
+                GradientMap = GradientMap
+            };
+        }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return Clone();
+        }
+#endif
+    }
+
+
+    /// <summary>
+    /// Used to use gradient data as Volume 3D texture. 
+    /// User must create their own data reader to read texture files as pixel byte[] and pass the necessary information as <see cref="VolumeTextureParams"/>
+    /// <para>
+    /// Pixel Byte[] is equal to Width * Height * Depth * BytesPerPixel.
+    /// </para>
+    /// </summary>
+    public class VolumeTextureDiffuseMaterial : Material
+    {
+        /// <summary>
+        /// Gets or sets the texture.
+        /// </summary>
+        /// <value>
+        /// The texture.
+        /// </value>
+        public VolumeTextureGradientParams Texture
+        {
+            get { return (VolumeTextureGradientParams)GetValue(TextureProperty); }
+            set { SetValue(TextureProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty TextureProperty =
+            DependencyProperty.Register("Texture", typeof(VolumeTextureGradientParams), typeof(VolumeTextureDiffuseMaterial),
+                new PropertyMetadata(new VolumeTextureGradientParams(), (d, e) =>
+                {
+                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).VolumeTexture = (VolumeTextureGradientParams)e.NewValue;
+                }));
+
+
+
+        public SamplerStateDescription Sampler
+        {
+            get { return (SamplerStateDescription)GetValue(SamplerProperty); }
+            set { SetValue(SamplerProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty SamplerProperty =
+            DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureDiffuseMaterial),
+                new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
+                {
+                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).Sampler = (SamplerStateDescription)e.NewValue;
+                }));
+
+        /// <summary>
+        /// Gets or sets the sample distance. Default = 1.0
+        /// </summary>
+        /// <value>
+        /// The size of the step.
+        /// </value>
+        public double SampleDistance
+        {
+            get { return (double)GetValue(SampleDistanceProperty); }
+            set { SetValue(SampleDistanceProperty, value); }
+        }
+
+        public static readonly DependencyProperty SampleDistanceProperty =
+            DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureDiffuseMaterial),
+                new PropertyMetadata(1.0, (d, e) =>
+                {
+                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).SampleDistance = (float)(double)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the max iterations. Usually equal to the Texture Depth. Default = INT.MAX for automatic iteration
+        /// </summary>
+        /// <value>
+        /// The iterations.
+        /// </value>
+        public int MaxIterations
+        {
+            get { return (int)GetValue(MaxIterationsProperty); }
+            set { SetValue(MaxIterationsProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxIterationsProperty =
+            DependencyProperty.Register("MaxIterations", typeof(int), typeof(VolumeTextureDiffuseMaterial),
+                new PropertyMetadata(int.MaxValue, (d, e) =>
+                {
+                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).MaxIterations = (int)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the color. It can also used to adjust opacity
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
+        public Color4 Color
+        {
+            get { return (Color4)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color4", typeof(Color4), typeof(VolumeTextureDiffuseMaterial),
+                new PropertyMetadata(new Color4(1, 1, 1, 1),
+                (d, e) =>
+                {
+                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).Color = (Color4)e.NewValue;
+                }));
+
+        /// <summary>
+        /// Gets or sets the gradient map.
+        /// </summary>
+        /// <value>
+        /// The gradient map.
+        /// </value>
+        public Color4[] GradientMap
+        {
+            get { return (Color4[])GetValue(GradientMapProperty); }
+            set { SetValue(GradientMapProperty, value); }
+        }
+
+        public static readonly DependencyProperty GradientMapProperty =
+            DependencyProperty.Register("GradientMap", typeof(Color4[]), typeof(VolumeTextureDiffuseMaterial),
+                new PropertyMetadata(null,
+                (d, e) =>
+                {
+                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).GradientMap = (Color4[])e.NewValue;
+                }));
+
+        protected override MaterialCore OnCreateCore()
+        {
+            return new VolumeTextureDiffuseMaterialCore()
+            {
+                VolumeTexture = Texture,
+                SampleDistance = (float)SampleDistance,
+                MaxIterations = MaxIterations,
+                Sampler = Sampler,
+                Color = Color,
+                GradientMap = GradientMap
             };
         }
 

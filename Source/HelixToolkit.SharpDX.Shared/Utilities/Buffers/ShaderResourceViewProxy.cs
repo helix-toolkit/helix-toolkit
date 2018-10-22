@@ -255,6 +255,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <summary>
         /// Creates the view from 3D texture byte array.
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="pixels">The pixels.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
@@ -262,8 +263,8 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="format">The format.</param>
         /// <param name="mipCount">The mip count.</param>
         /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
-        public void CreateView(byte[] pixels, int width, int height, int depth,
-            global::SharpDX.DXGI.Format format, bool createSRV = true)
+        public void CreateView<T>(T[] pixels, int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
         {
             this.DisposeAndClear();
             resource = Collect(global::SharpDX.Toolkit.Graphics.Texture3D.New(device, width, height, depth,
@@ -433,6 +434,13 @@ namespace HelixToolkit.UWP.Utilities
             return proxy;
         }
 
+        public static ShaderResourceViewProxy CreateViewFromPixelData(Device device, Half4[] pixels, int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(pixels, width, height, depth, format, createSRV);
+            return proxy;
+        }
         /// <summary>
         /// Creates the view from pixel data.
         /// </summary>

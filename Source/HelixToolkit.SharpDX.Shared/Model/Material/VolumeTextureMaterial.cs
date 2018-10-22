@@ -15,11 +15,36 @@ namespace HelixToolkit.UWP.Model
 
     public struct VolumeTextureParams
     {
-        public byte[] VolumeTextures;
-        public int Width;
-        public int Height;
-        public int Depth;
-        public global::SharpDX.DXGI.Format Format;
+        public byte[] VolumeTextures { get; }
+        public int Width { get; }
+        public int Height { get; }
+        public int Depth { get; }
+        public global::SharpDX.DXGI.Format Format { get; }
+        public VolumeTextureParams(byte[] data, int width, int height, int depth, global::SharpDX.DXGI.Format format)
+        {
+            VolumeTextures = data;
+            Width = width;
+            Height = height;
+            Depth = depth;
+            Format = format;
+        }
+    }
+
+    public struct VolumeTextureGradientParams
+    {
+        public Half4[] VolumeTextures { get; }
+        public int Width { get; }
+        public int Height { get; }
+        public int Depth { get; }
+        public global::SharpDX.DXGI.Format Format { get; }
+        public VolumeTextureGradientParams(Half4[] data, int width, int height, int depth)
+        {
+            VolumeTextures = data;
+            Width = width;
+            Height = height;
+            Depth = depth;
+            Format = global::SharpDX.DXGI.Format.R16G16B16A16_Float;
+        }
     }
     /// <summary>
     /// Abstract class for VolumeTextureMaterial
@@ -41,30 +66,30 @@ namespace HelixToolkit.UWP.Model
             get { return sampler; }
         }
 
-        private float stepSize = 0.1f;
+        private float sampleDistance = 1f;
         /// <summary>
         /// Gets or sets the step size, usually set to 1 / VolumeDepth.
         /// </summary>
         /// <value>
         /// The size of the step.
         /// </value>
-        public float StepSize
+        public float SampleDistance
         {
-            set { Set(ref stepSize, value); }
-            get { return stepSize; }
+            set { Set(ref sampleDistance, value); }
+            get { return sampleDistance; }
         }
 
-        private int iterations = 10;
+        private int maxIterations = int.MaxValue;
         /// <summary>
         /// Gets or sets the iteration. Usually set to VolumeDepth.
         /// </summary>
         /// <value>
         /// The iteration.
         /// </value>
-        public int Iterations
+        public int MaxIterations
         {
-            set { Set(ref iterations, value); }
-            get { return iterations; }
+            set { Set(ref maxIterations, value); }
+            get { return maxIterations; }
         }
 
         private Color4 color = new Color4(1,1,1,1);
@@ -80,9 +105,18 @@ namespace HelixToolkit.UWP.Model
             get { return color; }
         }
 
+        private Color4[] gradientMap;
+        public Color4[] GradientMap
+        {
+            set { Set(ref gradientMap, value); }
+            get { return gradientMap; }
+        }
+
+        protected virtual string DefaultPassName { get; } = DefaultPassNames.Default;
+
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new VolumeMaterialVariable<T>(manager, technique, this)
+            return new VolumeMaterialVariable<T>(manager, technique, this, DefaultPassName)
             {
                 OnCreateTexture = (material, effectsManager) => { return OnCreateTexture(effectsManager); }
             };
@@ -112,8 +146,15 @@ namespace HelixToolkit.UWP.Model
     {
         protected override ShaderResourceViewProxy OnCreateTexture(IEffectsManager manager)
         {
-            return ShaderResourceViewProxy.CreateViewFromPixelData(manager.Device, VolumeTexture.VolumeTextures,
+            if (VolumeTexture.VolumeTextures != null)
+            {
+                return ShaderResourceViewProxy.CreateViewFromPixelData(manager.Device, VolumeTexture.VolumeTextures,
                 VolumeTexture.Width, VolumeTexture.Height, VolumeTexture.Depth, VolumeTexture.Format);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public static VolumeTextureParams LoadRAWFile(string filename, int width, int height, int depth)
@@ -127,27 +168,42 @@ namespace HelixToolkit.UWP.Model
                 {                   
                     reader.Read(buffer, 0, buffer.Length);
                 }
-                var ret = new VolumeTextureParams()
-                {
-                    VolumeTextures = buffer,
-                    Width = width,
-                    Height = height,
-                    Depth = depth,
-                };
+                var format = global::SharpDX.DXGI.Format.Unknown;
                 switch (bytePerPixel)
                 {
                     case 1:
-                        ret.Format = global::SharpDX.DXGI.Format.R8_UNorm;
+                        format = global::SharpDX.DXGI.Format.R8_UNorm;
                         break;
                     case 2:
-                        ret.Format = global::SharpDX.DXGI.Format.R16_UNorm;
+                        format = global::SharpDX.DXGI.Format.R16_UNorm;
                         break;
                     case 4:
-                        ret.Format = global::SharpDX.DXGI.Format.R32_Float;
+                        format = global::SharpDX.DXGI.Format.R32_Float;
                         break;
                 }
-                return ret;
+                return new VolumeTextureParams(buffer, width, height, depth, format);               
             }              
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class VolumeTextureDiffuseMaterialCore : VolumeTextureMaterialCoreBase<VolumeTextureGradientParams>
+    {
+        protected override string DefaultPassName => DefaultPassNames.Diffuse;
+
+        protected override ShaderResourceViewProxy OnCreateTexture(IEffectsManager manager)
+        {
+            if (VolumeTexture.VolumeTextures != null)
+            {
+                return ShaderResourceViewProxy.CreateViewFromPixelData(manager.Device, VolumeTexture.VolumeTextures,
+                VolumeTexture.Width, VolumeTexture.Height, VolumeTexture.Depth, VolumeTexture.Format);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

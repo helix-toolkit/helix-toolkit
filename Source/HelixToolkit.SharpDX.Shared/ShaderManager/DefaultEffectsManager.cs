@@ -1682,6 +1682,18 @@ namespace HelixToolkit.UWP
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeFront
                     },
+                    new ShaderPassDescription(DefaultPassNames.Diffuse)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSVolume3D,
+                            DefaultPSShaderDescriptions.PSVolumeDiffuse3D,
+                        },
+                        Topology = PrimitiveTopology.TriangleList,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeFront
+                    },
                     new ShaderPassDescription(DefaultPassNames.Positions)
                     {
                         ShaderList = new[]
