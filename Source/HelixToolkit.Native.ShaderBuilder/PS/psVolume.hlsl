@@ -24,12 +24,13 @@ float4 main(VolumePS_INPUT input) : SV_Target
     float4 src = 0;
  
     float value = 0;
+    uint iteration = min(dirLength / stepSize, maxIterations);
  
     float3 Step = dir * stepSize;
 
     float lengthAccu = 0;
     [loop]
-    for (uint i = 0; i < iterations; i++)
+    for (uint i = 0; i < iteration; i++)
     {
         float4 color = pColor;
         pos.w = 0;

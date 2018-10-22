@@ -110,7 +110,8 @@ namespace HelixToolkit.UWP.Utilities
             this.DisposeAndClear();
             if (stream != null && device != null)
             {
-                textureView = Collect(TextureLoader.FromMemoryAsShaderResourceView(device, stream, disableAutoGenMipMap));
+                resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, disableAutoGenMipMap));
+                textureView = Collect(new ShaderResourceView(device, resource));
             }
         }
         /// <summary>

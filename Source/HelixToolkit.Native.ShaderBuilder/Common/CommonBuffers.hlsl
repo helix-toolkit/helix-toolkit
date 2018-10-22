@@ -140,7 +140,7 @@ cbuffer cbVolumeModel : register(b4)
     float4 pColor;
     float stepSize;
     float2 padding1;
-    uint iterations;
+    uint maxIterations;
     bool bHasGradientMapX;
     float isoValue;
     float baseSampleDist = .5f;

@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP.Model
     {
         protected override ShaderResourceViewProxy OnCreateTexture(IEffectsManager manager)
         {
-            return manager.MaterialTextureManager.Register(VolumeTexture);
+            return manager.MaterialTextureManager.Register(VolumeTexture, true);
         }
     }
     /// <summary>

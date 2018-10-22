@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP.Model
             AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.SampleDistance),
                 () => UpdateStepSize());
             AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.MaxIterations),
-                () => UpdateStepSize());
+                () => WriteValue(VolumeParamsStruct.MaxIterations, material.MaxIterations));
             AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.Color),
                 () => WriteValue(VolumeParamsStruct.Color, material.Color));
             AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.GradientMap),
@@ -59,15 +59,13 @@ namespace HelixToolkit.UWP.Model
 
         private void UpdateStepSize()
         {
-            if(texture != null && texture.TextureView != null && texture.Resource is Texture3D res)
+            if(texture != null && texture.Resource is Texture3D res)
             {
                 var desc = res.Description;
                 var maxSize = Math.Max(desc.Width, Math.Max(desc.Height, desc.Depth));
                 var steps = 1f / maxSize * material.SampleDistance;
-                var iteration = (int)Math.Min((float)material.MaxIterations, (float)maxSize / material.SampleDistance);
                 var scale = Vector4.One / ((Vector4.One * maxSize) / new Vector4(desc.Width, desc.Height, desc.Depth, 1));
-                scale.W = 1;
-                WriteValue(VolumeParamsStruct.Iterations, iteration);
+                scale.W = 1;               
                 WriteValue(VolumeParamsStruct.StepSize, steps);
                 WriteValue(VolumeParamsStruct.ActualSampleDistance, material.SampleDistance);
                 WriteValue(VolumeParamsStruct.BaseSampleDistance, 1.0f);

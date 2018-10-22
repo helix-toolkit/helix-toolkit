@@ -27,11 +27,11 @@ float4 main(VolumePS_INPUT input) : SV_Target
     float4 value = 0;
  
     float3 Step = dir * stepSize;
-
+    uint iteration = min(dirLength / stepSize, maxIterations);
     float3 L = normalize(vEyePos - input.wp.xyz);
     float lengthAccu = 0;
     [loop]
-    for (uint i = 0; i < iterations; i++)
+    for (uint i = 0; i < iteration; i++)
     {
         pos.w = 0;
         float4 color = pColor;

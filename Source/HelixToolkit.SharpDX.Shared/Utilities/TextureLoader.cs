@@ -99,6 +99,34 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
+        public static Resource FromMemoryAsShaderResource(Device device, Stream memory, bool disableAutoGenMipMap = false)
+        {
+            var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory);
+            if (texture != null)
+            {
+                if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
+                {
+                    try
+                    {
+                        var textureMipmap = GenerateMipMaps(device, texture);
+                        return textureMipmap;
+                    }
+                    finally
+                    {
+                        texture.Dispose();
+                    }
+                }
+                else
+                {
+                    return texture;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public static Resource GenerateMipMaps(Device device, global::SharpDX.Toolkit.Graphics.Texture texture)
         {
             Resource textMip = null;

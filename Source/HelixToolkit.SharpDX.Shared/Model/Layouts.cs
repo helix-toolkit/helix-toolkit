@@ -527,7 +527,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string World = "mWorld"; //Separated from the struct in material
         public const string Color = "pColor"; // Vector4
         public const string StepSize = "stepSize"; // Vector3
-        public const string Iterations = "iterations"; // int or uint
+        public const string MaxIterations = "maxIterations"; // int or uint
         public const string HasGradientMapX = "bHasGradientMapX";// bool
         public const string IsoValue = "isoValue"; // float
         public const string BaseSampleDistance = "baseSampleDist"; //float
