@@ -2,6 +2,7 @@
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Model;
 using HelixToolkit.Wpf.SharpDX.Utilities;
+using SharpDX;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -56,7 +57,7 @@ namespace VolumeRendering
             LoadTeapotCommand = new RelayCommand((o) => { Load(0); });
             LoadSkullCommand = new RelayCommand((o) => { Load(1); });
             LoadCloudCommand = new RelayCommand((o) => { Load(2); });
-            Load(0);
+            //Load(0);
         }
 
         private void Load(int idx)
@@ -105,7 +106,8 @@ namespace VolumeRendering
             m.Texture = ProcessData(data.VolumeTextures, data.Width, data.Height, data.Depth, out var transferMap);
             m.Color = new Color4(1, 1, 1, 0.5f);
             m.TransferMap = transferMap;
-            var transform = new Media3D.ScaleTransform3D(2, 1, 1);
+            var transform = new Media3D.MatrixTransform3D((Matrix.Scaling(2, 1, 1)
+                * Matrix.RotationAxis(Vector3.UnitX, (float)Math.PI / 2)).ToMatrix3D());
             m.Freeze();
             transform.Freeze();
             return new Tuple<Material, Media3D.Transform3D>(m, transform);
@@ -117,7 +119,7 @@ namespace VolumeRendering
             m.Texture = LoadFileToMemory("NoiseVolume.dds");
             m.Color = new Color4(1, 1, 1, 0.01f);
             m.Freeze();
-            var transform = new Media3D.ScaleTransform3D(4, 4, 4);
+            var transform = new Media3D.ScaleTransform3D(1, 1, 1);
             transform.Freeze();
             return new Tuple<Material, Media3D.Transform3D>(m, transform);
         }

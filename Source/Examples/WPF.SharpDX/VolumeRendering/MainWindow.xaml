@@ -23,7 +23,8 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             CameraRotationMode="Trackball"
-            EffectsManager="{Binding EffectsManager}">
+            EffectsManager="{Binding EffectsManager}"
+            ShowCameraTarget="False">
             <hx:VolumeTextureModel3D Transform="{Binding Transform}" VolumeMaterial="{Binding VolumeMaterial}" />
         </hx:Viewport3DX>
         <StackPanel
