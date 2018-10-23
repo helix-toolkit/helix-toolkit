@@ -102,6 +102,9 @@
     <Content Include="..\..\..\..\Images\Textures\3D Texture\NoiseVolume.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+      <Content Include="..\..\..\..\Images\Textures\3D Texture\stagbeetle208x208x123.dat">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

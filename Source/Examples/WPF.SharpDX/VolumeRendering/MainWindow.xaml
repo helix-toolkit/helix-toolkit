@@ -34,6 +34,7 @@
             <Button Margin="4" Command="{Binding LoadSkullCommand}">Load Skull</Button>
             <Button Margin="4" Command="{Binding LoadTeapotCommand}">Load Teapot</Button>
             <Button Margin="4" Command="{Binding LoadCloudCommand}">Load Noise</Button>
+            <Button Margin="4" Command="{Binding LoadBeetleCommand}">Load Beetle</Button>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="4">IterationOffset:</TextBlock>
                 <TextBlock Text="{Binding IterationOffset}" />
