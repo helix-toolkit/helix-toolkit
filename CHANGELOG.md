@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Next Version]
+### Added
+1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.
+2. Supports [ImGui](https://github.com/ocornut/imgui) (using [ImGui.NET](https://github.com/mellinoe/ImGui.NET)) for SharpDX.Core. Details refer to [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest).
+
+### Improvement and Changes
+
+### Fixed
+
 ## [2.5.0] - 2018-10-19
 ### Added
 1. Physics Based Rendering Material. (WPF.SharpDX and UWP)
