@@ -46,6 +46,31 @@ namespace VolumeRendering
             get { return isLoading; }
         }
 
+        private int iterationOffset;
+        public int IterationOffset
+        {
+            set
+            {
+                if(SetValue(ref iterationOffset, value) && volumeMaterial != null)
+                {
+                    (volumeMaterial as IVolumeTextureMaterial).IterationOffset = value;
+                }
+            }
+            get { return iterationOffset; }
+        }
+
+        private double isoValue;
+        public double IsoValue
+        {
+            set
+            {
+                if (SetValue(ref isoValue, value) && volumeMaterial != null)
+                {
+                    (volumeMaterial as IVolumeTextureMaterial).IsoValue = value;
+                }
+            }
+            get { return isoValue; }
+        }
         public ICommand LoadTeapotCommand { get; }
         public ICommand LoadSkullCommand { get; }
         public ICommand LoadCloudCommand { get; }
@@ -78,7 +103,7 @@ namespace VolumeRendering
                 return null;
             }).ContinueWith((result)=> 
             {
-                VolumeMaterial = result.Result.Item1;
+                VolumeMaterial = result.Result.Item1.Clone() as Material;
                 Transform = result.Result.Item2;
                 IsLoading = false;
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -104,7 +129,7 @@ namespace VolumeRendering
             var m = new VolumeTextureDiffuseMaterial();
             var data = VolumeTextureRawDataMaterialCore.LoadRAWFile("male128x256x256.raw", 128, 256, 256);
             m.Texture = ProcessData(data.VolumeTextures, data.Width, data.Height, data.Depth, out var transferMap);
-            m.Color = new Color4(1, 1, 1, 0.5f);
+            m.Color = new Color4(0.6f, 0.6f, 0.6f, 1f);
             m.TransferMap = transferMap;
             var transform = new Media3D.MatrixTransform3D((Matrix.Scaling(2, 1, 1)
                 * Matrix.RotationAxis(Vector3.UnitX, (float)Math.PI / 2)).ToMatrix3D());
@@ -142,20 +167,25 @@ namespace VolumeRendering
 
         private static readonly Color4[] ColorCandidates = new Color4[]
         {
-            Colors.DarkSlateBlue.ToColor4(),
+            Colors.LightPink.ToColor4(),
             Colors.DarkGray.ToColor4(),
             Colors.Yellow.ToColor4(),
             Colors.Red.ToColor4(),
             Colors.Green.ToColor4(),            
         };
-       
+        /// <summary>
+        /// Gets the transfer function. Please create your own color transfer map.
+        /// </summary>
+        /// <param name="histogram">The histogram.</param>
+        /// <param name="total">The total.</param>
+        /// <returns></returns>
         public static Color4[] GetTransferFunction(uint[] histogram, int total)
         {
             float[] percentage = new float[histogram.Length];
             for(int i=0; i < histogram.Length; ++i)
             {
                 percentage[i] = (float)histogram[i] / total;
-                if(percentage[i] > 0.0025f)
+                if(percentage[i] > 0.003f || percentage[i] < 0.0001f)
                 {
                     percentage[i] = 255;
                 }

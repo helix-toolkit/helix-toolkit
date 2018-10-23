@@ -65,7 +65,21 @@ namespace HelixToolkit.UWP.Model
         /// The iteration.
         /// </value>
         int MaxIterations { set; get; }
-
+        /// <summary>
+        /// Gets or sets the iteration offset. This can be used to achieve cross section
+        /// </summary>
+        /// <value>
+        /// The iteration offset.
+        /// </value>
+        int IterationOffset { set; get; }
+        /// <summary>
+        /// Gets or sets the iso value. Only data with isovalue > sepecified iso value will be displayed.
+        /// Value must be normalized to 0~1. Default = 1, show all data.
+        /// </summary>
+        /// <value>
+        /// The iso value.
+        /// </value>
+        double IsoValue { set; get; }
         /// <summary>
         /// Gets or sets the color.
         /// </summary>
@@ -73,7 +87,12 @@ namespace HelixToolkit.UWP.Model
         /// The color.
         /// </value>
         Color4 Color { set; get; }
-        
+        /// <summary>
+        /// Gets or sets the transfer map.
+        /// </summary>
+        /// <value>
+        /// The transfer map.
+        /// </value>
         Color4[] TransferMap { set; get; }
     }
 
@@ -121,6 +140,33 @@ namespace HelixToolkit.UWP.Model
         {
             set { Set(ref maxIterations, value); }
             get { return maxIterations; }
+        }
+
+        private int iterationOffset = 0;
+        /// <summary>
+        /// Gets or sets the iteration offset. This can be used to achieve cross section
+        /// </summary>
+        /// <value>
+        /// The iteration offset.
+        /// </value>
+        public int IterationOffset
+        {
+            set { Set(ref iterationOffset, value); }
+            get { return iterationOffset; }
+        }
+
+        private double isoValue = 0;
+        /// <summary>
+        /// Gets or sets the iso value. Only data with isovalue > sepecified iso value will be displayed
+        /// Value must be normalized to 0~1. Default = 1, show all data.
+        /// </summary>
+        /// <value>
+        /// The iso value.
+        /// </value>
+        public double IsoValue
+        {
+            set { Set(ref isoValue, value); }
+            get { return isoValue; }
         }
 
         private Color4 color = new Color4(1,1,1,1);

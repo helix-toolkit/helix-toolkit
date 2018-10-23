@@ -16,11 +16,151 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     using Shaders;
+    public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMaterial
+    {
+        public SamplerStateDescription Sampler
+        {
+            get { return (SamplerStateDescription)GetValue(SamplerProperty); }
+            set { SetValue(SamplerProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty SamplerProperty =
+            DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureMaterialBase),
+                new PropertyMetadata(DefaultSamplers.VolumeSampler, (d, e) =>
+                {
+                    ((d as VolumeTextureMaterialBase).Core as VolumeTextureDDS3DMaterialCore).Sampler = (SamplerStateDescription)e.NewValue;
+                }));
+
+        /// <summary>
+        /// Gets or sets the sample distance. Default = 1.0
+        /// </summary>
+        /// <value>
+        /// The size of the step.
+        /// </value>
+        public double SampleDistance
+        {
+            get { return (double)GetValue(SampleDistanceProperty); }
+            set { SetValue(SampleDistanceProperty, value); }
+        }
+
+        public static readonly DependencyProperty SampleDistanceProperty =
+            DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureMaterialBase),
+                new PropertyMetadata(1.0, (d, e) =>
+                {
+                    ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).SampleDistance = (double)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the max iterations. Usually equal to the Texture Depth. Default = INT.MAX for automatic iteration
+        /// </summary>
+        /// <value>
+        /// The iterations.
+        /// </value>
+        public int MaxIterations
+        {
+            get { return (int)GetValue(MaxIterationsProperty); }
+            set { SetValue(MaxIterationsProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxIterationsProperty =
+            DependencyProperty.Register("MaxIterations", typeof(int), typeof(VolumeTextureMaterialBase),
+                new PropertyMetadata(int.MaxValue, (d, e) =>
+                {
+                    ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).MaxIterations = (int)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the iteration offset. This can be used to achieve cross section
+        /// </summary>
+        /// <value>
+        /// The iteration offset.
+        /// </value>
+        public int IterationOffset
+        {
+            get { return (int)GetValue(IterationOffsetProperty); }
+            set { SetValue(IterationOffsetProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty IterationOffsetProperty =
+            DependencyProperty.Register("IterationOffset", typeof(int), typeof(VolumeTextureMaterialBase), 
+                new PropertyMetadata(0, (d, e) =>
+                {
+                    ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).IterationOffset = (int)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the iso value. Only data with isovalue > sepecified iso value will be displayed
+        /// Value must be normalized to 0~1. Default = 1, show all data.
+        /// </summary>
+        /// <value>
+        /// The iso value.
+        /// </value>
+        public double IsoValue
+        {
+            get { return (double)GetValue(IsoValueProperty); }
+            set { SetValue(IsoValueProperty, value); }
+        }
+        
+        public static readonly DependencyProperty IsoValueProperty =
+            DependencyProperty.Register("IsoValue", typeof(double), typeof(VolumeTextureMaterialBase), 
+                new PropertyMetadata(0.0, (d, e) =>
+                {
+                    ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).IsoValue = (double)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the color. It can also used to adjust opacity
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
+        public Color4 Color
+        {
+            get { return (Color4)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color4", typeof(Color4), typeof(VolumeTextureMaterialBase),
+                new PropertyMetadata(new Color4(1, 1, 1, 1),
+                (d, e) =>
+                {
+                    ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).Color = (Color4)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the Color Transfer Map.
+        /// </summary>
+        /// <value>
+        /// The gradient map.
+        /// </value>
+        public Color4[] TransferMap
+        {
+            get { return (Color4[])GetValue(TransferMapProperty); }
+            set { SetValue(TransferMapProperty, value); }
+        }
+
+        public static readonly DependencyProperty TransferMapProperty =
+            DependencyProperty.Register("TransferMap", typeof(Color4[]), typeof(VolumeTextureMaterialBase),
+                new PropertyMetadata(null,
+                (d, e) =>
+                {
+                    ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).TransferMap = (Color4[])e.NewValue;
+                }));
+    }
 
     /// <summary>
     /// Default Volume Texture Material. Supports 3D DDS memory stream as <see cref="VolumeTextureMaterialCoreBase{T}.VolumeTexture"/>
     /// </summary>
-    public class VolumeTextureDDS3DMaterial : Material, IVolumeTextureMaterial
+    public sealed class VolumeTextureDDS3DMaterial : VolumeTextureMaterialBase
     {
         /// <summary>
         /// Gets or sets the texture. Only supports 3D DDS texture stream
@@ -43,115 +183,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
 
-
-        public SamplerStateDescription Sampler
-        {
-            get { return (SamplerStateDescription)GetValue(SamplerProperty); }
-            set { SetValue(SamplerProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty SamplerProperty =
-            DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureDDS3DMaterial), 
-                new PropertyMetadata(DefaultSamplers.VolumeSampler, (d, e) =>
-                {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).Sampler = (SamplerStateDescription)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Gets or sets the sample distance. Default = 1.0
-        /// </summary>
-        /// <value>
-        /// The size of the step.
-        /// </value>
-        public double SampleDistance
-        {
-            get { return (double)GetValue(SampleDistanceProperty); }
-            set { SetValue(SampleDistanceProperty, value); }
-        }
-        
-        public static readonly DependencyProperty SampleDistanceProperty =
-            DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureDDS3DMaterial), 
-                new PropertyMetadata(1.0, (d, e) =>
-                {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).SampleDistance = (double)e.NewValue;
-                }));
-
-
-        /// <summary>
-        /// Gets or sets the max iterations. Usually equal to the Texture Depth. Default = INT.MAX for automatic iteration
-        /// </summary>
-        /// <value>
-        /// The iterations.
-        /// </value>
-        public int MaxIterations
-        {
-            get { return (int)GetValue(MaxIterationsProperty); }
-            set { SetValue(MaxIterationsProperty, value); }
-        }
-
-        public static readonly DependencyProperty MaxIterationsProperty =
-            DependencyProperty.Register("MaxIterations", typeof(int), typeof(VolumeTextureDDS3DMaterial), 
-                new PropertyMetadata(int.MaxValue, (d, e) =>
-                {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).MaxIterations = (int)e.NewValue;
-                }));
-
-
-        /// <summary>
-        /// Gets or sets the color. It can also used to adjust opacity
-        /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
-        public Color4 Color
-        {
-            get { return (Color4)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color4", typeof(Color4), typeof(VolumeTextureDDS3DMaterial), 
-                new PropertyMetadata(new Color4(1,1,1,1),
-                (d, e) =>
-                {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).Color = (Color4)e.NewValue;
-                }));
-
-
-        /// <summary>
-        /// Gets or sets the Color Transfer Map.
-        /// </summary>
-        /// <value>
-        /// The gradient map.
-        /// </value>
-        public Color4[] TransferMap
-        {
-            get { return (Color4[])GetValue(TransferMapProperty); }
-            set { SetValue(TransferMapProperty, value); }
-        }
-
-        public static readonly DependencyProperty TransferMapProperty =
-            DependencyProperty.Register("TransferMap", typeof(Color4[]), typeof(VolumeTextureDDS3DMaterial),
-                new PropertyMetadata(null,
-                (d, e) =>
-                {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).TransferMap = (Color4[])e.NewValue;
-                }));
-
-
-
         protected override MaterialCore OnCreateCore()
         {
             return new VolumeTextureDDS3DMaterialCore()
             {
+                Name = Name,
                 VolumeTexture = Texture,
                 SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                TransferMap = TransferMap
+                TransferMap = TransferMap,
+                IsoValue = IsoValue,
+                IterationOffset = IterationOffset
             };
         }
 
@@ -160,12 +204,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new VolumeTextureDDS3DMaterial()
             {
+                Name = Name,
                 Texture = Texture,
                 SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                TransferMap = TransferMap
+                TransferMap = TransferMap,
+                IsoValue = IsoValue,
+                IterationOffset = IterationOffset
             };
         }
 #endif
@@ -178,7 +225,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Pixel Byte[] is equal to Width * Height * Depth * BytesPerPixel.
     /// </para>
     /// </summary>
-    public class VolumeTextureRawDataMaterial : Material, IVolumeTextureMaterial
+    public sealed class VolumeTextureRawDataMaterial : VolumeTextureMaterialBase
     {
         /// <summary>
         /// Gets or sets the texture.
@@ -200,113 +247,19 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).VolumeTexture = (VolumeTextureParams)e.NewValue;
                 }));
 
-
-
-        public SamplerStateDescription Sampler
-        {
-            get { return (SamplerStateDescription)GetValue(SamplerProperty); }
-            set { SetValue(SamplerProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty SamplerProperty =
-            DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureRawDataMaterial),
-                new PropertyMetadata(DefaultSamplers.VolumeSampler, (d, e) =>
-                {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).Sampler = (SamplerStateDescription)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Gets or sets the sample distance. Default = 1.0
-        /// </summary>
-        /// <value>
-        /// The size of the step.
-        /// </value>
-        public double SampleDistance
-        {
-            get { return (double)GetValue(SampleDistanceProperty); }
-            set { SetValue(SampleDistanceProperty, value); }
-        }
-
-        public static readonly DependencyProperty SampleDistanceProperty =
-            DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureRawDataMaterial),
-                new PropertyMetadata(1.0, (d, e) =>
-                {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).SampleDistance = (double)e.NewValue;
-                }));
-
-
-        /// <summary>
-        /// Gets or sets the max iterations. Usually equal to the Texture Depth. Default = INT.MAX for automatic iteration
-        /// </summary>
-        /// <value>
-        /// The iterations.
-        /// </value>
-        public int MaxIterations
-        {
-            get { return (int)GetValue(MaxIterationsProperty); }
-            set { SetValue(MaxIterationsProperty, value); }
-        }
-
-        public static readonly DependencyProperty MaxIterationsProperty =
-            DependencyProperty.Register("MaxIterations", typeof(int), typeof(VolumeTextureRawDataMaterial),
-                new PropertyMetadata(int.MaxValue, (d, e) =>
-                {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).MaxIterations = (int)e.NewValue;
-                }));
-
-
-        /// <summary>
-        /// Gets or sets the color. It can also used to adjust opacity
-        /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
-        public Color4 Color
-        {
-            get { return (Color4)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color4", typeof(Color4), typeof(VolumeTextureRawDataMaterial), 
-                new PropertyMetadata(new Color4(1, 1, 1, 1),
-                (d, e) =>
-                {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).Color = (Color4)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Gets or sets the Color Transfer Map.
-        /// </summary>
-        /// <value>
-        /// The gradient map.
-        /// </value>
-        public Color4[] TransferMap
-        {
-            get { return (Color4[])GetValue(TransferMapProperty); }
-            set { SetValue(TransferMapProperty, value); }
-        }
-
-        public static readonly DependencyProperty TransferMapProperty =
-            DependencyProperty.Register("TransferMap", typeof(Color4[]), typeof(VolumeTextureRawDataMaterial),
-                new PropertyMetadata(null,
-                (d, e) =>
-                {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).TransferMap = (Color4[])e.NewValue;
-                }));
-
         protected override MaterialCore OnCreateCore()
         {
             return new VolumeTextureRawDataMaterialCore()
             {
+                Name = Name,
                 VolumeTexture = Texture,
                 SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                TransferMap = TransferMap
+                TransferMap = TransferMap,
+                IsoValue = IsoValue,
+                IterationOffset = IterationOffset
             };
         }
 
@@ -315,12 +268,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new VolumeTextureRawDataMaterial()
             {
+                Name = Name,
                 Texture = Texture,
                 SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                TransferMap = TransferMap
+                TransferMap = TransferMap,
+                IsoValue = IsoValue,
+                IterationOffset = IterationOffset
             };
         }
 #endif
@@ -334,7 +290,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Pixel Byte[] is equal to Width * Height * Depth * BytesPerPixel.
     /// </para>
     /// </summary>
-    public class VolumeTextureDiffuseMaterial : Material, IVolumeTextureMaterial
+    public sealed class VolumeTextureDiffuseMaterial : VolumeTextureMaterialBase
     {
         /// <summary>
         /// Gets or sets the texture.
@@ -356,113 +312,19 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).VolumeTexture = (VolumeTextureGradientParams)e.NewValue;
                 }));
 
-
-
-        public SamplerStateDescription Sampler
-        {
-            get { return (SamplerStateDescription)GetValue(SamplerProperty); }
-            set { SetValue(SamplerProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty SamplerProperty =
-            DependencyProperty.Register("Sampler", typeof(SamplerStateDescription), typeof(VolumeTextureDiffuseMaterial),
-                new PropertyMetadata(DefaultSamplers.VolumeSampler, (d, e) =>
-                {
-                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).Sampler = (SamplerStateDescription)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Gets or sets the sample distance. Default = 1.0
-        /// </summary>
-        /// <value>
-        /// The size of the step.
-        /// </value>
-        public double SampleDistance
-        {
-            get { return (double)GetValue(SampleDistanceProperty); }
-            set { SetValue(SampleDistanceProperty, value); }
-        }
-
-        public static readonly DependencyProperty SampleDistanceProperty =
-            DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureDiffuseMaterial),
-                new PropertyMetadata(1.0, (d, e) =>
-                {
-                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).SampleDistance = (double)e.NewValue;
-                }));
-
-
-        /// <summary>
-        /// Gets or sets the max iterations. Usually equal to the Texture Depth. Default = INT.MAX for automatic iteration
-        /// </summary>
-        /// <value>
-        /// The iterations.
-        /// </value>
-        public int MaxIterations
-        {
-            get { return (int)GetValue(MaxIterationsProperty); }
-            set { SetValue(MaxIterationsProperty, value); }
-        }
-
-        public static readonly DependencyProperty MaxIterationsProperty =
-            DependencyProperty.Register("MaxIterations", typeof(int), typeof(VolumeTextureDiffuseMaterial),
-                new PropertyMetadata(int.MaxValue, (d, e) =>
-                {
-                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).MaxIterations = (int)e.NewValue;
-                }));
-
-
-        /// <summary>
-        /// Gets or sets the color. It can also used to adjust opacity
-        /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
-        public Color4 Color
-        {
-            get { return (Color4)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color4", typeof(Color4), typeof(VolumeTextureDiffuseMaterial),
-                new PropertyMetadata(new Color4(1, 1, 1, 1),
-                (d, e) =>
-                {
-                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).Color = (Color4)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Gets or sets the Color Transfer Map.
-        /// </summary>
-        /// <value>
-        /// The transfer map.
-        /// </value>
-        public Color4[] TransferMap
-        {
-            get { return (Color4[])GetValue(TransferMapProperty); }
-            set { SetValue(TransferMapProperty, value); }
-        }
-
-        public static readonly DependencyProperty TransferMapProperty =
-            DependencyProperty.Register("TransferMap", typeof(Color4[]), typeof(VolumeTextureDiffuseMaterial),
-                new PropertyMetadata(null,
-                (d, e) =>
-                {
-                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).TransferMap = (Color4[])e.NewValue;
-                }));
-
         protected override MaterialCore OnCreateCore()
         {
             return new VolumeTextureDiffuseMaterialCore()
             {
+                Name = Name,
                 VolumeTexture = Texture,
                 SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                TransferMap = TransferMap
+                TransferMap = TransferMap,
+                IsoValue = IsoValue,
+                IterationOffset = IterationOffset
             };
         }
 
@@ -471,12 +333,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new VolumeTextureDiffuseMaterial()
             {
+                Name = Name,
                 Texture = Texture,
                 SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
-                TransferMap = TransferMap
+                TransferMap = TransferMap,
+                IsoValue = IsoValue,
+                IterationOffset = IterationOffset
             };
         }
 #endif

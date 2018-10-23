@@ -51,6 +51,10 @@ namespace HelixToolkit.UWP.Model
                 () => UpdateStepSize());
             AddPropertyBinding(nameof(IVolumeTextureMaterial.MaxIterations),
                 () => WriteValue(VolumeParamsStruct.MaxIterations, material.MaxIterations));
+            AddPropertyBinding(nameof(IVolumeTextureMaterial.IterationOffset),
+                () => WriteValue(VolumeParamsStruct.IterationOffset, material.IterationOffset));
+            AddPropertyBinding(nameof(IVolumeTextureMaterial.IsoValue),
+                () => WriteValue(VolumeParamsStruct.IsoValue, (float)material.IsoValue));
             AddPropertyBinding(nameof(IVolumeTextureMaterial.Color),
                 () => WriteValue(VolumeParamsStruct.Color, material.Color));
             AddPropertyBinding(nameof(IVolumeTextureMaterial.TransferMap),

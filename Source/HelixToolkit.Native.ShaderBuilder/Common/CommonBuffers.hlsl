@@ -139,7 +139,8 @@ cbuffer cbVolumeModel : register(b4)
     float4x4 mWorld;
     float4 pColor;
     float stepSize;
-    float2 padding1;
+    uint iterationOffset;
+    float padding1;
     uint maxIterations;
     bool bHasGradientMapX;
     float isoValue;

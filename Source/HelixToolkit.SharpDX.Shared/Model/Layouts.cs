@@ -533,6 +533,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string BaseSampleDistance = "baseSampleDist"; //float
         public const string ActualSampleDistance = "actualSampleDist"; //float
         public const string ScaleFactor = "scaleFactor"; //Vector4
+        public const string IterationOffset = "iterationOffset"; // int or uint
         public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 + 4 + 4);
     }
 #if !NETFX_CORE
