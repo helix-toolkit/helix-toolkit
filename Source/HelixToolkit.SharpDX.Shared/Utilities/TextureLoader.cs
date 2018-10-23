@@ -200,8 +200,22 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     textMip = new Texture2D(device, desc2D);
                     break;
                 case global::SharpDX.Toolkit.Graphics.TextureDimension.Texture3D:
-                case global::SharpDX.Toolkit.Graphics.TextureDimension.TextureCube:
                     var desc3D = new Texture3DDescription()
+                    {
+                        Width = texture.Description.Width,
+                        Height = texture.Description.Height,
+                        Depth = texture.Description.Depth,
+                        MipLevels = 0,
+                        BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                        CpuAccessFlags = CpuAccessFlags.None,
+                        Usage = ResourceUsage.Default,
+                        OptionFlags = ResourceOptionFlags.GenerateMipMaps,
+                        Format = texture.Description.Format
+                    };
+                    textMip = new Texture3D(device, desc3D);
+                    break;
+                case global::SharpDX.Toolkit.Graphics.TextureDimension.TextureCube:
+                    var descCube = new Texture3DDescription()
                     {
                         Width = texture.Description.Width,
                         Height = texture.Description.Height,
@@ -213,7 +227,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         OptionFlags = ResourceOptionFlags.GenerateMipMaps,
                         Format = texture.Description.Format
                     };
-                    textMip = new Texture3D(device, desc3D);
+                    textMip = new Texture3D(device, descCube);
                     break;
                 default:
                     throw new InvalidDataException("Input texture is invalid.");

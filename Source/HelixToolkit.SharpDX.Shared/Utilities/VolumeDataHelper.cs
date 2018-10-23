@@ -1,6 +1,7 @@
 ﻿using SharpDX;
 using System;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
@@ -21,17 +22,16 @@ namespace HelixToolkit.UWP.Utilities
         public static Half4[] GenerateGradients(float[] data, int width, int height, int depth, int sampleSize)
         {
             int n = sampleSize;
-            Vector3 normal = Vector3.Zero;
-            Vector3 s1, s2;
 
-            int index = 0;
             var gradients = new Half4[width * height * depth];
-            for (int z = 0; z < depth; z++)
+            Parallel.For(0, depth, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, (z) =>
             {
+                int index = z * width * height;
                 for (int y = 0; y < height; y++)
                 {
                     for (int x = 0; x < width; x++, ++index)
                     {
+                        Vector3 s1, s2;
                         s1.X = SampleVolume(data, width, height, depth, x - n, y, z);
                         s2.X = SampleVolume(data, width, height, depth, x + n, y, z);
                         s1.Y = SampleVolume(data, width, height, depth, x, y - n, z);
@@ -40,14 +40,14 @@ namespace HelixToolkit.UWP.Utilities
                         s2.Z = SampleVolume(data, width, height, depth, x, y, z + n);
                         var v = Vector3.Normalize(s2 - s1);
                         var sample = SampleVolume(data, width, height, depth, x, y, z);
-                        gradients[index] = new Half4(v.X,v.Y,v.Z, sample);
+                        gradients[index] = new Half4(v.X, v.Y, v.Z, sample);
                         if (float.IsNaN(gradients[index].X))
                         {
                             gradients[index] = new Half4(0, 0, 0, sample);
                         }
                     }
                 }
-            }
+            });
             return gradients;
         }
 
