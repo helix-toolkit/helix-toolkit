@@ -140,8 +140,6 @@
     <Compile Include="CommonDX\SwapChainRenderHost.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\MouseHandlers\CameraController.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
     <Compile Include="Controls\MouseHandlers\MouseInputController.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
@@ -464,6 +462,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\vsScreenQuad.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\psSprite.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\vsSprite.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\psVolume.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\vsVolume.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\psVolumeCube.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\psVolumeDiffuse.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

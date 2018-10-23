@@ -24,6 +24,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string BorderEffectCB = "cbBorderEffect";
         public static string DynamicCubeMapCB = "cbDynamicCubeMap";
         public static string ScreenQuadCB = "cbScreenQuad";
+        public static string VolumeModelCB = "cbVolumeModel";
 #if !NETFX_CORE
         public static string ScreenDuplicationCB = "cbScreenClone";
 #endif
@@ -55,6 +56,12 @@ namespace HelixToolkit.UWP.Shaders
         public static string OITAlphaTB = "texOITAlpha";
         //----------Bone Skin--------------
         public static string BoneSkinSB = "skinMatrices"; // Structured Buffer
+
+        public static string SpriteTB = "texSprite";
+
+        public static string VolumeTB = "texVolume";
+        public static string VolumeFront = "texVolumeFront";
+        public static string VolumeBack = "texVolumeBack";
     }
 
     public static class DefaultSamplerStateNames
@@ -66,5 +73,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string ShadowMapSampler = "samplerShadow";
         public static string ParticleTextureSampler = "samplerParticle";
         public static string BillboardTextureSampler = "samplerBillboard";
+        public static string SpriteSampler = "samplerSprite";
+        public static string VolumeSampler = "samplerVolume";
     }
 }

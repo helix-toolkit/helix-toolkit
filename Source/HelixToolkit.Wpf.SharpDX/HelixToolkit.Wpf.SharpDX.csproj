@@ -131,8 +131,6 @@
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\DX11ImageSource.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
     <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
@@ -276,7 +274,11 @@
     <None Include="Resources\psScreenDup.cso" />
     <None Include="Resources\psShadow.cso" />
     <None Include="Resources\psSkybox.cso" />
+    <None Include="Resources\psSprite.cso" />
     <None Include="Resources\psViewCube.cso" />
+    <None Include="Resources\psVolume.cso" />
+    <None Include="Resources\psVolumeCube.cso" />
+    <None Include="Resources\psVolumeDiffuse.cso" />
     <None Include="Resources\psWireframe.cso" />
     <None Include="Resources\psWireframeOIT.cso" />
     <None Include="Resources\vsBillboard.cso" />
@@ -304,6 +306,8 @@
     <None Include="Resources\vsScreenDupCursor.cso" />
     <None Include="Resources\vsScreenQuad.cso" />
     <None Include="Resources\vsSkybox.cso" />
+    <None Include="Resources\vsSprite.cso" />
+    <None Include="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />

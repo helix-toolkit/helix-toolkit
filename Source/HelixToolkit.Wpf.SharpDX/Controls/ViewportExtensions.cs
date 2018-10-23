@@ -308,8 +308,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static IList<HitTestResult> FindHits(this Viewport3DX viewport, Point position)
         {
-            var camera = viewport.Camera as ProjectionCamera;
-            if (camera == null)
+            if (!(viewport.Camera is ProjectionCamera camera))
             {
                 return EmptyHits;
             }
@@ -353,8 +352,7 @@ namespace HelixToolkit.Wpf.SharpDX
             normal = new Vector3D();
             model = null;
 
-            var camera = viewport.Camera as ProjectionCamera;
-            if (camera == null)
+            if (!(viewport.Camera is ProjectionCamera camera))
             {
                 return false;
             }
@@ -382,8 +380,7 @@ namespace HelixToolkit.Wpf.SharpDX
             normal = new Vector3();
             model = null;
 
-            var camera = viewport.Camera as ProjectionCamera;
-            if (camera == null)
+            if (!(viewport.Camera is ProjectionCamera camera))
             {
                 return false;
             }
@@ -411,10 +408,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The nearest point, or null if no point was found.</returns>
         public static Point3D? FindNearestPoint(this Viewport3DX viewport, Point position)
         {
-            Point3D p;
-            Vector3D n;
-            Element3D obj;
-            if (FindNearest(viewport, position, out p, out n, out obj))
+            if (FindNearest(viewport, position, out Point3D p, out Vector3D n, out Element3D obj))
             {
                 return p;
             }
@@ -429,15 +423,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)//, out Vector3 pointNear, out Vector3 pointFar)
         {
-            var camera = viewport.CameraCore as ProjectionCameraCore;
-            if (camera != null)
+            if (viewport.CameraCore is ProjectionCameraCore camera)
             {
                 var px = (float)point2d.X;
                 var py = (float)point2d.Y;
 
                 var viewMatrix = camera.GetViewMatrix();
                 Vector3 v = new Vector3();
-                
+
                 var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
                 float w = (float)viewport.ActualWidth;
                 float h = (float)viewport.ActualHeight;
@@ -458,9 +451,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     v.Z = 0;
                     Vector3.TransformCoordinate(ref v, ref matrix, out zn);
-                }           
+                }
                 Vector3 r = zf - zn;
-                r.Normalize();               
+                r.Normalize();
 
                 return new Ray(zn + r * camera.NearPlaneDistance, r);
             }
@@ -551,8 +544,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Vector2 p, Plane plane)
         {
             var ray = UnProjectToRay(viewport, p);
-            Vector3 hitPoint;
-            if (ray.Intersects(ref plane, out hitPoint))
+            if (ray.Intersects(ref plane, out Vector3 hitPoint))
             {
                 return hitPoint;
             }
@@ -573,8 +565,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static Point3D? UnProjectOnPlane(this Viewport3DX viewport, Point p)
         {
-            var pc = viewport.Camera as ProjectionCamera;
-            if (pc == null)
+            if (!(viewport.Camera is ProjectionCamera pc))
             {
                 return null;
             }
@@ -677,10 +668,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="height">The height.</param>
         /// <returns>A bitmap.</returns>
         public static BitmapSource RenderBitmap(
-            this Viewport3DX view, double width, double height)
+            this Viewport3DX view, int width, int height)
         {
-            double w = view.Width;
-            double h = view.Height;
+            var w = (int)view.Width;
+            var h = (int)view.Height;
             ResizeAndArrange(view, width, height);
             var rtb = RenderBitmap(view);
             ResizeAndArrange(view, w, h);
@@ -699,11 +690,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="height">
         /// The height.
         /// </param>
-        public static void ResizeAndArrange(this Viewport3DX view, double width, double height)
+        public static void ResizeAndArrange(this Viewport3DX view, int width, int height)
         {
             view.Width = width;
             view.Height = height;
-            if (double.IsNaN(width) || double.IsNaN(height) || view.RenderHost == null || !view.RenderHost.IsRendering)
+            if (view.RenderHost == null || !view.RenderHost.IsRendering)
             {
                 return;
             }            
@@ -804,8 +795,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static void ZoomExtents(this Viewport3DX viewport, Point3D center, double radius, double animationTime = 0)
         {
             var camera = viewport.Camera;
-            var pcam = camera as PerspectiveCamera;
-            if (pcam != null)
+            if (camera is PerspectiveCamera pcam)
             {
                 double disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
                 double vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
@@ -816,9 +806,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 dir.Normalize();
                 pcam.LookAt(center, dir * dist, animationTime);
             }
-
-            var ocam = camera as OrthographicCamera;
-            if (ocam != null)
+            else if (camera is OrthographicCamera ocam)
             {
                 ocam.LookAt(center, ocam.LookDirection, animationTime);
                 double newWidth = radius * 2;
@@ -839,8 +827,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rectangle">The rectangle.</param>
         public static void ZoomToRectangle(this Viewport3DX viewport, Rect rectangle)
         {
-            var pcam = viewport.Camera as ProjectionCamera;
-            if (pcam != null)
+            if (viewport.Camera is ProjectionCamera pcam)
             {
                 pcam.ZoomToRectangle(viewport, rectangle);
             }
@@ -857,8 +844,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public static void ZoomByChangingFieldOfView(this Viewport3DX viewport, double delta)
         {
-            var pcamera = viewport.Camera as PerspectiveCamera;
-            if (pcamera == null || !viewport.IsChangeFieldOfViewEnabled)
+            if (!(viewport.Camera is PerspectiveCamera pcamera) || !viewport.IsChangeFieldOfViewEnabled)
             {
                 return;
             }

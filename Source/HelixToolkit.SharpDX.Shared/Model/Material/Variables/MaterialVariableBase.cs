@@ -29,6 +29,10 @@ namespace HelixToolkit.UWP.Model
             = new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB,
                         PointLineMaterialStruct.SizeInBytes);
 
+        public static readonly ConstantBufferDescription DefaultVolumeConstantBufferDesc
+            = new ConstantBufferDescription(DefaultBufferNames.VolumeModelCB,
+                        VolumeParamsStruct.SizeInBytes);
+
         public event EventHandler UpdateNeeded;
         /// <summary>
         /// Gets or sets the identifier. Used for material sorting

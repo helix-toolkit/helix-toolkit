@@ -144,6 +144,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool IsShadowMappingEnabled { get { return false; } }
 
+        public global::SharpDX.Rectangle ViewportRectangle { get { return new global::SharpDX.Rectangle(); } }
+
         private IRenderHost renderHostInternal;
 
         private bool IsAttached = false;

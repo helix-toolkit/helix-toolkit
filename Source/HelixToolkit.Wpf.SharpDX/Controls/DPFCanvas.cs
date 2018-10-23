@@ -160,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private bool StartD3D()
         {                   
-            RenderHost.StartD3D(ActualWidth, ActualHeight);
+            RenderHost.StartD3D((int)ActualWidth, (int)ActualHeight);
             return true;
         }
 
@@ -233,7 +233,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     try
                     {
-                        RenderHost.Resize(ActualWidth, ActualHeight);                       
+                        RenderHost.Resize((int)ActualWidth, (int)ActualHeight);                       
                     }
                     catch (Exception ex)
                     {

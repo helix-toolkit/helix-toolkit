@@ -88,5 +88,12 @@ namespace HelixToolkit.UWP
         /// Invalidates the scene graph.
         /// </summary>
         void InvalidateSceneGraph();
+        /// <summary>
+        /// Gets the viewport rectangle.
+        /// </summary>
+        /// <value>
+        /// The viewport rectangle.
+        /// </value>
+        Rectangle ViewportRectangle { get; }
     }
 }

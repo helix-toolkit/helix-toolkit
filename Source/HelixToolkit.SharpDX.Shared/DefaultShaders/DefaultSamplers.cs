@@ -148,5 +148,15 @@ namespace HelixToolkit.UWP.Shaders
             AddressW = TextureAddressMode.Clamp,
             Filter = Filter.MinMagMipLinear           
         };
+
+        public static SamplerStateDescription VolumeSampler = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Clamp,
+            AddressV = TextureAddressMode.Clamp,
+            AddressW = TextureAddressMode.Clamp,
+            Filter = Filter.MinMagLinearMipPoint,
+            MaximumLod = float.MaxValue,
+            BorderColor = new global::SharpDX.Mathematics.Interop.RawColor4(0, 0, 0, 0)
+        };
     }
 }

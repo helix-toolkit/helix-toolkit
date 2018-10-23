@@ -91,7 +91,8 @@ namespace HelixToolkit.Wpf.SharpDX
         None = 0,
         RasterState = 1,
         DepthStencilState = 1 << 2,
-        BlendState = 1 << 3
+        BlendState = 1 << 3,
+        All = RasterState | DepthStencilState | BlendState
     }
 
     [Flags]

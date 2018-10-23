@@ -401,4 +401,27 @@ struct MeshOutlinePS_INPUT
     noperspective
     float2 Tex : TEXCOORD0;
 };
+
+struct SpriteVS_INPUT
+{
+    float2 Pos : POSITION;
+    float2 UV : TEXCOORD0;
+    float4 Color : COLOR0;
+};
+
+struct SpritePS_INPUT
+{
+    float4 Pos : SV_POSITION;
+    float4 Color : COLOR0;
+    float2 UV : TEXCOORD0;   
+};
+
+struct VolumePS_INPUT
+{
+    float4 pos : SV_POSITION;
+    float4 wp : POSITION0;
+    float4 mPos : TEXCOORD0;
+    noperspective
+    float2 tex : TEXCOORD1;
+};
 #endif

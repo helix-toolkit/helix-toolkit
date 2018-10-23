@@ -1,11 +1,14 @@
 ﻿//#define TESTADDREMOVE
 
 using HelixToolkit.SharpDX.Core.Controls;
+using HelixToolkit.SharpDX.Core.Model;
 using HelixToolkit.UWP;
 using HelixToolkit.UWP.Cameras;
 using HelixToolkit.UWP.Core;
 using HelixToolkit.UWP.Model;
 using HelixToolkit.UWP.Model.Scene;
+using HelixToolkit.UWP.Shaders;
+using ImGuiNET;
 using SharpDX;
 using SharpDX.Windows;
 using System;
@@ -26,30 +29,44 @@ namespace CoreTest
         private CameraCore camera;
         private Geometry3D box, sphere, points, lines;
         private GroupNode groupSphere, groupBox, groupPoints, groupLines;
-        private const int NumItems = 4000;
+        private const int NumItems = 40;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
         private MaterialCore[] materialList;
         private long previousTime;
         private bool resizeRequested = false;
+        private IO io = ImGui.GetIO();
+        private CameraController cameraController;
 
         public CoreTestApp(Form window)
         {
             viewport = new ViewportCore(window.Handle);
+            cameraController = new CameraController(viewport);
             this.window = window;
             window.ResizeEnd += Window_ResizeEnd;
             window.Load += Window_Load;
             window.FormClosing += Window_FormClosing;
+            window.MouseMove += Window_MouseMove;
+            window.MouseDown += Window_MouseDown;
+            window.MouseUp += Window_MouseUp;
+            window.MouseWheel += Window_MouseWheel;
+            window.KeyDown += Window_KeyDown;
+            window.KeyUp += Window_KeyUp;
+            window.KeyPress += Window_KeyPress;
             effectsManager = new DefaultEffectsManager();
+            effectsManager.AddTechnique(ImGuiNode.RenderTechnique);
             viewport.EffectsManager = effectsManager;           
             viewport.OnStartRendering += Viewport_OnStartRendering;
             viewport.OnStopRendering += Viewport_OnStopRendering;
             viewport.OnErrorOccurred += Viewport_OnErrorOccurred;
-            viewport.FXAALevel = FXAALevel.Low;
+            //viewport.FXAALevel = FXAALevel.Low;
             viewport.RenderHost.EnableRenderFrustum = false;
             viewport.RenderHost.RenderConfiguration.EnableRenderOrder = true;
+            viewport.BackgroundColor = new Color4(0.45f, 0.55f, 0.6f, 1f);
             InitializeScene();
         }
+
+
 
         private void InitializeScene()
         {
@@ -115,6 +132,28 @@ namespace CoreTest
 
             var viewbox = new ViewBoxNode();
             viewport.Items.Add(viewbox);
+            var imGui = new ImGuiNode();
+            viewport.Items.Add(imGui);
+            imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
+            io.KeyMap[GuiKey.Tab] = (int)Keys.Tab;
+            io.KeyMap[GuiKey.LeftArrow] = (int)Keys.Left;
+            io.KeyMap[GuiKey.RightArrow] = (int)Keys.Right;
+            io.KeyMap[GuiKey.UpArrow] = (int)Keys.Up;
+            io.KeyMap[GuiKey.DownArrow] = (int)Keys.Down;
+            io.KeyMap[GuiKey.PageUp] = (int)Keys.PageUp;
+            io.KeyMap[GuiKey.PageDown] = (int)Keys.PageDown;
+            io.KeyMap[GuiKey.Home] = (int)Keys.Home;
+            io.KeyMap[GuiKey.End] = (int)Keys.End;
+            io.KeyMap[GuiKey.Delete] = (int)Keys.Delete;
+            io.KeyMap[GuiKey.Backspace] = (int)Keys.Back;
+            io.KeyMap[GuiKey.Enter] = (int)Keys.Enter;
+            io.KeyMap[GuiKey.Escape] = (int)Keys.Escape;
+        }
+
+        private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
+        {
+            bool open = true;
+            ImGuiNative.igShowDemoWindow(ref open);
         }
 
         private void InitializeMaterials()
@@ -157,7 +196,7 @@ namespace CoreTest
             {
                 if (resizeRequested)
                 {
-                    viewport.Resize(window.Width, window.Height);
+                    viewport.Resize(window.ClientSize.Width, window.ClientSize.Height);
                     resizeRequested = false;
                     return;
                 }
@@ -165,28 +204,11 @@ namespace CoreTest
                 var t = Stopwatch.GetTimestamp();
                 var elapse = t - previousTime;
                 previousTime = t;
-                var angle = ((double)elapse / Stopwatch.Frequency) * 0.05;
-                var camRotate = Matrix.RotationAxis(Vector3.UnitY, (float)(angle * Math.PI));
-                camera.Position = Vector3.TransformCoordinate(pos, camRotate);
-                camera.LookDirection = -camera.Position;
-                if (isGoingOut)
-                {
-                    camera.Position += 0.05f * Vector3.Normalize(camera.Position);
-                    if(camera.Position.LengthSquared() > 10000)
-                    {
-                        isGoingOut = false;
-                    }
-                }
-                else
-                {
-                    camera.Position -= 0.05f * Vector3.Normalize(camera.Position);
-                    if(camera.Position.LengthSquared() < 2500)
-                    {
-                        isGoingOut = true;
-                    }
-                }
+                cameraController.OnTimeStep();
+
                 viewport.Render();
-                viewport.InvalidateRender();
+
+                
 #if TESTADDREMOVE
                 if (groupSphere.Items.Count > 0 && !isAddingNode)
                 {
@@ -228,7 +250,131 @@ namespace CoreTest
 
         private void Window_Load(object sender, EventArgs e)
         {
-            viewport.StartD3D(window.Width, window.Height);
+            viewport.StartD3D(window.ClientSize.Width, window.ClientSize.Height);
         }
+        #region Handle mouse event
+        private void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!cameraController.IsMouseCaptured)
+            {
+                io.MousePosition = new System.Numerics.Vector2(e.X, e.Y);
+            }
+            else if (!io.WantCaptureMouse)
+            {
+                cameraController.MouseMove(new Vector2(e.X, e.Y));
+            }
+        }
+
+        private void Window_MouseUp(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    io.MouseDown[0] = false;
+                    break;
+                case MouseButtons.Right:
+                    io.MouseDown[1] = false;
+                    break;
+                case MouseButtons.Middle:
+                    io.MouseDown[2] = false;
+                    break;
+            }
+            if (cameraController.IsMouseCaptured)
+            {
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        break;
+                    case MouseButtons.Right:
+                        cameraController.EndRotate(new Vector2(e.X, e.Y));
+                        break;
+                    case MouseButtons.Middle:
+                        cameraController.EndPan(new Vector2(e.X, e.Y));
+                        break;
+                }
+            }
+        }
+
+        private void Window_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (!cameraController.IsMouseCaptured)
+            {
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        io.MouseDown[0] = true;
+                        break;
+                    case MouseButtons.Right:
+                        io.MouseDown[1] = true;
+                        break;
+                    case MouseButtons.Middle:
+                        io.MouseDown[2] = true;
+                        break;
+                }
+                if (!io.WantCaptureMouse)
+                {
+                    switch (e.Button)
+                    {
+                        case MouseButtons.Left:
+                            break;
+                        case MouseButtons.Right:
+                            cameraController.StartRotate(new Vector2(e.X, e.Y));
+                            break;
+                        case MouseButtons.Middle:
+                            cameraController.StartPan(new Vector2(e.X, e.Y));
+                            break;
+                    }
+                }
+            }
+            else if(!io.WantCaptureMouse)
+            {
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        break;
+                    case MouseButtons.Right:
+                        cameraController.StartRotate(new Vector2(e.X, e.Y));
+                        break;
+                    case MouseButtons.Middle:
+                        cameraController.StartPan(new Vector2(e.X, e.Y));
+                        break;
+                }
+            }
+        }
+
+        private void Window_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!cameraController.IsMouseCaptured)
+            {
+                io.MouseWheel = (int)(e.Delta * 0.01f);
+            }
+            if(!io.WantCaptureMouse)
+            {
+                cameraController.MouseWheel(e.Delta, new Vector2(e.X, e.Y));
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {        
+            io.KeysDown[e.KeyValue] = true;
+            io.ShiftPressed = e.Shift;
+            io.CtrlPressed = e.Control;
+            io.AltPressed = e.Alt;
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            io.KeysDown[e.KeyValue] = false;
+            io.ShiftPressed = e.Shift;
+            io.CtrlPressed = e.Control;
+            io.AltPressed = e.Alt;
+        }
+
+
+        private void Window_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ImGui.AddInputCharacter(e.KeyChar);
+        }
+        #endregion
     }
 }

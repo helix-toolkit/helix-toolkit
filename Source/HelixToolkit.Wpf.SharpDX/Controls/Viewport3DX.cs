@@ -213,6 +213,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public IRenderHost RenderHost { get { return this.renderHostInternal; } }
 
+        public global::SharpDX.Rectangle ViewportRectangle { get { return new global::SharpDX.Rectangle(0, 0, (int)ActualWidth, (int)ActualHeight); } }
+
         private Window parentWindow;
 
         private Overlay Overlay2D { get; } = new Overlay() { EnableBitmapCache = true };

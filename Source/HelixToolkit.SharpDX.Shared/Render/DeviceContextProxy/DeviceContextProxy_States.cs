@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             deviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
             currBlendState = blendState;
             currBlendFactor = blendFactor;
-            currSampleMask = sampleMask == -1 ? int.MaxValue : (uint)sampleMask;
+            currSampleMask = sampleMask == -1 ? uint.MaxValue : (uint)sampleMask;
         }
 
         /// <summary>
