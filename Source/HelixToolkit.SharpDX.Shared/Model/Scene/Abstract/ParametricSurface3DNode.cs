@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     TessellateAsync();
                 }
             }
-            get => meshSizeU;
+            get => meshSizeV;
         }
 
         private bool isTessellating = false;
