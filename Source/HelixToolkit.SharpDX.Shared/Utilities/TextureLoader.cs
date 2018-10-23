@@ -38,17 +38,21 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         {
             using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, fileName))
             {
+                if(texture == null)
+                {
+                    return null;
+                }
                 if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
                 {
-                    using (var textureMipmap = GenerateMipMaps(device, texture))
+                    if (GenerateMipMaps(device, texture, out var textureMipmap))
                     {
-                        return new ShaderResourceView(device, textureMipmap);
+                        using (textureMipmap)
+                        {
+                            return new ShaderResourceView(device, textureMipmap);
+                        }
                     }
                 }
-                else
-                {
-                    return new ShaderResourceView(device, texture);
-                }
+                return new ShaderResourceView(device, texture);
             }
         }
 
@@ -78,24 +82,21 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         {
             using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory))
             {
-                if(texture != null)
+                if(texture == null)
                 {
-                    if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
+                    return null;
+                }
+                if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
+                {
+                    if(GenerateMipMaps(device, texture, out var textureMipmap))
                     {
-                        using (var textureMipmap = GenerateMipMaps(device, texture))
+                        using (textureMipmap)
                         {
                             return new ShaderResourceView(device, textureMipmap);
                         }
                     }
-                    else
-                    {
-                        return new ShaderResourceView(device, texture);
-                    }
                 }
-                else
-                {
-                    return null;
-                }
+                return new ShaderResourceView(device, texture);
             }
         }
         /// <summary>
@@ -108,40 +109,39 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         public static Resource FromMemoryAsShaderResource(Device device, Stream memory, bool disableAutoGenMipMap = false)
         {
             var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory);
-            if (texture != null)
-            {
-                if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
-                {
-                    try
-                    {
-                        var textureMipmap = GenerateMipMaps(device, texture);
-                        return textureMipmap;
-                    }
-                    finally
-                    {
-                        texture.Dispose();
-                    }
-                }
-                else
-                {
-                    return texture;
-                }
-            }
-            else
+            if(texture == null)
             {
                 return null;
             }
+            if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
+            {
+                try
+                {
+                    if(GenerateMipMaps(device, texture, out var textureMipmap))
+                    {
+                        texture.Dispose();
+                    }
+                    return textureMipmap;
+                }
+                catch(System.Exception ex)
+                {
+                    texture.Dispose();
+                    throw new System.Exception(ex.Message);
+                }
+            }
+            return texture;
         }
         /// <summary>
         /// Generates the mip maps.
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="texture">The texture.</param>
-        /// <returns></returns>
+        /// <param name="textMip">Returns a new texture with mipmaps if succeeded. Otherwise returns the input texture</param>
+        /// <returns>True succeed. False: Format not supported.</returns>
         /// <exception cref="InvalidDataException">Input texture is invalid.</exception>
-        public static Resource GenerateMipMaps(Device device, global::SharpDX.Toolkit.Graphics.Texture texture)
+        public static bool GenerateMipMaps(Device device, global::SharpDX.Toolkit.Graphics.Texture texture, out Resource textMip)
         {
-            Resource textMip = null;
+            textMip = null;
             //Check texture format support: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476426(v=vs.85).aspx
             switch (texture.Description.Format)
             {
@@ -177,7 +177,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 case global::SharpDX.DXGI.Format.B5G5R5A1_UNorm:
                     break;
                 default:
-                    return texture;//Format not support, return the original texture.
+                    textMip = texture;//Format not support, return the original texture.
+                    return false;
             }
             switch (texture.Description.Dimension)
             {
@@ -250,7 +251,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 device.ImmediateContext.CopySubresourceRegion(texture, 0, null, textMip, 0);
                 device.ImmediateContext.GenerateMips(shaderRes);
             }
-            return textMip;
+            return true;
         }
     }
 }

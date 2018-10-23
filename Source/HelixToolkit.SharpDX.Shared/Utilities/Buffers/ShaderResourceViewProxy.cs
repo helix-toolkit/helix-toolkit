@@ -203,8 +203,15 @@ namespace HelixToolkit.UWP.Utilities
             var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, format, array));
             if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
-                resource = Collect(TextureLoader.GenerateMipMaps(device, texture));
-                RemoveAndDispose(ref texture);
+                if(TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
             }
             else
             {
@@ -233,8 +240,15 @@ namespace HelixToolkit.UWP.Utilities
                 format, array));
             if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
-                resource = Collect(TextureLoader.GenerateMipMaps(device, texture));
-                RemoveAndDispose(ref texture);
+                if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
             }
             else
             {
@@ -270,8 +284,15 @@ namespace HelixToolkit.UWP.Utilities
                 new[] { databox }));
             if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
-                resource = Collect(TextureLoader.GenerateMipMaps(device, texture));
-                RemoveAndDispose(ref texture);
+                if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
             }
             else
             {
@@ -302,8 +323,15 @@ namespace HelixToolkit.UWP.Utilities
                 format, pixels));
             if(texture.Description.MipLevels == 1 && generateMipMaps)
             {
-                resource = Collect(TextureLoader.GenerateMipMaps(device, texture));
-                RemoveAndDispose(ref texture);
+                if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
             }
             else
             {
@@ -336,8 +364,15 @@ namespace HelixToolkit.UWP.Utilities
                 databox));
             if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
-                resource = Collect(TextureLoader.GenerateMipMaps(device, texture));
-                RemoveAndDispose(ref texture);
+                if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
             }
             else
             {
