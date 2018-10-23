@@ -50,7 +50,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
         pos.xyz += Step;
         lengthAccu += stepSize;
         //break if the position is greater than <1, 1, 1>
-        if (lengthAccu > dirLength || dst.a >= 1)
+        if (lengthAccu > dirLength || dst.a > 0.95)
             break;
     }
  
