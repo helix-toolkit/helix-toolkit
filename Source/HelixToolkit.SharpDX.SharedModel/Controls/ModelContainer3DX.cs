@@ -127,9 +127,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return CurrentRenderHost != null ? CurrentRenderHost.Renderer : null;
+                return CurrentRenderHost?.Renderer;
             }
         }
+
+        public new float ActualWidth { get => 0; }
+        public new float ActualHeight { get => 0; }
 
         /// <summary>
         /// Gets the current frame renderables for rendering.
@@ -531,7 +534,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public void StartD3D(double width, double height)
+        public void StartD3D(int width, int height)
         {
             
         }
@@ -554,7 +557,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public void Resize(double width, double height)
+        public void Resize(int width, int height)
         {
             
         }

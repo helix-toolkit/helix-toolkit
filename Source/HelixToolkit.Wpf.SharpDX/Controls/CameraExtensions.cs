@@ -71,22 +71,18 @@ namespace HelixToolkit.Wpf.SharpDX
             projectionDest.Position = projectionSource.Position;
             projectionDest.UpDirection = projectionSource.UpDirection;
 
-            var psrc = source as IPerspectiveCameraModel;
-            var osrc = source as IOrthographicCameraModel;
-            var pdest = dest as IPerspectiveCameraModel;
-            var odest = dest as IOrthographicCameraModel;
-            if (pdest != null)
+            if (dest is IPerspectiveCameraModel pdest)
             {
                 projectionDest.NearPlaneDistance = projectionSource.NearPlaneDistance > 0 ? projectionSource.NearPlaneDistance : 1e-1;
                 projectionDest.FarPlaneDistance = projectionSource.FarPlaneDistance;
 
                 double fov = 45;
-                if (psrc != null)
+                if (source is IPerspectiveCameraModel psrc)
                 {
                     fov = psrc.FieldOfView;
                 }
 
-                if (osrc != null)
+                if (source is IOrthographicCameraModel osrc)
                 {
                     double dist = projectionSource.LookDirection.Length;
                     fov = Math.Atan2(osrc.Width / 2, dist) * (180 / Math.PI);
@@ -95,19 +91,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 pdest.FieldOfView = fov;
             }
 
-            if (odest != null)
+            if (dest is IOrthographicCameraModel odest)
             {
                 projectionDest.NearPlaneDistance = projectionSource.NearPlaneDistance;
                 projectionDest.FarPlaneDistance = projectionSource.FarPlaneDistance;
 
                 double width = 100;
-                if (psrc != null)
+                if (source is IPerspectiveCameraModel psrc)
                 {
                     double dist = projectionSource.LookDirection.Length;
                     width = Math.Tan(psrc.FieldOfView / 180 * Math.PI) * 2 * dist;
                 }
 
-                if (osrc != null)
+                if (source is IOrthographicCameraModel osrc)
                 {
                     width = osrc.Width;
                 }
@@ -166,13 +162,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static string GetInfo(this Camera camera)
         {
-            var matrixCamera = camera as MatrixCamera;
-            var perspectiveCamera = camera as PerspectiveCamera;
-            var projectionCamera = camera as IProjectionCameraModel;
-            var orthographicCamera = camera as OrthographicCamera;
             var sb = new StringBuilder();
             sb.AppendLine(camera.GetType().Name);
-            if (projectionCamera != null)
+            if (camera is IProjectionCameraModel projectionCamera)
             {
                 sb.AppendLine(
                     string.Format(
@@ -210,19 +202,19 @@ namespace HelixToolkit.Wpf.SharpDX
                     string.Format(CultureInfo.InvariantCulture, "FarPlaneDist:\t{0}", projectionCamera.FarPlaneDistance));
             }
 
-            if (perspectiveCamera != null)
+            if (camera is PerspectiveCamera perspectiveCamera)
             {
                 sb.AppendLine(
                     string.Format(CultureInfo.InvariantCulture, "FieldOfView:\t{0:0.#}°", perspectiveCamera.FieldOfView));
             }
 
-            if (orthographicCamera != null)
+            if (camera is OrthographicCamera orthographicCamera)
             {
                 sb.AppendLine(
                     string.Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", orthographicCamera.Width));
             }
 
-            if (matrixCamera != null)
+            if (camera is MatrixCamera matrixCamera)
             {
                 sb.AppendLine("ProjectionMatrix:");
                 sb.AppendLine(matrixCamera.ProjectionMatrix.ToString(CultureInfo.InvariantCulture));
@@ -457,14 +449,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public static void Reset(this Camera camera)
         {
-            var projectionCamera = camera as PerspectiveCamera;
-            if (projectionCamera != null)
+            if (camera is PerspectiveCamera pCamera)
             {
-                Reset(projectionCamera);
+                Reset(pCamera);
             }
-
-            var ocamera = camera as OrthographicCamera;
-            if (ocamera != null)
+            else if (camera is OrthographicCamera ocamera)
             {
                 Reset(ocamera);
             }

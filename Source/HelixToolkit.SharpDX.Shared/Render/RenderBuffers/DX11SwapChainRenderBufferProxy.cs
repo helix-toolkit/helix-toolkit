@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public override bool Present()
         {
-            var res = swapChain.Present(0, PresentFlags.None, presentParams);
+            var res = swapChain.Present(VSyncInterval, PresentFlags.None, presentParams);
             if (res.Success)
             {
                 return true;
@@ -142,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
                 else
                 {
-                    swapChain.Present(0, PresentFlags.Restart, presentParams);
+                    swapChain.Present(VSyncInterval, PresentFlags.Restart, presentParams);
                 }
                 return false;
             }

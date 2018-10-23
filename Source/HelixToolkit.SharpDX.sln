@@ -118,6 +118,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillboardDemo", "Examples\W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeshSimplification", "Examples\WPF.SharpDX\MeshSimplification\MeshSimplification.csproj", "{F03D69ED-DEE5-4245-9A2D-8AD000EC0584}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolumeRendering", "Examples\WPF.SharpDX\VolumeRendering\VolumeRendering.csproj", "{FE982A9C-8416-40B7-9973-012D6B3E022E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
@@ -887,6 +889,22 @@ Global
 		{F03D69ED-DEE5-4245-9A2D-8AD000EC0584}.Release|x64.Build.0 = Release|Any CPU
 		{F03D69ED-DEE5-4245-9A2D-8AD000EC0584}.Release|x86.ActiveCfg = Release|Any CPU
 		{F03D69ED-DEE5-4245-9A2D-8AD000EC0584}.Release|x86.Build.0 = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|x64.Build.0 = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|x86.Build.0 = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|ARM.Build.0 = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|x64.ActiveCfg = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|x64.Build.0 = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|x86.ActiveCfg = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -933,6 +951,7 @@ Global
 		{7B119430-FE63-4854-9B16-51A1B1ADC533} = {76556164-48F2-4CAA-859B-5573F790970C}
 		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D} = {76556164-48F2-4CAA-859B-5573F790970C}
 		{F03D69ED-DEE5-4245-9A2D-8AD000EC0584} = {76556164-48F2-4CAA-859B-5573F790970C}
+		{FE982A9C-8416-40B7-9973-012D6B3E022E} = {76556164-48F2-4CAA-859B-5573F790970C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87F9CAC9-056B-409A-8B96-99C9F936B1B4}

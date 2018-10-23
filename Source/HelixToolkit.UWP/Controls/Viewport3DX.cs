@@ -139,6 +139,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public RenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
 
+        public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)ActualWidth, (int)ActualHeight); } }
         /// <summary>
         /// Gets or sets the render host internal.
         /// </summary>

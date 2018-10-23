@@ -150,9 +150,15 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
-            return new PointMaterial()
+            return new LineMaterial()
             {
-                Name = Name
+                Name = Name,
+                Color = Color,
+                Smoothness = Smoothness,
+                Thickness = Thickness,
+                EnableDistanceFading = EnableDistanceFading,
+                FadingNearDistance = FadingNearDistance,
+                FadingFarDistance = FadingFarDistance
             };
         }
 #endif

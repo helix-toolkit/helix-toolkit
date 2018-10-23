@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The actual width.
         /// </value>
-        public double ActualWidth { get { return RenderHost.ActualWidth; } }
+        public float ActualWidth { get { return RenderHost.ActualWidth; } }
 
         /// <summary>
         /// Gets the actual height.
@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The actual height.
         /// </value>
-        public double ActualHeight { get { return RenderHost.ActualHeight; } }
+        public float ActualHeight { get { return RenderHost.ActualHeight; } }
 
         /// <summary>
         /// Gets or sets the camera.

@@ -355,4 +355,22 @@
   <data name="vsScreenQuad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsscreenquad.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psSprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pssprite.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsSprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vssprite.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psVolume" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psvolume.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsVolume" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsvolume.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psVolumeCube" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psvolumecube.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psVolumeDiffuse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psvolumediffuse.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

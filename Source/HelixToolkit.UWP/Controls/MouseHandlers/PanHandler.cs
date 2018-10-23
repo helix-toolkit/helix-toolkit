@@ -39,8 +39,8 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
-        public override void Delta(Point e)
+        /// <param name="e">The <see cref="Vector2"/> instance containing the event data.</param>
+        public override void Delta(Vector2 e)
         {
             base.Delta(e);
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
@@ -96,7 +96,7 @@ namespace HelixToolkit.UWP
                 this.Controller.StopSpin();
                 this.Controller.StopZooming();
             }
-            var mousePoint = (this.LastPoint.ToVector2() + delta).ToPoint();
+            var mousePoint = (this.LastPoint + delta);
 
             var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
@@ -159,7 +159,7 @@ namespace HelixToolkit.UWP
         /// </param>
         protected override void OnInertiaStarting(double elapsedTime)
         {
-            var speed = (this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2()) * (40.0f / (float)elapsedTime);
+            var speed = (this.LastPoint - this.MouseDownPoint) * (40.0f / (float)elapsedTime);
             this.Controller.AddPanForce(speed.X, speed.Y);
         }
     }

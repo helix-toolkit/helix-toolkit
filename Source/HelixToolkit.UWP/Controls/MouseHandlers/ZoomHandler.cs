@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP
     using Vector3D = SharpDX.Vector3;
     using Point = Windows.Foundation.Point;
     using Windows.UI.Core;
+    using SharpDX;
 
     /// <summary>
     /// Handles zooming.
@@ -66,9 +67,9 @@ namespace HelixToolkit.UWP
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
         /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
-        public override void Delta(Point e)
+        public override void Delta(Vector2 e)
         {
-            var delta = e.ToVector2() - this.LastPoint.ToVector2();
+            var delta = e - this.LastPoint;
             this.LastPoint = e;
             this.Zoom(delta.Y * 0.01, this.zoomPoint3D);
         }
@@ -85,7 +86,7 @@ namespace HelixToolkit.UWP
 
             if (this.Controller.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
             {
-                this.zoomPoint = this.MouseDownPoint;
+                this.zoomPoint = this.MouseDownPoint.ToPoint();
                 this.zoomPoint3D = this.MouseDownNearestPoint3D.Value;
             }
 
