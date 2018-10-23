@@ -34,10 +34,10 @@ float4 main(VolumePS_INPUT input) : SV_Target
     {
         float4 color = pColor;
         pos.w = 0;
-        value = texVolume.Sample(samplerVolume, pos.xyz).r;
+        value = texVolume.SampleLevel(samplerVolume, pos.xyz, 0).r;
         if (bHasGradientMapX)
         {
-            color *= texColorStripe1DX.Sample(samplerVolume, value);
+            color *= texColorStripe1DX.SampleLevel(samplerVolume, value, 0);
         }
         src = float4(color.rgb * value, color.a * value);
         //src.a *= .5f; //reduce the alpha to have a more transparent result 

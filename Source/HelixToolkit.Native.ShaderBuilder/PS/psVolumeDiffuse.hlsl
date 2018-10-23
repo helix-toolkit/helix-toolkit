@@ -36,20 +36,20 @@ float4 main(VolumePS_INPUT input) : SV_Target
         pos.w = 0;
         float4 color = pColor;
 		//get the normal and iso-value for the current sample
-        value = texVolume.Sample(samplerVolume, pos.xyz);
+        value = texVolume.SampleLevel(samplerVolume, pos.xyz, 0);
 		
 		//index the transfer function with the iso-value (value.a)
 		//and get the rgba value for the voxel
         if (bHasGradientMapX)
         {
-            color *= texColorStripe1DX.Sample(samplerVolume, value.a);
+            color *= texColorStripe1DX.SampleLevel(samplerVolume, value.a, 0);
         }
         src = float4(color.rgb, color.a * value.a);
 		//Oppacity correction: As sampling distance decreases we get more samples.
 		//Therefore the alpha values set for a sampling distance of .5f will be too
 		//high for a sampling distance of .25f (or conversely, too low for a sampling
 		//distance of 1.0f). So we have to adjust the alpha accordingly.
-        src.a = 1 - pow((1 - src.a), actualSampleDist / baseSampleDist);
+        src.a = 1 - pow(abs(1 - src.a), abs(actualSampleDist / baseSampleDist));
 					  
         float s = 1-dot(normalize(value.xyz), L);
 				

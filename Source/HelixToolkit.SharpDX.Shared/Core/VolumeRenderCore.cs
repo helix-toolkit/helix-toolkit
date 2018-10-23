@@ -1,6 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
+Reference: https://graphicsrunner.blogspot.com/search/label/Volume%20Rendering
 */
 using SharpDX;
 using SharpDX.Direct3D;

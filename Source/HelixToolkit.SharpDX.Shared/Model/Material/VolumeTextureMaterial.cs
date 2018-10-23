@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP.Model
     {
         protected override ShaderResourceViewProxy OnCreateTexture(IEffectsManager manager)
         {
-            return manager.MaterialTextureManager.Register(VolumeTexture);
+            return manager.MaterialTextureManager.Register(VolumeTexture, true);
         }
     }
     /// <summary>
@@ -149,7 +149,7 @@ namespace HelixToolkit.UWP.Model
             if (VolumeTexture.VolumeTextures != null)
             {
                 return ShaderResourceViewProxy.CreateViewFromPixelData(manager.Device, VolumeTexture.VolumeTextures,
-                VolumeTexture.Width, VolumeTexture.Height, VolumeTexture.Depth, VolumeTexture.Format);
+                VolumeTexture.Width, VolumeTexture.Height, VolumeTexture.Depth, VolumeTexture.Format, true, false);
             }
             else
             {
@@ -198,7 +198,7 @@ namespace HelixToolkit.UWP.Model
             if (VolumeTexture.VolumeTextures != null)
             {
                 return ShaderResourceViewProxy.CreateViewFromPixelData(manager.Device, VolumeTexture.VolumeTextures,
-                VolumeTexture.Width, VolumeTexture.Height, VolumeTexture.Depth, VolumeTexture.Format);
+                VolumeTexture.Width, VolumeTexture.Height, VolumeTexture.Depth, VolumeTexture.Format, true, false);
             }
             else
             {

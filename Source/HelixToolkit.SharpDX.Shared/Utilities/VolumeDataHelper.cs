@@ -1,4 +1,9 @@
-﻿using SharpDX;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+Reference: https://graphicsrunner.blogspot.com/search/label/Volume%20Rendering
+*/
+using SharpDX;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -80,6 +85,10 @@ namespace HelixToolkit.UWP.Utilities
         /// Samples the sub-volume graident volume and returns the average.
         /// Should be an odd number of samples.
         /// </summary>
+        /// <param name="data"></param>
+        /// <param name="depth"></param>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="z"></param>
@@ -125,6 +134,10 @@ namespace HelixToolkit.UWP.Utilities
         /// <summary>
         /// Samples the gradient volume
         /// </summary>
+        /// <param name="data"></param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="z"></param>

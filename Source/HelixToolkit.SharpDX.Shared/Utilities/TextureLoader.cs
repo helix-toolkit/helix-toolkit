@@ -98,7 +98,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 }
             }
         }
-
+        /// <summary>
+        /// Froms the memory as shader resource.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="memory">The memory.</param>
+        /// <param name="disableAutoGenMipMap">if set to <c>true</c> [disable automatic gen mip map].</param>
+        /// <returns></returns>
         public static Resource FromMemoryAsShaderResource(Device device, Stream memory, bool disableAutoGenMipMap = false)
         {
             var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory);
@@ -126,7 +132,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 return null;
             }
         }
-
+        /// <summary>
+        /// Generates the mip maps.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="texture">The texture.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidDataException">Input texture is invalid.</exception>
         public static Resource GenerateMipMaps(Device device, global::SharpDX.Toolkit.Graphics.Texture texture)
         {
             Resource textMip = null;
