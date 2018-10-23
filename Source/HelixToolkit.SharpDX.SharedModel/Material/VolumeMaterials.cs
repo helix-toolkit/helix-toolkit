@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Default Volume Texture Material. Supports 3D DDS memory stream as <see cref="VolumeTextureMaterialCoreBase{T}.VolumeTexture"/>
     /// </summary>
-    public class VolumeTextureDDS3DMaterial : Material
+    public class VolumeTextureDDS3DMaterial : Material, IVolumeTextureMaterial
     {
         /// <summary>
         /// Gets or sets the texture. Only supports 3D DDS texture stream
@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureDDS3DMaterial), 
                 new PropertyMetadata(1.0, (d, e) =>
                 {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).SampleDistance = (float)(double)e.NewValue;
+                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).SampleDistance = (double)e.NewValue;
                 }));
 
 
@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new VolumeTextureDDS3DMaterialCore()
             {
                 VolumeTexture = Texture,
-                SampleDistance = (float)SampleDistance,
+                SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
@@ -158,7 +158,15 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
-            return Clone();
+            return new VolumeTextureDDS3DMaterial()
+            {
+                Texture = Texture,
+                SampleDistance = SampleDistance,
+                MaxIterations = MaxIterations,
+                Sampler = Sampler,
+                Color = Color,
+                TransferMap = TransferMap
+            };
         }
 #endif
     }
@@ -170,7 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Pixel Byte[] is equal to Width * Height * Depth * BytesPerPixel.
     /// </para>
     /// </summary>
-    public class VolumeTextureRawDataMaterial : Material
+    public class VolumeTextureRawDataMaterial : Material, IVolumeTextureMaterial
     {
         /// <summary>
         /// Gets or sets the texture.
@@ -224,7 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureRawDataMaterial),
                 new PropertyMetadata(1.0, (d, e) =>
                 {
-                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).SampleDistance = (float)(double)e.NewValue;
+                    ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).SampleDistance = (double)e.NewValue;
                 }));
 
 
@@ -294,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new VolumeTextureRawDataMaterialCore()
             {
                 VolumeTexture = Texture,
-                SampleDistance = (float)SampleDistance,
+                SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
@@ -305,7 +313,15 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
-            return Clone();
+            return new VolumeTextureRawDataMaterial()
+            {
+                Texture = Texture,
+                SampleDistance = SampleDistance,
+                MaxIterations = MaxIterations,
+                Sampler = Sampler,
+                Color = Color,
+                TransferMap = TransferMap
+            };
         }
 #endif
     }
@@ -318,7 +334,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Pixel Byte[] is equal to Width * Height * Depth * BytesPerPixel.
     /// </para>
     /// </summary>
-    public class VolumeTextureDiffuseMaterial : Material
+    public class VolumeTextureDiffuseMaterial : Material, IVolumeTextureMaterial
     {
         /// <summary>
         /// Gets or sets the texture.
@@ -372,7 +388,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("SampleDistance", typeof(double), typeof(VolumeTextureDiffuseMaterial),
                 new PropertyMetadata(1.0, (d, e) =>
                 {
-                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).SampleDistance = (float)(double)e.NewValue;
+                    ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).SampleDistance = (double)e.NewValue;
                 }));
 
 
@@ -442,7 +458,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new VolumeTextureDiffuseMaterialCore()
             {
                 VolumeTexture = Texture,
-                SampleDistance = (float)SampleDistance,
+                SampleDistance = SampleDistance,
                 MaxIterations = MaxIterations,
                 Sampler = Sampler,
                 Color = Color,
@@ -453,7 +469,15 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
-            return Clone();
+            return new VolumeTextureDiffuseMaterial()
+            {
+                Texture = Texture,
+                SampleDistance = SampleDistance,
+                MaxIterations = MaxIterations,
+                Sampler = Sampler,
+                Color = Color,
+                TransferMap = TransferMap
+            };
         }
 #endif
     }

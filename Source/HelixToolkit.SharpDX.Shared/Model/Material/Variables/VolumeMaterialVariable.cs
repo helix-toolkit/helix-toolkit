@@ -42,18 +42,18 @@ namespace HelixToolkit.UWP.Model
         {
             base.OnInitialPropertyBindings();
             AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.VolumeTexture), () => { UpdateTexture(material); });
-            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.Sampler), () => 
+            AddPropertyBinding(nameof(IVolumeTextureMaterial.Sampler), () => 
             {
                 RemoveAndDispose(ref sampler);
                 sampler = Collect(EffectsManager.StateManager.Register(material.Sampler));
             });
-            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.SampleDistance),
+            AddPropertyBinding(nameof(IVolumeTextureMaterial.SampleDistance),
                 () => UpdateStepSize());
-            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.MaxIterations),
+            AddPropertyBinding(nameof(IVolumeTextureMaterial.MaxIterations),
                 () => WriteValue(VolumeParamsStruct.MaxIterations, material.MaxIterations));
-            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.Color),
+            AddPropertyBinding(nameof(IVolumeTextureMaterial.Color),
                 () => WriteValue(VolumeParamsStruct.Color, material.Color));
-            AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.TransferMap),
+            AddPropertyBinding(nameof(IVolumeTextureMaterial.TransferMap),
                 () => UpdateGradientMap());
         }
 
@@ -63,11 +63,11 @@ namespace HelixToolkit.UWP.Model
             {
                 var desc = res.Description;
                 var maxSize = Math.Max(desc.Width, Math.Max(desc.Height, desc.Depth));
-                var steps = 1f / maxSize * material.SampleDistance;
+                var steps = 1f / maxSize * (float)material.SampleDistance;
                 var scale = Vector4.One / ((Vector4.One * maxSize) / new Vector4(desc.Width, desc.Height, desc.Depth, 1));
                 scale.W = 1;               
                 WriteValue(VolumeParamsStruct.StepSize, steps);
-                WriteValue(VolumeParamsStruct.ActualSampleDistance, material.SampleDistance);
+                WriteValue(VolumeParamsStruct.ActualSampleDistance, (float)material.SampleDistance);
                 WriteValue(VolumeParamsStruct.BaseSampleDistance, 1.0f);
                 WriteValue(VolumeParamsStruct.ScaleFactor, scale);
             }            

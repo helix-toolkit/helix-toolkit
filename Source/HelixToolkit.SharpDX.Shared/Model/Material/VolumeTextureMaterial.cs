@@ -46,11 +46,42 @@ namespace HelixToolkit.UWP.Model
             Format = global::SharpDX.DXGI.Format.R16G16B16A16_Float;
         }
     }
+
+    public interface IVolumeTextureMaterial
+    {
+        global::SharpDX.Direct3D11.SamplerStateDescription Sampler { set; get; }
+        /// <summary>
+        /// Gets or sets the step size, usually set to 1 / VolumeDepth.
+        /// </summary>
+        /// <value>
+        /// The size of the step.
+        /// </value>
+        double SampleDistance { set; get; }
+
+        /// <summary>
+        /// Gets or sets the iteration. Usually set to VolumeDepth.
+        /// </summary>
+        /// <value>
+        /// The iteration.
+        /// </value>
+        int MaxIterations { set; get; }
+
+        /// <summary>
+        /// Gets or sets the color.
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
+        Color4 Color { set; get; }
+        
+        Color4[] TransferMap { set; get; }
+    }
+
     /// <summary>
     /// Abstract class for VolumeTextureMaterial
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class VolumeTextureMaterialCoreBase<T> : MaterialCore
+    public abstract class VolumeTextureMaterialCoreBase<T> : MaterialCore, IVolumeTextureMaterial
     {
         private T volumeTexture;
         public T VolumeTexture
@@ -66,14 +97,14 @@ namespace HelixToolkit.UWP.Model
             get { return sampler; }
         }
 
-        private float sampleDistance = 1f;
+        private double sampleDistance = 1.0;
         /// <summary>
         /// Gets or sets the step size, usually set to 1 / VolumeDepth.
         /// </summary>
         /// <value>
         /// The size of the step.
         /// </value>
-        public float SampleDistance
+        public double SampleDistance
         {
             set { Set(ref sampleDistance, value); }
             get { return sampleDistance; }

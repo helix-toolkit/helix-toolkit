@@ -624,7 +624,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
-            return Clone();
+            return CloneMaterial();
         }
 #endif
 
