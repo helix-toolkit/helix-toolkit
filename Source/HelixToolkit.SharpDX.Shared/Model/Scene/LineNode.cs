@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 DepthBiasClamp = -1000,
                 SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
                 IsDepthClipEnabled = IsDepthClipEnabled,
-                IsFrontCounterClockwise = false,
+                IsFrontCounterClockwise = true,
 
                 IsMultisampleEnabled = IsMSAAEnabled,
                 //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed

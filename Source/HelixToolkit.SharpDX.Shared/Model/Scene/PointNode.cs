@@ -79,13 +79,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return new RasterizerStateDescription()
             {
-                FillMode = FillMode.Solid,
-                CullMode = CullMode.Back,
+                FillMode = FillMode,
+                CullMode = CullMode.None,
                 DepthBias = DepthBias,
                 DepthBiasClamp = -1000,
                 SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
                 IsDepthClipEnabled = IsDepthClipEnabled,
-                IsFrontCounterClockwise = false,
+                IsFrontCounterClockwise = true,
                 IsMultisampleEnabled = false,
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };

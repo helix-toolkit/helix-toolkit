@@ -272,7 +272,8 @@ struct VSInputPS
 
 struct GSInputPS
 {
-	float4 p : POSITION;
+    float4 p : SV_POSITION;
+    float4 wp : POSITION0;
 	float4 c : COLOR;
     float4 vEye : POSITION1;
 };
@@ -280,10 +281,10 @@ struct GSInputPS
 struct PSInputPS
 {
 	float4 p : SV_POSITION;
-	noperspective
-		float3 t : TEXCOORD;
-	float4 c : COLOR;
     float4 vEye : POSITION0;
+	float4 c : COLOR;
+	noperspective
+	float3 t : TEXCOORD;
 };
 
 //--------------------------------------------------------------------------------------
