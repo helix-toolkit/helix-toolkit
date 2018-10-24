@@ -15,7 +15,7 @@ void main(point GSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     float4 ndcPosition3 = input[0].p;
 
 	// Transform to clip space
-    if (!pbParams.x)// if not fixed size billboard
+    if (!fixedSize)// if not fixed size billboard
     {
         ndcPosition0.xy += input[0].offTR;
         ndcPosition1.xy += input[0].offBR;
@@ -33,7 +33,7 @@ void main(point GSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     float4 ndcTranslated2 = ndcPosition2 / ndcPosition2.w;
     float4 ndcTranslated3 = ndcPosition3 / ndcPosition3.w;
 
-    if (pbParams.x)// if fixed sized billboard
+    if (fixedSize)// if fixed sized billboard
     {
 		// Translate offset into normalized device coordinates.
         ndcTranslated0.xy += windowToNdc(input[0].offTR);

@@ -272,7 +272,8 @@ struct VSInputPS
 
 struct GSInputPS
 {
-	float4 p : POSITION;
+    float4 p : SV_POSITION;
+    float4 wp : POSITION0;
 	float4 c : COLOR;
     float4 vEye : POSITION1;
 };
@@ -280,10 +281,10 @@ struct GSInputPS
 struct PSInputPS
 {
 	float4 p : SV_POSITION;
-	noperspective
-		float3 t : TEXCOORD;
-	float4 c : COLOR;
     float4 vEye : POSITION0;
+	float4 c : COLOR;
+	noperspective
+	float3 t : TEXCOORD;
 };
 
 //--------------------------------------------------------------------------------------
@@ -400,5 +401,28 @@ struct MeshOutlinePS_INPUT
     float4 Pos : SV_POSITION;
     noperspective
     float2 Tex : TEXCOORD0;
+};
+
+struct SpriteVS_INPUT
+{
+    float2 Pos : POSITION;
+    float2 UV : TEXCOORD0;
+    float4 Color : COLOR0;
+};
+
+struct SpritePS_INPUT
+{
+    float4 Pos : SV_POSITION;
+    float4 Color : COLOR0;
+    float2 UV : TEXCOORD0;   
+};
+
+struct VolumePS_INPUT
+{
+    float4 pos : SV_POSITION;
+    float4 wp : POSITION0;
+    float4 mPos : TEXCOORD0;
+    noperspective
+    float2 tex : TEXCOORD1;
 };
 #endif

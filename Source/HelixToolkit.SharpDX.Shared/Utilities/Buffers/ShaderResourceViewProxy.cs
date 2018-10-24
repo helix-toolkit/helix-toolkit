@@ -1,5 +1,6 @@
 using SharpDX;
 using SharpDX.Direct3D11;
+using System;
 using System.Threading;
 
 #if !NETFX_CORE
@@ -100,7 +101,7 @@ namespace HelixToolkit.UWP.Utilities
             textureView = Collect(view);
         }
         /// <summary>
-        /// Creates the view.
+        /// Creates the view from common texture file stream. Supports Bmp, Jpg, DDS, Png.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="disableAutoGenMipMap">Disable auto mipmaps generation</param>
@@ -109,7 +110,8 @@ namespace HelixToolkit.UWP.Utilities
             this.DisposeAndClear();
             if (stream != null && device != null)
             {
-                textureView = Collect(TextureLoader.FromMemoryAsShaderResourceView(device, stream, disableAutoGenMipMap));
+                resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, disableAutoGenMipMap));
+                textureView = Collect(new ShaderResourceView(device, resource));
             }
         }
         /// <summary>
@@ -186,7 +188,6 @@ namespace HelixToolkit.UWP.Utilities
             depthStencilView = Collect(new DepthStencilView(device, resource));
         }
 
-
         /// <summary>
         /// Creates the 1D texture view from data array.
         /// </summary>
@@ -194,10 +195,28 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="array">The array.</param>
         /// <param name="format">The pixel format.</param>
         /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
-        public void CreateView<T>(T[] array, global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
+        /// <param name="generateMipMaps"></param>
+        public void CreateView<T>(T[] array, global::SharpDX.DXGI.Format format,
+            bool createSRV = true, bool generateMipMaps = true) where T : struct
         {
             this.DisposeAndClear();
-            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, format, array));
+            var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, format, array));
+            if (texture.Description.MipLevels == 1 && generateMipMaps)
+            {
+                if(TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
+            }
+            else
+            {
+                resource = texture;
+            }
             if (createSRV)
             {
                 textureView = Collect(new ShaderResourceView(device, resource));
@@ -211,12 +230,154 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="format">The format.</param>
-        /// <param name="mipCount">The mipCount. Default = 0 Auto</param>
         /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
-        public void CreateView<T>(T[] array, int width, int height, global::SharpDX.DXGI.Format format, int mipCount = 0, bool createSRV = true) where T : struct
+        /// <param name="generateMipMaps"></param>
+        public void CreateView<T>(T[] array, int width, int height, global::SharpDX.DXGI.Format format,
+            bool createSRV = true, bool generateMipMaps = true) where T : struct
         {
             this.DisposeAndClear();
-            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, mipCount, format));
+            var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, 
+                format, array));
+            if (texture.Description.MipLevels == 1 && generateMipMaps)
+            {
+                if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
+            }
+            else
+            {
+                resource = texture;
+            }
+            if (createSRV)
+            {
+                textureView = Collect(new ShaderResourceView(device, resource));
+            }
+        }
+        /// <summary>
+        /// Creates the shader resource view from data ptr.
+        /// </summary>
+        /// <param name="dataPtr">The data PTR.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="generateMipMaps"></param>
+        public unsafe void CreateView(IntPtr dataPtr, int width, int height,
+            global::SharpDX.DXGI.Format format,
+            bool createSRV = true, bool generateMipMaps = true)
+        {
+            this.DisposeAndClear();
+            var ptr = (IntPtr)dataPtr;
+            global::SharpDX.Toolkit.Graphics.Image
+                .ComputePitch(format, width, height, 
+                out var rowPitch, out var slicePitch, out var widthCount, out var heightCount);
+                
+            var databox = new DataBox(ptr, rowPitch, slicePitch);
+
+            var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, 1, format, 
+                new[] { databox }));
+            if (texture.Description.MipLevels == 1 && generateMipMaps)
+            {
+                if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
+            }
+            else
+            {
+                resource = texture;
+            }
+            if (createSRV)
+            {
+                textureView = Collect(new ShaderResourceView(device, resource));
+            }
+        }
+
+        /// <summary>
+        /// Creates the view from 3D texture byte array.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="generateMipMaps"></param>
+        public void CreateView<T>(T[] pixels, int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true) where T : struct
+        {
+            this.DisposeAndClear();
+            var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture3D.New(device, width, height, depth,
+                format, pixels));
+            if(texture.Description.MipLevels == 1 && generateMipMaps)
+            {
+                if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
+            }
+            else
+            {
+                resource = texture;
+            }
+            if (createSRV)
+            {
+                textureView = Collect(new ShaderResourceView(device, resource));
+            }
+        }
+
+        /// <summary>
+        /// Creates the view.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="dataPtr"></param>
+        /// <param name="generateMipMaps"></param>
+        public unsafe void CreateView(IntPtr dataPtr, int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true)
+        {
+            this.DisposeAndClear();
+            var ptr = (IntPtr)dataPtr;
+            var img = global::SharpDX.Toolkit.Graphics.Image.New3D(width, height, depth, global::SharpDX.Toolkit.Graphics.MipMapCount.Auto, format, dataPtr);
+            var databox = img.ToDataBox();
+            var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture3D.New(device, width, height, depth, format,
+                databox));
+            if (texture.Description.MipLevels == 1 && generateMipMaps)
+            {
+                if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                {
+                    resource = Collect(mipmapTexture);
+                    RemoveAndDispose(ref texture);
+                }
+                else
+                {
+                    resource = texture;
+                }
+            }
+            else
+            {
+                resource = texture;
+            }
             if (createSRV)
             {
                 textureView = Collect(new ShaderResourceView(device, resource));
@@ -236,12 +397,174 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="array">The array.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="mipCount">The mipCount. Default = 0 Auto</param>
         /// <param name="createSRV"></param>
-        public void CreateViewFromColorArray(Color4[] array, int width, int height, int mipCount = 0, bool createSRV = true)
+        /// <param name="generateMipMaps"></param>
+        public void CreateViewFromColorArray(Color4[] array, int width, int height, 
+            bool createSRV = true, bool generateMipMaps = true)
         {
-            CreateView(array, width, height, global::SharpDX.DXGI.Format.R32G32B32A32_Float, mipCount, createSRV);
+            CreateView(array, width, height, global::SharpDX.DXGI.Format.R32G32B32A32_Float, createSRV, generateMipMaps);
         }
+
+        #region Static Creator        
+        /// <summary>
+        /// Creates ShaderResourceViewProxy from 2D texture array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="device">The device.</param>
+        /// <param name="array">The array.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="generateMipMaps"></param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy CreateView<T>(Device device, T[] array, 
+            global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true) where T : struct
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(array, format, createSRV, generateMipMaps);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates ShaderResourceViewProxy from common file formats such as Jpg, Bmp, DDS, Png, etc
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="texture">The texture.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy CreateView(Device device, System.IO.Stream texture, bool createSRV = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(texture, createSRV);
+            return proxy;
+        }
+        /// <summary>
+        /// Creates the 2D texture view from data array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="device">The device.</param>
+        /// <param name="array">The array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="generateMipMaps"></param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy CreateView<T>(Device device, T[] array, int width, int height, 
+            global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true) where T : struct
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(array, width, height, format, createSRV, generateMipMaps);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates the 2D texture view from raw pixel byte array
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="dataPtr">The data PTR.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="generateMipMaps"></param>
+        /// <returns></returns>
+        public unsafe static ShaderResourceViewProxy CreateView(Device device, IntPtr dataPtr, int width, int height,
+            global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(dataPtr, width, height, format, createSRV, generateMipMaps);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates the 1D texture view from color array.
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="array">The array.</param>
+        public static ShaderResourceViewProxy CreateViewFromColorArray(Device device, Color4[] array)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateViewFromColorArray(array);
+            return proxy;
+        }
+        /// <summary>
+        /// Creates the 2D texture view from color array.
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="array">The array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="createSRV"></param>
+        /// <param name="generateMipMaps"></param>
+        public static ShaderResourceViewProxy CreateViewFromColorArray(Device device, Color4[] array, 
+            int width, int height, bool createSRV = true, bool generateMipMaps = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateViewFromColorArray(array, width, height, createSRV, generateMipMaps);
+            return proxy;
+        }
+
+        /// <summary>
+        /// Creates the 3D texture view from raw pixel array
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="generateMipMaps"></param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy CreateViewFromPixelData(Device device, byte[] pixels, 
+            int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(pixels, width, height, depth, format, createSRV, generateMipMaps);
+            return proxy;
+        }
+        /// <summary>
+        /// Creates the view from pixel data.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="generateMipMaps">if set to <c>true</c> [generate mip maps].</param>
+        /// <returns></returns>
+        public static ShaderResourceViewProxy CreateViewFromPixelData(Device device, Half4[] pixels,
+            int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(pixels, width, height, depth, format, createSRV, generateMipMaps);
+            return proxy;
+        }
+        /// <summary>
+        /// Creates the view from pixel data.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="pixels">The pixels.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        /// <param name="generateMipMaps"></param>
+        /// <returns></returns>
+        public unsafe static ShaderResourceViewProxy CreateViewFromPixelData(Device device, IntPtr pixels, 
+            int width, int height, int depth,
+            global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true)
+        {
+            var proxy = new ShaderResourceViewProxy(device);
+            proxy.CreateView(pixels, width, height, depth, format, createSRV, generateMipMaps);
+            return proxy;
+        }
+        #endregion
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="ShaderResourceView"/>.
         /// </summary>

@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.UWP
 {
+    using SharpDX;
     using System;
     using Windows.Foundation;
     using Windows.UI.Core;
@@ -49,12 +50,12 @@ namespace HelixToolkit.UWP
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
         /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
-        public override void Delta(Point e)
+        public override void Delta(Vector2 e)
         {
             base.Delta(e);
 
             double ar = this.Controller.Viewport.ActualHeight / this.Controller.Viewport.ActualWidth;
-            var delta = this.MouseDownPoint.ToVector2() - e.ToVector2();
+            var delta = this.MouseDownPoint - e;
 
             if (Math.Abs(delta.Y / delta.X) < ar)
             {
@@ -65,7 +66,7 @@ namespace HelixToolkit.UWP
                 delta.X = (float)(Math.Sign(delta.X) * Math.Abs(delta.Y / ar));
             }
 
-            this.zoomRectangle = new Rect(this.MouseDownPoint, (this.MouseDownPoint.ToVector2() - delta).ToPoint());
+            this.zoomRectangle = new Rect(this.MouseDownPoint.ToPoint(), (this.MouseDownPoint - delta).ToPoint());
 
             //this.Viewport.ShowZoomRectangle(this.zoomRectangle);
         }
@@ -77,7 +78,7 @@ namespace HelixToolkit.UWP
         public override void Started(Point e)
         {
             base.Started(e);
-            this.zoomRectangle = new Rect(this.MouseDownPoint, this.MouseDownPoint);
+            this.zoomRectangle = new Rect(this.MouseDownPoint.ToPoint(), this.MouseDownPoint.ToPoint());
             //this.Viewport.ShowZoomRectangle(this.zoomRectangle);
         }
 

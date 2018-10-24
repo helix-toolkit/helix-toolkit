@@ -79,6 +79,19 @@ namespace HelixToolkit.UWP.Model
             set { Set(ref fadingFarDistance, value); }
             get { return fadingFarDistance; }
         }
+
+        private bool fixedSize = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [fixed size].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
+        /// </value>
+        public bool FixedSize
+        {
+            set { Set(ref fixedSize, value); }
+            get { return fixedSize; }
+        }
         #endregion
 
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)

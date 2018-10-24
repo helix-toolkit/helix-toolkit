@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP.Model
         protected override void OnInitialPropertyBindings()
         {
             base.OnInitialPropertyBindings();
-            AddPropertyBinding(nameof(BillboardMaterialCore.FixedSize), () => { WriteValue(PointLineMaterialStruct.BoolParamsStr, new Bool4(materialCore.FixedSize, false, false, false)); });
+            AddPropertyBinding(nameof(BillboardMaterialCore.FixedSize), () => { WriteValue(PointLineMaterialStruct.FixedSize, materialCore.FixedSize); });
             AddPropertyBinding(nameof(BillboardMaterialCore.Type), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0)); });
             AddPropertyBinding(nameof(BillboardMaterialCore.SamplerDescription), () => {
                 RemoveAndDispose(ref textureSampler);

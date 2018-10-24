@@ -125,11 +125,29 @@ cbuffer cbPointLineModel : register(b4)
 	float2 padding1;
     float4 pfParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
     float4 pColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
-	bool4 pbParams = bool4(false, false, false, false);
+    bool fixedSize;
+	bool3 pbParams;
     bool enableDistanceFading;
     float fadeNearDistance;
     float fadeFarDistance;
     float padding2;
+};
+#endif
+#if defined(VOLUME) // model for line, point and billboard
+//Per model
+cbuffer cbVolumeModel : register(b4)
+{
+    float4x4 mWorld;
+    float4 pColor;
+    float stepSize;
+    uint iterationOffset;
+    float padding1;
+    uint maxIterations;
+    bool bHasGradientMapX;
+    float isoValue;
+    float baseSampleDist = .5f;
+    float actualSampleDist = .5f;
+    float4 scaleFactor;
 };
 #endif
 #if defined(PARTICLE) // model for line, point and billboard
@@ -266,7 +284,13 @@ Texture2D texOITAlpha : register(t11);
 Texture1D texColorStripe1DX : register(t12);
 Texture1D texColorStripe1DY : register(t13);
 
-StructuredBuffer<matrix> skinMatrices : register(t20);
+StructuredBuffer<matrix> skinMatrices : register(t40);
+
+Texture2D texSprite : register(t50);
+
+Texture3D texVolume : register(t0);
+Texture2D texVolumeFront : register(t1);
+Texture2D texVolumeBack : register(t2);
 ///------------------Samplers-------------------
 SamplerState samplerSurface : register(s0);
 SamplerState samplerIBL : register(s1);
@@ -280,6 +304,10 @@ SamplerComparisonState samplerShadow : register(s5);
 SamplerState samplerParticle : register(s6);
 
 SamplerState samplerBillboard : register(s7);
+
+SamplerState samplerSprite : register(s8);
+
+SamplerState samplerVolume : register(s9);
 ///---------------------UAV-----------------------------
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);

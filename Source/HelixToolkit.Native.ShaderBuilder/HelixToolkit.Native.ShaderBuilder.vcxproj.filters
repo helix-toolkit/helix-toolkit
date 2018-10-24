@@ -281,5 +281,23 @@
     <FxCompile Include="VS\vsScreenQuad.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
+    <FxCompile Include="VS\vsSprite.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psSprite.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsVolume.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psVolume.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psVolumeCube.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psVolumeDiffuse.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

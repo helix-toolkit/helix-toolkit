@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using System;
 using System.Collections.Generic;
 using global::SharpDX;
 
@@ -26,10 +30,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get { return effectsManager; }
             set
             {
-                if(effectsManager != value)
+                if (effectsManager != value)
                 {
                     effectsManager = value;
-                    if(RenderHost != null)
+                    if (RenderHost != null)
                     {
                         RenderHost.EffectsManager = value;
                     }
@@ -43,10 +47,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get => renderTechnique;
             set
             {
-                if(renderTechnique != value)
+                if (renderTechnique != value)
                 {
                     renderTechnique = value;
-                    if(RenderHost != null)
+                    if (RenderHost != null)
                     {
                         RenderHost.RenderTechnique = value;
                     }
@@ -142,6 +146,33 @@ namespace HelixToolkit.SharpDX.Core.Controls
             }
         }
 
+        public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)RenderHost.ActualWidth, (int)RenderHost.ActualHeight); } }
+
+        public RenderContext RenderContext { get => RenderHost.RenderContext; }
+
+        private bool enableVSync = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable vertical synchronize].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable vertical synchronize]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableVSync
+        {
+            set
+            {
+                enableVSync = value;
+                if (RenderHost != null)
+                {
+                    RenderHost.RenderConfiguration.EnableVSync = value;
+                }
+            }
+            get
+            {
+                return enableVSync;
+            }
+        }
+
         private SceneNode2D root2D = new OverlayNode2D() { EnableBitmapCache = false };
 
         public ViewportCore(IntPtr nativeWindowPointer, bool deferred = false)
@@ -164,6 +195,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 };
             }
             BackgroundColor = Color.Black;
+            RenderHost.RenderConfiguration.EnableVSync = enableVSync;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
@@ -191,7 +223,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             RenderHost.UpdateAndRender();
         }
 
-        public void StartD3D(double width, double height)
+        public void StartD3D(int width, int height)
         {
             RenderHost.StartD3D(width, height);
         }
@@ -227,12 +259,12 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public void InvalidateRender()
         {
-            RenderHost?.InvalidateRender();
+            RenderHost.InvalidateRender();
         }
 
         public void InvalidateSceneGraph()
         {
-            RenderHost?.InvalidateSceneGraph();
+            RenderHost.InvalidateSceneGraph();
         }
 
         public void Update(TimeSpan timeStamp)
@@ -242,7 +274,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public void Resize(int width, int height)
         {
-            RenderHost?.Resize(width, height);
+            RenderHost.Resize(width, height);
         }
     }
 }

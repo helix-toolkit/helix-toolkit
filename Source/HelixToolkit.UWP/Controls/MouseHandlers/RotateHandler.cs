@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP
     using Point = Windows.Foundation.Point;
     using Windows.UI.Core;
     using SharpDX;
-    using System.Diagnostics;
+    using Cameras;
 
     /// <summary>
     /// Handles rotation.
@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The rotation point.
         /// </summary>
-        private Point rotationPoint;
+        private Vector2 rotationPoint;
 
         /// <summary>
         /// The 3D rotation point.
@@ -89,7 +89,7 @@ namespace HelixToolkit.UWP
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
         /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Delta(Point e)
+        public override void Delta(Vector2 e)
         {
             base.Delta(e);
             this.Rotate(this.LastPoint, e, this.rotationPoint3D);
@@ -128,7 +128,7 @@ namespace HelixToolkit.UWP
         /// The rotate around.
         /// </param>
         /// <param name="stopOther">Stop other manipulation</param>
-        public void Rotate(Point p0, Point p1, Point3D rotateAround, bool stopOther = true)
+        public void Rotate(Vector2 p0, Vector2 p1, Point3D rotateAround, bool stopOther = true)
         {
             if (!this.Controller.IsRotationEnabled)
             {
@@ -139,23 +139,28 @@ namespace HelixToolkit.UWP
                 Controller.StopZooming();
                 Controller.StopPanning();
             }
+            var newPos = Camera.CameraInternal.Position;
+            var newLook = Camera.CameraInternal.LookDirection;
+            var newUp = Vector3D.Normalize(Camera.CameraInternal.UpDirection);
             switch (this.Controller.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
-                    this.RotateTrackball(p0, p1, rotateAround);
+                    CameraMath.RotateTrackball(CameraMode, ref p0, ref p1, ref rotateAround, (float)RotationSensitivity,
+                        Controller.Width, Controller.Height, Camera, inv, out newPos, out newLook, out newUp);
                     break;
                 case CameraRotationMode.Turntable:
-                    this.RotateTurntable(p1.ToVector2() - p0.ToVector2(), rotateAround);
+                    var p = p1 - p0;
+                    CameraMath.RotateTurntable(CameraMode, ref p, ref rotateAround, (float)RotationSensitivity,
+                        Controller.Width, Controller.Height, Camera, inv, ModelUpDirection, out newPos, out newLook, out newUp);
                     break;
                 case CameraRotationMode.Turnball:
-                    this.RotateTurnball(p0, p1, rotateAround);
+                    CameraMath.RotateTurnball(CameraMode, ref p0, ref p1, ref rotateAround, (float)RotationSensitivity,
+                        Controller.Width, Controller.Height, Camera, inv, out newPos, out newLook, out newUp);
                     break;
             }
-
-            if (Math.Abs(this.Camera.UpDirection.Length() - 1) > 1e-8)
-            {
-                this.Camera.UpDirection.Normalize();
-            }
+            Camera.LookDirection = newLook;
+            Camera.Position = newPos;
+            Camera.UpDirection = newUp;
         }
 
         /// <summary>
@@ -167,126 +172,13 @@ namespace HelixToolkit.UWP
         public void Rotate(Vector2 delta)
         {
             var p0 = this.LastPoint;
-            var p1 = p0.ToVector2() + delta;
+            var p1 = p0 + delta;
             if (this.MouseDownPoint3D != null)
             {
-                this.Rotate(p0, p1.ToPoint(), this.MouseDownPoint3D.Value);
+                this.Rotate(p0, p1, this.MouseDownPoint3D.Value);
             }
 
             this.LastPoint = p0;
-        }
-
-        /// <summary>
-        /// Rotate around three axes.
-        /// </summary>
-        /// <param name="p1">
-        /// The previous mouse position.
-        /// </param>
-        /// <param name="p2">
-        /// The current mouse position.
-        /// </param>
-        /// <param name="rotateAround">
-        /// The point to rotate around.
-        /// </param>
-        public void RotateTurnball(Point p1, Point p2, Point3D rotateAround)
-        {
-            this.InitTurnballRotationAxes(p1);
-
-            Vector2 delta = p2.ToVector2() - p1.ToVector2();
-
-            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
-            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
-
-            float d = -1f;
-            if (this.CameraMode != CameraMode.Inspect)
-            {
-                d = 0.2f;
-            }
-
-            d *= (float)this.RotationSensitivity;
-
-            var q1 = Quaternion.RotationAxis(this.rotationAxisX, (float)(d * inv * delta.X / 180 * Math.PI));
-            var q2 = Quaternion.RotationAxis(this.rotationAxisY, (float)(d * delta.Y / 180 * Math.PI));
-            Quaternion q = q1 * q2;
-
-            var m = Matrix.RotationQuaternion(q);
-
-            var newLookDir = Vector3D.Transform(this.Camera.CameraInternal.LookDirection, m).ToVector3();
-            var newUpDirection = Vector3D.Transform(this.Camera.CameraInternal.UpDirection, m).ToVector3();
-
-            var newRelativeTarget = Vector3D.Transform(relativeTarget, m).ToVector3();
-            var newRelativePosition = Vector3D.Transform(relativePosition, m).ToVector3();
-
-            var newRightVector = Vector3D.Cross(newLookDir, newUpDirection);
-            newRightVector.Normalize();
-            var modUpDir = Vector3D.Cross(newRightVector, newLookDir);
-            modUpDir.Normalize();
-            if ((newUpDirection - modUpDir).Length() > 1e-8)
-            {
-                newUpDirection = modUpDir;
-            }
-
-            var newTarget = rotateAround - newRelativeTarget;
-            var newPosition = rotateAround - newRelativePosition;
-            var newLookDirection = newTarget - newPosition;
-
-            this.Camera.LookDirection = newLookDirection;
-            if (this.CameraMode == CameraMode.Inspect)
-            {
-                this.Camera.Position = newPosition;
-            }
-
-            this.Camera.UpDirection = newUpDirection;
-        }
-
-        /// <summary>
-        /// Rotate camera using 'Turntable' rotation.
-        /// </summary>
-        /// <param name="delta">
-        /// The relative change in position.
-        /// </param>
-        /// <param name="rotateAround">
-        /// The point to rotate around.
-        /// </param>
-        public void RotateTurntable(Vector2 delta, Point3D rotateAround)
-        {
-            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
-            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
-
-            var up = this.ModelUpDirection;
-            var dir = this.Camera.CameraInternal.LookDirection;
-            dir.Normalize();
-
-            var right = Vector3D.Cross(dir, this.Camera.CameraInternal.UpDirection);
-            right.Normalize();
-
-            var d = -0.5f;
-            if (this.CameraMode != CameraMode.Inspect)
-            {
-                d *= -0.2f;
-            }
-
-            d *= (float)this.RotationSensitivity;
-
-            var q1 = Quaternion.RotationAxis(up, (float)(d * inv * delta.X / 180 * Math.PI));
-            var q2 = Quaternion.RotationAxis(right, (float)(d * delta.Y / 180 * Math.PI));
-            Quaternion q = q1 * q2;
-
-            var m = Matrix.RotationQuaternion(q);
-
-            var newUpDirection = Vector3D.Transform(this.Camera.CameraInternal.UpDirection, m).ToVector3();
-            var newRelativeTarget = Vector3D.Transform(relativeTarget, m).ToVector3();
-            var newRelativePosition = Vector3D.Transform(relativePosition, m).ToVector3();
-            var newTarget = rotateAround - newRelativeTarget;
-            var newPosition = rotateAround - newRelativePosition;
-
-            this.Camera.LookDirection = newTarget - newPosition;
-            if (this.CameraMode == CameraMode.Inspect)
-            {
-                this.Camera.Position = newPosition;
-            }
-
-            this.Camera.UpDirection = newUpDirection;
         }
 
         /// <summary>
@@ -297,8 +189,8 @@ namespace HelixToolkit.UWP
         {
             base.Started(e);
 
-            this.rotationPoint = new Point(
-                this.Controller.Viewport.ActualWidth / 2, this.Controller.Viewport.ActualHeight / 2);
+            this.rotationPoint = new Vector2(
+                this.Controller.Width / 2f, this.Controller.Height / 2f);
             this.rotationPoint3D = this.Camera.CameraInternal.Target;
 
             switch (this.CameraMode)
@@ -338,7 +230,7 @@ namespace HelixToolkit.UWP
                 case CameraRotationMode.Turntable:
                     break;
                 case CameraRotationMode.Turnball:
-                    this.InitTurnballRotationAxes(e);
+                    CameraMath.InitTurnballRotationAxes(e.ToVector2(), Controller.Width, Controller.Height, Camera, out rotationAxisX, out rotationAxisY);
                     break;
             }
 
@@ -380,149 +272,13 @@ namespace HelixToolkit.UWP
         /// </param>
         protected override void OnInertiaStarting(double elapsedTime)
         {
-            Vector2 delta = this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2();
+            Vector2 delta = this.LastPoint - this.MouseDownPoint;
 
             // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
             this.Controller.StartSpin(
                 4 * delta * (float)(this.Controller.SpinReleaseTime / elapsedTime),
-                this.MouseDownPoint,
+                this.MouseDownPoint.ToPoint(),
                 this.rotationPoint3D);
-        }
-
-        /// <summary>
-        /// Projects a screen position to the trackball unit sphere.
-        /// </summary>
-        /// <param name="point">
-        /// The screen position.
-        /// </param>
-        /// <param name="w">
-        /// The width of the viewport.
-        /// </param>
-        /// <param name="h">
-        /// The height of the viewport.
-        /// </param>
-        /// <returns>
-        /// A trackball coordinate.
-        /// </returns>
-        private static Point3D ProjectToTrackball(Point point, double w, double h)
-        {
-            // Use the diagonal for scaling, making sure that the whole client area is inside the trackball
-            double r = Math.Sqrt((w * w) + (h * h)) / 2;
-            double x = (point.X - (w / 2)) / r;
-            double y = ((h / 2) - point.Y) / r;
-            double z2 = 1 - (x * x) - (y * y);
-            double z = z2 > 0 ? Math.Sqrt(z2) : 0;
-
-            return new Point3D((float)x, (float)y, (float)z);
-        }
-
-        /// <summary>
-        /// Initializes the 'turn-ball' rotation axes from the specified point.
-        /// </summary>
-        /// <param name="p1">
-        /// The point.
-        /// </param>
-        private void InitTurnballRotationAxes(Point p1)
-        {
-            double fx = p1.X / this.Controller.Viewport.ActualWidth;
-            double fy = p1.Y / this.Controller.Viewport.ActualHeight;
-
-            var up = this.Camera.CameraInternal.UpDirection;
-            var dir = this.Camera.CameraInternal.LookDirection;
-            dir.Normalize();
-
-            var right = Vector3D.Cross(dir, this.Camera.CameraInternal.UpDirection);
-            right.Normalize();
-
-            this.rotationAxisX = up;
-            this.rotationAxisY = right;
-            if (fy > 0.8 || fy < 0.2)
-            {
-                // delta.Y = 0;
-            }
-
-            if (fx > 0.8)
-            {
-                // delta.X = 0;
-                this.rotationAxisY = dir;
-            }
-
-            if (fx < 0.2)
-            {
-                // delta.X = 0;
-                this.rotationAxisY = -dir;
-            }
-        }
-
-        /// <summary>
-        /// The rotate trackball.
-        /// </summary>
-        /// <param name="p1">
-        /// The previous mouse position.
-        /// </param>
-        /// <param name="p2">
-        /// The current mouse position.
-        /// </param>
-        /// <param name="rotateAround">
-        /// The point to rotate around.
-        /// </param>
-        private void RotateTrackball(Point p1, Point p2, Point3D rotateAround)
-        {
-            // http://viewport3d.com/trackball.htm
-            // http://www.codeplex.com/3DTools/Thread/View.aspx?ThreadId=22310
-            var v1 = ProjectToTrackball(p1, this.Controller.Viewport.ActualWidth, this.Controller.Viewport.ActualHeight);
-            var v2 = ProjectToTrackball(p2, this.Controller.Viewport.ActualWidth, this.Controller.Viewport.ActualHeight);
-
-            // transform the trackball coordinates to view space
-            var viewZ = this.Camera.CameraInternal.LookDirection * inv;
-            var viewX = Vector3D.Cross(this.Camera.CameraInternal.UpDirection, viewZ) * inv;
-            var viewY = Vector3D.Cross(viewX, viewZ);
-            viewX.Normalize();
-            viewY.Normalize();
-            viewZ.Normalize();
-            var u1 = (viewZ * v1.Z) + (viewX * v1.X) + (viewY * v1.Y);
-            var u2 = (viewZ * v2.Z) + (viewX * v2.X) + (viewY * v2.Y);
-
-            // Could also use the Camera ViewMatrix
-            // var vm = Viewport3DHelper.GetViewMatrix(this.ActualCamera);
-            // vm.Invert();
-            // var ct = new MatrixTransform3D(vm);
-            // var u1 = ct.Transform(v1);
-            // var u2 = ct.Transform(v2);
-
-            // Find the rotation axis and angle
-            var axis = Vector3D.Cross(u1, u2);
-            if (axis.LengthSquared() < 1e-8)
-            {
-                return;
-            }
-
-            var angle = u1.AngleBetween(u2);
-
-            // Create the transform
-            var delta = Quaternion.RotationAxis(axis, -(float)(angle * this.RotationSensitivity * 5));
-            var rotate = Matrix.RotationQuaternion(delta);
-
-            // Find vectors relative to the rotate-around point
-            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
-            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
-
-            // Rotate the relative vectors
-            var newRelativeTarget = Vector3D.Transform(relativeTarget, rotate).ToVector3();
-            var newRelativePosition = Vector3D.Transform(relativePosition, rotate).ToVector3();
-            var newUpDirection = Vector3D.Transform(this.Camera.CameraInternal.UpDirection, rotate).ToVector3();
-
-            // Find new camera position
-            var newTarget = rotateAround - newRelativeTarget;
-            var newPosition = rotateAround - newRelativePosition;
-
-            this.Camera.LookDirection = newTarget - newPosition;
-            if (this.CameraMode == CameraMode.Inspect)
-            {
-                this.Camera.Position = newPosition;
-            }
-
-            this.Camera.UpDirection = newUpDirection;
         }
     }
 }

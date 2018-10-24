@@ -61,6 +61,19 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as PointGeometryModel3D).SceneNode as PointNode).HitTestThickness = (float)(double)e.NewValue;
                 }));
 
+        /// <summary>
+        /// Fixed sized billboard. Default = true. 
+        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// </summary>
+        public static readonly DependencyProperty FixedSizeProperty
+            = DependencyProperty.Register("FixedSize", typeof(bool), typeof(PointGeometryModel3D),
+            new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    (d as PointGeometryModel3D).material.FixedSize = (bool)e.NewValue;
+                }));
+
         public Media.Color Color
         {
             get { return (Media.Color)this.GetValue(ColorProperty); }
@@ -93,6 +106,23 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)this.GetValue(HitTestThicknessProperty); }
             set { this.SetValue(HitTestThicknessProperty, value); }
         }
+
+        /// <summary>
+        /// Fixed sized billboard. Default = true. 
+        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// </summary>
+        public bool FixedSize
+        {
+            set
+            {
+                SetValue(FixedSizeProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FixedSizeProperty);
+            }
+        }
         #endregion
 
         protected readonly PointMaterialCore material = new PointMaterialCore();
@@ -115,6 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX
             material.Figure = Figure;
             material.FigureRatio = (float)FigureRatio;
             material.PointColor = Color.ToColor4();
+            material.FixedSize = FixedSize;
             base.AssignDefaultValuesToSceneNode(core);
         }
     }

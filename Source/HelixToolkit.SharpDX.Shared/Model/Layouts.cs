@@ -380,7 +380,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string EnableDistanceFading = "enableDistanceFading";
         public const string ParamsStr = "pfParams";
         public const string ColorStr = "pColor";
-        public const string BoolParamsStr = "pbParams";
+        public const string FixedSize = "fixedSize";//bool
+        public const string BoolParamsStr = "pbParams";//bool3
     }
 
     /// <summary>
@@ -509,6 +510,32 @@ namespace HelixToolkit.Wpf.SharpDX
         Vector2 pad1;
 
         public const int SizeInBytes = 4 * ( 4 * 4 + 4 * 8 );
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct SpriteStruct
+    {
+        public Vector2 Position;
+        public Vector2 UV;
+        public Vector4 Color;
+
+        public const int SizeInBytes = 4 * (2 + 2 + 4);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct VolumeParamsStruct
+    {
+        public const string World = "mWorld"; //Separated from the struct in material
+        public const string Color = "pColor"; // Vector4
+        public const string StepSize = "stepSize"; // Vector3
+        public const string MaxIterations = "maxIterations"; // int or uint
+        public const string HasGradientMapX = "bHasGradientMapX";// bool
+        public const string IsoValue = "isoValue"; // float
+        public const string BaseSampleDistance = "baseSampleDist"; //float
+        public const string ActualSampleDistance = "actualSampleDist"; //float
+        public const string ScaleFactor = "scaleFactor"; //Vector4
+        public const string IterationOffset = "iterationOffset"; // int or uint
+        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 + 4 + 4);
     }
 #if !NETFX_CORE
     /// <summary>

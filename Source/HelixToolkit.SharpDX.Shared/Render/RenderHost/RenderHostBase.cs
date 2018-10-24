@@ -213,7 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         }
                         else if(isLoaded)
                         {
-                            StartD3D(ActualWidth, ActualHeight);
+                            StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                         }
                     }
                     else
@@ -272,14 +272,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private double height = MinHeight;
+        private float height = MinHeight;
         /// <summary>
         /// Gets or sets the actual height.
         /// </summary>
         /// <value>
         /// The actual height.
         /// </value>
-        public double ActualHeight
+        public float ActualHeight
         {
             private set
             {
@@ -291,14 +291,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private double width = MinWidth;
+        private float width = MinWidth;
         /// <summary>
         /// Gets or sets the actual width.
         /// </summary>
         /// <value>
         /// The actual width.
         /// </value>
-        public double ActualWidth
+        public float ActualWidth
         {
             private set
             {
@@ -624,12 +624,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     renderContext.OITWeightDepthSlope = RenderConfiguration.OITWeightDepthSlope;
                     renderContext.OITWeightMode = RenderConfiguration.OITWeightMode;
                 }
+                renderBuffer.VSyncInterval = RenderConfiguration.EnableVSync ? 1 : 0;
                 bool updateSceneGraph = UpdateSceneGraphRequested;
                 bool updatePerFrameRenderable = UpdatePerFrameRenderableRequested;
                 renderContext.UpdateSceneGraphRequested = UpdateSceneGraphRequested;
                 renderContext.UpdatePerFrameRenderableRequested = UpdatePerFrameRenderableRequested;
                 UpdateSceneGraphRequested = false;
-                UpdatePerFrameRenderableRequested = false;
+                UpdatePerFrameRenderableRequested = false;               
                 PreRender(updateSceneGraph, updatePerFrameRenderable);
                 try
                 {                    
@@ -748,13 +749,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             else
             {
                 EndD3D();
-                StartD3D(this.ActualWidth, this.ActualHeight);
+                StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
             }
         }
         /// <summary>
         /// 
         /// </summary>
-        public void StartD3D(double width, double height)
+        public void StartD3D(int width, int height)
         {
             Log(LogLevel.Information, $"Width = {width}; Height = {height};");
             if (IsInitialized)
@@ -952,7 +953,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public void Resize(double width, double height)
+        public void Resize(int width, int height)
         {
             if(ActualWidth == width && ActualHeight == height)
             {
@@ -964,7 +965,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (IsInitialized)
             {
                 StopRendering();
-                var texture = renderBuffer.Resize((int)ActualWidth, (int)ActualHeight);
+                var texture = renderBuffer.Resize((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                 OnNewRenderTargetTexture?.Invoke(this, new Texture2DArgs(texture));
                 if (Viewport != null)
                 {
@@ -992,7 +993,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 syncContext.Post((o) => 
                 {
-                    StartD3D(ActualWidth, ActualHeight);
+                    StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                 }, null);
             }
         }

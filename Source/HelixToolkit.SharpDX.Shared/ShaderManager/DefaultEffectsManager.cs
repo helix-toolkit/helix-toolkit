@@ -1644,6 +1644,82 @@ namespace HelixToolkit.UWP
                     }
                 }
             };
+
+            var sprite2D = new TechniqueDescription(DefaultRenderTechniqueNames.Sprite2D)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSSprite2D, DefaultInputLayout.VSInputSprite2D),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSSprite2D,
+                            DefaultPSShaderDescriptions.PSSprite2D,
+                        },
+                        Topology = PrimitiveTopology.TriangleList,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSSpriteCW,
+                    }
+                }
+            };
+
+            var volume3D = new TechniqueDescription(DefaultRenderTechniqueNames.Volume3D)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSVolume3D, DefaultInputLayout.VSInputVolume3D),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSVolume3D,
+                            DefaultPSShaderDescriptions.PSVolume3D,
+                        },
+                        Topology = PrimitiveTopology.TriangleList,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeFront
+                    },
+                    new ShaderPassDescription(DefaultPassNames.Diffuse)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSVolume3D,
+                            DefaultPSShaderDescriptions.PSVolumeDiffuse3D,
+                        },
+                        Topology = PrimitiveTopology.TriangleList,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeFront
+                    },
+                    new ShaderPassDescription(DefaultPassNames.Positions)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSVolume3D,
+                            DefaultPSShaderDescriptions.PSVolumeCube,
+                        },
+                        Topology = PrimitiveTopology.TriangleList,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeFront
+                    },
+                    new ShaderPassDescription(DefaultPassNames.Backface)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSVolume3D,
+                            DefaultPSShaderDescriptions.PSVolumeCube,
+                        },
+                        Topology = PrimitiveTopology.TriangleList,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeBack
+                    }
+                }
+            };
 #if !NETFX_CORE
             var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
             {
@@ -1695,6 +1771,8 @@ namespace HelixToolkit.UWP
             yield return meshOITQuad;
             yield return planeGrid;
             yield return screenQuad;
+            yield return sprite2D;
+            yield return volume3D;
 #if !NETFX_CORE
             yield return renderScreenDup;
 #endif

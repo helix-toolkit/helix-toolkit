@@ -512,6 +512,9 @@ namespace HelixToolkit.UWP
         {
             set; get;
         } = new Point3D();
+
+        internal int Width;
+        internal int Height;
         #endregion
 
         #region TouchGesture
@@ -653,6 +656,13 @@ namespace HelixToolkit.UWP
             this.changeFieldOfViewHandler = new ZoomHandler(this, true);
             this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.CameraProperty, (d, e) => { ActualCamera = d.GetValue(e) as ProjectionCamera; });
             this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.DefaultCameraProperty, (d, e) => { DefaultCamera = d.GetValue(e) as ProjectionCamera; });
+            this.Viewport.SizeChanged += (s, e) =>
+            {
+                Width = (int)e.NewSize.Width;
+                Height = (int)e.NewSize.Height;
+            };
+            Width = (int)Viewport.Width;
+            Height = (int)Viewport.Height;
         }
         #region Input Events
         private void InputController_OnBackView(object sender, EventArgs e)
@@ -835,21 +845,21 @@ namespace HelixToolkit.UWP
             if (this.Viewport.IsInertiaEnabled)
             {
                 this.rotationPoint3D = this.CameraTarget;
-                this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
+                this.rotationPosition = new Point(Width / 2.0, Height / 2.0);
                 this.rotationSpeed.X += (float)dx * 40;
                 this.rotationSpeed.Y += (float)dy * 40;
             }
             else if (FixedRotationPointEnabled)
             {
-                this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
+                this.rotationPosition = new Point(Width / 2.0, Height / 2.0);
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, new Point(this.rotationPosition.X + dx, this.rotationPosition.Y + dy), FixedRotationPoint);
+                    this.rotationPosition.ToVector2(), new Vector2((float)(this.rotationPosition.X + dx), (float)(this.rotationPosition.Y + dy)), FixedRotationPoint);
             }
             else
             {
-                this.rotationPosition = new Point(this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
+                this.rotationPosition = new Point(Width / 2.0, Height / 2.0);
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, new Point(this.rotationPosition.X + dx, this.rotationPosition.Y + dy), this.CameraTarget);
+                    this.rotationPosition.ToVector2(), new Vector2((float)(this.rotationPosition.X + dx), (float)(this.rotationPosition.Y + dy)), this.CameraTarget);
             }
             Viewport.InvalidateRender();
         }
@@ -1142,7 +1152,7 @@ namespace HelixToolkit.UWP
                     case 1:
                         if (EnableTouchRotate)
                         {
-                            this.rotateHandler.Delta(position);
+                            this.rotateHandler.Delta(position.ToVector2());
                             e.Handled = true;
                         }
                         break;
@@ -1170,7 +1180,7 @@ namespace HelixToolkit.UWP
                     case 3:
                         if (EnableThreeFingerPan)
                         {
-                            this.panHandler.Delta(position);
+                            this.panHandler.Delta(position.ToVector2());
                             e.Handled = true;
                         }
                         break;
@@ -1323,7 +1333,7 @@ namespace HelixToolkit.UWP
             if (this.rotationSpeed.LengthSquared() > 0.1)
             {
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, (rotationPosition.ToVector2() + (rotationSpeed * time)).ToPoint(), this.rotationPoint3D, false);
+                    this.rotationPosition.ToVector2(), rotationPosition.ToVector2() + (rotationSpeed * time), this.rotationPoint3D, false);
                 this.rotationSpeed *= factor;
                 needUpdate = true;
                 this.spinningSpeed = VectorZero;
@@ -1334,7 +1344,7 @@ namespace HelixToolkit.UWP
                 if (this.isSpinning && this.spinningSpeed.LengthSquared() > 0.1)
                 {
                     this.rotateHandler.Rotate(
-                        this.spinningPosition, (spinningPosition.ToVector2() + (spinningSpeed * time)).ToPoint(), this.spinningPoint3D, false);
+                        this.spinningPosition.ToVector2(), spinningPosition.ToVector2() + (spinningSpeed * time), this.spinningPoint3D, false);
                     if (!Viewport.InfiniteSpin)
                     {
                         this.spinningSpeed *= factor;

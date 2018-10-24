@@ -390,12 +390,39 @@ namespace HelixToolkit.UWP.Shaders
         } = "psMeshPBROIT";
 
         /// <summary>
+        /// Gets the ps sprite.
+        /// </summary>
+        /// <value>
+        /// The ps sprite.
+        /// </value>
+        public static string PSSprite2D
+        {
+            get;
+        } = "psSprite";
+
+
+        /// <summary>
         /// 
         /// </summary>
         public static string PSScreenDup
         {
             get;
         } = "psScreenDup";
+
+        public static string PSVolume3D
+        {
+            get;
+        } = "psVolume";
+
+        public static string PSVolumeCube
+        {
+            get;
+        } = "psVolumeCube";
+
+        public static string PSVolumeDiffuse
+        {
+            get;
+        } = "psVolumeDiffuse";
     }
 
 
@@ -489,7 +516,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSShadow = new ShaderDescription(nameof(PSShadow), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSShadow);
-        #region Mesh Clipping
+#region Mesh Clipping
         /// <summary>
         /// /
         /// </summary>
@@ -500,7 +527,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshClipScreenQuad = new ShaderDescription(nameof(PSMeshClipScreenQuad), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshClipPlaneQuad);
-        #endregion
+#endregion
         /// <summary>
         /// 
         /// </summary>
@@ -634,9 +661,33 @@ namespace HelixToolkit.UWP.Shaders
             DefaultPSShaderByteCodes.PSMeshPBROIT);
 
         /// <summary>
+        /// The ps sprite
+        /// </summary>
+        public static ShaderDescription PSSprite2D = new ShaderDescription(nameof(PSSprite2D), ShaderStage.Pixel, new ShaderReflector(), 
+            DefaultPSShaderByteCodes.PSSprite2D);
+
+        /// <summary>
         /// The ps screen dup
         /// </summary>
         public static ShaderDescription PSScreenDup = new ShaderDescription(nameof(PSScreenDup), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSScreenDup);
+
+        /// <summary>
+        /// The ps volume3d
+        /// </summary>
+        public static ShaderDescription PSVolume3D = new ShaderDescription(nameof(PSVolume3D), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSVolume3D);
+
+        /// <summary>
+        /// The ps volume cube
+        /// </summary>
+        public static ShaderDescription PSVolumeCube = new ShaderDescription(nameof(PSVolumeCube), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSVolumeCube);
+
+        /// <summary>
+        /// The ps volume3d
+        /// </summary>
+        public static ShaderDescription PSVolumeDiffuse3D = new ShaderDescription(nameof(PSVolumeDiffuse3D), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSVolumeDiffuse);
     }
 }

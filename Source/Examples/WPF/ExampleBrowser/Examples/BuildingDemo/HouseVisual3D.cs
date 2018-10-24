@@ -25,6 +25,7 @@ namespace BuildingDemo
         public static readonly DependencyProperty WidthProperty = DependencyPropertyEx.Register<double, HouseVisual3D>("Width", 10, (s, e) => s.AppearanceChanged());
         public static readonly DependencyProperty LengthProperty = DependencyPropertyEx.Register<double, HouseVisual3D>("Length", 20, (s, e) => s.AppearanceChanged());
         public static readonly DependencyProperty StoriesProperty = DependencyPropertyEx.Register<int, HouseVisual3D>("Stories", 1, (s, e) => s.AppearanceChanged());
+        public static readonly DependencyProperty ExplodedRoofProperty = DependencyPropertyEx.Register<bool, HouseVisual3D>("ExplodedRoof", false, (s, e) => s.ExplodedRoofChanged());
 
         private readonly GeometryModel3D roof = new GeometryModel3D();
         private readonly GeometryModel3D walls = new GeometryModel3D();
@@ -98,6 +99,20 @@ namespace BuildingDemo
         {
             get { return (double)this.GetValue(FloorThicknessProperty); }
             set { this.SetValue(FloorThicknessProperty, value); }
+        }
+
+        [Browsable(true)]
+        public bool ExplodedRoof
+        {
+            get { return (bool)this.GetValue(ExplodedRoofProperty); }
+            set { this.SetValue(ExplodedRoofProperty, value); }
+        }
+        private void ExplodedRoofChanged()
+        {
+            if (ExplodedRoof)
+                roof.Transform = new TranslateTransform3D(0, 0, 30);
+            else
+                roof.Transform = Transform3D.Identity;
         }
 
         private void AppearanceChanged()

@@ -1,9 +1,8 @@
 ﻿using SharpDX;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
 {
@@ -25,8 +24,7 @@ namespace HelixToolkit.UWP
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)
         {
-            var camera = viewport.CameraCore as ProjectionCameraCore;
-            if (camera != null)
+            if (viewport.CameraCore is ProjectionCameraCore camera)
             {
                 var px = (float)point2d.X;
                 var py = (float)point2d.Y;
@@ -222,8 +220,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         public static IList<HitTestResult> FindHits(this Viewport3DX viewport, Point position)
         {
-            var camera = viewport.Camera as ProjectionCamera;
-            if (camera == null)
+            if (!(viewport.Camera is ProjectionCamera camera))
             {
                 return EmptyHits;
             }
@@ -268,8 +265,7 @@ namespace HelixToolkit.UWP
             normal = new Vector3();
             model = null;
 
-            var camera = viewport.Camera as ProjectionCamera;
-            if (camera == null)
+            if (!(viewport.Camera is ProjectionCamera camera))
             {
                 return false;
             }
@@ -301,8 +297,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public static void ZoomByChangingFieldOfView(this Viewport3DX viewport, double delta)
         {
-            var pcamera = viewport.Camera as PerspectiveCamera;
-            if (pcamera == null || !viewport.IsChangeFieldOfViewEnabled)
+            if (!(viewport.Camera is PerspectiveCamera pcamera) || !viewport.IsChangeFieldOfViewEnabled)
             {
                 return;
             }
@@ -339,8 +334,7 @@ namespace HelixToolkit.UWP
         /// <param name="rectangle">The rectangle.</param>
         public static void ZoomToRectangle(this Viewport3DX viewport, Rect rectangle)
         {
-            var pcam = viewport.Camera as ProjectionCamera;
-            if (pcam != null)
+            if (viewport.Camera is ProjectionCamera pcam)
             {
                 pcam.ZoomToRectangle(viewport, rectangle);
             }

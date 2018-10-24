@@ -150,14 +150,14 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The actual height.
         /// </value>
-        double ActualHeight { get; }
+        float ActualHeight { get; }
         /// <summary>
         /// Gets the actual width.
         /// </summary>
         /// <value>
         /// The actual width.
         /// </value>
-        double ActualWidth { get; }
+        float ActualWidth { get; }
 
         /// <summary>
         /// Indicates if DPFCanvas busy on rendering.
@@ -258,7 +258,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        void StartD3D(double width, double height);
+        void StartD3D(int width, int height);
         /// <summary>
         /// Ends the d3 d.
         /// </summary>
@@ -284,7 +284,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        void Resize(double width, double height);
+        void Resize(int width, int height);
         /// <summary>
         /// Gets or sets a value indicating whether [show statistics].
         /// </summary>
@@ -399,5 +399,12 @@ namespace HelixToolkit.UWP
         ///   <c>true</c> if [enable render order]; otherwise, <c>false</c>.
         /// </value>
         public bool EnableRenderOrder { set; get; } = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable vertical synchronize].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable v synchronize]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableVSync { set; get; } = true;
     }
 }

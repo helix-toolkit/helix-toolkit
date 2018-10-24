@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP.Utilities
 {
     using Extensions;
     using Render;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     ///
@@ -43,6 +44,15 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="minBufferCount">Used to initialize a buffer which size is Max(count, minBufferCount). Only used in dynamic buffer.</param>
         void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset, int minBufferCount = default(int)) where T : struct;
 
+        /// <summary>
+        /// Uploads the data to buffer using data pointer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="countByBytes">The count by bytes.</param>
+        /// <param name="offsetByBytes">The offset by bytes.</param>
+        /// <param name="minBufferCountByBytes">The minimum buffer count by bytes.</param>
+        unsafe void UploadDataToBuffer(DeviceContextProxy context, System.IntPtr data, int countByBytes, int offsetByBytes, int minBufferCountByBytes = default(int));
         /// <summary>
         /// <see cref="DisposeObject.DisposeAndClear"/>
         /// </summary>
@@ -113,6 +123,34 @@ namespace HelixToolkit.UWP.Utilities
             };
             buffer = Collect(Buffer.Create(context, data.GetArrayByType(), buffdesc));
         }
+
+        /// <summary>
+        /// Uploads the data to buffer using data pointer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="data">The data pointer.</param>
+        /// <param name="countByBytes">The count by bytes.</param>
+        /// <param name="offsetByBytes">The offset by bytes.</param>
+        /// <param name="minBufferCountByBytes">The minimum buffer count by bytes.</param>
+        public unsafe void UploadDataToBuffer(DeviceContextProxy context, System.IntPtr data, int countByBytes, int offsetByBytes, int minBufferCountByBytes = default(int))
+        {
+            RemoveAndDispose(ref buffer);
+            ElementCount = countByBytes / StructureSize;
+            if (countByBytes == 0)
+            {
+                return;
+            }
+            var buffdesc = new BufferDescription()
+            {
+                BindFlags = this.BindFlags,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = this.OptionFlags,
+                SizeInBytes = countByBytes,
+                StructureByteStride = StructureSize,
+                Usage = Usage
+            };
+            buffer = Collect(new Buffer(context, data, buffdesc));
+        }
     }
 
     /// <summary>
@@ -157,6 +195,22 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicBufferProxy"/> class.
+        /// </summary>
+        /// <param name="structureSize">Size of the structure.</param>
+        /// <param name="bindFlags">The bind flags.</param>
+        /// <param name="optionFlags">The option flags.</param>
+        /// <param name="lazyResize">if set to <c>true</c> [lazy resize].</param>
+        /// <param name="canOverWrite">if set to <c>true</c> [can over write].</param>
+        public DynamicBufferProxy(int structureSize, BindFlags bindFlags, bool canOverWrite,
+            ResourceOptionFlags optionFlags = ResourceOptionFlags.None, bool lazyResize = true)
+            : base(structureSize, bindFlags)
+        {
+            CanOverwrite = canOverWrite;
+            this.OptionFlags = optionFlags;
+            LazyResize = lazyResize;
+        }
+        /// <summary>
         /// <see cref="IElementsBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, IList{T}, int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -174,7 +228,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
         /// <param name="data"></param>
-        /// <param name="count"></param>
+        /// <param name="count">Data Count</param>
         /// <param name="offset"></param>
         /// <param name="minBufferCount">Used to create a dynamic buffer with size of Max(count, minBufferCount).</param>
         public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset, int minBufferCount = default(int)) where T : struct
@@ -185,10 +239,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 return;
             }
-            else if (buffer == null || Capacity < newSizeInBytes || (!LazyResize && Capacity != newSizeInBytes))
-            {
-                Initialize(context, data, count, offset, minBufferCount);
-            }
+            EnsureBufferCapacity(context, ElementCount, minBufferCount);
             if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred && CanOverwrite)
             {
                 Offset = CapacityUsed;
@@ -214,15 +265,85 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
+        /// Uploads the data pointer to buffer. 
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="byteCount">The count by bytes.</param>
+        /// <param name="byteOffset">The offset by bytes.</param>
+        /// <param name="minBufferSizeByBytes">The minimum buffer count by bytes.</param>
+        public unsafe void UploadDataToBuffer(DeviceContextProxy context, System.IntPtr data, int byteCount, int byteOffset, int minBufferSizeByBytes = default(int))
+        {
+            ElementCount = byteCount / StructureSize;
+            int newSizeInBytes = byteCount;
+            if (byteCount == 0)
+            {
+                return;
+            }
+            EnsureBufferCapacity(context, ElementCount, minBufferSizeByBytes / StructureSize);
+            if (CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred && CanOverwrite)
+            {
+                Offset = CapacityUsed;
+                context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
+                using (stream)
+                {
+                    stream.Position = Offset;
+                    stream.Write(data, byteOffset, byteCount);
+                }
+                context.UnmapSubresource(this.buffer, 0);
+                CapacityUsed += newSizeInBytes;
+            }
+            else
+            {
+                context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+                using (stream)
+                {
+                    stream.Write(data, byteOffset, byteCount);
+                }
+                context.UnmapSubresource(this.buffer, 0);
+                Offset = CapacityUsed = 0;
+            }
+        }
+
+        /// <summary>
+        /// Ensures the buffer capacity is enough.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="count">The count.</param>
+        /// <param name="minSizeCount">The minimum size count.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void EnsureBufferCapacity(DeviceContextProxy context, int count, int minSizeCount)
+        {
+            int bytes = count * StructureSize;
+            if (buffer == null || Capacity < bytes || (!LazyResize && Capacity != bytes))
+            {
+                Initialize(context, count, minSizeCount);
+            }
+        }
+
+        /// <summary>
+        /// Maps the buffer. Make sure to call <see cref="EnsureBufferCapacity(DeviceContextProxy, int, int)"/> to make sure buffer has enough space
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="action">The action.</param>
+        public void MapBuffer(DeviceContextProxy context, System.Action<DataStream> action)
+        {
+            context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+            using (stream)
+            {
+                action(stream);
+            }
+            context.UnmapSubresource(this.buffer, 0);
+            Offset = CapacityUsed = 0;
+        }
+        /// <summary>
         /// Initializes the specified device.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="device">The device.</param>
-        /// <param name="data">The data.</param>
         /// <param name="count">The count.</param>
-        /// <param name="offset">The offset.</param>
         /// <param name="minBufferCount">The minimum buffer count.</param>
-        public void Initialize<T>(Device device, IList<T> data, int count, int offset = default(int), int minBufferCount = default(int)) where T : struct
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Initialize(Device device, int count, int minBufferCount = default(int))
         {
             RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()

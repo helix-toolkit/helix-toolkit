@@ -24,40 +24,51 @@ void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
     points[3] = windowToProj(B1w, posA.z, posA.w);
 }
 
+void makeNonFixedQuad(out float4 points[4], in float4 posA, in float w, in float h)
+{
+    // Bring A and B in window space
+    float2 Aw = posA.xy;
+    float w2 = w * 0.5;
+    float h2 = h * 0.5;
+
+    // Compute the corners of the ribbon in window space
+    float4 A1w = float4(Aw.x + w2, Aw.y + h2, posA.z, posA.w);
+    float4 A2w = float4(Aw.x - w2, Aw.y + h2, posA.z, posA.w);
+    float4 B1w = float4(Aw.x - w2, Aw.y - h2, posA.z, posA.w);
+    float4 B2w = float4(Aw.x + w2, Aw.y - h2, posA.z, posA.w);
+
+    // bring back corners in projection frame
+    points[0] = mul(A1w, mProjection);
+    points[1] = mul(A2w, mProjection);
+    points[2] = mul(B2w, mProjection);
+    points[3] = mul(B1w, mProjection);
+}
+
 [maxvertexcount(4)]
 void main(point GSInputPS input[1], inout TriangleStream<PSInputPS> outStream)
 {
     PSInputPS output = (PSInputPS) 0;
-    output.vEye = input[0].vEye;    
-    float4 spriteCorners[4];
-    makeQuad(spriteCorners, input[0].p, pfParams.x, pfParams.y);
-
-    output.p = spriteCorners[0];
+    output.vEye = input[0].vEye;   
     output.c = input[0].c;
-    output.t[0] = +1;
-    output.t[1] = +1;
-    output.t[2] = 1;   
+    float4 spriteCorners[4] = { (float4) 0, (float4) 0, (float4) 0, (float4) 0 };
+    if(fixedSize)
+        makeQuad(spriteCorners, input[0].p, pfParams.x, pfParams.y);
+    else
+        makeNonFixedQuad(spriteCorners, mul(input[0].wp, mView), pfParams.x, pfParams.y);
+    output.p = spriteCorners[0];    
+    output.t = float3(1, 1, 1);
     outStream.Append(output);
     
     output.p = spriteCorners[1];
-    output.c = input[0].c;
-    output.t[0] = +1;
-    output.t[1] = -1;
-    output.t[2] = 1;
+    output.t = float3(1, -1, 1);
     outStream.Append(output);
  
     output.p = spriteCorners[2];
-    output.c = input[0].c;
-    output.t[0] = -1;
-    output.t[1] = +1;
-    output.t[2] = 1;
+    output.t = float3(-1, 1, 1);
     outStream.Append(output);
     
     output.p = spriteCorners[3];
-    output.c = input[0].c;
-    output.t[0] = -1;
-    output.t[1] = -1;
-    output.t[2] = 1;
+    output.t = float3(-1, -1, 1);
     outStream.Append(output);
     
     outStream.RestartStrip();
