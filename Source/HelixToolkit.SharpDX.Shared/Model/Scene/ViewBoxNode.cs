@@ -245,7 +245,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         private void UpdateTexture(Stream texture)
         {
-            (ViewBoxMeshModel.Material as PhongMaterialCore).DiffuseMap = texture;
+            if(ViewBoxMeshModel.Material is ViewCubeMaterialCore material)
+                material.DiffuseMap = texture;
         }
 
         protected void UpdateModel(Vector3 up)

@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+
+## [2.5.1] - 2018-10-24
+Hot fix for v2.5.0.
+### Fixed
+1. Fixed wrong type cast while using custom ViewBox Texture in HelixToolkit.SharpDX and UWP. (WPF.SharpDX and UWP)
+
 ## [2.5.0] - 2018-10-19
 ### Added
 1. Physics Based Rendering Material. (WPF.SharpDX and UWP)
