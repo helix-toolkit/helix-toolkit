@@ -129,6 +129,7 @@ namespace HelixToolkit.UWP.Core
             volumePass.BindShader(deviceContext);
             volumePass.BindStates(deviceContext, StateType.All);
             deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
+            volumePass.PixelShader.BindTexture(deviceContext, backTexSlot, null);
             context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, back);
         }
 
@@ -151,8 +152,8 @@ namespace HelixToolkit.UWP.Core
                 context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
             }
             context.SetRenderTargets(dsv, targetView == null ? null : new RenderTargetView[] { targetView });
-            context.SetViewport(0, 0, width, height);
-            context.SetScissorRectangle(0, 0, width, height);
+            //context.SetViewport(0, 0, width, height);
+            //context.SetScissorRectangle(0, 0, width, height);
         }
 
         /// <summary>

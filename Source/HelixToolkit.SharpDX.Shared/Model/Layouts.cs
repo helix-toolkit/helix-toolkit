@@ -380,7 +380,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string EnableDistanceFading = "enableDistanceFading";
         public const string ParamsStr = "pfParams";
         public const string ColorStr = "pColor";
-        public const string BoolParamsStr = "pbParams";
+        public const string FixedSize = "fixedSize";//bool
+        public const string BoolParamsStr = "pbParams";//bool3
     }
 
     /// <summary>

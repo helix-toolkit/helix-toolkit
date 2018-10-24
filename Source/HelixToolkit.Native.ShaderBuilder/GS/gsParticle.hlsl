@@ -40,6 +40,7 @@ void main(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT
 		float row = floor(colrow / NumTexCol);
 	
 		// Emit two new triangles
+        [unroll]
 		for (int i = 0; i < 4; i++)
 		{
 			// Transform to clip space
@@ -54,8 +55,9 @@ void main(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT
 	}
 	else
 	{
-				// Emit two new triangles
-		for (int i = 0; i < 4; i++)
+		// Emit two new triangles
+        [unroll]
+        for (int i = 0; i < 4; i++)
 		{
 			// Transform to clip space
 

@@ -34,6 +34,7 @@
             <Button Margin="4" Command="{Binding LoadSkullCommand}">Load Skull</Button>
             <Button Margin="4" Command="{Binding LoadTeapotCommand}">Load Teapot</Button>
             <Button Margin="4" Command="{Binding LoadCloudCommand}">Load Noise</Button>
+            <Button Margin="4" Command="{Binding LoadBeetleCommand}">Load Beetle</Button>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="4">IterationOffset:</TextBlock>
                 <TextBlock Text="{Binding IterationOffset}" />
@@ -53,6 +54,15 @@
                 Maximum="1"
                 Minimum="0"
                 Value="{Binding IsoValue}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="4">SampleDistance:</TextBlock>
+                <TextBlock Text="{Binding SampleDistance}" />
+            </StackPanel>
+            <Slider
+                Margin="4,0"
+                Maximum="5"
+                Minimum="1"
+                Value="{Binding SampleDistance}" />
         </StackPanel>
         <Grid Grid.ColumnSpan="2" Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}">
             <Rectangle
