@@ -43,7 +43,7 @@
             <ColumnDefinition Width="1.61*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" MouseDown="UIElement_OnMouseDown" Background="LightGray" IsHeadLightEnabled="True">
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" MouseDown="UIElement_OnMouseDown" Background="LightGray" IsHeadLightEnabled="True" ZoomAroundMouseDownPoint="True" RotateAroundMouseDownPoint="True">
             <ModelVisual3D>
                 <buildingDemo:HouseVisual3D/>
                 <buildingDemo:HouseVisual3D Transform="{h:Translate 40,0,0}"/>
