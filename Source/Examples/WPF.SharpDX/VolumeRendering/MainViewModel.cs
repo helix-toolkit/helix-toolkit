@@ -74,6 +74,18 @@ namespace VolumeRendering
             }
             get { return isoValue; }
         }
+        private double sampleDistance = 1;
+        public double SampleDistance
+        {
+            set
+            {
+                if(SetValue(ref sampleDistance, value) && volumeMaterial != null)
+                {
+                    (volumeMaterial as IVolumeTextureMaterial).SampleDistance = value;
+                }
+            }
+            get { return sampleDistance; }
+        }
         public ICommand LoadTeapotCommand { get; }
         public ICommand LoadSkullCommand { get; }
         public ICommand LoadCloudCommand { get; }
