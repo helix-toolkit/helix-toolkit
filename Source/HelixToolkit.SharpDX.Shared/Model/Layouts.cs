@@ -375,11 +375,11 @@ namespace HelixToolkit.Wpf.SharpDX
         //public Bool4 BoolParams;
 
         public const int SizeInBytes = 4 * (4 * 4) + PointLineModelStruct.SizeInBytes;
-        public const string FadeNearDistance = "fadeNearDistance";
-        public const string FadeFarDistance = "fadeFarDistance";
-        public const string EnableDistanceFading = "enableDistanceFading";
-        public const string ParamsStr = "pfParams";
-        public const string ColorStr = "pColor";
+        public const string FadeNearDistance = "fadeNearDistance";//float
+        public const string FadeFarDistance = "fadeFarDistance";//float
+        public const string EnableDistanceFading = "enableDistanceFading";//bool
+        public const string ParamsStr = "pfParams";//vector4
+        public const string ColorStr = "pColor";//vector4
         public const string FixedSize = "fixedSize";//bool
         public const string BoolParamsStr = "pbParams";//bool3
     }

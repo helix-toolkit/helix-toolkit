@@ -344,10 +344,10 @@ namespace HelixToolkit.Wpf
         /// <returns>The transform.</returns>
         public static GeneralTransform3D GetTransformTo(this Visual3D visual, Model3D model)
         {
-            var mv = visual as ModelVisual3D;
-            if (mv != null)
+            var mc = GetModel(visual);
+            if (mc != null)
             {
-                return mv.Content.GetTransform(model, Transform3D.Identity);
+                return mc.GetTransform(model, Transform3D.Identity);
             }
 
             return null;

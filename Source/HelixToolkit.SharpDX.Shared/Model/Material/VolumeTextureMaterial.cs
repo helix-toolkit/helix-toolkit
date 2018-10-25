@@ -57,7 +57,6 @@ namespace HelixToolkit.UWP.Model
         /// The size of the step.
         /// </value>
         double SampleDistance { set; get; }
-
         /// <summary>
         /// Gets or sets the iteration. Usually set to VolumeDepth.
         /// </summary>
