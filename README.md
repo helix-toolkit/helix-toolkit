@@ -56,7 +56,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 2018-10-19
 [V2.5.1](https://github.com/helix-toolkit/helix-toolkit/tree/hotfix/2.5.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 
-**Hotfix: Wrong type cast causes null reference exception when uses custom ViewBox texture.** Only for SharpDX version.
+**Hotfix: Wrong type cast causes null reference exception when uses custom ViewBox texture.** (SharpDX Version Only)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.5.1)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.5.1)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.5.1)
