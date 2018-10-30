@@ -277,8 +277,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     renderHostInternal.IsRendering = (bool)e.NewValue;
                 }
-            };
-            AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
+            };            
         }
 
         private void InitCameraController()
@@ -1576,13 +1575,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void ViewCubeClicked(object sender, ViewBoxModel3D.ViewBoxClickedEventArgs e)
+        private void ViewCubeClicked(Vector3D lookDirection, Vector3D upDirection)
         {
             var target = cameraController.ActualCamera.Position + cameraController.ActualCamera.LookDirection;
             double distance = cameraController.ActualCamera.LookDirection.Length;
-            e.LookDirection *= distance;
-            var newPosition = target - e.LookDirection;
-            cameraController.ActualCamera.AnimateTo(newPosition, e.LookDirection, e.UpDirection, 500);
+            lookDirection *= distance;
+            var newPosition = target - lookDirection;
+            cameraController.ActualCamera.AnimateTo(newPosition, lookDirection, upDirection, 500);
         }
 
         /// <summary>
@@ -1664,6 +1663,16 @@ namespace HelixToolkit.Wpf.SharpDX
             if(viewCube.HitTest(RenderContext, ray, ref hits))
             {
                 viewCube.RaiseEvent(new MouseDown3DEventArgs(viewCube, this.currentHit, p, this));
+                var normal = hits[0].NormalAtHit;              
+                if (Vector3.Cross(normal, ModelUpDirection.ToVector3()).LengthSquared() < 1e-5)
+                {
+                    var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);
+                    ViewCubeClicked(hits[0].NormalAtHit.ToVector3D(), vecLeft.ToVector3D());
+                }
+                else
+                {
+                    ViewCubeClicked(hits[0].NormalAtHit.ToVector3D(), ModelUpDirection);
+                }
                 return true;
             }
             else

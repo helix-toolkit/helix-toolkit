@@ -27,38 +27,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     public class ViewBoxNode : ScreenSpacedNode
     {
         #region Properties
-        /// <summary>
-        /// 
-        /// </summary>
-        public sealed class ViewBoxClickedEventArgs : EventArgs
-        {
-            /// <summary>
-            /// Gets the look direction.
-            /// </summary>
-            /// <value>The look direction.</value>
-            public Vector3 LookDirection { get; private set; }
-
-            /// <summary>
-            /// Gets up direction.
-            /// </summary>
-            /// <value>Up direction.</value>
-            public Vector3 UpDirection { get; private set; }
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ViewBoxClickedEventArgs"/> class.
-            /// </summary>
-            /// <param name="lookDir">The look dir.</param>
-            /// <param name="upDir">Up dir.</param>
-            public ViewBoxClickedEventArgs(Vector3 lookDir, Vector3 upDir)
-            {
-                LookDirection = lookDir;
-                UpDirection = upDir;
-            }
-        }
-        /// <summary>
-        /// Occurs when [on view box clicked].
-        /// </summary>
-        public event EventHandler<ViewBoxClickedEventArgs> OnViewBoxClicked;
-
         private Stream viewboxTexture;
         /// <summary>
         /// Gets or sets the view box texture.
@@ -414,21 +382,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     return false;
                 }
                 normal.Normalize();
-                if (Vector3.Cross(normal, UpDirection).LengthSquared() < 1e-5)
-                {
-                    var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);
-                    OnViewBoxClicked?.Invoke(this, new ViewBoxClickedEventArgs(normal, vecLeft));
-                }
-                else
-                {
-                    OnViewBoxClicked?.Invoke(this, new ViewBoxClickedEventArgs(normal, UpDirection));
-                }
+                hit.NormalAtHit = normal;
                 return true;
             }
             else
             {
                 return false;
             }
-        }
+        }        
     }
 }
