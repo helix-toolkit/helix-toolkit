@@ -89,45 +89,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Element3DCore).SceneNode as ViewBoxNode).EnableEdgeClick = (bool)e.NewValue;
             }));
-        
-
-        public static readonly RoutedEvent ViewBoxClickedEvent =
-            EventManager.RegisterRoutedEvent("ViewBoxClicked", RoutingStrategy.Bubble, typeof(EventHandler<ViewBoxClickedEventArgs>), typeof(ViewBoxModel3D));
-
-        public class ViewBoxClickedEventArgs : RoutedEventArgs
-        {
-            /// <summary>
-            /// Gets or sets the look direction.
-            /// </summary>
-            /// <value>The look direction.</value>
-            public Media3D.Vector3D LookDirection { get; set; }
-
-            /// <summary>
-            /// Gets or sets up direction.
-            /// </summary>
-            /// <value>Up direction.</value>
-            public Media3D.Vector3D UpDirection { get; set; }
-            public ViewBoxClickedEventArgs(object source, Media3D.Vector3D lookDir, Media3D.Vector3D upDir)
-                : base(ViewBoxClickedEvent, source)
-            {
-                LookDirection = lookDir;
-                UpDirection = upDir;
-            }
-        }
-
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event EventHandler<ViewBoxClickedEventArgs> ViewBoxClicked
-        {
-            add { AddHandler(ViewBoxClickedEvent, value); }
-            remove { RemoveHandler(ViewBoxClickedEvent, value); }
-        }
 
         protected override SceneNode OnCreateSceneNode()
         {
             var node = new ViewBoxNode();
-            node.OnViewBoxClicked += (s, e) => { RaiseEvent(new ViewBoxClickedEventArgs(this, e.LookDirection.ToVector3D(), e.UpDirection.ToVector3D())); };
             return node;
         }
 

@@ -352,10 +352,6 @@ namespace HelixToolkit.UWP
             if(viewCube == null)
             {
                 viewCube = GetTemplateChild(ViewportPartNames.PART_ViewCube) as ViewBoxModel3D;
-                if(viewCube != null)
-                {
-                    viewCube.ViewBoxClickedEvent += ViewCube_ViewBoxClickedEvent;
-                }
             }
 
             if (viewCube == null)
@@ -523,6 +519,16 @@ namespace HelixToolkit.UWP
             var hits = new List<HitTestResult>();
             if (viewCube.HitTest(RenderContext, ray, ref hits))
             {
+                var normal = hits[0].NormalAtHit;
+                if (Vector3.Cross(normal, ModelUpDirection).LengthSquared() < 1e-5)
+                {
+                    var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);
+                    ViewCubeClicked(hits[0].NormalAtHit, vecLeft);
+                }
+                else
+                {
+                    ViewCubeClicked(hits[0].NormalAtHit, ModelUpDirection);
+                }
                 return true;
             }
             else
@@ -531,7 +537,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private void ViewCube_ViewBoxClickedEvent(object sender, ViewBoxNode.ViewBoxClickedEventArgs e)
+        private void ViewCubeClicked(Vector3 lookDirection, Vector3 upDirection)
         {
             if (!(this.Camera is ProjectionCamera pc))
             {
@@ -540,9 +546,9 @@ namespace HelixToolkit.UWP
 
             var target = pc.Position + pc.LookDirection;
             float distance = pc.LookDirection.Length();
-            var look = e.LookDirection * distance;
+            var look = lookDirection * distance;
             var newPosition = target - look;
-            pc.AnimateTo(newPosition, look, e.UpDirection, 500);
+            pc.AnimateTo(newPosition, look, upDirection, 500);
         }
 
         /// <summary>

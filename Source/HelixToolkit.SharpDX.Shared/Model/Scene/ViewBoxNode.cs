@@ -54,10 +54,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 UpDirection = upDir;
             }
         }
-        /// <summary>
-        /// Occurs when [on view box clicked].
-        /// </summary>
-        public event EventHandler<ViewBoxClickedEventArgs> OnViewBoxClicked;
 
         private Stream viewboxTexture;
         /// <summary>
@@ -414,21 +410,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     return false;
                 }
                 normal.Normalize();
-                if (Vector3.Cross(normal, UpDirection).LengthSquared() < 1e-5)
-                {
-                    var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);
-                    OnViewBoxClicked?.Invoke(this, new ViewBoxClickedEventArgs(normal, vecLeft));
-                }
-                else
-                {
-                    OnViewBoxClicked?.Invoke(this, new ViewBoxClickedEventArgs(normal, UpDirection));
-                }
+                hit.NormalAtHit = normal;
                 return true;
             }
             else
             {
                 return false;
             }
-        }
+        }        
     }
 }
