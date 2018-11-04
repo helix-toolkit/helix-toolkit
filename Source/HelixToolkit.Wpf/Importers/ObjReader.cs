@@ -742,7 +742,8 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void LoadMaterialLib(string mtlFile)
         {
-            var path = Path.GetFullPath(Path.Combine(this.TexturePath, "./" + mtlFile));
+            string path = PathHelpers.GetFullPath(this.TexturePath, mtlFile);
+
             if (!File.Exists(path))
             {
                 return;
@@ -1113,7 +1114,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    var path = Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap));
+                    string path = PathHelpers.GetFullPath(texturePath, this.DiffuseMap);
                     if (File.Exists(path))
                     {
                         mg.Children.Add(new DiffuseMaterial(this.CreateTextureBrush(path)));
@@ -1127,7 +1128,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    var path = Path.GetFullPath(Path.Combine(texturePath, "./" + this.AmbientMap));
+                    string path = PathHelpers.GetFullPath(texturePath, this.AmbientMap);
                     if (File.Exists(path))
                     {
                         mg.Children.Add(new EmissiveMaterial(this.CreateTextureBrush(path)));
@@ -1153,6 +1154,33 @@ namespace HelixToolkit.Wpf
                 var img = new BitmapImage(new Uri(path, UriKind.Relative));
                 var textureBrush = new ImageBrush(img) { Opacity = this.Dissolved, ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile };
                 return textureBrush;
+            }
+        }
+
+        /// <summary>
+        /// Path helpers.
+        /// </summary>
+        private static class PathHelpers
+        {
+            /// <summary>
+            /// Gets a full path.
+            /// </summary>
+            /// <param name="basePath">
+            /// The base path.
+            /// </param>
+            /// <param name="path">
+            /// The path.
+            /// </param>
+            public static string GetFullPath(string basePath, string path)
+            {
+                if (path.Length > 1
+                    && (path[0] == Path.DirectorySeparatorChar || path[0] == Path.AltDirectorySeparatorChar)
+                    && (path[1] != Path.DirectorySeparatorChar && path[1] != Path.AltDirectorySeparatorChar))
+                {
+                    path = path.Substring(1);
+                }
+    
+                return Path.GetFullPath(Path.Combine(basePath, path));
             }
         }
     }

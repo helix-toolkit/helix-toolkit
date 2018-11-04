@@ -859,7 +859,7 @@ namespace HelixToolkit.UWP
         /// </param>
         private void LoadMaterialLib(string mtlFile)
         {
-            var path = Path.GetFullPath(Path.Combine(this.TexturePath, "./" + mtlFile));
+            string path = PathHelpers.GetFullPath(this.TexturePath, mtlFile);
             if (!File.Exists(path))
             {
                 return;
@@ -1226,7 +1226,7 @@ namespace HelixToolkit.UWP
                 MemoryStream diffuseMapMS = null;
                 if (DiffuseMap != null)
                 {
-                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap)), FileMode.Open))
+                    using (var fs = new FileStream(PathHelpers.GetFullPath(texturePath, this.DiffuseMap), FileMode.Open))
                     {
                         diffuseMapMS = new MemoryStream();
                         fs.CopyTo(diffuseMapMS);
@@ -1235,7 +1235,7 @@ namespace HelixToolkit.UWP
                 MemoryStream bumpMapMS = null;
                 if (BumpMap != null)
                 {
-                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.BumpMap)), FileMode.Open))
+                    using (var fs = new FileStream(PathHelpers.GetFullPath(texturePath, this.BumpMap), FileMode.Open))
                     {
                         bumpMapMS = new MemoryStream();
                         fs.CopyTo(bumpMapMS);
@@ -1244,7 +1244,7 @@ namespace HelixToolkit.UWP
                 MemoryStream alphaMapMS = null;
                 if (AlphaMap != null)
                 {
-                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.AlphaMap)), FileMode.Open))
+                    using (var fs = new FileStream(PathHelpers.GetFullPath(texturePath, this.AlphaMap), FileMode.Open))
                     {
                         alphaMapMS = new MemoryStream();
                         fs.CopyTo(alphaMapMS);
@@ -1253,7 +1253,7 @@ namespace HelixToolkit.UWP
                 MemoryStream specularMapMS = null;
                 if (SpecularMap != null)
                 {
-                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.SpecularMap)), FileMode.Open))
+                    using (var fs = new FileStream(PathHelpers.GetFullPath(texturePath, this.SpecularMap), FileMode.Open))
                     {
                         specularMapMS = new MemoryStream();
                         fs.CopyTo(specularMapMS);
@@ -1289,6 +1289,33 @@ namespace HelixToolkit.UWP
             //    return bmp;
             //}
 
+        }
+
+        /// <summary>
+        /// Path helpers.
+        /// </summary>
+        private static class PathHelpers
+        {
+            /// <summary>
+            /// Gets a full path.
+            /// </summary>
+            /// <param name="basePath">
+            /// The base path.
+            /// </param>
+            /// <param name="path">
+            /// The path.
+            /// </param>
+            public static string GetFullPath(string basePath, string path)
+            {
+                if (path.Length > 1
+                    && (path[0] == Path.DirectorySeparatorChar || path[0] == Path.AltDirectorySeparatorChar)
+                    && (path[1] != Path.DirectorySeparatorChar && path[1] != Path.AltDirectorySeparatorChar))
+                {
+                    path = path.Substring(1);
+                }
+    
+                return Path.GetFullPath(Path.Combine(basePath, path));
+            }
         }
     }
 }

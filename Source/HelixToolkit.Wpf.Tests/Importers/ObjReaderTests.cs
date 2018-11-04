@@ -397,6 +397,59 @@ map_Ka " + prefix + Path.GetFileName(tempTexAmbient) + @"
         }
 
         [Test]
+        public void TexturePath_Absolute_Valid()
+        {
+            var tempObj = Path.GetTempFileName();
+            var tempMtl = Path.GetTempFileName();
+            var tempTexDiffuse = Path.GetTempFileName();
+            var tempTexAmbient = Path.GetTempFileName();
+
+            try
+            {
+                File.WriteAllText(tempObj, @"
+mtllib " + tempMtl + @"
+v -0.5 0 0.5
+v 0.5 0 0.5
+v -0.5 0 -0.5
+vt 0 1
+usemtl TestMaterial
+f 1/1 2/1 3/1
+");
+
+                File.WriteAllText(tempMtl, @"
+newmtl TestMaterial
+map_Kd " + tempTexDiffuse + @"
+map_Ka " + tempTexAmbient + @"
+");
+
+                using (var image = new System.Drawing.Bitmap(1, 1))
+                {
+                    image.Save(tempTexDiffuse);
+                    image.Save(tempTexAmbient);
+                }
+
+                var model = _objReader.Read(tempObj);
+                var geometry = (GeometryModel3D)model.Children[0];
+                var materialGroup = (MaterialGroup)geometry.Material;
+
+                var diffuseMaterial = (DiffuseMaterial)materialGroup.Children[0];
+                var diffuseSource = ((ImageBrush)diffuseMaterial.Brush).ImageSource.ToString();
+                Assert.AreEqual(tempTexDiffuse, diffuseSource);
+
+                var ambientMaterial = (EmissiveMaterial)materialGroup.Children[1];
+                var ambientSource = ((ImageBrush)ambientMaterial.Brush).ImageSource.ToString();
+                Assert.AreEqual(tempTexAmbient, ambientSource);
+            }
+            finally
+            {
+                File.Delete(tempObj);
+                File.Delete(tempMtl);
+                File.Delete(tempTexDiffuse);
+                File.Delete(tempTexAmbient);
+            }
+        }
+
+        [Test]
         public void MaterialLib_LoadMultipleTimes_Valid()
         {
             var tempObj = Path.GetTempFileName();
