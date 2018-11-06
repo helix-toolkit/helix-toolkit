@@ -130,7 +130,7 @@ namespace HelixToolkit.UWP.Core
             volumePass.BindStates(deviceContext, StateType.All);
             deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
             volumePass.PixelShader.BindTexture(deviceContext, backTexSlot, null);
-            deviceContext.ClearRenderTargetView(back, global::SharpDX.Color.Transparent);
+            //deviceContext.ClearRenderTargetView(back, global::SharpDX.Color.Transparent);
             context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, back);
         }
 
