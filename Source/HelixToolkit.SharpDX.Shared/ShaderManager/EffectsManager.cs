@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
-        private Dictionary<string, Lazy<IRenderTechnique>> techniqueDict { get; } = new Dictionary<string, Lazy<IRenderTechnique>>();
+        private readonly Dictionary<string, Lazy<IRenderTechnique>> techniqueDict = new Dictionary<string, Lazy<IRenderTechnique>>();
         private readonly Dictionary<string, TechniqueDescription> techniqueDescriptions = new Dictionary<string, TechniqueDescription>();
         /// <summary>
         /// <see cref="IEffectsManager.RenderTechniques"/>
@@ -488,8 +488,7 @@ namespace HelixToolkit.UWP
         /// <exception cref="ArgumentException"></exception>
         public IRenderTechnique GetTechnique(string name)
         {            
-            Lazy<IRenderTechnique> t;
-            techniqueDict.TryGetValue(name, out t);
+            techniqueDict.TryGetValue(name, out var t);
             if (t == null)
             {
                 Log(LogLevel.Warning, $"Technique {name} does not exist. Return a null technique.");
@@ -517,13 +516,7 @@ namespace HelixToolkit.UWP
                 return GetTechnique(name);
             }           
         }
-        /// <summary>
-        /// Finalizes an instance of the <see cref="EffectsManager"/> class.
-        /// </summary>
-        ~EffectsManager()
-        {
-            Dispose();
-        }
+
         /// <summary>
         /// <see cref="DisposeObject.OnDispose(bool)"/>
         /// </summary>
@@ -552,7 +545,6 @@ namespace HelixToolkit.UWP
 #if DEBUGMEMORY
             ReportResources();
 #endif
-            GC.SuppressFinalize(this);
         }
 
         private void DisposeResources()

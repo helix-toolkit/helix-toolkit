@@ -130,6 +130,7 @@ namespace HelixToolkit.UWP.Core
             volumePass.BindStates(deviceContext, StateType.All);
             deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
             volumePass.PixelShader.BindTexture(deviceContext, backTexSlot, null);
+            //deviceContext.ClearRenderTargetView(back, global::SharpDX.Color.Transparent);
             context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, back);
         }
 
@@ -145,15 +146,9 @@ namespace HelixToolkit.UWP.Core
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
+        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height)
         {
-            if (clear)
-            {
-                context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
-            }
             context.SetRenderTargets(dsv, targetView == null ? null : new RenderTargetView[] { targetView });
-            //context.SetViewport(0, 0, width, height);
-            //context.SetScissorRectangle(0, 0, width, height);
         }
 
         /// <summary>
