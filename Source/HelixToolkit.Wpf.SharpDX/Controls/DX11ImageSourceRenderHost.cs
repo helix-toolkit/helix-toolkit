@@ -112,7 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 frontBufferChange = true;
                 if (EffectsManager.Device.DeviceRemovedReason.Success)
                 {
-                    StopRendering();
+                    //StopRendering();
                 }
                 else
                 {
