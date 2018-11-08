@@ -267,6 +267,10 @@ namespace HelixToolkit.UWP
             Log(LogLevel.Information, $"Adapter Index = {adapterIndex}");
             var adapter = GetAdapter(ref adapterIndex);
             AdapterIndex = adapterIndex;
+            if(AdapterIndex < 0 || adapter == null)
+            {
+                throw new PlatformNotSupportedException("Graphic adapter does not meet minimum requirement, must support DirectX 10 or above.");
+            }
 #if DX11
             if (adapter != null)
             {
@@ -469,7 +473,7 @@ namespace HelixToolkit.UWP
         {
             using (var f = new Factory1())
             {
-                if (f.Adapters.Length <= index)
+                if (f.Adapters.Length <= index || index < 0)
                 {
                     return GetBestAdapter(out index);
                 }
