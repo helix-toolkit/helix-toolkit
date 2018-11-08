@@ -1645,8 +1645,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
                 if (this.currentHit != null)
                 {
-                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
-                        new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    if(currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+                    else
+                    {
+                        RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
                 }
             }
             else
@@ -1699,8 +1705,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (this.currentHit != null)
                 {
-                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
-                        new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    if (currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+                    else
+                    {
+                        RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
                 }
                 else
                 {
@@ -1731,8 +1743,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (this.currentHit != null)
                 {               
-                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
-                        new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    if(currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+                    else
+                    {
+                        RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+
                     this.currentHit = null;
                     Mouse.Capture(this, CaptureMode.None);
                 }
