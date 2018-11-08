@@ -174,7 +174,7 @@ float4 main(PSInput input) : SV_Target
     }
     DI.rgb *= s;
     I += DI;
-    I.a = input.cDiffuse.a;
+    I.a = input.cDiffuse.a * vMaterialTexture.a;
     if (bHasAlphaMap)
     {
         I.a *= alpha;

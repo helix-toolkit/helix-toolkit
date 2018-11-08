@@ -142,7 +142,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="tessellationOITPassName">Name of the tessellation oit pass.</param>
         public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore,
             string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
-            string materialOITPassName = DefaultPassNames.OITPass, string wireframeOITPassName = DefaultPassNames.OITPass,
+            string materialOITPassName = DefaultPassNames.OITPass, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,
             string shadowPassName = DefaultPassNames.ShadowPass,
             string tessellationPassName = DefaultPassNames.MeshTriTessellation,
             string tessellationOITPassName = DefaultPassNames.MeshTriTessellationOIT)
