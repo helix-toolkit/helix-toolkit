@@ -569,9 +569,9 @@ namespace HelixToolkit.UWP
             if (hits.Count > 0)
             {
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
-                if (this.currentHit != null)
+                if (this.currentHit != null && currentHit.ModelHit is Element3D ele)
                 {
-                    (this.currentHit.ModelHit as Element3D)?.RaiseMouseDownEvent(this.currentHit, pt, this);
+                    ele.RaiseMouseDownEvent(this.currentHit, pt, this);
                 }
             }
             else
@@ -593,9 +593,9 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            if (this.currentHit != null)
+            if (this.currentHit != null && currentHit.ModelHit is Element3D ele)
             {
-                (this.currentHit.ModelHit as Element3D)?.RaiseMouseMoveEvent(this.currentHit, pt, this);
+                ele.RaiseMouseMoveEvent(this.currentHit, pt, this);
             }
             this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this));
         }
@@ -612,9 +612,9 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            if (currentHit != null)
+            if (currentHit != null && currentHit.ModelHit is Element3D ele)
             {
-                (this.currentHit.ModelHit as Element3D)?.RaiseMouseUpEvent(this.currentHit, pt, this);               
+                ele.RaiseMouseUpEvent(this.currentHit, pt, this);               
                 currentHit = null;
             }
             this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this));

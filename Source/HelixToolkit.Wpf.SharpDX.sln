@@ -99,6 +99,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchedMeshDemo", "Examples
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillboardDemo", "Examples\WPF.SharpDX\BillboardDemo\BillboardDemo.csproj", "{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolumeRendering", "Examples\WPF.SharpDX\VolumeRendering\VolumeRendering.csproj", "{FE982A9C-8416-40B7-9973-012D6B3E022E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
@@ -575,6 +577,18 @@ Global
 		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|x64.Build.0 = Release|Any CPU
 		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|x86.ActiveCfg = Release|Any CPU
 		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D}.Release|x86.Build.0 = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|x64.Build.0 = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Debug|x86.Build.0 = Debug|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|x64.ActiveCfg = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|x64.Build.0 = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|x86.ActiveCfg = Release|Any CPU
+		{FE982A9C-8416-40B7-9973-012D6B3E022E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -616,6 +630,7 @@ Global
 		{6BAA6F89-637A-49EB-A554-76AB527A5968} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{7AAEFD49-24D2-402D-9BB6-C3445DE8C059} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{D4DBF05A-A7D3-42AF-8447-2F1BEACB9C7D} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{FE982A9C-8416-40B7-9973-012D6B3E022E} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67B0DD22-D5CF-4D97-9E28-F8B59C583F78}
