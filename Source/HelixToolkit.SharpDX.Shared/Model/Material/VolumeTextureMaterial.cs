@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP.Model
     {
         global::SharpDX.Direct3D11.SamplerStateDescription Sampler { set; get; }
         /// <summary>
-        /// Gets or sets the step size, usually set to 1 / VolumeDepth.
+        /// Gets or sets the step size, controls the quality.
         /// </summary>
         /// <value>
         /// The size of the step.
@@ -117,7 +117,7 @@ namespace HelixToolkit.UWP.Model
 
         private double sampleDistance = 1.0;
         /// <summary>
-        /// Gets or sets the step size, usually set to 1 / VolumeDepth.
+        /// Gets or sets the step size, controls the quality.
         /// </summary>
         /// <value>
         /// The size of the step.

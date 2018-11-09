@@ -30,6 +30,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
     float3 pos = float3(front + stepV * iterationOffset);
 
     float lengthAccu = iterationOffset * stepSize;
+    dirLength -= 1e-4;
     [loop]
     for (uint i = iterationOffset; i < iteration; i++)
     {
@@ -54,7 +55,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
         pos += stepV;
         lengthAccu += stepSize;
         //break if the position is greater than <1, 1, 1>
-        if (lengthAccu > dirLength || dst.a > 0.95)
+        if (lengthAccu >= dirLength || dst.a > 0.95)
             break;
     }
  

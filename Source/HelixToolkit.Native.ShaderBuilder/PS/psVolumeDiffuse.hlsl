@@ -31,7 +31,9 @@ float4 main(VolumePS_INPUT input) : SV_Target
     uint iteration = min(dirLength / stepSize, maxIterations);
     float3 L = normalize(vEyePos - input.wp.xyz);
     float lengthAccu = iterationOffset * stepSize;
-    [loop]
+    float corr = clamp(actualSampleDist / baseSampleDist, 1, 4);
+    dirLength -= 1e-4;
+    //[loop]
     for (uint i = iterationOffset; i < iteration; i++)
     {
         float4 color = pColor;
@@ -50,7 +52,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
 		//Therefore the alpha values set for a sampling distance of .5f will be too
 		//high for a sampling distance of .25f (or conversely, too low for a sampling
 		//distance of 1.0f). So we have to adjust the alpha accordingly.
-            src.a = 1 - pow(abs(1 - src.a), abs(actualSampleDist / baseSampleDist));
+            src.a = 1 - pow(abs(1 - src.a), corr);
 					  
             float s = 1 - dot(normalize(value.xyz), L);
 				
@@ -69,7 +71,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
 		
         lengthAccu += stepSize;
         //break if the position is greater than <1, 1, 1>
-        if (lengthAccu > dirLength || dst.a > 0.95)
+        if (lengthAccu >= dirLength || dst.a > 0.95)
             break;
     }
  
