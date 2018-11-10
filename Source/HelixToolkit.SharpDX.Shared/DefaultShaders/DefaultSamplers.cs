@@ -151,9 +151,9 @@ namespace HelixToolkit.UWP.Shaders
 
         public static SamplerStateDescription VolumeSampler = new SamplerStateDescription()
         {
-            AddressU = TextureAddressMode.Clamp,
-            AddressV = TextureAddressMode.Clamp,
-            AddressW = TextureAddressMode.Clamp,
+            AddressU = TextureAddressMode.Border,
+            AddressV = TextureAddressMode.Border,
+            AddressW = TextureAddressMode.Border,
             Filter = Filter.MinMagLinearMipPoint,
             MaximumLod = float.MaxValue,
             BorderColor = new global::SharpDX.Mathematics.Interop.RawColor4(0, 0, 0, 0)
