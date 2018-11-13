@@ -5,12 +5,16 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.
 2. Supports [ImGui](https://github.com/ocornut/imgui) (using [ImGui.NET](https://github.com/mellinoe/ImGui.NET)) for SharpDX.Core. Details refer to [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest).
-3. Supports Line/Point non-fixedSize rendering.
+3. Supports Line/Point non-fixedSize thickness rendering.
 
 ### Improvement and Changes
 
 ### Fixed
-
+1. Make DPFCanvas work over Remote Desktop again #998. (WPF.SharpDX and UWP)
+2. Transparent sorting and materials (SharpDX) #994. (WPF.SharpDX and UWP)
+3. Fixed manual render order not working issue. (WPF.SharpDX and UWP)
+4. TaskCanceledException not caught in OnDetached #988. (WPF.SharpDX and UWP)
+5. ViewCube is acting on Mouse Move #969. (WPF.SharpDX and UWP)
 
 ## [2.5.1] - 2018-10-24
 Hot fix for v2.5.0.
