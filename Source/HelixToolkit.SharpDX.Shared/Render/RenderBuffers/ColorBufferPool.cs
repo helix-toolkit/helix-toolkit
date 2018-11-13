@@ -164,25 +164,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return null;
             }
-            ConcurrentBag<ShaderResourceViewProxy> bag;
-            ShaderResourceViewProxy proxy;
-            if(pool.TryGetValue(format, out bag) && bag.TryTake(out proxy))
+            if(pool.TryGetValue(format, out var bag) && bag.TryTake(out var proxy))
             {
                 return proxy;
             }
             else
             {
-                description.Format = format;
-                var texture = Collect(new ShaderResourceViewProxy(deviceResourse.Device, description));
-                if((description.BindFlags & BindFlags.RenderTarget) != 0)
+                var desc = description;
+                desc.Format = format;
+                var texture = Collect(new ShaderResourceViewProxy(deviceResourse.Device, desc));
+                if((desc.BindFlags & BindFlags.RenderTarget) != 0)
                 {
                     texture.CreateRenderTargetView();
                 }
-                if((description.BindFlags & BindFlags.ShaderResource) != 0)
+                if((desc.BindFlags & BindFlags.ShaderResource) != 0)
                 {
                     texture.CreateTextureView();
                 }
-                if((description.BindFlags & BindFlags.DepthStencil) != 0)
+                if((desc.BindFlags & BindFlags.DepthStencil) != 0)
                 {
                     texture.CreateDepthStencilView();
                 }
@@ -203,10 +202,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected override void OnDispose(bool disposeManagedResources)
         {
-            ShaderResourceViewProxy proxy;
             foreach(var bag in pool.Values)
             {
-                while(bag.TryTake(out proxy))
+                while(bag.TryTake(out var proxy))
                 {
                     continue;
                 }
