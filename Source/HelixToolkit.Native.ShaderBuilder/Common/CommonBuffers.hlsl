@@ -28,6 +28,16 @@ cbuffer cbTransforms : register(b0)
     int OITReserved;
 };
 
+#if defined(MESHSIMPLE)
+cbuffer cbMeshSimple : register(b1)
+{
+// Common Parameters
+    float4x4 mWorld;
+    bool bHasInstances = false;
+    float3 padding1;
+};
+#endif
+
 #if defined(MESH)
 //Per model shares between Phong material and PBR material
 cbuffer cbMesh : register(b1) 

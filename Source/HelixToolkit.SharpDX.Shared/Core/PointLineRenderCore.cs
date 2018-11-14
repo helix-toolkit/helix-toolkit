@@ -92,7 +92,12 @@ namespace HelixToolkit.UWP.Core
             var pass = materialVariables.GetShadowPass(RenderType, context);
             if (!IsThrowingShadow || pass.IsNULL)
             { return; }
-            if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+            var v = new SimpleMeshStruct()
+            {
+                World = ModelMatrix,
+                HasInstances = InstanceBuffer.HasElements ? 1 : 0
+            };
+            if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
             {
                 return;
             }
