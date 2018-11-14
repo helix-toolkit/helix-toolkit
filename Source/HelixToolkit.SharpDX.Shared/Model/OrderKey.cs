@@ -22,7 +22,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static OrderKey Create(ushort order, ushort materialID)
         {
-            return new OrderKey(((uint)order << 16) | materialID);
+            //return new OrderKey(((uint)order << 16) | materialID);
+            return new OrderKey(order);
         }
 
         public int CompareTo(OrderKey other)
