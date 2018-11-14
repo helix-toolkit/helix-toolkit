@@ -213,7 +213,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             var pass = materialVariables.GetShadowPass(RenderType, context);
-            if (!IsThrowingShadow || pass.IsNULL)
+            if (pass.IsNULL)
             { return; }
             var v = new SimpleMeshStruct()
             {
