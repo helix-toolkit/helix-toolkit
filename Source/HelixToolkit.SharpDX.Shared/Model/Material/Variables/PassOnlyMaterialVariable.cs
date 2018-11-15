@@ -32,6 +32,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="technique">The technique.</param>
         /// <param name="shadowPassName">Name of the shadow pass.</param>
         /// <param name="wireframePassName">Name of the wireframe pass.</param>
+        /// <param name="depthPassName">Name of the depth pass</param>
         public PassOnlyMaterialVariable(string passName, IRenderTechnique technique,
             string shadowPassName = DefaultPassNames.ShadowPass, 
             string wireframePassName = DefaultPassNames.Wireframe,

@@ -74,6 +74,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="materialOITPassName">Name of the material oit pass.</param>
         /// <param name="wireframeOITPassName">Name of the wireframe oit pass.</param>
         /// <param name="shadowPassName">Name of the shadow pass.</param>
+        /// <param name="depthPassName">Name of the depth pass</param>
         private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, DiffuseMaterialCore materialCore,
             string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
             string materialOITPassName = DefaultPassNames.DiffuseOIT, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,

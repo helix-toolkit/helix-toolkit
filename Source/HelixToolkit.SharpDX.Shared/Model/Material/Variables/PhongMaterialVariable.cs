@@ -141,6 +141,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="shadowPassName">Name of the shadow pass.</param>
         /// <param name="tessellationPassName">Name of the tessellation pass.</param>
         /// <param name="tessellationOITPassName">Name of the tessellation oit pass.</param>
+        /// <param name="depthPassName">Name of the depth pass</param>
         public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore,
             string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
             string materialOITPassName = DefaultPassNames.OITPass, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,

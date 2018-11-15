@@ -29,6 +29,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="materialCore">The material core.</param>
         /// <param name="linePassName">Name of the line pass.</param>
         /// <param name="shadowPassName">Name of the shadow pass.</param>
+        /// <param name="depthPassName">Name of the depth pass</param>
         public LineMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineMaterialCore materialCore,
             string linePassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass,
             string depthPassName = DefaultPassNames.DepthPrepass) 
