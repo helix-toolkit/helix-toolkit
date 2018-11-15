@@ -35,18 +35,7 @@ namespace HelixToolkit.UWP.Core
             context.CustomPassName = DefaultPassNames.DepthPrepass;
             for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
-                var core = context.RenderHost.PerFrameOpaqueNodes[i];
-                if (core.RenderType == RenderType.Opaque)
-                {
-                    var pass = core.EffectTechnique[DefaultPassNames.DepthPrepass];
-                    if (pass.IsNULL)
-                    {
-                        continue;
-                    }
-                    pass.BindShader(deviceContext);
-                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                    core.RenderCustom(context, deviceContext);
-                }
+                context.RenderHost.PerFrameOpaqueNodes[i].RenderCore.RenderDepth(context, deviceContext);
             }
         }
 
@@ -57,7 +46,9 @@ namespace HelixToolkit.UWP.Core
         public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
         }
-
+        public sealed override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
         protected override bool OnAttach(IRenderTechnique technique)
         {
             return true;

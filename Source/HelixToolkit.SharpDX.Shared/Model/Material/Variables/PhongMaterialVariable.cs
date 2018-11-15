@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP.Model
             AlphaIdx = 1,
             NormalIdx = 2,
             DisplaceIdx = 3,
-            SpecularColorIdx = 4, 
+            SpecularColorIdx = 4,
             EmissiveIdx = 5;
 
         private readonly ITextureResourceManager textureManager;
@@ -48,13 +48,14 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public ShaderPass MaterialPass { get; } = ShaderPass.NullPass;
-        public ShaderPass MaterialOITPass { get; } = ShaderPass.NullPass;
-        public ShaderPass ShadowPass { get; } = ShaderPass.NullPass;
-        public ShaderPass WireframePass { get; } = ShaderPass.NullPass;
-        public ShaderPass WireframeOITPass { get; } = ShaderPass.NullPass;
-        public ShaderPass TessellationPass { get; } = ShaderPass.NullPass;
-        public ShaderPass TessellationOITPass { get; } = ShaderPass.NullPass;
+        public ShaderPass MaterialPass { get; }
+        public ShaderPass MaterialOITPass { get; }
+        public ShaderPass ShadowPass { get; }
+        public ShaderPass WireframePass { get; }
+        public ShaderPass WireframeOITPass { get; }
+        public ShaderPass TessellationPass { get; }
+        public ShaderPass TessellationOITPass { get; }
+        public ShaderPass DepthPass { get; }
         /// <summary>
         /// 
         /// </summary>
@@ -145,7 +146,8 @@ namespace HelixToolkit.UWP.Model
             string materialOITPassName = DefaultPassNames.OITPass, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,
             string shadowPassName = DefaultPassNames.ShadowPass,
             string tessellationPassName = DefaultPassNames.MeshTriTessellation,
-            string tessellationOITPassName = DefaultPassNames.MeshTriTessellationOIT)
+            string tessellationOITPassName = DefaultPassNames.MeshTriTessellationOIT,
+            string depthPassName = DefaultPassNames.DepthPrepass)
             : base(manager, technique, DefaultMeshConstantBufferDesc, materialCore)
         {
             this.material = materialCore;
@@ -161,6 +163,7 @@ namespace HelixToolkit.UWP.Model
             WireframeOITPass = technique[wireframeOITPassName];
             TessellationPass = technique[tessellationPassName];
             TessellationOITPass = technique[tessellationOITPassName];
+            DepthPass = technique[depthPassName];
             UpdateMappings(MaterialPass);
             EnableTessellation = materialCore.EnableTessellation;
             currentMaterialPass = EnableTessellation ? TessellationPass : MaterialPass;
@@ -389,6 +392,11 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
         {
             return renderType == RenderType.Transparent && context.IsOITPass ? WireframeOITPass : WireframePass;
+        }
+
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return DepthPass;
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

@@ -78,5 +78,15 @@ namespace HelixToolkit.UWP.Model
         {
             return ShaderPass.NullPass;
         }
+        /// <summary>
+        /// Gets the depth pass.
+        /// </summary>
+        /// <param name="renderType">Type of the render.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return ShaderPass.NullPass;
+        }
     }
 }

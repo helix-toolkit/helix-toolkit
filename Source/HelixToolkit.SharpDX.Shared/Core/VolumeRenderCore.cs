@@ -143,7 +143,9 @@ namespace HelixToolkit.UWP.Core
         }
 
 
-
+        public override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height)

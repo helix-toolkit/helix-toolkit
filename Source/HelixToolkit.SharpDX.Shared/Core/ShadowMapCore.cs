@@ -255,5 +255,9 @@ namespace HelixToolkit.UWP.Core
         public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
         {
         }
+
+        public sealed override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
     }
 }

@@ -48,7 +48,7 @@ namespace HelixToolkit.UWP.Model
         public ShaderPass ShadowPass { get; }
         public ShaderPass WireframePass { get; } 
         public ShaderPass WireframeOITPass { get; }
-
+        public ShaderPass DepthPass { get; }
         private int numRadianceMipLevels = 0;
 
         public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core)
@@ -62,6 +62,7 @@ namespace HelixToolkit.UWP.Model
             WireframePass = technique[DefaultPassNames.Wireframe];
             WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
             ShadowPass = technique[DefaultPassNames.ShadowPass];
+            DepthPass = technique[DefaultPassNames.DepthPrepass];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
@@ -289,6 +290,11 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
         {
             return ShadowPass;
+        }
+
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return DepthPass;
         }
 
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)

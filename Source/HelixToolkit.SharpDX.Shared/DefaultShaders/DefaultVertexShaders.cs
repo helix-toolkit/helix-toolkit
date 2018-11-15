@@ -52,6 +52,16 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshShadow";
         /// <summary>
+        /// Gets the vs mesh depth.
+        /// </summary>
+        /// <value>
+        /// The vs mesh depth.
+        /// </value>
+        public static string VSMeshDepth
+        {
+            get;
+        } = "vsMeshDepth";
+        /// <summary>
         ///
         /// </summary>
         public static string VSMeshBatchedShadow
@@ -515,6 +525,10 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs mesh wireframe
         /// </summary>
         public static ShaderDescription VSMeshWireframe = new ShaderDescription(nameof(VSMeshWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshWireframe);
+        /// <summary>
+        /// The vs mesh depth
+        /// </summary>
+        public static ShaderDescription VSMeshDepth = new ShaderDescription(nameof(VSMeshDepth), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshDepth);
         /// <summary>
         /// The vs mesh batched wireframe
         /// </summary>

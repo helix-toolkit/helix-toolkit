@@ -73,7 +73,6 @@ namespace HelixToolkit.UWP.Core
             {
                 shaderPass.BindShader(deviceContext);
                 shaderPass.BindStates(deviceContext, DefaultStateBinding);
-                OnBindRasterState(deviceContext, context.IsInvertCullMode);
                 materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
             }
         }
@@ -90,7 +89,7 @@ namespace HelixToolkit.UWP.Core
         protected sealed override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             var pass = materialVariables.GetShadowPass(RenderType, context);
-            if (!IsThrowingShadow || pass.IsNULL)
+            if (pass.IsNULL)
             { return; }
             var v = new SimpleMeshStruct()
             {
@@ -104,6 +103,24 @@ namespace HelixToolkit.UWP.Core
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, ShadowStateBinding); 
             materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+        }
+
+        protected sealed override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            var pass = materialVariables.GetDepthPass(RenderType, context);
+            if (pass.IsNULL)
+            { return; }
+            OnUpdatePerModelStruct();
+            if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+            {
+                return;
+            }
+            if (materialVariables.BindMaterialResources(context, deviceContext, pass))
+            {
+                pass.BindShader(deviceContext);
+                pass.BindStates(deviceContext, DefaultStateBinding);
+                materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+            }
         }
     }
 }

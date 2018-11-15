@@ -100,6 +100,7 @@
     <None Remove="Resources\vsMeshClipPlane.cso" />
     <None Remove="Resources\vsMeshClipPlaneQuad.cso" />
     <None Remove="Resources\vsMeshDefault.cso" />
+    <None Remove="Resources\vsMeshDepth.cso" />
     <None Remove="Resources\vsMeshInstancing.cso" />
     <None Remove="Resources\vsMeshInstancingPBR.cso" />
     <None Remove="Resources\vsMeshInstancingTessellation.cso" />
@@ -195,6 +196,7 @@
     <EmbeddedResource Include="Resources\vsMeshClipPlane.cso" />
     <EmbeddedResource Include="Resources\vsMeshClipPlaneQuad.cso" />
     <EmbeddedResource Include="Resources\vsMeshDefault.cso" />
+    <EmbeddedResource Include="Resources\vsMeshDepth.cso" />
     <EmbeddedResource Include="Resources\vsMeshInstancing.cso" />
     <EmbeddedResource Include="Resources\vsMeshInstancingTessellation.cso" />
     <EmbeddedResource Include="Resources\vsMeshOutlinePass1.cso" />

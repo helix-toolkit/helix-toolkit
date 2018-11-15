@@ -228,5 +228,24 @@ namespace HelixToolkit.UWP.Core
             pass.BindStates(deviceContext, ShadowStateBinding);
             materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
         }
+
+        protected override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            var pass = materialVariables.GetDepthPass(RenderType, context);
+            if (pass.IsNULL)
+            { return; }
+            var v = new SimpleMeshStruct()
+            {
+                World = ModelMatrix,
+                HasInstances = InstanceBuffer.HasElements ? 1 : 0
+            };
+            if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
+            {
+                return;
+            }
+            pass.BindShader(deviceContext);
+            pass.BindStates(deviceContext, ShadowStateBinding);
+            materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+        }
     }
 }

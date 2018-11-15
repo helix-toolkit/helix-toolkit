@@ -299,5 +299,6 @@
     <FxCompile Include="PS\psVolumeDiffuse.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="VS\vsMeshDepth.hlsl" />
   </ItemGroup>
 </Project>

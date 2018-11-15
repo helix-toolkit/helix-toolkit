@@ -145,17 +145,6 @@ namespace HelixToolkit.UWP.Core
             invertCullModeState = null;
             base.OnDetach();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pass"></param>
-        protected virtual void OnDefaultPassChanged(ShaderPass pass) { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pass"></param>
-        protected virtual void OnShadowPassChanged(ShaderPass pass) { }
         /// <summary>
         /// Called when [geometry buffer changed].
         /// </summary>
@@ -270,6 +259,13 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        public sealed override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (PreRender(context, deviceContext))
+            {
+                OnRenderDepth(context, deviceContext);
+            }
+        }
         /// <summary>
         /// Called when [render].
         /// </summary>
@@ -288,6 +284,12 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="deviceContext"></param>
         protected abstract void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext);
+        /// <summary>
+        /// Called when [render depth].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        protected abstract void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext);
 
         protected void OnElementChanged(object sender, EventArgs e)
         {

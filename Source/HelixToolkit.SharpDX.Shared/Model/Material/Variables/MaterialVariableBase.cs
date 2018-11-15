@@ -132,6 +132,13 @@ namespace HelixToolkit.UWP.Model
         /// <returns></returns>
         public abstract ShaderPass GetWireframePass(RenderType renderType, RenderContext context);
         /// <summary>
+        /// Gets the depth pass.
+        /// </summary>
+        /// <param name="renderType">Type of the render.</param>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public abstract ShaderPass GetDepthPass(RenderType renderType, RenderContext context);
+        /// <summary>
         /// Gets the name of the pass by.
         /// </summary>
         /// <param name="name">The name.</param>

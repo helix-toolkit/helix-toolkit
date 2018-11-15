@@ -453,6 +453,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
         }
 
+        public sealed override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
         private sealed class DuplicationInfo
         {
             public readonly OutputDescription OutputDesc;

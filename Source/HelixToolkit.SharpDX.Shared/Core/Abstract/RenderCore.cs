@@ -197,6 +197,12 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public abstract void RenderCustom(RenderContext context, DeviceContextProxy deviceContext);
         /// <summary>
+        /// Renders the depth pass.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        public abstract void RenderDepth(RenderContext context, DeviceContextProxy deviceContext);
+        /// <summary>
         /// Update routine. Only used to run update computation such as compute shader in particle system. 
         /// <para>Compute shader can be run at the beginning of any other <see cref="Render(RenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
         /// </summary>

@@ -291,6 +291,7 @@
     <None Include="Resources\vsMeshClipPlane.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />
     <None Include="Resources\vsMeshDefault.cso" />
+    <None Include="Resources\vsMeshDepth.cso" />
     <None Include="Resources\vsMeshInstancing.cso" />
     <None Include="Resources\vsMeshInstancingTessellation.cso" />
     <None Include="Resources\vsMeshOutlinePass1.cso" />

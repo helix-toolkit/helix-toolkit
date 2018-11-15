@@ -78,6 +78,11 @@ namespace HelixToolkit.UWP.Core
             
         }
 
+        public override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        {
+
+        }
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             spritePass = technique[DefaultPassNames.Default];
