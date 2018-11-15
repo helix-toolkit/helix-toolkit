@@ -490,6 +490,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            if (myAdornerLayer == null) { return; }
             if (this.targetAdorner != null)
             {
                 myAdornerLayer.Remove(this.targetAdorner);
@@ -511,6 +512,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            if (myAdornerLayer == null) { return; }
             if (this.rectangleAdorner != null)
             {
                 myAdornerLayer.Remove(this.rectangleAdorner);
@@ -817,6 +819,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            if (myAdornerLayer == null) { return; }
             this.targetAdorner = new TargetSymbolAdorner(visual, position);
             myAdornerLayer.Add(this.targetAdorner);
         }
@@ -839,6 +842,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            if (myAdornerLayer == null) { return; }
             this.rectangleAdorner = new RectangleAdorner(
                 visual, rect, Colors.LightGray, Colors.Black, 3, 1, 10, DashStyles.Solid);
             myAdornerLayer.Add(this.rectangleAdorner);
