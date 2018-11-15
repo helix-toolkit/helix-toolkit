@@ -224,17 +224,5 @@ namespace HelixToolkit.UWP.Core
             screenQuadPass.PixelShader.BindSampler(deviceContext, samplerIndex, targetSampler);
             deviceContext.Draw(4, 0);
         }
-
-        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public sealed override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
     }
 }

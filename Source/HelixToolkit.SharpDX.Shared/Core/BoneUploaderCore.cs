@@ -58,16 +58,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-        public override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
         protected override bool OnAttach(IRenderTechnique technique)
         {
             BoneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes, false));

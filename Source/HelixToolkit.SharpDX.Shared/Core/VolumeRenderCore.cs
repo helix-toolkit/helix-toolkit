@@ -134,19 +134,6 @@ namespace HelixToolkit.UWP.Core
             context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, back);
         }
 
-        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-
-        public override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height)
         {

@@ -252,16 +252,6 @@ namespace HelixToolkit.SharpDX.Core.Model
             return true;
         }
 
-        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-
-        }
-
-        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-
-        }
-
         protected override bool OnAttach(IRenderTechnique technique)
         {
             spritePass = technique[DefaultPassNames.Default];
