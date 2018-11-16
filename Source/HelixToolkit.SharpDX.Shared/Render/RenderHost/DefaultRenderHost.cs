@@ -137,7 +137,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private int numRendered = 0;
 
-        private static readonly Comparison<SceneNode> sortingDelegate = delegate (SceneNode a, SceneNode b) { return a.RenderOrderKey.Key > b.RenderOrderKey.Key ? 1 : a.RenderOrderKey.Key < b.RenderOrderKey.Key ? -1 : 0; };
+        private static readonly Comparison<SceneNode> sortingDelegate = delegate (SceneNode a, SceneNode b) { return a.RenderOrderKey.CompareTo(b.RenderOrderKey); };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.

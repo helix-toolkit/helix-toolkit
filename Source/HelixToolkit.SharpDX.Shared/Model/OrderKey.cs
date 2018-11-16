@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// </summary>
     public struct OrderKey : IComparable<OrderKey>
     {
-        public uint Key;
+        public uint Key { get; }
 
         public OrderKey(uint key)
         {
