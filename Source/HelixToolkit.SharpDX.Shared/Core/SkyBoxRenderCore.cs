@@ -250,7 +250,7 @@ namespace HelixToolkit.UWP.Core
         {
             
         }
-        protected sealed override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        protected sealed override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext, Shaders.ShaderPass customPass)
         {
         }
         /// <summary>

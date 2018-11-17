@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     [Serializable]
     [TypeConverter(typeof(Color4CollectionConverter))]
 #endif
-    public sealed class Color4Collection : ExposedArrayList<Color4>
+    public sealed class Color4Collection : FastList<Color4>
     {
         public Color4Collection()
         {

@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     [Serializable]
     [TypeConverter(typeof(IntCollectionConverter))]
 #endif
-    public sealed class IntCollection : ExposedArrayList<int>
+    public sealed class IntCollection : FastList<int>
     {
         public IntCollection()
         {

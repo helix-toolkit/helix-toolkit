@@ -216,6 +216,16 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     },
+                    new ShaderPassDescription(DefaultPassNames.SSAO)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshSSAO,
+                            DefaultPSShaderDescriptions.PSSSAOP1
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
+                    },
                     new ShaderPassDescription(DefaultPassNames.MeshTriTessellation)
                     {
                         ShaderList = new[]
@@ -528,6 +538,16 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     },
+                    new ShaderPassDescription(DefaultPassNames.SSAO)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshSSAO,
+                            DefaultPSShaderDescriptions.PSSSAOP1
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
+                    },
                     new ShaderPassDescription(DefaultPassNames.MeshOutline)
                     {
                         ShaderList = new[]
@@ -787,6 +807,16 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                    new ShaderPassDescription(DefaultPassNames.SSAO)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshSSAO,
+                            DefaultPSShaderDescriptions.PSSSAOP1
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
                     },
                     new ShaderPassDescription(DefaultPassNames.MeshTriTessellation)
                     {

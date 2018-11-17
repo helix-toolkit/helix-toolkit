@@ -5,21 +5,25 @@
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 
-float4 main(VSInput input) : SV_Position
+float4 main(float4 pos : POSITION0,
+float4 mr0 : TEXCOORD1,
+float4 mr1 : TEXCOORD2,
+float4 mr2 : TEXCOORD3,
+float4 mr3 : TEXCOORD4) : SV_Position
 {
     float4 output = (float4) 0;
-    output = input.p;
+    output = pos;
 	// compose instance matrix
     if (bHasInstances)
     {
         matrix mInstance =
         {
-            input.mr0,
-			input.mr1,
-			input.mr2,
-			input.mr3
+            mr0,
+			mr1,
+			mr2,
+			mr3
         };
-        output = mul(input.p, mInstance);
+        output = mul(pos, mInstance);
     }
 
 	//set position into world space	

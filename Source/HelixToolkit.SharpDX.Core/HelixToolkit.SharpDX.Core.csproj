@@ -84,6 +84,8 @@
     <None Remove="Resources\psShadow.cso" />
     <None Remove="Resources\psSkybox.cso" />
     <None Remove="Resources\psSprite.cso" />
+    <None Remove="Resources\psSSAO.cso" />
+    <None Remove="Resources\psSSAOP1.cso" />
     <None Remove="Resources\psViewCube.cso" />
     <None Remove="Resources\psVolume.cso" />
     <None Remove="Resources\psVolumeCube.cso" />
@@ -109,6 +111,7 @@
     <None Remove="Resources\vsMeshOutlineScreenQuad.cso" />
     <None Remove="Resources\vsMeshPBRClipPlane.cso" />
     <None Remove="Resources\vsMeshShadow.cso" />
+    <None Remove="Resources\vsMeshSSAO.cso" />
     <None Remove="Resources\vsMeshTessellation.cso" />
     <None Remove="Resources\vsMeshTessellationPBR.cso" />
     <None Remove="Resources\vsMeshWireframe.cso" />
@@ -180,6 +183,8 @@
     <EmbeddedResource Include="Resources\psShadow.cso" />
     <EmbeddedResource Include="Resources\psSkybox.cso" />
     <EmbeddedResource Include="Resources\psSprite.cso" />
+    <EmbeddedResource Include="Resources\psSSAO.cso" />
+    <EmbeddedResource Include="Resources\psSSAOP1.cso" />
     <EmbeddedResource Include="Resources\psViewCube.cso" />
     <EmbeddedResource Include="Resources\psVolume.cso" />
     <EmbeddedResource Include="Resources\psVolumeCube.cso" />
@@ -202,6 +207,7 @@
     <EmbeddedResource Include="Resources\vsMeshOutlinePass1.cso" />
     <EmbeddedResource Include="Resources\vsMeshOutlineScreenQuad.cso" />
     <EmbeddedResource Include="Resources\vsMeshShadow.cso" />
+    <EmbeddedResource Include="Resources\vsMeshSSAO.cso" />
     <EmbeddedResource Include="Resources\vsMeshTessellation.cso" />
     <EmbeddedResource Include="Resources\vsMeshWireframe.cso" />
     <EmbeddedResource Include="Resources\vsParticle.cso" />

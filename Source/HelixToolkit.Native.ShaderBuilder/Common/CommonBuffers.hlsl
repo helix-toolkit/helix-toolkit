@@ -265,6 +265,15 @@ cbuffer cbParticleCreateParameters : register(b8)
     float3 InitialAcceleration;
 };
 #endif
+
+#if defined(SSAO)
+cbuffer cbSSAO : register(b1)
+{
+    float4 kernel[32];
+    float4x4 invViewProj;
+}
+#endif
+
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D<float3> texNormalMap : register(t1);
@@ -283,6 +292,8 @@ Texture2D<float3> texDisplacementMap : register(t4);
 TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 
 Texture2D<float> texShadowMap : register(t30);
+Texture2D<float> texSSAOMap : register(t31);
+Texture2D<float3> texSSAONoise : register(t32);
 
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
@@ -318,6 +329,10 @@ SamplerState samplerBillboard : register(s7);
 SamplerState samplerSprite : register(s8);
 
 SamplerState samplerVolume : register(s9);
+
+#if defined(SSAO)
+SamplerState samplerNoise : register(s1);
+#endif
 ///---------------------UAV-----------------------------
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);

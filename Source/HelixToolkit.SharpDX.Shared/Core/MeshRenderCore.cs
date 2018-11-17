@@ -229,9 +229,9 @@ namespace HelixToolkit.UWP.Core
             materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
         }
 
-        protected override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext, ShaderPass customPass)
         {
-            var pass = materialVariables.GetDepthPass(RenderType, context);
+            var pass = customPass ?? materialVariables.GetDepthPass(RenderType, context);
             if (pass.IsNULL)
             { return; }
             var v = new SimpleMeshStruct()

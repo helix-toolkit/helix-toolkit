@@ -76,6 +76,10 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshInstancing";
 
+        public static string VSMeshSSAO
+        {
+            get;
+        } = "vsMeshSSAO";
         /// <summary>
         /// 
         /// </summary>
@@ -445,6 +449,11 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSMeshShadow = new ShaderDescription(nameof(VSMeshShadow), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshShadow);
+        /// <summary>
+        /// The vs mesh ssao
+        /// </summary>
+        public static ShaderDescription VSMeshSSAO = new ShaderDescription(nameof(VSMeshSSAO), ShaderStage.Vertex,
+            new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshSSAO);
         /// <summary>
         /// 
         /// </summary>

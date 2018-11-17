@@ -275,6 +275,8 @@
     <None Include="Resources\psShadow.cso" />
     <None Include="Resources\psSkybox.cso" />
     <None Include="Resources\psSprite.cso" />
+    <None Include="Resources\psSSAO.cso" />
+    <None Include="Resources\psSSAOP1.cso" />
     <None Include="Resources\psViewCube.cso" />
     <None Include="Resources\psVolume.cso" />
     <None Include="Resources\psVolumeCube.cso" />
@@ -297,6 +299,7 @@
     <None Include="Resources\vsMeshOutlinePass1.cso" />
     <None Include="Resources\vsMeshOutlineScreenQuad.cso" />
     <None Include="Resources\vsMeshShadow.cso" />
+    <None Include="Resources\vsMeshSSAO.cso" />
     <None Include="Resources\vsMeshTessellation.cso" />
     <None Include="Resources\vsMeshWireframe.cso" />
     <None Include="Resources\vsParticle.cso" />

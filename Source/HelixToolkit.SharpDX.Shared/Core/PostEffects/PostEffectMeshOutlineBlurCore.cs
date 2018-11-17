@@ -377,17 +377,5 @@ namespace HelixToolkit.UWP.Core
             modelStruct.Param.M12 = ScaleY;
             modelStruct.Color = color;
         }
-
-        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public sealed override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
     }
 }

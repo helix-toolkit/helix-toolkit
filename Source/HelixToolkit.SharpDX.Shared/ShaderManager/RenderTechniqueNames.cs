@@ -275,6 +275,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string FXAAPass = "FXAAPass";
+        /// <summary>
+        /// The ssao pass
+        /// </summary>
+        public const string SSAO = "SSAOPass";
     }
     /// <summary>
     /// 

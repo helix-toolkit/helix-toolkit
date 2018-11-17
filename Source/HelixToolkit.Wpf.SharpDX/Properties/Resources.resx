@@ -376,4 +376,13 @@
   <data name="vsMeshDepth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshdepth.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psSSAO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psssao.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psSSAOP1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psssaop1.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshSSAO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshssao.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

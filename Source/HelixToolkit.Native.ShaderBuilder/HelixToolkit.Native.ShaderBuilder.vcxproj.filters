@@ -300,5 +300,8 @@
       <Filter>PS</Filter>
     </FxCompile>
     <FxCompile Include="VS\vsMeshDepth.hlsl" />
+    <FxCompile Include="PS\psSSAO.hlsl" />
+    <FxCompile Include="PS\psSSAOP1.hlsl" />
+    <FxCompile Include="VS\vsMeshSSAO.hlsl" />
   </ItemGroup>
 </Project>

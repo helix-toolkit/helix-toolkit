@@ -259,11 +259,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public sealed override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext)
+        public sealed override void RenderDepth(RenderContext context, DeviceContextProxy deviceContext, ShaderPass customPass)
         {
             if (PreRender(context, deviceContext))
             {
-                OnRenderDepth(context, deviceContext);
+                OnRenderDepth(context, deviceContext, customPass);
             }
         }
         /// <summary>
@@ -289,7 +289,8 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected abstract void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext);
+        /// <param name="customPass">Custom depth pass</param>
+        protected abstract void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext, ShaderPass customPass);
 
         protected void OnElementChanged(object sender, EventArgs e)
         {

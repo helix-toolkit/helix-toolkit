@@ -72,6 +72,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\SkyBoxRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\SkyDomeRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Sprite2DRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\SSAOCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\VolumeRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultBuffers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultComputeShaders.cs" />
@@ -148,7 +149,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\MaterialVariableBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PassOnlyMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardSingleImage3D.cs" />
@@ -329,6 +329,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Disposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ElementsBufferProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\FastList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\FrameStatistics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\ArevaloRectanglePacker.cs" />
