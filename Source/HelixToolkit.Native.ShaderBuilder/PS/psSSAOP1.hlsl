@@ -1,3 +1,5 @@
+//Ref: https://learnopengl.com/Advanced-Lighting/SSAO
+//Ref: https://mynameismjp.wordpress.com/2009/03/10/reconstructing-position-from-depth/
 #ifndef SSAOEP1PASS
 #define SSAOEP1PASS
 

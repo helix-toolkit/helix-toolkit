@@ -186,7 +186,7 @@ float4 main(PSInput input) : SV_Target
     {
         I.rgb = cubeMapReflection(input, I.rgb, reflectColor.rgb);
     }
-
+    I.rgb *= texSSAOMap.Sample(samplerSurface, input.t).r;
     return I;
 }
 
