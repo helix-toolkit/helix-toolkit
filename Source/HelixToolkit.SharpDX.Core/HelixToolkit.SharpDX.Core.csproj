@@ -124,6 +124,7 @@
     <None Remove="Resources\vsScreenQuad.cso" />
     <None Remove="Resources\vsSkybox.cso" />
     <None Remove="Resources\vsSprite.cso" />
+    <None Remove="Resources\vsSSAO.cso" />
     <None Remove="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +220,7 @@
     <EmbeddedResource Include="Resources\vsScreenQuad.cso" />
     <EmbeddedResource Include="Resources\vsSkybox.cso" />
     <EmbeddedResource Include="Resources\vsSprite.cso" />
+    <EmbeddedResource Include="Resources\vsSSAO.cso" />
     <EmbeddedResource Include="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>

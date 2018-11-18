@@ -406,5 +406,12 @@ namespace HelixToolkit.UWP
         ///   <c>true</c> if [enable v synchronize]; otherwise, <c>false</c>.
         /// </value>
         public bool EnableVSync { set; get; } = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable ssao].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable ssao]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableSSAO { set; get; } = true;
     }
 }

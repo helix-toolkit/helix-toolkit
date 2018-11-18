@@ -216,7 +216,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     },
-                    new ShaderPassDescription(DefaultPassNames.SSAO)
+                    new ShaderPassDescription(DefaultPassNames.MeshSSAOPass)
                     {
                         ShaderList = new[]
                         {
@@ -538,7 +538,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     },
-                    new ShaderPassDescription(DefaultPassNames.SSAO)
+                    new ShaderPassDescription(DefaultPassNames.MeshSSAOPass)
                     {
                         ShaderList = new[]
                         {
@@ -808,7 +808,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     },
-                    new ShaderPassDescription(DefaultPassNames.SSAO)
+                    new ShaderPassDescription(DefaultPassNames.MeshSSAOPass)
                     {
                         ShaderList = new[]
                         {
@@ -1750,6 +1750,27 @@ namespace HelixToolkit.UWP
                     }
                 }
             };
+
+            var ssao = new TechniqueDescription(DefaultRenderTechniqueNames.SSAO)
+            {
+                InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSSSAO,
+                            DefaultPSShaderDescriptions.PSSSAO
+                        },
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
+                    }
+                }
+            };
+
 #if !NETFX_CORE
             var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
             {
@@ -1803,6 +1824,7 @@ namespace HelixToolkit.UWP
             yield return screenQuad;
             yield return sprite2D;
             yield return volume3D;
+            yield return ssao;
 #if !NETFX_CORE
             yield return renderScreenDup;
 #endif

@@ -158,5 +158,14 @@ namespace HelixToolkit.UWP.Shaders
             MaximumLod = float.MaxValue,
             BorderColor = new global::SharpDX.Mathematics.Interop.RawColor4(0, 0, 0, 0)
         };
+
+        public static SamplerStateDescription SSAONoise = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Wrap,
+            AddressV = TextureAddressMode.Wrap,
+            AddressW = TextureAddressMode.Wrap,
+            Filter = Filter.MinMagLinearMipPoint,
+            MaximumLod = 0
+        };
     }
 }

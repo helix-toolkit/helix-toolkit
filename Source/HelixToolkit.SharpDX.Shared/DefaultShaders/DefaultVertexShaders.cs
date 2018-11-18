@@ -221,6 +221,11 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsVolume";
+
+        public static string VSSSAO
+        {
+            get;
+        } = "vsSSAO";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -573,6 +578,10 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs volume3d
         /// </summary>
         public static ShaderDescription VSVolume3D = new ShaderDescription(nameof(VSVolume3D), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSVolume3D);
+        /// <summary>
+        /// The vsssao
+        /// </summary>
+        public static ShaderDescription VSSSAO = new ShaderDescription(nameof(VSSSAO), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSSAO);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

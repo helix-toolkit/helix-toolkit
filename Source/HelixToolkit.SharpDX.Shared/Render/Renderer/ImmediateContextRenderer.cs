@@ -29,6 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
         private readonly OrderIndependentTransparentRenderCore transparentRenderCore;
         private readonly PostEffectFXAA postFXAACore;
+        private readonly SSAOCore preSSAOCore;
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -50,6 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
             transparentRenderCore = Collect(new OrderIndependentTransparentRenderCore());
             postFXAACore = Collect(new PostEffectFXAA());
+            preSSAOCore = Collect(new SSAOCore());
         }
 
         private static readonly Func<SceneNode, RenderContext, bool> updateFunc = (x, context) =>
@@ -218,6 +220,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 renderables[i].RenderCore.Render(context, ImmediateContext);
             }
+            if (context.RenderHost.RenderConfiguration.EnableSSAO)
+            {
+                preSSAOCore.Render(context, ImmediateContext);
+            }
         }
 
         /// <summary>
@@ -320,6 +326,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
                 postFXAACore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.PostEffectFXAA));
+                preSSAOCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.SSAO));
             }
         }
 
@@ -329,6 +336,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             stack2DCache1.Clear();
             transparentRenderCore.Detach();
             postFXAACore.Detach();
+            preSSAOCore.Detach();
         }
     }
 

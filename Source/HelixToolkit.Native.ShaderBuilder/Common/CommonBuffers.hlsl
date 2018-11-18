@@ -267,10 +267,14 @@ cbuffer cbParticleCreateParameters : register(b8)
 #endif
 
 #if defined(SSAO)
+static const uint SSAOKernalSize = 32;
 cbuffer cbSSAO : register(b1)
 {
-    float4 kernel[32];
-    float4x4 invViewProj;
+    float4 kernel[SSAOKernalSize];
+    float4 frustumCorner[4];
+    float2 noiseScale;
+    float padding2;
+    float radius;    
 }
 #endif
 
@@ -292,8 +296,11 @@ Texture2D<float3> texDisplacementMap : register(t4);
 TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 
 Texture2D<float> texShadowMap : register(t30);
-Texture2D<float> texSSAOMap : register(t31);
+
+#if defined(SSAO)
+Texture2D<float4> texSSAOMap : register(t31);
 Texture2D<float3> texSSAONoise : register(t32);
+#endif
 
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);

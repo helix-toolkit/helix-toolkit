@@ -26,6 +26,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string DynamicCubeMapCB = "cbDynamicCubeMap";
         public static string ScreenQuadCB = "cbScreenQuad";
         public static string VolumeModelCB = "cbVolumeModel";
+        public static string SSAOCB = "cbSSAO";
 #if !NETFX_CORE
         public static string ScreenDuplicationCB = "cbScreenClone";
 #endif
@@ -36,7 +37,6 @@ namespace HelixToolkit.UWP.Shaders
         public static string DisplacementMapTB = "texDisplacementMap";
         public static string CubeMapTB = "texCubeMap";
         public static string ShadowMapTB = "texShadowMap";
-        public static string SSAOMapTB = "texSSAOMap";
         public static string SpecularTB = "texSpecularMap";
         public static string BillboardTB = "billboardTexture";
         public static string ColorStripe1DXTB = "texColorStripe1DX";
@@ -64,6 +64,9 @@ namespace HelixToolkit.UWP.Shaders
         public static string VolumeTB = "texVolume";
         public static string VolumeFront = "texVolumeFront";
         public static string VolumeBack = "texVolumeBack";
+
+        public static string SSAOMapTB = "texSSAOMap";
+        public static string SSAONoiseTB = "texSSAONoise";
     }
 
     public static class DefaultSamplerStateNames
@@ -77,5 +80,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string BillboardTextureSampler = "samplerBillboard";
         public static string SpriteSampler = "samplerSprite";
         public static string VolumeSampler = "samplerVolume";
+
+        public static string NoiseSampler = "samplerNoise";
     }
 }

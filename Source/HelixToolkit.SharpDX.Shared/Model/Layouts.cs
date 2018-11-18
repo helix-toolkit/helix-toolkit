@@ -502,6 +502,18 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    internal struct SSAOParamStruct
+    {
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+        //public Vector4[] Kernels;
+        //public Vector4[] FrustumFarplaneCorner;
+        public Vector2 NoiseScale;
+        public float KernelSize;
+        public float Radius;
+        public const int SizeInBytes = 4 * (4 * 32 + 4 * 4 + 4);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ScreenQuadModelStruct
     {
         public Matrix mWorld;

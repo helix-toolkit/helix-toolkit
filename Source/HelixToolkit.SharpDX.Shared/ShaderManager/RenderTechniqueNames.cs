@@ -103,6 +103,8 @@ namespace HelixToolkit.UWP
         public const string Sprite2D = "Sprite2D";
 
         public const string Volume3D = "Volume3D";
+
+        public const string SSAO = "SSAO";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -278,7 +280,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The ssao pass
         /// </summary>
-        public const string SSAO = "SSAOPass";
+        public const string MeshSSAOPass = "MeshSSAOPass";
     }
     /// <summary>
     /// 

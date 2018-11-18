@@ -311,6 +311,7 @@
     <None Include="Resources\vsScreenQuad.cso" />
     <None Include="Resources\vsSkybox.cso" />
     <None Include="Resources\vsSprite.cso" />
+    <None Include="Resources\vsSSAO.cso" />
     <None Include="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
