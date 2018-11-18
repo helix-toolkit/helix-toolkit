@@ -22,7 +22,7 @@ float4 main(SSAOPS_INPUT input) : SV_Target
     {
         return float4(1, 1, 1, 0);
     }
-    float3 position = float3(input.Corner.xy, input.Corner.z * depth);
+    float3 position = input.Corner.xyz * depth;
 
     float3 randomVec = texSSAONoise.Sample(samplerNoise, input.Tex * noiseScale) * 2 - 1;
 
@@ -39,8 +39,7 @@ float4 main(SSAOPS_INPUT input) : SV_Target
         float4 offset = float4(sample, 1);
         offset = mul(offset, mProjection);
         offset.xy /= offset.w;
-        offset.xy = mad(offset.xy, 0.5, float2(0.5, -0.5));
-        offset.y = abs(offset.y);
+        offset.xy = mad(offset.xy, 0.5, 0.5);
         float sampleDepth = texSSAOMap.SampleLevel(samplerSurface, offset.xy, 0).a * input.Corner.z;
         float rangeCheck = whenlt(abs(position.z - sampleDepth), radius);
         occlusion += whenle(sampleDepth, sample.z) * rangeCheck;
