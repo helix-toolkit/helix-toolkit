@@ -297,8 +297,8 @@ TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 
 Texture2D<float> texShadowMap : register(t30);
 
-#if defined(SSAO)
 Texture2D<float4> texSSAOMap : register(t31);
+#if defined(SSAO)
 Texture2D<float3> texSSAONoise : register(t32);
 #endif
 

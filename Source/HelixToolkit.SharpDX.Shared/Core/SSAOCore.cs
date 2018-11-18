@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP.Core
         {
             CpuAccessFlags = CpuAccessFlags.None,
             BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-            Format = global::SharpDX.DXGI.Format.R16_Float,
+            Format = global::SharpDX.DXGI.Format.R32_Float,
             SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
             OptionFlags = ResourceOptionFlags.None,
             Usage = ResourceUsage.Default,
@@ -73,10 +73,10 @@ namespace HelixToolkit.UWP.Core
                 node.RenderCore.RenderDepth(context, deviceContext, ssaoPass1);
             }
             context.BoundingFrustum.GetCorners(frustumCorners);
-            fpCorners[0] = Vector3.Transform(frustumCorners[5], context.ViewMatrix);
-            fpCorners[1] = Vector3.Transform(frustumCorners[6], context.ViewMatrix);
-            fpCorners[2] = Vector3.Transform(frustumCorners[4], context.ViewMatrix);
-            fpCorners[3] = Vector3.Transform(frustumCorners[7], context.ViewMatrix);
+            Vector3.Transform(ref frustumCorners[5], ref context.ViewMatrix, out fpCorners[0]);
+            Vector3.Transform(ref frustumCorners[6], ref context.ViewMatrix, out fpCorners[1]);
+            Vector3.Transform(ref frustumCorners[4], ref context.ViewMatrix, out fpCorners[2]);
+            Vector3.Transform(ref frustumCorners[7], ref context.ViewMatrix, out fpCorners[3]);
             ssaoParam.NoiseScale = new Vector2(context.ActualWidth/4f, context.ActualHeight/4f);
             ssaoCB.ModelConstBuffer.UploadDataToBuffer(deviceContext, (stream) =>
             {
@@ -91,10 +91,10 @@ namespace HelixToolkit.UWP.Core
             ssaoPass.PixelShader.BindTexture(deviceContext, noiseTexSlot, ssaoNoise);
             ssaoPass.PixelShader.BindSampler(deviceContext, surfaceSampleSlot, surfaceSampler);
             ssaoPass.PixelShader.BindSampler(deviceContext, noiseSamplerSlot, noiseSampler);
-            deviceContext.Draw(4, 0);
+            deviceContext.Draw(4, 0);            
 
             context.RenderHost.SetDefaultRenderTargets(false);
-
+            ssaoPass.PixelShader.BindTexture(deviceContext, ssaoTexSlot, ssaoView);
             context.RenderHost.RenderBuffer.FullResDepthStencilPool.Put(global::SharpDX.DXGI.Format.D32_Float, ds);
             context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, rt0);
         }
@@ -154,7 +154,7 @@ namespace HelixToolkit.UWP.Core
                 float z = (float)rnd.NextDouble(0, 1);
                 var v = Vector3.Normalize(new Vector3(x, y, z));                
                 v *= scale;
-                scale = 0.1f + scale * scale * (0.9f);
+                scale = 0.1f + scale * (0.9f);
                 kernels[i] = new Vector4(v.X, v.Y, v.Z, 0);
             }
 
