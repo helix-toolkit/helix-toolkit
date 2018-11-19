@@ -33,10 +33,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="parameter">The parameter.</param>
         /// <param name="outputCommands">The output commands.</param>
+        /// <param name="testFrustum"></param>
         /// <param name="numRendered"></param>
         /// <returns></returns>
         bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
-            RenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
+            RenderContext context, RenderParameter parameter, bool testFrustum, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
     }
     /// <summary>
     /// 
@@ -110,9 +111,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter"></param>
         /// <param name="outputCommands"></param>
         /// <param name="numRendered"></param>
+        /// <param name="testFrustum"></param>
         /// <returns></returns>
         public bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
-            RenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
+            RenderContext context, RenderParameter parameter, bool testFrustum,
+            List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
         {
             outputCommands.Clear();
             int totalCount = 0;
@@ -129,15 +132,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         int counter = 0;                    
                         var deferred = pool.Get();
                         SetRenderTargets(deferred, ref parameter);
-                        for(int i=range.Item1; i<range.Item2; ++i)
+                        if (!testFrustum)
                         {
-                            if (context.EnableBoundingFrustum && !items[i].TestViewFrustum(ref frustum))
+                            for (int i = range.Item1; i < range.Item2; ++i)
                             {
-                                continue;
+                                items[i].RenderCore.Render(context, deferred);
+                                ++counter;
                             }
-                            items[i].RenderCore.Render(context, deferred);
-                            ++counter;         
                         }
+                        else
+                        {
+                            for (int i = range.Item1; i < range.Item2; ++i)
+                            {
+                                if (context.EnableBoundingFrustum && !items[i].TestViewFrustum(ref frustum))
+                                {
+                                    continue;
+                                }
+                                items[i].RenderCore.Render(context, deferred);
+                                ++counter;
+                            }
+                        }
+
                         var command = deferred.FinishCommandList(true);
                         pool.Put(deferred);
                         lock (outputCommands)

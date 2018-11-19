@@ -18,19 +18,20 @@ float4 main(SSAOPS_INPUT input) : SV_Target
     float4 value = texSSAOMap.Sample(samplerSurface, input.Tex);
     float3 normal = normalize(value.rgb);
     float depth = value.a;
-    if (depth == 0)
+    if (depth == 1)
     {
-        return float4(1, 1, 1, 0);
+        return float4(1, 0, 0, 0);
     }
-    float3 position = input.Corner.xyz * depth;
+    float3 position = float3(input.Corner.xy, input.Corner.z * depth);
 
     float3 randomVec = texSSAONoise.Sample(samplerNoise, input.Tex * noiseScale);
 
     float3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
     float3 bitangent = cross(normal, tangent);
-    float3x3 TBN = transpose(float3x3(tangent, bitangent, normal));
+    float3x3 TBN = float3x3(tangent, bitangent, normal);
     float occlusion = 0;
     const float inv = 1.0 / SSAOKernalSize;
+
     [loop]
     for (uint i = 0; i < SSAOKernalSize; ++i)
     {
@@ -39,12 +40,12 @@ float4 main(SSAOPS_INPUT input) : SV_Target
         float4 offset = float4(sample, 1);
         offset = mul(offset, mProjection);
         offset.xy /= offset.w;
-        offset.xy = mad(offset.xy, float2(0.5, -0.5), 0.5);
+        offset.xy = mad(offset.xy, float2(0.5, -0.5), 0.5f);
         float sampleDepth = texSSAOMap.SampleLevel(samplerSurface, offset.xy, 0).a * input.Corner.z;
-        float rangeCheck = whenlt(abs(position.z - sampleDepth), radius);
+        float rangeCheck = whenlt(abs(position.z - sampleDepth), radius); //smoothstep(0.0, 1.0, radius / abs(position.z - sampleDepth));
         occlusion += whenle(abs(sampleDepth), abs(sample.z)) * rangeCheck;
     }
-    occlusion = 1- occlusion * inv;
+    occlusion = 1.0 - occlusion * inv;
     return float4(occlusion, 0, 0, 0);
 }
 #endif

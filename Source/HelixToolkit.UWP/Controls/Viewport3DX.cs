@@ -312,6 +312,8 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
                     renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                     renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
+                    renderHostInternal.RenderConfiguration.EnableSSAO = EnableSSAO;
+                    renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
                     renderHostInternal.Rendered += this.RaiseRenderHostRendered;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
 

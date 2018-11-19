@@ -198,7 +198,8 @@ namespace HelixToolkit.UWP.Core
             if (!parameter.ScissorRegion.IsEmpty)
             {
                 parameter.RenderTargetView = new RenderTargetView[] { colorTarget, alphaTarget };
-                RenderCount = context.RenderHost.Renderer.RenderOpaque(context, context.RenderHost.PerFrameTransparentNodes, ref parameter);
+                RenderCount = context.RenderHost.Renderer.
+                    RenderOpaque(context, context.RenderHost.PerFrameTransparentNodes, ref parameter, context.EnableBoundingFrustum);
             }
             else
             {

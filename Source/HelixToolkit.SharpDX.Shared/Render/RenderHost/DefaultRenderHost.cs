@@ -49,6 +49,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected readonly List<SceneNode> opaqueNodes = new List<SceneNode>();
         /// <summary>
+        /// The opaque nodes in frustum
+        /// </summary>
+        protected readonly List<SceneNode> opaqueNodesInFrustum = new List<SceneNode>();
+        /// <summary>
         /// The transparent nodes
         /// </summary>
         protected readonly List<SceneNode> transparentNodes = new List<SceneNode>();
@@ -88,14 +92,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// Gets the current frame flattened scene graph
         /// </value>
-        public override List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return perFrameFlattenedScene; } }
+        public sealed override List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return perFrameFlattenedScene; } }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
         /// <value>
         /// The per frame lights.
         /// </value>
-        public override IEnumerable<LightNode> PerFrameLights
+        public sealed override IEnumerable<LightNode> PerFrameLights
         {
             get { return lightNodes.Select(x => x as LightNode); }
         }
@@ -103,7 +107,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
         /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        public override List<SceneNode> PerFrameOpaqueNodes { get { return opaqueNodes; } }
+        public sealed override List<SceneNode> PerFrameOpaqueNodes { get { return opaqueNodes; } }
+        /// <summary>
+        /// Gets the per frame opaque nodes in frustum.
+        /// </summary>
+        /// <value>
+        /// The per frame opaque nodes in frustum.
+        /// </value>
+        public sealed override List<SceneNode> PerFrameOpaqueNodesInFrustum { get { return opaqueNodesInFrustum; } }
         /// <summary>
         /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
         /// <para>This does not include <see cref="RenderType.Opaque"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
@@ -111,21 +122,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        public override List<SceneNode> PerFrameTransparentNodes { get { return transparentNodes; } }
+        public sealed override List<SceneNode> PerFrameTransparentNodes { get { return transparentNodes; } }
         /// <summary>
         /// Gets the per frame transparent nodes.
         /// </summary>
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        public override List<SceneNode> PerFrameParticleNodes { get { return particleNodes; } }
+        public sealed override List<SceneNode> PerFrameParticleNodes { get { return particleNodes; } }
         /// <summary>
         /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameOpaqueNodes"/>
         /// </summary>
         /// <value>
         /// The per frame post effects cores.
         /// </value>
-        public override List<SceneNode> PerFrameNodesWithPostEffect
+        public sealed override List<SceneNode> PerFrameNodesWithPostEffect
         {
             get { return nodesForPostRender; }
         }
@@ -389,8 +400,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 needUpdateCores[i].Update(RenderContext, renderer.ImmediateContext);
             }
             renderer.RenderPreProc(RenderContext, preProcNodes, ref renderParameter);
-            numRendered += renderer.RenderOpaque(RenderContext, opaqueNodes, ref renderParameter);
-            numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter);
+            if (EnableRenderFrustum)
+            {
+                var frustum = renderContext.BoundingFrustum;
+                for(int i=0; i < opaqueNodes.Count; ++i)
+                {
+                    if (opaqueNodes[i].TestViewFrustum(ref frustum))
+                    {
+                        opaqueNodesInFrustum.Add(opaqueNodes[i]);
+                    }
+                }
+            }
+            else
+            {
+                opaqueNodesInFrustum.AddRange(opaqueNodes);
+            }
+            numRendered += renderer.RenderOpaque(RenderContext, opaqueNodesInFrustum, ref renderParameter, false);
+            numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter, true);
             numRendered += renderer.RenderTransparent(RenderContext, transparentNodes, ref renderParameter);
 
             getPostEffectCoreTask?.Wait();
@@ -471,6 +497,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             viewportRenderables.Clear();
             needUpdateCores.Clear();
             nodesForPostRender.Clear();
+            opaqueNodesInFrustum.Clear();
             if (clearFrameRenderables)
             {
                 perFrameFlattenedScene.Clear();

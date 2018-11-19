@@ -280,6 +280,17 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
+        /// Gets or sets a value indicating whether [ssao enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [ssao enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool SSAOEnabled
+        {
+            set { globalTransform.SSAOEnabled = value ? 1 : 0; }
+            get { return globalTransform.SSAOEnabled == 1 ? true : false; }
+        }
+        /// <summary>
         /// Gets or sets a value indicating whether [update scene graph requested] in this frame.
         /// </summary>
         /// <value>

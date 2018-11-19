@@ -46,10 +46,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
+        /// <param name="testFrustum"></param>
         /// <returns>Number of node has been rendered</returns>
-        public override int RenderOpaque(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public override int RenderOpaque(RenderContext context, List<SceneNode> renderables, 
+            ref RenderParameter parameter, bool testFrustum)
         {
-            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, commandList, out int counter))
+            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, 
+                testFrustum, commandList, out int counter))
             {
                 RenderParameter param = parameter;
 
@@ -63,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             else
             {
-                return base.RenderOpaque(context, renderables, ref parameter);
+                return base.RenderOpaque(context, renderables, ref parameter, testFrustum);
             }
         }
 

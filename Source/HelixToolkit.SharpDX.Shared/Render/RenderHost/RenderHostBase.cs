@@ -443,6 +443,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public abstract List<SceneNode> PerFrameOpaqueNodes { get; }
         /// <summary>
+        /// Gets the per frame opaque nodes in frustum.
+        /// </summary>
+        /// <value>
+        /// The per frame opaque nodes in frustum.
+        /// </value>
+        public abstract List<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
+        /// <summary>
         /// Gets the per frame transparent nodes.
         /// </summary>
         /// <value>
@@ -623,6 +630,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     renderContext.OITWeightPower = RenderConfiguration.OITWeightPower;
                     renderContext.OITWeightDepthSlope = RenderConfiguration.OITWeightDepthSlope;
                     renderContext.OITWeightMode = RenderConfiguration.OITWeightMode;
+                    renderContext.SSAOEnabled = RenderConfiguration.EnableSSAO;
                 }
                 renderBuffer.VSyncInterval = RenderConfiguration.EnableVSync ? 1 : 0;
                 bool updateSceneGraph = UpdateSceneGraphRequested;

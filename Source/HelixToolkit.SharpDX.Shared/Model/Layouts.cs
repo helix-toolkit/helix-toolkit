@@ -264,7 +264,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The eye position
         /// </summary>
         public Vector3 EyePos;
-        private float padding0;
+        public int SSAOEnabled;
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;

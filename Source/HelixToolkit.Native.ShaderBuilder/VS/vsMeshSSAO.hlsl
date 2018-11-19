@@ -25,13 +25,13 @@ SSAOIn main(VSInput input)
 			input.mr3
         };
         input.p = mul(input.p, mInstance);
-        input.n = mul(float4(input.n, 0), mInstance).xyz;
+        input.n = mul(input.n, (float3x3) mInstance);
     }
     float4 pv = mul(input.p, mul(mWorld, mView));
     SSAOIn output = (SSAOIn) 0;
 	//set position into world space	
     output.pos = mul(input.p, mul(mWorld, mViewProjection));
-    output.normal = normalize(mul(float4(input.n, 0), mWorld));
+    output.normal = normalize(mul(input.n, (float3x3) mWorld));
     output.depth = pv.z;
     return output;
 }
