@@ -57,6 +57,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected readonly List<SceneNode> transparentNodes = new List<SceneNode>();
         /// <summary>
+        /// The transparent nodes in frustum
+        /// </summary>
+        protected readonly List<SceneNode> transparentNodesInFrustum = new List<SceneNode>();
+        /// <summary>
         /// The particle nodes
         /// </summary>
         protected readonly List<SceneNode> particleNodes = new List<SceneNode>();
@@ -345,7 +349,29 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             base.PreRender(invalidateSceneGraph, invalidatePerFrameRenderables);
 
             SeparateRenderables(RenderContext, invalidateSceneGraph, invalidatePerFrameRenderables);
-
+            if (EnableRenderFrustum)
+            {
+                var frustum = renderContext.BoundingFrustum;
+                for (int i = 0; i < opaqueNodes.Count; ++i)
+                {
+                    if (opaqueNodes[i].TestViewFrustum(ref frustum))
+                    {
+                        opaqueNodesInFrustum.Add(opaqueNodes[i]);
+                    }
+                }
+                for(int i=0; i < transparentNodes.Count; ++i)
+                {
+                    if(transparentNodes[i].TestViewFrustum(ref frustum))
+                    {
+                        transparentNodesInFrustum.Add(transparentNodes[i]);
+                    }
+                }
+            }
+            else
+            {
+                opaqueNodesInFrustum.AddRange(opaqueNodes);
+                transparentNodesInFrustum.AddRange(transparentNodes);
+            }
             asyncTask = Task.Factory.StartNew(() =>
             {
                 renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
@@ -355,7 +381,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 getTriangleCountTask = Task.Factory.StartNew(() =>
                 {
                     int count = 0;
-                    foreach (var core in opaqueNodes.Select(x => x.RenderCore))
+                    foreach (var core in opaqueNodesInFrustum.Select(x => x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
@@ -363,7 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                                 count += geo.Geometry.Indices.Count / 3;
                         }
                     }
-                    foreach (var core in transparentNodes.Select(x => x.RenderCore))
+                    foreach (var core in transparentNodesInFrustum.Select(x => x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
@@ -400,24 +426,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 needUpdateCores[i].Update(RenderContext, renderer.ImmediateContext);
             }
             renderer.RenderPreProc(RenderContext, preProcNodes, ref renderParameter);
-            if (EnableRenderFrustum)
-            {
-                var frustum = renderContext.BoundingFrustum;
-                for(int i=0; i < opaqueNodes.Count; ++i)
-                {
-                    if (opaqueNodes[i].TestViewFrustum(ref frustum))
-                    {
-                        opaqueNodesInFrustum.Add(opaqueNodes[i]);
-                    }
-                }
-            }
-            else
-            {
-                opaqueNodesInFrustum.AddRange(opaqueNodes);
-            }
             numRendered += renderer.RenderOpaque(RenderContext, opaqueNodesInFrustum, ref renderParameter, false);
             numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter, true);
-            numRendered += renderer.RenderTransparent(RenderContext, transparentNodes, ref renderParameter);
+            numRendered += renderer.RenderTransparent(RenderContext, transparentNodesInFrustum, ref renderParameter);
 
             getPostEffectCoreTask?.Wait();
             getPostEffectCoreTask = null;
@@ -498,6 +509,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             needUpdateCores.Clear();
             nodesForPostRender.Clear();
             opaqueNodesInFrustum.Clear();
+            transparentNodesInFrustum.Clear();
             if (clearFrameRenderables)
             {
                 perFrameFlattenedScene.Clear();

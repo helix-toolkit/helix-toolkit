@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 int count = lights.Count;
                 for (int i = 0; i < count && i < Constants.MaxLights; ++i)
                 {
-                    lights[i].RenderCore.Render(context, ImmediateContext);
+                    lights[i].Render(context, ImmediateContext);
                 }
             }
             if (parameter.UpdatePerFrameData)
@@ -126,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 for (int i = 0; i < count; ++i)
                 {
-                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                    renderables[i].Render(context, ImmediateContext);
                     ++renderedCount;
                 }               
             }
@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     {
                         continue;
                     }
-                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                    renderables[i].Render(context, ImmediateContext);
                     ++renderedCount;
                 }
             }
@@ -168,11 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 int count = renderables.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
-                    {
-                        continue;
-                    }
-                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                    renderables[i].Render(context, ImmediateContext);
                     ++renderedCount;
                 }
                 return renderedCount;
@@ -231,7 +227,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {
-                renderables[i].RenderCore.Render(context, ImmediateContext);
+                renderables[i].Render(context, ImmediateContext);
             }
             if (context.SSAOEnabled)
             {
@@ -251,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {
-                renderables[i].RenderCore.Render(context, ImmediateContext);
+                renderables[i].Render(context, ImmediateContext);
             }            
         }
         /// <summary>
@@ -301,7 +297,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
                 for (int i = 0; i < count; ++i)
                 {
-                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                    renderables[i].Render(context, ImmediateContext);
                 }
                 if (!useDefault)
                 {

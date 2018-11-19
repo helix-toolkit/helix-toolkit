@@ -320,7 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         #endregion Events
 
-        private RenderCore core;
+        internal RenderCore core;
         /// <summary>
         /// Initializes a new instance of the <see cref="SceneNode"/> class.
         /// </summary>
@@ -538,6 +538,20 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             if (core.CanRenderFlag)
             {
                 core.RenderCustom(context, deviceContext);
+            }
+        }
+        /// <summary>
+        /// Renders the custom.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        /// <param name="pass"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void RenderDepth(RenderContext context, DeviceContextProxy deviceContext, Shaders.ShaderPass pass)
+        {
+            if (core.CanRenderFlag)
+            {
+                core.RenderDepth(context, deviceContext, pass);
             }
         }
         /// <summary>

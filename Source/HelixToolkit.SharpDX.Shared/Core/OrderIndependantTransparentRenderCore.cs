@@ -208,10 +208,6 @@ namespace HelixToolkit.UWP.Core
                 for (int i = 0; i < count; ++i)
                 {
                     var renderable = context.RenderHost.PerFrameTransparentNodes[i];
-                    if (context.EnableBoundingFrustum && !renderable.TestViewFrustum(ref frustum))
-                    {
-                        continue;
-                    }
                     renderable.RenderCore.Render(context, deviceContext);
                     ++RenderCount;
                 }

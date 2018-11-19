@@ -80,7 +80,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     continue;
                 }
-                node.RenderCore.RenderDepth(context, deviceContext, ssaoPass1);
+                node.RenderDepth(context, deviceContext, ssaoPass1);
             }
             context.BoundingFrustum.GetCorners(frustumCorners);
             Vector3.Transform(ref frustumCorners[5], ref context.ViewMatrix, out fpCorners[0]);
