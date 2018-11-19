@@ -299,11 +299,23 @@
     <FxCompile Include="PS\psVolumeDiffuse.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
-    <FxCompile Include="VS\vsMeshDepth.hlsl" />
-    <FxCompile Include="PS\psSSAO.hlsl" />
-    <FxCompile Include="PS\psSSAOP1.hlsl" />
-    <FxCompile Include="VS\vsMeshSSAO.hlsl" />
-    <FxCompile Include="VS\vsSSAO.hlsl" />
-    <FxCompile Include="PS\psSSAOBlur.hlsl" />
+    <FxCompile Include="PS\psSSAO.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psSSAOBlur.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="PS\psSSAOP1.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsMeshDepth.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsMeshSSAO.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsSSAO.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -70,7 +70,7 @@ namespace HelixToolkit.UWP.Core
             var frustum = context.BoundingFrustum;
             for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodesInFrustum.Count; ++i)
             {
-                var node = context.RenderHost.PerFrameOpaqueNodes[i];
+                var node = context.RenderHost.PerFrameOpaqueNodesInFrustum[i];
                 if (currTechnique != node.EffectTechnique)
                 {
                     currTechnique = node.EffectTechnique;
@@ -89,6 +89,7 @@ namespace HelixToolkit.UWP.Core
             Vector3.Transform(ref frustumCorners[7], ref context.ViewMatrix, out fpCorners[3]);
             ssaoParam.NoiseScale = new Vector2(context.ActualWidth / 4f, context.ActualHeight / 4f);
             ssaoParam.Radius = radius;
+            ssaoParam.IsPerspective = context.IsPerspective ? 1 : 0;
             ssaoCB.ModelConstBuffer.UploadDataToBuffer(deviceContext, (stream) =>
             {
                 stream.WriteRange(kernels);
@@ -110,9 +111,10 @@ namespace HelixToolkit.UWP.Core
             ssaoBlur.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt1);
             ssaoBlur.PixelShader.BindSampler(deviceContext, surfaceSampleSlot, blurSampler);
             deviceContext.Draw(4, 0);
+            context.SharedResource.SSAOMap = ssaoView;
 
             context.RenderHost.SetDefaultRenderTargets(false);
-            ssaoPass.PixelShader.BindTexture(deviceContext, ssaoTexSlot, ssaoView);
+            deviceContext.SetShaderResource(PixelShader.Type, ssaoTexSlot, ssaoView);
             context.RenderHost.RenderBuffer.FullResDepthStencilPool.Put(global::SharpDX.DXGI.Format.D32_Float, ds);
             context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, rt0);
             context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16_Float, rt1);
@@ -163,7 +165,6 @@ namespace HelixToolkit.UWP.Core
 
         private void InitialParameters()
         {
-            ssaoParam.KernelSize = KernalSize;
             ssaoParam.Radius = radius;
             var rnd = new Random((int)Stopwatch.GetTimestamp());
             float scale = 0.99f;

@@ -33,9 +33,9 @@ namespace HelixToolkit.UWP.Core
         public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             context.CustomPassName = DefaultPassNames.DepthPrepass;
-            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
+            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodesInFrustum.Count; ++i)
             {
-                context.RenderHost.PerFrameOpaqueNodes[i].RenderCore.RenderDepth(context, deviceContext, null);
+                context.RenderHost.PerFrameOpaqueNodesInFrustum[i].RenderDepth(context, deviceContext, null);
             }
         }
 

@@ -22,8 +22,8 @@ float4 main(SSAOPS_INPUT input) : SV_Target
     {
         return float4(1, 0, 0, 0);
     }
-    float3 position = float3(input.Corner.xy, input.Corner.z * depth);
-
+    float3 position = float3(input.Corner.xy, input.Corner.z * depth) * (1 - isPerspective) + input.Corner.xyz * depth * isPerspective;
+    
     float3 randomVec = texSSAONoise.Sample(samplerNoise, input.Tex * noiseScale);
 
     float3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
@@ -32,6 +32,13 @@ float4 main(SSAOPS_INPUT input) : SV_Target
     float occlusion = 0;
     const float inv = 1.0 / SSAOKernalSize;
 
+    //float3 sample = mul(float3(0, 0, 1), TBN);
+    //sample = mad(sample, radius, position);
+    //float4 offset = float4(sample, 1);
+    //offset = mul(offset, mProjection); 
+    //offset.xy /= offset.w;
+    //offset.xy = mad(offset.xy, float2(0.5, -0.5), 0.5f);
+    //return texSSAOMap.SampleLevel(samplerSurface, offset.xy, 0);
     [loop]
     for (uint i = 0; i < SSAOKernalSize; ++i)
     {

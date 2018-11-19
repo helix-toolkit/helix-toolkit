@@ -508,7 +508,7 @@ namespace HelixToolkit.Wpf.SharpDX
         //public Vector4[] Kernels;
         //public Vector4[] FrustumFarplaneCorner;
         public Vector2 NoiseScale;
-        public float KernelSize;
+        public int IsPerspective;
         public float Radius;
         public const int SizeInBytes = 4 * (4 * 32 + 4 * 4 + 4);
     }

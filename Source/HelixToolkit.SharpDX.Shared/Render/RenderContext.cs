@@ -39,6 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private CameraCore camera;
 
+        public bool IsPerspective { get; private set; }
         /// <summary>
         /// Gets the view matrix.
         /// </summary>
@@ -135,6 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
                     globalTransform.EyePos = this.camera.Position;
                 }
+                IsPerspective = this.camera is PerspectiveCameraCore;
             }
         }
 

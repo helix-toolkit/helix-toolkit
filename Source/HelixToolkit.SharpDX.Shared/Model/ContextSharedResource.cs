@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 {
     using Utilities;
 
-    public class ContextSharedResource : IDisposable
+    public sealed class ContextSharedResource : IDisposable
     {
         public ShaderResourceViewProxy ShadowView
         {
@@ -21,6 +21,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         }
 
         public ShaderResourceViewProxy EnvironementMap
+        {
+            set;get;
+        }
+
+        public ShaderResourceViewProxy SSAOMap
         {
             set;get;
         }
