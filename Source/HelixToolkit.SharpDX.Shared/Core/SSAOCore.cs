@@ -20,6 +20,12 @@ namespace HelixToolkit.UWP.Core
 
     public sealed class SSAOCore : RenderCore
     {
+        private float radius = 0.5f;
+        public float Radius
+        {
+            set { SetAffectsRender(ref radius, value); }
+            get { return radius; }
+        }
         private Texture2DDescription ssaoTextureDesc = new Texture2DDescription()
         {
             CpuAccessFlags = CpuAccessFlags.None,
@@ -43,6 +49,8 @@ namespace HelixToolkit.UWP.Core
         private readonly Vector4[] kernels = new Vector4[KernalSize];
         private readonly Vector3[] frustumCorners = new Vector3[8];
         private readonly Vector4[] fpCorners = new Vector4[4];
+        private PostEffectBlurCore blurCore;
+
         public SSAOCore():base(RenderType.PreProc)
         {
             ssaoCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.SSAOCB, SSAOParamStruct.SizeInBytes)));
@@ -78,6 +86,7 @@ namespace HelixToolkit.UWP.Core
             Vector3.Transform(ref frustumCorners[4], ref context.ViewMatrix, out fpCorners[2]);
             Vector3.Transform(ref frustumCorners[7], ref context.ViewMatrix, out fpCorners[3]);
             ssaoParam.NoiseScale = new Vector2(context.ActualWidth/4f, context.ActualHeight/4f);
+            ssaoParam.Radius = radius;
             ssaoCB.ModelConstBuffer.UploadDataToBuffer(deviceContext, (stream) =>
             {
                 stream.WriteRange(kernels);
@@ -136,7 +145,9 @@ namespace HelixToolkit.UWP.Core
             noiseSamplerSlot = ssaoPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.NoiseSampler);
             surfaceSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.PointSamplerWrap));
             noiseSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.SSAONoise));
-
+            blurCore = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.R16_Float,
+                technique[DefaultPassNames.EffectBlurVertical], technique[DefaultPassNames.EffectBlurHorizontal],
+                ssaoTexSlot, surfaceSampleSlot, DefaultSamplers.PointSamplerWrap, technique.EffectsManager));
             InitialParameters();
             return true;
         }
@@ -144,7 +155,7 @@ namespace HelixToolkit.UWP.Core
         private void InitialParameters()
         {
             ssaoParam.KernelSize = KernalSize;
-            ssaoParam.Radius = 0.5f;
+            ssaoParam.Radius = radius;
             var rnd = new Random((int)Stopwatch.GetTimestamp());
             float scale = 0.99f;
             for(int i = 0; i < 32; ++i)
@@ -154,7 +165,7 @@ namespace HelixToolkit.UWP.Core
                 float z = (float)rnd.NextDouble(0, 1);
                 var v = Vector3.Normalize(new Vector3(x, y, z));                
                 v *= scale;
-                scale = 0.1f + scale * (0.9f);
+                scale = 0.1f + scale * scale * (0.9f);
                 kernels[i] = new Vector4(v.X, v.Y, v.Z, 0);
             }
 

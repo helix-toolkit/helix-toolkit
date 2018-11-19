@@ -12,31 +12,26 @@ struct SSAOIn
     float3 normal : NORMAL;
 };
 
-SSAOIn main(float4 pos : POSITION0,
-float3 normal : NORMAL,
-float4 mr0 : TEXCOORD1,
-float4 mr1 : TEXCOORD2,
-float4 mr2 : TEXCOORD3,
-float4 mr3 : TEXCOORD4)
+SSAOIn main(VSInput input)
 {
 	// compose instance matrix
     if (bHasInstances)
     {
         matrix mInstance =
         {
-            mr0,
-			mr1,
-			mr2,
-			mr3
+            input.mr0,
+			input.mr1,
+			input.mr2,
+			input.mr3
         };
-        pos = mul(pos, mInstance);
-        normal = mul(float4(normal, 0), mInstance).xyz;
+        input.p = mul(input.p, mInstance);
+        input.n = mul(float4(input.n, 0), mInstance).xyz;
     }
-    float4 pv = mul(pos, mul(mWorld, mView));
+    float4 pv = mul(input.p, mul(mWorld, mView));
     SSAOIn output = (SSAOIn) 0;
 	//set position into world space	
-    output.pos = mul(pos, mul(mWorld, mViewProjection));
-    output.normal = normalize(mul(float4(normal, 0), mul(mWorld, mViewProjection)).xyz);
+    output.pos = mul(input.p, mul(mWorld, mViewProjection));
+    output.normal = normalize(mul(float4(input.n, 0), mWorld));
     output.depth = pv.z;
     return output;
 }
