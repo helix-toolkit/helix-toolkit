@@ -37,13 +37,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
                     ShadowView = null;
+                    EnvironementMap = null;
+                    SSAOMap = null;
                     // TODO: dispose managed state (managed objects).
                 }
 
