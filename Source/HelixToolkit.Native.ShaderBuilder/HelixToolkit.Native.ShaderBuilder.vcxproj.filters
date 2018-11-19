@@ -304,5 +304,6 @@
     <FxCompile Include="PS\psSSAOP1.hlsl" />
     <FxCompile Include="VS\vsMeshSSAO.hlsl" />
     <FxCompile Include="VS\vsSSAO.hlsl" />
+    <FxCompile Include="PS\psSSAOBlur.hlsl" />
   </ItemGroup>
 </Project>

@@ -1767,7 +1767,19 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         RasterStateDescription = DefaultRasterDescriptions.RSOutline,
                         Topology = PrimitiveTopology.TriangleStrip
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.EffectBlurHorizontal)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSSSAOBlur
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
+                    },
                 }
             };
 

@@ -276,6 +276,7 @@
     <None Include="Resources\psSkybox.cso" />
     <None Include="Resources\psSprite.cso" />
     <None Include="Resources\psSSAO.cso" />
+    <None Include="Resources\psSSAOBlur.cso" />
     <None Include="Resources\psSSAOP1.cso" />
     <None Include="Resources\psViewCube.cso" />
     <None Include="Resources\psVolume.cso" />

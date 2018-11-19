@@ -433,6 +433,11 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "psSSAO";
+
+        public static string PSSSAOBlur
+        {
+            get;
+        } = "psSSAOBlur";
     }
 
 
@@ -709,5 +714,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSSSAO = new ShaderDescription(nameof(PSSSAO), ShaderStage.Pixel, new ShaderReflector(),
            DefaultPSShaderByteCodes.PSSSAO);
+
+        /// <summary>
+        /// The ps ssao blur
+        /// </summary>
+        public static ShaderDescription PSSSAOBlur = new ShaderDescription(nameof(PSSSAOBlur), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSSSAOBlur);
     }
 }

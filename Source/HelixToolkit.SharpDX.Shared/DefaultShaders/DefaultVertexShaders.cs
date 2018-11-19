@@ -582,6 +582,7 @@ namespace HelixToolkit.UWP.Shaders
         /// The vsssao
         /// </summary>
         public static ShaderDescription VSSSAO = new ShaderDescription(nameof(VSSSAO), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSSAO);
+
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

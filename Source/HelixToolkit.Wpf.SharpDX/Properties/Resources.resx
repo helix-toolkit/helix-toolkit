@@ -388,4 +388,7 @@
   <data name="vsSSAO" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsssao.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psSSAOBlur" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psssaoblur.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

@@ -85,6 +85,7 @@
     <None Remove="Resources\psSkybox.cso" />
     <None Remove="Resources\psSprite.cso" />
     <None Remove="Resources\psSSAO.cso" />
+    <None Remove="Resources\psSSAOBlur.cso" />
     <None Remove="Resources\psSSAOP1.cso" />
     <None Remove="Resources\psViewCube.cso" />
     <None Remove="Resources\psVolume.cso" />
@@ -185,6 +186,7 @@
     <EmbeddedResource Include="Resources\psSkybox.cso" />
     <EmbeddedResource Include="Resources\psSprite.cso" />
     <EmbeddedResource Include="Resources\psSSAO.cso" />
+    <EmbeddedResource Include="Resources\psSSAOBlur.cso" />
     <EmbeddedResource Include="Resources\psSSAOP1.cso" />
     <EmbeddedResource Include="Resources\psViewCube.cso" />
     <EmbeddedResource Include="Resources\psVolume.cso" />
