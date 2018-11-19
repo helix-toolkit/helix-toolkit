@@ -320,7 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         #endregion Events
 
-        internal RenderCore core;
+        private RenderCore core;
         /// <summary>
         /// Initializes a new instance of the <see cref="SceneNode"/> class.
         /// </summary>
