@@ -72,11 +72,12 @@ namespace FileLoadDemo
             Camera = new OrthographicCamera() {
                 LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10),
                 Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
-                FarPlaneDistance = 10000, NearPlaneDistance = 0.1 };
+                UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0),
+            FarPlaneDistance = 1000, NearPlaneDistance = 0.1 };
             ResetCameraCommand = new DelegateCommand(() =>
             {
-                Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10);
-                Camera.Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10);
+                (Camera as OrthographicCamera).Reset();
+                (Camera as OrthographicCamera).FarPlaneDistance = 1000;
             });
             ExportCommand = new DelegateCommand(() => { ExportFile(); });
         }
