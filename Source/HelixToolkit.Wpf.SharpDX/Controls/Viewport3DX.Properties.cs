@@ -1138,6 +1138,17 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }));
 
+        public static readonly DependencyProperty SSAOIntensityProperty =
+            DependencyProperty.Register("SSAOIntensity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e)=> 
+                {
+                    var viewport = d as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                    {
+                        viewport.renderHostInternal.RenderConfiguration.SSAOIntensity =(float) (double) e.NewValue;
+                        viewport.renderHostInternal.InvalidateRender();
+                    }
+                }));
+
 
         /// <summary>
         /// Background Color
@@ -2929,6 +2940,18 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (double)GetValue(SSAOSamplingRadiusProperty); }
             set { SetValue(SSAOSamplingRadiusProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the ssao intensity.
+        /// </summary>
+        /// <value>
+        /// The ssao intensity.
+        /// </value>
+        public double SSAOIntensity
+        {
+            get { return (double)GetValue(SSAOIntensityProperty); }
+            set { SetValue(SSAOIntensityProperty, value); }
         }
     }
 }

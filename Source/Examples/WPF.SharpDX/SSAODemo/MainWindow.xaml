@@ -23,8 +23,8 @@
             EnableD2DRendering="False"
             EnableSSAO="True"
             EnableSwapChainRendering="True">
-            <hx:DirectionalLight3D Direction="-1, -1, 0" Color="White" />
-            <hx:AmbientLight3D Color="#5E5E5E" />
+            <hx:DirectionalLight3D Direction="-1, -1, 0" Color="#A8A8A8" />
+            <hx:AmbientLight3D Color="#414141" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
@@ -34,6 +34,10 @@
                 Geometry="{Binding SphereModel}"
                 Instances="{Binding SphereInstances}"
                 Material="{Binding SphereMaterial}" />
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                Geometry="{Binding BunnyModel}"
+                Material="{Binding BunnyMaterial}"/>
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <CheckBox Margin="4" IsChecked="{Binding ElementName=viewport, Path=EnableSSAO}">Enable SSAO</CheckBox>
@@ -42,6 +46,11 @@
                 Maximum="4"
                 Minimum="0.1"
                 Value="{Binding ElementName=viewport, Path=SSAOSamplingRadius}" />
+            <Slider
+                Margin="4"
+                Maximum="4"
+                Minimum="1"
+                Value="{Binding ElementName=viewport, Path=SSAOIntensity}" />
         </StackPanel>
     </Grid>
 </Window>

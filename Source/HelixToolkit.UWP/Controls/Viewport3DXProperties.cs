@@ -2231,5 +2231,32 @@ namespace HelixToolkit.UWP
                         viewport.renderHostInternal.InvalidateRender();
                     }
                 }));
+
+
+        /// <summary>
+        /// Gets or sets the ssao intensity.
+        /// </summary>
+        /// <value>
+        /// The ssao intensity.
+        /// </value>
+        public double SSAOIntensity
+        {
+            get { return (double)GetValue(SSAOIntensityProperty); }
+            set { SetValue(SSAOIntensityProperty, value); }
+        }
+
+        /// <summary>
+        /// The ssao intensity property
+        /// </summary>
+        public static readonly DependencyProperty SSAOIntensityProperty =
+            DependencyProperty.Register("SSAOIntensity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.SSAOIntensity = (float)(double)e.NewValue;
+                    viewport.renderHostInternal.InvalidateRender();
+                }
+            }));
     }
 }
