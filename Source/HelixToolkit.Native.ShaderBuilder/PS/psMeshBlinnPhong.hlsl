@@ -84,7 +84,7 @@ float4 main(PSInput input) : SV_Target
     float4 I = input.c2;
     if (SSAOEnabled)
     {
-        float2 quadTex = input.p.xy * float2(0.5, -0.5) + 0.5;
+        float2 quadTex = input.p.xy * vViewport.zw;
         I.rgb *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
 
@@ -193,7 +193,7 @@ float4 main(PSInput input) : SV_Target
         I.rgb = cubeMapReflection(input, I.rgb, reflectColor.rgb);
     }
 
-    return I;
+    return saturate(I);
 }
 
 #endif

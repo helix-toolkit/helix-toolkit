@@ -264,12 +264,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The eye position
         /// </summary>
         public Vector3 EyePos;
-        public int SSAOEnabled;
+        public uint SSAOEnabled;
+        public float SSAOBias;
+        public float SSAOIntensity;
+        Vector2 padding;
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;
         private int padding1;
-        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 4);
+        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 5);
     }
     /// <summary>
     /// Used for simple mesh rendering without materials. Such as ShadowPass

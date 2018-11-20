@@ -422,5 +422,13 @@ namespace HelixToolkit.UWP
         /// The SSAO sampling radius
         /// </summary>
         public float SSAORadius = 0.5f;
+        /// <summary>
+        /// The ssao bias
+        /// </summary>
+        public float SSAOBias = 1e-3f;
+        /// <summary>
+        /// The ssao intensity
+        /// </summary>
+        public float SSAOIntensity = 1f;
     }
 }

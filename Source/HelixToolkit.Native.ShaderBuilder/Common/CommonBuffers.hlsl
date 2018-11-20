@@ -21,7 +21,10 @@ cbuffer cbTransforms : register(b0)
     float4 vViewport;
 	// camera position
     float3 vEyePos;
-    float SSAOEnabled;
+    bool SSAOEnabled;
+    float SSAOBias;
+    float SSAOIntensity;
+    float2 padding0;
     float OITPower;
     float OITSlope;
     int OITWeightMode;

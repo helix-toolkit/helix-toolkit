@@ -631,6 +631,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     renderContext.OITWeightDepthSlope = RenderConfiguration.OITWeightDepthSlope;
                     renderContext.OITWeightMode = RenderConfiguration.OITWeightMode;
                     renderContext.SSAOEnabled = RenderConfiguration.EnableSSAO;
+                    renderContext.SSAOBias = RenderConfiguration.SSAOBias;
+                    renderContext.SSAOIntensity = RenderConfiguration.SSAOIntensity;
                 }
                 renderBuffer.VSyncInterval = RenderConfiguration.EnableVSync ? 1 : 0;
                 bool updateSceneGraph = UpdateSceneGraphRequested;

@@ -217,7 +217,7 @@ float4 main(PSInput input) : SV_Target
     float ambientOcculsion = input.c2.a;
     if (SSAOEnabled)
     {
-        float2 quadTex = input.p.xy * float2(0.5, -0.5) + 0.5;
+        float2 quadTex = input.p.xy * vViewport.zw;
         ambientOcculsion *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
     color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, ClearCoat, ClearCoatRoughness);
