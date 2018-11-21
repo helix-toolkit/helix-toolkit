@@ -542,7 +542,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshSSAO,
+                            DefaultVSShaderDescriptions.VSMeshBatchedSSAO,
                             DefaultPSShaderDescriptions.PSSSAOP1
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,

@@ -99,6 +99,7 @@
     <None Remove="Resources\vsCubeMap.cso" />
     <None Remove="Resources\vsMeshBatched.cso" />
     <None Remove="Resources\vsMeshBatchedShadow.cso" />
+    <None Remove="Resources\vsMeshBatchedSSAO.cso" />
     <None Remove="Resources\vsMeshBatchedWireframe.cso" />
     <None Remove="Resources\vsMeshClipPlane.cso" />
     <None Remove="Resources\vsMeshClipPlaneQuad.cso" />
@@ -200,6 +201,7 @@
     <EmbeddedResource Include="Resources\vsCubeMap.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatched.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatchedShadow.cso" />
+    <EmbeddedResource Include="Resources\vsMeshBatchedSSAO.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatchedWireframe.cso" />
     <EmbeddedResource Include="Resources\vsMeshClipPlane.cso" />
     <EmbeddedResource Include="Resources\vsMeshClipPlaneQuad.cso" />

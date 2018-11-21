@@ -11,9 +11,13 @@ struct SSAOIn
     float depth : TEXCOORD0;
     float3 normal : NORMAL;
 };
-
+#if defined(BATCHED)
+SSAOIn main(VSInputBatched input)
+#else
 SSAOIn main(VSInput input)
+#endif
 {
+    #if !defined(BATCHED)
 	// compose instance matrix
     if (bHasInstances)
     {
@@ -27,6 +31,8 @@ SSAOIn main(VSInput input)
         input.p = mul(input.p, mInstance);
         input.n = mul(input.n, (float3x3) mInstance);
     }
+    #endif
+
     float4 pv = mul(input.p, mul(mWorld, mView));
     SSAOIn output = (SSAOIn) 0;
 	//set position into world space	
