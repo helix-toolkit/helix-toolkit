@@ -848,7 +848,9 @@ namespace HelixToolkit.Wpf
             var orthographicCamera = camera as OrthographicCamera;
             if (orthographicCamera != null)
             {
-                LookAt(orthographicCamera, center, lookDirection, upDirection, animationTime);
+                var dir = lookDirection;
+                dir.Normalize();
+                LookAt(orthographicCamera, center, dir, upDirection, animationTime);
                 double newWidth = radius * 2;
 
                 if (viewport.ActualWidth > viewport.ActualHeight)
