@@ -156,7 +156,7 @@ namespace HelixToolkit.UWP.Core
             noiseTexSlot = ssaoPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SSAONoiseTB);
             surfaceSampleSlot = ssaoPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
             noiseSamplerSlot = ssaoPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.NoiseSampler);
-            surfaceSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.PointSamplerWrap));
+            surfaceSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.SSAOSamplerClamp));
             noiseSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.SSAONoise));
             blurSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
             InitialParameters();
@@ -176,12 +176,12 @@ namespace HelixToolkit.UWP.Core
                     float y = rnd.NextFloat(-1, 1);
                     float z = rnd.NextFloat(1e-3f, 1);
                     var v = Vector3.Normalize(new Vector3(x, y, z));
-                    if (Math.Acos(Math.Abs(Vector3.Dot(v, Vector3.UnitZ))) < Math.PI / 6)
+                    if (Math.Acos(Math.Abs(Vector3.Dot(v, Vector3.UnitZ))) < Math.PI / 9)
                     {
                         continue;
                     }
                     float scale = i / 32f;
-                    scale = 0.1f + 0.9f * scale;
+                    scale = 0.1f + 0.9f * scale * scale;
                     v *= scale;
                     kernels[i] = new Vector4(v.X, v.Y, v.Z, 0);
                     break;
@@ -193,7 +193,7 @@ namespace HelixToolkit.UWP.Core
             {
                 float x = rnd.NextFloat(-1, 1);
                 float y = rnd.NextFloat(-1, 1);
-                noise[i] = new Vector3(x, y, 0);
+                noise[i] = Vector3.Normalize(new Vector3(x, y, 0));
             }
             ssaoNoise = Collect(ShaderResourceViewProxy
                 .CreateView(Device, noise, 4, 4, global::SharpDX.DXGI.Format.R32G32B32_Float, true, false));

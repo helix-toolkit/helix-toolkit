@@ -167,5 +167,14 @@ namespace HelixToolkit.UWP.Shaders
             Filter = Filter.MinMagLinearMipPoint,
             MaximumLod = 0
         };
+
+        public static SamplerStateDescription SSAOSamplerClamp = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Clamp,
+            AddressV = TextureAddressMode.Clamp,
+            AddressW = TextureAddressMode.Clamp,
+            Filter = Filter.MinMagMipPoint,
+            MaximumLod = 0
+        };
     }
 }

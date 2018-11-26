@@ -20,8 +20,10 @@ namespace SSAODemo
         public PhongMaterial FloorMaterial { get; }
         public PhongMaterial SphereMaterial { get; }
 
-        public Material BunnyMaterial { get; }
+        public PhongMaterial BunnyMaterial { get; }
         public Matrix[] SphereInstances { get; }
+
+        public Matrix[] BunnyInstances { get; }
 
         public MainWindowViewModel()
         {
@@ -49,12 +51,12 @@ namespace SSAODemo
 
             var models = reader.Read("bunny.obj");
             BunnyModel = models[0].Geometry;
-            BunnyMaterial = models[0].Material.ConvertToMaterial();
-
-            FloorMaterial = PhongMaterials.MediumGray;
-            FloorMaterial.AmbientColor = Color.DarkGray;
+            BunnyMaterial = PhongMaterials.Green;
+            BunnyMaterial.AmbientColor = BunnyMaterial.DiffuseColor * 0.3f;
+            FloorMaterial = PhongMaterials.PureWhite;
+            FloorMaterial.AmbientColor = FloorMaterial.DiffuseColor * 0.3f;
             SphereMaterial = PhongMaterials.Red;
-            SphereMaterial.AmbientColor = Color.DarkGray;
+            SphereMaterial.AmbientColor = SphereMaterial.DiffuseColor * 0.3f;
             SphereInstances = new Matrix[4]
             {
                 Matrix.Translation(-2.5f, 1, 0),
@@ -62,7 +64,14 @@ namespace SSAODemo
                 Matrix.Translation(0, 1, -2.5f),
                 Matrix.Translation(0, 1, 2.5f)
             };
-            
+
+            BunnyInstances = new Matrix[4]
+            {
+                Matrix.Translation(0f, -0.8f, 0),
+                Matrix.Translation(6f, -0.8f, 0),
+                Matrix.Translation(0, -0.8f, -4f),
+                Matrix.Translation(0, -0.8f, 4f)
+            };           
         }
     }
 }

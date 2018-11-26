@@ -23,8 +23,8 @@
             EnableD2DRendering="False"
             EnableSSAO="True"
             EnableSwapChainRendering="True">
-            <hx:DirectionalLight3D Direction="-1, -1, 0" Color="#A8A8A8" />
-            <hx:AmbientLight3D Color="#414141" />
+            <hx:DirectionalLight3D Direction="-1, -1, 0" Color="White" />
+            <hx:AmbientLight3D Color="#6F6E6E" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
@@ -37,7 +37,8 @@
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding BunnyModel}"
-                Material="{Binding BunnyMaterial}"/>
+                Material="{Binding BunnyMaterial}"
+                Instances="{Binding BunnyInstances}"/>
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <CheckBox Margin="4" IsChecked="{Binding ElementName=viewport, Path=EnableSSAO}">Enable SSAO</CheckBox>
