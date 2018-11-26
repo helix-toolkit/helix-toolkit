@@ -317,5 +317,6 @@
     <FxCompile Include="VS\vsSSAO.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
+    <FxCompile Include="VS\vsMeshBatchedSSAO.hlsl" />
   </ItemGroup>
 </Project>

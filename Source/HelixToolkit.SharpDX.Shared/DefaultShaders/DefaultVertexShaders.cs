@@ -69,6 +69,16 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshBatchedShadow";
         /// <summary>
+        /// Gets the vs mesh batched ssao.
+        /// </summary>
+        /// <value>
+        /// The vs mesh batched ssao.
+        /// </value>
+        public static string VSMeshBatchedSSAO
+        {
+            get;
+        } = "vsMeshBatchedSSAO";
+        /// <summary>
         /// 
         /// </summary>
         public static string VSMeshInstancing
@@ -465,6 +475,13 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSMeshBatchedShadow = new ShaderDescription(nameof(VSMeshBatchedShadow), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshBatchedShadow);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshBatchedSSAO = new ShaderDescription(nameof(VSMeshBatchedSSAO), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBatchedSSAO);
         /// <summary>
         /// 
         /// </summary>
