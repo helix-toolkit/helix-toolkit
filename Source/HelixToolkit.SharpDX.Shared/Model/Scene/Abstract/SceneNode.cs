@@ -541,6 +541,20 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
         /// <summary>
+        /// Renders the custom.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        /// <param name="pass"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void RenderDepth(RenderContext context, DeviceContextProxy deviceContext, Shaders.ShaderPass pass)
+        {
+            if (core.CanRenderFlag)
+            {
+                core.RenderDepth(context, deviceContext, pass);
+            }
+        }
+        /// <summary>
         /// View frustum test.
         /// </summary>
         /// <param name="viewFrustum">The frustum.</param>

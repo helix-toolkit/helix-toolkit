@@ -21,6 +21,8 @@ namespace HelixToolkit.UWP.Model
 
         public ShaderPass WireframePass { get; }
 
+        public ShaderPass DepthPass { get; }
+
         private readonly string passName;
 
         /// <summary>
@@ -30,13 +32,18 @@ namespace HelixToolkit.UWP.Model
         /// <param name="technique">The technique.</param>
         /// <param name="shadowPassName">Name of the shadow pass.</param>
         /// <param name="wireframePassName">Name of the wireframe pass.</param>
-        public PassOnlyMaterialVariable(string passName, IRenderTechnique technique, string shadowPassName = DefaultPassNames.ShadowPass, string wireframePassName = DefaultPassNames.Wireframe)
+        /// <param name="depthPassName">Name of the depth pass</param>
+        public PassOnlyMaterialVariable(string passName, IRenderTechnique technique,
+            string shadowPassName = DefaultPassNames.ShadowPass, 
+            string wireframePassName = DefaultPassNames.Wireframe,
+            string depthPassName = DefaultPassNames.DepthPrepass)
             : base(technique.EffectsManager, technique, DefaultMeshConstantBufferDesc, null)
         {
             this.passName = passName;
             MaterialPass = technique[passName];
             ShadowPass = technique[shadowPassName];
             WireframePass = technique[wireframePassName];
+            DepthPass = technique[depthPassName];
         }
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
@@ -56,6 +63,11 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
         {
             return WireframePass;
+        }
+
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return DepthPass;
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

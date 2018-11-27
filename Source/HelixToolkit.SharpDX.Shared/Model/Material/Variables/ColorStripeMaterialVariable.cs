@@ -37,6 +37,7 @@ namespace HelixToolkit.UWP.Model
         public ShaderPass WireframePass { get; private set; } = ShaderPass.NullPass;
 
         public ShaderPass ShadowPass { get; private set; } = ShaderPass.NullPass;
+        public ShaderPass DepthPass { get; }
         /// <summary>
         /// 
         /// </summary>
@@ -46,10 +47,6 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         public string ShaderSamplerDiffuseTexName { set; get; } = DefaultSamplerStateNames.SurfaceSampler;
-
-        private readonly string defaultShaderPassName = DefaultPassNames.ColorStripe1D;
-        private readonly string wireframePassName = DefaultPassNames.Wireframe;
-        private readonly string shadowPassName = DefaultPassNames.ShadowPass;
 
         private readonly ColorStripeMaterialCore material;
         private readonly IDevice3DResources deviceResources;
@@ -68,9 +65,10 @@ namespace HelixToolkit.UWP.Model
             samplerDiffuseSlot = -1;
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
-            MaterialPass = technique[defaultShaderPassName];
-            WireframePass = technique[wireframePassName];
-            ShadowPass = technique[shadowPassName];
+            MaterialPass = technique[DefaultPassNames.ColorStripe1D];
+            WireframePass = technique[DefaultPassNames.Wireframe];
+            ShadowPass = technique[DefaultPassNames.ShadowPass];
+            DepthPass = technique[DefaultPassNames.DepthPrepass];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
@@ -217,6 +215,11 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
         {
             return WireframePass;
+        }
+
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return DepthPass;
         }
 
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

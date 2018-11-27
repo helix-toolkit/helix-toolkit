@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     [Serializable]
     [TypeConverter(typeof(Vector3CollectionConverter))]
 #endif
-    public sealed class Vector3Collection : ExposedArrayList<Vector3>
+    public sealed class Vector3Collection : FastList<Vector3>
     {
         public Vector3Collection()
         {

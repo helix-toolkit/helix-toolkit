@@ -189,13 +189,21 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        public abstract void RenderShadow(RenderContext context, DeviceContextProxy deviceContext);
+        public virtual void RenderShadow(RenderContext context, DeviceContextProxy deviceContext) { }
         /// <summary>
         /// Renders the custom pass. Must apply render pass externally. Usually used during PostEffect rendering.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        public abstract void RenderCustom(RenderContext context, DeviceContextProxy deviceContext);
+        public virtual void RenderCustom(RenderContext context, DeviceContextProxy deviceContext) { }
+        /// <summary>
+        /// Renders the depth pass.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        /// <param name="customPass"></param>
+        public virtual void RenderDepth(RenderContext context, DeviceContextProxy deviceContext,
+            Shaders.ShaderPass customPass) { }
         /// <summary>
         /// Update routine. Only used to run update computation such as compute shader in particle system. 
         /// <para>Compute shader can be run at the beginning of any other <see cref="Render(RenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>

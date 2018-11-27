@@ -4475,8 +4475,8 @@ namespace HelixToolkit.Wpf
             {
                 Vector3DCollection tan, bitan;
                 ComputeTangents(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out tan, out bitan);
-                ((List<Vector3D>)this.tangents).AddRange(tan);
-                ((List<Vector3D>)this.bitangents).AddRange(bitan);
+                this.tangents.AddRange(tan);
+                this.bitangents.AddRange(bitan);
             }
 
             return new MeshGeometry3D()

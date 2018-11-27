@@ -423,6 +423,21 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "psVolumeDiffuse";
+
+        public static string PSSSAOP1
+        {
+            get;
+        } = "psSSAOP1";
+
+        public static string PSSSAO
+        {
+            get;
+        } = "psSSAO";
+
+        public static string PSSSAOBlur
+        {
+            get;
+        } = "psSSAOBlur";
     }
 
 
@@ -689,5 +704,21 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSVolumeDiffuse3D = new ShaderDescription(nameof(PSVolumeDiffuse3D), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSVolumeDiffuse);
+        /// <summary>
+        /// The psssao p1
+        /// </summary>
+        public static ShaderDescription PSSSAOP1 = new ShaderDescription(nameof(PSSSAOP1), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSSSAOP1);
+        /// <summary>
+        /// The psssao
+        /// </summary>
+        public static ShaderDescription PSSSAO = new ShaderDescription(nameof(PSSSAO), ShaderStage.Pixel, new ShaderReflector(),
+           DefaultPSShaderByteCodes.PSSSAO);
+
+        /// <summary>
+        /// The ps ssao blur
+        /// </summary>
+        public static ShaderDescription PSSSAOBlur = new ShaderDescription(nameof(PSSSAOBlur), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSSSAOBlur);
     }
 }

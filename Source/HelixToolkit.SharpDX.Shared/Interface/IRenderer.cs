@@ -129,8 +129,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
+        /// <param name="testFrustum"></param>
         /// <returns>Number of node has been rendered</returns>
-        int RenderOpaque(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+        int RenderOpaque(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter, bool testFrustum);
 
         /// <summary>
         /// Renders the transparent.
@@ -160,7 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter);
         /// <summary>
-        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderOpaque(RenderContext, List{SceneNode}, ref RenderParameter)"/>
+        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderOpaque(RenderContext, List{SceneNode}, ref RenderParameter, bool)"/>
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
         /// </summary>
         /// <param name="renderables"></param>

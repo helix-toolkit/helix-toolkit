@@ -264,14 +264,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The eye position
         /// </summary>
         public Vector3 EyePos;
-        private float padding0;
+        public uint SSAOEnabled;
+        public float SSAOBias;
+        public float SSAOIntensity;
+        Vector2 padding;
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;
         private int padding1;
-        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 4);
+        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 5);
     }
-
+    /// <summary>
+    /// Used for simple mesh rendering without materials. Such as ShadowPass
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct SimpleMeshStruct
+    {
+        public Matrix World;
+        public int HasInstances;
+        Vector3 padding;
+        public const int SizeInBytes = 4 * (4 * 4 + 4);
+    }
     /// <summary>
     /// Used combine with <see cref="PhongPBRMaterialStruct"/>
     /// </summary>
@@ -489,6 +502,18 @@ namespace HelixToolkit.Wpf.SharpDX
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
         public CubeFaceCamera[] Cameras;
         public const int SizeInBytes = CubeFaceCamera.SizeInBytes * 6;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    internal struct SSAOParamStruct
+    {
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+        //public Vector4[] Kernels;
+        //public Vector4[] FrustumFarplaneCorner;
+        public Vector2 NoiseScale;
+        public int IsPerspective;
+        public float Radius;
+        public const int SizeInBytes = 4 * (4 * 32 + 4 * 4 + 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

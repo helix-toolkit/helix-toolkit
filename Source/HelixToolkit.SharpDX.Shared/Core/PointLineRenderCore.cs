@@ -73,7 +73,6 @@ namespace HelixToolkit.UWP.Core
             {
                 shaderPass.BindShader(deviceContext);
                 shaderPass.BindStates(deviceContext, DefaultStateBinding);
-                OnBindRasterState(deviceContext, context.IsInvertCullMode);
                 materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
             }
         }
@@ -90,15 +89,39 @@ namespace HelixToolkit.UWP.Core
         protected sealed override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             var pass = materialVariables.GetShadowPass(RenderType, context);
-            if (!IsThrowingShadow || pass.IsNULL)
+            if (pass.IsNULL)
             { return; }
-            if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+            var v = new SimpleMeshStruct()
+            {
+                World = ModelMatrix,
+                HasInstances = InstanceBuffer.HasElements ? 1 : 0
+            };
+            if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
             {
                 return;
             }
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, ShadowStateBinding); 
             materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+        }
+
+        protected sealed override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext, 
+            Shaders.ShaderPass customPass)
+        {
+            var pass = customPass ?? materialVariables.GetDepthPass(RenderType, context);
+            if (pass.IsNULL)
+            { return; }
+            OnUpdatePerModelStruct();
+            if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+            {
+                return;
+            }
+            if (materialVariables.BindMaterialResources(context, deviceContext, pass))
+            {
+                pass.BindShader(deviceContext);
+                pass.BindStates(deviceContext, DefaultStateBinding);
+                materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+            }
         }
     }
 }

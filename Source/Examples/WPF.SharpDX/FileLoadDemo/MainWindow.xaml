@@ -11,6 +11,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <hx:Viewport3DX
             x:Name="view"
             Grid.Row="1"
@@ -19,6 +23,8 @@
             CameraMode="Inspect"
             CameraRotationMode="Turnball"
             EffectsManager="{Binding EffectsManager}"
+            EnableD2DRendering="False"
+            EnableSwapChainRendering="True"
             FXAALevel="Low">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -43,18 +49,20 @@
             VerticalAlignment="Top">
             <MenuItem Header="File">
                 <MenuItem Command="{Binding OpenFileCommand}" Header="Open File" />
-                <MenuItem Command="{Binding ExportCommand}" Header="Export"/>
+                <MenuItem Command="{Binding ExportCommand}" Header="Export" />
             </MenuItem>
         </Menu>
         <StackPanel
             Grid.Row="1"
+            Grid.Column="1"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Orientation="Vertical">
             <Button Command="{Binding ResetCameraCommand}">
                 Reset Camera
             </Button>
-            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding ElementName=view, Path=EnableSSAO}">Enable SSAO</CheckBox>
         </StackPanel>
     </Grid>
 </Window>

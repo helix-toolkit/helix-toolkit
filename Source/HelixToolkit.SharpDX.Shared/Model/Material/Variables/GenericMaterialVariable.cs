@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Model
         {
             Texture, Sampler, Float, Vector2, Vector3, Vector4, Matrix
         }
-        private readonly ShaderPass materialPass, shadowPass, wireframePass;
+        private readonly ShaderPass materialPass, shadowPass, wireframePass, depthPass;
 
 
         private readonly KeyValuePair<int, ShaderResourceViewProxy>[] shaderResources;
@@ -34,13 +34,15 @@ namespace HelixToolkit.UWP.Model
             GenericMaterialCore materialCore, ConstantBufferDescription constantBufferDescription,
             string materialShaderPassName = DefaultPassNames.Default,
             string shadowShaderPassName = DefaultPassNames.ShadowPass,
-            string wireframePassName = DefaultPassNames.Wireframe)
+            string wireframePassName = DefaultPassNames.Wireframe,
+            string depthPassName = DefaultPassNames.DepthPrepass)
             : base(manager, technique, constantBufferDescription, materialCore)
         {
             core = materialCore;
             materialPass = technique[materialShaderPassName];
             shadowPass = technique[shadowShaderPassName];
             wireframePass = technique[wireframePassName];
+            depthPass = technique[depthPassName];
             shaderResources = new KeyValuePair<int, ShaderResourceViewProxy>[materialPass.PixelShader.ShaderResourceViewMapping.Count];
 
             for(int i=0; i < materialPass.PixelShader.ShaderResourceViewMapping.Count; ++i)
@@ -181,6 +183,11 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
         {
             return wireframePass;
+        }
+
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return depthPass;
         }
 
         protected override void OnDispose(bool disposeManagedResources)

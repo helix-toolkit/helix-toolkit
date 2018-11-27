@@ -213,9 +213,33 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             var pass = materialVariables.GetShadowPass(RenderType, context);
-            if (!IsThrowingShadow || pass.IsNULL)
+            if (pass.IsNULL)
             { return; }
-            if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, ModelStruct.SizeInBytes))
+            var v = new SimpleMeshStruct()
+            {
+                World = ModelMatrix,
+                HasInstances = InstanceBuffer.HasElements ? 1 : 0
+            };
+            if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
+            {
+                return;
+            }
+            pass.BindShader(deviceContext);
+            pass.BindStates(deviceContext, ShadowStateBinding);
+            materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+        }
+
+        protected override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext, ShaderPass customPass)
+        {
+            var pass = customPass ?? materialVariables.GetDepthPass(RenderType, context);
+            if (pass.IsNULL)
+            { return; }
+            var v = new SimpleMeshStruct()
+            {
+                World = ModelMatrix,
+                HasInstances = InstanceBuffer.HasElements ? 1 : 0
+            };
+            if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
             {
                 return;
             }

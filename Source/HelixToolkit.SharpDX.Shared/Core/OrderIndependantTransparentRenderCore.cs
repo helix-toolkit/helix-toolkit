@@ -198,7 +198,8 @@ namespace HelixToolkit.UWP.Core
             if (!parameter.ScissorRegion.IsEmpty)
             {
                 parameter.RenderTargetView = new RenderTargetView[] { colorTarget, alphaTarget };
-                RenderCount = context.RenderHost.Renderer.RenderOpaque(context, context.RenderHost.PerFrameTransparentNodes, ref parameter);
+                RenderCount = context.RenderHost.Renderer.
+                    RenderOpaque(context, context.RenderHost.PerFrameTransparentNodes, ref parameter, context.EnableBoundingFrustum);
             }
             else
             {
@@ -207,10 +208,6 @@ namespace HelixToolkit.UWP.Core
                 for (int i = 0; i < count; ++i)
                 {
                     var renderable = context.RenderHost.PerFrameTransparentNodes[i];
-                    if (context.EnableBoundingFrustum && !renderable.TestViewFrustum(ref frustum))
-                    {
-                        continue;
-                    }
                     renderable.RenderCore.Render(context, deviceContext);
                     ++RenderCount;
                 }
@@ -223,14 +220,6 @@ namespace HelixToolkit.UWP.Core
             screenQuadPass.PixelShader.BindTexture(deviceContext, alphaTexIndex, alphaTargetNoMSAA);
             screenQuadPass.PixelShader.BindSampler(deviceContext, samplerIndex, targetSampler);
             deviceContext.Draw(4, 0);
-        }
-
-        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
         }
     }
 }

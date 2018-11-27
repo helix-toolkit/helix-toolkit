@@ -20,6 +20,7 @@ namespace HelixToolkit.UWP.Model
 
         public ShaderPass LinePass { get; }
         public ShaderPass ShadowPass { get; }
+        public ShaderPass DepthPass { get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="LineMaterialVariable"/> class.
         /// </summary>
@@ -28,12 +29,15 @@ namespace HelixToolkit.UWP.Model
         /// <param name="materialCore">The material core.</param>
         /// <param name="linePassName">Name of the line pass.</param>
         /// <param name="shadowPassName">Name of the shadow pass.</param>
+        /// <param name="depthPassName">Name of the depth pass</param>
         public LineMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineMaterialCore materialCore,
-            string linePassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass) 
+            string linePassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass,
+            string depthPassName = DefaultPassNames.DepthPrepass) 
             : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
         {
             LinePass = technique[linePassName];
             ShadowPass = technique[shadowPassName];
+            DepthPass = technique[depthPassName];
             this.material = materialCore;
         }
 
@@ -66,6 +70,11 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
         {
             return ShaderPass.NullPass;
+        }
+
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return DepthPass;
         }
 
         public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)

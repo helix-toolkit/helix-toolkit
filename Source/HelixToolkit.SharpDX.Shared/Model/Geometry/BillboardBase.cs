@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private bool isInitialized = false;
 
-        public IList<BillboardVertex> BillboardVertices { get; } = new List<BillboardVertex>();
+        public IList<BillboardVertex> BillboardVertices { get; } = new FastList<BillboardVertex>();
 
         public BillboardBase()
         {

@@ -128,14 +128,6 @@ namespace HelixToolkit.UWP.Core
             deviceContext.Draw(4, 0);
         }
 
-        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
         protected override bool OnAttach(IRenderTechnique technique)
         {
             pass = technique[passName];

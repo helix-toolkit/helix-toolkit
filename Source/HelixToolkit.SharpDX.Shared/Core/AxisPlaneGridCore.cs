@@ -292,13 +292,5 @@ namespace HelixToolkit.UWP.Core
                 }
             }
         }
-
-        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
     }
 }

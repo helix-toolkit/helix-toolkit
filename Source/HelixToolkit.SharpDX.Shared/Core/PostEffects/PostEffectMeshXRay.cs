@@ -262,13 +262,5 @@ namespace HelixToolkit.UWP.Core
             context.SetViewport(0, 0, width, height);
             context.SetScissorRectangle(0, 0, width, height);
         }
-
-        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
     }
 }

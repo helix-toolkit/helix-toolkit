@@ -533,7 +533,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private static IntCollection ConvertFaceIndices(List<int> subFaces, List<int> faces)
+        private static IntCollection ConvertFaceIndices(List<int> subFaces, IList<int> faces)
         {
             var triangleIndices = new IntCollection(subFaces.Count * 3);// new List<int>(subFaces.Count * 3);
             foreach (int f in subFaces)

@@ -82,6 +82,12 @@ float4 main(PSInput input) : SV_Target
 
     // light emissive intensity and add ambient light
     float4 I = input.c2;
+    if (SSAOEnabled)
+    {
+        float2 quadTex = input.p.xy * vViewport.zw;
+        I.rgb *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
+    }
+
     if (bHasEmissiveMap)
     {
         I.rgb += texEmissiveMap.Sample(samplerSurface, input.t);
@@ -187,7 +193,7 @@ float4 main(PSInput input) : SV_Target
         I.rgb = cubeMapReflection(input, I.rgb, reflectColor.rgb);
     }
 
-    return I;
+    return saturate(I);
 }
 
 #endif

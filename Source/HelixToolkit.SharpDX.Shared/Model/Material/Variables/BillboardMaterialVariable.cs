@@ -86,6 +86,11 @@ namespace HelixToolkit.UWP.Model
             return ShaderPass.NullPass;
         }
 
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return ShaderPass.NullPass;
+        }
+
         public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
         {
             if (bufferModel is IBillboardBufferModel billboardModel)

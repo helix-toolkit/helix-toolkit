@@ -39,6 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private CameraCore camera;
 
+        public bool IsPerspective { get; private set; }
         /// <summary>
         /// Gets the view matrix.
         /// </summary>
@@ -135,6 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
                     globalTransform.EyePos = this.camera.Position;
                 }
+                IsPerspective = this.camera is PerspectiveCameraCore;
             }
         }
 
@@ -278,6 +280,39 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return (OITWeightMode)globalTransform.OITWeightMode;
             }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [ssao enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [ssao enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool SSAOEnabled
+        {
+            set { globalTransform.SSAOEnabled = value ? 1u : 0; }
+            get { return globalTransform.SSAOEnabled == 1u ? true : false; }
+        }
+        /// <summary>
+        /// Gets or sets the ssao bias.
+        /// </summary>
+        /// <value>
+        /// The ssao bias.
+        /// </value>
+        public float SSAOBias
+        {
+            set { globalTransform.SSAOBias = value; }
+            get { return globalTransform.SSAOBias; }
+        }
+        /// <summary>
+        /// Gets or sets the ssao intensity.
+        /// </summary>
+        /// <value>
+        /// The ssao intensity.
+        /// </value>
+        public float SSAOIntensity
+        {
+            set { globalTransform.SSAOIntensity = value; }
+            get { return globalTransform.SSAOIntensity; }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [update scene graph requested] in this frame.

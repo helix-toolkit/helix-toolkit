@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// </summary>
     public struct OrderKey : IComparable<OrderKey>
     {
-        public uint Key;
+        public uint Key { get; }
 
         public OrderKey(uint key)
         {
@@ -22,7 +22,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static OrderKey Create(ushort order, ushort materialID)
         {
-            return new OrderKey(((uint)order << 16) | materialID);
+            //return new OrderKey(((uint)order << 16) | materialID);
+            return new OrderKey(order);
         }
 
         public int CompareTo(OrderKey other)

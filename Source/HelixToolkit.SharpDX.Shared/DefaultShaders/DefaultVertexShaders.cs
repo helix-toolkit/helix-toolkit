@@ -52,12 +52,32 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshShadow";
         /// <summary>
+        /// Gets the vs mesh depth.
+        /// </summary>
+        /// <value>
+        /// The vs mesh depth.
+        /// </value>
+        public static string VSMeshDepth
+        {
+            get;
+        } = "vsMeshDepth";
+        /// <summary>
         ///
         /// </summary>
         public static string VSMeshBatchedShadow
         {
             get;
         } = "vsMeshBatchedShadow";
+        /// <summary>
+        /// Gets the vs mesh batched ssao.
+        /// </summary>
+        /// <value>
+        /// The vs mesh batched ssao.
+        /// </value>
+        public static string VSMeshBatchedSSAO
+        {
+            get;
+        } = "vsMeshBatchedSSAO";
         /// <summary>
         /// 
         /// </summary>
@@ -66,6 +86,10 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshInstancing";
 
+        public static string VSMeshSSAO
+        {
+            get;
+        } = "vsMeshSSAO";
         /// <summary>
         /// 
         /// </summary>
@@ -207,6 +231,11 @@ namespace HelixToolkit.UWP.Shaders
         {
             get;
         } = "vsVolume";
+
+        public static string VSSSAO
+        {
+            get;
+        } = "vsSSAO";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -436,11 +465,23 @@ namespace HelixToolkit.UWP.Shaders
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshShadow);
         /// <summary>
+        /// The vs mesh ssao
+        /// </summary>
+        public static ShaderDescription VSMeshSSAO = new ShaderDescription(nameof(VSMeshSSAO), ShaderStage.Vertex,
+            new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshSSAO);
+        /// <summary>
         /// 
         /// </summary>
         public static ShaderDescription VSMeshBatchedShadow = new ShaderDescription(nameof(VSMeshBatchedShadow), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshBatchedShadow);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshBatchedSSAO = new ShaderDescription(nameof(VSMeshBatchedSSAO), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBatchedSSAO);
         /// <summary>
         /// 
         /// </summary>
@@ -516,6 +557,10 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription VSMeshWireframe = new ShaderDescription(nameof(VSMeshWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshWireframe);
         /// <summary>
+        /// The vs mesh depth
+        /// </summary>
+        public static ShaderDescription VSMeshDepth = new ShaderDescription(nameof(VSMeshDepth), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshDepth);
+        /// <summary>
         /// The vs mesh batched wireframe
         /// </summary>
         public static ShaderDescription VSMeshBatchedWireframe = new ShaderDescription(nameof(VSMeshBatchedWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshBatchedWireframe);
@@ -550,6 +595,11 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs volume3d
         /// </summary>
         public static ShaderDescription VSVolume3D = new ShaderDescription(nameof(VSVolume3D), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSVolume3D);
+        /// <summary>
+        /// The vsssao
+        /// </summary>
+        public static ShaderDescription VSSSAO = new ShaderDescription(nameof(VSSSAO), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSSAO);
+
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

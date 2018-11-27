@@ -29,6 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
         private readonly OrderIndependentTransparentRenderCore transparentRenderCore;
         private readonly PostEffectFXAA postFXAACore;
+        private readonly SSAOCore preSSAOCore;
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -50,6 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
             transparentRenderCore = Collect(new OrderIndependentTransparentRenderCore());
             postFXAACore = Collect(new PostEffectFXAA());
+            preSSAOCore = Collect(new SSAOCore());
         }
 
         private static readonly Func<SceneNode, RenderContext, bool> updateFunc = (x, context) =>
@@ -97,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 int count = lights.Count;
                 for (int i = 0; i < count && i < Constants.MaxLights; ++i)
                 {
-                    lights[i].RenderCore.Render(context, ImmediateContext);
+                    lights[i].Render(context, ImmediateContext);
                 }
             }
             if (parameter.UpdatePerFrameData)
@@ -112,20 +114,33 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
+        /// <param name="testFrustum"></param>
         /// <returns>Number of node has been rendered</returns>
-        public virtual int RenderOpaque(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public virtual int RenderOpaque(RenderContext context, List<SceneNode> renderables, 
+            ref RenderParameter parameter, bool testFrustum)
         {
             int renderedCount = 0;
             int count = renderables.Count;
             var frustum = context.BoundingFrustum;
-            for (int i = 0; i < count; ++i)
+            if (!testFrustum)
             {
-                if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
+                for (int i = 0; i < count; ++i)
                 {
-                    continue;
+                    renderables[i].Render(context, ImmediateContext);
+                    ++renderedCount;
+                }               
+            }
+            else
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    if (!renderables[i].TestViewFrustum(ref frustum))
+                    {
+                        continue;
+                    }
+                    renderables[i].Render(context, ImmediateContext);
+                    ++renderedCount;
                 }
-                renderables[i].RenderCore.Render(context, ImmediateContext);
-                ++renderedCount;
             }
             return renderedCount;
         }
@@ -153,11 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 int count = renderables.Count;
                 for (int i = 0; i < count; ++i)
                 {
-                    if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
-                    {
-                        continue;
-                    }
-                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                    renderables[i].Render(context, ImmediateContext);
                     ++renderedCount;
                 }
                 return renderedCount;
@@ -216,7 +227,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {
-                renderables[i].RenderCore.Render(context, ImmediateContext);
+                renderables[i].Render(context, ImmediateContext);
+            }
+            if (context.SSAOEnabled)
+            {
+                preSSAOCore.Radius = context.RenderHost.RenderConfiguration.SSAORadius;
+                preSSAOCore.Render(context, ImmediateContext);
             }
         }
 
@@ -231,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {
-                renderables[i].RenderCore.Render(context, ImmediateContext);
+                renderables[i].Render(context, ImmediateContext);
             }            
         }
         /// <summary>
@@ -281,7 +297,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
                 for (int i = 0; i < count; ++i)
                 {
-                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                    renderables[i].Render(context, ImmediateContext);
                 }
                 if (!useDefault)
                 {
@@ -320,6 +336,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
                 postFXAACore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.PostEffectFXAA));
+                preSSAOCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.SSAO));
             }
         }
 
@@ -329,6 +346,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             stack2DCache1.Clear();
             transparentRenderCore.Detach();
             postFXAACore.Detach();
+            preSSAOCore.Detach();
         }
     }
 

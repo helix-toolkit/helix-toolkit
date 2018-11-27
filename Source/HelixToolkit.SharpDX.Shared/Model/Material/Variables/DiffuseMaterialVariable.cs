@@ -42,11 +42,12 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public ShaderPass MaterialPass { get; } = ShaderPass.NullPass;
-        public ShaderPass TransparentPass { get; } = ShaderPass.NullPass;
-        public ShaderPass ShadowPass { get; } = ShaderPass.NullPass;
-        public ShaderPass WireframePass { get; } = ShaderPass.NullPass;
-        public ShaderPass WireframeOITPass { get; } = ShaderPass.NullPass;
+        public ShaderPass MaterialPass { get; }
+        public ShaderPass TransparentPass { get; }
+        public ShaderPass ShadowPass { get; }
+        public ShaderPass WireframePass { get; }
+        public ShaderPass WireframeOITPass { get; }
+        public ShaderPass DepthPass { get; }
         /// <summary>
         /// 
         /// </summary>
@@ -73,10 +74,12 @@ namespace HelixToolkit.UWP.Model
         /// <param name="materialOITPassName">Name of the material oit pass.</param>
         /// <param name="wireframeOITPassName">Name of the wireframe oit pass.</param>
         /// <param name="shadowPassName">Name of the shadow pass.</param>
+        /// <param name="depthPassName">Name of the depth pass</param>
         private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, DiffuseMaterialCore materialCore,
             string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
             string materialOITPassName = DefaultPassNames.DiffuseOIT, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,
-            string shadowPassName = DefaultPassNames.ShadowPass)
+            string shadowPassName = DefaultPassNames.ShadowPass,
+            string depthPassName = DefaultPassNames.DepthPrepass)
             : base(manager, technique, DefaultMeshConstantBufferDesc, materialCore)
         {
             this.material = materialCore;
@@ -89,6 +92,7 @@ namespace HelixToolkit.UWP.Model
             ShadowPass = technique[shadowPassName];
             WireframePass = technique[wireframePassName];
             WireframeOITPass = technique[wireframeOITPassName];
+            DepthPass = technique[depthPassName];
             UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
@@ -226,6 +230,11 @@ namespace HelixToolkit.UWP.Model
         public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
         {
             return ShadowPass;
+        }
+
+        public override ShaderPass GetDepthPass(RenderType renderType, RenderContext context)
+        {
+            return DepthPass;
         }
 
         public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)

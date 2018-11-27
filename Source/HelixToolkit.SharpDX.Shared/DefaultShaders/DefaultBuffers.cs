@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP.Shaders
     {
         public static string GlobalTransformCB = "cbTransforms";
         public static string ModelCB = "cbMesh";
+        public static string SimpleMeshCB = "cbMeshSimple";
         public static string PointLineModelCB = "cbPointLineModel";
         public static string ParticleModelCB = "cbParticleModel";
         public static string PlaneGridModelCB = "cbPlaneGridModel";
@@ -25,6 +26,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string DynamicCubeMapCB = "cbDynamicCubeMap";
         public static string ScreenQuadCB = "cbScreenQuad";
         public static string VolumeModelCB = "cbVolumeModel";
+        public static string SSAOCB = "cbSSAO";
 #if !NETFX_CORE
         public static string ScreenDuplicationCB = "cbScreenClone";
 #endif
@@ -62,6 +64,9 @@ namespace HelixToolkit.UWP.Shaders
         public static string VolumeTB = "texVolume";
         public static string VolumeFront = "texVolumeFront";
         public static string VolumeBack = "texVolumeBack";
+
+        public static string SSAOMapTB = "texSSAOMap";
+        public static string SSAONoiseTB = "texSSAONoise";
     }
 
     public static class DefaultSamplerStateNames
@@ -75,5 +80,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string BillboardTextureSampler = "samplerBillboard";
         public static string SpriteSampler = "samplerSprite";
         public static string VolumeSampler = "samplerVolume";
+
+        public static string NoiseSampler = "samplerNoise";
     }
 }

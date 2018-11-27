@@ -33,29 +33,10 @@ namespace HelixToolkit.UWP.Core
         public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             context.CustomPassName = DefaultPassNames.DepthPrepass;
-            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
+            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodesInFrustum.Count; ++i)
             {
-                var core = context.RenderHost.PerFrameOpaqueNodes[i];
-                if (core.RenderType == RenderType.Opaque)
-                {
-                    var pass = core.EffectTechnique[DefaultPassNames.DepthPrepass];
-                    if (pass.IsNULL)
-                    {
-                        continue;
-                    }
-                    pass.BindShader(deviceContext);
-                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                    core.RenderCustom(context, deviceContext);
-                }
+                context.RenderHost.PerFrameOpaqueNodesInFrustum[i].RenderDepth(context, deviceContext, null);
             }
-        }
-
-        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
         }
 
         protected override bool OnAttach(IRenderTechnique technique)

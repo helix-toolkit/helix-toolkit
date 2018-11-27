@@ -21,12 +21,25 @@ cbuffer cbTransforms : register(b0)
     float4 vViewport;
 	// camera position
     float3 vEyePos;
-    float padding0;
+    bool SSAOEnabled;
+    float SSAOBias;
+    float SSAOIntensity;
+    float2 padding0;
     float OITPower;
     float OITSlope;
     int OITWeightMode;
     int OITReserved;
 };
+
+#if defined(MESHSIMPLE)
+cbuffer cbMeshSimple : register(b1)
+{
+// Common Parameters
+    float4x4 mWorld;
+    bool bHasInstances = false;
+    float3 padding1;
+};
+#endif
 
 #if defined(MESH)
 //Per model shares between Phong material and PBR material
@@ -255,6 +268,19 @@ cbuffer cbParticleCreateParameters : register(b8)
     float3 InitialAcceleration;
 };
 #endif
+
+#if defined(SSAO)
+static const uint SSAOKernalSize = 32;
+cbuffer cbSSAO : register(b1)
+{
+    float4 kernel[SSAOKernalSize];
+    float4 frustumCorner[4];
+    float2 noiseScale;
+    int isPerspective;
+    float radius;    
+}
+#endif
+
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D<float3> texNormalMap : register(t1);
@@ -273,6 +299,11 @@ Texture2D<float3> texDisplacementMap : register(t4);
 TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 
 Texture2D<float> texShadowMap : register(t30);
+
+Texture2D texSSAOMap : register(t31);
+#if defined(SSAO)
+Texture2D<float3> texSSAONoise : register(t32);
+#endif
 
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
@@ -308,6 +339,10 @@ SamplerState samplerBillboard : register(s7);
 SamplerState samplerSprite : register(s8);
 
 SamplerState samplerVolume : register(s9);
+
+#if defined(SSAO)
+SamplerState samplerNoise : register(s1);
+#endif
 ///---------------------UAV-----------------------------
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);

@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 {
     using Utilities;
 
-    public class ContextSharedResource : IDisposable
+    public sealed class ContextSharedResource : IDisposable
     {
         public ShaderResourceViewProxy ShadowView
         {
@@ -25,6 +25,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             set;get;
         }
 
+        public ShaderResourceViewProxy SSAOMap
+        {
+            set;get;
+        }
+
         public int EnvironmentMapMipLevels
         {
             set;get;
@@ -32,13 +37,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
                     ShadowView = null;
+                    EnvironementMap = null;
+                    SSAOMap = null;
                     // TODO: dispose managed state (managed objects).
                 }
 
