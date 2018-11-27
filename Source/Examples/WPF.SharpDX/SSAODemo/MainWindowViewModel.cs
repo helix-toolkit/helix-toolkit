@@ -52,11 +52,11 @@ namespace SSAODemo
             var models = reader.Read("bunny.obj");
             BunnyModel = models[0].Geometry;
             BunnyMaterial = PhongMaterials.Green;
-            BunnyMaterial.AmbientColor = BunnyMaterial.DiffuseColor * 0.3f;
+            BunnyMaterial.AmbientColor = BunnyMaterial.DiffuseColor * 0.5f;
             FloorMaterial = PhongMaterials.PureWhite;
-            FloorMaterial.AmbientColor = FloorMaterial.DiffuseColor * 0.3f;
+            FloorMaterial.AmbientColor = FloorMaterial.DiffuseColor * 0.5f;
             SphereMaterial = PhongMaterials.Red;
-            SphereMaterial.AmbientColor = SphereMaterial.DiffuseColor * 0.3f;
+            SphereMaterial.AmbientColor = SphereMaterial.DiffuseColor * 0.5f;
             SphereInstances = new Matrix[4]
             {
                 Matrix.Translation(-2.5f, 1, 0),
