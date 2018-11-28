@@ -551,6 +551,16 @@ namespace HelixToolkit.Wpf.SharpDX
         {
 
         }
+
+        public void StartRendering()
+        {
+
+        }
+
+        public void StopRendering()
+        {
+
+        }
         /// <summary>
         /// Updates the and render.
         /// </summary>

@@ -770,6 +770,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             Log(LogLevel.Information, $"Width = {width}; Height = {height};");
             if (IsInitialized)
             {
+                StartRendering();
                 return;
             }
             ActualWidth = width;
@@ -794,7 +795,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Starts the rendering.
         /// </summary>
-        protected virtual void StartRendering()
+        public virtual void StartRendering()
         {
             Log(LogLevel.Information, "");
             renderStatistics.Reset();
@@ -928,7 +929,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Stops the rendering.
         /// </summary>
-        protected virtual void StopRendering()
+        public virtual void StopRendering()
         {
             Log(LogLevel.Information, "");
             StopRenderLoop?.Invoke(this, EventArgs.Empty);
