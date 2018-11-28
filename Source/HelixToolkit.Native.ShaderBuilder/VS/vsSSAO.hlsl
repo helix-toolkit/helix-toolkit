@@ -18,7 +18,6 @@ struct SSAOPS_INPUT
     float4 Pos : SV_POSITION;
     noperspective
     float2 Tex : TEXCOORD0;
-    float4 Corner : TEXCOORD1;
 };
 
 SSAOPS_INPUT main(uint vI : SV_VERTEXID)
@@ -27,7 +26,6 @@ SSAOPS_INPUT main(uint vI : SV_VERTEXID)
     float2 texcoord = quadtexcoords[vI];
     output.Tex = texcoord;
     output.Pos = float4((texcoord.x - 0.5f) * 2, -(texcoord.y - 0.5f) * 2, 0, 1);
-    output.Corner = frustumCorner[vI];
     return output;
 }
 

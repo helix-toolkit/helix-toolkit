@@ -172,18 +172,38 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 var desc = description;
                 desc.Format = format;
-                var texture = Collect(new ShaderResourceViewProxy(deviceResourse.Device, desc));
+                ShaderResourceViewProxy texture = null;
+                
                 if((desc.BindFlags & BindFlags.RenderTarget) != 0)
                 {
+                    texture = Collect(new ShaderResourceViewProxy(deviceResourse.Device, desc));
                     texture.CreateRenderTargetView();
+                    if((desc.BindFlags & BindFlags.ShaderResource) != 0)
+                    {
+                        texture.CreateTextureView();
+                    }
                 }
-                if((desc.BindFlags & BindFlags.ShaderResource) != 0)
+                else if((desc.BindFlags & BindFlags.DepthStencil) != 0)
                 {
-                    texture.CreateTextureView();
-                }
-                if((desc.BindFlags & BindFlags.DepthStencil) != 0)
-                {
-                    texture.CreateDepthStencilView();
+                    if (format == Format.R32_Typeless)// Special handle for depth buffer used as both depth stencil and shader resource
+                    {
+                        desc.BindFlags |= BindFlags.ShaderResource;
+                    }
+                    texture = Collect(new ShaderResourceViewProxy(deviceResourse.Device, desc));
+                    if (format == Format.R32_Typeless)// Special handle for depth buffer used as both depth stencil and shader resource
+                    {
+                        texture.CreateView(new DepthStencilViewDescription() { Format = Format.D32_Float, Dimension = DepthStencilViewDimension.Texture2D });
+                        texture.CreateView(new ShaderResourceViewDescription()
+                        {
+                            Format = Format.R32_Float,
+                            Dimension = global::SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
+                            Texture2D = new ShaderResourceViewDescription.Texture2DResource() { MipLevels = desc.MipLevels }
+                        });
+                    }
+                    else
+                    {
+                        texture.CreateDepthStencilView();
+                    }
                 }
                 return texture;
             }

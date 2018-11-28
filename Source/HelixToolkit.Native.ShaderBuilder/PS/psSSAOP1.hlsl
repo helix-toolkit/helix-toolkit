@@ -14,7 +14,6 @@ struct SSAOIn
 
 float4 main(SSAOIn input) : SV_TARGET
 {
-    float fd = -input.depth / vFrustum.w;
-    return float4(normalize(input.normal), fd);
+    return float4(normalize(input.normal), 1);
 }
 #endif

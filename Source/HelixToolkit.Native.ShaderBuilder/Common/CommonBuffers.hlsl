@@ -274,10 +274,10 @@ static const uint SSAOKernalSize = 32;
 cbuffer cbSSAO : register(b1)
 {
     float4 kernel[SSAOKernalSize];
-    float4 frustumCorner[4];
     float2 noiseScale;
     int isPerspective;
     float radius;    
+    float4x4 invProjection;
 }
 #endif
 
@@ -303,6 +303,7 @@ Texture2D<float> texShadowMap : register(t30);
 Texture2D texSSAOMap : register(t31);
 #if defined(SSAO)
 Texture2D<float3> texSSAONoise : register(t32);
+Texture2D<float> texSSAODepth : register(t33);
 #endif
 
 Texture2D texParticle : register(t0);
