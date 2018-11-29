@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP.Core
 
         private ShaderResourceViewProxy ssaoView, ssaoNoise;
         private int width, height;
-        private int ssaoTexSlot, noiseTexSlot, surfaceSampleSlot, noiseSamplerSlot;
+        private int ssaoTexSlot, noiseTexSlot, surfaceSampleSlot, noiseSamplerSlot, depthSlot;
         private ShaderPass ssaoPass, ssaoBlur;
         private SamplerStateProxy surfaceSampler, noiseSampler, blurSampler;
         private SSAOParamStruct ssaoParam;
@@ -49,7 +49,9 @@ namespace HelixToolkit.UWP.Core
         private const int KernalSize = 32;
         private readonly Vector4[] kernels = new Vector4[KernalSize];
         private readonly Vector3[] frustumCorners = new Vector3[8];
-        private readonly Vector4[] fpCorners = new Vector4[4];
+        private const global::SharpDX.DXGI.Format DEPTHFORMAT = global::SharpDX.DXGI.Format.R32_Typeless;
+        private const global::SharpDX.DXGI.Format RENDERTARGETFORMAT = global::SharpDX.DXGI.Format.R16G16B16A16_Float;
+        private const global::SharpDX.DXGI.Format SSAOTARGETFORMAT = global::SharpDX.DXGI.Format.R16_Float;
 
         public SSAOCore() : base(RenderType.PreProc)
         {
@@ -59,9 +61,9 @@ namespace HelixToolkit.UWP.Core
         public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             EnsureTextureResources((int)context.ActualWidth, (int)context.ActualHeight, deviceContext);
-            var ds = context.RenderHost.RenderBuffer.FullResDepthStencilPool.Get(global::SharpDX.DXGI.Format.D32_Float);
-            var rt0 = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(global::SharpDX.DXGI.Format.R16G16B16A16_Float);
-            var rt1 = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(global::SharpDX.DXGI.Format.R16_Float);
+            var ds = context.RenderHost.RenderBuffer.FullResDepthStencilPool.Get(DEPTHFORMAT);
+            var rt0 = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(RENDERTARGETFORMAT);
+            var rt1 = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(SSAOTARGETFORMAT);
             deviceContext.ClearDepthStencilView(ds, DepthStencilClearFlags.Depth, 1, 0);
             deviceContext.ClearRenderTargetView(rt0, new Color4(0, 0, 0, 1));//Set alpha channel to 1 for max depth value
             deviceContext.SetRenderTarget(ds, rt0);
@@ -82,18 +84,15 @@ namespace HelixToolkit.UWP.Core
                 }
                 node.RenderDepth(context, deviceContext, ssaoPass1);
             }
-            context.BoundingFrustum.GetCorners(frustumCorners);
-            Vector3.Transform(ref frustumCorners[5], ref context.ViewMatrix, out fpCorners[0]);
-            Vector3.Transform(ref frustumCorners[6], ref context.ViewMatrix, out fpCorners[1]);
-            Vector3.Transform(ref frustumCorners[4], ref context.ViewMatrix, out fpCorners[2]);
-            Vector3.Transform(ref frustumCorners[7], ref context.ViewMatrix, out fpCorners[3]);
+
+            var invProjection = context.ProjectionMatrix.Inverted(); //* context.ViewMatrix.PsudoInvert();
+            ssaoParam.InvProjection = invProjection;
             ssaoParam.NoiseScale = new Vector2(context.ActualWidth / 4f, context.ActualHeight / 4f);
             ssaoParam.Radius = radius;
             ssaoParam.IsPerspective = context.IsPerspective ? 1 : 0;
             ssaoCB.ModelConstBuffer.UploadDataToBuffer(deviceContext, (stream) =>
             {
                 stream.WriteRange(kernels);
-                stream.WriteRange(fpCorners);
                 stream.Write(ssaoParam);
             });
             deviceContext.SetRenderTarget(null, rt1);
@@ -101,9 +100,12 @@ namespace HelixToolkit.UWP.Core
             ssaoPass.BindStates(deviceContext, StateType.All);
             ssaoPass.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt0);
             ssaoPass.PixelShader.BindTexture(deviceContext, noiseTexSlot, ssaoNoise);
+            ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, ds);
             ssaoPass.PixelShader.BindSampler(deviceContext, surfaceSampleSlot, surfaceSampler);
             ssaoPass.PixelShader.BindSampler(deviceContext, noiseSamplerSlot, noiseSampler);
             deviceContext.Draw(4, 0);
+
+            ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, null);
 
             deviceContext.SetRenderTarget(null, ssaoView);
             ssaoBlur.BindShader(deviceContext);
@@ -115,9 +117,9 @@ namespace HelixToolkit.UWP.Core
 
             context.RenderHost.SetDefaultRenderTargets(false);
             deviceContext.SetShaderResource(PixelShader.Type, ssaoTexSlot, ssaoView);
-            context.RenderHost.RenderBuffer.FullResDepthStencilPool.Put(global::SharpDX.DXGI.Format.D32_Float, ds);
-            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16G16B16A16_Float, rt0);
-            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(global::SharpDX.DXGI.Format.R16_Float, rt1);
+            context.RenderHost.RenderBuffer.FullResDepthStencilPool.Put(DEPTHFORMAT, ds);
+            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(RENDERTARGETFORMAT, rt0);
+            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(SSAOTARGETFORMAT, rt1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -154,8 +156,9 @@ namespace HelixToolkit.UWP.Core
             }
             ssaoTexSlot = ssaoPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SSAOMapTB);
             noiseTexSlot = ssaoPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SSAONoiseTB);
+            depthSlot = ssaoPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SSAODepthTB);
             surfaceSampleSlot = ssaoPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
-            noiseSamplerSlot = ssaoPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.NoiseSampler);
+            noiseSamplerSlot = ssaoPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.NoiseSampler);           
             surfaceSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.SSAOSamplerClamp));
             noiseSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.SSAONoise));
             blurSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
@@ -181,7 +184,7 @@ namespace HelixToolkit.UWP.Core
                         continue;
                     }
                     float scale = i / 32f;
-                    scale = 0.1f + 0.9f * scale * scale;
+                    scale = 0.1f + 0.9f * scale;
                     v *= scale;
                     kernels[i] = new Vector4(v.X, v.Y, v.Z, 0);
                     break;

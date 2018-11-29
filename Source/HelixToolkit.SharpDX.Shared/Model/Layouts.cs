@@ -509,11 +509,11 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         //public Vector4[] Kernels;
-        //public Vector4[] FrustumFarplaneCorner;
         public Vector2 NoiseScale;
         public int IsPerspective;
         public float Radius;
-        public const int SizeInBytes = 4 * (4 * 32 + 4 * 4 + 4);
+        public Matrix InvProjection;
+        public const int SizeInBytes = 4 * (4 * 32 + 4 + 4 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

@@ -271,6 +271,14 @@ namespace HelixToolkit.UWP
         /// </summary>
         void EndD3D();
         /// <summary>
+        /// Starts the rendering. Trigger <see cref="StartRenderLoop"/>
+        /// </summary>
+        void StartRendering();
+        /// <summary>
+        /// Stops the rendering. Trigger <see cref="StopRenderLoop"/>
+        /// </summary>
+        void StopRendering();
+        /// <summary>
         /// Updates the and render.
         /// </summary>
         void UpdateAndRender();
