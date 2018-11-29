@@ -20,9 +20,10 @@
             Grid.Column="0"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
-            EnableD2DRendering="False"
+            EnableD2DRendering="True"
+            EnableSSAO="True"
             FXAALevel="Medium"
-            EnableSSAO="True">
+            ShowFrameDetails="True">
             <hx:DirectionalLight3D Direction="-1, -1, 0" Color="#9A9A9A" />
             <hx:AmbientLight3D Color="#B0B0B0" />
             <hx:MeshGeometryModel3D
@@ -37,16 +38,18 @@
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding BunnyModel}"
-                Material="{Binding BunnyMaterial}"
-                Instances="{Binding BunnyInstances}"/>
+                Instances="{Binding BunnyInstances}"
+                Material="{Binding BunnyMaterial}" />
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <CheckBox Margin="4" IsChecked="{Binding ElementName=viewport, Path=EnableSSAO}">Enable SSAO</CheckBox>
+            <Label>Radius</Label>
             <Slider
                 Margin="4"
                 Maximum="4"
                 Minimum="0.1"
                 Value="{Binding ElementName=viewport, Path=SSAOSamplingRadius}" />
+            <Label>Strength</Label>
             <Slider
                 Margin="4"
                 Maximum="4"
