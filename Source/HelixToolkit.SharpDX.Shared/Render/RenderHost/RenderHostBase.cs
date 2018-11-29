@@ -770,6 +770,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             Log(LogLevel.Information, $"Width = {width}; Height = {height};");
             if (IsInitialized)
             {
+                Log(LogLevel.Information, $"RenderHost already Initialized.");
                 StartRendering();
                 return;
             }
@@ -789,6 +790,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
             CreateAndBindBuffers();
             IsInitialized = true;
+            Log(LogLevel.Information, $"Initialized.");
             AttachRenderable(EffectsManager);
             StartRendering();
         }

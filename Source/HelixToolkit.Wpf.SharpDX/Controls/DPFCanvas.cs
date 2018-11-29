@@ -77,7 +77,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred = delegate { };
 
         private readonly CompositionTargetEx compositionTarget = new CompositionTargetEx();
-
         /// <summary>
         /// 
         /// </summary>
@@ -152,7 +151,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 parentWindow.Closed -= ParentWindow_Closed;
             }
-            EndD3D();
+            if (DataContext == null)
+            {
+                EndD3D();
+            }
+            else
+            {
+                RenderHost.StopRendering();
+            }
         }
 
         /// <summary>
@@ -179,7 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             RenderHost.UpdateAndRender();
         }
-        private TimeSpan _last = TimeSpan.Zero;
+
         /// <summary>
         /// 
         /// </summary>
@@ -278,8 +284,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var parent = System.Windows.Media.VisualTreeHelper.GetParent(obj);
                 while (parent != null)
                 {
-                    var typed = parent as T;
-                    if (typed != null)
+                    if (parent is T typed)
                     {
                         return typed;
                     }

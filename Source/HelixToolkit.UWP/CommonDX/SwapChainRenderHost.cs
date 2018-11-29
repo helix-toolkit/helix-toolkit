@@ -55,7 +55,14 @@ namespace HelixToolkit.UWP
 
         private void SwapChainRenderHost_Unloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            EndD3D();
+            if (DataContext == null)
+            {
+                EndD3D();
+            }
+            else
+            {
+                renderHost.StopRendering();
+            }
         }
 
         private void SwapChainRenderHost_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
