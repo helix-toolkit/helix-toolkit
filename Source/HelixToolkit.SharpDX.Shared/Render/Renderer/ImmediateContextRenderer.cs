@@ -292,7 +292,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 var buffer = context.RenderHost.RenderBuffer;
                 bool useDefault = parameter.RenderTargetView[0] == buffer.ColorBuffer.RenderTargetView;
 
-                var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : buffer.FullResDepthStencilPool.Get(Format.D32_Float_S8X24_UInt);
+                var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : buffer.FullResDepthStencilPool.Get(Format.D32_Float);
                 ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
 
                 for (int i = 0; i < count; ++i)
@@ -301,7 +301,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
                 if (!useDefault)
                 {
-                    buffer.FullResDepthStencilPool.Put(Format.D32_Float_S8X24_UInt, depthStencilBuffer);
+                    buffer.FullResDepthStencilPool.Put(depthStencilBuffer);
                 }
             }
         }

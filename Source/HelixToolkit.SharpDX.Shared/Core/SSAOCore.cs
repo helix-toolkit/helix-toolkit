@@ -117,9 +117,9 @@ namespace HelixToolkit.UWP.Core
 
             context.RenderHost.SetDefaultRenderTargets(false);
             deviceContext.SetShaderResource(PixelShader.Type, ssaoTexSlot, ssaoView);
-            context.RenderHost.RenderBuffer.FullResDepthStencilPool.Put(DEPTHFORMAT, ds);
-            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(RENDERTARGETFORMAT, rt0);
-            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(SSAOTARGETFORMAT, rt1);
+            context.RenderHost.RenderBuffer.FullResDepthStencilPool.Put(ds);
+            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(rt0);
+            context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(rt1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

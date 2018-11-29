@@ -1,12 +1,13 @@
 ﻿using SharpDX.Direct3D11;
 using System.Collections.Concurrent;
 using Format = SharpDX.DXGI.Format;
+using System.Diagnostics;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
-{    
+{
     using Utilities;
     /// <summary>
     /// 
@@ -205,6 +206,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         texture.CreateDepthStencilView();
                     }
                 }
+                Debug.WriteLine("Create New Full Screen Texture");
                 return texture;
             }
         }

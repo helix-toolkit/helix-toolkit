@@ -316,7 +316,7 @@ namespace HelixToolkit.UWP.Core
                     DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetFull);
                 }
             }
-            buffer.FullResDepthStencilPool.Put(depthdesc.Format, depthStencilBuffer);
+            buffer.FullResDepthStencilPool.Put(depthStencilBuffer);
         }
 
         private void DrawOutline(RenderContext context, DeviceContextProxy deviceContext, 
