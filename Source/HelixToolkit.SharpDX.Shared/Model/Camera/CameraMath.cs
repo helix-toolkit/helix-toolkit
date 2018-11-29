@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             var cUP = Vector3.Normalize(camera.UpDirection);
             // transform the trackball coordinates to view space
             var viewZ = Vector3.Normalize(camera.LookDirection * invertFactor);
-            var viewX = Vector3.Cross(cUP, viewZ) * invertFactor;
+            var viewX = Vector3.Normalize(Vector3.Cross(cUP, viewZ)) * invertFactor;
             var viewY = Vector3.Cross(viewX, viewZ);
             var u1 = (viewZ * v1.Z) + (viewX * v1.X) + (viewY * v1.Y);
             var u2 = (viewZ * v2.Z) + (viewX * v2.X) + (viewY * v2.Y);
@@ -157,7 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             Vector3 newRelativeTarget = Vector3.TransformCoordinate(relativeTarget, m);
             Vector3 newRelativePosition = Vector3.TransformCoordinate(relativePosition, m);
 
-            var newRightVector = Vector3.Cross(newLookDir, newUpDirection);
+            var newRightVector = Vector3.Normalize(Vector3.Cross(newLookDir, newUpDirection));
             var modUpDir = Vector3.Cross(newRightVector, newLookDir);
             if ((newUpDirection - modUpDir).Length() > 1e-8)
             {
@@ -240,7 +240,7 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             var cUp = Vector3.Normalize(camera.UpDirection);
             var up = modelUpDirection;
             var dir = Vector3.Normalize(camera.LookDirection);
-            var right = Vector3.Cross(dir, cUp);
+            var right = Vector3.Normalize(Vector3.Cross(dir, cUp));
 
             float d = -0.5f;
             if (cameraMode != CameraMode.Inspect)
