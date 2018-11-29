@@ -170,7 +170,7 @@ namespace HelixToolkit.UWP.Core
         {
             ssaoParam.Radius = radius;
             var rnd = new Random((int)Stopwatch.GetTimestamp());
-
+            double thres = Math.Cos(Math.PI / 2 - Math.PI / 12);
             for (int i = 0; i < 32; ++i)
             {
                 while (true)
@@ -179,7 +179,8 @@ namespace HelixToolkit.UWP.Core
                     float y = rnd.NextFloat(-1, 1);
                     float z = rnd.NextFloat(1e-3f, 1);
                     var v = Vector3.Normalize(new Vector3(x, y, z));
-                    if (Math.Acos(Math.Abs(Vector3.Dot(v, Vector3.UnitZ))) < Math.PI / 9)
+                    float angle = Vector3.Dot(v, Vector3.UnitZ);
+                    if (Vector3.Dot(v, Vector3.UnitZ) < thres)
                     {
                         continue;
                     }

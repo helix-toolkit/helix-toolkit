@@ -58,7 +58,7 @@ float4 main(SSAOPS_INPUT input) : SV_Target
         //float rangeCheck = whenlt(abs(position.z - sampleDepth), radius); 
         occlusion += whenle(abs(sampleDepth), abs(sample.z - SSAOBias)) * rangeCheck;
     }
-    occlusion = 1.0 - occlusion * inv * whenge(occlusion, 5);
+    occlusion = 1.0 - occlusion * inv;
     return float4(occlusion, 0, 0, 0);
 
 }
