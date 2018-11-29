@@ -184,7 +184,7 @@ namespace HelixToolkit.UWP.Core
                         continue;
                     }
                     float scale = i / 32f;
-                    scale = 0.1f + 0.9f * scale * scale;
+                    scale = 0.1f + 0.9f * scale;
                     v *= scale;
                     kernels[i] = new Vector4(v.X, v.Y, v.Z, 0);
                     break;
