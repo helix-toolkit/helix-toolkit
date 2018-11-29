@@ -220,6 +220,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             bag.Add(proxy);
         }
 
+        public void Put(ShaderResourceViewProxy proxy)
+        {
+            if (IsDisposed)
+            {
+                return;
+            }
+            ConcurrentBag<ShaderResourceViewProxy> bag = pool.GetOrAdd(proxy.TextureFormat, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) =>
+            { return new ConcurrentBag<ShaderResourceViewProxy>(); }));
+            bag.Add(proxy);
+        }
+
         protected override void OnDispose(bool disposeManagedResources)
         {
             foreach(var bag in pool.Values)

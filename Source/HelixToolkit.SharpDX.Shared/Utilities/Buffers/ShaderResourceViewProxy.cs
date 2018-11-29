@@ -49,6 +49,7 @@ namespace HelixToolkit.UWP.Utilities
 
         private readonly Device device;
 
+        public global::SharpDX.DXGI.Format TextureFormat { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
         /// </summary>
@@ -63,6 +64,7 @@ namespace HelixToolkit.UWP.Utilities
         public ShaderResourceViewProxy(Device device, Texture1DDescription textureDesc) : this(device)
         {
             resource = Collect(new Texture1D(device, textureDesc));
+            TextureFormat = textureDesc.Format;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
@@ -72,6 +74,7 @@ namespace HelixToolkit.UWP.Utilities
         public ShaderResourceViewProxy(Device device, Texture2DDescription textureDesc) : this(device)
         {
             resource = Collect(new Texture2D(device, textureDesc));
+            TextureFormat = textureDesc.Format;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
@@ -81,6 +84,7 @@ namespace HelixToolkit.UWP.Utilities
         public ShaderResourceViewProxy(Device device, Texture3DDescription textureDesc) : this(device)
         {
             resource = Collect(new Texture3D(device, textureDesc));
+            TextureFormat = textureDesc.Format;
         }
 
         /// <summary>
@@ -99,6 +103,7 @@ namespace HelixToolkit.UWP.Utilities
         public ShaderResourceViewProxy(ShaderResourceView view) : this(view.Device)
         {
             textureView = Collect(view);
+            TextureFormat = view.Description.Format;
         }
         /// <summary>
         /// Creates the view from common texture file stream. Supports Bmp, Jpg, DDS, Png.
@@ -112,6 +117,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, disableAutoGenMipMap));
                 textureView = Collect(new ShaderResourceView(device, resource));
+                TextureFormat = textureView.Description.Format;
             }
         }
         /// <summary>
@@ -201,6 +207,7 @@ namespace HelixToolkit.UWP.Utilities
         {
             this.DisposeAndClear();
             var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, format, array));
+            TextureFormat = format;
             if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
                 if(TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
@@ -238,6 +245,7 @@ namespace HelixToolkit.UWP.Utilities
             this.DisposeAndClear();
             var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, 
                 format, array));
+            TextureFormat = format;
             if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
                 if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
@@ -282,6 +290,7 @@ namespace HelixToolkit.UWP.Utilities
 
             var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, 1, format, 
                 new[] { databox }));
+            TextureFormat = format;
             if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
                 if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
@@ -321,7 +330,8 @@ namespace HelixToolkit.UWP.Utilities
             this.DisposeAndClear();
             var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture3D.New(device, width, height, depth,
                 format, pixels));
-            if(texture.Description.MipLevels == 1 && generateMipMaps)
+            TextureFormat = format;
+            if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
                 if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
                 {
@@ -362,6 +372,7 @@ namespace HelixToolkit.UWP.Utilities
             var databox = img.ToDataBox();
             var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture3D.New(device, width, height, depth, format,
                 databox));
+            TextureFormat = format;
             if (texture.Description.MipLevels == 1 && generateMipMaps)
             {
                 if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
