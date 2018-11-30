@@ -37,44 +37,52 @@ using System.Linq;
 using Bitmap = SharpDX.WIC.Bitmap;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Utilities.ImagePacker
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Utilities.ImagePacker
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>
-    /// Pack a list of WIC.Bitmap into a single large bitmap
-    /// </summary>
-    public sealed class ImagePacker : SpritePackerBase<Bitmap, Bitmap>
+    namespace Utilities.ImagePacker
     {
-        public ImagePacker(IDevice2DResources deviceResources) : base(deviceResources)
+        /// <summary>
+        /// Pack a list of WIC.Bitmap into a single large bitmap
+        /// </summary>
+        public sealed class ImagePacker : SpritePackerBase<Bitmap, Bitmap>
         {
-        }
-
-        protected override void DrawOntoOutputTarget(WicRenderTarget target)
-        {
-            // draw all the images into the output image
-            foreach (var image in ItemArray)
+            public ImagePacker(IDevice2DResources deviceResources) : base(deviceResources)
             {
-                var location = ImagePlacement[image.Key];
-                var img = image.Value;
-                using (var bmp = global::SharpDX.Direct2D1.Bitmap.FromWicBitmap(target, img))
+            }
+
+            protected override void DrawOntoOutputTarget(WicRenderTarget target)
+            {
+                // draw all the images into the output image
+                foreach (var image in ItemArray)
                 {
-                    target.DrawBitmap(bmp,
-                        new RawRectangleF(location.Left, location.Top, location.Right, location.Bottom),
-                        1, global::SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
+                    var location = ImagePlacement[image.Key];
+                    var img = image.Value;
+                    using (var bmp = global::SharpDX.Direct2D1.Bitmap.FromWicBitmap(target, img))
+                    {
+                        target.DrawBitmap(bmp,
+                            new RawRectangleF(location.Left, location.Top, location.Right, location.Bottom),
+                            1, global::SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
+                    }
                 }
             }
-        }
 
-        protected override KeyValuePair<int, Bitmap>[] GetArray(IEnumerable<Bitmap> items)
-        {
-            return items.Select((x,i)=>new KeyValuePair<int, Bitmap>(i, x)).ToArray();
-        }
+            protected override KeyValuePair<int, Bitmap>[] GetArray(IEnumerable<Bitmap> items)
+            {
+                return items.Select((x,i)=>new KeyValuePair<int, Bitmap>(i, x)).ToArray();
+            }
 
-        protected override Size2F GetSize(Bitmap value)
-        {
-            return value.Size.ToSizeF();
+            protected override Size2F GetSize(Bitmap value)
+            {
+                return value.Size.ToSizeF();
+            }
         }
     }
+
 }

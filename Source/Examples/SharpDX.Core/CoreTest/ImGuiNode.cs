@@ -9,13 +9,12 @@ namespace HelixToolkit.SharpDX.Core.Model
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
     using global::SharpDX.DXGI;
-    using UWP.Core.Components;
-    using UWP.Shaders;
-    using UWP;
-    using UWP.Core;
-    using UWP.Model.Scene;
-    using UWP.Render;
-    using UWP.Utilities;
+    using Core.Components;
+    using Shaders;
+    using Core;
+    using Model.Scene;
+    using Render;
+    using Utilities;
 
     public class ImGuiNode : SceneNode
     {
@@ -291,7 +290,7 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         public ImGui2DBufferModel()
         {
-            VertexBufferInternal = Collect(new DynamicBufferProxy(Utilities.SizeOf<DrawVert>(), BindFlags.VertexBuffer));
+            VertexBufferInternal = Collect(new DynamicBufferProxy(global::SharpDX.Utilities.SizeOf<DrawVert>(), BindFlags.VertexBuffer));
             VertexBuffer[0] = VertexBufferInternal;
             IndexBuffer = IndexBufferInternal = Collect(new DynamicBufferProxy(sizeof(ushort), BindFlags.IndexBuffer));
         }

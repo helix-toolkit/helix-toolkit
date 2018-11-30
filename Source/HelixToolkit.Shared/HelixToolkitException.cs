@@ -6,14 +6,14 @@
 //   Represents errors that occurs in the Helix 3D Toolkit.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-#if SHARPDX
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 #else
-namespace HelixToolkit.Wpf
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using System;

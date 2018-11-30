@@ -4,36 +4,44 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Utilities
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Utilities
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IRandomSeed
+    namespace Utilities
     {
         /// <summary>
-        /// Gets the seed.
+        /// 
         /// </summary>
-        /// <value>
-        /// The seed.
-        /// </value>
-        uint Seed { get; }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IRandomVector : IRandomSeed
-    {
+        public interface IRandomSeed
+        {
+            /// <summary>
+            /// Gets the seed.
+            /// </summary>
+            /// <value>
+            /// The seed.
+            /// </value>
+            uint Seed { get; }
+        }
         /// <summary>
-        /// Gets the random vector3.
+        /// 
         /// </summary>
-        /// <value>
-        /// The random vector3.
-        /// </value>
-        Vector3 RandomVector3 { get; }
+        public interface IRandomVector : IRandomSeed
+        {
+            /// <summary>
+            /// Gets the random vector3.
+            /// </summary>
+            /// <value>
+            /// The random vector3.
+            /// </value>
+            Vector3 RandomVector3 { get; }
+        }
     }
+
 }

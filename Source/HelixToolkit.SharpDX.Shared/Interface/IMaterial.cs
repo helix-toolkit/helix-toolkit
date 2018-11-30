@@ -7,10 +7,14 @@ using SharpDX.Direct3D11;
 using System;
 using System.ComponentModel;
 using System.IO;
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Model;

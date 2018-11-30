@@ -4,13 +4,10 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using System.Diagnostics;
+using System;
 namespace HelixToolkit.SharpDX.Core.Controls
 {
-    using System;
-    using UWP;
-    using UWP.Cameras;
-
-
+    using Cameras;
     public abstract class MouseGestureHandler
     {
         /// <summary>

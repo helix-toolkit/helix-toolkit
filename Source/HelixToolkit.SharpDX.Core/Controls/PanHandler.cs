@@ -52,7 +52,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 this.Controller.StopSpin();
                 this.Controller.StopZooming();
             }
-            if (this.CameraMode == UWP.CameraMode.FixedPosition)
+            if (this.CameraMode == CameraMode.FixedPosition)
             {
                 return;
             }
@@ -114,7 +114,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// </returns>
         protected override bool CanStart()
         {
-            return this.Controller.IsPanEnabled && this.Controller.CameraMode != UWP.CameraMode.FixedPosition;
+            return this.Controller.IsPanEnabled && this.Controller.CameraMode != CameraMode.FixedPosition;
         }
 
         /// <summary>

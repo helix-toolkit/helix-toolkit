@@ -6,24 +6,22 @@
 //
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+using System;
+using global::SharpDX;
+using Vector3D = global::SharpDX.Vector3;
+using Vector3 = global::SharpDX.Vector3;
+using Point3D = global::SharpDX.Vector3;    
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using System;
-
-    using global::SharpDX;
-
-    using Core;
-
-    using Vector3D = global::SharpDX.Vector3;
-    using Vector3 = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;    
-    
-
+    using Core;  
     public class LineBuilder
     {
         private Vector3Collection positions;

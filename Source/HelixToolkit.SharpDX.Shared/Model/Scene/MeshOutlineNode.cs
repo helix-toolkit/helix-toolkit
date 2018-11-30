@@ -5,94 +5,101 @@ Copyright(c) 2018 Helix Toolkit contributors
 
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-
-    public class MeshOutlineNode : MeshNode
+    namespace Model.Scene
     {
-        #region Properties
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable outline].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable outline]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableOutline
+        using Core;
+
+        public class MeshOutlineNode : MeshNode
         {
-            set
+            #region Properties
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable outline].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable outline]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnableOutline
             {
-                (RenderCore as IMeshOutlineParams).OutlineEnabled = value;
+                set
+                {
+                    (RenderCore as IMeshOutlineParams).OutlineEnabled = value;
+                }
+                get
+                {
+                    return (RenderCore as IMeshOutlineParams).OutlineEnabled;
+                }
             }
-            get
+            /// <summary>
+            /// Gets or sets the color of the outline.
+            /// </summary>
+            /// <value>
+            /// The color of the outline.
+            /// </value>
+            public Color4 OutlineColor
             {
-                return (RenderCore as IMeshOutlineParams).OutlineEnabled;
+                set
+                {
+                    (RenderCore as IMeshOutlineParams).Color = value;
+                }
+                get
+                {
+                    return (RenderCore as IMeshOutlineParams).Color;
+                }
             }
-        }
-        /// <summary>
-        /// Gets or sets the color of the outline.
-        /// </summary>
-        /// <value>
-        /// The color of the outline.
-        /// </value>
-        public Color4 OutlineColor
-        {
-            set
+            /// <summary>
+            /// Gets or sets a value indicating whether this instance is draw geometry.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this instance is draw geometry; otherwise, <c>false</c>.
+            /// </value>
+            public bool IsDrawGeometry
             {
-                (RenderCore as IMeshOutlineParams).Color = value;
+                set
+                {
+                    (RenderCore as IMeshOutlineParams).DrawMesh = value;
+                }
+                get
+                {
+                    return (RenderCore as IMeshOutlineParams).DrawMesh;
+                }
             }
-            get
+            /// <summary>
+            /// Gets or sets the outline fading factor.
+            /// </summary>
+            /// <value>
+            /// The outline fading factor.
+            /// </value>
+            public float OutlineFadingFactor
             {
-                return (RenderCore as IMeshOutlineParams).Color;
-            }
-        }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is draw geometry.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is draw geometry; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsDrawGeometry
-        {
-            set
+                set
+                {
+                    (RenderCore as IMeshOutlineParams).OutlineFadingFactor = value;
+                }
+                get
+                {
+                    return (RenderCore as IMeshOutlineParams).OutlineFadingFactor;
+                }
+            } 
+            #endregion
+            /// <summary>
+            /// Called when [create render core].
+            /// </summary>
+            /// <returns></returns>
+            protected override RenderCore OnCreateRenderCore()
             {
-                (RenderCore as IMeshOutlineParams).DrawMesh = value;
+                return new MeshOutlineRenderCore();
             }
-            get
-            {
-                return (RenderCore as IMeshOutlineParams).DrawMesh;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the outline fading factor.
-        /// </summary>
-        /// <value>
-        /// The outline fading factor.
-        /// </value>
-        public float OutlineFadingFactor
-        {
-            set
-            {
-                (RenderCore as IMeshOutlineParams).OutlineFadingFactor = value;
-            }
-            get
-            {
-                return (RenderCore as IMeshOutlineParams).OutlineFadingFactor;
-            }
-        } 
-        #endregion
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new MeshOutlineRenderCore();
         }
     }
+
 }

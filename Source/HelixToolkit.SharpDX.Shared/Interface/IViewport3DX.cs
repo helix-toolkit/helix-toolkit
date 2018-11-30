@@ -3,19 +3,23 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
+using global::SharpDX;
+using System;
+using System.Collections.Generic;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
 #endif
+#endif
 {
-    using Cameras;
-    using global::SharpDX;
+    using Cameras;   
     using Model.Scene;
     using Model.Scene2D;
-    using System;
-    using System.Collections.Generic;
+
 
     /// <summary>
     /// 

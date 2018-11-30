@@ -6,240 +6,248 @@ using D2D = SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Core2D
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public class TextRenderCore2D : RenderCore2DBase
+    namespace Core2D
     {
-        private string text = "";
-        public string Text
+        public class TextRenderCore2D : RenderCore2DBase
         {
-            set
+            private string text = "";
+            public string Text
             {
-                if(SetAffectsRender(ref text, value))
+                set
+                {
+                    if(SetAffectsRender(ref text, value))
+                    {
+                        textLayoutDirty = true;
+                    }
+                }
+                get
+                {
+                    return text;
+                }
+            }
+
+            private D2D.Brush foreground = null;
+            public D2D.Brush Foreground
+            {
+                set
+                {
+                    var old = foreground;
+                    if(SetAffectsRender(ref foreground, value))
+                    {
+                        RemoveAndDispose(ref old);
+                        Collect(value);
+                    }
+                }
+                get
+                {
+                    return foreground;
+                }
+            }
+
+            private D2D.Brush background = null;
+            public D2D.Brush Background
+            {
+                set
+                {
+                    var old = background;
+                    if (SetAffectsRender(ref background, value))
+                    {
+                        RemoveAndDispose(ref old);
+                        Collect(value);
+                    }
+                }
+                get
+                {
+                    return background;
+                }
+            }
+
+            private string fontFamily = "Arial";
+            public string FontFamily
+            {
+                set
+                {
+                    if(SetAffectsRender(ref fontFamily, value) && IsAttached)
+                    {
+                        UpdateFontFormat();
+                    }
+                }
+                get
+                {
+                    return fontFamily;
+                }
+            }
+
+            private int fontSize = 12;
+            public int FontSize
+            {
+                set
+                {
+                    if(SetAffectsRender(ref fontSize, value) && IsAttached)
+                    {
+                        UpdateFontFormat();
+                    }
+                }
+                get { return fontSize; }
+            }
+
+            private FontWeight fontWeight = FontWeight.Normal;
+            public FontWeight FontWeight
+            {
+                set
+                {
+                    if(SetAffectsRender(ref fontWeight, value) && IsAttached)
+                    {
+                        UpdateFontFormat();
+                    }
+                }
+                get { return fontWeight; }
+            }
+
+            private FontStyle fontStyle = FontStyle.Normal;
+            public FontStyle FontStyle
+            {
+                set
+                {
+                    if(SetAffectsRender(ref fontStyle, value) && IsAttached)
+                    {
+                        UpdateFontFormat();
+                    }
+                }
+                get { return fontStyle; }
+            } 
+
+            public D2D.DrawTextOptions DrawingOptions { set; get; } = D2D.DrawTextOptions.None;
+
+            private TextAlignment textAlignment = TextAlignment.Leading;
+            public TextAlignment TextAlignment
+            {
+                set
+                {
+                    SetAffectsRender(ref textAlignment, value);
+                }
+                get
+                {
+                    return textAlignment;
+                }
+            }
+
+            private FlowDirection flowDirection = FlowDirection.LeftToRight;
+            public FlowDirection FlowDirection
+            {
+                set
+                {
+                    SetAffectsRender(ref flowDirection, value);
+                }
+                get
+                {
+                    return flowDirection;
+                }
+            }
+
+            private Factory textFactory;
+            private TextFormat textFormat;
+
+            public TextMetrics Metrices
+            {
+                get
+                {
+                    UpdateTextLayout();
+                    return textLayout.Metrics;
+                }
+            }
+
+            private TextLayout textLayout;
+
+            protected bool textLayoutDirty = true;
+
+            private float maxWidth = 0;
+            public float MaxWidth
+            {
+                set
+                {
+                    if(Set(ref maxWidth, value))
+                    {
+                        textLayoutDirty = true;
+                    }
+                }
+                get
+                {
+                    return maxWidth;
+                }
+            }
+
+            private float maxHeight = 0;
+            public float MaxHeight
+            {
+                set
+                {
+                    if(Set(ref maxHeight, value))
+                    {
+                        textLayoutDirty = true;
+                    }
+                }
+                get { return maxHeight; }
+            }
+
+            protected override bool OnAttach(IRenderHost host)
+            {
+                if (base.OnAttach(host))
                 {
                     textLayoutDirty = true;
+                    textFactory = Collect(new Factory(FactoryType.Isolated));
+                    textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
+                    return true;
                 }
-            }
-            get
-            {
-                return text;
-            }
-        }
-
-        private D2D.Brush foreground = null;
-        public D2D.Brush Foreground
-        {
-            set
-            {
-                var old = foreground;
-                if(SetAffectsRender(ref foreground, value))
+                else
                 {
-                    RemoveAndDispose(ref old);
-                    Collect(value);
+                    return false;
                 }
             }
-            get
-            {
-                return foreground;
-            }
-        }
 
-        private D2D.Brush background = null;
-        public D2D.Brush Background
-        {
-            set
+            private void UpdateFontFormat()
             {
-                var old = background;
-                if (SetAffectsRender(ref background, value))
-                {
-                    RemoveAndDispose(ref old);
-                    Collect(value);
-                }
-            }
-            get
-            {
-                return background;
-            }
-        }
-
-        private string fontFamily = "Arial";
-        public string FontFamily
-        {
-            set
-            {
-                if(SetAffectsRender(ref fontFamily, value) && IsAttached)
-                {
-                    UpdateFontFormat();
-                }
-            }
-            get
-            {
-                return fontFamily;
-            }
-        }
-
-        private int fontSize = 12;
-        public int FontSize
-        {
-            set
-            {
-                if(SetAffectsRender(ref fontSize, value) && IsAttached)
-                {
-                    UpdateFontFormat();
-                }
-            }
-            get { return fontSize; }
-        }
-
-        private FontWeight fontWeight = FontWeight.Normal;
-        public FontWeight FontWeight
-        {
-            set
-            {
-                if(SetAffectsRender(ref fontWeight, value) && IsAttached)
-                {
-                    UpdateFontFormat();
-                }
-            }
-            get { return fontWeight; }
-        }
-
-        private FontStyle fontStyle = FontStyle.Normal;
-        public FontStyle FontStyle
-        {
-            set
-            {
-                if(SetAffectsRender(ref fontStyle, value) && IsAttached)
-                {
-                    UpdateFontFormat();
-                }
-            }
-            get { return fontStyle; }
-        } 
-
-        public D2D.DrawTextOptions DrawingOptions { set; get; } = D2D.DrawTextOptions.None;
-
-        private TextAlignment textAlignment = TextAlignment.Leading;
-        public TextAlignment TextAlignment
-        {
-            set
-            {
-                SetAffectsRender(ref textAlignment, value);
-            }
-            get
-            {
-                return textAlignment;
-            }
-        }
-
-        private FlowDirection flowDirection = FlowDirection.LeftToRight;
-        public FlowDirection FlowDirection
-        {
-            set
-            {
-                SetAffectsRender(ref flowDirection, value);
-            }
-            get
-            {
-                return flowDirection;
-            }
-        }
-
-        private Factory textFactory;
-        private TextFormat textFormat;
-
-        public TextMetrics Metrices
-        {
-            get
-            {
-                UpdateTextLayout();
-                return textLayout.Metrics;
-            }
-        }
-
-        private TextLayout textLayout;
-
-        protected bool textLayoutDirty = true;
-
-        private float maxWidth = 0;
-        public float MaxWidth
-        {
-            set
-            {
-                if(Set(ref maxWidth, value))
-                {
-                    textLayoutDirty = true;
-                }
-            }
-            get
-            {
-                return maxWidth;
-            }
-        }
-
-        private float maxHeight = 0;
-        public float MaxHeight
-        {
-            set
-            {
-                if(Set(ref maxHeight, value))
-                {
-                    textLayoutDirty = true;
-                }
-            }
-            get { return maxHeight; }
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
-            {
-                textLayoutDirty = true;
-                textFactory = Collect(new Factory(FactoryType.Isolated));
+                RemoveAndDispose(ref textFormat);
                 textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
-                return true;
+                textLayoutDirty = true;
             }
-            else
+
+            private void UpdateTextLayout()
             {
-                return false;
-            }
-        }
+                if (textLayoutDirty)
+                {
+                    RemoveAndDispose(ref textLayout);
+                    textLayout = Collect(new TextLayout(textFactory, Text, textFormat, MaxWidth, MaxHeight));
+                    textLayoutDirty = false;
+                }
+                textLayout.TextAlignment = TextAlignment;            
+            }       
 
-        private void UpdateFontFormat()
-        {
-            RemoveAndDispose(ref textFormat);
-            textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
-            textLayoutDirty = true;
-        }
-
-        private void UpdateTextLayout()
-        {
-            if (textLayoutDirty)
+            protected override bool CanRender(RenderContext2D context)
             {
-                RemoveAndDispose(ref textLayout);
-                textLayout = Collect(new TextLayout(textFactory, Text, textFormat, MaxWidth, MaxHeight));
-                textLayoutDirty = false;
+                return base.CanRender(context) && Foreground != null;
             }
-            textLayout.TextAlignment = TextAlignment;            
-        }       
 
-        protected override bool CanRender(RenderContext2D context)
-        {
-            return base.CanRender(context) && Foreground != null;
-        }
-
-        protected override void OnRender(RenderContext2D context)
-        {
-            if (Background != null)
+            protected override void OnRender(RenderContext2D context)
             {
-                context.DeviceContext.FillRectangle(LayoutBound, Background);
+                if (Background != null)
+                {
+                    context.DeviceContext.FillRectangle(LayoutBound, Background);
+                }
+                UpdateTextLayout();
+                context.DeviceContext.DrawTextLayout(new Vector2(LayoutBound.Left, LayoutBound.Top), textLayout, Foreground, DrawingOptions);
             }
-            UpdateTextLayout();
-            context.DeviceContext.DrawTextLayout(new Vector2(LayoutBound.Left, LayoutBound.Top), textLayout, Foreground, DrawingOptions);
         }
     }
+
 }

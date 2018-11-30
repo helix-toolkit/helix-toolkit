@@ -3,26 +3,33 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class AmbientLightNode : LightNode
+    namespace Model.Scene
     {
+        using Core;
         /// <summary>
-        /// Called when [create render core].
+        /// 
         /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+        public sealed class AmbientLightNode : LightNode
         {
-            return new AmbientLightCore();
+            /// <summary>
+            /// Called when [create render core].
+            /// </summary>
+            /// <returns></returns>
+            protected override RenderCore OnCreateRenderCore()
+            {
+                return new AmbientLightCore();
+            }
         }
     }
+
 }

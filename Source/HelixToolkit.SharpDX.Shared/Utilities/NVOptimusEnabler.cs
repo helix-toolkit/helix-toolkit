@@ -1,38 +1,46 @@
 using System;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Utilities
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Utilities
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-#if !NETFX_CORE
-    /// <summary>
-    /// Enable dedicated graphics card for rendering. https://stackoverflow.com/questions/17270429/forcing-hardware-accelerated-rendering
-    /// </summary>
-    public sealed class NVOptimusEnabler
+    namespace Utilities
     {
-        static NVOptimusEnabler()
+    #if !NETFX_CORE
+        /// <summary>
+        /// Enable dedicated graphics card for rendering. https://stackoverflow.com/questions/17270429/forcing-hardware-accelerated-rendering
+        /// </summary>
+        public sealed class NVOptimusEnabler
         {
-            try
+            static NVOptimusEnabler()
             {
+                try
+                {
 
-                if (Environment.Is64BitProcess)
-                    NativeMethods.LoadNvApi64();
-                else
-                    NativeMethods.LoadNvApi32();
+                    if (Environment.Is64BitProcess)
+                        NativeMethods.LoadNvApi64();
+                    else
+                        NativeMethods.LoadNvApi32();
+                }
+                catch { } // will always fail since 'fake' entry point doesn't exists
             }
-            catch { } // will always fail since 'fake' entry point doesn't exists
+        };
+
+        internal static class NativeMethods
+        {
+            [System.Runtime.InteropServices.DllImport("nvapi64.dll", EntryPoint = "fake")]
+            internal static extern int LoadNvApi64();
+
+            [System.Runtime.InteropServices.DllImport("nvapi.dll", EntryPoint = "fake")]
+            internal static extern int LoadNvApi32();
         }
-    };
-
-    internal static class NativeMethods
-    {
-        [System.Runtime.InteropServices.DllImport("nvapi64.dll", EntryPoint = "fake")]
-        internal static extern int LoadNvApi64();
-
-        [System.Runtime.InteropServices.DllImport("nvapi.dll", EntryPoint = "fake")]
-        internal static extern int LoadNvApi32();
+    #endif
     }
-#endif
+
 }

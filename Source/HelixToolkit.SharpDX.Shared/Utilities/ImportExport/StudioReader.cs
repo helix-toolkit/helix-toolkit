@@ -11,7 +11,11 @@ using System.Windows.Media.Imaging;
 using MediaColor = System.Windows.Media.Color;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Core;

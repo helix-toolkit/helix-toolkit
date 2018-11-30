@@ -36,7 +36,7 @@ namespace RenderTechniqueImportExport
             LineModel = lineBuilder.ToLineGeometry3D();
 
             var offset = new Vector3(-4, 0, 0);
-            PointModel = new PointGeometry3D() { Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection(MeshModel.Positions.Select(x => x + offset)) };
+            PointModel = new PointGeometry3D() { Positions = new Vector3Collection(MeshModel.Positions.Select(x => x + offset)) };
 
             ExportCommand = new RelayCommand((o) => { Export(); });
             ImportCommand = new RelayCommand((o) => { Import(); });

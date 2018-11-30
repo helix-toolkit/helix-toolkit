@@ -5,12 +5,10 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using SharpDX;
 using System;
-
+using System.Diagnostics;
 namespace HelixToolkit.SharpDX.Core.Controls
-{
-    using System.Diagnostics;
-    using UWP;
-    using UWP.Cameras;
+{   
+    using Cameras;
 
     public sealed class CameraController
     {

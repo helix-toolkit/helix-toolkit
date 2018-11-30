@@ -27,20 +27,28 @@
 using System.IO;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Utilities.ImagePacker
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Utilities.ImagePacker
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public static class MiscHelper
-	{
-		// stolen from http://en.wikipedia.org/wiki/Power_of_two#Algorithm_to_find_the_next-highest_power_of_two
-		public static int FindNextPowerOfTwo(int k)
-		{
-			k--;
-			for (int i = 1; i < sizeof(int) * 8; i <<= 1)
-				k = k | k >> i;
-			return k + 1;
-		}
-	}
+    namespace Utilities.ImagePacker
+    {
+        public static class MiscHelper
+	    {
+		    // stolen from http://en.wikipedia.org/wiki/Power_of_two#Algorithm_to_find_the_next-highest_power_of_two
+		    public static int FindNextPowerOfTwo(int k)
+		    {
+			    k--;
+			    for (int i = 1; i < sizeof(int) * 8; i <<= 1)
+				    k = k | k >> i;
+			    return k + 1;
+		    }
+	    }
+    }
+
 }

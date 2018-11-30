@@ -2,15 +2,17 @@
 using System.IO;
 using System.Linq;
 using System;
-
+using global::SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
 #endif
-{
-    using global::SharpDX.Direct3D11;
-    
+#endif
+{   
     using Utilities;
     /// <summary>
     /// Use for texture resource sharing between models. It uses texture stream as key for each texture.

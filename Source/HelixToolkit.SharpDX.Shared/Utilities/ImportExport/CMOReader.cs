@@ -148,11 +148,16 @@ using System.Collections.Generic;
 using System.IO;
 using global::SharpDX;
 using System.Runtime.InteropServices;
+
 #if !NETFX_CORE
 using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
 #if NETFX_CORE

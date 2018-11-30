@@ -27,24 +27,32 @@
 using System;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Utilities.ImagePacker
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Utilities.ImagePacker
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>Insufficient space left in packing area to contain a given object</summary>
-    /// <remarks>
-    ///   An exception being sent to you from deep space. Erm, no, wait, it's an exception
-    ///   that occurs when a packing algorithm runs out of space and is unable to fit
-    ///   the object you tried to pack into the remaining packing area.
-    /// </remarks>
-	public sealed class OutOfSpaceException : Exception 
-	{
-		/// <summary>Initializes the exception with an error message</summary>
-		/// <param name="message">Error message describing the cause of the exception</param>
-		public OutOfSpaceException(string message) 
-			: base(message) 
-		{ 
-		}
-	}
+    namespace Utilities.ImagePacker
+    {
+        /// <summary>Insufficient space left in packing area to contain a given object</summary>
+        /// <remarks>
+        ///   An exception being sent to you from deep space. Erm, no, wait, it's an exception
+        ///   that occurs when a packing algorithm runs out of space and is unable to fit
+        ///   the object you tried to pack into the remaining packing area.
+        /// </remarks>
+	    public sealed class OutOfSpaceException : Exception 
+	    {
+		    /// <summary>Initializes the exception with an error message</summary>
+		    /// <param name="message">Error message describing the cause of the exception</param>
+		    public OutOfSpaceException(string message) 
+			    : base(message) 
+		    { 
+		    }
+	    }
+    }
+
 }

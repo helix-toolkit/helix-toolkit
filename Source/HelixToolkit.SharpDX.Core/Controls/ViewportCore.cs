@@ -8,11 +8,10 @@ using global::SharpDX;
 
 namespace HelixToolkit.SharpDX.Core.Controls
 {   
-    using UWP;
-    using UWP.Cameras;
-    using UWP.Model.Scene;
-    using UWP.Model.Scene2D;
-    using UWP.Render;
+    using Cameras;
+    using Model.Scene;
+    using Model.Scene2D;
+    using Render;
 
 
     public sealed class ViewportCore : IViewport3DX

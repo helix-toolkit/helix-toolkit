@@ -2,12 +2,10 @@
 
 using HelixToolkit.SharpDX.Core.Controls;
 using HelixToolkit.SharpDX.Core.Model;
-using HelixToolkit.UWP;
-using HelixToolkit.UWP.Cameras;
-using HelixToolkit.UWP.Core;
-using HelixToolkit.UWP.Model;
-using HelixToolkit.UWP.Model.Scene;
-using HelixToolkit.UWP.Shaders;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Cameras;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core.Shaders;
 using ImGuiNET;
 using SharpDX;
 using SharpDX.Windows;
