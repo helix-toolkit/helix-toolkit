@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helper
         {
 #if CORE
             var assembly = typeof(UWPShaderBytePool).GetTypeInfo().Assembly;
-            Stream shaderStream = assembly.GetManifestResourceStream($"HelixToolkit.SharpDX.Core.Resources.{name}.cso");
+            Stream shaderStream = assembly.GetManifestResourceStream($"HelixToolkit.UWP.Resources.{name}.cso");
             if (shaderStream == null)
             {
                 throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
