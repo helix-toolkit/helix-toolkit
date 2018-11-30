@@ -32,8 +32,8 @@ namespace HelixToolkit.UWP
             private const int NumPingPongBlurBuffer = 2;
             private ShaderPass screenBlurPassVertical;
             private ShaderPass screenBlurPassHorizontal;
-            private int textureSlot;
-            private int samplerSlot;
+            private readonly int textureSlot;
+            private readonly int samplerSlot;
             private Texture2DDescription texture2DDesc = new Texture2DDescription()
             {
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
@@ -61,8 +61,8 @@ namespace HelixToolkit.UWP
             };
 
             #region Texture Resources
-            private ShaderResourceViewProxy[] renderTargetBlur = new ShaderResourceViewProxy[NumPingPongBlurBuffer];
-            private SamplerStateProxy sampler;
+            private readonly ShaderResourceViewProxy[] renderTargetBlur = new ShaderResourceViewProxy[NumPingPongBlurBuffer];
+            private readonly SamplerStateProxy sampler;
             #endregion Texture Resources
             #endregion
             #region Properties
