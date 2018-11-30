@@ -57,9 +57,9 @@ namespace CoreTest
             viewport.OnStartRendering += Viewport_OnStartRendering;
             viewport.OnStopRendering += Viewport_OnStopRendering;
             viewport.OnErrorOccurred += Viewport_OnErrorOccurred;
-            //viewport.FXAALevel = FXAALevel.Low;
-            viewport.RenderHost.EnableRenderFrustum = false;
-            viewport.RenderHost.RenderConfiguration.EnableRenderOrder = true;
+            viewport.FXAALevel = FXAALevel.Low;
+            viewport.RenderHost.EnableRenderFrustum = true;
+            viewport.EnableRenderOrder = true;
             viewport.BackgroundColor = new Color4(0.45f, 0.55f, 0.6f, 1f);
             InitializeScene();
         }
