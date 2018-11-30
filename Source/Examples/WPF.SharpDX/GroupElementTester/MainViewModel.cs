@@ -34,10 +34,9 @@ namespace GroupElementTester
 
         public MeshGeometry3D ConeModel { private set; get; }
 
-        public PhongMaterial RedMaterial { get { return PhongMaterials.Red; } }
-
-        public PhongMaterial BlueMaterial { get { return PhongMaterials.Blue; } }
-        public PhongMaterial GreenMaterial { get { return PhongMaterials.Green; } }
+        public PhongMaterial RedMaterial { get; } = PhongMaterials.Red;
+        public PhongMaterial BlueMaterial { get; } = PhongMaterials.Blue;
+        public PhongMaterial GreenMaterial { get; } = PhongMaterials.Green;
 
         public Transform3D GroupModel3DTransform { private set; get; } = new Media3D.TranslateTransform3D(5, 0, 0);
         public Transform3D ItemsModel3DTransform { private set; get; } = new Media3D.TranslateTransform3D(0, 0, 5);
