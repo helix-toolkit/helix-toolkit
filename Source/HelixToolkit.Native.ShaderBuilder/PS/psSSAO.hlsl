@@ -22,13 +22,13 @@ float3 getPos(in float2 tex, in float depth)
 
 float4 main(SSAOPS_INPUT input) : SV_Target
 {
-    float4 value = texSSAOMap.Sample(samplerSurface, input.Tex);
-    float3 normal = normalize(value.rgb);
     float depth = texSSAODepth.Sample(samplerSurface, input.Tex); 
     if (depth == 1)
     {
         return float4(1, 0, 0, 0);
     }
+    float4 value = texSSAOMap.Sample(samplerSurface, input.Tex);
+    float3 normal = normalize(value.rgb);
     float3 position = getPos(input.Tex, depth); 
     
     float3 randomVec = texSSAONoise.Sample(samplerNoise, input.Tex * noiseScale);
@@ -58,7 +58,7 @@ float4 main(SSAOPS_INPUT input) : SV_Target
         //float rangeCheck = whenlt(abs(position.z - sampleDepth), radius); 
         occlusion += whenle(abs(sampleDepth), abs(sample.z - SSAOBias)) * rangeCheck;
     }
-    occlusion = 1.0 - occlusion * inv * whenge(occlusion, 5);
+    occlusion = 1.0 - occlusion * inv;
     return float4(occlusion, 0, 0, 0);
 
 }

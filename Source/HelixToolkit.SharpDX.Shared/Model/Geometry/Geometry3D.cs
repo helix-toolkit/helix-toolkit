@@ -2,18 +2,24 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+using System;
+using global::SharpDX;
+using System.Runtime.Serialization;
+using System.Collections.Generic;
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using System;
-    using global::SharpDX;
+
     using Core;
     using Model;
-    using System.Runtime.Serialization;
-    using System.Collections.Generic;
+
 
 #if !NETFX_CORE
     [Serializable]

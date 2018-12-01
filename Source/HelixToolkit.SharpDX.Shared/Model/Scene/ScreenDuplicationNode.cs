@@ -6,13 +6,18 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System.Collections.Generic;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
+    namespace Model.Scene
+    {
 #if !NETFX_CORE
 
     using Core;
@@ -21,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// </summary>
     public class ScreenDuplicationNode : SceneNode
     {
-        #region Properties
+    #region Properties
         /// <summary>
         /// Gets or sets the capture rectangle.
         /// </summary>
@@ -90,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IScreenClone).ShowMouseCursor;
             }
         } 
-        #endregion
+    #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenDuplicationModel"/> class.
@@ -137,4 +142,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     }
 
 #endif
+    }
+
 }

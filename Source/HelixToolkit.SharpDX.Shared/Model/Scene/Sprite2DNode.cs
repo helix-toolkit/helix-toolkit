@@ -6,155 +6,162 @@ using SharpDX;
 using System.Collections.Generic;
 using System.IO;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    using Utilities;
-
-    public class Sprite2DNode : SceneNode
+    namespace Model.Scene
     {
-        private Stream texture;
-        public Stream Texture
+        using Core;
+        using Utilities;
+
+        public class Sprite2DNode : SceneNode
         {
-            set
+            private Stream texture;
+            public Stream Texture
             {
-                if (SetAffectsRender(ref texture, value) && IsAttached)
+                set
                 {
-                    RemoveAndDispose(ref textureView);
-                    if (value != null)
+                    if (SetAffectsRender(ref texture, value) && IsAttached)
                     {
-                        TextureView = EffectTechnique.EffectsManager.MaterialTextureManager.Register(value, true);
+                        RemoveAndDispose(ref textureView);
+                        if (value != null)
+                        {
+                            TextureView = EffectTechnique.EffectsManager.MaterialTextureManager.Register(value, true);
+                        }
                     }
                 }
+                get { return texture; }
             }
-            get { return texture; }
-        }
 
-        public Matrix ProjectionMatrix
-        {
-            set
+            public Matrix ProjectionMatrix
             {
-                (RenderCore as Sprite2DRenderCore).ProjectionMatrix = value;
-            }
-            get
-            {
-                return (RenderCore as Sprite2DRenderCore).ProjectionMatrix;
-            }
-        }
-
-        private SpriteStruct[] sprites;
-        public SpriteStruct[] Sprites
-        {
-            set
-            {
-                if(Set(ref sprites, value) && IsAttached)
+                set
                 {
-                    bufferModel.Sprites = value;
+                    (RenderCore as Sprite2DRenderCore).ProjectionMatrix = value;
+                }
+                get
+                {
+                    return (RenderCore as Sprite2DRenderCore).ProjectionMatrix;
                 }
             }
-            get { return sprites; }
-        }
 
-        private int spriteCount;
-        public int SpriteCount
-        {
-            set
+            private SpriteStruct[] sprites;
+            public SpriteStruct[] Sprites
             {
-                if (SetAffectsRender(ref spriteCount, value) && IsAttached)
+                set
                 {
-                    bufferModel.SpriteCount = value;
+                    if(Set(ref sprites, value) && IsAttached)
+                    {
+                        bufferModel.Sprites = value;
+                    }
+                }
+                get { return sprites; }
+            }
+
+            private int spriteCount;
+            public int SpriteCount
+            {
+                set
+                {
+                    if (SetAffectsRender(ref spriteCount, value) && IsAttached)
+                    {
+                        bufferModel.SpriteCount = value;
+                    }
+                }
+                get { return spriteCount; }
+            }
+
+            private int[] indices;
+            public int[] Indices
+            {
+                set
+                {
+                    if(SetAffectsRender(ref indices, value) && IsAttached)
+                    {
+                        bufferModel.Indices = value;
+                    }
+                }
+                get
+                {
+                    return indices;
                 }
             }
-            get { return spriteCount; }
-        }
 
-        private int[] indices;
-        public int[] Indices
-        {
-            set
+            private int indexCount;
+            public int IndexCount
             {
-                if(SetAffectsRender(ref indices, value) && IsAttached)
+                set
                 {
-                    bufferModel.Indices = value;
+                    if(SetAffectsRender(ref indexCount, value) && IsAttached)
+                    {
+                        bufferModel.IndexCount = value;
+                    }
                 }
+                get { return indexCount; }
             }
-            get
-            {
-                return indices;
-            }
-        }
 
-        private int indexCount;
-        public int IndexCount
-        {
-            set
+            private Sprite2DBufferModel bufferModel;
+
+            private ShaderResourceViewProxy textureView;
+            protected ShaderResourceViewProxy TextureView
             {
-                if(SetAffectsRender(ref indexCount, value) && IsAttached)
+                set
                 {
-                    bufferModel.IndexCount = value;
+                    if(SetAffectsRender(ref textureView, value))
+                    {
+                        (RenderCore as Sprite2DRenderCore).TextureView = value;
+                    }
                 }
+                get { return textureView; }
             }
-            get { return indexCount; }
-        }
 
-        private Sprite2DBufferModel bufferModel;
-
-        private ShaderResourceViewProxy textureView;
-        protected ShaderResourceViewProxy TextureView
-        {
-            set
+            protected override RenderCore OnCreateRenderCore()
             {
-                if(SetAffectsRender(ref textureView, value))
+                return new Sprite2DRenderCore();
+            }
+
+            protected override void OnAttached()
+            {
+                bufferModel = Collect(new Sprite2DBufferModel());
+                bufferModel.Sprites = Sprites;
+                bufferModel.SpriteCount = SpriteCount;
+                if (texture != null)
                 {
-                    (RenderCore as Sprite2DRenderCore).TextureView = value;
+                    TextureView = Collect(EffectTechnique.EffectsManager.MaterialTextureManager.Register(texture, true));
                 }
+                base.OnAttached();
             }
-            get { return textureView; }
-        }
 
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new Sprite2DRenderCore();
-        }
-
-        protected override void OnAttached()
-        {
-            bufferModel = Collect(new Sprite2DBufferModel());
-            bufferModel.Sprites = Sprites;
-            bufferModel.SpriteCount = SpriteCount;
-            if (texture != null)
+            protected override void OnDetach()
             {
-                TextureView = Collect(EffectTechnique.EffectsManager.MaterialTextureManager.Register(texture, true));
+                bufferModel = null;
+                TextureView = null;
+                base.OnDetach();
             }
-            base.OnAttached();
-        }
 
-        protected override void OnDetach()
-        {
-            bufferModel = null;
-            TextureView = null;
-            base.OnDetach();
-        }
+            protected override bool CanRender(RenderContext context)
+            {
+                return base.CanRender(context) && sprites != null && indices != null 
+                    && spriteCount != 0 && indexCount != 0 && textureView != null;
+            }
 
-        protected override bool CanRender(RenderContext context)
-        {
-            return base.CanRender(context) && sprites != null && indices != null 
-                && spriteCount != 0 && indexCount != 0 && textureView != null;
-        }
+            protected override bool CanHitTest(RenderContext context)
+            {
+                return false;
+            }
 
-        protected override bool CanHitTest(RenderContext context)
-        {
-            return false;
-        }
-
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
+            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            {
+                return false;
+            }
         }
     }
+
 }

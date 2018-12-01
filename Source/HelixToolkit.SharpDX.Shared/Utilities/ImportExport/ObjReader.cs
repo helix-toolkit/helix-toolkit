@@ -15,11 +15,13 @@ using System.Linq;
 using global::SharpDX;
 
 #if !NETFX_CORE
-using System.Windows;
-//using System.Windows.Media.Imaging;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
 #if NETFX_CORE

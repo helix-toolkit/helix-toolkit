@@ -5,34 +5,41 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene2D
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core2D;
-
-    public class RectangleNode2D : ShapeNode2D
+    namespace Model.Scene2D
     {
-        protected override ShapeRenderCore2DBase CreateShapeRenderCore()
-        {
-            return new RectangleRenderCore2D();
-        }
+        using Core2D;
 
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        public class RectangleNode2D : ShapeNode2D
         {
-            hitResult = null;
-            if (LayoutBoundWithTransform.Contains(mousePoint))
+            protected override ShapeRenderCore2DBase CreateShapeRenderCore()
             {
-                hitResult = new HitTest2DResult(WrapperSource);
-                return true;
+                return new RectangleRenderCore2D();
             }
-            else
+
+            protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
             {
-                return false;
+                hitResult = null;
+                if (LayoutBoundWithTransform.Contains(mousePoint))
+                {
+                    hitResult = new HitTest2DResult(WrapperSource);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }
+
 }

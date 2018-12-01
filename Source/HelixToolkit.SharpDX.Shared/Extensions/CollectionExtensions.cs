@@ -6,10 +6,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Extensions
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Extensions
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
 #if NETFX_CORE

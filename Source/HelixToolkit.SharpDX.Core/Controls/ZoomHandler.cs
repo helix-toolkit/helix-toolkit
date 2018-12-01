@@ -4,8 +4,8 @@ using SharpDX;
 
 namespace HelixToolkit.SharpDX.Core.Controls
 {
-    using UWP.Cameras;
-    using UWP;
+    using Cameras;
+
     public sealed class ZoomHandler : MouseGestureHandler
     {
         /// <summary>

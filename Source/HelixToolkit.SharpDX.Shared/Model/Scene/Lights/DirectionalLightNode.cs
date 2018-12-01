@@ -4,27 +4,35 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class DirectionalLightNode : LightNode
+    namespace Model.Scene
     {
-        public Vector3 Direction
+        using Core;
+        /// <summary>
+        /// 
+        /// </summary>
+        public sealed class DirectionalLightNode : LightNode
         {
-            set { (RenderCore as DirectionalLightCore).Direction = value; }
-            get { return (RenderCore as DirectionalLightCore).Direction; }
-        }
+            public Vector3 Direction
+            {
+                set { (RenderCore as DirectionalLightCore).Direction = value; }
+                get { return (RenderCore as DirectionalLightCore).Direction; }
+            }
 
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new DirectionalLightCore();
+            protected override RenderCore OnCreateRenderCore()
+            {
+                return new DirectionalLightCore();
+            }
         }
     }
+
 }

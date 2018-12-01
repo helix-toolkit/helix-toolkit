@@ -8,11 +8,10 @@ using global::SharpDX;
 
 namespace HelixToolkit.SharpDX.Core.Controls
 {   
-    using UWP;
-    using UWP.Cameras;
-    using UWP.Model.Scene;
-    using UWP.Model.Scene2D;
-    using UWP.Render;
+    using Cameras;
+    using Model.Scene;
+    using Model.Scene2D;
+    using Render;
 
 
     public sealed class ViewportCore : IViewport3DX
@@ -20,7 +19,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
         public event EventHandler OnStartRendering;
         public event EventHandler OnStopRendering;
         public event EventHandler<Exception> OnErrorOccurred;
-        public IRenderHost RenderHost { private set; get; }
+        public IRenderHost RenderHost { get; }
 
         public bool IsShadowMappingEnabled { set; get; }
 
@@ -112,45 +111,26 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public bool RenderD2D
         {
-            set
-            {
-                RenderHost.RenderConfiguration.RenderD2D = value;
-            }
-            get
-            {
-                return RenderHost.RenderConfiguration.RenderD2D;
-            }
+            set => RenderHost.RenderConfiguration.RenderD2D = value;
+            get => RenderHost.RenderConfiguration.RenderD2D;
         }
 
         public Color4 BackgroundColor
         {
-            set
-            {
-                RenderHost.ClearColor = value;
-            }
-            get
-            {
-                return RenderHost.ClearColor;
-            }
+            set => RenderHost.ClearColor = value;
+            get => RenderHost.ClearColor; 
         }
 
         public FXAALevel FXAALevel
         {
-            set
-            {
-                RenderHost.RenderConfiguration.FXAALevel = value;
-            }
-            get
-            {
-                return RenderHost.RenderConfiguration.FXAALevel;
-            }
+            set => RenderHost.RenderConfiguration.FXAALevel = value;
+            get => RenderHost.RenderConfiguration.FXAALevel;
         }
 
         public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)RenderHost.ActualWidth, (int)RenderHost.ActualHeight); } }
 
         public RenderContext RenderContext { get => RenderHost.RenderContext; }
 
-        private bool enableVSync = true;
         /// <summary>
         /// Gets or sets a value indicating whether [enable vertical synchronize].
         /// </summary>
@@ -159,18 +139,21 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// </value>
         public bool EnableVSync
         {
-            set
-            {
-                enableVSync = value;
-                if (RenderHost != null)
-                {
-                    RenderHost.RenderConfiguration.EnableVSync = value;
-                }
-            }
-            get
-            {
-                return enableVSync;
-            }
+            set => RenderHost.RenderConfiguration.EnableVSync = value;
+            get => RenderHost.RenderConfiguration.EnableVSync;
+        }
+
+
+        public bool EnableSSAO
+        {
+            set => RenderHost.RenderConfiguration.EnableSSAO = value;
+            get => RenderHost.RenderConfiguration.EnableSSAO;
+        }
+
+        public bool EnableRenderOrder
+        {
+            set => RenderHost.RenderConfiguration.EnableRenderOrder = value;
+            get => RenderHost.RenderConfiguration.EnableRenderOrder;
         }
 
         private SceneNode2D root2D = new OverlayNode2D() { EnableBitmapCache = false };
@@ -195,7 +178,6 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 };
             }
             BackgroundColor = Color.Black;
-            RenderHost.RenderConfiguration.EnableVSync = enableVSync;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };

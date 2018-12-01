@@ -4,65 +4,73 @@ using System.Runtime.Serialization;
 using System.Text;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Shaders
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Shaders
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public enum UnorderedAccessViewType
+    namespace Shaders
     {
-        AppendStructured,
-        ConsumeStructured,
-        RWByteAddress,
-        RWStructuredWithCounter,
-        RWTyped
-    };
-    public sealed class UAVDescription
-    {
-        [DataMember]
-        public string Name { set; get; }
-        [DataMember]
-        public ShaderStage ShaderType;
-        [DataMember]
-        public UnorderedAccessViewType Type;
-
-        public UAVDescription() { }
-
-        public UAVDescription(string name, ShaderStage shaderType, UnorderedAccessViewType type)
+        public enum UnorderedAccessViewType
         {
-            Name = name;
-            ShaderType = shaderType;
-            Type = type;
+            AppendStructured,
+            ConsumeStructured,
+            RWByteAddress,
+            RWStructuredWithCounter,
+            RWTyped
+        };
+        public sealed class UAVDescription
+        {
+            [DataMember]
+            public string Name { set; get; }
+            [DataMember]
+            public ShaderStage ShaderType;
+            [DataMember]
+            public UnorderedAccessViewType Type;
+
+            public UAVDescription() { }
+
+            public UAVDescription(string name, ShaderStage shaderType, UnorderedAccessViewType type)
+            {
+                Name = name;
+                ShaderType = shaderType;
+                Type = type;
+            }
+
+            public UAVMapping CreateMapping(int slot)
+            {
+                return new UAVMapping(slot, this);
+            }
+
+            public UAVDescription Clone()
+            {
+                return new UAVDescription(this.Name, this.ShaderType, this.Type);
+            }
         }
 
-        public UAVMapping CreateMapping(int slot)
+        [DataContract]
+        public sealed class UAVMapping
         {
-            return new UAVMapping(slot, this);
-        }
+            [DataMember]
+            public int Slot { set; get; }
+            [DataMember]
+            public UAVDescription Description { set; get; }
 
-        public UAVDescription Clone()
-        {
-            return new UAVDescription(this.Name, this.ShaderType, this.Type);
+            public UAVMapping(int slot, UAVDescription description)
+            {
+                Slot = slot;
+                Description = description;
+            }
+
+            public UAVMapping Clone()
+            {
+                return new UAVMapping(this.Slot, this.Description.Clone());
+            }
         }
     }
 
-    [DataContract]
-    public sealed class UAVMapping
-    {
-        [DataMember]
-        public int Slot { set; get; }
-        [DataMember]
-        public UAVDescription Description { set; get; }
-
-        public UAVMapping(int slot, UAVDescription description)
-        {
-            Slot = slot;
-            Description = description;
-        }
-
-        public UAVMapping Clone()
-        {
-            return new UAVMapping(this.Slot, this.Description.Clone());
-        }
-    }
 }

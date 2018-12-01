@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsHitTestVisible = false
             };
             int segment = mesh.Positions.Count / 3;
-            var colors = new Core.Color4Collection(Enumerable.Repeat<Color4>(Color.Black, mesh.Positions.Count));
+            var colors = new Color4Collection(Enumerable.Repeat<Color4>(Color.Black, mesh.Positions.Count));
             int i = 0;
             for (; i < segment; ++i)
             {

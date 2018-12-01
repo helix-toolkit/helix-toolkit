@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using SharpDX.DirectWrite;
 using FontWeight = SharpDX.DirectWrite.FontWeight;
 using FontWeights = SharpDX.DirectWrite.FontWeight;
-using Thickness = HelixToolkit.UWP.Model.Scene2D.Thickness;
+using Thickness = HelixToolkit.SharpDX.Core.Model.Scene2D.Thickness;
 #else
 #if NETFX_CORE
     using Windows.UI.Xaml;
@@ -20,14 +20,20 @@ using Thickness = HelixToolkit.UWP.Model.Scene2D.Thickness;
 #endif
 #endif
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-using Core;
+    using Core;
+#if !CORE
     using Extensions;
+#endif
     using System;
     using System.Diagnostics;
 
@@ -171,7 +177,7 @@ using Core;
         private FontStyle mFontStyle = FontStyle.Normal;
 #else
         private FontStyle mFontStyle = FontStyles.Normal;
-#endif        
+#endif
         /// <summary>
         /// Gets or sets the font style.
         /// </summary>

@@ -1,9 +1,9 @@
 ﻿using SharpDX;
+using System;
 namespace HelixToolkit.SharpDX.Core
 {
-    using HelixToolkit.SharpDX.Core.Controls;
-    using System;
-    using UWP.Cameras;
+    using Controls;   
+    using Cameras;
     public static class CameraExtension
     {
         /// <summary>

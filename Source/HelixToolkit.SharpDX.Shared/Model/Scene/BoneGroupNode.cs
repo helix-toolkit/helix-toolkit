@@ -7,53 +7,60 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-
-    public sealed class BoneGroupNode : GroupNodeBase
+    namespace Model.Scene
     {
-        public Matrix[] BoneMatrices
+        using Core;
+
+        public sealed class BoneGroupNode : GroupNodeBase
         {
-            set
+            public Matrix[] BoneMatrices
             {
-                core.BoneMatrices = value;
+                set
+                {
+                    core.BoneMatrices = value;
+                }
+                get { return core.BoneMatrices; }
             }
-            get { return core.BoneMatrices; }
-        }
 
-        private readonly BoneUploaderCore core = new BoneUploaderCore();
+            private readonly BoneUploaderCore core = new BoneUploaderCore();
 
-        public BoneGroupNode()
-        {
-            OnAddChildNode += NodeGroup_OnAddChildNode;
-            OnRemoveChildNode += NodeGroup_OnRemoveChildNode;
-        }
-
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return core;
-        }
-
-        private void NodeGroup_OnRemoveChildNode(object sender, OnChildNodeChangedArgs e)
-        {
-            if (e.Node is BoneSkinMeshNode b)
+            public BoneGroupNode()
             {
-                (b.RenderCore as BoneSkinRenderCore).SharedBoneBuffer = null;
+                OnAddChildNode += NodeGroup_OnAddChildNode;
+                OnRemoveChildNode += NodeGroup_OnRemoveChildNode;
             }
-        }
 
-        private void NodeGroup_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
-        {
-            if(e.Node is BoneSkinMeshNode b)
+            protected override RenderCore OnCreateRenderCore()
             {
-                (b.RenderCore as BoneSkinRenderCore).SharedBoneBuffer = core;
+                return core;
+            }
+
+            private void NodeGroup_OnRemoveChildNode(object sender, OnChildNodeChangedArgs e)
+            {
+                if (e.Node is BoneSkinMeshNode b)
+                {
+                    (b.RenderCore as BoneSkinRenderCore).SharedBoneBuffer = null;
+                }
+            }
+
+            private void NodeGroup_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
+            {
+                if(e.Node is BoneSkinMeshNode b)
+                {
+                    (b.RenderCore as BoneSkinRenderCore).SharedBoneBuffer = core;
+                }
             }
         }
     }
+
 }

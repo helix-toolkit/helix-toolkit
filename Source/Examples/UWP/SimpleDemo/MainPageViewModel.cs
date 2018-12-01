@@ -154,7 +154,7 @@ namespace SimpleDemoW10
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 5, 0));
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 0, 5));
             LineGeometry = lineBuilder.ToLineGeometry3D();
-            LineGeometry.Colors = new HelixToolkit.UWP.Core.Color4Collection() { Color.Red, Color.Red, Color.Green, Color.Green, Color.Blue, Color.Blue };
+            LineGeometry.Colors = new Color4Collection() { Color.Red, Color.Red, Color.Green, Color.Green, Color.Blue, Color.Blue };
 
             builder = new MeshBuilder();
             builder.AddSphere(new Vector3(), 3);

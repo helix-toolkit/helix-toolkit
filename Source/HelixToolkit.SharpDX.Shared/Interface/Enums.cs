@@ -5,10 +5,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     /// <summary>
@@ -181,5 +185,15 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         Tile = 0,
         Grid = 1
+    }
+
+    public enum OffScreenTextureSize
+    {
+        Full, Half, Quarter
+    }
+
+    public enum OffScreenTextureType
+    {
+        RenderTarget, DepthStencil
     }
 }

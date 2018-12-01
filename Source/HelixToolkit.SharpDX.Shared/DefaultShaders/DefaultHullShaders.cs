@@ -5,26 +5,34 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Shaders
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Shaders
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Helper;
-    public static class DefaultHullShaders
+    namespace Shaders
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string HSMeshTessellation
+        using Helper;
+        public static class DefaultHullShaders
         {
-            get;
-        } = "hsMeshTriTessellation";
+            /// <summary>
+            /// 
+            /// </summary>
+            public static string HSMeshTessellation
+            {
+                get;
+            } = "hsMeshTriTessellation";
+        }
+
+        public static class DefaultHullShaderDescriptions
+        {
+            public static readonly ShaderDescription HSMeshTessellation = new ShaderDescription(nameof(HSMeshTessellation), ShaderStage.Hull, new ShaderReflector(),
+                DefaultHullShaders.HSMeshTessellation);
+        }
     }
 
-    public static class DefaultHullShaderDescriptions
-    {
-        public static ShaderDescription HSMeshTessellation = new ShaderDescription(nameof(HSMeshTessellation), ShaderStage.Hull, new ShaderReflector(),
-            DefaultHullShaders.HSMeshTessellation);
-    }
 }

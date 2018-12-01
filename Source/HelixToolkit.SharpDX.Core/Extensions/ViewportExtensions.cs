@@ -7,9 +7,8 @@ using System.Linq;
 namespace HelixToolkit.SharpDX.Core
 {
     using Controls;
-    using UWP.Model.Scene;
-    using UWP;
-    using UWP.Cameras;
+    using Model.Scene;
+    using Cameras;
 
     public static class ViewportExtensions
     {
