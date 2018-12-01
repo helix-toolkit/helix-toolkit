@@ -146,8 +146,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public bool EnableSSAO
         {
-            set => RenderHost.RenderConfiguration.EnableVSync = value;
-            get => RenderHost.RenderConfiguration.EnableVSync;
+            set => RenderHost.RenderConfiguration.EnableSSAO = value;
+            get => RenderHost.RenderConfiguration.EnableSSAO;
         }
 
         public bool EnableRenderOrder
