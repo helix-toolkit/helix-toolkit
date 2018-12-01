@@ -120,24 +120,24 @@ namespace HelixToolkit.UWP
                 buffer.AttachBuffers(deviceContext, ref slot, EffectTechnique.EffectsManager);
                 cubeBackPass.BindShader(deviceContext);
                 cubeBackPass.BindStates(deviceContext, StateType.All);
-                var back = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(global::SharpDX.DXGI.Format.R16G16B16A16_Float);
-                BindTarget(null, back, deviceContext, (int)context.ActualWidth, (int)context.ActualHeight);
-                deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
-                context.RenderHost.SetDefaultRenderTargets(false);
-                var pass = materialVariables.GetPass(RenderType.Opaque, context);
-                if (pass != volumePass)
+                using (var back = context.GetOffScreenRT(OffScreenTextureSize.Full, global::SharpDX.DXGI.Format.R16G16B16A16_Float))
                 {
-                    volumePass = pass;
-                    backTexSlot = volumePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.VolumeBack);
+                    BindTarget(null, back, deviceContext, (int)context.ActualWidth, (int)context.ActualHeight);
+                    deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
+                    context.RenderHost.SetDefaultRenderTargets(false);
+                    var pass = materialVariables.GetPass(RenderType.Opaque, context);
+                    if (pass != volumePass)
+                    {
+                        volumePass = pass;
+                        backTexSlot = volumePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.VolumeBack);
+                    }
+                    materialVariables.BindMaterialResources(context, deviceContext, pass);
+                    volumePass.PixelShader.BindTexture(deviceContext, backTexSlot, back);
+                    volumePass.BindShader(deviceContext);
+                    volumePass.BindStates(deviceContext, StateType.All);
+                    deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
+                    volumePass.PixelShader.BindTexture(deviceContext, backTexSlot, null);
                 }
-                materialVariables.BindMaterialResources(context, deviceContext, pass);
-                volumePass.PixelShader.BindTexture(deviceContext, backTexSlot, back);
-                volumePass.BindShader(deviceContext);
-                volumePass.BindStates(deviceContext, StateType.All);
-                deviceContext.DrawIndexed(buffer.IndexBuffer.ElementCount, 0, 0);
-                volumePass.PixelShader.BindTexture(deviceContext, backTexSlot, null);
-                //deviceContext.ClearRenderTargetView(back, global::SharpDX.Color.Transparent);
-                context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(back);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

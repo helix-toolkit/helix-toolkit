@@ -298,7 +298,7 @@ namespace HelixToolkit.UWP
                     var buffer = context.RenderHost.RenderBuffer;
                     bool useDefault = parameter.RenderTargetView[0] == buffer.ColorBuffer.RenderTargetView;
 
-                    var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : buffer.FullResDepthStencilPool.Get(Format.D32_Float);
+                    var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float);
                     ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
 
                     for (int i = 0; i < count; ++i)
@@ -307,7 +307,7 @@ namespace HelixToolkit.UWP
                     }
                     if (!useDefault)
                     {
-                        buffer.FullResDepthStencilPool.Put(depthStencilBuffer);
+                        depthStencilBuffer.Dispose();
                     }
                 }
             }

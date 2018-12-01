@@ -155,6 +155,23 @@ namespace HelixToolkit.UWP
 
         public sealed class TexturePool : DisposeObject
         {
+            private sealed class PooledShaderResourceViewProxy : ShaderResourceViewProxy
+            {
+                private readonly ConcurrentBag<ShaderResourceViewProxy> pool;
+
+                public PooledShaderResourceViewProxy(Device device, Texture2DDescription textureDesc, ConcurrentBag<ShaderResourceViewProxy> pool) 
+                    : base(device, textureDesc)
+                {
+                    this.pool = pool;
+                    IsPooled = true;
+                }
+
+                protected override void OnPutBackToPool()
+                {
+                    pool.Add(this);
+                }
+            }
+
             private readonly ConcurrentDictionary<Format, ConcurrentBag<ShaderResourceViewProxy>> pool = new ConcurrentDictionary<Format, ConcurrentBag<ShaderResourceViewProxy>>();
             private readonly IDevice3DResources deviceResourse;
             private Texture2DDescription description;
@@ -164,26 +181,32 @@ namespace HelixToolkit.UWP
                 this.deviceResourse = deviceResourse;
                 description = desc;
             }
-
+            /// <summary>
+            /// Gets the off screen texture with specified format. After using it, make sure to call Dispose() to return it back into the pool.
+            /// </summary>
+            /// <param name="format">The format.</param>
+            /// <returns></returns>
             public ShaderResourceViewProxy Get(Format format)
             {
                 if (IsDisposed)
                 {
-                    return null;
+                    return ShaderResourceViewProxy.Empty;
                 }
-                if(pool.TryGetValue(format, out var bag) && bag.TryTake(out var proxy))
+                if(pool.TryGetValue(format, out var bag) && bag.TryTake(out var proxy) && !proxy.IsDisposed)
                 {
                     return proxy;
                 }
                 else
                 {
+                    bag = bag ?? pool.GetOrAdd(format, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) =>
+                    { return new ConcurrentBag<ShaderResourceViewProxy>(); }));
                     var desc = description;
                     desc.Format = format;
                     ShaderResourceViewProxy texture = null;
                 
                     if((desc.BindFlags & BindFlags.RenderTarget) != 0)
                     {
-                        texture = Collect(new ShaderResourceViewProxy(deviceResourse.Device, desc));
+                        texture = Collect(new PooledShaderResourceViewProxy(deviceResourse.Device, desc, bag));
                         texture.CreateRenderTargetView();
                         if((desc.BindFlags & BindFlags.ShaderResource) != 0)
                         {
@@ -196,7 +219,7 @@ namespace HelixToolkit.UWP
                         {
                             desc.BindFlags |= BindFlags.ShaderResource;
                         }
-                        texture = Collect(new ShaderResourceViewProxy(deviceResourse.Device, desc));
+                        texture = Collect(new PooledShaderResourceViewProxy(deviceResourse.Device, desc, bag));
                         if (format == Format.R32_Typeless)// Special handle for depth buffer used as both depth stencil and shader resource
                         {
                             texture.CreateView(new DepthStencilViewDescription() { Format = Format.D32_Float, Dimension = DepthStencilViewDimension.Texture2D });
@@ -217,34 +240,13 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public void Put(Format format, ShaderResourceViewProxy proxy)
-            {
-                if (IsDisposed)
-                {
-                    return;
-                }
-                ConcurrentBag<ShaderResourceViewProxy> bag = pool.GetOrAdd(format, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) =>
-                { return new ConcurrentBag<ShaderResourceViewProxy>(); }));
-                bag.Add(proxy);
-            }
-
-            public void Put(ShaderResourceViewProxy proxy)
-            {
-                if (IsDisposed)
-                {
-                    return;
-                }
-                ConcurrentBag<ShaderResourceViewProxy> bag = pool.GetOrAdd(proxy.TextureFormat, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) =>
-                { return new ConcurrentBag<ShaderResourceViewProxy>(); }));
-                bag.Add(proxy);
-            }
-
             protected override void OnDispose(bool disposeManagedResources)
             {
                 foreach(var bag in pool.Values)
                 {
                     while(bag.TryTake(out var proxy))
                     {
+                        proxy.IsPooled = false; // Set flag to false so it can be disposed
                         continue;
                     }
                 }

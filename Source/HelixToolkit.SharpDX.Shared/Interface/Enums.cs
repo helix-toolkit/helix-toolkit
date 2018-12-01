@@ -186,4 +186,14 @@ namespace HelixToolkit.UWP
         Tile = 0,
         Grid = 1
     }
+
+    public enum OffScreenTextureSize
+    {
+        Full, Half, Quarter
+    }
+
+    public enum OffScreenTextureType
+    {
+        RenderTarget, DepthStencil
+    }
 }

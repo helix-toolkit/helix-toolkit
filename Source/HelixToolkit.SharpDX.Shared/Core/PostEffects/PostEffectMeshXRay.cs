@@ -157,7 +157,7 @@ namespace HelixToolkit.UWP
                 var buffer = context.RenderHost.RenderBuffer;
                 bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
                 var dPass = DoublePass;
-                var depthStencilBuffer = hasMSAA ? buffer.FullResDepthStencilPool.Get(Format.D32_Float) : buffer.DepthStencilBuffer;
+                var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float) : buffer.DepthStencilBuffer;
 
                 BindTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
                 if (hasMSAA)
@@ -248,7 +248,7 @@ namespace HelixToolkit.UWP
                 if (hasMSAA)
                 {
                     deviceContext.ClearRenderTagetBindings();
-                    buffer.FullResDepthStencilPool.Put(depthStencilBuffer);
+                    depthStencilBuffer.Dispose();
                 }
             }
 

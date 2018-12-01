@@ -241,88 +241,89 @@ namespace HelixToolkit.UWP
                 }
                 #endregion
 
-                var depthStencilBuffer = buffer.FullResDepthStencilPool.Get(depthdesc.Format);            
-                var renderTargetFull = buffer.FullResPPBuffer.NextRTV;
+                using (var depthStencilBuffer = context.GetOffScreenDS(OffScreenTextureSize.Full, depthdesc.Format))
+                {
+                    var renderTargetFull = buffer.FullResPPBuffer.NextRTV;
             
-                var frustum = context.BoundingFrustum;
-                OnUpdatePerModelStruct(context);
-                if (drawMode == OutlineMode.Separated)
-                {
-                    for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
-                    {                    
-                        #region Render objects onto offscreen texture
-                        var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                        if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
-                        {
-                            continue;
+                    var frustum = context.BoundingFrustum;
+                    OnUpdatePerModelStruct(context);
+                    if (drawMode == OutlineMode.Separated)
+                    {
+                        for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                        {                    
+                            #region Render objects onto offscreen texture
+                            var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
+                            if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                            {
+                                continue;
+                            }
+                            BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
+                            deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
+                            modelCB.Upload(deviceContext, ref modelStruct);
+                            if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                            {
+                                var color = Color;
+                                if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                                {
+                                    color = colorStr.ToColor4();
+                                }
+                                if (modelStruct.Color != color)
+                                {
+                                    modelStruct.Color = color;
+                                    modelCB.Upload(deviceContext, ref modelStruct);
+                                }
+                                context.CustomPassName = DefaultPassNames.EffectOutlineP1;
+                                var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
+                                if (pass.IsNULL) { continue; }
+                                pass.BindShader(deviceContext);
+                                pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                                mesh.RenderCustom(context, deviceContext);
+                                DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetFull);
+                            }                             
+                            #endregion   
                         }
+                    }
+                    else
+                    {
                         BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
+                        #region Render objects onto offscreen texture
                         deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
-                        modelCB.Upload(deviceContext, ref modelStruct);
-                        if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                        bool hasMesh = false;
+                        for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                         {
-                            var color = Color;
-                            if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                            var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
+                            if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
                             {
-                                color = colorStr.ToColor4();
+                                continue;
                             }
-                            if (modelStruct.Color != color)
+                            if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                             {
-                                modelStruct.Color = color;
-                                modelCB.Upload(deviceContext, ref modelStruct);
+                                var color = Color;
+                                if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                                {
+                                    color = colorStr.ToColor4();
+                                }
+                                if (modelStruct.Color != color)
+                                {
+                                    modelStruct.Color = color;
+                                    modelCB.Upload(deviceContext, ref modelStruct);
+                                }
+                                context.CustomPassName = DefaultPassNames.EffectOutlineP1;
+                                var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
+                                if (pass.IsNULL) { continue; }
+                                pass.BindShader(deviceContext);
+                                pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                                mesh.RenderCustom(context, deviceContext);
+                                hasMesh = true;
                             }
-                            context.CustomPassName = DefaultPassNames.EffectOutlineP1;
-                            var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
-                            if (pass.IsNULL) { continue; }
-                            pass.BindShader(deviceContext);
-                            pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                            mesh.RenderCustom(context, deviceContext);
+                        }
+                        #endregion
+                        if (hasMesh)
+                        {
                             DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetFull);
-                        }                             
-                        #endregion   
-                    }
-                }
-                else
-                {
-                    BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
-                    #region Render objects onto offscreen texture
-                    deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
-                    bool hasMesh = false;
-                    for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
-                    {
-                        var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                        if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
-                        {
-                            continue;
-                        }
-                        if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
-                        {
-                            var color = Color;
-                            if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
-                            {
-                                color = colorStr.ToColor4();
-                            }
-                            if (modelStruct.Color != color)
-                            {
-                                modelStruct.Color = color;
-                                modelCB.Upload(deviceContext, ref modelStruct);
-                            }
-                            context.CustomPassName = DefaultPassNames.EffectOutlineP1;
-                            var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
-                            if (pass.IsNULL) { continue; }
-                            pass.BindShader(deviceContext);
-                            pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                            mesh.RenderCustom(context, deviceContext);
-                            hasMesh = true;
                         }
                     }
-                    #endregion
-                    if (hasMesh)
-                    {
-                        DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetFull);
-                    }
                 }
-                buffer.FullResDepthStencilPool.Put(depthStencilBuffer);
             }
 
             private void DrawOutline(RenderContext context, DeviceContextProxy deviceContext, 

@@ -18,8 +18,9 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// A proxy container to handle view resources
         /// </summary>
-        public sealed class ShaderResourceViewProxy : ReferenceCountDisposeObject
+        public class ShaderResourceViewProxy : ReferenceCountDisposeObject
         {
+            public static ShaderResourceViewProxy Empty { get; } = new ShaderResourceViewProxy();
             /// <summary>
             /// Gets the texture view.
             /// </summary>
@@ -56,6 +57,8 @@ namespace HelixToolkit.UWP
             private readonly Device device;
 
             public global::SharpDX.DXGI.Format TextureFormat { private set; get; }
+
+            private ShaderResourceViewProxy() { }
             /// <summary>
             /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
             /// </summary>

@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The render host.
         /// </value>
-        public IRenderHost RenderHost { get; private set; }
+        public IRenderHost RenderHost { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether is deferred pass.
@@ -397,6 +397,65 @@ namespace HelixToolkit.UWP
             if (updateLights)
             {
                 LightScene.UploadToBuffer(deviceContext);
+            }
+        }
+        /// <summary>
+        /// Gets the off screen texture. Same as <see cref="GetOffScreenRT(OffScreenTextureSize, SharpDX.DXGI.Format)"/> or <see cref="GetOffScreenDS(OffScreenTextureSize, SharpDX.DXGI.Format)"/>
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        public ShaderResourceViewProxy GetOffScreenTexture(OffScreenTextureType type, OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (type)
+            {
+                case OffScreenTextureType.RenderTarget:
+                    return GetOffScreenRT(size, format);
+                case OffScreenTextureType.DepthStencil:
+                    return GetOffScreenDS(size, format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+        /// <summary>
+        /// Gets the off screen render target.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    return RenderHost.RenderBuffer.FullResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    return RenderHost.RenderBuffer.HalfResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    return RenderHost.RenderBuffer.QuarterResRenderTargetPool.Get(format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+        /// <summary>
+        /// Gets the off screen depth stencil.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    return RenderHost.RenderBuffer.FullResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    return RenderHost.RenderBuffer.HalfResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    return RenderHost.RenderBuffer.QuarterResDepthStencilPool.Get(format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
             }
         }
     }

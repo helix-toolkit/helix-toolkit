@@ -67,65 +67,68 @@ namespace HelixToolkit.UWP
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 EnsureTextureResources((int)context.ActualWidth, (int)context.ActualHeight, deviceContext);
-                var ds = context.RenderHost.RenderBuffer.FullResDepthStencilPool.Get(DEPTHFORMAT);
-                var rt0 = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(RENDERTARGETFORMAT);
-                var rt1 = context.RenderHost.RenderBuffer.FullResRenderTargetPool.Get(SSAOTARGETFORMAT);
-                deviceContext.ClearDepthStencilView(ds, DepthStencilClearFlags.Depth, 1, 0);
-                deviceContext.ClearRenderTargetView(rt0, new Color4(0, 0, 0, 1));//Set alpha channel to 1 for max depth value
-                deviceContext.SetRenderTarget(ds, rt0);
-                IRenderTechnique currTechnique = null;
-                ShaderPass ssaoPass1 = ShaderPass.NullPass;
-                var frustum = context.BoundingFrustum;
-                for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodesInFrustum.Count; ++i)
+                using (var ds = context.GetOffScreenDS(OffScreenTextureSize.Full, DEPTHFORMAT))
                 {
-                    var node = context.RenderHost.PerFrameOpaqueNodesInFrustum[i];
-                    if (currTechnique != node.EffectTechnique)
+                    using (var rt0 = context.GetOffScreenRT(OffScreenTextureSize.Full, RENDERTARGETFORMAT))
                     {
-                        currTechnique = node.EffectTechnique;
-                        ssaoPass1 = currTechnique[DefaultPassNames.MeshSSAOPass];
+                        using (var rt1 = context.GetOffScreenRT(OffScreenTextureSize.Full, SSAOTARGETFORMAT))
+                        {
+                            deviceContext.ClearDepthStencilView(ds, DepthStencilClearFlags.Depth, 1, 0);
+                            deviceContext.ClearRenderTargetView(rt0, new Color4(0, 0, 0, 1));//Set alpha channel to 1 for max depth value
+                            deviceContext.SetRenderTarget(ds, rt0);
+                            IRenderTechnique currTechnique = null;
+                            ShaderPass ssaoPass1 = ShaderPass.NullPass;
+                            var frustum = context.BoundingFrustum;
+                            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodesInFrustum.Count; ++i)
+                            {
+                                var node = context.RenderHost.PerFrameOpaqueNodesInFrustum[i];
+                                if (currTechnique != node.EffectTechnique)
+                                {
+                                    currTechnique = node.EffectTechnique;
+                                    ssaoPass1 = currTechnique[DefaultPassNames.MeshSSAOPass];
+                                }
+                                if (ssaoPass1.IsNULL)
+                                {
+                                    continue;
+                                }
+                                node.RenderDepth(context, deviceContext, ssaoPass1);
+                            }
+
+                            var invProjection = context.ProjectionMatrix.Inverted(); //* context.ViewMatrix.PsudoInvert();
+                            ssaoParam.InvProjection = invProjection;
+                            ssaoParam.NoiseScale = new Vector2(context.ActualWidth / 4f, context.ActualHeight / 4f);
+                            ssaoParam.Radius = radius;
+                            ssaoParam.IsPerspective = context.IsPerspective ? 1 : 0;
+                            ssaoCB.ModelConstBuffer.UploadDataToBuffer(deviceContext, (stream) =>
+                            {
+                                stream.WriteRange(kernels);
+                                stream.Write(ssaoParam);
+                            });
+                            deviceContext.SetRenderTarget(null, rt1);
+                            ssaoPass.BindShader(deviceContext);
+                            ssaoPass.BindStates(deviceContext, StateType.All);
+                            ssaoPass.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt0);
+                            ssaoPass.PixelShader.BindTexture(deviceContext, noiseTexSlot, ssaoNoise);
+                            ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, ds);
+                            ssaoPass.PixelShader.BindSampler(deviceContext, surfaceSampleSlot, surfaceSampler);
+                            ssaoPass.PixelShader.BindSampler(deviceContext, noiseSamplerSlot, noiseSampler);
+                            deviceContext.Draw(4, 0);
+
+                            ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, null);
+
+                            deviceContext.SetRenderTarget(null, ssaoView);
+                            ssaoBlur.BindShader(deviceContext);
+                            ssaoBlur.BindStates(deviceContext, StateType.All);
+                            ssaoBlur.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt1);
+                            ssaoBlur.PixelShader.BindSampler(deviceContext, surfaceSampleSlot, blurSampler);
+                            deviceContext.Draw(4, 0);
+                            context.SharedResource.SSAOMap = ssaoView;
+
+                            context.RenderHost.SetDefaultRenderTargets(false);
+                            deviceContext.SetShaderResource(PixelShader.Type, ssaoTexSlot, ssaoView);
+                        }
                     }
-                    if (ssaoPass1.IsNULL)
-                    {
-                        continue;
-                    }
-                    node.RenderDepth(context, deviceContext, ssaoPass1);
                 }
-
-                var invProjection = context.ProjectionMatrix.Inverted(); //* context.ViewMatrix.PsudoInvert();
-                ssaoParam.InvProjection = invProjection;
-                ssaoParam.NoiseScale = new Vector2(context.ActualWidth / 4f, context.ActualHeight / 4f);
-                ssaoParam.Radius = radius;
-                ssaoParam.IsPerspective = context.IsPerspective ? 1 : 0;
-                ssaoCB.ModelConstBuffer.UploadDataToBuffer(deviceContext, (stream) =>
-                {
-                    stream.WriteRange(kernels);
-                    stream.Write(ssaoParam);
-                });
-                deviceContext.SetRenderTarget(null, rt1);
-                ssaoPass.BindShader(deviceContext);
-                ssaoPass.BindStates(deviceContext, StateType.All);
-                ssaoPass.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt0);
-                ssaoPass.PixelShader.BindTexture(deviceContext, noiseTexSlot, ssaoNoise);
-                ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, ds);
-                ssaoPass.PixelShader.BindSampler(deviceContext, surfaceSampleSlot, surfaceSampler);
-                ssaoPass.PixelShader.BindSampler(deviceContext, noiseSamplerSlot, noiseSampler);
-                deviceContext.Draw(4, 0);
-
-                ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, null);
-
-                deviceContext.SetRenderTarget(null, ssaoView);
-                ssaoBlur.BindShader(deviceContext);
-                ssaoBlur.BindStates(deviceContext, StateType.All);
-                ssaoBlur.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt1);
-                ssaoBlur.PixelShader.BindSampler(deviceContext, surfaceSampleSlot, blurSampler);
-                deviceContext.Draw(4, 0);
-                context.SharedResource.SSAOMap = ssaoView;
-
-                context.RenderHost.SetDefaultRenderTargets(false);
-                deviceContext.SetShaderResource(PixelShader.Type, ssaoTexSlot, ssaoView);
-                context.RenderHost.RenderBuffer.FullResDepthStencilPool.Put(ds);
-                context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(rt0);
-                context.RenderHost.RenderBuffer.FullResRenderTargetPool.Put(rt1);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
