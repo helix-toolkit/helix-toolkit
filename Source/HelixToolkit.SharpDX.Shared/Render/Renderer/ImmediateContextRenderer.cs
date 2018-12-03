@@ -298,7 +298,7 @@ namespace HelixToolkit.UWP
                     var buffer = context.RenderHost.RenderBuffer;
                     bool useDefault = parameter.RenderTargetView[0] == buffer.ColorBuffer.RenderTargetView;
 
-                    var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float);
+                    var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt);
                     ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
 
                     for (int i = 0; i < count; ++i)
