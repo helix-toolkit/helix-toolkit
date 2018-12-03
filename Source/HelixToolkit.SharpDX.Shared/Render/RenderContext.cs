@@ -400,7 +400,7 @@ namespace HelixToolkit.UWP
             }
         }
         /// <summary>
-        /// Gets the off screen texture. Same as <see cref="GetOffScreenRT(OffScreenTextureSize, SharpDX.DXGI.Format)"/> or <see cref="GetOffScreenDS(OffScreenTextureSize, SharpDX.DXGI.Format)"/>
+        /// Gets the off screen texture. Same as <see cref="GetOffScreenRT(OffScreenTextureSize, global::SharpDX.DXGI.Format)"/> or <see cref="GetOffScreenDS(OffScreenTextureSize, global::SharpDX.DXGI.Format)"/>
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="size">The size.</param>

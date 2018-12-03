@@ -96,6 +96,8 @@ namespace HelixToolkit.UWP
             /// <param name="clearDSV">if set to <c>true</c> [clear DSV].</param>
             /// <param name="color"></param>
             /// <param name="flags"></param>
+            /// <param name="depth"></param>
+            /// <param name="stencil"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void SetRenderTarget(DepthStencilView dsv, RenderTargetView rtv, int width, int height, 
                 bool clearRTV, Color4 color,
