@@ -157,9 +157,8 @@ namespace HelixToolkit.UWP
                 var buffer = context.RenderHost.RenderBuffer;
                 bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
                 var dPass = DoublePass;
-                var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float) : buffer.DepthStencilBuffer;
-
-                BindTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
+                var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
+                deviceContext.SetRenderTargetNoClear(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
                 if (hasMSAA)
                 {
                     //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.
@@ -255,18 +254,6 @@ namespace HelixToolkit.UWP
             protected override bool OnUpdateCanRenderFlag()
             {
                 return IsAttached && !string.IsNullOrEmpty(EffectName);
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
-            {
-                if (clear)
-                {
-                    context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
-                }
-                context.SetRenderTargets(dsv, targetView == null ? null : new RenderTargetView[] { targetView });
-                context.SetViewport(0, 0, width, height);
-                context.SetScissorRectangle(0, 0, width, height);
             }
         }
     }

@@ -84,6 +84,86 @@ namespace HelixToolkit.UWP
             {
                 deviceContext.OutputMerger.SetRenderTargets(dsv, ZeroRenderTargetArray);
             }
+
+            /// <summary>
+            /// Sets the render target.
+            /// </summary>
+            /// <param name="dsv">The DSV.</param>
+            /// <param name="rtv">The RTV.</param>
+            /// <param name="width">The width.</param>
+            /// <param name="height">The height.</param>
+            /// <param name="clearRTV">if set to <c>true</c> [clear RTV].</param>
+            /// <param name="clearDSV">if set to <c>true</c> [clear DSV].</param>
+            /// <param name="color"></param>
+            /// <param name="flags"></param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetRenderTarget(DepthStencilView dsv, RenderTargetView rtv, int width, int height, 
+                bool clearRTV, Color4 color,
+                bool clearDSV, 
+                DepthStencilClearFlags flags = DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil,
+                float depth = 1, byte stencil = 0)
+            {
+                if (clearRTV && rtv != null)
+                {
+                    ClearRenderTargetView(rtv, color);
+                }
+                if(clearDSV && dsv != null)
+                {
+                    ClearDepthStencilView(dsv, flags, depth, stencil);
+                }
+                SetRenderTarget(dsv, rtv);
+                SetViewport(0, 0, width, height);
+                SetScissorRectangle(0, 0, width, height);
+            }
+            /// <summary>
+            /// Sets the render target. This sets depth stencil buffer to null
+            /// </summary>
+            /// <param name="rtv">The RTV.</param>
+            /// <param name="width">The width.</param>
+            /// <param name="height">The height.</param>
+            /// <param name="clearRTV">if set to <c>true</c> [clear RTV].</param>
+            /// <param name="color">The color.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetRenderTarget(RenderTargetView rtv, int width, int height,
+                bool clearRTV, Color4 color)
+            {
+                if (clearRTV && rtv != null)
+                {
+                    ClearRenderTargetView(rtv, color);
+                }
+                SetRenderTarget(null, rtv);
+                SetViewport(0, 0, width, height);
+                SetScissorRectangle(0, 0, width, height);
+            }
+
+            /// <summary>
+            /// Sets the render target but no clear.
+            /// </summary>
+            /// <param name="dsv">The DSV.</param>
+            /// <param name="rtv">The RTV.</param>
+            /// <param name="width">The width.</param>
+            /// <param name="height">The height.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetRenderTargetNoClear(DepthStencilView dsv, RenderTargetView rtv, int width, int height)
+            {
+                SetRenderTarget(dsv, rtv);
+                SetViewport(0, 0, width, height);
+                SetScissorRectangle(0, 0, width, height);
+            }
+
+            /// <summary>
+            /// Sets the render target no clear. This sets depth stencil buffer to null
+            /// </summary>
+            /// <param name="rtv">The RTV.</param>
+            /// <param name="width">The width.</param>
+            /// <param name="height">The height.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetRenderTargetNoClear(RenderTargetView rtv, int width, int height)
+            {
+                SetRenderTarget(null, rtv);
+                SetViewport(0, 0, width, height);
+                SetScissorRectangle(0, 0, width, height);
+            }
             #endregion Set targets
 
             #region Get targets
@@ -153,6 +233,7 @@ namespace HelixToolkit.UWP
                 return deviceContext.OutputMerger.GetUnorderedAccessViews(startSlot, count);
             }
 
+
             #endregion Get targets
 
             #region Clear Targets
@@ -176,7 +257,7 @@ namespace HelixToolkit.UWP
             /// <param name="depth">The depth.</param>
             /// <param name="stencil">The stencil.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void ClearDepthStencilView(DepthStencilView view, DepthStencilClearFlags clearFlag, float depth, byte stencil)
+            public void ClearDepthStencilView(DepthStencilView view, DepthStencilClearFlags clearFlag, float depth = 1, byte stencil = 0)
             {
                 deviceContext.ClearDepthStencilView(view, clearFlag, depth, stencil);
             }
