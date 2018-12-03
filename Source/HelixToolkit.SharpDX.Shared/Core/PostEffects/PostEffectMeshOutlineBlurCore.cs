@@ -6,7 +6,6 @@ using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using System.Runtime.CompilerServices;
-
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -257,8 +256,8 @@ namespace HelixToolkit.UWP
                             {
                                 continue;
                             }
-                            BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
-                            deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
+                            deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetFull, buffer.TargetWidth, buffer.TargetHeight, true,
+                                global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
                             modelCB.Upload(deviceContext, ref modelStruct);
                             if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                             {
@@ -285,9 +284,9 @@ namespace HelixToolkit.UWP
                     }
                     else
                     {
-                        BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
+                        deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetFull, buffer.TargetWidth, buffer.TargetHeight, true,
+                                global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
                         #region Render objects onto offscreen texture
-                        deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
                         bool hasMesh = false;
                         for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                         {
@@ -331,7 +330,7 @@ namespace HelixToolkit.UWP
             {
                 var buffer = context.RenderHost.RenderBuffer;
                 #region Do Blur Pass
-                BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, true);
+                deviceContext.SetRenderTarget(blurCore.CurrentRTV, blurCore.Width, blurCore.Height, true, global::SharpDX.Color.Transparent);
                 blurPassVertical.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                 blurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
                 blurPassVertical.BindShader(deviceContext);
@@ -342,14 +341,14 @@ namespace HelixToolkit.UWP
                 #endregion
 
                 #region Draw back with stencil test
-                BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetFull, buffer.TargetWidth, buffer.TargetHeight, true, global::SharpDX.Color.Transparent, false);
                 screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
                 screenQuadPass.BindShader(deviceContext);
                 screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
                 deviceContext.Draw(4, 0);
                 #endregion
                 #region Draw outline onto original target
-                BindTarget(null, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
+                deviceContext.SetRenderTargetNoClear(buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
                 screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
                 screenOutlinePass.BindShader(deviceContext);
                 screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
@@ -364,18 +363,6 @@ namespace HelixToolkit.UWP
                 blurCore = null;
                 sampler = null;
                 base.OnDetach();
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
-            {
-                if (clear)
-                {
-                    context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
-                }
-                context.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
-                context.SetViewport(0, 0, width, height);
-                context.SetScissorRectangle(0, 0, width, height);
             }
 
             private void OnUpdatePerModelStruct(RenderContext context)
