@@ -241,8 +241,6 @@ namespace HelixToolkit.UWP
             {
                 return deviceContext.OutputMerger.GetUnorderedAccessViews(startSlot, count);
             }
-
-
             #endregion Get targets
 
             #region Clear Targets
