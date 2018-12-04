@@ -1486,7 +1486,7 @@ namespace HelixToolkit.UWP
                             DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
                             DefaultPSShaderDescriptions.PSMeshOutlineQuadFinal
                         },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        BlendStateDescription = DefaultBlendStateDescriptions.AdditiveBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         RasterStateDescription = DefaultRasterDescriptions.RSOutline,
                         Topology = PrimitiveTopology.TriangleStrip
@@ -1523,12 +1523,12 @@ namespace HelixToolkit.UWP
                         RasterStateDescription = DefaultRasterDescriptions.RSOutline,
                         Topology = PrimitiveTopology.TriangleStrip
                     },
-                    new ShaderPassDescription(DefaultPassNames.EffectOutlineSmooth)
+                    new ShaderPassDescription(DefaultPassNames.EffectBlurHorizontal)
                     {
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
-                            DefaultPSShaderDescriptions.PSEffectOutlineSmooth
+                            DefaultPSShaderDescriptions.PSEffectMeshBorderHighlight
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
@@ -1542,7 +1542,7 @@ namespace HelixToolkit.UWP
                             DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
                             DefaultPSShaderDescriptions.PSMeshOutlineQuadFinal
                         },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        BlendStateDescription = DefaultBlendStateDescriptions.AdditiveBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         RasterStateDescription = DefaultRasterDescriptions.RSOutline,
                         Topology = PrimitiveTopology.TriangleStrip

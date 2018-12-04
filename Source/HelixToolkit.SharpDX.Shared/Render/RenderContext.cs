@@ -406,6 +406,7 @@ namespace HelixToolkit.UWP
         /// <param name="size">The size.</param>
         /// <param name="format">The format.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderResourceViewProxy GetOffScreenTexture(OffScreenTextureType type, OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
         {
             switch (type)
@@ -424,6 +425,7 @@ namespace HelixToolkit.UWP
         /// <param name="size">The size.</param>
         /// <param name="format">The format.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
         {
             switch (size)
@@ -447,6 +449,7 @@ namespace HelixToolkit.UWP
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format, out int width, out int height)
         {
             switch (size)
@@ -474,6 +477,7 @@ namespace HelixToolkit.UWP
         /// <param name="size">The size.</param>
         /// <param name="format">The format.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
         {
             switch (size)
@@ -496,6 +500,7 @@ namespace HelixToolkit.UWP
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format, out int width, out int height)
         {
             switch (size)
@@ -516,6 +521,18 @@ namespace HelixToolkit.UWP
                     width = height = 0;
                     return ShaderResourceViewProxy.Empty;
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetPingPongBufferNextRTV()
+        {
+            return RenderHost.RenderBuffer.FullResPPBuffer.NextRTV;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetPingPongBufferCurrentRTV()
+        {
+            return RenderHost.RenderBuffer.FullResPPBuffer.CurrentRTV;
         }
     }
 }

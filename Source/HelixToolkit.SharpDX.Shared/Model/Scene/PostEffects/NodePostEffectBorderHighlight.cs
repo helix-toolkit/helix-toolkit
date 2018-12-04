@@ -58,6 +58,15 @@ namespace HelixToolkit.UWP
             {
                 return host.EffectsManager[DefaultRenderTechniqueNames.PostEffectMeshBorderHighlight];
             }
+
+            /// <summary>
+            /// Called when [create render core].
+            /// </summary>
+            /// <returns></returns>
+            protected override RenderCore OnCreateRenderCore()
+            {
+                return new PostEffectMeshOutlineBlurCore(false);
+            }
         }
     }
 
