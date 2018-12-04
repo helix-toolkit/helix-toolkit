@@ -74,7 +74,6 @@ namespace HelixToolkit.UWP
                 deviceContext.StreamOutput.SetTargets(bufferBindings);
             }
             private static readonly RenderTargetView[] ZeroRenderTargetArray = new RenderTargetView[0];
-
             /// <summary>
             /// Sets the depth stencil only. This will clear all render target bindings and only binds depth stencil view to output merger.
             /// </summary>

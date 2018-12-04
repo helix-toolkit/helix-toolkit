@@ -8,8 +8,8 @@ static const float scale = 1;
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
     float4 color = texDiffuseMap.Sample(samplerSurface, input.Tex);
-    float x = vViewport.z * Param._m00;
-    float y = vViewport.w * Param._m01;
+    float x = vViewport.z * Param._m00 * viewportScale;
+    float y = vViewport.w * Param._m01 * viewportScale;
     [unroll]
     for (int i = 1; i < 2; ++i)
     {

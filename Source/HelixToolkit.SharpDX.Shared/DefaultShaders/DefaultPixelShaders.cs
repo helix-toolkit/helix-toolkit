@@ -251,6 +251,17 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "psEffectMeshBorderHighlight";
+
+            /// <summary>
+            /// Gets the ps effect outline smooth.
+            /// </summary>
+            /// <value>
+            /// The ps effect outline smooth.
+            /// </value>
+            public static string PSEffectOutlineSmooth
+            {
+                get;
+            } = "psEffectOutlineSmooth";
             /// <summary>
             /// Gets the ps mesh outline screen quad stencil.
             /// </summary>
@@ -603,6 +614,11 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription PSEffectMeshBorderHighlight = new ShaderDescription(nameof(PSEffectMeshBorderHighlight), ShaderStage.Pixel, new ShaderReflector(),
                 DefaultPSShaderByteCodes.PSEffectMeshBorderHighlight);
+            /// <summary>
+            /// The ps effect mesh border highlight
+            /// </summary>
+            public static readonly ShaderDescription PSEffectOutlineSmooth = new ShaderDescription(nameof(PSEffectOutlineSmooth), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSEffectOutlineSmooth);
             /// <summary>
             ///
             /// </summary>

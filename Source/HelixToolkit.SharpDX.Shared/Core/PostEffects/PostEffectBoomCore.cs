@@ -198,91 +198,91 @@ namespace HelixToolkit.UWP
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
-                var buffer = context.RenderHost.RenderBuffer;
-                #region Initialize textures
-                if (offScreenRenderTargets.Count == 0
-                    || width != (int)(context.ActualWidth)
-                    || height != (int)(context.ActualHeight))
-                {
-                    width = (int)(context.ActualWidth);
-                    height = (int)(context.ActualHeight);
-                    for (int i = 0; i < offScreenRenderTargets.Count; ++i)
-                    {
-                        var target = offScreenRenderTargets[i];
-                        RemoveAndDispose(ref target);
-                    }
-                    offScreenRenderTargets.Clear();
+                //var buffer = context.RenderHost.RenderBuffer;
+                //#region Initialize textures
+                //if (offScreenRenderTargets.Count == 0
+                //    || width != (int)(context.ActualWidth)
+                //    || height != (int)(context.ActualHeight))
+                //{
+                //    width = (int)(context.ActualWidth);
+                //    height = (int)(context.ActualHeight);
+                //    for (int i = 0; i < offScreenRenderTargets.Count; ++i)
+                //    {
+                //        var target = offScreenRenderTargets[i];
+                //        RemoveAndDispose(ref target);
+                //    }
+                //    offScreenRenderTargets.Clear();
 
-                    int w = width;
-                    int h = height;
-                    int count = 0;
-                    while(w > 1 && h > 1 && count < Math.Max(0, MaximumDownSamplingStep) + 1)
-                    {
-                        var target = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical, blurPassHorizontal, textureSlot, samplerSlot,
-                            DefaultSamplers.LinearSamplerClampAni1, EffectTechnique.EffectsManager));
-                        target.Resize(Device, w, h);
-                        offScreenRenderTargets.Add(target);
-                        w >>= 2;
-                        h >>= 2;
-                        ++count;
-                    }
-                    //Skip this frame to avoid performance hit due to texture creation
-                    RaiseInvalidateRender();
-                    return;
-                }
-                #endregion
+                //    int w = width;
+                //    int h = height;
+                //    int count = 0;
+                //    while(w > 1 && h > 1 && count < Math.Max(0, MaximumDownSamplingStep) + 1)
+                //    {
+                //        var target = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical, blurPassHorizontal, textureSlot, samplerSlot,
+                //            DefaultSamplers.LinearSamplerClampAni1, EffectTechnique.EffectsManager));
+                //        target.Resize(Device, w, h);
+                //        offScreenRenderTargets.Add(target);
+                //        w >>= 2;
+                //        h >>= 2;
+                //        ++count;
+                //    }
+                //    //Skip this frame to avoid performance hit due to texture creation
+                //    RaiseInvalidateRender();
+                //    return;
+                //}
+                //#endregion
 
-                #region Render objects onto offscreen texture    
+                //#region Render objects onto offscreen texture    
 
-                using (var resource2 = offScreenRenderTargets[0].CurrentRTV.Resource)
-                {                   
-                    deviceContext.CopyResource(buffer.FullResPPBuffer.CurrentTexture, resource2);
-                }
-                #endregion
-                #region Do Bloom Pass
-                modelCB.Upload(deviceContext, ref modelStruct);
-                //Extract bloom samples
-                BindTarget(null, offScreenRenderTargets[0].NextRTV, deviceContext, offScreenRenderTargets[0].Width, offScreenRenderTargets[0].Height, false);
-                screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
-                screenQuadPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
-                screenQuadPass.BindShader(deviceContext);
-                screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                deviceContext.Draw(4, 0);
-                offScreenRenderTargets[0].SwapTargets();
+                //using (var resource2 = offScreenRenderTargets[0].CurrentRTV.Resource)
+                //{                   
+                //    deviceContext.CopyResource(buffer.FullResPPBuffer.CurrentTexture, resource2);
+                //}
+                //#endregion
+                //#region Do Bloom Pass
+                //modelCB.Upload(deviceContext, ref modelStruct);
+                ////Extract bloom samples
+                //BindTarget(null, offScreenRenderTargets[0].NextRTV, deviceContext, offScreenRenderTargets[0].Width, offScreenRenderTargets[0].Height, false);
+                //screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
+                //screenQuadPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
+                //screenQuadPass.BindShader(deviceContext);
+                //screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
+                //deviceContext.Draw(4, 0);
+                //offScreenRenderTargets[0].SwapTargets();
 
-                // Down sampling
-                screenQuadCopy.BindShader(deviceContext);
-                screenQuadCopy.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                for (int i = 1; i < offScreenRenderTargets.Count; ++i)
-                {
-                    BindTarget(null, offScreenRenderTargets[i].CurrentRTV, deviceContext, offScreenRenderTargets[i].Width, offScreenRenderTargets[i].Height, false);
-                    screenQuadCopy.PixelShader.BindTexture(deviceContext, textureSlot, offScreenRenderTargets[i - 1].CurrentSRV);
-                    deviceContext.Draw(4, 0);
-                }
+                //// Down sampling
+                //screenQuadCopy.BindShader(deviceContext);
+                //screenQuadCopy.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
+                //for (int i = 1; i < offScreenRenderTargets.Count; ++i)
+                //{
+                //    BindTarget(null, offScreenRenderTargets[i].CurrentRTV, deviceContext, offScreenRenderTargets[i].Width, offScreenRenderTargets[i].Height, false);
+                //    screenQuadCopy.PixelShader.BindTexture(deviceContext, textureSlot, offScreenRenderTargets[i - 1].CurrentSRV);
+                //    deviceContext.Draw(4, 0);
+                //}
 
-                for (int i = offScreenRenderTargets.Count - 1; i >= 1; --i)
-                {
-                    //Run blur pass
-                    offScreenRenderTargets[i].Run(deviceContext, NumberOfBlurPass);
+                //for (int i = offScreenRenderTargets.Count - 1; i >= 1; --i)
+                //{
+                //    //Run blur pass
+                //    offScreenRenderTargets[i].Run(deviceContext, NumberOfBlurPass);
 
-                    //Up sampling
-                    screenOutlinePass.BindShader(deviceContext);
-                    screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                    BindTarget(null, offScreenRenderTargets[i - 1].CurrentRTV, deviceContext, offScreenRenderTargets[i - 1].Width, offScreenRenderTargets[i - 1].Height, false);
-                    screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, offScreenRenderTargets[i].CurrentSRV);
-                    deviceContext.Draw(4, 0);
-                }
-                offScreenRenderTargets[0].Run(deviceContext, NumberOfBlurPass);
-                #endregion
+                //    //Up sampling
+                //    screenOutlinePass.BindShader(deviceContext);
+                //    screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
+                //    BindTarget(null, offScreenRenderTargets[i - 1].CurrentRTV, deviceContext, offScreenRenderTargets[i - 1].Width, offScreenRenderTargets[i - 1].Height, false);
+                //    screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, offScreenRenderTargets[i].CurrentSRV);
+                //    deviceContext.Draw(4, 0);
+                //}
+                //offScreenRenderTargets[0].Run(deviceContext, NumberOfBlurPass);
+                //#endregion
 
-                #region Draw outline onto original target
-                BindTarget(null, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
-                screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
-                screenOutlinePass.BindShader(deviceContext);
-                screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                deviceContext.Draw(4, 0);
-                screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, null);
-                #endregion
+                //#region Draw outline onto original target
+                //BindTarget(null, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
+                //screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
+                //screenOutlinePass.BindShader(deviceContext);
+                //screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
+                //deviceContext.Draw(4, 0);
+                //screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, null);
+                //#endregion
             }
 
             protected override void OnDetach()

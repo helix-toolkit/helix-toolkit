@@ -61,6 +61,7 @@
     <None Remove="Resources\psEffectOutlineQuad.cso" />
     <None Remove="Resources\psEffectOutlineQuadStencil.cso" />
     <None Remove="Resources\psEffectOutlineQualFinal.cso" />
+    <None Remove="Resources\psEffectOutlineSmooth.cso" />
     <None Remove="Resources\psFXAA.cso" />
     <None Remove="Resources\psLine.cso" />
     <None Remove="Resources\psLineColor.cso" />
@@ -131,6 +132,7 @@
     <None Remove="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\psEffectOutlineSmooth.cso" />
     <EmbeddedResource Include="Resources\psMeshPBROIT.cso" />
   </ItemGroup>
   <ItemGroup>

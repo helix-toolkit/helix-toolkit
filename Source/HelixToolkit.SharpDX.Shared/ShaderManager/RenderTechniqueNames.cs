@@ -219,6 +219,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string EffectBlurHorizontal = "EffectBlurHorizontal";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectOutlineSmooth = "EffectOutlineSmooth";
 
         /// <summary>
         /// 

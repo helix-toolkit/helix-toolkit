@@ -318,5 +318,8 @@
       <Filter>VS</Filter>
     </FxCompile>
     <FxCompile Include="VS\vsMeshBatchedSSAO.hlsl" />
+    <FxCompile Include="PS\psEffectOutlineSmooth.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
