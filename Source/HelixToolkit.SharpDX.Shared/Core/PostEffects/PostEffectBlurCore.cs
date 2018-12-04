@@ -70,7 +70,7 @@ namespace HelixToolkit.UWP
             /// <param name="sourceHeight"></param>
             /// <param name="sourceWidth"></param>
             public virtual void Run(RenderContext context, DeviceContextProxy deviceContext, 
-                ShaderResourceViewProxy source, int sourceWidth, int sourceHeight, BlurDepth depth, float scaleX, float scaleY)
+                ShaderResourceViewProxy source, int sourceWidth, int sourceHeight, BlurDepth depth, ref BorderEffectStruct modelStruct)
             {
                 deviceContext.SetSampler(PixelShader.Type, samplerSlot, sampler);
                 if((depth & BlurDepth.One) != 0)
@@ -78,8 +78,6 @@ namespace HelixToolkit.UWP
                     using (var target1 = context.GetOffScreenRT(OffScreenTextureSize.Half,
                         global::SharpDX.DXGI.Format.R8G8B8A8_UNorm, out int width, out int height))
                     {
-                        modelStruct.Param.M11 = scaleX;
-                        modelStruct.Param.M12 = scaleY;
                         modelStruct.ViewportScale = (int)OffScreenTextureSize.Half;
                         modelCB.Upload(deviceContext, ref modelStruct);
                         //Full -> Half Vertical

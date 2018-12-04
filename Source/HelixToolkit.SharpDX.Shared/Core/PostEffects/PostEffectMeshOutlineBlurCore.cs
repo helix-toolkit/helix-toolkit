@@ -320,7 +320,7 @@ namespace HelixToolkit.UWP
                 {
                     for(int i = 0; i < numberOfBlurPass; ++i)
                     {
-                        blurCore.Run(context, deviceContext, source, width, height, PostEffectBlurCore.BlurDepth.One, scaleX, scaleY);
+                        blurCore.Run(context, deviceContext, source, width, height, PostEffectBlurCore.BlurDepth.One, ref modelStruct);
                     }
                 }
                 else

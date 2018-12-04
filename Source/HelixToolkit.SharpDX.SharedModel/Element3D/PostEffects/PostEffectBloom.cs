@@ -82,32 +82,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The number of blur pass property
         /// </summary>
         public static readonly DependencyProperty NumberOfBlurPassProperty =
-            DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectBloom), new PropertyMetadata(2, (d, e) =>
+            DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectBloom), new PropertyMetadata(1, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as NodePostEffectBloom).NumberOfBlurPass = (int)e.NewValue;
             }));
-
-        /// <summary>
-        /// Gets or sets the maximum down sampling step.
-        /// </summary>
-        /// <value>
-        /// The maximum down sampling step.
-        /// </value>
-        public int MaximumDownSamplingStep
-        {
-            get { return (int)GetValue(MaximumDownSamplingStepProperty); }
-            set { SetValue(MaximumDownSamplingStepProperty, value); }
-        }
-
-        /// <summary>
-        /// The maximum down sampling step property
-        /// </summary>
-        public static readonly DependencyProperty MaximumDownSamplingStepProperty =
-            DependencyProperty.Register("MaximumDownSamplingStep", typeof(int), typeof(PostEffectBloom), new PropertyMetadata(3, (d, e) =>
-            {
-                ((d as Element3DCore).SceneNode as NodePostEffectBloom).MaximumDownSamplingStep = (int)e.NewValue;
-            }));
-
 
         /// <summary>
         /// Gets or sets the bloom extract intensity.
@@ -212,7 +190,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.BloomCombineSaturation = (float)BloomCombineSaturation;
                 c.BloomExtractIntensity = (float)BloomExtractIntensity;
                 c.BloomPassIntensity = (float)BloomPassIntensity;
-                c.MaximumDownSamplingStep = MaximumDownSamplingStep;
                 c.NumberOfBlurPass = NumberOfBlurPass;
                 c.ThresholdColor = ThresholdColor.ToColor4();
             }
