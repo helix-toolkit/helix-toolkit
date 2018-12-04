@@ -153,7 +153,7 @@ namespace HelixToolkit.UWP
             /// <param name="width">The width.</param>
             /// <param name="height">The height.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetRenderTargetNoClear(DepthStencilView dsv, RenderTargetView rtv, int width, int height)
+            public void SetRenderTarget(DepthStencilView dsv, RenderTargetView rtv, int width, int height)
             {
                 SetRenderTarget(dsv, rtv);
                 SetViewport(0, 0, width, height);
@@ -167,7 +167,7 @@ namespace HelixToolkit.UWP
             /// <param name="width">The width.</param>
             /// <param name="height">The height.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetRenderTargetNoClear(RenderTargetView rtv, int width, int height)
+            public void SetRenderTarget(RenderTargetView rtv, int width, int height)
             {
                 SetRenderTarget(null, rtv);
                 SetViewport(0, 0, width, height);

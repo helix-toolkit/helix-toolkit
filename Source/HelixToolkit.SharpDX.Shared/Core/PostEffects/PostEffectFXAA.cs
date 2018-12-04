@@ -81,7 +81,7 @@ namespace HelixToolkit.UWP
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 var buffer = context.RenderHost.RenderBuffer;
-                deviceContext.SetRenderTargetNoClear(buffer.FullResPPBuffer.NextRTV, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.NextRTV, buffer.TargetWidth, buffer.TargetHeight);
                 OnUpdatePerModelStruct(context);
                 modelCB.Upload(deviceContext, ref modelStruct);
                 LUMAPass.BindShader(deviceContext);

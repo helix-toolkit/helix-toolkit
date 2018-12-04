@@ -327,13 +327,13 @@ namespace HelixToolkit.UWP
                 {
                     for (int i = 0; i < numberOfBlurPass; ++i)
                     {
-                        deviceContext.SetRenderTargetNoClear(context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV, width, height);
+                        deviceContext.SetRenderTarget(context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV, width, height);
                         blurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, source);
                         blurPassHorizontal.BindShader(deviceContext);
                         blurPassHorizontal.BindStates(deviceContext, StateType.All);
                         deviceContext.Draw(4, 0);
 
-                        deviceContext.SetRenderTargetNoClear(source, width, height);
+                        deviceContext.SetRenderTarget(source, width, height);
                         blurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV);
                         blurPassVertical.BindShader(deviceContext);
                         blurPassVertical.BindStates(deviceContext, StateType.All);
@@ -351,7 +351,7 @@ namespace HelixToolkit.UWP
                 #endregion
 
                 #region Draw outline onto original target
-                deviceContext.SetRenderTargetNoClear(buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
                 screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV);
                 screenOutlinePass.BindShader(deviceContext);
                 screenOutlinePass.BindStates(deviceContext, StateType.All);

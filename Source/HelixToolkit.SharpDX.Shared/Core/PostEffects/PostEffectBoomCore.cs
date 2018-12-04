@@ -185,7 +185,7 @@ namespace HelixToolkit.UWP
                 #region Do Bloom Pass
                 modelCB.Upload(deviceContext, ref modelStruct);
                 //Extract bloom samples
-                deviceContext.SetRenderTargetNoClear(buffer.FullResPPBuffer.NextRTV, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.NextRTV, buffer.TargetWidth, buffer.TargetHeight);
                 
                 screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
                 screenQuadPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);

@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP
                 bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
                 var dPass = DoublePass;
                 var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
-                deviceContext.SetRenderTargetNoClear(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
                 if (hasMSAA)
                 {
                     //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.
