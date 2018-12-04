@@ -21,12 +21,25 @@ cbuffer cbTransforms : register(b0)
     float4 vViewport;
 	// camera position
     float3 vEyePos;
-    float padding0;
+    bool SSAOEnabled;
+    float SSAOBias;
+    float SSAOIntensity;
+    float2 padding0;
     float OITPower;
     float OITSlope;
     int OITWeightMode;
     int OITReserved;
 };
+
+#if defined(MESHSIMPLE)
+cbuffer cbMeshSimple : register(b1)
+{
+// Common Parameters
+    float4x4 mWorld;
+    bool bHasInstances = false;
+    float3 padding1;
+};
+#endif
 
 #if defined(MESH)
 //Per model shares between Phong material and PBR material
@@ -133,6 +146,23 @@ cbuffer cbPointLineModel : register(b4)
     float padding2;
 };
 #endif
+#if defined(VOLUME) // model for line, point and billboard
+//Per model
+cbuffer cbVolumeModel : register(b4)
+{
+    float4x4 mWorld;
+    float4 pColor;
+    float stepSize;
+    uint iterationOffset;
+    float padding1;
+    uint maxIterations;
+    bool bHasGradientMapX;
+    float isoValue;
+    float baseSampleDist = .5f;
+    float actualSampleDist = .5f;
+    float4 scaleFactor;
+};
+#endif
 #if defined(PARTICLE) // model for line, point and billboard
 //Per model
 cbuffer cbParticleModel : register(b4)
@@ -193,6 +223,8 @@ cbuffer cbBorderEffect : register(b6)
 {
     float4 Color;
     float4x4 Param;
+    float viewportScale; // Used to handle if using lower resolution render target for bluring. Scale = Full Res / Low Res;
+    float3 padding9;
 };
 #endif
 
@@ -238,6 +270,19 @@ cbuffer cbParticleCreateParameters : register(b8)
     float3 InitialAcceleration;
 };
 #endif
+
+#if defined(SSAO)
+static const uint SSAOKernalSize = 32;
+cbuffer cbSSAO : register(b1)
+{
+    float4 kernel[SSAOKernalSize];
+    float2 noiseScale;
+    int isPerspective;
+    float radius;    
+    float4x4 invProjection;
+}
+#endif
+
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D<float3> texNormalMap : register(t1);
@@ -257,6 +302,12 @@ TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 
 Texture2D<float> texShadowMap : register(t30);
 
+Texture2D texSSAOMap : register(t31);
+#if defined(SSAO)
+Texture2D<float3> texSSAONoise : register(t32);
+Texture2D<float> texSSAODepth : register(t33);
+#endif
+
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
 Texture2D billboardTexture : register(t0);; // billboard text image
@@ -267,7 +318,13 @@ Texture2D texOITAlpha : register(t11);
 Texture1D texColorStripe1DX : register(t12);
 Texture1D texColorStripe1DY : register(t13);
 
-StructuredBuffer<matrix> skinMatrices : register(t20);
+StructuredBuffer<matrix> skinMatrices : register(t40);
+
+Texture2D texSprite : register(t50);
+
+Texture3D texVolume : register(t0);
+Texture2D texVolumeFront : register(t1);
+Texture2D texVolumeBack : register(t2);
 ///------------------Samplers-------------------
 SamplerState samplerSurface : register(s0);
 SamplerState samplerIBL : register(s1);
@@ -281,6 +338,14 @@ SamplerComparisonState samplerShadow : register(s5);
 SamplerState samplerParticle : register(s6);
 
 SamplerState samplerBillboard : register(s7);
+
+SamplerState samplerSprite : register(s8);
+
+SamplerState samplerVolume : register(s9);
+
+#if defined(SSAO)
+SamplerState samplerNoise : register(s1);
+#endif
 ///---------------------UAV-----------------------------
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
