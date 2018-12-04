@@ -39,7 +39,6 @@ namespace HelixToolkit.UWP
             private readonly int textureSlot;
             private readonly int samplerSlot;
             private readonly ConstantBufferComponent modelCB;
-            private BorderEffectStruct modelStruct;
             private readonly SamplerStateProxy sampler;
             private static readonly Color4 Transparent = new Color4(0, 0, 0, 0);
             #endregion
@@ -59,16 +58,15 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// Runs the specified context.
+            /// Runs the blur procedure
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="deviceContext">The device context.</param>
             /// <param name="source">The source.</param>
             /// <param name="depth">The depth.</param>
-            /// <param name="scaleX">The scale x.</param>
-            /// <param name="scaleY">The scale y.</param>
             /// <param name="sourceHeight"></param>
             /// <param name="sourceWidth"></param>
+            /// <param name="modelStruct"></param>
             public virtual void Run(RenderContext context, DeviceContextProxy deviceContext, 
                 ShaderResourceViewProxy source, int sourceWidth, int sourceHeight, BlurDepth depth, ref BorderEffectStruct modelStruct)
             {
