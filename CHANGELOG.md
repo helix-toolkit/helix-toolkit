@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 
 ### Improvement and Changes
 1. Add FastList and change Vector3Collection/IntCollection base class to FastList for direct underlying array access.
+2. Improved off-screen texture pooling.
+3. Improved post effects quality.
 
 ### Fixed
 1. Make DPFCanvas work over Remote Desktop again #998. (WPF.SharpDX and UWP)
