@@ -83,7 +83,15 @@ namespace HelixToolkit.UWP
             {
                 deviceContext.OutputMerger.SetRenderTargets(dsv, ZeroRenderTargetArray);
             }
-
+            /// <summary>
+            /// Sets the render target only.
+            /// </summary>
+            /// <param name="rtv">The RTV.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetRenderTargetOnly(RenderTargetView rtv)
+            {
+                deviceContext.OutputMerger.SetRenderTargets(null, rtv);
+            }
             /// <summary>
             /// Sets the render target.
             /// </summary>
