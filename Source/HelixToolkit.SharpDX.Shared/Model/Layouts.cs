@@ -488,8 +488,10 @@ namespace HelixToolkit.UWP
     {
         public Color4 Color;
         public Matrix Param;
+        public float ViewportScale; //Used to handle using lower resolution render target for bluring. Scale = Full Resolution / Low Resolution
+        Vector3 padding;
 
-        public const int SizeInBytes = 4 * (4 + 4 * 4);
+        public const int SizeInBytes = 4 * (4 + 4 * 4 + 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

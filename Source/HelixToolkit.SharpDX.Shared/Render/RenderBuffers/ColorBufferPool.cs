@@ -175,6 +175,8 @@ namespace HelixToolkit.UWP
             private readonly ConcurrentDictionary<Format, ConcurrentBag<ShaderResourceViewProxy>> pool = new ConcurrentDictionary<Format, ConcurrentBag<ShaderResourceViewProxy>>();
             private readonly IDevice3DResources deviceResourse;
             private Texture2DDescription description;
+            public int Width { get => description.Width; }
+            public int Height { get => description.Height; }
 
             public TexturePool(IDevice3DResources deviceResourse, Texture2DDescription desc)
             {

@@ -254,7 +254,14 @@ namespace HelixToolkit.UWP
                 for (int i = 0; i < count; ++i)
                 {
                     renderables[i].Render(context, ImmediateContext);
-                }            
+                }
+
+                if (context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0
+                  && context.RenderHost.RenderConfiguration.FXAALevel != FXAALevel.None)
+                {
+                    postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
+                    postFXAACore.Render(context, ImmediateContext);
+                }
             }
             /// <summary>
             /// Renders to ping pong buffer.
@@ -265,23 +272,13 @@ namespace HelixToolkit.UWP
             {
                 var buffer = context.RenderHost.RenderBuffer;
                 buffer.FullResPPBuffer.Initialize();
-                if (context.RenderHost.FeatureLevel < global::SharpDX.Direct3D.FeatureLevel.Level_11_0 
-                    || context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || parameter.IsMSAATexture)
+                if (parameter.IsMSAATexture)
                 {
-                    if (parameter.IsMSAATexture)
-                    {
-                        ImmediateContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.FullResPPBuffer.CurrentTexture, 0, buffer.Format);
-                    }
-                    else
-                    {
-                        ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);                    
-                    }
+                    ImmediateContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.FullResPPBuffer.CurrentTexture, 0, buffer.Format);
                 }
                 else
                 {
-                    ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);
-                    postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
-                    postFXAACore.Render(context, ImmediateContext);
+                    ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);                    
                 }
             }
             /// <summary>

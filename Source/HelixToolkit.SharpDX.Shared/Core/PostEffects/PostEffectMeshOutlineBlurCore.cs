@@ -74,28 +74,20 @@ namespace HelixToolkit.UWP
 
             private ShaderPass blurPassHorizontal;
 
+            private ShaderPass smoothPass;
+
             private ShaderPass screenOutlinePass;
 
             private int textureSlot;
 
             private int samplerSlot;
 
-            private const int downSamplingScale = 2;
-
-            private Texture2DDescription depthdesc = new Texture2DDescription
-            {
-                BindFlags = BindFlags.DepthStencil,
-                Format = global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt,
-                MipLevels = 1,
-                SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
-                Usage = ResourceUsage.Default,
-                OptionFlags = ResourceOptionFlags.None,
-                CpuAccessFlags = CpuAccessFlags.None,
-                ArraySize = 1,
-            };
-
             private readonly ConstantBufferComponent modelCB;
             private BorderEffectStruct modelStruct;
+            private static readonly OffScreenTextureSize TextureSize = OffScreenTextureSize.Full;
+            private static readonly Color4 Transparent = new Color4(0, 0, 0, 0);
+
+            private readonly bool useBlurCore = true;
             #endregion
             #region Properties
             private string effectName = DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur;
@@ -196,23 +188,28 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Initializes a new instance of the <see cref="PostEffectMeshOutlineBlurCore"/> class.
             /// </summary>
-            public PostEffectMeshOutlineBlurCore() : base(RenderType.PostProc)
+            public PostEffectMeshOutlineBlurCore(bool useBlurCore = true) : base(RenderType.PostProc)
             {
+                this.useBlurCore = useBlurCore;
                 Color = global::SharpDX.Color.Red;
                 modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
-            {
+            {               
                 screenQuadPass = technique.GetPass(DefaultPassNames.ScreenQuad);
                 blurPassVertical = technique.GetPass(DefaultPassNames.EffectBlurVertical);
                 blurPassHorizontal = technique.GetPass(DefaultPassNames.EffectBlurHorizontal);
+                smoothPass = technique.GetPass(DefaultPassNames.EffectOutlineSmooth);
                 screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
                 textureSlot = screenOutlinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
                 sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
-                blurCore = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical,
-                    blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager));
+                if (useBlurCore)
+                {
+                    blurCore = Collect(new PostEffectBlurCore(blurPassVertical,
+                        blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager));
+                }
                 return true;
             }
 
@@ -223,143 +220,149 @@ namespace HelixToolkit.UWP
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
-                #region Initialize textures
-                var buffer = context.RenderHost.RenderBuffer;
-                if (depthdesc.Width != buffer.TargetWidth
-                    || depthdesc.Height != buffer.TargetHeight)
+                int width = 0;
+                int height = 0;
+                using (var depthStencilBuffer = context.GetOffScreenDS(TextureSize, global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt, out width, out height))
                 {
-                    depthdesc.Width = buffer.TargetWidth;
-                    depthdesc.Height = buffer.TargetHeight;
-
-                    blurCore.Resize(deviceContext,
-                        depthdesc.Width / downSamplingScale,
-                        depthdesc.Height / downSamplingScale);
-                    //Skip this frame to avoid performance hit due to texture creation
-                    RaiseInvalidateRender();
-                    return;
-                }
-                #endregion
-
-                using (var depthStencilBuffer = context.GetOffScreenDS(OffScreenTextureSize.Full, depthdesc.Format))
-                {
-                    var renderTargetFull = buffer.FullResPPBuffer.NextRTV;
-            
-                    var frustum = context.BoundingFrustum;
-                    OnUpdatePerModelStruct(context);
-                    if (drawMode == OutlineMode.Separated)
+                    using (var renderTargetBuffer = context.GetOffScreenRT(TextureSize, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm))
                     {
-                        for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
-                        {                    
+                        var frustum = context.BoundingFrustum;
+                        OnUpdatePerModelStruct(context);
+                        if (drawMode == OutlineMode.Separated)
+                        {
+                            for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                            {                    
+                                #region Render objects onto offscreen texture
+                                var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
+                                if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                                {
+                                    continue;
+                                }
+                                deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, width, height, true,
+                                    global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
+                                modelCB.Upload(deviceContext, ref modelStruct);
+                                if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                                {
+                                    var color = Color;
+                                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                                    {
+                                        color = colorStr.ToColor4();
+                                    }
+                                    if (modelStruct.Color != color)
+                                    {
+                                        modelStruct.Color = color;
+                                        modelCB.Upload(deviceContext, ref modelStruct);
+                                    }
+                                    context.CustomPassName = DefaultPassNames.EffectOutlineP1;
+                                    var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
+                                    if (pass.IsNULL) { continue; }
+                                    pass.BindShader(deviceContext);
+                                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                                    mesh.RenderCustom(context, deviceContext);
+                                    DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer, width, height);
+                                }                             
+                                #endregion   
+                            }
+                        }
+                        else
+                        {
+                            deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, width, height, true,
+                                    Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
                             #region Render objects onto offscreen texture
-                            var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                            if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                            bool hasMesh = false;
+                            for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                             {
-                                continue;
+                                var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
+                                if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                                {
+                                    continue;
+                                }
+                                if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                                {
+                                    var color = Color;
+                                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                                    {
+                                        color = colorStr.ToColor4();
+                                    }
+                                    if (modelStruct.Color != color)
+                                    {
+                                        modelStruct.Color = color;
+                                        modelCB.Upload(deviceContext, ref modelStruct);
+                                    }
+                                    context.CustomPassName = DefaultPassNames.EffectOutlineP1;
+                                    var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
+                                    if (pass.IsNULL) { continue; }
+                                    pass.BindShader(deviceContext);
+                                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                                    mesh.RenderCustom(context, deviceContext);
+                                    hasMesh = true;
+                                }
                             }
-                            deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetFull, buffer.TargetWidth, buffer.TargetHeight, true,
-                                global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
-                            modelCB.Upload(deviceContext, ref modelStruct);
-                            if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                            #endregion
+                            if (hasMesh)
                             {
-                                var color = Color;
-                                if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
-                                {
-                                    color = colorStr.ToColor4();
-                                }
-                                if (modelStruct.Color != color)
-                                {
-                                    modelStruct.Color = color;
-                                    modelCB.Upload(deviceContext, ref modelStruct);
-                                }
-                                context.CustomPassName = DefaultPassNames.EffectOutlineP1;
-                                var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
-                                if (pass.IsNULL) { continue; }
-                                pass.BindShader(deviceContext);
-                                pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                                mesh.RenderCustom(context, deviceContext);
-                                DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetFull);
-                            }                             
-                            #endregion   
+                                DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer, width, height);
+                            }
                         }
                     }
-                    else
-                    {
-                        deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetFull, buffer.TargetWidth, buffer.TargetHeight, true,
-                                global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
-                        #region Render objects onto offscreen texture
-                        bool hasMesh = false;
-                        for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
-                        {
-                            var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                            if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
-                            {
-                                continue;
-                            }
-                            if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
-                            {
-                                var color = Color;
-                                if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
-                                {
-                                    color = colorStr.ToColor4();
-                                }
-                                if (modelStruct.Color != color)
-                                {
-                                    modelStruct.Color = color;
-                                    modelCB.Upload(deviceContext, ref modelStruct);
-                                }
-                                context.CustomPassName = DefaultPassNames.EffectOutlineP1;
-                                var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
-                                if (pass.IsNULL) { continue; }
-                                pass.BindShader(deviceContext);
-                                pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                                mesh.RenderCustom(context, deviceContext);
-                                hasMesh = true;
-                            }
-                        }
-                        #endregion
-                        if (hasMesh)
-                        {
-                            DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetFull);
-                        }
-                    }
+            
+
                 }
             }
 
             private void DrawOutline(RenderContext context, DeviceContextProxy deviceContext, 
-                ShaderResourceViewProxy depthStencilBuffer, ShaderResourceViewProxy renderTargetFull)
+                ShaderResourceViewProxy depthStencilBuffer, ShaderResourceViewProxy source, int width, int height)
             {
                 var buffer = context.RenderHost.RenderBuffer;
-                #region Do Blur Pass
-                deviceContext.SetRenderTarget(blurCore.CurrentRTV, blurCore.Width, blurCore.Height, true, global::SharpDX.Color.Transparent);
-                blurPassVertical.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
-                blurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
-                blurPassVertical.BindShader(deviceContext);
-                blurPassVertical.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                deviceContext.Draw(4, 0);
 
-                blurCore.Run(deviceContext, NumberOfBlurPass, 1, 0);//Already blur once on vertical, pass 1 as initial index.            
-                #endregion
+                #region Do Blur Pass
+                if (useBlurCore)
+                {
+                    for(int i = 0; i < numberOfBlurPass; ++i)
+                    {
+                        blurCore.Run(context, deviceContext, source, width, height, PostEffectBlurCore.BlurDepth.One, ref modelStruct);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < numberOfBlurPass; ++i)
+                    {
+                        deviceContext.SetRenderTarget(context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV, width, height);
+                        blurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, source);
+                        blurPassHorizontal.BindShader(deviceContext);
+                        blurPassHorizontal.BindStates(deviceContext, StateType.All);
+                        deviceContext.Draw(4, 0);
+
+                        deviceContext.SetRenderTarget(source, width, height);
+                        blurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV);
+                        blurPassVertical.BindShader(deviceContext);
+                        blurPassVertical.BindStates(deviceContext, StateType.All);
+                        deviceContext.Draw(4, 0);
+                    }
+                }
 
                 #region Draw back with stencil test
-                deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetFull, buffer.TargetWidth, buffer.TargetHeight, true, global::SharpDX.Color.Transparent, false);
-                screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
+                deviceContext.SetRenderTarget(depthStencilBuffer, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV, width, height,
+                    true, global::SharpDX.Color.Transparent, false);
+                screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, source);
                 screenQuadPass.BindShader(deviceContext);
-                screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
+                screenQuadPass.BindStates(deviceContext, StateType.All);
                 deviceContext.Draw(4, 0);
                 #endregion
+
                 #region Draw outline onto original target
-                deviceContext.SetRenderTargetNoClear(buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
-                screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
+                screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV);
                 screenOutlinePass.BindShader(deviceContext);
-                screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
+                screenOutlinePass.BindStates(deviceContext, StateType.All);
                 deviceContext.Draw(4, 0);
                 screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, null);
+                #endregion
                 #endregion
             }
 
             protected override void OnDetach()
             {
-                depthdesc.Width = depthdesc.Height = 0;
                 blurCore = null;
                 sampler = null;
                 base.OnDetach();
@@ -370,6 +373,7 @@ namespace HelixToolkit.UWP
                 modelStruct.Param.M11 = scaleX;
                 modelStruct.Param.M12 = ScaleY;
                 modelStruct.Color = color;
+                modelStruct.ViewportScale = (int)TextureSize;
             }
         }
     }

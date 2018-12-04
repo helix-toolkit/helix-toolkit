@@ -76,23 +76,7 @@ namespace HelixToolkit.UWP
                     return (RenderCore as IPostEffectBloom).NumberOfBlurPass;
                 }
             }
-            /// <summary>
-            /// Gets or sets the maximum down sampling step.
-            /// </summary>
-            /// <value>
-            /// The maximum down sampling step.
-            /// </value>
-            public int MaximumDownSamplingStep
-            {
-                set
-                {
-                    (RenderCore as IPostEffectBloom).MaximumDownSamplingStep = value;
-                }
-                get
-                {
-                    return (RenderCore as IPostEffectBloom).MaximumDownSamplingStep;
-                }
-            }
+
             /// <summary>
             /// Gets or sets the bloom extract intensity.
             /// </summary>

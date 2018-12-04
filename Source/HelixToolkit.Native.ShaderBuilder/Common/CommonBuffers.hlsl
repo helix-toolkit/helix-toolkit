@@ -223,6 +223,8 @@ cbuffer cbBorderEffect : register(b6)
 {
     float4 Color;
     float4x4 Param;
+    float viewportScale; // Used to handle if using lower resolution render target for bluring. Scale = Full Res / Low Res;
+    float3 padding9;
 };
 #endif
 

@@ -189,7 +189,7 @@ namespace HelixToolkit.UWP
 
     public enum OffScreenTextureSize
     {
-        Full, Half, Quarter
+        Full = 1, Half = 2, Quarter = 4
     }
 
     public enum OffScreenTextureType

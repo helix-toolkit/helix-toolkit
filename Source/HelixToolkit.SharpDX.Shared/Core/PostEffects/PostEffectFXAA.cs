@@ -81,18 +81,16 @@ namespace HelixToolkit.UWP
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 var buffer = context.RenderHost.RenderBuffer;
-                deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.NextRTV });
-                deviceContext.SetViewport(0, 0, buffer.TargetWidth, buffer.TargetHeight, 0.0f, 1.0f);
-                deviceContext.SetScissorRectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.NextRTV, buffer.TargetWidth, buffer.TargetHeight);
                 OnUpdatePerModelStruct(context);
                 modelCB.Upload(deviceContext, ref modelStruct);
                 LUMAPass.BindShader(deviceContext);
-                LUMAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+                LUMAPass.BindStates(deviceContext, StateType.All);
                 LUMAPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
                 LUMAPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                 deviceContext.Draw(4, 0);
            
-                deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.CurrentRTV });
+                deviceContext.SetRenderTargetOnly(buffer.FullResPPBuffer.CurrentRTV);
                 FXAAPass.BindShader(deviceContext);
                 FXAAPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
                 deviceContext.Draw(4, 0);

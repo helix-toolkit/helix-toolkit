@@ -406,6 +406,7 @@ namespace HelixToolkit.UWP
         /// <param name="size">The size.</param>
         /// <param name="format">The format.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderResourceViewProxy GetOffScreenTexture(OffScreenTextureType type, OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
         {
             switch (type)
@@ -424,6 +425,7 @@ namespace HelixToolkit.UWP
         /// <param name="size">The size.</param>
         /// <param name="format">The format.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
         {
             switch (size)
@@ -438,12 +440,44 @@ namespace HelixToolkit.UWP
                     return ShaderResourceViewProxy.Empty;
             }
         }
+
+        /// <summary>
+        /// Gets the off screen rt.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format, out int width, out int height)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    width = RenderHost.RenderBuffer.FullResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.FullResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.FullResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    width = RenderHost.RenderBuffer.HalfResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.HalfResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.HalfResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    width = RenderHost.RenderBuffer.QuarterResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.QuarterResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.QuarterResRenderTargetPool.Get(format);
+                default:
+                    width = height = 0;
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
         /// <summary>
         /// Gets the off screen depth stencil.
         /// </summary>
         /// <param name="size">The size.</param>
         /// <param name="format">The format.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
         {
             switch (size)
@@ -457,6 +491,48 @@ namespace HelixToolkit.UWP
                 default:
                     return ShaderResourceViewProxy.Empty;
             }
+        }
+        /// <summary>
+        /// Gets the off screen ds.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format, out int width, out int height)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    width = RenderHost.RenderBuffer.FullResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.FullResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.FullResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    width = RenderHost.RenderBuffer.HalfResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.HalfResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.HalfResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    width = RenderHost.RenderBuffer.QuarterResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.QuarterResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.QuarterResDepthStencilPool.Get(format);
+                default:
+                    width = height = 0;
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetPingPongBufferNextRTV()
+        {
+            return RenderHost.RenderBuffer.FullResPPBuffer.NextRTV;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetPingPongBufferCurrentRTV()
+        {
+            return RenderHost.RenderBuffer.FullResPPBuffer.CurrentRTV;
         }
     }
 }
