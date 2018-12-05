@@ -208,7 +208,6 @@ namespace HelixToolkit.UWP
                     mesh.RenderCustom(context, deviceContext);
                 }
 
-                deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
                 OnUpdatePerModelStruct(context);
                 modelCB.Upload(deviceContext, ref modelStruct);
                 //Thrid pass, draw mesh with grid overlay

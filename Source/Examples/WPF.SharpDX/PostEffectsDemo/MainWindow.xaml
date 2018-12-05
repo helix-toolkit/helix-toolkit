@@ -21,6 +21,8 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
+            EnableD2DRendering="False"
+            EnableSwapChainRendering="True"
             FXAALevel="Low"
             ModelUpDirection="0,0,1"
             ShowCoordinateSystem="True"
@@ -60,7 +62,7 @@
                 CullMode="Back"
                 Geometry="{Binding MeshModel2}"
                 Material="{Binding Material2}"
-                PostEffects="border; glow[color:#0000FF]; xrayGrid[color:#D21C9229]"
+                PostEffects="border; glow[color:#0000FF]; xrayGrid[color:#D22FDCDC]"
                 Transform="{Binding Model2Transform}" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
@@ -72,12 +74,17 @@
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
                 Material="{Binding FloorMaterial}" />
+            <hx:LineGeometryModel3D
+                Geometry="{Binding LineModel}"
+                PostEffects="xrayLine"
+                Color="White" />
             <hx:PostEffectMeshXRayGrid EffectName="xrayGrid" GridDensity="4" />
             <hx:PostEffectMeshOutlineBlur
                 EffectName="glow"
                 NumberOfBlurPass="6"
                 Color="Yellow" />
             <hx:PostEffectMeshBorderHighlight EffectName="border" Color="Red" />
+            <hx:PostEffectMeshXRay EffectName="xrayLine" />
         </hx:Viewport3DX>
     </Grid>
 </Window>
