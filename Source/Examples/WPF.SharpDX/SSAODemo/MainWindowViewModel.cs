@@ -25,6 +25,8 @@ namespace SSAODemo
 
         public Matrix[] BunnyInstances { get; }
 
+        public SSAOQuality[] SSAOQualities { get; } = new SSAOQuality[] { SSAOQuality.High, SSAOQuality.Low };
+
         public MainWindowViewModel()
         {
             EffectsManager = new DefaultEffectsManager();

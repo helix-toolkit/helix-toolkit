@@ -516,7 +516,7 @@ namespace HelixToolkit.UWP
         //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         //public Vector4[] Kernels;
         public Vector2 NoiseScale;
-        public int IsPerspective;
+        public int TextureScale;
         public float Radius;
         public Matrix InvProjection;
         public const int SizeInBytes = 4 * (4 * 32 + 4 + 4 * 4);

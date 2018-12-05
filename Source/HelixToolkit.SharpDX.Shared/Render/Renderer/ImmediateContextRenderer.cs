@@ -238,6 +238,7 @@ namespace HelixToolkit.UWP
                 if (context.SSAOEnabled)
                 {
                     preSSAOCore.Radius = context.RenderHost.RenderConfiguration.SSAORadius;
+                    preSSAOCore.Quality = context.RenderHost.RenderConfiguration.SSAOQuality;
                     preSSAOCore.Render(context, ImmediateContext);
                 }
             }

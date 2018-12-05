@@ -1,11 +1,11 @@
-//#define SSAO
+#define SSAO
 #include"..\Common\CommonBuffers.hlsl"
 #pragma pack_matrix( row_major )
 
 static const float div = 1.0 / 16;
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
-    float2 texSize = vViewport.zw;
+    float2 texSize = vViewport.zw * texScale;
     float result = 0;
     [unroll]
     for (int x = -2; x < 2; ++x)

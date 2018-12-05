@@ -33,6 +33,19 @@ namespace HelixToolkit.UWP
                 get { return radius; }
             }
 
+            private SSAOQuality quality = SSAOQuality.Low;
+            public SSAOQuality Quality
+            {
+                set
+                {
+                    if(SetAffectsRender(ref quality, value))
+                    {
+                        offScreenTextureSize = value == SSAOQuality.High ? OffScreenTextureSize.Full : OffScreenTextureSize.Half;
+                    }
+                }
+                get { return quality; }
+            }
+
             private Texture2DDescription ssaoTextureDesc = new Texture2DDescription()
             {
                 CpuAccessFlags = CpuAccessFlags.None,
@@ -54,10 +67,11 @@ namespace HelixToolkit.UWP
             private readonly ConstantBufferComponent ssaoCB;
             private const int KernalSize = 32;
             private readonly Vector4[] kernels = new Vector4[KernalSize];
-            private readonly Vector3[] frustumCorners = new Vector3[8];
             private const global::SharpDX.DXGI.Format DEPTHFORMAT = global::SharpDX.DXGI.Format.R32_Typeless;
             private const global::SharpDX.DXGI.Format RENDERTARGETFORMAT = global::SharpDX.DXGI.Format.R16G16B16A16_Float;
             private const global::SharpDX.DXGI.Format SSAOTARGETFORMAT = global::SharpDX.DXGI.Format.R16_Float;
+
+            private OffScreenTextureSize offScreenTextureSize = OffScreenTextureSize.Half;
 
             public SSAOCore() : base(RenderType.PreProc)
             {
@@ -67,15 +81,16 @@ namespace HelixToolkit.UWP
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 EnsureTextureResources((int)context.ActualWidth, (int)context.ActualHeight, deviceContext);
-                using (var ds = context.GetOffScreenDS(OffScreenTextureSize.Full, DEPTHFORMAT))
+                int texScale = (int)offScreenTextureSize;
+                using (var ds = context.GetOffScreenDS(offScreenTextureSize, DEPTHFORMAT))
                 {
-                    using (var rt0 = context.GetOffScreenRT(OffScreenTextureSize.Full, RENDERTARGETFORMAT))
+                    using (var rt0 = context.GetOffScreenRT(offScreenTextureSize, RENDERTARGETFORMAT))
                     {
-                        using (var rt1 = context.GetOffScreenRT(OffScreenTextureSize.Full, SSAOTARGETFORMAT))
+                        using (var rt1 = context.GetOffScreenRT(offScreenTextureSize, SSAOTARGETFORMAT))
                         {
-                            deviceContext.ClearDepthStencilView(ds, DepthStencilClearFlags.Depth, 1, 0);
-                            deviceContext.ClearRenderTargetView(rt0, new Color4(0, 0, 0, 1));//Set alpha channel to 1 for max depth value
-                            deviceContext.SetRenderTarget(ds, rt0);
+                            int w = (int)(context.ActualWidth / texScale);// Make sure to set correct viewport width/height by quality
+                            int h = (int)(context.ActualHeight / texScale);
+                            deviceContext.SetRenderTarget(ds, rt0, w, h, true, new Color4(0, 0, 0, 1), true, DepthStencilClearFlags.Depth);
                             IRenderTechnique currTechnique = null;
                             ShaderPass ssaoPass1 = ShaderPass.NullPass;
                             var frustum = context.BoundingFrustum;
@@ -94,17 +109,17 @@ namespace HelixToolkit.UWP
                                 node.RenderDepth(context, deviceContext, ssaoPass1);
                             }
 
-                            var invProjection = context.ProjectionMatrix.Inverted(); //* context.ViewMatrix.PsudoInvert();
+                            var invProjection = context.ProjectionMatrix.Inverted();
                             ssaoParam.InvProjection = invProjection;
-                            ssaoParam.NoiseScale = new Vector2(context.ActualWidth / 4f, context.ActualHeight / 4f);
+                            ssaoParam.NoiseScale = new Vector2(w / 4f, h / 4f);
                             ssaoParam.Radius = radius;
-                            ssaoParam.IsPerspective = context.IsPerspective ? 1 : 0;
+                            ssaoParam.TextureScale = texScale;
                             ssaoCB.ModelConstBuffer.UploadDataToBuffer(deviceContext, (stream) =>
                             {
                                 stream.WriteRange(kernels);
                                 stream.Write(ssaoParam);
                             });
-                            deviceContext.SetRenderTarget(null, rt1);
+                            deviceContext.SetRenderTargetOnly(rt1);
                             ssaoPass.BindShader(deviceContext);
                             ssaoPass.BindStates(deviceContext, StateType.All);
                             ssaoPass.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt0);
@@ -116,7 +131,7 @@ namespace HelixToolkit.UWP
 
                             ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, null);
 
-                            deviceContext.SetRenderTarget(null, ssaoView);
+                            deviceContext.SetRenderTarget(ssaoView, width, height);
                             ssaoBlur.BindShader(deviceContext);
                             ssaoBlur.BindStates(deviceContext, StateType.All);
                             ssaoBlur.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt1);
@@ -139,7 +154,7 @@ namespace HelixToolkit.UWP
                     RemoveAndDispose(ref ssaoView);
                     width = w;
                     height = h;
-                    if (width > 10 && height > 0)
+                    if (width > 10 && height > 10)
                     {
                         ssaoTextureDesc.Width = width;
                         ssaoTextureDesc.Height = height;

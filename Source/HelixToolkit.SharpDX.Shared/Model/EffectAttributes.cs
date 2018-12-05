@@ -79,8 +79,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public object GetAttribute(string attName)
             {
-                object obj;
-                if(attributes.TryGetValue(attName, out obj))
+                if(attributes.TryGetValue(attName, out var obj))
                 {
                     return obj;
                 }

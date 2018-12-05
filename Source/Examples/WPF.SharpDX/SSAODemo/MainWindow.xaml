@@ -20,7 +20,6 @@
             Grid.Column="0"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
-            EnableD2DRendering="True"
             EnableSSAO="True"
             FXAALevel="Medium"
             ShowFrameDetails="True">
@@ -55,6 +54,7 @@
                 Maximum="4"
                 Minimum="1"
                 Value="{Binding ElementName=viewport, Path=SSAOIntensity}" />
+            <ComboBox ItemsSource="{Binding SSAOQualities}" SelectedItem="{Binding ElementName=viewport, Path=SSAOQuality}"/>
         </StackPanel>
     </Grid>
 </Window>
