@@ -660,6 +660,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.RenderConfiguration.EnableSSAO = EnableSSAO;
                 this.renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
                 this.renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
+                this.renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
                 if (ShowFrameRate)
                 {
                     this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;

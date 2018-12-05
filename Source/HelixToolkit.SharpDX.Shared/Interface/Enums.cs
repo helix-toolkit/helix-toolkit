@@ -196,4 +196,9 @@ namespace HelixToolkit.UWP
     {
         RenderTarget, DepthStencil
     }
+
+    public enum SSAOQuality
+    {
+        High, Low
+    }
 }

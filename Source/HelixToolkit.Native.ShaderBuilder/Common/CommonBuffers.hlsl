@@ -277,7 +277,7 @@ cbuffer cbSSAO : register(b1)
 {
     float4 kernel[SSAOKernalSize];
     float2 noiseScale;
-    int isPerspective;
+    int texScale; // Used when viewport size does not match texture size
     float radius;    
     float4x4 invProjection;
 }

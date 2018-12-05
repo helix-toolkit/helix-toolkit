@@ -442,5 +442,9 @@ namespace HelixToolkit.UWP
         /// The ssao intensity
         /// </summary>
         public float SSAOIntensity = 1f;
+        /// <summary>
+        /// The ssao quality
+        /// </summary>
+        public SSAOQuality SSAOQuality = SSAOQuality.High;
     }
 }

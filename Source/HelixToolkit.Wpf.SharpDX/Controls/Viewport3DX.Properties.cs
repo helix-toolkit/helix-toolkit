@@ -1149,6 +1149,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }));
 
+        /// <summary>
+        /// The ssao quality property
+        /// </summary>
+        public static readonly DependencyProperty SSAOQualityProperty =
+            DependencyProperty.Register("SSAOQuality", typeof(SSAOQuality), typeof(Viewport3DX), new PropertyMetadata(SSAOQuality.Low, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.SSAOQuality = (SSAOQuality)e.NewValue;
+                    viewport.renderHostInternal.InvalidateRender();
+                }
+            }));
+
+
 
         /// <summary>
         /// Background Color
@@ -2952,6 +2967,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (double)GetValue(SSAOIntensityProperty); }
             set { SetValue(SSAOIntensityProperty, value); }
+        }
+
+
+        /// <summary>
+        /// Gets or sets the ssao quality.
+        /// </summary>
+        /// <value>
+        /// The ssao quality.
+        /// </value>
+        public SSAOQuality SSAOQuality
+        {
+            get { return (SSAOQuality)GetValue(SSAOQualityProperty); }
+            set { SetValue(SSAOQualityProperty, value); }
         }
     }
 }

@@ -166,9 +166,9 @@ namespace HelixToolkit.UWP
                     depthPrepassCore.Render(context, deviceContext);
                 }
                 var frustum = context.BoundingFrustum;
+                deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 1, 0);
                 if (dPass)
-                {                
-                    deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 1, 0);
+                {                                   
                     for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                     {
                         var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
