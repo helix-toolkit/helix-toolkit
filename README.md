@@ -23,7 +23,6 @@ Description         | Value
 License             | The MIT License (MIT)
 Web page            | http://helix-toolkit.org/
 Documentation       | http://docs.helix-toolkit.org/
-Forum               | http://forum.helix-toolkit.org/
 Chat                | https://gitter.im/helix-toolkit/helix-toolkit
 Source repository   | http://github.com/helix-toolkit/helix-toolkit
 Latest build        | http://ci.appveyor.com/project/objorke/helix-toolkit
