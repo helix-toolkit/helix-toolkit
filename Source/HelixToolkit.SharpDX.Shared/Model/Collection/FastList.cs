@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets the items from internal array. Make sure to access this array using <see cref="Count"/> instead of Array Length
         /// </summary>
-        public T[] Items { get; private set; }
+        internal T[] Items { get; private set; }
         private static readonly T[] empty = new T[0];
         private int _size;
 
@@ -200,12 +200,10 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                if (index < 0 || index >= _size) throw new ArgumentOutOfRangeException(nameof(index));
                 return Items[index];
             }
             set
             {
-                if (index < 0 || index >= _size) throw new ArgumentOutOfRangeException(nameof(index));
                 Items[index] = value;
             }
         }
@@ -525,7 +523,7 @@ namespace HelixToolkit.UWP
 
         public void Sort()
         {
-            Sort(0, Count, null);
+            Array.Sort(Items, 0, Count);
         }
 
         public void Sort(IComparer<T> comparer)
@@ -629,7 +627,26 @@ namespace HelixToolkit.UWP
                 current = default(T);
             }
         }
-
         #endregion
+
+        /// <summary>
+        /// Fast add all from another <see cref="FastList{T}"/>.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        public void AddAll(FastList<T> list)
+        {
+            EnsureCapacity(_size + list.Count);
+            Array.Copy(list.Items, 0, Items, Count, list.Count);
+            _size += list.Count;
+        }
+
+        /// <summary>
+        /// Gets the internal array used to hold data.
+        /// </summary>
+        /// <returns></returns>
+        public T[] GetInternalArray()
+        {
+            return Items;
+        }
     }
 }

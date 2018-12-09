@@ -223,7 +223,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The per frame renderable.
         /// </value>
-        List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
+        FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
         /// <summary>
         /// Gets the current frame lights
         /// </summary>
@@ -237,33 +237,33 @@ namespace HelixToolkit.UWP
         /// <value>
         /// Gets the per frame nodes with post effects.
         /// </value>
-        List<SceneNode> PerFrameNodesWithPostEffect { get; }
+        FastList<SceneNode> PerFrameNodesWithPostEffect { get; }
         /// <summary>
         /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
         /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        List<SceneNode> PerFrameOpaqueNodes { get; }
+        FastList<SceneNode> PerFrameOpaqueNodes { get; }
         /// <summary>
         /// Gets the per frame opaque nodes in frustum.
         /// </summary>
         /// <value>
         /// The per frame opaque nodes in frustum.
         /// </value>
-        List<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
+        FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
         /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle"/>
         /// </summary>
         /// <value>
         /// The per frame particle nodes.
         /// </value>
-        List<SceneNode> PerFrameParticleNodes { get; }
+        FastList<SceneNode> PerFrameParticleNodes { get; }
         /// <summary>
         /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>
         /// </summary>
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        List<SceneNode> PerFrameTransparentNodes { get; }
+        FastList<SceneNode> PerFrameTransparentNodes { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>

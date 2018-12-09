@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
             /// <param name="testFrustum"></param>
             /// <param name="numRendered"></param>
             /// <returns></returns>
-            bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
+            bool ScheduleAndRun(FastList<SceneNode> items, IDeviceContextPool pool,
                 RenderContext context, RenderParameter parameter, bool testFrustum, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
         }
         /// <summary>
@@ -120,7 +120,7 @@ namespace HelixToolkit.UWP
             /// <param name="numRendered"></param>
             /// <param name="testFrustum"></param>
             /// <returns></returns>
-            public bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
+            public bool ScheduleAndRun(FastList<SceneNode> items, IDeviceContextPool pool,
                 RenderContext context, RenderParameter parameter, bool testFrustum,
                 List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
             {

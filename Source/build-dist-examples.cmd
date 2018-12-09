@@ -16,3 +16,10 @@ echo Examples/WPF.SharpDX/%%~a
 mkdir "dist-examples/WPF.SharpDX/%%~a"
 xcopy /s /d /q "Examples/WPF.SharpDX/%%~a/bin/Release" "dist-examples/WPF.SharpDX/%%~a\"
 )
+
+
+for /d %%a in ("Examples/SharpDX.Core/*") do (
+echo Examples/SharpDX.Core/%%~a
+mkdir "dist-examples/SharpDX.Core/%%~a"
+xcopy /s /d /q "Examples/SharpDX.Core/%%~a/bin/Release" "dist-examples/SharpDX.Core/%%~a\"
+)

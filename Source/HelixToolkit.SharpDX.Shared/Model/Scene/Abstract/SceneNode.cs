@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         ///
         /// </summary>
-        public abstract partial class SceneNode : DisposeObject
+        public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>
         {
             #region Properties
 
@@ -894,6 +894,12 @@ namespace HelixToolkit.UWP
                 this.RaisePropertyChanged(propertyName);
                 InvalidateSceneGraph();
                 return true;
+            }
+
+            public int CompareTo(SceneNode other)
+            {
+                if(other == null) { return 1; }
+                return RenderOrderKey.CompareTo(other.RenderOrderKey);
             }
         }
 

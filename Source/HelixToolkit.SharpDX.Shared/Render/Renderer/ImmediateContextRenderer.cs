@@ -71,7 +71,7 @@ namespace HelixToolkit.UWP
             /// <param name="renderables">The renderables.</param>
             /// <param name="results">Returns list of flattened scene graph with depth index as KeyValuePair.Key</param>
             /// <returns></returns>
-            public virtual void UpdateSceneGraph(RenderContext context, List<SceneNode> renderables, List<KeyValuePair<int, SceneNode>> results)
+            public virtual void UpdateSceneGraph(RenderContext context, FastList<SceneNode> renderables, FastList<KeyValuePair<int, SceneNode>> results)
             {
                 renderables.PreorderDFT(context, updateFunc, results, stackCache1);
             }
@@ -82,7 +82,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
             /// <returns></returns>
-            public void UpdateSceneGraph2D(RenderContext2D context, List<SceneNode2D> renderables)
+            public void UpdateSceneGraph2D(RenderContext2D context, FastList<SceneNode2D> renderables)
             {
                 renderables.PreorderDFTRun((x) =>
                 {
@@ -96,7 +96,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="lights">The lights.</param>
             /// <param name="parameter">The parameter.</param>
-            public virtual void UpdateGlobalVariables(RenderContext context, List<SceneNode> lights, ref RenderParameter parameter)
+            public virtual void UpdateGlobalVariables(RenderContext context, FastList<SceneNode> lights, ref RenderParameter parameter)
             {
                 ImmediateContext.Reset();
                 if (parameter.RenderLight)
@@ -122,7 +122,7 @@ namespace HelixToolkit.UWP
             /// <param name="parameter">The parameter.</param>
             /// <param name="testFrustum"></param>
             /// <returns>Number of node has been rendered</returns>
-            public virtual int RenderOpaque(RenderContext context, List<SceneNode> renderables, 
+            public virtual int RenderOpaque(RenderContext context, FastList<SceneNode> renderables, 
                 ref RenderParameter parameter, bool testFrustum)
             {
                 int renderedCount = 0;
@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
             /// <returns></returns>
-            public virtual int RenderTransparent(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+            public virtual int RenderTransparent(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
             {
                 if (context.RenderHost.RenderConfiguration.EnableOITRendering
                     && context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
@@ -181,12 +181,12 @@ namespace HelixToolkit.UWP
                 }
             }
             /// <summary>
-            /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(RenderContext, List{KeyValuePair{int, SceneNode}})"/>
+            /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(RenderContext, FastList{KeyValuePair{int, SceneNode}})"/>
             /// </summary>
             /// <param name="renderables">The renderables.</param>
             /// <param name="context"></param>
             /// <returns></returns>
-            public virtual void UpdateNotRenderParallel(RenderContext context, List<KeyValuePair<int, SceneNode>> renderables)
+            public virtual void UpdateNotRenderParallel(RenderContext context, FastList<KeyValuePair<int, SceneNode>> renderables)
             {
                 int count = renderables.Count;
                 for(int i = 0; i < count; ++i)
@@ -213,7 +213,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
-            public virtual void RenderScene2D(RenderContext2D context, List<SceneNode2D> renderables, ref RenderParameter2D parameter)
+            public virtual void RenderScene2D(RenderContext2D context, FastList<SceneNode2D> renderables, ref RenderParameter2D parameter)
             {
                 int count = renderables.Count;
                 for (int i = 0; i < count; ++ i)
@@ -228,7 +228,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
-            public virtual void RenderPreProc(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+            public virtual void RenderPreProc(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
             {
                 int count = renderables.Count;
                 for (int i = 0; i < count; ++i)
@@ -249,7 +249,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
-            public virtual void RenderPostProc(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+            public virtual void RenderPostProc(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
             {            
                 int count = renderables.Count;
                 for (int i = 0; i < count; ++i)
@@ -288,7 +288,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
-            public virtual void RenderScreenSpaced(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+            public virtual void RenderScreenSpaced(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
             {
                 int count = renderables.Count;
                 if(count > 0)

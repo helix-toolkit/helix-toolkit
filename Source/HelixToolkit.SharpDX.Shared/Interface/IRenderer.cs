@@ -94,7 +94,7 @@ namespace HelixToolkit.UWP
             /// <param name="renderables"></param>
             /// <param name="results"></param>
             /// <returns></returns>
-            void UpdateSceneGraph(RenderContext context, List<SceneNode> renderables, List<KeyValuePair<int, SceneNode>> results);
+            void UpdateSceneGraph(RenderContext context, FastList<SceneNode> renderables, FastList<KeyValuePair<int, SceneNode>> results);
 
             /// <summary>
             /// Update scene graph, return the 2D renderables which will be rendered in this frame
@@ -102,14 +102,14 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="renderables"></param>
             /// <returns></returns>
-            void UpdateSceneGraph2D(RenderContext2D context, List<SceneNode2D> renderables);
+            void UpdateSceneGraph2D(RenderContext2D context, FastList<SceneNode2D> renderables);
             /// <summary>
             /// 
             /// </summary>
             /// <param name="context"></param>
             /// <param name="renderables"></param>
             /// <param name="parameter"></param>
-            void UpdateGlobalVariables(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+            void UpdateGlobalVariables(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter);
 
             /// <summary>
             /// 
@@ -123,7 +123,7 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="renderables"></param>
             /// <param name="parameter"></param>
-            void RenderPreProc(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+            void RenderPreProc(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter);
 
             /// <summary>
             /// Render post processing, such as bloom effects etc.
@@ -131,7 +131,7 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="renderables"></param>
             /// <param name="parameter"></param>
-            void RenderPostProc(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+            void RenderPostProc(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter);
 
             /// <summary>
             /// Run actual rendering for render cores.
@@ -141,7 +141,7 @@ namespace HelixToolkit.UWP
             /// <param name="parameter"></param>
             /// <param name="testFrustum"></param>
             /// <returns>Number of node has been rendered</returns>
-            int RenderOpaque(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter, bool testFrustum);
+            int RenderOpaque(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter, bool testFrustum);
 
             /// <summary>
             /// Renders the transparent.
@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
             /// <returns></returns>
-            int RenderTransparent(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+            int RenderTransparent(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter);
             /// <summary>
             /// Renders to intermediate ping pong buffer.
             /// </summary>
@@ -163,7 +163,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
-            void RenderScreenSpaced(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+            void RenderScreenSpaced(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter);
             /// <summary>
             /// Renders to back buffer.
             /// </summary>
@@ -171,20 +171,20 @@ namespace HelixToolkit.UWP
             /// <param name="parameter">The parameter.</param>
             void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter);
             /// <summary>
-            /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderOpaque(RenderContext, List{SceneNode}, ref RenderParameter, bool)"/>
+            /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderOpaque(RenderContext, FastList{SceneNode}, ref RenderParameter, bool)"/>
             /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
             /// </summary>
             /// <param name="renderables"></param>
             /// <param name="context"></param>
             /// <returns></returns>
-            void UpdateNotRenderParallel(RenderContext context, List<KeyValuePair<int, SceneNode>> renderables);
+            void UpdateNotRenderParallel(RenderContext context, FastList<KeyValuePair<int, SceneNode>> renderables);
             /// <summary>
             /// 
             /// </summary>
             /// <param name="context"></param>
             /// <param name="renderables"></param>
             /// <param name="parameter"></param>
-            void RenderScene2D(RenderContext2D context, List<SceneNode2D> renderables, ref RenderParameter2D parameter);
+            void RenderScene2D(RenderContext2D context, FastList<SceneNode2D> renderables, ref RenderParameter2D parameter);
         }
     }
 

@@ -226,7 +226,6 @@ namespace HelixToolkit.UWP
                 {
                     using (var renderTargetBuffer = context.GetOffScreenRT(TextureSize, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm))
                     {
-                        var frustum = context.BoundingFrustum;
                         OnUpdatePerModelStruct(context);
                         if (drawMode == OutlineMode.Separated)
                         {
@@ -234,10 +233,6 @@ namespace HelixToolkit.UWP
                             {                    
                                 #region Render objects onto offscreen texture
                                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                                if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
-                                {
-                                    continue;
-                                }
                                 deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, width, height, true,
                                     global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
                                 modelCB.Upload(deviceContext, ref modelStruct);
@@ -273,10 +268,6 @@ namespace HelixToolkit.UWP
                             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                             {
                                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                                if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
-                                {
-                                    continue;
-                                }
                                 if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                                 {
                                     var color = Color;
@@ -325,10 +316,11 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
+                    blurPassHorizontal.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                     for (int i = 0; i < numberOfBlurPass; ++i)
                     {
                         deviceContext.SetRenderTarget(context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV, width, height);
-                        blurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, source);
+                        blurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, source);                       
                         blurPassHorizontal.BindShader(deviceContext);
                         blurPassHorizontal.BindStates(deviceContext, StateType.All);
                         deviceContext.Draw(4, 0);
