@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         ///
         /// </summary>
-        public abstract partial class SceneNode : DisposeObject, IComparer<SceneNode>
+        public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>
         {
             #region Properties
 
@@ -896,9 +896,10 @@ namespace HelixToolkit.UWP
                 return true;
             }
 
-            public int Compare(SceneNode x, SceneNode y)
+            public int CompareTo(SceneNode other)
             {
-                return x.RenderOrderKey.CompareTo(y.RenderOrderKey);
+                if(other == null) { return 1; }
+                return RenderOrderKey.CompareTo(other.RenderOrderKey);
             }
         }
 

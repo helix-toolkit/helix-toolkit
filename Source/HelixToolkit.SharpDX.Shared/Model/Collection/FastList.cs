@@ -523,7 +523,7 @@ namespace HelixToolkit.UWP
 
         public void Sort()
         {
-            Sort(0, Count, null);
+            Array.Sort(Items, 0, Count);
         }
 
         public void Sort(IComparer<T> comparer)
