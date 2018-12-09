@@ -140,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameFlattenedScene : Constants.EmptyRenderablePair; } }
+        public FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameFlattenedScene : Constants.EmptyRenderablePair; } }
         /// <summary>
         /// Gets the current frame Lights for rendering.
         /// </summary>
@@ -154,35 +154,35 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame post effect cores.
         /// </value>
-        public List<SceneNode> PerFrameNodesWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameNodesWithPostEffect : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameNodesWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameNodesWithPostEffect : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the per frame general render cores.
         /// </summary>
         /// <value>
         /// The per frame general render cores.
         /// </value>
-        public List<SceneNode> PerFrameOpaqueNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodes : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameOpaqueNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodes : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the per frame opaque nodes in frustum.
         /// </summary>
         /// <value>
         /// The per frame opaque nodes in frustum.
         /// </value>
-        public List<SceneNode> PerFrameOpaqueNodesInFrustum { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodesInFrustum : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodesInFrustum : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>
         /// </summary>
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        public List<SceneNode> PerFrameTransparentNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameTransparentNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle" />
         /// </summary>
         /// <value>
         /// The per frame particle nodes.
         /// </value>
-        public List<SceneNode> PerFrameParticleNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameParticleNodes : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameParticleNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameParticleNodes : Constants.EmptyRenderable; } }
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>

@@ -428,7 +428,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The per frame renderable.
             /// </value>
-            public abstract List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
+            public abstract FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
             /// <summary>
             /// Gets the per frame lights.
             /// </summary>
@@ -442,35 +442,35 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The post effects render cores.
             /// </value>
-            public abstract List<SceneNode> PerFrameNodesWithPostEffect { get; }
+            public abstract FastList<SceneNode> PerFrameNodesWithPostEffect { get; }
             /// <summary>
             /// Gets the per frame render cores.
             /// </summary>
             /// <value>
             /// The per frame render cores.
             /// </value>
-            public abstract List<SceneNode> PerFrameOpaqueNodes { get; }
+            public abstract FastList<SceneNode> PerFrameOpaqueNodes { get; }
             /// <summary>
             /// Gets the per frame opaque nodes in frustum.
             /// </summary>
             /// <value>
             /// The per frame opaque nodes in frustum.
             /// </value>
-            public abstract List<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
+            public abstract FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
             /// <summary>
             /// Gets the per frame transparent nodes.
             /// </summary>
             /// <value>
             /// The per frame transparent nodes.
             /// </value>
-            public abstract List<SceneNode> PerFrameParticleNodes { get; }
+            public abstract FastList<SceneNode> PerFrameParticleNodes { get; }
             /// <summary>
             /// Gets the per frame transparent nodes.
             /// </summary>
             /// <value>
             /// The per frame transparent nodes.
             /// </value>
-            public abstract List<SceneNode> PerFrameTransparentNodes { get; }
+            public abstract FastList<SceneNode> PerFrameTransparentNodes { get; }
     #endregion
     #region Configuration
             /// <summary>

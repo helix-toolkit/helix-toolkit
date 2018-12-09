@@ -41,60 +41,60 @@ namespace HelixToolkit.UWP
         public class DefaultRenderHost : DX11RenderHostBase
         {
             #region Per frame render list
-            protected readonly List<SceneNode> viewportRenderables = new List<SceneNode>();
+            protected readonly FastList<SceneNode> viewportRenderables = new FastList<SceneNode>();
             /// <summary>
             /// The pending renderables
             /// </summary>
-            protected readonly List<KeyValuePair<int, SceneNode>> perFrameFlattenedScene = new List<KeyValuePair<int, SceneNode>>();
+            protected readonly FastList<KeyValuePair<int, SceneNode>> perFrameFlattenedScene = new FastList<KeyValuePair<int, SceneNode>>();
             /// <summary>
             /// The light renderables
             /// </summary>
-            protected readonly List<SceneNode> lightNodes = new List<SceneNode>();
+            protected readonly FastList<SceneNode> lightNodes = new FastList<SceneNode>();
             /// <summary>
             /// The pending render nodes
             /// </summary>
-            protected readonly List<SceneNode> opaqueNodes = new List<SceneNode>();
+            protected readonly FastList<SceneNode> opaqueNodes = new FastList<SceneNode>();
             /// <summary>
             /// The opaque nodes in frustum
             /// </summary>
-            protected readonly List<SceneNode> opaqueNodesInFrustum = new List<SceneNode>();
+            protected readonly FastList<SceneNode> opaqueNodesInFrustum = new FastList<SceneNode>();
             /// <summary>
             /// The transparent nodes
             /// </summary>
-            protected readonly List<SceneNode> transparentNodes = new List<SceneNode>();
+            protected readonly FastList<SceneNode> transparentNodes = new FastList<SceneNode>();
             /// <summary>
             /// The transparent nodes in frustum
             /// </summary>
-            protected readonly List<SceneNode> transparentNodesInFrustum = new List<SceneNode>();
+            protected readonly FastList<SceneNode> transparentNodesInFrustum = new FastList<SceneNode>();
             /// <summary>
             /// The particle nodes
             /// </summary>
-            protected readonly List<SceneNode> particleNodes = new List<SceneNode>();
+            protected readonly FastList<SceneNode> particleNodes = new FastList<SceneNode>();
             /// <summary>
             /// The pending render nodes
             /// </summary>
-            protected readonly List<SceneNode> preProcNodes = new List<SceneNode>();
+            protected readonly FastList<SceneNode> preProcNodes = new FastList<SceneNode>();
             /// <summary>
             /// The pending render nodes
             /// </summary>
-            protected readonly List<SceneNode> postProcNodes = new List<SceneNode>();
+            protected readonly FastList<SceneNode> postProcNodes = new FastList<SceneNode>();
             /// <summary>
             /// The render nodes for post render
             /// </summary>
-            protected readonly List<SceneNode> nodesForPostRender = new List<SceneNode>();
+            protected readonly FastList<SceneNode> nodesForPostRender = new FastList<SceneNode>();
             /// <summary>
             /// The pending render nodes
             /// </summary>
-            protected readonly List<SceneNode> screenSpacedNodes = new List<SceneNode>();
+            protected readonly FastList<SceneNode> screenSpacedNodes = new FastList<SceneNode>();
 
             /// <summary>
             /// The viewport renderable2D
             /// </summary>
-            protected readonly List<SceneNode2D> viewportRenderable2D = new List<SceneNode2D>();
+            protected readonly FastList<SceneNode2D> viewportRenderable2D = new FastList<SceneNode2D>();
             /// <summary>
             /// The need update cores
             /// </summary>
-            private readonly List<RenderCore> needUpdateCores = new List<RenderCore>();
+            private readonly FastList<RenderCore> needUpdateCores = new FastList<RenderCore>();
 
             /// <summary>
             /// Gets the current frame flattened scene graph. KeyValuePair.Key is the depth of the node.
@@ -102,7 +102,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// Gets the current frame flattened scene graph
             /// </value>
-            public sealed override List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return perFrameFlattenedScene; } }
+            public sealed override FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return perFrameFlattenedScene; } }
             /// <summary>
             /// Gets the per frame lights.
             /// </summary>
@@ -117,14 +117,14 @@ namespace HelixToolkit.UWP
             /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
             /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
             /// </summary>
-            public sealed override List<SceneNode> PerFrameOpaqueNodes { get { return opaqueNodes; } }
+            public sealed override FastList<SceneNode> PerFrameOpaqueNodes { get { return opaqueNodes; } }
             /// <summary>
             /// Gets the per frame opaque nodes in frustum.
             /// </summary>
             /// <value>
             /// The per frame opaque nodes in frustum.
             /// </value>
-            public sealed override List<SceneNode> PerFrameOpaqueNodesInFrustum { get { return opaqueNodesInFrustum; } }
+            public sealed override FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get { return opaqueNodesInFrustum; } }
             /// <summary>
             /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
             /// <para>This does not include <see cref="RenderType.Opaque"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
@@ -132,21 +132,21 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The per frame transparent nodes.
             /// </value>
-            public sealed override List<SceneNode> PerFrameTransparentNodes { get { return transparentNodes; } }
+            public sealed override FastList<SceneNode> PerFrameTransparentNodes { get { return transparentNodes; } }
             /// <summary>
             /// Gets the per frame transparent nodes.
             /// </summary>
             /// <value>
             /// The per frame transparent nodes.
             /// </value>
-            public sealed override List<SceneNode> PerFrameParticleNodes { get { return particleNodes; } }
+            public sealed override FastList<SceneNode> PerFrameParticleNodes { get { return particleNodes; } }
             /// <summary>
             /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameOpaqueNodes"/>
             /// </summary>
             /// <value>
             /// The per frame post effects cores.
             /// </value>
-            public sealed override List<SceneNode> PerFrameNodesWithPostEffect
+            public sealed override FastList<SceneNode> PerFrameNodesWithPostEffect
             {
                 get { return nodesForPostRender; }
             }
@@ -157,8 +157,6 @@ namespace HelixToolkit.UWP
             private Task getPostEffectCoreTask;
 
             private int numRendered = 0;
-
-            private static readonly Comparison<SceneNode> sortingDelegate = delegate (SceneNode a, SceneNode b) { return a.RenderOrderKey.CompareTo(b.RenderOrderKey); };
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
@@ -258,22 +256,22 @@ namespace HelixToolkit.UWP
                         {
                             preProcNodes[i].UpdateRenderOrderKey();
                         }
-                        preProcNodes.Sort(sortingDelegate);
+                        preProcNodes.Sort();
                         for (int i = 0; i < opaqueNodes.Count; ++i)
                         {
                             opaqueNodes[i].UpdateRenderOrderKey();
                         }
-                        opaqueNodes.Sort(sortingDelegate);
+                        opaqueNodes.Sort();
                         for (int i = 0; i < postProcNodes.Count; ++i)
                         {
                             postProcNodes[i].UpdateRenderOrderKey();
                         }
-                        postProcNodes.Sort(sortingDelegate);
+                        postProcNodes.Sort();
                         for (int i = 0; i < particleNodes.Count; ++i)
                         {
                             particleNodes[i].UpdateRenderOrderKey();
                         }
-                        particleNodes.Sort(sortingDelegate);
+                        particleNodes.Sort();
                     }
                 }
                 else
@@ -302,47 +300,6 @@ namespace HelixToolkit.UWP
                             needUpdateCores.Add(renderable.Value.RenderCore);
                         }
                         ++i;
-                    }
-                }
-                //Get RenderCores with post effect specified.
-                if (postProcNodes.Count > 0)
-                {
-                    if (opaqueNodes.Count + transparentNodes.Count > 50)
-                    {
-                        getPostEffectCoreTask = Task.Run(() =>
-                        {
-                            for (int i = 0; i < opaqueNodes.Count; ++i)
-                            {
-                                if (opaqueNodes[i].HasAnyPostEffect)
-                                {
-                                    nodesForPostRender.Add(opaqueNodes[i]);
-                                }
-                            }
-                            for (int i = 0; i < transparentNodes.Count; ++i)
-                            {
-                                if (transparentNodes[i].HasAnyPostEffect)
-                                {
-                                    nodesForPostRender.Add(transparentNodes[i]);
-                                }
-                            }
-                        });
-                    }
-                    else
-                    {
-                        for (int i = 0; i < opaqueNodes.Count; ++i)
-                        {
-                            if (opaqueNodes[i].HasAnyPostEffect)
-                            {
-                                nodesForPostRender.Add(opaqueNodes[i]);
-                            }
-                        }
-                        for (int i = 0; i < transparentNodes.Count; ++i)
-                        {
-                            if (transparentNodes[i].HasAnyPostEffect)
-                            {
-                                nodesForPostRender.Add(transparentNodes[i]);
-                            }
-                        }
                     }
                 }
             }
@@ -375,13 +332,14 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    opaqueNodesInFrustum.AddRange(opaqueNodes);
-                    transparentNodesInFrustum.AddRange(transparentNodes);
+                    opaqueNodesInFrustum.AddAll(opaqueNodes);
+                    transparentNodesInFrustum.AddAll(transparentNodes);
                 }
                 asyncTask = Task.Factory.StartNew(() =>
                 {
                     renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
                 });
+                CollectPostEffectNodes();
                 if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
                 {
                     getTriangleCountTask = Task.Factory.StartNew(() =>
@@ -405,6 +363,51 @@ namespace HelixToolkit.UWP
                         }
                         renderStatistics.NumTriangles = count;
                     });
+                }
+            }
+
+            private void CollectPostEffectNodes()
+            {
+                //Get RenderCores with post effect specified.
+                if (postProcNodes.Count > 0)
+                {
+                    if (opaqueNodesInFrustum.Count + transparentNodesInFrustum.Count > 50)
+                    {
+                        getPostEffectCoreTask = Task.Run(() =>
+                        {
+                            for (int i = 0; i < opaqueNodesInFrustum.Count; ++i)
+                            {
+                                if (opaqueNodesInFrustum[i].HasAnyPostEffect)
+                                {
+                                    nodesForPostRender.Add(opaqueNodesInFrustum[i]);
+                                }
+                            }
+                            for (int i = 0; i < transparentNodesInFrustum.Count; ++i)
+                            {
+                                if (transparentNodesInFrustum[i].HasAnyPostEffect)
+                                {
+                                    nodesForPostRender.Add(transparentNodesInFrustum[i]);
+                                }
+                            }
+                        });
+                    }
+                    else
+                    {
+                        for (int i = 0; i < opaqueNodesInFrustum.Count; ++i)
+                        {
+                            if (opaqueNodesInFrustum[i].HasAnyPostEffect)
+                            {
+                                nodesForPostRender.Add(opaqueNodesInFrustum[i]);
+                            }
+                        }
+                        for (int i = 0; i < transparentNodesInFrustum.Count; ++i)
+                        {
+                            if (transparentNodesInFrustum[i].HasAnyPostEffect)
+                            {
+                                nodesForPostRender.Add(transparentNodesInFrustum[i]);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -511,24 +514,25 @@ namespace HelixToolkit.UWP
             private void Clear(bool clearFrameRenderables, bool clearPerFrameRenderables)
             {
                 numRendered = 0;
-                viewportRenderables.Clear();
-                needUpdateCores.Clear();
-                nodesForPostRender.Clear();
-                opaqueNodesInFrustum.Clear();
-                transparentNodesInFrustum.Clear();
+                bool fastClear = !clearFrameRenderables;
+                viewportRenderables.Clear(fastClear);
+                needUpdateCores.Clear(fastClear);
+                nodesForPostRender.Clear(fastClear);
+                opaqueNodesInFrustum.Clear(fastClear);
+                transparentNodesInFrustum.Clear(fastClear);
                 if (clearFrameRenderables)
                 {
                     perFrameFlattenedScene.Clear();
                 }
                 if (clearPerFrameRenderables)
                 {
-                    opaqueNodes.Clear();
-                    transparentNodes.Clear();
-                    particleNodes.Clear();
-                    lightNodes.Clear();
-                    postProcNodes.Clear();
-                    preProcNodes.Clear();
-                    screenSpacedNodes.Clear();
+                    opaqueNodes.Clear(fastClear);
+                    transparentNodes.Clear(fastClear);
+                    particleNodes.Clear(fastClear);
+                    lightNodes.Clear(fastClear);
+                    postProcNodes.Clear(fastClear);
+                    preProcNodes.Clear(fastClear);
+                    screenSpacedNodes.Clear(fastClear);
                 }
             }
 

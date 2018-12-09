@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP
             /// <param name="parameter">The parameter.</param>
             /// <param name="testFrustum"></param>
             /// <returns>Number of node has been rendered</returns>
-            public override int RenderOpaque(RenderContext context, List<SceneNode> renderables, 
+            public override int RenderOpaque(RenderContext context, FastList<SceneNode> renderables, 
                 ref RenderParameter parameter, bool testFrustum)
             {
                 if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, 

@@ -130,8 +130,8 @@ namespace HelixToolkit.UWP
         }
 
         public static readonly char[] Separators = { ';', ' ', ',' };
-        public static readonly List<KeyValuePair<int, SceneNode>> EmptyRenderablePair = new List<KeyValuePair<int, SceneNode>>();
-        public static readonly List<SceneNode> EmptyRenderable = new List<SceneNode>();
+        public static readonly FastList<KeyValuePair<int, SceneNode>> EmptyRenderablePair = new FastList<KeyValuePair<int, SceneNode>>();
+        public static readonly FastList<SceneNode> EmptyRenderable = new FastList<SceneNode>();
         public static readonly List<RenderCore> EmptyCore = new List<RenderCore>();
         public static readonly IList<SceneNode> EmptyRenderableArray = new SceneNode[0];
         public static readonly IList<SceneNode2D> EmptyRenderable2D = new SceneNode2D[0];
