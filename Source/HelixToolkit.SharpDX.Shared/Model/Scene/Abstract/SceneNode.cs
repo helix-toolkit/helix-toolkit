@@ -35,7 +35,14 @@ namespace HelixToolkit.UWP
             ///
             /// </summary>
             public Guid GUID { get { return RenderCore.GUID; } }
-
+            private string name;
+            /// <summary>
+            /// Gets or sets the name.
+            /// </summary>
+            /// <value>
+            /// The name.
+            /// </value>
+            public string Name { set => Set(ref name, value); get => name; }
             /// <summary>
             /// Do not assgin this field. This is updated by <see cref="ComputeTransformMatrix"/>.
             /// Used as field only for performance consideration.
