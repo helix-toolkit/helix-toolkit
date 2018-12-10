@@ -26,7 +26,7 @@ namespace CoreTest
         private readonly EffectsManager effectsManager;
         private CameraCore camera;
         private Geometry3D box, sphere, points, lines;
-        private GroupNode groupSphere, groupBox, groupPoints, groupLines;
+        private GroupNode groupSphere, groupBox, groupPoints, groupLines, groupModel;
         private const int NumItems = 40;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
@@ -40,6 +40,8 @@ namespace CoreTest
         {
             viewport = new ViewportCore(window.Handle);
             cameraController = new CameraController(viewport);
+            cameraController.CameraMode = CameraMode.Inspect;
+            cameraController.CameraRotationMode = CameraRotationMode.Trackball;
             this.window = window;
             window.ResizeEnd += Window_ResizeEnd;
             window.Load += Window_Load;
@@ -61,6 +63,7 @@ namespace CoreTest
             viewport.RenderHost.EnableRenderFrustum = true;
             viewport.EnableRenderOrder = true;
             viewport.BackgroundColor = new Color4(0.45f, 0.55f, 0.6f, 1f);
+            viewport.EnableSSAO = true;
             InitializeScene();
         }
 
@@ -78,9 +81,11 @@ namespace CoreTest
                 UpDirection = new Vector3(0, 1, 0)
             };
             viewport.CameraCore = camera;
-            viewport.Items.Add(new DirectionalLightNode() { Direction = new Vector3(0, -1, 1), Color = Color.White });
-            viewport.Items.Add(new PointLightNode() { Position = new Vector3(0, 0, -20), Color = Color.Yellow, Range = 20, Attenuation = Vector3.One });
-
+            viewport.Items.AddChildNode(new DirectionalLightNode() { Direction = new Vector3(0, -1, 1), Color = Color.White * 0.6f });
+            viewport.Items.AddChildNode(new PointLightNode() { Position = new Vector3(0, 0, -20), Color = Color.Yellow, Range = 20, Attenuation = Vector3.One });
+            viewport.Items.AddChildNode(new AmbientLightNode() { Color = Color.White * 0.4f });
+            groupModel = new GroupNode();
+            viewport.Items.AddChildNode(groupModel);
             var builder = new MeshBuilder(true, true, true);
             builder.AddSphere(Vector3.Zero, 1, 12, 12);
             sphere = builder.ToMesh();
@@ -123,15 +128,15 @@ namespace CoreTest
             //    groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } });
             //}
 
-            viewport.Items.Add(groupSphere);
+            groupModel.AddChildNode(groupSphere);
             groupSphere.AddChildNode(groupBox);
             groupSphere.AddChildNode(groupPoints);
             groupSphere.AddChildNode(groupLines);
 
             var viewbox = new ViewBoxNode();
-            viewport.Items.Add(viewbox);
+            viewport.Items.AddChildNode(viewbox);
             var imGui = new ImGuiNode();
-            viewport.Items.Add(imGui);
+            viewport.Items.AddChildNode(imGui);
             imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
             io.KeyMap[GuiKey.Tab] = (int)Keys.Tab;
             io.KeyMap[GuiKey.LeftArrow] = (int)Keys.Left;
@@ -148,10 +153,59 @@ namespace CoreTest
             io.KeyMap[GuiKey.Escape] = (int)Keys.Escape;
         }
 
+
+        private bool showImGuiDemo = false;
+
         private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
         {
-            bool open = true;
-            ImGuiNative.igShowDemoWindow(ref open);
+            ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero, Condition.Always, System.Numerics.Vector2.Zero);
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(viewport.Width, viewport.Height), Condition.Always);
+            bool opened = false;
+            if (ImGui.BeginWindow("Model Loader Window", ref opened, 0,
+                WindowFlags.MenuBar | WindowFlags.NoResize | WindowFlags.NoMove | WindowFlags.NoScrollbar | WindowFlags.NoCollapse))
+            {
+                if (ImGui.BeginMenuBar())
+                {
+                    if (ImGui.BeginMenu("Load Model"))
+                    {
+                        if (ImGui.MenuItem("Open"))
+                        {
+                            LoadModel();
+                        }
+                        ImGui.EndMenu();
+                    }
+                    if(!showImGuiDemo && ImGui.BeginMenu("ImGui Demo"))
+                    {
+                        if (ImGui.MenuItem("Show"))
+                        {
+                            showImGuiDemo = true;
+                        }                       
+                        ImGui.EndMenu();
+                    }
+                    ImGui.EndMenuBar();
+                }
+
+                ImGui.EndWindow();
+            }
+            if (showImGuiDemo)
+            {
+                opened = false;
+                ImGuiNative.igShowDemoWindow(ref showImGuiDemo);
+            }
+        }
+
+        private void LoadModel()
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            //dialog.Filter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;*.ply;";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                var path = dialog.FileName;
+                var importer = new HelixToolkit.SharpDX.Core.Assimp.Importer();
+                var group = importer.Load(path);
+                groupModel.Clear();
+                groupModel.AddChildNode(group);
+            }
         }
 
         private void InitializeMaterials()
