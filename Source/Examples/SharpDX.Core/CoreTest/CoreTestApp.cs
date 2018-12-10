@@ -82,7 +82,7 @@ namespace CoreTest
             };
             viewport.CameraCore = camera;
             viewport.Items.AddChildNode(new DirectionalLightNode() { Direction = new Vector3(0, -1, 1), Color = Color.White * 0.6f });
-            viewport.Items.AddChildNode(new PointLightNode() { Position = new Vector3(0, 0, -20), Color = Color.Yellow, Range = 20, Attenuation = Vector3.One });
+            //viewport.Items.AddChildNode(new PointLightNode() { Position = new Vector3(0, 0, -20), Color = Color.Yellow, Range = 20, Attenuation = Vector3.One });
             viewport.Items.AddChildNode(new AmbientLightNode() { Color = Color.White * 0.4f });
             groupModel = new GroupNode();
             viewport.Items.AddChildNode(groupModel);

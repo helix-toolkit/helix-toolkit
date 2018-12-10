@@ -244,120 +244,131 @@ namespace HelixToolkit.UWP
                 return hMesh;
             }
 
+            private Model.PhongMaterialCore ToPhongMaterial(Material material)
+            {
+                var phong = new Model.PhongMaterialCore
+                {
+                    AmbientColor = material.ColorAmbient.ToSharpDXColor4(),
+                    DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
+                    EmissiveColor = material.ColorEmissive.ToSharpDXColor4(),
+                    ReflectiveColor = material.ColorReflective.ToSharpDXColor4(),
+                    SpecularShininess = material.Shininess
+                };
+                if (material.HasOpacity)
+                {
+                    var c = phong.DiffuseColor;
+                    c.Alpha = material.Opacity;
+                    phong.DiffuseColor = c;
+                }
+                if (material.HasTextureDiffuse)
+                {
+                    phong.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
+                    var desc = Shaders.DefaultSamplers.LinearSamplerClampAni1;
+                    desc.AddressU = ToDXAddressMode(material.TextureDiffuse.WrapModeU);
+                    desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
+                    phong.DiffuseMapSampler = desc;
+                    if (material.HasNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE))
+                    {
+                        var prop = material.GetProperty(AiMatKeys.UVTRANSFORM_BASE, TextureType.Diffuse, material.TextureDiffuse.TextureIndex);
+                        if (prop != null)
+                        {
+                            phong.UVTransform = new global::SharpDX.Matrix();
+                        }
+                    }
+
+                }
+                if (material.HasTextureNormal)
+                {
+                    phong.NormalMap = LoadTexture(material.TextureNormal.FilePath);
+                }
+                if (material.HasTextureSpecular)
+                {
+                    phong.SpecularColorMap = LoadTexture(material.TextureSpecular.FilePath);
+                }
+                if (material.HasTextureDisplacement)
+                {
+                    phong.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
+                }
+                if (material.HasBumpScaling)
+                {
+                    phong.DisplacementMapScaleMask = new global::SharpDX.Vector4(material.BumpScaling, material.BumpScaling, material.BumpScaling, 0);
+                }
+                if (material.HasTextureOpacity)
+                {
+                    phong.DiffuseAlphaMap = LoadTexture(material.TextureOpacity.FilePath);
+                }
+                return phong;
+            }
+
+            private Model.PBRMaterialCore ToPBRMaterial(Material material)
+            {
+                var pbr = new Model.PBRMaterialCore()
+                {
+                    AlbedoColor = material.ColorDiffuse.ToSharpDXColor4(),
+                    EmissiveColor = material.ColorEmissive.ToSharpDXColor4(),
+                    MetallicFactor = material.Shininess,// Used this for now, not sure which to use
+                    ReflectanceFactor = material.ShininessStrength,// Used this for now, not sure which to use
+                    RoughnessFactor = material.Reflectivity,// Used this for now, not sure which to use
+                };
+                if (material.HasOpacity)
+                {
+                    var c = pbr.AlbedoColor;
+                    c.Alpha = material.Opacity;
+                    pbr.AlbedoColor = c;
+                }
+                if (material.HasColorDiffuse)
+                {
+                    pbr.AlbedoMap = LoadTexture(material.TextureDiffuse.FilePath);
+                    var desc = Shaders.DefaultSamplers.LinearSamplerClampAni1;
+                    desc.AddressU = ToDXAddressMode(material.TextureDiffuse.WrapModeU);
+                    desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
+                    pbr.SurfaceMapSampler = desc;
+                }
+                if (material.HasTextureNormal)
+                {
+                    pbr.NormalMap = LoadTexture(material.TextureNormal.FilePath);
+                }
+                if (material.HasTextureSpecular)
+                {
+                    pbr.RMAMap = LoadTexture(material.TextureSpecular.FilePath);
+                }
+                if (material.HasTextureDisplacement)
+                {
+                    pbr.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
+                }
+                if (material.HasBumpScaling)
+                {
+                    pbr.DisplacementMapScaleMask = new global::SharpDX.Vector4(material.BumpScaling, material.BumpScaling, material.BumpScaling, 0);
+                }
+                if (material.HasTextureLightMap)
+                {
+                    pbr.IrradianceMap = LoadTexture(material.TextureLightMap.FilePath);
+                }
+                return pbr;
+            }
+
             private Tuple<Material, Model.MaterialCore> ToHelixMaterial(Material material)
             {
                 Model.MaterialCore core = null;
                 if (!material.HasShadingMode)
                 {
-                    return new Tuple<Material, Model.MaterialCore>(material, new Model.ColorMaterialCore());
+                    var phong = ToPhongMaterial(material);
+                    return new Tuple<Material, Model.MaterialCore>(material, phong);
                 }
                 switch (material.ShadingMode)
                 {
                     case ShadingMode.Blinn:
                     case ShadingMode.Phong:
-                        var phong = new Model.PhongMaterialCore
-                        {
-                            AmbientColor = material.ColorAmbient.ToSharpDXColor4(),
-                            DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
-                            EmissiveColor = material.ColorEmissive.ToSharpDXColor4(),
-                            ReflectiveColor = material.ColorReflective.ToSharpDXColor4(),
-                            SpecularShininess = material.Shininess
-                        };
-                        if (material.HasOpacity)
-                        {
-                            var c = phong.DiffuseColor;
-                            c.Alpha = material.Opacity;
-                            phong.DiffuseColor = c;
-                        }
-                        if (material.HasTextureDiffuse)
-                        {
-                            phong.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
-                            var desc = Shaders.DefaultSamplers.LinearSamplerClampAni1;
-                            desc.AddressU = ToDXAddressMode(material.TextureDiffuse.WrapModeU);
-                            desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
-                            phong.DiffuseMapSampler = desc;
-                            //if (material.HasNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE))
-                            //{
-                            //    var prop = material.GetProperty(AiMatKeys.UVTRANSFORM_BASE, TextureType.Diffuse, material.TextureDiffuse.TextureIndex);
-                            //    if (prop != null)
-                            //    {
-                            //        phong.UVTransform = new global::SharpDX.Matrix();
-                            //    }
-                            //}
-
-                        }
-                        if (material.HasTextureNormal)
-                        {
-                            phong.NormalMap = LoadTexture(material.TextureNormal.FilePath);
-                        }
-                        if (material.HasTextureSpecular)
-                        {
-                            phong.SpecularColorMap = LoadTexture(material.TextureSpecular.FilePath);
-                        }
-                        if (material.HasTextureDisplacement)
-                        {
-                            phong.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
-                        }
-                        if (material.HasBumpScaling)
-                        {
-                            phong.DisplacementMapScaleMask = new global::SharpDX.Vector4(material.BumpScaling, material.BumpScaling, material.BumpScaling, 0);
-                        }
-                        if (material.HasTextureOpacity)
-                        {
-                            phong.DiffuseAlphaMap = LoadTexture(material.TextureOpacity.FilePath);
-                        }
-                        core = phong;
+                    case ShadingMode.Gouraud:
+                        core = ToPhongMaterial(material);
                         break;
                     case ShadingMode.None:
                         core = new Model.ColorMaterialCore();
                         break;
                     case ShadingMode.Fresnel:
-                        var pbr = new Model.PBRMaterialCore()
-                        {
-                            AlbedoColor = material.ColorDiffuse.ToSharpDXColor4(),
-                            EmissiveColor = material.ColorEmissive.ToSharpDXColor4(),
-                            MetallicFactor = material.Shininess,// Used this for now, not sure which to use
-                            ReflectanceFactor = material.ShininessStrength,// Used this for now, not sure which to use
-                            RoughnessFactor = material.Reflectivity,// Used this for now, not sure which to use
-                        };
-                        if (material.HasOpacity)
-                        {
-                            var c = pbr.AlbedoColor;
-                            c.Alpha = material.Opacity;
-                            pbr.AlbedoColor = c;
-                        }
-                        if (material.HasColorDiffuse)
-                        {
-                            pbr.AlbedoMap = LoadTexture(material.TextureDiffuse.FilePath);
-                            var desc = Shaders.DefaultSamplers.LinearSamplerClampAni1;
-                            desc.AddressU = ToDXAddressMode(material.TextureDiffuse.WrapModeU);
-                            desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
-                            pbr.SurfaceMapSampler = desc;
-                        }
-                        if (material.HasTextureNormal)
-                        {
-                            pbr.NormalMap = LoadTexture(material.TextureNormal.FilePath);
-                        }
-                        if (material.HasTextureSpecular)
-                        {
-                            pbr.RMAMap = LoadTexture(material.TextureSpecular.FilePath);
-                        }
-                        if (material.HasTextureDisplacement)
-                        {
-                            pbr.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
-                        }
-                        if (material.HasBumpScaling)
-                        {
-                            pbr.DisplacementMapScaleMask = new global::SharpDX.Vector4(material.BumpScaling, material.BumpScaling, material.BumpScaling, 0);
-                        }
-                        if (material.HasTextureLightMap)
-                        {
-                            pbr.IrradianceMap = LoadTexture(material.TextureLightMap.FilePath);
-                        }
-                        core = pbr;
+                        core = ToPBRMaterial(material);
                         break;
                     case ShadingMode.Flat:
-                    case ShadingMode.Gouraud:
                         var diffuse = new Model.DiffuseMaterialCore()
                         {
                             DiffuseColor = material.ColorDiffuse.ToSharpDXColor4()
