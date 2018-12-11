@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+    <ItemGroup>
+        <None Include="..\HelixToolkit.snk" />
+    </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
       <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
@@ -8,25 +10,28 @@
       <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
       <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
       <SignAssembly>true</SignAssembly>
-      <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+      <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
       <Company>HelixToolkit</Company>
       <Authors>HelixToolkit Contributors</Authors>
       <Version>0.0.0.1</Version>
       <RepositoryType>git</RepositoryType>
       <PackageTags>SharpDX; DirectX; 3D;</PackageTags>
       <RootNamespace>HelixToolkit.SharpDX.Core</RootNamespace>
+      <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETSTANDARD1_3</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETSTANDARD1_3</DefineConstants>
-    <DocumentationFile>bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />

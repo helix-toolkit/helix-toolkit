@@ -216,7 +216,7 @@ namespace HelixToolkit.UWP
                                 {
                                     break;
                                 }
-                                i += perFrameFlattenedScene[i].Value.Items.Count;
+                                i += perFrameFlattenedScene[i].Value.ItemsInternal.Count;
                             }
                             continue;
                         }
@@ -291,7 +291,7 @@ namespace HelixToolkit.UWP
                                 {
                                     break;
                                 }
-                                i += perFrameFlattenedScene[i].Value.Items.Count;
+                                i += perFrameFlattenedScene[i].Value.ItemsInternal.Count;
                             }
                             continue;
                         }
@@ -481,7 +481,7 @@ namespace HelixToolkit.UWP
                 viewportRenderable2D.Clear();
                 var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
                 bool renderD2D = false;
-                if (d2dRoot != null && d2dRoot.Items.Count() > 0 && RenderConfiguration.RenderD2D)
+                if (d2dRoot != null && d2dRoot.ItemsInternal.Count() > 0 && RenderConfiguration.RenderD2D)
                 {
                     renderD2D = true;
                     d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));

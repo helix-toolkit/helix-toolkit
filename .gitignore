@@ -206,3 +206,4 @@ FakesAssemblies/
 /Source/.vs/
 /Source/HelixToolkit.UWP/Resources/*.cso
 /Source/HelixToolkit.SharpDX.Core/Resources/*.cso
+/Source/MigrationBackup/**

@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+      <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
+      <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
+      <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
+      <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
+      <SignAssembly>true</SignAssembly>
+      <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
+      <Company>HelixToolkit</Company>
+      <Authors>HelixToolkit Contributors</Authors>
+      <Version>0.0.0.1</Version>
+      <RepositoryType>git</RepositoryType>
+      <PackageTags>SharpDX; DirectX; 3D;</PackageTags>
+      <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NETFX_CORE;CORE;</DefineConstants>
+    <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;NETFX_CORE;CORE;</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.csproj" />
+  </ItemGroup>
+    <ItemGroup>
+        <None Include="..\HelixToolkit.snk" />
+    </ItemGroup>
+  <Import Project="..\HelixToolkit.SharpDX.Assimp.Shared\HelixToolkit.SharpDX.Assimp.Shared.projitems" Label="Shared" />
+
+</Project>

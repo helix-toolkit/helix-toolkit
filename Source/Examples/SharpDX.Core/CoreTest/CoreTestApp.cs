@@ -26,7 +26,9 @@ namespace CoreTest
         private readonly EffectsManager effectsManager;
         private CameraCore camera;
         private Geometry3D box, sphere, points, lines;
-        private GroupNode groupSphere, groupBox, groupPoints, groupLines;
+        private GroupNode groupSphere, groupBox, groupPoints, groupLines, groupModel;
+        private DirectionalLightNode directionalLight;
+        private AmbientLightNode ambientLight;
         private const int NumItems = 40;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
@@ -36,10 +38,35 @@ namespace CoreTest
         private IO io = ImGui.GetIO();
         private CameraController cameraController;
 
+        private struct ViewportOptions
+        {
+            public bool DirectionalLightFollowCamera;
+            public bool WalkAround;
+            public bool EnableSSAO;
+            public bool EnableFXAA;
+            public bool EnableFrustum;
+            public System.Numerics.Vector3 BackgroundColor;
+            public float DirectionLightIntensity;
+            public float AmbientLightIntensity;
+        }
+
+        private ViewportOptions options = new ViewportOptions()
+        {
+            BackgroundColor = new System.Numerics.Vector3(0.4f, 0.4f, 0.4f),
+            EnableFrustum = true,
+            EnableFXAA = true,
+            EnableSSAO = true,
+            DirectionalLightFollowCamera = true,
+            DirectionLightIntensity = 0.6f,
+            AmbientLightIntensity = 0.4f
+        };
+
         public CoreTestApp(Form window)
         {
             viewport = new ViewportCore(window.Handle);
             cameraController = new CameraController(viewport);
+            cameraController.CameraMode = CameraMode.Inspect;
+            cameraController.CameraRotationMode = CameraRotationMode.Trackball;
             this.window = window;
             window.ResizeEnd += Window_ResizeEnd;
             window.Load += Window_Load;
@@ -57,13 +84,17 @@ namespace CoreTest
             viewport.OnStartRendering += Viewport_OnStartRendering;
             viewport.OnStopRendering += Viewport_OnStopRendering;
             viewport.OnErrorOccurred += Viewport_OnErrorOccurred;
-            viewport.FXAALevel = FXAALevel.Low;
-            viewport.RenderHost.EnableRenderFrustum = true;
-            viewport.EnableRenderOrder = true;
-            viewport.BackgroundColor = new Color4(0.45f, 0.55f, 0.6f, 1f);
+            AssignViewportOption();
             InitializeScene();
         }
 
+        private void AssignViewportOption()
+        {
+            viewport.FXAALevel = options.EnableFXAA ? FXAALevel.Low : FXAALevel.None;
+            viewport.EnableRenderFrustum = options.EnableFrustum;
+            viewport.BackgroundColor = new Color4(options.BackgroundColor.X, options.BackgroundColor.Y, options.BackgroundColor.Z, 1);
+            viewport.EnableSSAO = options.EnableSSAO;
+        }
 
 
         private void InitializeScene()
@@ -78,9 +109,21 @@ namespace CoreTest
                 UpDirection = new Vector3(0, 1, 0)
             };
             viewport.CameraCore = camera;
-            viewport.Items.Add(new DirectionalLightNode() { Direction = new Vector3(0, -1, 1), Color = Color.White });
-            viewport.Items.Add(new PointLightNode() { Position = new Vector3(0, 0, -20), Color = Color.Yellow, Range = 20, Attenuation = Vector3.One });
+            directionalLight = new DirectionalLightNode()
+            {
+                Direction = new Vector3(0, -1, 1),
+                Color = Color.White.ToColor4().ChangeIntensity(options.DirectionLightIntensity)
+            };
+            viewport.Items.AddChildNode(directionalLight);
 
+            ambientLight = new AmbientLightNode()
+            {
+                Color = Color.White.ToColor4().ChangeIntensity(options.AmbientLightIntensity)
+            };
+            viewport.Items.AddChildNode(ambientLight);
+
+            groupModel = new GroupNode();
+            viewport.Items.AddChildNode(groupModel);
             var builder = new MeshBuilder(true, true, true);
             builder.AddSphere(Vector3.Zero, 1, 12, 12);
             sphere = builder.ToMesh();
@@ -123,15 +166,15 @@ namespace CoreTest
             //    groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } });
             //}
 
-            viewport.Items.Add(groupSphere);
+            groupModel.AddChildNode(groupSphere);
             groupSphere.AddChildNode(groupBox);
             groupSphere.AddChildNode(groupPoints);
             groupSphere.AddChildNode(groupLines);
 
             var viewbox = new ViewBoxNode();
-            viewport.Items.Add(viewbox);
+            viewport.Items.AddChildNode(viewbox);
             var imGui = new ImGuiNode();
-            viewport.Items.Add(imGui);
+            viewport.Items.AddChildNode(imGui);
             imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
             io.KeyMap[GuiKey.Tab] = (int)Keys.Tab;
             io.KeyMap[GuiKey.LeftArrow] = (int)Keys.Left;
@@ -148,10 +191,105 @@ namespace CoreTest
             io.KeyMap[GuiKey.Escape] = (int)Keys.Escape;
         }
 
+
+        private bool showImGuiDemo = false;
+
         private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
         {
-            bool open = true;
-            ImGuiNative.igShowDemoWindow(ref open);
+            ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero, Condition.Always, System.Numerics.Vector2.Zero);
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(viewport.Width, viewport.Height), Condition.Always);
+            bool opened = false;
+            if (ImGui.BeginWindow("Model Loader Window", ref opened, 0,
+                WindowFlags.MenuBar | WindowFlags.NoResize | WindowFlags.NoMove | WindowFlags.NoScrollbar | WindowFlags.NoCollapse))
+            {
+                if (ImGui.BeginMenuBar())
+                {
+                    if (ImGui.BeginMenu("Load Model"))
+                    {
+                        if (ImGui.MenuItem("Open"))
+                        {
+                            LoadModel();
+                        }
+                        ImGui.EndMenu();
+                    }
+                    if (ImGui.BeginMenu("Options"))
+                    {
+                        ImGui.Checkbox("Dir Light Follow Camera", ref options.DirectionalLightFollowCamera);
+                        ImGui.SliderFloat("Dir Light Intensity", ref options.DirectionLightIntensity, 0, 1, "", 1);
+                        ImGui.SliderFloat("Ambient Light Intensity", ref options.AmbientLightIntensity, 0, 1, "", 1);
+                        ImGui.Spacing();
+                        ImGui.Checkbox("Enable SSAO", ref options.EnableSSAO);
+                        ImGui.Checkbox("Enable FXAA", ref options.EnableFXAA);
+                        ImGui.Checkbox("Enable Frustum", ref options.EnableFrustum);
+                        ImGui.Spacing();
+                        ImGui.ColorPicker3("Background Color", ref options.BackgroundColor);
+                        ImGui.EndMenu();
+                    }
+                    if(!showImGuiDemo && ImGui.BeginMenu("ImGui Demo"))
+                    {
+                        if (ImGui.MenuItem("Show"))
+                        {
+                            showImGuiDemo = true;
+                        }                       
+                        ImGui.EndMenu();
+                    }
+                    ImGui.EndMenuBar();
+                }
+                if (ImGui.CollapsingHeader("Mouse Gestures", TreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Text("Mouse Right: Rotate");
+                    ImGui.Text("Mouse Middle: Pan");
+                }
+                ImGui.Spacing();
+                if (ImGui.CollapsingHeader("Scene Graph", TreeNodeFlags.DefaultOpen))
+                {
+                    DrawSceneGraph(groupModel);
+                }
+
+                ImGui.EndWindow();
+            }
+            if (showImGuiDemo)
+            {
+                opened = false;
+                ImGuiNative.igShowDemoWindow(ref showImGuiDemo);
+            }
+        }
+
+        private void DrawSceneGraph(SceneNode node)
+        {
+            if(node.Name == null)
+            {
+                return;
+            }
+            if(node.Items.Count > 0)
+            {
+                if (ImGui.TreeNode(node.Name))
+                {
+                    foreach(var n in node.Items)
+                    {
+                        DrawSceneGraph(n);
+                    }
+                    ImGui.TreePop();
+                }
+            }
+            else
+            {
+                ImGui.Text(node.Name);
+            }
+        }
+
+        private void LoadModel()
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            //dialog.Filter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;*.ply;";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                var path = dialog.FileName;
+                var importer = new HelixToolkit.SharpDX.Core.Assimp.Importer();
+                var group = importer.Load(path);
+                groupModel.Clear();
+                groupModel.AddChildNode(group);
+            }
         }
 
         private void InitializeMaterials()
@@ -198,12 +336,19 @@ namespace CoreTest
                     resizeRequested = false;
                     return;
                 }
+
                 var pos = camera.Position;
                 var t = Stopwatch.GetTimestamp();
                 var elapse = t - previousTime;
                 previousTime = t;
                 cameraController.OnTimeStep();
-
+                if (options.DirectionalLightFollowCamera)
+                {
+                    directionalLight.Direction = camera.LookDirection.Normalized();
+                }
+                AssignViewportOption();
+                directionalLight.Color = Color.White.ToColor4().ChangeIntensity(options.DirectionLightIntensity);
+                ambientLight.Color = Color.White.ToColor4().ChangeIntensity(options.AmbientLightIntensity);
                 viewport.Render();
 
                 

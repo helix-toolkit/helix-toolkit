@@ -121,9 +121,9 @@ namespace HelixToolkit.UWP
                 screenSpaceCore.RelativeScreenLocationX = RelativeScreenLocationX;
                 screenSpaceCore.RelativeScreenLocationY = RelativeScreenLocationY;
                 screenSpaceCore.SizeScale = SizeScale;
-                for (int i = 0; i < Items.Count; ++i)
+                for (int i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    Items[i].RenderType = RenderType.ScreenSpaced;
+                    ItemsInternal[i].RenderType = RenderType.ScreenSpaced;
                 }
                 return base.OnAttach(host);
             }

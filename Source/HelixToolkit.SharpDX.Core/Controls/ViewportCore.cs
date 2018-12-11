@@ -63,13 +63,13 @@ namespace HelixToolkit.SharpDX.Core.Controls
             set;
         }
 
-        public IEnumerable<SceneNode> Renderables => Items;
+        public IEnumerable<SceneNode> Renderables => Items.ItemsInternal;
 
-        public IEnumerable<SceneNode2D> D2DRenderables => Items2D;
+        public IEnumerable<SceneNode2D> D2DRenderables => Items2D.ItemsInternal;
 
-        public List<SceneNode> Items { get; } = new List<SceneNode>();
+        public GroupNode Items { get; } = new GroupNode();
 
-        public List<SceneNode2D> Items2D { get; } = new List<SceneNode2D>();
+        public SceneNode2D Items2D { get; } = new OverlayNode2D() { EnableBitmapCache = false };
 
         public bool ShowFPS
         {
@@ -127,6 +127,12 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get => RenderHost.RenderConfiguration.FXAALevel;
         }
 
+        public bool EnableRenderFrustum
+        {
+            set => RenderHost.EnableRenderFrustum = value;
+            get => RenderHost.EnableRenderFrustum;
+        }
+
         public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)RenderHost.ActualWidth, (int)RenderHost.ActualHeight); } }
 
         public RenderContext RenderContext { get => RenderHost.RenderContext; }
@@ -156,7 +162,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get => RenderHost.RenderConfiguration.EnableRenderOrder;
         }
 
-        private SceneNode2D root2D = new OverlayNode2D() { EnableBitmapCache = false };
+        public int Width { private set; get; }
+        public int Height { private set; get; }
 
         public ViewportCore(IntPtr nativeWindowPointer, bool deferred = false)
         {
@@ -181,8 +188,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
-            root2D.Items.Add(new FrameStatisticsNode2D());
-            Items2D.Add(root2D);
+            Items2D.ItemsInternal.Add(new FrameStatisticsNode2D());
         }
 
         private void HandleExceptionOccured(Exception exception)
@@ -217,26 +223,14 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public void Attach(IRenderHost host)
         {
-            foreach(var model in Items)
-            {
-                model.Attach(host);
-            }
-            foreach(var model in Items2D)
-            {
-                model.Attach(host);
-            }
+            Items.Attach(host);
+            Items2D.Attach(host);
         }
 
         public void Detach()
         {
-            foreach (var model in Items)
-            {
-                model.Detach();
-            }
-            foreach(var model in Items2D)
-            {
-                model.Detach();
-            }
+            Items.Detach();
+            Items2D.Detach();
         }
 
         public void InvalidateRender()
@@ -256,6 +250,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public void Resize(int width, int height)
         {
+            Width = width;
+            Height = height;
             RenderHost.Resize(width, height);
         }
     }
