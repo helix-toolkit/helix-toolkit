@@ -127,6 +127,12 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get => RenderHost.RenderConfiguration.FXAALevel;
         }
 
+        public bool EnableRenderFrustum
+        {
+            set => RenderHost.EnableRenderFrustum = value;
+            get => RenderHost.EnableRenderFrustum;
+        }
+
         public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)RenderHost.ActualWidth, (int)RenderHost.ActualHeight); } }
 
         public RenderContext RenderContext { get => RenderHost.RenderContext; }

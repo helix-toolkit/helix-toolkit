@@ -238,5 +238,11 @@ namespace HelixToolkit.UWP
             Colors.TryGetValue(name, out object color);
             return color;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Color4 ChangeIntensity(this Color4 c, float intensity)
+        {
+            return new Color4(c.Red * intensity, c.Green * intensity, c.Blue * intensity, c.Alpha);
+        }
     }
 }

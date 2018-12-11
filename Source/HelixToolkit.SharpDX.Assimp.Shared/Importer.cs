@@ -52,11 +52,21 @@ namespace HelixToolkit.UWP
 
             private string filePath = "";
 
+            private const string ToUpperDictString = @"..\";
+
+            public PostProcessSteps DefaultPostProcessSteps = 
+                    PostProcessSteps.GenerateNormals
+                | PostProcessSteps.Triangulate
+                | PostProcessSteps.TransformUVCoords 
+                | PostProcessSteps.CalculateTangentSpace
+                | PostProcessSteps.JoinIdenticalVertices 
+                | PostProcessSteps.FindDegenerates 
+                | PostProcessSteps.RemoveRedundantMaterials
+                | PostProcessSteps.FlipUVs;
+
             public HxScene.SceneNode Load(string filePath)
             {
-                return Load(filePath, 
-                    PostProcessSteps.GenerateNormals | PostProcessSteps.Triangulate
-                    | PostProcessSteps.JoinIdenticalVertices, null);
+                return Load(filePath, DefaultPostProcessSteps, null);
             }
 
             public HxScene.SceneNode Load(string filePath, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
@@ -110,61 +120,82 @@ namespace HelixToolkit.UWP
             }
 
 
-            private static HxScene.SceneNode ConstructHelixScene(Node node, HelixScene scene)
+            private HxScene.SceneNode ConstructHelixScene(Node node, HelixScene scene)
             {
-                var group = new HxScene.GroupNode
+                if (node.HasChildren || node.MeshCount > 1)
                 {
-                    Name = node.Name,
-                    ModelMatrix = node.Transform.ToSharpDXMatrix()
-                };
-                if (node.HasMeshes)
-                {
+                    var group = new HxScene.GroupNode
+                    {
+                        Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
+                        ModelMatrix = node.Transform.ToSharpDXMatrix()
+                    };
+                    foreach (var c in node.Children)
+                    {
+                        group.AddChildNode(ConstructHelixScene(c, scene));
+                    }
                     foreach (var idx in node.MeshIndices)
                     {
                         var mesh = scene.Meshes[idx];
-                        switch (mesh.Type)
-                        {
-                            case PrimitiveType.Triangle:
-                                var material = scene.Materials[mesh.MaterialIndex];
-                                group.AddChildNode(new HxScene.MeshNode()
-                                {
-                                    Name = mesh.AssimpMesh.Name,
-                                    Geometry = mesh.Mesh,
-                                    Material = scene.Materials[mesh.MaterialIndex].Item2
-                                });
-                                break;
-                            case PrimitiveType.Line:
-                                group.AddChildNode(new HxScene.LineNode()
-                                {
-                                    Name = mesh.AssimpMesh.Name,
-                                    Geometry = mesh.Mesh,
-                                    Material = scene.Materials[mesh.MaterialIndex].Item2
-                                });
-                                break;
-                            case PrimitiveType.Point:
-                                group.AddChildNode(new HxScene.PointNode()
-                                {
-                                    Name = mesh.AssimpMesh.Name,
-                                    Geometry = mesh.Mesh,
-                                    Material = scene.Materials[mesh.MaterialIndex].Item2
-                                });
-                                break;
-                            default:
-                                throw new NotSupportedException($"Mesh Type {mesh.Type} does not supported");
-                        }
-                    }                 
+                        group.AddChildNode(ToHxMesh(mesh, scene));
+                    }
+                    return group;
                 }
-                if (node.HasChildren)
+                else if (node.MeshCount == 1)
                 {
-                    foreach(var c in node.Children)
-                    {
-                        group.AddChildNode(ConstructHelixScene(c, scene));
-                    }                                       
+                    return ToHxMesh(scene.Meshes[node.MeshIndices[0]], scene);
                 }
-                return group;
+                else
+                {
+                    return null;
+                }
             }
 
-            public static MeshInfo ToHelixGeometry(Mesh mesh)
+            protected virtual HxScene.SceneNode ToHxMesh(MeshInfo mesh, HelixScene scene)
+            {
+                switch (mesh.Type)
+                {
+                    case PrimitiveType.Triangle:
+                        var material = scene.Materials[mesh.MaterialIndex];
+                        return new HxScene.MeshNode()
+                        {
+                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.MeshNode) : mesh.AssimpMesh.Name,
+                            Geometry = mesh.Mesh,
+                            Material = scene.Materials[mesh.MaterialIndex].Item2
+                        };
+                    case PrimitiveType.Line:
+                        var lnode = new HxScene.LineNode()
+                        {
+                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.LineNode) : mesh.AssimpMesh.Name,
+                            Geometry = mesh.Mesh
+                        };
+                        var lmaterial = new Model.LineMaterialCore(); //Must create separate line material
+                        lnode.Material = lmaterial;
+                        var ml = scene.Materials[mesh.MaterialIndex].Item2;
+                        if (ml is Model.DiffuseMaterialCore diffuse)
+                        {
+                            lmaterial.LineColor = diffuse.DiffuseColor;                         
+                        }
+                        return lnode;
+                    case PrimitiveType.Point:
+                        var pnode = new HxScene.PointNode()
+                        {
+                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.PointNode) : mesh.AssimpMesh.Name,
+                            Geometry = mesh.Mesh
+                        };
+                        var pmaterial = new Model.PointMaterialCore(); //Must create separate point material
+                        pnode.Material = pmaterial;
+                        var pm = scene.Materials[mesh.MaterialIndex].Item2;
+                        if(pm is Model.DiffuseMaterialCore diffuse1)
+                        {
+                            pmaterial.PointColor = diffuse1.DiffuseColor;
+                        }
+                        return pnode;
+                    default:
+                        throw new NotSupportedException($"Mesh Type {mesh.Type} does not supported");
+                }
+            }
+
+            private MeshInfo ToHelixGeometry(Mesh mesh)
             {
                 switch (mesh.PrimitiveType)
                 {
@@ -179,7 +210,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            private static MeshGeometry3D ToHelixMesh(Mesh mesh)
+            protected virtual MeshGeometry3D ToHelixMesh(Mesh mesh)
             {
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
                 var builder = new MeshBuilder(false, false);
@@ -225,14 +256,14 @@ namespace HelixToolkit.UWP
                 return hMesh;
             }
 
-            private static PointGeometry3D ToHelixPoint(Mesh mesh)
+            protected virtual PointGeometry3D ToHelixPoint(Mesh mesh)
             {
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
                 var hMesh = new PointGeometry3D() { Positions = hVertices };
                 return hMesh;
             }
 
-            private static LineGeometry3D ToHelixLine(Mesh mesh)
+            protected virtual LineGeometry3D ToHelixLine(Mesh mesh)
             {
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
                 var hIndices = new IntCollection(mesh.Faces.SelectMany(x => x.Indices));
@@ -244,7 +275,7 @@ namespace HelixToolkit.UWP
                 return hMesh;
             }
 
-            private Model.PhongMaterialCore ToPhongMaterial(Material material)
+            protected virtual Model.PhongMaterialCore ToPhongMaterial(Material material)
             {
                 var phong = new Model.PhongMaterialCore
                 {
@@ -267,15 +298,6 @@ namespace HelixToolkit.UWP
                     desc.AddressU = ToDXAddressMode(material.TextureDiffuse.WrapModeU);
                     desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
                     phong.DiffuseMapSampler = desc;
-                    if (material.HasNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE))
-                    {
-                        var prop = material.GetProperty(AiMatKeys.UVTRANSFORM_BASE, TextureType.Diffuse, material.TextureDiffuse.TextureIndex);
-                        if (prop != null)
-                        {
-                            phong.UVTransform = new global::SharpDX.Matrix();
-                        }
-                    }
-
                 }
                 if (material.HasTextureNormal)
                 {
@@ -300,7 +322,7 @@ namespace HelixToolkit.UWP
                 return phong;
             }
 
-            private Model.PBRMaterialCore ToPBRMaterial(Material material)
+            protected virtual Model.PBRMaterialCore ToPBRMaterial(Material material)
             {
                 var pbr = new Model.PBRMaterialCore()
                 {
@@ -347,7 +369,7 @@ namespace HelixToolkit.UWP
                 return pbr;
             }
 
-            private Tuple<Material, Model.MaterialCore> ToHelixMaterial(Material material)
+            protected virtual Tuple<Material, Model.MaterialCore> ToHelixMaterial(Material material)
             {
                 Model.MaterialCore core = null;
                 if (!material.HasShadingMode)
@@ -422,6 +444,11 @@ namespace HelixToolkit.UWP
                 {                
                     var dict = Path.GetDirectoryName(filePath);
                     var p = Path.GetFullPath(Path.Combine(dict, path));
+                    if (!File.Exists(p) && path.StartsWith(ToUpperDictString))
+                    {
+                        path.Remove(0, ToUpperDictString.Length);
+                        p = Path.GetFullPath(Path.Combine(dict, path));
+                    }
                     var texture = LoadFileToStream(p);
                     textureDict.Add(path, texture);
                     return texture;
