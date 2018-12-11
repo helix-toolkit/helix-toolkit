@@ -235,7 +235,13 @@ namespace CoreTest
                     }
                     ImGui.EndMenuBar();
                 }
-                if(ImGui.CollapsingHeader("Scene Graph", TreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Mouse Gestures", TreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Text("Mouse Right: Rotate");
+                    ImGui.Text("Mouse Middle: Pan");
+                }
+                ImGui.Spacing();
+                if (ImGui.CollapsingHeader("Scene Graph", TreeNodeFlags.DefaultOpen))
                 {
                     DrawSceneGraph(groupModel);
                 }
