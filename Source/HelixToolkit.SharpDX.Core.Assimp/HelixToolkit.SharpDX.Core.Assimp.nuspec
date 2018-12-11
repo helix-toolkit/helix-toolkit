@@ -23,7 +23,7 @@
     </dependencies>
   </metadata>
   <files>
-  	<file src="bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp???" target="lib\netstandard1.3" />
+  	<file src="bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netstandard1.3" />
 	<file src="bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netstandard1.3" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
