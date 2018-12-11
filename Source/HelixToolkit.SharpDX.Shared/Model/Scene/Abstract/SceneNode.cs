@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP
             ///
             /// </summary>
             public Guid GUID { get { return RenderCore.GUID; } }
-            private string name;
+            private string name = "Node";
             /// <summary>
             /// Gets or sets the name.
             /// </summary>
@@ -202,8 +202,8 @@ namespace HelixToolkit.UWP
             /// </value>
             internal ObservableCollection<SceneNode> ItemsInternal
             {
-                get;
-            } = new ObservableCollection<SceneNode>();
+                set; get;
+            } = Constants.EmptyRenderableArray;
 
             /// <summary>
             /// Gets the readonly child items from outside UI component access.
@@ -211,7 +211,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The children.
             /// </value>
-            public ReadOnlyObservableCollection<SceneNode> Items { get; } 
+            public ReadOnlyObservableCollection<SceneNode> Items { internal set; get; } = Constants.EmptyReadOnlyRenderableArray;
 
             /// <summary>
             /// Gets or sets a value indicating whether this instance is hit test visible.
@@ -347,7 +347,6 @@ namespace HelixToolkit.UWP
             /// </summary>
             public SceneNode()
             {
-                Items = new ReadOnlyObservableCollection<SceneNode>(ItemsInternal);
                 WrapperSource = this;
                 renderCore = new Lazy<RenderCore>(() => 
                 {
@@ -356,7 +355,14 @@ namespace HelixToolkit.UWP
                     return core;
                 }, true);
             }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SceneNode"/> class.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            public SceneNode(string name) : this()
+            {
+                Name = name;
+            }
             /// <summary>
             /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
             /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>

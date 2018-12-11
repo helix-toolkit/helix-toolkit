@@ -154,14 +154,14 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items.
             /// </value>
-            internal ObservableCollection<SceneNode2D> ItemsInternal { get; } = new ObservableCollection<SceneNode2D>();
+            internal ObservableCollection<SceneNode2D> ItemsInternal { set; get; } = Constants.EmptyRenderable2D;
             /// <summary>
             /// Gets the items as readonly. Expose for outside for UI access or bindings
             /// </summary>
             /// <value>
             /// The items.
             /// </value>
-            public ReadOnlyObservableCollection<SceneNode2D> Items { get; }
+            public ReadOnlyObservableCollection<SceneNode2D> Items { internal set; get; } = Constants.EmptyReadOnlyRenderable2DArray;
 
             private Matrix3x2 modelMatrix = Matrix3x2.Identity;
 
@@ -289,7 +289,6 @@ namespace HelixToolkit.UWP
             /// </summary>
             public SceneNode2D()
             {
-                Items = new ReadOnlyObservableCollection<SceneNode2D>(ItemsInternal);
                 WrapperSource = this;
             }
 

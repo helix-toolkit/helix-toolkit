@@ -63,10 +63,26 @@ namespace HelixToolkit.UWP
             public event EventHandler<OnChildNodeChangedArgs> OnAddChildNode;
             public event EventHandler<OnChildNodeChangedArgs> OnRemoveChildNode;
             public event EventHandler<OnChildNodeChangedArgs> OnClear;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="GroupNodeBase"/> class.
+            /// </summary>
+            public GroupNodeBase()
+            {
+                ItemsInternal = new System.Collections.ObjectModel.ObservableCollection<SceneNode>();
+                Items = new System.Collections.ObjectModel.ReadOnlyObservableCollection<SceneNode>(ItemsInternal);
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="GroupNodeBase"/> class.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            public GroupNodeBase(string name) : this()
+            {
+                Name = name;
+            }
 
             public bool AddChildNode(SceneNode node)
             {
-                if (!itemHashSet.ContainsKey(node.GUID))
+                if (node != null && !itemHashSet.ContainsKey(node.GUID))
                 {
                     itemHashSet.Add(node.GUID, node);
                     ItemsInternal.Add(node);
@@ -105,7 +121,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool RemoveChildNode(SceneNode node)
             {
-                if (itemHashSet.Remove(node.GUID))
+                if (node != null && itemHashSet.Remove(node.GUID))
                 {
                     node.Detach();             
                     ItemsInternal.Remove(node);

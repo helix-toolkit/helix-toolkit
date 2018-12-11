@@ -25,6 +25,12 @@ namespace HelixToolkit.UWP
         {
             protected readonly Dictionary<Guid, SceneNode2D> itemHashSet = new Dictionary<Guid, SceneNode2D>();
 
+            public PanelNode2D()
+            {
+                ItemsInternal = new ObservableCollection<SceneNode2D>();
+                Items = new ReadOnlyObservableCollection<SceneNode2D>(ItemsInternal);
+            }
+
             public virtual bool AddChildNode(SceneNode2D node)
             {
                 if (!itemHashSet.ContainsKey(node.GUID))

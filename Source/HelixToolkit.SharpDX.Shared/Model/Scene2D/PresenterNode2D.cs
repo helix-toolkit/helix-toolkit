@@ -53,6 +53,12 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            public PresenterNode2D()
+            {
+                ItemsInternal = new System.Collections.ObjectModel.ObservableCollection<SceneNode2D>();
+                Items = new System.Collections.ObjectModel.ReadOnlyObservableCollection<SceneNode2D>(ItemsInternal);                
+            }
+
             protected override bool OnAttach(IRenderHost host)
             {
                 if (base.OnAttach(host))
