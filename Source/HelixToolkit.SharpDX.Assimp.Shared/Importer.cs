@@ -303,6 +303,10 @@ namespace HelixToolkit.UWP
                 {
                     phong.NormalMap = LoadTexture(material.TextureNormal.FilePath);
                 }
+                else if (material.HasTextureHeight)
+                {
+                    phong.NormalMap = LoadTexture(material.TextureHeight.FilePath);
+                }
                 if (material.HasTextureSpecular)
                 {
                     phong.SpecularColorMap = LoadTexture(material.TextureSpecular.FilePath);
@@ -349,6 +353,10 @@ namespace HelixToolkit.UWP
                 if (material.HasTextureNormal)
                 {
                     pbr.NormalMap = LoadTexture(material.TextureNormal.FilePath);
+                }
+                else if (material.HasTextureHeight)
+                {
+                    pbr.NormalMap = LoadTexture(material.TextureHeight.FilePath);
                 }
                 if (material.HasTextureSpecular)
                 {
