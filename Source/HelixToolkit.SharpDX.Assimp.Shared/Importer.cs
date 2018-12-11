@@ -20,19 +20,46 @@ namespace HelixToolkit.UWP
     using HxScene = Model.Scene;
     namespace Assimp
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public class Importer
         {
+            /// <summary>
+            /// 
+            /// </summary>
             public sealed class MeshInfo
             {
+                /// <summary>
+                /// The mesh type
+                /// </summary>
                 public PrimitiveType Type;
+                /// <summary>
+                /// The Assimp mesh
+                /// </summary>
                 public Mesh AssimpMesh;
+                /// <summary>
+                /// The Helix mesh
+                /// </summary>
                 public Geometry3D Mesh;
+                /// <summary>
+                /// The material index
+                /// </summary>
                 public int MaterialIndex;
+                /// <summary>
+                /// Initializes a new instance of the <see cref="MeshInfo"/> class.
+                /// </summary>
                 public MeshInfo()
                 {
 
                 }
-
+                /// <summary>
+                /// Initializes a new instance of the <see cref="MeshInfo"/> class.
+                /// </summary>
+                /// <param name="type">The type.</param>
+                /// <param name="assimpMesh">The assimp mesh.</param>
+                /// <param name="mesh">The mesh.</param>
+                /// <param name="materialIndex">Index of the material.</param>
                 public MeshInfo(PrimitiveType type, Mesh assimpMesh, Geometry3D mesh, int materialIndex)
                 {
                     Type = type;
@@ -41,10 +68,18 @@ namespace HelixToolkit.UWP
                     MaterialIndex = materialIndex;
                 }
             }
-
+            /// <summary>
+            /// 
+            /// </summary>
             public sealed class HelixScene
             {
+                /// <summary>
+                /// The meshes
+                /// </summary>
                 public MeshInfo[] Meshes;
+                /// <summary>
+                /// The materials
+                /// </summary>
                 public Tuple<global::Assimp.Material, Model.MaterialCore>[] Materials;
             }
 
@@ -53,7 +88,9 @@ namespace HelixToolkit.UWP
             private string filePath = "";
 
             private const string ToUpperDictString = @"..\";
-
+            /// <summary>
+            /// The default post process steps
+            /// </summary>
             public PostProcessSteps DefaultPostProcessSteps = 
                     PostProcessSteps.GenerateNormals
                 | PostProcessSteps.Triangulate
@@ -63,12 +100,22 @@ namespace HelixToolkit.UWP
                 | PostProcessSteps.FindDegenerates 
                 | PostProcessSteps.RemoveRedundantMaterials
                 | PostProcessSteps.FlipUVs;
-
+            /// <summary>
+            /// Loads the specified file path.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <returns></returns>
             public HxScene.SceneNode Load(string filePath)
             {
                 return Load(filePath, DefaultPostProcessSteps, null);
             }
-
+            /// <summary>
+            /// Loads the specified file path.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="postprocessSteps">The postprocess steps.</param>
+            /// <param name="configs">The configs.</param>
+            /// <returns></returns>
             public HxScene.SceneNode Load(string filePath, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
             {
                 this.filePath = filePath;
@@ -149,7 +196,13 @@ namespace HelixToolkit.UWP
                     return null;
                 }
             }
-
+            /// <summary>
+            /// To the hx mesh nodes.
+            /// </summary>
+            /// <param name="mesh">The mesh.</param>
+            /// <param name="scene">The scene.</param>
+            /// <returns></returns>
+            /// <exception cref="System.NotSupportedException">Mesh Type {mesh.Type}</exception>
             protected virtual HxScene.SceneNode ToHxMesh(MeshInfo mesh, HelixScene scene)
             {
                 switch (mesh.Type)
@@ -209,7 +262,11 @@ namespace HelixToolkit.UWP
                         throw new NotSupportedException($"MeshType : {mesh.PrimitiveType} does not supported");
                 }
             }
-
+            /// <summary>
+            /// To the helix mesh.
+            /// </summary>
+            /// <param name="mesh">The mesh.</param>
+            /// <returns></returns>
             protected virtual MeshGeometry3D ToHelixMesh(Mesh mesh)
             {
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
@@ -255,14 +312,22 @@ namespace HelixToolkit.UWP
                 }
                 return hMesh;
             }
-
+            /// <summary>
+            /// To the helix point.
+            /// </summary>
+            /// <param name="mesh">The mesh.</param>
+            /// <returns></returns>
             protected virtual PointGeometry3D ToHelixPoint(Mesh mesh)
             {
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
                 var hMesh = new PointGeometry3D() { Positions = hVertices };
                 return hMesh;
             }
-
+            /// <summary>
+            /// To the helix line.
+            /// </summary>
+            /// <param name="mesh">The mesh.</param>
+            /// <returns></returns>
             protected virtual LineGeometry3D ToHelixLine(Mesh mesh)
             {
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
@@ -274,7 +339,11 @@ namespace HelixToolkit.UWP
                 }
                 return hMesh;
             }
-
+            /// <summary>
+            /// To the phong material.
+            /// </summary>
+            /// <param name="material">The material.</param>
+            /// <returns></returns>
             protected virtual Model.PhongMaterialCore ToPhongMaterial(global::Assimp.Material material)
             {
                 var phong = new Model.PhongMaterialCore
@@ -325,7 +394,11 @@ namespace HelixToolkit.UWP
                 }
                 return phong;
             }
-
+            /// <summary>
+            /// To the PBR material.
+            /// </summary>
+            /// <param name="material">The material.</param>
+            /// <returns></returns>
             protected virtual Model.PBRMaterialCore ToPBRMaterial(global::Assimp.Material material)
             {
                 var pbr = new Model.PBRMaterialCore()
@@ -376,7 +449,12 @@ namespace HelixToolkit.UWP
                 }
                 return pbr;
             }
-
+            /// <summary>
+            /// To the helix material.
+            /// </summary>
+            /// <param name="material">The material.</param>
+            /// <returns></returns>
+            /// <exception cref="System.NotSupportedException">Shading Mode {material.ShadingMode}</exception>
             protected virtual Tuple<global::Assimp.Material, Model.MaterialCore> ToHelixMaterial(global::Assimp.Material material)
             {
                 Model.MaterialCore core = null;
