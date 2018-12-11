@@ -483,9 +483,9 @@ namespace HelixToolkit.UWP
                 if (DesiredSize != clippedDesiredSize)
                 {
                     DesiredSize = clippedDesiredSize;
-                    for (int i = 0; i < Items.Count; ++i)
+                    for (int i = 0; i < ItemsInternal.Count; ++i)
                     {
-                        Items[i].InvalidateMeasure();
+                        ItemsInternal[i].InvalidateMeasure();
                     }
                 }
                 else
@@ -692,18 +692,18 @@ namespace HelixToolkit.UWP
 
             protected virtual RectangleF ArrangeOverride(RectangleF finalSize)
             {
-                for (int i = 0; i < Items.Count; ++i)
+                for (int i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    Items[i].Arrange(finalSize);
+                    ItemsInternal[i].Arrange(finalSize);
                 }
                 return finalSize;
             }
 
             protected virtual Size2F MeasureOverride(Size2F availableSize)
             {
-                for (int i = 0; i < Items.Count; ++i)
+                for (int i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    Items[i].Measure(availableSize);
+                    ItemsInternal[i].Measure(availableSize);
                 }
                 return availableSize;
             }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -199,10 +200,18 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items.
             /// </value>
-            public virtual IList<SceneNode> Items
+            internal ObservableCollection<SceneNode> ItemsInternal
             {
                 get;
-            } = Constants.EmptyRenderableArray;
+            } = new ObservableCollection<SceneNode>();
+
+            /// <summary>
+            /// Gets the readonly child items from outside UI component access.
+            /// </summary>
+            /// <value>
+            /// The children.
+            /// </value>
+            public ReadOnlyObservableCollection<SceneNode> Items { get; } 
 
             /// <summary>
             /// Gets or sets a value indicating whether this instance is hit test visible.
@@ -338,6 +347,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public SceneNode()
             {
+                Items = new ReadOnlyObservableCollection<SceneNode>(ItemsInternal);
                 WrapperSource = this;
                 renderCore = new Lazy<RenderCore>(() => 
                 {
@@ -473,9 +483,9 @@ namespace HelixToolkit.UWP
                 if (NeedMatrixUpdate)
                 {
                     core.ModelMatrix = TotalModelMatrix = modelMatrix * parent.TotalModelMatrix;
-                    for (int i = 0; i < Items.Count; ++i)
+                    for (int i = 0; i < ItemsInternal.Count; ++i)
                     {
-                        Items[i].NeedMatrixUpdate = true;
+                        ItemsInternal[i].NeedMatrixUpdate = true;
                     }
                     NeedMatrixUpdate = false;
                     TransformChanged(ref TotalModelMatrix);
@@ -843,10 +853,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnDispose(bool disposeManagedResources)
             {
-                if (!Items.IsReadOnly)
-                {
-                    Items.Clear();
-                }
+                ItemsInternal.Clear();
                 RenderCore.Dispose();
                 VisibleChanged = null;
                 OnTransformChanged = null;

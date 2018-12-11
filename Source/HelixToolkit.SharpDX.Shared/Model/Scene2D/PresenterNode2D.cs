@@ -32,16 +32,17 @@ namespace HelixToolkit.UWP
                         {
                             content.Detach();
                             content.Parent = null;
+                            ItemsInternal.Clear();
                         }
-                        content = value;
-                        contentArray[0] = value;
+                        content = value;                     
                         if (content != null)
-                        {
+                        {                            
                             content.Parent = this;
                             if (IsAttached)
                             {
                                 content.Attach(RenderHost);
                             }
+                            ItemsInternal.Add(value);
                         }
                         InvalidateMeasure();
                     }
@@ -49,16 +50,6 @@ namespace HelixToolkit.UWP
                 get
                 {
                     return content;
-                }
-            }
-
-            private SceneNode2D[] contentArray = new SceneNode2D[1];
-
-            public override IList<SceneNode2D> Items
-            {
-                get
-                {
-                    return content == null ? Constants.EmptyRenderable2D : contentArray;
                 }
             }
 

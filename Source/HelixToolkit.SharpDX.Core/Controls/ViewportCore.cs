@@ -63,9 +63,9 @@ namespace HelixToolkit.SharpDX.Core.Controls
             set;
         }
 
-        public IEnumerable<SceneNode> Renderables => Items.Items;
+        public IEnumerable<SceneNode> Renderables => Items.ItemsInternal;
 
-        public IEnumerable<SceneNode2D> D2DRenderables => Items2D.Items;
+        public IEnumerable<SceneNode2D> D2DRenderables => Items2D.ItemsInternal;
 
         public GroupNode Items { get; } = new GroupNode();
 
@@ -182,7 +182,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
-            Items2D.Items.Add(new FrameStatisticsNode2D());
+            Items2D.ItemsInternal.Add(new FrameStatisticsNode2D());
         }
 
         private void HandleExceptionOccured(Exception exception)

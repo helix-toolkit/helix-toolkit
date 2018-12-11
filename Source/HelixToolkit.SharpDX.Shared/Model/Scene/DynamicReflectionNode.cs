@@ -202,19 +202,19 @@ namespace HelixToolkit.UWP
                 {
                     BoundingBox box = new BoundingBox();
                     int i = 0;
-                    for(; i < Items.Count; ++i)
+                    for(; i < ItemsInternal.Count; ++i)
                     {
-                        if(Items[i] is IDynamicReflectable)
+                        if(ItemsInternal[i] is IDynamicReflectable)
                         {
-                            box = Items[i].BoundsWithTransform;
+                            box = ItemsInternal[i].BoundsWithTransform;
                             break;
                         }
                     }
-                    for (; i < Items.Count; ++i)
+                    for (; i < ItemsInternal.Count; ++i)
                     {
-                        if (Items[i] is IDynamicReflectable)
+                        if (ItemsInternal[i] is IDynamicReflectable)
                         {
-                            box = BoundingBox.Merge(box, Items[i].BoundsWithTransform);
+                            box = BoundingBox.Merge(box, ItemsInternal[i].BoundsWithTransform);
                         }
                     }
                     Center = box.Center();
