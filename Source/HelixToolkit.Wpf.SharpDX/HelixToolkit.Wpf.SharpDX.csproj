@@ -44,7 +44,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -351,6 +351,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\Camera\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\HelixToolkit.snk" />
   </ItemGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />

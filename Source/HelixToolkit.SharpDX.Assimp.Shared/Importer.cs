@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP
             public sealed class HelixScene
             {
                 public MeshInfo[] Meshes;
-                public Tuple<Material, Model.MaterialCore>[] Materials;
+                public Tuple<global::Assimp.Material, Model.MaterialCore>[] Materials;
             }
 
             private Dictionary<string, Stream> textureDict = new Dictionary<string, Stream>();
@@ -100,7 +100,7 @@ namespace HelixToolkit.UWP
                 var s = new HelixScene
                 {
                     Meshes = new MeshInfo[scene.MeshCount],
-                    Materials = new Tuple<Material, Model.MaterialCore>[scene.MaterialCount]
+                    Materials = new Tuple<global::Assimp.Material, Model.MaterialCore>[scene.MaterialCount]
                 };
                 if (scene.HasMeshes)
                 {
@@ -275,7 +275,7 @@ namespace HelixToolkit.UWP
                 return hMesh;
             }
 
-            protected virtual Model.PhongMaterialCore ToPhongMaterial(Material material)
+            protected virtual Model.PhongMaterialCore ToPhongMaterial(global::Assimp.Material material)
             {
                 var phong = new Model.PhongMaterialCore
                 {
@@ -322,7 +322,7 @@ namespace HelixToolkit.UWP
                 return phong;
             }
 
-            protected virtual Model.PBRMaterialCore ToPBRMaterial(Material material)
+            protected virtual Model.PBRMaterialCore ToPBRMaterial(global::Assimp.Material material)
             {
                 var pbr = new Model.PBRMaterialCore()
                 {
@@ -369,13 +369,13 @@ namespace HelixToolkit.UWP
                 return pbr;
             }
 
-            protected virtual Tuple<Material, Model.MaterialCore> ToHelixMaterial(Material material)
+            protected virtual Tuple<global::Assimp.Material, Model.MaterialCore> ToHelixMaterial(global::Assimp.Material material)
             {
                 Model.MaterialCore core = null;
                 if (!material.HasShadingMode)
                 {
                     var phong = ToPhongMaterial(material);
-                    return new Tuple<Material, Model.MaterialCore>(material, phong);
+                    return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, phong);
                 }
                 switch (material.ShadingMode)
                 {
@@ -415,7 +415,7 @@ namespace HelixToolkit.UWP
                         throw new NotSupportedException($"Shading Mode {material.ShadingMode} does not supported.");
                 }
                 core.Name = material.Name;
-                return new Tuple<Material, Model.MaterialCore>(material, core);
+                return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, core);
             }
 
 
