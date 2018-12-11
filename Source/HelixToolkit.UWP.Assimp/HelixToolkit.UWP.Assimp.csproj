@@ -35,6 +35,7 @@
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\HelixToolkit.UWP.Assimp.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -128,9 +129,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyDescription.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.Assimp.rd.xml" />
-      <Compile Include="..\AssemblyInfo.cs">
-          <Link>Properties\AssemblyInfo.cs</Link>
-      </Compile>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet">

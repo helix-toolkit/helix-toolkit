@@ -24,7 +24,6 @@
   </metadata>
   <files>
   	<file src="bin\Release\HelixToolkit.UWP.Assimp.???" target="lib\uap10.0" />
-	<file src="bin\Release\HelixToolkit.UWP.Assimp.??.xml" target="lib\uap10.0\HelixToolkit.UWP.Assimp" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />

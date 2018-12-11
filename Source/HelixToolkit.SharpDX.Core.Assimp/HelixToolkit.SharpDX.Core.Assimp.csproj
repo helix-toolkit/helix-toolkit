@@ -19,10 +19,14 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;NETFX_CORE;CORE;</DefineConstants>
+    <DocumentationFile>bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
+    <OutputPath>bin\Release\netstandard1.3\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NETFX_CORE;CORE;</DefineConstants>
+    <OutputPath>bin\Debug\netstandard1.3\</OutputPath>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
