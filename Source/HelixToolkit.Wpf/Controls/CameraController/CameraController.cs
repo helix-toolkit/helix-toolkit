@@ -2109,7 +2109,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void LeftViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
         }
 
         /// <summary>
@@ -2395,7 +2395,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void RightViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
         }
 
         /// <summary>
