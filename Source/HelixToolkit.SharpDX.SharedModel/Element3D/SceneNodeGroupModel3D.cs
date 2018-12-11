@@ -27,6 +27,11 @@ namespace HelixToolkit.Wpf.SharpDX
             GroupNode.RemoveChildNode(node);
         }
 
+        public void Clear()
+        {
+            GroupNode.Clear();
+        }
+
         protected override SceneNode OnCreateSceneNode()
         {
             return GroupNode;

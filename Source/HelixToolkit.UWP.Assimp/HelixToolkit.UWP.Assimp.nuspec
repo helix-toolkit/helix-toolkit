@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>HelixToolkit.UWP.Assimp</id>
+    <version>$version$</version>
+    <title>Assimp Import/Export for HelixToolkit.UWP</title>
+    <authors>objo, Lunci</authors>
+    <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
+    <projectUrl>http://helix-toolkit.github.io/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides Assimp import/export for HelixToolkit.UWP.</description>
+    <tags>UWP SharpDX 3D DirectX Assimp</tags>
+    <dependencies>
+	  <group targetFramework="UAP10.0">
+		<dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.1.7" exclude="Build,Analyzers" />
+		<dependency id="AssimpNet" version="4.1.0" />
+		<dependency id="HelixToolkit.UWP" version="[$version$]" />
+		<dependency id="SharpDX" version="4.2.0" />
+		<dependency id="SharpDX.Direct3D11" version="4.2.0" />
+		<dependency id="SharpDX.Mathematics" version="4.2.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+  	<file src="bin\Release\HelixToolkit.UWP.Assimp.???" target="lib\uap10.0" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+  </files>
+</package>

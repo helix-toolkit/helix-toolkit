@@ -94,13 +94,13 @@ namespace HelixToolkit.UWP
             public override void UpdateNotRender(RenderContext context)
             {
                 base.UpdateNotRender(context);
-                if (!EnableSorting || Items.Count == 0)
+                if (!EnableSorting || ItemsInternal.Count == 0)
                 { return; }
                 long currTime = Stopwatch.GetTimestamp() * 1000 / Stopwatch.Frequency;
 
                 if (currTime - LastSortTime > SortingInterval)
                 {
-                    Sort(Items, context);
+                    Sort(ItemsInternal, context);
                     LastSortTime = currTime;
                 }
             }
@@ -161,18 +161,18 @@ namespace HelixToolkit.UWP
                     }
                 }
 
-                Items.Clear();
+                ItemsInternal.Clear();
                 for (int i = 0; i < notSorted.Count; ++i)
                 {
-                    Items.Add(notSorted[i]);
+                    ItemsInternal.Add(notSorted[i]);
                 }
                 for (int i = 0; i < sortingOpaqueCache.Count; ++i)
                 {
-                    Items.Add(sortingOpaqueCache[i].Value);
+                    ItemsInternal.Add(sortingOpaqueCache[i].Value);
                 }
                 for (int i = 0; i < sortingTransparentCache.Count; ++i)
                 {
-                    Items.Add(sortingTransparentCache[i].Value);
+                    ItemsInternal.Add(sortingTransparentCache[i].Value);
                 }
 
                 sortingTransparentCache.Clear();

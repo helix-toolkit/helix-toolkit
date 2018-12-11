@@ -60,18 +60,32 @@ namespace HelixToolkit.UWP
             }
             protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
 
-            public override IList<SceneNode> Items { get; } = new List<SceneNode>();
-
             public event EventHandler<OnChildNodeChangedArgs> OnAddChildNode;
             public event EventHandler<OnChildNodeChangedArgs> OnRemoveChildNode;
             public event EventHandler<OnChildNodeChangedArgs> OnClear;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="GroupNodeBase"/> class.
+            /// </summary>
+            public GroupNodeBase()
+            {
+                ItemsInternal = new System.Collections.ObjectModel.ObservableCollection<SceneNode>();
+                Items = new System.Collections.ObjectModel.ReadOnlyObservableCollection<SceneNode>(ItemsInternal);
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="GroupNodeBase"/> class.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            public GroupNodeBase(string name) : this()
+            {
+                Name = name;
+            }
 
             public bool AddChildNode(SceneNode node)
             {
-                if (!itemHashSet.ContainsKey(node.GUID))
+                if (node != null && !itemHashSet.ContainsKey(node.GUID))
                 {
                     itemHashSet.Add(node.GUID, node);
-                    Items.Add(node);
+                    ItemsInternal.Add(node);
                     if(node.Parent != NullSceneNode.NullNode && node.Parent != this)
                     {
                         throw new ArgumentException("SceneNode already attach to a different node");
@@ -91,12 +105,12 @@ namespace HelixToolkit.UWP
             /// </summary>
             public void Clear()
             {
-                for (int i = 0; i < Items.Count; ++i)
+                for (int i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    Items[i].Detach();
-                    Items[i].Parent = null;
+                    ItemsInternal[i].Detach();
+                    ItemsInternal[i].Parent = null;
                 }
-                Items.Clear();
+                ItemsInternal.Clear();
                 itemHashSet.Clear();
                 OnClear?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
             }
@@ -107,10 +121,10 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool RemoveChildNode(SceneNode node)
             {
-                if (itemHashSet.Remove(node.GUID))
+                if (node != null && itemHashSet.Remove(node.GUID))
                 {
                     node.Detach();             
-                    Items.Remove(node);
+                    ItemsInternal.Remove(node);
                     node.Parent = null;
                     OnRemoveChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
                     return true;
@@ -139,9 +153,9 @@ namespace HelixToolkit.UWP
             {
                 if (base.OnAttach(host))
                 {
-                    for (int i = 0; i < Items.Count; ++i)
+                    for (int i = 0; i < ItemsInternal.Count; ++i)
                     {
-                        Items[i].Attach(host);
+                        ItemsInternal[i].Attach(host);
                     }
                     return true;
                 }
@@ -152,9 +166,9 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected override void OnDetach()
             {
-                for (int i = 0; i < Items.Count; ++i)
+                for (int i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    Items[i].Detach();
+                    ItemsInternal[i].Detach();
                 }
                 base.OnDetach();
             }
@@ -170,17 +184,13 @@ namespace HelixToolkit.UWP
             protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
             {
                 bool hit = false;
-                foreach (var c in this.Items)
+                foreach (var c in this.ItemsInternal)
                 {
                     if (c.HitTest(context, ray, ref hits))
                     {
                         hit = true;
                     }
                 }
-                //if (hit)
-                //{
-                //    hits.Sort();
-                //}
                 return hit;
             }
 

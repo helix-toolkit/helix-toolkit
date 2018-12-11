@@ -8,6 +8,7 @@ using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -153,7 +154,14 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items.
             /// </value>
-            public virtual IList<SceneNode2D> Items { get; } = Constants.EmptyRenderable2D;
+            internal ObservableCollection<SceneNode2D> ItemsInternal { set; get; } = Constants.EmptyRenderable2D;
+            /// <summary>
+            /// Gets the items as readonly. Expose for outside for UI access or bindings
+            /// </summary>
+            /// <value>
+            /// The items.
+            /// </value>
+            public ReadOnlyObservableCollection<SceneNode2D> Items { internal set; get; } = Constants.EmptyReadOnlyRenderable2DArray;
 
             private Matrix3x2 modelMatrix = Matrix3x2.Identity;
 
@@ -230,9 +238,9 @@ namespace HelixToolkit.UWP
                 {
                     if (Set(ref totalTransform, value))
                     {
-                        for (int i = 0; i < Items.Count; ++i)
+                        for (int i = 0; i < ItemsInternal.Count; ++i)
                         {
-                            Items[i].ParentMatrix = totalTransform;
+                            ItemsInternal[i].ParentMatrix = totalTransform;
                         }
                         TransformChanged(ref value);
                         OnTransformChanged?.Invoke(this, new Transform2DArgs(ref value));
@@ -487,9 +495,9 @@ namespace HelixToolkit.UWP
             protected virtual void OnRender(RenderContext2D context)
             {
                 RenderCore.Render(context);
-                for (int i = 0; i < this.Items.Count; ++i)
+                for (int i = 0; i < this.ItemsInternal.Count; ++i)
                 {
-                    Items[i].Render(context);
+                    ItemsInternal[i].Render(context);
                 }
             }
 

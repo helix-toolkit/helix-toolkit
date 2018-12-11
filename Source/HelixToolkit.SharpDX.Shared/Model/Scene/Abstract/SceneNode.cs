@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -35,7 +36,14 @@ namespace HelixToolkit.UWP
             ///
             /// </summary>
             public Guid GUID { get { return RenderCore.GUID; } }
-
+            private string name = "Node";
+            /// <summary>
+            /// Gets or sets the name.
+            /// </summary>
+            /// <value>
+            /// The name.
+            /// </value>
+            public string Name { set => Set(ref name, value); get => name; }
             /// <summary>
             /// Do not assgin this field. This is updated by <see cref="ComputeTransformMatrix"/>.
             /// Used as field only for performance consideration.
@@ -192,10 +200,18 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items.
             /// </value>
-            public virtual IList<SceneNode> Items
+            internal ObservableCollection<SceneNode> ItemsInternal
             {
-                get;
+                set; get;
             } = Constants.EmptyRenderableArray;
+
+            /// <summary>
+            /// Gets the readonly child items from outside UI component access.
+            /// </summary>
+            /// <value>
+            /// The children.
+            /// </value>
+            public ReadOnlyObservableCollection<SceneNode> Items { internal set; get; } = Constants.EmptyReadOnlyRenderableArray;
 
             /// <summary>
             /// Gets or sets a value indicating whether this instance is hit test visible.
@@ -339,7 +355,14 @@ namespace HelixToolkit.UWP
                     return core;
                 }, true);
             }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SceneNode"/> class.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            public SceneNode(string name) : this()
+            {
+                Name = name;
+            }
             /// <summary>
             /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
             /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
@@ -466,9 +489,9 @@ namespace HelixToolkit.UWP
                 if (NeedMatrixUpdate)
                 {
                     core.ModelMatrix = TotalModelMatrix = modelMatrix * parent.TotalModelMatrix;
-                    for (int i = 0; i < Items.Count; ++i)
+                    for (int i = 0; i < ItemsInternal.Count; ++i)
                     {
-                        Items[i].NeedMatrixUpdate = true;
+                        ItemsInternal[i].NeedMatrixUpdate = true;
                     }
                     NeedMatrixUpdate = false;
                     TransformChanged(ref TotalModelMatrix);
@@ -836,10 +859,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnDispose(bool disposeManagedResources)
             {
-                if (!Items.IsReadOnly)
-                {
-                    Items.Clear();
-                }
+                ItemsInternal.Clear();
                 RenderCore.Dispose();
                 VisibleChanged = null;
                 OnTransformChanged = null;

@@ -34,7 +34,7 @@ namespace HelixToolkit.UWP
                         old?.Clear();
                         if (octreeManager != null)
                         {
-                            foreach(var item in Items)
+                            foreach(var item in ItemsInternal)
                             {
                                 octreeManager.AddPendingItem(item);
                             }
@@ -93,7 +93,7 @@ namespace HelixToolkit.UWP
                     OctreeManager.ProcessPendingItems();
                     if (OctreeManager.RequestUpdateOctree)
                     {
-                        OctreeManager?.RebuildTree(this.Items);
+                        OctreeManager?.RebuildTree(this.ItemsInternal);
                     }
                 }
             }
