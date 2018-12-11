@@ -308,7 +308,10 @@ namespace HelixToolkit.Wpf
 
             if (this.Controller.CameraMode == CameraMode.Inspect)
             {
-                this.Controller.ShowTargetAdorner(this.rotationPoint);
+                if (this.Controller.ZoomAroundMouseDownPoint)
+                    this.Controller.ShowTargetAdorner(this.MouseDownNearestPoint2D);
+                else
+                    this.Controller.ShowTargetAdorner(this.MouseDownPoint);
             }
 
             switch (this.Controller.CameraRotationMode)
