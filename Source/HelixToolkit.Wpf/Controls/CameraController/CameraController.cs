@@ -447,6 +447,7 @@ namespace HelixToolkit.Wpf
             this.FocusVisualStyle = null;
 
             this.IsManipulationEnabled = true;
+            this.RotataAroundClosestVertexComplexity = 5000;
 
             this.InitializeBindings();
             this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
@@ -1247,6 +1248,13 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ZoomSensitivityProperty, value);
             }
         }
+
+        /// <summary>
+        /// Efficiency option, lower values decrease computation time for camera interaction when
+        /// RotateAroundMouseDownPoint or ZoomAroundMouseDownPoint is set to true in inspect mode.
+        /// Note: Will mostly save on computation time once the bounds are already calculated and cashed within the MeshGeometry3D.
+        /// </summary>
+        public int RotataAroundClosestVertexComplexity { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether IsOrthographicCamera.
@@ -2262,7 +2270,7 @@ namespace HelixToolkit.Wpf
             {
                 var point = e.GetPosition(this);
 
-                Point3D? nearestPoint = new Closest3DPointHitTester(this.Viewport).CalculateMouseDownNearestPoint(point, true).MouseDownNearestPoint3D;
+                Point3D? nearestPoint = new Closest3DPointHitTester(this.Viewport, this.RotataAroundClosestVertexComplexity).CalculateMouseDownNearestPoint(point, true).MouseDownNearestPoint3D;
                 if (nearestPoint.HasValue)
                 {
                     this.AddZoomForce(-e.Delta * 0.001, nearestPoint.Value);

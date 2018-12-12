@@ -10,14 +10,21 @@ namespace HelixToolkit.Wpf
     internal class Closest3DPointHitTester
     {
         private readonly Viewport3D mViewPort3D;
+        private readonly int mMaximumVerticesPerMesh;
 
         /// <summary>
         /// Create a new CloseObjectHitTest that returns a 3D point closest to the clicked point on the camera.
         /// </summary>
         /// <param name="viewPort3D"></param>
-        public Closest3DPointHitTester(Viewport3D viewPort3D)
+        /// <param name="maximumVerticesPerMesh">
+        /// The maximum number of vertices a mesh may contain to exactly determine the closest vertex for it when there is no exact hit.
+        /// Any mesh containing more vertices gets approximated by its bounds.
+        /// Note: Will mostly save on computation time once the bounds are already calculated and cashed within the MeshGeometry3D.
+        /// </param>
+        public Closest3DPointHitTester(Viewport3D viewPort3D, int maximumVerticesPerMesh)
         {
             mViewPort3D = viewPort3D;
+            mMaximumVerticesPerMesh = maximumVerticesPerMesh;
         }
 
 
@@ -39,8 +46,7 @@ namespace HelixToolkit.Wpf
 
             if (useClosestMeshIfPossible)
             {
-                ClosestVertexResult closestResult =
-                    new Closest3DPointHitTester(mViewPort3D).ResultOfClosestPointHit2D(position);
+                ClosestVertexResult closestResult = ResultOfClosestPointHit2D(position);
                 if (closestResult != null)
                 {
                     return new NearestPointInCamera(closestResult.ClosestPointIn2D, closestResult.ClosestPoint);
@@ -65,7 +71,6 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="pointToHitTest"> The point in screen coordinates to calculate the closest vertices for. </param>
         /// <returns> A ClosestVertexResult containing the distance to the 2D point and the closest 3D vertex point for each geometry/model </returns>
-
         public IEnumerable<ClosestVertexResult> FindClosestHits(Point pointToHitTest)
         {
             ProjectionCamera camera = mViewPort3D.Camera as ProjectionCamera;
@@ -85,16 +90,25 @@ namespace HelixToolkit.Wpf
                         return;
                     }
 
+                    Point3D[] point3Ds;
+                    if (geometry.Positions.Count <= mMaximumVerticesPerMesh)
+                    {
+                        point3Ds = geometry.Positions.Select(transform.Transform).ToArray();
+                    }
+                    else
+                    {
+                        Rect3D bounds = geometry.Bounds;
+                        point3Ds = GetBoundaryPointsBoundingBox(bounds).Select(transform.Transform).ToArray();
+                    }
+
                     // transform the positions of the mesh to screen coordinates
-                    Point3D[] point3Ds = geometry.Positions.Select(transform.Transform).ToArray();
-                    Point[] point2Ds = geometry.Positions.Select(transform.Transform)
-                        .Select(mViewPort3D.Point3DtoPoint2D).ToArray();
+                    Point[] point2Ds = mViewPort3D.Point3DtoPoint2D(point3Ds).ToArray(); 
 
                     double minSquaredDistanceToPoint = double.PositiveInfinity;
 
                     Point3D closestPoint = point3Ds[0];
                     Point closestPointIn2D = point2Ds[0];
-                    // evaluate each triangle
+
                     for (int i = 0; i < point2Ds.Length; i++)
                     {
                         Point point = point2Ds[i];
@@ -116,6 +130,17 @@ namespace HelixToolkit.Wpf
                 });
 
             return results;
+        }
+        private IEnumerable<Point3D> GetBoundaryPointsBoundingBox(Rect3D boundingBox)
+        {
+            yield return new Point3D(boundingBox.X, boundingBox.Y, boundingBox.Z);
+            yield return new Point3D(boundingBox.X, boundingBox.Y + boundingBox.SizeY, boundingBox.Z);
+            yield return new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y + boundingBox.SizeY, boundingBox.Z);
+            yield return new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y, boundingBox.Z);
+            yield return new Point3D(boundingBox.X, boundingBox.Y, boundingBox.Z + boundingBox.SizeZ);
+            yield return new Point3D(boundingBox.X, boundingBox.Y + boundingBox.SizeY, boundingBox.Z + boundingBox.SizeZ);
+            yield return new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y + boundingBox.SizeY, boundingBox.Z + boundingBox.SizeZ);
+            yield return new Point3D(boundingBox.X + boundingBox.SizeX, boundingBox.Y, boundingBox.Z + boundingBox.SizeZ);
         }
     }
 }
