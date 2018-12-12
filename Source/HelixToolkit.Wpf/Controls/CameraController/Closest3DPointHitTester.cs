@@ -59,11 +59,20 @@ namespace HelixToolkit.Wpf
 
         public ClosestVertexResult ResultOfClosestPointHit2D(Point position)
         {
-            List<ClosestVertexResult> closestHits =
-                FindClosestHits(position).OrderBy(x => x.DistanceToPoint2D).ToList();
-            if (closestHits.Count != 0)
-                return closestHits[0];
-            return null;
+            double minX = 0;
+            double minY = 0;
+            double maxX = mViewPort3D.ActualWidth;
+            double maxY = mViewPort3D.ActualHeight;
+            IEnumerable<ClosestVertexResult> hitsInView = FindClosestHits(position).Where(result =>
+                result.ClosestPointIn2D.X >= minX && result.ClosestPointIn2D.X <= maxX &&
+                result.ClosestPointIn2D.Y >= minY && result.ClosestPointIn2D.Y <= maxY);
+
+            IOrderedEnumerable<ClosestVertexResult> closestHits =
+                hitsInView.OrderBy(x => x.DistanceToPoint2D);
+            
+           //Return the closest valid result, or null in case no valid result was found.
+           ClosestVertexResult closestHitInView = closestHits.FirstOrDefault();
+           return closestHitInView;
         }
 
         /// <summary>
