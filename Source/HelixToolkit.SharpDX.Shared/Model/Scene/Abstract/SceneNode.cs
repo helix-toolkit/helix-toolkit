@@ -475,7 +475,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The time since last update.</param>
             public virtual void Update(RenderContext context)
             {
-                IsRenderable = CanRender(context);
+                IsRenderable = CanRender(context) && core.CanRenderFlag;
                 if (!IsRenderable)
                 {
                     return;
@@ -536,10 +536,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if (core.CanRenderFlag)
-                {
-                    core.Render(context, deviceContext);
-                }
+                core.Render(context, deviceContext);
             }
 
             /// <summary>
@@ -550,10 +547,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if (core.CanRenderFlag)
-                {
-                    core.RenderShadow(context, deviceContext);
-                }
+                core.RenderShadow(context, deviceContext);
             }
             /// <summary>
             /// Renders the custom.
@@ -563,10 +557,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if (core.CanRenderFlag)
-                {
-                    core.RenderCustom(context, deviceContext);
-                }
+                 core.RenderCustom(context, deviceContext);
             }
             /// <summary>
             /// Renders the custom.
@@ -577,10 +568,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void RenderDepth(RenderContext context, DeviceContextProxy deviceContext, Shaders.ShaderPass pass)
             {
-                if (core.CanRenderFlag)
-                {
-                    core.RenderDepth(context, deviceContext, pass);
-                }
+                 core.RenderDepth(context, deviceContext, pass);
             }
             /// <summary>
             /// View frustum test.
