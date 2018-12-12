@@ -104,13 +104,19 @@ namespace HelixToolkit.UWP
                 | PostProcessSteps.RemoveRedundantMaterials
                 | PostProcessSteps.FlipUVs;
 
-
+            /// <summary>
+            /// Gets or sets a value indicating whether [parallel loading].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [parallel loading]; otherwise, <c>false</c>.
+            /// </value>
             protected bool ParallelLoading { private set; get; } = false;
 
             /// <summary>
             /// Loads the specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
+            /// <param name="parallelLoad"></param>
             /// <returns></returns>
             public HxScene.SceneNode Load(string filePath, bool parallelLoad = true)
             {
