@@ -7,6 +7,8 @@ using System.Linq;
 using System.IO;
 using Assimp.Unmanaged;
 using SharpDX;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -84,7 +86,7 @@ namespace HelixToolkit.UWP
                 public Tuple<global::Assimp.Material, Model.MaterialCore>[] Materials;
             }
 
-            private Dictionary<string, Stream> textureDict = new Dictionary<string, Stream>();
+            private ConcurrentDictionary<string, Stream> textureDict = new ConcurrentDictionary<string, Stream>();
 
             private string filePath = "";
 
@@ -101,26 +103,33 @@ namespace HelixToolkit.UWP
                 | PostProcessSteps.FindDegenerates 
                 | PostProcessSteps.RemoveRedundantMaterials
                 | PostProcessSteps.FlipUVs;
+
+
+            protected bool ParallelLoading { private set; get; } = false;
+
             /// <summary>
             /// Loads the specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath)
+            public HxScene.SceneNode Load(string filePath, bool parallelLoad = true)
             {
-                return Load(filePath, DefaultPostProcessSteps, null);
+                return Load(filePath, parallelLoad, DefaultPostProcessSteps, null);
             }
             /// <summary>
             /// Loads the specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
+            /// <param name="parallelLoad">Enable parallel loading</param>
             /// <param name="postprocessSteps">The postprocess steps.</param>
             /// <param name="configs">The configs.</param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
+            public HxScene.SceneNode Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
             {
                 this.filePath = filePath;
                 var importer = new AssimpContext();
+                textureDict.Clear();
+                ParallelLoading = parallelLoad;
                 if (configs != null)
                 {
                     foreach (var config in configs)
@@ -140,10 +149,10 @@ namespace HelixToolkit.UWP
                     return new HxScene.GroupNode();
                 }
 
-                return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene));
+                return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene, parallelLoad));
             }
 
-            private HelixScene ToHelixScene(Scene scene)
+            private HelixScene ToHelixScene(Scene scene, bool parallel)
             {
                 var s = new HelixScene
                 {
@@ -152,16 +161,36 @@ namespace HelixToolkit.UWP
                 };
                 if (scene.HasMeshes)
                 {
-                    for (int i = 0; i < scene.MeshCount; ++i)
+                    if (parallel)
                     {
-                        s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                        Parallel.ForEach(scene.Meshes, (mesh, state, index) =>
+                        {
+                            s.Meshes[index] = ToHelixGeometry(mesh);
+                        });
+                    }
+                    else
+                    {
+                        for (int i = 0; i < scene.MeshCount; ++i)
+                        {
+                            s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                        }
                     }
                 }
                 if (scene.HasMaterials)
                 {
-                    for (int i = 0; i < scene.MaterialCount; ++i)
+                    if (parallel)
                     {
-                        s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                        Parallel.ForEach(scene.Materials, (material, state, index) => 
+                        {
+                            s.Materials[index] = ToHelixMaterial(material);
+                        });
+                    }
+                    else
+                    {
+                        for (int i = 0; i < scene.MaterialCount; ++i)
+                        {
+                            s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                        }
                     }
                 }
                 return s;
@@ -311,6 +340,8 @@ namespace HelixToolkit.UWP
                 {
                     hMesh.TextureCoordinates = new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
                 }
+                hMesh.UpdateBounds();
+                hMesh.UpdateOctree();
                 return hMesh;
             }
             /// <summary>
@@ -534,7 +565,7 @@ namespace HelixToolkit.UWP
                     var texture = OnLoadTexture(path);
                     if (texture != null)
                     {
-                        textureDict.Add(path, texture);
+                        textureDict.TryAdd(path, texture);
                     }
                     return texture;
                 }
