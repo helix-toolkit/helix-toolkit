@@ -442,9 +442,10 @@ namespace HelixToolkit.UWP
                     adapterIndex++;
                     Log(LogLevel.Information, $"Adapter {adapterIndex}: Description: {item.Description.Description}; " +
                         $"VendorId: {item.Description.VendorId}; " +
-                        $"Video Mem: {item.Description.DedicatedVideoMemory.ToUInt64() / MByte} MByte; " +
-                        $"System Mem: {item.Description.DedicatedSystemMemory.ToUInt64() / MByte} MByte; " +
-                        $"Shared Mem: {item.Description.SharedSystemMemory.ToUInt64() / MByte} MByte");
+                        $"Video Mem: {item.Description.DedicatedVideoMemory.ToUInt64() / MByte} MB; " +
+                        $"System Mem: {item.Description.DedicatedSystemMemory.ToUInt64() / MByte} MB; " +
+                        $"Shared Mem: {item.Description.SharedSystemMemory.ToUInt64() / MByte} MB; " +
+                        $"Num Outputs: {item.Outputs.Length}");
                     // not skip the render only WARP device
                     if (item.Description.VendorId != 0x1414 || item.Description.DeviceId != 0x8c)
                     {
