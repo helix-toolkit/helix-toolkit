@@ -1652,6 +1652,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         ele.RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                     }
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    {
+                        sceneNode.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit);
+                    }
                     else
                     {
                         RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
@@ -1722,6 +1726,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         ele.RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                     }
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    {
+                        sceneNode.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit);
+                    }
                     else
                     {
                         RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
@@ -1759,6 +1767,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     if(currentHit.ModelHit is Element3D ele)
                     {
                         ele.RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    {
+                        sceneNode.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit);
                     }
                     else
                     {
