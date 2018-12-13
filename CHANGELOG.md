@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 3. Supports Line/Point non-fixedSize thickness rendering.
 4. Supports SSAO.
 5. Adds Assimp Import/Export support for SharpDX versions.
+6. Demo Winform Integration. [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest)
 
 ### Improvement and Changes
 1. Add FastList and change Vector3Collection/IntCollection base class to FastList for direct underlying array access.
