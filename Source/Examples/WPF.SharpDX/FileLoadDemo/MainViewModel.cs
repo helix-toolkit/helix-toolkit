@@ -80,11 +80,16 @@ namespace FileLoadDemo
 
         private void OpenFile()
         {
+            if (isLoading)
+            {
+                return;
+            }
             string path = OpenFileDialog(OpenFileFilter);
             if (path == null)
             {
                 return;
             }
+            GroupModel.Clear();
             IsLoading = true;
             Task.Run(() =>
             {

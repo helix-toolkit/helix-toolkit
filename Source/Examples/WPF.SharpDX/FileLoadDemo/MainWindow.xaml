@@ -24,7 +24,7 @@
             BackgroundColor="#595959"
             Camera="{Binding Camera}"
             CameraMode="Inspect"
-            CameraRotationMode="Turnball"
+            CameraRotationMode="Trackball"
             EffectsManager="{Binding EffectsManager}"
             FXAALevel="Low">
             <hx:Viewport3DX.InputBindings>
@@ -39,12 +39,15 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D />
-            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
+            <hx:AmbientLight3D Color="#5E5E5E"/>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="#D6D6D6"/>
             <hx:Element3DPresenter Content="{Binding GroupModel}" />
             <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
         </hx:Viewport3DX>
-        <Grid Grid.Row="1" Background="#7B363636" Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}" >
+        <Grid
+            Grid.Row="1"
+            Background="#7B363636"
+            Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}">
             <StackPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -54,7 +57,7 @@
                     Grid.Row="1"
                     Width="200"
                     Height="30"
-                    IsIndeterminate="True"/>
+                    IsIndeterminate="True" />
             </StackPanel>
         </Grid>
         <Menu
@@ -66,17 +69,35 @@
                 <MenuItem Command="{Binding ExportCommand}" Header="Export" />
             </MenuItem>
         </Menu>
-        <StackPanel
+
+        <ScrollViewer
             Grid.Row="1"
             Grid.Column="1"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Orientation="Vertical">
-            <Button Command="{Binding ResetCameraCommand}">
-                Reset Camera
-            </Button>
-            <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
-            <CheckBox Margin="4" IsChecked="{Binding ElementName=view, Path=EnableSSAO}">Enable SSAO</CheckBox>
-        </StackPanel>
+            Width="200"
+            VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel HorizontalAlignment="Left" Orientation="Vertical">
+                    <Button Command="{Binding ResetCameraCommand}">
+                        Reset Camera
+                    </Button>
+                    <Separator />
+                    <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+                    <CheckBox Margin="4" IsChecked="{Binding ElementName=view, Path=EnableSSAO}">Enable SSAO</CheckBox>
+                    <Separator />
+                    <TextBlock>Scene Graph</TextBlock>
+                </StackPanel>
+                <TreeView Grid.Row="1" ItemsSource="{Binding GroupModel.GroupNode.Items}">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Items}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>
