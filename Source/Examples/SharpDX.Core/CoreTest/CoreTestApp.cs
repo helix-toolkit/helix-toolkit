@@ -37,28 +37,15 @@ namespace CoreTest
         private bool resizeRequested = false;
         private IO io = ImGui.GetIO();
         private CameraController cameraController;
-
-        private struct ViewportOptions
-        {
-            public bool DirectionalLightFollowCamera;
-            public bool WalkAround;
-            public bool EnableSSAO;
-            public bool EnableFXAA;
-            public bool EnableFrustum;
-            public System.Numerics.Vector3 BackgroundColor;
-            public float DirectionLightIntensity;
-            public float AmbientLightIntensity;
-        }
+        private Stack<IEnumerator<SceneNode>> stackCache = new Stack<IEnumerator<SceneNode>>();
 
         private ViewportOptions options = new ViewportOptions()
         {
+            AmbientLightIntensity = 0.2f,
             BackgroundColor = new System.Numerics.Vector3(0.4f, 0.4f, 0.4f),
-            EnableFrustum = true,
-            EnableFXAA = true,
-            EnableSSAO = true,
             DirectionalLightFollowCamera = true,
-            DirectionLightIntensity = 0.6f,
-            AmbientLightIntensity = 0.4f
+            DirectionLightIntensity = 0.8f,
+            EnableFrustum = true, EnableFXAA = true, EnableSSAO = true, WalkAround = false
         };
 
         public CoreTestApp(Form window)
@@ -94,6 +81,18 @@ namespace CoreTest
             viewport.EnableRenderFrustum = options.EnableFrustum;
             viewport.BackgroundColor = new Color4(options.BackgroundColor.X, options.BackgroundColor.Y, options.BackgroundColor.Z, 1);
             viewport.EnableSSAO = options.EnableSSAO;
+            if (options.ShowWireframeChanged)
+            {
+                options.ShowWireframeChanged = false;
+                foreach(var node in groupModel.Items.Traverse(true, stackCache))
+                {
+                    if(node is MeshNode m)
+                    {
+                        m.RenderWireframe = options.ShowWireframe;
+                    }
+                }
+
+            }
         }
 
 
@@ -191,105 +190,9 @@ namespace CoreTest
             io.KeyMap[GuiKey.Escape] = (int)Keys.Escape;
         }
 
-
-        private bool showImGuiDemo = false;
-
         private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
         {
-            ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero, Condition.Always, System.Numerics.Vector2.Zero);
-            ImGui.SetNextWindowSize(new System.Numerics.Vector2(viewport.Width, viewport.Height), Condition.Always);
-            bool opened = false;
-            if (ImGui.BeginWindow("Model Loader Window", ref opened, 0,
-                WindowFlags.MenuBar | WindowFlags.NoResize | WindowFlags.NoMove | WindowFlags.NoScrollbar | WindowFlags.NoCollapse))
-            {
-                if (ImGui.BeginMenuBar())
-                {
-                    if (ImGui.BeginMenu("Load Model"))
-                    {
-                        if (ImGui.MenuItem("Open"))
-                        {
-                            LoadModel();
-                        }
-                        ImGui.EndMenu();
-                    }
-                    if (ImGui.BeginMenu("Options"))
-                    {
-                        ImGui.Checkbox("Dir Light Follow Camera", ref options.DirectionalLightFollowCamera);
-                        ImGui.SliderFloat("Dir Light Intensity", ref options.DirectionLightIntensity, 0, 1, "", 1);
-                        ImGui.SliderFloat("Ambient Light Intensity", ref options.AmbientLightIntensity, 0, 1, "", 1);
-                        ImGui.Spacing();
-                        ImGui.Checkbox("Enable SSAO", ref options.EnableSSAO);
-                        ImGui.Checkbox("Enable FXAA", ref options.EnableFXAA);
-                        ImGui.Checkbox("Enable Frustum", ref options.EnableFrustum);
-                        ImGui.Spacing();
-                        ImGui.ColorPicker3("Background Color", ref options.BackgroundColor);
-                        ImGui.EndMenu();
-                    }
-                    if(!showImGuiDemo && ImGui.BeginMenu("ImGui Demo"))
-                    {
-                        if (ImGui.MenuItem("Show"))
-                        {
-                            showImGuiDemo = true;
-                        }                       
-                        ImGui.EndMenu();
-                    }
-                    ImGui.EndMenuBar();
-                }
-                if (ImGui.CollapsingHeader("Mouse Gestures", TreeNodeFlags.DefaultOpen))
-                {
-                    ImGui.Text("Mouse Right: Rotate");
-                    ImGui.Text("Mouse Middle: Pan");
-                }
-                ImGui.Spacing();
-                if (ImGui.CollapsingHeader("Scene Graph", TreeNodeFlags.DefaultOpen))
-                {
-                    DrawSceneGraph(groupModel);
-                }
-
-                ImGui.EndWindow();
-            }
-            if (showImGuiDemo)
-            {
-                opened = false;
-                ImGuiNative.igShowDemoWindow(ref showImGuiDemo);
-            }
-        }
-
-        private void DrawSceneGraph(SceneNode node)
-        {
-            if(node.Name == null)
-            {
-                return;
-            }
-            if(node.Items.Count > 0)
-            {
-                if (ImGui.TreeNode(node.Name))
-                {
-                    foreach(var n in node.Items)
-                    {
-                        DrawSceneGraph(n);
-                    }
-                    ImGui.TreePop();
-                }
-            }
-            else
-            {
-                ImGui.Text(node.Name);
-            }
-        }
-
-        private void LoadModel()
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            //dialog.Filter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;*.ply;";
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                var path = dialog.FileName;
-                var importer = new HelixToolkit.SharpDX.Core.Assimp.Importer();
-                var group = importer.Load(path);
-                groupModel.Clear();
-                groupModel.AddChildNode(group);
-            }
+            SceneUI.DrawUI(viewport.Width, viewport.Height, ref options, groupModel);
         }
 
         private void InitializeMaterials()

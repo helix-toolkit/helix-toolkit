@@ -117,13 +117,9 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    var old = materialVariables;
                     if (SetAffectsCanRenderFlag(ref materialVariables, value))
                     {
-                        if (value == null)
-                        {
-                            materialVariables = EmptyMaterialVariable.EmptyVariable;
-                        }
+                        materialVariables = materialVariables ?? EmptyMaterialVariable.EmptyVariable;
                     }
                 }
                 get
@@ -133,7 +129,7 @@ namespace HelixToolkit.UWP
             }
             #endregion
 
-            protected ModelStruct modelStruct;
+            protected ModelStruct modelStruct = new ModelStruct() { World = Matrix.Identity };
 
             protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
             {

@@ -165,6 +165,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
         public int Width { private set; get; }
         public int Height { private set; get; }
 
+        private List<HitTestResult> hits = new List<HitTestResult>();
+
+        private SceneNode currentNode;
+
         public ViewportCore(IntPtr nativeWindowPointer, bool deferred = false)
         {
             if (deferred)
@@ -241,6 +245,38 @@ namespace HelixToolkit.SharpDX.Core.Controls
         public void InvalidateSceneGraph()
         {
             RenderHost.InvalidateSceneGraph();
+        }
+
+        public void MouseDown(Vector2 position)
+        {
+            hits.Clear();
+            if(this.FindHits(position, ref hits) && hits.Count > 0 && hits[0].ModelHit is SceneNode node)
+            {
+                currentNode = node;
+                currentNode.RaiseMouseDownEvent(this, position, hits[0]);
+            }
+            else
+            {
+                currentNode = null;
+            }
+        }
+
+        public void MouseMove(Vector2 position)
+        {
+            if(currentNode != null && hits.Count > 0)
+            {
+                currentNode.RaiseMouseMoveEvent(this, position, hits[0]);
+            }
+        }
+
+        public void MouseUp(Vector2 position)
+        {
+            if(currentNode != null && hits.Count > 0)
+            {
+                currentNode.RaiseMouseUpEvent(this, position, hits[0]);
+            }
+            hits.Clear();
+            currentNode = null;
         }
 
         public void Update(TimeSpan timeStamp)

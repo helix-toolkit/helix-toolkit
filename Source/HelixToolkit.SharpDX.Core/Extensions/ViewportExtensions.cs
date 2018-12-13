@@ -201,10 +201,33 @@ namespace HelixToolkit.SharpDX.Core
         /// </returns>
         public static IList<HitTestResult> FindHits(this ViewportCore viewport, Vector2 position)
         {
+            var hits = new List<HitTestResult>();
+            if(FindHits(viewport, position, ref hits))
+            {
+                return hits;
+            }
+            else
+            {
+                return EmptyHits;
+            }
+        }
+
+        /// <summary>
+        /// Finds the hits.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
+        public static bool FindHits(this ViewportCore viewport, Vector2 position, ref List<HitTestResult> hits)
+        {
             if (viewport.CameraCore is ProjectionCameraCore)
             {
                 var ray = UnProject(viewport, position);
-                var hits = new List<HitTestResult>();
+                if (hits == null)
+                {
+                    hits = new List<HitTestResult>();
+                }
 
                 foreach (var element in viewport.Renderables)
                 {
@@ -212,11 +235,11 @@ namespace HelixToolkit.SharpDX.Core
                 }
                 hits.Sort();
 
-                return hits;               
+                return hits.Count > 0;
             }
             else
             {
-                return EmptyHits;
+                return false;
             }
         }
 

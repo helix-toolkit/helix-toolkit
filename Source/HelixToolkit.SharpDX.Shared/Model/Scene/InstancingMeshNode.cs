@@ -172,7 +172,7 @@ namespace HelixToolkit.UWP
                     if (octreeManager != null && octreeManager.Octree != null)
                     {
                         var boundHits = new List<HitTestResult>();
-                        isHit = octreeManager.Octree.HitTest(context, this, Geometry, TotalModelMatrix, rayWS, ref boundHits);
+                        isHit = octreeManager.Octree.HitTest(context, this.WrapperSource, Geometry, TotalModelMatrix, rayWS, ref boundHits);
                         if (isHit)
                         {
                             isHit = false;

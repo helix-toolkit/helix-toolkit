@@ -573,9 +573,16 @@ namespace HelixToolkit.UWP
             if (hits.Count > 0)
             {
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
-                if (this.currentHit != null && currentHit.ModelHit is Element3D ele)
+                if (this.currentHit != null)
                 {
-                    ele.RaiseMouseDownEvent(this.currentHit, pt, this);
+                    if (currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseMouseDownEvent(this.currentHit, pt, this);
+                    }
+                    else if(currentHit.ModelHit is SceneNode node)
+                    {
+                        node.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit);
+                    }
                 }
             }
             else
@@ -597,9 +604,16 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            if (this.currentHit != null && currentHit.ModelHit is Element3D ele)
+            if (this.currentHit != null)
             {
-                ele.RaiseMouseMoveEvent(this.currentHit, pt, this);
+                if (currentHit.ModelHit is Element3D ele)
+                {
+                    ele.RaiseMouseMoveEvent(this.currentHit, pt, this);
+                }
+                else if(currentHit.ModelHit is SceneNode node)
+                {
+                    node.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit);
+                }
             }
             this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this));
         }
@@ -616,9 +630,16 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            if (currentHit != null && currentHit.ModelHit is Element3D ele)
+            if (currentHit != null)
             {
-                ele.RaiseMouseUpEvent(this.currentHit, pt, this);               
+                if (currentHit.ModelHit is Element3D ele)
+                {
+                    ele.RaiseMouseUpEvent(this.currentHit, pt, this);
+                }
+                else if(currentHit.ModelHit is SceneNode node)
+                {
+                    node.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit);
+                }
                 currentHit = null;
             }
             this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this));

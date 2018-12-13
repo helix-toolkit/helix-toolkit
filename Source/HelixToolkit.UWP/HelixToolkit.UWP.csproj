@@ -400,7 +400,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="HelixToolkit.SharpDX.Shared.licenseheader" />
-    <None Include="HelixToolkit.snk" />
     <Content Include="Resources\psBillboardTextOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

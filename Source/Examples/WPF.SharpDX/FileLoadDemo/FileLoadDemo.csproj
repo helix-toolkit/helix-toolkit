@@ -101,6 +101,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX.Assimp\HelixToolkit.Wpf.SharpDX.Assimp.csproj">
+      <Project>{997f58f5-5892-4fd5-a724-55cb3c162235}</Project>
+      <Name>HelixToolkit.Wpf.SharpDX.Assimp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj">
       <Project>{39740654-f5f1-4936-b4ea-9bc97d4cde37}</Project>
       <Name>HelixToolkit.Wpf.SharpDX</Name>

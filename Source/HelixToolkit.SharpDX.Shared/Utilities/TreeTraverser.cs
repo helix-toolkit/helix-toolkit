@@ -21,6 +21,18 @@ namespace HelixToolkit.UWP
     public static class TreeTraverser
     {
         /// <summary>
+        /// Traverses the specified condition.
+        /// </summary>
+        /// <param name="nodes">The nodes.</param>
+        /// <param name="condition">The condition.</param>
+        /// <param name="stackCache">The stack cache.</param>
+        /// <returns></returns>
+        public static IEnumerable<SceneNode> Traverse(this IEnumerable<SceneNode> nodes, bool onlyRendering,
+            Stack<IEnumerator<SceneNode>> stackCache = null)
+        {
+            return PreorderDFT(nodes, (n)=> { return onlyRendering ? n.IsRenderable : true; }, stackCache);
+        }
+        /// <summary>
         /// Pre-ordered depth first traverse
         /// </summary>
         /// <param name="nodes"></param>
@@ -40,8 +52,11 @@ namespace HelixToolkit.UWP
                     var item = e.Current;
                     if (!condition(item)) { continue; }
                     yield return item;
-                    var elements = item.Items;
-                    if (elements == null) continue;
+                    var elements = item.ItemsInternal;
+                    if (elements.Count == 0)
+                    {
+                        continue;
+                    }
                     stack.Push(e);
                     e = elements.GetEnumerator();
                 }
@@ -80,8 +95,8 @@ namespace HelixToolkit.UWP
                     if (!condition(item, context))
                     { continue; }
                     results.Add(new KeyValuePair<int, SceneNode>(level, item));
-                    var elements = item.Items;
-                    if(elements == null || elements.Count == 0)
+                    var elements = item.ItemsInternal;
+                    if(elements.Count == 0)
                     { continue; }
                     stack.Push(new KeyValuePair<int, IList<SceneNode>>(i, currNodes));
                     i = -1;
@@ -118,8 +133,9 @@ namespace HelixToolkit.UWP
                     var item = e.Current;
                     if (!condition(item)) { continue; }
                     yield return item.RenderCore;
-                    var elements = item.Items;
-                    if (elements == null) continue;
+                    var elements = item.ItemsInternal;
+                    if (elements.Count == 0)
+                    { continue; }
                     stack.Push(e);
                     e = elements.GetEnumerator();
                 }
@@ -151,8 +167,8 @@ namespace HelixToolkit.UWP
                     var item = nodes[i];
                     if (!condition(item))
                     { continue; }
-                    var elements = item.Items;
-                    if (elements == null || elements.Count == 0)
+                    var elements = item.ItemsInternal;
+                    if (elements.Count == 0)
                     { continue; }
                     stack.Push(new KeyValuePair<int, IList<SceneNode2D>>(i, nodes));
                     i = -1;
@@ -186,8 +202,9 @@ namespace HelixToolkit.UWP
                     var item = e.Current;
                     if (!condition(item)) { continue; }
                     yield return item.RenderCore;
-                    var elements = item.Items;
-                    if (elements == null) continue;
+                    var elements = item.ItemsInternal;
+                    if (elements.Count == 0)
+                    { continue; }
                     stack.Push(e);
                     e = elements.GetEnumerator();
                 }

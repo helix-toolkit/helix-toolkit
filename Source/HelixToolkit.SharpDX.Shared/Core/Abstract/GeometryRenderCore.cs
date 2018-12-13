@@ -177,7 +177,7 @@ namespace HelixToolkit.UWP
             {
                 if(GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager))
                 {
-                    InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);
+                    InstanceBuffer.AttachBuffer(context, ref vertStartSlot);
                     return true;
                 }
                 else
@@ -223,15 +223,12 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected bool PreRender(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if (CanRenderFlag)
+                int vertStartSlot = 0;
+                if (!OnAttachBuffers(deviceContext, ref vertStartSlot))
                 {
-                    int vertStartSlot = 0;
-                    if (!OnAttachBuffers(deviceContext, ref vertStartSlot))
-                    {
-                        return false;
-                    }
-                    OnBindRasterState(deviceContext, context.IsInvertCullMode);
+                    return false;
                 }
+                OnBindRasterState(deviceContext, context.IsInvertCullMode);
                 return CanRenderFlag;
             }
 

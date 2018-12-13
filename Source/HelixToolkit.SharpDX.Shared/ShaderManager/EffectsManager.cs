@@ -426,7 +426,7 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <returns></returns>
-        private static Adapter GetBestAdapter(out int bestAdapterIndex)
+        private Adapter GetBestAdapter(out int bestAdapterIndex)
         {
             using (var f = new Factory1())
             {
@@ -435,11 +435,17 @@ namespace HelixToolkit.UWP
                 int adapterIndex = -1;
                 ulong bestVideoMemory = 0;
                 ulong bestSystemMemory = 0;
-
+                Log(LogLevel.Information, $"Trying to get best adapter. Number of adapters: {f.Adapters.Length}");
+                ulong MByte = 1024 * 1024;
                 foreach (var item in f.Adapters)
                 {
                     adapterIndex++;
-
+                    Log(LogLevel.Information, $"Adapter {adapterIndex}: Description: {item.Description.Description}; " +
+                        $"VendorId: {item.Description.VendorId}; " +
+                        $"Video Mem: {item.Description.DedicatedVideoMemory.ToUInt64() / MByte} MB; " +
+                        $"System Mem: {item.Description.DedicatedSystemMemory.ToUInt64() / MByte} MB; " +
+                        $"Shared Mem: {item.Description.SharedSystemMemory.ToUInt64() / MByte} MB; " +
+                        $"Num Outputs: {item.Outputs.Length}");
                     // not skip the render only WARP device
                     if (item.Description.VendorId != 0x1414 || item.Description.DeviceId != 0x8c)
                     {
@@ -451,7 +457,7 @@ namespace HelixToolkit.UWP
                     }
 
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
-
+                    Log(LogLevel.Information, $"Feature Level: {level}");
                     if (level < MinimumFeatureLevel)
                     {
                         continue;
@@ -468,12 +474,12 @@ namespace HelixToolkit.UWP
                         bestSystemMemory = systemMemory;
                     }
                 }
-
+                Log(LogLevel.Information, $"Best Adapter: {bestAdapterIndex}");
                 return bestAdapter;
             }
         }
 
-        private static Adapter GetAdapter(ref int index)
+        private Adapter GetAdapter(ref int index)
         {
             using (var f = new Factory1())
             {

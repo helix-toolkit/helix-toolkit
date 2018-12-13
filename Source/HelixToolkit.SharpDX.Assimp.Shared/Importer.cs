@@ -6,6 +6,9 @@ using Assimp.Configs;
 using System.Linq;
 using System.IO;
 using Assimp.Unmanaged;
+using SharpDX;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -82,8 +85,17 @@ namespace HelixToolkit.UWP
                 /// </summary>
                 public Tuple<global::Assimp.Material, Model.MaterialCore>[] Materials;
             }
+            /// <summary>
+            /// Gets the supported formats.
+            /// </summary>
+            /// <value>
+            /// The supported formats.
+            /// </value>
+            public static string[] SupportedFormats { get; }
 
-            private Dictionary<string, Stream> textureDict = new Dictionary<string, Stream>();
+            public static string SupportedFormatsString { get; }
+
+            private ConcurrentDictionary<string, Stream> textureDict = new ConcurrentDictionary<string, Stream>();
 
             private string filePath = "";
 
@@ -100,49 +112,80 @@ namespace HelixToolkit.UWP
                 | PostProcessSteps.FindDegenerates 
                 | PostProcessSteps.RemoveRedundantMaterials
                 | PostProcessSteps.FlipUVs;
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [parallel loading].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [parallel loading]; otherwise, <c>false</c>.
+            /// </value>
+            protected bool ParallelLoading { private set; get; } = false;
+
+            static Importer()
+            {
+                using (var temp = new AssimpContext())
+                {
+                    SupportedFormats = temp.GetSupportedImportFormats();
+                }
+                var builder = new StringBuilder();
+                foreach(var s in SupportedFormats)
+                {
+                    builder.Append("*");
+                    builder.Append(s);
+                    builder.Append(";");
+                }
+                SupportedFormatsString = builder.ToString();
+            }
+
             /// <summary>
             /// Loads the specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
+            /// <param name="parallelLoad"></param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath)
+            public HxScene.SceneNode Load(string filePath, bool parallelLoad = true)
             {
-                return Load(filePath, DefaultPostProcessSteps, null);
+                return Load(filePath, parallelLoad, DefaultPostProcessSteps, null);
             }
             /// <summary>
             /// Loads the specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
+            /// <param name="parallelLoad">Enable parallel loading</param>
             /// <param name="postprocessSteps">The postprocess steps.</param>
             /// <param name="configs">The configs.</param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
+            public HxScene.SceneNode Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
             {
                 this.filePath = filePath;
-                var importer = new AssimpContext();
-                if (configs != null)
+                using (var importer = new AssimpContext())
                 {
-                    foreach (var config in configs)
+                    textureDict.Clear();
+                    ParallelLoading = parallelLoad;
+                    if (configs != null)
                     {
-                        importer.SetConfig(config);
+                        foreach (var config in configs)
+                        {
+                            importer.SetConfig(config);
+                        }
                     }
-                }
 
-                var assimpScene = importer.ImportFile(filePath, postprocessSteps);
-                if (assimpScene == null)
-                {
-                    return null;
-                }
+                    var assimpScene = importer.ImportFile(filePath, postprocessSteps);
+                    if (assimpScene == null)
+                    {
+                        return null;
+                    }
 
-                if (!assimpScene.HasMeshes)
-                {
-                    return new HxScene.GroupNode();
-                }
+                    if (!assimpScene.HasMeshes)
+                    {
+                        return new HxScene.GroupNode();
+                    }
 
-                return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene));
+                    return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene, parallelLoad));
+                }
             }
 
-            private HelixScene ToHelixScene(Scene scene)
+            private HelixScene ToHelixScene(Scene scene, bool parallel)
             {
                 var s = new HelixScene
                 {
@@ -151,16 +194,36 @@ namespace HelixToolkit.UWP
                 };
                 if (scene.HasMeshes)
                 {
-                    for (int i = 0; i < scene.MeshCount; ++i)
+                    if (parallel)
                     {
-                        s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                        Parallel.ForEach(scene.Meshes, (mesh, state, index) =>
+                        {
+                            s.Meshes[index] = ToHelixGeometry(mesh);
+                        });
+                    }
+                    else
+                    {
+                        for (int i = 0; i < scene.MeshCount; ++i)
+                        {
+                            s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                        }
                     }
                 }
                 if (scene.HasMaterials)
                 {
-                    for (int i = 0; i < scene.MaterialCount; ++i)
+                    if (parallel)
                     {
-                        s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                        Parallel.ForEach(scene.Materials, (material, state, index) => 
+                        {
+                            s.Materials[index] = ToHelixMaterial(material);
+                        });
+                    }
+                    else
+                    {
+                        for (int i = 0; i < scene.MaterialCount; ++i)
+                        {
+                            s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                        }
                     }
                 }
                 return s;
@@ -310,6 +373,8 @@ namespace HelixToolkit.UWP
                 {
                     hMesh.TextureCoordinates = new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
                 }
+                hMesh.UpdateBounds();
+                hMesh.UpdateOctree();
                 return hMesh;
             }
             /// <summary>
@@ -344,14 +409,14 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="material">The material.</param>
             /// <returns></returns>
-            protected virtual Model.PhongMaterialCore ToPhongMaterial(global::Assimp.Material material)
+            protected virtual Model.PhongMaterialCore OnCreatePhongMaterial(global::Assimp.Material material)
             {
                 var phong = new Model.PhongMaterialCore
                 {
-                    AmbientColor = material.ColorAmbient.ToSharpDXColor4(),
-                    DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
-                    EmissiveColor = material.ColorEmissive.ToSharpDXColor4(),
-                    ReflectiveColor = material.ColorReflective.ToSharpDXColor4(),
+                    AmbientColor = material.HasColorAmbient ? material.ColorAmbient.ToSharpDXColor4() : Color.Black,
+                    DiffuseColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.Black,
+                    EmissiveColor = material.HasColorEmissive ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
+                    ReflectiveColor = material.HasColorReflective ? material.ColorReflective.ToSharpDXColor4() : Color.Black,
                     SpecularShininess = material.Shininess
                 };
                 if (material.HasOpacity)
@@ -399,12 +464,12 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="material">The material.</param>
             /// <returns></returns>
-            protected virtual Model.PBRMaterialCore ToPBRMaterial(global::Assimp.Material material)
+            protected virtual Model.PBRMaterialCore OnCreatePBRMaterial(global::Assimp.Material material)
             {
                 var pbr = new Model.PBRMaterialCore()
                 {
-                    AlbedoColor = material.ColorDiffuse.ToSharpDXColor4(),
-                    EmissiveColor = material.ColorEmissive.ToSharpDXColor4(),
+                    AlbedoColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.Black,
+                    EmissiveColor = material.HasColorEmissive ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
                     MetallicFactor = material.Shininess,// Used this for now, not sure which to use
                     ReflectanceFactor = material.ShininessStrength,// Used this for now, not sure which to use
                     RoughnessFactor = material.Reflectivity,// Used this for now, not sure which to use
@@ -415,7 +480,7 @@ namespace HelixToolkit.UWP
                     c.Alpha = material.Opacity;
                     pbr.AlbedoColor = c;
                 }
-                if (material.HasColorDiffuse)
+                if (material.HasTextureDiffuse)
                 {
                     pbr.AlbedoMap = LoadTexture(material.TextureDiffuse.FilePath);
                     var desc = Shaders.DefaultSamplers.LinearSamplerClampAni1;
@@ -449,6 +514,7 @@ namespace HelixToolkit.UWP
                 }
                 return pbr;
             }
+
             /// <summary>
             /// To the helix material.
             /// </summary>
@@ -460,7 +526,7 @@ namespace HelixToolkit.UWP
                 Model.MaterialCore core = null;
                 if (!material.HasShadingMode)
                 {
-                    var phong = ToPhongMaterial(material);
+                    var phong = OnCreatePhongMaterial(material);
                     return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, phong);
                 }
                 switch (material.ShadingMode)
@@ -468,13 +534,14 @@ namespace HelixToolkit.UWP
                     case ShadingMode.Blinn:
                     case ShadingMode.Phong:
                     case ShadingMode.Gouraud:
-                        core = ToPhongMaterial(material);
+                        core = OnCreatePhongMaterial(material);
                         break;
                     case ShadingMode.None:
                         core = new Model.ColorMaterialCore();
                         break;
+                    case ShadingMode.CookTorrance:
                     case ShadingMode.Fresnel:
-                        core = ToPBRMaterial(material);
+                        core = OnCreatePBRMaterial(material);
                         break;
                     case ShadingMode.Flat:
                         var diffuse = new Model.DiffuseMaterialCore()
@@ -527,18 +594,31 @@ namespace HelixToolkit.UWP
                     return s;
                 }
                 else
-                {                
-                    var dict = Path.GetDirectoryName(filePath);
-                    var p = Path.GetFullPath(Path.Combine(dict, path));
-                    if (!File.Exists(p) && path.StartsWith(ToUpperDictString))
+                {
+                    var texture = OnLoadTexture(path);
+                    if (texture != null)
                     {
-                        path.Remove(0, ToUpperDictString.Length);
-                        p = Path.GetFullPath(Path.Combine(dict, path));
+                        textureDict.TryAdd(path, texture);
                     }
-                    var texture = LoadFileToStream(p);
-                    textureDict.Add(path, texture);
                     return texture;
                 }
+            }
+            /// <summary>
+            /// Called when [load texture].
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns></returns>
+            protected virtual Stream OnLoadTexture(string path)
+            {
+                var dict = Path.GetDirectoryName(filePath);
+                var p = Path.GetFullPath(Path.Combine(dict, path));
+                if (!File.Exists(p) && path.StartsWith(ToUpperDictString))
+                {
+                    path.Remove(0, ToUpperDictString.Length);
+                    p = Path.GetFullPath(Path.Combine(dict, path));
+                }
+                var texture = LoadFileToStream(p);               
+                return texture;
             }
 
             private static Stream LoadFileToStream(string path)

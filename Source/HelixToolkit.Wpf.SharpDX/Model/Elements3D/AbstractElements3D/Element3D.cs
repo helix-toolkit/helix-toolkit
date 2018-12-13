@@ -194,7 +194,31 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseDown3D += OnMouse3DDown;
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
+            OnSceneNodeCreated += Element3D_OnSceneNodeCreated;
         }
+
+        private void Element3D_OnSceneNodeCreated(object sender, SceneNodeCreatedEventArgs e)
+        {
+            e.Node.MouseDown += Node_MouseDown;
+            e.Node.MouseMove += Node_MouseMove;
+            e.Node.MouseUp += Node_MouseUp;
+        }
+
+        private void Node_MouseUp(object sender, Model.Scene.SceneNodeMouseUpArgs e)
+        {
+            RaiseEvent(new MouseUp3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX));
+        }
+
+        private void Node_MouseMove(object sender, Model.Scene.SceneNodeMouseMoveArgs e)
+        {
+            RaiseEvent(new MouseMove3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX));
+        }
+
+        private void Node_MouseDown(object sender, Model.Scene.SceneNodeMouseDownArgs e)
+        {
+            RaiseEvent(new MouseDown3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX));
+        }
+
         /// <summary>
         /// Looks for the first visual ancestor of type <typeparamref name="T"/>.
         /// </summary>
