@@ -1,11 +1,11 @@
 #define BORDEREFFECTS
 #include"..\Common\CommonBuffers.hlsl"
 #pragma pack_matrix( row_major )
-static const int SIZE = 2;
-static const float offset[SIZE] = { 0, 1 };
+static const int SIZE = 4;
+static const float offset[SIZE] = { 0, 0.4, 1, 1.2 };
 static const float weight[SIZE] =
 {
-    0.5, 0.5
+    0.35, 0.3, 0.2, 0.15
 };
 static const float scale = 1;
 
