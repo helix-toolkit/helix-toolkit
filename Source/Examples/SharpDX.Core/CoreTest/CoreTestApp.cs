@@ -37,6 +37,8 @@ namespace CoreTest
         private bool resizeRequested = false;
         private IO io = ImGui.GetIO();
         private CameraController cameraController;
+        private Stack<IEnumerator<SceneNode>> stackCache = new Stack<IEnumerator<SceneNode>>();
+
         private ViewportOptions options = new ViewportOptions()
         {
             AmbientLightIntensity = 0.2f,
@@ -79,6 +81,18 @@ namespace CoreTest
             viewport.EnableRenderFrustum = options.EnableFrustum;
             viewport.BackgroundColor = new Color4(options.BackgroundColor.X, options.BackgroundColor.Y, options.BackgroundColor.Z, 1);
             viewport.EnableSSAO = options.EnableSSAO;
+            if (options.ShowWireframeChanged)
+            {
+                options.ShowWireframeChanged = false;
+                foreach(var node in groupModel.Items.Traverse(true, stackCache))
+                {
+                    if(node is MeshNode m)
+                    {
+                        m.RenderWireframe = options.ShowWireframe;
+                    }
+                }
+
+            }
         }
 
 

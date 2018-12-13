@@ -21,6 +21,18 @@ namespace HelixToolkit.UWP
     public static class TreeTraverser
     {
         /// <summary>
+        /// Traverses the specified condition.
+        /// </summary>
+        /// <param name="nodes">The nodes.</param>
+        /// <param name="condition">The condition.</param>
+        /// <param name="stackCache">The stack cache.</param>
+        /// <returns></returns>
+        public static IEnumerable<SceneNode> Traverse(this IEnumerable<SceneNode> nodes, bool onlyRendering,
+            Stack<IEnumerator<SceneNode>> stackCache = null)
+        {
+            return PreorderDFT(nodes, (n)=> { return onlyRendering ? n.IsRenderable : true; }, stackCache);
+        }
+        /// <summary>
         /// Pre-ordered depth first traverse
         /// </summary>
         /// <param name="nodes"></param>

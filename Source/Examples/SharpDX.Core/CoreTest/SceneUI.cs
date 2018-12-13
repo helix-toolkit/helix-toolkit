@@ -1,11 +1,7 @@
 ﻿using HelixToolkit.SharpDX.Core.Model.Scene;
 using ImGuiNET;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -46,6 +42,10 @@ namespace CoreTest
                         ImGui.Checkbox("Enable SSAO", ref options.EnableSSAO);
                         ImGui.Checkbox("Enable FXAA", ref options.EnableFXAA);
                         ImGui.Checkbox("Enable Frustum", ref options.EnableFrustum);
+                        if(ImGui.Checkbox("Show Wireframe", ref options.ShowWireframe))
+                        {
+                            options.ShowWireframeChanged = true;
+                        }
                         ImGui.Separator();
                         ImGui.ColorPicker3("Background Color", ref options.BackgroundColor);
                         ImGui.EndMenu();
@@ -95,7 +95,7 @@ namespace CoreTest
         private static void LoadModel(GroupNode node)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            //dialog.Filter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;*.ply;";
+            dialog.Filter = $"3D model files ({HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString}|{HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString}";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 var path = dialog.FileName;

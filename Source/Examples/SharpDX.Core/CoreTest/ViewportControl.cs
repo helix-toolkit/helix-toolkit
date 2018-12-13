@@ -16,5 +16,7 @@ namespace CoreTest
         public System.Numerics.Vector3 BackgroundColor;
         public float DirectionLightIntensity;
         public float AmbientLightIntensity;
+        public bool ShowWireframe;
+        public bool ShowWireframeChanged;
     }
 }
