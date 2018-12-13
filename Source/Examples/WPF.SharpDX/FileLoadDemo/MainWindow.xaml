@@ -7,6 +7,9 @@
     Width="1000"
     Height="800">
     <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -23,8 +26,6 @@
             CameraMode="Inspect"
             CameraRotationMode="Turnball"
             EffectsManager="{Binding EffectsManager}"
-            EnableD2DRendering="False"
-            EnableSwapChainRendering="True"
             FXAALevel="Low">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -40,9 +41,22 @@
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
-            <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ModelGeometry}" />
+            <hx:Element3DPresenter Content="{Binding GroupModel}" />
             <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
         </hx:Viewport3DX>
+        <Grid Grid.Row="1" Background="#7B363636" Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}" >
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <TextBlock Foreground="White">Loading Model</TextBlock>
+                <ProgressBar
+                    Grid.Row="1"
+                    Width="200"
+                    Height="30"
+                    IsIndeterminate="True"/>
+            </StackPanel>
+        </Grid>
         <Menu
             Grid.Row="0"
             Height="20"

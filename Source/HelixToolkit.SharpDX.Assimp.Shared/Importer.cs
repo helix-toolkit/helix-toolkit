@@ -85,6 +85,15 @@ namespace HelixToolkit.UWP
                 /// </summary>
                 public Tuple<global::Assimp.Material, Model.MaterialCore>[] Materials;
             }
+            /// <summary>
+            /// Gets the supported formats.
+            /// </summary>
+            /// <value>
+            /// The supported formats.
+            /// </value>
+            public static string[] SupportedFormats { get; }
+
+            public static string SupportedFormatsString { get; }
 
             private ConcurrentDictionary<string, Stream> textureDict = new ConcurrentDictionary<string, Stream>();
 
@@ -112,6 +121,22 @@ namespace HelixToolkit.UWP
             /// </value>
             protected bool ParallelLoading { private set; get; } = false;
 
+            static Importer()
+            {
+                using (var temp = new AssimpContext())
+                {
+                    SupportedFormats = temp.GetSupportedImportFormats();
+                }
+                var builder = new StringBuilder();
+                foreach(var s in SupportedFormats)
+                {
+                    builder.Append("*");
+                    builder.Append(s);
+                    builder.Append(";");
+                }
+                SupportedFormatsString = builder.ToString();
+            }
+
             /// <summary>
             /// Loads the specified file path.
             /// </summary>
@@ -133,29 +158,31 @@ namespace HelixToolkit.UWP
             public HxScene.SceneNode Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
             {
                 this.filePath = filePath;
-                var importer = new AssimpContext();
-                textureDict.Clear();
-                ParallelLoading = parallelLoad;
-                if (configs != null)
+                using (var importer = new AssimpContext())
                 {
-                    foreach (var config in configs)
+                    textureDict.Clear();
+                    ParallelLoading = parallelLoad;
+                    if (configs != null)
                     {
-                        importer.SetConfig(config);
+                        foreach (var config in configs)
+                        {
+                            importer.SetConfig(config);
+                        }
                     }
-                }
 
-                var assimpScene = importer.ImportFile(filePath, postprocessSteps);
-                if (assimpScene == null)
-                {
-                    return null;
-                }
+                    var assimpScene = importer.ImportFile(filePath, postprocessSteps);
+                    if (assimpScene == null)
+                    {
+                        return null;
+                    }
 
-                if (!assimpScene.HasMeshes)
-                {
-                    return new HxScene.GroupNode();
-                }
+                    if (!assimpScene.HasMeshes)
+                    {
+                        return new HxScene.GroupNode();
+                    }
 
-                return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene, parallelLoad));
+                    return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene, parallelLoad));
+                }
             }
 
             private HelixScene ToHelixScene(Scene scene, bool parallel)
