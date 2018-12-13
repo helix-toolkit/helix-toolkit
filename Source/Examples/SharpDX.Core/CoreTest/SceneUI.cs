@@ -15,13 +15,14 @@ namespace CoreTest
         private static string modelName = "";
         private static long currentTime = 0;
 
+        public static string SomeTextFromOutside = "";
+
         public static void DrawUI(int width, int height, ref ViewportOptions options, GroupNode rootNode)
         {
             ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero, Condition.Always, System.Numerics.Vector2.Zero);
-            ImGui.SetNextWindowSize(new System.Numerics.Vector2(width, height), Condition.Always);
             bool opened = false;
             if (ImGui.BeginWindow("Model Loader Window", ref opened, 0.8f,
-                WindowFlags.MenuBar | WindowFlags.NoResize | WindowFlags.NoMove | WindowFlags.NoCollapse))
+                WindowFlags.MenuBar | WindowFlags.AlwaysAutoResize))
             {
                 if (ImGui.BeginMenuBar())
                 {
@@ -64,6 +65,11 @@ namespace CoreTest
                 {
                     ImGui.Text("Mouse Right: Rotate");
                     ImGui.Text("Mouse Middle: Pan");
+                    ImGui.Separator();
+                    if (!string.IsNullOrEmpty(SomeTextFromOutside))
+                    {
+                        ImGui.Text(SomeTextFromOutside);
+                    }
                 }
                 ImGui.Separator();
                 if (!loading && ImGui.CollapsingHeader("Scene Graph", TreeNodeFlags.DefaultOpen))

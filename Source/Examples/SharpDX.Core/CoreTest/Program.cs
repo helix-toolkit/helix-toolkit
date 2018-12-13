@@ -18,9 +18,9 @@ namespace CoreTest
             NVOptimusEnabler nvEnabler = new NVOptimusEnabler();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);            
-            RenderForm form = new RenderForm() { Width = 1280, Height = 720 };
-            CoreTestApp app = new CoreTestApp(form);
-            Application.Run(form);
+            //RenderForm form = new RenderForm() { Width = 1280, Height = 720 };
+            //CoreTestApp app = new CoreTestApp(form);
+            Application.Run(new Form1());
         }
     }
 
