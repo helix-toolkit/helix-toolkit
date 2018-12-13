@@ -329,6 +329,13 @@ namespace HelixToolkit.UWP
             /// </value>
             public object WrapperSource { internal set; get; }
 
+            /// <summary>
+            /// Gets or sets the tag. This can be used to attach an external view model or property class object
+            /// </summary>
+            /// <value>
+            /// The tag.
+            /// </value>
+            public object Tag { set; get; }
             #endregion Properties
 
             #region Events            
