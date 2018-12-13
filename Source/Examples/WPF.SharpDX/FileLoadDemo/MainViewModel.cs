@@ -142,15 +142,16 @@ namespace FileLoadDemo
 
         private void ShowWireframeFunct(bool show)
         {
-            GroupModel.GroupNode.Items.PreorderDFT((node) =>
+            foreach(var node in GroupModel.GroupNode.Items.PreorderDFT((node) =>
+            {
+                return node.IsRenderable;
+            }))
             {
                 if (node is MeshNode m)
                 {
                     m.RenderWireframe = show;
-                    return false;
                 }
-                return node.IsRenderable;
-            });
+            }
         }
     }
 
