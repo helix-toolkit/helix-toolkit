@@ -289,6 +289,11 @@ namespace CoreTest
             resizeRequested = true;
         }
 
+        public void RequestResize()
+        {
+            resizeRequested = true;
+        }
+
         private void Window_FormClosing(object sender, FormClosingEventArgs e)
         {
             viewport.EndD3D();
