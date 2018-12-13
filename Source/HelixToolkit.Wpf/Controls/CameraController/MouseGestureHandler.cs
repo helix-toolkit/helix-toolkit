@@ -180,6 +180,11 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets or sets the mouse down point (2D screen coordinates).
         /// </summary>
+        protected Point MouseDownNearestPoint2D { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mouse down point (2D screen coordinates).
+        /// </summary>
         protected Point MouseDownPoint { get; set; }
 
         /// <summary>
@@ -477,26 +482,12 @@ namespace HelixToolkit.Wpf
         private void SetMouseDownPoint(Point position)
         {
             this.MouseDownPoint = position;
-
-            this.MouseDownNearestPoint3D = null;
-
-            Point3D nearestPoint;
-            Vector3D normal;
-            DependencyObject visual;
-            if (this.Controller.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
-            {
-                this.MouseDownNearestPoint3D = nearestPoint;
-            }
-            else
-            {
-                var pos = this.Viewport.UnProject(this.MouseDownPoint);
-                if (pos.HasValue)
-                {
-                    this.MouseDownNearestPoint3D = pos.Value;
-                }
-            }
-
             this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);
+            NearestPointInCamera nearestPoint = new Closest3DPointHitTester(this.Controller.Viewport, this.Controller.RotataAroundClosestVertexComplexity).CalculateMouseDownNearestPoint(position, true);
+            this.MouseDownNearestPoint2D = nearestPoint.MouseDownNearestPoint2D;
+            this.MouseDownNearestPoint3D = nearestPoint.MouseDownNearestPoint3D;
+
+
         }
     }
 }

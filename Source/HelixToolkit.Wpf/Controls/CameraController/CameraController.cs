@@ -447,6 +447,7 @@ namespace HelixToolkit.Wpf
             this.FocusVisualStyle = null;
 
             this.IsManipulationEnabled = true;
+            this.RotataAroundClosestVertexComplexity = 5000;
 
             this.InitializeBindings();
             this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
@@ -1247,6 +1248,13 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ZoomSensitivityProperty, value);
             }
         }
+
+        /// <summary>
+        /// Efficiency option, lower values decrease computation time for camera interaction when
+        /// RotateAroundMouseDownPoint or ZoomAroundMouseDownPoint is set to true in inspect mode.
+        /// Note: Will mostly save on computation time once the bounds are already calculated and cashed within the MeshGeometry3D.
+        /// </summary>
+        public int RotataAroundClosestVertexComplexity { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether IsOrthographicCamera.
@@ -2265,21 +2273,11 @@ namespace HelixToolkit.Wpf
             if (this.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetPosition(this);
-                
-                Point3D nearestPoint;
-                Vector3D normal;
-                DependencyObject visual;
-                if (this.Viewport.FindNearest(point, out nearestPoint, out normal, out visual))
-                {
-                    this.AddZoomForce(-e.Delta * 0.001, nearestPoint);
-                    e.Handled = true;
-                    return;
-                }
 
-                var pos = this.Viewport.UnProject(point);
-                if (pos.HasValue)
+                Point3D? nearestPoint = new Closest3DPointHitTester(this.Viewport, this.RotataAroundClosestVertexComplexity).CalculateMouseDownNearestPoint(point, true).MouseDownNearestPoint3D;
+                if (nearestPoint.HasValue)
                 {
-                    this.AddZoomForce(-e.Delta * 0.001, pos.Value);
+                    this.AddZoomForce(-e.Delta * 0.001, nearestPoint.Value);
                     e.Handled = true;
                     return;
                 }
