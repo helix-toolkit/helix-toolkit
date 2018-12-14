@@ -155,7 +155,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected sealed class OctantArray
             {
-                private Octant[] array = new Octant[128];
+                internal Octant[] array = new Octant[128];
                 public int Count { private set; get; }
                 /// <summary>
                 /// Initializes a new instance of the <see cref="OctantArray"/> class.
@@ -427,7 +427,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected BoundingBox FindEnclosingBox(int index)
             {
-                var octant = octants[index];
+                ref var octant = ref octants.array[index];
                 if (octant.Count == 0)
                 {
                     return new BoundingBox();
@@ -507,7 +507,7 @@ namespace HelixToolkit.UWP
                         {
                             var childIdx = parentOctant[curr];
                             process(childIdx);
-                            var octant = octants[childIdx];
+                            ref var octant = ref octants.array[childIdx];
                             if (octant.HasChildren && (canVisitChildren == null || canVisitChildren(octant.Index)))
                             {
                                 stack.Push(new KeyValuePair<int, int>(parent, curr));
@@ -581,7 +581,7 @@ namespace HelixToolkit.UWP
                     {
                         if (parentOctant.HasChildAtIndex(curr))
                         {
-                            var octant = octants[parentOctant[curr]];
+                            ref var octant = ref octants.array[parentOctant[curr]];
                             bool isIntersect = false;
                             bool nodeHit = HitTestCurrentNodeExcludeChild(ref octant,
                                 context, model, geometry, modelMatrix, ref rayWS, ref rayModel, ref modelHits, ref isIntersect, hitThickness);
@@ -660,7 +660,7 @@ namespace HelixToolkit.UWP
                     {
                         if (parentOctant.HasChildAtIndex(curr))
                         {
-                            var octant = octants[parentOctant[curr]];
+                            ref var octant = ref octants.array[parentOctant[curr]];
                             bool isIntersect = false;
                             bool nodeHit = FindNearestPointBySphereExcludeChild(ref octant, context, ref sphere, ref points, ref isIntersect);
                             isHit |= nodeHit;
@@ -718,7 +718,7 @@ namespace HelixToolkit.UWP
                     {
                         if (parentOctant.HasChildAtIndex(curr))
                         {
-                            var octant = octants[parentOctant[curr]];
+                            ref var octant = ref octants.array[parentOctant[curr]];
                             bool isIntersect = false;
                             bool nodeHit = FindNearestPointBySphereExcludeChild(ref octant, context, ref sphere, ref results, ref isIntersect);
                             isHit |= nodeHit;
@@ -802,7 +802,7 @@ namespace HelixToolkit.UWP
                 var builder = new LineBuilder();
                 for (int i = 0; i < octants.Count; ++i)
                 {
-                    var box = octants[i].Bound;
+                    var box = octants.array[i].Bound;
                     Vector3[] verts = new Vector3[8];
                     verts[0] = box.Minimum;
                     verts[1] = new Vector3(box.Minimum.X, box.Minimum.Y, box.Maximum.Z); //Z
