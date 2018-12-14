@@ -211,8 +211,7 @@ float4 main(PSInput input) : SV_Target
     if (bHasRMAMap)
     {
         float3 rmaSample = texRMAMap.Sample(samplerSurface, input.t).rgb;
-        RMA.r = min(RMA.r, rmaSample.r);
-        RMA.gb = max(RMA.gb, rmaSample.gb);
+        RMA.rgb = RMA.rgb * rmaSample.rgb;
     }
     float ambientOcculsion = input.c2.a;
     if (SSAOEnabled)
@@ -220,7 +219,7 @@ float4 main(PSInput input) : SV_Target
         float2 quadTex = input.p.xy * vViewport.zw;
         ambientOcculsion *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
-    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, ClearCoat, ClearCoatRoughness);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, ambientOcculsion, ClearCoat, ClearCoatRoughness);
     float s = 1;
     if (bHasShadowMap)
     {

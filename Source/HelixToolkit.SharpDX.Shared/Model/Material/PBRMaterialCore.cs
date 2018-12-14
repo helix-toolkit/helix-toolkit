@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP
 
             private float metallicFactor = 0;
             /// <summary>
-            /// Gets or sets the metallic factor. If RMA map is used, for each pixel, metallic factor = max(<see cref="MetallicFactor"/>, RMA map B Channel)
+            /// Gets or sets the metallic factor. If RMA map is used, for each pixel, metallic factor = <see cref="MetallicFactor"/> * RMA map B Channel
             /// </summary>
             /// <value>
             /// The metallic factor.
@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP
 
             private float roughnessFactor = 0;
             /// <summary>
-            /// Gets or sets the roughness factor. If RMA map is used, for each pixel, roughness factor = max(<see cref="RoughnessFactor"/>, RMA map G Channel)
+            /// Gets or sets the roughness factor. If RMA map is used, for each pixel, roughness factor = <see cref="RoughnessFactor"/> * RMA map G Channel
             /// </summary>
             /// <value>
             /// The roughness factor.
@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP
 
             private float ambientOcclusionFactor = 1;
             /// <summary>
-            /// Gets or sets the ambient occlusion factor. If RMA map is used, for each pixel, ambient occlusion factor = min(<see cref="AmbientOcclusionFactor"/>, RMA map R Channel)
+            /// Gets or sets the ambient occlusion factor. If RMA map is used, for each pixel, ambient occlusion factor = <see cref="AmbientOcclusionFactor"/> * RMA map R Channel
             /// </summary>
             /// <value>
             /// The ambient occlusion factor.
