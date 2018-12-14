@@ -84,6 +84,10 @@ namespace HelixToolkit.UWP
             /// The ai matkey GLTF basecolor factor for PBR material
             /// </summary>
             public string AI_MATKEY_GLTF_BASECOLOR_FACTOR = @"$mat.gltf.pbrMetallicRoughness.baseColorFactor";
+            /// <summary>
+            /// The ignore emissive color
+            /// </summary>
+            public bool IgnoreEmissiveColor = false;
         }
 
         /// <summary>
@@ -551,10 +555,8 @@ namespace HelixToolkit.UWP
                 var pbr = new Model.PBRMaterialCore()
                 {
                     AlbedoColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.Black,
-                    EmissiveColor = material.HasColorEmissive ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
-                    MetallicFactor = material.Shininess,// Used this for now, not sure which to use
-                    ReflectanceFactor = material.ShininessStrength,// Used this for now, not sure which to use
-                    RoughnessFactor = material.Reflectivity,// Used this for now, not sure which to use
+                    EmissiveColor = material.HasColorEmissive && !Configuration.IgnoreEmissiveColor ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
+                    ReflectanceFactor = material.HasReflectivity ? material.Reflectivity : 0,
                 };
                 if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
                 {
