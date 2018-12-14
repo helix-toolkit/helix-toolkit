@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// The enable parallel processing, such as converting Assimp meshes into HelixToolkit meshes
             /// </summary>
-            public bool EnableParallelProcessing = true;
+            public bool EnableParallelProcessing = false;
             /// <summary>
             /// The default post process steps for Assimp Importer. <see cref="PostProcessSteps.FlipUVs"/> must be used for DirectX texture sampling
             /// </summary>
@@ -68,6 +68,22 @@ namespace HelixToolkit.UWP
             /// The external context. Can be use to do more customized configuration for Assimp Importer
             /// </summary>
             public AssimpContext ExternalContext = null;
+            /// <summary>
+            /// The ai matkey GLTF metallic, roughness, ambient occlusion texture
+            /// </summary>
+            public string AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE = @"$tex.file";
+            /// <summary>
+            /// The ai matkey GLTF metallic factor for PBR material
+            /// </summary>
+            public string AI_MATKEY_GLTF_METALLIC_FACTOR = @"$mat.gltf.pbrMetallicRoughness.metallicFactor";
+            /// <summary>
+            /// The ai matkey GLTF roughness factor for PBR material
+            /// </summary>
+            public string AI_MATKEY_GLTF_ROUGHNESS_FACTOR = @"$mat.gltf.pbrMetallicRoughness.roughnessFactor";
+            /// <summary>
+            /// The ai matkey GLTF basecolor factor for PBR material
+            /// </summary>
+            public string AI_MATKEY_GLTF_BASECOLOR_FACTOR = @"$mat.gltf.pbrMetallicRoughness.baseColorFactor";
         }
 
         /// <summary>
@@ -222,6 +238,8 @@ namespace HelixToolkit.UWP
                             importer.SetConfig(config);
                         }
                     }
+                    importer.SetConfig(new FloatPropertyConfig(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR, 0f));
+                    importer.SetConfig(new FloatPropertyConfig(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR, 0f));
 
                     var assimpScene = importer.ImportFile(filePath, Configuration.AssimpPostProcessSteps);
                     if (assimpScene == null)
@@ -538,6 +556,18 @@ namespace HelixToolkit.UWP
                     ReflectanceFactor = material.ShininessStrength,// Used this for now, not sure which to use
                     RoughnessFactor = material.Reflectivity,// Used this for now, not sure which to use
                 };
+                if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
+                {
+                    pbr.AlbedoColor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR).GetColor4DValue().ToSharpDXColor4();
+                }
+                if(material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR))
+                {
+                    pbr.MetallicFactor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR).GetFloatValue();
+                }
+                if(material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR))
+                {
+                    pbr.RoughnessFactor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR).GetFloatValue();
+                }
                 if (material.HasOpacity)
                 {
                     var c = pbr.AlbedoColor;
@@ -560,7 +590,12 @@ namespace HelixToolkit.UWP
                 {
                     pbr.NormalMap = LoadTexture(material.TextureHeight.FilePath);
                 }
-                if (material.HasTextureSpecular)
+                if (material.HasProperty(Configuration.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, TextureType.Unknown, 0))
+                {
+                    var t = material.GetProperty(Configuration.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, TextureType.Unknown, 0);
+                    pbr.RMAMap = LoadTexture(t.GetStringValue());
+                }
+                else if (material.HasTextureSpecular)
                 {
                     pbr.RMAMap = LoadTexture(material.TextureSpecular.FilePath);
                 }
@@ -590,8 +625,18 @@ namespace HelixToolkit.UWP
                 Model.MaterialCore core = null;
                 if (!material.HasShadingMode)
                 {
-                    var phong = OnCreatePhongMaterial(material);
-                    return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, phong);
+                    if(material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR)
+                        || material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR)
+                        || material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
+                    {
+                        var pbr = OnCreatePBRMaterial(material);
+                        return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, pbr);
+                    }
+                    else
+                    {
+                        var phong = OnCreatePhongMaterial(material);
+                        return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, phong);
+                    }
                 }
                 var mode = material.ShadingMode;
                 if(Configuration.ImportMaterialType != MaterialType.Auto)
