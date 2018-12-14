@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Assimp;
+﻿using Assimp;
 using Assimp.Configs;
-using System.Linq;
-using System.IO;
-using Assimp.Unmanaged;
 using SharpDX;
-using System.Threading.Tasks;
+using System;
 using System.Collections.Concurrent;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -23,6 +21,55 @@ namespace HelixToolkit.UWP
     using HxScene = Model.Scene;
     namespace Assimp
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public enum MaterialType
+        {
+            Auto,
+            BlinnPhong,
+            PBR,
+            Diffuse,
+            VertexColor,
+            Normal,
+            Position,
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public class ImporterConfiguration
+        {
+            /// <summary>
+            /// Force to use material type. Default is Auto
+            /// </summary>
+            public MaterialType ImportMaterialType = MaterialType.Auto;
+            /// <summary>
+            /// The enable parallel processing, such as converting Assimp meshes into HelixToolkit meshes
+            /// </summary>
+            public bool EnableParallelProcessing = true;
+            /// <summary>
+            /// The default post process steps for Assimp Importer. <see cref="PostProcessSteps.FlipUVs"/> must be used for DirectX texture sampling
+            /// </summary>
+            public PostProcessSteps AssimpPostProcessSteps =
+                    PostProcessSteps.GenerateNormals
+                | PostProcessSteps.Triangulate
+                | PostProcessSteps.TransformUVCoords
+                | PostProcessSteps.CalculateTangentSpace
+                | PostProcessSteps.JoinIdenticalVertices
+                | PostProcessSteps.FindDegenerates
+                | PostProcessSteps.SortByPrimitiveType
+                | PostProcessSteps.RemoveRedundantMaterials
+                | PostProcessSteps.FlipUVs;
+            /// <summary>
+            /// The assimp property configuration
+            /// </summary>
+            public PropertyConfig[] AssimpPropertyConfig = null;
+            /// <summary>
+            /// The external context. Can be use to do more customized configuration for Assimp Importer
+            /// </summary>
+            public AssimpContext ExternalContext = null;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -97,29 +144,11 @@ namespace HelixToolkit.UWP
 
             private ConcurrentDictionary<string, Stream> textureDict = new ConcurrentDictionary<string, Stream>();
 
-            private string filePath = "";
-
             private const string ToUpperDictString = @"..\";
-            /// <summary>
-            /// The default post process steps
-            /// </summary>
-            public PostProcessSteps DefaultPostProcessSteps = 
-                    PostProcessSteps.GenerateNormals
-                | PostProcessSteps.Triangulate
-                | PostProcessSteps.TransformUVCoords 
-                | PostProcessSteps.CalculateTangentSpace
-                | PostProcessSteps.JoinIdenticalVertices 
-                | PostProcessSteps.FindDegenerates 
-                | PostProcessSteps.RemoveRedundantMaterials
-                | PostProcessSteps.FlipUVs;
 
-            /// <summary>
-            /// Gets or sets a value indicating whether [parallel loading].
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if [parallel loading]; otherwise, <c>false</c>.
-            /// </value>
-            protected bool ParallelLoading { private set; get; } = false;
+            public ImporterConfiguration Configuration { set; get; } = new ImporterConfiguration();
+
+            private string filePath = "";
 
             static Importer()
             {
@@ -141,36 +170,60 @@ namespace HelixToolkit.UWP
             /// Loads the specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
-            /// <param name="parallelLoad"></param>
+            /// <param name="config">The configuration.</param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath, bool parallelLoad = true)
+            public HxScene.SceneNode Load(string filePath, ImporterConfiguration config)
             {
-                return Load(filePath, parallelLoad, DefaultPostProcessSteps, null);
+                Configuration = config;
+                return Load(filePath);
             }
+
             /// <summary>
             /// Loads the specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
-            /// <param name="parallelLoad">Enable parallel loading</param>
+            /// <param name="parallelLoad">if set to <c>true</c> [parallel load].</param>
             /// <param name="postprocessSteps">The postprocess steps.</param>
             /// <param name="configs">The configs.</param>
             /// <returns></returns>
             public HxScene.SceneNode Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
             {
+                Configuration.EnableParallelProcessing = parallelLoad;
+                Configuration.AssimpPostProcessSteps = postprocessSteps;
+                return Load(filePath);
+            }
+
+            /// <summary>
+            /// Loads the specified file path.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <returns></returns>
+            public HxScene.SceneNode Load(string filePath)
+            {
                 this.filePath = filePath;
-                using (var importer = new AssimpContext())
+                AssimpContext importer = null;
+                bool useExtern = false;
+                if (Configuration.ExternalContext != null)
                 {
-                    textureDict.Clear();
-                    ParallelLoading = parallelLoad;
-                    if (configs != null)
+                    importer = Configuration.ExternalContext;
+                    useExtern = true;
+                }
+                else
+                {
+                    importer = new AssimpContext();
+                }
+                textureDict.Clear();
+                try
+                {
+                    if (!useExtern && Configuration.AssimpPropertyConfig != null)
                     {
-                        foreach (var config in configs)
+                        foreach (var config in Configuration.AssimpPropertyConfig)
                         {
                             importer.SetConfig(config);
                         }
                     }
 
-                    var assimpScene = importer.ImportFile(filePath, postprocessSteps);
+                    var assimpScene = importer.ImportFile(filePath, Configuration.AssimpPostProcessSteps);
                     if (assimpScene == null)
                     {
                         return null;
@@ -181,7 +234,18 @@ namespace HelixToolkit.UWP
                         return new HxScene.GroupNode();
                     }
 
-                    return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene, parallelLoad));
+                    return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene, Configuration.EnableParallelProcessing));
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                finally
+                {
+                    if (!useExtern)
+                    {
+                        importer.Dispose();
+                    }
                 }
             }
 
@@ -529,21 +593,42 @@ namespace HelixToolkit.UWP
                     var phong = OnCreatePhongMaterial(material);
                     return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, phong);
                 }
+                var mode = material.ShadingMode;
+                if(Configuration.ImportMaterialType != MaterialType.Auto)
+                {
+                    switch (Configuration.ImportMaterialType)
+                    {
+                        case MaterialType.BlinnPhong:
+                            mode = ShadingMode.Blinn;
+                            break;
+                        case MaterialType.Diffuse:
+                            mode = ShadingMode.Flat;
+                            break;
+                        case MaterialType.PBR:
+                            mode = ShadingMode.CookTorrance;
+                            break;
+                        case MaterialType.VertexColor:
+                            mode = ShadingMode.Flat;
+                            break;
+                        case MaterialType.Normal:
+                            break;
+                        case MaterialType.Position:
+                            break;
+                    }
+                }
                 switch (material.ShadingMode)
                 {
                     case ShadingMode.Blinn:
                     case ShadingMode.Phong:
-                    case ShadingMode.Gouraud:
-                        core = OnCreatePhongMaterial(material);
-                        break;
                     case ShadingMode.None:
-                        core = new Model.ColorMaterialCore();
+                        core = OnCreatePhongMaterial(material);
                         break;
                     case ShadingMode.CookTorrance:
                     case ShadingMode.Fresnel:
+                    case ShadingMode.OrenNayar:
                         core = OnCreatePBRMaterial(material);
                         break;
-                    case ShadingMode.Flat:
+                    case ShadingMode.Gouraud:
                         var diffuse = new Model.DiffuseMaterialCore()
                         {
                             DiffuseColor = material.ColorDiffuse.ToSharpDXColor4()
@@ -564,10 +649,27 @@ namespace HelixToolkit.UWP
                         }
                         core = diffuse;
                         break;
+                    case ShadingMode.Flat:
+                        core = new Model.ColorMaterialCore();
+                        break;
                     default:
-                        throw new NotSupportedException($"Shading Mode {material.ShadingMode} does not supported.");
+                        switch (Configuration.ImportMaterialType)
+                        {
+                            case MaterialType.Position:
+                                core = new Model.PositionMaterialCore();
+                                break;
+                            case MaterialType.Normal:
+                                core = new Model.NormalMaterialCore();
+                                break;
+                            default:
+                                throw new NotSupportedException($"Shading Mode {material.ShadingMode} does not supported.");
+                        }
+                        break;
                 }
-                core.Name = material.Name;
+                if (core != null)
+                {
+                    core.Name = material.Name;
+                }
                 return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, core);
             }
 
