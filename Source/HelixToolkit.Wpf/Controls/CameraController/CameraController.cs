@@ -447,6 +447,7 @@ namespace HelixToolkit.Wpf
             this.FocusVisualStyle = null;
 
             this.IsManipulationEnabled = true;
+            this.RotataAroundClosestVertexComplexity = 5000;
 
             this.InitializeBindings();
             this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
@@ -1249,6 +1250,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Efficiency option, lower values decrease computation time for camera interaction when
+        /// RotateAroundMouseDownPoint or ZoomAroundMouseDownPoint is set to true in inspect mode.
+        /// Note: Will mostly save on computation time once the bounds are already calculated and cashed within the MeshGeometry3D.
+        /// </summary>
+        public int RotataAroundClosestVertexComplexity { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether IsOrthographicCamera.
         /// </summary>
         protected bool IsOrthographicCamera
@@ -1487,6 +1495,7 @@ namespace HelixToolkit.Wpf
         public void HideRectangle()
         {
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            if (myAdornerLayer == null) { return; }
             if (this.rectangleAdorner != null)
             {
                 myAdornerLayer.Remove(this.rectangleAdorner);
@@ -1503,6 +1512,7 @@ namespace HelixToolkit.Wpf
         public void HideTargetAdorner()
         {
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            if (myAdornerLayer == null) { return; }
             if (this.targetAdorner != null)
             {
                 myAdornerLayer.Remove(this.targetAdorner);
@@ -1614,6 +1624,7 @@ namespace HelixToolkit.Wpf
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            if (myAdornerLayer == null) { return; }
             this.rectangleAdorner = new RectangleAdorner(
                 this.Viewport, rect, color1, color2, 3, 1, 10, DashStyles.Solid);
             myAdornerLayer.Add(this.rectangleAdorner);
@@ -1638,6 +1649,7 @@ namespace HelixToolkit.Wpf
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            if (myAdornerLayer == null) { return; }
             this.targetAdorner = new TargetSymbolAdorner(this.Viewport, position);
             myAdornerLayer.Add(this.targetAdorner);
         }
@@ -2105,7 +2117,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void LeftViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
         }
 
         /// <summary>
@@ -2261,21 +2273,11 @@ namespace HelixToolkit.Wpf
             if (this.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetPosition(this);
-                
-                Point3D nearestPoint;
-                Vector3D normal;
-                DependencyObject visual;
-                if (this.Viewport.FindNearest(point, out nearestPoint, out normal, out visual))
-                {
-                    this.AddZoomForce(-e.Delta * 0.001, nearestPoint);
-                    e.Handled = true;
-                    return;
-                }
 
-                var pos = this.Viewport.UnProject(point);
-                if (pos.HasValue)
+                Point3D? nearestPoint = new Closest3DPointHitTester(this.Viewport, this.RotataAroundClosestVertexComplexity).CalculateMouseDownNearestPoint(point, true).MouseDownNearestPoint3D;
+                if (nearestPoint.HasValue)
                 {
-                    this.AddZoomForce(-e.Delta * 0.001, pos.Value);
+                    this.AddZoomForce(-e.Delta * 0.001, nearestPoint.Value);
                     e.Handled = true;
                     return;
                 }
@@ -2391,7 +2393,7 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void RightViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
+            this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
         }
 
         /// <summary>

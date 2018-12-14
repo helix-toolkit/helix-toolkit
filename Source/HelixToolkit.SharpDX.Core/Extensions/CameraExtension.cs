@@ -320,7 +320,9 @@ namespace HelixToolkit.SharpDX.Core
             }
             else if (camera is OrthographicCameraCore orth)
             {
-                LookAt(camera, center, camera.LookDirection, animationTime);
+                var dir = camera.LookDirection;
+                dir.Normalize();
+                LookAt(camera, center, dir, animationTime);
                 float newWidth = radius * 2;
 
                 if (viewport.ViewportRectangle.Width > viewport.ViewportRectangle.Height)

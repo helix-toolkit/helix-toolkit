@@ -327,6 +327,58 @@ map_bump " + prefix + Path.GetFileName(tempTexBump) + @"
             }
         }
 
+        [Test]
+        public void TexturePath_Absolute_Valid()
+        {
+            var tempObj = Path.GetTempFileName();
+            var tempMtl = Path.GetTempFileName();
+            var tempTexDiffuse = Path.GetTempFileName();
+            var tempTexBump = Path.GetTempFileName();
+
+            try
+            {
+                File.WriteAllText(tempObj, @"
+mtllib " + tempMtl + @"
+v -0.5 0 0.5
+v 0.5 0 0.5
+v -0.5 0 -0.5
+vt 0 1
+usemtl TestMaterial
+f 1/1 2/1 3/1
+");
+
+                File.WriteAllText(tempMtl, @"
+newmtl TestMaterial
+map_Kd " + tempTexDiffuse + @"
+map_bump " + tempTexBump + @"
+");
+
+                using (var image = new System.Drawing.Bitmap(1, 1))
+                {
+                    image.Save(tempTexDiffuse);
+                    image.Save(tempTexBump);
+                }
+
+                var model = _objReader.Read(tempObj);
+                var material = (PhongMaterialCore)model[0].Material;
+                using(var fs = new FileStream(tempTexDiffuse, FileMode.Open))
+                {
+                    Compare(fs, material.DiffuseMap);
+                }
+                using (var fs = new FileStream(tempTexBump, FileMode.Open))
+                {
+                    Compare(fs, material.NormalMap);
+                }
+            }
+            finally
+            {
+                File.Delete(tempObj);
+                File.Delete(tempMtl);
+                //File.Delete(tempTexDiffuse);
+                //File.Delete(tempTexBump);
+            }
+        }
+
         public void Compare(Stream s1, Stream s2)
         {
             Assert.AreEqual(s1.Length, s2.Length);

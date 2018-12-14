@@ -212,7 +212,7 @@ namespace HelixToolkit.Wpf
 
             if (this.Controller.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
             {
-                this.zoomPoint = this.MouseDownPoint;
+                this.zoomPoint = this.MouseDownNearestPoint2D;
                 this.zoomPoint3D = this.MouseDownNearestPoint3D.Value;
             }
 

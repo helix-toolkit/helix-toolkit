@@ -14,7 +14,6 @@ namespace CoreTest
         private static bool loading = false;
         private static string modelName = "";
         private static long currentTime = 0;
-
         public static string SomeTextFromOutside = "";
 
         public static void DrawUI(int width, int height, ref ViewportOptions options, GroupNode rootNode)
