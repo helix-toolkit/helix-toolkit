@@ -219,7 +219,7 @@ float4 main(PSInput input) : SV_Target
         float2 quadTex = input.p.xy * vViewport.zw;
         ambientOcculsion *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
-    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, ClearCoat, ClearCoatRoughness);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, ambientOcculsion, ClearCoat, ClearCoatRoughness);
     float s = 1;
     if (bHasShadowMap)
     {
