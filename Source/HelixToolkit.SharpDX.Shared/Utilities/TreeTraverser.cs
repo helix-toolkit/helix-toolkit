@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
         /// Traverses the specified condition.
         /// </summary>
         /// <param name="nodes">The nodes.</param>
-        /// <param name="condition">The condition.</param>
+        /// <param name="onlyRendering">Only the node is currently rendering. The nodes set to be Visible = false or IsRendering = false will not be traversed. </param>
         /// <param name="stackCache">The stack cache.</param>
         /// <returns></returns>
         public static IEnumerable<SceneNode> Traverse(this IEnumerable<SceneNode> nodes, bool onlyRendering,
@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP
         public static IEnumerable<SceneNode> PreorderDFT(this IEnumerable<SceneNode> nodes, Func<SceneNode, bool> condition, 
             Stack<IEnumerator<SceneNode>> stackCache = null)
         {
-            var stack = stackCache == null ? new Stack<IEnumerator<SceneNode>>(20) : stackCache;
+            var stack = stackCache ?? new Stack<IEnumerator<SceneNode>>(20);
             var e = nodes.GetEnumerator();
 
             while (true)
@@ -82,7 +82,7 @@ namespace HelixToolkit.UWP
             Func<SceneNode, RenderContext, bool> condition, IList<KeyValuePair<int, SceneNode>> results,
             Stack<KeyValuePair<int, IList<SceneNode>>> stackCache = null)
         {
-            var stack = stackCache == null ? new Stack<KeyValuePair<int, IList<SceneNode>>>(20) : stackCache;
+            var stack = stackCache ?? new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
             int i = -1;
             int level = 0;
             IList<SceneNode> currNodes = nodes;
@@ -123,7 +123,7 @@ namespace HelixToolkit.UWP
         public static IEnumerable<RenderCore> PreorderDFTGetCores(this IEnumerable<SceneNode> nodes, Func<SceneNode, bool> condition,
             Stack<IEnumerator<SceneNode>> stackCache = null)
         {
-            var stack = stackCache == null ? new Stack<IEnumerator<SceneNode>>(20) : stackCache;
+            var stack = stackCache ?? new Stack<IEnumerator<SceneNode>>(20);
             var e = nodes.GetEnumerator();
 
             while (true)
@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP
         public static void PreorderDFTRun(this IList<SceneNode2D> nodes, Func<SceneNode2D, bool> condition, 
             Stack<KeyValuePair<int, IList<SceneNode2D>>> stackCache = null)
         {
-            var stack = stackCache == null ? new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20) : stackCache;
+            var stack = stackCache ?? new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
             int i = -1;
             while (true)
             {
@@ -192,7 +192,7 @@ namespace HelixToolkit.UWP
         public static IEnumerable<RenderCore2D> PreorderDFTGetCores(this IEnumerable<SceneNode2D> nodes, Func<SceneNode2D, bool> condition,
             Stack<IEnumerator<SceneNode2D>> stackCache = null)
         {
-            var stack = stackCache == null ? new Stack<IEnumerator<SceneNode2D>>(20) : stackCache;
+            var stack = stackCache ?? new Stack<IEnumerator<SceneNode2D>>(20);
             var e = nodes.GetEnumerator();
 
             while (true)
