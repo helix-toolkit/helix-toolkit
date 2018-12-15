@@ -88,6 +88,14 @@ namespace HelixToolkit.UWP
             /// The ignore emissive color
             /// </summary>
             public bool IgnoreEmissiveColor = false;
+            /// <summary>
+            /// Force cull mode for all imported meshes. Otherwise automatically set cull mode according to the materials.
+            /// </summary>
+            public bool ForceCullMode = false;
+            /// <summary>
+            /// The cull mode
+            /// </summary>
+            public global::SharpDX.Direct3D11.CullMode CullMode = global::SharpDX.Direct3D11.CullMode.None;
         }
 
         /// <summary>
@@ -332,13 +340,13 @@ namespace HelixToolkit.UWP
                     foreach (var idx in node.MeshIndices)
                     {
                         var mesh = scene.Meshes[idx];
-                        group.AddChildNode(ToHxMesh(mesh, scene));
+                        group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
                     }
                     return group;
                 }
                 else if (node.MeshCount == 1)
                 {
-                    return ToHxMesh(scene.Meshes[node.MeshIndices[0]], scene);
+                    return ToHxMesh(scene.Meshes[node.MeshIndices[0]], scene, node.Transform.ToSharpDXMatrix());
                 }
                 else
                 {
@@ -350,25 +358,38 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="mesh">The mesh.</param>
             /// <param name="scene">The scene.</param>
+            /// <param name="transform"></param>
             /// <returns></returns>
             /// <exception cref="System.NotSupportedException">Mesh Type {mesh.Type}</exception>
-            protected virtual HxScene.SceneNode ToHxMesh(MeshInfo mesh, HelixScene scene)
+            protected virtual HxScene.SceneNode ToHxMesh(MeshInfo mesh, HelixScene scene, Matrix transform)
             {
                 switch (mesh.Type)
                 {
                     case PrimitiveType.Triangle:
                         var material = scene.Materials[mesh.MaterialIndex];
+                        var cullMode = material.Item1.HasTwoSided && material.Item1.IsTwoSided ?
+                            global::SharpDX.Direct3D11.CullMode.Back : global::SharpDX.Direct3D11.CullMode.None;
+                        if (Configuration.ForceCullMode)
+                        {
+                            cullMode = Configuration.CullMode;
+                        }
+                        var fillMode = material.Item1.HasWireFrame && material.Item1.IsWireFrameEnabled ?
+                            global::SharpDX.Direct3D11.FillMode.Wireframe : global::SharpDX.Direct3D11.FillMode.Solid;
                         return new HxScene.MeshNode()
                         {
                             Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.MeshNode) : mesh.AssimpMesh.Name,
                             Geometry = mesh.Mesh,
-                            Material = scene.Materials[mesh.MaterialIndex].Item2
+                            Material = material.Item2,
+                            ModelMatrix = transform,
+                            CullMode = cullMode,
+                            FillMode = fillMode
                         };
                     case PrimitiveType.Line:
                         var lnode = new HxScene.LineNode()
                         {
                             Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.LineNode) : mesh.AssimpMesh.Name,
-                            Geometry = mesh.Mesh
+                            Geometry = mesh.Mesh,
+                            ModelMatrix = transform,
                         };
                         var lmaterial = new Model.LineMaterialCore(); //Must create separate line material
                         lnode.Material = lmaterial;
@@ -382,7 +403,8 @@ namespace HelixToolkit.UWP
                         var pnode = new HxScene.PointNode()
                         {
                             Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.PointNode) : mesh.AssimpMesh.Name,
-                            Geometry = mesh.Mesh
+                            Geometry = mesh.Mesh,
+                            ModelMatrix = transform,
                         };
                         var pmaterial = new Model.PointMaterialCore(); //Must create separate point material
                         pnode.Material = pmaterial;
