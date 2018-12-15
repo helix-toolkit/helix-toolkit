@@ -25,14 +25,16 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public class LineNode : MaterialGeometryNode
-        {        
+        {
+            private double hitTestThickness = 1;
             /// <summary>
             /// Used only for point/line hit test
             /// </summary>
             public double HitTestThickness
             {
-                set; get;
-            } = 1.0;
+                set => Set(ref hitTestThickness, value);
+                get => hitTestThickness;
+            }
             /// <summary>
             /// Called when [create buffer model].
             /// </summary>

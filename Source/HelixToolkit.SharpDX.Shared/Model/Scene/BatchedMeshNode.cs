@@ -301,7 +301,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableViewFrustumCheck
             {
-                set { enableViewFrustumCheck = value; }
+                set { Set(ref enableViewFrustumCheck, value); }
                 get { return enableViewFrustumCheck && HasBound; }
             }
 

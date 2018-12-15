@@ -85,11 +85,11 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    (RenderCore as IPostEffectMeshXRay).DoublePass = value;
+                    (RenderCore as IPostEffectMeshXRay).EnableDoublePass = value;
                 }
                 get
                 {
-                    return (RenderCore as IPostEffectMeshXRay).DoublePass;
+                    return (RenderCore as IPostEffectMeshXRay).EnableDoublePass;
                 }
             } 
             #endregion

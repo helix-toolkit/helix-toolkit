@@ -176,15 +176,10 @@ namespace HelixToolkit.UWP
                 private set; get;
             }
 
-            private IRenderHost renderHost;
-
             /// <summary>
             ///
             /// </summary>
-            public IRenderHost RenderHost
-            {
-                get { return renderHost; }
-            }
+            public IRenderHost RenderHost { get; private set; }
 
             /// <summary>
             /// Gets the effects manager.
@@ -192,7 +187,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The effects manager.
             /// </value>
-            protected IEffectsManager EffectsManager { get { return renderHost.EffectsManager; } }
+            protected IEffectsManager EffectsManager { get { return RenderHost.EffectsManager; } }
 
             /// <summary>
             /// Gets the items.
@@ -329,13 +324,18 @@ namespace HelixToolkit.UWP
             /// </value>
             public object WrapperSource { internal set; get; }
 
+            private object tag = null;
             /// <summary>
             /// Gets or sets the tag. This can be used to attach an external view model or property class object
             /// </summary>
             /// <value>
             /// The tag.
             /// </value>
-            public object Tag { set; get; }
+            public object Tag
+            {
+                set => Set(ref tag, value);
+                get => tag;
+            }
             #endregion Properties
 
             #region Events            
@@ -372,7 +372,7 @@ namespace HelixToolkit.UWP
             public SceneNode()
             {
                 WrapperSource = this;
-                renderCore = new Lazy<RenderCore>(() => 
+                renderCore = new Lazy<RenderCore>(() =>
                 {
                     core = OnCreateRenderCore();
                     core.InvalidateRender += RenderCore_OnInvalidateRenderer;
@@ -399,7 +399,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                renderHost = host;
+                RenderHost = host;
                 this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
                 if (renderTechnique == null)
                 {
@@ -459,12 +459,12 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void OnDetach()
             {
-                renderHost = null;           
+                RenderHost = null;           
             }
 
             protected void InvalidateRenderEvent(object sender, EventArgs arg)
             {
-                renderHost?.InvalidateRender();
+                RenderHost?.InvalidateRender();
             }
 
             /// <summary>
@@ -473,7 +473,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void InvalidateRender()
             {
-                renderHost?.InvalidateRender();
+                RenderHost?.InvalidateRender();
             }
 
             /// <summary>
@@ -482,7 +482,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected void InvalidateSceneGraph()
             {
-                renderHost?.InvalidateSceneGraph();
+                RenderHost?.InvalidateSceneGraph();
             }
 
             /// <summary>
@@ -491,7 +491,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected void InvalidatePerFrameRenderables()
             {
-                renderHost?.InvalidatePerFrameRenderables();
+                RenderHost?.InvalidatePerFrameRenderables();
             }
             /// <summary>
             /// Updates the element total transforms, determine renderability, etc. by the specified time span.

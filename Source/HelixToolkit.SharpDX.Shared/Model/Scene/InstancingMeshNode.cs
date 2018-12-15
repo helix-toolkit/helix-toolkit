@@ -26,6 +26,7 @@ namespace HelixToolkit.UWP
         public class InstancingMeshNode : MeshNode
         {
             #region Properties
+            private IList<Guid> instanceIdentifiers;
             /// <summary>
             /// Gets or sets the instance identifiers.
             /// </summary>
@@ -34,8 +35,9 @@ namespace HelixToolkit.UWP
             /// </value>
             public IList<Guid> InstanceIdentifiers
             {
-                set; get;
-            } = null;
+                set => Set(ref instanceIdentifiers, value);
+                get => instanceIdentifiers;
+            }
             /// <summary>
             /// Gets or sets the instance parameter array.
             /// </summary>
