@@ -197,19 +197,6 @@ namespace HelixToolkit.UWP
             /// <param name="instanceCount">The instance count.</param>
             public abstract void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount);
 
-            protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-            {
-                if (EqualityComparer<T>.Default.Equals(backingField, value))
-                {
-                    return false;
-                }
-
-                backingField = value;
-                NotifyUpdateNeeded();
-                this.RaisePropertyChanged(propertyName);
-                return true;
-            }
-
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected void InvalidateRenderer()
             {

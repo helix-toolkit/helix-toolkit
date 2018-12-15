@@ -3,8 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Runtime.CompilerServices;
-using System.ComponentModel;
-using global::SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -17,7 +15,6 @@ namespace HelixToolkit.UWP
 {
     namespace Model
     {
-        using Core;
         using Render;
         using ShaderManager;
         using Shaders;
@@ -117,11 +114,12 @@ namespace HelixToolkit.UWP
             {
                 private set
                 {
-                    if (SetAffectsRender(ref enableTessellation, value))
+                    if (Set(ref enableTessellation, value))
                     {
                         currentMaterialPass = value ? TessellationPass : MaterialPass;
                         UpdateMappings(currentMaterialPass);
                         currentOITPass = value ? TessellationOITPass : MaterialOITPass;
+                        InvalidateRenderer();
                     }
                 }
                 get
