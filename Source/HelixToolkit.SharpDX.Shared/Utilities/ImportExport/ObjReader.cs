@@ -61,6 +61,7 @@ namespace HelixToolkit.UWP
     /// http://www.martinreddy.net/gfx/3d/OBJ.spec
     /// http://www.eg-models.de/formats/Format_Obj.html
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class ObjReader : IModelReader
     {
         /// <summary>

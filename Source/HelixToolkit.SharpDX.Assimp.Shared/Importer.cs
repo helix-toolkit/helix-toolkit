@@ -142,6 +142,33 @@ namespace HelixToolkit.UWP
             /// Import animations
             /// </summary>
             public bool ImportAnimations = true;
+            /// <summary>
+            /// The create skeleton mesh for bone skinning
+            /// </summary>
+            public bool CreateSkeletonForBoneSkinningMesh = false;
+            /// <summary>
+            /// The skeleton material
+            /// </summary>
+            public MaterialCore SkeletonMaterial = new Model.DiffuseMaterialCore() { DiffuseColor = Color.Red };
+            /// <summary>
+            /// The skeleton effects such as xray effects
+            /// </summary>
+            public string SkeletonEffects = "EffectSkeletonGrid";
+            /// <summary>
+            /// The skeleton size scale
+            /// </summary>
+            public float SkeletonSizeScale = 0.1f;
+            /// <summary>
+            /// The adds post effect for skeleton
+            /// </summary>
+            public bool AddsPostEffectForSkeleton = true;
+
+            public ImporterConfiguration()
+            {
+#if DEBUG
+                CreateSkeletonForBoneSkinningMesh = true;
+#endif
+            }
         }
 
         [Flags]
@@ -352,6 +379,12 @@ namespace HelixToolkit.UWP
                     {
                         LoadAnimations(internalScene);
                         scene.Animations = Animations.ToArray();
+                        if (Configuration.CreateSkeletonForBoneSkinningMesh
+                            && Configuration.AddsPostEffectForSkeleton)
+                        {
+                            (scene.Root as HxScene.GroupNode).AddChildNode(new HxScene.NodePostEffectXRayGrid()
+                            { EffectName = Configuration.SkeletonEffects });
+                        }
                     }
                     if(!ErrorCode.HasFlag(ErrorCode.Failed))
                         ErrorCode |= ErrorCode.Succeed;
@@ -425,42 +458,26 @@ namespace HelixToolkit.UWP
                     ModelMatrix = node.Transform.ToSharpDXMatrix()
                 };
                 if (node.HasChildren)
+                {
                     foreach (var c in node.Children)
+                    {
                         group.AddChildNode(ConstructHelixScene(c, scene));
+                    }
+                }
                 if (node.HasMeshes)
+                {
                     foreach (var idx in node.MeshIndices)
                     {
                         var mesh = scene.Meshes[idx];
-                        group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
+                        var hxNode = ToHxMeshNode(mesh, scene, Matrix.Identity);
+                        group.AddChildNode(hxNode);
+                        if(hxNode is HxScene.BoneSkinMeshNode skinNode && Configuration.CreateSkeletonForBoneSkinningMesh)
+                        {
+                            group.AddChildNode(skinNode.CreateSkeletonNode(Configuration.SkeletonMaterial, Configuration.SkeletonEffects));
+                        }
                     }
-
+                }
                 return group;
-                //if (node.HasChildren || node.MeshCount > 1)
-                //{
-                //    var group = new HxScene.GroupNode
-                //    {
-                //        Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
-                //        ModelMatrix = node.Transform.ToSharpDXMatrix()
-                //    };
-                //    foreach (var c in node.Children)
-                //    {
-                //        group.AddChildNode(ConstructHelixScene(c, scene));
-                //    }
-                //    foreach (var idx in node.MeshIndices)
-                //    {
-                //        var mesh = scene.Meshes[idx];
-                //        group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
-                //    }
-                //    return group;
-                //}
-                //else if (node.MeshCount == 1)
-                //{
-                //    return ToHxMesh(scene.Meshes[node.MeshIndices[0]], scene, node.Transform.ToSharpDXMatrix());
-                //}
-                //else
-                //{
-                //    return null;
-                //}
             }
             #endregion
 

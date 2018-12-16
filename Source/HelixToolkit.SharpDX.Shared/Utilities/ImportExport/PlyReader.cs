@@ -1,4 +1,5 @@
 ﻿using SharpDX;
+using System;
 using System.Collections.Generic;
 using System.IO;
 #if !NETFX_CORE
@@ -24,6 +25,7 @@ namespace HelixToolkit.UWP
     /// This reader only reads ascii ply formats.
     /// This was initially meant to read models exported by Blender 3D Software.
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class PlyReader : ModelReader
     {
         /// <summary>

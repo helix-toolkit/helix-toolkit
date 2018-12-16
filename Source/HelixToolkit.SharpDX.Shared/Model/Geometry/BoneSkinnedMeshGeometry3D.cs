@@ -53,36 +53,28 @@ namespace HelixToolkit.UWP
                 return vertexBoneIds;
             }
         }
+
         /// <summary>
-        /// Gets or sets the animations.
+        /// Creates the node based bone matrices.
         /// </summary>
-        /// <value>
-        /// The animations.
-        /// </value>
-        public Dictionary<string, Animations.Animation> Animations { set; get; }
-        /// <summary>
-        /// Gets or sets the bones.
-        /// </summary>
-        /// <value>
-        /// The bones.
-        /// </value>
-        public IList<Animations.Bone> Bones { set; get; }
-        /// <summary>
-        /// Gets or sets the bone names.
-        /// </summary>
-        /// <value>
-        /// The bone names.
-        /// </value>
-        public IList<string> BoneNames { set; get; }
+        /// <param name="bones">The bones.</param>
+        /// <param name="rootInvTransform">The root inv transform.</param>
+        /// <returns></returns>
+        public static Matrix[] CreateNodeBasedBoneMatrices(IList<Animations.Bone> bones, ref Matrix rootInvTransform)
+        {
+            Matrix[] m = null;
+            CreateNodeBasedBoneMatrices(bones, ref rootInvTransform, ref m);
+            return m;
+        }
 
         /// <summary>
         /// Creates the node based bone matrices.
         /// </summary>
         /// <param name="bones">The bones.</param>
         /// <returns></returns>
-        public static Matrix[] CreateNodeBasedBoneMatrices(IList<Animations.Bone> bones, ref Matrix rootInvTransform)
+        public static void CreateNodeBasedBoneMatrices(IList<Animations.Bone> bones, ref Matrix rootInvTransform, ref Matrix[] matrices)
         {
-            var m = new Matrix[bones.Count];
+            var m = matrices ?? new Matrix[bones.Count];
             for(int i = 0; i <bones.Count; ++i)
             {
                 if(bones[i].Node != null)
@@ -94,7 +86,7 @@ namespace HelixToolkit.UWP
                     m[i] = Matrix.Identity;
                 }
             }
-            return m;
+            matrices = m;
         }
 
 

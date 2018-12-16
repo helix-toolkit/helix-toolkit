@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public sealed class KeyFrameUpdater
+        public class KeyFrameUpdater : IAnimationUpdater
         {
             public Animation Animation { get; }
 
@@ -83,27 +83,18 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="timeStamp">The time stamp (ticks).</param>
             /// <param name="frequency">The frequency (ticks per second).</param>
-            /// <returns></returns>
-            public Matrix[] Update(long timeStamp, long frequency)
+            public void Update(long timeStamp, long frequency)
             {
-                Matrix[] bones = null;
-                Update(timeStamp, frequency, ref bones);
-                return bones;
-            }
-            /// <summary>
-            /// Updates the animation by specified time stamp (ticks) and frequency (ticks per second).
-            /// </summary>
-            /// <param name="timeStamp">The time stamp (ticks).</param>
-            /// <param name="frequency">The frequency (ticks per second).</param>
-            /// <param name="bones">The bones.</param>
-            public void Update(long timeStamp, long frequency, ref Matrix[] bones)
-            {
+                if(Animation.BoneSkinMeshes ==null || Animation.BoneSkinMeshes.Count == 0)
+                {
+                    return;
+                }
                 if(currentTime == 0)
                 {
                     currentTime = timeStamp;
                 }
                 var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency;
-
+                var boneNode = Animation.BoneSkinMeshes[0];
                 if(timeElpased > Animation.EndTime)
                 {
                     switch (RepeatMode)
@@ -111,7 +102,7 @@ namespace HelixToolkit.UWP
                         case AnimationRepeatMode.PlayOnce:
                             return;
                         case AnimationRepeatMode.PlayOnceHold:
-                            OutputBones(ref bones);
+                            OutputBones(boneNode);
                             return;
                     }
                 }
@@ -130,7 +121,7 @@ namespace HelixToolkit.UWP
                 for (int i = start; i < end; ++i)
                 {
                     var frame = Animation.Keyframes[i];
-                    tempBones[frame.BoneIndex] = frame.Transform;
+                    tempBones[frame.BoneIndex] = frame.ToTransformMatrix();
                     tempKeyframes[frame.BoneIndex] = frame;
                 }
                 if (timeElpased > Animation.Keyframes[start].Time)
@@ -147,17 +138,11 @@ namespace HelixToolkit.UWP
                         var currFrame = tempKeyframes[nextFrame.BoneIndex];
                         if (currFrame.HasValue)
                         {
-                            // Interpolation using Lerp on scale and translation, and Slerp on Rotation (Quaternion)
-                            // Decompose the previous key-frame's transform
-                            currFrame.Value.Transform.DecomposeUniformScale(out float s1, out Quaternion q1, out Vector3 t1);
-                            // Decompose the current key-frame's transform
-                            nextFrame.Transform.DecomposeUniformScale(out float s2, out Quaternion q2, out Vector3 t2);
-
                             // Perform interpolation and reconstitute matrix
                             tempBones[nextFrame.BoneIndex] =
-                                Matrix.Scaling(MathUtil.Lerp(s1, s2, amount)) *
-                                Matrix.RotationQuaternion(Quaternion.Slerp(q1, q2, amount)) *
-                                Matrix.Translation(Vector3.Lerp(t1, t2, amount));
+                                Matrix.Scaling(Vector3.Lerp(currFrame.Value.Scale, nextFrame.Scale, amount)) *
+                                Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Value.Rotation, nextFrame.Rotation, amount)) *
+                                Matrix.Translation(Vector3.Lerp(currFrame.Value.Translation, nextFrame.Translation, amount));
                         }
                         else
                         {
@@ -183,7 +168,7 @@ namespace HelixToolkit.UWP
                 {
                     currentBones[i] = Bones[i].InvBindPose * tempBones[i];
                 }
-                OutputBones(ref bones);
+                OutputBones(boneNode);
 
                 if(RepeatMode == AnimationRepeatMode.Loop)
                 {
@@ -196,15 +181,15 @@ namespace HelixToolkit.UWP
             }
 
 
-            private void OutputBones(ref Matrix[] bones)
+            private void OutputBones(IBoneMatricesNode node)
             {
-                if (bones == null || bones.Length != BoneCount)
+                if (node.BoneMatrices == null || node.BoneMatrices.Length != BoneCount)
                 {
-                    bones = currentBones.ToArray();
+                    node.BoneMatrices = currentBones.ToArray();
                 }
                 else
                 {
-                    currentBones.CopyTo(bones, 0);
+                    currentBones.CopyTo(node.BoneMatrices, 0);
                 }
             }
 
@@ -215,7 +200,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        public sealed class NodeAnimationUpdater : IAnimationUpdater
+        public class NodeAnimationUpdater : IAnimationUpdater
         {
             private struct IndexTime
             {
@@ -271,13 +256,35 @@ namespace HelixToolkit.UWP
                 {
                     foreach(var m in Animation.BoneSkinMeshes)
                     {
-                        if (m.IsRenderable && m.Geometry is BoneSkinnedMeshGeometry3D mesh)
+                        if (m is Model.Scene.BoneSkinMeshNode skinMesh && skinMesh.IsRenderable)
                         {
-                            var inv = m.TotalModelMatrixInternal.Inverted();
-                            m.BoneMatrices = BoneSkinnedMeshGeometry3D.CreateNodeBasedBoneMatrices(mesh.Bones, ref inv); 
+                            var inv = skinMesh.TotalModelMatrixInternal.Inverted();
+                            var matrices = OnGetNewBoneMatrices(skinMesh.Bones.Length);
+                            BoneSkinnedMeshGeometry3D.CreateNodeBasedBoneMatrices(skinMesh.Bones, ref inv, ref matrices);
+                            var old = m.BoneMatrices;
+                            m.BoneMatrices = matrices;
+                            OnReturnOldBoneMatrices(old);
                         }
                     }
                 }
+            }
+
+            /// <summary>
+            /// Called when [get new bone matrices]. Override this to provide your own matices pool to avoid small object creation
+            /// </summary>
+            /// <param name="count">The count.</param>
+            /// <returns></returns>
+            protected virtual Matrix[] OnGetNewBoneMatrices(int count)
+            {
+                return new Matrix[count];
+            }
+            /// <summary>
+            /// Called when [return old bone matrices]. Override this to return the old matrix array back to your own matices pool. <see cref="OnGetNewBoneMatrices(int)"/>
+            /// </summary>
+            /// <param name="m">The m.</param>
+            protected virtual void OnReturnOldBoneMatrices(Matrix[] m)
+            {
+
             }
 
             private void UpdateNodes(float timeElapsed)
@@ -305,7 +312,7 @@ namespace HelixToolkit.UWP
                     float amount = diff / length;
                     var transform = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
                                 Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount)) *
-                                Matrix.Translation(Vector3.Lerp(currFrame.Position, nextFrame.Position, amount));
+                                Matrix.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
                     n.Node.ModelMatrix = transform;
                 }
             }

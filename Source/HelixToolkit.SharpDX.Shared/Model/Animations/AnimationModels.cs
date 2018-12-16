@@ -20,6 +20,7 @@ namespace HelixToolkit.UWP
     {
         public struct Bone
         {
+            public string Name;
             public Model.Scene.SceneNode ParentNode; // Used for scene graph based node animation
             public Model.Scene.SceneNode Node; // Used for scene graph based node animation
             public int ParentIndex;// Used only for array based bones
@@ -28,25 +29,23 @@ namespace HelixToolkit.UWP
             public Matrix BoneLocalTransform;
         };
 
-        public struct Keyframe
-        {
-            public int BoneIndex;// Used only for array based bones
-            public float Time;
-            public Matrix Transform;
-        };
-
         public struct NodeAnimation
         {
             public Model.Scene.SceneNode Node; // Used for scene graph based node animation
-            public FastList<Keyframe1> KeyFrames;
+            public FastList<Keyframe> KeyFrames;
         }
 
-        public struct Keyframe1
+        public struct Keyframe
         {
-            public Vector3 Position;
+            public Vector3 Translation;
             public Quaternion Rotation;
             public Vector3 Scale;
             public float Time;
+            public int BoneIndex;// Used only for array based bones
+            public Matrix ToTransformMatrix()
+            {
+                return Matrix.Scaling(Scale) * Matrix.RotationQuaternion(Rotation) * Matrix.Translation(Translation);
+            }
         }
 
         public enum AnimationType
@@ -114,7 +113,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The bone skin meshes.
             /// </value>
-            public List<Model.Scene.BoneSkinMeshNode> BoneSkinMeshes { set; get; }
+            public List<IBoneMatricesNode> BoneSkinMeshes { set; get; }
             /// <summary>
             /// Gets a value indicating whether this animation has bone skin meshes.
             /// </summary>

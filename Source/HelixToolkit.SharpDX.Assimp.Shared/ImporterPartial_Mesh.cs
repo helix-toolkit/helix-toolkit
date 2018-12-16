@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP
             /// <param name="transform"></param>
             /// <returns></returns>
             /// <exception cref="System.NotSupportedException">Mesh Type {mesh.Type}</exception>
-            protected virtual HxScene.SceneNode ToHxMesh(MeshInfo mesh, HelixInternalScene scene, Matrix transform)
+            protected virtual HxScene.SceneNode ToHxMeshNode(MeshInfo mesh, HelixInternalScene scene, Matrix transform)
             {
                 switch (mesh.Type)
                 {
@@ -44,7 +44,18 @@ namespace HelixToolkit.UWP
                             ? FillMode.Wireframe
                             : FillMode.Solid;
                         //Determine if has bones
-                        var mnode = mesh.AssimpMesh.HasBones ? new HxScene.BoneSkinMeshNode() : new HxScene.MeshNode();
+                        var mnode = mesh.AssimpMesh.HasBones ? 
+                            new HxScene.BoneSkinMeshNode()
+                            {
+                                Bones = mesh.AssimpMesh.Bones.Select(x => new HxAnimations.Bone()
+                                {
+                                    Name = x.Name,
+                                    BindPose = x.OffsetMatrix.ToSharpDXMatrix().Inverted(),
+                                    BoneLocalTransform = Matrix.Identity,
+                                    InvBindPose = x.OffsetMatrix.ToSharpDXMatrix(),//Documented at https://github.com/assimp/assimp/pull/1803
+                                }).ToArray()
+                            }
+                            : new HxScene.MeshNode();
                         mnode.Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.MeshNode) : mesh.AssimpMesh.Name;
                         mnode.Geometry = mesh.Mesh;
                         mnode.Material = material.Item2;
@@ -131,9 +142,7 @@ namespace HelixToolkit.UWP
                 var accumArray = new int[m.Positions.Count];
                 var boneMesh = new BoneSkinnedMeshGeometry3D(m)
                 {
-                    VertexBoneIds = vertBoneIds,
-                    Bones = new FastList<HxAnimations.Bone>(mesh.BoneCount),
-                    BoneNames = new FastList<string>(mesh.BoneCount)
+                    VertexBoneIds = vertBoneIds
                 };
                 for (var j = 0; j < mesh.BoneCount; ++j)
                 {
@@ -165,13 +174,6 @@ namespace HelixToolkit.UWP
                             }
                         }
                     }
-                    boneMesh.Bones.Add(new HxAnimations.Bone
-                    {
-                        BindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix().Inverted(),
-                        BoneLocalTransform = Matrix.Identity,
-                        InvBindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix(),//Documented at https://github.com/assimp/assimp/pull/1803
-                    });
-                    boneMesh.BoneNames.Add(mesh.Bones[j].Name);
                 }
 
                 return boneMesh;

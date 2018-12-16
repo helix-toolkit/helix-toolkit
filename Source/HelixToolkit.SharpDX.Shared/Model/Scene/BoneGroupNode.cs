@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP
     {
         using Core;
 
-        public sealed class BoneGroupNode : GroupNodeBase
+        public sealed class BoneGroupNode : GroupNodeBase, Animations.IBoneMatricesNode
         {
             public Matrix[] BoneMatrices
             {
@@ -31,6 +31,14 @@ namespace HelixToolkit.UWP
                 }
                 get { return core.BoneMatrices; }
             }
+
+            /// <summary>
+            /// Gets or sets the bones.
+            /// </summary>
+            /// <value>
+            /// The bones.
+            /// </value>
+            public Animations.Bone[] Bones { set; get; }
 
             private readonly BoneUploaderCore core = new BoneUploaderCore();
 

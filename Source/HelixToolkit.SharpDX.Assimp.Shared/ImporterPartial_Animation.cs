@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP
     {
         public partial class Importer
         {
-            protected virtual ErrorCode ProcessNodeAnimation(NodeAnimationChannel channel, double ticksPerSecond, out FastList<HxAnimations.Keyframe1> list)
+            protected virtual ErrorCode ProcessNodeAnimation(NodeAnimationChannel channel, double ticksPerSecond, out FastList<HxAnimations.Keyframe> list)
             {
                 var posCount = channel.PositionKeyCount;
                 var rotCount = channel.RotationKeyCount;
@@ -32,13 +32,13 @@ namespace HelixToolkit.UWP
                     return ErrorCode.NonUniformAnimationKeyDoesNotSupported;
                 }
 
-                var ret = new FastList<HxAnimations.Keyframe1>(posCount);
+                var ret = new FastList<HxAnimations.Keyframe>(posCount);
                 for (var i = 0; i < posCount; ++i)
                 {
-                    ret.Add(new HxAnimations.Keyframe1
+                    ret.Add(new HxAnimations.Keyframe
                     {
                         Time = (float)(channel.PositionKeys[i].Time / ticksPerSecond),
-                        Position = channel.PositionKeys[i].Value.ToSharpDXVector3(),
+                        Translation = channel.PositionKeys[i].Value.ToSharpDXVector3(),
                         Rotation = channel.RotationKeys[i].Value.ToSharpDXQuaternion(),
                         Scale = channel.ScalingKeys[i].Value.ToSharpDXVector3()
                     });
@@ -56,19 +56,18 @@ namespace HelixToolkit.UWP
                         dict.Add(node.Name, node);
                 }
 
-                foreach (var mesh in scene.Meshes.Where(x => x.Mesh is BoneSkinnedMeshGeometry3D)
-                    .Select(x => x.Mesh as BoneSkinnedMeshGeometry3D))
+                foreach (var node in SceneNodes.Where(x => x is Animations.IBoneMatricesNode)
+                    .Select(x => x as Animations.IBoneMatricesNode))
                 {
-                    if (mesh.Bones != null && mesh.BoneNames != null && mesh.Bones.Count == mesh.BoneNames.Count)
+                    if (node.Bones != null)
                     {
-                        for (var i = 0; i < mesh.Bones.Count; ++i)
+                        for (var i = 0; i < node.Bones.Length; ++i)
                         {
-                            if (dict.TryGetValue(mesh.BoneNames[i], out var s))
+                            if (dict.TryGetValue(node.Bones[i].Name, out var s))
                             {
-                                var b = mesh.Bones[i];
+                                ref var b = ref node.Bones[i];
                                 b.ParentNode = s.Parent;
                                 b.Node = s;
-                                mesh.Bones[i] = b;
                                 s.IsAnimationNode = true; // Make sure to set this to true
                             }
                         }
@@ -165,11 +164,11 @@ namespace HelixToolkit.UWP
                     
                     if(node.Parent != null)
                     node = node.Parent;
-                    animation.BoneSkinMeshes = new List<HxScene.BoneSkinMeshNode>();
+                    animation.BoneSkinMeshes = new List<Animations.IBoneMatricesNode>();
                     animation.RootNode = node;
                     foreach (var n in node.Items.PreorderDFT((m) => { return true; }))
                     {
-                        if(n is HxScene.BoneSkinMeshNode boneNode)
+                        if(n is Animations.IBoneMatricesNode boneNode)
                         {
                             animation.BoneSkinMeshes.Add(boneNode);
                         }

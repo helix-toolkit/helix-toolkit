@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public class BoneSkinMeshNode : MeshNode
+        public class BoneSkinMeshNode : MeshNode, Animations.IBoneMatricesNode
         {
             /// <summary>
             /// Gets or sets the bone matrices.
@@ -42,6 +42,13 @@ namespace HelixToolkit.UWP
                     return (RenderCore as BoneSkinRenderCore).BoneMatrices;
                 }
             }
+            /// <summary>
+            /// Gets or sets the bones.
+            /// </summary>
+            /// <value>
+            /// The bones.
+            /// </value>
+            public Animations.Bone[] Bones { set; get; }
 
             /// <summary>
             /// Called when [create render core].
@@ -77,7 +84,23 @@ namespace HelixToolkit.UWP
             {
                 return false;//return base.CanHitTest(context) && !hasBoneParameter;
             }
+
+            public BoneSkinMeshNode CreateSkeletonNode(MaterialCore material, string effectName, float scale = 0.1f)
+            {
+                return CreateSkeletonNode(this, material, effectName, scale);
+            }
+
+            public static BoneSkinMeshNode CreateSkeletonNode(BoneSkinMeshNode node, MaterialCore material, string effectName, float scale)
+            {
+                var skNode = new BoneSkinMeshNode()
+                {
+                    Material = material
+                };
+                skNode.Geometry = BoneSkinnedMeshGeometry3D.CreateSkeletonMesh(node.Bones, scale);
+                skNode.PostEffects = effectName;
+                skNode.Bones = node.Bones;
+                return skNode;
+            }
         }
     }
-
 }

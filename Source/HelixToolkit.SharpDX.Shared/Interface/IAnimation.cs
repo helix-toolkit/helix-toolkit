@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -23,6 +20,7 @@ namespace HelixToolkit.UWP
             Loop,
             PlayOnceHold,
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -65,6 +63,18 @@ namespace HelixToolkit.UWP
             ///   <c>true</c> if this scene node is animation node root; otherwise, <c>false</c>.
             /// </value>
             bool IsAnimationNodeRoot { get; }
+        }
+
+        public interface IBoneMatricesNode
+        {
+            Matrix[] BoneMatrices { set; get; }
+            /// <summary>
+            /// Gets or sets the bones.
+            /// </summary>
+            /// <value>
+            /// The bones.
+            /// </value>
+            Bone[] Bones { set; get; }
         }
     }
 }
