@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using Assimp;
+using Assimp.Configs;
+using SharpDX;
+using SharpDX.Direct3D11;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Assimp;
-using Assimp.Configs;
-using SharpDX;
-using SharpDX.Direct3D11;
-using Animation = Assimp.Animation;
-using TextureType = Assimp.TextureType;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -22,9 +19,9 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using HxScene = Model.Scene;
-    using HxAnimations = Animations;
     using Model;
+    using HxAnimations = Animations;
+    using HxScene = Model.Scene;
 
     namespace Assimp
     {

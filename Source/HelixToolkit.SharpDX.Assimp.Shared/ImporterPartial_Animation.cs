@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using Assimp;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Assimp;
-using Assimp.Configs;
-using SharpDX;
-using SharpDX.Direct3D11;
 using Animation = Assimp.Animation;
-using TextureType = Assimp.TextureType;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -22,9 +14,8 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using HxScene = Model.Scene;
     using HxAnimations = Animations;
-    using Model;
+    using HxScene = Model.Scene;
     namespace Assimp
     {
         public partial class Importer
@@ -43,6 +34,7 @@ namespace HelixToolkit.UWP
 
                 var ret = new FastList<HxAnimations.Keyframe1>(posCount);
                 for (var i = 0; i < posCount; ++i)
+                {
                     ret.Add(new HxAnimations.Keyframe1
                     {
                         Time = (float)(channel.PositionKeys[i].Time / ticksPerSecond),
@@ -50,6 +42,7 @@ namespace HelixToolkit.UWP
                         Rotation = channel.RotationKeys[i].Value.ToSharpDXQuaternion(),
                         Scale = channel.ScalingKeys[i].Value.ToSharpDXVector3()
                     });
+                }
                 list = ret;
                 return ErrorCode.Succeed;
             }
@@ -58,13 +51,18 @@ namespace HelixToolkit.UWP
             {
                 var dict = new Dictionary<string, HxScene.SceneNode>(SceneNodes.Count);
                 foreach (var node in SceneNodes)
+                {
                     if (!dict.ContainsKey(node.Name))
                         dict.Add(node.Name, node);
+                }
 
                 foreach (var mesh in scene.Meshes.Where(x => x.Mesh is BoneSkinnedMeshGeometry3D)
                     .Select(x => x.Mesh as BoneSkinnedMeshGeometry3D))
+                {
                     if (mesh.Bones != null && mesh.BoneNames != null && mesh.Bones.Count == mesh.BoneNames.Count)
+                    {
                         for (var i = 0; i < mesh.Bones.Count; ++i)
+                        {
                             if (dict.TryGetValue(mesh.BoneNames[i], out var s))
                             {
                                 var b = mesh.Bones[i];
@@ -73,30 +71,38 @@ namespace HelixToolkit.UWP
                                 mesh.Bones[i] = b;
                                 s.IsAnimationNode = true; // Make sure to set this to true
                             }
+                        }
+                    }
+                }
 
                 if (scene.AssimpScene.HasAnimations)
                 {
+                    bool hasBoneSkinnedMesh = scene.Meshes.Where(x => x.Mesh is BoneSkinnedMeshGeometry3D).Count() > 0 ? true : false;
                     var animationList = new List<HxAnimations.Animation>(scene.AssimpScene.AnimationCount);
                     if (Configuration.EnableParallelProcessing)
                         Parallel.ForEach(scene.AssimpScene.Animations, ani =>
                         {
-                            if (LoadAnimation(ani, dict, out var hxAni) == ErrorCode.Succeed)
+                            if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
+                            {
                                 lock (animationList)
                                 {
                                     animationList.Add(hxAni);
                                 }
+                            }
                         });
                     else
                         foreach (var ani in scene.AssimpScene.Animations)
-                            if (LoadAnimation(ani, dict, out var hxAni) == ErrorCode.Succeed)
+                        {
+                            if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
                                 animationList.Add(hxAni);
+                        }
                     scene.Animations = animationList;
                     Animations.AddRange(animationList);
                 }
                 return ErrorCode.Succeed;
             }
 
-            private ErrorCode LoadAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict,
+            private ErrorCode LoadAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict, bool searchBoneSkinMeshNode,
                 out HxAnimations.Animation hxAni)
             {
                 hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.Node)
@@ -111,6 +117,7 @@ namespace HelixToolkit.UWP
                 {
                     var code = ErrorCode.None;
                     foreach (var key in ani.NodeAnimationChannels)
+                    {
                         if (dict.TryGetValue(key.NodeName, out var node))
                         {
                             var nAni = new HxAnimations.NodeAnimation
@@ -129,13 +136,46 @@ namespace HelixToolkit.UWP
                                 break;
                             }
                         }
-
+                    }
+                    if (searchBoneSkinMeshNode)
+                    {
+                        FindBoneSkinMeshes(hxAni);
+                    }
                     return code;
                 }
 
                 return ErrorCode.Failed;
             }
 
+            private void FindBoneSkinMeshes(HxAnimations.Animation animation)
+            {
+                if(animation.NodeAnimationCollection != null && animation.NodeAnimationCollection.Count > 0)
+                {
+                    // Search all the bone skinned meshes from the common animation node root
+                    var node = animation.NodeAnimationCollection[0].Node;
+                    while(node != null && !node.IsAnimationNodeRoot)
+                    {
+                        node = node.Parent;
+                    }
+
+                    if (node == null)
+                    {
+                        return;
+                    }
+                    animation.RootNode = node;
+                    if(node.Parent != null)
+                    node = node.Parent;
+                    animation.BoneSkinMeshes = new List<HxScene.BoneSkinMeshNode>();
+                    
+                    foreach (var n in node.Items.PreorderDFT((m) => { return true; }))
+                    {
+                        if(n is HxScene.BoneSkinMeshNode boneNode)
+                        {
+                            animation.BoneSkinMeshes.Add(boneNode);
+                        }
+                    }
+                }              
+            }
         }
     }
 }

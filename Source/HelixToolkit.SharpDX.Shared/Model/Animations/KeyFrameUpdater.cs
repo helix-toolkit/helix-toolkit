@@ -259,8 +259,22 @@ namespace HelixToolkit.UWP
                             return;
                     }
                 }
+                UpdateBoneSkinMesh();
                 UpdateNodes(timeElpased);
                 currentTime = timeStamp;
+            }
+
+            private void UpdateBoneSkinMesh()
+            {
+                var rootInv = Animation.RootNode.TotalModelMatrixInternal;
+                rootInv.Invert();
+                foreach(var m in Animation.BoneSkinMeshes)
+                {
+                    if (m.IsRenderable && m.Geometry is BoneSkinnedMeshGeometry3D mesh)
+                    {
+                        m.BoneMatrices = BoneSkinnedMeshGeometry3D.CreateNodeBasedBoneMatrices(mesh.Bones, ref rootInv); 
+                    }
+                }
             }
 
             private void UpdateNodes(float timeElapsed)

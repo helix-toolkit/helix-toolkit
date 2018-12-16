@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assimp;
-using Assimp.Configs;
+﻿using Assimp;
 using SharpDX;
 using SharpDX.Direct3D11;
-using Animation = Assimp.Animation;
-using TextureType = Assimp.TextureType;
+using System;
+using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -22,9 +14,9 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using HxScene = Model.Scene;
-    using HxAnimations = Animations;
     using Model;
+    using HxAnimations = Animations;
+    using HxScene = Model.Scene;
     namespace Assimp
     {
         public partial class Importer
@@ -46,21 +38,20 @@ namespace HelixToolkit.UWP
                         var cullMode = material.Item1.HasTwoSided && material.Item1.IsTwoSided
                             ? CullMode.Back
                             : CullMode.None;
-                        if (Configuration.ForceCullMode) cullMode = Configuration.CullMode;
+                        if (Configuration.ForceCullMode)
+                            cullMode = Configuration.CullMode;
                         var fillMode = material.Item1.HasWireFrame && material.Item1.IsWireFrameEnabled
                             ? FillMode.Wireframe
                             : FillMode.Solid;
-                        return new HxScene.MeshNode
-                        {
-                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name)
-                                ? nameof(HxScene.MeshNode)
-                                : mesh.AssimpMesh.Name,
-                            Geometry = mesh.Mesh,
-                            Material = material.Item2,
-                            ModelMatrix = transform,
-                            CullMode = cullMode,
-                            FillMode = fillMode
-                        };
+                        //Determine if has bones
+                        var mnode = mesh.AssimpMesh.HasBones ? new HxScene.BoneSkinMeshNode() : new HxScene.MeshNode();
+                        mnode.Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.MeshNode) : mesh.AssimpMesh.Name;
+                        mnode.Geometry = mesh.Mesh;
+                        mnode.Material = material.Item2;
+                        mnode.ModelMatrix = transform;
+                        mnode.CullMode = cullMode;
+                        mnode.FillMode = fillMode;
+                        return mnode;
                     case PrimitiveType.Line:
                         var lnode = new HxScene.LineNode
                         {
@@ -147,6 +138,7 @@ namespace HelixToolkit.UWP
                 for (var j = 0; j < mesh.BoneCount; ++j)
                 {
                     if (mesh.Bones[j].HasVertexWeights)
+                    {
                         for (var i = 0; i < mesh.Bones[j].VertexWeightCount; ++i)
                         {
                             var vWeight = mesh.Bones[j].VertexWeights[i];
@@ -172,10 +164,11 @@ namespace HelixToolkit.UWP
                                     break;
                             }
                         }
-
+                    }
                     boneMesh.Bones.Add(new HxAnimations.Bone
                     {
                         BindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix(),
+                        BoneLocalTransform = Matrix.Identity,
                         InvBindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix().Inverted()
                     });
                     boneMesh.BoneNames.Add(mesh.Bones[j].Name);
@@ -228,21 +221,6 @@ namespace HelixToolkit.UWP
                         return new MeshInfo(PrimitiveType.Line, mesh, ToHelixLine(mesh), mesh.MaterialIndex);
                     default:
                         throw new NotSupportedException($"MeshType : {mesh.PrimitiveType} does not supported");
-                }
-            }
-
-            private static TextureAddressMode ToDXAddressMode(TextureWrapMode mode)
-            {
-                switch (mode)
-                {
-                    case TextureWrapMode.Clamp:
-                        return TextureAddressMode.Clamp;
-                    case TextureWrapMode.Mirror:
-                        return TextureAddressMode.Mirror;
-                    case TextureWrapMode.Wrap:
-                        return TextureAddressMode.Wrap;
-                    default:
-                        return TextureAddressMode.Wrap;
                 }
             }
 

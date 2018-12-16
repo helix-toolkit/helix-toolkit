@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assimp;
-using Assimp.Configs;
+﻿using Assimp;
 using SharpDX;
 using SharpDX.Direct3D11;
-using Animation = Assimp.Animation;
+using System;
+using System.Collections.Concurrent;
+using System.IO;
 using TextureType = Assimp.TextureType;
 
 #if !NETFX_CORE
@@ -22,8 +16,6 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using HxScene = Model.Scene;
-    using HxAnimations = Animations;
     using Model;
     namespace Assimp
     {
@@ -295,6 +287,21 @@ namespace HelixToolkit.UWP
                     var m = new MemoryStream();
                     v.CopyTo(m);
                     return m;
+                }
+            }
+
+            private static TextureAddressMode ToDXAddressMode(TextureWrapMode mode)
+            {
+                switch (mode)
+                {
+                    case TextureWrapMode.Clamp:
+                        return TextureAddressMode.Clamp;
+                    case TextureWrapMode.Mirror:
+                        return TextureAddressMode.Mirror;
+                    case TextureWrapMode.Wrap:
+                        return TextureAddressMode.Wrap;
+                    default:
+                        return TextureAddressMode.Wrap;
                 }
             }
         }

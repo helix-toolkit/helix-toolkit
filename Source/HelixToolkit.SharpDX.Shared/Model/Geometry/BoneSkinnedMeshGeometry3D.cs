@@ -75,6 +75,28 @@ namespace HelixToolkit.UWP
         /// </value>
         public IList<string> BoneNames { set; get; }
 
+        /// <summary>
+        /// Creates the node based bone matrices.
+        /// </summary>
+        /// <param name="bones">The bones.</param>
+        /// <returns></returns>
+        public static Matrix[] CreateNodeBasedBoneMatrices(IList<Animations.Bone> bones, ref Matrix rootInvTransform)
+        {
+            var m = new Matrix[bones.Count];
+            for(int i = 0; i <bones.Count; ++i)
+            {
+                if(bones[i].Node != null)
+                {
+                    m[i] = bones[i].BindPose * bones[i].Node.TotalModelMatrixInternal * rootInvTransform;
+                }
+                else
+                {
+                    m[i] = Matrix.Identity;
+                }
+            }
+            return m;
+        }
+
 
         public static BoneSkinnedMeshGeometry3D CreateSkeletonMesh(IList<Animations.Bone> bones, float scale = 1f)
         {
