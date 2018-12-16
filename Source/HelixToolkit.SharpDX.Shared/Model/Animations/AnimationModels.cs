@@ -18,24 +18,36 @@ namespace HelixToolkit.UWP
 {
     namespace Animations
     {
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct Bone
         {
-            public int ParentIndex;
+            public Model.Scene.SceneNode ParentNode; // Used for scene graph based node animation
+            public Model.Scene.SceneNode Node; // Used for scene graph based node animation
+            public int ParentIndex;// Used only for array based bones
             public Matrix InvBindPose;
             public Matrix BindPose;
             public Matrix BoneLocalTransform;
-            public const int SizeInBytes = 4 * (1 + 4 * 4 * 3);
         };
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct Keyframe
         {
-            public int BoneIndex;
+            public int BoneIndex;// Used only for array based bones
             public float Time;
             public Matrix Transform;
-            public const int SizeInBytes = 4 * (2 + 4 * 4);
         };
+
+        public struct NodeAnimation
+        {
+            public Model.Scene.SceneNode Node; // Used for scene graph based node animation
+            public List<Keyframe1> KeyFrames;
+        }
+
+        public struct Keyframe1
+        {
+            public Vector3 Position;
+            public Quaternion Rotation;
+            public Vector3 Scale;
+            public float Time;
+        }
 
         public class Animation
         {
@@ -43,7 +55,8 @@ namespace HelixToolkit.UWP
             public string Name { set; get; }
             public float StartTime { set; get; }
             public float EndTime { set; get; }
-            public List<Keyframe> Keyframes { set; get; } = new List<Keyframe>();
+            public List<Keyframe> Keyframes { set; get; }
+            public List<NodeAnimation> NodeAnimationCollection { set; get; }
         };
     }
 

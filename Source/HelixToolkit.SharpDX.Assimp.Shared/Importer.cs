@@ -1,12 +1,16 @@
-﻿using Assimp;
-using Assimp.Configs;
-using SharpDX;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assimp;
+using Assimp.Configs;
+using SharpDX;
+using SharpDX.Direct3D11;
+using Animation = Assimp.Animation;
+using TextureType = Assimp.TextureType;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -19,39 +23,81 @@ namespace HelixToolkit.UWP
 #endif
 {
     using HxScene = Model.Scene;
+    using HxAnimations = Animations;
+    using Model;
+
     namespace Assimp
     {
         /// <summary>
-        /// 
         /// </summary>
         public enum MaterialType
         {
+            /// <summary>
+            ///     Automatic determine material type
+            /// </summary>
             Auto,
+
+            /// <summary>
+            ///     The blinn phong
+            /// </summary>
             BlinnPhong,
+
+            /// <summary>
+            ///     The PBR
+            /// </summary>
             PBR,
+
+            /// <summary>
+            ///     The diffuse
+            /// </summary>
             Diffuse,
+
+            /// <summary>
+            ///     The vertex color
+            /// </summary>
             VertexColor,
+
+            /// <summary>
+            ///     The normal
+            /// </summary>
             Normal,
-            Position,
+
+            /// <summary>
+            ///     The position
+            /// </summary>
+            Position
         }
+
         /// <summary>
-        /// 
         /// </summary>
         public class ImporterConfiguration
         {
             /// <summary>
-            /// Force to use material type. Default is Auto
+            ///     The ai matkey GLTF basecolor factor for PBR material
             /// </summary>
-            public MaterialType ImportMaterialType = MaterialType.Auto;
+            public string AI_MATKEY_GLTF_BASECOLOR_FACTOR = @"$mat.gltf.pbrMetallicRoughness.baseColorFactor";
+
             /// <summary>
-            /// The enable parallel processing, such as converting Assimp meshes into HelixToolkit meshes
+            ///     The ai matkey GLTF metallic factor for PBR material
             /// </summary>
-            public bool EnableParallelProcessing = false;
+            public string AI_MATKEY_GLTF_METALLIC_FACTOR = @"$mat.gltf.pbrMetallicRoughness.metallicFactor";
+
             /// <summary>
-            /// The default post process steps for Assimp Importer. <see cref="PostProcessSteps.FlipUVs"/> must be used for DirectX texture sampling
+            ///     The ai matkey GLTF metallic, roughness, ambient occlusion texture
+            /// </summary>
+            public string AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE = @"$tex.file";
+
+            /// <summary>
+            ///     The ai matkey GLTF roughness factor for PBR material
+            /// </summary>
+            public string AI_MATKEY_GLTF_ROUGHNESS_FACTOR = @"$mat.gltf.pbrMetallicRoughness.roughnessFactor";
+
+            /// <summary>
+            ///     The default post process steps for Assimp Importer. <see cref="PostProcessSteps.FlipUVs" /> must be used for
+            ///     DirectX texture sampling
             /// </summary>
             public PostProcessSteps AssimpPostProcessSteps =
-                    PostProcessSteps.GenerateNormals
+                PostProcessSteps.GenerateNormals
                 | PostProcessSteps.Triangulate
                 | PostProcessSteps.TransformUVCoords
                 | PostProcessSteps.CalculateTangentSpace
@@ -60,123 +106,63 @@ namespace HelixToolkit.UWP
                 | PostProcessSteps.SortByPrimitiveType
                 | PostProcessSteps.RemoveRedundantMaterials
                 | PostProcessSteps.FlipUVs;
+
             /// <summary>
-            /// The assimp property configuration
+            ///     The assimp property configuration
             /// </summary>
             public PropertyConfig[] AssimpPropertyConfig = null;
+
             /// <summary>
-            /// The external context. Can be use to do more customized configuration for Assimp Importer
+            ///     The cull mode
+            /// </summary>
+            public CullMode CullMode = CullMode.None;
+
+            /// <summary>
+            ///     The enable parallel processing, such as converting Assimp meshes into HelixToolkit meshes
+            /// </summary>
+            public bool EnableParallelProcessing;
+
+            /// <summary>
+            ///     The external context. Can be use to do more customized configuration for Assimp Importer
             /// </summary>
             public AssimpContext ExternalContext = null;
+
             /// <summary>
-            /// The ai matkey GLTF metallic, roughness, ambient occlusion texture
-            /// </summary>
-            public string AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE = @"$tex.file";
-            /// <summary>
-            /// The ai matkey GLTF metallic factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_METALLIC_FACTOR = @"$mat.gltf.pbrMetallicRoughness.metallicFactor";
-            /// <summary>
-            /// The ai matkey GLTF roughness factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_ROUGHNESS_FACTOR = @"$mat.gltf.pbrMetallicRoughness.roughnessFactor";
-            /// <summary>
-            /// The ai matkey GLTF basecolor factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_BASECOLOR_FACTOR = @"$mat.gltf.pbrMetallicRoughness.baseColorFactor";
-            /// <summary>
-            /// The ignore emissive color
-            /// </summary>
-            public bool IgnoreEmissiveColor = false;
-            /// <summary>
-            /// Force cull mode for all imported meshes. Otherwise automatically set cull mode according to the materials.
+            ///     Force cull mode for all imported meshes. Otherwise automatically set cull mode according to the materials.
             /// </summary>
             public bool ForceCullMode = false;
+
             /// <summary>
-            /// The cull mode
+            ///     The ignore emissive color
             /// </summary>
-            public global::SharpDX.Direct3D11.CullMode CullMode = global::SharpDX.Direct3D11.CullMode.None;
+            public bool IgnoreEmissiveColor = false;
+
+            /// <summary>
+            ///     Force to use material type. Default is Auto
+            /// </summary>
+            public MaterialType ImportMaterialType = MaterialType.Auto;
+        }
+
+        [Flags]
+        public enum ErrorCode
+        {
+            None,
+            Failed,
+            Succeed,
+            DuplicateNodeName,
+            FileTypeNotSupported,
+            NonUniformAnimationKeyDoesNotSupported
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public class Importer
         {
-            /// <summary>
-            /// 
-            /// </summary>
-            public sealed class MeshInfo
-            {
-                /// <summary>
-                /// The mesh type
-                /// </summary>
-                public PrimitiveType Type;
-                /// <summary>
-                /// The Assimp mesh
-                /// </summary>
-                public Mesh AssimpMesh;
-                /// <summary>
-                /// The Helix mesh
-                /// </summary>
-                public Geometry3D Mesh;
-                /// <summary>
-                /// The material index
-                /// </summary>
-                public int MaterialIndex;
-                /// <summary>
-                /// Initializes a new instance of the <see cref="MeshInfo"/> class.
-                /// </summary>
-                public MeshInfo()
-                {
-
-                }
-                /// <summary>
-                /// Initializes a new instance of the <see cref="MeshInfo"/> class.
-                /// </summary>
-                /// <param name="type">The type.</param>
-                /// <param name="assimpMesh">The assimp mesh.</param>
-                /// <param name="mesh">The mesh.</param>
-                /// <param name="materialIndex">Index of the material.</param>
-                public MeshInfo(PrimitiveType type, Mesh assimpMesh, Geometry3D mesh, int materialIndex)
-                {
-                    Type = type;
-                    Mesh = mesh;
-                    AssimpMesh = assimpMesh;
-                    MaterialIndex = materialIndex;
-                }
-            }
-            /// <summary>
-            /// 
-            /// </summary>
-            public sealed class HelixScene
-            {
-                /// <summary>
-                /// The meshes
-                /// </summary>
-                public MeshInfo[] Meshes;
-                /// <summary>
-                /// The materials
-                /// </summary>
-                public Tuple<global::Assimp.Material, Model.MaterialCore>[] Materials;
-            }
-            /// <summary>
-            /// Gets the supported formats.
-            /// </summary>
-            /// <value>
-            /// The supported formats.
-            /// </value>
-            public static string[] SupportedFormats { get; }
-
-            public static string SupportedFormatsString { get; }
-
-            private ConcurrentDictionary<string, Stream> textureDict = new ConcurrentDictionary<string, Stream>();
-
             private const string ToUpperDictString = @"..\";
+            private string path = "";
 
-            public ImporterConfiguration Configuration { set; get; } = new ImporterConfiguration();
-
-            private string filePath = "";
+            private readonly ConcurrentDictionary<string, Stream> textureDict =
+                new ConcurrentDictionary<string, Stream>();
 
             static Importer()
             {
@@ -184,18 +170,54 @@ namespace HelixToolkit.UWP
                 {
                     SupportedFormats = temp.GetSupportedImportFormats();
                 }
+
                 var builder = new StringBuilder();
-                foreach(var s in SupportedFormats)
+                foreach (var s in SupportedFormats)
                 {
                     builder.Append("*");
                     builder.Append(s);
                     builder.Append(";");
                 }
+
                 SupportedFormatsString = builder.ToString();
             }
 
             /// <summary>
-            /// Loads the specified file path.
+            ///     Gets the supported formats.
+            /// </summary>
+            /// <value>
+            ///     The supported formats.
+            /// </value>
+            public static string[] SupportedFormats { get; }
+
+            /// <summary>
+            ///     Gets the supported formats string.
+            /// </summary>
+            /// <value>
+            ///     The supported formats string.
+            /// </value>
+            public static string SupportedFormatsString { get; }
+
+            /// <summary>
+            ///     Gets or sets the configuration.
+            /// </summary>
+            /// <value>
+            ///     The configuration.
+            /// </value>
+            public ImporterConfiguration Configuration { set; get; } = new ImporterConfiguration();
+
+            /// <summary>
+            ///     Gets all the loaded scene nodes order by preorder traverse.
+            /// </summary>
+            /// <value>
+            ///     The scene nodes.
+            /// </value>
+            public List<HxScene.SceneNode> SceneNodes { get; } = new List<HxScene.SceneNode>();
+
+            public ErrorCode ErrorCode { private set; get; }
+
+            /// <summary>
+            ///     Loads the model specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
             /// <param name="config">The configuration.</param>
@@ -207,14 +229,15 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// Loads the specified file path.
+            ///     Loads the model specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
             /// <param name="parallelLoad">if set to <c>true</c> [parallel load].</param>
             /// <param name="postprocessSteps">The postprocess steps.</param>
             /// <param name="configs">The configs.</param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps, params PropertyConfig[] configs)
+            public HxScene.SceneNode Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps,
+                params PropertyConfig[] configs)
             {
                 Configuration.EnableParallelProcessing = parallelLoad;
                 Configuration.AssimpPostProcessSteps = postprocessSteps;
@@ -222,15 +245,30 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// Loads the specified file path.
+            ///     Loads the model specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
             /// <returns></returns>
             public HxScene.SceneNode Load(string filePath)
             {
-                this.filePath = filePath;
+                if (Load(filePath, out var root) == ErrorCode.Succeed)
+                    return root;
+                return null;
+            }
+
+            /// <summary>
+            ///     Loads the model by specified file path.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="root">The root.</param>
+            /// <returns></returns>
+            /// <exception cref="System.Exception"></exception>
+            public ErrorCode Load(string filePath, out HxScene.SceneNode root)
+            {
+                this.path = filePath;
+                ErrorCode = ErrorCode.None;
                 AssimpContext importer = null;
-                bool useExtern = false;
+                var useExtern = false;
                 if (Configuration.ExternalContext != null)
                 {
                     importer = Configuration.ExternalContext;
@@ -240,31 +278,43 @@ namespace HelixToolkit.UWP
                 {
                     importer = new AssimpContext();
                 }
-                textureDict.Clear();
+
+                Clear();
+                root = null;
                 try
                 {
                     if (!useExtern && Configuration.AssimpPropertyConfig != null)
-                    {
                         foreach (var config in Configuration.AssimpPropertyConfig)
-                        {
                             importer.SetConfig(config);
-                        }
-                    }
                     importer.SetConfig(new FloatPropertyConfig(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR, 0f));
                     importer.SetConfig(new FloatPropertyConfig(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR, 0f));
+                    var fileName = Path.GetExtension(filePath);
+                    if (!importer.IsImportFormatSupported(fileName))
+                    {
+                        ErrorCode |= ErrorCode.FileTypeNotSupported;
+                        return ErrorCode;
+                    }
 
                     var assimpScene = importer.ImportFile(filePath, Configuration.AssimpPostProcessSteps);
                     if (assimpScene == null)
                     {
-                        return null;
+                        ErrorCode |= ErrorCode.Failed;
+                        return ErrorCode;
                     }
 
                     if (!assimpScene.HasMeshes)
                     {
-                        return new HxScene.GroupNode();
+                        root = new HxScene.GroupNode();
+                        ErrorCode = ErrorCode.Succeed;
+                        return ErrorCode.Succeed;
                     }
 
-                    return ConstructHelixScene(assimpScene.RootNode, ToHelixScene(assimpScene, Configuration.EnableParallelProcessing));
+                    var scene = ToHelixScene(assimpScene, Configuration.EnableParallelProcessing);
+                    root = ConstructHelixScene(assimpScene.RootNode, scene);
+                    var c = ProcessSceneNodes(root);
+                    if (c != ErrorCode.Succeed) return c;
+                    LoadAnimations(scene);
+                    return ErrorCode;
                 }
                 catch (Exception ex)
                 {
@@ -272,89 +322,206 @@ namespace HelixToolkit.UWP
                 }
                 finally
                 {
-                    if (!useExtern)
-                    {
-                        importer.Dispose();
-                    }
+                    if (!useExtern) importer.Dispose();
                 }
+            }
+
+            protected virtual void Clear()
+            {
+                textureDict.Clear();
+                SceneNodes.Clear();
+            }
+
+            protected virtual ErrorCode ProcessSceneNodes(HxScene.SceneNode root)
+            {
+                if (root == null) return ErrorCode.Failed;
+                SceneNodes.Add(root);
+                SceneNodes.AddRange(root.Items.PreorderDFT(n => { return true; }));
+                return ErrorCode.Succeed;
             }
 
             private HelixScene ToHelixScene(Scene scene, bool parallel)
             {
                 var s = new HelixScene
                 {
+                    AssimpScene = scene,
                     Meshes = new MeshInfo[scene.MeshCount],
-                    Materials = new Tuple<global::Assimp.Material, Model.MaterialCore>[scene.MaterialCount]
+                    Materials = new Tuple<global::Assimp.Material, MaterialCore>[scene.MaterialCount]
                 };
-                if (scene.HasMeshes)
-                {
-                    if (parallel)
+                Parallel.Invoke(() =>
                     {
-                        Parallel.ForEach(scene.Meshes, (mesh, state, index) =>
+                        if (scene.HasMeshes)
                         {
-                            s.Meshes[index] = ToHelixGeometry(mesh);
-                        });
-                    }
-                    else
-                    {
-                        for (int i = 0; i < scene.MeshCount; ++i)
-                        {
-                            s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                            if (parallel)
+                                Parallel.ForEach(scene.Meshes,
+                                    (mesh, state, index) => { s.Meshes[index] = ToHelixGeometry(mesh); });
+                            else
+                                for (var i = 0; i < scene.MeshCount; ++i)
+                                    s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
                         }
-                    }
-                }
-                if (scene.HasMaterials)
-                {
-                    if (parallel)
+                    },
+                    () =>
                     {
-                        Parallel.ForEach(scene.Materials, (material, state, index) => 
-                        {
-                            s.Materials[index] = ToHelixMaterial(material);
-                        });
-                    }
-                    else
-                    {
-                        for (int i = 0; i < scene.MaterialCount; ++i)
-                        {
-                            s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
-                        }
-                    }
-                }
+                        if (scene.HasMaterials)
+                            for (var i = 0; i < scene.MaterialCount; ++i)
+                                s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                    });
                 return s;
             }
 
+            private ErrorCode LoadAnimations(HelixScene scene)
+            {
+                var dict = new Dictionary<string, HxScene.SceneNode>(SceneNodes.Count);
+                foreach (var node in SceneNodes)
+                    if (!dict.ContainsKey(node.Name))
+                        dict.Add(node.Name, node);
+
+                foreach (var mesh in scene.Meshes.Where(x => x.Mesh is BoneSkinnedMeshGeometry3D)
+                    .Select(x => x.Mesh as BoneSkinnedMeshGeometry3D))
+                    if (mesh.Bones != null && mesh.BoneNames != null && mesh.Bones.Count == mesh.BoneNames.Count)
+                        for (var i = 0; i < mesh.Bones.Count; ++i)
+                            if (dict.TryGetValue(mesh.BoneNames[i], out var s))
+                            {
+                                var b = mesh.Bones[i];
+                                b.ParentNode = s.Parent;
+                                b.Node = s;
+                                mesh.Bones[i] = b;
+                            }
+
+                if (scene.AssimpScene.HasAnimations)
+                {
+                    var animationDict = new Dictionary<string, HxAnimations.Animation>(scene.AssimpScene.AnimationCount);
+                    if (Configuration.EnableParallelProcessing)
+                        Parallel.ForEach(scene.AssimpScene.Animations, ani =>
+                        {
+                            if (LoadAnimation(ani, dict, out var hxAni) == ErrorCode.Succeed)
+                                lock (animationDict)
+                                {
+                                    animationDict.Add(hxAni.Name, hxAni);
+                                }
+                        });
+                    else
+                        foreach (var ani in scene.AssimpScene.Animations)
+                            if (LoadAnimation(ani, dict, out var hxAni) == ErrorCode.Succeed)
+                                animationDict.Add(hxAni.Name, hxAni);
+                    scene.Animations = animationDict;
+                }
+
+                return ErrorCode.Succeed;
+            }
+
+            private ErrorCode LoadAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict,
+                out HxAnimations.Animation hxAni)
+            {
+                hxAni = new HxAnimations.Animation
+                {
+                    StartTime = 0,
+                    EndTime = (float)(ani.DurationInTicks / ani.TicksPerSecond),
+                    Name = ani.Name,
+                    NodeAnimationCollection = new List<HxAnimations.NodeAnimation>(ani.NodeAnimationChannelCount)
+                };
+
+                if (ani.HasNodeAnimations)
+                {
+                    var code = ErrorCode.None;
+                    foreach (var key in ani.NodeAnimationChannels)
+                        if (dict.TryGetValue(key.NodeName, out var node))
+                        {
+                            var nAni = new HxAnimations.NodeAnimation
+                            {
+                                Node = node
+                            };
+                            code = ProcessNodeAnimation(key, out var keyframes);
+                            if (code == ErrorCode.Succeed)
+                            {
+                                nAni.KeyFrames = keyframes;
+                                hxAni.NodeAnimationCollection.Add(nAni);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                    return code;
+                }
+
+                return ErrorCode.Failed;
+            }
+
+            protected virtual ErrorCode ProcessNodeAnimation(NodeAnimationChannel channel, out List<HxAnimations.Keyframe1> list)
+            {
+                var posCount = channel.PositionKeyCount;
+                var rotCount = channel.RotationKeyCount;
+                var scaleCount = channel.ScalingKeyCount;
+                if (posCount != rotCount || rotCount != scaleCount)
+                {
+                    list = null;
+                    ErrorCode |= ErrorCode.NonUniformAnimationKeyDoesNotSupported;
+                    return ErrorCode.NonUniformAnimationKeyDoesNotSupported;
+                }
+
+                var ret = new List<HxAnimations.Keyframe1>(posCount);
+                for (var i = 0; i < posCount; ++i)
+                    ret.Add(new HxAnimations.Keyframe1
+                    {
+                        Time = (float)channel.PositionKeys[i].Time,
+                        Position = channel.PositionKeys[i].Value.ToSharpDXVector3(),
+                        Rotation = channel.RotationKeys[i].Value.ToSharpDXQuaternion(),
+                        Scale = channel.ScalingKeys[i].Value.ToSharpDXVector3()
+                    });
+                list = ret;
+                return ErrorCode.Succeed;
+            }
 
             private HxScene.SceneNode ConstructHelixScene(Node node, HelixScene scene)
             {
-                if (node.HasChildren || node.MeshCount > 1)
+                var group = new HxScene.GroupNode
                 {
-                    var group = new HxScene.GroupNode
-                    {
-                        Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
-                        ModelMatrix = node.Transform.ToSharpDXMatrix()
-                    };
+                    Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
+                    ModelMatrix = node.Transform.ToSharpDXMatrix()
+                };
+                if (node.HasChildren)
                     foreach (var c in node.Children)
-                    {
                         group.AddChildNode(ConstructHelixScene(c, scene));
-                    }
+                if (node.HasMeshes)
                     foreach (var idx in node.MeshIndices)
                     {
                         var mesh = scene.Meshes[idx];
                         group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
                     }
-                    return group;
-                }
-                else if (node.MeshCount == 1)
-                {
-                    return ToHxMesh(scene.Meshes[node.MeshIndices[0]], scene, node.Transform.ToSharpDXMatrix());
-                }
-                else
-                {
-                    return null;
-                }
+
+                return group;
+                //if (node.HasChildren || node.MeshCount > 1)
+                //{
+                //    var group = new HxScene.GroupNode
+                //    {
+                //        Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
+                //        ModelMatrix = node.Transform.ToSharpDXMatrix()
+                //    };
+                //    foreach (var c in node.Children)
+                //    {
+                //        group.AddChildNode(ConstructHelixScene(c, scene));
+                //    }
+                //    foreach (var idx in node.MeshIndices)
+                //    {
+                //        var mesh = scene.Meshes[idx];
+                //        group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
+                //    }
+                //    return group;
+                //}
+                //else if (node.MeshCount == 1)
+                //{
+                //    return ToHxMesh(scene.Meshes[node.MeshIndices[0]], scene, node.Transform.ToSharpDXMatrix());
+                //}
+                //else
+                //{
+                //    return null;
+                //}
             }
+
             /// <summary>
-            /// To the hx mesh nodes.
+            ///     To the hx mesh nodes.
             /// </summary>
             /// <param name="mesh">The mesh.</param>
             /// <param name="scene">The scene.</param>
@@ -367,17 +534,18 @@ namespace HelixToolkit.UWP
                 {
                     case PrimitiveType.Triangle:
                         var material = scene.Materials[mesh.MaterialIndex];
-                        var cullMode = material.Item1.HasTwoSided && material.Item1.IsTwoSided ?
-                            global::SharpDX.Direct3D11.CullMode.Back : global::SharpDX.Direct3D11.CullMode.None;
-                        if (Configuration.ForceCullMode)
+                        var cullMode = material.Item1.HasTwoSided && material.Item1.IsTwoSided
+                            ? CullMode.Back
+                            : CullMode.None;
+                        if (Configuration.ForceCullMode) cullMode = Configuration.CullMode;
+                        var fillMode = material.Item1.HasWireFrame && material.Item1.IsWireFrameEnabled
+                            ? FillMode.Wireframe
+                            : FillMode.Solid;
+                        return new HxScene.MeshNode
                         {
-                            cullMode = Configuration.CullMode;
-                        }
-                        var fillMode = material.Item1.HasWireFrame && material.Item1.IsWireFrameEnabled ?
-                            global::SharpDX.Direct3D11.FillMode.Wireframe : global::SharpDX.Direct3D11.FillMode.Solid;
-                        return new HxScene.MeshNode()
-                        {
-                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.MeshNode) : mesh.AssimpMesh.Name,
+                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name)
+                                ? nameof(HxScene.MeshNode)
+                                : mesh.AssimpMesh.Name,
                             Geometry = mesh.Mesh,
                             Material = material.Item2,
                             ModelMatrix = transform,
@@ -385,34 +553,32 @@ namespace HelixToolkit.UWP
                             FillMode = fillMode
                         };
                     case PrimitiveType.Line:
-                        var lnode = new HxScene.LineNode()
+                        var lnode = new HxScene.LineNode
                         {
-                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.LineNode) : mesh.AssimpMesh.Name,
+                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name)
+                                ? nameof(HxScene.LineNode)
+                                : mesh.AssimpMesh.Name,
                             Geometry = mesh.Mesh,
-                            ModelMatrix = transform,
+                            ModelMatrix = transform
                         };
-                        var lmaterial = new Model.LineMaterialCore(); //Must create separate line material
+                        var lmaterial = new LineMaterialCore(); //Must create separate line material
                         lnode.Material = lmaterial;
                         var ml = scene.Materials[mesh.MaterialIndex].Item2;
-                        if (ml is Model.DiffuseMaterialCore diffuse)
-                        {
-                            lmaterial.LineColor = diffuse.DiffuseColor;                         
-                        }
+                        if (ml is DiffuseMaterialCore diffuse) lmaterial.LineColor = diffuse.DiffuseColor;
                         return lnode;
                     case PrimitiveType.Point:
-                        var pnode = new HxScene.PointNode()
+                        var pnode = new HxScene.PointNode
                         {
-                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.PointNode) : mesh.AssimpMesh.Name,
+                            Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name)
+                                ? nameof(HxScene.PointNode)
+                                : mesh.AssimpMesh.Name,
                             Geometry = mesh.Mesh,
-                            ModelMatrix = transform,
+                            ModelMatrix = transform
                         };
-                        var pmaterial = new Model.PointMaterialCore(); //Must create separate point material
+                        var pmaterial = new PointMaterialCore(); //Must create separate point material
                         pnode.Material = pmaterial;
                         var pm = scene.Materials[mesh.MaterialIndex].Item2;
-                        if(pm is Model.DiffuseMaterialCore diffuse1)
-                        {
-                            pmaterial.PointColor = diffuse1.DiffuseColor;
-                        }
+                        if (pm is DiffuseMaterialCore diffuse1) pmaterial.PointColor = diffuse1.DiffuseColor;
                         return pnode;
                     default:
                         throw new NotSupportedException($"Mesh Type {mesh.Type} does not supported");
@@ -424,7 +590,11 @@ namespace HelixToolkit.UWP
                 switch (mesh.PrimitiveType)
                 {
                     case PrimitiveType.Triangle:
-                        return new MeshInfo(PrimitiveType.Triangle, mesh, ToHelixMesh(mesh), mesh.MaterialIndex);
+                        if (mesh.HasBones)
+                            return new MeshInfo(PrimitiveType.Triangle, mesh, ToHelixMeshWithBones(mesh),
+                                mesh.MaterialIndex);
+                        else
+                            return new MeshInfo(PrimitiveType.Triangle, mesh, ToHelixMesh(mesh), mesh.MaterialIndex);
                     case PrimitiveType.Point:
                         return new MeshInfo(PrimitiveType.Point, mesh, ToHelixPoint(mesh), mesh.MaterialIndex);
                     case PrimitiveType.Line:
@@ -433,8 +603,9 @@ namespace HelixToolkit.UWP
                         throw new NotSupportedException($"MeshType : {mesh.PrimitiveType} does not supported");
                 }
             }
+
             /// <summary>
-            /// To the helix mesh.
+            ///     To the helix mesh.
             /// </summary>
             /// <param name="mesh">The mesh.</param>
             /// <returns></returns>
@@ -443,61 +614,100 @@ namespace HelixToolkit.UWP
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
                 var builder = new MeshBuilder(false, false);
                 builder.Positions.AddRange(hVertices);
-                for (int i=0; i < mesh.FaceCount; ++i)
+                for (var i = 0; i < mesh.FaceCount; ++i)
                 {
-                    if (!mesh.Faces[i].HasIndices)
-                    {
-                        continue;
-                    }
+                    if (!mesh.Faces[i].HasIndices) continue;
                     if (mesh.Faces[i].IndexCount == 3)
-                    {
                         builder.AddTriangle(mesh.Faces[i].Indices);
-                    }
-                    else if (mesh.Faces[i].IndexCount == 4)
-                    {
-                        builder.AddTriangleFan(mesh.Faces[i].Indices);
-                    }
-                    else
-                    {
-                        //builder.AddPolygonByTriangulation(mesh.Faces[i].Indices);
-                    }
+                    else if (mesh.Faces[i].IndexCount == 4) builder.AddTriangleFan(mesh.Faces[i].Indices);
                 }
-                
-                var hMesh = new MeshGeometry3D() { Positions = hVertices, Indices = builder.TriangleIndices };
+
+                var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = builder.TriangleIndices };
                 if (mesh.HasNormals)
-                {
                     hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => x.ToSharpDXVector3()));
-                }
                 if (mesh.HasTangentBasis)
                 {
                     hMesh.Tangents = new Vector3Collection(mesh.Tangents.Select(x => x.ToSharpDXVector3()));
                     hMesh.BiTangents = new Vector3Collection(mesh.BiTangents.Select(x => x.ToSharpDXVector3()));
                 }
+
                 if (mesh.HasVertexColors(0))
-                {
-                    hMesh.Colors = new Color4Collection(mesh.VertexColorChannels[0].Select(x => new global::SharpDX.Color4(x.R, x.G, x.B, x.A)));
-                }
+                    hMesh.Colors =
+                        new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
                 if (mesh.HasTextureCoords(0))
-                {
-                    hMesh.TextureCoordinates = new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
-                }
+                    hMesh.TextureCoordinates =
+                        new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
                 hMesh.UpdateBounds();
                 hMesh.UpdateOctree();
                 return hMesh;
             }
+
+            protected virtual BoneSkinnedMeshGeometry3D ToHelixMeshWithBones(Mesh mesh)
+            {
+                var m = ToHelixMesh(mesh);
+                var vertBoneIds = new FastList<BoneIds>(Enumerable.Repeat(new BoneIds(), m.Positions.Count));
+                var vertBoneInternal = vertBoneIds.GetInternalArray();
+                var accumArray = new int[m.Positions.Count];
+                var boneMesh = new BoneSkinnedMeshGeometry3D(m)
+                {
+                    VertexBoneIds = vertBoneIds,
+                    Bones = new FastList<HxAnimations.Bone>(mesh.BoneCount),
+                    BoneNames = new FastList<string>(mesh.BoneCount)
+                };
+                for (var j = 0; j < mesh.BoneCount; ++j)
+                {
+                    if (mesh.Bones[j].HasVertexWeights)
+                        for (var i = 0; i < mesh.Bones[j].VertexWeightCount; ++i)
+                        {
+                            var vWeight = mesh.Bones[j].VertexWeights[i];
+                            var currIdx = accumArray[vWeight.VertexID]++;
+                            ref var id = ref vertBoneInternal[vWeight.VertexID];
+                            switch (currIdx)
+                            {
+                                case 0:
+                                    id.Bone1 = j;
+                                    id.Weights.X = vWeight.Weight;
+                                    break;
+                                case 1:
+                                    id.Bone2 = j;
+                                    id.Weights.Y = vWeight.Weight;
+                                    break;
+                                case 2:
+                                    id.Bone3 = j;
+                                    id.Weights.Z = vWeight.Weight;
+                                    break;
+                                case 3:
+                                    id.Bone4 = j;
+                                    id.Weights.W = vWeight.Weight;
+                                    break;
+                            }
+                        }
+
+                    boneMesh.Bones.Add(new HxAnimations.Bone
+                    {
+                        BindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix(),
+                        InvBindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix().Inverted()
+                    });
+                    boneMesh.BoneNames.Add(mesh.Bones[j].Name);
+                }
+
+                return boneMesh;
+            }
+
             /// <summary>
-            /// To the helix point.
+            ///     To the helix point.
             /// </summary>
             /// <param name="mesh">The mesh.</param>
             /// <returns></returns>
             protected virtual PointGeometry3D ToHelixPoint(Mesh mesh)
             {
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
-                var hMesh = new PointGeometry3D() { Positions = hVertices };
+                var hMesh = new PointGeometry3D { Positions = hVertices };
                 return hMesh;
             }
+
             /// <summary>
-            /// To the helix line.
+            ///     To the helix line.
             /// </summary>
             /// <param name="mesh">The mesh.</param>
             /// <returns></returns>
@@ -505,26 +715,28 @@ namespace HelixToolkit.UWP
             {
                 var hVertices = new Vector3Collection(mesh.Vertices.Select(x => x.ToSharpDXVector3()));
                 var hIndices = new IntCollection(mesh.Faces.SelectMany(x => x.Indices));
-                var hMesh = new LineGeometry3D() { Positions = hVertices, Indices = hIndices };
+                var hMesh = new LineGeometry3D { Positions = hVertices, Indices = hIndices };
                 if (mesh.HasVertexColors(0))
-                {
-                    hMesh.Colors = new Color4Collection(mesh.VertexColorChannels[0].Select(x => new global::SharpDX.Color4(x.R, x.G, x.B, x.A)));
-                }
+                    hMesh.Colors =
+                        new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
                 return hMesh;
             }
+
             /// <summary>
-            /// To the phong material.
+            ///     To the phong material.
             /// </summary>
             /// <param name="material">The material.</param>
             /// <returns></returns>
-            protected virtual Model.PhongMaterialCore OnCreatePhongMaterial(global::Assimp.Material material)
+            protected virtual PhongMaterialCore OnCreatePhongMaterial(global::Assimp.Material material)
             {
-                var phong = new Model.PhongMaterialCore
+                var phong = new PhongMaterialCore
                 {
                     AmbientColor = material.HasColorAmbient ? material.ColorAmbient.ToSharpDXColor4() : Color.Black,
                     DiffuseColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.Black,
                     EmissiveColor = material.HasColorEmissive ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
-                    ReflectiveColor = material.HasColorReflective ? material.ColorReflective.ToSharpDXColor4() : Color.Black,
+                    ReflectiveColor = material.HasColorReflective
+                        ? material.ColorReflective.ToSharpDXColor4()
+                        : Color.Black,
                     SpecularShininess = material.Shininess
                 };
                 if (material.HasOpacity)
@@ -533,6 +745,7 @@ namespace HelixToolkit.UWP
                     c.Alpha = material.Opacity;
                     phong.DiffuseColor = c;
                 }
+
                 if (material.HasTextureDiffuse)
                 {
                     phong.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
@@ -541,63 +754,52 @@ namespace HelixToolkit.UWP
                     desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
                     phong.DiffuseMapSampler = desc;
                 }
+
                 if (material.HasTextureNormal)
-                {
                     phong.NormalMap = LoadTexture(material.TextureNormal.FilePath);
-                }
-                else if (material.HasTextureHeight)
-                {
-                    phong.NormalMap = LoadTexture(material.TextureHeight.FilePath);
-                }
+                else if (material.HasTextureHeight) phong.NormalMap = LoadTexture(material.TextureHeight.FilePath);
                 if (material.HasTextureSpecular)
-                {
                     phong.SpecularColorMap = LoadTexture(material.TextureSpecular.FilePath);
-                }
                 if (material.HasTextureDisplacement)
-                {
                     phong.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
-                }
                 if (material.HasBumpScaling)
-                {
-                    phong.DisplacementMapScaleMask = new global::SharpDX.Vector4(material.BumpScaling, material.BumpScaling, material.BumpScaling, 0);
-                }
-                if (material.HasTextureOpacity)
-                {
-                    phong.DiffuseAlphaMap = LoadTexture(material.TextureOpacity.FilePath);
-                }
+                    phong.DisplacementMapScaleMask = new Vector4(material.BumpScaling, material.BumpScaling,
+                        material.BumpScaling, 0);
+                if (material.HasTextureOpacity) phong.DiffuseAlphaMap = LoadTexture(material.TextureOpacity.FilePath);
                 return phong;
             }
+
             /// <summary>
-            /// To the PBR material.
+            ///     To the PBR material.
             /// </summary>
             /// <param name="material">The material.</param>
             /// <returns></returns>
-            protected virtual Model.PBRMaterialCore OnCreatePBRMaterial(global::Assimp.Material material)
+            protected virtual PBRMaterialCore OnCreatePBRMaterial(global::Assimp.Material material)
             {
-                var pbr = new Model.PBRMaterialCore()
+                var pbr = new PBRMaterialCore
                 {
                     AlbedoColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.Black,
-                    EmissiveColor = material.HasColorEmissive && !Configuration.IgnoreEmissiveColor ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
-                    ReflectanceFactor = material.HasReflectivity ? material.Reflectivity : 0,
+                    EmissiveColor = material.HasColorEmissive && !Configuration.IgnoreEmissiveColor
+                        ? material.ColorEmissive.ToSharpDXColor4()
+                        : Color.Black,
+                    ReflectanceFactor = material.HasReflectivity ? material.Reflectivity : 0
                 };
                 if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
-                {
-                    pbr.AlbedoColor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR).GetColor4DValue().ToSharpDXColor4();
-                }
-                if(material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR))
-                {
-                    pbr.MetallicFactor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR).GetFloatValue();
-                }
-                if(material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR))
-                {
-                    pbr.RoughnessFactor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR).GetFloatValue();
-                }
+                    pbr.AlbedoColor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR)
+                        .GetColor4DValue().ToSharpDXColor4();
+                if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR))
+                    pbr.MetallicFactor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR)
+                        .GetFloatValue();
+                if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR))
+                    pbr.RoughnessFactor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR)
+                        .GetFloatValue();
                 if (material.HasOpacity)
                 {
                     var c = pbr.AlbedoColor;
                     c.Alpha = material.Opacity;
                     pbr.AlbedoColor = c;
                 }
+
                 if (material.HasTextureDiffuse)
                 {
                     pbr.AlbedoMap = LoadTexture(material.TextureDiffuse.FilePath);
@@ -606,65 +808,57 @@ namespace HelixToolkit.UWP
                     desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
                     pbr.SurfaceMapSampler = desc;
                 }
+
                 if (material.HasTextureNormal)
-                {
                     pbr.NormalMap = LoadTexture(material.TextureNormal.FilePath);
-                }
-                else if (material.HasTextureHeight)
+                else if (material.HasTextureHeight) pbr.NormalMap = LoadTexture(material.TextureHeight.FilePath);
+                if (material.HasProperty(Configuration.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, TextureType.Unknown,
+                    0))
                 {
-                    pbr.NormalMap = LoadTexture(material.TextureHeight.FilePath);
-                }
-                if (material.HasProperty(Configuration.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, TextureType.Unknown, 0))
-                {
-                    var t = material.GetProperty(Configuration.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, TextureType.Unknown, 0);
+                    var t = material.GetProperty(Configuration.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE,
+                        TextureType.Unknown, 0);
                     pbr.RMAMap = LoadTexture(t.GetStringValue());
                 }
                 else if (material.HasTextureSpecular)
                 {
                     pbr.RMAMap = LoadTexture(material.TextureSpecular.FilePath);
                 }
+
                 if (material.HasTextureDisplacement)
-                {
                     pbr.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
-                }
                 if (material.HasBumpScaling)
-                {
-                    pbr.DisplacementMapScaleMask = new global::SharpDX.Vector4(material.BumpScaling, material.BumpScaling, material.BumpScaling, 0);
-                }
-                if (material.HasTextureLightMap)
-                {
-                    pbr.IrradianceMap = LoadTexture(material.TextureLightMap.FilePath);
-                }
+                    pbr.DisplacementMapScaleMask = new Vector4(material.BumpScaling, material.BumpScaling,
+                        material.BumpScaling, 0);
+                if (material.HasTextureLightMap) pbr.IrradianceMap = LoadTexture(material.TextureLightMap.FilePath);
                 return pbr;
             }
 
             /// <summary>
-            /// To the helix material.
+            ///     To the helix material.
             /// </summary>
             /// <param name="material">The material.</param>
             /// <returns></returns>
             /// <exception cref="System.NotSupportedException">Shading Mode {material.ShadingMode}</exception>
-            protected virtual Tuple<global::Assimp.Material, Model.MaterialCore> ToHelixMaterial(global::Assimp.Material material)
+            protected virtual Tuple<global::Assimp.Material, MaterialCore> ToHelixMaterial(
+                global::Assimp.Material material)
             {
-                Model.MaterialCore core = null;
+                MaterialCore core = null;
                 if (!material.HasShadingMode)
                 {
-                    if(material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR)
+                    if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR)
                         || material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR)
                         || material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
                     {
                         var pbr = OnCreatePBRMaterial(material);
-                        return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, pbr);
+                        return new Tuple<global::Assimp.Material, MaterialCore>(material, pbr);
                     }
-                    else
-                    {
-                        var phong = OnCreatePhongMaterial(material);
-                        return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, phong);
-                    }
+
+                    var phong = OnCreatePhongMaterial(material);
+                    return new Tuple<global::Assimp.Material, MaterialCore>(material, phong);
                 }
+
                 var mode = material.ShadingMode;
-                if(Configuration.ImportMaterialType != MaterialType.Auto)
-                {
+                if (Configuration.ImportMaterialType != MaterialType.Auto)
                     switch (Configuration.ImportMaterialType)
                     {
                         case MaterialType.BlinnPhong:
@@ -684,7 +878,6 @@ namespace HelixToolkit.UWP
                         case MaterialType.Position:
                             break;
                     }
-                }
                 switch (material.ShadingMode)
                 {
                     case ShadingMode.Blinn:
@@ -698,7 +891,7 @@ namespace HelixToolkit.UWP
                         core = OnCreatePBRMaterial(material);
                         break;
                     case ShadingMode.Gouraud:
-                        var diffuse = new Model.DiffuseMaterialCore()
+                        var diffuse = new DiffuseMaterialCore
                         {
                             DiffuseColor = material.ColorDiffuse.ToSharpDXColor4()
                         };
@@ -708,53 +901,49 @@ namespace HelixToolkit.UWP
                             c.Alpha = material.Opacity;
                             diffuse.DiffuseColor = c;
                         }
+
                         if (material.HasTextureDiffuse)
-                        {
                             diffuse.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
-                        }
-                        if(material.ShadingMode == ShadingMode.Flat)
-                        {
-                            diffuse.EnableUnLit = true;
-                        }
+                        if (material.ShadingMode == ShadingMode.Flat) diffuse.EnableUnLit = true;
                         core = diffuse;
                         break;
                     case ShadingMode.Flat:
-                        core = new Model.ColorMaterialCore();
+                        core = new ColorMaterialCore();
                         break;
                     default:
                         switch (Configuration.ImportMaterialType)
                         {
                             case MaterialType.Position:
-                                core = new Model.PositionMaterialCore();
+                                core = new PositionMaterialCore();
                                 break;
                             case MaterialType.Normal:
-                                core = new Model.NormalMaterialCore();
+                                core = new NormalMaterialCore();
                                 break;
                             default:
-                                throw new NotSupportedException($"Shading Mode {material.ShadingMode} does not supported.");
+                                throw new NotSupportedException(
+                                    $"Shading Mode {material.ShadingMode} does not supported.");
                         }
+
                         break;
                 }
-                if (core != null)
-                {
-                    core.Name = material.Name;
-                }
-                return new Tuple<global::Assimp.Material, Model.MaterialCore>(material, core);
+
+                if (core != null) core.Name = material.Name;
+                return new Tuple<global::Assimp.Material, MaterialCore>(material, core);
             }
 
 
-            private static global::SharpDX.Direct3D11.TextureAddressMode ToDXAddressMode(TextureWrapMode mode)
+            private static TextureAddressMode ToDXAddressMode(TextureWrapMode mode)
             {
                 switch (mode)
                 {
                     case TextureWrapMode.Clamp:
-                        return global::SharpDX.Direct3D11.TextureAddressMode.Clamp;
+                        return TextureAddressMode.Clamp;
                     case TextureWrapMode.Mirror:
-                        return global::SharpDX.Direct3D11.TextureAddressMode.Mirror;
+                        return TextureAddressMode.Mirror;
                     case TextureWrapMode.Wrap:
-                        return global::SharpDX.Direct3D11.TextureAddressMode.Wrap;
+                        return TextureAddressMode.Wrap;
                     default:
-                        return global::SharpDX.Direct3D11.TextureAddressMode.Wrap;
+                        return TextureAddressMode.Wrap;
                 }
             }
 
@@ -764,46 +953,118 @@ namespace HelixToolkit.UWP
                 {
                     return s;
                 }
-                else
-                {
-                    var texture = OnLoadTexture(path);
-                    if (texture != null)
-                    {
-                        textureDict.TryAdd(path, texture);
-                    }
-                    return texture;
-                }
+
+                var texture = OnLoadTexture(path);
+                if (texture != null) textureDict.TryAdd(path, texture);
+                return texture;
             }
+
             /// <summary>
-            /// Called when [load texture].
+            ///     Called when [load texture].
             /// </summary>
             /// <param name="path">The path.</param>
             /// <returns></returns>
             protected virtual Stream OnLoadTexture(string path)
             {
-                var dict = Path.GetDirectoryName(filePath);
+                var dict = Path.GetDirectoryName(this.path);
                 var p = Path.GetFullPath(Path.Combine(dict, path));
-                if (!File.Exists(p) && path.StartsWith(ToUpperDictString))
+                if (!File.Exists(p)) p = HandleTexturePathNotFound(dict, path);
+                if (!File.Exists(p)) return null;
+                return LoadFileToStream(p);
+            }
+
+            protected virtual string HandleTexturePathNotFound(string dir, string texturePath)
+            {
+                //If file not found in texture path dir, try to find the file in the same dir as the model file
+                if (texturePath.StartsWith(ToUpperDictString))
                 {
-                    path.Remove(0, ToUpperDictString.Length);
-                    p = Path.GetFullPath(Path.Combine(dict, path));
+                    texturePath.Remove(0, ToUpperDictString.Length);
+                    var p = Path.GetFullPath(Path.Combine(dir, texturePath));
+                    if (File.Exists(p)) return p;
                 }
-                var texture = LoadFileToStream(p);               
-                return texture;
+
+                //If still not found, try to go one upper level and find
+                var upper = Directory.GetParent(dir).FullName;
+                upper = Path.GetFullPath(upper + texturePath);
+                if (File.Exists(upper)) return upper;
+
+                return "";
             }
 
             private static Stream LoadFileToStream(string path)
-            {             
-                if (!File.Exists(path))
-                {
-                    return null;
-                }
+            {
+                if (!File.Exists(path)) return null;
                 using (var v = File.OpenRead(path))
                 {
                     var m = new MemoryStream();
                     v.CopyTo(m);
                     return m;
                 }
+            }
+
+            /// <summary>
+            /// </summary>
+            protected sealed class MeshInfo
+            {
+                /// <summary>
+                ///     The Assimp mesh
+                /// </summary>
+                public Mesh AssimpMesh;
+
+                /// <summary>
+                ///     The material index
+                /// </summary>
+                public int MaterialIndex;
+
+                /// <summary>
+                ///     The Helix mesh
+                /// </summary>
+                public Geometry3D Mesh;
+
+                /// <summary>
+                ///     The mesh type
+                /// </summary>
+                public PrimitiveType Type;
+
+                /// <summary>
+                ///     Initializes a new instance of the <see cref="MeshInfo" /> class.
+                /// </summary>
+                public MeshInfo()
+                {
+                }
+
+                /// <summary>
+                ///     Initializes a new instance of the <see cref="MeshInfo" /> class.
+                /// </summary>
+                /// <param name="type">The type.</param>
+                /// <param name="assimpMesh">The assimp mesh.</param>
+                /// <param name="mesh">The mesh.</param>
+                /// <param name="materialIndex">Index of the material.</param>
+                public MeshInfo(PrimitiveType type, Mesh assimpMesh, Geometry3D mesh, int materialIndex)
+                {
+                    Type = type;
+                    Mesh = mesh;
+                    AssimpMesh = assimpMesh;
+                    MaterialIndex = materialIndex;
+                }
+            }
+
+            /// <summary>
+            /// </summary>
+            protected sealed class HelixScene
+            {
+                public Dictionary<string, HxAnimations.Animation> Animations;
+                public Scene AssimpScene;
+
+                /// <summary>
+                ///     The materials
+                /// </summary>
+                public Tuple<global::Assimp.Material, MaterialCore>[] Materials;
+
+                /// <summary>
+                ///     The meshes
+                /// </summary>
+                public MeshInfo[] Meshes;
             }
         }
     }
