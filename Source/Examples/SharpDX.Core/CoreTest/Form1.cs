@@ -26,9 +26,11 @@ namespace CoreTest
             };
             renderForm.Dock = DockStyle.Fill;
             renderForm.FormBorderStyle = FormBorderStyle.None;
+            renderForm.ShowIcon = false;
             app = new CoreTestApp(renderForm);
             splitContainer1.Panel2.Controls.Add(renderForm);
             Shown += Form1_Shown;
+            FormClosing += Form1_FormClosing;
             splitContainer1.Panel2.Resize += Panel2_Resize;
             renderForm.Width = splitContainer1.Panel2.Width;
             renderForm.Height = splitContainer1.Panel2.Height;
@@ -45,6 +47,11 @@ namespace CoreTest
         private void Form1_Shown(object sender, EventArgs e)
         {
             renderForm.Show();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            renderForm.Close();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

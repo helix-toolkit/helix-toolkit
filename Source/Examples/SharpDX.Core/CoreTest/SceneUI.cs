@@ -1,9 +1,13 @@
-﻿using HelixToolkit.SharpDX.Core.Model.Scene;
+﻿using HelixToolkit.SharpDX.Core.Animations;
+using HelixToolkit.SharpDX.Core.Assimp;
+using HelixToolkit.SharpDX.Core.Model.Scene;
 using ImGuiNET;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace CoreTest
 {
@@ -15,6 +19,12 @@ namespace CoreTest
         private static string modelName = "";
         private static long currentTime = 0;
         public static string SomeTextFromOutside = "";
+
+        public static HelixToolkitScene scene;
+
+        private static bool[] animationSelection;
+        private static string[] animationNames;
+        private static int currentSelectedAnimation = -1;
 
         public static void DrawUI(int width, int height, ref ViewportOptions options, GroupNode rootNode)
         {
@@ -75,6 +85,11 @@ namespace CoreTest
                 {
                     DrawSceneGraph(rootNode);
                 }
+
+                if (!loading && scene != null)
+                {
+                    DrawAnimations(scene.Animations, ref options);
+                }
                 
                 if (!loading && !string.IsNullOrEmpty(exception))
                 {
@@ -118,7 +133,14 @@ namespace CoreTest
                     loading = false;
                     if (x.IsCompleted)
                     {
-                        node.AddChildNode(x.Result);
+                        node.AddChildNode(x.Result.Root);
+                        scene = x.Result;
+                        if(scene.Animations != null && scene.Animations.Count > 0)
+                        {
+                            animationSelection = new bool[scene.Animations.Count];
+                            animationNames = scene.Animations.Select((ani) => ani.Name).ToArray();
+                            currentSelectedAnimation = 0;
+                        }
                     }
                     else if (x.Exception != null)
                     {
@@ -148,6 +170,26 @@ namespace CoreTest
             else
             {
                 ImGui.Text(node.Name);
+            }
+        }
+
+        private static void DrawAnimations(IList<Animation> animations, ref ViewportOptions options)
+        {
+            if (animations.Count > 0)
+            {
+                if(ImGui.Combo("Animations", ref currentSelectedAnimation, animationNames))
+                {
+                    if(currentSelectedAnimation>=0 && currentSelectedAnimation < animationNames.Length)
+                    {
+                        options.PlayAnimation = true;
+                        options.AnimationUpdater = new NodeAnimationUpdater(scene.Animations[currentSelectedAnimation]);
+                    }
+                    else
+                    {
+                        options.PlayAnimation = false;
+                        options.AnimationUpdater = null;
+                    }
+                }
             }
         }
     }

@@ -351,7 +351,7 @@ namespace HelixToolkit.UWP
                 int animationCount = (int)reader.ReadUInt32();
                 for (var i = 0; i < animationCount; i++)
                 {
-                    Animation animation = new Animation();
+                    Animation animation = new Animation(AnimationType.Keyframe);
                     string animationName = reader.ReadCMO_wchar();
                     animation.StartTime = reader.ReadSingle();
                     animation.EndTime = reader.ReadSingle();

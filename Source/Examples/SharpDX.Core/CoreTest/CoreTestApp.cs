@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using HelixToolkit.SharpDX.Core.Animations;
 
 namespace CoreTest
 {
@@ -102,8 +103,8 @@ namespace CoreTest
             {
                 LookDirection = new Vector3(0, 0, 50),
                 Position = new Vector3(0, 0, -50),
-                FarPlaneDistance = 1000,
-                NearPlaneDistance = 0.1f,
+                FarPlaneDistance = 10000,
+                NearPlaneDistance = 10f,
                 FieldOfView = 45,
                 UpDirection = new Vector3(0, 1, 0)
             };
@@ -254,7 +255,10 @@ namespace CoreTest
                 ambientLight.Color = Color.White.ToColor4().ChangeIntensity(options.AmbientLightIntensity);
                 viewport.Render();
 
-                
+                if (options.PlayAnimation && options.AnimationUpdater != null)
+                {
+                    options.AnimationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+                }
 #if TESTADDREMOVE
                 if (groupSphere.Items.Count > 0 && !isAddingNode)
                 {

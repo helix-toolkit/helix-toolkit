@@ -38,7 +38,7 @@ namespace HelixToolkit.UWP
         public struct NodeAnimation
         {
             public Model.Scene.SceneNode Node; // Used for scene graph based node animation
-            public List<Keyframe1> KeyFrames;
+            public FastList<Keyframe1> KeyFrames;
         }
 
         public struct Keyframe1
@@ -49,14 +49,26 @@ namespace HelixToolkit.UWP
             public float Time;
         }
 
+        public enum AnimationType
+        {
+            Keyframe,
+            Node
+        }
+
         public class Animation
         {
             public Guid GUID { set; get; } = Guid.NewGuid();
+            public AnimationType AnimationType { set; get; }
             public string Name { set; get; }
             public float StartTime { set; get; }
             public float EndTime { set; get; }
             public List<Keyframe> Keyframes { set; get; }
             public List<NodeAnimation> NodeAnimationCollection { set; get; }
+
+            public Animation(AnimationType type)
+            {
+                AnimationType = type;
+            }
         };
     }
 

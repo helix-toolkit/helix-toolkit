@@ -146,12 +146,39 @@ namespace HelixToolkit.UWP
         [Flags]
         public enum ErrorCode
         {
-            None,
-            Failed,
-            Succeed,
-            DuplicateNodeName,
-            FileTypeNotSupported,
-            NonUniformAnimationKeyDoesNotSupported
+            None = 0,
+            Failed = 1,
+            Succeed = 2,
+            DuplicateNodeName = 4,
+            FileTypeNotSupported = 8,
+            NonUniformAnimationKeyDoesNotSupported = 16
+        }
+
+        /// <summary>
+        /// Scene for importer output
+        /// </summary>
+        public class HelixToolkitScene
+        {
+            public HxScene.SceneNode Root { set; get; }
+            public IList<HxAnimations.Animation> Animations { set; get; }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="HelixScene"/> class.
+            /// </summary>
+            /// <param name="root">The root.</param>
+            public HelixToolkitScene(HxScene.SceneNode root)
+            {
+                Root = root;
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="HelixScene"/> class.
+            /// </summary>
+            /// <param name="root">The root.</param>
+            /// <param name="animations">The animations.</param>
+            public HelixToolkitScene(HxScene.SceneNode root, IList<HxAnimations.Animation> animations = null)
+            {
+                Root = root;
+                Animations = animations.ToArray();
+            }
         }
 
         /// <summary>
@@ -181,7 +208,7 @@ namespace HelixToolkit.UWP
 
                 SupportedFormatsString = builder.ToString();
             }
-
+            #region Properties
             /// <summary>
             ///     Gets the supported formats.
             /// </summary>
@@ -213,16 +240,25 @@ namespace HelixToolkit.UWP
             ///     The scene nodes.
             /// </value>
             public List<HxScene.SceneNode> SceneNodes { get; } = new List<HxScene.SceneNode>();
+            /// <summary>
+            /// Gets the animations.
+            /// </summary>
+            /// <value>
+            /// The animations.
+            /// </value>
+            public List<Animations.Animation> Animations { get; } = new List<HxAnimations.Animation>();
 
             public ErrorCode ErrorCode { private set; get; }
+            #endregion
 
+            #region Public Methods
             /// <summary>
             ///     Loads the model specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
             /// <param name="config">The configuration.</param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath, ImporterConfiguration config)
+            public HelixToolkitScene Load(string filePath, ImporterConfiguration config)
             {
                 Configuration = config;
                 return Load(filePath);
@@ -236,7 +272,7 @@ namespace HelixToolkit.UWP
             /// <param name="postprocessSteps">The postprocess steps.</param>
             /// <param name="configs">The configs.</param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps,
+            public HelixToolkitScene Load(string filePath, bool parallelLoad, PostProcessSteps postprocessSteps,
                 params PropertyConfig[] configs)
             {
                 Configuration.EnableParallelProcessing = parallelLoad;
@@ -249,7 +285,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="filePath">The file path.</param>
             /// <returns></returns>
-            public HxScene.SceneNode Load(string filePath)
+            public HelixToolkitScene Load(string filePath)
             {
                 if (Load(filePath, out var root) == ErrorCode.Succeed)
                     return root;
@@ -260,10 +296,10 @@ namespace HelixToolkit.UWP
             ///     Loads the model by specified file path.
             /// </summary>
             /// <param name="filePath">The file path.</param>
-            /// <param name="root">The root.</param>
+            /// <param name="scene">The loaded scene.</param>
             /// <returns></returns>
             /// <exception cref="System.Exception"></exception>
-            public ErrorCode Load(string filePath, out HxScene.SceneNode root)
+            public ErrorCode Load(string filePath, out HelixToolkitScene scene)
             {
                 this.path = filePath;
                 ErrorCode = ErrorCode.None;
@@ -280,7 +316,7 @@ namespace HelixToolkit.UWP
                 }
 
                 Clear();
-                root = null;
+                scene = null;
                 try
                 {
                     if (!useExtern && Configuration.AssimpPropertyConfig != null)
@@ -304,16 +340,20 @@ namespace HelixToolkit.UWP
 
                     if (!assimpScene.HasMeshes)
                     {
-                        root = new HxScene.GroupNode();
+                        scene = new HelixToolkitScene(new HxScene.GroupNode());
                         ErrorCode = ErrorCode.Succeed;
                         return ErrorCode.Succeed;
                     }
 
-                    var scene = ToHelixScene(assimpScene, Configuration.EnableParallelProcessing);
-                    root = ConstructHelixScene(assimpScene.RootNode, scene);
-                    var c = ProcessSceneNodes(root);
-                    if (c != ErrorCode.Succeed) return c;
-                    LoadAnimations(scene);
+                    var internalScene = ToHelixScene(assimpScene, Configuration.EnableParallelProcessing);
+                    scene = new HelixToolkitScene(ConstructHelixScene(assimpScene.RootNode, internalScene));
+                    ErrorCode |= ProcessSceneNodes(scene.Root);
+                    if (ErrorCode.HasFlag(ErrorCode.Failed))
+                        return ErrorCode;
+                    LoadAnimations(internalScene);
+                    scene.Animations = Animations.ToArray();
+                    if(!ErrorCode.HasFlag(ErrorCode.Failed))
+                        ErrorCode |= ErrorCode.Succeed;
                     return ErrorCode;
                 }
                 catch (Exception ex)
@@ -326,10 +366,15 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            #endregion
+
+            #region Protected Methods
+
             protected virtual void Clear()
             {
                 textureDict.Clear();
                 SceneNodes.Clear();
+                Animations.Clear();
             }
 
             protected virtual ErrorCode ProcessSceneNodes(HxScene.SceneNode root)
@@ -340,116 +385,7 @@ namespace HelixToolkit.UWP
                 return ErrorCode.Succeed;
             }
 
-            private HelixScene ToHelixScene(Scene scene, bool parallel)
-            {
-                var s = new HelixScene
-                {
-                    AssimpScene = scene,
-                    Meshes = new MeshInfo[scene.MeshCount],
-                    Materials = new Tuple<global::Assimp.Material, MaterialCore>[scene.MaterialCount]
-                };
-                Parallel.Invoke(() =>
-                    {
-                        if (scene.HasMeshes)
-                        {
-                            if (parallel)
-                                Parallel.ForEach(scene.Meshes,
-                                    (mesh, state, index) => { s.Meshes[index] = ToHelixGeometry(mesh); });
-                            else
-                                for (var i = 0; i < scene.MeshCount; ++i)
-                                    s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
-                        }
-                    },
-                    () =>
-                    {
-                        if (scene.HasMaterials)
-                            for (var i = 0; i < scene.MaterialCount; ++i)
-                                s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
-                    });
-                return s;
-            }
-
-            private ErrorCode LoadAnimations(HelixScene scene)
-            {
-                var dict = new Dictionary<string, HxScene.SceneNode>(SceneNodes.Count);
-                foreach (var node in SceneNodes)
-                    if (!dict.ContainsKey(node.Name))
-                        dict.Add(node.Name, node);
-
-                foreach (var mesh in scene.Meshes.Where(x => x.Mesh is BoneSkinnedMeshGeometry3D)
-                    .Select(x => x.Mesh as BoneSkinnedMeshGeometry3D))
-                    if (mesh.Bones != null && mesh.BoneNames != null && mesh.Bones.Count == mesh.BoneNames.Count)
-                        for (var i = 0; i < mesh.Bones.Count; ++i)
-                            if (dict.TryGetValue(mesh.BoneNames[i], out var s))
-                            {
-                                var b = mesh.Bones[i];
-                                b.ParentNode = s.Parent;
-                                b.Node = s;
-                                mesh.Bones[i] = b;
-                            }
-
-                if (scene.AssimpScene.HasAnimations)
-                {
-                    var animationDict = new Dictionary<string, HxAnimations.Animation>(scene.AssimpScene.AnimationCount);
-                    if (Configuration.EnableParallelProcessing)
-                        Parallel.ForEach(scene.AssimpScene.Animations, ani =>
-                        {
-                            if (LoadAnimation(ani, dict, out var hxAni) == ErrorCode.Succeed)
-                                lock (animationDict)
-                                {
-                                    animationDict.Add(hxAni.Name, hxAni);
-                                }
-                        });
-                    else
-                        foreach (var ani in scene.AssimpScene.Animations)
-                            if (LoadAnimation(ani, dict, out var hxAni) == ErrorCode.Succeed)
-                                animationDict.Add(hxAni.Name, hxAni);
-                    scene.Animations = animationDict;
-                }
-
-                return ErrorCode.Succeed;
-            }
-
-            private ErrorCode LoadAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict,
-                out HxAnimations.Animation hxAni)
-            {
-                hxAni = new HxAnimations.Animation
-                {
-                    StartTime = 0,
-                    EndTime = (float)(ani.DurationInTicks / ani.TicksPerSecond),
-                    Name = ani.Name,
-                    NodeAnimationCollection = new List<HxAnimations.NodeAnimation>(ani.NodeAnimationChannelCount)
-                };
-
-                if (ani.HasNodeAnimations)
-                {
-                    var code = ErrorCode.None;
-                    foreach (var key in ani.NodeAnimationChannels)
-                        if (dict.TryGetValue(key.NodeName, out var node))
-                        {
-                            var nAni = new HxAnimations.NodeAnimation
-                            {
-                                Node = node
-                            };
-                            code = ProcessNodeAnimation(key, out var keyframes);
-                            if (code == ErrorCode.Succeed)
-                            {
-                                nAni.KeyFrames = keyframes;
-                                hxAni.NodeAnimationCollection.Add(nAni);
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-
-                    return code;
-                }
-
-                return ErrorCode.Failed;
-            }
-
-            protected virtual ErrorCode ProcessNodeAnimation(NodeAnimationChannel channel, out List<HxAnimations.Keyframe1> list)
+            protected virtual ErrorCode ProcessNodeAnimation(NodeAnimationChannel channel, double ticksPerSecond, out FastList<HxAnimations.Keyframe1> list)
             {
                 var posCount = channel.PositionKeyCount;
                 var rotCount = channel.RotationKeyCount;
@@ -461,63 +397,17 @@ namespace HelixToolkit.UWP
                     return ErrorCode.NonUniformAnimationKeyDoesNotSupported;
                 }
 
-                var ret = new List<HxAnimations.Keyframe1>(posCount);
+                var ret = new FastList<HxAnimations.Keyframe1>(posCount);
                 for (var i = 0; i < posCount; ++i)
                     ret.Add(new HxAnimations.Keyframe1
                     {
-                        Time = (float)channel.PositionKeys[i].Time,
+                        Time = (float)(channel.PositionKeys[i].Time / ticksPerSecond),
                         Position = channel.PositionKeys[i].Value.ToSharpDXVector3(),
                         Rotation = channel.RotationKeys[i].Value.ToSharpDXQuaternion(),
                         Scale = channel.ScalingKeys[i].Value.ToSharpDXVector3()
                     });
                 list = ret;
                 return ErrorCode.Succeed;
-            }
-
-            private HxScene.SceneNode ConstructHelixScene(Node node, HelixScene scene)
-            {
-                var group = new HxScene.GroupNode
-                {
-                    Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
-                    ModelMatrix = node.Transform.ToSharpDXMatrix()
-                };
-                if (node.HasChildren)
-                    foreach (var c in node.Children)
-                        group.AddChildNode(ConstructHelixScene(c, scene));
-                if (node.HasMeshes)
-                    foreach (var idx in node.MeshIndices)
-                    {
-                        var mesh = scene.Meshes[idx];
-                        group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
-                    }
-
-                return group;
-                //if (node.HasChildren || node.MeshCount > 1)
-                //{
-                //    var group = new HxScene.GroupNode
-                //    {
-                //        Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
-                //        ModelMatrix = node.Transform.ToSharpDXMatrix()
-                //    };
-                //    foreach (var c in node.Children)
-                //    {
-                //        group.AddChildNode(ConstructHelixScene(c, scene));
-                //    }
-                //    foreach (var idx in node.MeshIndices)
-                //    {
-                //        var mesh = scene.Meshes[idx];
-                //        group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
-                //    }
-                //    return group;
-                //}
-                //else if (node.MeshCount == 1)
-                //{
-                //    return ToHxMesh(scene.Meshes[node.MeshIndices[0]], scene, node.Transform.ToSharpDXMatrix());
-                //}
-                //else
-                //{
-                //    return null;
-                //}
             }
 
             /// <summary>
@@ -528,7 +418,7 @@ namespace HelixToolkit.UWP
             /// <param name="transform"></param>
             /// <returns></returns>
             /// <exception cref="System.NotSupportedException">Mesh Type {mesh.Type}</exception>
-            protected virtual HxScene.SceneNode ToHxMesh(MeshInfo mesh, HelixScene scene, Matrix transform)
+            protected virtual HxScene.SceneNode ToHxMesh(MeshInfo mesh, HelixInternalScene scene, Matrix transform)
             {
                 switch (mesh.Type)
                 {
@@ -582,25 +472,6 @@ namespace HelixToolkit.UWP
                         return pnode;
                     default:
                         throw new NotSupportedException($"Mesh Type {mesh.Type} does not supported");
-                }
-            }
-
-            private MeshInfo ToHelixGeometry(Mesh mesh)
-            {
-                switch (mesh.PrimitiveType)
-                {
-                    case PrimitiveType.Triangle:
-                        if (mesh.HasBones)
-                            return new MeshInfo(PrimitiveType.Triangle, mesh, ToHelixMeshWithBones(mesh),
-                                mesh.MaterialIndex);
-                        else
-                            return new MeshInfo(PrimitiveType.Triangle, mesh, ToHelixMesh(mesh), mesh.MaterialIndex);
-                    case PrimitiveType.Point:
-                        return new MeshInfo(PrimitiveType.Point, mesh, ToHelixPoint(mesh), mesh.MaterialIndex);
-                    case PrimitiveType.Line:
-                        return new MeshInfo(PrimitiveType.Line, mesh, ToHelixLine(mesh), mesh.MaterialIndex);
-                    default:
-                        throw new NotSupportedException($"MeshType : {mesh.PrimitiveType} does not supported");
                 }
             }
 
@@ -931,34 +802,6 @@ namespace HelixToolkit.UWP
                 return new Tuple<global::Assimp.Material, MaterialCore>(material, core);
             }
 
-
-            private static TextureAddressMode ToDXAddressMode(TextureWrapMode mode)
-            {
-                switch (mode)
-                {
-                    case TextureWrapMode.Clamp:
-                        return TextureAddressMode.Clamp;
-                    case TextureWrapMode.Mirror:
-                        return TextureAddressMode.Mirror;
-                    case TextureWrapMode.Wrap:
-                        return TextureAddressMode.Wrap;
-                    default:
-                        return TextureAddressMode.Wrap;
-                }
-            }
-
-            private Stream LoadTexture(string path)
-            {
-                if (textureDict.TryGetValue(path, out var s))
-                {
-                    return s;
-                }
-
-                var texture = OnLoadTexture(path);
-                if (texture != null) textureDict.TryAdd(path, texture);
-                return texture;
-            }
-
             /// <summary>
             ///     Called when [load texture].
             /// </summary>
@@ -991,6 +834,211 @@ namespace HelixToolkit.UWP
                 return "";
             }
 
+            #endregion
+
+            #region Private Methods
+
+            private HelixInternalScene ToHelixScene(Scene scene, bool parallel)
+            {
+                var s = new HelixInternalScene
+                {
+                    AssimpScene = scene,
+                    Meshes = new MeshInfo[scene.MeshCount],
+                    Materials = new Tuple<global::Assimp.Material, MaterialCore>[scene.MaterialCount]
+                };
+                Parallel.Invoke(() =>
+                    {
+                        if (scene.HasMeshes)
+                        {
+                            if (parallel)
+                                Parallel.ForEach(scene.Meshes,
+                                    (mesh, state, index) => { s.Meshes[index] = ToHelixGeometry(mesh); });
+                            else
+                                for (var i = 0; i < scene.MeshCount; ++i)
+                                    s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                        }
+                    },
+                    () =>
+                    {
+                        if (scene.HasMaterials)
+                            for (var i = 0; i < scene.MaterialCount; ++i)
+                                s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                    });
+                return s;
+            }
+
+            private ErrorCode LoadAnimations(HelixInternalScene scene)
+            {
+                var dict = new Dictionary<string, HxScene.SceneNode>(SceneNodes.Count);
+                foreach (var node in SceneNodes)
+                    if (!dict.ContainsKey(node.Name))
+                        dict.Add(node.Name, node);
+
+                foreach (var mesh in scene.Meshes.Where(x => x.Mesh is BoneSkinnedMeshGeometry3D)
+                    .Select(x => x.Mesh as BoneSkinnedMeshGeometry3D))
+                    if (mesh.Bones != null && mesh.BoneNames != null && mesh.Bones.Count == mesh.BoneNames.Count)
+                        for (var i = 0; i < mesh.Bones.Count; ++i)
+                            if (dict.TryGetValue(mesh.BoneNames[i], out var s))
+                            {
+                                var b = mesh.Bones[i];
+                                b.ParentNode = s.Parent;
+                                b.Node = s;
+                                mesh.Bones[i] = b;
+                            }
+
+                if (scene.AssimpScene.HasAnimations)
+                {
+                    var animationList = new List<HxAnimations.Animation>(scene.AssimpScene.AnimationCount);
+                    if (Configuration.EnableParallelProcessing)
+                        Parallel.ForEach(scene.AssimpScene.Animations, ani =>
+                        {
+                            if (LoadAnimation(ani, dict, out var hxAni) == ErrorCode.Succeed)
+                                lock (animationList)
+                                {
+                                    animationList.Add(hxAni);
+                                }
+                        });
+                    else
+                        foreach (var ani in scene.AssimpScene.Animations)
+                            if (LoadAnimation(ani, dict, out var hxAni) == ErrorCode.Succeed)
+                                animationList.Add(hxAni);
+                    scene.Animations = animationList;
+                    Animations.AddRange(animationList);
+                }
+                return ErrorCode.Succeed;
+            }
+
+            private ErrorCode LoadAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict,
+                out HxAnimations.Animation hxAni)
+            {
+                hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.Node)
+                {
+                    StartTime = 0,
+                    EndTime = (float)(ani.DurationInTicks / ani.TicksPerSecond),
+                    Name = ani.Name,
+                    NodeAnimationCollection = new List<HxAnimations.NodeAnimation>(ani.NodeAnimationChannelCount)
+                };
+
+                if (ani.HasNodeAnimations)
+                {
+                    var code = ErrorCode.None;
+                    foreach (var key in ani.NodeAnimationChannels)
+                        if (dict.TryGetValue(key.NodeName, out var node))
+                        {
+                            var nAni = new HxAnimations.NodeAnimation
+                            {
+                                Node = node
+                            };
+                            code = ProcessNodeAnimation(key, ani.TicksPerSecond, out var keyframes);
+                            if (code == ErrorCode.Succeed)
+                            {
+                                nAni.KeyFrames = keyframes;
+                                hxAni.NodeAnimationCollection.Add(nAni);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                    return code;
+                }
+
+                return ErrorCode.Failed;
+            }
+            
+            private HxScene.SceneNode ConstructHelixScene(Node node, HelixInternalScene scene)
+            {
+                var group = new HxScene.GroupNode
+                {
+                    Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
+                    ModelMatrix = node.Transform.ToSharpDXMatrix()
+                };
+                if (node.HasChildren)
+                    foreach (var c in node.Children)
+                        group.AddChildNode(ConstructHelixScene(c, scene));
+                if (node.HasMeshes)
+                    foreach (var idx in node.MeshIndices)
+                    {
+                        var mesh = scene.Meshes[idx];
+                        group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
+                    }
+
+                return group;
+                //if (node.HasChildren || node.MeshCount > 1)
+                //{
+                //    var group = new HxScene.GroupNode
+                //    {
+                //        Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
+                //        ModelMatrix = node.Transform.ToSharpDXMatrix()
+                //    };
+                //    foreach (var c in node.Children)
+                //    {
+                //        group.AddChildNode(ConstructHelixScene(c, scene));
+                //    }
+                //    foreach (var idx in node.MeshIndices)
+                //    {
+                //        var mesh = scene.Meshes[idx];
+                //        group.AddChildNode(ToHxMesh(mesh, scene, Matrix.Identity));
+                //    }
+                //    return group;
+                //}
+                //else if (node.MeshCount == 1)
+                //{
+                //    return ToHxMesh(scene.Meshes[node.MeshIndices[0]], scene, node.Transform.ToSharpDXMatrix());
+                //}
+                //else
+                //{
+                //    return null;
+                //}
+            }
+
+            private MeshInfo ToHelixGeometry(Mesh mesh)
+            {
+                switch (mesh.PrimitiveType)
+                {
+                    case PrimitiveType.Triangle:
+                        if (mesh.HasBones)
+                            return new MeshInfo(PrimitiveType.Triangle, mesh, ToHelixMeshWithBones(mesh),
+                                mesh.MaterialIndex);
+                        else
+                            return new MeshInfo(PrimitiveType.Triangle, mesh, ToHelixMesh(mesh), mesh.MaterialIndex);
+                    case PrimitiveType.Point:
+                        return new MeshInfo(PrimitiveType.Point, mesh, ToHelixPoint(mesh), mesh.MaterialIndex);
+                    case PrimitiveType.Line:
+                        return new MeshInfo(PrimitiveType.Line, mesh, ToHelixLine(mesh), mesh.MaterialIndex);
+                    default:
+                        throw new NotSupportedException($"MeshType : {mesh.PrimitiveType} does not supported");
+                }
+            }            
+
+            private static TextureAddressMode ToDXAddressMode(TextureWrapMode mode)
+            {
+                switch (mode)
+                {
+                    case TextureWrapMode.Clamp:
+                        return TextureAddressMode.Clamp;
+                    case TextureWrapMode.Mirror:
+                        return TextureAddressMode.Mirror;
+                    case TextureWrapMode.Wrap:
+                        return TextureAddressMode.Wrap;
+                    default:
+                        return TextureAddressMode.Wrap;
+                }
+            }
+
+            private Stream LoadTexture(string path)
+            {
+                if (textureDict.TryGetValue(path, out var s))
+                {
+                    return s;
+                }
+
+                var texture = OnLoadTexture(path);
+                if (texture != null) textureDict.TryAdd(path, texture);
+                return texture;
+            }
+
             private static Stream LoadFileToStream(string path)
             {
                 if (!File.Exists(path)) return null;
@@ -1001,6 +1049,9 @@ namespace HelixToolkit.UWP
                     return m;
                 }
             }
+            #endregion
+
+            #region Inner Classes
 
             /// <summary>
             /// </summary>
@@ -1051,9 +1102,16 @@ namespace HelixToolkit.UWP
 
             /// <summary>
             /// </summary>
-            protected sealed class HelixScene
+            protected sealed class HelixInternalScene
             {
-                public Dictionary<string, HxAnimations.Animation> Animations;
+                /// <summary>
+                /// The animations
+                /// </summary>
+                public List<HxAnimations.Animation> Animations;
+
+                /// <summary>
+                /// The assimp scene
+                /// </summary>
                 public Scene AssimpScene;
 
                 /// <summary>
@@ -1066,6 +1124,8 @@ namespace HelixToolkit.UWP
                 /// </summary>
                 public MeshInfo[] Meshes;
             }
+
+            #endregion
         }
     }
 }

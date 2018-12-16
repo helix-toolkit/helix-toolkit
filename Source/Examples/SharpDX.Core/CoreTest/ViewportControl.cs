@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HelixToolkit.SharpDX.Core.Animations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,7 @@ namespace CoreTest
         public float AmbientLightIntensity;
         public bool ShowWireframe;
         public bool ShowWireframeChanged;
+        public bool PlayAnimation;
+        public IAnimationUpdater AnimationUpdater;
     }
 }

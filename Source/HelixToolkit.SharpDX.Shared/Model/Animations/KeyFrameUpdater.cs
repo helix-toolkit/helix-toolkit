@@ -28,6 +28,13 @@ namespace HelixToolkit.UWP
             Loop,
             PlayOnceHold,
         }
+
+        public interface IAnimationUpdater
+        {
+            AnimationRepeatMode RepeatMode { set; get; }
+            void Update(long timeStamp, long frequency);
+            void Reset();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -220,6 +227,91 @@ namespace HelixToolkit.UWP
             public void Reset()
             {
                 CurrentRangeIndex = 0;
+                currentTime = 0;
+            }
+        }
+
+        public sealed class NodeAnimationUpdater : IAnimationUpdater
+        {
+            private struct IndexTime
+            {
+                public int Index;
+                public float AccumulatedTime;
+            }
+
+            public Animation Animation { get; }
+            private long currentTime;
+            private IndexTime[] keyframeIndices;
+
+            public IList<NodeAnimation> NodeCollection { get => Animation.NodeAnimationCollection; }
+
+            public AnimationRepeatMode RepeatMode
+            {
+                set; get;
+            } = AnimationRepeatMode.Loop;
+
+            public NodeAnimationUpdater(Animation animation)
+            {
+                Animation = animation;
+                keyframeIndices = new IndexTime[NodeCollection.Count];
+            }
+
+            public void Update(long timeStamp, long frequency)
+            {
+                if(currentTime == 0)
+                {
+                    currentTime = timeStamp;
+                    return;
+                }
+                var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency;
+
+                if (timeElpased > Animation.EndTime)
+                {
+                    switch (RepeatMode)
+                    {
+                        case AnimationRepeatMode.PlayOnce:
+                            return;
+                        case AnimationRepeatMode.PlayOnceHold:                           
+                            return;
+                    }
+                }
+                UpdateNodes(timeElpased);
+                currentTime = timeStamp;
+            }
+
+            private void UpdateNodes(float timeElapsed)
+            {
+                for (int i = 0; i < NodeCollection.Count; ++i)
+                {
+                    var n = NodeCollection[i];
+                    int count = n.KeyFrames.Count; // Make sure to use this count
+                    var frames = n.KeyFrames.Items; 
+                    ref var idxTime = ref keyframeIndices[i];
+                    idxTime.AccumulatedTime += timeElapsed;
+                    while(idxTime.Index < count - 1 && idxTime.AccumulatedTime >= frames[idxTime.Index+1].Time)//check if should move to next time frame
+                    {
+                        ++idxTime.Index;
+                    }
+                    if (idxTime.Index >= count - 1)//check if is at the end
+                    {
+                        idxTime.Index = 0;
+                        idxTime.AccumulatedTime = 0;
+                    }
+                    ref var currFrame = ref frames[idxTime.Index];
+                    ref var nextFrame = ref frames[idxTime.Index + 1];
+                    float diff = idxTime.AccumulatedTime - currFrame.Time;
+                    float length = nextFrame.Time - currFrame.Time;
+                    float amount = diff / length;
+                    var transform = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
+                                Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount)) *
+                                Matrix.Translation(Vector3.Lerp(currFrame.Position, nextFrame.Position, amount));
+                    n.Node.ModelMatrix = transform;
+                }
+            }
+
+            public void Reset()
+            {
+                Array.Clear(keyframeIndices, 0, keyframeIndices.Length);
                 currentTime = 0;
             }
         }

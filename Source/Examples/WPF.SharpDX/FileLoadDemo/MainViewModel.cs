@@ -100,7 +100,7 @@ namespace FileLoadDemo
                 IsLoading = false;
                 if (result.IsCompleted)
                 {
-                    GroupModel.AddNode(result.Result);
+                    GroupModel.AddNode(result.Result.Root);
                 }
                 else if (result.IsFaulted && result.Exception != null)
                 {
