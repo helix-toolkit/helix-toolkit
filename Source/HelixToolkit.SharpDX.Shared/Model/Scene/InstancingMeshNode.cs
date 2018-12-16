@@ -174,7 +174,7 @@ namespace HelixToolkit.UWP
                     if (octreeManager != null && octreeManager.Octree != null)
                     {
                         var boundHits = new List<HitTestResult>();
-                        isHit = octreeManager.Octree.HitTest(context, this.WrapperSource, Geometry, TotalModelMatrix, rayWS, ref boundHits);
+                        isHit = octreeManager.Octree.HitTest(context, this.WrapperSource, Geometry, TotalModelMatrixInternal, rayWS, ref boundHits);
                         if (isHit)
                         {
                             isHit = false;
@@ -183,7 +183,7 @@ namespace HelixToolkit.UWP
                             {
                                 int instanceIdx = (int)hit.Tag;
                                 instanceMatrix = InstanceBuffer.Elements[instanceIdx];
-                                var h = base.OnHitTest(context, TotalModelMatrix * instanceMatrix, ref rayWS, ref hits);
+                                var h = base.OnHitTest(context, TotalModelMatrixInternal * instanceMatrix, ref rayWS, ref hits);
                                 isHit |= h;
                                 if (h && hits.Count > 0)
                                 {

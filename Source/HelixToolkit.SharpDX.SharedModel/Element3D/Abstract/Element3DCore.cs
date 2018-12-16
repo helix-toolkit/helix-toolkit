@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         {
             get
             {
-                return SceneNode.TotalModelMatrix;
+                return SceneNode.TotalModelMatrixInternal;
             }
         }
 

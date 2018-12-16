@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -23,11 +24,12 @@ namespace HelixToolkit.UWP
     namespace Model.Scene
     {
         using Core;
-        using Render;
-        
+        using Render;     
+
         /// <summary>
         ///
         /// </summary>
+        [DebuggerDisplay("Name={"+ nameof(Name) +"}; Child Count={" + nameof(ItemsCount) + "};")]
         public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>
         {
             #region Properties
@@ -48,8 +50,14 @@ namespace HelixToolkit.UWP
             /// Do not assgin this field. This is updated by <see cref="ComputeTransformMatrix"/>.
             /// Used as field only for performance consideration.
             /// </summary>
-            public Matrix TotalModelMatrix = Matrix.Identity;
-
+            internal Matrix TotalModelMatrixInternal = Matrix.Identity;
+            /// <summary>
+            /// Gets the total model matrix.
+            /// </summary>
+            /// <value>
+            /// The total model matrix.
+            /// </value>
+            public Matrix TotalModelMatrix { get => TotalModelMatrixInternal; }
             /// <summary>
             /// Gets or sets the order key.
             /// </summary>
@@ -207,6 +215,13 @@ namespace HelixToolkit.UWP
             /// The children.
             /// </value>
             public ReadOnlyObservableCollection<SceneNode> Items { internal set; get; } = Constants.EmptyReadOnlyRenderableArray;
+            /// <summary>
+            /// Gets the items count.
+            /// </summary>
+            /// <value>
+            /// The items count.
+            /// </value>
+            public int ItemsCount { get => Items.Count; }
 
             /// <summary>
             /// Gets or sets a value indicating whether this instance is hit test visible.
@@ -512,14 +527,14 @@ namespace HelixToolkit.UWP
             {
                 if (NeedMatrixUpdate)
                 {
-                    core.ModelMatrix = TotalModelMatrix = modelMatrix * parent.TotalModelMatrix;
+                    core.ModelMatrix = TotalModelMatrixInternal = modelMatrix * parent.TotalModelMatrixInternal;
                     for (int i = 0; i < ItemsInternal.Count; ++i)
                     {
                         ItemsInternal[i].NeedMatrixUpdate = true;
                     }
                     NeedMatrixUpdate = false;
-                    TransformChanged(ref TotalModelMatrix);
-                    OnTransformChanged?.Invoke(this, new TransformArgs(ref TotalModelMatrix));               
+                    TransformChanged(ref TotalModelMatrixInternal);
+                    OnTransformChanged?.Invoke(this, new TransformArgs(ref TotalModelMatrixInternal));               
                 }
             }
             /// <summary>
@@ -618,7 +633,7 @@ namespace HelixToolkit.UWP
             {
                 if (CanHitTest(context))
                 {
-                    return OnHitTest(context, TotalModelMatrix, ref ray, ref hits);
+                    return OnHitTest(context, TotalModelMatrixInternal, ref ray, ref hits);
                 }
                 else
                 {
