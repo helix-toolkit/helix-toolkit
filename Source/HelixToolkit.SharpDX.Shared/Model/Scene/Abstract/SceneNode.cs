@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP
         ///
         /// </summary>
         [DebuggerDisplay("Name={"+ nameof(Name) +"}; Child Count={" + nameof(ItemsCount) + "};")]
-        public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>
+        public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>, Animations.IAnimationNode
         {
             #region Properties
 
@@ -261,6 +261,34 @@ namespace HelixToolkit.UWP
             /// The effects technique.
             /// </value>
             public IRenderTechnique EffectTechnique { get { return renderTechnique; } }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether this node is animation node.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this instance is animation node; otherwise, <c>false</c>.
+            /// </value>
+            public bool IsAnimationNode { set; get; } = false;
+            /// <summary>
+            /// Gets a value indicating whether this node is animation node root.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this node is animation node root; otherwise, <c>false</c>.
+            /// </value>
+            public bool IsAnimationNodeRoot
+            {
+                get
+                {
+                    if (IsAnimationNode)
+                    {
+                        if (Parent is Animations.IAnimationNode n)
+                        {
+                            return !n.IsAnimationNode;
+                        }
+                    }
+                    return false;
+                }
+            }
             #region Handling Transforms
 
             /// <summary>

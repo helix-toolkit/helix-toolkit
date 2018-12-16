@@ -22,22 +22,6 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public enum AnimationRepeatMode
-        {
-            PlayOnce,
-            Loop,
-            PlayOnceHold,
-        }
-
-        public interface IAnimationUpdater
-        {
-            AnimationRepeatMode RepeatMode { set; get; }
-            void Update(long timeStamp, long frequency);
-            void Reset();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
         public sealed class KeyFrameUpdater
         {
             public Animation Animation { get; }
