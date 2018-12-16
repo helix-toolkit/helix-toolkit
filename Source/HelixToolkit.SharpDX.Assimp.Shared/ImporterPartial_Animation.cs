@@ -162,11 +162,11 @@ namespace HelixToolkit.UWP
                     {
                         return;
                     }
-                    animation.RootNode = node;
+                    
                     if(node.Parent != null)
                     node = node.Parent;
                     animation.BoneSkinMeshes = new List<HxScene.BoneSkinMeshNode>();
-                    
+                    animation.RootNode = node;
                     foreach (var n in node.Items.PreorderDFT((m) => { return true; }))
                     {
                         if(n is HxScene.BoneSkinMeshNode boneNode)

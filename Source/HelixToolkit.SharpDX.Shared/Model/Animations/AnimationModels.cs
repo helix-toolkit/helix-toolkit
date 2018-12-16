@@ -116,6 +116,13 @@ namespace HelixToolkit.UWP
             /// </value>
             public List<Model.Scene.BoneSkinMeshNode> BoneSkinMeshes { set; get; }
             /// <summary>
+            /// Gets a value indicating whether this animation has bone skin meshes.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this animation has bone skin meshes; otherwise, <c>false</c>.
+            /// </value>
+            public bool HasBoneSkinMeshes { get => BoneSkinMeshes != null && BoneSkinMeshes.Count > 0; }
+            /// <summary>
             /// Gets or sets the root node of this animation
             /// </summary>
             /// <value>
@@ -123,7 +130,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public Model.Scene.SceneNode RootNode { set; get; }
             /// <summary>
-            /// Initializes a new instance of the <see cref="Animation"/> class.
+            /// Initializes a new animation of the <see cref="Animation"/> class.
             /// </summary>
             /// <param name="type">The type.</param>
             public Animation(AnimationType type)

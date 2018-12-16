@@ -167,9 +167,9 @@ namespace HelixToolkit.UWP
                     }
                     boneMesh.Bones.Add(new HxAnimations.Bone
                     {
-                        BindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix(),
+                        BindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix().Inverted(),
                         BoneLocalTransform = Matrix.Identity,
-                        InvBindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix().Inverted()
+                        InvBindPose = mesh.Bones[j].OffsetMatrix.ToSharpDXMatrix(),//Documented at https://github.com/assimp/assimp/pull/1803
                     });
                     boneMesh.BoneNames.Add(mesh.Bones[j].Name);
                 }

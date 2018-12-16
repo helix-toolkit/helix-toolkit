@@ -118,8 +118,7 @@ namespace CoreTest
             dialog.Filter = $"3D model files ({HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString}|{HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString}";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                var path = dialog.FileName;
-                node.Clear();
+                var path = dialog.FileName;             
                 exception = "";
                 currentTime = Stopwatch.GetTimestamp();
                 loading = true;
@@ -133,13 +132,14 @@ namespace CoreTest
                     loading = false;
                     if (x.IsCompleted)
                     {
+                        node.Clear();
                         node.AddChildNode(x.Result.Root);
                         scene = x.Result;
                         if(scene.Animations != null && scene.Animations.Count > 0)
                         {
                             animationSelection = new bool[scene.Animations.Count];
                             animationNames = scene.Animations.Select((ani) => ani.Name).ToArray();
-                            currentSelectedAnimation = 0;
+                            currentSelectedAnimation = -1;
                         }
                     }
                     else if (x.Exception != null)
@@ -177,7 +177,8 @@ namespace CoreTest
         {
             if (animations.Count > 0)
             {
-                if(ImGui.Combo("Animations", ref currentSelectedAnimation, animationNames))
+                ImGui.Text($"Animations: {animations.Count}");
+                if(ImGui.Combo(" ", ref currentSelectedAnimation, animationNames))
                 {
                     if(currentSelectedAnimation>=0 && currentSelectedAnimation < animationNames.Length)
                     {

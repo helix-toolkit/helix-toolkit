@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP
             {
                 if(bones[i].Node != null)
                 {
-                    m[i] = bones[i].BindPose * bones[i].Node.TotalModelMatrixInternal * rootInvTransform;
+                    m[i] = bones[i].InvBindPose * bones[i].Node.TotalModelMatrixInternal * rootInvTransform;
                 }
                 else
                 {
