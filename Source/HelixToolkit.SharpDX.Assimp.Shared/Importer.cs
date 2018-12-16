@@ -138,6 +138,10 @@ namespace HelixToolkit.UWP
             ///     Force to use material type. Default is Auto
             /// </summary>
             public MaterialType ImportMaterialType = MaterialType.Auto;
+            /// <summary>
+            /// Import animations
+            /// </summary>
+            public bool ImportAnimations = true;
         }
 
         [Flags]
@@ -344,8 +348,11 @@ namespace HelixToolkit.UWP
                     ErrorCode |= ProcessSceneNodes(scene.Root);
                     if (ErrorCode.HasFlag(ErrorCode.Failed))
                         return ErrorCode;
-                    LoadAnimations(internalScene);
-                    scene.Animations = Animations.ToArray();
+                    if (Configuration.ImportAnimations)
+                    {
+                        LoadAnimations(internalScene);
+                        scene.Animations = Animations.ToArray();
+                    }
                     if(!ErrorCode.HasFlag(ErrorCode.Failed))
                         ErrorCode |= ErrorCode.Succeed;
                     return ErrorCode;
