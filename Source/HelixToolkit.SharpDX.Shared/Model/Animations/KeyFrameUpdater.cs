@@ -253,7 +253,7 @@ namespace HelixToolkit.UWP
                 }
                 if (accumulatedTime >= Animation.EndTime)
                 {
-                    accumulatedTime = 0;
+                    Reset();
                 }
                 UpdateBoneSkinMesh();
                 UpdateNodes(timeElpased);
@@ -307,13 +307,13 @@ namespace HelixToolkit.UWP
                     int count = n.KeyFrames.Count; // Make sure to use this count
                     var frames = n.KeyFrames.Items; 
                     ref var idxTime = ref keyframeIndices[i];
-                    while(idxTime.Index < count - 1 && accumulatedTime >= frames[idxTime.Index+1].Time)//check if should move to next time frame
+                    while(idxTime.Index < count - 1 && accumulatedTime > frames[idxTime.Index+1].Time)//check if should move to next time frame
                     {
                         ++idxTime.Index;
                     }
-                    if (idxTime.Index >= count - 1)//check if is at the end
+                    if (idxTime.Index >= count - 1)//check if is at the end, if at the end, stays there
                     {
-                        idxTime.Index = 0;
+                        continue;
                     }
                     ref var currFrame = ref frames[idxTime.Index];
                     if (count == 1)
@@ -339,10 +339,6 @@ namespace HelixToolkit.UWP
 
             public void Reset()
             {
-                if(currentTime == 0 && accumulatedTime == 0)
-                {
-                    return;
-                }
                 Array.Clear(keyframeIndices, 0, keyframeIndices.Length);
                 currentTime = 0;
                 accumulatedTime = 0;

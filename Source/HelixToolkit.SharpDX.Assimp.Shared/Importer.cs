@@ -196,6 +196,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public float GlobalScale = 1f;
             /// <summary>
+            /// The tickes per second. Only used when file does not contains tickes per second for animation.
+            /// </summary>
+            public float TickesPerSecond = 25f;
+            /// <summary>
             /// Initializes a new instance of the <see cref="ImporterConfiguration"/> class.
             /// </summary>
             public ImporterConfiguration()
@@ -348,7 +352,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public HelixToolkitScene Load(string filePath)
             {
-                if (Load(filePath, out var root) == ErrorCode.Succeed)
+                if (Load(filePath, out var root).HasFlag(ErrorCode.Succeed))
                     return root;
                 return null;
             }

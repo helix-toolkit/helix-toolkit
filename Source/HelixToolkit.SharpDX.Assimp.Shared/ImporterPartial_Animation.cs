@@ -3,8 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using Assimp;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Animation = Assimp.Animation;
@@ -37,27 +37,78 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected virtual ErrorCode ProcessNodeAnimation(NodeAnimationChannel channel, double ticksPerSecond, out FastList<HxAnimations.Keyframe> list)
             {
-                var posCount = channel.PositionKeyCount;
-                var rotCount = channel.RotationKeyCount;
-                var scaleCount = channel.ScalingKeyCount;
+                var posCount = channel.HasPositionKeys ? channel.PositionKeyCount : 0;
+                var rotCount = channel.HasRotationKeys ? channel.RotationKeyCount : 0;
+                var scaleCount = channel.HasScalingKeys ? channel.ScalingKeyCount : 0;
+                int maxCount = Math.Max(posCount, Math.Max(rotCount, scaleCount));
+                var ret = new FastList<HxAnimations.Keyframe>(maxCount);
                 if (posCount != rotCount || rotCount != scaleCount)
                 {
-                    list = null;
-                    ErrorCode |= ErrorCode.NonUniformAnimationKeyDoesNotSupported;
-                    return ErrorCode.NonUniformAnimationKeyDoesNotSupported;
+                    Log(HelixToolkit.Logger.LogLevel.Trace, 
+                        "Animation Channel is non-uniform lengths." +
+                        $" Position={posCount}; Rotation={rotCount}; Scale={scaleCount};" +
+                        " Trying to automatically create uniform animation keys");
+                    // Adds dummy key if it is empty
+                    if (posCount == 0)
+                    {
+                        channel.PositionKeys.Add(new VectorKey(0, new Vector3D()));
+                    }
+                    if(rotCount == 0)
+                    {
+                        channel.RotationKeys.Add(new QuaternionKey(0, new Quaternion()));
+                    }
+                    if(scaleCount == 0)
+                    {
+                        channel.ScalingKeys.Add(new VectorKey(0, new Vector3D(1, 1, 1)));
+                    }
+                    int i = 0, j = 0, k = 0;
+                    double nextT1 = channel.PositionKeys[i].Time, 
+                        nextT2 = channel.RotationKeys[j].Time, 
+                        nextT3 = channel.ScalingKeys[k].Time;
+                    var minT = Math.Min(nextT1, Math.Min(nextT2, nextT3));
+
+                    for (int x = 0; x < maxCount && i < posCount && j < rotCount && k < scaleCount; ++x)
+                    {                       
+                        ret.Add(new HxAnimations.Keyframe()
+                        {
+                            Time = (float)(minT / ticksPerSecond),
+                            Translation = channel.PositionKeys[i].Value.ToSharpDXVector3(),
+                            Rotation = channel.RotationKeys[j].Value.ToSharpDXQuaternion(),
+                            Scale = channel.ScalingKeys[k].Value.ToSharpDXVector3(),
+                        });
+                        nextT1 = (i + 1) < posCount ? channel.PositionKeys[i + 1].Time : double.MaxValue; // Set to max so index will not increase
+                        nextT2 = (j + 1) < rotCount ? channel.RotationKeys[j + 1].Time : double.MaxValue;
+                        nextT3 = (k + 1) < scaleCount ? channel.ScalingKeys[k + 1].Time : double.MaxValue;
+
+                        minT = Math.Min(nextT1, Math.Min(nextT2, nextT3));
+                        if (minT == nextT1)
+                        {
+                            ++i;
+                        }
+                        if(minT == nextT2)
+                        {
+                            ++j;
+                        }
+                        if(minT == nextT3)
+                        {
+                            ++k;
+                        }
+                    }
+                }
+                else
+                {
+                    for(int i = 0; i < posCount; ++i)
+                    {
+                        ret.Add(new HxAnimations.Keyframe()
+                        {
+                            Time = (float)(channel.PositionKeys[i].Time / ticksPerSecond),
+                            Translation = channel.PositionKeys[i].Value.ToSharpDXVector3(),
+                            Rotation = channel.RotationKeys[i].Value.ToSharpDXQuaternion(),
+                            Scale = channel.ScalingKeys[i].Value.ToSharpDXVector3()
+                        });
+                    }
                 }
 
-                var ret = new FastList<HxAnimations.Keyframe>(posCount);
-                for (var i = 0; i < posCount; ++i)
-                {
-                    ret.Add(new HxAnimations.Keyframe
-                    {
-                        Time = (float)(channel.PositionKeys[i].Time / ticksPerSecond),
-                        Translation = channel.PositionKeys[i].Value.ToSharpDXVector3(),
-                        Rotation = channel.RotationKeys[i].Value.ToSharpDXQuaternion(),
-                        Scale = channel.ScalingKeys[i].Value.ToSharpDXVector3()
-                    });
-                }
                 list = ret;
                 return ErrorCode.Succeed;
             }
@@ -125,6 +176,11 @@ namespace HelixToolkit.UWP
             private ErrorCode LoadAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict, bool searchBoneSkinMeshNode,
                 out HxAnimations.Animation hxAni)
             {
+                if (ani.TicksPerSecond == 0)
+                {
+                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Animation TicksPerSecond is 0. Set to {configuration.TickesPerSecond}");
+                    ani.TicksPerSecond = configuration.TickesPerSecond;
+                }
                 hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.Node)
                 {
                     StartTime = 0,
