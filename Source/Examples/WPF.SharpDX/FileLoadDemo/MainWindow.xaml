@@ -70,34 +70,55 @@
             </MenuItem>
         </Menu>
 
-        <ScrollViewer
+        <Grid
             Grid.Row="1"
             Grid.Column="1"
             Width="200"
             VerticalAlignment="Stretch">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <StackPanel HorizontalAlignment="Left" Orientation="Vertical">
-                    <Button Command="{Binding ResetCameraCommand}">
-                        Reset Camera
-                    </Button>
-                    <Separator />
-                    <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
-                    <CheckBox Margin="4" IsChecked="{Binding ElementName=view, Path=EnableSSAO}">Enable SSAO</CheckBox>
-                    <Separator />
-                    <TextBlock>Scene Graph</TextBlock>
-                </StackPanel>
-                <TreeView Grid.Row="1" ItemsSource="{Binding GroupModel.GroupNode.Items}">
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Items}">
-                            <TextBlock Text="{Binding Name}" />
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
-            </Grid>
-        </ScrollViewer>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel
+                Margin="4"
+                HorizontalAlignment="Stretch"
+                Orientation="Vertical">
+                <Button Command="{Binding ResetCameraCommand}">
+                    Reset Camera
+                </Button>
+                <Separator />
+                <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+                <CheckBox Margin="4" IsChecked="{Binding ElementName=view, Path=EnableSSAO}">Enable SSAO</CheckBox>
+                <Separator />
+                <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}">Enable Animation</CheckBox>
+                <TextBlock>Animations</TextBlock>
+                <ComboBox
+                    DisplayMemberPath="Name"
+                    ItemsSource="{Binding Animations}"
+                    SelectedItem="{Binding SelectedAnimation}" />
+                <Separator />
+                <TextBlock>Scene Graph</TextBlock>
+            </StackPanel>
+            <TreeView Grid.Row="1" ItemsSource="{Binding GroupModel.GroupNode.Items}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Items}">
+                        <TextBlock Text="{Binding Name}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Setters>
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </Style.Setters>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAnimationNode}" Value="true">
+                                            <Setter Property="Foreground" Value="Blue" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </Grid>
     </Grid>
 </Window>

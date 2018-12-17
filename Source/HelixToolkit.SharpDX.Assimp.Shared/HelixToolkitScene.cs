@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP
         {
             public SceneNode Root { set; get; }
             public IList<Animation> Animations { set; get; }
+            public bool HasAnimation { get => Animations != null && Animations.Count > 0; }
             /// <summary>
             /// Initializes a new instance of the <see cref="HelixScene"/> class.
             /// </summary>
