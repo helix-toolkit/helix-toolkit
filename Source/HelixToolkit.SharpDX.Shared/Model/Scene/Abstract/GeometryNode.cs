@@ -548,7 +548,7 @@ namespace HelixToolkit.UWP
                         foreach (var modelMatrix in InstanceBuffer.Elements)
                         {
                             var b = this.Bounds;
-                            if (OnHitTest(context, modelMatrix * TotalModelMatrix, ref rayWS, ref hits))
+                            if (OnHitTest(context, modelMatrix * TotalModelMatrixInternal, ref rayWS, ref hits))
                             {
                                 hit = true;
                                 var lastHit = hits[hits.Count - 1];
@@ -562,7 +562,7 @@ namespace HelixToolkit.UWP
                     }
                     else
                     {
-                        return OnHitTest(context, TotalModelMatrix, ref rayWS, ref hits);
+                        return OnHitTest(context, TotalModelMatrixInternal, ref rayWS, ref hits);
                     }
                 }
                 else

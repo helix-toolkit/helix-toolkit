@@ -18,32 +18,124 @@ namespace HelixToolkit.UWP
 {
     namespace Animations
     {
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct Bone
         {
-            public int ParentIndex;
+            public string Name;
+            public Model.Scene.SceneNode ParentNode; // Used for scene graph based node animation
+            public Model.Scene.SceneNode Node; // Used for scene graph based node animation
+            public int ParentIndex;// Used only for array based bones
             public Matrix InvBindPose;
             public Matrix BindPose;
             public Matrix BoneLocalTransform;
-            public const int SizeInBytes = 4 * (1 + 4 * 4 * 3);
         };
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        public struct NodeAnimation
+        {
+            public Model.Scene.SceneNode Node; // Used for scene graph based node animation
+            public FastList<Keyframe> KeyFrames;
+        }
+
         public struct Keyframe
         {
-            public int BoneIndex;
+            public Vector3 Translation;
+            public Quaternion Rotation;
+            public Vector3 Scale;
             public float Time;
-            public Matrix Transform;
-            public const int SizeInBytes = 4 * (2 + 4 * 4);
-        };
+            public int BoneIndex;// Used only for array based bones
+            public Matrix ToTransformMatrix()
+            {
+                return Matrix.Scaling(Scale) * Matrix.RotationQuaternion(Rotation) * Matrix.Translation(Translation);
+            }
+        }
 
+        public enum AnimationType
+        {
+            Keyframe,
+            Node
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public class Animation
         {
+            /// <summary>
+            /// Gets or sets the unique identifier.
+            /// </summary>
+            /// <value>
+            /// The unique identifier.
+            /// </value>
             public Guid GUID { set; get; } = Guid.NewGuid();
+            /// <summary>
+            /// Gets or sets the type of the animation.
+            /// </summary>
+            /// <value>
+            /// The type of the animation.
+            /// </value>
+            public AnimationType AnimationType { set; get; }
+            /// <summary>
+            /// Gets or sets the name.
+            /// </summary>
+            /// <value>
+            /// The name.
+            /// </value>
             public string Name { set; get; }
+            /// <summary>
+            /// Gets or sets the start time.
+            /// </summary>
+            /// <value>
+            /// The start time.
+            /// </value>
             public float StartTime { set; get; }
+            /// <summary>
+            /// Gets or sets the end time.
+            /// </summary>
+            /// <value>
+            /// The end time.
+            /// </value>
             public float EndTime { set; get; }
-            public List<Keyframe> Keyframes { set; get; } = new List<Keyframe>();
+            /// <summary>
+            /// Gets or sets the keyframes.
+            /// </summary>
+            /// <value>
+            /// The keyframes.
+            /// </value>
+            public List<Keyframe> Keyframes { set; get; }
+            /// <summary>
+            /// Gets or sets the node animation collection.
+            /// </summary>
+            /// <value>
+            /// The node animation collection.
+            /// </value>
+            public List<NodeAnimation> NodeAnimationCollection { set; get; }
+            /// <summary>
+            /// Gets or sets the bone skin meshes.
+            /// </summary>
+            /// <value>
+            /// The bone skin meshes.
+            /// </value>
+            public List<IBoneMatricesNode> BoneSkinMeshes { set; get; }
+            /// <summary>
+            /// Gets a value indicating whether this animation has bone skin meshes.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this animation has bone skin meshes; otherwise, <c>false</c>.
+            /// </value>
+            public bool HasBoneSkinMeshes { get => BoneSkinMeshes != null && BoneSkinMeshes.Count > 0; }
+            /// <summary>
+            /// Gets or sets the root node of this animation
+            /// </summary>
+            /// <value>
+            /// The root node.
+            /// </value>
+            public Model.Scene.SceneNode RootNode { set; get; }
+            /// <summary>
+            /// Initializes a new animation of the <see cref="Animation"/> class.
+            /// </summary>
+            /// <param name="type">The type.</param>
+            public Animation(AnimationType type)
+            {
+                AnimationType = type;
+            }
         };
     }
 

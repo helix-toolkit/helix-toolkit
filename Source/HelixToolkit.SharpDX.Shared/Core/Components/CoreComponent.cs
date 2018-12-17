@@ -51,10 +51,9 @@ namespace HelixToolkit.UWP
             /// <typeparam name="T"></typeparam>
             /// <param name="backingField"></param>
             /// <param name="value"></param>
-            /// <param name="propertyName"></param>
             /// <returns></returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+            protected bool SetAffectsRender<T>(ref T backingField, T value)
             {
                 if (EqualityComparer<T>.Default.Equals(backingField, value))
                 {
@@ -62,7 +61,6 @@ namespace HelixToolkit.UWP
                 }
 
                 backingField = value;
-                this.RaisePropertyChanged(propertyName);
                 RaiseInvalidateRender();
                 return true;
             }

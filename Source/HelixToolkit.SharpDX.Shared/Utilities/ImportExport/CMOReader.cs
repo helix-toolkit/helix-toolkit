@@ -351,14 +351,18 @@ namespace HelixToolkit.UWP
                 int animationCount = (int)reader.ReadUInt32();
                 for (var i = 0; i < animationCount; i++)
                 {
-                    Animation animation = new Animation();
+                    Animation animation = new Animation(AnimationType.Keyframe);
                     string animationName = reader.ReadCMO_wchar();
                     animation.StartTime = reader.ReadSingle();
                     animation.EndTime = reader.ReadSingle();
                     animation.Name = animationName;
                     int keyframeCount = (int)reader.ReadUInt32();
                     for (var j = 0; j < keyframeCount; j++)
-                        animation.Keyframes.Add(reader.ReadStructure<Keyframe>());
+                    {
+                        var keyframe = reader.ReadStructure<KeyframeCMO>();
+                        keyframe.Transform.Decompose(out var s, out var q, out var t);
+                        animation.Keyframes.Add(new Keyframe() { Translation = t, Rotation = q, Scale = s, Time = keyframe.Time });
+                    }
                     animationHierarchy.Animations.Add(animation.Name, animation);
                     if (!UniqueAnimations.ContainsKey(animation.Name))
                     {
@@ -388,19 +392,16 @@ namespace HelixToolkit.UWP
                 };
                 if(isAnimationData)
                 {
-                    var boneskinmesh = new BoneSkinnedMeshGeometry3D(meshGeo) { Animations = new Dictionary<string, Animation>(animationHierarchy.Animations.Count) };
-                    foreach(var ani in animationHierarchy.Animations.Values)
-                    {
-                        boneskinmesh.Animations.Add(ani.Name, ani);
-                    }
+                    var boneskinmesh = new BoneSkinnedMeshGeometry3D(meshGeo);
                     boneskinmesh.VertexBoneIds = new List<BoneIds>(skinningVertexBuffers[(int)sub.VertexDataIndex]
                         .Select(x => new BoneIds()
                         {
-                            Bone1 = (int)x.BoneIndex0, Bone2 = (int)x.BoneIndex1, Bone3 = (int)x.BoneIndex2, Bone4 = (int)x.BoneIndex3,
+                            Bone1 = (int)x.BoneIndex0,
+                            Bone2 = (int)x.BoneIndex1,
+                            Bone3 = (int)x.BoneIndex2,
+                            Bone4 = (int)x.BoneIndex3,
                             Weights = new Vector4(x.BoneWeight0, x.BoneWeight1, x.BoneWeight2, x.BoneWeight3),
                         }));
-                    boneskinmesh.Bones = animationHierarchy.Bones;
-                    boneskinmesh.BoneNames = boneNames;
                     meshGeo = boneskinmesh;                    
                 }              
                 //Todo Load textures
@@ -452,6 +453,13 @@ namespace HelixToolkit.UWP
 
             public Vector3 Min;
             public Vector3 Max;
+        };
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private struct KeyframeCMO
+        {
+            public int BoneIndex;// Used only for array based bones
+            public float Time;
+            public Matrix Transform;
         };
     }
 
@@ -530,5 +538,6 @@ namespace HelixToolkit.UWP
             handle.Free();
             return stuff;
         }
+
     }
 }

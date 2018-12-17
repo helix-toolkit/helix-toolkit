@@ -21,6 +21,7 @@
     <DefineConstants>TRACE;NETFX_CORE;CORE;</DefineConstants>
     <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
     <OutputPath>bin\Release\</OutputPath>
+    <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -35,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.csproj" />
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
   </ItemGroup>
     <ItemGroup>
         <None Include="..\HelixToolkit.snk" />

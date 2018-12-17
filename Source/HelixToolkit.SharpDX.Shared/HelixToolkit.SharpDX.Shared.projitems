@@ -96,6 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Vector3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\EventArguments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ICamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IEffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferManager.cs" />

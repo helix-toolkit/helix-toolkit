@@ -1,9 +1,13 @@
-﻿using HelixToolkit.SharpDX.Core.Model.Scene;
+﻿using HelixToolkit.SharpDX.Core.Animations;
+using HelixToolkit.SharpDX.Core.Assimp;
+using HelixToolkit.SharpDX.Core.Model.Scene;
 using ImGuiNET;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace CoreTest
 {
@@ -15,6 +19,12 @@ namespace CoreTest
         private static string modelName = "";
         private static long currentTime = 0;
         public static string SomeTextFromOutside = "";
+
+        public static HelixToolkitScene scene;
+
+        private static bool[] animationSelection;
+        private static string[] animationNames;
+        private static int currentSelectedAnimation = -1;
 
         public static void DrawUI(int width, int height, ref ViewportOptions options, GroupNode rootNode)
         {
@@ -75,6 +85,11 @@ namespace CoreTest
                 {
                     DrawSceneGraph(rootNode);
                 }
+
+                if (!loading && scene != null)
+                {
+                    DrawAnimations(scene.Animations, ref options);
+                }
                 
                 if (!loading && !string.IsNullOrEmpty(exception))
                 {
@@ -103,22 +118,29 @@ namespace CoreTest
             dialog.Filter = $"3D model files ({HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString}|{HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString}";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                var path = dialog.FileName;
-                node.Clear();
+                var path = dialog.FileName;             
                 exception = "";
                 currentTime = Stopwatch.GetTimestamp();
                 loading = true;
                 modelName = Path.GetFileName(path);
                 Task.Run(() =>
                 {
-                    var importer = new HelixToolkit.SharpDX.Core.Assimp.Importer();
+                    var importer = new Importer();
                     return importer.Load(path);
                 }).ContinueWith((x) =>
                 {
                     loading = false;
-                    if (x.IsCompleted)
+                    if (x.IsCompleted && x.Result != null)
                     {
-                        node.AddChildNode(x.Result);
+                        node.Clear();
+                        node.AddChildNode(x.Result.Root);
+                        scene = x.Result;
+                        if(scene.Animations != null && scene.Animations.Count > 0)
+                        {
+                            animationSelection = new bool[scene.Animations.Count];
+                            animationNames = scene.Animations.Select((ani) => ani.Name).ToArray();
+                            currentSelectedAnimation = -1;
+                        }
                     }
                     else if (x.Exception != null)
                     {
@@ -136,18 +158,51 @@ namespace CoreTest
             }
             if (node.Items.Count > 0)
             {
+                if (node.IsAnimationNode)
+                {
+                    ImGui.PushStyleColor(ColorTarget.Text, new System.Numerics.Vector4(0, 1, 1, 1));
+                }
                 if (ImGui.TreeNode(node.Name))
                 {
+                    if (node.IsAnimationNode)
+                    {
+                        ImGui.PopStyleColor();
+                    }
                     foreach (var n in node.Items)
                     {
                         DrawSceneGraph(n);
                     }
                     ImGui.TreePop();
                 }
+                else if (node.IsAnimationNode)
+                {
+                    ImGui.PopStyleColor();
+                }
             }
             else
             {
                 ImGui.Text(node.Name);
+            }
+        }
+
+        private static void DrawAnimations(IList<Animation> animations, ref ViewportOptions options)
+        {
+            if (animations.Count > 0)
+            {
+                ImGui.Text($"Animations: {animations.Count}");
+                if(ImGui.Combo(" ", ref currentSelectedAnimation, animationNames))
+                {
+                    if(currentSelectedAnimation>=0 && currentSelectedAnimation < animationNames.Length)
+                    {
+                        options.PlayAnimation = true;
+                        options.AnimationUpdater = new NodeAnimationUpdater(scene.Animations[currentSelectedAnimation]);
+                    }
+                    else
+                    {
+                        options.PlayAnimation = false;
+                        options.AnimationUpdater = null;
+                    }
+                }
             }
         }
     }

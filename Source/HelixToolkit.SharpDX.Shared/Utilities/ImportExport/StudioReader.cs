@@ -31,6 +31,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     ///Ported from HelixToolkit.Wpf
     /// </summary>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class StudioReader : IModelReader
     {
         private readonly Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();

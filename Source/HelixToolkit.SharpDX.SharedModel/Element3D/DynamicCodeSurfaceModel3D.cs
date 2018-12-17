@@ -89,17 +89,14 @@ namespace HelixToolkit.Wpf.SharpDX
             var n = SceneNode as DynamicCodeSurface3DNode;
             n.Source = SourceCode;
             n.ParameterW = (float)ParameterW;
-            n.PropertyChanged += N_PropertyChanged;
+            n.OnCompileError += N_OnCompileError;
             base.AssignDefaultValuesToSceneNode(node);
         }
 
-        private void N_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void N_OnCompileError(object sender, System.EventArgs e)
         {
-            if(e.PropertyName == nameof(DynamicCodeSurface3DNode.Errors))
-            {
-                var s = sender as DynamicCodeSurface3DNode;
-                ErrorList = s.Errors;
-            }
+            if (sender is DynamicCodeSurface3DNode n)
+                ErrorList = n.Errors;
         }
 
         protected override SceneNode OnCreateSceneNode()

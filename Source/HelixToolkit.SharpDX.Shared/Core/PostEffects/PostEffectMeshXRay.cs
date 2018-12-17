@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
             /// </value>
-            bool DoublePass { set; get; }
+            bool EnableDoublePass { set; get; }
         }
         /// <summary>
         /// 
@@ -111,7 +111,7 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
             /// </value>
-            public bool DoublePass
+            public bool EnableDoublePass
             {
                 set
                 {
@@ -156,7 +156,7 @@ namespace HelixToolkit.UWP
             {
                 var buffer = context.RenderHost.RenderBuffer;
                 bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
-                var dPass = DoublePass;
+                var dPass = EnableDoublePass;
                 var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
                 deviceContext.SetRenderTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
                 if (hasMSAA)

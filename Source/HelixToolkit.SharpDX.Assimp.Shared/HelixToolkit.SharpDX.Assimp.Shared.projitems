@@ -10,6 +10,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HelixToolkitScene.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Importer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImporterPartial_Animation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImporterPartial_Mesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImporterPartial_Material.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)HelixToolkit.SharpDX.Shared.licenseheader" />
   </ItemGroup>
 </Project>
