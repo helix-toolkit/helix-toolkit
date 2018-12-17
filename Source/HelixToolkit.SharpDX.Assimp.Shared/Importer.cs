@@ -1,4 +1,8 @@
-﻿using Assimp;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using Assimp;
 using Assimp.Configs;
 using SharpDX;
 using SharpDX.Direct3D11;
@@ -200,9 +204,12 @@ namespace HelixToolkit.UWP
             }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
         [Flags]
         public enum ErrorCode
-        {
+        {        
             None = 0,
             Failed = 1,
             Succeed = 2,
@@ -437,15 +444,21 @@ namespace HelixToolkit.UWP
 
             #endregion
 
-            #region Protected Methods
-
+            #region Protected Methods            
+            /// <summary>
+            /// Clears this instance.
+            /// </summary>
             protected virtual void Clear()
             {
                 textureDict.Clear();
                 SceneNodes.Clear();
                 Animations.Clear();
             }
-
+            /// <summary>
+            /// Processes the scene nodes.
+            /// </summary>
+            /// <param name="root">The root.</param>
+            /// <returns></returns>
             protected virtual ErrorCode ProcessSceneNodes(HxScene.SceneNode root)
             {
                 if (root == null) return ErrorCode.Failed;
@@ -527,7 +540,14 @@ namespace HelixToolkit.UWP
                 }
                 return group;
             }
-
+            /// <summary>
+            /// Logs the specified level.
+            /// </summary>
+            /// <typeparam name="Type">The type of the ype.</typeparam>
+            /// <param name="level">The level.</param>
+            /// <param name="msg">The MSG.</param>
+            /// <param name="caller">The caller.</param>
+            /// <param name="sourceLineNumber">The source line number.</param>
             protected void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
             {
                 Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);

@@ -71,6 +71,8 @@ namespace HelixToolkit.UWP
         /// Creates the node based bone matrices.
         /// </summary>
         /// <param name="bones">The bones.</param>
+        /// <param name="matrices"></param>
+        /// <param name="rootInvTransform"></param>
         /// <returns></returns>
         public static void CreateNodeBasedBoneMatrices(IList<Animations.Bone> bones, ref Matrix rootInvTransform, ref Matrix[] matrices)
         {

@@ -64,7 +64,11 @@ namespace HelixToolkit.UWP
             {
                 return new global::SharpDX.Color4(v.R, v.G, v.B, v.A);
             }
-
+            /// <summary>
+            /// To the sharp dx quaternion.
+            /// </summary>
+            /// <param name="q">The q.</param>
+            /// <returns></returns>
             public static global::SharpDX.Quaternion ToSharpDXQuaternion(this Quaternion q)
             {
                 return new global::SharpDX.Quaternion(q.X, q.Y, q.Z, q.W);

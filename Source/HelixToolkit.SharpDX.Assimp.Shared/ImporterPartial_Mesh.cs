@@ -1,4 +1,8 @@
-﻿using Assimp;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using Assimp;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
@@ -133,7 +137,11 @@ namespace HelixToolkit.UWP
                 hMesh.UpdateOctree();
                 return hMesh;
             }
-
+            /// <summary>
+            /// To the helix mesh with bones.
+            /// </summary>
+            /// <param name="mesh">The mesh.</param>
+            /// <returns></returns>
             protected virtual BoneSkinnedMeshGeometry3D ToHelixMeshWithBones(Mesh mesh)
             {
                 var m = ToHelixMesh(mesh);

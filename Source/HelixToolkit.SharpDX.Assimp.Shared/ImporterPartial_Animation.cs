@@ -1,4 +1,8 @@
-﻿using Assimp;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using Assimp;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -19,8 +23,18 @@ namespace HelixToolkit.UWP
     using HxScene = Model.Scene;
     namespace Assimp
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public partial class Importer
         {
+            /// <summary>
+            /// Processes the node animation.
+            /// </summary>
+            /// <param name="channel">The channel.</param>
+            /// <param name="ticksPerSecond">The ticks per second.</param>
+            /// <param name="list">The list.</param>
+            /// <returns></returns>
             protected virtual ErrorCode ProcessNodeAnimation(NodeAnimationChannel channel, double ticksPerSecond, out FastList<HxAnimations.Keyframe> list)
             {
                 var posCount = channel.PositionKeyCount;
