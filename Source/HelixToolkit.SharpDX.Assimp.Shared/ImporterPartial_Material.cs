@@ -32,8 +32,8 @@ namespace HelixToolkit.UWP
             {
                 var phong = new PhongMaterialCore
                 {
-                    AmbientColor = material.HasColorAmbient ? material.ColorAmbient.ToSharpDXColor4() : Color.Black,
-                    DiffuseColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.Black,
+                    AmbientColor = material.ColorAmbient.ToSharpDXColor4(),
+                    DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
                     EmissiveColor = material.HasColorEmissive ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
                     ReflectiveColor = material.HasColorReflective
                         ? material.ColorReflective.ToSharpDXColor4()
@@ -221,14 +221,15 @@ namespace HelixToolkit.UWP
                                 core = new NormalMaterialCore();
                                 break;
                             default:
-                                throw new NotSupportedException(
-                                    $"Shading Mode {material.ShadingMode} does not supported.");
+                                Log(HelixToolkit.Logger.LogLevel.Warning, $"Shading Mode is not supported:{material.ShadingMode}");
+                                core = new DiffuseMaterialCore() { EnableUnLit = true };
+                                break;
                         }
-
                         break;
                 }
 
-                if (core != null) core.Name = material.Name;
+                if (core != null)
+                    core.Name = material.Name;
                 return new Tuple<global::Assimp.Material, MaterialCore>(material, core);
             }
 
@@ -239,15 +240,35 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected virtual Stream OnLoadTexture(string path)
             {
-                var dict = Path.GetDirectoryName(this.path);
-                var p = Path.GetFullPath(Path.Combine(dict, path));
-                if (!File.Exists(p))
-                    p = HandleTexturePathNotFound(dict, path);
-                if (!File.Exists(p))
-                    return null;
-                return LoadFileToStream(p);
+                try
+                {
+                    var dict = Path.GetDirectoryName(this.path);
+                    if (string.IsNullOrEmpty(dict))
+                    {
+                        dict = Directory.GetCurrentDirectory();
+                    }
+                    var p = Path.GetFullPath(Path.Combine(dict, path));
+                    if (!File.Exists(p))
+                        p = HandleTexturePathNotFound(dict, path);
+                    if (!File.Exists(p))
+                    {
+                        Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Path = {path}.");
+                        return null;
+                    }
+                    return LoadFileToStream(p);
+                }
+                catch(Exception ex)
+                {
+                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Exception. Texture Path = {path}. Exception: {ex.Message}");
+                }
+                return null;
             }
-
+            /// <summary>
+            /// Handles the texture path not found. Override to provide your own handling
+            /// </summary>
+            /// <param name="dir">The dir.</param>
+            /// <param name="texturePath">The texture path.</param>
+            /// <returns></returns>
             protected virtual string HandleTexturePathNotFound(string dir, string texturePath)
             {
                 //If file not found in texture path dir, try to find the file in the same dir as the model file
@@ -261,9 +282,22 @@ namespace HelixToolkit.UWP
 
                 //If still not found, try to go one upper level and find
                 var upper = Directory.GetParent(dir).FullName;
-                upper = Path.GetFullPath(upper + texturePath);
-                if (File.Exists(upper)) return upper;
-
+                try
+                {
+                    upper = Path.GetFullPath(upper + texturePath);
+                }
+                catch (NotSupportedException ex)
+                {
+                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Exception: {ex}");
+                }
+                if (File.Exists(upper))
+                    return upper;
+                var fileName = Path.GetFileName(texturePath);
+                var currentPath = Path.Combine(dir, fileName);
+                if (File.Exists(currentPath))
+                {
+                    return currentPath;
+                }
                 return "";
             }
 

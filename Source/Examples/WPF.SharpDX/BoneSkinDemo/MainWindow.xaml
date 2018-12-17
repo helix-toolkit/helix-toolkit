@@ -48,19 +48,12 @@
             <hx:ShadowMap3D OrthoWidth="200" />
             <hx:AmbientLight3D Color="#828282" />
             <hx:DirectionalLight3D Direction="0, -1, -1" Color="White" />
-            <hx:GroupModel3D ItemsSource="{Binding Models}" Transform="{Binding ModelTransform}" />
-            <hx:GroupModel3D
-                x:Name="skeleton"
-                ItemsSource="{Binding BoneModels}"
-                Transform="{Binding ModelTransform}" />
+            <hx:Element3DPresenter Content="{Binding ModelGroup}" />
             <hx:AxisPlaneGridModel3D
                 x:Name="plane"
+                AutoSpacing="False"
                 RenderShadowMap="True"
-                Offset="-0.8" />
-            <hx:PostEffectMeshXRayGrid
-                BlendingFactor="0.6"
-                EffectName="xray"
-                GridDensity="3" />
+                Offset="-0.2" />
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"
@@ -69,7 +62,7 @@
             Orientation="Vertical">
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
-            <CheckBox IsChecked="{Binding IsRendering, ElementName=skeleton}">Skeleton</CheckBox>
+            <CheckBox IsChecked="{Binding ShowSkeleton}">Skeleton</CheckBox>
             <TextBlock Margin="0,4,0,0">Animation List:</TextBlock>
             <ComboBox ItemsSource="{Binding Animations}" SelectedItem="{Binding SelectedAnimation}" />
             <TextBlock Margin="0,4,0,0">Repeat Mode:</TextBlock>

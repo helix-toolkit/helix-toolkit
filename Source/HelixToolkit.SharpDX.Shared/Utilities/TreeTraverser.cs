@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
         /// <param name="onlyRendering">Only the node is currently rendering. The nodes set to be Visible = false or IsRendering = false will not be traversed. </param>
         /// <param name="stackCache">The stack cache.</param>
         /// <returns></returns>
-        public static IEnumerable<SceneNode> Traverse(this IEnumerable<SceneNode> nodes, bool onlyRendering,
+        public static IEnumerable<SceneNode> Traverse(this IEnumerable<SceneNode> nodes, bool onlyRendering = false,
             Stack<IEnumerator<SceneNode>> stackCache = null)
         {
             return PreorderDFT(nodes, (n)=> { return onlyRendering ? n.IsRenderable : true; }, stackCache);

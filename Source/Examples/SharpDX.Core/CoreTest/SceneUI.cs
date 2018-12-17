@@ -125,12 +125,12 @@ namespace CoreTest
                 modelName = Path.GetFileName(path);
                 Task.Run(() =>
                 {
-                    var importer = new HelixToolkit.SharpDX.Core.Assimp.Importer();
+                    var importer = new Importer();
                     return importer.Load(path);
                 }).ContinueWith((x) =>
                 {
                     loading = false;
-                    if (x.IsCompleted)
+                    if (x.IsCompleted && x.Result != null)
                     {
                         node.Clear();
                         node.AddChildNode(x.Result.Root);
@@ -158,13 +158,25 @@ namespace CoreTest
             }
             if (node.Items.Count > 0)
             {
+                if (node.IsAnimationNode)
+                {
+                    ImGui.PushStyleColor(ColorTarget.Text, new System.Numerics.Vector4(0, 1, 1, 1));
+                }
                 if (ImGui.TreeNode(node.Name))
                 {
+                    if (node.IsAnimationNode)
+                    {
+                        ImGui.PopStyleColor();
+                    }
                     foreach (var n in node.Items)
                     {
                         DrawSceneGraph(n);
                     }
                     ImGui.TreePop();
+                }
+                else if (node.IsAnimationNode)
+                {
+                    ImGui.PopStyleColor();
                 }
             }
             else

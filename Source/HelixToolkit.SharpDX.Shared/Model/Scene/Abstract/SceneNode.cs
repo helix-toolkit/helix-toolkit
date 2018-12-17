@@ -110,16 +110,21 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if (Set(ref modelMatrix, value))
+                    if (SetAffectsRender(ref modelMatrix, value))
                     {
                         NeedMatrixUpdate = true;
-                        InvalidateRender();
                     }
                 }
                 get { return modelMatrix; }
             }
 
             private SceneNode parent = NullSceneNode.NullNode;
+            /// <summary>
+            /// Gets or sets the parent.
+            /// </summary>
+            /// <value>
+            /// The parent.
+            /// </value>
             public SceneNode Parent
             {
                 internal set
@@ -137,7 +142,6 @@ namespace HelixToolkit.UWP
             }
 
             private bool visible = true;
-
             /// <summary>
             /// Gets or sets a value indicating whether this <see cref="SceneNode"/> is visible.
             /// </summary>
@@ -146,12 +150,11 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool Visible
             {
-                internal set
+                set
                 {
-                    if (Set(ref visible, value))
+                    if (SetAffectsRender(ref visible, value))
                     {
                         VisibleChanged?.Invoke(this, value ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
-                        InvalidateRender();
                     }
                 }
                 get { return visible; }

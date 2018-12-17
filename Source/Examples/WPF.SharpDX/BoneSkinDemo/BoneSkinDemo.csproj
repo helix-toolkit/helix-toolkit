@@ -89,22 +89,20 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="..\..\..\..\Models\CMO\HumanCharacter\Character.cmo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_test.cmo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX.Assimp\HelixToolkit.Wpf.SharpDX.Assimp.csproj">
+      <Project>{997f58f5-5892-4fd5-a724-55cb3c162235}</Project>
+      <Name>HelixToolkit.Wpf.SharpDX.Assimp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj">
       <Project>{39740654-f5f1-4936-b4ea-9bc97d4cde37}</Project>
       <Name>HelixToolkit.Wpf.SharpDX</Name>
@@ -123,19 +121,19 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\Models\CMO\HumanCharacter\Character.png">
+    <None Include="..\..\..\..\Models\FBX\Solus The Knight\Solus_The_Knight.fbx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-      <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_UVMap_color.png">
+      <None Include="..\..\..\..\Models\FBX\Solus The Knight\temp_normal_map.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-    <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_Rusty_UVMap_color.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_Rusty_UVMap_nmap.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-      <None Include="..\..\..\..\Models\CMO\SphereBot\Sphere_Bot_Rusty_UVMap_RMA.png">
+      <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_knight_color_map_1024.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_knight_metalness_map_1024.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_occlusion_map_1024.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
   </ItemGroup>

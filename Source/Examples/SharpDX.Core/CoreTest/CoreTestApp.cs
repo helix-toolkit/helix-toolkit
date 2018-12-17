@@ -103,8 +103,8 @@ namespace CoreTest
             {
                 LookDirection = new Vector3(0, 0, 50),
                 Position = new Vector3(0, 0, -50),
-                FarPlaneDistance = 10000,
-                NearPlaneDistance = 10f,
+                FarPlaneDistance = 5000,
+                NearPlaneDistance = 1f,
                 FieldOfView = 45,
                 UpDirection = new Vector3(0, 1, 0)
             };

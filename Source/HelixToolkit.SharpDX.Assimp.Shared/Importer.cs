@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -19,7 +19,8 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using Model;
+    using HelixToolkit.Logger;
+    using Model;  
     using HxAnimations = Animations;
     using HxScene = Model.Scene;
 
@@ -162,12 +163,40 @@ namespace HelixToolkit.UWP
             /// The adds post effect for skeleton
             /// </summary>
             public bool AddsPostEffectForSkeleton = true;
+            /// <summary>
+            /// The flip triangle winding order during import
+            /// </summary>
+            public bool FlipWindingOrder = false;
 
+            private ILogger logger = new DebugLogger();
+            /// <summary>
+            /// Gets or sets the logger.
+            /// </summary>
+            /// <value>
+            /// The logger.
+            /// </value>
+            public ILogger Logger
+            {
+                set
+                {
+                    logger = value;
+                    if (logger == null)
+                    {
+                        logger = new DebugLogger();
+                    }
+                }
+                get { return logger; }
+            }
+            /// <summary>
+            /// The global scale for model
+            /// </summary>
+            public float GlobalScale = 1f;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ImporterConfiguration"/> class.
+            /// </summary>
             public ImporterConfiguration()
             {
-#if DEBUG
-                CreateSkeletonForBoneSkinningMesh = true;
-#endif
+
             }
         }
 
@@ -180,33 +209,6 @@ namespace HelixToolkit.UWP
             DuplicateNodeName = 4,
             FileTypeNotSupported = 8,
             NonUniformAnimationKeyDoesNotSupported = 16
-        }
-
-        /// <summary>
-        /// Scene for importer output
-        /// </summary>
-        public class HelixToolkitScene
-        {
-            public HxScene.SceneNode Root { set; get; }
-            public IList<HxAnimations.Animation> Animations { set; get; }
-            /// <summary>
-            /// Initializes a new instance of the <see cref="HelixScene"/> class.
-            /// </summary>
-            /// <param name="root">The root.</param>
-            public HelixToolkitScene(HxScene.SceneNode root)
-            {
-                Root = root;
-            }
-            /// <summary>
-            /// Initializes a new instance of the <see cref="HelixScene"/> class.
-            /// </summary>
-            /// <param name="root">The root.</param>
-            /// <param name="animations">The animations.</param>
-            public HelixToolkitScene(HxScene.SceneNode root, IList<HxAnimations.Animation> animations = null)
-            {
-                Root = root;
-                Animations = animations.ToArray();
-            }
         }
 
         /// <summary>
@@ -250,13 +252,28 @@ namespace HelixToolkit.UWP
             /// </value>
             public static string SupportedFormatsString { get; }
 
+            private ImporterConfiguration configuration = new ImporterConfiguration();
             /// <summary>
             ///     Gets or sets the configuration.
             /// </summary>
             /// <value>
             ///     The configuration.
             /// </value>
-            public ImporterConfiguration Configuration { set; get; } = new ImporterConfiguration();
+            public ImporterConfiguration Configuration
+            {
+                set
+                {
+                    configuration = value;
+                    if (value == null)
+                    {
+                        configuration = new ImporterConfiguration();
+                    }
+                }
+                get
+                {
+                    return configuration;
+                }
+            }
 
             /// <summary>
             ///     Gets all the loaded scene nodes order by preorder traverse.
@@ -272,8 +289,20 @@ namespace HelixToolkit.UWP
             /// The animations.
             /// </value>
             public List<Animations.Animation> Animations { get; } = new List<HxAnimations.Animation>();
-
-            public ErrorCode ErrorCode { private set; get; }
+            /// <summary>
+            /// Gets or sets the error code.
+            /// </summary>
+            /// <value>
+            /// The error code.
+            /// </value>
+            public ErrorCode ErrorCode { protected set; get; }
+            /// <summary>
+            /// Gets the logger.
+            /// </summary>
+            /// <value>
+            /// The logger.
+            /// </value>
+            public ILogger Logger { get => configuration.Logger; }
             #endregion
 
             #region Public Methods
@@ -347,16 +376,19 @@ namespace HelixToolkit.UWP
                     if (!useExtern && Configuration.AssimpPropertyConfig != null)
                         foreach (var config in Configuration.AssimpPropertyConfig)
                             importer.SetConfig(config);
-                    importer.SetConfig(new FloatPropertyConfig(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR, 0f));
-                    importer.SetConfig(new FloatPropertyConfig(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR, 0f));
+                    importer.Scale = configuration.GlobalScale;
                     var fileName = Path.GetExtension(filePath);
                     if (!importer.IsImportFormatSupported(fileName))
                     {
                         ErrorCode |= ErrorCode.FileTypeNotSupported;
                         return ErrorCode;
                     }
-
-                    var assimpScene = importer.ImportFile(filePath, Configuration.AssimpPostProcessSteps);
+                    var postProcess = configuration.AssimpPostProcessSteps;
+                    if (configuration.FlipWindingOrder)
+                    {
+                        postProcess |= PostProcessSteps.FlipWindingOrder;
+                    }
+                    var assimpScene = importer.ImportFile(filePath, postProcess);
                     if (assimpScene == null)
                     {
                         ErrorCode |= ErrorCode.Failed;
@@ -392,11 +424,14 @@ namespace HelixToolkit.UWP
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    Log(LogLevel.Error, ex.Message);
+                    ErrorCode = ErrorCode.Failed;
+                    return ErrorCode;
                 }
                 finally
                 {
-                    if (!useExtern) importer.Dispose();
+                    if (!useExtern)
+                        importer.Dispose();
                 }
             }
 
@@ -434,18 +469,28 @@ namespace HelixToolkit.UWP
                         if (scene.HasMeshes)
                         {
                             if (parallel)
+                            {
                                 Parallel.ForEach(scene.Meshes,
-                                    (mesh, state, index) => { s.Meshes[index] = ToHelixGeometry(mesh); });
+                                        (mesh, state, index) => { s.Meshes[index] = ToHelixGeometry(mesh); });
+                            }
                             else
+                            {
                                 for (var i = 0; i < scene.MeshCount; ++i)
+                                {
                                     s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                                }
+                            }
                         }
                     },
                     () =>
                     {
                         if (scene.HasMaterials)
+                        {
                             for (var i = 0; i < scene.MaterialCount; ++i)
+                            {
                                 s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                            }
+                        }
                     });
                 return s;
             }
@@ -473,11 +518,17 @@ namespace HelixToolkit.UWP
                         group.AddChildNode(hxNode);
                         if(hxNode is HxScene.BoneSkinMeshNode skinNode && Configuration.CreateSkeletonForBoneSkinningMesh)
                         {
-                            group.AddChildNode(skinNode.CreateSkeletonNode(Configuration.SkeletonMaterial, Configuration.SkeletonEffects));
+                            group.AddChildNode(skinNode.CreateSkeletonNode(Configuration.SkeletonMaterial, 
+                                Configuration.SkeletonEffects, Configuration.SkeletonSizeScale));
                         }
                     }
                 }
                 return group;
+            }
+
+            protected void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+            {
+                Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
             }
             #endregion
 

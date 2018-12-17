@@ -1,5 +1,6 @@
 ﻿using Assimp;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Animation = Assimp.Animation;
@@ -52,8 +53,10 @@ namespace HelixToolkit.UWP
                 var dict = new Dictionary<string, HxScene.SceneNode>(SceneNodes.Count);
                 foreach (var node in SceneNodes)
                 {
-                    if (!dict.ContainsKey(node.Name))
+                    if (node is HxScene.GroupNode && !dict.ContainsKey(node.Name))
+                    {
                         dict.Add(node.Name, node);
+                    }
                 }
 
                 foreach (var node in SceneNodes.Where(x => x is Animations.IBoneMatricesNode)
@@ -79,22 +82,26 @@ namespace HelixToolkit.UWP
                     bool hasBoneSkinnedMesh = scene.Meshes.Where(x => x.Mesh is BoneSkinnedMeshGeometry3D).Count() > 0 ? true : false;
                     var animationList = new List<HxAnimations.Animation>(scene.AssimpScene.AnimationCount);
                     if (Configuration.EnableParallelProcessing)
+                    {
                         Parallel.ForEach(scene.AssimpScene.Animations, ani =>
-                        {
-                            if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
-                            {
-                                lock (animationList)
-                                {
-                                    animationList.Add(hxAni);
-                                }
-                            }
-                        });
+                       {
+                           if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
+                           {
+                               lock (animationList)
+                               {
+                                   animationList.Add(hxAni);
+                               }
+                           }
+                       });
+                    }
                     else
+                    {
                         foreach (var ani in scene.AssimpScene.Animations)
                         {
                             if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
                                 animationList.Add(hxAni);
                         }
+                    }
                     scene.Animations = animationList;
                     Animations.AddRange(animationList);
                 }
@@ -166,7 +173,7 @@ namespace HelixToolkit.UWP
                     node = node.Parent;
                     animation.BoneSkinMeshes = new List<Animations.IBoneMatricesNode>();
                     animation.RootNode = node;
-                    foreach (var n in node.Items.PreorderDFT((m) => { return true; }))
+                    foreach (var n in SceneNodes[0].Items.PreorderDFT((m) => { return true; }))
                     {
                         if(n is Animations.IBoneMatricesNode boneNode)
                         {
