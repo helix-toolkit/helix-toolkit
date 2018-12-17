@@ -313,18 +313,49 @@ namespace HelixToolkit.Wpf
             var sortedTransparentChildren =
                 transparentChildren.OrderBy(item => -this.GetCameraDistance(item, cameraPos, transform)).ToList();
 
-            this.Children.Clear();
+            // Now that opaqueChildren and sortedTransparentChildren describe our desired ordering, we need sort the current children in the new order. 
+            // To optimize the efficiency of this procedure we want to change the children list as little as possible.
+            // Unfortunatally the Visual3DCollection does not have a swap method and we always need to remove an item before we can add it again as
+            // temporary duplicates result in exceptions in the visual tree.
+            // Due to this set of considerations we use selection sort to sort the current Children. (if we could swap without removal, cycle sort might be a small improvement)
 
-            // add the opaque children
-            foreach (var c in opaqueChildren)
+            for (int desiredIndex = 0; desiredIndex < opaqueChildren.Count; desiredIndex++)
             {
-                this.Children.Add(c);
+                Visual3D currentChild = opaqueChildren[desiredIndex];
+                int currentIndex = Children.IndexOf(currentChild);
+                //Insert in the proper spot if not contained:
+                if (currentIndex == -1)
+                {
+                    Children.Insert(desiredIndex, currentChild);
+                    continue;
+                }
+                //Do nothing if it is in the correct spot;
+                //The order of the opaque children does not matter as long as they are before the transparent children:
+                if (currentIndex < opaqueChildren.Count)
+                    continue;
+
+                //remove from old spot and insert to the new correct spot:
+                Children.RemoveAt(currentIndex);
+                Children.Insert(desiredIndex, currentChild);
             }
 
-            // add the sorted transparent children
-            foreach (var c in sortedTransparentChildren)
+            for (int desiredIndex = opaqueChildren.Count; desiredIndex < opaqueChildren.Count + sortedTransparentChildren.Count; desiredIndex++)
             {
-                this.Children.Add(c);
+                Visual3D currentChild = sortedTransparentChildren[desiredIndex - opaqueChildren.Count];
+                int currentIndex = Children.IndexOf(currentChild);
+                //Insert in the proper spot if not contained:
+                if (currentIndex == -1)
+                {
+                    Children.Insert(desiredIndex, currentChild);
+                    continue;
+                }
+                //Do nothing if it is in the correct spot:
+                if (currentIndex == desiredIndex)
+                    continue;
+
+                //remove from old spot and insert to the new correct spot:
+                Children.RemoveAt(currentIndex);
+                Children.Insert(desiredIndex, currentChild);
             }
         }
 
