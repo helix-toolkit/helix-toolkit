@@ -137,8 +137,8 @@ namespace HelixToolkit.UWP
                 return new global::SharpDX.Matrix
                 {
                     M11 = (float)Math.Cos(transform.Rotation) * transform.Scaling.X,
-                    M12 = (float)-Math.Sin(transform.Rotation),
-                    M21 = (float)Math.Sin(transform.Rotation),
+                    M12 = (float)Math.Sin(transform.Rotation),
+                    M21 = (float)-Math.Sin(transform.Rotation),
                     M22 = (float)Math.Cos(transform.Rotation) * transform.Scaling.Y,
                     M33 = 1,
                     M41 = transform.Translation.X,
