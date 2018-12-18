@@ -176,6 +176,10 @@ namespace FileLoadDemo
                                 Animations.Add(ani);
                             }
                         }
+                        foreach(var n in scene.Root.Traverse())
+                        {
+                            n.Tag = new AttachedNodeViewModel(n);
+                        }
                     }                  
                 }
                 else if (result.IsFaulted && result.Exception != null)

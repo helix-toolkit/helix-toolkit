@@ -18,8 +18,6 @@ namespace FileLoadDemo
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MeshNode selectedModel;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -32,21 +30,9 @@ namespace FileLoadDemo
                 {
                     return;
                 }
-                if(selectedModel == arg.HitTestResult.ModelHit)
+                if(arg.HitTestResult.ModelHit is SceneNode node && node.Tag is AttachedNodeViewModel vm)
                 {
-                    selectedModel.PostEffects = null;
-                    selectedModel = null;
-                    return;
-                }
-                if(selectedModel != null)
-                {
-                    selectedModel.PostEffects = null;
-                    selectedModel = null;
-                }
-                selectedModel = arg.HitTestResult.ModelHit as MeshNode;
-                if(selectedModel != null)
-                {
-                    selectedModel.PostEffects = string.IsNullOrEmpty(selectedModel.PostEffects) ? $"highlight[color:#FFFF00]" : null;
+                    vm.Selected = !vm.Selected;
                 }
             }));
         }
