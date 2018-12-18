@@ -35,7 +35,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Forces the update transform and bounds.
         /// </summary>
-        /// <param name="root">The root.</param>
+        /// <param name="nodes">The nodes.</param>
         public static void ForceUpdateTransformsAndBounds(this IEnumerable<SceneNode> nodes)
         {
             foreach (var n in nodes.Traverse())
