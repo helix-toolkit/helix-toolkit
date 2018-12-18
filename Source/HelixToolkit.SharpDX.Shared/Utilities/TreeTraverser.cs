@@ -21,6 +21,19 @@ namespace HelixToolkit.UWP
     public static class TreeTraverser
     {
         /// <summary>
+        /// Traverses up to the root
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        public static IEnumerable<SceneNode> TraverseUp(this SceneNode node)
+        {
+            while (node != null)
+            {
+                yield return node;
+                node = node.Parent;
+            }
+        }
+        /// <summary>
         /// Forces to update transform and bounds.
         /// </summary>
         /// <param name="root">The root.</param>

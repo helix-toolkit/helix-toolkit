@@ -131,11 +131,13 @@ namespace FileLoadDemo
                 Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
                 UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0),
                 FarPlaneDistance = 5000,
-                NearPlaneDistance = 1
+                NearPlaneDistance = 0.1f
             };
             ResetCameraCommand = new DelegateCommand(() =>
             {
                 (Camera as OrthographicCamera).Reset();
+                (Camera as OrthographicCamera).FarPlaneDistance = 5000;
+                (Camera as OrthographicCamera).NearPlaneDistance = 0.1f;
             });
             ExportCommand = new DelegateCommand(() => { ExportFile(); });
         }
@@ -175,6 +177,10 @@ namespace FileLoadDemo
                             {
                                 Animations.Add(ani);
                             }
+                        }
+                        foreach(var n in scene.Root.Traverse())
+                        {
+                            n.Tag = new AttachedNodeViewModel(n);
                         }
                     }                  
                 }

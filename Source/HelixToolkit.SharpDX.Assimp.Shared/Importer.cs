@@ -75,33 +75,12 @@ namespace HelixToolkit.UWP
         public class ImporterConfiguration
         {
             /// <summary>
-            ///     The ai matkey GLTF basecolor factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_BASECOLOR_FACTOR = @"$mat.gltf.pbrMetallicRoughness.baseColorFactor";
-
-            /// <summary>
-            ///     The ai matkey GLTF metallic factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_METALLIC_FACTOR = @"$mat.gltf.pbrMetallicRoughness.metallicFactor";
-
-            /// <summary>
-            ///     The ai matkey GLTF metallic, roughness, ambient occlusion texture
-            /// </summary>
-            public string AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE = @"$tex.file";
-
-            /// <summary>
-            ///     The ai matkey GLTF roughness factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_ROUGHNESS_FACTOR = @"$mat.gltf.pbrMetallicRoughness.roughnessFactor";
-
-            /// <summary>
             ///     The default post process steps for Assimp Importer. <see cref="PostProcessSteps.FlipUVs" /> must be used for
             ///     DirectX texture sampling
             /// </summary>
             public PostProcessSteps AssimpPostProcessSteps =
                 PostProcessSteps.GenerateNormals
                 | PostProcessSteps.Triangulate
-                | PostProcessSteps.TransformUVCoords
                 | PostProcessSteps.CalculateTangentSpace
                 | PostProcessSteps.JoinIdenticalVertices
                 | PostProcessSteps.FindDegenerates
@@ -137,7 +116,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///     The ignore emissive color
             /// </summary>
-            public bool IgnoreEmissiveColor = false;
+            public bool IgnoreEmissiveColor = true;
 
             /// <summary>
             ///     Force to use material type. Default is Auto

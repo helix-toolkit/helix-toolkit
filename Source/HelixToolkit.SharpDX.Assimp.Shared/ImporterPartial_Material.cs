@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using Assimp;
+using Assimp.Unmanaged;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
@@ -38,6 +39,7 @@ namespace HelixToolkit.UWP
                 {
                     AmbientColor = material.ColorAmbient.ToSharpDXColor4(),
                     DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
+                    SpecularColor = material.ColorSpecular.ToSharpDXColor4(),
                     EmissiveColor = material.HasColorEmissive ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
                     ReflectiveColor = material.HasColorReflective
                         ? material.ColorReflective.ToSharpDXColor4()
@@ -70,7 +72,23 @@ namespace HelixToolkit.UWP
                 if (material.HasBumpScaling)
                     phong.DisplacementMapScaleMask = new Vector4(material.BumpScaling, material.BumpScaling,
                         material.BumpScaling, 0);
-                if (material.HasTextureOpacity) phong.DiffuseAlphaMap = LoadTexture(material.TextureOpacity.FilePath);
+                if (material.HasTextureOpacity)
+                    phong.DiffuseAlphaMap = LoadTexture(material.TextureOpacity.FilePath);
+
+                if (material.HasNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE))
+                {
+                    var values = material.GetNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE).GetFloatArrayValue();
+                    if (values != null && values.Length == 5)
+                    {
+                        var transform = new global::Assimp.UVTransform()
+                        {
+                            Rotation = values[0],
+                            Scaling = new Vector2D(values[1], values[2]),
+                            Translation = new Vector2D(values[3], values[4])
+                        };
+                        phong.UVTransform = transform.ToMatrix();
+                    }
+                }
                 return phong;
             }
 
@@ -87,17 +105,51 @@ namespace HelixToolkit.UWP
                     EmissiveColor = material.HasColorEmissive && !Configuration.IgnoreEmissiveColor
                         ? material.ColorEmissive.ToSharpDXColor4()
                         : Color.Black,
-                    ReflectanceFactor = material.HasReflectivity ? material.Reflectivity : 0
                 };
-                if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
-                    pbr.AlbedoColor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR)
-                        .GetColor4DValue().ToSharpDXColor4();
-                if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR))
-                    pbr.MetallicFactor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR)
+                if (material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
+                {
+                    pbr.AlbedoColor = material.GetNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR)
+                       .GetColor4DValue().ToSharpDXColor4();
+                }
+                if (material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLIC_FACTOR))
+                {
+                    pbr.MetallicFactor = material.GetNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLIC_FACTOR)
+                       .GetFloatValue();
+                }
+                if (material.HasColorAmbient)
+                {
+                    pbr.AmbientOcclusionFactor = material.ColorAmbient.R;
+                }
+                if (material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_ROUGHNESS_FACTOR))
+                {
+                    pbr.RoughnessFactor = material.GetNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLIC_FACTOR)
                         .GetFloatValue();
-                if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR))
-                    pbr.RoughnessFactor = material.GetNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR)
-                        .GetFloatValue();
+                }
+                else if(material.HasColorSpecular && material.HasShininess)
+                {
+                    //Ref https://github.com/assimp/assimp/blob/master/code/glTF2Exporter.cpp
+                    float specularIntensity = material.ColorSpecular.R * 0.2125f 
+                        + material.ColorSpecular.G * 0.7154f + material.ColorSpecular.B * 0.0721f;
+                    float normalizedShininess = (float)Math.Sqrt(material.Shininess / 1000);
+                    normalizedShininess = Math.Min(Math.Max(normalizedShininess, 0), 1f);
+                    normalizedShininess *= specularIntensity;
+                    pbr.RoughnessFactor = 1 - normalizedShininess;
+                }
+                if(material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_PBRSPECULARGLOSSINESS))
+                {
+                    var hasGlossiness = material.GetNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_PBRSPECULARGLOSSINESS).GetBooleanValue();
+                    if (hasGlossiness)
+                    {
+                        if(material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_PBRSPECULARGLOSSINESS_GLOSSINESS_FACTOR))
+                        {
+                            pbr.ReflectanceFactor = material.GetNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_PBRSPECULARGLOSSINESS_GLOSSINESS_FACTOR).GetFloatValue();
+                        }
+                        else if(material.HasShininess)
+                        {
+                            pbr.ReflectanceFactor = material.Shininess / 1000;
+                        }
+                    }
+                }
                 if (material.HasOpacity)
                 {
                     var c = pbr.AlbedoColor;
@@ -115,12 +167,13 @@ namespace HelixToolkit.UWP
                 }
 
                 if (material.HasTextureNormal)
-                    pbr.NormalMap = LoadTexture(material.TextureNormal.FilePath);
-                else if (material.HasTextureHeight) pbr.NormalMap = LoadTexture(material.TextureHeight.FilePath);
-                if (material.HasProperty(Configuration.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, TextureType.Unknown,
-                    0))
                 {
-                    var t = material.GetProperty(Configuration.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE,
+                    pbr.NormalMap = LoadTexture(material.TextureNormal.FilePath);
+                }
+                else if (material.HasTextureHeight) pbr.NormalMap = LoadTexture(material.TextureHeight.FilePath);
+                if (material.HasProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, TextureType.Unknown, 0))
+                {
+                    var t = material.GetProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE,
                         TextureType.Unknown, 0);
                     pbr.RMAMap = LoadTexture(t.GetStringValue());
                 }
@@ -130,11 +183,30 @@ namespace HelixToolkit.UWP
                 }
 
                 if (material.HasTextureDisplacement)
+                {
                     pbr.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
+                }
                 if (material.HasBumpScaling)
+                {
                     pbr.DisplacementMapScaleMask = new Vector4(material.BumpScaling, material.BumpScaling,
                         material.BumpScaling, 0);
+                }
                 if (material.HasTextureLightMap) pbr.IrradianceMap = LoadTexture(material.TextureLightMap.FilePath);
+
+                if(material.HasNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE))
+                {
+                    var values = material.GetNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE).GetFloatArrayValue();
+                    if(values != null && values.Length == 5)
+                    {
+                        var transform = new global::Assimp.UVTransform()
+                        {
+                            Rotation = values[0],
+                            Scaling = new Vector2D(values[1], values[2]),
+                            Translation = new Vector2D(values[3], values[4])
+                        };
+                        pbr.UVTransform = transform.ToMatrix();
+                    }
+                }
                 return pbr;
             }
 
@@ -150,9 +222,9 @@ namespace HelixToolkit.UWP
                 MaterialCore core = null;
                 if (!material.HasShadingMode)
                 {
-                    if (material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_METALLIC_FACTOR)
-                        || material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_ROUGHNESS_FACTOR)
-                        || material.HasNonTextureProperty(Configuration.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
+                    if (material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLIC_FACTOR)
+                        || material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_ROUGHNESS_FACTOR)
+                        || material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
                     {
                         var pbr = OnCreatePBRMaterial(material);
                         return new Tuple<global::Assimp.Material, MaterialCore>(material, pbr);
