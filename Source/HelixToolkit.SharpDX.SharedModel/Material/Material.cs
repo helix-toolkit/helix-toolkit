@@ -45,6 +45,19 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (string)this.GetValue(NameProperty); }
             set { this.SetValue(NameProperty, value); }
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Material"/> class.
+        /// </summary>
+        public Material() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Material"/> class.
+        /// </summary>
+        /// <param name="core">The core.</param>
+        public Material(MaterialCore core)
+        {
+            this.core = core;
+            Name = core.Name;
+        }
 
         public override string ToString()
         {

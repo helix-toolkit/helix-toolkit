@@ -269,13 +269,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 ((d as Material).Core as PhongMaterialCore).UVTransform = (UVTransform)e.NewValue;
             }));
 
-
-        /// <summary>
-        /// Constructs a Shading Material which correspnds with 
-        /// the Phong and BlinnPhong lighting models.
-        /// </summary>
-        public PhongMaterial() { }
-
         /// <summary>
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
@@ -581,6 +574,50 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (UVTransform)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
+        }
+
+        /// <summary>
+        /// Constructs a Shading Material which correspnds with 
+        /// the Phong and BlinnPhong lighting models.
+        /// </summary>
+        public PhongMaterial() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PhongMaterial"/> class.
+        /// </summary>
+        /// <param name="core">The core.</param>
+        public PhongMaterial(PhongMaterialCore core) : base(core)
+        {
+            AmbientColor = core.AmbientColor;
+            DiffuseColor = core.DiffuseColor;
+            DisplacementMap = core.DisplacementMap;
+            EmissiveColor = core.EmissiveColor;
+            Name = core.Name;
+            NormalMap = core.NormalMap;
+            ReflectiveColor = core.ReflectiveColor;
+            SpecularColor = core.SpecularColor;
+            SpecularShininess = core.SpecularShininess;
+            DiffuseMap = core.DiffuseMap;
+            DiffuseAlphaMap = core.DiffuseAlphaMap;
+            SpecularColorMap = core.SpecularColorMap;
+            EmissiveMap = core.EmissiveMap;
+            DisplacementMapScaleMask = core.DisplacementMapScaleMask;
+            DiffuseMapSampler = core.DiffuseMapSampler;
+            DisplacementMapSampler = core.DisplacementMapSampler;
+            MaxTessellationDistance = core.MaxTessellationDistance;
+            MinTessellationDistance = core.MinTessellationDistance;
+            MaxDistanceTessellationFactor = core.MaxDistanceTessellationFactor;
+            MinDistanceTessellationFactor = core.MinDistanceTessellationFactor;
+            EnableTessellation = core.EnableTessellation;
+            RenderDiffuseAlphaMap = core.RenderDiffuseAlphaMap;
+            RenderDiffuseMap = core.RenderDiffuseMap;
+            RenderDisplacementMap = core.RenderDisplacementMap;
+            RenderNormalMap = core.RenderNormalMap;
+            RenderEnvironmentMap = core.RenderEnvironmentMap;
+            RenderShadowMap = core.RenderShadowMap;
+            RenderSpecularColorMap = core.RenderSpecularColorMap;
+            RenderEmissiveMap = core.RenderEmissiveMap;
+            EnableAutoTangent = core.EnableAutoTangent;
+            UVTransform = core.UVTransform;
         }
 
         public PhongMaterial CloneMaterial()

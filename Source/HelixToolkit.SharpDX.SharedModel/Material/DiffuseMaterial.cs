@@ -120,6 +120,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as Material).Core as DiffuseMaterialCore).EnableUnLit = (bool)e.NewValue;
                 }));
 
+        public DiffuseMaterial() { }
+
+        public DiffuseMaterial(DiffuseMaterialCore core) : base(core)
+        {
+            DiffuseColor = core.DiffuseColor;
+            DiffuseMap = core.DiffuseMap;
+            UVTransform = core.UVTransform;
+            DiffuseMapSampler = core.DiffuseMapSampler;
+            EnableUnLit = core.EnableUnLit;
+        }
 
         protected override MaterialCore OnCreateCore()
         {

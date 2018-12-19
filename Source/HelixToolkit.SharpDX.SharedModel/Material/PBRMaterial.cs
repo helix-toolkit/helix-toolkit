@@ -599,6 +599,52 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (UVTransform)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PBRMaterial"/> class.
+        /// </summary>
+        public PBRMaterial() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PBRMaterial"/> class.
+        /// </summary>
+        /// <param name="core">The core.</param>
+        public PBRMaterial(PBRMaterialCore core) : base(core)
+        {
+            AlbedoColor = core.AlbedoColor;
+            MetallicFactor = core.MetallicFactor;
+            RoughnessFactor = core.RoughnessFactor;
+            AmbientOcclusionFactor = core.AmbientOcclusionFactor;
+            ReflectanceFactor = core.ReflectanceFactor;
+            ClearCoatStrength = core.ClearCoatStrength;
+            ClearCoatRoughness = core.ClearCoatRoughness;
+
+            AlbedoMap = core.AlbedoMap;
+            NormalMap = core.NormalMap;
+            EmissiveMap = core.EmissiveMap;
+            RMAMap = core.RMAMap;
+            IrradianceMap = core.IrradianceMap;
+            DisplacementMap = core.DisplacementMap;
+            SurfaceMapSampler = core.SurfaceMapSampler;
+            IBLSampler = core.IBLSampler;
+            DisplacementMapSampler = core.DisplacementMapSampler;
+
+            RenderAlbedoMap = core.RenderAlbedoMap;
+            RenderDisplacementMap = core.RenderDisplacementMap;
+            RenderEmissiveMap = core.RenderEmissiveMap;
+            RenderEnvironmentMap = core.RenderEnvironmentMap;
+            RenderIrradianceMap = core.RenderIrradianceMap;
+            RenderNormalMap = core.RenderNormalMap;
+            RenderRMAMap = core.RenderRMAMap;
+            RenderShadowMap = core.RenderShadowMap;
+            EnableAutoTangent = core.EnableAutoTangent;
+            DisplacementMapScaleMask = core.DisplacementMapScaleMask;
+            UVTransform = core.UVTransform;
+
+            EnableTessellation = core.EnableTessellation;
+            MaxDistanceTessellationFactor = core.MaxDistanceTessellationFactor;
+            MinDistanceTessellationFactor = core.MinDistanceTessellationFactor;
+            MaxTessellationDistance = core.MaxTessellationDistance;
+            MinTessellationDistance = core.MinTessellationDistance;
+        }
 
         protected override MaterialCore OnCreateCore()
         {
