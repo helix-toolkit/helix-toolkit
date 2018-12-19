@@ -22,6 +22,8 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Model;
+    using System.Collections.Generic;
+
     namespace Assimp
     {
         public partial class Importer
@@ -204,7 +206,7 @@ namespace HelixToolkit.UWP
             /// <param name="material">The material.</param>
             /// <returns></returns>
             /// <exception cref="System.NotSupportedException">Shading Mode {material.ShadingMode}</exception>
-            protected virtual Tuple<global::Assimp.Material, MaterialCore> ToHelixMaterial(
+            protected virtual KeyValuePair<global::Assimp.Material, MaterialCore> OnCreateHelixMaterial(
                 global::Assimp.Material material)
             {
                 MaterialCore core = null;
@@ -215,7 +217,7 @@ namespace HelixToolkit.UWP
                         || material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
                     {
                         var pbr = OnCreatePBRMaterial(material);
-                        return new Tuple<global::Assimp.Material, MaterialCore>(material, pbr);
+                        return new KeyValuePair<global::Assimp.Material, MaterialCore>(material, pbr);
                     }
                     else
                     {
@@ -223,7 +225,7 @@ namespace HelixToolkit.UWP
                         {
                             DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
                         };
-                        return new Tuple<global::Assimp.Material, MaterialCore>(material, diffuse);
+                        return new KeyValuePair<global::Assimp.Material, MaterialCore>(material, diffuse);
                     }
                 }
 
@@ -299,7 +301,7 @@ namespace HelixToolkit.UWP
 
                 if (core != null)
                     core.Name = material.Name;
-                return new Tuple<global::Assimp.Material, MaterialCore>(material, core);
+                return new KeyValuePair<global::Assimp.Material, MaterialCore>(material, core);
             }
 
             /// <summary>

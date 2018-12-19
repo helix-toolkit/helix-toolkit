@@ -39,12 +39,12 @@ namespace HelixToolkit.UWP
                 {
                     case PrimitiveType.Triangle:
                         var material = scene.Materials[mesh.MaterialIndex];
-                        var cullMode = material.Item1.HasTwoSided && material.Item1.IsTwoSided
+                        var cullMode = material.Key.HasTwoSided && material.Key.IsTwoSided
                             ? CullMode.Back
                             : CullMode.None;
                         if (Configuration.ForceCullMode)
                             cullMode = Configuration.CullMode;
-                        var fillMode = material.Item1.HasWireFrame && material.Item1.IsWireFrameEnabled
+                        var fillMode = material.Key.HasWireFrame && material.Key.IsWireFrameEnabled
                             ? FillMode.Wireframe
                             : FillMode.Solid;
                         //Determine if has bones
@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP
                             : new HxScene.MeshNode();
                         mnode.Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.MeshNode) : mesh.AssimpMesh.Name;
                         mnode.Geometry = mesh.Mesh;
-                        mnode.Material = material.Item2;
+                        mnode.Material = material.Value;
                         mnode.ModelMatrix = transform;
                         mnode.CullMode = cullMode;
                         mnode.FillMode = fillMode;
@@ -78,7 +78,7 @@ namespace HelixToolkit.UWP
                         };
                         var lmaterial = new LineMaterialCore(); //Must create separate line material
                         lnode.Material = lmaterial;
-                        var ml = scene.Materials[mesh.MaterialIndex].Item2;
+                        var ml = scene.Materials[mesh.MaterialIndex].Value;
                         if (ml is DiffuseMaterialCore diffuse) lmaterial.LineColor = diffuse.DiffuseColor;
                         return lnode;
                     case PrimitiveType.Point:
@@ -92,7 +92,7 @@ namespace HelixToolkit.UWP
                         };
                         var pmaterial = new PointMaterialCore(); //Must create separate point material
                         pnode.Material = pmaterial;
-                        var pm = scene.Materials[mesh.MaterialIndex].Item2;
+                        var pm = scene.Materials[mesh.MaterialIndex].Value;
                         if (pm is DiffuseMaterialCore diffuse1) pmaterial.PointColor = diffuse1.DiffuseColor;
                         return pnode;
                     default:

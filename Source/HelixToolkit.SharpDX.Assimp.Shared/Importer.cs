@@ -461,7 +461,7 @@ namespace HelixToolkit.UWP
                 {
                     AssimpScene = scene,
                     Meshes = new MeshInfo[scene.MeshCount],
-                    Materials = new Tuple<global::Assimp.Material, MaterialCore>[scene.MaterialCount]
+                    Materials = new KeyValuePair<global::Assimp.Material, MaterialCore>[scene.MaterialCount]
                 };
                 Parallel.Invoke(() =>
                     {
@@ -487,7 +487,7 @@ namespace HelixToolkit.UWP
                         {
                             for (var i = 0; i < scene.MaterialCount; ++i)
                             {
-                                s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                                s.Materials[i] = OnCreateHelixMaterial(scene.Materials[i]);
                             }
                         }
                     });
@@ -561,7 +561,7 @@ namespace HelixToolkit.UWP
                 /// <summary>
                 ///     The materials
                 /// </summary>
-                public Tuple<global::Assimp.Material, MaterialCore>[] Materials;
+                public KeyValuePair<global::Assimp.Material, MaterialCore>[] Materials;
 
                 /// <summary>
                 ///     The meshes
