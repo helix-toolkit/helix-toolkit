@@ -228,6 +228,13 @@ namespace HelixToolkit.UWP
                 set => Set(ref albedoMap, value);
                 get => albedoMap;
             }
+            /// <summary>
+            /// Gets or sets the albedo map file path. Used for export only
+            /// </summary>
+            /// <value>
+            /// The albedo map file path.
+            /// </value>
+            public string AlbedoMapFilePath { set; get; }
 
             private Stream emissiveMap;
             /// <summary>
@@ -241,7 +248,13 @@ namespace HelixToolkit.UWP
                 set => Set(ref emissiveMap, value);
                 get => emissiveMap; 
             }
-
+            /// <summary>
+            /// Gets or sets the emissive map file path. Only for export
+            /// </summary>
+            /// <value>
+            /// The emissive map.
+            /// </value>
+            public string EmissiveMapFilePath { set; get; }
 
             private Stream normalMap;
             /// <summary>
@@ -255,6 +268,13 @@ namespace HelixToolkit.UWP
                 set => Set(ref normalMap, value); 
                 get => normalMap; 
             }
+            /// <summary>
+            /// Gets or sets the normal map file path. Only for export
+            /// </summary>
+            /// <value>
+            /// The normal map file path.
+            /// </value>
+            public string NormalMapFilePath { set; get; }
 
 
             private Stream displacementMap;
@@ -269,6 +289,13 @@ namespace HelixToolkit.UWP
                 set => Set(ref displacementMap, value); 
                 get => displacementMap; 
             }
+            /// <summary>
+            /// Gets or sets the displacement map file path. Only for export
+            /// </summary>
+            /// <value>
+            /// The displacement map file path.
+            /// </value>
+            public string DisplacementMapFilePath { set; get; }
 
             private Stream irradianceMap;
             /// <summary>
@@ -282,6 +309,13 @@ namespace HelixToolkit.UWP
                 set => Set(ref irradianceMap, value);
                 get => irradianceMap; 
             }
+            /// <summary>
+            /// Gets or sets the irradiance map file path. Only for export
+            /// </summary>
+            /// <value>
+            /// The irradiance map file path.
+            /// </value>
+            public string IrradianceMapFilePath { set; get; }
 
             private Stream rmaMap;
             /// <summary>
@@ -295,6 +329,13 @@ namespace HelixToolkit.UWP
                 set => Set(ref rmaMap, value); 
                 get => rmaMap; 
             }
+            /// <summary>
+            /// Gets or sets the rma map file path. Only for export
+            /// </summary>
+            /// <value>
+            /// The rma map file path.
+            /// </value>
+            public string RMAMapFilePath { set; get; }
 
             private Vector4 displacementMapScaleMask;
             /// <summary>
@@ -309,14 +350,14 @@ namespace HelixToolkit.UWP
                 get => displacementMapScaleMask; 
             }
 
-            private Matrix uvTransform = Matrix.Identity;
+            private UVTransform uvTransform = UVTransform.Identity;
             /// <summary>
             /// Gets or sets the uv transform.
             /// </summary>
             /// <value>
             /// The uv transform.
             /// </value>
-            public Matrix UVTransform
+            public UVTransform UVTransform
             {
                 set => Set(ref uvTransform, value); 
                 get => uvTransform; 

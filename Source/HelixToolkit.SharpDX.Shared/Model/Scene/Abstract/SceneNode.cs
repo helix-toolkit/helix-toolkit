@@ -45,7 +45,17 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The name.
             /// </value>
-            public string Name { set => Set(ref name, value); get => name; }
+            public string Name
+            {
+                set
+                {
+                    if(Set(ref name, value))
+                    {
+                        NameChanged?.Invoke(this, new StringArgs(value));
+                    }
+                }
+                get => name;
+            }
             /// <summary>
             /// Do not assgin this field. This is updated by <see cref="ComputeTransformMatrix"/>.
             /// Used as field only for performance consideration.
@@ -385,6 +395,7 @@ namespace HelixToolkit.UWP
             #endregion Properties
 
             #region Events            
+            public event EventHandler<StringArgs> NameChanged;
             /// <summary>
             /// Occurs when [visible changed].
             /// </summary>

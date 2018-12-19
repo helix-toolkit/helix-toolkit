@@ -247,7 +247,8 @@ namespace HelixToolkit.UWP
                 {
                     uvTransform = Matrix.Identity;
                 }
-                material.UVTransform = Matrix.Transpose(uvTransform);
+                uvTransform.Decompose(out var s, out var r, out var tra);
+                material.UVTransform = new UVTransform(r.Angle, new Vector2(s.X,s.Y), new Vector2(tra.X,tra.Y));
                 var pixelShaderName = reader.ReadCMO_wchar();//Not used
                 var textures = new List<string>();
                 for (int t = 0; t < MaxTextures; ++t)

@@ -115,7 +115,7 @@ namespace CoreTest
         private static void LoadModel(GroupNode node)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = $"3D model files ({HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString}|{HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString}";
+            dialog.Filter = HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 var path = dialog.FileName;             

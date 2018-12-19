@@ -75,33 +75,12 @@ namespace HelixToolkit.UWP
         public class ImporterConfiguration
         {
             /// <summary>
-            ///     The ai matkey GLTF basecolor factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_BASECOLOR_FACTOR = @"$mat.gltf.pbrMetallicRoughness.baseColorFactor";
-
-            /// <summary>
-            ///     The ai matkey GLTF metallic factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_METALLIC_FACTOR = @"$mat.gltf.pbrMetallicRoughness.metallicFactor";
-
-            /// <summary>
-            ///     The ai matkey GLTF metallic, roughness, ambient occlusion texture
-            /// </summary>
-            public string AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE = @"$tex.file";
-
-            /// <summary>
-            ///     The ai matkey GLTF roughness factor for PBR material
-            /// </summary>
-            public string AI_MATKEY_GLTF_ROUGHNESS_FACTOR = @"$mat.gltf.pbrMetallicRoughness.roughnessFactor";
-
-            /// <summary>
             ///     The default post process steps for Assimp Importer. <see cref="PostProcessSteps.FlipUVs" /> must be used for
             ///     DirectX texture sampling
             /// </summary>
             public PostProcessSteps AssimpPostProcessSteps =
                 PostProcessSteps.GenerateNormals
                 | PostProcessSteps.Triangulate
-                | PostProcessSteps.TransformUVCoords
                 | PostProcessSteps.CalculateTangentSpace
                 | PostProcessSteps.JoinIdenticalVertices
                 | PostProcessSteps.FindDegenerates
@@ -137,7 +116,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///     The ignore emissive color
             /// </summary>
-            public bool IgnoreEmissiveColor = false;
+            public bool IgnoreEmissiveColor = true;
 
             /// <summary>
             ///     Force to use material type. Default is Auto
@@ -224,11 +203,10 @@ namespace HelixToolkit.UWP
 
         /// <summary>
         /// </summary>
-        public partial class Importer
+        public partial class Importer : IDisposable
         {
             private const string ToUpperDictString = @"..\";
             private string path = "";
-
             static Importer()
             {
                 using (var temp = new AssimpContext())
@@ -237,14 +215,18 @@ namespace HelixToolkit.UWP
                 }
 
                 var builder = new StringBuilder();
+                builder.Append($"All Supported |");
                 foreach (var s in SupportedFormats)
                 {
-                    builder.Append("*");
-                    builder.Append(s);
-                    builder.Append(";");
+                    builder.Append($"*{ s };");
+                }
+                builder.Append($"|");
+                foreach (var s in SupportedFormats)
+                {
+                    builder.Append($"(*{ s })|*{ s }|");
                 }
 
-                SupportedFormatsString = builder.ToString();
+                SupportedFormatsString = builder.ToString(0, builder.Length - 1);
             }
             #region Properties
             /// <summary>
@@ -479,7 +461,7 @@ namespace HelixToolkit.UWP
                 {
                     AssimpScene = scene,
                     Meshes = new MeshInfo[scene.MeshCount],
-                    Materials = new Tuple<global::Assimp.Material, MaterialCore>[scene.MaterialCount]
+                    Materials = new KeyValuePair<global::Assimp.Material, MaterialCore>[scene.MaterialCount]
                 };
                 Parallel.Invoke(() =>
                     {
@@ -488,13 +470,13 @@ namespace HelixToolkit.UWP
                             if (parallel)
                             {
                                 Parallel.ForEach(scene.Meshes,
-                                        (mesh, state, index) => { s.Meshes[index] = ToHelixGeometry(mesh); });
+                                        (mesh, state, index) => { s.Meshes[index] = OnCreateHelixGeometry(mesh); });
                             }
                             else
                             {
                                 for (var i = 0; i < scene.MeshCount; ++i)
                                 {
-                                    s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                                    s.Meshes[i] = OnCreateHelixGeometry(scene.Meshes[i]);
                                 }
                             }
                         }
@@ -505,7 +487,7 @@ namespace HelixToolkit.UWP
                         {
                             for (var i = 0; i < scene.MaterialCount; ++i)
                             {
-                                s.Materials[i] = ToHelixMaterial(scene.Materials[i]);
+                                s.Materials[i] = OnCreateHelixMaterial(scene.Materials[i]);
                             }
                         }
                     });
@@ -531,7 +513,7 @@ namespace HelixToolkit.UWP
                     foreach (var idx in node.MeshIndices)
                     {
                         var mesh = scene.Meshes[idx];
-                        var hxNode = ToHxMeshNode(mesh, scene, Matrix.Identity);
+                        var hxNode = OnCreateHxMeshNode(mesh, scene, Matrix.Identity);
                         group.AddChildNode(hxNode);
                         if(hxNode is HxScene.BoneSkinMeshNode skinNode && Configuration.CreateSkeletonForBoneSkinningMesh)
                         {
@@ -556,6 +538,8 @@ namespace HelixToolkit.UWP
             {
                 Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
             }
+
+
             #endregion
 
             #region Inner Classes
@@ -577,14 +561,49 @@ namespace HelixToolkit.UWP
                 /// <summary>
                 ///     The materials
                 /// </summary>
-                public Tuple<global::Assimp.Material, MaterialCore>[] Materials;
+                public KeyValuePair<global::Assimp.Material, MaterialCore>[] Materials;
 
                 /// <summary>
                 ///     The meshes
                 /// </summary>
                 public MeshInfo[] Meshes;
             }
+            #endregion
 
+            #region IDisposable Support
+            private bool disposedValue = false; // To detect redundant calls
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!disposedValue)
+                {
+                    if (disposing)
+                    {
+                        // TODO: dispose managed state (managed objects).
+                        Clear();
+                    }
+
+                    // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                    // TODO: set large fields to null.
+
+                    disposedValue = true;
+                }
+            }
+
+            // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+            // ~Importer() {
+            //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            //   Dispose(false);
+            // }
+
+            // This code added to correctly implement the disposable pattern.
+            public void Dispose()
+            {
+                // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+                Dispose(true);
+                // TODO: uncomment the following line if the finalizer is overridden above.
+                // GC.SuppressFinalize(this);
+            }
             #endregion
         }
     }

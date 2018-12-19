@@ -133,6 +133,19 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
+        public LineMaterial() { }
+
+        public LineMaterial(LineMaterialCore core):base(core)
+        {
+            Name = core.Name;
+            Color = core.LineColor.ToColor();
+            Smoothness = core.Smoothness;
+            Thickness = core.Thickness;
+            EnableDistanceFading = EnableDistanceFading;
+            FadingNearDistance = core.FadingNearDistance;
+            FadingFarDistance = core.FadingFarDistance;
+        }
+
         protected override MaterialCore OnCreateCore()
         {
             return new LineMaterialCore()

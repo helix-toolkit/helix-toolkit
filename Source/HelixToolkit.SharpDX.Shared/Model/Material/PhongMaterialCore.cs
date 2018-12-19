@@ -123,6 +123,14 @@ namespace HelixToolkit.UWP
                 get { return diffuseMap; }
             }
 
+            /// <summary>
+            /// Gets or sets the diffuse map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The diffuse map file path.
+            /// </value>
+            public string DiffuseMapFilePath { set; get; }
+
             private Stream diffuseAlphaMap;
             /// <summary>
             /// Gets or sets the DiffuseAlphaMap.
@@ -135,7 +143,13 @@ namespace HelixToolkit.UWP
                 set { Set(ref diffuseAlphaMap, value); }
                 get { return diffuseAlphaMap; }
             }
-
+            /// <summary>
+            /// Gets or sets the diffuse alpha map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The diffuse alpha map file path.
+            /// </value>
+            public string DiffuseAlphaMapFilePath { set; get; }
 
             private Stream normalMap;
             /// <summary>
@@ -149,6 +163,13 @@ namespace HelixToolkit.UWP
                 set { Set(ref normalMap, value); }
                 get { return normalMap; }
             }
+            /// <summary>
+            /// Gets or sets the normal map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The normal map file path.
+            /// </value>
+            public string NormalMapFilePath { set; get; }
 
             private Stream specularColorMap;
             /// <summary>
@@ -162,6 +183,13 @@ namespace HelixToolkit.UWP
                 set { Set(ref specularColorMap, value); }
                 get { return specularColorMap; }
             }
+            /// <summary>
+            /// Gets or sets the specular color map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The specular color map file path.
+            /// </value>
+            public string SpecularColorMapFilePath { set; get; }
 
             private Stream displacementMap;
             /// <summary>
@@ -175,6 +203,13 @@ namespace HelixToolkit.UWP
                 set { Set(ref displacementMap, value); }
                 get { return displacementMap; }
             }
+            /// <summary>
+            /// Gets or sets the displacement file path. For export only
+            /// </summary>
+            /// <value>
+            /// The displacement file path.
+            /// </value>
+            public string DisplacementMapFilePath { set; get; }
 
             private Stream emissiveMap;
             /// <summary>
@@ -188,6 +223,13 @@ namespace HelixToolkit.UWP
                 set { Set(ref emissiveMap, value); }
                 get { return emissiveMap; }
             }
+            /// <summary>
+            /// Gets or sets the emissive map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The emissive map file path.
+            /// </value>
+            public string EmissiveMapFilePath { set; get; }
 
             private Vector4 displacementMapScaleMask;
             /// <summary>
@@ -202,14 +244,14 @@ namespace HelixToolkit.UWP
                 get { return displacementMapScaleMask; }
             }
 
-            private Matrix uvTransform = Matrix.Identity;
+            private UVTransform uvTransform = UVTransform.Identity;
             /// <summary>
             /// Gets or sets the uv transform.
             /// </summary>
             /// <value>
             /// The uv transform.
             /// </value>
-            public Matrix UVTransform
+            public UVTransform UVTransform
             {
                 set { Set(ref uvTransform, value); }
                 get { return uvTransform; }

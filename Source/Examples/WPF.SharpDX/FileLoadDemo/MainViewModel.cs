@@ -17,6 +17,7 @@ namespace FileLoadDemo
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
@@ -24,8 +25,8 @@ namespace FileLoadDemo
 
     public class MainViewModel : BaseViewModel
     {
-        private string OpenFileFilter = $"3D model files ({HelixToolkit.Wpf.SharpDX.Assimp.Importer.SupportedFormatsString + " | " + HelixToolkit.Wpf.SharpDX.Assimp.Importer.SupportedFormatsString})";
-
+        private string OpenFileFilter = $"{HelixToolkit.Wpf.SharpDX.Assimp.Importer.SupportedFormatsString}";
+        private string ExportFileFilter = $"{HelixToolkit.Wpf.SharpDX.Assimp.Exporter.SupportedFormatsString}";
         private bool showWireframe = false;
         public bool ShowWireframe
         {
@@ -131,11 +132,13 @@ namespace FileLoadDemo
                 Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
                 UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0),
                 FarPlaneDistance = 5000,
-                NearPlaneDistance = 1
+                NearPlaneDistance = 0.1f
             };
             ResetCameraCommand = new DelegateCommand(() =>
             {
                 (Camera as OrthographicCamera).Reset();
+                (Camera as OrthographicCamera).FarPlaneDistance = 5000;
+                (Camera as OrthographicCamera).NearPlaneDistance = 0.1f;
             });
             ExportCommand = new DelegateCommand(() => { ExportFile(); });
         }
@@ -176,6 +179,10 @@ namespace FileLoadDemo
                                 Animations.Add(ani);
                             }
                         }
+                        foreach(var n in scene.Root.Traverse())
+                        {
+                            n.Tag = new AttachedNodeViewModel(n);
+                        }
                     }                  
                 }
                 else if (result.IsFaulted && result.Exception != null)
@@ -205,9 +212,12 @@ namespace FileLoadDemo
 
         private void ExportFile()
         {
-            string path = SaveFileDialog("3D model files (*.obj;|*.obj;");
-            if (string.IsNullOrEmpty(path))
+            var index = SaveFileDialog(ExportFileFilter, out var path);
+            if (!string.IsNullOrEmpty(path) && index >= 0)
             {
+                var id = HelixToolkit.Wpf.SharpDX.Assimp.Exporter.SupportedFormats[index].FormatId;
+                var exporter = new HelixToolkit.Wpf.SharpDX.Assimp.Exporter();
+                exporter.ExportToFile(path, scene.Root, id);
                 return;
             }
         }
@@ -228,15 +238,19 @@ namespace FileLoadDemo
             return d.FileName;
         }
 
-        private string SaveFileDialog(string filter)
+        private int SaveFileDialog(string filter, out string path)
         {
             var d = new SaveFileDialog();
             d.Filter = filter;
             if (d.ShowDialog() == true)
             {
-                return d.FileName;
+                path = d.FileName;
+                return d.FilterIndex - 1;//This is tarting from 1. So must minus 1
             }
-            else { return ""; }
+            else {
+                path = "";
+                return -1;
+            }
         }
 
         private void ShowWireframeFunct(bool show)

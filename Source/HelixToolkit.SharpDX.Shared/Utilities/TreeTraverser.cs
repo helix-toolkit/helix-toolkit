@@ -21,6 +21,55 @@ namespace HelixToolkit.UWP
     public static class TreeTraverser
     {
         /// <summary>
+        /// Traverses up to the root
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        public static IEnumerable<SceneNode> TraverseUp(this SceneNode node)
+        {
+            while (node != null)
+            {
+                yield return node;
+                node = node.Parent;
+            }
+        }
+        /// <summary>
+        /// Forces to update transform and bounds.
+        /// </summary>
+        /// <param name="root">The root.</param>
+        public static void ForceUpdateTransformsAndBounds(this SceneNode root)
+        {
+            var nodes = Enumerable.Repeat(root, 1);
+            foreach(var n in nodes.Traverse())
+            {
+                n.ComputeTransformMatrix();
+            }
+        }
+        /// <summary>
+        /// Forces the update transform and bounds.
+        /// </summary>
+        /// <param name="nodes">The nodes.</param>
+        public static void ForceUpdateTransformsAndBounds(this IEnumerable<SceneNode> nodes)
+        {
+            foreach (var n in nodes.Traverse())
+            {
+                n.ComputeTransformMatrix();
+            }
+        }
+        /// <summary>
+        /// Traverses the specified only rendering.
+        /// </summary>
+        /// <param name="root">The root.</param>
+        /// <param name="onlyRendering">if set to <c>true</c> [only rendering].</param>
+        /// <param name="stackCache">The stack cache.</param>
+        /// <returns></returns>
+        public static IEnumerable<SceneNode> Traverse(this SceneNode root, bool onlyRendering = false,
+            Stack<IEnumerator<SceneNode>> stackCache = null)
+        {
+            var nodes = Enumerable.Repeat(root, 1);
+            return PreorderDFT(nodes, (n) => { return onlyRendering ? n.IsRenderable : true; }, stackCache);
+        }
+        /// <summary>
         /// Traverses the specified condition.
         /// </summary>
         /// <param name="nodes">The nodes.</param>

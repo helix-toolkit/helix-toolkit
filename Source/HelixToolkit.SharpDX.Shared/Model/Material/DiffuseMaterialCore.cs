@@ -47,14 +47,22 @@ namespace HelixToolkit.UWP
                 set { Set(ref diffuseMap, value); }
                 get { return diffuseMap; }
             }
-            private Matrix uvTransform = Matrix.Identity;
+            /// <summary>
+            /// Gets or sets the diffuse map file path. Only for export
+            /// </summary>
+            /// <value>
+            /// The diffuse map file path.
+            /// </value>
+            public string DiffuseMapFilePath { set; get; }
+
+            private UVTransform uvTransform = UVTransform.Identity;
             /// <summary>
             /// Gets or sets the uv transform.
             /// </summary>
             /// <value>
             /// The uv transform.
             /// </value>
-            public Matrix UVTransform
+            public UVTransform UVTransform
             {
                 set { Set(ref uvTransform, value); }
                 get { return uvTransform; }
