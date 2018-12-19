@@ -112,6 +112,7 @@ namespace HelixToolkit.UWP
             /// To the assimp color4d.
             /// </summary>
             /// <param name="v">The v.</param>
+            /// <param name="alpha"></param>
             /// <returns></returns>
             public static Color4D ToAssimpColor4D(this global::SharpDX.Color4 v, float alpha = 1f)
             {

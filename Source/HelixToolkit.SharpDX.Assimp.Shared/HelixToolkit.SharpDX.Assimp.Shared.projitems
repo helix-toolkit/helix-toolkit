@@ -13,7 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Material.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Mesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)glTFMatKeys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GLTFMatKeys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HelixToolkitScene.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Importer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImporterPartial_Animation.cs" />
