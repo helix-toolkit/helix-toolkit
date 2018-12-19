@@ -112,13 +112,18 @@ namespace HelixToolkit.UWP
                 builder.Positions.AddRange(hVertices);
                 for (var i = 0; i < mesh.FaceCount; ++i)
                 {
-                    if (!mesh.Faces[i].HasIndices) continue;
+                    if (!mesh.Faces[i].HasIndices)
+                    { continue; }
                     if (mesh.Faces[i].IndexCount == 3)
+                    {
                         builder.AddTriangle(mesh.Faces[i].Indices);
-                    else if (mesh.Faces[i].IndexCount == 4) builder.AddTriangleFan(mesh.Faces[i].Indices);
+                    }
+                    else if (mesh.Faces[i].IndexCount == 4)
+                    {
+                        builder.AddTriangleFan(mesh.Faces[i].Indices);
+                    }
                 }
-
-                var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = builder.TriangleIndices };
+                var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = builder.TriangleIndices, Name = mesh.Name };
                 if (mesh.HasNormals)
                     hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => x.ToSharpDXVector3()));
                 if (mesh.HasTangentBasis)

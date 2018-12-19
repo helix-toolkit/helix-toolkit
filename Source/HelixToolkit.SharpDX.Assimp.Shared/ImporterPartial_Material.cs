@@ -245,7 +245,7 @@ namespace HelixToolkit.UWP
                             mode = ShadingMode.Flat;
                             break;
                         case MaterialType.PBR:
-                            mode = ShadingMode.CookTorrance;
+                            mode = ShadingMode.Fresnel;
                             break;
                         case MaterialType.VertexColor:
                             mode = ShadingMode.Flat;

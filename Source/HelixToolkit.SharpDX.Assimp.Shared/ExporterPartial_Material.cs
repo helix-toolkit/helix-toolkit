@@ -45,6 +45,7 @@ namespace HelixToolkit.UWP
                 var assimpMaterial = new global::Assimp.Material();
                 if(material is PhongMaterialCore phong)
                 {
+                    assimpMaterial.ShadingMode = ShadingMode.Blinn;
                     assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, phong.DiffuseColor.ToAssimpColor4D()));
                     assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_SPECULAR_BASE, phong.SpecularColor.ToAssimpColor4D()));
                     assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_REFLECTIVE_BASE, phong.ReflectiveColor.ToAssimpColor4D()));
@@ -58,6 +59,7 @@ namespace HelixToolkit.UWP
                 }
                 else if(material is PBRMaterialCore pbr)
                 {
+                    assimpMaterial.ShadingMode = ShadingMode.Fresnel;
                     assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, pbr.AlbedoColor.ToAssimpColor4D()));
                     assimpMaterial.AddProperty(new MaterialProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR, pbr.AlbedoColor.ToAssimpColor4D()));
                     assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_EMISSIVE_BASE, pbr.EmissiveColor.ToAssimpColor4D()));
@@ -71,11 +73,20 @@ namespace HelixToolkit.UWP
                 }
                 else if(material is DiffuseMaterialCore diffuse)
                 {
-
+                    assimpMaterial.ShadingMode = ShadingMode.Gouraud;
+                    assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, diffuse.DiffuseColor.ToAssimpColor4D()));
                 }
                 else if(material is ColorMaterialCore vColor)
                 {
-
+                    assimpMaterial.ShadingMode = ShadingMode.Flat;
+                }
+                else if(material is LineMaterialCore line)
+                {
+                    assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, line.LineColor.ToAssimpColor4D()));
+                }
+                else if(material is PointMaterialCore point)
+                {
+                    assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, point.PointColor.ToAssimpColor4D()));
                 }
                 return assimpMaterial;
             }

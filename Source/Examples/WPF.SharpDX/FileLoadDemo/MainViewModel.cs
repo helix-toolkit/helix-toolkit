@@ -24,8 +24,8 @@ namespace FileLoadDemo
 
     public class MainViewModel : BaseViewModel
     {
-        private string OpenFileFilter = $"3D model files ({HelixToolkit.Wpf.SharpDX.Assimp.Importer.SupportedFormatsString + " | " + HelixToolkit.Wpf.SharpDX.Assimp.Importer.SupportedFormatsString})";
-
+        private string OpenFileFilter = $"{HelixToolkit.Wpf.SharpDX.Assimp.Importer.SupportedFormatsString}";
+        private string ExportFileFilter = $"{HelixToolkit.Wpf.SharpDX.Assimp.Exporter.SupportedFormatsString}";
         private bool showWireframe = false;
         public bool ShowWireframe
         {
@@ -211,7 +211,7 @@ namespace FileLoadDemo
 
         private void ExportFile()
         {
-            string path = SaveFileDialog("3D model files (*.obj;|*.obj;");
+            string path = SaveFileDialog(ExportFileFilter);
             if (string.IsNullOrEmpty(path))
             {
                 return;

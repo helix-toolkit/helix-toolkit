@@ -216,14 +216,18 @@ namespace HelixToolkit.UWP
                 }
 
                 var builder = new StringBuilder();
+                builder.Append($"All Supported |");
                 foreach (var s in SupportedFormats)
                 {
-                    builder.Append("*");
-                    builder.Append(s);
-                    builder.Append(";");
+                    builder.Append($"*{ s };");
+                }
+                builder.Append($"|");
+                foreach (var s in SupportedFormats)
+                {
+                    builder.Append($"(*{ s })|*{ s }|");
                 }
 
-                SupportedFormatsString = builder.ToString();
+                SupportedFormatsString = builder.ToString(0, builder.Length - 1);
             }
             #region Properties
             /// <summary>

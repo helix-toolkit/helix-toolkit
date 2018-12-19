@@ -79,6 +79,15 @@ namespace HelixToolkit.UWP
                 return new Vector2D(v.X, v.Y);
             }
             /// <summary>
+            /// To the assimp vector3d.
+            /// </summary>
+            /// <param name="v">The v.</param>
+            /// <returns></returns>
+            public static Vector3D ToAssimpVector3D(this global::SharpDX.Vector2 v)
+            {
+                return new Vector3D(v.X, v.Y, 0);
+            }
+            /// <summary>
             /// To the sharp dx vector2.
             /// </summary>
             /// <param name="v">The v.</param>

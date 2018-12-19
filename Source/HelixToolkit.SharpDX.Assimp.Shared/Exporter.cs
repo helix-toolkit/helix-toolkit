@@ -35,25 +35,6 @@ namespace HelixToolkit.UWP
             public class ExportConfiguration
             {            
                 /// <summary>
-                ///     The ai matkey GLTF basecolor factor for PBR material
-                /// </summary>
-                public string AI_MATKEY_GLTF_BASECOLOR_FACTOR = @"$mat.gltf.pbrMetallicRoughness.baseColorFactor";
-
-                /// <summary>
-                ///     The ai matkey GLTF metallic factor for PBR material
-                /// </summary>
-                public string AI_MATKEY_GLTF_METALLIC_FACTOR = @"$mat.gltf.pbrMetallicRoughness.metallicFactor";
-
-                /// <summary>
-                ///     The ai matkey GLTF metallic, roughness, ambient occlusion texture
-                /// </summary>
-                public string AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE = @"$tex.file";
-
-                /// <summary>
-                ///     The ai matkey GLTF roughness factor for PBR material
-                /// </summary>
-                public string AI_MATKEY_GLTF_ROUGHNESS_FACTOR = @"$mat.gltf.pbrMetallicRoughness.roughnessFactor";
-                /// <summary>
                 /// The post processing
                 /// </summary>
                 public PostProcessSteps PostProcessing =
@@ -110,18 +91,15 @@ namespace HelixToolkit.UWP
             {
                 using (var temp = new AssimpContext())
                 {
-                    SupportedFormats = temp.GetSupportedExportFormats().Select(x=>x.FormatId).ToArray();
+                    SupportedFormats = temp.GetSupportedExportFormats().ToArray();
                 }
 
                 var builder = new StringBuilder();
                 foreach (var s in SupportedFormats)
                 {
-                    builder.Append("*");
-                    builder.Append(s);
-                    builder.Append(";");
+                    builder.Append($"{s.Description} (*.{s.FileExtension})|*.{ s.FileExtension }|");
                 }
-
-                SupportedFormatsString = builder.ToString();
+                SupportedFormatsString = builder.ToString(0, builder.Length - 1);
             }
             #region Properties
             /// <summary>
@@ -130,7 +108,7 @@ namespace HelixToolkit.UWP
             /// <value>
             ///     The supported formats.
             /// </value>
-            public static string[] SupportedFormats { get; }
+            public static ExportFormatDescription[] SupportedFormats { get; }
 
             /// <summary>
             ///     Gets the supported formats string.
@@ -165,10 +143,9 @@ namespace HelixToolkit.UWP
 
             public ILogger Logger { get => configuration.Logger; }
 
-            private HxScene.SceneNode root;
-            protected readonly Dictionary<Geometry3D, int> geometryCollection = new Dictionary<Geometry3D, int>();
-            protected readonly Dictionary<MaterialCore, int> materialCollection = new Dictionary<MaterialCore, int>();
-            
+            protected readonly Dictionary<Geometry3D, uint> geometryCollection = new Dictionary<Geometry3D, uint>();
+            protected readonly Dictionary<MaterialCore, uint> materialCollection = new Dictionary<MaterialCore, uint>();
+            protected readonly Dictionary<ulong, MeshInfo> meshInfos = new Dictionary<ulong, MeshInfo>();
             #endregion
             public ErrorCode ExportToFile(string filePath, HxScene.SceneNode root, string formatId)
             {
@@ -188,7 +165,7 @@ namespace HelixToolkit.UWP
 
                 try
                 {
-                    if(!exporter.ExportFile(scene.AssimpScene, filePath, formatId))
+                    if(!exporter.ExportFile(scene, filePath, formatId))
                     {
                         Log(LogLevel.Error, $"Export failed. FilePath: {filePath}; Format: {formatId}");
                         return ErrorCode.Failed;
@@ -209,30 +186,71 @@ namespace HelixToolkit.UWP
                 return ErrorCode.Failed;
             }
 
-            private HelixInternalScene CreateScene(HxScene.SceneNode root)
+            private Scene CreateScene(HxScene.SceneNode root)
             {
                 CollectAllGeometriesAndMaterials(root);
-
-                var scene = new HelixInternalScene
+                var scene = new Scene();
+                //Adds material and meshes into the assimp scene
+                foreach(var material in materialCollection.OrderBy(x=>x.Value))
                 {
-                    AssimpScene = new Scene(),
-                    Materials = new Tuple<global::Assimp.Material, MaterialCore>[materialCollection.Count],
-                    Meshes = new MeshInfo[geometryCollection.Count]
-                };
+                    scene.Materials.Add(OnCreateAssimpMaterial(material.Key));
+                }
+                foreach(var mesh in meshInfos.OrderBy(x=>x.Value.MeshIndex))
+                {
+                    scene.Meshes.Add(mesh.Value.AssimpMesh);
+                }
+                scene.RootNode = ConstructAssimpNode(root, null);
                 return scene;
+            }
+
+            private Node ConstructAssimpNode(HxScene.SceneNode current, Node parent)
+            {
+                var node = new Node(current.Name, parent);
+
+                if(current is HxScene.GroupNodeBase group)
+                {
+                    foreach(var s in group.Items)
+                    {
+                        if(s is HxScene.GeometryNode geo)
+                        {
+                            if(geometryCollection.TryGetValue(geo.Geometry, out var meshIndex))
+                            {
+                                node.MeshIndices.Add((int)meshIndex);
+                            }
+                        }
+                        else if(s is HxScene.GroupNodeBase)
+                        {
+                            ConstructAssimpNode(s, node);
+                        }
+                    }
+                }
+                return node;
             }
 
             private void CollectAllGeometriesAndMaterials(HxScene.SceneNode root)
             {
+                // Collect all geometries and materials
                 foreach(var node in root.Traverse())
                 {
-                    if(GetGeometryFromNode(node, out var geometry) && !geometryCollection.ContainsKey(geometry))
-                    {
-                        geometryCollection.Add(geometry, geometryCollection.Count);
-                    }
                     if(GetMaterialFromNode(node, out var material) && !materialCollection.ContainsKey(material))
                     {
-                        materialCollection.Add(material, materialCollection.Count);
+                        materialCollection.Add(material, (uint)materialCollection.Count);
+                    }
+                    if (GetGeometryFromNode(node, out var geometry) && !geometryCollection.ContainsKey(geometry))
+                    {
+                        geometryCollection.Add(geometry, (uint)geometryCollection.Count);
+                    }
+                }
+                // Create Mesh Material Pair
+                foreach (var node in root.Traverse())
+                {
+                    if(node is HxScene.GeometryNode geo)
+                    {
+                        var info = CreateMeshInfo(geo);
+                        if (!meshInfos.ContainsKey(info.MaterialMeshKey))
+                        {
+                            meshInfos.Add(info.MaterialMeshKey, info);
+                        }
                     }
                 }
             }
@@ -241,6 +259,7 @@ namespace HelixToolkit.UWP
             {
                 geometryCollection.Clear();
                 materialCollection.Clear();
+                meshInfos.Clear();
             }
 
             /// <summary>
