@@ -137,23 +137,13 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// To the matrix.
+            /// To the Helix UVTransform.
             /// </summary>
             /// <param name="transform">The transform.</param>
             /// <returns></returns>
-            public static global::SharpDX.Matrix ToMatrix(this global::Assimp.UVTransform transform)
+            public static UVTransform ToHelixUVTransform(this global::Assimp.UVTransform transform)
             {
-                return new global::SharpDX.Matrix
-                {
-                    M11 = (float)Math.Cos(transform.Rotation) * transform.Scaling.X,
-                    M12 = (float)Math.Sin(transform.Rotation),
-                    M21 = (float)-Math.Sin(transform.Rotation),
-                    M22 = (float)Math.Cos(transform.Rotation) * transform.Scaling.Y,
-                    M33 = 1,
-                    M41 = transform.Translation.X,
-                    M42 = transform.Translation.Y,
-                    M44 = 1
-                };
+                return new UVTransform(transform.Rotation, transform.Scaling.ToSharpDXVector2(), transform.Translation.ToSharpDXVector2());
             }
         }
     }

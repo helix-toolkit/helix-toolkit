@@ -202,14 +202,14 @@ namespace HelixToolkit.UWP
                 get { return displacementMapScaleMask; }
             }
 
-            private Matrix uvTransform = Matrix.Identity;
+            private UVTransform uvTransform = UVTransform.Identity;
             /// <summary>
             /// Gets or sets the uv transform.
             /// </summary>
             /// <value>
             /// The uv transform.
             /// </value>
-            public Matrix UVTransform
+            public UVTransform UVTransform
             {
                 set { Set(ref uvTransform, value); }
                 get { return uvTransform; }

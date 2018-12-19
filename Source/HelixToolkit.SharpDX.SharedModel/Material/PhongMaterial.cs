@@ -264,9 +264,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The uv transform property
         /// </summary>
         public static readonly DependencyProperty UVTransformProperty =
-            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(PhongMaterial), new PropertyMetadata(Matrix.Identity, (d,e)=>
+            DependencyProperty.Register("UVTransform", typeof(UVTransform), typeof(PhongMaterial), new PropertyMetadata(UVTransform.Identity, (d,e)=>
             {
-                ((d as Material).Core as PhongMaterialCore).UVTransform = (Matrix)e.NewValue;
+                ((d as Material).Core as PhongMaterialCore).UVTransform = (UVTransform)e.NewValue;
             }));
 
 
@@ -577,9 +577,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The uv transform.
         /// </value>
-        public Matrix UVTransform
+        public UVTransform UVTransform
         {
-            get { return (Matrix)GetValue(UVTransformProperty); }
+            get { return (UVTransform)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
         }
 

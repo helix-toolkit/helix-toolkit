@@ -277,8 +277,10 @@ namespace DynamicTextureDemo
                     }
                     else
                     {
-                        ModelMaterial.UVTransform = Matrix.Translation(ModelMaterial.UVTransform.TranslationVector + new Vector3(0.005f, -0.01f, 0));
-                        InnerModelMaterial.UVTransform = Matrix.Translation(InnerModelMaterial.UVTransform.TranslationVector + new Vector3(-0.01f, 0.005f, 0));
+                        ModelMaterial.UVTransform = new UVTransform(0, Vector2.One,
+                            ModelMaterial.UVTransform.Translation + new Vector2(0.005f, -0.01f));
+                        InnerModelMaterial.UVTransform = new UVTransform(0, Vector2.One,
+                            InnerModelMaterial.UVTransform.Translation + new Vector2(-0.01f, 0.005f));
                     }
                 }, null);
 

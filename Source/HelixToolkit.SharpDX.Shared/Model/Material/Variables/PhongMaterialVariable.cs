@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Runtime.CompilerServices;
+using SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -17,7 +18,7 @@ namespace HelixToolkit.UWP
     {
         using Render;
         using ShaderManager;
-        using Shaders;
+        using Shaders;       
         using Utilities;
 
         /// <summary>
@@ -201,8 +202,9 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PhongMaterialCore.RenderEnvironmentMap), () => { WriteValue(PhongPBRMaterialStruct.HasCubeMapStr, material.RenderEnvironmentMap ? 1 : 0); });
                 AddPropertyBinding(nameof(PhongMaterialCore.UVTransform), () => 
                 {
-                    WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
-                    WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
+                    Matrix m = material.UVTransform;
+                    WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
+                    WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2);
                 });
                 AddPropertyBinding(nameof(PhongMaterialCore.EnableAutoTangent), () => { WriteValue(PhongPBRMaterialStruct.EnableAutoTangent, material.EnableAutoTangent); });
                 AddPropertyBinding(nameof(PhongMaterialCore.MaxTessellationDistance), () => { WriteValue(PhongPBRMaterialStruct.MaxTessDistanceStr, material.MaxTessellationDistance); });

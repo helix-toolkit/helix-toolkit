@@ -80,13 +80,7 @@ namespace HelixToolkit.UWP
                     var values = material.GetNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE).GetFloatArrayValue();
                     if (values != null && values.Length == 5)
                     {
-                        var transform = new global::Assimp.UVTransform()
-                        {
-                            Rotation = values[0],
-                            Scaling = new Vector2D(values[1], values[2]),
-                            Translation = new Vector2D(values[3], values[4])
-                        };
-                        phong.UVTransform = transform.ToMatrix();
+                        phong.UVTransform = new UVTransform(values[0], new Vector2(values[1], values[2]), new Vector2(values[3], values[4]));
                     }
                 }
                 return phong;
@@ -198,13 +192,7 @@ namespace HelixToolkit.UWP
                     var values = material.GetNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE).GetFloatArrayValue();
                     if(values != null && values.Length == 5)
                     {
-                        var transform = new global::Assimp.UVTransform()
-                        {
-                            Rotation = values[0],
-                            Scaling = new Vector2D(values[1], values[2]),
-                            Translation = new Vector2D(values[3], values[4])
-                        };
-                        pbr.UVTransform = transform.ToMatrix();
+                        pbr.UVTransform = new UVTransform(values[0], new Vector2(values[1], values[2]), new Vector2(values[3], values[4]));
                     }
                 }
                 return pbr;

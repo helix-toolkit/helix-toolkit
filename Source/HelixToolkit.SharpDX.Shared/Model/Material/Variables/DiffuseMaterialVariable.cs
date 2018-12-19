@@ -124,8 +124,9 @@ namespace HelixToolkit.UWP
                 { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor); });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.UVTransform), () => 
                 {
-                    WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
-                    WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
+                    Matrix m = material.UVTransform;
+                    WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
+                    WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2);
                 });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseMap), () =>
                 {
