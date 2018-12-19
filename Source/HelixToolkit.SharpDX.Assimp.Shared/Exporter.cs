@@ -25,12 +25,13 @@ namespace HelixToolkit.UWP
 {
     using HelixToolkit.Logger;
     using Model;
+    using System.Collections.ObjectModel;
     using HxAnimations = Animations;
     using HxScene = Model.Scene;
 
     namespace Assimp
     {
-        public partial class Exporter
+        public partial class Exporter : IDisposable
         {
             public class ExportConfiguration
             {            
@@ -93,7 +94,6 @@ namespace HelixToolkit.UWP
                 {
                     SupportedFormats = temp.GetSupportedExportFormats().ToArray();
                 }
-
                 var builder = new StringBuilder();
                 foreach (var s in SupportedFormats)
                 {
@@ -143,8 +143,8 @@ namespace HelixToolkit.UWP
 
             public ILogger Logger { get => configuration.Logger; }
 
-            protected readonly Dictionary<Geometry3D, uint> geometryCollection = new Dictionary<Geometry3D, uint>();
-            protected readonly Dictionary<MaterialCore, uint> materialCollection = new Dictionary<MaterialCore, uint>();
+            protected readonly Dictionary<Geometry3D, int> geometryCollection = new Dictionary<Geometry3D, int>();
+            protected readonly Dictionary<MaterialCore, int> materialCollection = new Dictionary<MaterialCore, int>();
             protected readonly Dictionary<ulong, MeshInfo> meshInfos = new Dictionary<ulong, MeshInfo>();
             #endregion
             public ErrorCode ExportToFile(string filePath, HxScene.SceneNode root, string formatId)
@@ -195,32 +195,35 @@ namespace HelixToolkit.UWP
                 {
                     scene.Materials.Add(OnCreateAssimpMaterial(material.Key));
                 }
-                foreach(var mesh in meshInfos.OrderBy(x=>x.Value.MeshIndex))
-                {
-                    scene.Meshes.Add(mesh.Value.AssimpMesh);
-                }
                 scene.RootNode = ConstructAssimpNode(root, null);
+                scene.Meshes.AddRange(meshInfos.Select(x => x.Value.AssimpMesh));
                 return scene;
             }
 
             private Node ConstructAssimpNode(HxScene.SceneNode current, Node parent)
             {
-                var node = new Node(current.Name, parent);
-
+                var node = new Node(current.Name, parent) { Transform = current.ModelMatrix.ToAssimpMatrix() };
                 if(current is HxScene.GroupNodeBase group)
                 {
                     foreach(var s in group.Items)
                     {
                         if(s is HxScene.GeometryNode geo)
                         {
-                            if(geometryCollection.TryGetValue(geo.Geometry, out var meshIndex))
+                            var info = OnCreateMeshInfo(geo);
+                            if (info == null)
                             {
-                                node.MeshIndices.Add((int)meshIndex);
+                                Log(LogLevel.Warning, $"Create Mesh info failed. Node Name: {geo.Name}");
+                                continue;
                             }
+                            if (!meshInfos.ContainsKey(info.MaterialMeshKey))
+                            {
+                                meshInfos.Add(info.MaterialMeshKey, info);
+                            }
+                            node.MeshIndices.Add(info.MeshIndex);
                         }
                         else if(s is HxScene.GroupNodeBase)
                         {
-                            ConstructAssimpNode(s, node);
+                            node.Children.Add(ConstructAssimpNode(s, node));
                         }
                     }
                 }
@@ -234,19 +237,23 @@ namespace HelixToolkit.UWP
                 {
                     if(GetMaterialFromNode(node, out var material) && !materialCollection.ContainsKey(material))
                     {
-                        materialCollection.Add(material, (uint)materialCollection.Count);
+                        materialCollection.Add(material, materialCollection.Count);
                     }
                     if (GetGeometryFromNode(node, out var geometry) && !geometryCollection.ContainsKey(geometry))
                     {
-                        geometryCollection.Add(geometry, (uint)geometryCollection.Count);
+                        geometryCollection.Add(geometry, geometryCollection.Count);
                     }
                 }
-                // Create Mesh Material Pair
                 foreach (var node in root.Traverse())
                 {
-                    if(node is HxScene.GeometryNode geo)
+                    if (node is HxScene.GeometryNode geo)
                     {
-                        var info = CreateMeshInfo(geo);
+                        var info = OnCreateMeshInfo(geo);
+                        if (info == null)
+                        {
+                            Log(LogLevel.Warning, $"Create Mesh info failed. Node Name: {geo.Name}");
+                            continue;
+                        }
                         if (!meshInfos.ContainsKey(info.MaterialMeshKey))
                         {
                             meshInfos.Add(info.MaterialMeshKey, info);
@@ -301,6 +308,42 @@ namespace HelixToolkit.UWP
                 public MeshInfo[] Meshes;
             }
 
+            #endregion
+
+            #region IDisposable Support
+            private bool disposedValue = false; // To detect redundant calls
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!disposedValue)
+                {
+                    if (disposing)
+                    {
+                        // TODO: dispose managed state (managed objects).
+                        Clear();
+                    }
+
+                    // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                    // TODO: set large fields to null.
+
+                    disposedValue = true;
+                }
+            }
+
+            // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+            // ~Importer() {
+            //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            //   Dispose(false);
+            // }
+
+            // This code added to correctly implement the disposable pattern.
+            public void Dispose()
+            {
+                // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+                Dispose(true);
+                // TODO: uncomment the following line if the finalizer is overridden above.
+                // GC.SuppressFinalize(this);
+            }
             #endregion
         }
     }

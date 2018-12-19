@@ -31,8 +31,6 @@ namespace HelixToolkit.UWP
         public const string TriangleBuffer = "TriangleBuffer";
         [DataMember]
         public Guid GUID { set; get; } = Guid.NewGuid();
-        [DataMember]
-        public string Name { set; get; } = nameof(Geometry3D);
 
         private IntCollection indices = null;
 

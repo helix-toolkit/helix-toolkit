@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
         public static class Extensions
         {
             /// <summary>
-            /// To the sharp dx matrix.
+            /// To the sharp dx matrix. Already transposed after this function
             /// </summary>
             /// <param name="m">The m.</param>
             /// <returns></returns>
@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP
                 return matrix;
             }
             /// <summary>
-            /// To the assimp matrix.
+            /// To the assimp matrix. Already transposed after this function
             /// </summary>
             /// <param name="m">The m.</param>
             /// <returns></returns>

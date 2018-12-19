@@ -217,9 +217,14 @@ namespace HelixToolkit.UWP
                         var pbr = OnCreatePBRMaterial(material);
                         return new Tuple<global::Assimp.Material, MaterialCore>(material, pbr);
                     }
-
-                    var phong = OnCreatePhongMaterial(material);
-                    return new Tuple<global::Assimp.Material, MaterialCore>(material, phong);
+                    else
+                    {
+                        var diffuse = new DiffuseMaterialCore
+                        {
+                            DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
+                        };
+                        return new Tuple<global::Assimp.Material, MaterialCore>(material, diffuse);
+                    }
                 }
 
                 var mode = material.ShadingMode;

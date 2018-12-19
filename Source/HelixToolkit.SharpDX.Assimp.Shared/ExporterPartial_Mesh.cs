@@ -47,46 +47,56 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="geoNode">The geo node.</param>
             /// <returns></returns>
-            private MeshInfo CreateMeshInfo(HxScene.GeometryNode geoNode)
+            private MeshInfo OnCreateMeshInfo(HxScene.GeometryNode geoNode)
             {
                 if (geoNode is HxScene.MaterialGeometryNode materialNode)
                 {
-                    if(materialNode.Material != null)
+                    var key = GetMaterialGeoKey(geoNode, out var materialIndex, out var geoIndex);
+                    if (!meshInfos.TryGetValue(key, out var existing))
                     {
-                        if(materialCollection.TryGetValue(materialNode.Material, out var materialIndex))
-                        {
-                            if (geometryCollection.TryGetValue(geoNode.Geometry, out var geoIndex))
-                            {
-                                var key = GetMaterialGeoKey(materialIndex, geoIndex);
-                                if (!meshInfos.ContainsKey(key))
-                                {
-                                    var info = new MeshInfo(key, ToAssimpMesh(geoNode.Geometry), geoNode.Geometry, (int)geoIndex);
-                                    return info;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Log(HelixToolkit.Logger.LogLevel.Warning, $"Material not found, Name: {materialNode.Material.Name}");
-                        }
+                        var info = new MeshInfo(key, OnCreateAssimpMesh(geoNode.Name, geoNode.Geometry, materialIndex), 
+                            geoNode.Geometry, geoIndex);
+                        return info;
+                    }
+                    else
+                    {
+                        return existing;
                     }
                 }
-                //else if(geometryCollection.TryGetValue(geoNode.Geometry, out var geoIndex))
-                //{
-                //    return new MeshInfo(GetMaterialGeoKey(0, geoIndex), ToAssimpMesh(geoNode.Geometry), geoNode.Geometry);
-                //}
                 return null;
             }
 
-            private ulong GetMaterialGeoKey(uint materialIndex, uint geometryIndex)
+            private ulong GetMaterialGeoKey(HxScene.GeometryNode node, out int materialIndex, out int geoIndex)
             {
-                ulong key = (ulong)materialIndex << 32 | geometryIndex;
+                if(geometryCollection.TryGetValue(node.Geometry, out geoIndex))
+                {
+                    if(node is HxScene.MaterialGeometryNode materialNode && materialNode.Material != null
+                        && materialCollection.TryGetValue(materialNode.Material, out materialIndex))
+                    {
+
+                        return GetMaterialGeoKey(materialIndex, geoIndex);
+                    }
+                    else
+                    {
+                        materialIndex = 0;
+                        return GetMaterialGeoKey(0, geoIndex);
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException("Geometry Key not found.");
+                }
+            }
+
+            private ulong GetMaterialGeoKey(int materialIndex, int geometryIndex)
+            {
+                ulong key = (ulong)materialIndex << 32 | (uint)geometryIndex;
                 return key;
             }
 
-            protected virtual Mesh ToAssimpMesh(Geometry3D geometry)
+            protected virtual Mesh OnCreateAssimpMesh(string name, Geometry3D geometry, int materialIndex)
             {
-                var assimpMesh = new Mesh(geometry.Name);
+                var assimpMesh = new Mesh(name) { MaterialIndex = materialIndex };
                 if (geometry.Positions != null && geometry.Positions.Count > 0)
                 {
                     assimpMesh.Vertices.AddRange(geometry.Positions.Select(x => x.ToAssimpVector3D()));

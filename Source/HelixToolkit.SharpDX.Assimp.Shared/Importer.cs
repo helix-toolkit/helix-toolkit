@@ -203,11 +203,10 @@ namespace HelixToolkit.UWP
 
         /// <summary>
         /// </summary>
-        public partial class Importer
+        public partial class Importer : IDisposable
         {
             private const string ToUpperDictString = @"..\";
             private string path = "";
-
             static Importer()
             {
                 using (var temp = new AssimpContext())
@@ -471,13 +470,13 @@ namespace HelixToolkit.UWP
                             if (parallel)
                             {
                                 Parallel.ForEach(scene.Meshes,
-                                        (mesh, state, index) => { s.Meshes[index] = ToHelixGeometry(mesh); });
+                                        (mesh, state, index) => { s.Meshes[index] = OnCreateHelixGeometry(mesh); });
                             }
                             else
                             {
                                 for (var i = 0; i < scene.MeshCount; ++i)
                                 {
-                                    s.Meshes[i] = ToHelixGeometry(scene.Meshes[i]);
+                                    s.Meshes[i] = OnCreateHelixGeometry(scene.Meshes[i]);
                                 }
                             }
                         }
@@ -514,7 +513,7 @@ namespace HelixToolkit.UWP
                     foreach (var idx in node.MeshIndices)
                     {
                         var mesh = scene.Meshes[idx];
-                        var hxNode = ToHxMeshNode(mesh, scene, Matrix.Identity);
+                        var hxNode = OnCreateHxMeshNode(mesh, scene, Matrix.Identity);
                         group.AddChildNode(hxNode);
                         if(hxNode is HxScene.BoneSkinMeshNode skinNode && Configuration.CreateSkeletonForBoneSkinningMesh)
                         {
@@ -539,6 +538,8 @@ namespace HelixToolkit.UWP
             {
                 Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
             }
+
+
             #endregion
 
             #region Inner Classes
@@ -567,7 +568,42 @@ namespace HelixToolkit.UWP
                 /// </summary>
                 public MeshInfo[] Meshes;
             }
+            #endregion
 
+            #region IDisposable Support
+            private bool disposedValue = false; // To detect redundant calls
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!disposedValue)
+                {
+                    if (disposing)
+                    {
+                        // TODO: dispose managed state (managed objects).
+                        Clear();
+                    }
+
+                    // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                    // TODO: set large fields to null.
+
+                    disposedValue = true;
+                }
+            }
+
+            // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+            // ~Importer() {
+            //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            //   Dispose(false);
+            // }
+
+            // This code added to correctly implement the disposable pattern.
+            public void Dispose()
+            {
+                // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+                Dispose(true);
+                // TODO: uncomment the following line if the finalizer is overridden above.
+                // GC.SuppressFinalize(this);
+            }
             #endregion
         }
     }

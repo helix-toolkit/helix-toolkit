@@ -17,6 +17,7 @@ namespace FileLoadDemo
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
@@ -211,9 +212,12 @@ namespace FileLoadDemo
 
         private void ExportFile()
         {
-            string path = SaveFileDialog(ExportFileFilter);
-            if (string.IsNullOrEmpty(path))
+            var index = SaveFileDialog(ExportFileFilter, out var path);
+            if (!string.IsNullOrEmpty(path) && index >= 0)
             {
+                var id = HelixToolkit.Wpf.SharpDX.Assimp.Exporter.SupportedFormats[index].FormatId;
+                var exporter = new HelixToolkit.Wpf.SharpDX.Assimp.Exporter();
+                exporter.ExportToFile(path, scene.Root, id);
                 return;
             }
         }
@@ -234,15 +238,19 @@ namespace FileLoadDemo
             return d.FileName;
         }
 
-        private string SaveFileDialog(string filter)
+        private int SaveFileDialog(string filter, out string path)
         {
             var d = new SaveFileDialog();
             d.Filter = filter;
             if (d.ShowDialog() == true)
             {
-                return d.FileName;
+                path = d.FileName;
+                return d.FilterIndex - 1;//This is tarting from 1. So must minus 1
             }
-            else { return ""; }
+            else {
+                path = "";
+                return -1;
+            }
         }
 
         private void ShowWireframeFunct(bool show)
