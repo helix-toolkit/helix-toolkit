@@ -1,5 +1,7 @@
 ﻿using Assimp;
+using SharpDX.IO;
 using System;
+using System.IO;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -147,5 +149,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

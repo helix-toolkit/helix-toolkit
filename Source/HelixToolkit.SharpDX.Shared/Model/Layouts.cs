@@ -588,6 +588,13 @@ namespace HelixToolkit.UWP
         /// </summary>
         public Vector2 Translation;
         /// <summary>
+        /// Gets a value indicating whether this instance has uv transform.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has uv transform; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasUVTransform { get => Rotation != 0 || Scaling.X != 1 || Scaling.Y != 1 || Translation.X != 0 || Translation.Y != 0; }
+        /// <summary>
         /// Initializes a new instance of the <see cref="UVTransform"/> struct.
         /// </summary>
         /// <param name="rotation">The rotation.</param>
@@ -661,6 +668,11 @@ namespace HelixToolkit.UWP
             return new UVTransform(r.Angle, new Vector2(s.X, s.Y), new Vector2(t.X, t.Y));
         }
         public static readonly UVTransform Identity = new UVTransform(0, Vector2.One, Vector2.Zero);
+
+        public float[] ToArray()
+        {
+            return new float[] { Rotation, Scaling.X, Scaling.Y, Translation.X, Translation.Y };
+        }
     }
 #if !NETFX_CORE
     /// <summary>

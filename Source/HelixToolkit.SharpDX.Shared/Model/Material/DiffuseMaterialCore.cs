@@ -47,6 +47,14 @@ namespace HelixToolkit.UWP
                 set { Set(ref diffuseMap, value); }
                 get { return diffuseMap; }
             }
+            /// <summary>
+            /// Gets or sets the diffuse map file path. Only for export
+            /// </summary>
+            /// <value>
+            /// The diffuse map file path.
+            /// </value>
+            public string DiffuseMapFilePath { set; get; }
+
             private UVTransform uvTransform = UVTransform.Identity;
             /// <summary>
             /// Gets or sets the uv transform.

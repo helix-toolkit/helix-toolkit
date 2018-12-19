@@ -85,7 +85,12 @@ namespace HelixToolkit.UWP
                     get { return logger; }
                 }
 
+                /// <summary>
+                /// The flip triangle winding order during import
+                /// </summary>
+                public bool FlipWindingOrder = false;
             }
+
             private const string ToUpperDictString = @"..\";
 
             static Exporter()
@@ -163,9 +168,14 @@ namespace HelixToolkit.UWP
                     exporter = new AssimpContext();
                 }
 
+                var postProcessing = configuration.PostProcessing;
+                if (configuration.FlipWindingOrder)
+                {
+                    postProcessing |= PostProcessSteps.FlipWindingOrder;
+                }
                 try
                 {
-                    if(!exporter.ExportFile(scene, filePath, formatId))
+                    if(!exporter.ExportFile(scene, filePath, formatId, postProcessing))
                     {
                         Log(LogLevel.Error, $"Export failed. FilePath: {filePath}; Format: {formatId}");
                         return ErrorCode.Failed;

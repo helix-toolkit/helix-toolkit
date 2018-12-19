@@ -58,6 +58,7 @@ namespace HelixToolkit.UWP
                 if (material.HasTextureDiffuse)
                 {
                     phong.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
+                    phong.DiffuseMapFilePath = material.TextureDiffuse.FilePath;
                     var desc = Shaders.DefaultSamplers.LinearSamplerClampAni1;
                     desc.AddressU = ToDXAddressMode(material.TextureDiffuse.WrapModeU);
                     desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
@@ -65,17 +66,36 @@ namespace HelixToolkit.UWP
                 }
 
                 if (material.HasTextureNormal)
+                {
                     phong.NormalMap = LoadTexture(material.TextureNormal.FilePath);
-                else if (material.HasTextureHeight) phong.NormalMap = LoadTexture(material.TextureHeight.FilePath);
+                    phong.NormalMapFilePath = material.TextureNormal.FilePath;
+                }
+                else if (material.HasTextureHeight)
+                {
+                    phong.NormalMap = LoadTexture(material.TextureHeight.FilePath);
+                    phong.NormalMapFilePath = material.TextureHeight.FilePath;
+                }
                 if (material.HasTextureSpecular)
+                {
                     phong.SpecularColorMap = LoadTexture(material.TextureSpecular.FilePath);
+                    phong.SpecularColorMapFilePath = material.TextureSpecular.FilePath;
+                }
                 if (material.HasTextureDisplacement)
+                {
                     phong.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
-                if (material.HasBumpScaling)
-                    phong.DisplacementMapScaleMask = new Vector4(material.BumpScaling, material.BumpScaling,
-                        material.BumpScaling, 0);
+                    phong.DisplacementMapFilePath = material.TextureDisplacement.FilePath;
+                }
+
                 if (material.HasTextureOpacity)
+                {
                     phong.DiffuseAlphaMap = LoadTexture(material.TextureOpacity.FilePath);
+                    phong.DiffuseAlphaMapFilePath = material.TextureOpacity.FilePath;
+                }
+                if (material.HasTextureEmissive)
+                {
+                    phong.EmissiveMap = LoadTexture(material.TextureEmissive.FilePath);
+                    phong.EmissiveMapFilePath = material.TextureEmissive.FilePath;
+                }
 
                 if (material.HasNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE))
                 {
@@ -156,6 +176,7 @@ namespace HelixToolkit.UWP
                 if (material.HasTextureDiffuse)
                 {
                     pbr.AlbedoMap = LoadTexture(material.TextureDiffuse.FilePath);
+                    pbr.AlbedoMapFilePath = material.TextureDiffuse.FilePath;
                     var desc = Shaders.DefaultSamplers.LinearSamplerClampAni1;
                     desc.AddressU = ToDXAddressMode(material.TextureDiffuse.WrapModeU);
                     desc.AddressV = ToDXAddressMode(material.TextureDiffuse.WrapModeV);
@@ -165,30 +186,41 @@ namespace HelixToolkit.UWP
                 if (material.HasTextureNormal)
                 {
                     pbr.NormalMap = LoadTexture(material.TextureNormal.FilePath);
+                    pbr.NormalMapFilePath = material.TextureNormal.FilePath;
                 }
-                else if (material.HasTextureHeight) pbr.NormalMap = LoadTexture(material.TextureHeight.FilePath);
+                else if (material.HasTextureHeight)
+                {
+                    pbr.NormalMap = LoadTexture(material.TextureHeight.FilePath);
+                    pbr.NormalMapFilePath = material.TextureHeight.FilePath;
+                }
                 if (material.HasProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, TextureType.Unknown, 0))
                 {
                     var t = material.GetProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE,
                         TextureType.Unknown, 0);
                     pbr.RMAMap = LoadTexture(t.GetStringValue());
+                    pbr.RMAMapFilePath = t.GetStringValue();
                 }
                 else if (material.HasTextureSpecular)
                 {
                     pbr.RMAMap = LoadTexture(material.TextureSpecular.FilePath);
+                    pbr.RMAMapFilePath = material.TextureSpecular.FilePath;
                 }
 
                 if (material.HasTextureDisplacement)
                 {
                     pbr.DisplacementMap = LoadTexture(material.TextureDisplacement.FilePath);
+                    pbr.DisplacementMapFilePath = material.TextureDisplacement.FilePath;
                 }
-                if (material.HasBumpScaling)
+                if (material.HasTextureLightMap)
                 {
-                    pbr.DisplacementMapScaleMask = new Vector4(material.BumpScaling, material.BumpScaling,
-                        material.BumpScaling, 0);
+                    pbr.IrradianceMap = LoadTexture(material.TextureLightMap.FilePath);
+                    pbr.IrradianceMapFilePath = material.TextureLightMap.FilePath;
                 }
-                if (material.HasTextureLightMap) pbr.IrradianceMap = LoadTexture(material.TextureLightMap.FilePath);
-
+                if (material.HasTextureEmissive)
+                {
+                    pbr.EmissiveMap = LoadTexture(material.TextureEmissive.FilePath);
+                    pbr.EmissiveMapFilePath = material.TextureEmissive.FilePath;
+                }
                 if(material.HasNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE))
                 {
                     var values = material.GetNonTextureProperty(AiMatKeys.UVTRANSFORM_BASE).GetFloatArrayValue();
@@ -225,6 +257,11 @@ namespace HelixToolkit.UWP
                         {
                             DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
                         };
+                        if (material.HasTextureDiffuse)
+                        {
+                            diffuse.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
+                            diffuse.DiffuseMapFilePath = material.TextureDiffuse.FilePath;
+                        }
                         return new KeyValuePair<global::Assimp.Material, MaterialCore>(material, diffuse);
                     }
                 }
@@ -275,8 +312,14 @@ namespace HelixToolkit.UWP
                         }
 
                         if (material.HasTextureDiffuse)
+                        {
                             diffuse.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
-                        if (material.ShadingMode == ShadingMode.Flat) diffuse.EnableUnLit = true;
+                            diffuse.DiffuseMapFilePath = material.TextureDiffuse.FilePath;
+                        }
+                        if (material.ShadingMode == ShadingMode.Flat)
+                        {
+                            diffuse.EnableUnLit = true;
+                        }
                         core = diffuse;
                         break;
                     case ShadingMode.Flat:
@@ -293,7 +336,7 @@ namespace HelixToolkit.UWP
                                 break;
                             default:
                                 Log(HelixToolkit.Logger.LogLevel.Warning, $"Shading Mode is not supported:{material.ShadingMode}");
-                                core = new DiffuseMaterialCore() { EnableUnLit = true };
+                                core = new DiffuseMaterialCore() { DiffuseColor = Color.Red, EnableUnLit = true };
                                 break;
                         }
                         break;
