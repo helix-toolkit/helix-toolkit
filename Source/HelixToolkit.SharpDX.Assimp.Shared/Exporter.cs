@@ -33,64 +33,6 @@ namespace HelixToolkit.UWP
     {
         public partial class Exporter : IDisposable
         {
-            public class ExportConfiguration
-            {            
-                /// <summary>
-                /// The post processing
-                /// </summary>
-                public PostProcessSteps PostProcessing =
-                    PostProcessSteps.FlipUVs;
-
-                /// <summary>
-                ///     The assimp property configuration
-                /// </summary>
-                public PropertyConfig[] AssimpPropertyConfig = null;
-
-                /// <summary>
-                ///     The enable parallel processing, such as converting Assimp meshes into HelixToolkit meshes
-                /// </summary>
-                public bool EnableParallelProcessing;
-
-                /// <summary>
-                ///     The external context. Can be use to do more customized configuration for Assimp Importer
-                /// </summary>
-                public AssimpContext ExternalContext = null;
-
-                /// <summary>
-                /// The global scale for model
-                /// </summary>
-                public float GlobalScale = 1f;
-                /// <summary>
-                /// The tickes per second. Only used when file does not contains tickes per second for animation.
-                /// </summary>
-                public float TickesPerSecond = 25f;
-
-                private ILogger logger = new DebugLogger();
-                /// <summary>
-                /// Gets or sets the logger.
-                /// </summary>
-                /// <value>
-                /// The logger.
-                /// </value>
-                public ILogger Logger
-                {
-                    set
-                    {
-                        logger = value;
-                        if (logger == null)
-                        {
-                            logger = new DebugLogger();
-                        }
-                    }
-                    get { return logger; }
-                }
-
-                /// <summary>
-                /// The flip triangle winding order during import
-                /// </summary>
-                public bool FlipWindingOrder = false;
-            }
-
             private const string ToUpperDictString = @"..\";
 
             static Exporter()

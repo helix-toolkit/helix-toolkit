@@ -9,6 +9,7 @@
     <Import_RootNamespace>HelixToolkit.SharpDX.Assimp.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Configurations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Material.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Mesh.cs" />
