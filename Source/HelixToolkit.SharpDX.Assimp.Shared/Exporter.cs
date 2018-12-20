@@ -218,7 +218,10 @@ namespace HelixToolkit.UWP
 
             private Node ConstructAssimpNode(HxScene.SceneNode current, Node parent)
             {
-                var node = new Node(current.Name, parent) { Transform = current.ModelMatrix.ToAssimpMatrix() };
+                var node = new Node(string.IsNullOrEmpty(current.Name) ? "Node" : current.Name, parent)
+                {
+                    Transform = current.ModelMatrix.ToAssimpMatrix()
+                };
                 if(current is HxScene.GroupNodeBase group)
                 {
                     foreach(var s in group.Items)
