@@ -104,5 +104,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return true;
             }
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new OrthographicCamera();
+        }
+#endif
     }
 }

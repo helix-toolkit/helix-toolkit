@@ -881,12 +881,8 @@ namespace HelixToolkit.UWP
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
-                    viewport.Attach(SharedModelContainer);
                 }
-                else
-                {
-                    viewport.Attach(this);
-                }
+                viewport.Attach(this);
     #if DX11_1
                 renderContext = Collect(CreateRenderContext());
     #else

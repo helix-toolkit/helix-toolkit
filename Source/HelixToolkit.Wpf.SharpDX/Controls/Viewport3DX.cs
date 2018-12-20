@@ -935,7 +935,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     e.Detach();
                 }
-                SharedModelContainerInternal?.Detach();
+                SharedModelContainerInternal?.Detach(this.renderHostInternal);
                 foreach(var e in this.D2DRenderables)
                 {
                     e.Detach();

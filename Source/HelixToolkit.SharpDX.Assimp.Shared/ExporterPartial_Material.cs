@@ -4,10 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using Assimp;
 using Assimp.Unmanaged;
-using SharpDX;
 using SharpDX.Direct3D11;
-using System;
-using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -20,7 +17,6 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Model;
-    using HxAnimations = Animations;
     using HxScene = Model.Scene;
     namespace Assimp
     {
@@ -155,7 +151,10 @@ namespace HelixToolkit.UWP
 
             protected virtual global::Assimp.Material OnCreateAssimpMaterial(MaterialCore material)
             {
-                var assimpMaterial = new global::Assimp.Material() { Name = material.Name };
+                var assimpMaterial = new global::Assimp.Material()
+                {
+                    Name = string.IsNullOrEmpty(material.Name) ? $"MAT_{MaterialIndexForNoName++}" : material.Name
+                };
                 if(material is PhongMaterialCore phong)
                 {
                     AddProperties(phong, assimpMaterial);

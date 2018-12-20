@@ -130,5 +130,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public override bool CreateLeftHandSystem { set; get; }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new MatrixCamera();
+        }
+#endif
     }
 }

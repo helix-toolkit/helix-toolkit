@@ -33,64 +33,6 @@ namespace HelixToolkit.UWP
     {
         public partial class Exporter : IDisposable
         {
-            public class ExportConfiguration
-            {            
-                /// <summary>
-                /// The post processing
-                /// </summary>
-                public PostProcessSteps PostProcessing =
-                    PostProcessSteps.FlipUVs;
-
-                /// <summary>
-                ///     The assimp property configuration
-                /// </summary>
-                public PropertyConfig[] AssimpPropertyConfig = null;
-
-                /// <summary>
-                ///     The enable parallel processing, such as converting Assimp meshes into HelixToolkit meshes
-                /// </summary>
-                public bool EnableParallelProcessing;
-
-                /// <summary>
-                ///     The external context. Can be use to do more customized configuration for Assimp Importer
-                /// </summary>
-                public AssimpContext ExternalContext = null;
-
-                /// <summary>
-                /// The global scale for model
-                /// </summary>
-                public float GlobalScale = 1f;
-                /// <summary>
-                /// The tickes per second. Only used when file does not contains tickes per second for animation.
-                /// </summary>
-                public float TickesPerSecond = 25f;
-
-                private ILogger logger = new DebugLogger();
-                /// <summary>
-                /// Gets or sets the logger.
-                /// </summary>
-                /// <value>
-                /// The logger.
-                /// </value>
-                public ILogger Logger
-                {
-                    set
-                    {
-                        logger = value;
-                        if (logger == null)
-                        {
-                            logger = new DebugLogger();
-                        }
-                    }
-                    get { return logger; }
-                }
-
-                /// <summary>
-                /// The flip triangle winding order during import
-                /// </summary>
-                public bool FlipWindingOrder = false;
-            }
-
             private const string ToUpperDictString = @"..\";
 
             static Exporter()
@@ -147,15 +89,17 @@ namespace HelixToolkit.UWP
             }
 
             public ILogger Logger { get => configuration.Logger; }
-
+            #endregion
             protected readonly Dictionary<Geometry3D, int> geometryCollection = new Dictionary<Geometry3D, int>();
             protected readonly Dictionary<MaterialCore, int> materialCollection = new Dictionary<MaterialCore, int>();
             protected readonly Dictionary<ulong, MeshInfo> meshInfos = new Dictionary<ulong, MeshInfo>();
-            #endregion
+
+            private int MaterialIndexForNoName = 0;
+            private int MeshIndexForNoName = 0;
+
             public ErrorCode ExportToFile(string filePath, HxScene.SceneNode root, string formatId)
             {
                 Clear();
-                var scene = CreateScene(root);
                 AssimpContext exporter = null;
                 var useExtern = false;
                 if (Configuration.ExternalContext != null)
@@ -167,7 +111,11 @@ namespace HelixToolkit.UWP
                 {
                     exporter = new AssimpContext();
                 }
-
+                if (!exporter.IsExportFormatSupported(Path.GetExtension(filePath)))
+                {
+                    return ErrorCode.Failed | ErrorCode.FileTypeNotSupported;
+                }
+                var scene = CreateScene(root);
                 var postProcessing = configuration.PostProcessing;
                 if (configuration.FlipWindingOrder)
                 {
@@ -212,24 +160,21 @@ namespace HelixToolkit.UWP
 
             private Node ConstructAssimpNode(HxScene.SceneNode current, Node parent)
             {
-                var node = new Node(current.Name, parent) { Transform = current.ModelMatrix.ToAssimpMatrix() };
+                var node = new Node(string.IsNullOrEmpty(current.Name) ? "Node" : current.Name, parent)
+                {
+                    Transform = current.ModelMatrix.ToAssimpMatrix()
+                };
                 if(current is HxScene.GroupNodeBase group)
                 {
                     foreach(var s in group.Items)
                     {
                         if(s is HxScene.GeometryNode geo)
                         {
-                            var info = OnCreateMeshInfo(geo);
-                            if (info == null)
+                            var key = GetMaterialGeoKey(geo, out var materialIndex, out var geoIndex);
+                            if (meshInfos.TryGetValue(key, out var meshInfo))
                             {
-                                Log(LogLevel.Warning, $"Create Mesh info failed. Node Name: {geo.Name}");
-                                continue;
-                            }
-                            if (!meshInfos.ContainsKey(info.MaterialMeshKey))
-                            {
-                                meshInfos.Add(info.MaterialMeshKey, info);
-                            }
-                            node.MeshIndices.Add(info.MeshIndex);
+                                node.MeshIndices.Add(meshInfo.MeshIndex);
+                            }                           
                         }
                         else if(s is HxScene.GroupNodeBase)
                         {
@@ -270,6 +215,21 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
+
+                if (configuration.EnableParallelProcessing)
+                {
+                    Parallel.ForEach(meshInfos, (info) =>
+                    {
+                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value.Name, info.Value.Mesh, info.Value.MaterialIndex);
+                    });
+                }
+                else
+                {
+                    foreach(var info in meshInfos)
+                    {
+                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value.Name, info.Value.Mesh, info.Value.MaterialIndex);
+                    }
+                }
             }
 
             protected virtual void Clear()
@@ -277,6 +237,7 @@ namespace HelixToolkit.UWP
                 geometryCollection.Clear();
                 materialCollection.Clear();
                 meshInfos.Clear();
+                MaterialIndexForNoName = MeshIndexForNoName = 0;
             }
 
             /// <summary>

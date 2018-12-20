@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public abstract class MaterialCore : ObservableObject, IMaterial
         {
-            private string name;
+            private string name = "Material";
             public string Name
             {
                 set

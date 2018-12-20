@@ -248,26 +248,21 @@ namespace HelixToolkit.UWP
                         || material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_ROUGHNESS_FACTOR)
                         || material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
                     {
-                        var pbr = OnCreatePBRMaterial(material);
-                        return new KeyValuePair<global::Assimp.Material, MaterialCore>(material, pbr);
+                        material.ShadingMode = ShadingMode.Fresnel;
+                    }
+                    else if(material.HasColorSpecular || material.HasColorDiffuse || material.HasTextureDiffuse)
+                    {
+                        material.ShadingMode = ShadingMode.Blinn;
                     }
                     else
                     {
-                        var diffuse = new DiffuseMaterialCore
-                        {
-                            DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
-                        };
-                        if (material.HasTextureDiffuse)
-                        {
-                            diffuse.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
-                            diffuse.DiffuseMapFilePath = material.TextureDiffuse.FilePath;
-                        }
-                        return new KeyValuePair<global::Assimp.Material, MaterialCore>(material, diffuse);
+                        material.ShadingMode = ShadingMode.Gouraud;
                     }
                 }
 
                 var mode = material.ShadingMode;
                 if (Configuration.ImportMaterialType != MaterialType.Auto)
+                {
                     switch (Configuration.ImportMaterialType)
                     {
                         case MaterialType.BlinnPhong:
@@ -287,6 +282,7 @@ namespace HelixToolkit.UWP
                         case MaterialType.Position:
                             break;
                     }
+                }
                 switch (material.ShadingMode)
                 {
                     case ShadingMode.Blinn:

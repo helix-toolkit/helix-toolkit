@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace FileLoadDemo
 {
+    /// <summary>
+    /// Provide your own view model to manipulate the scene nodes
+    /// </summary>
+    /// <seealso cref="DemoCore.ObservableObject" />
     public class AttachedNodeViewModel : ObservableObject
     {
         private bool selected = false;
@@ -21,12 +25,12 @@ namespace FileLoadDemo
                     if(node is MeshNode m)
                     {
                         m.PostEffects = value ? $"highlight[color:#FFFF00]" : "";
-                    }
-                    foreach(var n in node.TraverseUp())
-                    {
-                        if(n.Tag is AttachedNodeViewModel vm)
+                        foreach (var n in node.TraverseUp())
                         {
-                            vm.Expanded = value;
+                            if (n.Tag is AttachedNodeViewModel vm)
+                            {
+                                vm.Expanded = true;
+                            }
                         }
                     }
                 }

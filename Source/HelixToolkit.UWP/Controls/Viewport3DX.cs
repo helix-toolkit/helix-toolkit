@@ -438,7 +438,7 @@ namespace HelixToolkit.UWP
                 {
                     e.Detach();
                 }
-                SharedModelContainerInternal?.Detach();
+                SharedModelContainerInternal?.Detach(renderHostInternal);
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Detach();
