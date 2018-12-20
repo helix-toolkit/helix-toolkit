@@ -3,8 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using Assimp;
-using SharpDX;
-using SharpDX.Direct3D11;
 using System;
 using System.Linq;
 
@@ -18,9 +16,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using Model;
     using System.Collections.Generic;
-    using HxAnimations = Animations;
     using HxScene = Model.Scene;
     namespace Assimp
     {
@@ -96,7 +92,7 @@ namespace HelixToolkit.UWP
 
             protected virtual Mesh OnCreateAssimpMesh(string name, Geometry3D geometry, int materialIndex)
             {
-                var assimpMesh = new Mesh(string.IsNullOrEmpty(name) ? "Mesh" : name) { MaterialIndex = materialIndex };
+                var assimpMesh = new Mesh(string.IsNullOrEmpty(name) ? $"Mesh_{MeshIndexForNoName++}" : name) { MaterialIndex = materialIndex };
                 if (geometry.Positions != null && geometry.Positions.Count > 0)
                 {
                     assimpMesh.Vertices.AddRange(geometry.Positions.Select(x => x.ToAssimpVector3D()));

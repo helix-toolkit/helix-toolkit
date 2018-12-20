@@ -147,15 +147,17 @@ namespace HelixToolkit.UWP
             }
 
             public ILogger Logger { get => configuration.Logger; }
-
+            #endregion
             protected readonly Dictionary<Geometry3D, int> geometryCollection = new Dictionary<Geometry3D, int>();
             protected readonly Dictionary<MaterialCore, int> materialCollection = new Dictionary<MaterialCore, int>();
             protected readonly Dictionary<ulong, MeshInfo> meshInfos = new Dictionary<ulong, MeshInfo>();
-            #endregion
+
+            private int MaterialIndexForNoName = 0;
+            private int MeshIndexForNoName = 0;
+
             public ErrorCode ExportToFile(string filePath, HxScene.SceneNode root, string formatId)
             {
                 Clear();
-                var scene = CreateScene(root);
                 AssimpContext exporter = null;
                 var useExtern = false;
                 if (Configuration.ExternalContext != null)
@@ -167,7 +169,11 @@ namespace HelixToolkit.UWP
                 {
                     exporter = new AssimpContext();
                 }
-
+                if (!exporter.IsExportFormatSupported(Path.GetExtension(filePath)))
+                {
+                    return ErrorCode.Failed | ErrorCode.FileTypeNotSupported;
+                }
+                var scene = CreateScene(root);
                 var postProcessing = configuration.PostProcessing;
                 if (configuration.FlipWindingOrder)
                 {
@@ -277,6 +283,7 @@ namespace HelixToolkit.UWP
                 geometryCollection.Clear();
                 materialCollection.Clear();
                 meshInfos.Clear();
+                MaterialIndexForNoName = MeshIndexForNoName = 0;
             }
 
             /// <summary>

@@ -366,6 +366,10 @@ namespace HelixToolkit.UWP
                 scene = null;
                 try
                 {
+                    if (!importer.IsImportFormatSupported(Path.GetExtension(filePath)))
+                    {
+                        return ErrorCode.FileTypeNotSupported | ErrorCode.Failed;
+                    }
                     if (!useExtern && Configuration.AssimpPropertyConfig != null)
                         foreach (var config in Configuration.AssimpPropertyConfig)
                             importer.SetConfig(config);
