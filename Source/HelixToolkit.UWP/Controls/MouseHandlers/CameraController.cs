@@ -1415,7 +1415,7 @@ namespace HelixToolkit.UWP
             if (Viewport.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetCurrentPoint(Viewport).Position;
-                if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3D normal, out Element3D visual))
+                if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3D normal, out Element3D visual, out var node))
                 {
                     this.AddZoomForce(-delta * 0.001, nearestPoint);
                     e.Handled = true;

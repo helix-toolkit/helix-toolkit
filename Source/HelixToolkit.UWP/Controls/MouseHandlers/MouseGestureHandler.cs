@@ -399,9 +399,9 @@ namespace HelixToolkit.UWP
             this.MouseDownPoint = position.ToVector2();
 
             if (!this.Controller.Viewport.FixedRotationPointEnabled 
-                && this.Controller.Viewport.FindNearest(position, out var nearestPoint, out var normal, out var visual))
+                && this.Controller.Viewport.FindNearest(position, out var nearestPoint, out var normal, out var visual, out var node))
             {
-                this.MouseDownNearestPoint3D = visual.SceneNode.BoundsWithTransform.Center;
+                this.MouseDownNearestPoint3D = node.BoundsWithTransform.Center;
             }
             else
             {
