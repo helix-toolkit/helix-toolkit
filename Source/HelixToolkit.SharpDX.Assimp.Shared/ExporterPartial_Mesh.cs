@@ -96,7 +96,7 @@ namespace HelixToolkit.UWP
 
             protected virtual Mesh OnCreateAssimpMesh(string name, Geometry3D geometry, int materialIndex)
             {
-                var assimpMesh = new Mesh(name) { MaterialIndex = materialIndex };
+                var assimpMesh = new Mesh(string.IsNullOrEmpty(name) ? "Mesh" : name) { MaterialIndex = materialIndex };
                 if (geometry.Positions != null && geometry.Positions.Count > 0)
                 {
                     assimpMesh.Vertices.AddRange(geometry.Positions.Select(x => x.ToAssimpVector3D()));

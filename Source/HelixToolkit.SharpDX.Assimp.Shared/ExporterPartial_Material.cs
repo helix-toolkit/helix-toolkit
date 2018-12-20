@@ -155,7 +155,7 @@ namespace HelixToolkit.UWP
 
             protected virtual global::Assimp.Material OnCreateAssimpMaterial(MaterialCore material)
             {
-                var assimpMaterial = new global::Assimp.Material() { Name = material.Name };
+                var assimpMaterial = new global::Assimp.Material() { Name = string.IsNullOrEmpty(material.Name) ? "MAT" : material.Name };
                 if(material is PhongMaterialCore phong)
                 {
                     AddProperties(phong, assimpMaterial);
