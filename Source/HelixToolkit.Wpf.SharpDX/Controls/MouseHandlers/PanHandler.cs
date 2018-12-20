@@ -43,7 +43,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.Delta(e);
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
-
+            if (Camera.CameraInternal.LookDirection.LengthSquared() < 1f && MouseDownNearestPoint3D.HasValue)
+            {
+                var look = Camera.CameraInternal.LookDirection.Normalized();
+                var v = MouseDownNearestPoint3D.Value - Camera.CameraInternal.Position;
+                Camera.CameraInternal.LookDirection = look * Vector3.Dot(v, look);
+            }
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
                 return;
