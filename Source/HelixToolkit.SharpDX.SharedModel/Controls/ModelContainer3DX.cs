@@ -518,7 +518,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     foreach (var renderable in Renderables)
                     {
-                        renderable.Attach(host);
+                        renderable.Attach(this);
                     }
                 }
             }
