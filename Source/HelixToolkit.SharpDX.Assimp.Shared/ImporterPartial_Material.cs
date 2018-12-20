@@ -248,101 +248,94 @@ namespace HelixToolkit.UWP
                         || material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_ROUGHNESS_FACTOR)
                         || material.HasNonTextureProperty(GLTFMatKeys.AI_MATKEY_GLTF_BASECOLOR_FACTOR))
                     {
-                        core = OnCreatePBRMaterial(material);
+                        material.ShadingMode = ShadingMode.Fresnel;
+                    }
+                    else if(material.HasColorSpecular || material.HasColorDiffuse || material.HasTextureDiffuse)
+                    {
+                        material.ShadingMode = ShadingMode.Blinn;
                     }
                     else
                     {
+                        material.ShadingMode = ShadingMode.Gouraud;
+                    }
+                }
+
+                var mode = material.ShadingMode;
+                if (Configuration.ImportMaterialType != MaterialType.Auto)
+                {
+                    switch (Configuration.ImportMaterialType)
+                    {
+                        case MaterialType.BlinnPhong:
+                            mode = ShadingMode.Blinn;
+                            break;
+                        case MaterialType.Diffuse:
+                            mode = ShadingMode.Flat;
+                            break;
+                        case MaterialType.PBR:
+                            mode = ShadingMode.Fresnel;
+                            break;
+                        case MaterialType.VertexColor:
+                            mode = ShadingMode.Flat;
+                            break;
+                        case MaterialType.Normal:
+                            break;
+                        case MaterialType.Position:
+                            break;
+                    }
+                }
+                switch (material.ShadingMode)
+                {
+                    case ShadingMode.Blinn:
+                    case ShadingMode.Phong:
+                    case ShadingMode.None:
+                        core = OnCreatePhongMaterial(material);
+                        break;
+                    case ShadingMode.CookTorrance:
+                    case ShadingMode.Fresnel:
+                    case ShadingMode.OrenNayar:
+                        core = OnCreatePBRMaterial(material);
+                        break;
+                    case ShadingMode.Gouraud:
                         var diffuse = new DiffuseMaterialCore
                         {
-                            DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
+                            DiffuseColor = material.ColorDiffuse.ToSharpDXColor4()
                         };
+                        if (material.HasOpacity)
+                        {
+                            var c = diffuse.DiffuseColor;
+                            c.Alpha = material.Opacity;
+                            diffuse.DiffuseColor = c;
+                        }
+
                         if (material.HasTextureDiffuse)
                         {
                             diffuse.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
                             diffuse.DiffuseMapFilePath = material.TextureDiffuse.FilePath;
                         }
+                        if (material.ShadingMode == ShadingMode.Flat)
+                        {
+                            diffuse.EnableUnLit = true;
+                        }
                         core = diffuse;
-                    }
-                }
-                else
-                {
-                    var mode = material.ShadingMode;
-                    if (Configuration.ImportMaterialType != MaterialType.Auto)
-                    {
+                        break;
+                    case ShadingMode.Flat:
+                        core = new ColorMaterialCore();
+                        break;
+                    default:
                         switch (Configuration.ImportMaterialType)
                         {
-                            case MaterialType.BlinnPhong:
-                                mode = ShadingMode.Blinn;
-                                break;
-                            case MaterialType.Diffuse:
-                                mode = ShadingMode.Flat;
-                                break;
-                            case MaterialType.PBR:
-                                mode = ShadingMode.Fresnel;
-                                break;
-                            case MaterialType.VertexColor:
-                                mode = ShadingMode.Flat;
+                            case MaterialType.Position:
+                                core = new PositionMaterialCore();
                                 break;
                             case MaterialType.Normal:
+                                core = new NormalMaterialCore();
                                 break;
-                            case MaterialType.Position:
+                            default:
+                                Log(HelixToolkit.Logger.LogLevel.Warning, $"Shading Mode is not supported:{material.ShadingMode}");
+                                core = new DiffuseMaterialCore() { DiffuseColor = Color.Red, EnableUnLit = true };
                                 break;
                         }
-                    }
-                    switch (material.ShadingMode)
-                    {
-                        case ShadingMode.Blinn:
-                        case ShadingMode.Phong:
-                        case ShadingMode.None:
-                            core = OnCreatePhongMaterial(material);
-                            break;
-                        case ShadingMode.CookTorrance:
-                        case ShadingMode.Fresnel:
-                        case ShadingMode.OrenNayar:
-                            core = OnCreatePBRMaterial(material);
-                            break;
-                        case ShadingMode.Gouraud:
-                            var diffuse = new DiffuseMaterialCore
-                            {
-                                DiffuseColor = material.ColorDiffuse.ToSharpDXColor4()
-                            };
-                            if (material.HasOpacity)
-                            {
-                                var c = diffuse.DiffuseColor;
-                                c.Alpha = material.Opacity;
-                                diffuse.DiffuseColor = c;
-                            }
-
-                            if (material.HasTextureDiffuse)
-                            {
-                                diffuse.DiffuseMap = LoadTexture(material.TextureDiffuse.FilePath);
-                                diffuse.DiffuseMapFilePath = material.TextureDiffuse.FilePath;
-                            }
-                            if (material.ShadingMode == ShadingMode.Flat)
-                            {
-                                diffuse.EnableUnLit = true;
-                            }
-                            core = diffuse;
-                            break;
-                        case ShadingMode.Flat:
-                            core = new ColorMaterialCore();
-                            break;
-                        default:
-                            switch (Configuration.ImportMaterialType)
-                            {
-                                case MaterialType.Position:
-                                    core = new PositionMaterialCore();
-                                    break;
-                                case MaterialType.Normal:
-                                    core = new NormalMaterialCore();
-                                    break;
-                                default:
-                                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Shading Mode is not supported:{material.ShadingMode}");
-                                    core = new DiffuseMaterialCore() { DiffuseColor = Color.Red, EnableUnLit = true };
-                                    break;
-                            }
-                            break;
-                    }
+                        break;
                 }
 
                 if (core != null)
