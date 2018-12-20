@@ -170,17 +170,11 @@ namespace HelixToolkit.UWP
                     {
                         if(s is HxScene.GeometryNode geo)
                         {
-                            var info = OnCreateMeshInfo(geo);
-                            if (info == null)
+                            var key = GetMaterialGeoKey(geo, out var materialIndex, out var geoIndex);
+                            if (meshInfos.TryGetValue(key, out var meshInfo))
                             {
-                                Log(LogLevel.Warning, $"Create Mesh info failed. Node Name: {geo.Name}");
-                                continue;
-                            }
-                            if (!meshInfos.ContainsKey(info.MaterialMeshKey))
-                            {
-                                meshInfos.Add(info.MaterialMeshKey, info);
-                            }
-                            node.MeshIndices.Add(info.MeshIndex);
+                                node.MeshIndices.Add(meshInfo.MeshIndex);
+                            }                           
                         }
                         else if(s is HxScene.GroupNodeBase)
                         {
@@ -219,6 +213,21 @@ namespace HelixToolkit.UWP
                         {
                             meshInfos.Add(info.MaterialMeshKey, info);
                         }
+                    }
+                }
+
+                if (configuration.EnableParallelProcessing)
+                {
+                    Parallel.ForEach(meshInfos, (info) =>
+                    {
+                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value.Name, info.Value.Mesh, info.Value.MaterialIndex);
+                    });
+                }
+                else
+                {
+                    foreach(var info in meshInfos)
+                    {
+                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value.Name, info.Value.Mesh, info.Value.MaterialIndex);
                     }
                 }
             }

@@ -50,9 +50,7 @@ namespace HelixToolkit.UWP
                     var key = GetMaterialGeoKey(geoNode, out var materialIndex, out var geoIndex);
                     if (!meshInfos.TryGetValue(key, out var existing))
                     {
-                        var info = new MeshInfo(key, OnCreateAssimpMesh(geoNode.Name, geoNode.Geometry, materialIndex), 
-                            geoNode.Geometry, geoIndex);
-                        return info;
+                        return new MeshInfo(key, geoNode.Geometry, geoNode.Name, geoIndex, materialIndex);
                     }
                     else
                     {
@@ -100,7 +98,7 @@ namespace HelixToolkit.UWP
 
                 if(geometry.Indices != null && geometry.Indices.Count > 0)
                 {
-                    for(int i=0; i < geometry.Indices.Count; i += 3)
+                    for(int i = 0; i < geometry.Indices.Count; i += 3)
                     {
                         assimpMesh.Faces.Add(new Face(new int[] { geometry.Indices[i], geometry.Indices[i + 1], geometry.Indices[i + 2] }));
                     }
@@ -148,7 +146,7 @@ namespace HelixToolkit.UWP
                 /// <summary>
                 ///     The Assimp mesh
                 /// </summary>
-                public readonly Mesh AssimpMesh;
+                public Mesh AssimpMesh;
 
                 /// <summary>
                 /// The material mesh key
@@ -164,19 +162,22 @@ namespace HelixToolkit.UWP
                 /// </summary>
                 public readonly int MeshIndex;
                 /// <summary>
-                /// Gets the index of the material.
+                /// The material index
                 /// </summary>
-                /// <value>
-                /// The index of the material.
-                /// </value>
-                public int MaterialIndex { get => AssimpMesh.MaterialIndex; }
+                public readonly int MaterialIndex;
+                /// <summary>
+                /// The name
+                /// </summary>
+                public readonly string Name;
 
-                public MeshInfo(ulong materialMeshKey, Mesh assimpMesh, Geometry3D mesh, int meshIndex)
+
+                public MeshInfo(ulong materialMeshKey, Geometry3D mesh, string name, int meshIndex, int materialIndex)
                 {
                     Mesh = mesh;
-                    AssimpMesh = assimpMesh;
                     MaterialMeshKey = materialMeshKey;
                     MeshIndex = meshIndex;
+                    MaterialIndex = materialIndex;
+                    Name = name;
                 }
             }
         }
