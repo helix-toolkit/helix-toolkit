@@ -135,7 +135,10 @@ namespace HelixToolkit.UWP
                 {
                     assimpMesh.PrimitiveType = PrimitiveType.Line;
                 }
-
+                else
+                {
+                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Geometry type does not support yet. Type: {geometry.GetType().Name}");
+                }
                 return assimpMesh;
             }
 

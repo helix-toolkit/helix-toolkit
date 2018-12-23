@@ -32,12 +32,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 if(e.OldValue != null)
                 {
                     model.RemoveLogicalChild(e.OldValue);
-                    (model.SceneNode as GroupNode).RemoveChildNode(e.OldValue as Element3D);
+                    if (e.OldValue is Element3D ele)
+                    {
+                        (model.SceneNode as GroupNode).RemoveChildNode(ele.SceneNode);
+                    }
                 }
                 if(e.NewValue != null)
                 {
                     model.AddLogicalChild(e.NewValue);
-                    (model.SceneNode as GroupNode).AddChildNode(e.NewValue as Element3D);
+                    if (e.NewValue is Element3D ele)
+                    {
+                        (model.SceneNode as GroupNode).AddChildNode(ele.SceneNode);
+                    }
                 }
             }));
 

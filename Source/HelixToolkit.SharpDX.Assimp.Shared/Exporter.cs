@@ -180,7 +180,23 @@ namespace HelixToolkit.UWP
                         {
                             node.Children.Add(ConstructAssimpNode(s, node));
                         }
+                        else
+                        {
+                            Log(LogLevel.Warning, $"Current node type does not support yet. Type: {s.GetType().Name}");
+                        }
                     }
+                }
+                else if(current is HxScene.GeometryNode geo)
+                {
+                    var key = GetMaterialGeoKey(geo, out var materialIndex, out var geoIndex);
+                    if (meshInfos.TryGetValue(key, out var meshInfo))
+                    {
+                        node.MeshIndices.Add(meshInfo.MeshIndex);
+                    }
+                }
+                else
+                {
+                    Log(LogLevel.Warning, $"Current node type does not support yet. Type: {current.GetType().Name}");
                 }
                 return node;
             }
