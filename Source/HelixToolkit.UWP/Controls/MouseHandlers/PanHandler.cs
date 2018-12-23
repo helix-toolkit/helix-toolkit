@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP
     using Vector3D = SharpDX.Vector3;
     using Point = Windows.Foundation.Point;
     using Windows.UI.Core;
+    using System;
 
     /// <summary>
     /// Handles panning.
@@ -47,7 +48,7 @@ namespace HelixToolkit.UWP
             {
                 var look = Camera.CameraInternal.LookDirection.Normalized();
                 var v = MouseDownNearestPoint3D.Value - Camera.CameraInternal.Position;
-                Camera.CameraInternal.LookDirection = look * Vector3.Dot(v, look);
+                Camera.CameraInternal.LookDirection = look * Math.Max(1, Vector3.Dot(v, look));
             }
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 

@@ -1323,7 +1323,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetPosition(Viewport);
-                if (this.Viewport.FindNearest(point, out Vector3 nearestPoint, out Vector3 normal, out Element3D visual))
+                if (this.Viewport.FindNearest(point, out Vector3 nearestPoint, out Vector3 normal, out var visual, out var node))
                 {
                     this.AddZoomForce(-e.Delta * 0.001f, nearestPoint);
                     e.Handled = true;

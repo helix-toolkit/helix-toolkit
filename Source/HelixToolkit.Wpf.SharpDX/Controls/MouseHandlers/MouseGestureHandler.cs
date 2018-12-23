@@ -392,9 +392,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.MouseDownPoint = position;
 
-            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out Vector3 nearestPoint, out Vector3 normal, out Element3D visual))
+            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint,
+                out Vector3 nearestPoint, out Vector3 normal, out var visual, out var node))
             {
-                this.MouseDownNearestPoint3D = visual.SceneNode.BoundsWithTransform.Center;
+                this.MouseDownNearestPoint3D = node.BoundsWithTransform.Center;
             }
             else
             {
