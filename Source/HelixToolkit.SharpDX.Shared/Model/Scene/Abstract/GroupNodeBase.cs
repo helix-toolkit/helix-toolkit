@@ -79,10 +79,15 @@ namespace HelixToolkit.UWP
             {
                 Name = name;
             }
-
+            /// <summary>
+            /// Adds the child node.
+            /// </summary>
+            /// <param name="node">The node.</param>
+            /// <returns></returns>
+            /// <exception cref="System.ArgumentException">SceneNode already attach to a different node</exception>
             public bool AddChildNode(SceneNode node)
             {
-                if (node != null && !itemHashSet.ContainsKey(node.GUID))
+                if (node != null && !itemHashSet.ContainsKey(node.GUID) && !node.IsAttached)
                 {
                     itemHashSet.Add(node.GUID, node);
                     ItemsInternal.Add(node);
@@ -94,11 +99,46 @@ namespace HelixToolkit.UWP
                     if (IsAttached)
                     {
                         node.Attach(RenderHost);
+                        InvalidateSceneGraph();
                     }
                     OnAddChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
                     return true;
                 }
                 else { return false; }
+            }
+            /// <summary>
+            /// Moves the child node.
+            /// </summary>
+            /// <param name="fromIndex">From index.</param>
+            /// <param name="toIndex">To index.</param>
+            public void MoveChildNode(int fromIndex, int toIndex)
+            {
+                ItemsInternal.Move(fromIndex, toIndex);
+                if (IsAttached)
+                { InvalidateSceneGraph(); }
+            }
+            /// <summary>
+            /// Inserts the child node.
+            /// </summary>
+            /// <param name="index">The index.</param>
+            /// <param name="node">The node.</param>
+            /// <returns></returns>
+            public bool InsertChildNode(int index, SceneNode node)
+            {
+                if (node == null || node.IsAttached || itemHashSet.ContainsKey(node.GUID))
+                {
+                    return false;
+                }
+                itemHashSet.Add(node.GUID, node);
+                ItemsInternal.Insert(index, node);
+                if (IsAttached)
+                {
+                    node.Parent = this;
+                    node.Attach(RenderHost);
+                    InvalidateSceneGraph();
+                }
+                OnAddChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
+                return true;
             }
             /// <summary>
             /// Clears this instance.
