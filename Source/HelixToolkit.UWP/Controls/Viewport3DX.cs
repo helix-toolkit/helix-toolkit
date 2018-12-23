@@ -101,8 +101,8 @@ namespace HelixToolkit.UWP
                         yield return item;
                     }
                 }
-                yield return viewCube;
-                yield return coordinateSystem;
+                yield return viewCube.SceneNode;
+                yield return coordinateSystem.SceneNode;
             }
         }
 
