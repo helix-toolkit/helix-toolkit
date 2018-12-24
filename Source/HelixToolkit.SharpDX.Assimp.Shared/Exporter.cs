@@ -236,14 +236,14 @@ namespace HelixToolkit.UWP
                 {
                     Parallel.ForEach(meshInfos, (info) =>
                     {
-                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value.Name, info.Value.Mesh, info.Value.MaterialIndex);
+                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value);
                     });
                 }
                 else
                 {
                     foreach(var info in meshInfos)
                     {
-                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value.Name, info.Value.Mesh, info.Value.MaterialIndex);
+                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value);
                     }
                 }
             }

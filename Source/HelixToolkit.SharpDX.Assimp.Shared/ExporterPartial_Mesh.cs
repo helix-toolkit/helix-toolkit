@@ -45,19 +45,24 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             private MeshInfo OnCreateMeshInfo(HxScene.GeometryNode geoNode)
             {
+                MeshInfo info = null;
                 if (geoNode is HxScene.MaterialGeometryNode materialNode)
                 {
                     var key = GetMaterialGeoKey(geoNode, out var materialIndex, out var geoIndex);
                     if (!meshInfos.TryGetValue(key, out var existing))
                     {
-                        return new MeshInfo(key, geoNode.Geometry, geoNode.Name, geoIndex, materialIndex);
+                        info = new MeshInfo(key, geoNode.Geometry, geoNode.Name, geoIndex, materialIndex);
                     }
                     else
                     {
-                        return existing;
+                        info = existing;
+                    }
+                    if(info != null && info.Bones == null && materialNode is HxScene.BoneSkinMeshNode boneNode)
+                    {
+                        info.Bones = boneNode.Bones;
                     }
                 }
-                return null;
+                return info;
             }
 
             private ulong GetMaterialGeoKey(HxScene.GeometryNode node, out int materialIndex, out int geoIndex)
@@ -88,26 +93,26 @@ namespace HelixToolkit.UWP
                 return key;
             }
 
-            protected virtual Mesh OnCreateAssimpMesh(string name, Geometry3D geometry, int materialIndex)
+            protected virtual Mesh OnCreateAssimpMesh(MeshInfo info)
             {
-                var assimpMesh = new Mesh(string.IsNullOrEmpty(name) ? $"Mesh_{MeshIndexForNoName++}" : name) { MaterialIndex = materialIndex };
-                if (geometry.Positions != null && geometry.Positions.Count > 0)
+                var assimpMesh = new Mesh(string.IsNullOrEmpty(info.Name) ? $"Mesh_{MeshIndexForNoName++}" : info.Name) { MaterialIndex = info.MaterialIndex };
+                if (info.Mesh.Positions != null && info.Mesh.Positions.Count > 0)
                 {
-                    assimpMesh.Vertices.AddRange(geometry.Positions.Select(x => x.ToAssimpVector3D()));
+                    assimpMesh.Vertices.AddRange(info.Mesh.Positions.Select(x => x.ToAssimpVector3D()));
                 }
 
-                if(geometry.Indices != null && geometry.Indices.Count > 0)
+                if(info.Mesh.Indices != null && info.Mesh.Indices.Count > 0)
                 {
-                    for(int i = 0; i < geometry.Indices.Count; i += 3)
+                    for(int i = 0; i < info.Mesh.Indices.Count; i += 3)
                     {
-                        assimpMesh.Faces.Add(new Face(new int[] { geometry.Indices[i], geometry.Indices[i + 1], geometry.Indices[i + 2] }));
+                        assimpMesh.Faces.Add(new Face(new int[] { info.Mesh.Indices[i], info.Mesh.Indices[i + 1], info.Mesh.Indices[i + 2] }));
                     }
                 }
-                if (geometry.Colors != null && geometry.Colors.Count > 0)
+                if (info.Mesh.Colors != null && info.Mesh.Colors.Count > 0)
                 {
-                    assimpMesh.VertexColorChannels[0] = new List<Color4D>(geometry.Colors.Select(x => x.ToAssimpColor4D()));
+                    assimpMesh.VertexColorChannels[0] = new List<Color4D>(info.Mesh.Colors.Select(x => x.ToAssimpColor4D()));
                 }
-                if (geometry is MeshGeometry3D mesh)
+                if (info.Mesh is MeshGeometry3D mesh)
                 {
                     assimpMesh.PrimitiveType = PrimitiveType.Triangle;
                     if(mesh.Normals != null && mesh.Normals.Count > 0)
@@ -126,18 +131,58 @@ namespace HelixToolkit.UWP
                     {
                         assimpMesh.TextureCoordinateChannels[0] = new List<Vector3D>(mesh.TextureCoordinates.Select(x => x.ToAssimpVector3D()));
                     }
+                    if(info.Bones != null &&
+                        mesh is BoneSkinnedMeshGeometry3D boneSkinMesh 
+                        && boneSkinMesh.VertexBoneIds.Count == boneSkinMesh.Positions.Count)
+                    {
+                        foreach(var b in info.Bones)
+                        {
+                            var bone = new Bone
+                            {
+                                Name = b.Name,
+                                OffsetMatrix = b.InvBindPose.ToAssimpMatrix()
+                            };
+                            assimpMesh.Bones.Add(bone);
+                        }
+                        int boneCount = assimpMesh.Bones.Count;
+                        for(int i = 0; i < boneSkinMesh.VertexBoneIds.Count; ++i)
+                        {
+                            var id = boneSkinMesh.VertexBoneIds[i];
+                            
+                            if (id.Weights.X != 0 && id.Bone1 < boneCount)
+                            {
+                                var bone = assimpMesh.Bones[id.Bone1];
+                                bone.VertexWeights.Add(new VertexWeight(i, id.Weights.X));
+                            }
+                            if (id.Weights.Y != 0 && id.Bone2 < boneCount)
+                            {
+                                var bone = assimpMesh.Bones[id.Bone2];
+                                bone.VertexWeights.Add(new VertexWeight(i, id.Weights.Y));
+                            }
+                            if(id.Weights.Z != 0 && id.Bone3 < boneCount)
+                            {
+                                var bone = assimpMesh.Bones[id.Bone3];
+                                bone.VertexWeights.Add(new VertexWeight(i, id.Weights.Z));
+                            }
+                            if(id.Weights.W != 0 && id.Bone4 < boneCount)
+                            {
+                                var bone = assimpMesh.Bones[id.Bone4];
+                                bone.VertexWeights.Add(new VertexWeight(i, id.Weights.W));
+                            }
+                        }                      
+                    }
                 }
-                else if(geometry is PointGeometry3D pgeo)
+                else if(info.Mesh is PointGeometry3D pgeo)
                 {
                     assimpMesh.PrimitiveType = PrimitiveType.Point;
                 }
-                else if(geometry is LineGeometry3D lgeo)
+                else if(info.Mesh is LineGeometry3D lgeo)
                 {
                     assimpMesh.PrimitiveType = PrimitiveType.Line;
                 }
                 else
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Geometry type does not support yet. Type: {geometry.GetType().Name}");
+                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Geometry type does not support yet. Type: {info.Mesh.GetType().Name}");
                 }
                 return assimpMesh;
             }
@@ -172,15 +217,19 @@ namespace HelixToolkit.UWP
                 /// The name
                 /// </summary>
                 public readonly string Name;
+                /// <summary>
+                /// The bones if have
+                /// </summary>
+                public Animations.Bone[] Bones { set; get; }
 
-
-                public MeshInfo(ulong materialMeshKey, Geometry3D mesh, string name, int meshIndex, int materialIndex)
+                public MeshInfo(ulong materialMeshKey, Geometry3D mesh, string name, int meshIndex, int materialIndex, Animations.Bone[] bones = null)
                 {
                     Mesh = mesh;
                     MaterialMeshKey = materialMeshKey;
                     MeshIndex = meshIndex;
                     MaterialIndex = materialIndex;
                     Name = name;
+                    Bones = bones;
                 }
             }
         }

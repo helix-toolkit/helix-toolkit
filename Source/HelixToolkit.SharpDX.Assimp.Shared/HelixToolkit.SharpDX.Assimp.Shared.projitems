@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Configurations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Animation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Element3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Material.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Mesh.cs" />
