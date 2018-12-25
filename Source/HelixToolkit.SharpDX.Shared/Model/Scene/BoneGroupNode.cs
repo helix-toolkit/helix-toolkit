@@ -51,8 +51,8 @@ namespace HelixToolkit.UWP
 
             public BoneGroupNode()
             {
-                OnAddChildNode += NodeGroup_OnAddChildNode;
-                OnRemoveChildNode += NodeGroup_OnRemoveChildNode;
+                ChildNodeAdded += NodeGroup_OnAddChildNode;
+                ChildNodeRemoved += NodeGroup_OnRemoveChildNode;
             }
 
             protected override RenderCore OnCreateRenderCore()

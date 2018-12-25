@@ -60,9 +60,9 @@ namespace HelixToolkit.UWP
             }
             protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
 
-            public event EventHandler<OnChildNodeChangedArgs> OnAddChildNode;
-            public event EventHandler<OnChildNodeChangedArgs> OnRemoveChildNode;
-            public event EventHandler<OnChildNodeChangedArgs> OnClear;
+            public event EventHandler<OnChildNodeChangedArgs> ChildNodeAdded;
+            public event EventHandler<OnChildNodeChangedArgs> ChildNodeRemoved;
+            public event EventHandler<OnChildNodeChangedArgs> Cleared;
             /// <summary>
             /// Initializes a new instance of the <see cref="GroupNodeBase"/> class.
             /// </summary>
@@ -101,7 +101,7 @@ namespace HelixToolkit.UWP
                         node.Attach(RenderHost);
                         InvalidateSceneGraph();
                     }
-                    OnAddChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
+                    ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
                     return true;
                 }
                 else { return false; }
@@ -137,7 +137,7 @@ namespace HelixToolkit.UWP
                     node.Attach(RenderHost);
                     InvalidateSceneGraph();
                 }
-                OnAddChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
+                ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
                 return true;
             }
             /// <summary>
@@ -148,14 +148,14 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool TransferChildNode(SceneNode node, GroupNodeBase targetGroup)
             {
-                if(targetGroup == this || !itemHashSet.ContainsKey(node.GUID))
+                if(targetGroup == this || !itemHashSet.Remove(node.GUID))
                 {
                     return false;
                 }
-                itemHashSet.Remove(node.GUID);
                 ItemsInternal.Remove(node);
                 node.Parent = null;
                 InvalidateSceneGraph();
+                ChildNodeRemoved?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
                 return targetGroup.AddChildNode(node);
             }
             /// <summary>
@@ -170,7 +170,7 @@ namespace HelixToolkit.UWP
                 }
                 ItemsInternal.Clear();
                 itemHashSet.Clear();
-                OnClear?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
+                Cleared?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
             }
             /// <summary>
             /// Removes the child node.
@@ -184,7 +184,7 @@ namespace HelixToolkit.UWP
                     node.Detach();             
                     ItemsInternal.Remove(node);
                     node.Parent = null;
-                    OnRemoveChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
+                    ChildNodeRemoved?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
                     return true;
                 }
                 else
@@ -259,7 +259,7 @@ namespace HelixToolkit.UWP
             protected override void OnDispose(bool disposeManagedResources)
             {
                 Clear();
-                OnClear = null;
+                Cleared = null;
                 base.OnDispose(disposeManagedResources);
             }
         }

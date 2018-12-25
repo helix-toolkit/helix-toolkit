@@ -84,7 +84,7 @@ namespace HelixToolkit.UWP
 
             public ScreenSpacedNode()
             {
-                this.OnAddChildNode += ScreenSpacedNode_OnAddChildNode;
+                this.ChildNodeAdded += ScreenSpacedNode_OnAddChildNode;
             }
 
             private void ScreenSpacedNode_OnAddChildNode(object sender, OnChildNodeChangedArgs e)

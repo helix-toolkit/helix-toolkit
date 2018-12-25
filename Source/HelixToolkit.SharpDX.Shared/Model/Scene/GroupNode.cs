@@ -61,9 +61,9 @@ namespace HelixToolkit.UWP
 
             public GroupNode()
             {
-                OnAddChildNode += NodeGroup_OnAddChildNode;
-                OnRemoveChildNode += NodeGroup_OnRemoveChildNode;
-                OnClear += NodeGroup_OnClear;
+                ChildNodeAdded += NodeGroup_OnAddChildNode;
+                ChildNodeRemoved += NodeGroup_OnRemoveChildNode;
+                Cleared += NodeGroup_OnClear;
             }
 
             private void NodeGroup_OnClear(object sender, OnChildNodeChangedArgs e)
