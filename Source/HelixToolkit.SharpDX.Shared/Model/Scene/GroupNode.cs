@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         ///
         /// </summary>
+        [DebuggerDisplay("Name={" + nameof(Name) + "}; Child Count={" + nameof(ItemsCount) + "};")]
         public class GroupNode : GroupNodeBase, IHitable
         {
             private IOctreeManager octreeManager;

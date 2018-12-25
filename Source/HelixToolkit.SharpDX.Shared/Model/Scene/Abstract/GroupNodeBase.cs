@@ -141,6 +141,24 @@ namespace HelixToolkit.UWP
                 return true;
             }
             /// <summary>
+            /// Transfers the child node from current group node to another group node.
+            /// </summary>
+            /// <param name="targetGroup">The target group.</param>
+            /// <param name="node">The node.</param>
+            /// <returns></returns>
+            public bool TransferChildNode(SceneNode node, GroupNodeBase targetGroup)
+            {
+                if(targetGroup == this || !itemHashSet.ContainsKey(node.GUID))
+                {
+                    return false;
+                }
+                itemHashSet.Remove(node.GUID);
+                ItemsInternal.Remove(node);
+                node.Parent = null;
+                InvalidateSceneGraph();
+                return targetGroup.AddChildNode(node);
+            }
+            /// <summary>
             /// Clears this instance.
             /// </summary>
             public void Clear()

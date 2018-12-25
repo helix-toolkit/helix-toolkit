@@ -29,7 +29,6 @@ namespace HelixToolkit.UWP
         /// <summary>
         ///
         /// </summary>
-        [DebuggerDisplay("Name={"+ nameof(Name) +"}; Child Count={" + nameof(ItemsCount) + "};")]
         public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>, Animations.IAnimationNode
         {
             #region Properties
