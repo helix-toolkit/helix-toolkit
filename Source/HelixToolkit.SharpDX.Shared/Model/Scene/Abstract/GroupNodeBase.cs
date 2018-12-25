@@ -131,9 +131,9 @@ namespace HelixToolkit.UWP
                 }
                 itemHashSet.Add(node.GUID, node);
                 ItemsInternal.Insert(index, node);
+                node.Parent = this;
                 if (IsAttached)
                 {
-                    node.Parent = this;
                     node.Attach(RenderHost);
                     InvalidateSceneGraph();
                 }
