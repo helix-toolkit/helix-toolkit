@@ -132,6 +132,16 @@ namespace HelixToolkit.UWP
                 {
                     hMesh.Normals = hMesh.CalculateNormals();
                 }
+                if (mesh.HasVertexColors(0))
+                {
+                    hMesh.Colors =
+                       new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
+                }
+                if (mesh.HasTextureCoords(0))
+                {
+                    hMesh.TextureCoordinates =
+                       new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
+                }
                 if (mesh.HasTangentBasis && mesh.Tangents.Count == hMesh.Positions.Count && mesh.BiTangents.Count == hMesh.Positions.Count)
                 {
                     hMesh.Tangents = new Vector3Collection(mesh.Tangents.Select(x => x.ToSharpDXVector3()));
@@ -139,16 +149,13 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
+                    builder.Normals = hMesh.Normals;
+                    builder.TextureCoordinates = hMesh.TextureCoordinates;
                     builder.ComputeTangents(MeshFaces.Default);
                     hMesh.Tangents = builder.Tangents;
                     hMesh.BiTangents = builder.BiTangents;
                 }
-                if (mesh.HasVertexColors(0))
-                    hMesh.Colors =
-                        new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
-                if (mesh.HasTextureCoords(0))
-                    hMesh.TextureCoordinates =
-                        new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
+
                 hMesh.UpdateBounds();
                 hMesh.UpdateOctree();
                 return hMesh;
