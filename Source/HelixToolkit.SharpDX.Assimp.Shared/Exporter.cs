@@ -96,7 +96,29 @@ namespace HelixToolkit.UWP
 
             private int MaterialIndexForNoName = 0;
             private int MeshIndexForNoName = 0;
+            private IList<Animations.Animation> animations;
+            /// <summary>
+            /// Exports to file.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="scene">The scene.</param>
+            /// <param name="formatId">The format identifier. <see cref="SupportedFormats"/></param>
+            /// <returns></returns>
+            public ErrorCode ExportToFile(string filePath, HelixToolkitScene scene, string formatId)
+            {
+                animations = scene.Animations;
+                var code = ExportToFile(filePath, scene.Root, formatId);
+                animations = null;
+                return code;
+            }
 
+            /// <summary>
+            /// Exports to file.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="root">The root.</param>
+            /// <param name="formatId">The format identifier. <see cref="SupportedFormats"/></param>
+            /// <returns></returns>
             public ErrorCode ExportToFile(string filePath, HxScene.SceneNode root, string formatId)
             {
                 Clear();
@@ -155,6 +177,7 @@ namespace HelixToolkit.UWP
                 }
                 scene.RootNode = ConstructAssimpNode(root, null);
                 scene.Meshes.AddRange(meshInfos.Select(x => x.Value.AssimpMesh));
+                AddAnimationsToScene(scene);
                 return scene;
             }
 
