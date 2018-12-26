@@ -70,10 +70,8 @@ namespace HelixToolkit.UWP
             ///     The default post process steps for Assimp Importer. <see cref="PostProcessSteps.FlipUVs" /> must be used for
             ///     DirectX texture sampling
             /// </summary>
-            public PostProcessSteps AssimpPostProcessSteps =
-                PostProcessSteps.GenerateNormals
-                | PostProcessSteps.Triangulate
-                | PostProcessSteps.CalculateTangentSpace
+            public PostProcessSteps AssimpPostProcessSteps = 
+                PostProcessSteps.Triangulate
                 | PostProcessSteps.JoinIdenticalVertices
                 | PostProcessSteps.FindDegenerates
                 | PostProcessSteps.SortByPrimitiveType

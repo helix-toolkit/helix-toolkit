@@ -125,13 +125,24 @@ namespace HelixToolkit.UWP
                 }
                 var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = builder.TriangleIndices };
                 if (mesh.HasNormals)
+                {
                     hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => x.ToSharpDXVector3()));
+                }
+                else
+                {
+                    hMesh.Normals = hMesh.CalculateNormals();
+                }
                 if (mesh.HasTangentBasis)
                 {
                     hMesh.Tangents = new Vector3Collection(mesh.Tangents.Select(x => x.ToSharpDXVector3()));
                     hMesh.BiTangents = new Vector3Collection(mesh.BiTangents.Select(x => x.ToSharpDXVector3()));
                 }
-
+                else
+                {
+                    builder.ComputeTangents(MeshFaces.Default);
+                    hMesh.Tangents = builder.Tangents;
+                    hMesh.BiTangents = builder.BiTangents;
+                }
                 if (mesh.HasVertexColors(0))
                     hMesh.Colors =
                         new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
