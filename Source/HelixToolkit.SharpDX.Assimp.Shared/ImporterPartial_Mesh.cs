@@ -124,7 +124,7 @@ namespace HelixToolkit.UWP
                     }
                 }
                 var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = builder.TriangleIndices };
-                if (mesh.HasNormals)
+                if (mesh.HasNormals && mesh.Normals.Count == hMesh.Positions.Count)
                 {
                     hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => x.ToSharpDXVector3()));
                 }
@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP
                 {
                     hMesh.Normals = hMesh.CalculateNormals();
                 }
-                if (mesh.HasTangentBasis)
+                if (mesh.HasTangentBasis && mesh.Tangents.Count == hMesh.Positions.Count && mesh.BiTangents.Count == hMesh.Positions.Count)
                 {
                     hMesh.Tangents = new Vector3Collection(mesh.Tangents.Select(x => x.ToSharpDXVector3()));
                     hMesh.BiTangents = new Vector3Collection(mesh.BiTangents.Select(x => x.ToSharpDXVector3()));
