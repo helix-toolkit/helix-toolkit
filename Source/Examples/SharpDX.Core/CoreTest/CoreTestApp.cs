@@ -68,9 +68,10 @@ namespace CoreTest
             effectsManager = new DefaultEffectsManager();
             effectsManager.AddTechnique(ImGuiNode.RenderTechnique);
             viewport.EffectsManager = effectsManager;           
-            viewport.OnStartRendering += Viewport_OnStartRendering;
-            viewport.OnStopRendering += Viewport_OnStopRendering;
-            viewport.OnErrorOccurred += Viewport_OnErrorOccurred;
+            viewport.StartRendering += Viewport_OnStartRendering;
+            viewport.StopRendering += Viewport_OnStopRendering;
+            viewport.ErrorOccurred += Viewport_OnErrorOccurred;
+            options.Viewport = viewport;
             AssignViewportOption();
             InitializeScene();
         }
@@ -91,7 +92,6 @@ namespace CoreTest
                         m.RenderWireframe = options.ShowWireframe;
                     }
                 }
-
             }
         }
 

@@ -59,6 +59,8 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         private bool newFrame = false;
 
+        private TimeSpan previousTime = TimeSpan.Zero;
+
         public event EventHandler UpdatingImGuiUI;
 
         protected override RenderCore OnCreateRenderCore()
@@ -88,6 +90,12 @@ namespace HelixToolkit.SharpDX.Core.Model
             }
             var io = ImGui.GetIO();      
             io.DisplaySize = new System.Numerics.Vector2((int)context.ActualWidth, (int)context.ActualHeight);
+            if(previousTime == TimeSpan.Zero)
+            {
+                previousTime = context.TimeStamp;
+            }
+            io.Framerate = (float)(context.TimeStamp - previousTime).TotalSeconds;
+            previousTime = context.TimeStamp;
             ImGui.NewFrame();
             UpdatingImGuiUI?.Invoke(this, EventArgs.Empty);
         }
@@ -104,6 +112,7 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         protected override void OnAttached()
         {
+            previousTime = TimeSpan.Zero;
             IntPtr context = ImGui.CreateContext();
             ImGui.SetCurrentContext(context);
             ImGui.GetIO().Fonts.AddFontDefault();

@@ -25,6 +25,8 @@ namespace CoreTest
         private static bool[] animationSelection;
         private static string[] animationNames;
         private static int currentSelectedAnimation = -1;
+        private static float[] fps = new float[128];
+        private static int currFPSIndex = 0;
 
         public static void DrawUI(int width, int height, ref ViewportOptions options, GroupNode rootNode)
         {
@@ -51,7 +53,7 @@ namespace CoreTest
                     ImGui.Checkbox("Enable SSAO", ref options.EnableSSAO);
                     ImGui.Checkbox("Enable FXAA", ref options.EnableFXAA);
                     ImGui.Checkbox("Enable Frustum", ref options.EnableFrustum);
-                    if(ImGui.Checkbox("Show Wireframe", ref options.ShowWireframe))
+                    if (ImGui.Checkbox("Show Wireframe", ref options.ShowWireframe))
                     {
                         options.ShowWireframeChanged = true;
                     }
@@ -80,6 +82,9 @@ namespace CoreTest
                 }
             }
             ImGui.Separator();
+            ImGui.PlotLines("FPS", ref fps[0], fps.Length, 0, $"{fps[currFPSIndex]}", 30, 70, new System.Numerics.Vector2(200, 50));
+            fps[currFPSIndex++] = 1000f / (float)options.Viewport.RenderHost.RenderStatistics.FPSStatistics.AverageValue;
+            currFPSIndex %= 128;
             if (!loading && ImGui.CollapsingHeader("Scene Graph", ImGuiTreeNodeFlags.DefaultOpen))
             {
                 DrawSceneGraph(rootNode);
@@ -89,7 +94,7 @@ namespace CoreTest
             {
                 DrawAnimations(scene.Animations, ref options);
             }
-                
+
             if (!loading && !string.IsNullOrEmpty(exception))
             {
                 ImGui.Separator();
@@ -100,7 +105,7 @@ namespace CoreTest
             {
                 ImGui.Text($"Loading: {modelName}");
                 var progress = ((float)(Stopwatch.GetTimestamp() - currentTime) / Stopwatch.Frequency) * 100 % 100;
-                ImGui.ProgressBar(progress/100, new System.Numerics.Vector2(width, 20), "");
+                ImGui.ProgressBar(progress / 100, new System.Numerics.Vector2(width, 20), "");
             }
             ImGui.End();
             if (showImGuiDemo)
