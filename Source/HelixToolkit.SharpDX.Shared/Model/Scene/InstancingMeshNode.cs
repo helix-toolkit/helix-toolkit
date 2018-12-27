@@ -169,7 +169,7 @@ namespace HelixToolkit.UWP
             public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
             {
                 bool isHit = false;
-                if (CanHitTest(context))
+                if (CanHitTest(context) && PreHitTestOnBounds(ref rayWS))
                 {
                     if (octreeManager != null && octreeManager.Octree != null)
                     {

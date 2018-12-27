@@ -531,15 +531,24 @@ namespace HelixToolkit.UWP
                     return true;
                 }
                 return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref BoundManager.BoundsWithTransform, ref BoundManager.BoundsSphereWithTransform);
-                //return viewFrustum.Intersects(ref BoundManager.BoundsWithTransform) && viewFrustum.Intersects(ref BoundManager.BoundsSphereWithTransform);
             }
 
+            /// <summary>
+            /// Pre hit test on <see cref="BoundsWithTransform"/> and <see cref="BoundsSphereWithTransform"/>. 
+            /// If return false, <see cref="SceneNode.OnHitTest"/> will not be called.
+            /// </summary>
+            /// <param name="ray">The ray.</param>
+            /// <returns></returns>
+            protected virtual bool PreHitTestOnBounds(ref Ray ray)
+            {
+                return BoundsSphereWithTransform.Intersects(ref ray) && BoundsWithTransform.Intersects(ref ray);
+            }
             /// <summary>
             ///
             /// </summary>
             public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
             {
-                if (CanHitTest(context))
+                if (CanHitTest(context) && PreHitTestOnBounds(ref rayWS))
                 {
                     if (this.InstanceBuffer.HasElements)
                     {
@@ -547,7 +556,6 @@ namespace HelixToolkit.UWP
                         int idx = 0;
                         foreach (var modelMatrix in InstanceBuffer.Elements)
                         {
-                            var b = this.Bounds;
                             if (OnHitTest(context, modelMatrix * TotalModelMatrixInternal, ref rayWS, ref hits))
                             {
                                 hit = true;
@@ -557,7 +565,6 @@ namespace HelixToolkit.UWP
                             }
                             ++idx;
                         }
-
                         return hit;
                     }
                     else
@@ -582,6 +589,7 @@ namespace HelixToolkit.UWP
             {
                 return base.CanHitTest(context) && GeometryValid;
             }
+
             /// <summary>
             /// Updates the not render.
             /// </summary>

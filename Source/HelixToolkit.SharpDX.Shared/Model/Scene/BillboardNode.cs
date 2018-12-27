@@ -124,6 +124,11 @@ namespace HelixToolkit.UWP
                     return false;
                 }
             }
+
+            protected override bool PreHitTestOnBounds(ref Ray ray)
+            {
+                return true;
+            }
         }
     }
 
