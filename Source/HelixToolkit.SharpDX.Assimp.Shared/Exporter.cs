@@ -106,6 +106,10 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public ErrorCode ExportToFile(string filePath, HelixToolkitScene scene, string formatId)
             {
+                if (scene == null)
+                {
+                    return ErrorCode.Failed;
+                }
                 animations = scene.Animations;
                 var code = ExportToFile(filePath, scene.Root, formatId);
                 animations = null;
@@ -185,7 +189,7 @@ namespace HelixToolkit.UWP
             {
                 var node = new Node(string.IsNullOrEmpty(current.Name) ? "Node" : current.Name, parent)
                 {
-                    Transform = current.ModelMatrix.ToAssimpMatrix()
+                    Transform = current.ModelMatrix.ToAssimpMatrix(configuration.ToSourceMatrixColumnMajor)
                 };
                 if(current is HxScene.GroupNodeBase group)
                 {

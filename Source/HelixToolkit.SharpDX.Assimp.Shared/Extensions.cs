@@ -24,22 +24,30 @@ namespace HelixToolkit.UWP
             /// To the sharp dx matrix. Already transposed after this function
             /// </summary>
             /// <param name="m">The m.</param>
+            /// <param name="isColumnMajor"></param>
             /// <returns></returns>
-            public static global::SharpDX.Matrix ToSharpDXMatrix(this Matrix4x4 m)
+            public static global::SharpDX.Matrix ToSharpDXMatrix(this Matrix4x4 m, bool isColumnMajor)
             {
                 var matrix = new global::SharpDX.Matrix(m.A1, m.A2, m.A3, m.A4, m.B1, m.B2, m.B3, m.B4, m.C1, m.C2, m.C3, m.C4, m.D1, m.D2, m.D3, m.D4);
-                matrix.Transpose();
+                if (isColumnMajor)
+                {
+                    matrix.Transpose();
+                }
                 return matrix;
             }
             /// <summary>
             /// To the assimp matrix. Already transposed after this function
             /// </summary>
             /// <param name="m">The m.</param>
+            /// <param name="toColumnMajor"></param>
             /// <returns></returns>
-            public static Matrix4x4 ToAssimpMatrix(this global::SharpDX.Matrix m)
+            public static Matrix4x4 ToAssimpMatrix(this global::SharpDX.Matrix m, bool toColumnMajor)
             {
                 var matrix = new Matrix4x4(m.M11, m.M12, m.M13, m.M14, m.M21, m.M22, m.M23, m.M24, m.M31, m.M32, m.M33, m.M34, m.M41, m.M42, m.M43, m.M44);
-                matrix.Transpose();
+                if (toColumnMajor)
+                {
+                    matrix.Transpose();
+                }
                 return matrix;
             }
             /// <summary>
@@ -136,7 +144,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public static Quaternion ToAssimpQuaternion(this global::SharpDX.Quaternion q)
             {
-                return new Quaternion(q.X, q.Y, q.Z, q.W);
+                return new Quaternion(q.W, q.X, q.Y, q.Z);
             }
 
             /// <summary>

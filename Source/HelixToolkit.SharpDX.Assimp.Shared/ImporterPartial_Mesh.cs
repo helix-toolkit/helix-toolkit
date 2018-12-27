@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Model;
+    using System.Threading;
     using HxAnimations = Animations;
     using HxScene = Model.Scene;
     namespace Assimp
@@ -54,13 +55,13 @@ namespace HelixToolkit.UWP
                                 Bones = mesh.AssimpMesh.Bones.Select(x => new HxAnimations.Bone()
                                 {
                                     Name = x.Name,
-                                    BindPose = x.OffsetMatrix.ToSharpDXMatrix().Inverted(),
+                                    BindPose = x.OffsetMatrix.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor).Inverted(),
                                     BoneLocalTransform = Matrix.Identity,
-                                    InvBindPose = x.OffsetMatrix.ToSharpDXMatrix(),//Documented at https://github.com/assimp/assimp/pull/1803
+                                    InvBindPose = x.OffsetMatrix.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor),//Documented at https://github.com/assimp/assimp/pull/1803
                                 }).ToArray()
                             }
                             : new HxScene.MeshNode();
-                        mnode.Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.MeshNode) : mesh.AssimpMesh.Name;
+                        mnode.Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? $"{nameof(HxScene.MeshNode)}_{Interlocked.Increment(ref MeshIndexForNoName)}" : mesh.AssimpMesh.Name;
                         mnode.Geometry = mesh.Mesh;
                         mnode.Material = material.Value;
                         mnode.ModelMatrix = transform;
@@ -71,7 +72,7 @@ namespace HelixToolkit.UWP
                         var lnode = new HxScene.LineNode
                         {
                             Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name)
-                                ? nameof(HxScene.LineNode)
+                                ? $"{nameof(HxScene.LineNode)}_{Interlocked.Increment(ref MeshIndexForNoName)}"
                                 : mesh.AssimpMesh.Name,
                             Geometry = mesh.Mesh,
                             ModelMatrix = transform
@@ -85,7 +86,7 @@ namespace HelixToolkit.UWP
                         var pnode = new HxScene.PointNode
                         {
                             Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name)
-                                ? nameof(HxScene.PointNode)
+                                ? $"{nameof(HxScene.PointNode)}_{Interlocked.Increment(ref MeshIndexForNoName)}"
                                 : mesh.AssimpMesh.Name,
                             Geometry = mesh.Mesh,
                             ModelMatrix = transform

@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP
 {
     using Model;
     using System.Collections.Generic;
+    using System.Threading;
 
     namespace Assimp
     {
@@ -339,7 +340,7 @@ namespace HelixToolkit.UWP
                 }
 
                 if (core != null)
-                    core.Name = material.Name;
+                    core.Name = string.IsNullOrEmpty(material.Name) ? $"Material_{Interlocked.Increment(ref MaterialIndexForNoName)}" : material.Name;
                 return new KeyValuePair<global::Assimp.Material, MaterialCore>(material, core);
             }
 

@@ -127,6 +127,9 @@ namespace HelixToolkit.UWP
             public ILogger Logger { get => configuration.Logger; }
             #endregion
 
+            private int MaterialIndexForNoName = 0;
+            private int MeshIndexForNoName = 0;
+
             #region Public Methods
             /// <summary>
             ///     Loads the model specified file path.
@@ -215,6 +218,7 @@ namespace HelixToolkit.UWP
                         postProcess |= PostProcessSteps.FlipWindingOrder;
                     }
                     var assimpScene = importer.ImportFile(filePath, postProcess);
+             
                     if (assimpScene == null)
                     {
                         ErrorCode |= ErrorCode.Failed;
@@ -272,6 +276,8 @@ namespace HelixToolkit.UWP
                 textureDict.Clear();
                 SceneNodes.Clear();
                 Animations.Clear();
+                MeshIndexForNoName = 0;
+                MaterialIndexForNoName = 0;
             }
             /// <summary>
             /// Processes the scene nodes.
@@ -332,7 +338,7 @@ namespace HelixToolkit.UWP
                 var group = new HxScene.GroupNode
                 {
                     Name = string.IsNullOrEmpty(node.Name) ? nameof(HxScene.GroupNode) : node.Name,
-                    ModelMatrix = node.Transform.ToSharpDXMatrix()
+                    ModelMatrix = node.Transform.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor)
                 };
                 if (node.HasChildren)
                 {

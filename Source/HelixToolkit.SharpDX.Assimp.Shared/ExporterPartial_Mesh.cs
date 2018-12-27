@@ -17,12 +17,18 @@ namespace HelixToolkit.UWP
 #endif
 {
     using System.Collections.Generic;
+    using System.Threading;
     using HxScene = Model.Scene;
     namespace Assimp
     {
         public partial class Exporter
         {
-
+            /// <summary>
+            /// Gets the geometry from node. Currently only supports <see cref="HxScene.GeometryNode"/>
+            /// </summary>
+            /// <param name="node">The node.</param>
+            /// <param name="geometry">The geometry.</param>
+            /// <returns></returns>
             protected virtual bool GetGeometryFromNode(HxScene.SceneNode node, out Geometry3D geometry)
             {
                 if (node is HxScene.GeometryNode geo)
@@ -92,10 +98,14 @@ namespace HelixToolkit.UWP
                 ulong key = (ulong)materialIndex << 32 | (uint)geometryIndex;
                 return key;
             }
-
+            /// <summary>
+            /// Called when [create assimp mesh] from <see cref="MeshInfo"/>.
+            /// </summary>
+            /// <param name="info">The information.</param>
+            /// <returns></returns>
             protected virtual Mesh OnCreateAssimpMesh(MeshInfo info)
             {
-                var assimpMesh = new Mesh(string.IsNullOrEmpty(info.Name) ? $"Mesh_{MeshIndexForNoName++}" : info.Name) { MaterialIndex = info.MaterialIndex };
+                var assimpMesh = new Mesh(string.IsNullOrEmpty(info.Name) ? $"Mesh_{Interlocked.Increment(ref MeshIndexForNoName)}" : info.Name) { MaterialIndex = info.MaterialIndex };
                 if (info.Mesh.Positions != null && info.Mesh.Positions.Count > 0)
                 {
                     assimpMesh.Vertices.AddRange(info.Mesh.Positions.Select(x => x.ToAssimpVector3D()));
@@ -140,7 +150,7 @@ namespace HelixToolkit.UWP
                             var bone = new Bone
                             {
                                 Name = b.Name,
-                                OffsetMatrix = b.InvBindPose.ToAssimpMatrix()
+                                OffsetMatrix = b.InvBindPose.ToAssimpMatrix(configuration.ToSourceMatrixColumnMajor)
                             };
                             assimpMesh.Bones.Add(bone);
                         }
@@ -221,7 +231,15 @@ namespace HelixToolkit.UWP
                 /// The bones if have
                 /// </summary>
                 public Animations.Bone[] Bones { set; get; }
-
+                /// <summary>
+                /// Initializes a new instance of the <see cref="MeshInfo"/> class.
+                /// </summary>
+                /// <param name="materialMeshKey">The material mesh key.</param>
+                /// <param name="mesh">The mesh.</param>
+                /// <param name="name">The name.</param>
+                /// <param name="meshIndex">Index of the mesh.</param>
+                /// <param name="materialIndex">Index of the material.</param>
+                /// <param name="bones">The bones.</param>
                 public MeshInfo(ulong materialMeshKey, Geometry3D mesh, string name, int meshIndex, int materialIndex, Animations.Bone[] bones = null)
                 {
                     Mesh = mesh;
