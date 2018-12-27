@@ -979,7 +979,7 @@ namespace HelixToolkit.UWP
             /// <param name="height">The height.</param>
             public void Resize(int width, int height)
             {
-                if(ActualWidth == width && ActualHeight == height)
+                if(MathUtil.NearEqual(ActualWidth, width) && MathUtil.NearEqual(ActualHeight, height))
                 {
                     return;
                 }
