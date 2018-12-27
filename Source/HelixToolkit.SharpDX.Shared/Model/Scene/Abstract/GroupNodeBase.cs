@@ -60,9 +60,9 @@ namespace HelixToolkit.UWP
             }
             protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
 
-            public event EventHandler<OnChildNodeChangedArgs> OnAddChildNode;
-            public event EventHandler<OnChildNodeChangedArgs> OnRemoveChildNode;
-            public event EventHandler<OnChildNodeChangedArgs> OnClear;
+            public event EventHandler<OnChildNodeChangedArgs> ChildNodeAdded;
+            public event EventHandler<OnChildNodeChangedArgs> ChildNodeRemoved;
+            public event EventHandler<OnChildNodeChangedArgs> Cleared;
             /// <summary>
             /// Initializes a new instance of the <see cref="GroupNodeBase"/> class.
             /// </summary>
@@ -79,10 +79,15 @@ namespace HelixToolkit.UWP
             {
                 Name = name;
             }
-
+            /// <summary>
+            /// Adds the child node.
+            /// </summary>
+            /// <param name="node">The node.</param>
+            /// <returns></returns>
+            /// <exception cref="System.ArgumentException">SceneNode already attach to a different node</exception>
             public bool AddChildNode(SceneNode node)
             {
-                if (node != null && !itemHashSet.ContainsKey(node.GUID))
+                if (node != null && !itemHashSet.ContainsKey(node.GUID) && !node.IsAttached)
                 {
                     itemHashSet.Add(node.GUID, node);
                     ItemsInternal.Add(node);
@@ -94,11 +99,64 @@ namespace HelixToolkit.UWP
                     if (IsAttached)
                     {
                         node.Attach(RenderHost);
+                        InvalidateSceneGraph();
                     }
-                    OnAddChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
+                    ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
                     return true;
                 }
                 else { return false; }
+            }
+            /// <summary>
+            /// Moves the child node.
+            /// </summary>
+            /// <param name="fromIndex">From index.</param>
+            /// <param name="toIndex">To index.</param>
+            public void MoveChildNode(int fromIndex, int toIndex)
+            {
+                ItemsInternal.Move(fromIndex, toIndex);
+                if (IsAttached)
+                { InvalidateSceneGraph(); }
+            }
+            /// <summary>
+            /// Inserts the child node.
+            /// </summary>
+            /// <param name="index">The index.</param>
+            /// <param name="node">The node.</param>
+            /// <returns></returns>
+            public bool InsertChildNode(int index, SceneNode node)
+            {
+                if (node == null || node.IsAttached || itemHashSet.ContainsKey(node.GUID))
+                {
+                    return false;
+                }
+                itemHashSet.Add(node.GUID, node);
+                ItemsInternal.Insert(index, node);
+                node.Parent = this;
+                if (IsAttached)
+                {
+                    node.Attach(RenderHost);
+                    InvalidateSceneGraph();
+                }
+                ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
+                return true;
+            }
+            /// <summary>
+            /// Transfers the child node from current group node to another group node.
+            /// </summary>
+            /// <param name="targetGroup">The target group.</param>
+            /// <param name="node">The node.</param>
+            /// <returns></returns>
+            public bool TransferChildNode(SceneNode node, GroupNodeBase targetGroup)
+            {
+                if(targetGroup == this || !itemHashSet.Remove(node.GUID))
+                {
+                    return false;
+                }
+                ItemsInternal.Remove(node);
+                node.Parent = null;
+                InvalidateSceneGraph();
+                ChildNodeRemoved?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
+                return targetGroup.AddChildNode(node);
             }
             /// <summary>
             /// Clears this instance.
@@ -112,7 +170,7 @@ namespace HelixToolkit.UWP
                 }
                 ItemsInternal.Clear();
                 itemHashSet.Clear();
-                OnClear?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
+                Cleared?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
             }
             /// <summary>
             /// Removes the child node.
@@ -126,7 +184,7 @@ namespace HelixToolkit.UWP
                     node.Detach();             
                     ItemsInternal.Remove(node);
                     node.Parent = null;
-                    OnRemoveChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
+                    ChildNodeRemoved?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
                     return true;
                 }
                 else
@@ -201,7 +259,7 @@ namespace HelixToolkit.UWP
             protected override void OnDispose(bool disposeManagedResources)
             {
                 Clear();
-                OnClear = null;
+                Cleared = null;
                 base.OnDispose(disposeManagedResources);
             }
         }

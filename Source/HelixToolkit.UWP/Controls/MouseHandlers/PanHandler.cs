@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP
     using Vector3D = SharpDX.Vector3;
     using Point = Windows.Foundation.Point;
     using Windows.UI.Core;
+    using System;
 
     /// <summary>
     /// Handles panning.
@@ -43,6 +44,12 @@ namespace HelixToolkit.UWP
         public override void Delta(Vector2 e)
         {
             base.Delta(e);
+            if (Camera.CameraInternal.LookDirection.LengthSquared() < 1f && MouseDownNearestPoint3D.HasValue)
+            {
+                var look = Camera.CameraInternal.LookDirection.Normalized();
+                var v = MouseDownNearestPoint3D.Value - Camera.CameraInternal.Position;
+                Camera.CameraInternal.LookDirection = look * Math.Max(1, Vector3.Dot(v, look));
+            }
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
@@ -97,7 +104,6 @@ namespace HelixToolkit.UWP
                 this.Controller.StopZooming();
             }
             var mousePoint = (this.LastPoint + delta);
-
             var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)

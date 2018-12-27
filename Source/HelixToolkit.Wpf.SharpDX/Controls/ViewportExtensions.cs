@@ -342,16 +342,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="model">
         /// The model.
         /// </param>
+        /// <param name="node"></param>
         /// <returns>
         /// The find nearest.
         /// </returns>
         public static bool FindNearest(this Viewport3DX viewport, Point position,
-            out Point3D point, out Vector3D normal, out Element3D model)
+            out Point3D point, out Vector3D normal, out Element3D model, out SceneNode node)
         {
             point = new Point3D();
             normal = new Vector3D();
             model = null;
-
+            node = null;
             if (!(viewport.Camera is ProjectionCamera camera))
             {
                 return false;
@@ -362,7 +363,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 point = hits[0].PointHit.ToPoint3D();
                 normal = hits[0].NormalAtHit.ToVector3D();
-                model = hits[0].ModelHit as Element3D;
+                if (hits[0].ModelHit is Element3D ele)
+                {
+                    model = ele;
+                    node = model.SceneNode;
+                }
+                else if(hits[0].ModelHit is SceneNode sn)
+                {
+                    node = sn;
+                }
                 return true;
             }
             else
@@ -372,14 +381,23 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
         }
-
+        /// <summary>
+        /// Finds the nearest.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="point">The point.</param>
+        /// <param name="normal">The normal.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
         public static bool FindNearest(this Viewport3DX viewport, Point position,
-            out Vector3 point, out Vector3 normal, out Element3D model)
+            out Vector3 point, out Vector3 normal, out Element3D model, out SceneNode node)
         {
             point = new Vector3();
             normal = new Vector3();
             model = null;
-
+            node = null;
             if (!(viewport.Camera is ProjectionCamera camera))
             {
                 return false;
@@ -390,7 +408,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 point = hits[0].PointHit;
                 normal = hits[0].NormalAtHit;
-                model = hits[0].ModelHit as Element3D;
+                if (hits[0].ModelHit is Element3D ele)
+                {
+                    model = ele;
+                    node = model.SceneNode;
+                }
+                else if (hits[0].ModelHit is SceneNode sn)
+                {
+                    node = sn;
+                }
                 return true;
             }
             else
@@ -408,7 +434,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The nearest point, or null if no point was found.</returns>
         public static Point3D? FindNearestPoint(this Viewport3DX viewport, Point position)
         {
-            if (FindNearest(viewport, position, out Point3D p, out Vector3D n, out Element3D obj))
+            if (FindNearest(viewport, position, out Point3D p, out Vector3D n, out Element3D obj, out var node))
             {
                 return p;
             }

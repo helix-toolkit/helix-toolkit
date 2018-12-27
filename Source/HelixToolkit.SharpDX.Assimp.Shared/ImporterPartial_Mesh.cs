@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Model;
+    using System.Threading;
     using HxAnimations = Animations;
     using HxScene = Model.Scene;
     namespace Assimp
@@ -54,13 +55,13 @@ namespace HelixToolkit.UWP
                                 Bones = mesh.AssimpMesh.Bones.Select(x => new HxAnimations.Bone()
                                 {
                                     Name = x.Name,
-                                    BindPose = x.OffsetMatrix.ToSharpDXMatrix().Inverted(),
+                                    BindPose = x.OffsetMatrix.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor).Inverted(),
                                     BoneLocalTransform = Matrix.Identity,
-                                    InvBindPose = x.OffsetMatrix.ToSharpDXMatrix(),//Documented at https://github.com/assimp/assimp/pull/1803
+                                    InvBindPose = x.OffsetMatrix.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor),//Documented at https://github.com/assimp/assimp/pull/1803
                                 }).ToArray()
                             }
                             : new HxScene.MeshNode();
-                        mnode.Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? nameof(HxScene.MeshNode) : mesh.AssimpMesh.Name;
+                        mnode.Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? $"{nameof(HxScene.MeshNode)}_{Interlocked.Increment(ref MeshIndexForNoName)}" : mesh.AssimpMesh.Name;
                         mnode.Geometry = mesh.Mesh;
                         mnode.Material = material.Value;
                         mnode.ModelMatrix = transform;
@@ -71,7 +72,7 @@ namespace HelixToolkit.UWP
                         var lnode = new HxScene.LineNode
                         {
                             Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name)
-                                ? nameof(HxScene.LineNode)
+                                ? $"{nameof(HxScene.LineNode)}_{Interlocked.Increment(ref MeshIndexForNoName)}"
                                 : mesh.AssimpMesh.Name,
                             Geometry = mesh.Mesh,
                             ModelMatrix = transform
@@ -85,7 +86,7 @@ namespace HelixToolkit.UWP
                         var pnode = new HxScene.PointNode
                         {
                             Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name)
-                                ? nameof(HxScene.PointNode)
+                                ? $"{nameof(HxScene.PointNode)}_{Interlocked.Increment(ref MeshIndexForNoName)}"
                                 : mesh.AssimpMesh.Name,
                             Geometry = mesh.Mesh,
                             ModelMatrix = transform
@@ -124,20 +125,38 @@ namespace HelixToolkit.UWP
                     }
                 }
                 var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = builder.TriangleIndices };
-                if (mesh.HasNormals)
+                if (mesh.HasNormals && mesh.Normals.Count == hMesh.Positions.Count)
+                {
                     hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => x.ToSharpDXVector3()));
-                if (mesh.HasTangentBasis)
+                }
+                else
+                {
+                    hMesh.Normals = hMesh.CalculateNormals();
+                }
+                if (mesh.HasVertexColors(0))
+                {
+                    hMesh.Colors =
+                       new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
+                }
+                if (mesh.HasTextureCoords(0))
+                {
+                    hMesh.TextureCoordinates =
+                       new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
+                }
+                if (mesh.HasTangentBasis && mesh.Tangents.Count == hMesh.Positions.Count && mesh.BiTangents.Count == hMesh.Positions.Count)
                 {
                     hMesh.Tangents = new Vector3Collection(mesh.Tangents.Select(x => x.ToSharpDXVector3()));
                     hMesh.BiTangents = new Vector3Collection(mesh.BiTangents.Select(x => x.ToSharpDXVector3()));
                 }
+                else
+                {
+                    builder.Normals = hMesh.Normals;
+                    builder.TextureCoordinates = hMesh.TextureCoordinates;
+                    builder.ComputeTangents(MeshFaces.Default);
+                    hMesh.Tangents = builder.Tangents;
+                    hMesh.BiTangents = builder.BiTangents;
+                }
 
-                if (mesh.HasVertexColors(0))
-                    hMesh.Colors =
-                        new Color4Collection(mesh.VertexColorChannels[0].Select(x => new Color4(x.R, x.G, x.B, x.A)));
-                if (mesh.HasTextureCoords(0))
-                    hMesh.TextureCoordinates =
-                        new Vector2Collection(mesh.TextureCoordinateChannels[0].Select(x => x.ToSharpDXVector2()));
                 hMesh.UpdateBounds();
                 hMesh.UpdateOctree();
                 return hMesh;

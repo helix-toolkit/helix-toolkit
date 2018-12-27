@@ -200,6 +200,7 @@ namespace HelixToolkit.UWP
                             {
                                 Node = node
                             };
+                            
                             node.IsAnimationNode = true;// Make sure to set this to true
                             code = ProcessNodeAnimation(key, ani.TicksPerSecond, out var keyframes);
                             if (code == ErrorCode.Succeed)

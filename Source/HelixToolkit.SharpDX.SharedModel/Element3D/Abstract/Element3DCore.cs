@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         }
         #endregion
 
-        public static implicit operator SceneNode(Element3DCore core)
+        public static explicit operator SceneNode(Element3DCore core)
         {
             return core.SceneNode;
         }

@@ -96,7 +96,33 @@ namespace HelixToolkit.UWP
 
             private int MaterialIndexForNoName = 0;
             private int MeshIndexForNoName = 0;
+            private IList<Animations.Animation> animations;
+            /// <summary>
+            /// Exports to file.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="scene">The scene.</param>
+            /// <param name="formatId">The format identifier. <see cref="SupportedFormats"/></param>
+            /// <returns></returns>
+            public ErrorCode ExportToFile(string filePath, HelixToolkitScene scene, string formatId)
+            {
+                if (scene == null)
+                {
+                    return ErrorCode.Failed;
+                }
+                animations = scene.Animations;
+                var code = ExportToFile(filePath, scene.Root, formatId);
+                animations = null;
+                return code;
+            }
 
+            /// <summary>
+            /// Exports to file.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="root">The root.</param>
+            /// <param name="formatId">The format identifier. <see cref="SupportedFormats"/></param>
+            /// <returns></returns>
             public ErrorCode ExportToFile(string filePath, HxScene.SceneNode root, string formatId)
             {
                 Clear();
@@ -155,6 +181,7 @@ namespace HelixToolkit.UWP
                 }
                 scene.RootNode = ConstructAssimpNode(root, null);
                 scene.Meshes.AddRange(meshInfos.Select(x => x.Value.AssimpMesh));
+                AddAnimationsToScene(scene);
                 return scene;
             }
 
@@ -162,7 +189,7 @@ namespace HelixToolkit.UWP
             {
                 var node = new Node(string.IsNullOrEmpty(current.Name) ? "Node" : current.Name, parent)
                 {
-                    Transform = current.ModelMatrix.ToAssimpMatrix()
+                    Transform = current.ModelMatrix.ToAssimpMatrix(configuration.ToSourceMatrixColumnMajor)
                 };
                 if(current is HxScene.GroupNodeBase group)
                 {
@@ -180,7 +207,23 @@ namespace HelixToolkit.UWP
                         {
                             node.Children.Add(ConstructAssimpNode(s, node));
                         }
+                        else
+                        {
+                            Log(LogLevel.Warning, $"Current node type does not support yet. Type: {s.GetType().Name}");
+                        }
                     }
+                }
+                else if(current is HxScene.GeometryNode geo)
+                {
+                    var key = GetMaterialGeoKey(geo, out var materialIndex, out var geoIndex);
+                    if (meshInfos.TryGetValue(key, out var meshInfo))
+                    {
+                        node.MeshIndices.Add(meshInfo.MeshIndex);
+                    }
+                }
+                else
+                {
+                    Log(LogLevel.Warning, $"Current node type does not support yet. Type: {current.GetType().Name}");
                 }
                 return node;
             }
@@ -220,14 +263,14 @@ namespace HelixToolkit.UWP
                 {
                     Parallel.ForEach(meshInfos, (info) =>
                     {
-                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value.Name, info.Value.Mesh, info.Value.MaterialIndex);
+                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value);
                     });
                 }
                 else
                 {
                     foreach(var info in meshInfos)
                     {
-                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value.Name, info.Value.Mesh, info.Value.MaterialIndex);
+                        info.Value.AssimpMesh = OnCreateAssimpMesh(info.Value);
                     }
                 }
             }

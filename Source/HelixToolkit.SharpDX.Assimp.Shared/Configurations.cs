@@ -70,10 +70,8 @@ namespace HelixToolkit.UWP
             ///     The default post process steps for Assimp Importer. <see cref="PostProcessSteps.FlipUVs" /> must be used for
             ///     DirectX texture sampling
             /// </summary>
-            public PostProcessSteps AssimpPostProcessSteps =
-                PostProcessSteps.GenerateNormals
-                | PostProcessSteps.Triangulate
-                | PostProcessSteps.CalculateTangentSpace
+            public PostProcessSteps AssimpPostProcessSteps = 
+                PostProcessSteps.Triangulate
                 | PostProcessSteps.JoinIdenticalVertices
                 | PostProcessSteps.FindDegenerates
                 | PostProcessSteps.SortByPrimitiveType
@@ -171,6 +169,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public float TickesPerSecond = 25f;
             /// <summary>
+            /// Indicate if source model transform matrix column major. Note: Most of software exported model defaults to be column major in transform matrix
+            /// </summary>
+            public bool IsSourceMatrixColumnMajor = true;
+            /// <summary>
             /// Initializes a new instance of the <see cref="ImporterConfiguration"/> class.
             /// </summary>
             public ImporterConfiguration()
@@ -237,6 +239,11 @@ namespace HelixToolkit.UWP
             /// The flip triangle winding order during import
             /// </summary>
             public bool FlipWindingOrder = false;
+
+            /// <summary>
+            /// Convert transform matrix to column major. Note: Most of software exported model defaults to be column major in transform matrix
+            /// </summary>
+            public bool ToSourceMatrixColumnMajor = true;
         }
 
         /// <summary>

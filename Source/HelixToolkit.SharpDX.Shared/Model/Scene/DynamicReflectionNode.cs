@@ -145,9 +145,9 @@ namespace HelixToolkit.UWP
             /// </summary>
             public DynamicReflectionNode()
             {
-                this.OnAddChildNode += DynamicReflectionNode_OnAddChildNode;
-                this.OnRemoveChildNode += DynamicReflectionNode_OnRemoveChildNode;
-                this.OnClear += DynamicReflectionNode_OnClear;
+                this.ChildNodeAdded += DynamicReflectionNode_OnAddChildNode;
+                this.ChildNodeRemoved += DynamicReflectionNode_OnRemoveChildNode;
+                this.Cleared += DynamicReflectionNode_OnClear;
             }
 
             private void DynamicReflectionNode_OnClear(object sender, OnChildNodeChangedArgs e)

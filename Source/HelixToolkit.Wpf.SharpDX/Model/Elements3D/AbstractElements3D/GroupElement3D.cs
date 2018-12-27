@@ -137,7 +137,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.AddLogicalChild(c);
                 }
-                node.AddChildNode(c);
+                node.AddChildNode(c.SceneNode);
             }
         }
 
@@ -146,7 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var node = SceneNode as GroupNodeBase;
             foreach (Element3D c in children)
             {
-                node.RemoveChildNode(c);
+                node.RemoveChildNode(c.SceneNode);
                 if (c.Parent == this)
                 {
                     this.RemoveLogicalChild(c);

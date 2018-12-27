@@ -255,16 +255,17 @@ namespace HelixToolkit.UWP
         /// <param name="model">
         /// The model.
         /// </param>
+        /// <param name="node"></param>
         /// <returns>
         /// The find nearest.
         /// </returns>
         public static bool FindNearest(this Viewport3DX viewport, Point position,
-            out Vector3 point, out Vector3 normal, out Element3D model)
+            out Vector3 point, out Vector3 normal, out Element3D model, out SceneNode node)
         {
             point = new Vector3();
             normal = new Vector3();
             model = null;
-
+            node = null;
             if (!(viewport.Camera is ProjectionCamera camera))
             {
                 return false;
@@ -275,7 +276,15 @@ namespace HelixToolkit.UWP
             {
                 point = hits[0].PointHit;
                 normal = hits[0].NormalAtHit;
-                model = hits[0].ModelHit as Element3D;
+                if (hits[0].ModelHit is Element3D ele)
+                {
+                    model = ele;
+                    node = model.SceneNode;
+                }
+                else if (hits[0].ModelHit is SceneNode sn)
+                {
+                    node = sn;
+                }
                 return true;
             }
             else

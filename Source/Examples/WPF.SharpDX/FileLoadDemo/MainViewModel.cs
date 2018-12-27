@@ -217,7 +217,7 @@ namespace FileLoadDemo
             {
                 var id = HelixToolkit.Wpf.SharpDX.Assimp.Exporter.SupportedFormats[index].FormatId;
                 var exporter = new HelixToolkit.Wpf.SharpDX.Assimp.Exporter();
-                exporter.ExportToFile(path, scene.Root, id);
+                exporter.ExportToFile(path, scene, id);
                 return;
             }
         }

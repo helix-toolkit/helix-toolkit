@@ -153,7 +153,7 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {
-                if (node.AddChildNode(c))
+                if (node.AddChildNode(c.SceneNode))
                 {
                     Items.Add(c);
                 }               
@@ -168,7 +168,7 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {                
-                if(node.RemoveChildNode(c))
+                if(node.RemoveChildNode(c.SceneNode))
                 {
                     Items.Remove(c);
                 }

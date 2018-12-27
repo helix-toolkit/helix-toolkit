@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 this.RemoveLogicalChild(item);
                             }
-                            node.RemoveChildNode(item);
+                            node.RemoveChildNode(item.SceneNode);
                         }
                     }
                     break;
@@ -113,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 this.AddLogicalChild(item);
                             }
-                            node.AddChildNode(item);
+                            node.AddChildNode(item.SceneNode);
                         }
                         break;
                     case NotifyCollectionChangedAction.Add:
@@ -124,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 this.AddLogicalChild(item);
                             }
-                            node.AddChildNode(item);
+                            node.AddChildNode(item.SceneNode);
                         }
                         break;
                 }

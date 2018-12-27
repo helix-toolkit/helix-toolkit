@@ -17,11 +17,18 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Model;
+    using System.Threading;
     using HxScene = Model.Scene;
     namespace Assimp
     {
         public partial class Exporter
         {
+            /// <summary>
+            /// Gets the material from node. Currently only supports <see cref="HxScene.MaterialGeometryNode"/>
+            /// </summary>
+            /// <param name="node">The node.</param>
+            /// <param name="material">The material.</param>
+            /// <returns></returns>
             protected virtual bool GetMaterialFromNode(HxScene.SceneNode node, out MaterialCore material)
             {
                 if (node is HxScene.MaterialGeometryNode geo)
@@ -35,7 +42,11 @@ namespace HelixToolkit.UWP
                     return false;
                 }
             }
-
+            /// <summary>
+            /// Adds the properties.
+            /// </summary>
+            /// <param name="phong">The phong.</param>
+            /// <param name="assimpMaterial">The assimp material.</param>
             protected virtual void AddProperties(PhongMaterialCore phong, global::Assimp.Material assimpMaterial)
             {
                 assimpMaterial.ShadingMode = ShadingMode.Blinn;
@@ -85,6 +96,11 @@ namespace HelixToolkit.UWP
                     assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.UVTRANSFORM_BASE, phong.UVTransform.ToArray()));
                 }
             }
+            /// <summary>
+            /// Adds the properties.
+            /// </summary>
+            /// <param name="pbr">The PBR.</param>
+            /// <param name="assimpMaterial">The assimp material.</param>
             protected virtual void AddProperties(PBRMaterialCore pbr, global::Assimp.Material assimpMaterial)
             {
                 assimpMaterial.ShadingMode = ShadingMode.Fresnel;
@@ -142,18 +158,26 @@ namespace HelixToolkit.UWP
                     assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.UVTRANSFORM_BASE, pbr.UVTransform.ToArray()));
                 }
             }
-
+            /// <summary>
+            /// Adds the properties.
+            /// </summary>
+            /// <param name="diffuse">The diffuse.</param>
+            /// <param name="assimpMaterial">The assimp material.</param>
             protected virtual void AddProperties(DiffuseMaterialCore diffuse, global::Assimp.Material assimpMaterial)
             {
                 assimpMaterial.ShadingMode = ShadingMode.Gouraud;
                 assimpMaterial.AddProperty(new MaterialProperty(AiMatKeys.COLOR_DIFFUSE_BASE, diffuse.DiffuseColor.ToAssimpColor4D()));
             }
-
+            /// <summary>
+            /// Called when [create assimp material].
+            /// </summary>
+            /// <param name="material">The material.</param>
+            /// <returns></returns>
             protected virtual global::Assimp.Material OnCreateAssimpMaterial(MaterialCore material)
             {
                 var assimpMaterial = new global::Assimp.Material()
                 {
-                    Name = string.IsNullOrEmpty(material.Name) ? $"MAT_{MaterialIndexForNoName++}" : material.Name
+                    Name = string.IsNullOrEmpty(material.Name) ? $"MAT_{Interlocked.Increment(ref MaterialIndexForNoName)}" : material.Name
                 };
                 if(material is PhongMaterialCore phong)
                 {

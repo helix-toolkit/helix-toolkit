@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             foreach (var element in viewport.Items)
             {
-                Traverse(element, action);
+                Traverse(element.SceneNode, action);
             }
         }
 
