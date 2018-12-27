@@ -193,7 +193,7 @@ namespace CoreTest
 
         private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
         {
-            SceneUI.DrawUI(viewport.Width, viewport.Height, ref options, groupModel);
+            SceneUI.DrawUI((int)viewport.ActualWidth, (int)viewport.ActualHeight, ref options, groupModel);
         }
 
         private void InitializeMaterials()
