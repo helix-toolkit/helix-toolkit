@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
     using Point = Windows.Foundation.Point;
     using System;
     using Windows.UI.Xaml.Input;
+    using System.Collections.Generic;
 
     /// <summary>
     /// An abstract base class for the mouse gesture handlers.
@@ -158,6 +159,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         private CoreCursor OldCursor { get; set; }
 
+        private List<HitTestResult> hits = new List<HitTestResult>();
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
@@ -397,11 +399,19 @@ namespace HelixToolkit.UWP
         private void SetMouseDownPoint(Point position)
         {
             this.MouseDownPoint = position.ToVector2();
-
-            if (!this.Controller.Viewport.FixedRotationPointEnabled 
-                && this.Controller.Viewport.FindNearest(position, out var nearestPoint, out var normal, out var visual, out var node))
+            if (!this.Controller.Viewport.FixedRotationPointEnabled && this.Controller.Viewport.FindHitsInFrustum(this.MouseDownPoint, ref hits))
             {
-                this.MouseDownNearestPoint3D = node.BoundsWithTransform.Center;
+                if (hits.Count > 0)
+                {
+                    if (hits[0].ModelHit is Element3D ele)
+                    {
+                        this.MouseDownNearestPoint3D = ele.BoundsWithTransform.Center;
+                    }
+                    else if (hits[0].ModelHit is Model.Scene.SceneNode node)
+                    {
+                        MouseDownNearestPoint3D = node.BoundsWithTransform.Center;
+                    }
+                }
             }
             else
             {

@@ -125,6 +125,14 @@ namespace HelixToolkit.UWP
             /// The per frame opaque nodes in frustum.
             /// </value>
             public sealed override FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get { return opaqueNodesInFrustum; } }
+
+            /// <summary>
+            /// Gets the per frame transparent nodes in frustum.
+            /// </summary>
+            /// <value>
+            /// The per frame transparent nodes in frustum.
+            /// </value>
+            public sealed override FastList<SceneNode> PerFrameTransparentNodesInFrustum { get { return transparentNodesInFrustum; } }
             /// <summary>
             /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
             /// <para>This does not include <see cref="RenderType.Opaque"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>

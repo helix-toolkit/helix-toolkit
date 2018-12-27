@@ -162,8 +162,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get => RenderHost.RenderConfiguration.EnableRenderOrder;
         }
 
-        public int Width { private set; get; }
-        public int Height { private set; get; }
+        public double ActualWidth { private set; get; }
+        public double ActualHeight { private set; get; }
 
         private List<HitTestResult> hits = new List<HitTestResult>();
 
@@ -286,8 +286,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         public void Resize(int width, int height)
         {
-            Width = width;
-            Height = height;
+            ActualWidth = width;
+            ActualHeight = height;
             RenderHost.Resize(width, height);
         }
     }

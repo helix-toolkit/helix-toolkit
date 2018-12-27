@@ -8,6 +8,8 @@ using System;
 namespace HelixToolkit.SharpDX.Core.Controls
 {
     using Cameras;
+    using System.Collections.Generic;
+
     public abstract class MouseGestureHandler
     {
         /// <summary>
@@ -139,6 +141,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
         }
 
         private long startTick;
+
+        private List<HitTestResult> hits = new List<HitTestResult>();
 
         public event EventHandler MouseCaptureRequested;
         public event EventHandler MouseReleaseRequested;
@@ -314,16 +318,11 @@ namespace HelixToolkit.SharpDX.Core.Controls
         {
             this.MouseDownPoint = position;
 
-            if (!this.Controller.FixedRotationPointEnabled
-                && this.Controller.Viewport.FindNearest(position, out var nearestPoint, out var normal, out var visual))
+            if (!this.Controller.FixedRotationPointEnabled && this.Controller.Viewport.FindHitsInFrustum(this.MouseDownPoint, ref hits))
             {
-                if (visual is Model.Scene.SceneNode node)
+                if (hits.Count > 0 && hits[0].ModelHit is Model.Scene.SceneNode node)
                 {
-                    this.MouseDownNearestPoint3D = node.BoundsWithTransform.Center;
-                }
-                else
-                {
-                    this.MouseDownNearestPoint3D = nearestPoint;
+                    MouseDownNearestPoint3D = node.BoundsWithTransform.Center;
                 }
             }
             else
