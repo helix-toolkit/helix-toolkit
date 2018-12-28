@@ -12,21 +12,25 @@ All notable changes to this project will be documented in this file.
 
 ### Improvement and Changes
 1. Add FastList and change Vector3Collection/IntCollection base class to FastList for direct underlying array access. (WPF.SharpDX and UWP)
-2. Improved off-screen texture pooling. (WPF.SharpDX and UWP)
-3. Improved post effects quality. (WPF.SharpDX and UWP)
-4. Fixed Material creation performance issue. #1015, #1022  (WPF.SharpDX and UWP)
-5. SortingVisual causes lag when using large models #1036 (WPF)
-6. Adding BeginAnimation function to SharpDX Camera #1039  (WPF.SharpDX and UWP)
-7. Improves scene node for direct usage. (WPF.SharpDX and UWP)
+2. Improved off-screen texture pooling. (WPF.SharpDX/UWP/Core)
+3. Improved post effects quality. (WPF.SharpDX/UWP/Core)
+4. Fixed Material creation performance issue. #1015, #1022  (WPF.SharpDX/UWP/Core)
+5. Adding BeginAnimation function to SharpDX Camera #1039  (WPF.SharpDX and UWP)
+6. Improves scene node for direct usage. (WPF.SharpDX/UWP/Core)
+7. Merge common Viewport3DX extension functions into shared project.  (WPF.SharpDX/UWP/Core)
+8. Improve unnecessary graphics resource dispose/recreate after switching tab in TabControl. Ref #1013  (WPF.SharpDX/UWP)
+9. Improve rotation around mouse down point #1028 (WPF)
+10. SortingVisual causes lag when using large models #1036 (WPF)
 
 ### Fixed
 1. Make DPFCanvas work over Remote Desktop again #998. (WPF.SharpDX and UWP)
 2. Transparent sorting and materials (SharpDX) #994. (WPF.SharpDX and UWP)
-3. Fixed manual render order not working issue. (WPF.SharpDX and UWP)
-4. TaskCanceledException not caught in OnDetached #988. (WPF.SharpDX and UWP)
+3. Fixed manual render order not working issue. (WPF.SharpDX/UWP/Core)
+4. TaskCanceledException not caught in OnDetached #988. (WPF.SharpDX/UWP/Core)
 5. ViewCube is acting on Mouse Move #969. (WPF.SharpDX and UWP)
 6. LookDirection length in FitView #1009 (WPF) 
 7. D3D Counter is negative (SharpDX) SharpDX bug #1040(WPF.SharpDX and UWP)
+8. Zooming at small look directions causes camera shaking. #1032 (WPF)
 
 ## [2.5.1] - 2018-10-24
 Hot fix for v2.5.0.
