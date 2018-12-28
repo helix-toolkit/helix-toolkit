@@ -197,6 +197,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new Vector2((float)vector.X, (float)vector.Y);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Point ToPoint(this Vector2 vector)
+        {
+            return new Point(vector.X, vector.Y);
+        }
 #endif
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

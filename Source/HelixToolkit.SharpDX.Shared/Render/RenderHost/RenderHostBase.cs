@@ -458,6 +458,13 @@ namespace HelixToolkit.UWP
             /// </value>
             public abstract FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
             /// <summary>
+            /// Gets the per frame transparent node in frustum.
+            /// </summary>
+            /// <value>
+            /// The per frame transparent node in frustum.
+            /// </value>
+            public abstract FastList<SceneNode> PerFrameTransparentNodesInFrustum { get; }
+            /// <summary>
             /// Gets the per frame transparent nodes.
             /// </summary>
             /// <value>
@@ -972,7 +979,7 @@ namespace HelixToolkit.UWP
             /// <param name="height">The height.</param>
             public void Resize(int width, int height)
             {
-                if(ActualWidth == width && ActualHeight == height)
+                if(MathUtil.NearEqual(ActualWidth, width) && MathUtil.NearEqual(ActualHeight, height))
                 {
                     return;
                 }

@@ -364,10 +364,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             var up = Vector3.Cross(cameraNormal, direction);
             normal = Vector3.Cross(up, direction);
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                currentHit = hit.Value;
+                currentHit = hit;
                 isCaptured = true;
             }
         }
@@ -378,11 +377,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                var moveDir = hit.Value - currentHit;
-                currentHit = hit.Value;
+                var moveDir = hit - currentHit;
+                currentHit = hit;
                 switch (manipulationType)
                 {
                     case ManipulationType.TranslationX:
@@ -396,10 +394,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                 }
                 OnUpdateSelfTransform();
-                OnUpdateTargetMatrix();
+                OnUpdateTargetMatrix();              
             }
-
-
         }
         #endregion
 
@@ -439,11 +435,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             //var up = Vector3.Cross(cameraNormal, direction);
             //normal = Vector3.Cross(up, direction);
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                currentHit = hit.Value;
-                isCaptured = true;
+                currentHit = hit;
+                isCaptured = true;            
             }
         }
 
@@ -453,15 +448,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            var position = this.translationVector + centerOffset;
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
+                var position = this.translationVector + centerOffset;
                 var v = Vector3.Normalize(currentHit - position);
-                var u = Vector3.Normalize(hit.Value - position);
+                var u = Vector3.Normalize(hit - position);
                 var currentAxis = Vector3.Cross(u, v);
                 var axis = Vector3.UnitX;
-                currentHit = hit.Value;
+                currentHit = hit;
                 switch (manipulationType)
                 {
                     case ManipulationType.RotationX:
@@ -490,6 +484,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 OnUpdateTargetMatrix();
             }
+
         }
         #endregion
 
@@ -529,10 +524,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             var up = Vector3.Cross(cameraNormal, direction);
             normal = Vector3.Cross(up, direction);
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                currentHit = hit.Value;
+                currentHit = hit;
                 isCaptured = true;
             }
         }
@@ -543,11 +537,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                var moveDir = hit.Value - currentHit;
-                currentHit = hit.Value;
+                var moveDir = hit - currentHit;
+                currentHit = hit;
                 var orgAxis = Vector3.Zero;
                 float scale = 1;
                 switch (manipulationType)

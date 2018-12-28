@@ -36,8 +36,8 @@
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <ItemGroup>
+    <None Remove="Resources\arial.dds" />
     <None Remove="Resources\arial.fnt" />
-    <None Remove="Resources\arial.png" />
     <None Remove="Resources\csParticleInsert.cso" />
     <None Remove="Resources\csParticleUpdate.cso" />
     <None Remove="Resources\dsMeshTriTessellation.cso" />
@@ -137,12 +137,12 @@
     <None Remove="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\arial.dds" />
     <EmbeddedResource Include="Resources\psEffectOutlineSmooth.cso" />
     <EmbeddedResource Include="Resources\psMeshPBROIT.cso" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\arial.fnt" />
-    <EmbeddedResource Include="Resources\arial.png" />
     <EmbeddedResource Include="Resources\csParticleInsert.cso" />
     <EmbeddedResource Include="Resources\csParticleUpdate.cso" />
     <EmbeddedResource Include="Resources\dsMeshTriTessellation.cso" />

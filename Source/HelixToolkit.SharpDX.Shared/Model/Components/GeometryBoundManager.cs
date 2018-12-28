@@ -175,7 +175,7 @@ namespace HelixToolkit.UWP
             public GeometryBoundManager(GeometryNode core)
             {
                 this.elementCore = core;
-                core.OnTransformChanged += OnTransformChanged;
+                core.TransformChanged += OnTransformChanged;
             }
 
             private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
@@ -309,7 +309,7 @@ namespace HelixToolkit.UWP
                     {
                         if (geometry != null)
                         { geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate; }
-                        elementCore.OnTransformChanged -= OnTransformChanged;
+                        elementCore.TransformChanged -= OnTransformChanged;
                         OnBoundChanged = null;
                         OnTransformBoundChanged = null;
                         OnBoundSphereChanged = null;

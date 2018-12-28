@@ -94,10 +94,22 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// <value> The minimum field of view. </value>
         public float MinimumFieldOfView = 10.0f;
 
+        private Vector3 modelUpDirection = Vector3.UnitY;
         /// <summary>
         /// Gets or sets the model up direction.
         /// </summary>
-        public Vector3 ModelUpDirection = new Vector3(0, 1, 0);
+        public Vector3 ModelUpDirection
+        {
+            set
+            {
+                modelUpDirection = value;
+                if (Viewport != null)
+                {
+                    Viewport.ModelUpDirection = value;
+                }
+            }
+            get => modelUpDirection;
+        }
 
         /// <summary>
         /// Gets or sets the move sensitivity.

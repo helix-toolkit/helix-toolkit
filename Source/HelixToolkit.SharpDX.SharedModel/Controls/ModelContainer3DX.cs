@@ -178,6 +178,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public FastList<SceneNode> PerFrameTransparentNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable; } }
         /// <summary>
+        /// Gets the per frame transparent nodes in frustum.
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes in frustum.
+        /// </value>
+        public FastList<SceneNode> PerFrameTransparentNodesInFrustum { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodesInFrustum : Constants.EmptyRenderable; } }
+        /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle" />
         /// </summary>
         /// <value>

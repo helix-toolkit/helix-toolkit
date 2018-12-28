@@ -307,14 +307,14 @@ namespace HelixToolkit.UWP
             /// Transforms the changed.
             /// </summary>
             /// <param name="totalTransform">The total transform.</param>
-            protected virtual void TransformChanged(ref Matrix totalTransform)
+            protected virtual void OnTransformChanged(ref Matrix totalTransform)
             {
             }
 
             /// <summary>
             /// Occurs when [on transform changed].
             /// </summary>
-            public event EventHandler<TransformArgs> OnTransformChanged;
+            public event EventHandler<TransformArgs> TransformChanged;
 
             #endregion Handling Transforms
 
@@ -574,8 +574,8 @@ namespace HelixToolkit.UWP
                         ItemsInternal[i].NeedMatrixUpdate = true;
                     }
                     NeedMatrixUpdate = false;
-                    TransformChanged(ref TotalModelMatrixInternal);
-                    OnTransformChanged?.Invoke(this, new TransformArgs(ref TotalModelMatrixInternal));               
+                    OnTransformChanged(ref TotalModelMatrixInternal);
+                    TransformChanged?.Invoke(this, new TransformArgs(ref TotalModelMatrixInternal));               
                 }
             }
             /// <summary>
@@ -789,22 +789,22 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Occurs when [on bound changed].
             /// </summary>
-            public event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
+            public event EventHandler<BoundChangeArgs<BoundingBox>> BoundChanged;
 
             /// <summary>
             /// Occurs when [on transform bound changed].
             /// </summary>
-            public event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
+            public event EventHandler<BoundChangeArgs<BoundingBox>> TransformBoundChanged;
 
             /// <summary>
             /// Occurs when [on bound sphere changed].
             /// </summary>
-            public event EventHandler<BoundChangeArgs<BoundingSphere>> OnBoundSphereChanged;
+            public event EventHandler<BoundChangeArgs<BoundingSphere>> BoundSphereChanged;
 
             /// <summary>
             /// Occurs when [on transform bound sphere changed].
             /// </summary>
-            public event EventHandler<BoundChangeArgs<BoundingSphere>> OnTransformBoundSphereChanged;
+            public event EventHandler<BoundChangeArgs<BoundingSphere>> TransformBoundSphereChanged;
 
             /// <summary>
             /// Raises the on transform bound changed.
@@ -812,7 +812,7 @@ namespace HelixToolkit.UWP
             /// <param name="args">The arguments.</param>
             protected void RaiseOnTransformBoundChanged(BoundChangeArgs<BoundingBox> args)
             {
-                OnTransformBoundChanged?.Invoke(this, args);
+                TransformBoundChanged?.Invoke(this, args);
             }
 
             /// <summary>
@@ -821,7 +821,7 @@ namespace HelixToolkit.UWP
             /// <param name="args">The arguments.</param>
             protected void RaiseOnBoundChanged(BoundChangeArgs<BoundingBox> args)
             {
-                OnBoundChanged?.Invoke(this, args);
+                BoundChanged?.Invoke(this, args);
             }
 
             /// <summary>
@@ -830,7 +830,7 @@ namespace HelixToolkit.UWP
             /// <param name="args">The arguments.</param>
             protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
             {
-                OnTransformBoundSphereChanged?.Invoke(this, args);
+                TransformBoundSphereChanged?.Invoke(this, args);
             }
 
             /// <summary>
@@ -839,7 +839,7 @@ namespace HelixToolkit.UWP
             /// <param name="args">The arguments.</param>
             protected void RaiseOnBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
             {
-                OnBoundSphereChanged?.Invoke(this, args);
+                BoundSphereChanged?.Invoke(this, args);
             }
 
             #endregion IBoundable
@@ -930,12 +930,12 @@ namespace HelixToolkit.UWP
                 ItemsInternal.Clear();
                 RenderCore.Dispose();
                 VisibleChanged = null;
-                OnTransformChanged = null;
+                TransformChanged = null;
                 OnSetRenderTechnique = null;
-                OnBoundChanged = null;
-                OnTransformBoundChanged = null;
-                OnBoundSphereChanged = null;
-                OnTransformBoundSphereChanged = null;
+                BoundChanged = null;
+                TransformBoundChanged = null;
+                BoundSphereChanged = null;
+                TransformBoundSphereChanged = null;
                 Attached = null;
                 Detached = null;
                 WrapperSource = null;

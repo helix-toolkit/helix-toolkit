@@ -36,7 +36,6 @@ namespace CoreTest
         private MaterialCore[] materialList;
         private long previousTime;
         private bool resizeRequested = false;
-        private IO io = ImGui.GetIO();
         private CameraController cameraController;
         private Stack<IEnumerator<SceneNode>> stackCache = new Stack<IEnumerator<SceneNode>>();
 
@@ -69,9 +68,11 @@ namespace CoreTest
             effectsManager = new DefaultEffectsManager();
             effectsManager.AddTechnique(ImGuiNode.RenderTechnique);
             viewport.EffectsManager = effectsManager;           
-            viewport.OnStartRendering += Viewport_OnStartRendering;
-            viewport.OnStopRendering += Viewport_OnStopRendering;
-            viewport.OnErrorOccurred += Viewport_OnErrorOccurred;
+            viewport.StartRendering += Viewport_OnStartRendering;
+            viewport.StopRendering += Viewport_OnStopRendering;
+            viewport.ErrorOccurred += Viewport_OnErrorOccurred;
+            viewport.CoordinateSystemLabelColor = new Color4(1, 1, 0, 1);
+            options.Viewport = viewport;
             AssignViewportOption();
             InitializeScene();
         }
@@ -92,7 +93,6 @@ namespace CoreTest
                         m.RenderWireframe = options.ShowWireframe;
                     }
                 }
-
             }
         }
 
@@ -171,29 +171,28 @@ namespace CoreTest
             groupSphere.AddChildNode(groupPoints);
             groupSphere.AddChildNode(groupLines);
 
-            var viewbox = new ViewBoxNode();
-            viewport.Items.AddChildNode(viewbox);
             var imGui = new ImGuiNode();
             viewport.Items.AddChildNode(imGui);
             imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
-            io.KeyMap[GuiKey.Tab] = (int)Keys.Tab;
-            io.KeyMap[GuiKey.LeftArrow] = (int)Keys.Left;
-            io.KeyMap[GuiKey.RightArrow] = (int)Keys.Right;
-            io.KeyMap[GuiKey.UpArrow] = (int)Keys.Up;
-            io.KeyMap[GuiKey.DownArrow] = (int)Keys.Down;
-            io.KeyMap[GuiKey.PageUp] = (int)Keys.PageUp;
-            io.KeyMap[GuiKey.PageDown] = (int)Keys.PageDown;
-            io.KeyMap[GuiKey.Home] = (int)Keys.Home;
-            io.KeyMap[GuiKey.End] = (int)Keys.End;
-            io.KeyMap[GuiKey.Delete] = (int)Keys.Delete;
-            io.KeyMap[GuiKey.Backspace] = (int)Keys.Back;
-            io.KeyMap[GuiKey.Enter] = (int)Keys.Enter;
-            io.KeyMap[GuiKey.Escape] = (int)Keys.Escape;
+            //var io = ImGui.GetIO();
+            //io.KeyMap[(int)ImGuiKey.Tab] = (int)Keys.Tab;
+            //io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)Keys.Left;
+            //io.KeyMap[(int)ImGuiKey.RightArrow] = (int)Keys.Right;
+            //io.KeyMap[(int)ImGuiKey.UpArrow] = (int)Keys.Up;
+            //io.KeyMap[(int)ImGuiKey.DownArrow] = (int)Keys.Down;
+            //io.KeyMap[(int)ImGuiKey.PageUp] = (int)Keys.PageUp;
+            //io.KeyMap[(int)ImGuiKey.PageDown] = (int)Keys.PageDown;
+            //io.KeyMap[(int)ImGuiKey.Home] = (int)Keys.Home;
+            //io.KeyMap[(int)ImGuiKey.End] = (int)Keys.End;
+            //io.KeyMap[(int)ImGuiKey.Delete] = (int)Keys.Delete;
+            //io.KeyMap[(int)ImGuiKey.Backspace] = (int)Keys.Back;
+            //io.KeyMap[(int)ImGuiKey.Enter] = (int)Keys.Enter;
+            //io.KeyMap[(int)ImGuiKey.Escape] = (int)Keys.Escape;
         }
 
         private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
         {
-            SceneUI.DrawUI(viewport.Width, viewport.Height, ref options, groupModel);
+            SceneUI.DrawUI((int)viewport.ActualWidth, (int)viewport.ActualHeight, ref options, groupModel);
         }
 
         private void InitializeMaterials()
@@ -310,18 +309,21 @@ namespace CoreTest
         #region Handle mouse event
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
+            var io = ImGui.GetIO();
             if (!cameraController.IsMouseCaptured)
             {
-                io.MousePosition = new System.Numerics.Vector2(e.X, e.Y);
+                io.MousePos = new System.Numerics.Vector2(e.X, e.Y);
             }
             else if (!io.WantCaptureMouse)
             {
                 cameraController.MouseMove(new Vector2(e.X, e.Y));
+                viewport.MouseMove(new Vector2(e.X, e.Y));
             }
         }
 
         private void Window_MouseUp(object sender, MouseEventArgs e)
         {
+            var io = ImGui.GetIO();
             switch (e.Button)
             {
                 case MouseButtons.Left:
@@ -339,6 +341,7 @@ namespace CoreTest
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
+                        viewport.MouseUp(new Vector2(e.X, e.Y));
                         break;
                     case MouseButtons.Right:
                         cameraController.EndRotate(new Vector2(e.X, e.Y));
@@ -352,6 +355,7 @@ namespace CoreTest
 
         private void Window_MouseDown(object sender, MouseEventArgs e)
         {
+            var io = ImGui.GetIO();
             if (!cameraController.IsMouseCaptured)
             {
                 switch (e.Button)
@@ -371,6 +375,7 @@ namespace CoreTest
                     switch (e.Button)
                     {
                         case MouseButtons.Left:
+                            viewport.MouseDown(new Vector2(e.X, e.Y));
                             break;
                         case MouseButtons.Right:
                             cameraController.StartRotate(new Vector2(e.X, e.Y));
@@ -399,6 +404,7 @@ namespace CoreTest
 
         private void Window_MouseWheel(object sender, MouseEventArgs e)
         {
+            var io = ImGui.GetIO();
             if (!cameraController.IsMouseCaptured)
             {
                 io.MouseWheel = (int)(e.Delta * 0.01f);
@@ -410,25 +416,28 @@ namespace CoreTest
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
-        {        
+        {
+            var io = ImGui.GetIO();
             io.KeysDown[e.KeyValue] = true;
-            io.ShiftPressed = e.Shift;
-            io.CtrlPressed = e.Control;
-            io.AltPressed = e.Alt;
+            io.KeyShift = e.Shift;
+            io.KeyCtrl = e.Control;
+            io.KeyAlt = e.Alt;
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
+            var io = ImGui.GetIO();
             io.KeysDown[e.KeyValue] = false;
-            io.ShiftPressed = e.Shift;
-            io.CtrlPressed = e.Control;
-            io.AltPressed = e.Alt;
+            io.KeyShift = e.Shift;
+            io.KeyCtrl = e.Control;
+            io.KeyAlt = e.Alt;
         }
 
 
         private void Window_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ImGui.AddInputCharacter(e.KeyChar);
+            var io = ImGui.GetIO();
+            io.AddInputCharacter(e.KeyChar);
         }
         #endregion
     }

@@ -130,47 +130,41 @@ namespace HelixToolkit.SharpDX.Core
         {
             if(camera is ProjectionCameraCore pcam)
             {
-                var topLeftRay = viewport.UnProjectToRay(new Vector2(zoomRectangle.Top, zoomRectangle.Left));
-                var topRightRay = viewport.UnProjectToRay(new Vector2(zoomRectangle.Top, zoomRectangle.Right));
-                var centerRay =
-                    viewport.UnProjectToRay(
+                if(viewport.UnProject(new Vector2(zoomRectangle.Top, zoomRectangle.Left), out var topLeftRay)
+                && viewport.UnProject(new Vector2(zoomRectangle.Top, zoomRectangle.Right), out var topRightRay)
+                && viewport.UnProject(
                         new Vector2(
                             (zoomRectangle.Left + zoomRectangle.Right) * 0.5f,
-                            (zoomRectangle.Top + zoomRectangle.Bottom) * 0.5f));
-
-                if (topLeftRay == null || topRightRay == null || centerRay == null)
+                            (zoomRectangle.Top + zoomRectangle.Bottom) * 0.5f), out var centerRay))
                 {
-                    // could not invert camera matrix
-                    return;
-                }
-
-                var u = topLeftRay.Direction;
-                var v = topRightRay.Direction;
-                var w = centerRay.Direction;
-                u.Normalize();
-                v.Normalize();
-                w.Normalize();
-                if(camera is PerspectiveCameraCore perspectiveCamera)
-                {
-                    var distance = pcam.LookDirection.Length();
-
-                    // option 1: change distance
-                    var newDistance = distance * zoomRectangle.Width / viewport.ViewportRectangle.Width;
-                    var newLookDirection = (float)newDistance * w;
-                    var newPosition = perspectiveCamera.Position + ((distance - (float)newDistance) * w);
-                    var newTarget = newPosition + newLookDirection;
-                    LookAt(pcam, newTarget, newLookDirection, 200);
-                }
-                else if(camera is OrthographicCameraCore orthographicCamera)
-                {
-                    orthographicCamera.Width *= zoomRectangle.Width / viewport.ViewportRectangle.Width;
-                    var oldTarget = pcam.Position + pcam.LookDirection;
-                    var distance = pcam.LookDirection.Length();
-                    var newTarget = centerRay.PlaneIntersection(oldTarget, w);
-                    if (newTarget != null)
+                    var u = topLeftRay.Direction;
+                    var v = topRightRay.Direction;
+                    var w = centerRay.Direction;
+                    u.Normalize();
+                    v.Normalize();
+                    w.Normalize();
+                    if(camera is PerspectiveCameraCore perspectiveCamera)
                     {
-                        orthographicCamera.LookDirection = w * distance;
-                        orthographicCamera.Position = newTarget.Value - orthographicCamera.LookDirection;
+                        var distance = pcam.LookDirection.Length();
+
+                        // option 1: change distance
+                        var newDistance = distance * zoomRectangle.Width / viewport.ViewportRectangle.Width;
+                        var newLookDirection = (float)newDistance * w;
+                        var newPosition = perspectiveCamera.Position + ((distance - (float)newDistance) * w);
+                        var newTarget = newPosition + newLookDirection;
+                        LookAt(pcam, newTarget, newLookDirection, 200);
+                    }
+                    else if(camera is OrthographicCameraCore orthographicCamera)
+                    {
+                        orthographicCamera.Width *= zoomRectangle.Width / viewport.ViewportRectangle.Width;
+                        var oldTarget = pcam.Position + pcam.LookDirection;
+                        var distance = pcam.LookDirection.Length();
+                        
+                        if (centerRay.PlaneIntersection(oldTarget, w, out var newTarget))
+                        {
+                            orthographicCamera.LookDirection = w * distance;
+                            orthographicCamera.Position = newTarget - orthographicCamera.LookDirection;
+                        }
                     }
                 }
             }

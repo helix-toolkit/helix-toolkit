@@ -145,11 +145,8 @@ namespace HelixToolkit.Wpf.SharpDX
             //var position = this.totalModelMatrix.TranslationVector;
 
             // --- hit position 
-            var newHit = this.viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normal);
-
-            if (newHit.HasValue)
+            if(this.viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normal, out var newHitPos))
             {
-                var newHitPos = newHit.Value;
                 var v = this.lastHitPosWS - position;
                 var u = newHitPos - position;
                 v.Normalize();

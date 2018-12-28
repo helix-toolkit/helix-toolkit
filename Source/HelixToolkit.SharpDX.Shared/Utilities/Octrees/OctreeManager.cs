@@ -190,14 +190,14 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void SubscribeBoundChangeEvent(SceneNode item)
             {
-                item.OnTransformBoundChanged -= Item_OnBoundChanged;
-                item.OnTransformBoundChanged += Item_OnBoundChanged;
+                item.TransformBoundChanged -= Item_OnBoundChanged;
+                item.TransformBoundChanged += Item_OnBoundChanged;
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void UnsubscribeBoundChangeEvent(SceneNode item)
             {
-                item.OnTransformBoundChanged -= Item_OnBoundChanged;
+                item.TransformBoundChanged -= Item_OnBoundChanged;
             }
 
             private readonly HashSet<SceneNode> pendingItems
@@ -300,8 +300,8 @@ namespace HelixToolkit.UWP
                     {
                         if (item.HasBound)
                         {
-                            item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                            item.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                            item.TransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                            item.TransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
                             pendingItems.Add(item);
                         }
                         else
@@ -324,7 +324,7 @@ namespace HelixToolkit.UWP
             private void GeometryModel3DOctreeManager_OnBoundInitialized(object sender, BoundChangeArgs<BoundingBox> args)
             {
                 var item = sender as SceneNode;
-                item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                item.TransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
                 AddItem(item);
             }
 
@@ -391,7 +391,7 @@ namespace HelixToolkit.UWP
                         {
                             var tree = mOctree;
                             UpdateOctree(null);
-                            item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                            item.TransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
                             UnsubscribeBoundChangeEvent(item);
                             if (!tree.RemoveByBound(item))
                             {

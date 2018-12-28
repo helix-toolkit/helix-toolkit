@@ -1,4 +1,5 @@
-﻿using HelixToolkit.SharpDX.Core.Animations;
+﻿using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Animations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,6 @@ namespace CoreTest
         public bool ShowWireframeChanged;
         public bool PlayAnimation;
         public IAnimationUpdater AnimationUpdater;
+        public IViewport3DX Viewport;
     }
 }

@@ -220,6 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Overlay Overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
         private bool enableMouseButtonHitTest = true;
         private ContentPresenter hostPresenter;
+        private List<HitTestResult> hits = new List<HitTestResult>();
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
         /// Use this event carefully. Unsubscrible this event when not used. Otherwise may cause performance issue.
@@ -1604,10 +1605,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool HittedSomething(MouseEventArgs e)
         {
-            var hits = this.FindHits(e.GetPosition(this));
-            if (hits.Count > 0)
-                return true;
-            return false;
+            return this.FindHitsInFrustum(e.GetPosition(this).ToVector2(), ref hits);
         }
 
         /// <summary>
@@ -1637,10 +1635,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
-            var hits = this.FindHits(pt);
-            //this.CameraPropertyChanged();
-            if (hits.Count > 0)
+            
+            if (this.FindHitsInFrustum(pt.ToVector2(), ref hits))
             {
                 // We can't capture Touch because that would disable the CameraController which uses Manipulation,
                 // but since Manipulation captures touch, we can be quite sure to get every relevant touch event.

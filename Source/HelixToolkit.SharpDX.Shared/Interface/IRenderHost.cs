@@ -251,6 +251,13 @@ namespace HelixToolkit.UWP
         /// </value>
         FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
         /// <summary>
+        /// Gets the per frame transparent nodes in frustum.
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes in frustum.
+        /// </value>
+        FastList<SceneNode> PerFrameTransparentNodesInFrustum { get; }
+        /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle"/>
         /// </summary>
         /// <value>
