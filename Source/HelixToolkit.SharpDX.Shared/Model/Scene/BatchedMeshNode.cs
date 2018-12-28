@@ -465,7 +465,7 @@ namespace HelixToolkit.UWP
             public BatchedMeshNode()
             {
                 HasBound = true;
-                OnTransformChanged += BatchedMeshNode_OnTransformChanged;
+                TransformChanged += BatchedMeshNode_OnTransformChanged;
             }
 
             private void BatchedMeshNode_OnTransformChanged(object sender, TransformArgs e)
