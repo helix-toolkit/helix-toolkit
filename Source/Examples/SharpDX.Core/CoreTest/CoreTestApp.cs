@@ -71,6 +71,7 @@ namespace CoreTest
             viewport.StartRendering += Viewport_OnStartRendering;
             viewport.StopRendering += Viewport_OnStopRendering;
             viewport.ErrorOccurred += Viewport_OnErrorOccurred;
+            viewport.CoordinateSystemLabelColor = new Color4(1, 1, 0, 1);
             options.Viewport = viewport;
             AssignViewportOption();
             InitializeScene();
@@ -170,8 +171,6 @@ namespace CoreTest
             groupSphere.AddChildNode(groupPoints);
             groupSphere.AddChildNode(groupLines);
 
-            var viewbox = new ViewBoxNode();
-            viewport.Items.AddChildNode(viewbox);
             var imGui = new ImGuiNode();
             viewport.Items.AddChildNode(imGui);
             imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
@@ -318,6 +317,7 @@ namespace CoreTest
             else if (!io.WantCaptureMouse)
             {
                 cameraController.MouseMove(new Vector2(e.X, e.Y));
+                viewport.MouseMove(new Vector2(e.X, e.Y));
             }
         }
 
@@ -341,6 +341,7 @@ namespace CoreTest
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
+                        viewport.MouseUp(new Vector2(e.X, e.Y));
                         break;
                     case MouseButtons.Right:
                         cameraController.EndRotate(new Vector2(e.X, e.Y));
@@ -374,6 +375,7 @@ namespace CoreTest
                     switch (e.Button)
                     {
                         case MouseButtons.Left:
+                            viewport.MouseDown(new Vector2(e.X, e.Y));
                             break;
                         case MouseButtons.Right:
                             cameraController.StartRotate(new Vector2(e.X, e.Y));

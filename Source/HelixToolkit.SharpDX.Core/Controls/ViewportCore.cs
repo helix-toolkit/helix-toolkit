@@ -14,7 +14,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
     using Render;
 
 
-    public sealed class ViewportCore : IViewport3DX
+    public partial class ViewportCore : DisposeObject, IViewport3DX
     {
         /// <summary>
         /// Occurs when [on start rendering].
@@ -28,247 +28,11 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// Occurs when [on error occurred].
         /// </summary>
         public event EventHandler<Exception> ErrorOccurred;
-        #region Properties
-        /// <summary>
-        /// Gets the render host.
-        /// </summary>
-        /// <value>
-        /// The render host.
-        /// </value>
-        public IRenderHost RenderHost { get; }
-        /// <summary>
-        /// Gets a value indicating whether this instance is shadow mapping enabled.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is shadow mapping enabled; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsShadowMappingEnabled { set; get; }
 
-        private IEffectsManager effectsManager;
-        /// <summary>
-        /// Gets or sets the effects manager.
-        /// </summary>
-        /// <value>
-        /// The effects manager.
-        /// </value>
-        public IEffectsManager EffectsManager
-        {
-            get { return effectsManager; }
-            set
-            {
-                if (effectsManager != value)
-                {
-                    effectsManager = value;
-                    if (RenderHost != null)
-                    {
-                        RenderHost.EffectsManager = value;
-                    }
-                }
-            }
-        }
 
-        /// <summary>
-        /// Gets the camera core.
-        /// </summary>
-        /// <value>
-        /// The camera core.
-        /// </value>
-        public CameraCore CameraCore
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Gets the renderables.
-        /// </summary>
-        /// <value>
-        /// The renderables.
-        /// </value>
-        public IEnumerable<SceneNode> Renderables => Items.ItemsInternal;
-        /// <summary>
-        /// Gets the d2 d renderables.
-        /// </summary>
-        /// <value>
-        /// The d2 d renderables.
-        /// </value>
-        public IEnumerable<SceneNode2D> D2DRenderables => Items2D.ItemsInternal;
-        /// <summary>
-        /// Gets the items.
-        /// </summary>
-        /// <value>
-        /// The items.
-        /// </value>
-        public GroupNode Items { get; } = new GroupNode();
-        /// <summary>
-        /// Gets the items2 d.
-        /// </summary>
-        /// <value>
-        /// The items2 d.
-        /// </value>
-        public SceneNode2D Items2D { get; } = new OverlayNode2D() { EnableBitmapCache = false };
-        /// <summary>
-        /// Gets or sets a value indicating whether [show FPS].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [show FPS]; otherwise, <c>false</c>.
-        /// </value>
-        public bool ShowFPS
-        {
-            set
-            {
-                if (value)
-                {
-                    RenderHost.ShowRenderDetail |= RenderDetail.FPS;
-                }
-                else
-                {
-                    RenderHost.ShowRenderDetail &= ~RenderDetail.FPS;
-                }
-            }
-            get
-            {
-                return (RenderHost.ShowRenderDetail & ~RenderDetail.FPS) != 0;
-            }
-        }
-        /// <summary>
-        /// Gets or sets a value indicating whether [show render detail].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [show render detail]; otherwise, <c>false</c>.
-        /// </value>
-        public bool ShowRenderDetail
-        {
-            set
-            {
-                if (value)
-                {
-                    RenderHost.ShowRenderDetail |= RenderDetail.Statistics;
-                }
-                else
-                {
-                    RenderHost.ShowRenderDetail &= ~RenderDetail.Statistics;
-                }
-            }
-            get
-            {
-                return (RenderHost.ShowRenderDetail & ~RenderDetail.Statistics) != 0;
-            }
-        }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render d2d].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render d2d]; otherwise, <c>false</c>.
-        /// </value>
-        public bool RenderD2D
-        {
-            set => RenderHost.RenderConfiguration.RenderD2D = value;
-            get => RenderHost.RenderConfiguration.RenderD2D;
-        }
-        /// <summary>
-        /// Gets or sets the color of the background.
-        /// </summary>
-        /// <value>
-        /// The color of the background.
-        /// </value>
-        public Color4 BackgroundColor
-        {
-            set => RenderHost.ClearColor = value;
-            get => RenderHost.ClearColor; 
-        }
-        /// <summary>
-        /// Gets or sets the FXAA level.
-        /// </summary>
-        /// <value>
-        /// The FXAA level.
-        /// </value>
-        public FXAALevel FXAALevel
-        {
-            set => RenderHost.RenderConfiguration.FXAALevel = value;
-            get => RenderHost.RenderConfiguration.FXAALevel;
-        }
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable render frustum].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable render frustum]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableRenderFrustum
-        {
-            set => RenderHost.EnableRenderFrustum = value;
-            get => RenderHost.EnableRenderFrustum;
-        }
-        /// <summary>
-        /// Gets the viewport rectangle.
-        /// </summary>
-        /// <value>
-        /// The viewport rectangle.
-        /// </value>
-        public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)RenderHost.ActualWidth, (int)RenderHost.ActualHeight); } }
-        /// <summary>
-        /// Gets the render context.
-        /// </summary>
-        /// <value>
-        /// The render context.
-        /// </value>
-        public RenderContext RenderContext { get => RenderHost.RenderContext; }
-        /// <summary>
-        /// Gets the render stat.
-        /// </summary>
-        /// <value>
-        /// The render stat.
-        /// </value>
-        public Utilities.IRenderStatistics RenderStat { get => RenderHost.RenderStatistics; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable vertical synchronize].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable vertical synchronize]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableVSync
-        {
-            set => RenderHost.RenderConfiguration.EnableVSync = value;
-            get => RenderHost.RenderConfiguration.EnableVSync;
-        }
+        internal ViewBoxNode ViewCube { get; } = new ViewBoxNode();
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable ssao].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable ssao]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableSSAO
-        {
-            set => RenderHost.RenderConfiguration.EnableSSAO = value;
-            get => RenderHost.RenderConfiguration.EnableSSAO;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable render order].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable render order]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableRenderOrder
-        {
-            set => RenderHost.RenderConfiguration.EnableRenderOrder = value;
-            get => RenderHost.RenderConfiguration.EnableRenderOrder;
-        }
-        /// <summary>
-        /// Gets the actual width.
-        /// </summary>
-        /// <value>
-        /// The actual width.
-        /// </value>
-        public double ActualWidth { private set; get; }
-        /// <summary>
-        /// Gets the actual height.
-        /// </summary>
-        /// <value>
-        /// The actual height.
-        /// </value>
-        public double ActualHeight { private set; get; }
-        #endregion
+        internal CoordinateSystemNode CoordinateSystem { get; } = new CoordinateSystemNode();
 
         private List<HitTestResult> hits = new List<HitTestResult>();
 
@@ -304,6 +68,130 @@ namespace HelixToolkit.SharpDX.Core.Controls
             Items2D.ItemsInternal.Add(new FrameStatisticsNode2D());
         }
 
+        /// <summary>
+        /// Renders this instance.
+        /// </summary>
+        public void Render()
+        {
+            RenderHost.UpdateAndRender();
+        }
+        /// <summary>
+        /// Starts the d3 d.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public void StartD3D(int width, int height)
+        {
+            RenderHost.StartD3D(width, height);
+        }
+        /// <summary>
+        /// Ends the d3 d.
+        /// </summary>
+        public void EndD3D()
+        {
+            RenderHost.EndD3D();
+        }
+        /// <summary>
+        /// Attaches the specified host.
+        /// </summary>
+        /// <param name="host">The host.</param>
+        public void Attach(IRenderHost host)
+        {
+            Items.Attach(host);
+            ViewCube.Attach(host);
+            CoordinateSystem.Attach(host);
+            Items2D.Attach(host);
+        }
+        /// <summary>
+        /// Detaches this instance.
+        /// </summary>
+        public void Detach()
+        {
+            Items.Detach();
+            ViewCube.Detach();
+            CoordinateSystem.Detach();
+            Items2D.Detach();
+        }
+        /// <summary>
+        /// Invalidates the render.
+        /// </summary>
+        public void InvalidateRender()
+        {
+            RenderHost.InvalidateRender();
+        }
+        /// <summary>
+        /// Invalidates the scene graph.
+        /// </summary>
+        public void InvalidateSceneGraph()
+        {
+            RenderHost.InvalidateSceneGraph();
+        }
+        /// <summary>
+        /// Mouses down.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        public void MouseDown(Vector2 position)
+        {
+            currentNode = null;
+            hits.Clear();
+            if(!this.UnProject(position, out var ray))
+            {
+                return;
+            }
+            else if(ViewCubeHitTest(ref ray, ref position))
+            {
+                return;
+            }
+            else if(this.FindHitsInFrustum(position, ref hits) && hits.Count > 0 && hits[0].ModelHit is SceneNode node)
+            {
+                currentNode = node;
+                currentNode.RaiseMouseDownEvent(this, position, hits[0]);
+            }
+        }
+        /// <summary>
+        /// Mouses the move.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        public void MouseMove(Vector2 position)
+        {
+            if(currentNode != null && hits.Count > 0)
+            {
+                currentNode.RaiseMouseMoveEvent(this, position, hits[0]);
+            }
+        }
+        /// <summary>
+        /// Mouses up.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        public void MouseUp(Vector2 position)
+        {
+            if(currentNode != null && hits.Count > 0)
+            {
+                currentNode.RaiseMouseUpEvent(this, position, hits[0]);
+            }
+            hits.Clear();
+            currentNode = null;
+        }
+        /// <summary>
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        public void Update(TimeSpan timeStamp)
+        {
+            
+        }
+        /// <summary>
+        /// Resizes the specified width.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public void Resize(int width, int height)
+        {
+            ActualWidth = width;
+            ActualHeight = height;
+            RenderHost.Resize(width, height);
+        }
+        #region Private Methods
+
         private void HandleExceptionOccured(Exception exception)
         {
             ErrorOccurred?.Invoke(this, exception);
@@ -319,85 +207,40 @@ namespace HelixToolkit.SharpDX.Core.Controls
             StartRendering?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Render()
+        private bool ViewCubeHitTest(ref Ray ray, ref Vector2 position)
         {
-            RenderHost.UpdateAndRender();
-        }
-
-        public void StartD3D(int width, int height)
-        {
-            RenderHost.StartD3D(width, height);
-        }
-
-        public void EndD3D()
-        {
-            RenderHost.EndD3D();
-        }
-
-        public void Attach(IRenderHost host)
-        {
-            Items.Attach(host);
-            Items2D.Attach(host);
-        }
-
-        public void Detach()
-        {
-            Items.Detach();
-            Items2D.Detach();
-        }
-
-        public void InvalidateRender()
-        {
-            RenderHost.InvalidateRender();
-        }
-
-        public void InvalidateSceneGraph()
-        {
-            RenderHost.InvalidateSceneGraph();
-        }
-
-        public void MouseDown(Vector2 position)
-        {
-            hits.Clear();
-            if(this.FindHitsInFrustum(position, ref hits) && hits.Count > 0 && hits[0].ModelHit is SceneNode node)
+            if (ViewCube.HitTest(RenderContext, ray, ref hits))
             {
-                currentNode = node;
-                currentNode.RaiseMouseDownEvent(this, position, hits[0]);
+                ViewCube.RaiseMouseDownEvent(this, position, hits[0]);
+                var normal = hits[0].NormalAtHit;
+                if (Vector3.Cross(normal, ModelUpDirection).LengthSquared() < 1e-5)
+                {
+                    var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);
+                    ViewCubeClicked(hits[0].NormalAtHit, vecLeft);
+                }
+                else
+                {
+                    ViewCubeClicked(hits[0].NormalAtHit, ModelUpDirection);
+                }
+                return true;
             }
-            else
-            {
-                currentNode = null;
-            }
+            return false;
         }
 
-        public void MouseMove(Vector2 position)
+        private void ViewCubeClicked(Vector3 lookDirection, Vector3 upDirection)
         {
-            if(currentNode != null && hits.Count > 0)
-            {
-                currentNode.RaiseMouseMoveEvent(this, position, hits[0]);
-            }
+            var target = CameraCore.Position + CameraCore.LookDirection;
+            float distance = CameraCore.LookDirection.Length();
+            lookDirection *= distance;
+            var newPosition = target - lookDirection;
+            CameraCore.AnimateTo(newPosition, lookDirection, upDirection, 500);
         }
+        #endregion
 
-        public void MouseUp(Vector2 position)
+        protected override void OnDispose(bool disposeManagedResources)
         {
-            if(currentNode != null && hits.Count > 0)
-            {
-                currentNode.RaiseMouseUpEvent(this, position, hits[0]);
-            }
-            hits.Clear();
-            currentNode = null;
-        }
-
-        public void Update(TimeSpan timeStamp)
-        {
-            
-        }
-
-        public void Resize(int width, int height)
-        {
-            ActualWidth = width;
-            ActualHeight = height;
-            RenderHost.Resize(width, height);
+            Detach();
+            base.OnDispose(disposeManagedResources);
         }
     }
 }
