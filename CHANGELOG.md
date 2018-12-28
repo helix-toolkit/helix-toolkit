@@ -3,11 +3,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Next Version]
 ### Added
-1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.  (WPF.SharpDX and UWP)
+1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.  (WPF.SharpDX/UWP/Core)
 2. Supports [ImGui](https://github.com/ocornut/imgui) (using [ImGui.NET](https://github.com/mellinoe/ImGui.NET)) for SharpDX.Core. Details refer to [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest).  (WPF.SharpDX and UWP)
-3. Supports Line/Point non-fixedSize thickness rendering.  (WPF.SharpDX and UWP)
-4. Supports SSAO.  (WPF.SharpDX and UWP)
-5. Adds Assimp Import/Export support for SharpDX versions.
+3. Supports Line/Point non-fixedSize thickness rendering.  (WPF.SharpDX/UWP/Core)
+4. Supports SSAO.  (WPF.SharpDX/UWP/Core)
+5. Adds Assimp Import/Export support for SharpDX versions. (WPF.SharpDX/UWP/Core)
 6. Demo Winform Integration. [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest)
 
 ### Improvement and Changes
