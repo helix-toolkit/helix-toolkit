@@ -3,18 +3,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Next Version]
 ### Added
-1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.
-2. Supports [ImGui](https://github.com/ocornut/imgui) (using [ImGui.NET](https://github.com/mellinoe/ImGui.NET)) for SharpDX.Core. Details refer to [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest).
-3. Supports Line/Point non-fixedSize thickness rendering.
-4. Supports SSAO.
+1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.  (WPF.SharpDX and UWP)
+2. Supports [ImGui](https://github.com/ocornut/imgui) (using [ImGui.NET](https://github.com/mellinoe/ImGui.NET)) for SharpDX.Core. Details refer to [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest).  (WPF.SharpDX and UWP)
+3. Supports Line/Point non-fixedSize thickness rendering.  (WPF.SharpDX and UWP)
+4. Supports SSAO.  (WPF.SharpDX and UWP)
 5. Adds Assimp Import/Export support for SharpDX versions.
 6. Demo Winform Integration. [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest)
 
 ### Improvement and Changes
-1. Add FastList and change Vector3Collection/IntCollection base class to FastList for direct underlying array access.
-2. Improved off-screen texture pooling.
-3. Improved post effects quality.
-4. Fixed Material creation performance issue.
+1. Add FastList and change Vector3Collection/IntCollection base class to FastList for direct underlying array access. (WPF.SharpDX and UWP)
+2. Improved off-screen texture pooling. (WPF.SharpDX and UWP)
+3. Improved post effects quality. (WPF.SharpDX and UWP)
+4. Fixed Material creation performance issue. #1015, #1022  (WPF.SharpDX and UWP)
+5. SortingVisual causes lag when using large models #1036 (WPF)
+6. Adding BeginAnimation function to SharpDX Camera #1039  (WPF.SharpDX and UWP)
+7. Improves scene node for direct usage. (WPF.SharpDX and UWP)
 
 ### Fixed
 1. Make DPFCanvas work over Remote Desktop again #998. (WPF.SharpDX and UWP)
@@ -23,6 +26,7 @@ All notable changes to this project will be documented in this file.
 4. TaskCanceledException not caught in OnDetached #988. (WPF.SharpDX and UWP)
 5. ViewCube is acting on Mouse Move #969. (WPF.SharpDX and UWP)
 6. LookDirection length in FitView #1009 (WPF) 
+7. D3D Counter is negative (SharpDX) SharpDX bug #1040(WPF.SharpDX and UWP)
 
 ## [2.5.1] - 2018-10-24
 Hot fix for v2.5.0.
