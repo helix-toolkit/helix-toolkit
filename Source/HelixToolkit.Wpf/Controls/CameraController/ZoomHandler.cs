@@ -307,7 +307,18 @@ namespace HelixToolkit.Wpf
             var target = this.CameraPosition + this.CameraLookDirection;
             var relativeTarget = zoomAround - target;
             var relativePosition = zoomAround - this.CameraPosition;
-
+            if (relativePosition.LengthSquared < 1e-5)
+            {
+                if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
+                {
+                    relativePosition.Normalize();
+                    relativePosition /= 10;
+                }
+                else//If Zoom in too close, stop it.
+                {
+                    return;
+                }
+            }
             var f = Math.Pow(2.5, delta);
             var newRelativePosition = relativePosition * f;
             var newRelativeTarget = relativeTarget * f;
