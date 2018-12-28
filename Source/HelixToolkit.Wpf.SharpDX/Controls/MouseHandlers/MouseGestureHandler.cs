@@ -382,7 +382,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected Point Project(Vector3 p)
         {
-            return this.Viewport.Project(p);
+            return this.Viewport.Project(p).ToPoint();
         }
 
         /// <summary>

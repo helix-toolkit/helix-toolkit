@@ -230,7 +230,11 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// </returns>
         protected Ray GetRay(Vector2 position)
         {
-            return this.Controller.Viewport.UnProject(position);
+            if(this.Controller.Viewport.UnProject(position, out var ray))
+            {
+                return ray;
+            }
+            return new Ray();
         }
 
         /// <summary>
