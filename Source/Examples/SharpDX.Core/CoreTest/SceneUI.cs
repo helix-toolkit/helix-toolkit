@@ -96,7 +96,7 @@ namespace CoreTest
                 DrawSceneGraph(rootNode);
             }
 
-            if (!loading && scene != null)
+            if (!loading && scene != null && scene.Animations != null)
             {
                 DrawAnimations(scene.Animations, ref options);
             }
