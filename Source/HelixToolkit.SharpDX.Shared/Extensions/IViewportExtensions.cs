@@ -435,5 +435,26 @@ namespace HelixToolkit.UWP
             }
             return bounds;
         }
+
+        /// <summary>
+        /// Renders to bitmap stream.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <returns></returns>
+        public static System.IO.MemoryStream RenderToBitmapStream(this IViewport3DX view)
+        {
+            if (view.RenderHost != null && view.RenderHost.IsRendering)
+            {
+                view.RenderHost.UpdateAndRender();              
+                if (view.RenderHost != null && view.RenderHost.IsRendering)
+                {
+                    var memoryStream = new System.IO.MemoryStream();
+                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, 
+                        view.RenderHost.RenderBuffer.BackBuffer.Resource as global::SharpDX.Direct3D11.Texture2D, memoryStream);
+                    return memoryStream;
+                }
+            }
+            return null;
+        }
     }
 }

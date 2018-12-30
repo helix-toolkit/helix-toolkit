@@ -19,6 +19,7 @@ namespace CoreTest
 {
     public class CoreTestApp
     {
+        public ViewportCore Viewport { get => viewport; }
         private readonly ViewportCore viewport;
         private readonly Form window;
         private readonly EffectsManager effectsManager;
