@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP
 {
     using System.IO;
     using Utilities;
-
+    using Model;
     public interface ITextureResourceManager
     {
         int Count { get; }
@@ -21,13 +21,13 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="textureStream">The texture stream.</param>
         /// <returns></returns>
-        ShaderResourceViewProxy Register(Stream textureStream);
+        ShaderResourceViewProxy Register(TextureModel textureStream);
         /// <summary>
         /// Registers the specified texture stream.
         /// </summary>
         /// <param name="textureStream">The texture stream.</param>
         /// <param name="disableAutoGenMipMap">if set to <c>true</c> [disable automatic gen mip map].</param>
         /// <returns></returns>
-        ShaderResourceViewProxy Register(Stream textureStream, bool disableAutoGenMipMap);
+        ShaderResourceViewProxy Register(TextureModel textureStream, bool disableAutoGenMipMap);
     }
 }

@@ -310,7 +310,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The cube texture.
             /// </value>
-            Stream CubeTexture { set; get; }
+            TextureModel CubeTexture { set; get; }
         }
         /// <summary>
         /// 

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -24,7 +25,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     using HelixToolkit.Logger;
-    using Model;  
+    using Model;
     using HxAnimations = Animations;
     using HxScene = Model.Scene;
 
@@ -35,7 +36,15 @@ namespace HelixToolkit.UWP
         public partial class Importer : IDisposable
         {
             private const string ToUpperDictString = @"..\";
+
             private string path = "";
+            public static readonly string[] SupportedTextureFormats = new string[]
+            {
+                "bmp", "jpg", "jpeg", "png", "dds", "tiff", "wmp", "gif",
+            };
+
+            protected static readonly HashSet<string> SupportedTextureFormatDict;
+
             static Importer()
             {
                 using (var temp = new AssimpContext())
@@ -56,6 +65,7 @@ namespace HelixToolkit.UWP
                 }
 
                 SupportedFormatsString = builder.ToString(0, builder.Length - 1);
+                SupportedTextureFormatDict = new HashSet<string>(SupportedTextureFormats);
             }
             #region Properties
             /// <summary>
@@ -129,7 +139,7 @@ namespace HelixToolkit.UWP
 
             private int MaterialIndexForNoName = 0;
             private int MeshIndexForNoName = 0;
-
+            private List<EmbeddedTexture> embeddedTextures;
             #region Public Methods
             /// <summary>
             ///     Loads the model specified file path.
@@ -324,10 +334,12 @@ namespace HelixToolkit.UWP
                     {
                         if (scene.HasMaterials)
                         {
+                            embeddedTextures = scene.HasTextures ? scene.Textures : new List<EmbeddedTexture>();
                             for (var i = 0; i < scene.MaterialCount; ++i)
                             {
                                 s.Materials[i] = OnCreateHelixMaterial(scene.Materials[i]);
                             }
+                            embeddedTextures = null;
                         }
                     });
                 return s;

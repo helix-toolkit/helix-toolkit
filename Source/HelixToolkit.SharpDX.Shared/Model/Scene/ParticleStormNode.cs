@@ -166,7 +166,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The particle texture.
             /// </value>
-            public Stream ParticleTexture
+            public TextureModel ParticleTexture
             {
                 set { particleCore.ParticleTexture = value; }
                 get { return particleCore.ParticleTexture; }

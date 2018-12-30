@@ -143,10 +143,10 @@ namespace HelixToolkit.UWP
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private void CreateTextureView(System.IO.Stream stream, int index)
+            private void CreateTextureView(TextureModel texture, int index)
             {
                 RemoveAndDispose(ref TextureResource);
-                TextureResource = stream == null ? null : Collect(textureManager.Register(stream));
+                TextureResource = texture == null ? null : Collect(textureManager.Register(texture));
                 if (TextureResource != null)
                 {
                     textureIndex |= 1u << index;

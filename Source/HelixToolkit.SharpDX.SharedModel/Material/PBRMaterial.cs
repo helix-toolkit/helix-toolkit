@@ -100,40 +100,40 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty AlbedoMapProperty =
-            DependencyProperty.Register("AlbedoMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PBRMaterialCore).AlbedoMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("AlbedoMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PBRMaterialCore).AlbedoMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty EmissiveMapProperty =
-            DependencyProperty.Register("EmissiveMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PBRMaterialCore).EmissiveMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("EmissiveMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PBRMaterialCore).EmissiveMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel
         /// </summary>
         public static readonly DependencyProperty RMAMapProperty =
-            DependencyProperty.Register("RMAMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PBRMaterialCore).RMAMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("RMAMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PBRMaterialCore).RMAMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapProperty =
-            DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PBRMaterialCore).NormalMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("NormalMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PBRMaterialCore).NormalMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapProperty =
-            DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PBRMaterialCore).DisplacementMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("DisplacementMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PBRMaterialCore).DisplacementMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty IrradianceMapProperty =
-            DependencyProperty.Register("IrrandianceMap", typeof(Stream), typeof(PBRMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PBRMaterialCore).IrradianceMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("IrrandianceMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PBRMaterialCore).IrradianceMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// 
@@ -360,16 +360,16 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ClearCoatRoughnessProperty, value); }
         }
 
-        public Stream AlbedoMap
+        public TextureModel AlbedoMap
         {
-            get { return (Stream)this.GetValue(AlbedoMapProperty); }
+            get { return (TextureModel)this.GetValue(AlbedoMapProperty); }
             set { this.SetValue(AlbedoMapProperty, value); }
         }
 
 
-        public Stream EmissiveMap
+        public TextureModel EmissiveMap
         {
-            get { return (Stream)this.GetValue(EmissiveMapProperty); }
+            get { return (TextureModel)this.GetValue(EmissiveMapProperty); }
             set { this.SetValue(EmissiveMapProperty, value); }
         }
         /// <summary>
@@ -378,32 +378,32 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The rma map.
         /// </value>
-        public Stream RMAMap
+        public TextureModel RMAMap
         {
-            get { return (Stream)this.GetValue(RMAMapProperty); }
+            get { return (TextureModel)this.GetValue(RMAMapProperty); }
             set { this.SetValue(RMAMapProperty, value); }
         }
         /// <summary>
         /// 
         /// </summary>
-        public Stream NormalMap
+        public TextureModel NormalMap
         {
-            get { return (Stream)this.GetValue(NormalMapProperty); }
+            get { return (TextureModel)this.GetValue(NormalMapProperty); }
             set { this.SetValue(NormalMapProperty, value); }
         }
         /// <summary>
         /// 
         /// </summary>
-        public Stream DisplacementMap
+        public TextureModel DisplacementMap
         {
-            get { return (Stream)this.GetValue(DisplacementMapProperty); }
+            get { return (TextureModel)this.GetValue(DisplacementMapProperty); }
             set { this.SetValue(DisplacementMapProperty, value); }
         }
 
 
-        public Stream IrradianceMap
+        public TextureModel IrradianceMap
         {
-            get { return (Stream)this.GetValue(IrradianceMapProperty); }
+            get { return (TextureModel)this.GetValue(IrradianceMapProperty); }
             set { this.SetValue(IrradianceMapProperty, value); }
         }
         /// <summary>

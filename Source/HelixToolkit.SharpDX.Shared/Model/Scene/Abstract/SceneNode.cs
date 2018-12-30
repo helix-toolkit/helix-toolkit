@@ -391,6 +391,13 @@ namespace HelixToolkit.UWP
                 set => Set(ref tag, value);
                 get => tag;
             }
+            /// <summary>
+            /// Gets or sets a value indicating whether this instance is in frustum in current frame.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this instance is in frustum; otherwise, <c>false</c>.
+            /// </value>
+            public bool IsInFrustum { internal set; get; }
             #endregion Properties
 
             #region Events            
@@ -556,6 +563,7 @@ namespace HelixToolkit.UWP
             public virtual void Update(RenderContext context)
             {
                 IsRenderable = CanRender(context) && core.CanRenderFlag;
+                IsInFrustum = true;//Reset during update
                 if (!IsRenderable)
                 {
                     return;

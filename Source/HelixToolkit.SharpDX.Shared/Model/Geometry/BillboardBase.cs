@@ -2,10 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Collections.Generic;
 using SharpDX;
-using System.IO;
-using System.Linq;
+using System.Collections.Generic;
 #if NETFX_CORE
 
 #else
@@ -23,8 +21,6 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using Core;
-    using System;
     using System.Diagnostics;
 
     public abstract class BillboardBase : Geometry3D, IBillboardText
@@ -40,7 +36,7 @@ namespace HelixToolkit.UWP
             get;
         }
 
-        public Stream Texture
+        public TextureModel Texture
         {
             protected set;
             get;

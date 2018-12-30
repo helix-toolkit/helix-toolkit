@@ -48,8 +48,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
-            DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(DiffuseMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as DiffuseMaterialCore).DiffuseMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("DiffuseMap", typeof(TextureModel), typeof(DiffuseMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as DiffuseMaterialCore).DiffuseMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// Gets or sets the diffuse map.
@@ -57,9 +57,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The diffuse map.
         /// </value>
-        public Stream DiffuseMap
+        public TextureModel DiffuseMap
         {
-            get { return (Stream)this.GetValue(DiffuseMapProperty); }
+            get { return (TextureModel)this.GetValue(DiffuseMapProperty); }
             set { this.SetValue(DiffuseMapProperty, value); }
         }
 

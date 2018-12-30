@@ -135,6 +135,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\LineMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PBRMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PointMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\TextureModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\BillboardMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\ColorStripeMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\DiffuseMaterialVariable.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenQuadNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Sprite2DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\VolumeTextureNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHostPartial_Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PhongMaterialVariable.cs" />

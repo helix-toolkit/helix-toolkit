@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public BillboardType Type { private set; get; }
 
-            private Stream textureStream;
+            private TextureModel texture;
             /// <summary>
             /// Initializes a new instance of the <see cref="BillboardBufferModel{VertexStruct}"/> class.
             /// </summary>
@@ -89,20 +89,20 @@ namespace HelixToolkit.UWP
                     {
                         Type = billboardGeometry.Type;              
                         buffer.UploadDataToBuffer(context, billboardGeometry.BillboardVertices, billboardGeometry.BillboardVertices.Count, 0, geometry.PreDefinedVertexCount);
-                        if(textureStream != billboardGeometry.Texture)
+                        if(texture != billboardGeometry.Texture)
                         {
                             RemoveAndDispose(ref textureView);
-                            textureStream = billboardGeometry.Texture;
-                            if (textureStream != null)
+                            texture = billboardGeometry.Texture;
+                            if (texture != null)
                             {
-                                textureView = Collect(deviceResources.MaterialTextureManager.Register(textureStream));
+                                textureView = Collect(deviceResources.MaterialTextureManager.Register(texture));
                             }
                         }
                     }
                     else
                     {
                         RemoveAndDispose(ref textureView);
-                        textureStream = null;
+                        texture = null;
                         buffer.UploadDataToBuffer(context, emptyVerts, 0);
                     }
                 }
