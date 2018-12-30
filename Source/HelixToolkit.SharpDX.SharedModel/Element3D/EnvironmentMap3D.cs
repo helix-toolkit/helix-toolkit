@@ -1,5 +1,4 @@
-﻿using System.IO;
-
+﻿
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP

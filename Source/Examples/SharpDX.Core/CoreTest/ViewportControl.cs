@@ -15,6 +15,7 @@ namespace CoreTest
         public bool EnableSSAO;
         public bool EnableFXAA;
         public bool EnableFrustum;
+        public bool ShowRenderDetail;
         public System.Numerics.Vector3 BackgroundColor;
         public float DirectionLightIntensity;
         public float AmbientLightIntensity;

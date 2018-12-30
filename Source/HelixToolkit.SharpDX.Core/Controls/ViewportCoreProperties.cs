@@ -84,7 +84,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// <value>
         /// The d2 d renderables.
         /// </value>
-        public IEnumerable<SceneNode2D> D2DRenderables => Items2D.ItemsInternal;
+        public IEnumerable<SceneNode2D> D2DRenderables { get { yield return Items2D; } }
         /// <summary>
         /// Gets the items.
         /// </summary>
@@ -347,5 +347,30 @@ namespace HelixToolkit.SharpDX.Core.Controls
             get => ViewCube.Visible;
         }
         #endregion
+
+        #region Events
+        /// <summary>
+        /// Occurs when [on start rendering].
+        /// </summary>
+        public event EventHandler StartRendering;
+        /// <summary>
+        /// Occurs when [on stop rendering].
+        /// </summary>
+        public event EventHandler StopRendering;
+        /// <summary>
+        /// Occurs when [on error occurred].
+        /// </summary>
+        public event EventHandler<Exception> ErrorOccurred;
+        #endregion
+
+        internal ViewBoxNode ViewCube { get; } = new ViewBoxNode();
+
+        internal CoordinateSystemNode CoordinateSystem { get; } = new CoordinateSystemNode();
+
+        private List<HitTestResult> hits = new List<HitTestResult>();
+
+        private SceneNode currentNode;
+
+        private FrameStatisticsNode2D frameStatisticsNode = new FrameStatisticsNode2D();
     }
 }

@@ -2,41 +2,18 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
-using System.Collections.Generic;
 using global::SharpDX;
+using System;
 
 namespace HelixToolkit.SharpDX.Core.Controls
-{   
+{
     using Cameras;
     using Model.Scene;
-    using Model.Scene2D;
     using Render;
 
 
     public partial class ViewportCore : DisposeObject, IViewport3DX
     {
-        /// <summary>
-        /// Occurs when [on start rendering].
-        /// </summary>
-        public event EventHandler StartRendering;
-        /// <summary>
-        /// Occurs when [on stop rendering].
-        /// </summary>
-        public event EventHandler StopRendering;
-        /// <summary>
-        /// Occurs when [on error occurred].
-        /// </summary>
-        public event EventHandler<Exception> ErrorOccurred;
-
-
-        internal ViewBoxNode ViewCube { get; } = new ViewBoxNode();
-
-        internal CoordinateSystemNode CoordinateSystem { get; } = new CoordinateSystemNode();
-
-        private List<HitTestResult> hits = new List<HitTestResult>();
-
-        private SceneNode currentNode;
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewportCore"/> class.
         /// </summary>
@@ -49,7 +26,6 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 RenderHost = new SwapChainRenderHost(nativeWindowPointer,
                     (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); })
                 {
-                    ShowRenderDetail = RenderDetail.Statistics | RenderDetail.FPS,
                     Viewport = this,
                 };
             }
@@ -57,7 +33,6 @@ namespace HelixToolkit.SharpDX.Core.Controls
             {
                 RenderHost = new SwapChainRenderHost(nativeWindowPointer)
                 {
-                    ShowRenderDetail = RenderDetail.Statistics | RenderDetail.FPS,
                     Viewport = this,
                 };
             }
@@ -65,7 +40,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
-            Items2D.ItemsInternal.Add(new FrameStatisticsNode2D());
+            Items2D.ItemsInternal.Add(frameStatisticsNode);
         }
 
         /// <summary>

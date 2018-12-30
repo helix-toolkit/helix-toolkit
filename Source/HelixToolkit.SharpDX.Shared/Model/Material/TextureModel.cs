@@ -22,9 +22,7 @@ namespace HelixToolkit.UWP
     /// <para>For compress textures, only provide their memory stream.</para>
     /// <para>For uncompressed textures, provides either data as byte[] or Color4[] with width/height and proper <see cref="Format"/></para>
     /// </summary>
-#if !NETFX_CORE
-    [System.ComponentModel.TypeConverter(typeof(Utilities.StreamToTextureModelConverter))]
-#endif
+    [System.ComponentModel.TypeConverter(typeof(StreamToTextureModelConverter))]
     public sealed class TextureModel
     {
         /// <summary>
