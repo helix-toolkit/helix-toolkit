@@ -2,8 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Runtime.CompilerServices;
 using SharpDX;
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP
     {
         using Render;
         using ShaderManager;
-        using Shaders;       
+        using Shaders;
         using Utilities;
 
         /// <summary>
@@ -265,10 +265,10 @@ namespace HelixToolkit.UWP
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private void CreateTextureView(System.IO.Stream stream, int index)
+            private void CreateTextureView(TextureModel textureModel, int index)
             {
                 RemoveAndDispose(ref textureResources[index]);
-                textureResources[index] = stream == null ? null : Collect(textureManager.Register(stream));
+                textureResources[index] = textureModel == null ? null : Collect(textureManager.Register(textureModel));
                 if (textureResources[index] != null)
                 {
                     textureIndex |= 1u << index;

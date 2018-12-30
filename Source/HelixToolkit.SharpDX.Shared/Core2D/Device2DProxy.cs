@@ -5,8 +5,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using System;
-using Device2D = global::SharpDX.Direct2D1.Device;
 using DeviceContext2D = global::SharpDX.Direct2D1.DeviceContext;
 
 #if !NETFX_CORE

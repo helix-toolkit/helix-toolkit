@@ -35,14 +35,14 @@ namespace HelixToolkit.UWP
                 set { Set(ref diffuseColor, value); }
                 get { return diffuseColor; }
             }
-            private Stream diffuseMap;
+            private TextureModel diffuseMap;
             /// <summary>
             /// Gets or sets the diffuse map.
             /// </summary>
             /// <value>
             /// The diffuse map.
             /// </value>
-            public Stream DiffuseMap
+            public TextureModel DiffuseMap
             {
                 set { Set(ref diffuseMap, value); }
                 get { return diffuseMap; }

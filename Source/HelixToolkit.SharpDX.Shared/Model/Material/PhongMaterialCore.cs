@@ -110,14 +110,14 @@ namespace HelixToolkit.UWP
                 get { return specularShininess; }
             }
 
-            private Stream diffuseMap;
+            private TextureModel diffuseMap;
             /// <summary>
             /// Gets or sets the diffuse map.
             /// </summary>
             /// <value>
             /// The diffuse map.
             /// </value>
-            public Stream DiffuseMap
+            public TextureModel DiffuseMap
             {
                 set { Set(ref diffuseMap, value); }
                 get { return diffuseMap; }
@@ -131,14 +131,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string DiffuseMapFilePath { set; get; }
 
-            private Stream diffuseAlphaMap;
+            private TextureModel diffuseAlphaMap;
             /// <summary>
             /// Gets or sets the DiffuseAlphaMap.
             /// </summary>
             /// <value>
             /// DiffuseAlphaMap
             /// </value>
-            public Stream DiffuseAlphaMap
+            public TextureModel DiffuseAlphaMap
             {
                 set { Set(ref diffuseAlphaMap, value); }
                 get { return diffuseAlphaMap; }
@@ -151,14 +151,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string DiffuseAlphaMapFilePath { set; get; }
 
-            private Stream normalMap;
+            private TextureModel normalMap;
             /// <summary>
             /// Gets or sets the NormalMap.
             /// </summary>
             /// <value>
             /// NormalMap
             /// </value>
-            public Stream NormalMap
+            public TextureModel NormalMap
             {
                 set { Set(ref normalMap, value); }
                 get { return normalMap; }
@@ -171,14 +171,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string NormalMapFilePath { set; get; }
 
-            private Stream specularColorMap;
+            private TextureModel specularColorMap;
             /// <summary>
             /// Gets or sets the specular color map.
             /// </summary>
             /// <value>
             /// The specular color map.
             /// </value>
-            public Stream SpecularColorMap
+            public TextureModel SpecularColorMap
             {
                 set { Set(ref specularColorMap, value); }
                 get { return specularColorMap; }
@@ -191,14 +191,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string SpecularColorMapFilePath { set; get; }
 
-            private Stream displacementMap;
+            private TextureModel displacementMap;
             /// <summary>
             /// Gets or sets the DisplacementMap.
             /// </summary>
             /// <value>
             /// DisplacementMap
             /// </value>
-            public Stream DisplacementMap
+            public TextureModel DisplacementMap
             {
                 set { Set(ref displacementMap, value); }
                 get { return displacementMap; }
@@ -211,14 +211,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string DisplacementMapFilePath { set; get; }
 
-            private Stream emissiveMap;
+            private TextureModel emissiveMap;
             /// <summary>
             /// Gets or sets the emissive map.
             /// </summary>
             /// <value>
             /// The emissive map.
             /// </value>
-            public Stream EmissiveMap
+            public TextureModel EmissiveMap
             {
                 set { Set(ref emissiveMap, value); }
                 get { return emissiveMap; }

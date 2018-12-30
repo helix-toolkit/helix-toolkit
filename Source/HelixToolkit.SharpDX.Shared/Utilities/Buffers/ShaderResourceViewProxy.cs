@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    using Model;
     namespace Utilities
     {
         /// <summary>
@@ -115,18 +116,25 @@ namespace HelixToolkit.UWP
                 TextureFormat = view.Description.Format;
             }
             /// <summary>
-            /// Creates the view from common texture file stream. Supports Bmp, Jpg, DDS, Png.
+            /// Creates the view from texture model.
             /// </summary>
-            /// <param name="stream">The stream.</param>
+            /// <param name="texture">The stream.</param>
             /// <param name="disableAutoGenMipMap">Disable auto mipmaps generation</param>
-            public void CreateView(System.IO.Stream stream, bool disableAutoGenMipMap = false)
+            public void CreateView(TextureModel texture, bool disableAutoGenMipMap = false)
             {
                 this.DisposeAndClear();
-                if (stream != null && device != null)
+                if (texture != null && device != null)
                 {
-                    resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, disableAutoGenMipMap));
-                    textureView = Collect(new ShaderResourceView(device, resource));
-                    TextureFormat = textureView.Description.Format;
+                    if (texture.IsCompressed)
+                    {
+                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, disableAutoGenMipMap));
+                        textureView = Collect(new ShaderResourceView(device, resource));
+                        TextureFormat = textureView.Description.Format;
+                    }
+                    else
+                    {
+                        CreateView(texture.NonCompressedData, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                    }
                 }
             }
             /// <summary>

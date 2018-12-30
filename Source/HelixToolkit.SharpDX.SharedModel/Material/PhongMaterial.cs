@@ -90,43 +90,43 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
-            DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("DiffuseMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// Supports alpha channel image, such as PNG.
-        /// Usage: Load the image file(BMP, PNG, etc) as a stream.
+        /// Usage: Load the image file(BMP, PNG, etc) as a TextureModel.
         /// It can be used to replace DiffuseMap, or used as a mask and apply onto diffuse map. 
         /// The color will be cDiffuse*cAlpha.
         /// </summary>
         public static readonly DependencyProperty DiffuseAlphaMapProperty =
-            DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null, 
-                (d,e)=> { ((d as Material).Core as PhongMaterialCore).DiffuseAlphaMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("DiffuseAlphaMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null, 
+                (d,e)=> { ((d as Material).Core as PhongMaterialCore).DiffuseAlphaMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapProperty =
-            DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).NormalMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("NormalMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).NormalMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty SpecularColorMapProperty =
-            DependencyProperty.Register("SpecularColorMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).SpecularColorMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("SpecularColorMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).SpecularColorMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapProperty =
-            DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("DisplacementMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty EmissiveMapProperty =
-            DependencyProperty.Register("EmissiveMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).EmissiveMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("EmissiveMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).EmissiveMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// 
         /// </summary>
@@ -347,47 +347,47 @@ namespace HelixToolkit.Wpf.SharpDX
         /// System.Windows.Media.Brush to be applied as a System.Windows.Media.Media3D.Material
         /// to a 3-D model.
         /// </summary>
-        public Stream DiffuseMap
+        public TextureModel DiffuseMap
         {
-            get { return (Stream)this.GetValue(DiffuseMapProperty); }
+            get { return (TextureModel)this.GetValue(DiffuseMapProperty); }
             set { this.SetValue(DiffuseMapProperty, value); }
         }
 
 
-        public Stream DiffuseAlphaMap
+        public TextureModel DiffuseAlphaMap
         {
-            get { return (Stream)this.GetValue(DiffuseAlphaMapProperty); }
+            get { return (TextureModel)this.GetValue(DiffuseAlphaMapProperty); }
             set { this.SetValue(DiffuseAlphaMapProperty, value); }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Stream NormalMap
+        public TextureModel NormalMap
         {
-            get { return (Stream)this.GetValue(NormalMapProperty); }
+            get { return (TextureModel)this.GetValue(NormalMapProperty); }
             set { this.SetValue(NormalMapProperty, value); }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Stream SpecularColorMap
+        public TextureModel SpecularColorMap
         {
-            get { return (Stream)this.GetValue(SpecularColorMapProperty); }
+            get { return (TextureModel)this.GetValue(SpecularColorMapProperty); }
             set { this.SetValue(SpecularColorMapProperty, value); }
         }
         /// <summary>
         /// 
         /// </summary>
-        public Stream DisplacementMap
+        public TextureModel DisplacementMap
         {
-            get { return (Stream)this.GetValue(DisplacementMapProperty); }
+            get { return (TextureModel)this.GetValue(DisplacementMapProperty); }
             set { this.SetValue(DisplacementMapProperty, value); }
         }
-        public Stream EmissiveMap
+        public TextureModel EmissiveMap
         {
-            get { return (Stream)this.GetValue(EmissiveMapProperty); }
+            get { return (TextureModel)this.GetValue(EmissiveMapProperty); }
             set { this.SetValue(EmissiveMapProperty, value); }
         }
         /// <summary>

@@ -172,9 +172,9 @@
     <Compile Include="Model\Material\PhongMaterialFactory.cs" />
     <Compile Include="Model\Scene\SceneNode.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
-      <Compile Include="..\AssemblyInfo.cs">
-          <Link>Properties\AssemblyInfo.cs</Link>
-      </Compile>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>

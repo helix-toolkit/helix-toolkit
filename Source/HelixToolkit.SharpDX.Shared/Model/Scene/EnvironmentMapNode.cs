@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The texture.
             /// </value>
-            public Stream Texture
+            public TextureModel Texture
             {
                 set
                 {

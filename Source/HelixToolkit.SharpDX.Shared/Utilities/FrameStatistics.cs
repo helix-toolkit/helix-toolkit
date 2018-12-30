@@ -141,6 +141,7 @@ namespace HelixToolkit.UWP
             int NumCore3D { get; }
             int NumTriangles { get; }
             int NumDrawCalls { get; }
+            float FrustumTestTime { get; }
             RenderDetail FrameDetail { set; get; }
             ICamera Camera { set; get; }
             string GetDetailString();
@@ -169,33 +170,40 @@ namespace HelixToolkit.UWP
             public IFrameStatistics LatencyStatistics { get; } = new FrameStatistics();
 
             /// <summary>
-            /// Gets or sets the number of model3d per frame.
+            /// Gets the number of model3d per frame.
             /// </summary>
             /// <value>
             /// The number model3d.
             /// </value>
             public int NumModel3D { internal set; get; } = 0;
             /// <summary>
-            /// Gets or sets the number of render core3d per frame.
+            /// Gets the number of render core3d per frame.
             /// </summary>
             /// <value>
             /// The number core3 d.
             /// </value>
             public int NumCore3D { internal set; get; } = 0;
             /// <summary>
-            /// Gets or sets the number triangles rendered in geometry model
+            /// Gets the number triangles rendered in geometry model
             /// </summary>
             /// <value>
             /// The number triangles.
             /// </value>
             public int NumTriangles { internal set; get; } = 0;
             /// <summary>
-            /// Gets or sets the number draw calls per frame
+            /// Gets the number draw calls per frame
             /// </summary>
             /// <value>
             /// The number draw calls.
             /// </value>
             public int NumDrawCalls { internal set; get; } = 0;
+            /// <summary>
+            /// Gets the frustum test time.
+            /// </summary>
+            /// <value>
+            /// The frustum test time.
+            /// </value>
+            public float FrustumTestTime { internal set; get; } = 0;
             /// <summary>
             /// Gets or sets the camera.
             /// </summary>
@@ -274,6 +282,7 @@ namespace HelixToolkit.UWP
                 FPSStatistics.Reset();
                 LatencyStatistics.Reset();
                 NumTriangles = NumCore3D = NumModel3D = NumDrawCalls = 0;
+                FrustumTestTime = 0;
             }
             /// <summary>
             /// Returns a <see cref="System.String" /> that represents this instance.

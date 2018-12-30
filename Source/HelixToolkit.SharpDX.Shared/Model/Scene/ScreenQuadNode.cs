@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The texture.
             /// </value>
-            public Stream Texture
+            public TextureModel Texture
             {
                 set { (RenderCore as DrawScreenQuadCore).Texture = value; }
                 get { return (RenderCore as DrawScreenQuadCore).Texture; }

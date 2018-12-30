@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using HelixToolkit.SharpDX.Core;
 namespace CoreTest
 {
     public partial class Form1 : Form
@@ -57,6 +57,15 @@ namespace CoreTest
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             SceneUI.SomeTextFromOutside = textBox1.Text;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            using (var mem = app.Viewport.RenderToBitmapStream())
+            {
+                var bmp = new Bitmap(mem);
+                pictureBox1.Image = bmp;
+            }
         }
     }
 }

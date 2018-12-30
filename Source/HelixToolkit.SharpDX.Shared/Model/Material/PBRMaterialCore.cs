@@ -216,14 +216,14 @@ namespace HelixToolkit.UWP
                 get => enableAutoTangent;
             }
 
-            private Stream albedoMap;
+            private TextureModel albedoMap;
             /// <summary>
             /// Gets or sets the albedo map.
             /// </summary>
             /// <value>
             /// The albedo map.
             /// </value>
-            public Stream AlbedoMap
+            public TextureModel AlbedoMap
             {
                 set => Set(ref albedoMap, value);
                 get => albedoMap;
@@ -236,14 +236,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string AlbedoMapFilePath { set; get; }
 
-            private Stream emissiveMap;
+            private TextureModel emissiveMap;
             /// <summary>
             /// Gets or sets the emissive map.
             /// </summary>
             /// <value>
             /// The emissive map.
             /// </value>
-            public Stream EmissiveMap
+            public TextureModel EmissiveMap
             {
                 set => Set(ref emissiveMap, value);
                 get => emissiveMap; 
@@ -256,14 +256,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string EmissiveMapFilePath { set; get; }
 
-            private Stream normalMap;
+            private TextureModel normalMap;
             /// <summary>
             /// Gets or sets the NormalMap.
             /// </summary>
             /// <value>
             /// NormalMap
             /// </value>
-            public Stream NormalMap
+            public TextureModel NormalMap
             {
                 set => Set(ref normalMap, value); 
                 get => normalMap; 
@@ -277,14 +277,14 @@ namespace HelixToolkit.UWP
             public string NormalMapFilePath { set; get; }
 
 
-            private Stream displacementMap;
+            private TextureModel displacementMap;
             /// <summary>
             /// Gets or sets the DisplacementMap.
             /// </summary>
             /// <value>
             /// DisplacementMap
             /// </value>
-            public Stream DisplacementMap
+            public TextureModel DisplacementMap
             {
                 set => Set(ref displacementMap, value); 
                 get => displacementMap; 
@@ -297,14 +297,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string DisplacementMapFilePath { set; get; }
 
-            private Stream irradianceMap;
+            private TextureModel irradianceMap;
             /// <summary>
             /// Gets or sets the irradiance map.
             /// </summary>
             /// <value>
             /// The irradiance map.
             /// </value>
-            public Stream IrradianceMap
+            public TextureModel IrradianceMap
             {
                 set => Set(ref irradianceMap, value);
                 get => irradianceMap; 
@@ -317,14 +317,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string IrradianceMapFilePath { set; get; }
 
-            private Stream rmaMap;
+            private TextureModel rmaMap;
             /// <summary>
             /// Gets or sets the Roughness, Metallic, Ambient Occlusion map. glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel
             /// </summary>
             /// <value>
             /// The rma map.
             /// </value>
-            public Stream RMAMap
+            public TextureModel RMAMap
             {
                 set => Set(ref rmaMap, value); 
                 get => rmaMap; 

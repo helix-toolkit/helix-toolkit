@@ -1,11 +1,10 @@
 ﻿//#define TESTADDREMOVE
 
-using HelixToolkit.SharpDX.Core.Controls;
-using HelixToolkit.SharpDX.Core.Model;
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Cameras;
+using HelixToolkit.SharpDX.Core.Controls;
+using HelixToolkit.SharpDX.Core.Model;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-using HelixToolkit.SharpDX.Core.Shaders;
 using ImGuiNET;
 using SharpDX;
 using SharpDX.Windows;
@@ -14,14 +13,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
-using HelixToolkit.SharpDX.Core.Animations;
 
 namespace CoreTest
 {
     public class CoreTestApp
     {
+        public ViewportCore Viewport { get => viewport; }
         private readonly ViewportCore viewport;
         private readonly Form window;
         private readonly EffectsManager effectsManager;
@@ -30,7 +28,7 @@ namespace CoreTest
         private GroupNode groupSphere, groupBox, groupPoints, groupLines, groupModel;
         private DirectionalLightNode directionalLight;
         private AmbientLightNode ambientLight;
-        private const int NumItems = 40;
+        private const int NumItems = 400;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
         private MaterialCore[] materialList;
@@ -45,7 +43,11 @@ namespace CoreTest
             BackgroundColor = new System.Numerics.Vector3(0.4f, 0.4f, 0.4f),
             DirectionalLightFollowCamera = true,
             DirectionLightIntensity = 0.8f,
-            EnableFrustum = true, EnableFXAA = true, EnableSSAO = true, WalkAround = false
+            EnableFrustum = true,
+            EnableFXAA = true,
+            EnableSSAO = true,
+            WalkAround = false,
+            ShowRenderDetail = false
         };
 
         public CoreTestApp(Form window)
@@ -83,6 +85,7 @@ namespace CoreTest
             viewport.EnableRenderFrustum = options.EnableFrustum;
             viewport.BackgroundColor = new Color4(options.BackgroundColor.X, options.BackgroundColor.Y, options.BackgroundColor.Z, 1);
             viewport.EnableSSAO = options.EnableSSAO;
+            viewport.ShowRenderDetail = options.ShowRenderDetail;
             if (options.ShowWireframeChanged)
             {
                 options.ShowWireframeChanged = false;

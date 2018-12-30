@@ -92,7 +92,7 @@ namespace InstancingDemo
             ModelMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
             ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
-            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
+            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap.CompressedStream, 20, 20);
             Texture = LoadFileToMemory("Cubemap_Grandcanyon.dds");
             CreateModels();
             timer.Interval = TimeSpan.FromMilliseconds(30);

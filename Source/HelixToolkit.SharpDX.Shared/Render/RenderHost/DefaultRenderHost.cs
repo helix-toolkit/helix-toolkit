@@ -4,7 +4,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
@@ -31,152 +30,38 @@ namespace HelixToolkit.UWP
     {
         using Core;
         using HelixToolkit.Logger;
-        using Model.Scene;
-        using Model.Scene2D;
+        using System.Collections.Concurrent;
 
 
         /// <summary>
         /// 
         /// </summary>
-        public class DefaultRenderHost : DX11RenderHostBase
+        public partial class DefaultRenderHost : DX11RenderHostBase
         {
-            #region Per frame render list
-            protected readonly FastList<SceneNode> viewportRenderables = new FastList<SceneNode>();
-            /// <summary>
-            /// The pending renderables
-            /// </summary>
-            protected readonly FastList<KeyValuePair<int, SceneNode>> perFrameFlattenedScene = new FastList<KeyValuePair<int, SceneNode>>();
-            /// <summary>
-            /// The light renderables
-            /// </summary>
-            protected readonly FastList<SceneNode> lightNodes = new FastList<SceneNode>();
-            /// <summary>
-            /// The pending render nodes
-            /// </summary>
-            protected readonly FastList<SceneNode> opaqueNodes = new FastList<SceneNode>();
-            /// <summary>
-            /// The opaque nodes in frustum
-            /// </summary>
-            protected readonly FastList<SceneNode> opaqueNodesInFrustum = new FastList<SceneNode>();
-            /// <summary>
-            /// The transparent nodes
-            /// </summary>
-            protected readonly FastList<SceneNode> transparentNodes = new FastList<SceneNode>();
-            /// <summary>
-            /// The transparent nodes in frustum
-            /// </summary>
-            protected readonly FastList<SceneNode> transparentNodesInFrustum = new FastList<SceneNode>();
-            /// <summary>
-            /// The particle nodes
-            /// </summary>
-            protected readonly FastList<SceneNode> particleNodes = new FastList<SceneNode>();
-            /// <summary>
-            /// The pending render nodes
-            /// </summary>
-            protected readonly FastList<SceneNode> preProcNodes = new FastList<SceneNode>();
-            /// <summary>
-            /// The pending render nodes
-            /// </summary>
-            protected readonly FastList<SceneNode> postProcNodes = new FastList<SceneNode>();
-            /// <summary>
-            /// The render nodes for post render
-            /// </summary>
-            protected readonly FastList<SceneNode> nodesForPostRender = new FastList<SceneNode>();
-            /// <summary>
-            /// The pending render nodes
-            /// </summary>
-            protected readonly FastList<SceneNode> screenSpacedNodes = new FastList<SceneNode>();
-
-            /// <summary>
-            /// The viewport renderable2D
-            /// </summary>
-            protected readonly FastList<SceneNode2D> viewportRenderable2D = new FastList<SceneNode2D>();
-            /// <summary>
-            /// The need update cores
-            /// </summary>
-            private readonly FastList<RenderCore> needUpdateCores = new FastList<RenderCore>();
-
-            /// <summary>
-            /// Gets the current frame flattened scene graph. KeyValuePair.Key is the depth of the node.
-            /// </summary>
-            /// <value>
-            /// Gets the current frame flattened scene graph
-            /// </value>
-            public sealed override FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return perFrameFlattenedScene; } }
-            /// <summary>
-            /// Gets the per frame lights.
-            /// </summary>
-            /// <value>
-            /// The per frame lights.
-            /// </value>
-            public sealed override IEnumerable<LightNode> PerFrameLights
-            {
-                get { return lightNodes.Select(x => x as LightNode); }
-            }
-            /// <summary>
-            /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
-            /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
-            /// </summary>
-            public sealed override FastList<SceneNode> PerFrameOpaqueNodes { get { return opaqueNodes; } }
-            /// <summary>
-            /// Gets the per frame opaque nodes in frustum.
-            /// </summary>
-            /// <value>
-            /// The per frame opaque nodes in frustum.
-            /// </value>
-            public sealed override FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get { return opaqueNodesInFrustum; } }
-
-            /// <summary>
-            /// Gets the per frame transparent nodes in frustum.
-            /// </summary>
-            /// <value>
-            /// The per frame transparent nodes in frustum.
-            /// </value>
-            public sealed override FastList<SceneNode> PerFrameTransparentNodesInFrustum { get { return transparentNodesInFrustum; } }
-            /// <summary>
-            /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
-            /// <para>This does not include <see cref="RenderType.Opaque"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
-            /// </summary>
-            /// <value>
-            /// The per frame transparent nodes.
-            /// </value>
-            public sealed override FastList<SceneNode> PerFrameTransparentNodes { get { return transparentNodes; } }
-            /// <summary>
-            /// Gets the per frame transparent nodes.
-            /// </summary>
-            /// <value>
-            /// The per frame transparent nodes.
-            /// </value>
-            public sealed override FastList<SceneNode> PerFrameParticleNodes { get { return particleNodes; } }
-            /// <summary>
-            /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameOpaqueNodes"/>
-            /// </summary>
-            /// <value>
-            /// The per frame post effects cores.
-            /// </value>
-            public sealed override FastList<SceneNode> PerFrameNodesWithPostEffect
-            {
-                get { return nodesForPostRender; }
-            }
-            #endregion
-
             private Task asyncTask;
             private Task getTriangleCountTask;
             private Task getPostEffectCoreTask;
+            private OrderablePartitioner<Tuple<int, int>> opaquePartitioner;
+            private OrderablePartitioner<Tuple<int, int>> transparentPartitioner;
+            private Action FrustumTestAction;
 
             private int numRendered = 0;
-
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
             /// </summary>
-            public DefaultRenderHost() { }
+            public DefaultRenderHost()
+            {
+                FrustumTestAction = NoFrustumTest;
+                FrustumEnabledChanged += (s, e) => { SetupFrustumTestFunctions(); };
+            }
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
             /// </summary>
             /// <param name="createRenderer">The create renderer.</param>
             public DefaultRenderHost(Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
             {
-
+                FrustumTestAction = NoFrustumTest;
+                FrustumEnabledChanged += (s, e) => { SetupFrustumTestFunctions(); };
             }
 
             /// <summary>
@@ -281,6 +166,9 @@ namespace HelixToolkit.UWP
                         }
                         particleNodes.Sort();
                     }
+                    opaquePartitioner = opaqueNodes.Count > 0 ? Partitioner.Create(0, opaqueNodes.Count, FrustumPartitionSize) : null;
+                    transparentPartitioner = transparentNodes.Count > 0 ? Partitioner.Create(0, transparentNodes.Count, FrustumPartitionSize) : null;
+                    SetupFrustumTestFunctions();
                 }
                 else
                 {
@@ -320,33 +208,15 @@ namespace HelixToolkit.UWP
                 base.PreRender(invalidateSceneGraph, invalidatePerFrameRenderables);
 
                 SeparateRenderables(RenderContext, invalidateSceneGraph, invalidatePerFrameRenderables);
-                if (EnableRenderFrustum)
-                {
-                    var frustum = renderContext.BoundingFrustum;
-                    for (int i = 0; i < opaqueNodes.Count; ++i)
-                    {
-                        if (opaqueNodes[i].TestViewFrustum(ref frustum))
-                        {
-                            opaqueNodesInFrustum.Add(opaqueNodes[i]);
-                        }
-                    }
-                    for(int i=0; i < transparentNodes.Count; ++i)
-                    {
-                        if(transparentNodes[i].TestViewFrustum(ref frustum))
-                        {
-                            transparentNodesInFrustum.Add(transparentNodes[i]);
-                        }
-                    }
-                }
-                else
-                {
-                    opaqueNodesInFrustum.AddAll(opaqueNodes);
-                    transparentNodesInFrustum.AddAll(transparentNodes);
-                }
+
                 asyncTask = Task.Factory.StartNew(() =>
                 {
                     renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
                 });
+                var ft = Stopwatch.GetTimestamp();
+                FrustumTestAction();
+                ft = Stopwatch.GetTimestamp() - ft;
+                renderStatistics.FrustumTestTime = (float)ft / Stopwatch.Frequency;
                 CollectPostEffectNodes();
                 if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
                 {
@@ -489,7 +359,7 @@ namespace HelixToolkit.UWP
                 viewportRenderable2D.Clear();
                 var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
                 bool renderD2D = false;
-                if (d2dRoot != null && d2dRoot.ItemsInternal.Count() > 0 && RenderConfiguration.RenderD2D)
+                if (d2dRoot != null && d2dRoot.ItemsInternal.Count > 0 && RenderConfiguration.RenderD2D)
                 {
                     renderD2D = true;
                     d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
@@ -556,6 +426,93 @@ namespace HelixToolkit.UWP
                 Clear(true, true);
                 base.OnEndingD3D();
             }
+
+            #region FrustumTest
+            protected void SetupFrustumTestFunctions()
+            {
+                if (!EnableRenderFrustum)
+                {
+                    FrustumTestAction = NoFrustumTest;
+                }
+                else
+                {
+                    if (opaqueNodes.Count < FrustumPartitionSize && transparentNodes.Count < FrustumPartitionSize)
+                    {
+                        FrustumTestAction = FrustumTestDefault;
+                    }
+                    else
+                    {
+                        FrustumTestAction = FrustumTestParallel;
+                    }
+                }
+            }
+
+            private void NoFrustumTest()
+            {
+                opaqueNodesInFrustum.AddAll(opaqueNodes);
+                transparentNodesInFrustum.AddAll(transparentNodes);
+            }
+
+            private void FrustumTestDefault()
+            {
+                var frustum = renderContext.BoundingFrustum;
+                for (int i = 0; i < opaqueNodes.Count; ++i)
+                {
+                    opaqueNodes.Items[i].IsInFrustum = opaqueNodes.Items[i].TestViewFrustum(ref frustum);
+                    if (opaqueNodes.Items[i].IsInFrustum)
+                    {
+                        opaqueNodesInFrustum.Add(opaqueNodes.Items[i]);
+                    }
+                }
+                for (int i = 0; i < transparentNodes.Count; ++i)
+                {
+                    transparentNodes.Items[i].IsInFrustum = transparentNodes.Items[i].TestViewFrustum(ref frustum);
+                    if (transparentNodes.Items[i].IsInFrustum)
+                    {
+                        transparentNodesInFrustum.Add(transparentNodes.Items[i]);
+                    }
+                }
+            }
+
+            private void FrustumTestParallel()
+            {
+                var frustum = renderContext.BoundingFrustum;
+                if (opaquePartitioner != null)
+                {
+                    Parallel.ForEach(opaquePartitioner, (range) =>
+                    {
+                        for (int i = range.Item1; i < range.Item2; ++i)
+                        {
+                            opaqueNodes.Items[i].IsInFrustum = opaqueNodes.Items[i].TestViewFrustum(ref frustum);
+                        }
+                    });
+                    for (int i = 0; i < opaqueNodes.Count; ++i)
+                    {
+                        if (opaqueNodes.Items[i].IsInFrustum)
+                        {
+                            opaqueNodesInFrustum.Add(opaqueNodes.Items[i]);
+                        }
+                    }
+                }
+                if (transparentPartitioner != null)
+                {
+                    Parallel.ForEach(transparentPartitioner, (range) =>
+                    {
+                        for (int i = range.Item1; i < range.Item2; ++i)
+                        {
+                            transparentNodes.Items[i].IsInFrustum = transparentNodes.Items[i].TestViewFrustum(ref frustum);
+                        }
+                    });
+                    for (int i = 0; i < transparentNodes.Count; ++i)
+                    {
+                        if (transparentNodes.Items[i].IsInFrustum)
+                        {
+                            transparentNodesInFrustum.Add(transparentNodes.Items[i]);
+                        }
+                    }
+                }        
+            }
+            #endregion
         }
     }
 

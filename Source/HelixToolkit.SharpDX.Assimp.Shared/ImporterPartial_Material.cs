@@ -9,6 +9,7 @@ using SharpDX.Direct3D11;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using TextureType = Assimp.TextureType;
 
 #if !NETFX_CORE
@@ -29,8 +30,8 @@ namespace HelixToolkit.UWP
     {
         public partial class Importer
         {
-            private readonly ConcurrentDictionary<string, Stream> textureDict =
-                new ConcurrentDictionary<string, Stream>();
+            private readonly ConcurrentDictionary<string, TextureModel> textureDict =
+                new ConcurrentDictionary<string, TextureModel>();
             /// <summary>
             ///     To the phong material.
             /// </summary>
@@ -239,8 +240,7 @@ namespace HelixToolkit.UWP
             /// <param name="material">The material.</param>
             /// <returns></returns>
             /// <exception cref="System.NotSupportedException">Shading Mode {material.ShadingMode}</exception>
-            protected virtual KeyValuePair<global::Assimp.Material, MaterialCore> OnCreateHelixMaterial(
-                global::Assimp.Material material)
+            protected virtual KeyValuePair<global::Assimp.Material, MaterialCore> OnCreateHelixMaterial(global::Assimp.Material material)
             {
                 MaterialCore core = null;
                 if (!material.HasShadingMode)
@@ -349,30 +349,70 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="path">The path.</param>
             /// <returns></returns>
-            protected virtual Stream OnLoadTexture(string path)
+            protected virtual TextureModel OnLoadTexture(string path)
             {
                 try
                 {
-                    var dict = Path.GetDirectoryName(this.path);
-                    if (string.IsNullOrEmpty(dict))
+                    //Check if is embedded material
+                    if (path.StartsWith("*") && int.TryParse(path.Substring(1, path.Length - 1), out int idx) 
+                        && embeddedTextures.Count > idx)
                     {
-                        dict = Directory.GetCurrentDirectory();
+                        return OnLoadEmbeddedTexture(embeddedTextures[idx]);
                     }
-                    var p = Path.GetFullPath(Path.Combine(dict, path));
-                    if (!File.Exists(p))
-                        p = HandleTexturePathNotFound(dict, path);
-                    if (!File.Exists(p))
+                    else
                     {
-                        Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Path = {path}.");
-                        return null;
+                        var ext = Path.GetExtension(path);
+                        if (string.IsNullOrEmpty(ext) || !SupportedTextureFormats.Contains(ext.TrimStart('.').ToLowerInvariant()))
+                        {
+                            Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Format not supported = {ext}.");
+                            return null;
+                        }
+                        var dict = Path.GetDirectoryName(this.path);
+                        if (string.IsNullOrEmpty(dict))
+                        {
+                            dict = Directory.GetCurrentDirectory();
+                        }
+                        var p = Path.GetFullPath(Path.Combine(dict, path));
+                        if (!File.Exists(p))
+                            p = HandleTexturePathNotFound(dict, path);
+                        if (!File.Exists(p))
+                        {
+                            Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Path = {path}.");
+                            return null;
+                        }
+                        return LoadFileToStream(p);
                     }
-                    return LoadFileToStream(p);
                 }
                 catch(Exception ex)
                 {
                     Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Exception. Texture Path = {path}. Exception: {ex.Message}");
                 }
                 return null;
+            }
+
+            protected virtual TextureModel OnLoadEmbeddedTexture(EmbeddedTexture texture)
+            {               
+                if (texture.HasCompressedData)
+                {
+                    Log(HelixToolkit.Logger.LogLevel.Information, $"Loading Embedded Compressed Texture. Format: {texture.CompressedFormatHint}");
+                    if (!SupportedTextureFormatDict.Contains(texture.CompressedFormatHint.ToLowerInvariant()))
+                    {
+                        Log(HelixToolkit.Logger.LogLevel.Information, $"Compressed Texture Format not supported. Format: {texture.CompressedFormatHint}");
+                        return null;
+                    }
+                    var stream = new MemoryStream(texture.CompressedData);
+                    return stream;
+                }
+                else if (texture.HasNonCompressedData)
+                {
+                    Log(HelixToolkit.Logger.LogLevel.Information, $"Loading Embedded NonCompressed Texture");
+                    var rawData = texture.NonCompressedData.Select(x => new Color4(x.R / 255f, x.G / 255f, x.B / 255f, x.A / 255f)).ToArray();
+                    return new TextureModel(rawData, texture.Width, texture.Height);
+                }
+                else
+                {
+                    return null;
+                }
             }
             /// <summary>
             /// Handles the texture path not found. Override to provide your own handling
@@ -390,7 +430,7 @@ namespace HelixToolkit.UWP
                     if (File.Exists(p))
                         return p;
                 }
-
+                
                 //If still not found, try to go one upper level and find
                 var upper = Directory.GetParent(dir).FullName;
                 try
@@ -412,7 +452,7 @@ namespace HelixToolkit.UWP
                 return "";
             }
 
-            private Stream LoadTexture(string path)
+            private TextureModel LoadTexture(string path)
             {
                 if (textureDict.TryGetValue(path, out var s))
                 {
@@ -420,7 +460,8 @@ namespace HelixToolkit.UWP
                 }
 
                 var texture = OnLoadTexture(path);
-                if (texture != null) textureDict.TryAdd(path, texture);
+                if (texture != null)
+                    textureDict.TryAdd(path, texture);
                 return texture;
             }
 
