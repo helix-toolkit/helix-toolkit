@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [Next Version]
+### Potential Breaking Changes:
+1. Material UV Transform changed from  Matrix  to  UVTransform  struct.
+2. Material Texture changed from `Stream` to `TextureModel`. This will allow more powerful texture support in future. In most cases, `Stream` will be implicit convert to `TextureModel` to reduce breaking changes. However, it may have issue if you are using XAML binding to a Texture stream in ViewModel. 
+
 ### Added
 1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.  (WPF.SharpDX/UWP/Core)
 2. Supports [ImGui](https://github.com/ocornut/imgui) (using [ImGui.NET](https://github.com/mellinoe/ImGui.NET)) for SharpDX.Core. Details refer to [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest).  (WPF.SharpDX and UWP)
