@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Potential Breaking Changes:
 1. Material UV Transform changed from  Matrix  to  UVTransform  struct.
 2. Material Texture changed from `Stream` to `TextureModel`. This will allow more powerful texture support in future. In most cases, `Stream` will be implicit convert to `TextureModel` to reduce breaking changes. However, it may have issue if you are using XAML binding to a Texture stream in ViewModel. 
+3. GroupModel3D and ItemsModel3D no longer support using XAML Children and ItemsSource at the same time (To be consistent with other WPF controls such as ListView).
 
 ### Added
 1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.  (WPF.SharpDX/UWP/Core)
@@ -25,6 +26,7 @@ All notable changes to this project will be documented in this file.
 8. Improve unnecessary graphics resource dispose/recreate after switching tab in TabControl. Ref #1013  (WPF.SharpDX/UWP)
 9. Improve rotation around mouse down point #1028 (WPF)
 10. SortingVisual causes lag when using large models #1036 (WPF)
+11. GroupModel3D and ItemsModel3D supports ObservableCollection.Move. Ref #1048 (WPF.SharpDX and UWP)
 
 ### Fixed
 1. Make DPFCanvas work over Remote Desktop again #998. (WPF.SharpDX and UWP)
