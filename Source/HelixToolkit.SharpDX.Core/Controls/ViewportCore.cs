@@ -117,7 +117,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             {
                 return;
             }
-            else if(this.FindHitsInFrustum(position, ref hits) && hits.Count > 0 && hits[0].ModelHit is SceneNode node)
+            else if(this.FindHits(position, ref hits) && hits.Count > 0 && hits[0].ModelHit is SceneNode node)
             {
                 currentNode = node;
                 currentNode.RaiseMouseDownEvent(this, position, hits[0]);
