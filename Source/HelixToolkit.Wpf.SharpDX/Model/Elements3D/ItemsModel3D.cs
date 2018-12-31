@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private IOctreeBasic Octree
         {
-            get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
+            get { return (SceneNode as GroupNode)?.OctreeManager?.Octree; }
         }
 
         private readonly Dictionary<object, Element3D> elementDict = new Dictionary<object, Element3D>();
@@ -122,13 +122,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 o.CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
-
-            foreach (Element3D item in Children)
+            if(e.OldValue == null && e.NewValue != null && Children.Count > 0)
             {
-                item.DataContext = null;
+                throw new InvalidOperationException("Children must be empty before using ItemsSource");
             }
 
-            Clear();
+            elementDict.Clear();
+            Children.Clear();
 
             if (e.NewValue is INotifyCollectionChanged n)
             {
@@ -145,11 +145,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    var model = item as Element3D;
-                    if (model != null)
+                    if (item is Element3D model)
                     {
-                        this.Children.Add(model);
                         elementDict.Add(item, model);
+                        Children.Add(model);
                     }
                     else
                     {
@@ -161,12 +160,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    var model = this.ItemTemplate.LoadContent() as Element3D;
-                    if (model != null)
+                    if (this.ItemTemplate.LoadContent() is Element3D model)
                     {
                         model.DataContext = item;
-                        this.Children.Add(model);
                         elementDict.Add(item, model);
+                        Children.Add(model);
                     }
                     else
                     {
@@ -176,8 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (Children.Count > 0)
             {
-                var groupNode = SceneNode as GroupNode;
-                groupNode.OctreeManager?.RequestRebuild();
+                (SceneNode as GroupNode).OctreeManager?.RequestRebuild();
             }
         }
 
@@ -190,19 +187,18 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (e.OldItems != null)
                     {
                         foreach (var item in e.OldItems)
-                        {
-                            Element3D element;
-                            if(elementDict.TryGetValue(item, out element))
+                        { 
+                            if(elementDict.TryGetValue(item, out var model))
                             {
-                                Children.Remove(element);
                                 elementDict.Remove(item);
+                                Children.Remove(model);                               
                             }
                         }
-                        InvalidateRender();
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    Clear();
+                    Children.Clear();
+                    elementDict.Clear();
                     break;
             }
 
@@ -215,11 +211,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = item as Element3D;
-                                if (model != null)
+                                if (item is Element3D model)
                                 {
-                                    this.Children.Add(model);
                                     elementDict.Add(item, model);
+                                    Children.Add(model);
                                 }
                                 else
                                 {
@@ -231,12 +226,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = this.ItemTemplate.LoadContent() as Element3D;
-                                if (model != null)
+                                if (this.ItemTemplate.LoadContent() is Element3D model)
                                 {
                                     model.DataContext = item;
-                                    this.Children.Add(model);
                                     elementDict.Add(item, model);
+                                    Children.Add(model);
                                 }
                                 else
                                 {
@@ -245,7 +239,6 @@ namespace HelixToolkit.Wpf.SharpDX
                             }
                         }
                     }
-                    InvalidateRender();
                     break;
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
@@ -255,12 +248,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in e.NewItems)
                             {
-                                var model = this.ItemTemplate.LoadContent() as Element3D;
-                                if (model != null)
-                                {                                    
+                                if (this.ItemTemplate.LoadContent() is Element3D model)
+                                {
                                     model.DataContext = item;
-                                    this.Children.Add(model);
                                     elementDict.Add(item, model);
+                                    Children.Add(model);
                                 }
                                 else
                                 {
@@ -272,11 +264,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in e.NewItems)
                             {
-                                var model = item as Element3D;
-                                if (model != null)
-                                {                                    
-                                    this.Children.Add(model);
+                                if (item is Element3D model)
+                                {
                                     elementDict.Add(item, model);
+                                    Children.Add(model);
                                 }
                                 else
                                 {
@@ -286,14 +277,12 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                     }
                     break;
+                case NotifyCollectionChangedAction.Move:
+                    Children.Move(e.OldStartingIndex, e.NewStartingIndex);
+                    break;
             }
         }
 
-        public override void Clear()
-        {
-            elementDict.Clear();
-            base.Clear();
-        }
 
         protected override void Dispose(bool disposing)
         {
