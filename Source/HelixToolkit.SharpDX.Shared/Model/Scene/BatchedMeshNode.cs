@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP
         /// <see cref="Material"/> is used if <see cref="Materials"/> = null. And also used for shared material texture binding.
         /// </para>
         /// </summary>
-        public class BatchedMeshNode : SceneNode, IHitable, IThrowingShadow, IBoundable
+        public class BatchedMeshNode : SceneNode, IHitable, IThrowingShadow, IBoundable, IApplyPostEffect
         {
             #region Properties
             private BatchedMeshGeometryConfig[] geometries;

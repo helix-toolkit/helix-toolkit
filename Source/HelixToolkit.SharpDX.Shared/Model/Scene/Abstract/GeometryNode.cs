@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP
         using Core;
         using Components;
 
-        public abstract class GeometryNode : SceneNode, IHitable, IThrowingShadow, IInstancing, IBoundable
+        public abstract class GeometryNode : SceneNode, IHitable, IThrowingShadow, IInstancing, IBoundable, IApplyPostEffect
         {
             #region Properties
 

@@ -117,10 +117,11 @@ namespace HelixToolkit.SharpDX.Core.Controls
             {
                 return;
             }
-            else if(this.FindHitsInFrustum(position, ref hits) && hits.Count > 0 && hits[0].ModelHit is SceneNode node)
+            else if(this.FindHits(position, ref hits) && hits.Count > 0 && hits[0].ModelHit is SceneNode node)
             {
                 currentNode = node;
                 currentNode.RaiseMouseDownEvent(this, position, hits[0]);
+                NodeHitOnMouseDown?.Invoke(this, new SceneNodeMouseDownArgs(this, position, currentNode, hits[0]));
             }
         }
         /// <summary>
@@ -132,6 +133,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             if(currentNode != null && hits.Count > 0)
             {
                 currentNode.RaiseMouseMoveEvent(this, position, hits[0]);
+                NodeHitOnMouseMove?.Invoke(this, new SceneNodeMouseMoveArgs(this, position, currentNode, hits[0]));
             }
         }
         /// <summary>
@@ -143,6 +145,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             if(currentNode != null && hits.Count > 0)
             {
                 currentNode.RaiseMouseUpEvent(this, position, hits[0]);
+                NodeHitOnMouseUp?.Invoke(this, new SceneNodeMouseUpArgs(this, position, currentNode, hits[0]));
             }
             hits.Clear();
             currentNode = null;

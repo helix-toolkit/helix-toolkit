@@ -226,7 +226,7 @@ namespace HelixToolkit.UWP
                 {
                     using (var renderTargetBuffer = context.GetOffScreenRT(TextureSize, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm))
                     {
-                        OnUpdatePerModelStruct(context);
+                        OnUpdatePerModelStruct(context);                   
                         if (drawMode == OutlineMode.Separated)
                         {
                             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
@@ -235,7 +235,6 @@ namespace HelixToolkit.UWP
                                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
                                 deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, width, height, true,
                                     global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
-                                modelCB.Upload(deviceContext, ref modelStruct);
                                 if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                                 {
                                     var color = Color;
@@ -295,9 +294,7 @@ namespace HelixToolkit.UWP
                                 DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer, width, height);
                             }
                         }
-                    }
-            
-
+                    }           
                 }
             }
 
@@ -364,7 +361,7 @@ namespace HelixToolkit.UWP
             {
                 modelStruct.Param.M11 = scaleX;
                 modelStruct.Param.M12 = ScaleY;
-                modelStruct.Color = color;
+                modelStruct.Color = new Color4();
                 modelStruct.ViewportScale = (int)TextureSize;
             }
         }

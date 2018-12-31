@@ -99,6 +99,7 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static bool FindHits(this IViewport3DX viewport, Vector2 position, ref List<HitTestResult> hits)
         {
+            hits?.Clear();
             if (viewport.CameraCore is ProjectionCameraCore && viewport.RenderHost != null)
             {
                 if(!viewport.UnProject(position, out var ray))

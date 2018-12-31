@@ -49,9 +49,9 @@ namespace GroupElementTester
 
         public Transform3D Transform4 { get; } = new Media3D.TranslateTransform3D(-6, 0, 0);
 
-        public ObservableElement3DCollection GroupModelSource { get; } = new ObservableElement3DCollection();
-        public ObservableElement3DCollection TransparentGroupModelSource { get; } = new ObservableElement3DCollection();
-        public ObservableCollection<MeshDataModel> ItemsSource { get; } = new ObservableCollection<MeshDataModel>();
+        public ObservableElement3DCollection GroupModelSource { private set; get; } = new ObservableElement3DCollection();
+        public ObservableElement3DCollection TransparentGroupModelSource { private set; get; } = new ObservableElement3DCollection();
+        public ObservableCollection<MeshDataModel> ItemsSource { private set; get; } = new ObservableCollection<MeshDataModel>();
 
         private PhongMaterialCollection materialCollection = new PhongMaterialCollection();
 
@@ -74,6 +74,8 @@ namespace GroupElementTester
 
         public ICommand AnimateItemsModelCommand { private set; get; }
 
+        public ICommand ReplaceGroupSourceCommand { private set; get; }
+        public ICommand ReplaceItemsModelSourceCommand { private set; get; }
         public MainViewModel()
         {
             //    RenderTechniquesManager = new DefaultRenderTechniquesManager();           
@@ -125,8 +127,15 @@ namespace GroupElementTester
             RemoveItemsModelCommand = new RelayCommand(RemoveItemsModel);
             ClearItemsModelCommand = new RelayCommand((o) => { ItemsSource.Clear(); });
             AnimateItemsModelCommand = new RelayCommand(AnimateItemsModel);
-
-
+            ReplaceGroupSourceCommand = new RelayCommand((o) => {
+                GroupModelSource = new ObservableElement3DCollection();
+                OnPropertyChanged(nameof(GroupModelSource));
+            });
+            ReplaceItemsModelSourceCommand = new RelayCommand((o) => 
+            {
+                ItemsSource = new ObservableCollection<MeshDataModel>();
+                OnPropertyChanged(nameof(ItemsSource));
+            });
         }
 
         private void AddGroupModel(object o)

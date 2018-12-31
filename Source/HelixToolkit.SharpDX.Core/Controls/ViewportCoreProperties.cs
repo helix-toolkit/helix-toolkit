@@ -361,6 +361,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// Occurs when [on error occurred].
         /// </summary>
         public event EventHandler<Exception> ErrorOccurred;
+
+        public event EventHandler<SceneNodeMouseDownArgs> NodeHitOnMouseDown;
+        public event EventHandler<SceneNodeMouseUpArgs> NodeHitOnMouseUp;
+        public event EventHandler<SceneNodeMouseMoveArgs> NodeHitOnMouseMove;
         #endregion
 
         internal ViewBoxNode ViewCube { get; } = new ViewBoxNode();

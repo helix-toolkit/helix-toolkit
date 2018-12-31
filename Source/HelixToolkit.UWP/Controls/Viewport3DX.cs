@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP
         /// The nearest valid result during a hit test.
         /// </summary>
         private HitTestResult currentHit;
-
+        private List<HitTestResult> hits = new List<HitTestResult>();
         private bool enableMouseButtonHitTest = true;
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
@@ -568,9 +568,8 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-
-            var hits = this.FindHits(pt);
-            if (hits.Count > 0)
+           
+            if (this.FindHits(pt.ToVector2(), ref hits) && hits.Count > 0)
             {
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
                 if (this.currentHit != null)

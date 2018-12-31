@@ -1636,7 +1636,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             
-            if (this.FindHitsInFrustum(pt.ToVector2(), ref hits))
+            if (this.FindHits(pt.ToVector2(), ref hits))
             {
                 // We can't capture Touch because that would disable the CameraController which uses Manipulation,
                 // but since Manipulation captures touch, we can be quite sure to get every relevant touch event.

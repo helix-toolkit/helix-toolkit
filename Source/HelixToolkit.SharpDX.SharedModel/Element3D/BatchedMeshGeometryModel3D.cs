@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <see cref="Material"/> is used if <see cref="BatchedMaterials"/> = null. And also used for shared material texture binding.
     /// </para>
     /// </summary>
-    public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow
+    public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, IApplyPostEffect
     {
         #region Dependency Properties
         public IList<BatchedMeshGeometryConfig> BatchedGeometries

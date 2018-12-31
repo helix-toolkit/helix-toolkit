@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
-    public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow
+    public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IApplyPostEffect
     {
         #region DependencyProperties        
         /// <summary>
