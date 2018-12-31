@@ -25,7 +25,7 @@ namespace CoreTest
         private readonly EffectsManager effectsManager;
         private CameraCore camera;
         private Geometry3D box, sphere, points, lines;
-        private GroupNode groupSphere, groupBox, groupPoints, groupLines, groupModel;
+        private GroupNode groupSphere, groupBox, groupPoints, groupLines, groupModel, groupEffects;
         private DirectionalLightNode directionalLight;
         private AmbientLightNode ambientLight;
         private const int NumItems = 400;
@@ -36,6 +36,7 @@ namespace CoreTest
         private bool resizeRequested = false;
         private CameraController cameraController;
         private Stack<IEnumerator<SceneNode>> stackCache = new Stack<IEnumerator<SceneNode>>();
+        private IApplyPostEffect currentHighlight = null;
 
         private ViewportOptions options = new ViewportOptions()
         {
@@ -141,6 +142,7 @@ namespace CoreTest
             groupBox = new GroupNode();
             groupLines = new GroupNode();
             groupPoints = new GroupNode();
+            groupEffects = new GroupNode();
             InitializeMaterials();
             materialList = materials.Values.ToArray();
             var materialCount = materialList.Length;
@@ -191,6 +193,23 @@ namespace CoreTest
             //io.KeyMap[(int)ImGuiKey.Backspace] = (int)Keys.Back;
             //io.KeyMap[(int)ImGuiKey.Enter] = (int)Keys.Enter;
             //io.KeyMap[(int)ImGuiKey.Escape] = (int)Keys.Escape;
+            groupEffects.AddChildNode(new NodePostEffectBorderHighlight() { EffectName = "highlightEffect", Color = Color.Yellow });
+            viewport.Items.AddChildNode(groupEffects);
+            viewport.NodeHitOnMouseDown += Viewport_NodeHitOnMouseDown;
+        }
+
+        private void Viewport_NodeHitOnMouseDown(object sender, SceneNodeMouseDownArgs e)
+        {
+            if(currentHighlight != null)
+            {
+                currentHighlight.PostEffects = "";
+            }
+            currentHighlight = null;
+            if(e.HitResult.ModelHit is IApplyPostEffect s)
+            {
+                currentHighlight = s;
+                currentHighlight.PostEffects = "highlightEffect";
+            }
         }
 
         private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)

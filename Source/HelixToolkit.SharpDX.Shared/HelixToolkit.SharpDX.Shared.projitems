@@ -100,6 +100,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\EventArguments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ICamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IApplyPostEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IEffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferModel.cs" />
