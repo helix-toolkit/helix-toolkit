@@ -152,7 +152,8 @@ namespace MaterialDemo
                             AlbedoColor = p.DiffuseColor,
                             AlbedoMap = p.DiffuseMap,
                             NormalMap = p.NormalMap,
-                            RMAMap = p.SpecularColorMap,
+                            RoughnessMetallicMap = p.SpecularColorMap,
+                            AmbientOcculsionMap = p.SpecularColorMap,
                             RenderShadowMap = true,
                             RenderEnvironmentMap=true,
                             MetallicFactor = 1, // Set to 1 if using RMA Map

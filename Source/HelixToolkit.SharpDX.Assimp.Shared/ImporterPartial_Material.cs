@@ -199,13 +199,13 @@ namespace HelixToolkit.UWP
                 {
                     var t = material.GetProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE,
                         TextureType.Unknown, 0);
-                    pbr.RMAMap = LoadTexture(t.GetStringValue());
-                    pbr.RMAMapFilePath = t.GetStringValue();
+                    pbr.RoughnessMetallicMap = LoadTexture(t.GetStringValue());
+                    pbr.RoughnessMetallicMapFilePath = t.GetStringValue();
                 }
                 else if (material.HasTextureSpecular)
                 {
-                    pbr.RMAMap = LoadTexture(material.TextureSpecular.FilePath);
-                    pbr.RMAMapFilePath = material.TextureSpecular.FilePath;
+                    pbr.RoughnessMetallicMap = LoadTexture(material.TextureSpecular.FilePath);
+                    pbr.RoughnessMetallicMapFilePath = material.TextureSpecular.FilePath;
                 }
 
                 if (material.HasTextureDisplacement)
@@ -215,8 +215,8 @@ namespace HelixToolkit.UWP
                 }
                 if (material.HasTextureLightMap)
                 {
-                    pbr.IrradianceMap = LoadTexture(material.TextureLightMap.FilePath);
-                    pbr.IrradianceMapFilePath = material.TextureLightMap.FilePath;
+                    pbr.AmbientOcculsionMap = LoadTexture(material.TextureLightMap.FilePath);
+                    pbr.AmbientOcculsionMapFilePath = material.TextureLightMap.FilePath;
                 }
                 if (material.HasTextureEmissive)
                 {

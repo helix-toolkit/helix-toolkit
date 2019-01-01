@@ -77,7 +77,8 @@ cbuffer cbMesh : register(b1)
     float ConstantReflectance;
     float ClearCoat;
     float ClearCoatRoughness;
-    float2 padding1;
+    float padding1;
+    bool bHasAOMap;
 #endif
     bool bHasDiffuseMap = false;
     bool bHasNormalMap = false;
@@ -89,7 +90,7 @@ cbuffer cbMesh : register(b1)
     bool bHasSpecularMap;    
 #endif
 #if defined(PBR)
-    bool bHasRMAMap;    
+    bool bHasRMMap;    
     bool bHasIrradianceMap; 
 #endif
     bool bAutoTengent;
@@ -293,8 +294,9 @@ Texture2D texSpecularMap : register(t3);
 Texture2D<float3> texEmissiveMap : register(t5);
 #endif
 #if defined(PBR)
-Texture2D<float3> texRMAMap    : register(t2);
-Texture2D<float3> texEmissiveMap : register(t3);
+Texture2D<float3> texRMMap    : register(t2);
+Texture2D<float> texAOMap : register(t3);
+Texture2D<float3> texEmissiveMap : register(t5);
 TextureCube<float3> texIrradianceMap : register(t21);
 #endif
 Texture2D<float3> texDisplacementMap : register(t4);

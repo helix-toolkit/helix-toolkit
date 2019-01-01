@@ -353,7 +353,8 @@ namespace HelixToolkit.UWP
         public const string ClearCoatStr = "ClearCoat";
         public const string ClearCoatRoughnessStr = "ClearCoatRoughness";
 
-        public const string HasRMAMapStr = "bHasRMAMap";//bool
+        public const string HasRMMapStr = "bHasRMMap";//bool
+        public const string HasAOMapStr = "bHasAOMap";//bool
         public const string HasEmissiveMapStr = "bHasEmissiveMap";//bool
         public const string HasIrradianceMapStr = "bHasIrradianceMap";//bool
         public const string EnableAutoTangent = "bAutoTengent";//bool

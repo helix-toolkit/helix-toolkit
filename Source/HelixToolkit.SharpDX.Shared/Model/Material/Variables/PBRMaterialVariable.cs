@@ -26,16 +26,16 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class PBRMaterialVariable : MaterialVariable
         {
-            private const int NUMTEXTURES = 6;
+            private const int NUMTEXTURES = 7;
             private const int NUMSAMPLERS = 4;
-            private const int AlbedoMapIdx = 0, NormalMapIdx = 1, RMAMapIdx = 2, EmissiveMapIdx = 3, IrradianceMapIdx = 4, DisplaceMapIdx = 5;
+            private const int AlbedoMapIdx = 0, NormalMapIdx = 1, RMMapIdx = 2, EmissiveMapIdx = 3, IrradianceMapIdx = 4, DisplaceMapIdx = 5, AOMapIdx = 6;
             private const int SurfaceSamplerIdx = 0, IBLSamplerIdx = 1, ShadowSamplerIdx = 2, DisplaceSamplerIdx = 3;
             private readonly ITextureResourceManager textureManager;
             private readonly IStatePoolManager statePoolManager;
             private readonly ShaderResourceViewProxy[] TextureResources = new ShaderResourceViewProxy[NUMTEXTURES];
             private readonly SamplerStateProxy[] SamplerResources = new SamplerStateProxy[NUMSAMPLERS];
 
-            private int texDiffuseSlot, texNormalSlot, texRMASlot, texEmissiveSlot, texIrradianceSlot, texDisplaceSlot, texShadowSlot;
+            private int texDiffuseSlot, texNormalSlot, texRMSlot, texEmissiveSlot, texIrradianceSlot, texDisplaceSlot, texShadowSlot, texAOSlot;
             private int samplerSurfaceSlot, samplerIBLSlot, samplerShadowSlot, samplerDisplaceSlot;
             private uint textureIndex = 0;
 
@@ -93,7 +93,8 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PBRMaterialCore.RenderNormalMap), () => { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.RenderNormalMap && TextureResources[NormalMapIdx] != null ? 1 : 0); });
                 AddPropertyBinding(nameof(PBRMaterialCore.RenderDisplacementMap), () => { WriteValue(PhongPBRMaterialStruct.HasDisplacementMapStr, material.RenderDisplacementMap && TextureResources[DisplaceMapIdx] != null ? 1 : 0); });
                 AddPropertyBinding(nameof(PBRMaterialCore.RenderIrradianceMap), () => { WriteValue(PhongPBRMaterialStruct.HasIrradianceMapStr, material.RenderIrradianceMap && TextureResources[IrradianceMapIdx] != null ? 1 : 0); });
-                AddPropertyBinding(nameof(PBRMaterialCore.RenderRMAMap), () => { WriteValue(PhongPBRMaterialStruct.HasRMAMapStr, material.RenderRMAMap && TextureResources[RMAMapIdx] != null ? 1 : 0); });
+                AddPropertyBinding(nameof(PBRMaterialCore.RenderRoughnessMetallicMap), () => { WriteValue(PhongPBRMaterialStruct.HasRMMapStr, material.RenderRoughnessMetallicMap && TextureResources[RMMapIdx] != null ? 1 : 0); });
+                AddPropertyBinding(nameof(PBRMaterialCore.RenderAmbientOcclusionMap), () => { WriteValue(PhongPBRMaterialStruct.HasAOMapStr, material.RenderAmbientOcclusionMap && TextureResources[AOMapIdx] != null ? 1 : 0); });
                 AddPropertyBinding(nameof(PBRMaterialCore.EnableAutoTangent), () => { WriteValue(PhongPBRMaterialStruct.EnableAutoTangent, material.EnableAutoTangent); });
                 AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapScaleMask), () => { WriteValue(PhongPBRMaterialStruct.DisplacementMapScaleMaskStr, material.DisplacementMapScaleMask); });
                 AddPropertyBinding(nameof(PBRMaterialCore.RenderShadowMap), () => { WriteValue(PhongPBRMaterialStruct.RenderShadowMapStr, material.RenderShadowMap ? 1 : 0); });
@@ -113,7 +114,8 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PBRMaterialCore.NormalMap), () => { CreateTextureView(material.NormalMap, NormalMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderNormalMap)); });
                 AddPropertyBinding(nameof(PBRMaterialCore.IrradianceMap), () => { CreateTextureView(material.IrradianceMap, IrradianceMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderIrradianceMap)); });
                 AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMap), () => { CreateTextureView(material.DisplacementMap, DisplaceMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderDisplacementMap)); });
-                AddPropertyBinding(nameof(PBRMaterialCore.RMAMap), () => { CreateTextureView(material.RMAMap, RMAMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderRMAMap)); });
+                AddPropertyBinding(nameof(PBRMaterialCore.RoughnessMetallicMap), () => { CreateTextureView(material.RoughnessMetallicMap, RMMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderRoughnessMetallicMap)); });
+                AddPropertyBinding(nameof(PBRMaterialCore.AmbientOcculsionMap), () => { CreateTextureView(material.AmbientOcculsionMap, AOMapIdx); TriggerPropertyAction(nameof(PBRMaterialCore.RenderAmbientOcclusionMap)); });
                 AddPropertyBinding(nameof(PBRMaterialCore.SurfaceMapSampler), () => { CreateSampler(material.SurfaceMapSampler, SurfaceSamplerIdx); });
                 AddPropertyBinding(nameof(PBRMaterialCore.IBLSampler), () => { CreateSampler(material.IBLSampler, IBLSamplerIdx); });
                 AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapSampler), () => { CreateSampler(material.DisplacementMapSampler, DisplaceSamplerIdx); });
@@ -151,7 +153,8 @@ namespace HelixToolkit.UWP
                     CreateTextureView(material.DisplacementMap, DisplaceMapIdx);
                     CreateTextureView(material.EmissiveMap, EmissiveMapIdx);
                     CreateTextureView(material.IrradianceMap, IrradianceMapIdx);
-                    CreateTextureView(material.RMAMap, RMAMapIdx);
+                    CreateTextureView(material.RoughnessMetallicMap, RMMapIdx);
+                    CreateTextureView(material.AmbientOcculsionMap, AOMapIdx);
                 }
                 else
                 {
@@ -167,6 +170,7 @@ namespace HelixToolkit.UWP
             {
                 RemoveAndDispose(ref SamplerResources[SurfaceSamplerIdx]);
                 RemoveAndDispose(ref SamplerResources[IBLSamplerIdx]);
+                RemoveAndDispose(ref SamplerResources[DisplaceSamplerIdx]);
                 RemoveAndDispose(ref SamplerResources[ShadowSamplerIdx]);
                 if (material != null)
                 {
@@ -250,7 +254,8 @@ namespace HelixToolkit.UWP
                 int idx = shader.ShaderStageIndex;
                 shader.BindTexture(deviceContext, texDiffuseSlot, TextureResources[AlbedoMapIdx]);
                 shader.BindTexture(deviceContext, texNormalSlot, TextureResources[NormalMapIdx]);
-                shader.BindTexture(deviceContext, texRMASlot, TextureResources[RMAMapIdx]);
+                shader.BindTexture(deviceContext, texRMSlot, TextureResources[RMMapIdx]);
+                shader.BindTexture(deviceContext, texAOSlot, TextureResources[AOMapIdx]);
                 shader.BindTexture(deviceContext, texEmissiveSlot, TextureResources[EmissiveMapIdx]);
                 shader.BindTexture(deviceContext, texIrradianceSlot, TextureResources[IrradianceMapIdx]);
 
@@ -264,8 +269,8 @@ namespace HelixToolkit.UWP
                 texDiffuseSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 texEmissiveSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.EmissiveTB);
                 texNormalSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.NormalMapTB);
-                texRMASlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.RMAMapTB);
-            
+                texRMSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.RMMapTB);
+                texAOSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.AOMapTB);
                 texShadowSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.ShadowMapTB);
                 texIrradianceSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.IrradianceMap);
                 samplerSurfaceSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);

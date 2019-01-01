@@ -208,18 +208,20 @@ float4 main(PSInput input) : SV_Target
     {
         albedo *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
-    if (bHasRMAMap)
+    if (bHasRMMap)
     {
-        float3 rmaSample = texRMAMap.Sample(samplerSurface, input.t).rgb;
-        RMA.rgb = RMA.rgb * rmaSample.rgb;
+        RMA.gb *= texRMMap.Sample(samplerSurface, input.t).gb;
     }
-    float ambientOcculsion = input.c2.a;
-    if (SSAOEnabled)
+    if (bHasAOMap)
+    {
+        RMA.r *= texAOMap.Sample(samplerSurface, input.t).r;
+    }
+    else if (SSAOEnabled)
     {
         float2 quadTex = input.p.xy * vViewport.zw;
-        ambientOcculsion *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
+        RMA.r *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
-    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, ambientOcculsion, ClearCoat, ClearCoatRoughness);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, ConstantReflectance, ClearCoat, ClearCoatRoughness);
     float s = 1;
     if (bHasShadowMap)
     {
@@ -227,11 +229,12 @@ float4 main(PSInput input) : SV_Target
             s = shadowStrength(input.sp);
     }
     color.rgb *= s;
+    float3 emissive = vMaterialEmissive.rgb;
     if (bHasEmissiveMap)
     {
-        color += texEmissiveMap.Sample(samplerSurface, input.t).rgb;
+        emissive *= texEmissiveMap.Sample(samplerSurface, input.t).rgb;
     }
-    color += vMaterialEmissive.rgb;
+    color += emissive;
     return float4(color, albedo.a * input.cDiffuse.a);
 }
 #endif

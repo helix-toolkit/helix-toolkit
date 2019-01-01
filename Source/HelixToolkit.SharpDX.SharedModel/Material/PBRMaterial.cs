@@ -110,10 +110,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) => { ((d as Material).Core as PBRMaterialCore).EmissiveMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel
+        /// If uses RMA map, set both <see cref="RoughnessMetallicMap"/> and <see cref="AmbientOcculsionMap"/> to the same texture.
         /// </summary>
-        public static readonly DependencyProperty RMAMapProperty =
-            DependencyProperty.Register("RMAMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PBRMaterialCore).RMAMap = e.NewValue as TextureModel; }));
+        public static readonly DependencyProperty RoughnessMetallicMapProperty =
+            DependencyProperty.Register("RoughnessMetallicMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PBRMaterialCore).RoughnessMetallicMap = e.NewValue as TextureModel; }));
+
+        /// <summary>
+        /// glTF2 defines metalness as B channel, roughness as G channel, and occlusion as R channel.
+        /// If uses RMA map, set both <see cref="RoughnessMetallicMap"/> and <see cref="AmbientOcculsionMap"/> to the same texture.
+        /// </summary>
+        public static readonly DependencyProperty AmbientOcculsionMapProperty =
+            DependencyProperty.Register("AmbientOcculsionMap", typeof(TextureModel), typeof(PBRMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PBRMaterialCore).AmbientOcculsionMap = e.NewValue as TextureModel; }));
         /// <summary>
         /// 
         /// </summary>
@@ -184,11 +193,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public static readonly DependencyProperty RenderRMAMapProperty =
-            DependencyProperty.Register("RenderRMAMap", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(true,
+        public static readonly DependencyProperty RenderRoughnessMetallicMapProperty =
+            DependencyProperty.Register("RenderRoughnessMetallicMap", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Material).Core as PBRMaterialCore).RenderRMAMap = (bool)e.NewValue;
+                    ((d as Material).Core as PBRMaterialCore).RenderRoughnessMetallicMap = (bool)e.NewValue;
+                }));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty RenderAmbientOcclusionMapProperty =
+            DependencyProperty.Register("RenderAmbientOcclusionMap", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as PBRMaterialCore).RenderAmbientOcclusionMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -373,15 +392,29 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(EmissiveMapProperty, value); }
         }
         /// <summary>
-        /// Gets or sets the Roughness, Metallic, Ambient Occlusion map. glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel
+        /// Gets or sets the Roughness, Metallic, Ambient Occlusion map. 
+        /// glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel
         /// </summary>
         /// <value>
         /// The rma map.
         /// </value>
-        public TextureModel RMAMap
+        public TextureModel RoughnessMetallicMap
         {
-            get { return (TextureModel)this.GetValue(RMAMapProperty); }
-            set { this.SetValue(RMAMapProperty, value); }
+            get { return (TextureModel)this.GetValue(RoughnessMetallicMapProperty); }
+            set { this.SetValue(RoughnessMetallicMapProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the ambient occlusion map. 
+        /// glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel.
+        /// If uses RMA map, set both <see cref="RoughnessMetallicMap"/> and <see cref="AmbientOcculsionMap"/> to the same texture
+        /// </summary>
+        /// <value>
+        /// The ao map.
+        /// </value>
+        public TextureModel AmbientOcculsionMap
+        {
+            get { return (TextureModel)this.GetValue(AmbientOcculsionMapProperty); }
+            set { this.SetValue(AmbientOcculsionMapProperty, value); }
         }
         /// <summary>
         /// 
@@ -471,10 +504,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public bool RenderRMAMap
+        public bool RenderRoughnessMetallicMap
         {
-            get { return (bool)this.GetValue(RenderRMAMapProperty); }
-            set { this.SetValue(RenderRMAMapProperty, value); }
+            get { return (bool)this.GetValue(RenderRoughnessMetallicMapProperty); }
+            set { this.SetValue(RenderRoughnessMetallicMapProperty, value); }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderAmbientOcclusionMap
+        {
+            get { return (bool)this.GetValue(RenderAmbientOcclusionMapProperty); }
+            set { this.SetValue(RenderAmbientOcclusionMapProperty, value); }
         }
         /// <summary>
         /// 
@@ -620,7 +661,8 @@ namespace HelixToolkit.Wpf.SharpDX
             AlbedoMap = core.AlbedoMap;
             NormalMap = core.NormalMap;
             EmissiveMap = core.EmissiveMap;
-            RMAMap = core.RMAMap;
+            RoughnessMetallicMap = core.RoughnessMetallicMap;
+            AmbientOcculsionMap = core.AmbientOcculsionMap;
             IrradianceMap = core.IrradianceMap;
             DisplacementMap = core.DisplacementMap;
             SurfaceMapSampler = core.SurfaceMapSampler;
@@ -633,7 +675,8 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderEnvironmentMap = core.RenderEnvironmentMap;
             RenderIrradianceMap = core.RenderIrradianceMap;
             RenderNormalMap = core.RenderNormalMap;
-            RenderRMAMap = core.RenderRMAMap;
+            RenderRoughnessMetallicMap = core.RenderRoughnessMetallicMap;
+            RenderAmbientOcclusionMap = core.RenderAmbientOcclusionMap;
             RenderShadowMap = core.RenderShadowMap;
             EnableAutoTangent = core.EnableAutoTangent;
             DisplacementMapScaleMask = core.DisplacementMapScaleMask;
@@ -661,7 +704,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,
-                RMAMap = RMAMap,
+                RoughnessMetallicMap = RoughnessMetallicMap,
+                AmbientOcculsionMap = AmbientOcculsionMap,
                 IrradianceMap = IrradianceMap,
                 DisplacementMap = DisplacementMap,
                 SurfaceMapSampler = SurfaceMapSampler,
@@ -674,7 +718,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderIrradianceMap = RenderIrradianceMap,
                 RenderNormalMap = RenderNormalMap,
-                RenderRMAMap = RenderRMAMap,
+                RenderRoughnessMetallicMap = RenderRoughnessMetallicMap,
+                RenderAmbientOcclusionMap = RenderAmbientOcclusionMap,
                 RenderShadowMap = RenderShadowMap,
                 EnableAutoTangent = EnableAutoTangent,
                 DisplacementMapScaleMask = DisplacementMapScaleMask,
@@ -709,7 +754,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 AlbedoMap = AlbedoMap,
                 NormalMap = NormalMap,
                 EmissiveMap = EmissiveMap,
-                RMAMap = RMAMap,
+                RoughnessMetallicMap = RoughnessMetallicMap,
+                AmbientOcculsionMap = AmbientOcculsionMap,
                 IrradianceMap = IrradianceMap,
                 DisplacementMap = DisplacementMap,
                 SurfaceMapSampler = SurfaceMapSampler,
@@ -722,7 +768,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderEnvironmentMap = RenderEnvironmentMap,
                 RenderIrradianceMap = RenderIrradianceMap,
                 RenderNormalMap = RenderNormalMap,
-                RenderRMAMap = RenderRMAMap,
+                RenderRoughnessMetallicMap = RenderRoughnessMetallicMap,
+                RenderAmbientOcclusionMap = RenderAmbientOcclusionMap,
                 RenderShadowMap = RenderShadowMap,
                 EnableAutoTangent = EnableAutoTangent,
                 DisplacementMapScaleMask = DisplacementMapScaleMask,

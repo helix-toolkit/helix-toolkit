@@ -47,7 +47,8 @@ namespace HelixToolkit.UWP
             public const string BillboardTB = "billboardTexture";
             public const string ColorStripe1DXTB = "texColorStripe1DX";
             public const string ColorStripe1DYTB = "texColorStripe1DY";
-            public const string RMAMapTB = "texRMAMap";
+            public const string RMMapTB = "texRMMap";
+            public const string AOMapTB = "texAOMap";
             public const string EmissiveTB = "texEmissiveMap";
             public const string IrradianceMap = "texIrradianceMap";
             //----------Particle--------------

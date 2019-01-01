@@ -140,11 +140,18 @@ namespace HelixToolkit.UWP
                 get => renderNormalMap;
             }
 
-            private bool renderRMAMap = true;
-            public bool RenderRMAMap
+            private bool renderRoughnessMetallicMap = true;
+            public bool RenderRoughnessMetallicMap
             {
-                set => Set(ref renderRMAMap, value);
-                get => renderRMAMap;
+                set => Set(ref renderRoughnessMetallicMap, value);
+                get => renderRoughnessMetallicMap;
+            }
+
+            private bool renderAmbientOcclusionMap = true;
+            public bool RenderAmbientOcclusionMap
+            {
+                set => Set(ref renderAmbientOcclusionMap, value);
+                get => renderAmbientOcclusionMap;
             }
 
             private bool renderDisplacementMap = true;
@@ -317,17 +324,19 @@ namespace HelixToolkit.UWP
             /// </value>
             public string IrradianceMapFilePath { set; get; }
 
-            private TextureModel rmaMap;
+            private TextureModel roughnessMetallicMap;
             /// <summary>
-            /// Gets or sets the Roughness, Metallic, Ambient Occlusion map. glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel
+            /// Gets or sets the Roughness, Metallic map.
+            /// glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel.
+            /// If provides RMA map in one texture, set both <see cref="RoughnessMetallicMap"/> and <see cref="AmbientOcculsionMap"/> to the same texture.
             /// </summary>
             /// <value>
             /// The rma map.
             /// </value>
-            public TextureModel RMAMap
+            public TextureModel RoughnessMetallicMap
             {
-                set => Set(ref rmaMap, value); 
-                get => rmaMap; 
+                set => Set(ref roughnessMetallicMap, value); 
+                get => roughnessMetallicMap; 
             }
             /// <summary>
             /// Gets or sets the rma map file path. Only for export
@@ -335,7 +344,29 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The rma map file path.
             /// </value>
-            public string RMAMapFilePath { set; get; }
+            public string RoughnessMetallicMapFilePath { set; get; }
+
+            private TextureModel ambientOcculsionMap;
+            /// <summary>
+            /// Gets or sets the separate Ambient Occlusion map. 
+            /// glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel.
+            /// If provides RMA map in one texture, set both <see cref="RoughnessMetallicMap"/> and <see cref="AmbientOcculsionMap"/> to the same texture.
+            /// </summary>
+            /// <value>
+            /// The ao map.
+            /// </value>
+            public TextureModel AmbientOcculsionMap
+            {
+                set => Set(ref ambientOcculsionMap, value);
+                get => ambientOcculsionMap;
+            }
+            /// <summary>
+            /// Gets or sets the ao map file path.
+            /// </summary>
+            /// <value>
+            /// The ao map file path.
+            /// </value>
+            public string AmbientOcculsionMapFilePath { set; get; }
 
             private Vector4 displacementMapScaleMask;
             /// <summary>
