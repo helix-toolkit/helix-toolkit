@@ -234,7 +234,8 @@ float4 main(PSInput input) : SV_Target
     {
         emissive *= texEmissiveMap.Sample(samplerSurface, input.t).rgb;
     }
-    color += emissive;
+    float3 ambient = vLightAmbient.rgb * RMA.r;
+    color += emissive + ambient;
     return float4(color, albedo.a * input.cDiffuse.a);
 }
 #endif

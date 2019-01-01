@@ -12,6 +12,7 @@ namespace FileLoadDemo
     using HelixToolkit.Wpf.SharpDX.Animations;
     using HelixToolkit.Wpf.SharpDX.Assimp;
     using HelixToolkit.Wpf.SharpDX.Controls;
+    using HelixToolkit.Wpf.SharpDX.Model;
     using HelixToolkit.Wpf.SharpDX.Model.Scene;
     using Microsoft.Win32;
     using System.Collections.Generic;
@@ -41,6 +42,24 @@ namespace FileLoadDemo
             {
                 return showWireframe;
             }
+        }
+        private bool renderEnvironmentMap = true;
+        public bool RenderEnvironmentMap
+        {
+            set
+            {
+                if(SetValue(ref renderEnvironmentMap, value) && scene!=null && scene.Root != null)
+                {
+                    foreach(var node in scene.Root.Traverse())
+                    {
+                        if(node is MaterialGeometryNode m && m.Material is PBRMaterialCore material)
+                        {
+                            material.RenderEnvironmentMap = value;
+                        }
+                    }
+                }
+            }
+            get => renderEnvironmentMap;
         }
 
         public ICommand OpenFileCommand
@@ -174,6 +193,16 @@ namespace FileLoadDemo
                     GroupModel.Clear();
                     if (scene != null)
                     {
+                        if (scene.Root != null)
+                        {
+                            foreach (var node in scene.Root.Traverse())
+                            {
+                                if (node is MaterialGeometryNode m && m.Material is PBRMaterialCore material)
+                                {
+                                    material.RenderEnvironmentMap = RenderEnvironmentMap;
+                                }
+                            }
+                        }
                         GroupModel.AddNode(scene.Root);
                         if(scene.HasAnimation)
                         {

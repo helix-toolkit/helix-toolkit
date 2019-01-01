@@ -39,9 +39,9 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="#5E5E5E" />
+            <hx:AmbientLight3D Color="#363636" />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="#D6D6D6" />
-            <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
+            <hx:EnvironmentMap3D IsRendering="{Binding RenderEnvironmentMap}" Texture="{Binding EnvironmentMap}" />
             <hx:Element3DPresenter Content="{Binding GroupModel}" />
             <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
         </hx:Viewport3DX>
@@ -90,6 +90,7 @@
                 <Separator />
                 <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
                 <CheckBox Margin="4" IsChecked="{Binding ElementName=view, Path=EnableSSAO}">Enable SSAO</CheckBox>
+                <CheckBox Margin="4" IsChecked="{Binding RenderEnvironmentMap}">Render EnvironmentMap</CheckBox>
                 <Separator />
                 <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}">Enable Animation</CheckBox>
                 <TextBlock>Animations</TextBlock>
