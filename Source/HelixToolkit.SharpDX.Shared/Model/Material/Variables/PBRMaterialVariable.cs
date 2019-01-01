@@ -28,7 +28,8 @@ namespace HelixToolkit.UWP
         {
             private const int NUMTEXTURES = 7;
             private const int NUMSAMPLERS = 4;
-            private const int AlbedoMapIdx = 0, NormalMapIdx = 1, RMMapIdx = 2, EmissiveMapIdx = 3, IrradianceMapIdx = 4, DisplaceMapIdx = 5, AOMapIdx = 6;
+            private const int AlbedoMapIdx = 0, NormalMapIdx = 1, RMMapIdx = 2, EmissiveMapIdx = 3, 
+                IrradianceMapIdx = 4, DisplaceMapIdx = 5, AOMapIdx = 6;
             private const int SurfaceSamplerIdx = 0, IBLSamplerIdx = 1, ShadowSamplerIdx = 2, DisplaceSamplerIdx = 3;
             private readonly ITextureResourceManager textureManager;
             private readonly IStatePoolManager statePoolManager;
@@ -55,7 +56,6 @@ namespace HelixToolkit.UWP
             public ShaderPass WireframePass { get; } 
             public ShaderPass WireframeOITPass { get; }
             public ShaderPass DepthPass { get; }
-            private int numRadianceMipLevels = 0;
 
             public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core)
                 : base(manager, technique, DefaultMeshConstantBufferDesc, core)
@@ -192,12 +192,6 @@ namespace HelixToolkit.UWP
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
             {
-                if(numRadianceMipLevels != context.SharedResource.EnvironmentMapMipLevels)
-                {
-                    numRadianceMipLevels = context.SharedResource.EnvironmentMapMipLevels;
-                    WriteValue(PhongPBRMaterialStruct.NumRadianceMipLevels, numRadianceMipLevels);
-                    InvalidateRenderer();
-                }
                 if (HasTextures)
                 {
                     OnBindMaterialTextures(deviceContext, shaderPass.VertexShader);
@@ -276,7 +270,7 @@ namespace HelixToolkit.UWP
                 samplerSurfaceSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
                 samplerIBLSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.IBLSampler);
                 samplerShadowSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.ShadowMapSampler);
-            
+
                 if (!shaderPass.DomainShader.IsNULL && material.EnableTessellation)
                 {
                     texDisplaceSlot = shaderPass.DomainShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DisplacementMapTB);
