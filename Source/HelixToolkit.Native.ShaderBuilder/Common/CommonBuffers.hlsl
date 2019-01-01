@@ -96,7 +96,7 @@ cbuffer cbMesh : register(b1)
     bool bAutoTengent;
     bool bHasDisplacementMap = false;
     bool bRenderPBR = false;  
-    int NumRadianceMipLevels;
+    float padding12;
     float sMaterialShininess = 1.0f; //Ps := surface material's shininess
 
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
@@ -126,7 +126,9 @@ cbuffer cbLights : register(b3)
     LightStruct Lights[LIGHTS];
     float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
     int NumLights;
-    float3 padding;
+    bool bHasEnvironmentMap;
+    int NumEnvironmentMapMipLevels;
+    float padding;
 };
 
 #if defined(POINTLINE) // model for line, point and billboard

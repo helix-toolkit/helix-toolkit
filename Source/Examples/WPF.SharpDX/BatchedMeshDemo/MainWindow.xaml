@@ -32,7 +32,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:ShadowMap3D OrthoWidth="300" />
-            <hx:AmbientLight3D Color="DarkGray" />
+            <hx:AmbientLight3D Color="#414141" />
             <hx:DirectionalLight3D Direction="50, -200, -100" />
             <hx:BatchedMeshGeometryModel3D
                 x:Name="batchedMesh"

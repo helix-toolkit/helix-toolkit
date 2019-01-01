@@ -41,6 +41,7 @@
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="#5E5E5E" />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="#D6D6D6" />
+            <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
             <hx:Element3DPresenter Content="{Binding GroupModel}" />
             <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
         </hx:Viewport3DX>

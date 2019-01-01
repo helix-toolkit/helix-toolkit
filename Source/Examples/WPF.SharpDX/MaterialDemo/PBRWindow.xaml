@@ -73,7 +73,7 @@
                 Range="80"
                 Color="Green" />
             <hx:ShadowMap3D />
-            <!--<hx:GroupModel3D ItemsSource="{Binding Models}" />-->
+            <hx:GroupModel3D ItemsSource="{Binding Models}" />
             <hx:DynamicReflectionMap3D>
                 <hx:MeshGeometryModel3D
                     x:Name="sphereControl"

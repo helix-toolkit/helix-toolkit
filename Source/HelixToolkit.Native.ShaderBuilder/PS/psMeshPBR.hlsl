@@ -176,7 +176,7 @@ float3 LightSurface(in float4 wp,
 #endif
     if (bHasCubeMap)
     {
-        // Add specular radiance 
+    // Add specular radiance 
         specular_env = Specular_IBL(N, V, roughness);
 #if defined(CLEARCOAT)
         clearCoatColor = Specular_IBL(N, V, clearCoatRoughness) * Fc;
@@ -203,7 +203,7 @@ float4 main(PSInput input) : SV_Target
 
     float4 albedo = float4(input.cDiffuse.xyz, 1);
     // glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel 
-    float3 RMA = input.c2.rgb;
+    float3 RMA = float3(ConstantAO, ConstantRoughness, ConstantMetallic);
     if (bHasDiffuseMap)
     {
         albedo *= texDiffuseMap.Sample(samplerSurface, input.t);

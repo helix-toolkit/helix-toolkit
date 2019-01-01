@@ -110,10 +110,9 @@ namespace HelixToolkit.UWP
     public struct InstanceParameter
     {
         public Color4 DiffuseColor;
-        public Color4 AmbientColor;
         public Color4 EmissiveColor;
         public Vector2 TexCoordOffset;
-        public const int SizeInBytes = 4 * (4 * 3 + 2);
+        public const int SizeInBytes = 4 * (4 * 2 + 2);
     }
     /// <summary>
     /// 
@@ -361,7 +360,6 @@ namespace HelixToolkit.UWP
 
         public const string HasDisplacementMapStr = "bHasDisplacementMap";//bool
         public const string RenderPBR = "bRenderPBR";//bool
-        public const string NumRadianceMipLevels = "NumRadianceMipLevels";//int
         public const string ShininessStr = "sMaterialShininess";//float
 
         public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";//float4

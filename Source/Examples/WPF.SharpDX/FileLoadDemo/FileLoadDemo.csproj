@@ -100,6 +100,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+      <Content Include="..\..\..\..\Images\EnvironmentMaps\Cubemap_Grandcanyon.dds">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX.Assimp\HelixToolkit.Wpf.SharpDX.Assimp.csproj">

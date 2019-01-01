@@ -114,6 +114,8 @@ namespace FileLoadDemo
             }
         }
 
+        public TextureModel EnvironmentMap { get; }
+
         private SynchronizationContext context = SynchronizationContext.Current;
         private HelixToolkitScene scene;
         private NodeAnimationUpdater animationUpdater;
@@ -141,6 +143,7 @@ namespace FileLoadDemo
                 (Camera as OrthographicCamera).NearPlaneDistance = 0.1f;
             });
             ExportCommand = new DelegateCommand(() => { ExportFile(); });
+            EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
         }
 
         private void OpenFile()
