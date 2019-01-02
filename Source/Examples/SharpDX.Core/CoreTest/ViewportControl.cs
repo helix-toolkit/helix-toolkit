@@ -24,5 +24,6 @@ namespace CoreTest
         public bool PlayAnimation;
         public IAnimationUpdater AnimationUpdater;
         public IViewport3DX Viewport;
+        public bool ShowEnvironmentMap;
     }
 }

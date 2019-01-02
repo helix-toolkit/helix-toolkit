@@ -197,9 +197,16 @@ namespace FileLoadDemo
                         {
                             foreach (var node in scene.Root.Traverse())
                             {
-                                if (node is MaterialGeometryNode m && m.Material is PBRMaterialCore material)
+                                if (node is MaterialGeometryNode m)
                                 {
-                                    material.RenderEnvironmentMap = RenderEnvironmentMap;
+                                    if (m.Material is PBRMaterialCore pbr)
+                                    {
+                                        pbr.RenderEnvironmentMap = RenderEnvironmentMap;
+                                    }
+                                    else if(m.Material is PhongMaterialCore phong)
+                                    {
+                                        phong.RenderEnvironmentMap = RenderEnvironmentMap;
+                                    }
                                 }
                             }
                         }

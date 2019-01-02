@@ -26,6 +26,7 @@ namespace CoreTest
         private CameraCore camera;
         private Geometry3D box, sphere, points, lines;
         private GroupNode groupSphere, groupBox, groupPoints, groupLines, groupModel, groupEffects;
+        private EnvironmentMapNode environmentMap;
         private DirectionalLightNode directionalLight;
         private AmbientLightNode ambientLight;
         private const int NumItems = 400;
@@ -48,7 +49,8 @@ namespace CoreTest
             EnableFXAA = true,
             EnableSSAO = true,
             WalkAround = false,
-            ShowRenderDetail = false
+            ShowRenderDetail = false,
+            ShowEnvironmentMap = false,
         };
 
         public CoreTestApp(Form window)
@@ -179,22 +181,15 @@ namespace CoreTest
             var imGui = new ImGuiNode();
             viewport.Items.AddChildNode(imGui);
             imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
-            //var io = ImGui.GetIO();
-            //io.KeyMap[(int)ImGuiKey.Tab] = (int)Keys.Tab;
-            //io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)Keys.Left;
-            //io.KeyMap[(int)ImGuiKey.RightArrow] = (int)Keys.Right;
-            //io.KeyMap[(int)ImGuiKey.UpArrow] = (int)Keys.Up;
-            //io.KeyMap[(int)ImGuiKey.DownArrow] = (int)Keys.Down;
-            //io.KeyMap[(int)ImGuiKey.PageUp] = (int)Keys.PageUp;
-            //io.KeyMap[(int)ImGuiKey.PageDown] = (int)Keys.PageDown;
-            //io.KeyMap[(int)ImGuiKey.Home] = (int)Keys.Home;
-            //io.KeyMap[(int)ImGuiKey.End] = (int)Keys.End;
-            //io.KeyMap[(int)ImGuiKey.Delete] = (int)Keys.Delete;
-            //io.KeyMap[(int)ImGuiKey.Backspace] = (int)Keys.Back;
-            //io.KeyMap[(int)ImGuiKey.Enter] = (int)Keys.Enter;
-            //io.KeyMap[(int)ImGuiKey.Escape] = (int)Keys.Escape;
             groupEffects.AddChildNode(new NodePostEffectBorderHighlight() { EffectName = "highlightEffect", Color = Color.Yellow });
             viewport.Items.AddChildNode(groupEffects);
+            var environmentTexture = new MemoryStream();
+            using (var fs = File.Open("Cubemap_Grandcanyon.dds", FileMode.Open))
+            {
+                fs.CopyTo(environmentTexture);
+            }
+            environmentMap = new EnvironmentMapNode() { Texture = environmentTexture };
+            viewport.Items.AddChildNode(environmentMap);
             viewport.NodeHitOnMouseDown += Viewport_NodeHitOnMouseDown;
         }
 
@@ -274,6 +269,7 @@ namespace CoreTest
                 AssignViewportOption();
                 directionalLight.Color = Color.White.ToColor4().ChangeIntensity(options.DirectionLightIntensity);
                 ambientLight.Color = Color.White.ToColor4().ChangeIntensity(options.AmbientLightIntensity);
+                ChangeEnvironmentMapVisibility(options.ShowEnvironmentMap);
                 viewport.Render();
 
                 if (options.PlayAnimation && options.AnimationUpdater != null)
@@ -307,6 +303,28 @@ namespace CoreTest
                 }
 #endif
             });
+        }
+
+        private void ChangeEnvironmentMapVisibility(bool visible)
+        {
+            if(environmentMap.Visible != visible)
+            {
+                environmentMap.Visible = visible;
+                foreach(var model in groupModel.Traverse())
+                {
+                    if(model is MeshNode mesh)
+                    {
+                        if(mesh.Material is PBRMaterialCore pbr)
+                        {
+                            pbr.RenderEnvironmentMap = visible;
+                        }
+                        else if(mesh.Material is PhongMaterialCore phong)
+                        {
+                            phong.RenderEnvironmentMap = visible;
+                        }
+                    }
+                }
+            }
         }
 
         private void Window_ResizeEnd(object sender, EventArgs e)
