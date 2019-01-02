@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Next Version]
+## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
 1. Material UV Transform changed from  Matrix  to  UVTransform  struct. (WPF.SharpDX/UWP/Core)
 2. Material Texture changed from `Stream` to `TextureModel`. This will allow more powerful texture support in future. In most cases, `Stream` will be implicit convert to `TextureModel` to reduce breaking changes. However, it may have issue if you are using XAML binding to a Texture stream in ViewModel. (WPF.SharpDX/UWP/Core)
