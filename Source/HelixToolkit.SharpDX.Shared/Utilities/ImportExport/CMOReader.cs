@@ -335,7 +335,7 @@ namespace HelixToolkit.UWP
                 for (var i = 0; i < boneCount; i++)
                 {
                     boneNames[i] = reader.ReadCMO_wchar();
-                    animationHierarchy.Bones.Add(reader.ReadStructure<Bone>());
+                    animationHierarchy.Bones.Add(reader.ReadStructure<BoneStruct>());
                 }
 
                 //      UINT - Animation clip count
@@ -462,6 +462,20 @@ namespace HelixToolkit.UWP
             public float Time;
             public Matrix Transform;
         };
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct BoneStruct
+        {
+            public int ParentIndex;// Used only for array based bones
+            public Matrix InvBindPose;
+            public Matrix BindPose;
+            public Matrix BoneLocalTransform;
+
+            public static implicit operator Bone(BoneStruct bone)
+            {
+                return new Bone() { ParentIndex = bone.ParentIndex, BindPose = bone.BindPose, InvBindPose = bone.InvBindPose, BoneLocalTransform = bone.BoneLocalTransform };
+            }
+        };
+
     }
 
     public static class BinaryReaderExtensions
