@@ -344,52 +344,6 @@ namespace HelixToolkit.UWP
                 return new KeyValuePair<global::Assimp.Material, MaterialCore>(material, core);
             }
 
-            /// <summary>
-            ///     Called when [load texture].
-            /// </summary>
-            /// <param name="path">The path.</param>
-            /// <returns></returns>
-            protected virtual TextureModel OnLoadTexture(string path)
-            {
-                try
-                {
-                    //Check if is embedded material
-                    if (path.StartsWith("*") && int.TryParse(path.Substring(1, path.Length - 1), out int idx) 
-                        && embeddedTextures.Count > idx)
-                    {
-                        return OnLoadEmbeddedTexture(embeddedTextures[idx]);
-                    }
-                    else
-                    {
-                        var ext = Path.GetExtension(path);
-                        if (string.IsNullOrEmpty(ext) || !SupportedTextureFormats.Contains(ext.TrimStart('.').ToLowerInvariant()))
-                        {
-                            Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Format not supported = {ext}.");
-                            return null;
-                        }
-                        var dict = Path.GetDirectoryName(this.path);
-                        if (string.IsNullOrEmpty(dict))
-                        {
-                            dict = Directory.GetCurrentDirectory();
-                        }
-                        var p = Path.GetFullPath(Path.Combine(dict, path));
-                        if (!File.Exists(p))
-                            p = HandleTexturePathNotFound(dict, path);
-                        if (!File.Exists(p))
-                        {
-                            Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Path = {path}.");
-                            return null;
-                        }
-                        return LoadFileToStream(p);
-                    }
-                }
-                catch(Exception ex)
-                {
-                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Exception. Texture Path = {path}. Exception: {ex.Message}");
-                }
-                return null;
-            }
-
             protected virtual TextureModel OnLoadEmbeddedTexture(EmbeddedTexture texture)
             {               
                 if (texture.HasCompressedData)
@@ -414,67 +368,49 @@ namespace HelixToolkit.UWP
                     return null;
                 }
             }
-            /// <summary>
-            /// Handles the texture path not found. Override to provide your own handling
-            /// </summary>
-            /// <param name="dir">The dir.</param>
-            /// <param name="texturePath">The texture path.</param>
-            /// <returns></returns>
-            protected virtual string HandleTexturePathNotFound(string dir, string texturePath)
-            {
-                //If file not found in texture path dir, try to find the file in the same dir as the model file
-                if (texturePath.StartsWith(ToUpperDictString))
-                {
-                    var t = texturePath.Remove(0, ToUpperDictString.Length);
-                    var p = Path.GetFullPath(Path.Combine(dir, t));
-                    if (File.Exists(p))
-                        return p;
-                }
-                
-                //If still not found, try to go one upper level and find
-                var upper = Directory.GetParent(dir).FullName;
-                try
-                {
-                    upper = Path.GetFullPath(upper + texturePath);
-                }
-                catch (NotSupportedException ex)
-                {
-                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Exception: {ex}");
-                }
-                if (File.Exists(upper))
-                    return upper;
-                var fileName = Path.GetFileName(texturePath);
-                var currentPath = Path.Combine(dir, fileName);
-                if (File.Exists(currentPath))
-                {
-                    return currentPath;
-                }
-                return "";
-            }
 
-            private TextureModel LoadTexture(string path)
+
+            private TextureModel LoadTexture(string texturePath)
             {
-                if (textureDict.TryGetValue(path, out var s))
+                if (textureDict.TryGetValue(texturePath, out var s))
                 {
                     return s;
                 }
 
-                var texture = OnLoadTexture(path);
+                var texture = OnLoadTexture(texturePath);
                 if (texture != null)
-                    textureDict.TryAdd(path, texture);
+                    textureDict.TryAdd(texturePath, texture);
                 return texture;
             }
 
-            private static Stream LoadFileToStream(string path)
+            protected virtual TextureModel OnLoadTexture(string texturePath)
             {
-                if (!File.Exists(path)) return null;
-                using (var v = File.OpenRead(path))
+                try
                 {
-                    var m = new MemoryStream();
-                    v.CopyTo(m);
-                    return m;
+                    //Check if is embedded material
+                    if (texturePath.StartsWith("*") && int.TryParse(texturePath.Substring(1, texturePath.Length - 1), out int idx)
+                        && embeddedTextures.Count > idx)
+                    {
+                        return OnLoadEmbeddedTexture(embeddedTextures[idx]);
+                    }
+                    else
+                    {
+                        var ext = Path.GetExtension(texturePath);
+                        if (string.IsNullOrEmpty(ext) || !SupportedTextureFormats.Contains(ext.TrimStart('.').ToLowerInvariant()))
+                        {
+                            Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Format not supported = {ext}.");
+                            return null;
+                        }
+                        return configuration?.TextureLoader?.Load(path, texturePath, Logger);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Exception. Texture Path = {texturePath}. Exception: {ex.Message}");
+                }
+                return null;
             }
+
 
             private static TextureAddressMode ToDXAddressMode(TextureWrapMode mode)
             {

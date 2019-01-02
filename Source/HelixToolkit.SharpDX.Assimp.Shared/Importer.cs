@@ -35,8 +35,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         public partial class Importer : IDisposable
         {
-            private const string ToUpperDictString = @"..\";
-
             private string path = "";
             public static readonly string[] SupportedTextureFormats = new string[]
             {
@@ -228,39 +226,64 @@ namespace HelixToolkit.UWP
                         postProcess |= PostProcessSteps.FlipWindingOrder;
                     }
                     var assimpScene = importer.ImportFile(filePath, postProcess);
-             
-                    if (assimpScene == null)
-                    {
-                        ErrorCode |= ErrorCode.Failed;
-                        return ErrorCode;
-                    }
 
-                    if (!assimpScene.HasMeshes)
-                    {
-                        scene = new HelixToolkitScene(new HxScene.GroupNode());
-                        ErrorCode = ErrorCode.Succeed;
-                        return ErrorCode.Succeed;
-                    }
-
-                    var internalScene = ToHelixScene(assimpScene, Configuration.EnableParallelProcessing);
-                    scene = new HelixToolkitScene(ConstructHelixScene(assimpScene.RootNode, internalScene));
-                    ErrorCode |= ProcessSceneNodes(scene.Root);
-                    if (ErrorCode.HasFlag(ErrorCode.Failed))
-                        return ErrorCode;
-                    if (Configuration.ImportAnimations)
-                    {
-                        LoadAnimations(internalScene);
-                        scene.Animations = Animations.ToArray();
-                        if (Configuration.CreateSkeletonForBoneSkinningMesh
-                            && Configuration.AddsPostEffectForSkeleton)
-                        {
-                            (scene.Root as HxScene.GroupNode).AddChildNode(new HxScene.NodePostEffectXRayGrid()
-                            { EffectName = Configuration.SkeletonEffects });
-                        }
-                    }
-                    if(!ErrorCode.HasFlag(ErrorCode.Failed))
-                        ErrorCode |= ErrorCode.Succeed;
+                    return BuildScene(assimpScene, out scene);
+                }
+                catch (Exception ex)
+                {
+                    Log(LogLevel.Error, ex.Message);
+                    ErrorCode = ErrorCode.Failed;
                     return ErrorCode;
+                }
+                finally
+                {
+                    if (!useExtern)
+                        importer.Dispose();
+                }
+            }
+
+            /// <summary>
+            /// Loads the specified file stream. User must provider custom texture loader to load texture files.
+            /// </summary>
+            /// <param name="fileStream">The file stream.</param>
+            /// <param name="formatHint">The format hint.</param>
+            /// <param name="textureLoader">The texture loader</param>
+            /// <param name="scene">The scene.</param>
+            /// <returns></returns>
+            public ErrorCode Load(Stream fileStream, ITextureIO textureLoader, string formatHint, out HelixToolkitScene scene)
+            {
+                ErrorCode = ErrorCode.None;
+                AssimpContext importer = null;
+                var useExtern = false;
+                if (Configuration.ExternalContext != null)
+                {
+                    importer = Configuration.ExternalContext;
+                    useExtern = true;
+                }
+                else
+                {
+                    importer = new AssimpContext();
+                }
+                configuration.TextureLoader = textureLoader;
+                Clear();
+                scene = null;
+                try
+                {
+                    if (!importer.IsImportFormatSupported(formatHint))
+                    {
+                        return ErrorCode.FileTypeNotSupported | ErrorCode.Failed;
+                    }
+                    if (!useExtern && Configuration.AssimpPropertyConfig != null)
+                        foreach (var config in Configuration.AssimpPropertyConfig)
+                            importer.SetConfig(config);
+                    importer.Scale = configuration.GlobalScale;
+                    var postProcess = configuration.AssimpPostProcessSteps;
+                    if (configuration.FlipWindingOrder)
+                    {
+                        postProcess |= PostProcessSteps.FlipWindingOrder;
+                    }
+                    var assimpScene = importer.ImportFileFromStream(fileStream, postProcess, formatHint);
+                    return BuildScene(assimpScene, out scene);
                 }
                 catch (Exception ex)
                 {
@@ -304,6 +327,43 @@ namespace HelixToolkit.UWP
             #endregion
 
             #region Private Methods
+            private ErrorCode BuildScene(Scene assimpScene, out HelixToolkitScene scene)
+            {
+                scene = null;
+                if (assimpScene == null)
+                {
+                    ErrorCode |= ErrorCode.Failed;
+                    return ErrorCode;
+                }
+
+                if (!assimpScene.HasMeshes)
+                {
+                    scene = new HelixToolkitScene(new HxScene.GroupNode());
+                    ErrorCode = ErrorCode.Succeed;
+                    return ErrorCode.Succeed;
+                }
+
+                var internalScene = ToHelixScene(assimpScene, Configuration.EnableParallelProcessing);
+                scene = new HelixToolkitScene(ConstructHelixScene(assimpScene.RootNode, internalScene));
+                ErrorCode |= ProcessSceneNodes(scene.Root);
+                if (ErrorCode.HasFlag(ErrorCode.Failed))
+                    return ErrorCode;
+                if (Configuration.ImportAnimations)
+                {
+                    LoadAnimations(internalScene);
+                    scene.Animations = Animations.ToArray();
+                    if (Configuration.CreateSkeletonForBoneSkinningMesh
+                        && Configuration.AddsPostEffectForSkeleton)
+                    {
+                        (scene.Root as HxScene.GroupNode).AddChildNode(new HxScene.NodePostEffectXRayGrid()
+                        { EffectName = Configuration.SkeletonEffects });
+                    }
+                }
+                if (!ErrorCode.HasFlag(ErrorCode.Failed))
+                    ErrorCode |= ErrorCode.Succeed;
+                return ErrorCode;
+            }
+
             private HelixInternalScene ToHelixScene(Scene scene, bool parallel)
             {
                 var s = new HelixInternalScene

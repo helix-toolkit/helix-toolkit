@@ -172,6 +172,8 @@ namespace HelixToolkit.UWP
             /// Indicate if source model transform matrix column major. Note: Most of software exported model defaults to be column major in transform matrix
             /// </summary>
             public bool IsSourceMatrixColumnMajor = true;
+
+            public ITextureIO TextureLoader = new DefaultTextureLoader();
             /// <summary>
             /// Initializes a new instance of the <see cref="ImporterConfiguration"/> class.
             /// </summary>
