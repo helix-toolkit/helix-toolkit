@@ -23,6 +23,15 @@ namespace MaterialDemo
         public MainWindow()
         {
             InitializeComponent();
+            Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            if(DataContext is IDisposable d)
+            {
+                d.Dispose();
+            }
         }
     }
 }

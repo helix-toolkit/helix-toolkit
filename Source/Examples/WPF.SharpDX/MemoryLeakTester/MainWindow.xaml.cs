@@ -44,6 +44,8 @@ namespace MemoryLeakTester
             ProjectWinPairs.Add(new Tuple<string, Type>("ShadowMapDemo", typeof(ShadowMapDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("TessellationDemo", typeof(TessellationDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("SimpleDemo", typeof(SimpleDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("MaterialDemo", typeof(MaterialDemo.MainWindow)));
+            ProjectWinPairs.Add(new Tuple<string, Type>("EnvironmentMapDemo", typeof(EnvironmentMapDemo.MainWindow)));
             projectCombo.ItemsSource = ProjectWinPairs;
         }
 

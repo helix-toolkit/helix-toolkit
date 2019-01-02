@@ -522,7 +522,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void OnDetach()
             {
-                RenderHost = null;           
+                RenderHost = null;
             }
 
             protected void InvalidateRenderEvent(object sender, EventArgs arg)
@@ -944,9 +944,13 @@ namespace HelixToolkit.UWP
                 TransformBoundChanged = null;
                 BoundSphereChanged = null;
                 TransformBoundSphereChanged = null;
+                MouseDown = null;
+                MouseMove = null;
+                MouseUp = null;
                 Attached = null;
                 Detached = null;
                 WrapperSource = null;
+                NameChanged = null;
                 base.OnDispose(disposeManagedResources);
             }
 
