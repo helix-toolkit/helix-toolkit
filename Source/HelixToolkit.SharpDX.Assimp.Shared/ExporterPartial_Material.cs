@@ -132,10 +132,10 @@ namespace HelixToolkit.UWP
                         AiMatKeys.GetFullTextureName(AiMatKeys.MAPPINGMODE_V_BASE, TextureType.Diffuse, 0),
                         (int)ToAssimpAddressMode(pbr.SurfaceMapSampler.AddressV)));
                 }
-                if (pbr.RMAMap != null && !string.IsNullOrEmpty(pbr.RMAMapFilePath))
+                if (pbr.RoughnessMetallicMap != null && !string.IsNullOrEmpty(pbr.RoughnessMetallicMapFilePath))
                 {
                     assimpMaterial.AddProperty(new MaterialProperty(GLTFMatKeys.AI_MATKEY_GLTF_METALLICROUGHNESSAO_TEXTURE, 
-                        pbr.RMAMapFilePath, TextureType.Unknown, 0));
+                        pbr.RoughnessMetallicMapFilePath, TextureType.Unknown, 0));
                 }
                 if (pbr.EmissiveMap != null && !string.IsNullOrEmpty(pbr.EmissiveMapFilePath))
                 {

@@ -396,6 +396,8 @@ namespace HelixToolkit.UWP
             }
             if (updateLights)
             {
+                LightScene.LightModels.HasEnvironmentMap = SharedResource.EnvironementMap != null;
+                LightScene.LightModels.EnvironmentMapMipLevels = SharedResource.EnvironmentMapMipLevels;
                 LightScene.UploadToBuffer(deviceContext);
             }
         }

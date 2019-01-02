@@ -176,7 +176,7 @@ float3 LightSurface(in float4 wp,
 #endif
     if (bHasCubeMap)
     {
-        // Add specular radiance 
+    // Add specular radiance 
         specular_env = Specular_IBL(N, V, roughness);
 #if defined(CLEARCOAT)
         clearCoatColor = Specular_IBL(N, V, clearCoatRoughness) * Fc;
@@ -203,23 +203,25 @@ float4 main(PSInput input) : SV_Target
 
     float4 albedo = float4(input.cDiffuse.xyz, 1);
     // glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel 
-    float3 RMA = input.c2.rgb;
+    float3 RMA = float3(ConstantAO, ConstantRoughness, ConstantMetallic);
     if (bHasDiffuseMap)
     {
         albedo *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
-    if (bHasRMAMap)
+    if (bHasRMMap)
     {
-        float3 rmaSample = texRMAMap.Sample(samplerSurface, input.t).rgb;
-        RMA.rgb = RMA.rgb * rmaSample.rgb;
+        RMA.gb *= texRMMap.Sample(samplerSurface, input.t).gb;
     }
-    float ambientOcculsion = input.c2.a;
-    if (SSAOEnabled)
+    if (bHasAOMap)
+    {
+        RMA.r *= texAOMap.Sample(samplerSurface, input.t).r;
+    }
+    else if (SSAOEnabled)
     {
         float2 quadTex = input.p.xy * vViewport.zw;
-        ambientOcculsion *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
+        RMA.r *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
-    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, ambientOcculsion, ClearCoat, ClearCoatRoughness);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, ConstantReflectance, ClearCoat, ClearCoatRoughness);
     float s = 1;
     if (bHasShadowMap)
     {
@@ -227,11 +229,13 @@ float4 main(PSInput input) : SV_Target
             s = shadowStrength(input.sp);
     }
     color.rgb *= s;
+    float3 emissive = vMaterialEmissive.rgb;
     if (bHasEmissiveMap)
     {
-        color += texEmissiveMap.Sample(samplerSurface, input.t).rgb;
+        emissive *= texEmissiveMap.Sample(samplerSurface, input.t).rgb;
     }
-    color += vMaterialEmissive.rgb;
+    float3 ambient = vLightAmbient.rgb * RMA.r;
+    color += emissive + ambient;
     return float4(color, albedo.a * input.cDiffuse.a);
 }
 #endif

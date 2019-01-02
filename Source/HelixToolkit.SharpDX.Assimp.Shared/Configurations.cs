@@ -106,7 +106,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///     The ignore emissive color
             /// </summary>
-            public bool IgnoreEmissiveColor = true;
+            public bool IgnoreEmissiveColor = false;
 
             /// <summary>
             ///     Force to use material type. Default is Auto

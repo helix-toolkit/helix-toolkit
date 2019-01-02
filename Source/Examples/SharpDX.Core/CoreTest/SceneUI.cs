@@ -8,6 +8,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
+using HelixToolkit.SharpDX.Core.Model;
+using HelixToolkit.SharpDX.Core;
 
 namespace CoreTest
 {
@@ -32,7 +34,7 @@ namespace CoreTest
         public static void DrawUI(int width, int height, ref ViewportOptions options, GroupNode rootNode)
         {
             ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero);
-            ImGui.SetNextWindowSize(new System.Numerics.Vector2(250, 250));
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(250, 350));
             bool opened = true;
             ImGui.Begin("Model Loader Window", ref opened, ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse);
             if (ImGui.BeginMenuBar())
@@ -41,7 +43,7 @@ namespace CoreTest
                 {
                     if (ImGui.MenuItem("Open"))
                     {
-                        LoadModel(rootNode);
+                        LoadModel(rootNode, options.ShowEnvironmentMap);
                     }
                     ImGui.EndMenu();
                 }
@@ -51,6 +53,7 @@ namespace CoreTest
                     ImGui.SliderFloat("Dir Light Intensity", ref options.DirectionLightIntensity, 0, 1, "", 1);
                     ImGui.SliderFloat("Ambient Light Intensity", ref options.AmbientLightIntensity, 0, 1, "", 1);
                     ImGui.Separator();
+                    ImGui.Checkbox("Show EnvironmentMap", ref options.ShowEnvironmentMap);
                     ImGui.Checkbox("Enable SSAO", ref options.EnableSSAO);
                     ImGui.Checkbox("Enable FXAA", ref options.EnableFXAA);
                     ImGui.Checkbox("Enable Frustum", ref options.EnableFrustum);
@@ -121,7 +124,7 @@ namespace CoreTest
             }
         }
 
-        private static void LoadModel(GroupNode node)
+        private static void LoadModel(GroupNode node, bool renderEnvironmentMap)
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = HelixToolkit.SharpDX.Core.Assimp.Importer.SupportedFormatsString;
@@ -142,6 +145,20 @@ namespace CoreTest
                     if (x.IsCompleted && x.Result != null)
                     {
                         node.Clear();
+                        foreach (var model in x.Result.Root.Traverse())
+                        {
+                            if (model is MeshNode mesh)
+                            {
+                                if (mesh.Material is PBRMaterialCore pbr)
+                                {
+                                    pbr.RenderEnvironmentMap = renderEnvironmentMap;
+                                }
+                                else if (mesh.Material is PhongMaterialCore phong)
+                                {
+                                    phong.RenderEnvironmentMap = renderEnvironmentMap;
+                                }
+                            }
+                        }
                         node.AddChildNode(x.Result.Root);
                         scene = x.Result;
                         if(scene.Animations != null && scene.Animations.Count > 0)

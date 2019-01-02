@@ -31,6 +31,20 @@ namespace HelixToolkit.UWP
             private readonly LightStruct[] lights = new LightStruct[Constants.MaxLights];
             public Color4 AmbientLight { set; get; } = new Color4(0, 0, 0, 1);
             public int LightCount { private set; get; } = 0;
+            /// <summary>
+            /// Gets or sets a value indicating whether the scene has environment map.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if the scene has environment map; otherwise, <c>false</c>.
+            /// </value>
+            internal bool HasEnvironmentMap = false;
+            /// <summary>
+            /// Gets or sets the environment map mip levels.
+            /// </summary>
+            /// <value>
+            /// The environment map mip levels.
+            /// </value>
+            internal int EnvironmentMapMipLevels = 0;
 
             public int BufferSize
             {
@@ -65,7 +79,9 @@ namespace HelixToolkit.UWP
                     {
                         stream.WriteRange(Lights, 0, Lights.Length);
                         stream.Write(AmbientLight);
-                        stream.Write(LightCount);                        
+                        stream.Write(LightCount);
+                        stream.Write(HasEnvironmentMap ? 1 : 0);
+                        stream.Write(EnvironmentMapMipLevels);
                     }
                     context.UnmapSubresource(buffer.Buffer, 0);
                 }
