@@ -3,17 +3,33 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>HelixToolkit.SharpDX.Core</id>
     <version>$version$</version>
-    <title>HelixToolkit for Dot Net Standard (based on SharpDX)</title>
+    <title>HelixToolkit for netstandard and netcore (based on SharpDX)</title>
     <authors>objo, Lunci</authors>
     <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
     <projectUrl>http://helix-toolkit.github.io/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Provides custom 3D controls for Dot Net Standard based on SharpDX.</description>
-    <tags>DotNetStandard SharpDX 3D</tags>
+    <description>Provides custom 3D controls for netstandard and netcore based on SharpDX.</description>
+    <tags>netstandard netcore SharpDX 3D</tags>
     <dependencies>
+	   <group targetFramework="netcoreapp2.1">
+		<dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />
+		<dependency id="HelixToolkit" version="[$version$]" />
+		<dependency id="SharpDX" version="4.2.0" />
+		<dependency id="SharpDX.D3DCompiler" version="4.2.0" />
+		<dependency id="SharpDX.Direct2D1" version="4.2.0" />
+		<dependency id="SharpDX.Direct3D11" version="4.2.0" />
+		<dependency id="SharpDX.DXGI" version="4.2.0" />
+		<dependency id="SharpDX.Mathematics" version="4.2.0" />
+		<dependency id="System.ComponentModel.TypeConverter" version="4.3.0"/>
+		<dependency id="System.Drawing.Primitives" version="4.3.0"/>		
+		<dependency id="System.Private.DataContractSerialization" version="4.3.0"/>
+		<dependency id="System.Reflection.TypeExtensions" version="4.3.0"/>
+		<dependency id="System.Runtime.Serialization.Primitives" version="4.3.0"/>
+		<dependency id="System.Runtime.Serialization.Xml" version="4.3.0"/>
+		<dependency id="System.Threading.Tasks.Parallel" version="4.3.0"/>
+      </group>
 	  <group targetFramework="netstandard1.3">
-		<dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
 		<dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />
 		<dependency id="HelixToolkit" version="[$version$]" />
 		<dependency id="SharpDX" version="4.2.0" />
@@ -35,6 +51,8 @@
   <files>
   	<file src="bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.???" target="lib\netstandard1.3" />
 	<file src="bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.deps.json" target="lib\netstandard1.3" />
+	<file src="bin\Release\netcoreapp2.1\HelixToolkit.SharpDX.Core.???" target="lib\netcoreapp2.1" />
+	<file src="bin\Release\netcoreapp2.1\HelixToolkit.SharpDX.Core.deps.json" target="lib\netcoreapp2.1" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
