@@ -1,9 +1,7 @@
 ﻿using HelixToolkit.Logger;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -42,18 +40,18 @@ namespace HelixToolkit.UWP
                     dict = Directory.GetCurrentDirectory();
                 }
                 var p = Path.GetFullPath(Path.Combine(dict, texturePath));
-                if (!File.Exists(p))
+                if (!FileExists(p))
                     p = HandleTexturePathNotFound(dict, texturePath);
-                if (!File.Exists(p))
+                if (!FileExists(p))
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Path = {texturePath}.");
+                    Log(LogLevel.Warning, $"Load Texture Failed. Texture Path = {texturePath}.");
                     return null;
                 }
                 return LoadFileToStream(p);
             }
             catch (Exception ex)
             {
-                Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Exception. Texture Path = {texturePath}. Exception: {ex.Message}");
+                Log(LogLevel.Warning, $"Load Texture Exception. Texture Path = {texturePath}. Exception: {ex.Message}");
             }
             return null;
         }
@@ -71,7 +69,7 @@ namespace HelixToolkit.UWP
             {
                 var t = texturePath.Remove(0, ToUpperDictString.Length);
                 var p = Path.GetFullPath(Path.Combine(dir, t));
-                if (File.Exists(p))
+                if (FileExists(p))
                     return p;
             }
 
@@ -83,20 +81,26 @@ namespace HelixToolkit.UWP
             }
             catch (NotSupportedException ex)
             {
-                Log(HelixToolkit.Logger.LogLevel.Warning, $"Exception: {ex}");
+                Log(LogLevel.Warning, $"Exception: {ex}");
             }
-            if (File.Exists(upper))
+            if (FileExists(upper))
                 return upper;
             var fileName = Path.GetFileName(texturePath);
             var currentPath = Path.Combine(dir, fileName);
-            if (File.Exists(currentPath))
+            if (FileExists(currentPath))
             {
                 return currentPath;
             }
             return "";
         }
 
-        private static Stream LoadFileToStream(string path)
+        protected virtual bool FileExists(string path)
+        {
+            return File.Exists(path);
+        }
+
+
+        protected virtual Stream LoadFileToStream(string path)
         {
             if (!File.Exists(path)) return null;
             using (var v = File.OpenRead(path))

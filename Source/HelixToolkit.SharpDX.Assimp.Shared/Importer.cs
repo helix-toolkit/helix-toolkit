@@ -246,12 +246,14 @@ namespace HelixToolkit.UWP
             /// Loads the specified file stream. User must provider custom texture loader to load texture files.
             /// </summary>
             /// <param name="fileStream">The file stream.</param>
+            /// <param name="filePath">The filePath. Used to load texture.</param>
             /// <param name="formatHint">The format hint.</param>
             /// <param name="textureLoader">The texture loader</param>
             /// <param name="scene">The scene.</param>
             /// <returns></returns>
-            public ErrorCode Load(Stream fileStream, ITextureIO textureLoader, string formatHint, out HelixToolkitScene scene)
+            public ErrorCode Load(Stream fileStream, string filePath, string formatHint, out HelixToolkitScene scene, ITextureIO textureLoader = null)
             {
+                path = filePath;
                 ErrorCode = ErrorCode.None;
                 AssimpContext importer = null;
                 var useExtern = false;
@@ -302,22 +304,13 @@ namespace HelixToolkit.UWP
             /// Convert the assimp scene to Helix Scene.
             /// </summary>
             /// <param name="assimpScene">The assimp scene.</param>
-            /// <param name="scene">The scene.</param>
-            /// <returns></returns>
-            public ErrorCode Load(Scene assimpScene, out HelixToolkitScene scene)
-            {
-                return BuildScene(assimpScene, out scene);
-            }
-
-            /// <summary>
-            /// Convert the assimp scene to Helix Scene.
-            /// </summary>
-            /// <param name="assimpScene">The assimp scene.</param>
+            /// <param name="filePath">The filePath of the model. It is used for texture loading</param>
             /// <param name="textureLoader">Custom Texture Loader</param>
             /// <param name="scene">The scene.</param>
             /// <returns></returns>
-            public ErrorCode Load(Scene assimpScene, ITextureIO textureLoader, out HelixToolkitScene scene)
+            public ErrorCode Load(Scene assimpScene, string filePath, out HelixToolkitScene scene, ITextureIO textureLoader = null)
             {
+                path = filePath;
                 Configuration.TextureLoader = textureLoader;
                 return BuildScene(assimpScene, out scene);
             }

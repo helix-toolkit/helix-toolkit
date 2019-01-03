@@ -173,13 +173,17 @@ namespace HelixToolkit.UWP
             /// </summary>
             public bool IsSourceMatrixColumnMajor = true;
 
-            public ITextureIO TextureLoader = new DefaultTextureLoader();
+            public ITextureIO TextureLoader;
             /// <summary>
             /// Initializes a new instance of the <see cref="ImporterConfiguration"/> class.
             /// </summary>
             public ImporterConfiguration()
             {
-
+#if WINDOWS_UWP
+                TextureLoader = new UWPTextureLoader();
+#else
+                TextureLoader = new DefaultTextureLoader();
+#endif
             }
         }
         /// <summary>
