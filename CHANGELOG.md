@@ -3,10 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Next Version]
 ### Potential Breaking Changes:
-1. Material UV Transform has been changed from  Matrix  to  UVTransform  struct. (WPF.SharpDX/UWP/Core)
+1. Material UV Transform has been changed from  `Matrix`  to  `UVTransform`  struct. (WPF.SharpDX/UWP/Core)
 2. Material Texture has been changed from `Stream` to `TextureModel`. This change allows more powerful texture support in future. In most cases, `Stream` will be implicit convert to `TextureModel` to reduce breaking changes. However, it may have issue if you are using XAML binding to a Texture stream in ViewModel. (WPF.SharpDX/UWP/Core)
-3. GroupModel3D and ItemsModel3D will no longer support using XAML Children and ItemsSource at the same time (To be consistent with other WPF controls such as ListView).(WPF.SharpDX/UWP/Core)
-4. PBR material RMAMap property has been renamed and separated into `RoughnessMetallicMap` and `AmbientOcclusionMap`. 
+3. `GroupModel3D` and `ItemsModel3D` will no longer support using XAML Children and ItemsSource at the same time (To be consistent with other WPF controls such as ListView).(WPF.SharpDX/UWP/Core)
+4. PBR material `RMAMap` property has been renamed and separated into `RoughnessMetallicMap` and `AmbientOcclusionMap`. 
 5. `AmbientColor` in InstancingParams has been removed.(WPF.SharpDX/UWP/Core)
 
 ### Added
@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 6. Demo Winform Integration. [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest)
 
 ### Improvement and Changes
-1. Add FastList and change Vector3Collection/IntCollection base class to FastList for direct underlying array access. (WPF.SharpDX and UWP)
+1. Add `FastList` and change `Vector3Collection`/`IntCollection` base class to FastList for direct underlying array access. (WPF.SharpDX and UWP)
 2. Improved off-screen texture pooling. (WPF.SharpDX/UWP/Core)
 3. Improved post effects quality. (WPF.SharpDX/UWP/Core)
 4. Fixed Material creation performance issue. #1015, #1022  (WPF.SharpDX/UWP/Core)
