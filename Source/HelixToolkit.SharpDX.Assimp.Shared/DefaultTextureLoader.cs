@@ -28,6 +28,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         ///     Called when [load texture].
         /// </summary>
+        /// <param name="modelPath">The model path</param>
         /// <param name="texturePath">The path.</param>
         /// <returns></returns>
         protected virtual TextureModel OnLoadTexture(string modelPath, string texturePath)
