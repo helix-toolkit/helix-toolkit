@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 3. GroupModel3D and ItemsModel3D no longer support using XAML Children and ItemsSource at the same time (To be consistent with other WPF controls such as ListView).(WPF.SharpDX/UWP/Core)
 4. PBR material RMAMap property is renamed and separated into `RoughnessMetallicMap` and `AmbientOcclusionMap`. 
 5. `AmbientColor` in InstancingParams is removed.(WPF.SharpDX/UWP/Core)
+6. Remove `Core` namespace on Vector3Collection/Vector2Collection/IntCollection.
 
 ### Added
 1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.  (WPF.SharpDX/UWP/Core)
