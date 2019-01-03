@@ -953,6 +953,21 @@ namespace HelixToolkit.UWP
                 NameChanged = null;
                 base.OnDispose(disposeManagedResources);
             }
+            /// <summary>
+            /// Removes self from scene graph.
+            /// </summary>
+            /// <returns></returns>
+            public bool RemoveSelf()
+            {
+                if(parent != null && parent is GroupNodeBase group)
+                {
+                    return group.RemoveChildNode(this);
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
             public int CompareTo(SceneNode other)
             {

@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Configurations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DefaultTextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Animation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Element3D.cs" />
@@ -22,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ImporterPartial_Animation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImporterPartial_Mesh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImporterPartial_Material.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)HelixToolkit.SharpDX.Shared.licenseheader" />
