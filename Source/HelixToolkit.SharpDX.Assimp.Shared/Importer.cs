@@ -298,6 +298,29 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            /// <summary>
+            /// Convert the assimp scene to Helix Scene.
+            /// </summary>
+            /// <param name="assimpScene">The assimp scene.</param>
+            /// <param name="scene">The scene.</param>
+            /// <returns></returns>
+            public ErrorCode Load(Scene assimpScene, out HelixToolkitScene scene)
+            {
+                return BuildScene(assimpScene, out scene);
+            }
+
+            /// <summary>
+            /// Convert the assimp scene to Helix Scene.
+            /// </summary>
+            /// <param name="assimpScene">The assimp scene.</param>
+            /// <param name="textureLoader">Custom Texture Loader</param>
+            /// <param name="scene">The scene.</param>
+            /// <returns></returns>
+            public ErrorCode Load(Scene assimpScene, ITextureIO textureLoader, out HelixToolkitScene scene)
+            {
+                Configuration.TextureLoader = textureLoader;
+                return BuildScene(assimpScene, out scene);
+            }
             #endregion
 
             #region Protected Methods            
