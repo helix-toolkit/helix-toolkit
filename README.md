@@ -4,16 +4,22 @@
 
 **Helix Toolkit is a collection of 3D components for .NET Framework.**
 
-[**HelixToolkit.WPF:**](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/HelixToolkit.Wpf) 
+[**HelixToolkit.WPF:**](/Source/HelixToolkit.Wpf) 
 Adds variety of functionalities/models on the top of internal WPF 3D model (Media3D namespace). 
 
-[**HelixToolkit.SharpDX.WPF:**](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/HelixToolkit.Wpf.SharpDX) 
+[**HelixToolkit.SharpDX.WPF:**](/Source/HelixToolkit.Wpf.SharpDX) 
 3D Components and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for high performance usage.
 
-[**HelixToolkit.UWP:**](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/HelixToolkit.UWP) 
+[**HelixToolkit.UWP:**](/Source/HelixToolkit.UWP) 
 3D Components and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for Universal Windows App.
 
-[**Examples:**](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples)
+[**HelixToolkit.SharpDX.Core:**](/Source/HelixToolkit.SharpDX.Core) 
+3D Components and Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for netstandard and .NET Core.
+
+[**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.Wpf.SharpDX.Assimp) 
+[Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
+
+[**Examples:**](/develop/Source/Examples)
 Please download full source code to run examples. Or download [compiled version](https://ci.appveyor.com/project/objorke/helix-toolkit/branch/develop/artifacts)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7?svg=true)](https://ci.appveyor.com/project/objorke/helix-toolkit)
