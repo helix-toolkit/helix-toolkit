@@ -5,12 +5,10 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using SharpDX;
 using System;
-
+using System.Diagnostics;
 namespace HelixToolkit.SharpDX.Core.Controls
-{
-    using System.Diagnostics;
-    using UWP;
-    using UWP.Cameras;
+{   
+    using Cameras;
 
     public sealed class CameraController
     {
@@ -96,10 +94,22 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// <value> The minimum field of view. </value>
         public float MinimumFieldOfView = 10.0f;
 
+        private Vector3 modelUpDirection = Vector3.UnitY;
         /// <summary>
         /// Gets or sets the model up direction.
         /// </summary>
-        public Vector3 ModelUpDirection = new Vector3(0, 1, 0);
+        public Vector3 ModelUpDirection
+        {
+            set
+            {
+                modelUpDirection = value;
+                if (Viewport != null)
+                {
+                    Viewport.ModelUpDirection = value;
+                }
+            }
+            get => modelUpDirection;
+        }
 
         /// <summary>
         /// Gets or sets the move sensitivity.

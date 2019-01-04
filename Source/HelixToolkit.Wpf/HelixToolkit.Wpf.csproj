@@ -63,6 +63,9 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Adorners\DrawingContextExtensions.cs" />
+    <Compile Include="Controls\CameraController\Closest3DPointHitTester.cs" />
+    <Compile Include="Controls\CameraController\ClosestVertexResult.cs" />
+    <Compile Include="Controls\CameraController\NearestPointInCamera.cs" />
     <Compile Include="Controls\Stereo\InterlacedView3D.xaml.cs">
       <DependentUpon>InterlacedView3D.xaml</DependentUpon>
     </Compile>

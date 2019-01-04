@@ -2177,5 +2177,112 @@ namespace HelixToolkit.UWP
                         viewport.renderHostInternal.InvalidatePerFrameRenderables();
                     }
                 }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable ScreenSpaced Ambient Occlusion].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable ssao]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableSSAO
+        {
+            get { return (bool)GetValue(EnableSSAOProperty); }
+            set { SetValue(EnableSSAOProperty, value); }
+        }
+
+        /// <summary>
+        /// The enable ssao property
+        /// </summary>
+        public static readonly DependencyProperty EnableSSAOProperty =
+            DependencyProperty.Register("EnableSSAO", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    var viewport = d as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                    {
+                        viewport.renderHostInternal.RenderConfiguration.EnableSSAO = (bool)e.NewValue;
+                        viewport.renderHostInternal.InvalidateRender();
+                    }
+                }));
+
+        /// <summary>
+        /// Gets or sets the ssao sampling radius.
+        /// </summary>
+        /// <value>
+        /// The ssao sampling radius.
+        /// </value>
+        public double SSAOSamplingRadius
+        {
+            get { return (double)GetValue(SSAOSamplingRadiusProperty); }
+            set { SetValue(SSAOSamplingRadiusProperty, value); }
+        }
+
+        /// <summary>
+        /// The ssao sampling radius property
+        /// </summary>
+        public static readonly DependencyProperty SSAOSamplingRadiusProperty =
+            DependencyProperty.Register("SSAOSamplingRadius", typeof(double), typeof(Viewport3DX),
+                new PropertyMetadata(0.5, (d, e) =>
+                {
+                    var viewport = d as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                    {
+                        viewport.renderHostInternal.RenderConfiguration.SSAORadius = (float)(double)e.NewValue;
+                        viewport.renderHostInternal.InvalidateRender();
+                    }
+                }));
+
+
+        /// <summary>
+        /// Gets or sets the ssao intensity.
+        /// </summary>
+        /// <value>
+        /// The ssao intensity.
+        /// </value>
+        public double SSAOIntensity
+        {
+            get { return (double)GetValue(SSAOIntensityProperty); }
+            set { SetValue(SSAOIntensityProperty, value); }
+        }
+
+        /// <summary>
+        /// The ssao intensity property
+        /// </summary>
+        public static readonly DependencyProperty SSAOIntensityProperty =
+            DependencyProperty.Register("SSAOIntensity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.SSAOIntensity = (float)(double)e.NewValue;
+                    viewport.renderHostInternal.InvalidateRender();
+                }
+            }));
+
+        /// <summary>
+        /// Gets or sets the ssao quality.
+        /// </summary>
+        /// <value>
+        /// The ssao quality.
+        /// </value>
+        public SSAOQuality SSAOQuality
+        {
+            get { return (SSAOQuality)GetValue(SSAOQualityProperty); }
+            set { SetValue(SSAOQualityProperty, value); }
+        }
+
+        /// <summary>
+        /// The ssao quality property
+        /// </summary>
+        public static readonly DependencyProperty SSAOQualityProperty =
+            DependencyProperty.Register("SSAOQuality", typeof(SSAOQuality), typeof(Viewport3DX), new PropertyMetadata(SSAOQuality.Low, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.SSAOQuality = (SSAOQuality)e.NewValue;
+                    viewport.renderHostInternal.InvalidateRender();
+                }
+            }));
     }
 }

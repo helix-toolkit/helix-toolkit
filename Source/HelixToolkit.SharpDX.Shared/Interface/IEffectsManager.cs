@@ -9,10 +9,14 @@ using System.Collections.Generic;
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #endif
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using HelixToolkit.Logger;

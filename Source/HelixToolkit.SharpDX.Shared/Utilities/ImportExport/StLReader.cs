@@ -19,8 +19,13 @@ using Color = System.Windows.Media.Color;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+using Vector3D = SharpDX.Vector3;
+namespace HelixToolkit.SharpDX.Core
+#else
 using Vector3D = SharpDX.Vector3;
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;    
@@ -35,6 +40,7 @@ namespace HelixToolkit.UWP
     /// <remarks>
     /// The format is documented on <a href="http://en.wikipedia.org/wiki/STL_(file_format)">Wikipedia</a>.
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class StLReader : ModelReader
     {
         /// <summary>

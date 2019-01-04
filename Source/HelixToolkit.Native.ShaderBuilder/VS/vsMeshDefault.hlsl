@@ -68,14 +68,7 @@ PSInput main(VSInstancingInput input)
 	//set texture coords
     output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
     output.cDiffuse = vMaterialDiffuse;
-    if (!bRenderPBR)
-    {
-        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
-    }
-    else
-    {
-        output.c2 = vMaterialSpecular;
-    }
+    output.c2 = vMaterialEmissive;
 #endif
 
 #if defined(INSTANCINGPARAM)
@@ -84,8 +77,8 @@ PSInput main(VSInstancingInput input)
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
         output.cDiffuse = vMaterialDiffuse;
         if (!bRenderPBR)
-        {
-            output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+        {            
+            output.c2 = vMaterialEmissive;
         }
         else
         {
@@ -99,11 +92,11 @@ PSInput main(VSInstancingInput input)
         output.cDiffuse = input.diffuseC;
         if (!bRenderPBR)
         {
-            output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
+            output.c2 = input.emissiveC; 
         }
         else
         {
-            output.c2 = input.ambientC;
+            output.c2 = input.emissiveC;
         }
     }
 #endif

@@ -54,24 +54,7 @@
             <hx:GroupModel3D
                 x:Name="group1"
                 ItemsSource="{Binding GroupModelSource}"
-                Transform="{Binding GroupModel3DTransform}">
-                <hx:MeshGeometryModel3D
-                    Geometry="{Binding SphereModel}"
-                    Material="{Binding RedMaterial}"
-                    Transform="{Binding Transform1}" />
-                <hx:MeshGeometryModel3D
-                    Geometry="{Binding SphereModel}"
-                    Material="{Binding RedMaterial}"
-                    Transform="{Binding Transform2}" />
-                <hx:MeshGeometryModel3D
-                    Geometry="{Binding SphereModel}"
-                    Material="{Binding RedMaterial}"
-                    Transform="{Binding Transform3}" />
-                <hx:MeshGeometryModel3D
-                    Geometry="{Binding SphereModel}"
-                    Material="{Binding RedMaterial}"
-                    Transform="{Binding Transform4}" />
-            </hx:GroupModel3D>
+                Transform="{Binding GroupModel3DTransform}" />
             <hx:ItemsModel3D
                 x:Name="itemsModel1"
                 ItemsSource="{Binding ItemsSource}"
@@ -98,11 +81,15 @@
             <Button Command="{Binding AddGroupModelCommand}">Add Group Model</Button>
             <Button Command="{Binding RemoveGroupModelCommand}">Remove Group Model</Button>
             <Button Command="{Binding ClearGroupModelCommand}">Clear Group Model</Button>
+            <Button Command="{Binding ReplaceGroupSourceCommand}">Replace Group Source</Button>
             <Button Command="{Binding AnimateGroupModelCommand}">Animate Group Model</Button>
+            <Button x:Name="detachGroupButton" Click="DetachGroupButton_Click">Detach Group</Button>
+            <Button x:Name="attachGroupButton" Click="AttachGroupButton_Click">Attach Group</Button>
             <Separator />
             <Button Command="{Binding AddItemsModelCommand}">Add Items Model</Button>
             <Button Command="{Binding RemoveItemsModelCommand}">Remove Items Model</Button>
             <Button Command="{Binding ClearItemsModelCommand}">Clear Items Model</Button>
+            <Button Command="{Binding ReplaceItemsModelSourceCommand}">Replace ItemsModel Source</Button>
             <Button Command="{Binding AnimateItemsModelCommand}">Animate Items Model</Button>
             <Separator />
             <Button Command="{Binding AddTransparentGroupModelCommand}">Add Transparent Model</Button>

@@ -97,7 +97,7 @@ namespace DynamicTextureDemo
         public bool DynamicVertices { set; get; } = false;
         public bool DynamicTriangles { set; get; } = false;
         public bool DynamicPointColor { set; get; } = true;
-
+        public bool AnimateUVOffset { set; get; } = true;
         public bool ReverseInnerRotation { set; get; } = false;
 
         private Vector3D camLookDir = new Vector3D(-10, -10, -10);
@@ -247,25 +247,40 @@ namespace DynamicTextureDemo
             counter %= 128;
             if (DynamicTexture)
             {
-                var texture = new Vector2Collection(Model.TextureCoordinates);
-                var t0 = texture[0];
-                for (int i = 1; i < texture.Count; ++i)
+                Vector2Collection texture = null;
+                if (!AnimateUVOffset)
                 {
-                    texture[i - 1] = texture[i];
+                    texture = new Vector2Collection(Model.TextureCoordinates);
+                    var t0 = texture[0];
+                    for (int i = 1; i < texture.Count; ++i)
+                    {
+                        texture[i - 1] = texture[i];
+                    }
+                    texture[texture.Count - 1] = t0;    
                 }
-                texture[texture.Count - 1] = t0;                
+            
                 context.Send((o) =>
                 {
-                    Model.TextureCoordinates = texture;
-                    if (ReverseInnerRotation)
+                    if (!AnimateUVOffset)
                     {
-                        var texture1 = new Vector2Collection(texture);
-                        texture1.Reverse();                   
-                        InnerModel.TextureCoordinates = texture1;
+                        Model.TextureCoordinates = texture;
+                        if (ReverseInnerRotation)
+                        {
+                            var texture1 = new Vector2Collection(texture);
+                            texture1.Reverse();                   
+                            InnerModel.TextureCoordinates = texture1;
+                        }
+                        else
+                        {
+                            InnerModel.TextureCoordinates = texture;
+                        }
                     }
                     else
                     {
-                        InnerModel.TextureCoordinates = texture;
+                        ModelMaterial.UVTransform = new UVTransform(0, Vector2.One,
+                            ModelMaterial.UVTransform.Translation + new Vector2(0.005f, -0.01f));
+                        InnerModelMaterial.UVTransform = new UVTransform(0, Vector2.One,
+                            InnerModelMaterial.UVTransform.Translation + new Vector2(-0.01f, 0.005f));
                     }
                 }, null);
 

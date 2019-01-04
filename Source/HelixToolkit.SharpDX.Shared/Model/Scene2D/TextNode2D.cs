@@ -6,166 +6,172 @@ Copyright (c) 2018 Helix Toolkit contributors
 using global::SharpDX.Direct2D1;
 using global::SharpDX.DirectWrite;
 using SharpDX;
-
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene2D
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core2D;
-
-    public class TextNode2D : SceneNode2D
+    namespace Model.Scene2D
     {
-        private string text = "";
-        public string Text
+        using Core2D;
+
+        public class TextNode2D : SceneNode2D
         {
-            set
+            private string text = "";
+            public string Text
             {
-                if(SetAffectsMeasure(ref text, value))
+                set
                 {
-                    (RenderCore as TextRenderCore2D).Text = value;
+                    if(SetAffectsMeasure(ref text, value))
+                    {
+                        (RenderCore as TextRenderCore2D).Text = value;
+                    }
+                }
+                get
+                {
+                    return text;
                 }
             }
-            get
-            {
-                return text;
-            }
-        }
 
-        public Brush Foreground
-        {
-            set
+            public Brush Foreground
             {
-                (RenderCore as TextRenderCore2D).Foreground = value;
+                set
+                {
+                    (RenderCore as TextRenderCore2D).Foreground = value;
+                }
+                get
+                {
+                    return (RenderCore as TextRenderCore2D).Foreground;
+                }
             }
-            get
-            {
-                return (RenderCore as TextRenderCore2D).Foreground;
-            }
-        }
 
-        public Brush Background
-        {
-            set
+            public Brush Background
             {
-                (RenderCore as TextRenderCore2D).Background = value;
+                set
+                {
+                    (RenderCore as TextRenderCore2D).Background = value;
+                }
+                get
+                {
+                    return (RenderCore as TextRenderCore2D).Background;
+                }
             }
-            get
-            {
-                return (RenderCore as TextRenderCore2D).Background;
-            }
-        }
 
-        public int FontSize
-        {
-            set
+            public int FontSize
             {
-                (RenderCore as TextRenderCore2D).FontSize = value;
+                set
+                {
+                    (RenderCore as TextRenderCore2D).FontSize = value;
+                }
+                get
+                {
+                    return (RenderCore as TextRenderCore2D).FontSize;
+                }
             }
-            get
-            {
-                return (RenderCore as TextRenderCore2D).FontSize;
-            }
-        }
 
-        public FontWeight FontWeight
-        {
-            set
+            public FontWeight FontWeight
             {
-                (RenderCore as TextRenderCore2D).FontWeight = value;
+                set
+                {
+                    (RenderCore as TextRenderCore2D).FontWeight = value;
+                }
+                get
+                {
+                    return (RenderCore as TextRenderCore2D).FontWeight;
+                }
             }
-            get
-            {
-                return (RenderCore as TextRenderCore2D).FontWeight;
-            }
-        }
 
-        public FontStyle FontStyle
-        {
-            set
+            public FontStyle FontStyle
             {
-                (RenderCore as TextRenderCore2D).FontStyle = value;
+                set
+                {
+                    (RenderCore as TextRenderCore2D).FontStyle = value;
+                }
+                get
+                {
+                    return (RenderCore as TextRenderCore2D).FontStyle;
+                }
             }
-            get
-            {
-                return (RenderCore as TextRenderCore2D).FontStyle;
-            }
-        }
 
-        public TextAlignment TextAlignment
-        {
-            set
+            public TextAlignment TextAlignment
             {
-                (RenderCore as TextRenderCore2D).TextAlignment = value;
+                set
+                {
+                    (RenderCore as TextRenderCore2D).TextAlignment = value;
+                }
+                get
+                {
+                    return (RenderCore as TextRenderCore2D).TextAlignment;
+                }
             }
-            get
-            {
-                return (RenderCore as TextRenderCore2D).TextAlignment;
-            }
-        }
 
-        public FlowDirection FlowDirection
-        {
-            set
+            public FlowDirection FlowDirection
             {
-                (RenderCore as TextRenderCore2D).FlowDirection = value;
+                set
+                {
+                    (RenderCore as TextRenderCore2D).FlowDirection = value;
+                }
+                get
+                {
+                    return (RenderCore as TextRenderCore2D).FlowDirection;
+                }
             }
-            get
+
+            public string FontFamily
             {
-                return (RenderCore as TextRenderCore2D).FlowDirection;
+                set
+                {
+                    (RenderCore as TextRenderCore2D).FontFamily = value;
+                }
+                get
+                {
+                    return (RenderCore as TextRenderCore2D).FontFamily;
+                }
             }
-        }
 
-        public string FontFamily
-        {
-            set
+            private TextRenderCore2D textRenderable;
+
+            protected override RenderCore2D CreateRenderCore()
             {
-                (RenderCore as TextRenderCore2D).FontFamily = value;
+                textRenderable = new TextRenderCore2D();
+                return textRenderable;
             }
-            get
+
+            protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
             {
-                return (RenderCore as TextRenderCore2D).FontFamily;
+                hitResult = null;
+                if (LayoutBoundWithTransform.Contains(mousePoint))
+                {
+                    hitResult = new HitTest2DResult(WrapperSource);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-        }
 
-        private TextRenderCore2D textRenderable;
-
-        protected override RenderCore2D CreateRenderCore()
-        {
-            textRenderable = new TextRenderCore2D();
-            return textRenderable;
-        }
-
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            hitResult = null;
-            if (LayoutBoundWithTransform.Contains(mousePoint))
+            protected override Size2F MeasureOverride(Size2F availableSize)
             {
-                hitResult = new HitTest2DResult(WrapperSource);
-                return true;
+                textRenderable.MaxWidth = availableSize.Width;
+                textRenderable.MaxHeight = availableSize.Height;
+                var metrices = textRenderable.Metrices;
+                return new Size2F(metrices.WidthIncludingTrailingWhitespace, metrices.Height);
             }
-            else
+
+            protected override RectangleF ArrangeOverride(RectangleF finalSize)
             {
-                return false;
+                textRenderable.MaxWidth = finalSize.Width;
+                textRenderable.MaxHeight = finalSize.Height;
+                var metrices = textRenderable.Metrices;
+                return finalSize;
             }
-        }
-
-        protected override Size2F MeasureOverride(Size2F availableSize)
-        {
-            textRenderable.MaxWidth = availableSize.Width;
-            textRenderable.MaxHeight = availableSize.Height;
-            var metrices = textRenderable.Metrices;
-            return new Size2F(metrices.WidthIncludingTrailingWhitespace, metrices.Height);
-        }
-
-        protected override RectangleF ArrangeOverride(RectangleF finalSize)
-        {
-            textRenderable.MaxWidth = finalSize.Width;
-            textRenderable.MaxHeight = finalSize.Height;
-            var metrices = textRenderable.Metrices;
-            return finalSize;
         }
     }
+
 }

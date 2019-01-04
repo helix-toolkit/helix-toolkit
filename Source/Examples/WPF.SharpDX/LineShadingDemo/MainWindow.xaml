@@ -106,42 +106,27 @@
                 <Expander.Background>
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <CheckBox
-                        Grid.Row="0"
-                        Margin="3"
-                        IsChecked="{Binding GridEnabled}">
+                <StackPanel>
+                    <CheckBox Margin="3" IsChecked="{Binding GridEnabled}">
                         Enable Grid
                     </CheckBox>
-                    <CheckBox
-                        Grid.Row="1"
-                        Margin="3"
-                        IsChecked="{Binding LinesEnabled}">
+                    <CheckBox Margin="3" IsChecked="{Binding LinesEnabled}">
                         Enable Lines
                     </CheckBox>
+                    <CheckBox Margin="3" IsChecked="{Binding ElementName=grid, Path=FixedSize}">FixedSize</CheckBox>
                     <TextBlock Grid.Row="2" Margin="3">Line Thickness</TextBlock>
                     <Slider
-                        Grid.Row="3"
                         Margin="3"
                         Maximum="10"
                         Minimum="0"
                         Value="{Binding LineThickness}" />
                     <TextBlock Grid.Row="4" Margin="3">Line Smoothness</TextBlock>
                     <Slider
-                        Grid.Row="5"
                         Margin="3"
                         Maximum="20"
                         Minimum="0"
                         Value="{Binding LineSmoothness}" />
-                </Grid>
+                </StackPanel>
             </Expander>
         </StackPanel>
         <StatusBar Grid.Row="1" VerticalAlignment="Bottom">

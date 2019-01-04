@@ -5,133 +5,141 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Model
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Model
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    public sealed class PointMaterialCore : MaterialCore, IPointRenderParams
+    namespace Model
     {
-        private float width = 0.5f;
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
-        /// <value>
-        /// The width.
-        /// </value>
-        public float Width
+        using Core;
+        public sealed class PointMaterialCore : MaterialCore, IPointRenderParams
         {
-            set
+            private float width = 0.5f;
+            /// <summary>
+            /// Gets or sets the width.
+            /// </summary>
+            /// <value>
+            /// The width.
+            /// </value>
+            public float Width
             {
-                Set(ref width, value);
+                set
+                {
+                    Set(ref width, value);
+                }
+                get { return width; }
             }
-            get { return width; }
-        }
 
-        private float height = 0.5f;
-        /// <summary>
-        /// Gets or sets the height.
-        /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        public float Height
-        {
-            set
+            private float height = 0.5f;
+            /// <summary>
+            /// Gets or sets the height.
+            /// </summary>
+            /// <value>
+            /// The height.
+            /// </value>
+            public float Height
             {
-                Set(ref height, value);
+                set
+                {
+                    Set(ref height, value);
+                }
+                get { return height; }
             }
-            get { return height; }
-        }
 
-        private PointFigure figure = PointFigure.Rect;
-        /// <summary>
-        /// Gets or sets the figure.
-        /// </summary>
-        /// <value>
-        /// The figure.
-        /// </value>
-        public PointFigure Figure
-        {
-            set
+            private PointFigure figure = PointFigure.Rect;
+            /// <summary>
+            /// Gets or sets the figure.
+            /// </summary>
+            /// <value>
+            /// The figure.
+            /// </value>
+            public PointFigure Figure
             {
-                Set(ref figure, value);
+                set
+                {
+                    Set(ref figure, value);
+                }
+                get { return figure; }
             }
-            get { return figure; }
-        }
 
-        private float figureRatio = 0.25f;
-        /// <summary>
-        /// Gets or sets the figure ratio.
-        /// </summary>
-        /// <value>
-        /// The figure ratio.
-        /// </value>
-        public float FigureRatio
-        {
-            set
+            private float figureRatio = 0.25f;
+            /// <summary>
+            /// Gets or sets the figure ratio.
+            /// </summary>
+            /// <value>
+            /// The figure ratio.
+            /// </value>
+            public float FigureRatio
             {
-                Set(ref figureRatio, value);
+                set
+                {
+                    Set(ref figureRatio, value);
+                }
+                get { return figureRatio; }
             }
-            get { return figureRatio; }
-        }
 
-        private Color4 pointColor = Color.Black;
-        /// <summary>
-        /// Final Point Color = PointColor * PerVertexPointColor
-        /// </summary>
-        public Color4 PointColor
-        {
-            set
+            private Color4 pointColor = Color.Black;
+            /// <summary>
+            /// Final Point Color = PointColor * PerVertexPointColor
+            /// </summary>
+            public Color4 PointColor
             {
-                Set(ref pointColor, value);
+                set
+                {
+                    Set(ref pointColor, value);
+                }
+                get
+                {
+                    return pointColor;
+                }
             }
-            get
+            private bool enableDistanceFading = false;
+            public bool EnableDistanceFading
             {
-                return pointColor;
+                set
+                {
+                    Set(ref enableDistanceFading, value);
+                }
+                get { return enableDistanceFading; }
             }
-        }
-        private bool enableDistanceFading = false;
-        public bool EnableDistanceFading
-        {
-            set
+
+            private float fadingNearDistance = 0;
+            public float FadingNearDistance
             {
-                Set(ref enableDistanceFading, value);
+                set { Set(ref fadingNearDistance, value); }
+                get { return fadingNearDistance; }
             }
-            get { return enableDistanceFading; }
-        }
 
-        private float fadingNearDistance = 0;
-        public float FadingNearDistance
-        {
-            set { Set(ref fadingNearDistance, value); }
-            get { return fadingNearDistance; }
-        }
+            private float fadingFarDistance = 100;
+            public float FadingFarDistance
+            {
+                set { Set(ref fadingFarDistance, value); }
+                get { return fadingFarDistance; }
+            }
 
-        private float fadingFarDistance = 100;
-        public float FadingFarDistance
-        {
-            set { Set(ref fadingFarDistance, value); }
-            get { return fadingFarDistance; }
-        }
+            private bool fixedSize = true;
+            /// <summary>
+            /// Gets or sets a value indicating whether [fixed size].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
+            /// </value>
+            public bool FixedSize
+            {
+                set { Set(ref fixedSize, value); }
+                get { return fixedSize; }
+            }
 
-        private bool fixedSize = true;
-        /// <summary>
-        /// Gets or sets a value indicating whether [fixed size].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
-        /// </value>
-        public bool FixedSize
-        {
-            set { Set(ref fixedSize, value); }
-            get { return fixedSize; }
-        }
-
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
-        {
-            return new PointMaterialVariable(manager, technique, this);
+            public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
+            {
+                return new PointMaterialVariable(manager, technique, this);
+            }
         }
     }
+
 }

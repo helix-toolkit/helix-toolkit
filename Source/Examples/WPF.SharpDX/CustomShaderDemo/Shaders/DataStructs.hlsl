@@ -102,8 +102,7 @@ struct VSInstancingInput
     float4 mr3 : TEXCOORD4;
 
     float4 diffuseC : COLOR1;
-    float4 ambientC : COLOR2;
-    float4 emissiveC : COLOR3;
+    float4 emissiveC : COLOR2;
     float2 tOffset : TEXCOORD5;
 };
 
@@ -119,7 +118,7 @@ struct PSInput
     float3 t1 : TANGENT; // tangent
     float3 t2 : BINORMAL; // bi-tangent	
     float4 c : COLOR; // solid color (for debug)
-    float4 c2 : COLOR1; //vMaterialEmissive + vMaterialAmbient * vLightAmbient
+    float4 c2 : COLOR1; //vMaterialEmissive
     float4 cDiffuse : COLOR2; //vMaterialDiffuse
 };
 

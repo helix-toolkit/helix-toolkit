@@ -311,11 +311,63 @@ map_bump " + prefix + Path.GetFileName(tempTexBump) + @"
                 var material = (PhongMaterialCore)model[0].Material;
                 using(var fs = new FileStream(tempTexDiffuse, FileMode.Open))
                 {
-                    Compare(fs, material.DiffuseMap);
+                    Compare(fs, material.DiffuseMap.CompressedStream);
                 }
                 using (var fs = new FileStream(tempTexBump, FileMode.Open))
                 {
-                    Compare(fs, material.NormalMap);
+                    Compare(fs, material.NormalMap.CompressedStream);
+                }
+            }
+            finally
+            {
+                File.Delete(tempObj);
+                File.Delete(tempMtl);
+                //File.Delete(tempTexDiffuse);
+                //File.Delete(tempTexBump);
+            }
+        }
+
+        [Test]
+        public void TexturePath_Absolute_Valid()
+        {
+            var tempObj = Path.GetTempFileName();
+            var tempMtl = Path.GetTempFileName();
+            var tempTexDiffuse = Path.GetTempFileName();
+            var tempTexBump = Path.GetTempFileName();
+
+            try
+            {
+                File.WriteAllText(tempObj, @"
+mtllib " + tempMtl + @"
+v -0.5 0 0.5
+v 0.5 0 0.5
+v -0.5 0 -0.5
+vt 0 1
+usemtl TestMaterial
+f 1/1 2/1 3/1
+");
+
+                File.WriteAllText(tempMtl, @"
+newmtl TestMaterial
+map_Kd " + tempTexDiffuse + @"
+map_bump " + tempTexBump + @"
+");
+
+                using (var image = new System.Drawing.Bitmap(1, 1))
+                {
+                    image.Save(tempTexDiffuse);
+                    image.Save(tempTexBump);
+                }
+
+                var model = _objReader.Read(tempObj);
+                var material = (PhongMaterialCore)model[0].Material;
+                using(var fs = new FileStream(tempTexDiffuse, FileMode.Open))
+                {
+                    Compare(fs, material.DiffuseMap.CompressedStream);
+                }
+                using (var fs = new FileStream(tempTexBump, FileMode.Open))
+                {
+                    Compare(fs, material.NormalMap.CompressedStream);
                 }
             }
             finally
@@ -377,28 +429,28 @@ Kd 0 0 0
 
     public static class TestExtensions 
     {
-        public static void AssertContains(this Core.Vector2Collection collection, params double[][] points) 
+        public static void AssertContains(this Vector2Collection collection, params double[][] points) 
         {
             Assert.AreEqual(points.Length, collection.Count, "Expected to find {0} points in collection", points.Length);
             foreach (var point in points)
                 Assert.IsTrue(collection.Contains(point), "Expected collection to contain point [{0},{1}]", point[0], point[1]);
         }
 
-        public static void AssertContains(this Core.Vector3Collection collection, params double[][] points) 
+        public static void AssertContains(this Vector3Collection collection, params double[][] points) 
         {
             Assert.AreEqual(points.Length, collection.Count, "Expected to find {0} points in collection", points.Length);
             foreach (var point in points)
                 Assert.IsTrue(collection.Contains(point), "Expected collection to contain point [{0},{1},{2}]", point[0], point[1], point[2]);
         }
 
-        public static bool Contains(this Core.Vector3Collection vectors, double[] expectedVector)
+        public static bool Contains(this Vector3Collection vectors, double[] expectedVector)
         {
             return vectors.Any(vector => Math.Abs((float) expectedVector[0] - vector.X) < float.Epsilon &&
                                          Math.Abs((float) expectedVector[1] - vector.Y) < float.Epsilon &&
                                          Math.Abs((float) expectedVector[2] - vector.Z) < float.Epsilon);
         }
 
-        public static bool Contains(this Core.Vector2Collection vectors, double[] expectedVector)
+        public static bool Contains(this Vector2Collection vectors, double[] expectedVector)
         {
             return vectors.Any(vector => Math.Abs((float) expectedVector[0] - vector.X) < float.Epsilon &&
                                          Math.Abs((float) expectedVector[1] - vector.Y) < float.Epsilon);

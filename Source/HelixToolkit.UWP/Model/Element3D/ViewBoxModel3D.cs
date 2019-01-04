@@ -90,13 +90,9 @@ namespace HelixToolkit.UWP
                 ((d as Element3DCore).SceneNode as ViewBoxNode).EnableEdgeClick = (bool)e.NewValue;
             }));
 
-        public event EventHandler<ViewBoxNode.ViewBoxClickedEventArgs> ViewBoxClickedEvent;
-
         protected override SceneNode OnCreateSceneNode()
         {
-            var node = new ViewBoxNode();
-            node.OnViewBoxClicked += (s, e) => { ViewBoxClickedEvent?.Invoke(this, e); };
-            return node;
+            return new ViewBoxNode();
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)

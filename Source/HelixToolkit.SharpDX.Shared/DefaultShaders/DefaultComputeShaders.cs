@@ -5,43 +5,51 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Shaders
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Shaders
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Helper;
-    public static class DefaultComputeShaders
+    namespace Shaders
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string CSParticleInsert
+        using Helper;
+        public static class DefaultComputeShaders
         {
-            get;
-        } = "csParticleInsert";
+            /// <summary>
+            /// 
+            /// </summary>
+            public static string CSParticleInsert
+            {
+                get;
+            } = "csParticleInsert";
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string CSParticleUpdate
-        {
-            get;
-        } = "csParticleUpdate";
+            /// <summary>
+            /// 
+            /// </summary>
+            public static string CSParticleUpdate
+            {
+                get;
+            } = "csParticleUpdate";
+        }
+
+
+        public static class DefaultComputeShaderDescriptions
+        {        
+            /// <summary>
+            /// 
+            /// </summary>
+            public static readonly ShaderDescription CSParticleInsert = new ShaderDescription(nameof(CSParticleInsert), ShaderStage.Compute, new ShaderReflector(),
+                DefaultComputeShaders.CSParticleInsert);
+            /// <summary>
+            /// 
+            /// </summary>
+            public static readonly ShaderDescription CSParticleUpdate = new ShaderDescription(nameof(CSParticleUpdate), ShaderStage.Compute, new ShaderReflector(),
+                DefaultComputeShaders.CSParticleUpdate);
+        }
     }
 
-
-    public static class DefaultComputeShaderDescriptions
-    {        
-        /// <summary>
-        /// 
-        /// </summary>
-        public static ShaderDescription CSParticleInsert = new ShaderDescription(nameof(CSParticleInsert), ShaderStage.Compute, new ShaderReflector(),
-            DefaultComputeShaders.CSParticleInsert);
-        /// <summary>
-        /// 
-        /// </summary>
-        public static ShaderDescription CSParticleUpdate = new ShaderDescription(nameof(CSParticleUpdate), ShaderStage.Compute, new ShaderReflector(),
-            DefaultComputeShaders.CSParticleUpdate);
-    }
 }

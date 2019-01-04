@@ -3,100 +3,109 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-
+using System.Runtime.Serialization;
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Model
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Model
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    public sealed class LineMaterialCore : MaterialCore, ILineRenderParams
+    namespace Model
     {
-        #region Properties
-        private float thickness = 0.5f;
-        /// <summary>
-        /// 
-        /// </summary>
-        public float Thickness
+        using Core;
+        [DataContract]
+        public sealed class LineMaterialCore : MaterialCore, ILineRenderParams
         {
-            set
+            #region Properties
+            private float thickness = 0.5f;
+            /// <summary>
+            /// 
+            /// </summary>
+            public float Thickness
             {
-                Set(ref thickness, value);
+                set
+                {
+                    Set(ref thickness, value);
+                }
+                get
+                {
+                    return thickness;
+                }
             }
-            get
+
+            private float smoothness;
+            /// <summary>
+            /// 
+            /// </summary>
+            public float Smoothness
             {
-                return thickness;
+                set
+                {
+                    Set(ref smoothness, value);
+                }
+                get { return smoothness; }
             }
-        }
 
-        private float smoothness;
-        /// <summary>
-        /// 
-        /// </summary>
-        public float Smoothness
-        {
-            set
+            private Color4 lineColor = Color.Blue;
+            /// <summary>
+            /// Final Line Color = LineColor * PerVertexLineColor
+            /// </summary>
+            public Color4 LineColor
             {
-                Set(ref smoothness, value);
+                set
+                {
+                    Set(ref lineColor, value);
+                }
+                get { return lineColor; }
             }
-            get { return smoothness; }
-        }
 
-        private Color4 lineColor = Color.Blue;
-        /// <summary>
-        /// Final Line Color = LineColor * PerVertexLineColor
-        /// </summary>
-        public Color4 LineColor
-        {
-            set
+            private bool enableDistanceFading = false;
+            public bool EnableDistanceFading
             {
-                Set(ref lineColor, value);
+                set
+                {
+                    Set(ref enableDistanceFading, value);
+                }
+                get { return enableDistanceFading; }
             }
-            get { return lineColor; }
-        }
 
-        private bool enableDistanceFading = false;
-        public bool EnableDistanceFading
-        {
-            set
+            private float fadingNearDistance = 100;
+            public float FadingNearDistance
             {
-                Set(ref enableDistanceFading, value);
+                set { Set(ref fadingNearDistance, value); }
+                get { return fadingNearDistance; }
             }
-            get { return enableDistanceFading; }
-        }
 
-        private float fadingNearDistance = 100;
-        public float FadingNearDistance
-        {
-            set { Set(ref fadingNearDistance, value); }
-            get { return fadingNearDistance; }
-        }
+            private float fadingFarDistance = 0;
+            public float FadingFarDistance
+            {
+                set { Set(ref fadingFarDistance, value); }
+                get { return fadingFarDistance; }
+            }
 
-        private float fadingFarDistance = 0;
-        public float FadingFarDistance
-        {
-            set { Set(ref fadingFarDistance, value); }
-            get { return fadingFarDistance; }
-        }
+            private bool fixedSize = true;
+            /// <summary>
+            /// Gets or sets a value indicating whether [fixed size].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
+            /// </value>
+            public bool FixedSize
+            {
+                set { Set(ref fixedSize, value); }
+                get { return fixedSize; }
+            }
+            #endregion
 
-        private bool fixedSize = true;
-        /// <summary>
-        /// Gets or sets a value indicating whether [fixed size].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
-        /// </value>
-        public bool FixedSize
-        {
-            set { Set(ref fixedSize, value); }
-            get { return fixedSize; }
-        }
-        #endregion
-
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
-        {
-            return new LineMaterialVariable(manager, technique, this);
+            public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
+            {
+                return new LineMaterialVariable(manager, technique, this);
+            }
         }
     }
+
 }

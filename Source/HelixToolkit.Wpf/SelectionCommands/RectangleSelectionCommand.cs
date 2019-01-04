@@ -130,6 +130,7 @@ namespace HelixToolkit.Wpf
         private void HideRectangle()
         {
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            if (myAdornerLayer == null) { return; }
             if (this.rectangleAdorner != null)
             {
                 myAdornerLayer.Remove(this.rectangleAdorner);
@@ -165,6 +166,7 @@ namespace HelixToolkit.Wpf
             }
 
             var adornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
+            if (adornerLayer == null) { return; }
             this.rectangleAdorner = new RectangleAdorner(this.Viewport, this.selectionRect, Colors.LightGray, Colors.Black, 1, 1, 0, DashStyles.Dash);
             adornerLayer.Add(this.rectangleAdorner);
         }

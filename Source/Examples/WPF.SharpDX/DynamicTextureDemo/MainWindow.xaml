@@ -78,11 +78,17 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
             Orientation="Vertical">
-            <CheckBox IsChecked="{Binding DynamicTexture}">Dynamic Texture</CheckBox>
-            <CheckBox IsChecked="{Binding DynamicVertices}">Dynamic Vertex Positions</CheckBox>
-            <CheckBox IsChecked="{Binding DynamicTriangles}">Dynamic Triangles</CheckBox>
-            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
-            <CheckBox IsChecked="{Binding ReverseInnerRotation}">Reverse Inner Rotation</CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding DynamicTexture}">Dynamic Texture</CheckBox>
+            <CheckBox
+                Margin="15,4,0,4"
+                IsChecked="{Binding AnimateUVOffset}"
+                IsEnabled="{Binding DynamicTexture}">
+                Animate UV
+            </CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding DynamicVertices}">Dynamic Vertex Positions</CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding DynamicTriangles}">Dynamic Triangles</CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox Margin="4" IsChecked="{Binding ReverseInnerRotation}">Reverse Inner Rotation</CheckBox>
         </StackPanel>
     </Grid>
 </Window>

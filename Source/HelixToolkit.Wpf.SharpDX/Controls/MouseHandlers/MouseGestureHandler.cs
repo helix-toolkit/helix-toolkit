@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Vector3 = global::SharpDX.Vector3;
     using Plane = global::SharpDX.Plane;
     using Ray = global::SharpDX.Ray;
+    using System.Collections.Generic;
 
     /// <summary>
     /// An abstract base class for the mouse gesture handlers.
@@ -160,6 +161,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the old cursor.
         /// </summary>
         private Cursor OldCursor { get; set; }
+
+        protected List<HitTestResult> hits = new List<HitTestResult>();
 
         /// <summary>
         /// Occurs when the manipulation is completed.
@@ -379,7 +382,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected Point Project(Vector3 p)
         {
-            return this.Viewport.Project(p);
+            return this.Viewport.Project(p).ToPoint();
         }
 
         /// <summary>
@@ -392,9 +395,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.MouseDownPoint = position;
 
-            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out Vector3 nearestPoint, out Vector3 normal, out Element3D visual))
+            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindHitsInFrustum(this.MouseDownPoint.ToVector2(), ref hits))
             {
-                this.MouseDownNearestPoint3D = nearestPoint;
+                if(hits.Count > 0)
+                {
+                    if(hits[0].ModelHit is Element3D ele)
+                    {
+                        this.MouseDownNearestPoint3D = ele.BoundsWithTransform.Center;
+                    }
+                    else if(hits[0].ModelHit is Model.Scene.SceneNode node)
+                    {
+                        MouseDownNearestPoint3D = node.BoundsWithTransform.Center;
+                    }
+                }               
             }
             else
             {

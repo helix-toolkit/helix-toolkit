@@ -21,12 +21,25 @@ cbuffer cbTransforms : register(b0)
     float4 vViewport;
 	// camera position
     float3 vEyePos;
-    float padding0;
+    bool SSAOEnabled;
+    float SSAOBias;
+    float SSAOIntensity;
+    float2 padding0;
     float OITPower;
     float OITSlope;
     int OITWeightMode;
     int OITReserved;
 };
+
+#if defined(MESHSIMPLE)
+cbuffer cbMeshSimple : register(b1)
+{
+// Common Parameters
+    float4x4 mWorld;
+    bool bHasInstances = false;
+    float3 padding1;
+};
+#endif
 
 #if defined(MESH)
 //Per model shares between Phong material and PBR material
@@ -64,7 +77,8 @@ cbuffer cbMesh : register(b1)
     float ConstantReflectance;
     float ClearCoat;
     float ClearCoatRoughness;
-    float2 padding1;
+    float padding1;
+    bool bHasAOMap;
 #endif
     bool bHasDiffuseMap = false;
     bool bHasNormalMap = false;
@@ -76,13 +90,13 @@ cbuffer cbMesh : register(b1)
     bool bHasSpecularMap;    
 #endif
 #if defined(PBR)
-    bool bHasRMAMap;    
+    bool bHasRMMap;    
     bool bHasIrradianceMap; 
 #endif
     bool bAutoTengent;
     bool bHasDisplacementMap = false;
     bool bRenderPBR = false;  
-    int NumRadianceMipLevels;
+    float padding12;
     float sMaterialShininess = 1.0f; //Ps := surface material's shininess
 
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
@@ -112,7 +126,9 @@ cbuffer cbLights : register(b3)
     LightStruct Lights[LIGHTS];
     float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
     int NumLights;
-    float3 padding;
+    bool bHasEnvironmentMap;
+    int NumEnvironmentMapMipLevels;
+    float padding;
 };
 
 #if defined(POINTLINE) // model for line, point and billboard
@@ -210,6 +226,8 @@ cbuffer cbBorderEffect : register(b6)
 {
     float4 Color;
     float4x4 Param;
+    float viewportScale; // Used to handle if using lower resolution render target for bluring. Scale = Full Res / Low Res;
+    float3 padding9;
 };
 #endif
 
@@ -255,6 +273,19 @@ cbuffer cbParticleCreateParameters : register(b8)
     float3 InitialAcceleration;
 };
 #endif
+
+#if defined(SSAO)
+static const uint SSAOKernalSize = 32;
+cbuffer cbSSAO : register(b1)
+{
+    float4 kernel[SSAOKernalSize];
+    float2 noiseScale;
+    int texScale; // Used when viewport size does not match texture size
+    float radius;    
+    float4x4 invProjection;
+}
+#endif
+
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D<float3> texNormalMap : register(t1);
@@ -265,14 +296,21 @@ Texture2D texSpecularMap : register(t3);
 Texture2D<float3> texEmissiveMap : register(t5);
 #endif
 #if defined(PBR)
-Texture2D<float3> texRMAMap    : register(t2);
-Texture2D<float3> texEmissiveMap : register(t3);
+Texture2D<float3> texRMMap    : register(t2);
+Texture2D<float> texAOMap : register(t3);
+Texture2D<float3> texEmissiveMap : register(t5);
 TextureCube<float3> texIrradianceMap : register(t21);
 #endif
 Texture2D<float3> texDisplacementMap : register(t4);
 TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 
 Texture2D<float> texShadowMap : register(t30);
+
+Texture2D texSSAOMap : register(t31);
+#if defined(SSAO)
+Texture2D<float3> texSSAONoise : register(t32);
+Texture2D<float> texSSAODepth : register(t33);
+#endif
 
 Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
@@ -308,6 +346,10 @@ SamplerState samplerBillboard : register(s7);
 SamplerState samplerSprite : register(s8);
 
 SamplerState samplerVolume : register(s9);
+
+#if defined(SSAO)
+SamplerState samplerNoise : register(s1);
+#endif
 ///---------------------UAV-----------------------------
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);

@@ -132,6 +132,10 @@
       <Project>{c7f68e1a-85b4-494a-ba4e-f4270fff3852}</Project>
       <Name>DynamicTextureDemo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EnvironmentMapDemo\EnvironmentMapDemo.csproj">
+      <Project>{82d01a4f-51b2-4771-b6f2-edc6240159e3}</Project>
+      <Name>EnvironmentMapDemo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InstancingDemo\InstancingDemo.csproj">
       <Project>{58309989-dc5d-486e-99f2-245e84dc8d7f}</Project>
       <Name>InstancingDemo</Name>
@@ -143,6 +147,10 @@
     <ProjectReference Include="..\LineShadingDemo\LineShadingDemo.csproj">
       <Project>{bc976236-a1a1-4e44-8101-17823ea7c945}</Project>
       <Name>LineShadingDemo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MaterialDemo\MaterialDemo.csproj">
+      <Project>{6c57e679-7a1b-45ac-97b7-aa88d7d9164a}</Project>
+      <Name>MaterialDemo</Name>
     </ProjectReference>
     <ProjectReference Include="..\OctreeDemo\OctreeDemo.csproj">
       <Project>{be3c1dbd-3345-4e32-be7e-c3ccfddd7220}</Project>

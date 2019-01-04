@@ -20,7 +20,11 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
 
@@ -219,7 +223,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The per frame renderable.
         /// </value>
-        List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
+        FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
         /// <summary>
         /// Gets the current frame lights
         /// </summary>
@@ -233,26 +237,40 @@ namespace HelixToolkit.UWP
         /// <value>
         /// Gets the per frame nodes with post effects.
         /// </value>
-        List<SceneNode> PerFrameNodesWithPostEffect { get; }
+        FastList<SceneNode> PerFrameNodesWithPostEffect { get; }
         /// <summary>
         /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
         /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        List<SceneNode> PerFrameOpaqueNodes { get; }
+        FastList<SceneNode> PerFrameOpaqueNodes { get; }
+        /// <summary>
+        /// Gets the per frame opaque nodes in frustum.
+        /// </summary>
+        /// <value>
+        /// The per frame opaque nodes in frustum.
+        /// </value>
+        FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
+        /// <summary>
+        /// Gets the per frame transparent nodes in frustum.
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes in frustum.
+        /// </value>
+        FastList<SceneNode> PerFrameTransparentNodesInFrustum { get; }
         /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle"/>
         /// </summary>
         /// <value>
         /// The per frame particle nodes.
         /// </value>
-        List<SceneNode> PerFrameParticleNodes { get; }
+        FastList<SceneNode> PerFrameParticleNodes { get; }
         /// <summary>
         /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>
         /// </summary>
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        List<SceneNode> PerFrameTransparentNodes { get; }
+        FastList<SceneNode> PerFrameTransparentNodes { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>
@@ -263,6 +281,14 @@ namespace HelixToolkit.UWP
         /// Ends the d3 d.
         /// </summary>
         void EndD3D();
+        /// <summary>
+        /// Starts the rendering. Trigger <see cref="StartRenderLoop"/>
+        /// </summary>
+        void StartRendering();
+        /// <summary>
+        /// Stops the rendering. Trigger <see cref="StopRenderLoop"/>
+        /// </summary>
+        void StopRendering();
         /// <summary>
         /// Updates the and render.
         /// </summary>
@@ -328,44 +354,44 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The render d2d
         /// </summary>
-        public bool RenderD2D { set; get; } = true;
+        public bool RenderD2D = true;
         /// <summary>
         /// The update global variable
         /// </summary>
-        public bool UpdatePerFrameData { set; get; } = true;
+        public bool UpdatePerFrameData = true;
         /// <summary>
         /// Gets or sets a value indicating whether [render lights].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [render lights]; otherwise, <c>false</c>.
         /// </value>
-        public bool RenderLights { set; get; } = true;
+        public bool RenderLights = true;
         /// <summary>
         /// Gets or sets a value indicating whether [clear render target before each frame].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [clear render target before each frame]; otherwise, <c>false</c>.
         /// </value>
-        public bool ClearEachFrame { set; get; } = true;
+        public bool ClearEachFrame = true;
 
         /// <summary>
         /// Auto update octree in geometry during rendering. 
         /// </summary>
-        public bool AutoUpdateOctree { set; get; } = false;
+        public bool AutoUpdateOctree = false;
         /// <summary>
         /// Gets or sets a value indicating whether [enable oit rendering].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableOITRendering { set; get; } = true;
+        public bool EnableOITRendering = true;
         /// <summary>
         /// Gets or sets the OIT weight power used for color weight calculation. Default = 3.
         /// </summary>
         /// <value>
         /// The OIT weight power.
         /// </value>
-        public float OITWeightPower { set; get; } = 3;
+        public float OITWeightPower = 3;
 
         /// <summary>
         /// Gets or sets the oit weight depth slope. Used to increase resolution for particular range of depth values. 
@@ -374,7 +400,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The oit weight depth slope.
         /// </value>
-        public float OITWeightDepthSlope { set; get; } = 1;
+        public float OITWeightDepthSlope = 1;
         /// <summary>
         /// Gets or sets the oit weight mode.
         /// <para>Please refer to http://jcgt.org/published/0002/02/09/ </para>
@@ -383,14 +409,11 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The oit weight mode.
         /// </value>
-        public OITWeightMode OITWeightMode
-        {
-            set; get;
-        } = OITWeightMode.Linear1;
+        public OITWeightMode OITWeightMode = OITWeightMode.Linear1;
         /// <summary>
         /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
         /// </summary>
-        public FXAALevel FXAALevel { set; get; } = FXAALevel.None;
+        public FXAALevel FXAALevel = FXAALevel.None;
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable render order] specified by user.
@@ -398,13 +421,37 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if [enable render order]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableRenderOrder { set; get; } = false;
+        public bool EnableRenderOrder = false;
         /// <summary>
         /// Gets or sets a value indicating whether [enable vertical synchronize].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [enable v synchronize]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableVSync { set; get; } = true;
+        public bool EnableVSync = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable SSAO].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable SSAO]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableSSAO = false;
+
+        /// <summary>
+        /// The SSAO sampling radius
+        /// </summary>
+        public float SSAORadius = 0.5f;
+        /// <summary>
+        /// The ssao bias
+        /// </summary>
+        public float SSAOBias = 1e-3f;
+        /// <summary>
+        /// The ssao intensity
+        /// </summary>
+        public float SSAOIntensity = 1f;
+        /// <summary>
+        /// The ssao quality
+        /// </summary>
+        public SSAOQuality SSAOQuality = SSAOQuality.High;
     }
 }

@@ -44,7 +44,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -251,6 +251,7 @@
     <None Include="Resources\psEffectOutlineQuad.cso" />
     <None Include="Resources\psEffectOutlineQuadStencil.cso" />
     <None Include="Resources\psEffectOutlineQualFinal.cso" />
+    <None Include="Resources\psEffectOutlineSmooth.cso" />
     <None Include="Resources\psFXAA.cso" />
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psLineColor.cso" />
@@ -275,6 +276,9 @@
     <None Include="Resources\psShadow.cso" />
     <None Include="Resources\psSkybox.cso" />
     <None Include="Resources\psSprite.cso" />
+    <None Include="Resources\psSSAO.cso" />
+    <None Include="Resources\psSSAOBlur.cso" />
+    <None Include="Resources\psSSAOP1.cso" />
     <None Include="Resources\psViewCube.cso" />
     <None Include="Resources\psVolume.cso" />
     <None Include="Resources\psVolumeCube.cso" />
@@ -287,15 +291,18 @@
     <None Include="Resources\vsCubeMap.cso" />
     <None Include="Resources\vsMeshBatched.cso" />
     <None Include="Resources\vsMeshBatchedShadow.cso" />
+    <None Include="Resources\vsMeshBatchedSSAO.cso" />
     <None Include="Resources\vsMeshBatchedWireframe.cso" />
     <None Include="Resources\vsMeshClipPlane.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />
     <None Include="Resources\vsMeshDefault.cso" />
+    <None Include="Resources\vsMeshDepth.cso" />
     <None Include="Resources\vsMeshInstancing.cso" />
     <None Include="Resources\vsMeshInstancingTessellation.cso" />
     <None Include="Resources\vsMeshOutlinePass1.cso" />
     <None Include="Resources\vsMeshOutlineScreenQuad.cso" />
     <None Include="Resources\vsMeshShadow.cso" />
+    <None Include="Resources\vsMeshSSAO.cso" />
     <None Include="Resources\vsMeshTessellation.cso" />
     <None Include="Resources\vsMeshWireframe.cso" />
     <None Include="Resources\vsParticle.cso" />
@@ -307,6 +314,7 @@
     <None Include="Resources\vsScreenQuad.cso" />
     <None Include="Resources\vsSkybox.cso" />
     <None Include="Resources\vsSprite.cso" />
+    <None Include="Resources\vsSSAO.cso" />
     <None Include="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +351,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\Camera\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\HelixToolkit.snk" />
   </ItemGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />

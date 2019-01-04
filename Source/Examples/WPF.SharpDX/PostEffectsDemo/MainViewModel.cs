@@ -23,6 +23,7 @@ namespace PostEffectsDemo
         public Geometry3D MeshModel2 { private set; get; }
         public Geometry3D MeshModel3 { private set; get; }
         public Geometry3D FloorModel { private set; get; }
+        public Geometry3D LineModel { private set; get; }
         public PhongMaterial Material1 { private set; get; } = PhongMaterials.Ruby;
         public PhongMaterial Material2 { private set; get; } = PhongMaterials.Turquoise;
         public PhongMaterial Material3 { private set; get; } = PhongMaterials.Silver;
@@ -62,6 +63,13 @@ namespace PostEffectsDemo
             builder = new MeshBuilder();
             builder.AddSphere(new Vector3(0, 0, 0), 1);
             MeshModel3 = builder.ToMesh();
+
+            var lineBuilder = new LineBuilder();
+            lineBuilder.AddLine(Vector3.Zero, Vector3.UnitX * 5);
+            lineBuilder.AddLine(Vector3.Zero, Vector3.UnitY * 5);
+            lineBuilder.AddLine(Vector3.Zero, Vector3.UnitZ * 5);
+            LineModel = lineBuilder.ToLineGeometry3D();
+            LineModel.Colors = new Color4Collection() { new Color4(1, 0, 0, 1), new Color4(1, 0, 0, 1), new Color4(0, 1, 0, 1), new Color4(0, 1, 0, 1), new Color4(0, 0, 1, 1), new Color4(0, 0, 1, 1), };
         }
 
         public List<Object3D> Load3ds(string path)

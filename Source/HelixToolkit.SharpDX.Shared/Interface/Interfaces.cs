@@ -5,10 +5,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Collections.Generic;
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using BoundingSphere = global::SharpDX.BoundingSphere;
@@ -169,19 +173,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when [on bound changed].
         /// </summary>
-        event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
+        event EventHandler<BoundChangeArgs<BoundingBox>> BoundChanged;
         /// <summary>
         /// Occurs when [on transform bound changed].
         /// </summary>
-        event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
+        event EventHandler<BoundChangeArgs<BoundingBox>> TransformBoundChanged;
         /// <summary>
         /// Occurs when [on bound sphere changed].
         /// </summary>
-        event EventHandler<BoundChangeArgs<BoundingSphere>> OnBoundSphereChanged;
+        event EventHandler<BoundChangeArgs<BoundingSphere>> BoundSphereChanged;
         /// <summary>
         /// Occurs when [on transform bound sphere changed].
         /// </summary>
-        event EventHandler<BoundChangeArgs<BoundingSphere>> OnTransformBoundSphereChanged;
+        event EventHandler<BoundChangeArgs<BoundingSphere>> TransformBoundSphereChanged;
     }
 
     /// <summary>

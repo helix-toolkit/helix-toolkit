@@ -14,10 +14,14 @@ using System.Diagnostics;
 using System.Windows.Media.Imaging;
 #endif
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     /// <summary>
@@ -111,21 +115,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 Width = image.Description.Width;
                 Height = image.Description.Height;
             }
-            Texture.Position = 0;
+            Texture.CompressedStream.Position = 0;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
         /// </summary>
-        /// <param name="imageStream">The image stream.</param>
+        /// <param name="texture">The image texture.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public BillboardSingleImage3D(Stream imageStream, float width, float height)
+        public BillboardSingleImage3D(TextureModel texture, float width, float height)
         {
-            this.Texture = imageStream;
+            this.Texture = texture;
             Width = width;
             Height = height;
-            Texture.Position = 0;
+            Texture.CompressedStream.Position = 0;
         }
 
         /// <summary>

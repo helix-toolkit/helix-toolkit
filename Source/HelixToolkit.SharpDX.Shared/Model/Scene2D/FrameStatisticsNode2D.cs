@@ -4,64 +4,71 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 using SharpDX;
-
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene2D
+using global::SharpDX.Direct2D1;
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core2D;
-    using global::SharpDX.Direct2D1;
-
-    public class FrameStatisticsNode2D : SceneNode2D
+    namespace Model.Scene2D
     {
-        public Brush Foreground
+        using Core2D;
+    
+
+        public class FrameStatisticsNode2D : SceneNode2D
         {
-            set
+            public Brush Foreground
             {
-                (RenderCore as FrameStatisticsRenderCore).Foreground = value;
+                set
+                {
+                    (RenderCore as FrameStatisticsRenderCore).Foreground = value;
+                }
+                get
+                {
+                    return (RenderCore as FrameStatisticsRenderCore).Foreground;
+                }
             }
-            get
+
+            public Brush Background
             {
-                return (RenderCore as FrameStatisticsRenderCore).Foreground;
+                set
+                {
+                    (RenderCore as FrameStatisticsRenderCore).Background = value;
+                }
+                get
+                {
+                    return (RenderCore as FrameStatisticsRenderCore).Background;
+                }
             }
-        }
 
-        public Brush Background
-        {
-            set
+            public FrameStatisticsNode2D()
             {
-                (RenderCore as FrameStatisticsRenderCore).Background = value;
+                HorizontalAlignment = HorizontalAlignment.Right;
+                VerticalAlignment = VerticalAlignment.Top;
+                EnableBitmapCache = false;
             }
-            get
+
+            protected override RenderCore2D CreateRenderCore()
             {
-                return (RenderCore as FrameStatisticsRenderCore).Background;
+                return new FrameStatisticsRenderCore();
             }
-        }
 
-        public FrameStatisticsNode2D()
-        {
-            HorizontalAlignment = HorizontalAlignment.Right;
-            VerticalAlignment = VerticalAlignment.Top;
-            EnableBitmapCache = false;
-        }
+            protected override bool CanHitTest()
+            {
+                return false;
+            }
 
-        protected override RenderCore2D CreateRenderCore()
-        {
-            return new FrameStatisticsRenderCore();
-        }
-
-        protected override bool CanHitTest()
-        {
-            return false;
-        }
-
-        protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            hitResult = null;
-            return false;
+            protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult hitResult)
+            {
+                hitResult = null;
+                return false;
+            }
         }
     }
+
 }

@@ -6,10 +6,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Extensions
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Extensions
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
 #if NETFX_CORE
@@ -39,6 +43,10 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             if (list is T[] t)
             {
                 array = t;
+            }
+            else if (list is FastList<T> f)
+            {
+                array = f.Items;
             }
             else
             {
@@ -86,13 +94,17 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
         public static T[] GetArrayByType<T>(this IList<T> list)
         {
             T[] array;
-            if (list is List<T> l)
-            {
-                array = l.GetInternalArray();
-            }
-            else if (list is T[] t)
+            if (list is T[] t)
             {
                 array = t;
+            }
+            else if(list is FastList<T> f)
+            {
+                array = f.Items;
+            }
+            else if (list is List<T> l)
+            {
+                array = l.GetInternalArray();
             }
             else
             {

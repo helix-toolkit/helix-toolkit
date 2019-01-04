@@ -3,13 +3,18 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
 #pragma warning disable 1591
@@ -105,10 +110,9 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct InstanceParameter
     {
         public Color4 DiffuseColor;
-        public Color4 AmbientColor;
         public Color4 EmissiveColor;
         public Vector2 TexCoordOffset;
-        public const int SizeInBytes = 4 * (4 * 3 + 2);
+        public const int SizeInBytes = 4 * (4 * 2 + 2);
     }
     /// <summary>
     /// 
@@ -264,14 +268,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The eye position
         /// </summary>
         public Vector3 EyePos;
-        private float padding0;
+        public uint SSAOEnabled;
+        public float SSAOBias;
+        public float SSAOIntensity;
+        Vector2 padding;
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;
         private int padding1;
-        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 4);
+        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 5);
     }
-
+    /// <summary>
+    /// Used for simple mesh rendering without materials. Such as ShadowPass
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct SimpleMeshStruct
+    {
+        public Matrix World;
+        public int HasInstances;
+        Vector3 padding;
+        public const int SizeInBytes = 4 * (4 * 4 + 4);
+    }
     /// <summary>
     /// Used combine with <see cref="PhongPBRMaterialStruct"/>
     /// </summary>
@@ -335,14 +352,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string ClearCoatStr = "ClearCoat";
         public const string ClearCoatRoughnessStr = "ClearCoatRoughness";
 
-        public const string HasRMAMapStr = "bHasRMAMap";//bool
+        public const string HasRMMapStr = "bHasRMMap";//bool
+        public const string HasAOMapStr = "bHasAOMap";//bool
         public const string HasEmissiveMapStr = "bHasEmissiveMap";//bool
         public const string HasIrradianceMapStr = "bHasIrradianceMap";//bool
         public const string EnableAutoTangent = "bAutoTengent";//bool
 
         public const string HasDisplacementMapStr = "bHasDisplacementMap";//bool
         public const string RenderPBR = "bRenderPBR";//bool
-        public const string NumRadianceMipLevels = "NumRadianceMipLevels";//int
         public const string ShininessStr = "sMaterialShininess";//float
 
         public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";//float4
@@ -375,11 +392,11 @@ namespace HelixToolkit.Wpf.SharpDX
         //public Bool4 BoolParams;
 
         public const int SizeInBytes = 4 * (4 * 4) + PointLineModelStruct.SizeInBytes;
-        public const string FadeNearDistance = "fadeNearDistance";
-        public const string FadeFarDistance = "fadeFarDistance";
-        public const string EnableDistanceFading = "enableDistanceFading";
-        public const string ParamsStr = "pfParams";
-        public const string ColorStr = "pColor";
+        public const string FadeNearDistance = "fadeNearDistance";//float
+        public const string FadeFarDistance = "fadeFarDistance";//float
+        public const string EnableDistanceFading = "enableDistanceFading";//bool
+        public const string ParamsStr = "pfParams";//vector4
+        public const string ColorStr = "pColor";//vector4
         public const string FixedSize = "fixedSize";//bool
         public const string BoolParamsStr = "pbParams";//bool3
     }
@@ -471,8 +488,10 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Color4 Color;
         public Matrix Param;
+        public float ViewportScale; //Used to handle using lower resolution render target for bluring. Scale = Full Resolution / Low Resolution
+        Vector3 padding;
 
-        public const int SizeInBytes = 4 * (4 + 4 * 4);
+        public const int SizeInBytes = 4 * (4 + 4 * 4 + 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -489,6 +508,18 @@ namespace HelixToolkit.Wpf.SharpDX
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
         public CubeFaceCamera[] Cameras;
         public const int SizeInBytes = CubeFaceCamera.SizeInBytes * 6;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    internal struct SSAOParamStruct
+    {
+        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+        //public Vector4[] Kernels;
+        public Vector2 NoiseScale;
+        public int TextureScale;
+        public float Radius;
+        public Matrix InvProjection;
+        public const int SizeInBytes = 4 * (4 * 32 + 4 + 4 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -536,6 +567,111 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string ScaleFactor = "scaleFactor"; //Vector4
         public const string IterationOffset = "iterationOffset"; // int or uint
         public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 + 4 + 4);
+    }
+
+    /// <summary>
+    /// 2D UV Transform
+    /// </summary>
+    public struct UVTransform
+    {
+        /// <summary>
+        /// The rotation by radian
+        /// </summary>
+        public float Rotation;
+        /// <summary>
+        /// The scaling
+        /// </summary>
+        public Vector2 Scaling;
+        /// <summary>
+        /// The translation
+        /// </summary>
+        public Vector2 Translation;
+        /// <summary>
+        /// Gets a value indicating whether this instance has uv transform.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has uv transform; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasUVTransform { get => Rotation != 0 || Scaling.X != 1 || Scaling.Y != 1 || Translation.X != 0 || Translation.Y != 0; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UVTransform"/> struct.
+        /// </summary>
+        /// <param name="rotation">The rotation.</param>
+        public UVTransform(float rotation)
+        {
+            Rotation = rotation;
+            Scaling = Vector2.One;
+            Translation = Vector2.Zero;
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UVTransform"/> struct.
+        /// </summary>
+        /// <param name="translation">The translation.</param>
+        public UVTransform(Vector2 translation)
+        {
+            Rotation = 0;
+            Scaling = Vector2.One;
+            Translation = translation;
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UVTransform"/> struct.
+        /// </summary>
+        /// <param name="rotation">The rotation.</param>
+        /// <param name="scaling">The scaling.</param>
+        /// <param name="translation">The translation.</param>
+        public UVTransform(float rotation, Vector2 scaling, Vector2 translation)
+        {
+            Rotation = rotation;
+            Scaling = scaling;
+            Translation = translation;
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UVTransform"/> struct.
+        /// </summary>
+        /// <param name="rotation">The rotation.</param>
+        /// <param name="scalingX">The scaling x.</param>
+        /// <param name="scalingY">The scaling y.</param>
+        /// <param name="translationX">The translation x.</param>
+        /// <param name="translationY">The translation y.</param>
+        public UVTransform(float rotation, float scalingX = 1, float scalingY = 1, float translationX = 0, float translationY = 0)
+        {
+            Rotation = rotation;
+            Scaling = new Vector2(scalingX, scalingY);
+            Translation = new Vector2(translationX, translationY);
+        }
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="UVTransform"/> to <see cref="Matrix"/>.
+        /// </summary>
+        /// <param name="uvTransform">The uv transform.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
+        public static implicit operator Matrix(UVTransform uvTransform)
+        {
+            float cos = (float)Math.Cos(uvTransform.Rotation);
+            float sine = (float)Math.Sin(uvTransform.Rotation);
+            return new Matrix(cos * uvTransform.Scaling.X, sine, 0, 0, 
+                -sine, cos * uvTransform.Scaling.Y, 0, 0,
+                0, 0, 1, 0, uvTransform.Translation.X, uvTransform.Translation.Y, 0, 1);
+        }
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Matrix"/> to <see cref="UVTransform"/>.
+        /// </summary>
+        /// <param name="matrix">The matrix.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
+        public static implicit operator UVTransform(Matrix matrix)
+        {
+            matrix.Decompose(out var s, out var r, out var t);
+            return new UVTransform(r.Angle, new Vector2(s.X, s.Y), new Vector2(t.X, t.Y));
+        }
+        public static readonly UVTransform Identity = new UVTransform(0, Vector2.One, Vector2.Zero);
+
+        public float[] ToArray()
+        {
+            return new float[] { Rotation, Scaling.X, Scaling.Y, Translation.X, Translation.Y };
+        }
     }
 #if !NETFX_CORE
     /// <summary>

@@ -48,8 +48,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
-            DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(DiffuseMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as DiffuseMaterialCore).DiffuseMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("DiffuseMap", typeof(TextureModel), typeof(DiffuseMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as DiffuseMaterialCore).DiffuseMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// Gets or sets the diffuse map.
@@ -57,9 +57,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The diffuse map.
         /// </value>
-        public Stream DiffuseMap
+        public TextureModel DiffuseMap
         {
-            get { return (Stream)this.GetValue(DiffuseMapProperty); }
+            get { return (TextureModel)this.GetValue(DiffuseMapProperty); }
             set { this.SetValue(DiffuseMapProperty, value); }
         }
 
@@ -81,9 +81,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The uv transform property
         /// </summary>
         public static readonly DependencyProperty UVTransformProperty =
-            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(DiffuseMaterial), new PropertyMetadata(Matrix.Identity, (d, e) =>
+            DependencyProperty.Register("UVTransform", typeof(UVTransform), typeof(DiffuseMaterial), new PropertyMetadata(UVTransform.Identity, (d, e) =>
             {
-                ((d as Material).Core as DiffuseMaterialCore).UVTransform = (Matrix)e.NewValue;
+                ((d as Material).Core as DiffuseMaterialCore).UVTransform = (UVTransform)e.NewValue;
             }));
         /// <summary>
         /// Gets or sets the texture uv transform.
@@ -91,9 +91,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The uv transform.
         /// </value>
-        public Matrix UVTransform
+        public UVTransform UVTransform
         {
-            get { return (Matrix)GetValue(UVTransformProperty); }
+            get { return (UVTransform)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
         }
 
@@ -120,6 +120,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as Material).Core as DiffuseMaterialCore).EnableUnLit = (bool)e.NewValue;
                 }));
 
+        public DiffuseMaterial() { }
+
+        public DiffuseMaterial(DiffuseMaterialCore core) : base(core)
+        {
+            DiffuseColor = core.DiffuseColor;
+            DiffuseMap = core.DiffuseMap;
+            UVTransform = core.UVTransform;
+            DiffuseMapSampler = core.DiffuseMapSampler;
+            EnableUnLit = core.EnableUnLit;
+        }
 
         protected override MaterialCore OnCreateCore()
         {

@@ -6,49 +6,60 @@
 
 namespace FileLoadDemo
 {
+
+    using DemoCore;
+    using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Animations;
+    using HelixToolkit.Wpf.SharpDX.Assimp;
+    using HelixToolkit.Wpf.SharpDX.Controls;
+    using HelixToolkit.Wpf.SharpDX.Model;
+    using HelixToolkit.Wpf.SharpDX.Model.Scene;
+    using Microsoft.Win32;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-
-    using HelixToolkit.Wpf.SharpDX;
-    using Microsoft.Win32;
-    using System.Windows.Input;
+    using System.Diagnostics;
     using System.IO;
-    using System.ComponentModel;
-    using DemoCore;
-    using HelixToolkit.Wpf.SharpDX.Model;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Input;
 
     public class MainViewModel : BaseViewModel
     {
-        private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;*.ply;";
-
-        public ObservableElement3DCollection ModelGeometry { get; private set; }
-
-        public Viewport3DX modelView
-        {
-            get;
-            set;
-        }
-
+        private string OpenFileFilter = $"{HelixToolkit.Wpf.SharpDX.Assimp.Importer.SupportedFormatsString}";
+        private string ExportFileFilter = $"{HelixToolkit.Wpf.SharpDX.Assimp.Exporter.SupportedFormatsString}";
         private bool showWireframe = false;
         public bool ShowWireframe
         {
             set
             {
-                if(SetValue(ref showWireframe, value))
+                if (SetValue(ref showWireframe, value))
                 {
-                    foreach(var model in ModelGeometry)
-                    {
-                        (model as MeshGeometryModel3D).RenderWireframe = value;
-                    }
+                    ShowWireframeFunct(value);
                 }
             }
             get
             {
                 return showWireframe;
             }
+        }
+        private bool renderEnvironmentMap = true;
+        public bool RenderEnvironmentMap
+        {
+            set
+            {
+                if(SetValue(ref renderEnvironmentMap, value) && scene!=null && scene.Root != null)
+                {
+                    foreach(var node in scene.Root.Traverse())
+                    {
+                        if(node is MaterialGeometryNode m && m.Material is PBRMaterialCore material)
+                        {
+                            material.RenderEnvironmentMap = value;
+                        }
+                    }
+                }
+            }
+            get => renderEnvironmentMap;
         }
 
         public ICommand OpenFileCommand
@@ -58,125 +69,203 @@ namespace FileLoadDemo
 
         public ICommand ResetCameraCommand
         {
-            set;get;
+            set; get;
         }
 
         public ICommand ExportCommand { private set; get; }
 
+        private bool isLoading = false;
+        public bool IsLoading
+        {
+            private set => SetValue(ref isLoading, value);
+            get => isLoading;
+        }
+
+        private bool enableAnimation = false;
+        public bool EnableAnimation
+        {
+            set
+            {
+                if (SetValue(ref enableAnimation, value))
+                {
+                    if (value)
+                    {
+                        StartAnimation();
+                    }
+                    else
+                    {
+                        StopAnimation();
+                    }
+                }
+            }
+            get { return enableAnimation; }
+        }
+
+        public ObservableCollection<Animation> Animations { get; } = new ObservableCollection<Animation>();
+
+        public SceneNodeGroupModel3D GroupModel { get; } = new SceneNodeGroupModel3D();
+
+        private Animation selectedAnimation = null;
+        public Animation SelectedAnimation
+        {
+            set
+            {
+                if(SetValue(ref selectedAnimation, value))
+                {
+                    StopAnimation();
+                    if (value != null)
+                    {
+                        animationUpdater = new NodeAnimationUpdater(value);
+                    }
+                    else
+                    {
+                        animationUpdater = null;
+                    }
+                    if (enableAnimation)
+                    {
+                        StartAnimation();
+                    }
+                }
+            }
+            get
+            {
+                return selectedAnimation;
+            }
+        }
+
+        public TextureModel EnvironmentMap { get; }
+
         private SynchronizationContext context = SynchronizationContext.Current;
+        private HelixToolkitScene scene;
+        private NodeAnimationUpdater animationUpdater;
+        private List<BoneSkinMeshNode> boneSkinNodes = new List<BoneSkinMeshNode>();
+        private List<BoneSkinMeshNode> skeletonNodes = new List<BoneSkinMeshNode>();
+        private CompositionTargetEx compositeHelper = new CompositionTargetEx();
+
+
         public MainViewModel()
         {
             this.OpenFileCommand = new DelegateCommand(this.OpenFile);
-            this.ModelGeometry = new ObservableElement3DCollection();
             EffectsManager = new DefaultEffectsManager();
-            Camera = new OrthographicCamera() {
+            Camera = new OrthographicCamera()
+            {
                 LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10),
                 Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
-                FarPlaneDistance = 10000, NearPlaneDistance = 0.1 };
+                UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0),
+                FarPlaneDistance = 5000,
+                NearPlaneDistance = 0.1f
+            };
             ResetCameraCommand = new DelegateCommand(() =>
             {
-                Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10);
-                Camera.Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10);
+                (Camera as OrthographicCamera).Reset();
+                (Camera as OrthographicCamera).FarPlaneDistance = 5000;
+                (Camera as OrthographicCamera).NearPlaneDistance = 0.1f;
             });
             ExportCommand = new DelegateCommand(() => { ExportFile(); });
+            EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
         }
 
         private void OpenFile()
         {
+            if (isLoading)
+            {
+                return;
+            }
             string path = OpenFileDialog(OpenFileFilter);
             if (path == null)
             {
                 return;
             }
-            ModelGeometry.Clear();
-            Task.Run(() => {
-                if (Path.GetExtension(path).ToLower() == ".3ds")
-                {
-                    Load3ds(path);
-                }
-                else if(Path.GetExtension(path).ToLower() == ".obj")
-                {
-                    LoadObj(path);
-                }
-                else if(Path.GetExtension(path).ToLower() == ".stl")
-                {
-                    LoadStl(path);
-                }
-                else if(Path.GetExtension(path).ToLower() == ".ply")
-                {
-                    LoadPly(path);
-                }
-            });
+            StopAnimation();
 
+            IsLoading = true;
+            Task.Run(() =>
+            {
+                var loader = new Importer();
+                return loader.Load(path);
+            }).ContinueWith((result) =>
+            {
+                IsLoading = false;
+                if (result.IsCompleted)
+                {
+                    scene = result.Result;
+                    Animations.Clear();
+                    GroupModel.Clear();
+                    if (scene != null)
+                    {
+                        if (scene.Root != null)
+                        {
+                            foreach (var node in scene.Root.Traverse())
+                            {
+                                if (node is MaterialGeometryNode m)
+                                {
+                                    if (m.Material is PBRMaterialCore pbr)
+                                    {
+                                        pbr.RenderEnvironmentMap = RenderEnvironmentMap;
+                                    }
+                                    else if(m.Material is PhongMaterialCore phong)
+                                    {
+                                        phong.RenderEnvironmentMap = RenderEnvironmentMap;
+                                    }
+                                }
+                            }
+                        }
+                        GroupModel.AddNode(scene.Root);
+                        if(scene.HasAnimation)
+                        {
+                            foreach(var ani in scene.Animations)
+                            {
+                                Animations.Add(ani);
+                            }
+                        }
+                        foreach(var n in scene.Root.Traverse())
+                        {
+                            n.Tag = new AttachedNodeViewModel(n);
+                        }
+                    }                  
+                }
+                else if (result.IsFaulted && result.Exception != null)
+                {
+                    MessageBox.Show(result.Exception.Message);
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        public void StartAnimation()
+        {
+            compositeHelper.Rendering += CompositeHelper_Rendering;
+        }
+
+        public void StopAnimation()
+        {
+            compositeHelper.Rendering -= CompositeHelper_Rendering;
+        }
+
+        private void CompositeHelper_Rendering(object sender, System.Windows.Media.RenderingEventArgs e)
+        {
+            if(animationUpdater != null)
+            {
+                animationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+            }
         }
 
         private void ExportFile()
         {
-            string path = SaveFileDialog("3D model files (*.obj;|*.obj;");
-            if (string.IsNullOrEmpty(path))
+            var index = SaveFileDialog(ExportFileFilter, out var path);
+            if (!string.IsNullOrEmpty(path) && index >= 0)
             {
+                var id = HelixToolkit.Wpf.SharpDX.Assimp.Exporter.SupportedFormats[index].FormatId;
+                var exporter = new HelixToolkit.Wpf.SharpDX.Assimp.Exporter();
+                exporter.ExportToFile(path, scene, id);
                 return;
             }
-            var exporter = new ObjExporter(path);
-            exporter.Export(ModelGeometry[0]);
-            exporter.Close();
-            MessageBox.Show($"Export Finished. {path}");
         }
 
-        public void Load3ds(string path)
-        {
-            var reader = new StudioReader();
-            var objCol = reader.Read(path);
-            AttachModelList(objCol);
 
-        }
-        public void LoadObj(string path)
-        {
-            var reader = new ObjReader();
-            var objCol = reader.Read(path);
-            AttachModelList(objCol);
-        }
-
-        public void LoadStl(string path)
-        {
-            var reader = new StLReader();
-            var objCol = reader.Read(path);
-            AttachModelList(objCol);
-        }
-
-        public void LoadPly(string path)
-        {
-            var reader = new PlyReader();
-            var objCol = reader.Read(path);
-            AttachModelList(objCol);
-        }
-        public void AttachModelList(List<Object3D> objs)
-        {            
-            foreach (var ob in objs)
-            {
-                ob.Geometry.UpdateOctree();
-                context.Post((o) => {
-                    var s = new MeshGeometryModel3D
-                    {
-                        Geometry = ob.Geometry,
-                    };
-                    if(ob.Material is PhongMaterialCore p)
-                    {
-                        s.Material = p;
-                    }
-                    if (ob.Transform != null && ob.Transform.Count > 0)
-                    {
-                        s.Instances = ob.Transform;
-                    }
-                    this.ModelGeometry.Add(s);
-                }, null);
-            }
-        }
         private string OpenFileDialog(string filter)
         {
             var d = new OpenFileDialog();
             d.CustomPlaces.Clear();
-
 
             d.Filter = filter;
 
@@ -188,15 +277,33 @@ namespace FileLoadDemo
             return d.FileName;
         }
 
-        private string SaveFileDialog(string filter)
+        private int SaveFileDialog(string filter, out string path)
         {
             var d = new SaveFileDialog();
             d.Filter = filter;
             if (d.ShowDialog() == true)
             {
-                return d.FileName;
+                path = d.FileName;
+                return d.FilterIndex - 1;//This is tarting from 1. So must minus 1
             }
-            else { return ""; }
+            else {
+                path = "";
+                return -1;
+            }
+        }
+
+        private void ShowWireframeFunct(bool show)
+        {
+            foreach(var node in GroupModel.GroupNode.Items.PreorderDFT((node) =>
+            {
+                return node.IsRenderable;
+            }))
+            {
+                if (node is MeshNode m)
+                {
+                    m.RenderWireframe = show;
+                }
+            }
         }
     }
 

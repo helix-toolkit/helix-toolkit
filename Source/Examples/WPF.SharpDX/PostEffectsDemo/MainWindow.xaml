@@ -11,6 +11,10 @@
     Height="600"
     mc:Ignorable="d">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
@@ -21,6 +25,8 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
+            EnableD2DRendering="False"
+            EnableSwapChainRendering="True"
             FXAALevel="Low"
             ModelUpDirection="0,0,1"
             ShowCoordinateSystem="True"
@@ -60,7 +66,7 @@
                 CullMode="Back"
                 Geometry="{Binding MeshModel2}"
                 Material="{Binding Material2}"
-                PostEffects="border; glow[color:#0000FF]; xrayGrid[color:#D21C9229]"
+                PostEffects="border; glow[color:#0000FF]; xrayGrid[color:#D22FDCDC]"
                 Transform="{Binding Model2Transform}" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
@@ -72,12 +78,30 @@
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
                 Material="{Binding FloorMaterial}" />
-            <hx:PostEffectMeshXRayGrid EffectName="xrayGrid" GridDensity="4" />
+            <hx:LineGeometryModel3D
+                Geometry="{Binding LineModel}"
+                PostEffects="xrayLine"
+                Color="White" />
+            <hx:PostEffectMeshXRayGrid
+                x:Name="xrayGrid"
+                EffectName="xrayGrid"
+                GridDensity="4" />
             <hx:PostEffectMeshOutlineBlur
+                x:Name="outlineGlow"
                 EffectName="glow"
                 NumberOfBlurPass="6"
                 Color="Yellow" />
-            <hx:PostEffectMeshBorderHighlight EffectName="border" Color="Red" />
+            <hx:PostEffectMeshBorderHighlight
+                x:Name="border"
+                EffectName="border"
+                Color="Red" />
+            <hx:PostEffectMeshXRay x:Name="xrayLine" EffectName="xrayLine" />
         </hx:Viewport3DX>
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <CheckBox Margin="2" IsChecked="{Binding ElementName=xrayGrid, Path=IsRendering}">Mesh XRayGrid</CheckBox>
+            <CheckBox Margin="2" IsChecked="{Binding ElementName=outlineGlow, Path=IsRendering}">Glow</CheckBox>
+            <CheckBox Margin="2" IsChecked="{Binding ElementName=border, Path=IsRendering}">Mesh Outline</CheckBox>
+            <CheckBox Margin="2" IsChecked="{Binding ElementName=xrayLine, Path=IsRendering}">Line XRay</CheckBox>
+        </StackPanel>
     </Grid>
 </Window>

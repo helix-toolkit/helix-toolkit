@@ -1,0 +1,6 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/

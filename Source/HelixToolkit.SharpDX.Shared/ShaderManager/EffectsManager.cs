@@ -19,7 +19,11 @@ using Device = SharpDX.Direct3D11.Device;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Render;
@@ -60,7 +64,7 @@ namespace HelixToolkit.UWP
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
-        private Dictionary<string, Lazy<IRenderTechnique>> techniqueDict { get; } = new Dictionary<string, Lazy<IRenderTechnique>>();
+        private readonly Dictionary<string, Lazy<IRenderTechnique>> techniqueDict = new Dictionary<string, Lazy<IRenderTechnique>>();
         private readonly Dictionary<string, TechniqueDescription> techniqueDescriptions = new Dictionary<string, TechniqueDescription>();
         /// <summary>
         /// <see cref="IEffectsManager.RenderTechniques"/>
@@ -267,6 +271,10 @@ namespace HelixToolkit.UWP
             Log(LogLevel.Information, $"Adapter Index = {adapterIndex}");
             var adapter = GetAdapter(ref adapterIndex);
             AdapterIndex = adapterIndex;
+            if(AdapterIndex < 0 || adapter == null)
+            {
+                throw new PlatformNotSupportedException("Graphic adapter does not meet minimum requirement, must support DirectX 10 or above.");
+            }
 #if DX11
             if (adapter != null)
             {
@@ -418,7 +426,7 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <returns></returns>
-        private static Adapter GetBestAdapter(out int bestAdapterIndex)
+        private Adapter GetBestAdapter(out int bestAdapterIndex)
         {
             using (var f = new Factory1())
             {
@@ -427,11 +435,17 @@ namespace HelixToolkit.UWP
                 int adapterIndex = -1;
                 ulong bestVideoMemory = 0;
                 ulong bestSystemMemory = 0;
-
+                Log(LogLevel.Information, $"Trying to get best adapter. Number of adapters: {f.Adapters.Length}");
+                ulong MByte = 1024 * 1024;
                 foreach (var item in f.Adapters)
                 {
                     adapterIndex++;
-
+                    Log(LogLevel.Information, $"Adapter {adapterIndex}: Description: {item.Description.Description}; " +
+                        $"VendorId: {item.Description.VendorId}; " +
+                        $"Video Mem: {item.Description.DedicatedVideoMemory.ToUInt64() / MByte} MB; " +
+                        $"System Mem: {item.Description.DedicatedSystemMemory.ToUInt64() / MByte} MB; " +
+                        $"Shared Mem: {item.Description.SharedSystemMemory.ToUInt64() / MByte} MB; " +
+                        $"Num Outputs: {item.Outputs.Length}");
                     // not skip the render only WARP device
                     if (item.Description.VendorId != 0x1414 || item.Description.DeviceId != 0x8c)
                     {
@@ -443,7 +457,7 @@ namespace HelixToolkit.UWP
                     }
 
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
-
+                    Log(LogLevel.Information, $"Feature Level: {level}");
                     if (level < MinimumFeatureLevel)
                     {
                         continue;
@@ -460,16 +474,16 @@ namespace HelixToolkit.UWP
                         bestSystemMemory = systemMemory;
                     }
                 }
-
+                Log(LogLevel.Information, $"Best Adapter: {bestAdapterIndex}");
                 return bestAdapter;
             }
         }
 
-        private static Adapter GetAdapter(ref int index)
+        private Adapter GetAdapter(ref int index)
         {
             using (var f = new Factory1())
             {
-                if (f.Adapters.Length <= index)
+                if (f.Adapters.Length <= index || index < 0)
                 {
                     return GetBestAdapter(out index);
                 }
@@ -488,8 +502,7 @@ namespace HelixToolkit.UWP
         /// <exception cref="ArgumentException"></exception>
         public IRenderTechnique GetTechnique(string name)
         {            
-            Lazy<IRenderTechnique> t;
-            techniqueDict.TryGetValue(name, out t);
+            techniqueDict.TryGetValue(name, out var t);
             if (t == null)
             {
                 Log(LogLevel.Warning, $"Technique {name} does not exist. Return a null technique.");
@@ -517,13 +530,7 @@ namespace HelixToolkit.UWP
                 return GetTechnique(name);
             }           
         }
-        /// <summary>
-        /// Finalizes an instance of the <see cref="EffectsManager"/> class.
-        /// </summary>
-        ~EffectsManager()
-        {
-            Dispose();
-        }
+
         /// <summary>
         /// <see cref="DisposeObject.OnDispose(bool)"/>
         /// </summary>
@@ -552,7 +559,6 @@ namespace HelixToolkit.UWP
 #if DEBUGMEMORY
             ReportResources();
 #endif
-            GC.SuppressFinalize(this);
         }
 
         private void DisposeResources()

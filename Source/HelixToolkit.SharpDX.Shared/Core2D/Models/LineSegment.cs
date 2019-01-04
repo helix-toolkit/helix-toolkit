@@ -6,26 +6,34 @@ using D2D = SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Core2D
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>
-    /// <see href="https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/"/>
-    /// </summary>
-    public class LineSegment : Segment
+    namespace Core2D
     {
-        public readonly Vector2 Point;
-        public LineSegment(Vector2 point)
+        /// <summary>
+        /// <see href="https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/"/>
+        /// </summary>
+        public class LineSegment : Segment
         {
-            Point = point;
-        }
+            public readonly Vector2 Point;
+            public LineSegment(Vector2 point)
+            {
+                Point = point;
+            }
 
-        public override void Create(D2D.GeometrySink sink)
-        {
-            sink.AddLine(Point);
+            public override void Create(D2D.GeometrySink sink)
+            {
+                sink.AddLine(Point);
+            }
         }
     }
+
 }

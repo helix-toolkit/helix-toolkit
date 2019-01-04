@@ -220,6 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Overlay Overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
         private bool enableMouseButtonHitTest = true;
         private ContentPresenter hostPresenter;
+        private List<HitTestResult> hits = new List<HitTestResult>();
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
         /// Use this event carefully. Unsubscrible this event when not used. Otherwise may cause performance issue.
@@ -277,8 +278,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     renderHostInternal.IsRendering = (bool)e.NewValue;
                 }
-            };
-            AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
+            };            
         }
 
         private void InitCameraController()
@@ -491,6 +491,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            if (myAdornerLayer == null) { return; }
             if (this.targetAdorner != null)
             {
                 myAdornerLayer.Remove(this.targetAdorner);
@@ -512,6 +513,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            if (myAdornerLayer == null) { return; }
             if (this.rectangleAdorner != null)
             {
                 myAdornerLayer.Remove(this.rectangleAdorner);
@@ -656,6 +658,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
                 this.renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                 this.renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
+                this.renderHostInternal.RenderConfiguration.EnableSSAO = EnableSSAO;
+                this.renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
+                this.renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
+                this.renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
                 if (ShowFrameRate)
                 {
                     this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
@@ -818,6 +824,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            if (myAdornerLayer == null) { return; }
             this.targetAdorner = new TargetSymbolAdorner(visual, position);
             myAdornerLayer.Add(this.targetAdorner);
         }
@@ -840,6 +847,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
+            if (myAdornerLayer == null) { return; }
             this.rectangleAdorner = new RectangleAdorner(
                 visual, rect, Colors.LightGray, Colors.Black, 3, 1, 10, DashStyles.Solid);
             myAdornerLayer.Add(this.rectangleAdorner);
@@ -928,7 +936,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     e.Detach();
                 }
-                SharedModelContainerInternal?.Detach();
+                SharedModelContainerInternal?.Detach(this.renderHostInternal);
                 foreach(var e in this.D2DRenderables)
                 {
                     e.Detach();
@@ -1576,13 +1584,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void ViewCubeClicked(object sender, ViewBoxModel3D.ViewBoxClickedEventArgs e)
+        private void ViewCubeClicked(Vector3D lookDirection, Vector3D upDirection)
         {
             var target = cameraController.ActualCamera.Position + cameraController.ActualCamera.LookDirection;
             double distance = cameraController.ActualCamera.LookDirection.Length;
-            e.LookDirection *= distance;
-            var newPosition = target - e.LookDirection;
-            cameraController.ActualCamera.AnimateTo(newPosition, e.LookDirection, e.UpDirection, 500);
+            lookDirection *= distance;
+            var newPosition = target - lookDirection;
+            cameraController.ActualCamera.AnimateTo(newPosition, lookDirection, upDirection, 500);
         }
 
         /// <summary>
@@ -1597,10 +1605,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool HittedSomething(MouseEventArgs e)
         {
-            var hits = this.FindHits(e.GetPosition(this));
-            if (hits.Count > 0)
-                return true;
-            return false;
+            return this.FindHitsInFrustum(e.GetPosition(this).ToVector2(), ref hits);
         }
 
         /// <summary>
@@ -1630,10 +1635,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
-            var hits = this.FindHits(pt);
-            //this.CameraPropertyChanged();
-            if (hits.Count > 0)
+            
+            if (this.FindHits(pt.ToVector2(), ref hits))
             {
                 // We can't capture Touch because that would disable the CameraController which uses Manipulation,
                 // but since Manipulation captures touch, we can be quite sure to get every relevant touch event.
@@ -1645,8 +1648,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
                 if (this.currentHit != null)
                 {
-                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
-                        new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    if(currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    {
+                        sceneNode.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit);
+                        RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
                 }
             }
             else
@@ -1664,6 +1674,16 @@ namespace HelixToolkit.Wpf.SharpDX
             if(viewCube.HitTest(RenderContext, ray, ref hits))
             {
                 viewCube.RaiseEvent(new MouseDown3DEventArgs(viewCube, this.currentHit, p, this));
+                var normal = hits[0].NormalAtHit;              
+                if (Vector3.Cross(normal, ModelUpDirection.ToVector3()).LengthSquared() < 1e-5)
+                {
+                    var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);
+                    ViewCubeClicked(hits[0].NormalAtHit.ToVector3D(), vecLeft.ToVector3D());
+                }
+                else
+                {
+                    ViewCubeClicked(hits[0].NormalAtHit.ToVector3D(), ModelUpDirection);
+                }
                 return true;
             }
             else
@@ -1699,8 +1719,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (this.currentHit != null)
                 {
-                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
-                        new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    if (currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    {
+                        sceneNode.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit);
+                        RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
                 }
                 else
                 {
@@ -1731,8 +1758,16 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (this.currentHit != null)
                 {               
-                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
-                        new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    if(currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    {
+                        sceneNode.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit);
+                        RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    }
+
                     this.currentHit = null;
                     Mouse.Capture(this, CaptureMode.None);
                 }
