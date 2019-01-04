@@ -358,7 +358,7 @@ namespace HelixToolkit.UWP
                     int count = n.KeyFrames.Count; // Make sure to use this count
                     if(count ==0)
                     {
-                        n.Node.ModelMatrix = Matrix.Identity;
+                        //n.Node.ModelMatrix = Matrix.Identity;
                         continue;
                     }
                     var frames = n.KeyFrames.Items;

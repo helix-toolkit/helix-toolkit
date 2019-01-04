@@ -184,9 +184,8 @@ namespace HelixToolkit.UWP
             /// <param name="technique"></param>
             /// <param name="material">The material.</param>
             public PhongMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
-                : this(manager, technique, material)
+                : this(manager, technique, material, passName)
             {
-                MaterialPass = technique[passName];
             }
 
             protected override void OnInitialPropertyBindings()
