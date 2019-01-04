@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         ///
         /// </summary>
-        public abstract partial class SceneNode2D : DisposeObject, IHitable2D, INotifyPropertyChanged
+        public abstract partial class SceneNode2D : DisposeObject, IHitable2D
         {
             public sealed class UpdateEventArgs : EventArgs
             {
@@ -567,92 +567,14 @@ namespace HelixToolkit.UWP
                 base.OnDispose(disposeManagedResources);
             }
 
-
-
-            #region INotifyPropertyChanged
-            private bool disablePropertyChangedEvent = false;
-            /// <summary>
-            /// Disable property changed event calling
-            /// </summary>
-            public bool DisablePropertyChangedEvent
-            {
-                set
-                {
-                    if (disablePropertyChangedEvent == value)
-                    {
-                        return;
-                    }
-                    disablePropertyChangedEvent = value;
-                    RaisePropertyChanged();
-                }
-                get
-                {
-                    return disablePropertyChangedEvent;
-                }
-            }
-            /// <summary>
-            /// 
-            /// </summary>
-            public event PropertyChangedEventHandler PropertyChanged;
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="propertyName"></param>
-            protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
-            {
-                if (!DisablePropertyChangedEvent)
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="backingField"></param>
-            /// <param name="value"></param>
-            /// <param name="propertyName"></param>
-            /// <returns></returns>
-            protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-            {
-                if (EqualityComparer<T>.Default.Equals(backingField, value))
-                {
-                    return false;
-                }
-
-                backingField = value;
-                this.RaisePropertyChanged(propertyName);
-                return true;
-            }
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="backingField"></param>
-            /// <param name="value"></param>
-            /// <param name="raisePropertyChanged"></param>
-            /// <param name="propertyName"></param>
-            /// <returns></returns>
-            protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
-            {
-                if (EqualityComparer<T>.Default.Equals(backingField, value))
-                {
-                    return false;
-                }
-
-                backingField = value;
-                if (raisePropertyChanged)
-                { this.RaisePropertyChanged(propertyName); }
-                return true;
-            }
-
             /// <summary>
             ///
             /// </summary>
             /// <typeparam name="T"></typeparam>
             /// <param name="backingField"></param>
             /// <param name="value"></param>
-            /// <param name="propertyName"></param>
             /// <returns></returns>
-            protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+            protected bool SetAffectsRender<T>(ref T backingField, T value)
             {
                 if (EqualityComparer<T>.Default.Equals(backingField, value))
                 {
@@ -660,7 +582,6 @@ namespace HelixToolkit.UWP
                 }
 
                 backingField = value;
-                this.RaisePropertyChanged(propertyName);
                 InvalidateRender();
                 return true;
             }
@@ -671,9 +592,8 @@ namespace HelixToolkit.UWP
             /// <typeparam name="T"></typeparam>
             /// <param name="backingField"></param>
             /// <param name="value"></param>
-            /// <param name="propertyName"></param>
             /// <returns></returns>
-            protected bool SetAffectsMeasure<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+            protected bool SetAffectsMeasure<T>(ref T backingField, T value)
             {
                 if (EqualityComparer<T>.Default.Equals(backingField, value))
                 {
@@ -681,11 +601,9 @@ namespace HelixToolkit.UWP
                 }
 
                 backingField = value;
-                this.RaisePropertyChanged(propertyName);
                 InvalidateMeasure();
                 return true;
             }
-            #endregion
         }
     }
 

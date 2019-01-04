@@ -1,13 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Next Version]
+## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
 1. Material UV Transform has been changed from  `Matrix`  to  `UVTransform`  struct. (WPF.SharpDX/UWP/Core)
 2. Material Texture has been changed from `Stream` to `TextureModel`. This change allows more powerful texture support in future. In most cases, `Stream` will be implicit convert to `TextureModel` to reduce breaking changes. However, it may have issue if you are using XAML binding to a Texture stream in ViewModel. (WPF.SharpDX/UWP/Core)
 3. `GroupModel3D` and `ItemsModel3D` will no longer support using XAML Children and ItemsSource at the same time (To be consistent with other WPF controls such as ListView).(WPF.SharpDX/UWP/Core)
 4. PBR material `RMAMap` property has been renamed and separated into `RoughnessMetallicMap` and `AmbientOcclusionMap`. 
 5. `AmbientColor` in InstancingParams has been removed.(WPF.SharpDX/UWP/Core)
+6. Remove `Core` namespace on Vector3Collection/Vector2Collection/IntCollection. Base class is changed to `FastList<T>`.
 
 ### Added
 1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.  (WPF.SharpDX/UWP/Core)

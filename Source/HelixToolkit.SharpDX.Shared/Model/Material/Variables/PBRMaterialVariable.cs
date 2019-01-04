@@ -57,22 +57,27 @@ namespace HelixToolkit.UWP
             public ShaderPass WireframeOITPass { get; }
             public ShaderPass DepthPass { get; }
 
-            public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core)
+            public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core,
+                string materialPassName = DefaultPassNames.PBR, string wireframePassName = DefaultPassNames.Wireframe,
+                string materialOITPassName = DefaultPassNames.PBROITPass, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,
+                string shadowPassName = DefaultPassNames.ShadowPass,
+                string tessellationPassName = DefaultPassNames.MeshPBRTriTessellation,
+                string tessellationOITPassName = DefaultPassNames.MeshPBRTriTessellationOIT,
+                string depthPassName = DefaultPassNames.DepthPrepass)
                 : base(manager, technique, DefaultMeshConstantBufferDesc, core)
             {
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
                 material = core;
-                MaterialPass = technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellation : DefaultPassNames.PBR];
-                MaterialOITPass = technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellationOIT : DefaultPassNames.PBROITPass];
-                WireframePass = technique[DefaultPassNames.Wireframe];
-                WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
-                ShadowPass = technique[DefaultPassNames.ShadowPass];
-                DepthPass = technique[DefaultPassNames.DepthPrepass];
+                MaterialPass = technique[material.EnableTessellation ? tessellationPassName : materialPassName];
+                MaterialOITPass = technique[material.EnableTessellation ? tessellationOITPassName : materialOITPassName];
+                WireframePass = technique[wireframePassName];
+                WireframeOITPass = technique[wireframeOITPassName];
+                ShadowPass = technique[shadowPassName];
+                DepthPass = technique[depthPassName];
                 UpdateMappings(MaterialPass);
                 CreateTextureViews();
                 CreateSamplers();
-                //EnableTessellation = material.EnableTessellation;
             }
 
             protected override void OnInitialPropertyBindings()
