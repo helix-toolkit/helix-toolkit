@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Version
+
+### Added
+1. Flat Normal Shading Mode for Phong/PBR/Diffuse Material. Use `EnableFlatShading = true` to enable this mode.
+
+### Improvement and Changes
+
+### Fixed
+
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
 1. Material UV Transform has been changed from  `Matrix`  to  `UVTransform`  struct. (WPF.SharpDX/UWP/Core)
