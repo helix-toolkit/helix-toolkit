@@ -119,6 +119,14 @@ namespace HelixToolkit.UWP
                 return new DiffuseMaterialVariables(DefaultPassNames.ViewCube, manager, technique, this);
             }
         }
+
+        public class FaceNormalDiffuseMaterialCore : DiffuseMaterialCore
+        {
+            public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
+            {
+                return new DiffuseMaterialVariables(DefaultPassNames.DiffuseFaceNormal, manager, technique, this);
+            }
+        }
     }
 
 }

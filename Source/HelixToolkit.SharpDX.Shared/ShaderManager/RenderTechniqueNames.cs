@@ -126,17 +126,33 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string Default = "Default";
         /// <summary>
+        /// The default face normal pass
+        /// </summary>
+        public const string DefaultFaceNormal = "DefaultFaceNormal";
+        /// <summary>
         /// The Physics Based Rendering
         /// </summary>
         public const string PBR = "PhysicsBasedRendering";
+        /// <summary>
+        /// The PBR face normal pass
+        /// </summary>
+        public const string PBRFaceNormal = "PhysicsBasedRenderingFaceNormal";
         /// <summary>
         /// 
         /// </summary>
         public const string Diffuse = "RenderDiffuse";
         /// <summary>
+        /// The diffuse face normal
+        /// </summary>
+        public const string DiffuseFaceNormal = "RenderDiffuseFaceNormal";
+        /// <summary>
         /// The diffuse oit
         /// </summary>
         public const string DiffuseOIT = "RenderDiffuseOIT";
+        /// <summary>
+        /// The diffuse oit face normal
+        /// </summary>
+        public const string DiffuseOITFaceNormal = "RenderDiffuseOITFaceNormal";
         /// <summary>
         /// 
         /// </summary>
@@ -177,10 +193,14 @@ namespace HelixToolkit.UWP
         /// The mesh transparent
         /// </summary>
         public const string OITPass = "MeshOITPass";
+
+        public const string OITPassFaceNormal = "MeshOITPassFaceNormal";
         /// <summary>
         /// The oit pass PBR
         /// </summary>
         public const string PBROITPass = "MeshPhysicsBasedOITPass";
+
+        public const string PBROITPassFaceNormal = "MeshPhysicsBasedOITPassFaceNormal";
         /// <summary>
         /// 
         /// </summary>

@@ -495,6 +495,18 @@ namespace HelixToolkit.UWP
                 return new PhongMaterialVariables(manager, technique, this);
             }
         }
+
+        /// <summary>
+        /// Face normal phong material
+        /// </summary>
+        public class FaceNormalPhongMaterialCore : PhongMaterialCore
+        {
+            public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
+            {
+                return new PhongMaterialVariables(manager, technique, this, DefaultPassNames.DefaultFaceNormal, DefaultPassNames.Wireframe,
+                    DefaultPassNames.OITPassFaceNormal);
+            }
+        }
     }
 
 }

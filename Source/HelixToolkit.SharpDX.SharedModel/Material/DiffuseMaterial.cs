@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Utilities;
 
 
-    public sealed class DiffuseMaterial : Material
+    public class DiffuseMaterial : Material
     {
         /// <summary>
         /// The diffuse color property
@@ -143,8 +143,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE
-        protected override Freezable CreateInstanceCore()
+        public virtual DiffuseMaterial CloneMaterial()
         {
             return new DiffuseMaterial()
             {
@@ -156,7 +155,41 @@ namespace HelixToolkit.Wpf.SharpDX
                 EnableUnLit = EnableUnLit,
             };
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return CloneMaterial();
+        }
 #endif
+    }
+
+    public class FaceNormalDiffuseMaterial : DiffuseMaterial
+    {
+        protected override MaterialCore OnCreateCore()
+        {
+            return new FaceNormalDiffuseMaterialCore()
+            {
+                DiffuseColor = DiffuseColor,
+                DiffuseMap = DiffuseMap,
+                UVTransform = UVTransform,
+                DiffuseMapSampler = DiffuseMapSampler,
+                EnableUnLit = EnableUnLit,
+            };
+        }
+
+        public override DiffuseMaterial CloneMaterial()
+        {
+            return new FaceNormalDiffuseMaterial()
+            {
+                DiffuseColor = DiffuseColor,
+                DiffuseMap = DiffuseMap,
+                DiffuseMapSampler = DiffuseMapSampler,
+                UVTransform = UVTransform,
+                Name = Name,
+                EnableUnLit = EnableUnLit,
+            };
+        }
     }
 
     public class DiffuseMaterialCollection : ObservableCollection<DiffuseMaterial>

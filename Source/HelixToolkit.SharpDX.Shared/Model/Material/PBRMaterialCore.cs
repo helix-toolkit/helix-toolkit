@@ -494,6 +494,18 @@ namespace HelixToolkit.UWP
                 return new PBRMaterialVariable(manager, technique, this);
             }
         }
+
+        /// <summary>
+        /// Face normal PBR Material
+        /// </summary>
+        public class FaceNormalPBRMaterialCore : PBRMaterialCore
+        {
+            public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
+            {
+                return new PBRMaterialVariable(manager, technique, this, DefaultPassNames.DefaultFaceNormal, DefaultPassNames.Wireframe,
+                    DefaultPassNames.PBROITPassFaceNormal);
+            }
+        }
     }
 
 }

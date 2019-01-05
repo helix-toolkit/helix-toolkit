@@ -66,6 +66,11 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "gsMeshSkinnedOut";
+
+            public static string GSMeshTriangleSeparate
+            {
+                get;
+            } = "gsMeshTriangleSeparate";
         }
 
 
@@ -120,6 +125,11 @@ namespace HelixToolkit.UWP
                     DefaultVertex.SizeInBytes
                 }
             };
+            /// <summary>
+            /// The gs mesh triangle separate
+            /// </summary>
+            public static readonly ShaderDescription GSMeshTriangleSeparate = new ShaderDescription(nameof(GSMeshTriangleSeparate), ShaderStage.Geometry, new ShaderReflector(),
+                DefaultGSShaderByteCodes.GSMeshTriangleSeparate);
         }
     }
 

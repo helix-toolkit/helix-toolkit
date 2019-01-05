@@ -740,7 +740,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 #endif
 
-        public PBRMaterial CloneMaterial()
+        public virtual PBRMaterial CloneMaterial()
         {
             return new PBRMaterial()
             {
@@ -784,6 +784,95 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 
+    public class FaceNormalPBRMaterial : PBRMaterial
+    {
+        protected override MaterialCore OnCreateCore()
+        {
+            return new FaceNormalPBRMaterialCore()
+            {
+                AlbedoColor = AlbedoColor,
+                MetallicFactor = (float)MetallicFactor,
+                RoughnessFactor = (float)RoughnessFactor,
+                AmbientOcclusionFactor = (float)AmbientOcclusionFactor,
+                ReflectanceFactor = (float)ReflectanceFactor,
+                ClearCoatStrength = (float)ClearCoatStrength,
+                ClearCoatRoughness = (float)ClearCoatRoughness,
+
+                AlbedoMap = AlbedoMap,
+                NormalMap = NormalMap,
+                EmissiveMap = EmissiveMap,
+                RoughnessMetallicMap = RoughnessMetallicMap,
+                AmbientOcculsionMap = AmbientOcculsionMap,
+                IrradianceMap = IrradianceMap,
+                DisplacementMap = DisplacementMap,
+                SurfaceMapSampler = SurfaceMapSampler,
+                IBLSampler = IBLSampler,
+                DisplacementMapSampler = DisplacementMapSampler,
+
+                RenderAlbedoMap = RenderAlbedoMap,
+                RenderDisplacementMap = RenderDisplacementMap,
+                RenderEmissiveMap = RenderEmissiveMap,
+                RenderEnvironmentMap = RenderEnvironmentMap,
+                RenderIrradianceMap = RenderIrradianceMap,
+                RenderNormalMap = RenderNormalMap,
+                RenderRoughnessMetallicMap = RenderRoughnessMetallicMap,
+                RenderAmbientOcclusionMap = RenderAmbientOcclusionMap,
+                RenderShadowMap = RenderShadowMap,
+                EnableAutoTangent = EnableAutoTangent,
+                DisplacementMapScaleMask = DisplacementMapScaleMask,
+                UVTransform = UVTransform,
+
+                EnableTessellation = EnableTessellation,
+                MaxDistanceTessellationFactor = (float)MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = (float)MinDistanceTessellationFactor,
+                MaxTessellationDistance = (float)MaxTessellationDistance,
+                MinTessellationDistance = (float)MinTessellationDistance,
+            };
+        }
+
+        public override PBRMaterial CloneMaterial()
+        {
+            return new FaceNormalPBRMaterial()
+            {
+                AlbedoColor = AlbedoColor,
+                MetallicFactor = MetallicFactor,
+                RoughnessFactor = RoughnessFactor,
+                AmbientOcclusionFactor = AmbientOcclusionFactor,
+                ReflectanceFactor = ReflectanceFactor,
+                ClearCoatStrength = ClearCoatStrength,
+                ClearCoatRoughness = ClearCoatRoughness,
+                AlbedoMap = AlbedoMap,
+                NormalMap = NormalMap,
+                EmissiveMap = EmissiveMap,
+                RoughnessMetallicMap = RoughnessMetallicMap,
+                AmbientOcculsionMap = AmbientOcculsionMap,
+                IrradianceMap = IrradianceMap,
+                DisplacementMap = DisplacementMap,
+                SurfaceMapSampler = SurfaceMapSampler,
+                IBLSampler = IBLSampler,
+                DisplacementMapSampler = DisplacementMapSampler,
+
+                RenderAlbedoMap = RenderAlbedoMap,
+                RenderDisplacementMap = RenderDisplacementMap,
+                RenderEmissiveMap = RenderEmissiveMap,
+                RenderEnvironmentMap = RenderEnvironmentMap,
+                RenderIrradianceMap = RenderIrradianceMap,
+                RenderNormalMap = RenderNormalMap,
+                RenderRoughnessMetallicMap = RenderRoughnessMetallicMap,
+                RenderAmbientOcclusionMap = RenderAmbientOcclusionMap,
+                RenderShadowMap = RenderShadowMap,
+                EnableAutoTangent = EnableAutoTangent,
+                DisplacementMapScaleMask = DisplacementMapScaleMask,
+                UVTransform = UVTransform,
+
+                EnableTessellation = EnableTessellation,
+                MaxDistanceTessellationFactor = MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = MinDistanceTessellationFactor,
+                MaxTessellationDistance = MaxTessellationDistance,
+                MinTessellationDistance = MinTessellationDistance,
+            };
+        }
+    }
     /// <summary>
     /// https://google.github.io/filament/images/material_chart.jpg
     /// </summary>

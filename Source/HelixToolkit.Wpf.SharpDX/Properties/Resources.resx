@@ -397,4 +397,7 @@
   <data name="psEffectOutlineSmooth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pseffectoutlinesmooth.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="gsMeshTriangleSeparate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gsmeshtriangleseparate.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

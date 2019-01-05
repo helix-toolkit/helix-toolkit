@@ -620,7 +620,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UVTransform = core.UVTransform;
         }
 
-        public PhongMaterial CloneMaterial()
+        public virtual PhongMaterial CloneMaterial()
         {
             return new PhongMaterial()
             {
@@ -700,6 +700,88 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderEmissiveMap = RenderEmissiveMap,
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform
+            };
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class FaceNormalPhongMaterial : PhongMaterial
+    {
+        protected override MaterialCore OnCreateCore()
+        {
+            return new FaceNormalPhongMaterialCore()
+            {
+                AmbientColor = this.AmbientColor,
+                DiffuseColor = this.DiffuseColor,
+                DisplacementMap = this.DisplacementMap,
+                EmissiveColor = this.EmissiveColor,
+                Name = this.Name,
+                NormalMap = this.NormalMap,
+                ReflectiveColor = this.ReflectiveColor,
+                SpecularColor = this.SpecularColor,
+                SpecularShininess = this.SpecularShininess,
+                DiffuseMap = this.DiffuseMap,
+                DiffuseAlphaMap = this.DiffuseAlphaMap,
+                SpecularColorMap = this.SpecularColorMap,
+                EmissiveMap = this.EmissiveMap,
+                DisplacementMapScaleMask = this.DisplacementMapScaleMask,
+                DiffuseMapSampler = this.DiffuseMapSampler,
+                DisplacementMapSampler = this.DisplacementMapSampler,
+                MaxTessellationDistance = (float)this.MaxTessellationDistance,
+                MinTessellationDistance = (float)this.MinTessellationDistance,
+                MaxDistanceTessellationFactor = (float)this.MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = (float)this.MinDistanceTessellationFactor,
+                EnableTessellation = EnableTessellation,
+                RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
+                RenderDiffuseMap = RenderDiffuseMap,
+                RenderDisplacementMap = RenderDisplacementMap,
+                RenderNormalMap = RenderNormalMap,
+                RenderEnvironmentMap = RenderEnvironmentMap,
+                RenderShadowMap = RenderShadowMap,
+                RenderSpecularColorMap = RenderSpecularColorMap,
+                RenderEmissiveMap = RenderEmissiveMap,
+                EnableAutoTangent = EnableAutoTangent,
+                UVTransform = UVTransform
+            };
+        }
+
+        public override PhongMaterial CloneMaterial()
+        {
+            return new FaceNormalPhongMaterial()
+            {
+                AmbientColor = this.AmbientColor,
+                DiffuseColor = this.DiffuseColor,
+                DisplacementMap = this.DisplacementMap,
+                EmissiveColor = this.EmissiveColor,
+                Name = this.Name,
+                NormalMap = this.NormalMap,
+                ReflectiveColor = this.ReflectiveColor,
+                SpecularColor = this.SpecularColor,
+                SpecularShininess = this.SpecularShininess,
+                DiffuseMap = this.DiffuseMap,
+                DiffuseAlphaMap = this.DiffuseAlphaMap,
+                SpecularColorMap = this.SpecularColorMap,
+                EmissiveMap = this.EmissiveMap,
+                DisplacementMapScaleMask = this.DisplacementMapScaleMask,
+                DiffuseMapSampler = this.DiffuseMapSampler,
+                DisplacementMapSampler = this.DisplacementMapSampler,
+                MaxTessellationDistance = (float)this.MaxTessellationDistance,
+                MinTessellationDistance = (float)this.MinTessellationDistance,
+                MaxDistanceTessellationFactor = (float)this.MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = (float)this.MinDistanceTessellationFactor,
+                EnableTessellation = EnableTessellation,
+                RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
+                RenderDiffuseMap = RenderDiffuseMap,
+                RenderDisplacementMap = RenderDisplacementMap,
+                RenderNormalMap = RenderNormalMap,
+                RenderEnvironmentMap = RenderEnvironmentMap,
+                RenderShadowMap = RenderShadowMap,
+                RenderSpecularColorMap = RenderSpecularColorMap,
+                RenderEmissiveMap = RenderEmissiveMap,
+                EnableAutoTangent = EnableAutoTangent,
+                UVTransform = UVTransform,
             };
         }
     }

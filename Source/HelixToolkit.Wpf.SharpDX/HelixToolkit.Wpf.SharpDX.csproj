@@ -230,6 +230,7 @@
     <None Include="Resources\gsLine.cso" />
     <None Include="Resources\gsMeshNormalVector.cso" />
     <None Include="Resources\gsMeshSkinnedOut.cso" />
+    <None Include="Resources\gsMeshTriangleSeparate.cso" />
     <None Include="Resources\gsParticle.cso" />
     <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\hsMeshTriTessellation.cso" />
