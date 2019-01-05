@@ -120,6 +120,24 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as Material).Core as DiffuseMaterialCore).EnableUnLit = (bool)e.NewValue;
                 }));
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable flat shading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableFlatShading
+        {
+            get { return (bool)GetValue(EnableFlatShadingProperty); }
+            set { SetValue(EnableFlatShadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableFlatShadingProperty =
+            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(DiffuseMaterial), new PropertyMetadata(false, (d, e) =>
+            {
+                ((d as Material).Core as DiffuseMaterialCore).EnableFlatShading = (bool)e.NewValue;
+            }));
+
         public DiffuseMaterial() { }
 
         public DiffuseMaterial(DiffuseMaterialCore core) : base(core)
@@ -129,6 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UVTransform = core.UVTransform;
             DiffuseMapSampler = core.DiffuseMapSampler;
             EnableUnLit = core.EnableUnLit;
+            EnableFlatShading = core.EnableFlatShading;
         }
 
         protected override MaterialCore OnCreateCore()
@@ -140,6 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 UVTransform = UVTransform,
                 DiffuseMapSampler = DiffuseMapSampler,
                 EnableUnLit = EnableUnLit,
+                EnableFlatShading = EnableFlatShading,
             };
         }
 
@@ -153,6 +173,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 UVTransform = UVTransform,
                 Name = Name,
                 EnableUnLit = EnableUnLit,
+                EnableFlatShading = EnableFlatShading,
             };
         }
 
@@ -162,34 +183,6 @@ namespace HelixToolkit.Wpf.SharpDX
             return CloneMaterial();
         }
 #endif
-    }
-
-    public class FaceNormalDiffuseMaterial : DiffuseMaterial
-    {
-        protected override MaterialCore OnCreateCore()
-        {
-            return new FaceNormalDiffuseMaterialCore()
-            {
-                DiffuseColor = DiffuseColor,
-                DiffuseMap = DiffuseMap,
-                UVTransform = UVTransform,
-                DiffuseMapSampler = DiffuseMapSampler,
-                EnableUnLit = EnableUnLit,
-            };
-        }
-
-        public override DiffuseMaterial CloneMaterial()
-        {
-            return new FaceNormalDiffuseMaterial()
-            {
-                DiffuseColor = DiffuseColor,
-                DiffuseMap = DiffuseMap,
-                DiffuseMapSampler = DiffuseMapSampler,
-                UVTransform = UVTransform,
-                Name = Name,
-                EnableUnLit = EnableUnLit,
-            };
-        }
     }
 
     public class DiffuseMaterialCollection : ObservableCollection<DiffuseMaterial>

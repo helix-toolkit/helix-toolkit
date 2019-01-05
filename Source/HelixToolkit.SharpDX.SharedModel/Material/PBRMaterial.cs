@@ -308,6 +308,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// The enable flat shading property
+        /// </summary>
+        public static readonly DependencyProperty EnableFlatShadingProperty =
+            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(false, (d, e) =>
+            {
+                ((d as Material).Core as PBRMaterialCore).EnableFlatShading = (bool)e.NewValue;
+            }));
+        /// <summary>
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
@@ -640,6 +648,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (UVTransform)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable flat shading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableFlatShading
+        {
+            get { return (bool)GetValue(EnableFlatShadingProperty); }
+            set { SetValue(EnableFlatShadingProperty, value); }
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="PBRMaterial"/> class.
         /// </summary>
@@ -687,6 +707,7 @@ namespace HelixToolkit.Wpf.SharpDX
             MinDistanceTessellationFactor = core.MinDistanceTessellationFactor;
             MaxTessellationDistance = core.MaxTessellationDistance;
             MinTessellationDistance = core.MinTessellationDistance;
+            EnableFlatShading = core.EnableFlatShading;
         }
 
         protected override MaterialCore OnCreateCore()
@@ -730,6 +751,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MinDistanceTessellationFactor = (float)MinDistanceTessellationFactor,
                 MaxTessellationDistance = (float)MaxTessellationDistance,
                 MinTessellationDistance = (float)MinTessellationDistance,
+                EnableFlatShading = EnableFlatShading,
             };
         }
 
@@ -780,96 +802,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MinDistanceTessellationFactor = MinDistanceTessellationFactor,
                 MaxTessellationDistance = MaxTessellationDistance,
                 MinTessellationDistance = MinTessellationDistance,
-            };
-        }
-    }
-
-    public class FaceNormalPBRMaterial : PBRMaterial
-    {
-        protected override MaterialCore OnCreateCore()
-        {
-            return new FaceNormalPBRMaterialCore()
-            {
-                AlbedoColor = AlbedoColor,
-                MetallicFactor = (float)MetallicFactor,
-                RoughnessFactor = (float)RoughnessFactor,
-                AmbientOcclusionFactor = (float)AmbientOcclusionFactor,
-                ReflectanceFactor = (float)ReflectanceFactor,
-                ClearCoatStrength = (float)ClearCoatStrength,
-                ClearCoatRoughness = (float)ClearCoatRoughness,
-
-                AlbedoMap = AlbedoMap,
-                NormalMap = NormalMap,
-                EmissiveMap = EmissiveMap,
-                RoughnessMetallicMap = RoughnessMetallicMap,
-                AmbientOcculsionMap = AmbientOcculsionMap,
-                IrradianceMap = IrradianceMap,
-                DisplacementMap = DisplacementMap,
-                SurfaceMapSampler = SurfaceMapSampler,
-                IBLSampler = IBLSampler,
-                DisplacementMapSampler = DisplacementMapSampler,
-
-                RenderAlbedoMap = RenderAlbedoMap,
-                RenderDisplacementMap = RenderDisplacementMap,
-                RenderEmissiveMap = RenderEmissiveMap,
-                RenderEnvironmentMap = RenderEnvironmentMap,
-                RenderIrradianceMap = RenderIrradianceMap,
-                RenderNormalMap = RenderNormalMap,
-                RenderRoughnessMetallicMap = RenderRoughnessMetallicMap,
-                RenderAmbientOcclusionMap = RenderAmbientOcclusionMap,
-                RenderShadowMap = RenderShadowMap,
-                EnableAutoTangent = EnableAutoTangent,
-                DisplacementMapScaleMask = DisplacementMapScaleMask,
-                UVTransform = UVTransform,
-
-                EnableTessellation = EnableTessellation,
-                MaxDistanceTessellationFactor = (float)MaxDistanceTessellationFactor,
-                MinDistanceTessellationFactor = (float)MinDistanceTessellationFactor,
-                MaxTessellationDistance = (float)MaxTessellationDistance,
-                MinTessellationDistance = (float)MinTessellationDistance,
-            };
-        }
-
-        public override PBRMaterial CloneMaterial()
-        {
-            return new FaceNormalPBRMaterial()
-            {
-                AlbedoColor = AlbedoColor,
-                MetallicFactor = MetallicFactor,
-                RoughnessFactor = RoughnessFactor,
-                AmbientOcclusionFactor = AmbientOcclusionFactor,
-                ReflectanceFactor = ReflectanceFactor,
-                ClearCoatStrength = ClearCoatStrength,
-                ClearCoatRoughness = ClearCoatRoughness,
-                AlbedoMap = AlbedoMap,
-                NormalMap = NormalMap,
-                EmissiveMap = EmissiveMap,
-                RoughnessMetallicMap = RoughnessMetallicMap,
-                AmbientOcculsionMap = AmbientOcculsionMap,
-                IrradianceMap = IrradianceMap,
-                DisplacementMap = DisplacementMap,
-                SurfaceMapSampler = SurfaceMapSampler,
-                IBLSampler = IBLSampler,
-                DisplacementMapSampler = DisplacementMapSampler,
-
-                RenderAlbedoMap = RenderAlbedoMap,
-                RenderDisplacementMap = RenderDisplacementMap,
-                RenderEmissiveMap = RenderEmissiveMap,
-                RenderEnvironmentMap = RenderEnvironmentMap,
-                RenderIrradianceMap = RenderIrradianceMap,
-                RenderNormalMap = RenderNormalMap,
-                RenderRoughnessMetallicMap = RenderRoughnessMetallicMap,
-                RenderAmbientOcclusionMap = RenderAmbientOcclusionMap,
-                RenderShadowMap = RenderShadowMap,
-                EnableAutoTangent = EnableAutoTangent,
-                DisplacementMapScaleMask = DisplacementMapScaleMask,
-                UVTransform = UVTransform,
-
-                EnableTessellation = EnableTessellation,
-                MaxDistanceTessellationFactor = MaxDistanceTessellationFactor,
-                MinDistanceTessellationFactor = MinDistanceTessellationFactor,
-                MaxTessellationDistance = MaxTessellationDistance,
-                MinTessellationDistance = MinTessellationDistance,
+                EnableFlatShading = EnableFlatShading,
             };
         }
     }

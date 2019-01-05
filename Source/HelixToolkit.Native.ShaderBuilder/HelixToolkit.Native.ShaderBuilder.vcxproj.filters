@@ -321,6 +321,5 @@
     <FxCompile Include="PS\psEffectOutlineSmooth.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
-    <FxCompile Include="GS\gsMeshTriangleSeparate.hlsl" />
   </ItemGroup>
 </Project>

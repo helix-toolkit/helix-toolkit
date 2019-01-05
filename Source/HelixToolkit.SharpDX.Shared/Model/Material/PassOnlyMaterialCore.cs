@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         /// <summary>
-        /// 
+        /// Vertex Normal Material
         /// </summary>
         public sealed class NormalMaterialCore : MaterialCore
         {
@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
             }
         }
         /// <summary>
-        /// 
+        /// Vertex Color Material
         /// </summary>
         public sealed class ColorMaterialCore : MaterialCore
         {
@@ -38,7 +38,7 @@ namespace HelixToolkit.UWP
             }
         }
         /// <summary>
-        /// 
+        /// Vertex Position Material
         /// </summary>
         public sealed class PositionMaterialCore : MaterialCore
         {
@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP
             }
         }
         /// <summary>
-        /// 
+        /// Vertex Normal Vector Material
         /// </summary>
         public sealed class NormalVectorMaterialCore : MaterialCore
         {

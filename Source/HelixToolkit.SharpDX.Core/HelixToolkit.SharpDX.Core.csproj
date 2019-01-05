@@ -58,7 +58,6 @@
     <None Remove="Resources\gsLine.cso" />
     <None Remove="Resources\gsMeshNormalVector.cso" />
     <None Remove="Resources\gsMeshSkinnedOut.cso" />
-    <None Remove="Resources\gsMeshTriangleSeparate.cso" />
     <None Remove="Resources\gsParticle.cso" />
     <None Remove="Resources\gsPoint.cso" />
     <None Remove="Resources\hsMeshTriTessellation.cso" />
@@ -152,7 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\arial.dds" />
-    <EmbeddedResource Include="Resources\gsMeshTriangleSeparate.cso" />
     <EmbeddedResource Include="Resources\psEffectOutlineSmooth.cso" />
     <EmbeddedResource Include="Resources\psMeshPBROIT.cso" />
   </ItemGroup>

@@ -487,23 +487,22 @@ namespace HelixToolkit.UWP
                 get => enableTessellation;
             }
 
-
+            private bool enableFlatShading = false;
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable flat shading].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnableFlatShading
+            {
+                set { Set(ref enableFlatShading, value); }
+                get { return enableFlatShading; }
+            }
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
             {
                 return new PBRMaterialVariable(manager, technique, this);
-            }
-        }
-
-        /// <summary>
-        /// Face normal PBR Material
-        /// </summary>
-        public class FaceNormalPBRMaterialCore : PBRMaterialCore
-        {
-            public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
-            {
-                return new PBRMaterialVariable(manager, technique, this, DefaultPassNames.PBRFaceNormal, DefaultPassNames.Wireframe,
-                    DefaultPassNames.PBROITPassFaceNormal);
             }
         }
     }
