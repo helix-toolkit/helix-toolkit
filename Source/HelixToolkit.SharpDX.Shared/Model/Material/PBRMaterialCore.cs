@@ -502,7 +502,7 @@ namespace HelixToolkit.UWP
         {
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
             {
-                return new PBRMaterialVariable(manager, technique, this, DefaultPassNames.DefaultFaceNormal, DefaultPassNames.Wireframe,
+                return new PBRMaterialVariable(manager, technique, this, DefaultPassNames.PBRFaceNormal, DefaultPassNames.Wireframe,
                     DefaultPassNames.PBROITPassFaceNormal);
             }
         }

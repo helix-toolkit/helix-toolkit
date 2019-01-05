@@ -52,10 +52,15 @@ namespace HelixToolkit.UWP
 
             public ShaderPass MaterialPass { private set; get; }
             public ShaderPass MaterialOITPass { private set; get; }
+            public ShaderPass TessMaterialPass { private set; get; }
+            public ShaderPass TessMaterialOITPass { private set; get; }
             public ShaderPass ShadowPass { get; }
             public ShaderPass WireframePass { get; } 
             public ShaderPass WireframeOITPass { get; }
             public ShaderPass DepthPass { get; }
+
+            private ShaderPass currentMaterialPass;
+            private ShaderPass currentMaterialOITPass;
 
             public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core,
                 string materialPassName = DefaultPassNames.PBR, string wireframePassName = DefaultPassNames.Wireframe,
@@ -69,8 +74,10 @@ namespace HelixToolkit.UWP
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
                 material = core;
-                MaterialPass = technique[material.EnableTessellation ? tessellationPassName : materialPassName];
-                MaterialOITPass = technique[material.EnableTessellation ? tessellationOITPassName : materialOITPassName];
+                MaterialPass = technique[materialPassName];
+                MaterialOITPass = technique[materialOITPassName];
+                TessMaterialPass = technique[tessellationPassName];
+                TessMaterialOITPass = technique[tessellationOITPassName];
                 WireframePass = technique[wireframePassName];
                 WireframeOITPass = technique[wireframeOITPassName];
                 ShadowPass = technique[shadowPassName];
@@ -126,9 +133,9 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapSampler), () => { CreateSampler(material.DisplacementMapSampler, DisplaceSamplerIdx); });
                 AddPropertyBinding(nameof(PBRMaterialCore.EnableTessellation), () =>
                 {
-                    MaterialPass = Technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellation : DefaultPassNames.PBR];
+                    currentMaterialPass = material.EnableTessellation ? TessMaterialPass : MaterialPass;
                     UpdateMappings(MaterialPass);
-                    MaterialOITPass = Technique[material.EnableTessellation ? DefaultPassNames.MeshPBRTriTessellationOIT : DefaultPassNames.PBROITPass];
+                    currentMaterialOITPass = material.EnableTessellation ? TessMaterialOITPass : MaterialOITPass;
                 });
 
                 WriteValue(PhongPBRMaterialStruct.RenderPBR, true); // Make sure to set this flag
@@ -295,7 +302,7 @@ namespace HelixToolkit.UWP
 
             public override ShaderPass GetPass(RenderType renderType, RenderContext context)
             {
-                return renderType == RenderType.Transparent && context.IsOITPass ? MaterialOITPass : MaterialPass;
+                return renderType == RenderType.Transparent && context.IsOITPass ? currentMaterialOITPass : currentMaterialPass;
             }
 
             public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
