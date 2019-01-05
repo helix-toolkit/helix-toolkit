@@ -360,6 +360,7 @@ namespace HelixToolkit.UWP
 
         public const string HasDisplacementMapStr = "bHasDisplacementMap";//bool
         public const string RenderPBR = "bRenderPBR";//bool
+        public const string RenderFlat = "bRenderFlat";//bool
         public const string ShininessStr = "sMaterialShininess";//float
 
         public const string DisplacementMapScaleMaskStr = "displacementMapScaleMask";//float4

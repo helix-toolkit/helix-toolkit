@@ -130,6 +130,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string PBR = "PhysicsBasedRendering";
         /// <summary>
+        /// The PBR face normal pass
+        /// </summary>
+        public const string PBRFaceNormal = "PhysicsBasedRenderingFaceNormal";
+        /// <summary>
         /// 
         /// </summary>
         public const string Diffuse = "RenderDiffuse";
@@ -177,10 +181,12 @@ namespace HelixToolkit.UWP
         /// The mesh transparent
         /// </summary>
         public const string OITPass = "MeshOITPass";
+
         /// <summary>
         /// The oit pass PBR
         /// </summary>
         public const string PBROITPass = "MeshPhysicsBasedOITPass";
+
         /// <summary>
         /// 
         /// </summary>
