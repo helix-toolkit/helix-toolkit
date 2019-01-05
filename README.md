@@ -28,6 +28,7 @@ Description         | Value
 --------------------|-----------------------
 License             | The MIT License (MIT)
 Web page            | http://helix-toolkit.org/
+Wiki                | https://github.com/helix-toolkit/helix-toolkit/wiki
 Documentation       | http://docs.helix-toolkit.org/
 Chat                | https://gitter.im/helix-toolkit/helix-toolkit
 Source repository   | http://github.com/helix-toolkit/helix-toolkit
