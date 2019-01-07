@@ -67,7 +67,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 - [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.6.0)
 
 **Two new packages have been released on version 2.6.0.**
-- `SharpDX.Core` is the base implementation for all HelixToolkit.SharpDX versions(WPF.SharpDX and UWP). It is implemented based on `netstandard` and can be used for other platforms such as WinForms and DotNetCore.
+- `SharpDX.Core` is the base implementation for all HelixToolkit.SharpDX versions(WPF.SharpDX and UWP). It is implemented based on `netstandard` and can be used on other platforms such as WinForms and DotNetCore.
 - `SharpDX.Assimp` ports [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) into HelixToolkit to support 3D model import/export for HelixToolkit.SharpDX versions. Currently import/export supports [SceneNode](https://github.com/helix-toolkit/helix-toolkit/wiki/Use-Element3D-or-SceneNode-under-WPF.SharpDX-or-UWP) only. For more details, please refer to [FileLoadDemo](/Source/Examples/WPF.SharpDX/FileLoadDemo) or [CoreTest](/Source/Examples/SharpDX.Core/CoreTest).
 
 
