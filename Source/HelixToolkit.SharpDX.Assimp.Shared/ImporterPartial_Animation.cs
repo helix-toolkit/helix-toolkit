@@ -150,6 +150,16 @@ namespace HelixToolkit.UWP
                                 s.IsAnimationNode = true; // Make sure to set this to true                                   
                             }
                         }
+
+                        if(Configuration.CreateSkeletonForBoneSkinningMesh 
+                            && node is HxScene.BoneSkinMeshNode sk 
+                            && sk.Parent is HxScene.GroupNodeBase group)
+                        {
+                            var skeleton = sk.CreateSkeletonNode(Configuration.SkeletonMaterial,
+                                Configuration.SkeletonEffects, Configuration.SkeletonSizeScale);
+                            skeleton.Name = "HxSK_" + sk.Name;
+                            group.AddChildNode(skeleton);
+                        }
                     }
                 }
 
