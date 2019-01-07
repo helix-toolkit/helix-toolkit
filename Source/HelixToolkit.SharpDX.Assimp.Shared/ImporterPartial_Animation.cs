@@ -124,11 +124,17 @@ namespace HelixToolkit.UWP
                     }
                 }
 
+                var nodeIdxDict = new Dictionary<string, int>();
                 foreach (var node in SceneNodes.Where(x => x is Animations.IBoneMatricesNode)
                     .Select(x => x as Animations.IBoneMatricesNode))
                 {
                     if (node.Bones != null)
                     {
+                        nodeIdxDict.Clear();
+                        for(var i = 0; i < node.Bones.Length; ++i)
+                        {
+                            nodeIdxDict.Add(node.Bones[i].Name, i);
+                        }
                         for (var i = 0; i < node.Bones.Length; ++i)
                         {
                             if (dict.TryGetValue(node.Bones[i].Name, out var s))
@@ -136,7 +142,12 @@ namespace HelixToolkit.UWP
                                 ref var b = ref node.Bones[i];
                                 b.ParentNode = s.Parent;
                                 b.Node = s;
-                                s.IsAnimationNode = true; // Make sure to set this to true
+                                b.BoneLocalTransform = s.ModelMatrix;
+                                if(s.Parent != null && nodeIdxDict.TryGetValue(s.Parent.Name, out var idx))
+                                {
+                                    b.ParentIndex = idx;
+                                }
+                                s.IsAnimationNode = true; // Make sure to set this to true                                   
                             }
                         }
                     }
