@@ -2284,5 +2284,32 @@ namespace HelixToolkit.UWP
                     viewport.renderHostInternal.InvalidateRender();
                 }
             }));
+
+        /// <summary>
+        /// The update count. Used to render at least N frames for each InvalidateRenderer. 
+        /// D3DImage sometimes not getting refresh if only render once.
+        /// Default = 6.
+        /// </summary>
+        /// <value>
+        /// The minimum update count.
+        /// </value>
+        public int MinimumUpdateCount
+        {
+            get { return (int)GetValue(MinimumUpdateCountProperty); }
+            set { SetValue(MinimumUpdateCountProperty, value); }
+        }
+
+        /// <summary>
+        /// The minimum update count property
+        /// </summary>
+        public static readonly DependencyProperty MinimumUpdateCountProperty =
+            DependencyProperty.Register("MinimumUpdateCount", typeof(int), typeof(Viewport3DX), new PropertyMetadata(6, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, (int)e.NewValue);
+                }
+            }));
     }
 }

@@ -316,6 +316,7 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
                     renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
                     renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
+                    renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, MinimumUpdateCount);
                     renderHostInternal.Rendered += this.RaiseRenderHostRendered;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
 
