@@ -576,7 +576,7 @@ namespace HelixToolkit.UWP
             {
                 if (NeedMatrixUpdate)
                 {
-                    core.ModelMatrix = TotalModelMatrixInternal = modelMatrix * parent.TotalModelMatrixInternal;
+                    TotalModelMatrixInternal = modelMatrix * parent.TotalModelMatrixInternal;
                     for (int i = 0; i < ItemsInternal.Count; ++i)
                     {
                         ItemsInternal[i].NeedMatrixUpdate = true;
@@ -624,6 +624,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
+                core.ModelMatrix = TotalModelMatrixInternal;
                 core.Render(context, deviceContext);
             }
 
@@ -635,6 +636,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
             {
+                core.ModelMatrix = TotalModelMatrixInternal;
                 core.RenderShadow(context, deviceContext);
             }
             /// <summary>
@@ -645,7 +647,8 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
             {
-                 core.RenderCustom(context, deviceContext);
+                core.ModelMatrix = TotalModelMatrixInternal;
+                core.RenderCustom(context, deviceContext);
             }
             /// <summary>
             /// Renders the custom.
@@ -656,7 +659,8 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void RenderDepth(RenderContext context, DeviceContextProxy deviceContext, Shaders.ShaderPass pass)
             {
-                 core.RenderDepth(context, deviceContext, pass);
+                core.ModelMatrix = TotalModelMatrixInternal;
+                core.RenderDepth(context, deviceContext, pass);
             }
             /// <summary>
             /// View frustum test.
