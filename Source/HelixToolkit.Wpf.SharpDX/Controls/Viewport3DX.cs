@@ -311,6 +311,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController.IsRotationEnabled = this.IsRotationEnabled;
             this.cameraController.EnableTouchRotate = this.IsTouchRotateEnabled;
             this.cameraController.EnablePinchZoom = this.IsPinchZoomEnabled;
+            this.cameraController.PinchZoomAtCenter = this.PinchZoomAtCenter;
             this.cameraController.EnableThreeFingerPan = this.IsThreeFingerPanningEnabled;
             this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;

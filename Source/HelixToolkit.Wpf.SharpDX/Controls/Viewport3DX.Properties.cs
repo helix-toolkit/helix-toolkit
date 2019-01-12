@@ -393,6 +393,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// The pinch zoom at center property
+        /// </summary>
+        public static readonly DependencyProperty PinchZoomAtCenterProperty =
+            DependencyProperty.Register("PinchZoomAtCenter", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=> 
+            {
+                var viewport = d as Viewport3DX;
+                viewport.CameraController.PinchZoomAtCenter = (bool)e.NewValue;
+            }));
+
+        /// <summary>
         /// The enable touch rotate property
         /// </summary>
         public static readonly DependencyProperty IsThreeFingerPanningEnabledProperty =
@@ -1797,7 +1807,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(IsPinchZoomEnabledProperty, value);
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [pinch zoom at center] instead of at finger down point.
+        /// Default is false.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [pinch zoom at center]; otherwise, <c>false</c>.
+        /// </value>
+        public bool PinchZoomAtCenter
+        {
+            get { return (bool)GetValue(PinchZoomAtCenterProperty); }
+            set { SetValue(PinchZoomAtCenterProperty, value); }
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [enable three finger panning].
         /// </summary>
