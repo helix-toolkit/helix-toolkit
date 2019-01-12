@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System.Collections.Generic;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -15,9 +16,7 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         using Render;
-        using Shaders;
-        using System.Collections.Generic;
-        using System.IO;
+        using Shaders;       
         using Utilities;
 
         public abstract class GenericMaterialVariable : MaterialVariable
@@ -128,7 +127,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public bool SetTexture(string name, Stream texture)
+            public bool SetTexture(string name, TextureModel texture)
             {
                 if(resourceIdxDict.TryGetValue(name, out var idx))
                 {

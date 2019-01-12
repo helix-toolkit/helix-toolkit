@@ -565,7 +565,7 @@ namespace HelixToolkit.UWP
 
             private TimeSpan lastRenderTime = TimeSpan.Zero;
 
-            private int updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
+            private uint updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
 
             private volatile bool UpdateSceneGraphRequested = true;
 
@@ -628,7 +628,8 @@ namespace HelixToolkit.UWP
             /// </returns>
             protected virtual bool CanRender()
             {
-                return IsInitialized && IsRendering && (UpdateRequested || updateCounter < 6) && viewport != null && viewport.CameraCore != null && ActualWidth > 10 && ActualHeight > 10;
+                return IsInitialized && IsRendering && (UpdateRequested || updateCounter < RenderConfiguration.MinimumUpdateCount)
+                    && viewport != null && viewport.CameraCore != null && ActualWidth > 10 && ActualHeight > 10;
             }
             /// <summary>
             /// Updates the and render.
