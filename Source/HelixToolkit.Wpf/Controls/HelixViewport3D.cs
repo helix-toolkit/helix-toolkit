@@ -536,6 +536,20 @@ namespace HelixToolkit.Wpf
                 "RotateAroundMouseDownPoint", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// Identifies the <see cref="FixedRotationPointEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointEnabledProperty =
+            DependencyProperty.Register(
+                "FixedRotationPointEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
+
+        /// <summary>
+        /// Identifies the <see cref="FixedRotationPoint"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointProperty =
+            DependencyProperty.Register(
+                "FixedRotationPoint", typeof(Point3D), typeof(HelixViewport3D), new UIPropertyMetadata(default(Point3D)));
+
+        /// <summary>
         /// Identifies the <see cref="RotateCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
@@ -2254,6 +2268,40 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(RotateAroundMouseDownPointProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to rotate around a fixed point.
+        /// </summary>
+        /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
+        public bool FixedRotationPointEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(FixedRotationPointEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(FixedRotationPointEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the center of rotation.
+        /// </summary>
+        /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
+        public Point3D FixedRotationPoint
+        {
+            get
+            {
+                return (Point3D)this.GetValue(FixedRotationPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(FixedRotationPointProperty, value);
             }
         }
 

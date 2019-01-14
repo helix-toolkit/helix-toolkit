@@ -70,6 +70,8 @@
                                 PageUpDownZoomSensitivity="{TemplateBinding PageUpDownZoomSensitivity}"
                                 PanCursor="{TemplateBinding PanCursor}"
                                 RotateAroundMouseDownPoint="{TemplateBinding RotateAroundMouseDownPoint}"
+                                FixedRotationPointEnabled="{TemplateBinding FixedRotationPointEnabled}"
+                                FixedRotationPoint="{TemplateBinding FixedRotationPoint}"
                                 RotateCursor="{TemplateBinding RotateCursor}"
                                 RotationSensitivity="{TemplateBinding RotationSensitivity}"
                                 ShowCameraTarget="{TemplateBinding ShowCameraTarget}"
