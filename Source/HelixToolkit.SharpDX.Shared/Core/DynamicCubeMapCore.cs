@@ -102,7 +102,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    SetAffectsCanRenderFlag(ref enableReflector, value);
+                    SetAffectsRender(ref enableReflector, value);
                 }
                 get
                 {
@@ -400,13 +400,12 @@ namespace HelixToolkit.UWP
                 base.OnDetach();
             }
 
-            protected override bool OnUpdateCanRenderFlag()
-            {
-                return base.OnUpdateCanRenderFlag() && EnableReflector;
-            }
-
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
+                if (!enableReflector)
+                {
+                    return;
+                }
                 if (CreateCubeMapResources())
                 {
                     RaiseInvalidateRender();

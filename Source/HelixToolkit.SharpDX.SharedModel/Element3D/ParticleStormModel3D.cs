@@ -299,15 +299,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty ParticleTextureProperty = DependencyProperty.Register("ParticleTexture", typeof(Stream), typeof(ParticleStormModel3D),
+        public static DependencyProperty ParticleTextureProperty = DependencyProperty.Register("ParticleTexture", typeof(TextureModel), typeof(ParticleStormModel3D),
             new PropertyMetadata(null,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).ParticleTexture = (Stream)e.NewValue;
+                ((d as Element3DCore).SceneNode as ParticleStormNode).ParticleTexture = (TextureModel)e.NewValue;
             }
             ));
 
-        public Stream ParticleTexture
+        public TextureModel ParticleTexture
         {
             set
             {
@@ -315,7 +315,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Stream)GetValue(ParticleTextureProperty);
+                return (TextureModel)GetValue(ParticleTextureProperty);
             }
         }
 

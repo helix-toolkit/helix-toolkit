@@ -112,20 +112,18 @@ namespace HelixToolkit.Wpf.SharpDX
             // the direction plane
             normalWS = Vector3.Cross(upWS, directionWS); normalWS.Normalize();
             // find new hit on the camera-direction plane
-            var newHit = this.viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normalWS);
-
-            if (newHit.HasValue)
+            if(viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normalWS, out var newHit))
             {
                 // project point on ray
                 // a: vec to project on
                 //b(a) = (a.b)/(a.a)*a;
-                var b = newHit.Value - lastHitPosWS;
+                var b = newHit - lastHitPosWS;
                 var ab = Vector3.Dot(directionWS, b);
                 var aa = Vector3.Dot(directionWS, directionWS);
                 var ba = (ab / aa) * directionWS;
                 newHit = lastHitPosWS + ba;
 
-                var delta = newHit.Value - lastHitPosWS;
+                var delta = newHit - lastHitPosWS;
                 this.Value += Vector3.Dot(delta, directionWS);
                 var deltaTranslateTrafo = new TranslateTransform3D(delta.ToVector3D());
 
@@ -145,8 +143,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
 
-                this.lastHitPosWS = newHit.Value;
-            }
+                this.lastHitPosWS = newHit;
+            }         
         }
     }
 }

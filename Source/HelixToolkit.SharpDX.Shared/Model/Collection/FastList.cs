@@ -41,8 +41,7 @@ namespace HelixToolkit.UWP
 
         public FastList(IEnumerable<T> collection)
         {
-            var is2 = collection as ICollection<T>;
-            if (is2 != null)
+            if (collection is ICollection<T> is2)
             {
                 var count = is2.Count;
                 Items = new T[count];
@@ -406,8 +405,7 @@ namespace HelixToolkit.UWP
 
         public void InsertRange(int index, IEnumerable<T> collection)
         {
-            var is2 = collection as ICollection<T>;
-            if (is2 != null)
+            if (collection is ICollection<T> is2)
             {
                 var count = is2.Count;
                 if (count > 0)
@@ -420,7 +418,7 @@ namespace HelixToolkit.UWP
                     if (this == is2)
                     {
                         Array.Copy(Items, 0, Items, index, index);
-                        Array.Copy(Items, (index + count), Items, (index*2), (_size - index));
+                        Array.Copy(Items, (index + count), Items, (index * 2), (_size - index));
                     }
                     else
                     {

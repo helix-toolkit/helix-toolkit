@@ -517,14 +517,14 @@ namespace HelixToolkit.Wpf.SharpDX
             this Camera camera, Viewport3DX viewport, double animationTime = 0)
         {
             var bounds = viewport.FindBoundsInternal();
-            var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
+            var diagonal = bounds.Maximum - bounds.Minimum;
 
-            if (bounds.IsEmpty || diagonal.LengthSquared.Equals(0))
+            if (diagonal.LengthSquared().Equals(0))
             {
                 return;
             }
 
-            ZoomExtents(camera, viewport, bounds, animationTime);
+            ZoomExtents(camera, viewport, new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D()), animationTime);
         }
 
         /// <summary>
@@ -612,49 +612,41 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public static void ZoomToRectangle(this Camera camera, Viewport3DX viewport, Rect zoomRectangle)
         {
-            var topLeftRay = viewport.UnProjectToRay(zoomRectangle.TopLeft);
-            var topRightRay = viewport.UnProjectToRay(zoomRectangle.TopRight);
-            var centerRay =
-                viewport.UnProjectToRay(
-                    new Point(
-                        (zoomRectangle.Left + zoomRectangle.Right) * 0.5,
-                        (zoomRectangle.Top + zoomRectangle.Bottom) * 0.5));
-
-            if (topLeftRay == null || topRightRay == null || centerRay == null)
+            if(viewport.UnProject(zoomRectangle.TopLeft.ToVector2(), out var topLeftRay)
+                && viewport.UnProject(zoomRectangle.TopRight.ToVector2(), out var topRightRay)
+                && viewport.UnProject(new global::SharpDX.Vector2(
+                        (float)(zoomRectangle.Left + zoomRectangle.Right) * 0.5f,
+                        (float)(zoomRectangle.Top + zoomRectangle.Bottom) * 0.5f), out var centerRay))
             {
-                // could not invert camera matrix
-                return;
-            }
-
-            var u = Vector3.Normalize(topLeftRay.Direction);
-            var v = Vector3.Normalize(topRightRay.Direction);
-            var w = Vector3.Normalize(centerRay.Direction);
-            if (camera is IPerspectiveCameraModel perspectiveCamera)
-            {
-                var distance = camera.LookDirection.Length;
-
-                // option 1: change distance
-                var newDistance = distance * zoomRectangle.Width / viewport.ActualWidth;
-                var newLookDirection = (float)newDistance * w;
-                var newPosition = camera.CameraInternal.Position + ((float)(distance - newDistance) * w);
-                var newTarget = newPosition + newLookDirection;
-                LookAt(camera, newTarget.ToPoint3D(), newLookDirection.ToVector3D(), 200);
-
-                // option 2: change fov
-                // double newFieldOfView = Math.Acos(Vector3D.DotProduct(u, v));
-                // var newTarget = camera.Position + distance * w;
-                // pcamera.FieldOfView = newFieldOfView * 180 / Math.PI;
-                // LookAt(camera, newTarget, distance * w, 0);
-            }
-            else if (camera is IOrthographicCameraModel orthographicCamera)
-            {
-                orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
-                var oldTarget = camera.CameraInternal.Position + camera.CameraInternal.LookDirection;
-                var distance = camera.CameraInternal.LookDirection.Length();
-                var newTarget = centerRay.PlaneIntersection(oldTarget, w);
-                if (newTarget != null)
+                var u = Vector3.Normalize(topLeftRay.Direction);
+                var v = Vector3.Normalize(topRightRay.Direction);
+                var w = Vector3.Normalize(centerRay.Direction);
+                if (camera is IPerspectiveCameraModel perspectiveCamera)
                 {
-                    LookAt(orthographicCamera, newTarget.Value.ToPoint3D(), 200);
+                    var distance = camera.LookDirection.Length;
+
+                    // option 1: change distance
+                    var newDistance = distance * zoomRectangle.Width / viewport.ActualWidth;
+                    var newLookDirection = (float)newDistance * w;
+                    var newPosition = camera.CameraInternal.Position + ((float)(distance - newDistance) * w);
+                    var newTarget = newPosition + newLookDirection;
+                    LookAt(camera, newTarget.ToPoint3D(), newLookDirection.ToVector3D(), 200);
+
+                    // option 2: change fov
+                    // double newFieldOfView = Math.Acos(Vector3D.DotProduct(u, v));
+                    // var newTarget = camera.Position + distance * w;
+                    // pcamera.FieldOfView = newFieldOfView * 180 / Math.PI;
+                    // LookAt(camera, newTarget, distance * w, 0);
+                }
+                else if (camera is IOrthographicCameraModel orthographicCamera)
+                {
+                    orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
+                    var oldTarget = camera.CameraInternal.Position + camera.CameraInternal.LookDirection;
+                    var distance = camera.CameraInternal.LookDirection.Length();
+                    if (centerRay.PlaneIntersection(oldTarget, w, out var newTarget))
+                    {
+                        LookAt(orthographicCamera, newTarget.ToPoint3D(), 200);
+                    }
                 }
             }
         }

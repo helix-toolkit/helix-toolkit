@@ -25,17 +25,18 @@ namespace HelixToolkit.UWP
         {
             protected readonly Dictionary<Guid, SceneNode2D> itemHashSet = new Dictionary<Guid, SceneNode2D>();
 
-            public override IList<SceneNode2D> Items
+            public PanelNode2D()
             {
-                get;
-            } = new ObservableCollection<SceneNode2D>();
+                ItemsInternal = new ObservableCollection<SceneNode2D>();
+                Items = new ReadOnlyObservableCollection<SceneNode2D>(ItemsInternal);
+            }
 
             public virtual bool AddChildNode(SceneNode2D node)
             {
                 if (!itemHashSet.ContainsKey(node.GUID))
                 {
                     itemHashSet.Add(node.GUID, node);
-                    Items.Add(node);
+                    ItemsInternal.Add(node);
                     node.Parent = this;
                     if (IsAttached)
                     {
@@ -54,8 +55,10 @@ namespace HelixToolkit.UWP
                 for (int i = 0; i < Items.Count; ++i)
                 {
                     Items[i].Detach();
+                    Items[i].Parent = null;
                 }
                 itemHashSet.Clear();
+                ItemsInternal.Clear();
             }
 
             /// <summary>
@@ -68,7 +71,7 @@ namespace HelixToolkit.UWP
                 if (itemHashSet.Remove(node.GUID))
                 {
                     node.Detach();
-                    Items.Remove(node);
+                    ItemsInternal.Remove(node);
                     node.Parent = null;
                     return true;
                 }

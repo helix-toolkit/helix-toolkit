@@ -212,7 +212,7 @@ namespace HelixToolkit.Wpf
 
             if (this.Controller.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
             {
-                this.zoomPoint = this.MouseDownPoint;
+                this.zoomPoint = this.MouseDownNearestPoint2D;
                 this.zoomPoint3D = this.MouseDownNearestPoint3D.Value;
             }
 
@@ -307,7 +307,18 @@ namespace HelixToolkit.Wpf
             var target = this.CameraPosition + this.CameraLookDirection;
             var relativeTarget = zoomAround - target;
             var relativePosition = zoomAround - this.CameraPosition;
-
+            if (relativePosition.LengthSquared < 1e-5)
+            {
+                if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
+                {
+                    relativePosition.Normalize();
+                    relativePosition /= 10;
+                }
+                else//If Zoom in too close, stop it.
+                {
+                    return;
+                }
+            }
             var f = Math.Pow(2.5, delta);
             var newRelativePosition = relativePosition * f;
             var newRelativeTarget = relativeTarget * f;

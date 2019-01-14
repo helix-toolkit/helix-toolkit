@@ -55,6 +55,7 @@ namespace HelixToolkit.UWP
     /// </summary>
     public class DynamicCodeSurface3DNode : ParametricSurface3DNode
     {
+        public event EventHandler OnCompileError;
         private float parameterW = 1f;
         public float ParameterW
         {
@@ -90,7 +91,13 @@ namespace HelixToolkit.UWP
         private CompilerErrorCollection errors;
         public CompilerErrorCollection Errors
         {
-            private set => Set(ref errors, value);
+            private set
+            {
+                if(Set(ref errors, value))
+                {
+                    OnCompileError?.Invoke(this, EventArgs.Empty);
+                }
+            }
             get => errors;
         }
 

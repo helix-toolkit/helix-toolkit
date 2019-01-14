@@ -73,10 +73,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool InvertNormal
             {
-                get { return (RenderCore as MeshRenderCore).InvertNormal; }
+                get { return (RenderCore as IInvertNormal).InvertNormal; }
                 set
                 {
-                    (RenderCore as MeshRenderCore).InvertNormal = value;
+                    (RenderCore as IInvertNormal).InvertNormal = value;
                 }
             }
 

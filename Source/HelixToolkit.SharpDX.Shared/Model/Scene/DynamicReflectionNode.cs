@@ -145,9 +145,9 @@ namespace HelixToolkit.UWP
             /// </summary>
             public DynamicReflectionNode()
             {
-                this.OnAddChildNode += DynamicReflectionNode_OnAddChildNode;
-                this.OnRemoveChildNode += DynamicReflectionNode_OnRemoveChildNode;
-                this.OnClear += DynamicReflectionNode_OnClear;
+                this.ChildNodeAdded += DynamicReflectionNode_OnAddChildNode;
+                this.ChildNodeRemoved += DynamicReflectionNode_OnRemoveChildNode;
+                this.Cleared += DynamicReflectionNode_OnClear;
             }
 
             private void DynamicReflectionNode_OnClear(object sender, OnChildNodeChangedArgs e)
@@ -202,19 +202,19 @@ namespace HelixToolkit.UWP
                 {
                     BoundingBox box = new BoundingBox();
                     int i = 0;
-                    for(; i < Items.Count; ++i)
+                    for(; i < ItemsInternal.Count; ++i)
                     {
-                        if(Items[i] is IDynamicReflectable)
+                        if(ItemsInternal[i] is IDynamicReflectable)
                         {
-                            box = Items[i].BoundsWithTransform;
+                            box = ItemsInternal[i].BoundsWithTransform;
                             break;
                         }
                     }
-                    for (; i < Items.Count; ++i)
+                    for (; i < ItemsInternal.Count; ++i)
                     {
-                        if (Items[i] is IDynamicReflectable)
+                        if (ItemsInternal[i] is IDynamicReflectable)
                         {
-                            box = BoundingBox.Merge(box, Items[i].BoundsWithTransform);
+                            box = BoundingBox.Merge(box, ItemsInternal[i].BoundsWithTransform);
                         }
                     }
                     Center = box.Center();

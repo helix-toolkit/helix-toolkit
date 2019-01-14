@@ -36,6 +36,6 @@ namespace HelixToolkit.UWP
         IRenderHost CurrentRenderHost { set; get; }
 
         void Attach(IRenderHost host);
-        void Detach();
+        void Detach(IRenderHost host);
     }
 }

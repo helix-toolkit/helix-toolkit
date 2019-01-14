@@ -53,27 +53,43 @@ namespace HelixToolkit.UWP
                 return vertexBoneIds;
             }
         }
+
         /// <summary>
-        /// Gets or sets the animations.
+        /// Creates the node based bone matrices.
         /// </summary>
-        /// <value>
-        /// The animations.
-        /// </value>
-        public Dictionary<string, Animations.Animation> Animations { set; get; }
+        /// <param name="bones">The bones.</param>
+        /// <param name="rootInvTransform">The root inv transform.</param>
+        /// <returns></returns>
+        public static Matrix[] CreateNodeBasedBoneMatrices(IList<Animations.Bone> bones, ref Matrix rootInvTransform)
+        {
+            Matrix[] m = null;
+            CreateNodeBasedBoneMatrices(bones, ref rootInvTransform, ref m);
+            return m;
+        }
+
         /// <summary>
-        /// Gets or sets the bones.
+        /// Creates the node based bone matrices.
         /// </summary>
-        /// <value>
-        /// The bones.
-        /// </value>
-        public IList<Animations.Bone> Bones { set; get; }
-        /// <summary>
-        /// Gets or sets the bone names.
-        /// </summary>
-        /// <value>
-        /// The bone names.
-        /// </value>
-        public IList<string> BoneNames { set; get; }
+        /// <param name="bones">The bones.</param>
+        /// <param name="matrices"></param>
+        /// <param name="rootInvTransform"></param>
+        /// <returns></returns>
+        public static void CreateNodeBasedBoneMatrices(IList<Animations.Bone> bones, ref Matrix rootInvTransform, ref Matrix[] matrices)
+        {
+            var m = matrices ?? new Matrix[bones.Count];
+            for(int i = 0; i <bones.Count; ++i)
+            {
+                if(bones[i].Node != null)
+                {
+                    m[i] = bones[i].InvBindPose * bones[i].Node.TotalModelMatrixInternal * rootInvTransform;
+                }
+                else
+                {
+                    m[i] = Matrix.Identity;
+                }
+            }
+            matrices = m;
+        }
 
 
         public static BoneSkinnedMeshGeometry3D CreateSkeletonMesh(IList<Animations.Bone> bones, float scale = 1f)

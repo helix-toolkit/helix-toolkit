@@ -136,12 +136,12 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            private Stream particleTexture;
+            private TextureModel particleTexture;
 
             /// <summary>
             /// Particle Texture
             /// </summary>
-            public Stream ParticleTexture
+            public TextureModel ParticleTexture
             {
                 set
                 {

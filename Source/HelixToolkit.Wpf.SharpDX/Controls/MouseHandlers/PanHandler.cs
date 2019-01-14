@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Input;
     using Vector3 = global::SharpDX.Vector3;
     using Vector2 = global::SharpDX.Vector2;
+    using System;
 
     /// <summary>
     /// Handles panning.
@@ -43,7 +44,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.Delta(e);
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
-
+            if (Camera.CameraInternal.LookDirection.LengthSquared() < 1f && MouseDownNearestPoint3D.HasValue)
+            {
+                var look = Camera.CameraInternal.LookDirection.Normalized();
+                var v = MouseDownNearestPoint3D.Value - Camera.CameraInternal.Position;
+                Camera.CameraInternal.LookDirection = look * Math.Max(1, Vector3.Dot(v, look));
+            }
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
                 return;

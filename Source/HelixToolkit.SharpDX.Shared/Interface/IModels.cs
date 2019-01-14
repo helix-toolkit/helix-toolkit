@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The texture.
         /// </value>
-        Stream Texture { get; }
+        TextureModel Texture { get; }
 
         /// <summary>
         /// Draws the texture.

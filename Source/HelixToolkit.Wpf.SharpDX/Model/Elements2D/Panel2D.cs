@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                foreach(var item in SceneNode.Items)
+                foreach(var item in SceneNode.ItemsInternal)
                 {
                     this.RemoveLogicalChild(item.WrapperSource);
                 }

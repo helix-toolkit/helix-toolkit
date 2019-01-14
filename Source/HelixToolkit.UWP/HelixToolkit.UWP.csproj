@@ -122,7 +122,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
@@ -171,7 +171,10 @@
     <Compile Include="Model\Lights\SpotLight3D.cs" />
     <Compile Include="Model\Material\PhongMaterialFactory.cs" />
     <Compile Include="Model\Scene\SceneNode.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyDescription.cs" />
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -397,7 +400,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="HelixToolkit.SharpDX.Shared.licenseheader" />
-    <None Include="HelixToolkit.snk" />
     <Content Include="Resources\psBillboardTextOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

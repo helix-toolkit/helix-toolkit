@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP
         public const string TriangleBuffer = "TriangleBuffer";
         [DataMember]
         public Guid GUID { set; get; } = Guid.NewGuid();
-        
+
         private IntCollection indices = null;
 
         /// <summary>
@@ -293,11 +293,14 @@ namespace HelixToolkit.UWP
             target.Colors = this.Colors;
             target.Bound = this.Bound;
             target.BoundingSphere = this.BoundingSphere;
-            target.ManualSetOctree(Octree);
             target.OctreeParameter.MinimumOctantSize = OctreeParameter.MinimumOctantSize;
             target.OctreeParameter.MinObjectSizeToSplit = OctreeParameter.MinObjectSizeToSplit;
             target.OctreeParameter.Cubify = OctreeParameter.Cubify;
             target.OctreeParameter.EnableParallelBuild = OctreeParameter.EnableParallelBuild;
+            if (Octree != null)
+            {
+                target.ManualSetOctree(Octree);
+            }
             OnAssignTo(target);
         }
 

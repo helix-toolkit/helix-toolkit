@@ -312,7 +312,6 @@ namespace HelixToolkit.UWP
                 new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
                 new InputElement("COLOR", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
                 new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
-                new InputElement("COLOR", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
                 new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
             };
 

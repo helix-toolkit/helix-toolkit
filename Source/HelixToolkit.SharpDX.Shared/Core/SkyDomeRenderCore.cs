@@ -47,14 +47,14 @@ namespace HelixToolkit.UWP
             #endregion
 
             #region Properties
-            private Stream cubeTexture = null;
+            private TextureModel cubeTexture = null;
             /// <summary>
             /// Gets or sets the cube texture.
             /// </summary>
             /// <value>
             /// The cube texture.
             /// </value>
-            public Stream CubeTexture
+            public TextureModel CubeTexture
             {
                 set
                 {

@@ -124,8 +124,9 @@ namespace HelixToolkit.UWP
                 { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor); });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.UVTransform), () => 
                 {
-                    WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, material.UVTransform.Column1);
-                    WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, material.UVTransform.Column2);
+                    Matrix m = material.UVTransform;
+                    WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
+                    WriteValue(PhongPBRMaterialStruct.UVTransformR2Str, m.Column2);
                 });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseMap), () =>
                 {
@@ -139,13 +140,14 @@ namespace HelixToolkit.UWP
                 });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.EnableUnLit), () => 
                 { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.EnableUnLit); });
+                AddPropertyBinding(nameof(DiffuseMaterialCore.EnableFlatShading), () => { WriteValue(PhongPBRMaterialStruct.RenderFlat, material.EnableFlatShading); });
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private void CreateTextureView(System.IO.Stream stream, int index)
+            private void CreateTextureView(TextureModel texture, int index)
             {
                 RemoveAndDispose(ref TextureResource);
-                TextureResource = stream == null ? null : Collect(textureManager.Register(stream));
+                TextureResource = texture == null ? null : Collect(textureManager.Register(texture));
                 if (TextureResource != null)
                 {
                     textureIndex |= 1u << index;

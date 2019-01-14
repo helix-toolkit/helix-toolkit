@@ -54,5 +54,12 @@ namespace HelixToolkit.Wpf.SharpDX
             (core as PerspectiveCameraCore).FieldOfView = (float)this.FieldOfView;
             (core as PerspectiveCameraCore).NearPlaneDistance = (float)this.NearPlaneDistance;
         }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return new PerspectiveCamera();
+        }
+#endif
     }
 }

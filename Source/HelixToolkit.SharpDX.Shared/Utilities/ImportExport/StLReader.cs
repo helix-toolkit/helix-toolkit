@@ -40,6 +40,7 @@ namespace HelixToolkit.UWP
     /// <remarks>
     /// The format is documented on <a href="http://en.wikipedia.org/wiki/STL_(file_format)">Wikipedia</a>.
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class StLReader : ModelReader
     {
         /// <summary>

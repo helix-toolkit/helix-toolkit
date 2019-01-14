@@ -101,8 +101,8 @@ namespace HelixToolkit.UWP
                         yield return item;
                     }
                 }
-                yield return viewCube;
-                yield return coordinateSystem;
+                yield return viewCube.SceneNode;
+                yield return coordinateSystem.SceneNode;
             }
         }
 
@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP
         /// The nearest valid result during a hit test.
         /// </summary>
         private HitTestResult currentHit;
-
+        private List<HitTestResult> hits = new List<HitTestResult>();
         private bool enableMouseButtonHitTest = true;
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
@@ -215,6 +215,7 @@ namespace HelixToolkit.UWP
             this.cameraController.EnableTouchRotate = this.IsTouchRotateEnabled;
             this.cameraController.EnablePinchZoom = this.IsPinchZoomEnabled;
             this.cameraController.EnableThreeFingerPan = this.IsThreeFingerPanningEnabled;
+            this.cameraController.PinchZoomAtCenter = this.PinchZoomAtCenter;
             this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
             this.cameraController.MaximumFieldOfView = this.MaximumFieldOfView;
@@ -316,6 +317,7 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
                     renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
                     renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
+                    renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, MinimumUpdateCount);
                     renderHostInternal.Rendered += this.RaiseRenderHostRendered;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
 
@@ -438,7 +440,7 @@ namespace HelixToolkit.UWP
                 {
                     e.Detach();
                 }
-                SharedModelContainerInternal?.Detach();
+                SharedModelContainerInternal?.Detach(renderHostInternal);
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Detach();
@@ -568,14 +570,20 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-
-            var hits = this.FindHits(pt);
-            if (hits.Count > 0)
+           
+            if (this.FindHits(pt.ToVector2(), ref hits) && hits.Count > 0)
             {
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
-                if (this.currentHit != null && currentHit.ModelHit is Element3D ele)
+                if (this.currentHit != null)
                 {
-                    ele.RaiseMouseDownEvent(this.currentHit, pt, this);
+                    if (currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseMouseDownEvent(this.currentHit, pt, this);
+                    }
+                    else if(currentHit.ModelHit is SceneNode node)
+                    {
+                        node.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit);
+                    }
                 }
             }
             else
@@ -597,9 +605,16 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            if (this.currentHit != null && currentHit.ModelHit is Element3D ele)
+            if (this.currentHit != null)
             {
-                ele.RaiseMouseMoveEvent(this.currentHit, pt, this);
+                if (currentHit.ModelHit is Element3D ele)
+                {
+                    ele.RaiseMouseMoveEvent(this.currentHit, pt, this);
+                }
+                else if(currentHit.ModelHit is SceneNode node)
+                {
+                    node.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit);
+                }
             }
             this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this));
         }
@@ -616,9 +631,16 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            if (currentHit != null && currentHit.ModelHit is Element3D ele)
+            if (currentHit != null)
             {
-                ele.RaiseMouseUpEvent(this.currentHit, pt, this);               
+                if (currentHit.ModelHit is Element3D ele)
+                {
+                    ele.RaiseMouseUpEvent(this.currentHit, pt, this);
+                }
+                else if(currentHit.ModelHit is SceneNode node)
+                {
+                    node.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit);
+                }
                 currentHit = null;
             }
             this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this));

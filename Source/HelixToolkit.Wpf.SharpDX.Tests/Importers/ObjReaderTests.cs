@@ -311,11 +311,11 @@ map_bump " + prefix + Path.GetFileName(tempTexBump) + @"
                 var material = (PhongMaterialCore)model[0].Material;
                 using(var fs = new FileStream(tempTexDiffuse, FileMode.Open))
                 {
-                    Compare(fs, material.DiffuseMap);
+                    Compare(fs, material.DiffuseMap.CompressedStream);
                 }
                 using (var fs = new FileStream(tempTexBump, FileMode.Open))
                 {
-                    Compare(fs, material.NormalMap);
+                    Compare(fs, material.NormalMap.CompressedStream);
                 }
             }
             finally
@@ -363,11 +363,11 @@ map_bump " + tempTexBump + @"
                 var material = (PhongMaterialCore)model[0].Material;
                 using(var fs = new FileStream(tempTexDiffuse, FileMode.Open))
                 {
-                    Compare(fs, material.DiffuseMap);
+                    Compare(fs, material.DiffuseMap.CompressedStream);
                 }
                 using (var fs = new FileStream(tempTexBump, FileMode.Open))
                 {
-                    Compare(fs, material.NormalMap);
+                    Compare(fs, material.NormalMap.CompressedStream);
                 }
             }
             finally

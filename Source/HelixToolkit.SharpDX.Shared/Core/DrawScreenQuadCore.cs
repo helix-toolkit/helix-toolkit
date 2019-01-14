@@ -41,14 +41,14 @@ namespace HelixToolkit.UWP
 
             public ScreenQuadModelStruct ModelStruct;
 
-            private Stream texture;
+            private TextureModel texture;
             /// <summary>
             /// Gets or sets the texture.
             /// </summary>
             /// <value>
             /// The texture.
             /// </value>
-            public Stream Texture
+            public TextureModel Texture
             {
                 set
                 {
@@ -104,7 +104,7 @@ namespace HelixToolkit.UWP
                 };
             }
 
-            private void UpdateTexture(Stream texture)
+            private void UpdateTexture(TextureModel texture)
             {
                 RemoveAndDispose(ref textureProxy);
                 if (texture != null)

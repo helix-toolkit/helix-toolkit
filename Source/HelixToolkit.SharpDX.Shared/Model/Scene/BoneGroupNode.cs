@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP
     {
         using Core;
 
-        public sealed class BoneGroupNode : GroupNodeBase
+        public sealed class BoneGroupNode : GroupNodeBase, Animations.IBoneMatricesNode
         {
             public Matrix[] BoneMatrices
             {
@@ -32,12 +32,27 @@ namespace HelixToolkit.UWP
                 get { return core.BoneMatrices; }
             }
 
+            /// <summary>
+            /// Gets or sets the bones.
+            /// </summary>
+            /// <value>
+            /// The bones.
+            /// </value>
+            public Animations.Bone[] Bones { set; get; }
+            /// <summary>
+            /// Always return false for bone groups
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this instance has bone group; otherwise, <c>false</c>.
+            /// </value>
+            public bool HasBoneGroup { get; } = false;
+
             private readonly BoneUploaderCore core = new BoneUploaderCore();
 
             public BoneGroupNode()
             {
-                OnAddChildNode += NodeGroup_OnAddChildNode;
-                OnRemoveChildNode += NodeGroup_OnRemoveChildNode;
+                ChildNodeAdded += NodeGroup_OnAddChildNode;
+                ChildNodeRemoved += NodeGroup_OnRemoveChildNode;
             }
 
             protected override RenderCore OnCreateRenderCore()
@@ -49,6 +64,7 @@ namespace HelixToolkit.UWP
             {
                 if (e.Node is BoneSkinMeshNode b)
                 {
+                    b.HasBoneGroup = false;
                     (b.RenderCore as BoneSkinRenderCore).SharedBoneBuffer = null;
                 }
             }
@@ -57,6 +73,7 @@ namespace HelixToolkit.UWP
             {
                 if(e.Node is BoneSkinMeshNode b)
                 {
+                    b.HasBoneGroup = true;
                     (b.RenderCore as BoneSkinRenderCore).SharedBoneBuffer = core;
                 }
             }

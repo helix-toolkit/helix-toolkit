@@ -35,26 +35,34 @@ namespace HelixToolkit.UWP
                 set { Set(ref diffuseColor, value); }
                 get { return diffuseColor; }
             }
-            private Stream diffuseMap;
+            private TextureModel diffuseMap;
             /// <summary>
             /// Gets or sets the diffuse map.
             /// </summary>
             /// <value>
             /// The diffuse map.
             /// </value>
-            public Stream DiffuseMap
+            public TextureModel DiffuseMap
             {
                 set { Set(ref diffuseMap, value); }
                 get { return diffuseMap; }
             }
-            private Matrix uvTransform = Matrix.Identity;
+            /// <summary>
+            /// Gets or sets the diffuse map file path. Only for export
+            /// </summary>
+            /// <value>
+            /// The diffuse map file path.
+            /// </value>
+            public string DiffuseMapFilePath { set; get; }
+
+            private UVTransform uvTransform = UVTransform.Identity;
             /// <summary>
             /// Gets or sets the uv transform.
             /// </summary>
             /// <value>
             /// The uv transform.
             /// </value>
-            public Matrix UVTransform
+            public UVTransform UVTransform
             {
                 set { Set(ref uvTransform, value); }
                 get { return uvTransform; }
@@ -96,6 +104,19 @@ namespace HelixToolkit.UWP
             {
                 set { Set(ref enableUnLit, value); }
                 get { return enableUnLit; }
+            }
+
+            private bool enableFlatShading = false;
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable flat shading].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnableFlatShading
+            {
+                set { Set(ref enableFlatShading, value); }
+                get { return enableFlatShading; }
             }
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)

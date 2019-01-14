@@ -676,6 +676,19 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Transforms the set of Point3D to a set of Point2D.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="points">The set of 3D points.</param>
+        /// <returns>The transformed points.</returns>
+        public static IEnumerable<Point> Point3DtoPoint2D(this Viewport3D viewport, IEnumerable<Point3D> points)
+        {
+            var matrix = GetTotalTransform(viewport);
+            var pointsTransformed = points.Select(point => matrix.Transform(point));
+            return pointsTransformed.Select(point => new Point(point.X, point.Y));
+        }
+
+        /// <summary>
         /// Prints the specified viewport.
         /// </summary>
         /// <param name="vp">

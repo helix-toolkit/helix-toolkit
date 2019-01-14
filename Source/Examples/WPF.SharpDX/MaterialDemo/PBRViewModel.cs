@@ -126,7 +126,7 @@ namespace MaterialDemo
                 AlbedoMap = LoadFileToMemory("Engraved_Metal_COLOR.jpg"),
                 NormalMap = LoadFileToMemory("Engraved_Metal_NORM.jpg"),
                 DisplacementMap = LoadFileToMemory("Engraved_Metal_DISP.png"),
-                RMAMap = LoadFileToMemory("Engraved_Metal_RMC.png"),
+                RoughnessMetallicMap = LoadFileToMemory("Engraved_Metal_RMC.png"),
                 DisplacementMapScaleMask = new Vector4(0.1f, 0.1f, 0.1f, 0),
                 EnableAutoTangent =true, EnableTessellation = true, MaxDistanceTessellationFactor = 2, MinDistanceTessellationFactor = 4
             };
@@ -145,7 +145,8 @@ namespace MaterialDemo
                 AlbedoMap = LoadFileToMemory("Wood_Planks_COLOR.jpg"),
                 NormalMap = LoadFileToMemory("Wood_Planks_NORM.jpg"),
                 DisplacementMap = LoadFileToMemory("Wood_Planks_DISP.png"),
-                RMAMap = LoadFileToMemory("Wood_Planks_RMA.png"),
+                RoughnessMetallicMap = LoadFileToMemory("Wood_Planks_RMA.png"),
+                AmbientOcculsionMap = LoadFileToMemory("Wood_Planks_RMA.png"),
                 DisplacementMapScaleMask = new Vector4(1f, 1f, 1f, 0),
                 RoughnessFactor = 0.8,
                 MetallicFactor = 0.2,                

@@ -114,28 +114,29 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public static Resource FromMemoryAsShaderResource(Device device, Stream memory, bool disableAutoGenMipMap = false)
             {
-                var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory);
-                if(texture == null)
+                using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory))
                 {
-                    return null;
-                }
-                if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
-                {
-                    try
+                    if (texture == null)
                     {
-                        if(GenerateMipMaps(device, texture, out var textureMipmap))
+                        return null;
+                    }
+                    if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
+                    {
+                        try
                         {
-                            texture.Dispose();
+                            GenerateMipMaps(device, texture, out var textureMipmap);
+                            return textureMipmap;
                         }
-                        return textureMipmap;
+                        catch (System.Exception ex)
+                        {
+                            throw new System.Exception(ex.Message);
+                        }
                     }
-                    catch(System.Exception ex)
+                    else
                     {
-                        texture.Dispose();
-                        throw new System.Exception(ex.Message);
+                        return texture.Resource.QueryInterface<Resource>();
                     }
                 }
-                return texture;
             }
             /// <summary>
             /// Generates the mip maps.
@@ -183,7 +184,7 @@ namespace HelixToolkit.UWP
                     case global::SharpDX.DXGI.Format.B5G5R5A1_UNorm:
                         break;
                     default:
-                        textMip = texture;//Format not support, return the original texture.
+                        textMip = texture.Resource.QueryInterface<Resource>();//Format not support, return the original texture.
                         return false;
                 }
                 switch (texture.Description.Dimension)

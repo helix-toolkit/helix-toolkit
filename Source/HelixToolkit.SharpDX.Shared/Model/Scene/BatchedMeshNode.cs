@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP
         /// <see cref="Material"/> is used if <see cref="Materials"/> = null. And also used for shared material texture binding.
         /// </para>
         /// </summary>
-        public class BatchedMeshNode : SceneNode, IHitable, IThrowingShadow, IBoundable
+        public class BatchedMeshNode : SceneNode, IHitable, IThrowingShadow, IBoundable, IApplyPostEffect
         {
             #region Properties
             private BatchedMeshGeometryConfig[] geometries;
@@ -301,7 +301,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableViewFrustumCheck
             {
-                set { enableViewFrustumCheck = value; }
+                set { Set(ref enableViewFrustumCheck, value); }
                 get { return enableViewFrustumCheck && HasBound; }
             }
 
@@ -465,7 +465,7 @@ namespace HelixToolkit.UWP
             public BatchedMeshNode()
             {
                 HasBound = true;
-                OnTransformChanged += BatchedMeshNode_OnTransformChanged;
+                TransformChanged += BatchedMeshNode_OnTransformChanged;
             }
 
             private void BatchedMeshNode_OnTransformChanged(object sender, TransformArgs e)
@@ -640,7 +640,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {               
-                    boundsWithTransform = originalBounds.Transform(TotalModelMatrix);
+                    boundsWithTransform = originalBounds.Transform(TotalModelMatrixInternal);
                 }
                 var oldBS = boundsSphereWithTransform;
                 if(originalBoundsSphere == MaxBoundSphere)
@@ -649,7 +649,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    boundsSphereWithTransform = originalBoundsSphere.TransformBoundingSphere(TotalModelMatrix);
+                    boundsSphereWithTransform = originalBoundsSphere.TransformBoundingSphere(TotalModelMatrixInternal);
                 }
                 RaiseOnTransformBoundChanged(new BoundChangeArgs<BoundingBox>(ref boundsWithTransform, ref old));
                 RaiseOnTransformBoundSphereChanged(new BoundChangeArgs<BoundingSphere>(ref boundsSphereWithTransform, ref oldBS));

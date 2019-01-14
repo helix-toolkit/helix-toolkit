@@ -337,7 +337,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var texturePath = Path.Combine(this.directory, textureFilename);
 
                     // create .png bitmap file for the brush
-                    RenderBrush(texturePath, pm.DiffuseMap);
+                    RenderBrush(texturePath, pm.DiffuseMap.CompressedStream);
                     this.mwriter.WriteLine(string.Format("map_Ka {0}", textureFilename));
                 }
             }

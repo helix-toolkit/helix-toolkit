@@ -141,6 +141,18 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ColorStripeSamplerProperty, value); }
         }
 
+        public ColorStripeMaterial() { }
+
+        public ColorStripeMaterial(ColorStripeMaterialCore core) : base(core)
+        {
+            DiffuseColor = core.DiffuseColor;
+            ColorStripeSampler = core.ColorStripeSampler;
+            ColorStripeX = core.ColorStripeX;
+            ColorStripeXEnabled = core.ColorStripeXEnabled;
+            ColorStripeY = core.ColorStripeY;
+            ColorStripeYEnabled = core.ColorStripeYEnabled;
+        }
+
         protected override MaterialCore OnCreateCore()
         {
             return new ColorStripeMaterialCore()

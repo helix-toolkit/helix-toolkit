@@ -110,84 +110,126 @@ namespace HelixToolkit.UWP
                 get { return specularShininess; }
             }
 
-            private Stream diffuseMap;
+            private TextureModel diffuseMap;
             /// <summary>
             /// Gets or sets the diffuse map.
             /// </summary>
             /// <value>
             /// The diffuse map.
             /// </value>
-            public Stream DiffuseMap
+            public TextureModel DiffuseMap
             {
                 set { Set(ref diffuseMap, value); }
                 get { return diffuseMap; }
             }
 
-            private Stream diffuseAlphaMap;
+            /// <summary>
+            /// Gets or sets the diffuse map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The diffuse map file path.
+            /// </value>
+            public string DiffuseMapFilePath { set; get; }
+
+            private TextureModel diffuseAlphaMap;
             /// <summary>
             /// Gets or sets the DiffuseAlphaMap.
             /// </summary>
             /// <value>
             /// DiffuseAlphaMap
             /// </value>
-            public Stream DiffuseAlphaMap
+            public TextureModel DiffuseAlphaMap
             {
                 set { Set(ref diffuseAlphaMap, value); }
                 get { return diffuseAlphaMap; }
             }
+            /// <summary>
+            /// Gets or sets the diffuse alpha map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The diffuse alpha map file path.
+            /// </value>
+            public string DiffuseAlphaMapFilePath { set; get; }
 
-
-            private Stream normalMap;
+            private TextureModel normalMap;
             /// <summary>
             /// Gets or sets the NormalMap.
             /// </summary>
             /// <value>
             /// NormalMap
             /// </value>
-            public Stream NormalMap
+            public TextureModel NormalMap
             {
                 set { Set(ref normalMap, value); }
                 get { return normalMap; }
             }
+            /// <summary>
+            /// Gets or sets the normal map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The normal map file path.
+            /// </value>
+            public string NormalMapFilePath { set; get; }
 
-            private Stream specularColorMap;
+            private TextureModel specularColorMap;
             /// <summary>
             /// Gets or sets the specular color map.
             /// </summary>
             /// <value>
             /// The specular color map.
             /// </value>
-            public Stream SpecularColorMap
+            public TextureModel SpecularColorMap
             {
                 set { Set(ref specularColorMap, value); }
                 get { return specularColorMap; }
             }
+            /// <summary>
+            /// Gets or sets the specular color map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The specular color map file path.
+            /// </value>
+            public string SpecularColorMapFilePath { set; get; }
 
-            private Stream displacementMap;
+            private TextureModel displacementMap;
             /// <summary>
             /// Gets or sets the DisplacementMap.
             /// </summary>
             /// <value>
             /// DisplacementMap
             /// </value>
-            public Stream DisplacementMap
+            public TextureModel DisplacementMap
             {
                 set { Set(ref displacementMap, value); }
                 get { return displacementMap; }
             }
+            /// <summary>
+            /// Gets or sets the displacement file path. For export only
+            /// </summary>
+            /// <value>
+            /// The displacement file path.
+            /// </value>
+            public string DisplacementMapFilePath { set; get; }
 
-            private Stream emissiveMap;
+            private TextureModel emissiveMap;
             /// <summary>
             /// Gets or sets the emissive map.
             /// </summary>
             /// <value>
             /// The emissive map.
             /// </value>
-            public Stream EmissiveMap
+            public TextureModel EmissiveMap
             {
                 set { Set(ref emissiveMap, value); }
                 get { return emissiveMap; }
             }
+            /// <summary>
+            /// Gets or sets the emissive map file path. For export only
+            /// </summary>
+            /// <value>
+            /// The emissive map file path.
+            /// </value>
+            public string EmissiveMapFilePath { set; get; }
 
             private Vector4 displacementMapScaleMask;
             /// <summary>
@@ -202,14 +244,14 @@ namespace HelixToolkit.UWP
                 get { return displacementMapScaleMask; }
             }
 
-            private Matrix uvTransform = Matrix.Identity;
+            private UVTransform uvTransform = UVTransform.Identity;
             /// <summary>
             /// Gets or sets the uv transform.
             /// </summary>
             /// <value>
             /// The uv transform.
             /// </value>
-            public Matrix UVTransform
+            public UVTransform UVTransform
             {
                 set { Set(ref uvTransform, value); }
                 get { return uvTransform; }
@@ -446,6 +488,19 @@ namespace HelixToolkit.UWP
                     Set(ref renderEnvironmentMap, value);
                 }
                 get { return renderEnvironmentMap; }
+            }
+
+            private bool enableFlatShading = false;
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable flat shading].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnableFlatShading
+            {
+                set { Set(ref enableFlatShading, value); }
+                get { return enableFlatShading; }
             }
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)

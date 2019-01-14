@@ -77,7 +77,8 @@ cbuffer cbMesh : register(b1)
     float ConstantReflectance;
     float ClearCoat;
     float ClearCoatRoughness;
-    float2 padding1;
+    float padding1;
+    bool bHasAOMap;
 #endif
     bool bHasDiffuseMap = false;
     bool bHasNormalMap = false;
@@ -89,13 +90,13 @@ cbuffer cbMesh : register(b1)
     bool bHasSpecularMap;    
 #endif
 #if defined(PBR)
-    bool bHasRMAMap;    
+    bool bHasRMMap;    
     bool bHasIrradianceMap; 
 #endif
     bool bAutoTengent;
     bool bHasDisplacementMap = false;
     bool bRenderPBR = false;  
-    int NumRadianceMipLevels;
+    float padding12;
     float sMaterialShininess = 1.0f; //Ps := surface material's shininess
 
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
@@ -125,7 +126,9 @@ cbuffer cbLights : register(b3)
     LightStruct Lights[LIGHTS];
     float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
     int NumLights;
-    float3 padding;
+    bool bHasEnvironmentMap;
+    int NumEnvironmentMapMipLevels;
+    float padding;
 };
 
 #if defined(POINTLINE) // model for line, point and billboard
@@ -277,7 +280,7 @@ cbuffer cbSSAO : register(b1)
 {
     float4 kernel[SSAOKernalSize];
     float2 noiseScale;
-    int isPerspective;
+    int texScale; // Used when viewport size does not match texture size
     float radius;    
     float4x4 invProjection;
 }
@@ -293,8 +296,9 @@ Texture2D texSpecularMap : register(t3);
 Texture2D<float3> texEmissiveMap : register(t5);
 #endif
 #if defined(PBR)
-Texture2D<float3> texRMAMap    : register(t2);
-Texture2D<float3> texEmissiveMap : register(t3);
+Texture2D<float3> texRMMap    : register(t2);
+Texture2D<float> texAOMap : register(t3);
+Texture2D<float3> texEmissiveMap : register(t5);
 TextureCube<float3> texIrradianceMap : register(t21);
 #endif
 Texture2D<float3> texDisplacementMap : register(t4);

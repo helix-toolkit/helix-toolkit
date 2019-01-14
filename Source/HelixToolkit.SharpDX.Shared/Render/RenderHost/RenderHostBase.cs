@@ -324,6 +324,8 @@ namespace HelixToolkit.UWP
             {
                 private set; get;
             } = false;
+
+            private bool enableRenderFrustum = true;
             /// <summary>
             /// Gets or sets a value indicating whether [enable render frustum].
             /// </summary>
@@ -332,8 +334,17 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableRenderFrustum
             {
-                set; get;
-            } = true;
+                set
+                {
+                    if (enableRenderFrustum == value)
+                    {
+                        return;
+                    }
+                    enableRenderFrustum = value;
+                    FrustumEnabledChanged?.Invoke(this, value ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
+                }
+                get => enableRenderFrustum;
+            }
 
             /// <summary>
             /// Gets or sets a value indicating whether [enable sharing model mode].
@@ -458,6 +469,13 @@ namespace HelixToolkit.UWP
             /// </value>
             public abstract FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
             /// <summary>
+            /// Gets the per frame transparent node in frustum.
+            /// </summary>
+            /// <value>
+            /// The per frame transparent node in frustum.
+            /// </value>
+            public abstract FastList<SceneNode> PerFrameTransparentNodesInFrustum { get; }
+            /// <summary>
             /// Gets the per frame transparent nodes.
             /// </summary>
             /// <value>
@@ -527,6 +545,8 @@ namespace HelixToolkit.UWP
             public event EventHandler Rendered;
 
             private readonly Func<IDevice3DResources, IRenderer> createRendererFunction;
+
+            public event EventHandler<BoolArgs> FrustumEnabledChanged;
     #endregion
 
     #region Private variables
@@ -545,7 +565,7 @@ namespace HelixToolkit.UWP
 
             private TimeSpan lastRenderTime = TimeSpan.Zero;
 
-            private int updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
+            private uint updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
 
             private volatile bool UpdateSceneGraphRequested = true;
 
@@ -608,7 +628,8 @@ namespace HelixToolkit.UWP
             /// </returns>
             protected virtual bool CanRender()
             {
-                return IsInitialized && IsRendering && (UpdateRequested || updateCounter < 6) && viewport != null && viewport.CameraCore != null && ActualWidth > 10 && ActualHeight > 10;
+                return IsInitialized && IsRendering && (UpdateRequested || updateCounter < RenderConfiguration.MinimumUpdateCount)
+                    && viewport != null && viewport.CameraCore != null && ActualWidth > 10 && ActualHeight > 10;
             }
             /// <summary>
             /// Updates the and render.
@@ -881,12 +902,8 @@ namespace HelixToolkit.UWP
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
-                    viewport.Attach(SharedModelContainer);
                 }
-                else
-                {
-                    viewport.Attach(this);
-                }
+                viewport.Attach(this);
     #if DX11_1
                 renderContext = Collect(CreateRenderContext());
     #else
@@ -976,7 +993,7 @@ namespace HelixToolkit.UWP
             /// <param name="height">The height.</param>
             public void Resize(int width, int height)
             {
-                if(ActualWidth == width && ActualHeight == height)
+                if(MathUtil.NearEqual(ActualWidth, width) && MathUtil.NearEqual(ActualHeight, height))
                 {
                     return;
                 }

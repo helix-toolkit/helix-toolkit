@@ -76,30 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetViewProjectionMatrix3D(this Viewport3DX viewport)
         {
-            return GetViewProjectionMatrix(viewport).ToMatrix3D();
-        }
-
-        /// <summary>
-        /// Gets the camera transform.
-        /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        /// <returns>
-        /// The camera transform.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix GetViewProjectionMatrix(this Viewport3DX viewport)
-        {
-            return viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix * viewport.RenderContext.ProjectionMatrix
-                : viewport.CameraCore.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix GetProjectionMatrix(this Viewport3DX viewport)
-        {
-            return viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix
-                : viewport.CameraCore.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+            return viewport.GetViewProjectionMatrix().ToMatrix3D();
         }
         /// <summary>
         /// Gets the total transform for a Viewport3DX. 
@@ -111,20 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetScreenViewProjectionMatrix3D(this Viewport3DX viewport)
         {
-            return GetScreenViewProjectionMatrix(viewport).ToMatrix3D();
-        }
-
-        /// <summary>
-        /// Gets the total transform for a Viewport3DX. 
-        /// Old name of this function: GetTotalTransform
-        /// New name of the function: GetScreenViewProjectionTransform
-        /// </summary>
-        /// <param name="viewport">The viewport.</param>
-        /// <returns>The total transform.</returns>       
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix GetScreenViewProjectionMatrix(this Viewport3DX viewport)
-        {
-            return GetViewProjectionMatrix(viewport) * GetViewportMatrix(viewport);
+            return viewport.GetScreenViewProjectionMatrix().ToMatrix3D();
         }
 
         /// <summary>
@@ -138,37 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D GetViewportMatrix3D(this Viewport3DX viewport)
         {
-            return GetViewportMatrix(viewport).ToMatrix3D();
-        }
-
-        /// <summary>
-        /// Gets the viewport transform aka the screen-space transform.
-        /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
-        /// </param>
-        /// <returns>The transform.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix GetViewportMatrix(this Viewport3DX viewport)
-        {
-            return new Matrix(
-                (float)(viewport.ActualWidth / 2),
-                0,
-                0,
-                0,
-                0,
-                (float)(-viewport.ActualHeight / 2),
-                0,
-                0,
-                0,
-                0,
-                1,
-                0,
-                (float)((viewport.ActualWidth - 1) / 2),
-                (float)((viewport.ActualHeight - 1) / 2),
-                0,
-                1);
+            return viewport.GetViewportMatrix().ToMatrix3D();
         }
 
         /// <summary>
@@ -176,60 +110,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="viewport">The viewport.</param>
         /// <returns>The bounding box.</returns>
-        public static Rect3D FindBounds(this Viewport3DX viewport)
+        public static Rect3D FindBounds3D(this Viewport3DX viewport)
         {
-            if(viewport.RenderHost != null && viewport.RenderHost.IsRendering)
-            {
-                viewport.RenderHost.UpdateAndRender();
-            }
-            return FindBoundsInternal(viewport);
-        }
-
-        internal static Rect3D FindBoundsInternal(this Viewport3DX viewport)
-        {
-            var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-            var firstModel = viewport.Renderables.PreorderDFT((r) =>
-            {
-                if (r.Visible && !(r is ScreenSpacedNode))
-                {
-                    return true;
-                }
-                return false;
-            }).Where(x =>
-            {
-                if (x is IBoundable b)
-                {
-                    return b.HasBound && b.BoundsWithTransform.Maximum != b.BoundsWithTransform.Minimum
-                    && b.BoundsWithTransform.Maximum != Vector3.Zero && b.BoundsWithTransform.Maximum != maxVector;
-                }
-                else
-                {
-                    return false;
-                }
-            }).FirstOrDefault();
-            if (firstModel == null)
-            {
-                return new Rect3D();
-            }
-            var bounds = firstModel.BoundsWithTransform;
-
-            foreach (var renderable in viewport.Renderables.PreorderDFT((r) =>
-            {
-                if (r.Visible && !(r is ScreenSpacedNode))
-                {
-                    return true;
-                }
-                return false;
-            }))
-            {
-                if (renderable is IBoundable r)
-                {
-                    if (r.HasBound && r.BoundsWithTransform.Maximum != maxVector)
-                    {
-                        bounds = global::SharpDX.BoundingBox.Merge(bounds, r.BoundsWithTransform);
-                    }
-                }
-            }
+            var bounds = viewport.FindBounds();
             return new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D());
         }
 
@@ -308,20 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static IList<HitTestResult> FindHits(this Viewport3DX viewport, Point position)
         {
-            if (!(viewport.Camera is ProjectionCamera camera))
-            {
-                return EmptyHits;
-            }
-
-            var ray = UnProject(viewport, new Vector2((float)position.X, (float)position.Y));
-            var hits = new List<HitTestResult>();
-
-            foreach (var element in viewport.Renderables)
-            {
-                element.HitTest(viewport.RenderContext, ray, ref hits);
-            }
-            hits.Sort();
-            return hits;
+            return viewport.FindHits(position.ToVector2());
         }
 
         /// <summary>
@@ -342,64 +212,34 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="model">
         /// The model.
         /// </param>
+        /// <param name="node"></param>
         /// <returns>
         /// The find nearest.
         /// </returns>
         public static bool FindNearest(this Viewport3DX viewport, Point position,
-            out Point3D point, out Vector3D normal, out Element3D model)
+            out Point3D point, out Vector3D normal, out Element3D model, out SceneNode node)
         {
-            point = new Point3D();
-            normal = new Vector3D();
-            model = null;
-
-            if (!(viewport.Camera is ProjectionCamera camera))
+            bool succ = viewport.FindNearest(position.ToVector2(), out var p, out var n, out var m);
+            point = p.ToPoint3D();
+            normal = n.ToVector3D();
+            if(m is Element3D ele)
             {
-                return false;
+                model = ele;
+                node = ele.SceneNode;
             }
-
-            var hits = FindHits(viewport, position);
-            if (hits.Count > 0)
+            else if(m is SceneNode nd)
             {
-                point = hits[0].PointHit.ToPoint3D();
-                normal = hits[0].NormalAtHit.ToVector3D();
-                model = hits[0].ModelHit as Element3D;
-                return true;
+                node = nd;
+                model = null;
             }
             else
             {
-                // check for nearest points in the scene
-                // TODO!!
-                return false;
+                model = null;
+                node = null;
             }
+            return succ;
         }
 
-        public static bool FindNearest(this Viewport3DX viewport, Point position,
-            out Vector3 point, out Vector3 normal, out Element3D model)
-        {
-            point = new Vector3();
-            normal = new Vector3();
-            model = null;
-
-            if (!(viewport.Camera is ProjectionCamera camera))
-            {
-                return false;
-            }
-
-            var hits = FindHits(viewport, position);
-            if (hits.Count > 0)
-            {
-                point = hits[0].PointHit;
-                normal = hits[0].NormalAtHit;
-                model = hits[0].ModelHit as Element3D;
-                return true;
-            }
-            else
-            {
-                // check for nearest points in the scene
-                // TODO!!
-                return false;
-            }
-        }
         /// <summary>
         /// Find the coordinates of the nearest point given a 2D position in the viewport
         /// </summary>
@@ -408,9 +248,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The nearest point, or null if no point was found.</returns>
         public static Point3D? FindNearestPoint(this Viewport3DX viewport, Point position)
         {
-            if (FindNearest(viewport, position, out Point3D p, out Vector3D n, out Element3D obj))
+            if (viewport.FindNearest(position.ToVector2(), out Vector3 p, out Vector3 n, out var model))
             {
-                return p;
+                return p.ToPoint3D();
             }
             return null;
         }
@@ -421,43 +261,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="viewport">The viewport.</param>
         /// <param name="point2d">The input point.</param>
         /// <returns>The ray.</returns>
-        public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)//, out Vector3 pointNear, out Vector3 pointFar)
+        public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)
         {
-            if (viewport.CameraCore is ProjectionCameraCore camera)
-            {
-                var px = (float)point2d.X;
-                var py = (float)point2d.Y;
-
-                var viewMatrix = camera.GetViewMatrix();
-                Vector3 v = new Vector3();
-
-                var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
-                float w = (float)viewport.ActualWidth;
-                float h = (float)viewport.ActualHeight;
-                var aspectRatio = w / h;
-
-                var projMatrix = camera.GetProjectionMatrix(aspectRatio);
-                Vector3 zn, zf;
-                v.X = (2 * px / w - 1) / projMatrix.M11;
-                v.Y = -(2 * py / h - 1) / projMatrix.M22;
-                v.Z = 1 / projMatrix.M33;
-                Vector3.TransformCoordinate(ref v, ref matrix, out zf);
-
-                if (camera is PerspectiveCameraCore)
-                {
-                    zn = camera.Position;
-                }
-                else
-                {
-                    v.Z = 0;
-                    Vector3.TransformCoordinate(ref v, ref matrix, out zn);
-                }
-                Vector3 r = zf - zn;
-                r.Normalize();
-
-                return new Ray(zn + r * camera.NearPlaneDistance, r);
-            }
-            throw new HelixToolkitException("Unproject camera error.");
+            viewport.UnProject(point2d, out var ray);
+            return ray;
         }
 
         /// <summary>
@@ -468,33 +275,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Point point2d)
         {
-            //Vector3 p0, p1;
-            var r = UnProject(viewport, point2d.ToVector2());//, out p0, out p1);
-            return new Ray(r.Position, r.Direction);
-        }
-
-        /// <summary>
-        /// Un-projects the specified 2D screen point to a ray.
-        /// </summary>
-        /// <param name="viewport">The viewport.</param>
-        /// <param name="point2d">The point.</param>
-        /// <returns>The ray.</returns>
-        public static Ray UnProjectToRay(this Viewport3DX viewport, Point point2d)
-        {
-            var r = viewport.UnProject(point2d.ToVector2());            
-            return new Ray(r.Position, r.Direction);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="viewport"></param>
-        /// <param name="point2d"></param>
-        /// <returns></returns>
-        public static Ray UnProjectToRay(this Viewport3DX viewport, Vector2 point2d)
-        {
-            var r = viewport.UnProject(point2d);
-            return new Ray(r.Position, r.Direction);
+            return viewport.UnProject(point2d.ToVector2());
         }
 
         /// <summary>
@@ -517,21 +298,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static Point3D? UnProjectOnPlane(this Viewport3DX viewport, Point p, Point3D position, Vector3D normal)
         {
-            return UnProjectOnPlane(viewport, p.ToVector2(), position.ToVector3(), normal.ToVector3())?.ToPoint3D();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="viewport"></param>
-        /// <param name="p"></param>
-        /// <param name="position"></param>
-        /// <param name="normal"></param>
-        /// <returns></returns>
-        public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Vector2 p, Vector3 position, Vector3 normal)
-        {            
-            var plane = new Plane(position, normal);
-            return UnProjectOnPlane(viewport, p, plane);
+            if(viewport.UnProjectOnPlane(p.ToVector2(), position.ToVector3(), normal.ToVector3(), out var intersection))
+            {
+                return intersection.ToPoint3D();
+            }
+            else
+            {
+                return null;
+            }
         }
           
         /// <summary>
@@ -543,10 +317,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Vector2 p, Plane plane)
         {
-            var ray = UnProjectToRay(viewport, p);
-            if (ray.Intersects(ref plane, out Vector3 hitPoint))
+            if(viewport.UnProject(p, out var ray))
             {
-                return hitPoint;
+                if(plane.Intersects(ref ray, out Vector3 point))
+                {
+                    return point;
+                }
             }
             return null;
         }
@@ -580,39 +356,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The point.</returns>
         public static Point Project(this Viewport3DX viewport, Point3D point)
         {
-            var matrix = GetScreenViewProjectionMatrix3D(viewport);
-            var pointTransformed = matrix.Transform(point);
-            var pt = new Point(pointTransformed.X, pointTransformed.Y);
-            return pt;
+            var p = viewport.Project(point.ToVector3());
+            return new Point(p.X, p.Y);
         }
 
-        public static Point Project(this Viewport3DX viewport, Vector3 point)
-        {
-            var matrix = GetScreenViewProjectionMatrix(viewport);
-            var pointTransformed = Vector3.TransformCoordinate(point, matrix);
-            var pt = new Point(pointTransformed.X, pointTransformed.Y);
-            return pt;
-        }
-
-        /// <summary>
-        /// Finds the intersection with a plane.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="normal">The normal.</param>
-        /// <param name="ray"></param>
-        /// <returns>The intersection point.</returns>
-        public static Vector3? PlaneIntersection(this Ray ray, Vector3 position, Vector3 normal)
-        {
-            // http://paulbourke.net/geometry/planeline/
-            var dn = Vector3.Dot(normal, ray.Direction);
-            if (dn == 0)
-            {
-                return null;
-            }
-
-            var u = Vector3.Dot(normal, position - ray.Position) / dn;
-            return ray.Position + u * ray.Direction;
-        }
         /// <summary>
         /// Prints the specified viewport.
         /// </summary>
@@ -761,14 +508,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public static void ZoomExtents(this Viewport3DX viewport, double animationTime = 0)
         {
             var bounds = viewport.FindBoundsInternal();
-            var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
+            var diagonal = bounds.Maximum - bounds.Minimum;
 
-            if (bounds.IsEmpty || diagonal.LengthSquared.Equals(0))
+            if (diagonal.LengthSquared() == 0)
             {
                 return;
             }
 
-            ZoomExtents(viewport, bounds, animationTime);
+            ZoomExtents(viewport, new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D()), animationTime);
         }
 
         /// <summary>

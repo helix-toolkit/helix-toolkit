@@ -220,6 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Overlay Overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
         private bool enableMouseButtonHitTest = true;
         private ContentPresenter hostPresenter;
+        private List<HitTestResult> hits = new List<HitTestResult>();
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
         /// Use this event carefully. Unsubscrible this event when not used. Otherwise may cause performance issue.
@@ -310,6 +311,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController.IsRotationEnabled = this.IsRotationEnabled;
             this.cameraController.EnableTouchRotate = this.IsTouchRotateEnabled;
             this.cameraController.EnablePinchZoom = this.IsPinchZoomEnabled;
+            this.cameraController.PinchZoomAtCenter = this.PinchZoomAtCenter;
             this.cameraController.EnableThreeFingerPan = this.IsThreeFingerPanningEnabled;
             this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
@@ -661,6 +663,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
                 this.renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
                 this.renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
+                this.renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, MinimumUpdateCount);
                 if (ShowFrameRate)
                 {
                     this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
@@ -935,7 +938,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     e.Detach();
                 }
-                SharedModelContainerInternal?.Detach();
+                SharedModelContainerInternal?.Detach(this.renderHostInternal);
                 foreach(var e in this.D2DRenderables)
                 {
                     e.Detach();
@@ -1604,10 +1607,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool HittedSomething(MouseEventArgs e)
         {
-            var hits = this.FindHits(e.GetPosition(this));
-            if (hits.Count > 0)
-                return true;
-            return false;
+            return this.FindHitsInFrustum(e.GetPosition(this).ToVector2(), ref hits);
         }
 
         /// <summary>
@@ -1637,10 +1637,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
-            var hits = this.FindHits(pt);
-            //this.CameraPropertyChanged();
-            if (hits.Count > 0)
+            
+            if (this.FindHits(pt.ToVector2(), ref hits))
             {
                 // We can't capture Touch because that would disable the CameraController which uses Manipulation,
                 // but since Manipulation captures touch, we can be quite sure to get every relevant touch event.
@@ -1656,8 +1654,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         ele.RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                     }
-                    else
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
                     {
+                        sceneNode.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit);
                         RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                     }
                 }
@@ -1726,8 +1725,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         ele.RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                     }
-                    else
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
                     {
+                        sceneNode.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit);
                         RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                     }
                 }
@@ -1764,8 +1764,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         ele.RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                     }
-                    else
+                    else if(currentHit.ModelHit is SceneNode sceneNode)
                     {
+                        sceneNode.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit);
                         RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                     }
 

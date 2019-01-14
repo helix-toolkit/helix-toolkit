@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public class BoneSkinMeshNode : MeshNode
+        public class BoneSkinMeshNode : MeshNode, Animations.IBoneMatricesNode
         {
             /// <summary>
             /// Gets or sets the bone matrices.
@@ -42,7 +42,28 @@ namespace HelixToolkit.UWP
                     return (RenderCore as BoneSkinRenderCore).BoneMatrices;
                 }
             }
-
+            /// <summary>
+            /// Gets or sets the bones.
+            /// </summary>
+            /// <value>
+            /// The bones.
+            /// </value>
+            public Animations.Bone[] Bones { set; get; }
+            /// <summary>
+            /// Gets or sets a value indicating whether this node is used to show skeleton. Only used as an indication.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this node is used to show skeleton; otherwise, <c>false</c>.
+            /// </value>
+            public bool IsSkeletonNode { set; get; }
+            /// <summary>
+            /// Gets or sets a value indicating whether this node has bone group. 
+            /// <see cref="BoneGroupNode"/> shares bones with multiple <see cref="BoneSkinMeshNode"/>
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this instance has bone group; otherwise, <c>false</c>.
+            /// </value>
+            public bool HasBoneGroup { internal set; get; }
             /// <summary>
             /// Called when [create render core].
             /// </summary>
@@ -77,7 +98,37 @@ namespace HelixToolkit.UWP
             {
                 return false;//return base.CanHitTest(context) && !hasBoneParameter;
             }
+            /// <summary>
+            /// Creates the skeleton node.
+            /// </summary>
+            /// <param name="material">The material.</param>
+            /// <param name="effectName">Name of the effect.</param>
+            /// <param name="scale">The scale.</param>
+            /// <returns></returns>
+            public BoneSkinMeshNode CreateSkeletonNode(MaterialCore material, string effectName, float scale = 0.1f)
+            {
+                return CreateSkeletonNode(this, material, effectName, scale);
+            }
+            /// <summary>
+            /// Creates the skeleton node.
+            /// </summary>
+            /// <param name="node">The node.</param>
+            /// <param name="material">The material.</param>
+            /// <param name="effectName">Name of the effect.</param>
+            /// <param name="scale">The scale.</param>
+            /// <returns></returns>
+            public static BoneSkinMeshNode CreateSkeletonNode(BoneSkinMeshNode node, MaterialCore material, string effectName, float scale)
+            {
+                var skNode = new BoneSkinMeshNode()
+                {
+                    Material = material,
+                    IsSkeletonNode = true,
+                };
+                skNode.Geometry = BoneSkinnedMeshGeometry3D.CreateSkeletonMesh(node.Bones, scale);
+                skNode.PostEffects = effectName;
+                skNode.Bones = node.Bones;
+                return skNode;
+            }
         }
     }
-
 }

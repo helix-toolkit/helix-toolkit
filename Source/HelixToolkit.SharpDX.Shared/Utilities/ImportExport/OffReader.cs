@@ -40,6 +40,7 @@ namespace HelixToolkit.UWP
     /// http://segeval.cs.princeton.edu/public/off_format.html
     /// http://paulbourke.net/dataformats/off/
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class OffReader : IModelReader
     {
         /// <summary>

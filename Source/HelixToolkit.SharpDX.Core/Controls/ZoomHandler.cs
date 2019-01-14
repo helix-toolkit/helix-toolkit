@@ -227,7 +227,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             var target = Camera.Position + Camera.LookDirection;
             var relativeTarget = zoomAround - target;
             var relativePosition = zoomAround - Camera.Position;
-            if (relativePosition.Length() < 1e-4)
+            if (relativePosition.LengthSquared() < 1e-5)
             {
                 if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
                 {

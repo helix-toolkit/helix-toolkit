@@ -98,7 +98,30 @@ namespace HelixToolkit.UWP
             RegisterPropertyChangedCallback(IsHitTestVisibleProperty, (s, e) =>
             {
                 SceneNode.IsHitTestVisible = (bool)s.GetValue(e);
-            });            
+            });
+            OnSceneNodeCreated += Element3D_OnSceneNodeCreated;
+        }
+
+        private void Element3D_OnSceneNodeCreated(object sender, SceneNodeCreatedEventArgs e)
+        {
+            e.Node.MouseDown += Node_MouseDown;
+            e.Node.MouseUp += Node_MouseUp;
+            e.Node.MouseMove += Node_MouseMove;
+        }
+
+        private void Node_MouseMove(object sender, Model.Scene.SceneNodeMouseMoveArgs e)
+        {
+            RaiseMouseMoveEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX);
+        }
+
+        private void Node_MouseUp(object sender, Model.Scene.SceneNodeMouseUpArgs e)
+        {
+            RaiseMouseUpEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX);
+        }
+
+        private void Node_MouseDown(object sender, Model.Scene.SceneNodeMouseDownArgs e)
+        {
+            RaiseMouseDownEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX);
         }
 
         protected override Size ArrangeOverride(Size finalSize)

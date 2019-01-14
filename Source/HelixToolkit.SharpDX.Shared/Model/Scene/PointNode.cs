@@ -27,13 +27,15 @@ namespace HelixToolkit.UWP
         public class PointNode : MaterialGeometryNode
         {
             #region Properties
+            private double hitTestThickness = 4;
             /// <summary>
             /// Used only for point/line hit test
             /// </summary>
             public double HitTestThickness
             {
-                set; get;
-            } = 4; 
+                set => Set(ref hitTestThickness, value);
+                get => hitTestThickness;
+            }
             #endregion
 
             /// <summary>

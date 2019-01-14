@@ -55,6 +55,12 @@ namespace HelixToolkit.SharpDX.Core.Model
         #endregion
         private ImGui2DBufferModel bufferModel;
 
+        private IntPtr fontAtlasID = (IntPtr)1;
+
+        private bool newFrame = false;
+
+        private TimeSpan previousTime = TimeSpan.Zero;
+
         public event EventHandler UpdatingImGuiUI;
 
         protected override RenderCore OnCreateRenderCore()
@@ -77,8 +83,20 @@ namespace HelixToolkit.SharpDX.Core.Model
         public override void Update(RenderContext context)
         {
             base.Update(context);
-            var io = ImGui.GetIO();
+            if (newFrame)
+            {
+                newFrame = false;
+                ImGui.Render();
+            }
+            var io = ImGui.GetIO();      
             io.DisplaySize = new System.Numerics.Vector2((int)context.ActualWidth, (int)context.ActualHeight);
+            if(previousTime == TimeSpan.Zero)
+            {
+                previousTime = context.TimeStamp;
+            }
+            io.Framerate = (float)(context.TimeStamp - previousTime).TotalSeconds;
+            previousTime = context.TimeStamp;
+            ImGui.NewFrame();
             UpdatingImGuiUI?.Invoke(this, EventArgs.Empty);
         }
 
@@ -94,21 +112,25 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         protected override void OnAttached()
         {
+            previousTime = TimeSpan.Zero;
+            IntPtr context = ImGui.CreateContext();
+            ImGui.SetCurrentContext(context);
+            ImGui.GetIO().Fonts.AddFontDefault();
             bufferModel = Collect(new ImGui2DBufferModel());
             (RenderCore as ImGuiRenderCore).Buffer = bufferModel;
             var io = ImGui.GetIO();
-
-            var textureData = io.FontAtlas.GetTexDataAsRGBA32();
-            var textureView = Collect(new ShaderResourceViewProxy(EffectsManager.Device));
             unsafe
             {
-                textureView.CreateView((IntPtr)textureData.Pixels, textureData.Width, textureData.Height, 
+                io.Fonts.GetTexDataAsRGBA32(out var textureData, out var width, out var height);
+                var textureView = Collect(new ShaderResourceViewProxy(EffectsManager.Device));
+                textureView.CreateView((IntPtr)textureData, width, height, 
                     Format.R8G8B8A8_UNorm);
+                io.Fonts.SetTexID(fontAtlasID);
+                io.Fonts.ClearTexData();
+                (RenderCore as ImGuiRenderCore).TextureView = textureView;
             }
-            io.FontAtlas.SetTexID(1);
-            io.FontAtlas.ClearTexData();
-            (RenderCore as ImGuiRenderCore).TextureView = textureView;
             ImGui.NewFrame();
+            newFrame = true;
             base.OnAttached();
         }
     }
@@ -146,8 +168,7 @@ namespace HelixToolkit.SharpDX.Core.Model
                 return;
             }        
             
-            IO io = ImGui.GetIO();
-            float mouseWheel = io.MouseWheel;
+            var io = ImGui.GetIO();
             ImGui.Render();
             if (!UpdateBuffer(deviceContext))
             {
@@ -181,12 +202,12 @@ namespace HelixToolkit.SharpDX.Core.Model
                 var draw_data = ImGui.GetDrawData();
                 int idx_offset = 0;
                 int vtx_offset = 0;
-                for (int n = 0; n < draw_data->CmdListsCount; n++)
+                for (int n = 0; n < draw_data.CmdListsCount; n++)
                 {
-                    NativeDrawList* cmd_list = draw_data->CmdLists[n];
-                    for (int cmd_i = 0; cmd_i < cmd_list->CmdBuffer.Size; cmd_i++)
+                    var cmd_list = draw_data.CmdListsRange[n];
+                    for (int cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
                     {
-                        DrawCmd* pcmd = &(((DrawCmd*)cmd_list->CmdBuffer.Data)[cmd_i]);
+                        var pcmd = &(((ImDrawCmd*)cmd_list.CmdBuffer.Data)[cmd_i]);
                         if (pcmd->UserCallback != IntPtr.Zero)
                         {
 
@@ -205,13 +226,10 @@ namespace HelixToolkit.SharpDX.Core.Model
 
                         idx_offset += (int)pcmd->ElemCount;
                     }
-                    vtx_offset += cmd_list->VtxBuffer.Size;
+                    vtx_offset += cmd_list.VtxBuffer.Size;
                 }
                 #endregion
             }
-            io.MouseWheel = mouseWheel;
-            ImGui.NewFrame();
-            io.MouseWheel = 0;
             RaiseInvalidateRender();
         }
 
@@ -220,31 +238,31 @@ namespace HelixToolkit.SharpDX.Core.Model
             unsafe
             {
                 var data = ImGui.GetDrawData();
-                if (data->CmdListsCount == 0)
+                if (data.CmdListsCount == 0)
                 {
                     return false;
                 }
-                Buffer.SpriteCount = data->TotalVtxCount;
-                Buffer.IndexCount = data->TotalIdxCount;
+                Buffer.SpriteCount = data.TotalVtxCount;
+                Buffer.IndexCount = data.TotalIdxCount;
                 
-                Buffer.VertexBufferInternal.EnsureBufferCapacity(deviceContext, data->TotalVtxCount, data->TotalVtxCount * 2);
-                Buffer.IndexBufferInternal.EnsureBufferCapacity(deviceContext, data->TotalIdxCount, data->TotalIdxCount * 2);
+                Buffer.VertexBufferInternal.EnsureBufferCapacity(deviceContext, data.TotalVtxCount, data.TotalVtxCount * 2);
+                Buffer.IndexBufferInternal.EnsureBufferCapacity(deviceContext, data.TotalIdxCount, data.TotalIdxCount * 2);
                 Buffer.VertexBufferInternal.MapBuffer(deviceContext, (stream) => 
                 {
-                    for (int i = 0; i < data->CmdListsCount; i++)
+                    for (int i = 0; i < data.CmdListsCount; i++)
                     {
-                        NativeDrawList* cmd_list = data->CmdLists[i];
-                        int vCount = cmd_list->VtxBuffer.Size * sizeof(DrawVert);
-                        stream.WriteRange((IntPtr)cmd_list->VtxBuffer.Data, vCount);
+                        var cmd_list = data.CmdListsRange[i];
+                        int vCount = cmd_list.VtxBuffer.Size * sizeof(ImDrawVert);
+                        stream.WriteRange((IntPtr)cmd_list.VtxBuffer.Data, vCount);
                     }
                 });
                 Buffer.IndexBufferInternal.MapBuffer(deviceContext, (stream) => 
                 {
-                    for (int i = 0; i < data->CmdListsCount; i++)
+                    for (int i = 0; i < data.CmdListsCount; i++)
                     {
-                        NativeDrawList* cmd_list = data->CmdLists[i];
-                        int iCount = cmd_list->IdxBuffer.Size * sizeof(ushort);
-                        stream.WriteRange((IntPtr)cmd_list->IdxBuffer.Data, iCount);
+                        var cmd_list = data.CmdListsRange[i];
+                        int iCount = cmd_list.IdxBuffer.Size * sizeof(ushort);
+                        stream.WriteRange((IntPtr)cmd_list.IdxBuffer.Data, iCount);
                     }
                 });
             }
@@ -290,7 +308,7 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         public ImGui2DBufferModel()
         {
-            VertexBufferInternal = Collect(new DynamicBufferProxy(global::SharpDX.Utilities.SizeOf<DrawVert>(), BindFlags.VertexBuffer));
+            VertexBufferInternal = Collect(new DynamicBufferProxy(global::SharpDX.Utilities.SizeOf<ImDrawVert>(), BindFlags.VertexBuffer));
             VertexBuffer[0] = VertexBufferInternal;
             IndexBuffer = IndexBufferInternal = Collect(new DynamicBufferProxy(sizeof(ushort), BindFlags.IndexBuffer));
         }

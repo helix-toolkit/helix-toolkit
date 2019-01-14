@@ -11,7 +11,7 @@
 
 float3 calcNormal(PSInput input)
 {
-    float3 normal = normalize(input.n);
+    float3 normal = bRenderFlat ? normalize(cross(ddy(input.wp.xyz), ddx(input.wp.xyz))) : normalize(input.n);
     if (bHasNormalMap)
     {
         if (bAutoTengent)
@@ -21,18 +21,18 @@ float3 calcNormal(PSInput input)
         }
         else
         {
-		    // Normalize the per-pixel interpolated tangent-space
+		// Normalize the per-pixel interpolated tangent-space
             float3 tangent = normalize(input.t1);
             float3 biTangent = normalize(input.t2);
 
-		    // Sample the texel in the bump map.
+		// Sample the texel in the bump map.
             float3 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
-		    // Expand the range of the normal value from (0, +1) to (-1, +1).
+		// Expand the range of the normal value from (0, +1) to (-1, +1).
             bumpMap = mad(2.0f, bumpMap, -1.0f);
-		    // Calculate the normal from the data in the bump map.
+		// Calculate the normal from the data in the bump map.
             normal += mad(bumpMap.x, tangent, bumpMap.y * biTangent);
             normal = normalize(normal);
-        }
+        }      
     }
     return normal;
 }
@@ -176,7 +176,7 @@ float3 LightSurface(in float4 wp,
 #endif
     if (bHasCubeMap)
     {
-        // Add specular radiance 
+    // Add specular radiance 
         specular_env = Specular_IBL(N, V, roughness);
 #if defined(CLEARCOAT)
         clearCoatColor = Specular_IBL(N, V, clearCoatRoughness) * Fc;
@@ -198,29 +198,29 @@ float4 main(PSInput input) : SV_Target
     const float3 V = normalize(input.vEye.xyz); // view vector
 
     float3 N = calcNormal(input);
-    
     float3 color = (float3) 0;
 
     float4 albedo = float4(input.cDiffuse.xyz, 1);
     // glTF2 defines occlusion as R channel, roughness as G channel, metalness as B channel 
-    float3 RMA = input.c2.rgb;
+    float3 RMA = float3(ConstantAO, ConstantRoughness, ConstantMetallic);
     if (bHasDiffuseMap)
     {
         albedo *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
-    if (bHasRMAMap)
+    if (bHasRMMap)
     {
-        float3 rmaSample = texRMAMap.Sample(samplerSurface, input.t).rgb;
-        RMA.r = min(RMA.r, rmaSample.r);
-        RMA.gb = max(RMA.gb, rmaSample.gb);
+        RMA.gb *= texRMMap.Sample(samplerSurface, input.t).gb;
     }
-    float ambientOcculsion = input.c2.a;
-    if (SSAOEnabled)
+    if (bHasAOMap)
+    {
+        RMA.r *= texAOMap.Sample(samplerSurface, input.t).r;
+    }
+    else if (SSAOEnabled)
     {
         float2 quadTex = input.p.xy * vViewport.zw;
-        ambientOcculsion *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
+        RMA.r *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
-    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, input.c2.a, ClearCoat, ClearCoatRoughness);
+    color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, ConstantReflectance, ClearCoat, ClearCoatRoughness);
     float s = 1;
     if (bHasShadowMap)
     {
@@ -228,11 +228,13 @@ float4 main(PSInput input) : SV_Target
             s = shadowStrength(input.sp);
     }
     color.rgb *= s;
+    float3 emissive = vMaterialEmissive.rgb;
     if (bHasEmissiveMap)
     {
-        color += texEmissiveMap.Sample(samplerSurface, input.t).rgb;
+        emissive *= texEmissiveMap.Sample(samplerSurface, input.t).rgb;
     }
-    color += vMaterialEmissive.rgb;
+    float3 ambient = vLightAmbient.rgb * RMA.r;
+    color += emissive + ambient;
     return float4(color, albedo.a * input.cDiffuse.a);
 }
 #endif

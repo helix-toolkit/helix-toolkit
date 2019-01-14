@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP
 {
     namespace Model
     {
+        using System.Collections.Generic;
         using Utilities;
 
         public sealed class ContextSharedResource : IDisposable

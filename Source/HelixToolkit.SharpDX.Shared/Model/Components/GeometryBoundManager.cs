@@ -175,7 +175,7 @@ namespace HelixToolkit.UWP
             public GeometryBoundManager(GeometryNode core)
             {
                 this.elementCore = core;
-                core.OnTransformChanged += OnTransformChanged;
+                core.TransformChanged += OnTransformChanged;
             }
 
             private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
@@ -187,12 +187,12 @@ namespace HelixToolkit.UWP
                 else if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
                 {
                     Bounds = Geometry.Bound;
-                    BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrix);
+                    BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrixInternal);
                 }
                 else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
                 {
                     BoundsSphere = Geometry.BoundingSphere;
-                    BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
+                    BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrixInternal);
                 }
             }
 
@@ -238,10 +238,10 @@ namespace HelixToolkit.UWP
                         BoundsSphere = Geometry.BoundingSphere;
                         RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
                         oldBound = BoundsWithTransform;
-                        BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrix);
+                        BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrixInternal);
                         RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
                         oldSphere = BoundsSphereWithTransform;
-                        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
+                        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrixInternal);
                         RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
                     }
                     else
@@ -284,10 +284,10 @@ namespace HelixToolkit.UWP
                         BoundsSphere = boundSphere;
                         RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
                         oldBound = BoundsWithTransform;
-                        BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrix);
+                        BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrixInternal);
                         RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
                         oldSphere = BoundsSphereWithTransform;
-                        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
+                        BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrixInternal);
                         RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
                     }
                 }
@@ -309,7 +309,7 @@ namespace HelixToolkit.UWP
                     {
                         if (geometry != null)
                         { geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate; }
-                        elementCore.OnTransformChanged -= OnTransformChanged;
+                        elementCore.TransformChanged -= OnTransformChanged;
                         OnBoundChanged = null;
                         OnTransformBoundChanged = null;
                         OnBoundSphereChanged = null;

@@ -64,7 +64,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public LogWrapper Logger { get { return CurrentRenderHost != null ? CurrentRenderHost.Logger : NullLogger; } }
 
-        private readonly IList<IViewport3DX> viewports = new List<IViewport3DX>();
+        private readonly HashSet<IViewport3DX> viewports = new HashSet<IViewport3DX>();
+        private readonly HashSet<IRenderHost> attachedRenderHosts = new HashSet<IRenderHost>();
 #pragma warning disable 0067        
         /// <summary>
         /// Fired whenever an exception occurred on this object.
@@ -177,6 +178,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public FastList<SceneNode> PerFrameTransparentNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable; } }
         /// <summary>
+        /// Gets the per frame transparent nodes in frustum.
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes in frustum.
+        /// </value>
+        public FastList<SceneNode> PerFrameTransparentNodesInFrustum { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodesInFrustum : Constants.EmptyRenderable; } }
+        /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle" />
         /// </summary>
         /// <value>
@@ -199,8 +207,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="viewport"></param>
         public void AttachViewport3DX(IViewport3DX viewport)
         {
-            viewports.Add(viewport);
-            viewport.EffectsManager = this.EffectsManager;
+            if (viewports.Add(viewport))
+            {
+                viewport.EffectsManager = this.EffectsManager;
+            }
         }
         /// <summary>
         /// </summary>
@@ -214,9 +224,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateRender()
         {
-            foreach(var v in viewports)
+            foreach(var v in attachedRenderHosts)
             {
-                v.RenderHost?.InvalidateRender();
+                v.InvalidateRender();
             }
         }
 
@@ -225,9 +235,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateSceneGraph()
         {
-            foreach (var v in viewports)
+            foreach (var v in attachedRenderHosts)
             {
-                v.RenderHost?.InvalidateSceneGraph();
+                v.InvalidateSceneGraph();
             }
         }
         /// <summary>
@@ -235,9 +245,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidatePerFrameRenderables()
         {
-            foreach (var v in viewports)
+            foreach (var v in attachedRenderHosts)
             {
-                v.RenderHost?.InvalidatePerFrameRenderables();
+                v.InvalidatePerFrameRenderables();
             }
         }
         /// <summary>
@@ -509,30 +519,45 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
-            if (Interlocked.Increment(ref d3dCounter) == 1 && host.EffectsManager != null)
+            if (host != null && attachedRenderHosts.Add(host))
             {
-                foreach (var renderable in Renderables)
+                if (Interlocked.Increment(ref d3dCounter) == 1 && host.EffectsManager != null)
                 {
-                    renderable.Attach(host);
+                    foreach (var renderable in Renderables)
+                    {
+                        renderable.Attach(this);
+                    }
                 }
             }
         }
         /// <summary>
         /// Detaches this instance.
         /// </summary>
+        /// <param name="host"></param>
         /// <exception cref="IndexOutOfRangeException">D3DCounter is negative.</exception>
-        public void Detach()
+        public void Detach(IRenderHost host)
         {
-            if (Interlocked.Decrement(ref d3dCounter) == 0)
+            if (host != null && attachedRenderHosts.Remove(host))
             {
-                foreach (var renderable in Renderables)
+                if (Interlocked.Decrement(ref d3dCounter) == 0)
                 {
-                    renderable.Detach();
+                    foreach (var renderable in Renderables)
+                    {
+                        renderable.Detach();
+                    }
                 }
+                else if (d3dCounter < 0)
+                {
+                    throw new IndexOutOfRangeException("D3DCounter is negative.");
+                } 
             }
-            else if (d3dCounter < 0)
+        }
+
+        private void Detach()
+        {
+            foreach (var renderable in Renderables)
             {
-                throw new IndexOutOfRangeException("D3DCounter is negative.");
+                renderable.Detach();
             }
         }
         /// <summary>
@@ -597,6 +622,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (disposing)
                 {
+                    attachedRenderHosts.Clear();
                     Detach();
                     // TODO: dispose managed state (managed objects).
                     viewports.Clear();

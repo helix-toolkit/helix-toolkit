@@ -82,10 +82,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             var node = SceneNode as GroupNode;
-
             switch (e.Action)
             {
-                case NotifyCollectionChangedAction.Reset:
                 case NotifyCollectionChangedAction.Remove:
                 case NotifyCollectionChangedAction.Replace:
                     if (e.OldItems != null)
@@ -96,53 +94,52 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 this.RemoveLogicalChild(item);
                             }
-                            node.RemoveChildNode(item);
+                            node.RemoveChildNode(item.SceneNode);
                         }
                     }
                     break;
+                case NotifyCollectionChangedAction.Reset:
+                    if (e.OldItems != null)
+                    {
+                        foreach (Element3D item in e.OldItems)
+                        {
+                            if (item.Parent == this)
+                            {
+                                this.RemoveLogicalChild(item);
+                            }
+                        }
+                    }
+                    node.Clear();
+                    break;
             }
 
-            if (e.NewItems != null)
+            switch (e.Action)
             {
-                switch (e.Action)
-                {
-                    case NotifyCollectionChangedAction.Reset:
-                        foreach (Element3D item in Children)
+                case NotifyCollectionChangedAction.Reset:
+                    foreach (Element3D item in Children)
+                    {
+                        if (item.Parent == null)
                         {
-                            if (item.Parent == null)
-                            {
-                                this.AddLogicalChild(item);
-                            }
-                            node.AddChildNode(item);
+                            this.AddLogicalChild(item);
                         }
-                        break;
-                    case NotifyCollectionChangedAction.Add:
-                    case NotifyCollectionChangedAction.Replace:
-                        foreach (Element3D item in e.NewItems)
+                        node.AddChildNode(item.SceneNode);
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Replace:
+                    foreach (Element3D item in e.NewItems)
+                    {
+                        if (item.Parent == null)
                         {
-                            if (item.Parent == null)
-                            {
-                                this.AddLogicalChild(item);
-                            }
-                            node.AddChildNode(item);
+                            this.AddLogicalChild(item);
                         }
-                        break;
-                }
+                        node.AddChildNode(item.SceneNode);
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    node.MoveChildNode(e.OldStartingIndex, e.NewStartingIndex);
+                    break;
             }
-        }
-
-        public virtual void Clear()
-        {
-            foreach (Element3D item in Children)
-            {
-                if (item.Parent == this)
-                {
-                    this.RemoveLogicalChild(item);
-                }
-            }
-            var node = SceneNode as GroupNode;
-            node.Clear();
-            Children.Clear();
         }
 
         protected override SceneNode OnCreateSceneNode()

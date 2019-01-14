@@ -3,15 +3,16 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Windows;
+using System.Windows.Markup;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using HelixToolkit.Wpf.SharpDX.Model.Scene;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Windows;
-    using System.Windows.Markup;
+    using Model.Scene;
+    using System;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
@@ -72,17 +73,24 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private IOctreeBasic Octree
         {
-            get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
+            get { return (SceneNode as GroupNode).OctreeManager?.Octree; }
         }
 
         private IList<Element3D> itemsSourceInternal;
-
+        /// <summary>
+        /// Gets the children.
+        /// </summary>
+        /// <value>
+        /// The children.
+        /// </value>
         public ObservableElement3DCollection Children
         {
             get;
         } = new ObservableElement3DCollection();
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GroupElement3D"/> class.
+        /// </summary>
         public GroupElement3D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
@@ -91,14 +99,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (Element3D c in Children)
+            foreach (var c in Children)
             {
                 if (c.Parent == this)
                 {
                     this.RemoveLogicalChild(c);
                 }
             }
-            foreach (Element3D c in Children)
+            foreach (var c in Children)
             {
                 if (c.Parent == null)
                 {
@@ -114,43 +122,67 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
-            {
-                DetachChildren(e.OldItems);
-            }            
-            if(e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                AttachChildren(sender as IEnumerable);
+            var node = SceneNode as GroupNode;     
+            switch (e.Action)
+            {               
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Replace:
+                    if (e.OldItems != null)
+                    {
+                        foreach (Element3D item in e.OldItems)
+                        {
+                            if (item.Parent == this)
+                            {
+                                this.RemoveLogicalChild(item);
+                            }
+                            node.RemoveChildNode(item.SceneNode);
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    if (e.OldItems != null)
+                    {
+                        foreach (Element3D item in e.OldItems)
+                        {
+                            if (item.Parent == this)
+                            {
+                                this.RemoveLogicalChild(item);
+                            }
+                        }
+                    }
+                    node.Clear();
+                    break;
             }
-            else if(e.NewItems != null)
-            {
-                AttachChildren(e.NewItems);
-            }
-        }
 
-        protected void AttachChildren(IEnumerable children)
-        {
-            var node = SceneNode as GroupNodeBase;
-            foreach (Element3D c in children)
+            switch (e.Action)
             {
-                if (c.Parent == null)
-                {
-                    this.AddLogicalChild(c);
-                }
-                node.AddChildNode(c);
-            }
-        }
-
-        protected void DetachChildren(IEnumerable children)
-        {
-            var node = SceneNode as GroupNodeBase;
-            foreach (Element3D c in children)
-            {
-                node.RemoveChildNode(c);
-                if (c.Parent == this)
-                {
-                    this.RemoveLogicalChild(c);
-                }
+                case NotifyCollectionChangedAction.Reset:
+                    if(sender is IList list)
+                    {
+                        foreach (Element3D item in list)
+                        {
+                            if (item.Parent == null)
+                            {
+                                this.AddLogicalChild(item);
+                            }
+                            node.AddChildNode(item.SceneNode);
+                        }
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Replace:
+                    foreach (Element3D item in e.NewItems)
+                    {
+                        if (item.Parent == null)
+                        {
+                            this.AddLogicalChild(item);
+                        }
+                        node.AddChildNode(item.SceneNode);
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    node.MoveChildNode(e.OldStartingIndex, e.NewStartingIndex);
+                    break;
             }
         }
 
@@ -161,12 +193,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
                     s.CollectionChanged -= S_CollectionChanged;
-                }
-                foreach(var child in itemsSourceInternal)
-                {
-                    Children.Remove(child);
-                }
+                }                
             }
+            //Must not use both ItemsSource and Children at the same time
+            if(itemsSourceInternal == null && Children.Count > 0 && itemsSource != null)
+            {
+                throw new InvalidOperationException("Children must be empty before using ItemsSource");
+            }
+            Children.Clear();
             itemsSourceInternal = itemsSource;
             if (itemsSourceInternal != null)
             {
@@ -174,28 +208,46 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     s.CollectionChanged += S_CollectionChanged;
                 }
-                foreach(var child in itemsSourceInternal)
+                foreach(Element3D item in itemsSourceInternal)
                 {
-                    Children.Add(child);
-                }    
+                    Children.Add(item);
+                }
             }
         }
 
         private void S_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
+            switch (e.Action)
             {
-                foreach(Element3D item in e.OldItems)
-                {
-                    Children.Remove(item);
-                }
+                case NotifyCollectionChangedAction.Reset:
+                    Children.Clear();
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Replace:
+                    foreach(Element3D item in e.OldItems)
+                    {
+                        Children.Remove(item);
+                    }
+                    break;
             }
-            if (e.NewItems != null)
+            switch (e.Action)
             {
-                foreach(Element3D item in e.NewItems)
-                {
-                    Children.Add(item);
-                }
+                case NotifyCollectionChangedAction.Reset:
+                    foreach(Element3D item in itemsSourceInternal)
+                    {
+                        Children.Add(item);
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Replace:
+                    foreach(Element3D item in e.NewItems)
+                    {
+                        Children.Add(item);
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    Children.Move(e.OldStartingIndex, e.NewStartingIndex);
+                    break;
             }
         }
     }

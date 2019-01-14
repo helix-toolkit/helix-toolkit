@@ -94,7 +94,8 @@ namespace HelixToolkit.UWP
                     // The CreateSwapChain method is used so we can descend
                     // from this class and implement a swapchain for a desktop
                     // or a Windows 8 AppStore app
-                    return new SwapChain1(dxgiFactory2, Device, surfacePointer, ref desc);
+                    return surfacePointer == IntPtr.Zero ? new SwapChain1(dxgiFactory2, Device, ref desc) 
+                        : new SwapChain1(dxgiFactory2, Device, surfacePointer, ref desc);
                 }
             }
 
