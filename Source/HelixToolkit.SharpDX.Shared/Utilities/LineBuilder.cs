@@ -90,6 +90,33 @@ namespace HelixToolkit.UWP
             this.lineListIndices.Add(i0);
             this.lineListIndices.Add(i0 + 1);
         }
+        
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="radius"></param>
+        /// <param name="thetaDiv"></param>
+        public void AddCircle(Point3D center, double radius, int thetaDiv = 20)
+        {
+            var dt = 2 * (float)Math.PI / thetaDiv;
+
+            var list = new FastList<Vector3>();
+
+            for (int ti = 0; ti <= thetaDiv; ti++)
+            {
+                var theta = ti * dt;
+
+                var x = (float)Math.Cos(theta);
+                var y = (float)Math.Sin(theta);
+                var z = 1;
+
+                var p = new Vector3(center.X + (float)(radius * x), center.Y + (float)(radius * y), center.Z + (float)(radius * z));
+                list.Add(p);
+            }
+
+            Add(true, list.ToArray());
+        }
 
         /// <summary>
         /// 
