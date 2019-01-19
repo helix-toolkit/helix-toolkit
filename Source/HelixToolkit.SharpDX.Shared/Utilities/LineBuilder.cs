@@ -164,6 +164,10 @@ namespace HelixToolkit.UWP
         /// <param name="segments">The segments.</param>
         public void AddCircle(Vector3 position, Vector3 normal, float radius, int segments)
         {
+            if (segments < 3)
+            {
+                throw new ArgumentNullException("too few segments, at least 3");
+            }
             normal.Normalize();
             float sectionAngle = (float)(2.0 * Math.PI / segments);
             var start = new Vector3(radius, 0.0f, 0.0f);
@@ -348,71 +352,23 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static LineGeometry3D GenerateCircle(Vector3 plane, float radius, int segments)
         {
-            if (segments < 3)
-            {
-                throw new ArgumentNullException("too few segments, at least 3");
-            }
+            var bd = new LineBuilder();
+            bd.AddCircle(Vector3.Zero, plane, radius, segments);
+            return bd.ToLineGeometry3D();
+        }
 
-            var circle = new LineBuilder();
-
-            float sectionAngle = (float)(2.0 * Math.PI / segments);
-
-            if (plane == Vector3.UnitX)
-            {
-                Point3D start = new Point3D(0.0f, 0.0f, radius);
-                Point3D current = new Point3D(0.0f, 0.0f, radius);
-                Point3D next = new Point3D(0.0f, 0.0f, 0.0f);
-
-                for (int i = 1; i < segments; i++)
-                {
-                    next.Z = radius * (float)Math.Cos(i * sectionAngle);
-                    next.Y = radius * (float)Math.Sin(i * sectionAngle);
-
-                    circle.AddLine(current, next);
-
-                    current = next;
-                }
-
-                circle.AddLine(current, start);
-            }
-            else if (plane == Vector3.UnitY)
-            {
-                Point3D start = new Point3D(radius, 0.0f, 0.0f);
-                Point3D current = new Point3D(radius, 0.0f, 0.0f);
-                Point3D next = new Point3D(0.0f, 0.0f, 0.0f);
-
-                for (int i = 1; i < segments; i++)
-                {
-                    next.X = radius * (float)Math.Cos(i * sectionAngle);
-                    next.Z = radius * (float)Math.Sin(i * sectionAngle);
-
-                    circle.AddLine(current, next);
-
-                    current = next;
-                }
-
-                circle.AddLine(current, start);
-            }
-            else
-            {
-                Point3D start = new Point3D(0.0f, radius, 0.0f);
-                Point3D current = new Point3D(0.0f, radius, 0.0f);
-                Point3D next = new Point3D(0.0f, 0.0f, 0.0f);
-
-                for (int i = 1; i < segments; i++)
-                {
-                    next.Y = radius * (float)Math.Cos(i * sectionAngle);
-                    next.X = radius * (float)Math.Sin(i * sectionAngle);
-
-                    circle.AddLine(current, next);
-
-                    current = next;
-                }
-
-                circle.AddLine(current, start);
-            }
-
-            return circle.ToLineGeometry3D();
+        /// <summary>
+        /// Generates the circile.
+        /// </summary>
+        /// <param name="plane">The plane.</param>
+        /// <param name="radius">The radius.</param>
+        /// <param name="segments">The segments.</param>
+        /// <returns></returns>
+        public static LineGeometry3D GenerateCircile(Plane plane, float radius, int segments)
+        {
+            var bd = new LineBuilder();
+            bd.AddCircle(plane.D + plane.Normal, plane.Normal, radius, segments);
+            return bd.ToLineGeometry3D();
         }
 
         /// <summary>
