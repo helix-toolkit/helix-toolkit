@@ -25,10 +25,10 @@ Please download full source code to run examples. Or download [compiled version]
 [![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit.svg?style=popout)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7?svg=true)](https://ci.appveyor.com/project/objorke/helix-toolkit)
 [![Release](https://img.shields.io/github/release/helix-toolkit/helix-toolkit.svg?style=popout)](https://www.nuget.org/packages?q=Helix-Toolkit)
+[![Chat](https://img.shields.io/gitter/room/helix-toolkit/helix-toolkit.svg)](https://gitter.im/helix-toolkit/helix-toolkit)
 
 Description         | Value
 --------------------|-----------------------
-License             | The MIT License (MIT)
 Web page            | http://helix-toolkit.org/
 Wiki                | https://github.com/helix-toolkit/helix-toolkit/wiki
 Documentation       | http://docs.helix-toolkit.org/
