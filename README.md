@@ -24,6 +24,7 @@ Please download full source code to run examples. Or download [compiled version]
 
 [![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit.svg?style=popout)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7?svg=true)](https://ci.appveyor.com/project/objorke/helix-toolkit)
+[![Release](https://img.shields.io/github/release/helix-toolkit/helix-toolkit.svg?style=popout)](https://www.nuget.org/packages?q=Helix-Toolkit)
 
 Description         | Value
 --------------------|-----------------------
