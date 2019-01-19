@@ -154,6 +154,50 @@ namespace HelixToolkit.UWP
 
             return new LineGeometry3D { Positions = this.positions, Indices = this.lineListIndices };
         }
+
+        /// <summary>
+        /// Adds the circle.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="normal">The normal.</param>
+        /// <param name="radius">The radius.</param>
+        /// <param name="segments">The segments.</param>
+        public void AddCircle(Vector3 position, Vector3 normal, float radius, int segments)
+        {
+            normal.Normalize();
+            float sectionAngle = (float)(2.0 * Math.PI / segments);
+            var start = new Vector3(radius, 0.0f, 0.0f);
+            var current = new Vector3(radius, 0.0f, 0.0f);
+            var next = new Vector3(0.0f, 0.0f, 0.0f);
+            int posStart = positions.Count;
+            positions.Add(current);
+            int currIndex = posStart;
+            
+            for (int i = 1; i < segments; i++)
+            {
+                next.X = radius * (float)Math.Cos(i * sectionAngle);
+                next.Z = radius * (float)Math.Sin(i * sectionAngle);               
+                current = next;
+                positions.Add(current);
+                lineListIndices.Add(currIndex);
+                lineListIndices.Add(++currIndex);
+            }
+
+            lineListIndices.Add(currIndex);
+            lineListIndices.Add(posStart);
+            var axis = Vector3.Cross(Vector3.UnitY, normal);
+            var transform = Matrix.Translation(position);
+            if (axis.LengthSquared() > 1e-6)
+            {
+                axis.Normalize();
+                transform = Matrix.RotationAxis(axis, (float)Math.Acos(Vector3.Dot(Vector3.UnitY, normal))) * transform;
+            }
+
+            for(int i = posStart; i < positions.Count; ++i)
+            {
+                positions[i] = Vector3.TransformCoordinate(positions[i], transform);
+            }
+        }
                
         /// <summary>
         /// Generates a square grid with a step of 1.0 
