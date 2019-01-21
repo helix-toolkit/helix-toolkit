@@ -150,7 +150,6 @@ usemtl mat1
 v 2 0 0
 v 2 0 1
 v 2 1 0
-v 2 0 -1
 # 3 vertices
 vt 0 1
 vt 1 1
