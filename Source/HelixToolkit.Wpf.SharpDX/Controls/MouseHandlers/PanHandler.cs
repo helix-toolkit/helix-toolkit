@@ -44,10 +44,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.Delta(e);
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
-            if (Camera.CameraInternal.LookDirection.LengthSquared() < 1f && MouseDownNearestPoint3D.HasValue)
+            if (Camera.CameraInternal.LookDirection.LengthSquared() < 1f && MouseDownNearestModelBoundCenter.HasValue)
             {
                 var look = Camera.CameraInternal.LookDirection.Normalized();
-                var v = MouseDownNearestPoint3D.Value - Camera.CameraInternal.Position;
+                var v = MouseDownNearestModelBoundCenter.Value - Camera.CameraInternal.Position;
                 Camera.CameraInternal.LookDirection = look * Math.Max(1, Vector3.Dot(v, look));
             }
             if (this.LastPoint3D == null || thisPoint3D == null)
@@ -127,9 +127,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.Started(e);
             this.panPoint3D = this.Camera.CameraInternal.Target;
-            if (this.MouseDownNearestPoint3D != null)
+            if (this.MouseDownNearestModelBoundCenter.HasValue)
             {
-                this.panPoint3D = this.MouseDownNearestPoint3D.Value;
+                this.panPoint3D = this.MouseDownNearestModelBoundCenter.Value;
             }
 
             this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
