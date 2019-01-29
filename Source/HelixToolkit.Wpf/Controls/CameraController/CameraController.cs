@@ -1300,9 +1300,14 @@ namespace HelixToolkit.Wpf
                 return this.ActualCamera as PerspectiveCamera;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [limit FPS].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [limit FPS]; otherwise, <c>false</c>.
+        /// </value>
+        public bool LimitFPS { set; get; } = true;
         #region Private Variables
-        public bool LimitFPS = true;
         private TimeSpan prevTime;
         #endregion
         /// <summary>
