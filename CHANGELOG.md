@@ -7,8 +7,10 @@ All notable changes to this project will be documented in this file.
 1. Flat Normal Shading Mode for Phong/PBR/Diffuse Material. Use `EnableFlatShading = true` to enable this mode.
 
 ### Improvement and Changes
+1. Add LimitFPS option in HelixToolkit.WPF Viewport3D. Prevents mouse movement causes FPS overshooting.
 
 ### Fixed
+1. Fix Camera Rotation with ZoomAroundMouseDownpoint=true (SharpDX) #1068
 
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
