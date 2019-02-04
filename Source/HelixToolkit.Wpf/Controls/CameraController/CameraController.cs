@@ -1297,6 +1297,7 @@ namespace HelixToolkit.Wpf
             }
         }
 
+
         /// <summary>
         /// Efficiency option, lower values decrease computation time for camera interaction when
         /// RotateAroundMouseDownPoint or ZoomAroundMouseDownPoint is set to true in inspect mode.
@@ -1347,7 +1348,16 @@ namespace HelixToolkit.Wpf
                 return this.ActualCamera as PerspectiveCamera;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [limit FPS].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [limit FPS]; otherwise, <c>false</c>.
+        /// </value>
+        public bool LimitFPS { set; get; } = true;
+        #region Private Variables
+        private TimeSpan prevTime;
+        #endregion
         /// <summary>
         /// Adds the specified move force.
         /// </summary>
@@ -2188,6 +2198,11 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
+            if (LimitFPS && prevTime == e.RenderingTime)
+            {
+                return;
+            }
+            prevTime = e.RenderingTime;
             var ticks = e.RenderingTime.Ticks;
             var time = 100e-9 * (ticks - this.lastTick);
 

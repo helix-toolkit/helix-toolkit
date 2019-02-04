@@ -873,6 +873,15 @@ namespace HelixToolkit.Wpf
             "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
 
         /// <summary>
+        /// The limit FPS property
+        /// </summary>
+        public static readonly DependencyProperty LimitFPSProperty =
+            DependencyProperty.Register("LimitFPS", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(true, (d,e)=> 
+            {
+                (d as HelixViewport3D).limitFPS = (bool)e.NewValue;
+            }));
+
+        /// <summary>
         /// The adorner layer name.
         /// </summary>
         private const string PartAdornerLayer = "PART_AdornerLayer";
@@ -3128,6 +3137,22 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [limit FPS].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [limit FPS]; otherwise, <c>false</c>.
+        /// </value>
+        public bool LimitFPS
+        {
+            get { return (bool)GetValue(LimitFPSProperty); }
+            set { SetValue(LimitFPSProperty, value); }
+        }
+
+        #region Private Variables
+        private bool limitFPS = true;
+        private TimeSpan prevTime;
+        #endregion
+        /// <summary>
         /// Changes the camera direction.
         /// </summary>
         /// <param name="newDirection">
@@ -3311,6 +3336,7 @@ namespace HelixToolkit.Wpf
                 if (this.cameraController != null)
                 {
                     this.cameraController.Viewport = this.Viewport;
+                    this.cameraController.LimitFPS = this.limitFPS;
                     this.cameraController.LookAtChanged += (s, e) => this.OnLookAtChanged();
                     this.cameraController.ZoomedByRectangle += (s, e) => this.OnZoomedByRectangle();
                 }
@@ -3694,8 +3720,13 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        private void CompositionTargetRendering(object sender, EventArgs e)
+        private void CompositionTargetRendering(object sender, RenderingEventArgs e)
         {
+            if (limitFPS && prevTime == e.RenderingTime)
+            {
+                return;
+            }
+            prevTime = e.RenderingTime;
             this.frameCounter++;
             if (this.ShowFrameRate && this.fpsWatch.ElapsedMilliseconds > 500)
             {
