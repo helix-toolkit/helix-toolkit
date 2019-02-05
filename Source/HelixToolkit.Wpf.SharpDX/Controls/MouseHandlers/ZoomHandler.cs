@@ -308,6 +308,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var newLookDirection = newTarget - newPosition;
+            if (newLookDirection.LengthSquared() < 1e-5)
+            {
+                return false;
+            }
             this.Camera.LookDirection = newLookDirection.ToVector3D();
             this.Camera.Position = newPosition.ToPoint3D();
             return true;
