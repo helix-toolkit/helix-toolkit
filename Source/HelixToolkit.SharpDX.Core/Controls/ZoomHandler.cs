@@ -274,6 +274,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
             }
 
             var newLookDirection = newTarget - newPosition;
+            if (newLookDirection.LengthSquared() < 1e-5)
+            {
+                return false;
+            }
             Camera.LookDirection = newLookDirection;
             Camera.Position = newPosition;
             return true;
