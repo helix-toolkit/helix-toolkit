@@ -288,7 +288,7 @@ namespace HelixToolkit.UWP
                 }
                 if (core == null)
                 {
-                    switch (material.ShadingMode)
+                    switch (mode)
                     {
                         case ShadingMode.Blinn:
                         case ShadingMode.Phong:
