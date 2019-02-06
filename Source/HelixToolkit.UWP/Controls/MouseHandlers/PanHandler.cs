@@ -44,11 +44,9 @@ namespace HelixToolkit.UWP
         public override void Delta(Vector2 e)
         {
             base.Delta(e);
-            if (Camera.CameraInternal.LookDirection.LengthSquared() < 1f && MouseDownNearestModelBoundCenter.HasValue)
+            if (Camera.CameraInternal.LookDirection.LengthSquared() < 1e-5f)
             {
-                var look = Camera.CameraInternal.LookDirection.Normalized();
-                var v = MouseDownNearestModelBoundCenter.Value - Camera.CameraInternal.Position;
-                Camera.CameraInternal.LookDirection = look * Math.Max(1, Vector3.Dot(v, look));
+                return;
             }
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
@@ -127,9 +125,9 @@ namespace HelixToolkit.UWP
         {
             base.Started(e);
             this.panPoint3D = this.Camera.CameraInternal.Target;
-            if (this.MouseDownNearestModelBoundCenter.HasValue)
+            if (this.MouseDownNearestPoint3D.HasValue)
             {
-                this.panPoint3D = this.MouseDownNearestModelBoundCenter.Value;
+                this.panPoint3D = this.MouseDownNearestPoint3D.Value;
             }
 
             this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
