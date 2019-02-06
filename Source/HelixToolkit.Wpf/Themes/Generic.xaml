@@ -78,6 +78,7 @@
                                 UpDownPanSensitivity="{TemplateBinding UpDownPanSensitivity}"
                                 UpDownRotationSensitivity="{TemplateBinding UpDownRotationSensitivity}"
                                 ZoomAroundMouseDownPoint="{TemplateBinding ZoomAroundMouseDownPoint}"
+                                SnapMouseDownPoint="{TemplateBinding SnapMouseDownPoint}"
                                 ZoomCursor="{TemplateBinding ZoomCursor}"
                                 ZoomRectangleCursor="{TemplateBinding ZoomRectangleCursor}"
                                 ZoomSensitivity="{TemplateBinding ZoomSensitivity}">

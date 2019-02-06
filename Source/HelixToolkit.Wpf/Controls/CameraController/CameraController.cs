@@ -269,6 +269,13 @@ namespace HelixToolkit.Wpf
                 "ZoomAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// Identifies the <see cref="SnapMouseDownPoint"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SnapMouseDownPointProperty =
+            DependencyProperty.Register(
+                "SnapMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="ZoomCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
@@ -1244,6 +1251,23 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(ZoomAroundMouseDownPointProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to snap the mouse down point to a model.
+        /// </summary>
+        /// <value> <c>true</c> if snapping the mouse down point is enabled; otherwise, <c>false</c> . </value>
+        public bool SnapMouseDownPoint
+        {
+            get
+            {
+                return (bool)this.GetValue(SnapMouseDownPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(SnapMouseDownPointProperty, value);
             }
         }
 
@@ -2337,7 +2361,10 @@ namespace HelixToolkit.Wpf
             {
                 var point = e.GetPosition(this);
 
-                Point3D? nearestPoint = new Closest3DPointHitTester(this.Viewport, this.RotataAroundClosestVertexComplexity).CalculateMouseDownNearestPoint(point, true).MouseDownNearestPoint3D;
+                Point3D? nearestPoint =
+                    new Closest3DPointHitTester(this.Viewport, this.RotataAroundClosestVertexComplexity)
+                        .CalculateMouseDownNearestPoint(point, SnapMouseDownPoint).MouseDownNearestPoint3D;
+
                 if (nearestPoint.HasValue)
                 {
                     this.AddZoomForce(-e.Delta * 0.001, nearestPoint.Value);
