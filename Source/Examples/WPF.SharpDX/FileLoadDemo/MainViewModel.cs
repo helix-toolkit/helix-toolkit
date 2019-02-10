@@ -43,6 +43,23 @@ namespace FileLoadDemo
                 return showWireframe;
             }
         }
+
+        private bool renderFlat = false;
+        public bool RenderFlat
+        {
+            set
+            {
+                if(SetValue(ref renderFlat, value))
+                {
+                    RenderFlatFunct(value);
+                }
+            }
+            get
+            {
+                return renderFlat;
+            }
+        }
+
         private bool renderEnvironmentMap = true;
         public bool RenderEnvironmentMap
         {
@@ -302,6 +319,27 @@ namespace FileLoadDemo
                 if (node is MeshNode m)
                 {
                     m.RenderWireframe = show;
+                }
+            }
+        }
+
+        private void RenderFlatFunct(bool show)
+        {
+            foreach (var node in GroupModel.GroupNode.Items.PreorderDFT((node) =>
+            {
+                return node.IsRenderable;
+            }))
+            {
+                if (node is MeshNode m)
+                {
+                    if (m.Material is PhongMaterialCore phong)
+                    {
+                        phong.EnableFlatShading = show;
+                    }
+                    else if (m.Material is PBRMaterialCore pbr)
+                    {
+                        pbr.EnableFlatShading = show;
+                    }
                 }
             }
         }

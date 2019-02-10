@@ -318,6 +318,10 @@ namespace HelixToolkit.UWP
             }
 
             var newLookDirection = newTarget - newPosition;
+            if (newLookDirection.LengthSquared() < 1e-5)
+            {
+                return false;
+            }
             this.Camera.LookDirection = newLookDirection;
             this.Camera.Position = newPosition;
             return true;

@@ -442,13 +442,6 @@ namespace HelixToolkit.UWP
                         var mesh = scene.Meshes[idx];
                         var hxNode = OnCreateHxMeshNode(mesh, scene, Matrix.Identity);
                         group.AddChildNode(hxNode);
-                        if(hxNode is HxScene.BoneSkinMeshNode skinNode && Configuration.CreateSkeletonForBoneSkinningMesh)
-                        {
-                            var skeleton = skinNode.CreateSkeletonNode(Configuration.SkeletonMaterial,
-                                Configuration.SkeletonEffects, Configuration.SkeletonSizeScale);
-                            skeleton.Name = "HxSK_" + skinNode.Name;
-                            group.AddChildNode(skeleton);
-                        }
                     }
                 }
                 return group;

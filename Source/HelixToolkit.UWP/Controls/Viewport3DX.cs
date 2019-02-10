@@ -215,6 +215,7 @@ namespace HelixToolkit.UWP
             this.cameraController.EnableTouchRotate = this.IsTouchRotateEnabled;
             this.cameraController.EnablePinchZoom = this.IsPinchZoomEnabled;
             this.cameraController.EnableThreeFingerPan = this.IsThreeFingerPanningEnabled;
+            this.cameraController.PinchZoomAtCenter = this.PinchZoomAtCenter;
             this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
             this.cameraController.MaximumFieldOfView = this.MaximumFieldOfView;
@@ -316,6 +317,7 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
                     renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
                     renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
+                    renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, MinimumUpdateCount);
                     renderHostInternal.Rendered += this.RaiseRenderHostRendered;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
 

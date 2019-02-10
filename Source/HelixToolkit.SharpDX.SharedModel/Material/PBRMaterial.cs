@@ -308,6 +308,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// The enable flat shading property
+        /// </summary>
+        public static readonly DependencyProperty EnableFlatShadingProperty =
+            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(PBRMaterial), new PropertyMetadata(false, (d, e) =>
+            {
+                ((d as Material).Core as PBRMaterialCore).EnableFlatShading = (bool)e.NewValue;
+            }));
+        /// <summary>
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
@@ -640,6 +648,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (UVTransform)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable flat shading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableFlatShading
+        {
+            get { return (bool)GetValue(EnableFlatShadingProperty); }
+            set { SetValue(EnableFlatShadingProperty, value); }
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="PBRMaterial"/> class.
         /// </summary>
@@ -687,6 +707,7 @@ namespace HelixToolkit.Wpf.SharpDX
             MinDistanceTessellationFactor = core.MinDistanceTessellationFactor;
             MaxTessellationDistance = core.MaxTessellationDistance;
             MinTessellationDistance = core.MinTessellationDistance;
+            EnableFlatShading = core.EnableFlatShading;
         }
 
         protected override MaterialCore OnCreateCore()
@@ -730,6 +751,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MinDistanceTessellationFactor = (float)MinDistanceTessellationFactor,
                 MaxTessellationDistance = (float)MaxTessellationDistance,
                 MinTessellationDistance = (float)MinTessellationDistance,
+                EnableFlatShading = EnableFlatShading,
             };
         }
 
@@ -740,7 +762,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 #endif
 
-        public PBRMaterial CloneMaterial()
+        public virtual PBRMaterial CloneMaterial()
         {
             return new PBRMaterial()
             {
@@ -780,10 +802,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 MinDistanceTessellationFactor = MinDistanceTessellationFactor,
                 MaxTessellationDistance = MaxTessellationDistance,
                 MinTessellationDistance = MinTessellationDistance,
+                EnableFlatShading = EnableFlatShading,
             };
         }
     }
-
     /// <summary>
     /// https://google.github.io/filament/images/material_chart.jpg
     /// </summary>

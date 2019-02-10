@@ -521,6 +521,7 @@ namespace HelixToolkit.UWP
         public bool EnableTouchRotate { set; get; } = true;
         public bool EnablePinchZoom { set; get; } = true;
         public bool EnableThreeFingerPan { set; get; } = true;
+        public bool PinchZoomAtCenter { set; get; } = false;
         #endregion
         /// <summary>
         /// The camera history stack.
@@ -1165,13 +1166,22 @@ namespace HelixToolkit.UWP
                             }
                             else
                             {
-                                var zoomAroundPoint = this.zoomHandler.UnProject(
-                                    e.Position, this.zoomHandler.Origin, this.CameraLookDirection);
-                                if (zoomAroundPoint != null)
+                                if (PinchZoomAtCenter)
                                 {
                                     float s = e.Cumulative.Scale;
-                                    this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
+                                    this.zoomHandler.Zoom((prevScale - s), CameraPosition + CameraLookDirection, true);
                                     prevScale = s;
+                                }
+                                else
+                                {
+                                    var zoomAroundPoint = this.zoomHandler.UnProject(
+                                        e.Position, this.zoomHandler.Origin, this.CameraLookDirection);
+                                    if (zoomAroundPoint.HasValue)
+                                    {
+                                        float s = e.Cumulative.Scale;
+                                        this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
+                                        prevScale = s;
+                                    }
                                 }
                             }
                         }

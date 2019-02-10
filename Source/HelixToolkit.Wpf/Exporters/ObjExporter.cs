@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf
             this.TextureQualityLevel = 90;
             this.TextureFolder = ".";
 
-            this.SwitchYZ = true;
+            this.SwitchYZ = false;
             this.ExportNormals = false;
             this.FileCreator = File.Create;
         }
@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf
                 {
                     normalIndexMap.Add(index++, this.normalIndex++);
                     writer.WriteLine(
-                        string.Format(CultureInfo.InvariantCulture, "vn {0} {1} {2}", vn.X, vn.Y, vn.Z));
+                        string.Format(CultureInfo.InvariantCulture, "vn {0} {1} {2}", vn.X, this.SwitchYZ ? vn.Z : vn.Y, this.SwitchYZ ? -vn.Y : vn.Z));
                 }
 
                 writer.WriteLine(string.Format("# {0} normals", index));

@@ -490,6 +490,19 @@ namespace HelixToolkit.UWP
                 get { return renderEnvironmentMap; }
             }
 
+            private bool enableFlatShading = false;
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable flat shading].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnableFlatShading
+            {
+                set { Set(ref enableFlatShading, value); }
+                get { return enableFlatShading; }
+            }
+
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
             {
                 return new PhongMaterialVariables(manager, technique, this);

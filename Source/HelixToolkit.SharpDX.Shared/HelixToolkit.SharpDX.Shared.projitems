@@ -182,6 +182,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Sprite2DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\VolumeTextureNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHostPartial_Properties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DX11RenderHostConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PhongMaterialVariable.cs" />

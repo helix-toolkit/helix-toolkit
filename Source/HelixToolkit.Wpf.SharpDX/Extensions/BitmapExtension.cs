@@ -1,4 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Utilities;
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX
 {
-
+    using Utilities;
     public static class BitmapExtension
     {
   /*  

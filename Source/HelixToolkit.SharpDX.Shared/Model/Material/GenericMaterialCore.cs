@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP
 
             internal event EventHandler<UpdateEvent> UpdatingResource;
             [DataMember]
-            public Dictionary<string, Stream> TextureDict { get; } = new Dictionary<string, Stream>();
+            public Dictionary<string, TextureModel> TextureDict { get; } = new Dictionary<string, TextureModel>();
             [DataMember]
             public Dictionary<string, SamplerStateDescription> SamplerDict { get; } = new Dictionary<string, SamplerStateDescription>();
             [DataMember]
@@ -137,7 +137,7 @@ namespace HelixToolkit.UWP
                 UpdatingResource?.Invoke(this, new UpdateEvent(GenericMaterialVariable.ResourceType.Sampler, name));
             }
 
-            public Stream GetTexture(string name)
+            public TextureModel GetTexture(string name)
             {
                 if(TextureDict.TryGetValue(name, out var texture))
                 {

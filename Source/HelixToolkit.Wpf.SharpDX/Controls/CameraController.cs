@@ -521,6 +521,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool EnableTouchRotate { set; get; } = true;
         public bool EnablePinchZoom { set; get; } = true;
         public bool EnableThreeFingerPan { set; get; } = true;
+        public bool PinchZoomAtCenter { set; get; } = false;
         #endregion
 
         /// <summary>
@@ -989,14 +990,22 @@ namespace HelixToolkit.Wpf.SharpDX
                             }
                             else
                             {
-                                var zoomAroundPoint = this.zoomHandler.UnProject(
-                                    p, this.zoomHandler.Origin, this.CameraLookDirection);
-                                if (zoomAroundPoint != null)
+                                if (PinchZoomAtCenter)
                                 {
                                     var s = e.CumulativeManipulation.Scale.Length;
-                                    //Debug.WriteLine(s);
-                                    this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
+                                    this.zoomHandler.Zoom((prevScale - s), CameraPosition + CameraLookDirection, true);
                                     prevScale = s;
+                                }
+                                else
+                                {
+                                    var zoomAroundPoint = this.zoomHandler.UnProject(
+                                        p, this.zoomHandler.Origin, this.CameraLookDirection);
+                                    if (zoomAroundPoint.HasValue)
+                                    {
+                                        var s = e.CumulativeManipulation.Scale.Length;
+                                        this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
+                                        prevScale = s;
+                                    }
                                 }
                             }
                             e.Handled = true;
