@@ -804,6 +804,13 @@ namespace HelixToolkit.Wpf
                 "ZoomAroundMouseDownPoint", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// Identifies the <see cref="SnapMouseDownPoint"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SnapMouseDownPointProperty =
+            DependencyProperty.Register(
+                "SnapMouseDownPoint", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="ZoomCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
@@ -2987,6 +2994,23 @@ namespace HelixToolkit.Wpf
             set
             {
                 this.SetValue(ZoomAroundMouseDownPointProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to snap the mouse down point to a model.
+        /// </summary>
+        /// <value> <c>true</c> if snapping the mouse down point is enabled; otherwise, <c>false</c> . </value>
+        public bool SnapMouseDownPoint
+        {
+            get
+            {
+                return (bool)this.GetValue(SnapMouseDownPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(SnapMouseDownPointProperty, value);
             }
         }
 
