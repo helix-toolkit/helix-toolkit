@@ -77,6 +77,9 @@
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
+                <hx:ManipulationBinding Command="hx:ViewportCommands.Rotate" Gesture="TwoFingerPan" />
+                <hx:ManipulationBinding Command="hx:ViewportCommands.Pan" Gesture="Pan" />
+                <hx:ManipulationBinding Command="hx:ViewportCommands.Zoom" Gesture="Pinch" />
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="Black" />
             <hx:DirectionalLight3D Direction="-2,-5,-2" Color="White" />
