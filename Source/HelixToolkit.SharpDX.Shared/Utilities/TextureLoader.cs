@@ -187,6 +187,8 @@ namespace HelixToolkit.UWP
                         textMip = texture.Resource.QueryInterface<Resource>();//Format not support, return the original texture.
                         return false;
                 }
+                int sliceCount = 1;
+                int mipLevels = 0;
                 switch (texture.Description.Dimension)
                 {
                     case global::SharpDX.Toolkit.Graphics.TextureDimension.Texture1D:
@@ -202,6 +204,7 @@ namespace HelixToolkit.UWP
                             Format = texture.Description.Format
                         };
                         textMip = new Texture1D(device, desc1D);
+                        mipLevels = (textMip as Texture1D).Description.MipLevels;
                         break;
                     case global::SharpDX.Toolkit.Graphics.TextureDimension.Texture2D:
                         var desc2D = new Texture2DDescription()
@@ -218,6 +221,7 @@ namespace HelixToolkit.UWP
                             Format = texture.Description.Format
                         };
                         textMip = new Texture2D(device, desc2D);
+                        mipLevels = (textMip as Texture2D).Description.MipLevels;
                         break;
                     case global::SharpDX.Toolkit.Graphics.TextureDimension.Texture3D:
                         var desc3D = new Texture3DDescription()
@@ -233,21 +237,26 @@ namespace HelixToolkit.UWP
                             Format = texture.Description.Format
                         };
                         textMip = new Texture3D(device, desc3D);
+                        sliceCount = texture.Description.Depth;
+                        mipLevels = (textMip as Texture3D).Description.MipLevels;
                         break;
                     case global::SharpDX.Toolkit.Graphics.TextureDimension.TextureCube:
-                        var descCube = new Texture3DDescription()
+                        var descCube = new Texture2DDescription()
                         {
                             Width = texture.Description.Width,
                             Height = texture.Description.Height,
-                            Depth = texture.Description.ArraySize,
+                            ArraySize = texture.Description.ArraySize,
                             MipLevels = 0,
                             BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
                             CpuAccessFlags = CpuAccessFlags.None,
+                            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
                             Usage = ResourceUsage.Default,
-                            OptionFlags = ResourceOptionFlags.GenerateMipMaps,
+                            OptionFlags = ResourceOptionFlags.GenerateMipMaps | ResourceOptionFlags.TextureCube,
                             Format = texture.Description.Format
                         };
-                        textMip = new Texture3D(device, descCube);
+                        textMip = new Texture2D(device, descCube);
+                        sliceCount = texture.Description.ArraySize;
+                        mipLevels = (textMip as Texture2D).Description.MipLevels;
                         break;
                     default:
                         throw new InvalidDataException("Input texture is invalid.");
@@ -255,10 +264,20 @@ namespace HelixToolkit.UWP
 
                 using (var shaderRes = new ShaderResourceView(device, textMip))
                 {
-                    device.ImmediateContext.CopySubresourceRegion(texture, 0, null, textMip, 0);
+                    for(int i = 0; i < sliceCount; ++i)
+                    {
+                        int idx = texture.GetSubResourceIndex(i, 0);
+                        int targetIdx = GetSubResourceIndex(i, mipLevels, 0);
+                        device.ImmediateContext.CopySubresourceRegion(texture, idx, null, textMip, targetIdx);
+                    }
                     device.ImmediateContext.GenerateMips(shaderRes);
                 }
                 return true;
+            }
+
+            public static int GetSubResourceIndex(int arraySlice, int mipLevels, int mipSlice)
+            {
+                return arraySlice * mipLevels + mipSlice;
             }
         }
     }
