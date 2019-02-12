@@ -16,6 +16,8 @@ All notable changes to this project will be documented in this file.
 1. Fix Camera Rotation with ZoomAroundMouseDownpoint=true (SharpDX) #1068 (WPF.SharpDX/UWP/Core)
 2. Fix exception in Closest3DPointHitTester #1085 (WPF)
 3. Fix panning sometimes not working issue.(WPF.SharpDX/UWP/Core)
+4. ViewportExtensions.Project does not get correct projection #1090. (WPF.SharpDX/UWP/Core)
+5. Fix cube map auto mipmap generation #1087.  (WPF.SharpDX/UWP/Core)
 
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
