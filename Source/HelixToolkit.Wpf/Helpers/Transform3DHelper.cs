@@ -37,9 +37,7 @@ namespace HelixToolkit.Wpf
                 return t2;
             if (t1 != null && t2 == null)
                 return t1;
-            var g = new Transform3DGroup();
-            g.Children.Add(t1);
-            g.Children.Add(t2);
+            var g = new MatrixTransform3D(t1.Value * t2.Value);
             return g;
         }
 
