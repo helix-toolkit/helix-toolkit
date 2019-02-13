@@ -148,21 +148,24 @@ namespace HelixToolkit.Wpf
             DependencyObject obj = visual;
             while (obj != null)
             {
-                var viewport3DVisual = obj as Viewport3DVisual;
-                if (viewport3DVisual != null)
+                if (obj is Viewport3DVisual viewport3DVisual)
                 {
                     return totalTransform;
-                }
-
-                var mv = obj as ModelVisual3D;
-                if (mv != null)
+                }          
+                else if (obj is ModelVisual3D mv)
                 {
                     if (mv.Transform != null)
                     {
                         totalTransform.Append(mv.Transform.Value);
                     }
                 }
-
+                else if(obj is UIElement3D ui)
+                {
+                    if(ui.Transform != null)
+                    {
+                        totalTransform.Append(ui.Transform.Value);
+                    }
+                }
                 obj = VisualTreeHelper.GetParent(obj);
             }
 
