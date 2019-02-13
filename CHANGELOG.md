@@ -18,8 +18,8 @@ All notable changes to this project will be documented in this file.
 3. Fix panning sometimes not working issue.(WPF.SharpDX/UWP/Core)
 4. ViewportExtensions.Project does not get correct projection #1090. (WPF.SharpDX/UWP/Core)
 5. Fix cube map auto mipmap generation #1087.  (WPF.SharpDX/UWP/Core)
-6. Fix Transform3DHelper.CombineTransform creates too nested Transform3DGroup #1089
-7. Fix local transform not getting calculated for UIElement3D in Visual3DHelper.GetTransform(). This solve mouse rotate getting reversed issue in Rotate Manipulator.
+6. Fix Transform3DHelper.CombineTransform creates too nested Transform3DGroup #1089 (WPF)
+7. Fix local transform not getting calculated for UIElement3D in Visual3DHelper.GetTransform(). This solve mouse rotate getting reversed issue in Rotate Manipulator. (WPF)
 
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
