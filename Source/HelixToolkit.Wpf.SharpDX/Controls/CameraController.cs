@@ -1064,9 +1064,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.touchPreviousPoint = e.ManipulationOrigin;
             this.manipulatorCount = 0;
             this.prevScale = 1;
-            this.panFingerCount = 3;
-            this.zoomFingerCount = 2;
-            this.rotateFingerCount = 1;
+            this.panFingerCount = -1;
+            this.zoomFingerCount = -1;
+            this.rotateFingerCount = -1;
+            this.allowCombinedManipulation = false;
 
             foreach (var mb in this.Viewport.InputBindings.OfType<ManipulationBinding>())
             {
@@ -1083,6 +1084,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.rotateFingerCount = mb.FingerCount;
                 }
+            }
+
+            if (!this.allowCombinedManipulation)
+            {
+                this.panFingerCount = 3;
+                this.zoomFingerCount = 2;
+                this.rotateFingerCount = 1;
             }
         }
 
