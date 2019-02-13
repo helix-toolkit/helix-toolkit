@@ -152,19 +152,9 @@ namespace HelixToolkit.Wpf
                 {
                     return totalTransform;
                 }          
-                else if (obj is ModelVisual3D mv)
+                else if (obj is Visual3D mv && mv.Transform != null)
                 {
-                    if (mv.Transform != null)
-                    {
-                        totalTransform.Append(mv.Transform.Value);
-                    }
-                }
-                else if(obj is UIElement3D ui)
-                {
-                    if(ui.Transform != null)
-                    {
-                        totalTransform.Append(ui.Transform.Value);
-                    }
+                    totalTransform.Append(mv.Transform.Value);
                 }
                 obj = VisualTreeHelper.GetParent(obj);
             }
