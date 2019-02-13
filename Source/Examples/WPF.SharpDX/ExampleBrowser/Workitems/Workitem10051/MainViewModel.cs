@@ -9,12 +9,10 @@
     using System;
     using System.ComponentModel;
     using System.Windows;
-    using System.Windows.Threading;
 
     using DemoCore;
 
     using HelixToolkit.Wpf.SharpDX;
-    using HelixToolkit.Wpf.SharpDX.Extensions;
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     public class MainViewModel : BaseViewModel
@@ -27,10 +25,10 @@
         {
             // titles
             this.Title = "Simple Demo (Workitem 10051)";
-            this.SubTitle = "LineGeometryModel3D now works with OrthographicCamera and Intel HD 3000.";
+            this.SubTitle = "ManipulationBindings: TwoFingerPan-Rotate, Pan-Pan, Pinch-Zoom";
+            // old issue: this.SubTitle = "LineGeometryModel3D now works with OrthographicCamera and Intel HD 3000.";
             this.PropertyChanged += this.OnPropertyChanged;
-
-            EffectsManager = new DefaultEffectsManager();
+            this.EffectsManager = new DefaultEffectsManager();
         }
 
         /// <summary>
@@ -48,7 +46,7 @@
                 if (this.renderException != value)
                 {
                     this.renderException = value;
-                    this.OnPropertyChanged("RenderException");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -68,7 +66,7 @@
                 if (this.viewportMessage != value)
                 {
                     this.viewportMessage = value;
-                    this.OnPropertyChanged("ViewportMessage");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -95,7 +93,7 @@
         {
             if ("RenderException".Equals(e.PropertyName))
             {
-                this.ViewportMessage = this.RenderException != null ? this.RenderException.ToString() : null;
+                this.ViewportMessage = this.RenderException?.ToString();
             }
         }
     }

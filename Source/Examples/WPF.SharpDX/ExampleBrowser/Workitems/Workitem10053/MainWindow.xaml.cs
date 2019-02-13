@@ -16,7 +16,8 @@ namespace Workitem10053
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    [Example("Issue 10053", "SharpDX: Enable touch / implement CameraController.")]
+    //old issue: [Example("Issue 10053", "SharpDX: Enable touch / implement CameraController.")]
+    [Example("Issue 1074-2", "ManipulationBindings: Pan-Rotate, TwoFingerPan-Pan, Pinch-Zoom.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
