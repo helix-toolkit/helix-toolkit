@@ -42,6 +42,11 @@ namespace HelixToolkit.Wpf.SharpDX
         internal RotateHandler changeLookAtHandler;
 
         /// <summary>
+        /// Decides if combined manipulation is allowed.
+        /// </summary>
+        private bool allowCombinedManipulation;
+
+        /// <summary>
         /// The is spinning flag.
         /// </summary>
         private bool isSpinning;
@@ -57,17 +62,24 @@ namespace HelixToolkit.Wpf.SharpDX
         private Vector3 moveSpeed;
 
         /// <summary>
+        /// The number of fingers used for panning.
+        /// </summary>
+        private int panFingerCount;
+
+        /// <summary>
         /// The pan event handler.
         /// </summary>
         internal PanHandler panHandler;
-        /// <summary>
-        /// The set target handler
-        /// </summary>
-        internal RotateHandler setTargetHandler;
+
         /// <summary>
         /// The pan speed.
         /// </summary>
         private Vector3 panSpeed;
+
+        /// <summary>
+        /// The number of fingers used for rotating.
+        /// </summary>
+        private int rotateFingerCount;
 
         /// <summary>
         /// The rotation event handler.
@@ -90,6 +102,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private Vector2 rotationSpeed;
 
         /// <summary>
+        /// The set target handler
+        /// </summary>
+        internal RotateHandler setTargetHandler;
+
+        /// <summary>
         /// The 3D point to spin around.
         /// </summary>
         private Vector3 spinningPoint3D;
@@ -104,7 +121,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private Vector2 spinningSpeed;
 
-
         /// <summary>
         /// The touch point in the last touch delta event
         /// </summary>
@@ -114,6 +130,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The number of touch manipulators (fingers) in the last touch delta event
         /// </summary>
         private int manipulatorCount;
+
+        /// <summary>
+        /// The number of fingers used for zooming.
+        /// </summary>
+        private int zoomFingerCount;
 
         /// <summary>
         /// The zoom event handler.
@@ -126,6 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Vector3 zoomPoint3D;
 
         private double prevScale = 1;
+
         /// <summary>
         /// The zoom rectangle event handler.
         /// </summary>
@@ -891,14 +913,18 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var p = e.ManipulationOrigin + e.TotalManipulation.Translation;
 
-            if (this.manipulatorCount == 1)
+            if (this.manipulatorCount == this.rotateFingerCount)
             {
                 this.rotateHandler.Completed(p);
             }
 
-            if (this.manipulatorCount == 2)
+            if (this.manipulatorCount == this.panFingerCount)
             {
                 this.panHandler.Completed(p);
+            }
+
+            if (this.manipulatorCount == this.zoomFingerCount)
+            {
                 this.zoomHandler.Completed(p);
             }
         }
@@ -915,6 +941,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
+
             // number of manipulators (fingers)
             int n = e.Manipulators.Count();
             var p = e.ManipulationOrigin;
@@ -929,95 +956,99 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.manipulatorCount != n)
             {
                 // the number of manipulators has changed
-                switch (this.manipulatorCount)
+
+                // cancel old manipulations
+                var combine = true;
+                if (this.manipulatorCount == this.rotateFingerCount) // && combine)
                 {
-                    case 1:
-                        this.rotateHandler.Completed(position);
-                        break;
-                    case 2:
-                        this.zoomHandler.Completed(p);
-                        break;
-                    case 3:
-                        this.panHandler.Completed(position);
-                        break;
+                    this.rotateHandler.Completed(position);
+                    combine = this.allowCombinedManipulation;
                 }
 
-                switch (n)
+                if (this.manipulatorCount == this.zoomFingerCount && combine)
                 {
-                    case 1:
-                        if (EnableTouchRotate)
-                        {
-                            this.rotateHandler.Started(position);
-                            e.Handled = true;
-                        }
-                        break;
-                    case 2:
-                        if (EnablePinchZoom)
-                        {
-                            this.zoomHandler.Started(p);
-                            e.Handled = true;
-                        }
-                        break;
-                    case 3:
-                        if (EnableThreeFingerPan)
-                        {
-                            this.panHandler.Started(position);
-                            e.Handled = true;
-                        }
-                        break;
+                    this.zoomHandler.Completed(p);
+                    combine = this.allowCombinedManipulation;
                 }
+
+                if (this.manipulatorCount == this.panFingerCount && combine)
+                {
+                    this.panHandler.Completed(position);
+                    //combine = this.allowCombinedManipulation;
+                }
+
+                // start new manipulations
+                combine = true;
+                if (this.EnableTouchRotate && n == this.rotateFingerCount) // && combine)
+                {
+                    this.rotateHandler.Started(position);
+                    e.Handled = true;
+                    combine = this.allowCombinedManipulation;
+                }
+
+                if (this.EnablePinchZoom && n == this.zoomFingerCount && combine)
+                {
+                    this.zoomHandler.Started(p);
+                    e.Handled = true;
+                    combine = this.allowCombinedManipulation;
+                }
+
+                if (this.EnableThreeFingerPan && n == this.panFingerCount && combine)
+                {
+                    this.panHandler.Started(position);
+                    e.Handled = true;
+                    //combine = this.allowCombinedManipulation;
+                }
+
                 this.manipulatorCount = n;
                 // skip this event, the origin may have changed
                 return;
             }
             else
             {
-                switch (n)
+                if (this.EnableTouchRotate && n == this.rotateFingerCount)
                 {
-                    case 1:
-                        if (EnableTouchRotate)
+                    this.rotateHandler.Delta(position);
+                    e.Handled = true;
+                    if (!this.allowCombinedManipulation) return;
+                }
+
+                if (this.EnablePinchZoom && n == this.zoomFingerCount)
+                {
+                    if (prevScale == 1)
+                    {
+                        prevScale = e.CumulativeManipulation.Scale.Length;
+                    }
+                    else
+                    {
+                        if (this.PinchZoomAtCenter)
                         {
-                            this.rotateHandler.Delta(position);
-                            e.Handled = true;
+                            var s = e.CumulativeManipulation.Scale.Length;
+                            this.zoomHandler.Zoom(prevScale - s, CameraPosition + CameraLookDirection, true);
+                            prevScale = s;
                         }
-                        break;
-                    case 2:
-                        if (EnablePinchZoom)
+                        else
                         {
-                            if (prevScale == 1)
+                            var zoomAroundPoint = this.zoomHandler.UnProject(
+                                p, this.zoomHandler.Origin, this.CameraLookDirection);
+                            if (zoomAroundPoint.HasValue)
                             {
-                                prevScale = e.CumulativeManipulation.Scale.Length;
+                                var s = e.CumulativeManipulation.Scale.Length;
+                                this.zoomHandler.Zoom(prevScale - s, zoomAroundPoint.Value, true);
+                                prevScale = s;
                             }
-                            else
-                            {
-                                if (PinchZoomAtCenter)
-                                {
-                                    var s = e.CumulativeManipulation.Scale.Length;
-                                    this.zoomHandler.Zoom((prevScale - s), CameraPosition + CameraLookDirection, true);
-                                    prevScale = s;
-                                }
-                                else
-                                {
-                                    var zoomAroundPoint = this.zoomHandler.UnProject(
-                                        p, this.zoomHandler.Origin, this.CameraLookDirection);
-                                    if (zoomAroundPoint.HasValue)
-                                    {
-                                        var s = e.CumulativeManipulation.Scale.Length;
-                                        this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
-                                        prevScale = s;
-                                    }
-                                }
-                            }
-                            e.Handled = true;
                         }
-                        break;
-                    case 3:
-                        if (EnableThreeFingerPan)
-                        {
-                            this.panHandler.Delta(position);
-                            e.Handled = true;
-                        }
-                        break;
+                    }
+
+                    e.Handled = true;
+                    if (!this.allowCombinedManipulation) return;
+                }
+
+                if (this.EnableThreeFingerPan && n == this.panFingerCount)
+                {
+                    this.panHandler.Delta(position);
+                    e.Handled = true;
+                    //if (!this.allowCombinedManipulation) return;
                 }
             }
         }
@@ -1033,6 +1064,34 @@ namespace HelixToolkit.Wpf.SharpDX
             this.touchPreviousPoint = e.ManipulationOrigin;
             this.manipulatorCount = 0;
             this.prevScale = 1;
+            this.panFingerCount = -1;
+            this.zoomFingerCount = -1;
+            this.rotateFingerCount = -1;
+            this.allowCombinedManipulation = false;
+
+            foreach (var mb in this.Viewport.InputBindings.OfType<ManipulationBinding>())
+            {
+                this.allowCombinedManipulation = true;
+                if (mb.Command == ViewportCommands.Pan)
+                {
+                    this.panFingerCount = mb.FingerCount;
+                }
+                else if (mb.Command == ViewportCommands.Zoom)
+                {
+                    this.zoomFingerCount = mb.FingerCount;
+                }
+                else if (mb.Command == ViewportCommands.Rotate)
+                {
+                    this.rotateFingerCount = mb.FingerCount;
+                }
+            }
+
+            if (!this.allowCombinedManipulation)
+            {
+                this.panFingerCount = 3;
+                this.zoomFingerCount = 2;
+                this.rotateFingerCount = 1;
+            }
         }
 
         /// <summary>
