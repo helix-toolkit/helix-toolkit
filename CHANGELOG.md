@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 5. Fix cube map auto mipmap generation #1087.  (WPF.SharpDX/UWP/Core)
 6. Fix Transform3DHelper.CombineTransform creates too nested Transform3DGroup #1089 (WPF)
 7. Fix local transform not getting calculated for UIElement3D in Visual3DHelper.GetTransform(). This solve mouse rotate getting reversed issue in Rotate Manipulator. (WPF)
+8. Fix Bound one dimension is zero on single point or single axis align line and causes hit test failed.(WPF.SharpDX/UWP/Core)
 
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
