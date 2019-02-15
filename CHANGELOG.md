@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Flat Normal Shading Mode for Phong/PBR/Diffuse Material. Use `EnableFlatShading = true` to enable this mode.(WPF.SharpDX/UWP/Core)
 2. Add LimitPFS option to prevent FPS over shoot on mouse move (WPF)
+3. ManipulationBinding allows to map ManipulationGesture for Wpf.SharpDX (WPF.SharpDX)
 
 ### Improvement and Changes
 1. Add LimitFPS option in HelixToolkit.WPF Viewport3D. Prevents mouse movement causes FPS overshooting. (WPF)
