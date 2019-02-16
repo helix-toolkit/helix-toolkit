@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 1. Fix Camera Rotation with ZoomAroundMouseDownpoint=true (SharpDX) #1068
+2. Fix rounding issue in TextGroupVisual3D CreateTextMaterial #1075
 
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
