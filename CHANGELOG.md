@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.6.1]
+## [2.6.1] - 2019-02-16
 
 ### Added
 1. Flat Normal Shading Mode for Phong/PBR/Diffuse Material. Use `EnableFlatShading = true` to enable this mode.(WPF.SharpDX/UWP/Core)
