@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 7. Fix local transform not getting calculated for UIElement3D in Visual3DHelper.GetTransform(). This solve mouse rotate getting reversed issue in Rotate Manipulator. (WPF)
 8. Fix Bound one dimension is zero on single point or single axis align line and causes hit test failed.(WPF.SharpDX/UWP/Core)
 9. Fix rounding issue in TextGroupVisual3D CreateTextMaterial #1075 (WPF)
+10. Fix Assimp importer user specified material type in configuration not working properly. (WPF.SharpDX/UWP/Core)
 
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
