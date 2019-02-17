@@ -61,7 +61,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 ## News
 #### 2019-02-16
-[v2.6.1](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.1) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+[v2.6.1](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.6.1)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.6.1)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.6.1)
@@ -69,7 +69,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 - [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.6.1)
 
 #### 2019-01-04
-[v2.6.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+[v2.6.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.6.0)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.6.0)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.6.0)
@@ -82,7 +82,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 
 #### 2018-10-19
-[V2.5.1](https://github.com/helix-toolkit/helix-toolkit/tree/hotfix/2.5.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+[V2.5.1](https://github.com/helix-toolkit/helix-toolkit/tree/hotfix/2.5.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 
 **Hotfix: Wrong type cast causes null reference exception when uses custom ViewBox texture.** (SharpDX Version Only)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.5.1)
@@ -91,4 +91,4 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 
-##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](https://github.com/helix-toolkit/helix-toolkit/blob/develop/CHANGELOG.md)
+##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](/CHANGELOG.md)
