@@ -354,8 +354,8 @@ namespace HelixToolkit.Wpf
                 panel.Children.Add(e);
             }
 
-            var pw = (int)OptimizeSize(panel, maxWidth, 1024);
-            var ph = (int)Math.Min(pw, panel.ActualHeight);
+            var pw = (int)Math.Ceiling(OptimizeSize(panel, maxWidth, 1024));
+            var ph = (int)Math.Ceiling(Math.Min(pw, panel.ActualHeight));
 
             elementPositions = new Dictionary<FrameworkElement, Rect>();
             foreach (FrameworkElement element in panel.Children)
