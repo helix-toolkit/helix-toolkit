@@ -113,6 +113,11 @@
     <Compile Include="Controls\DrawingContextExtensions.cs" />
     <Compile Include="Controls\DX11ImageSourceRenderHost.cs" />
     <Compile Include="Controls\IRenderCanvas.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationAction.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationActionConverter.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationGestureConverter.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationGesture.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationBinding.cs" />
     <Compile Include="Controls\RectangleAdorner.cs" />
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>

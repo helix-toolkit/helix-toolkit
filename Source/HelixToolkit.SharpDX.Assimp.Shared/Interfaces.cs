@@ -14,6 +14,9 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    /// <summary>
+    /// Custom Texture loading IO interface.
+    /// </summary>
     public interface ITextureIO
     {
         TextureModel Load(string modelPath, string texturePath, ILogger logger);

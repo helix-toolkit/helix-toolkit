@@ -536,6 +536,20 @@ namespace HelixToolkit.Wpf
                 "RotateAroundMouseDownPoint", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// Identifies the <see cref="FixedRotationPointEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointEnabledProperty =
+            DependencyProperty.Register(
+                "FixedRotationPointEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
+
+        /// <summary>
+        /// Identifies the <see cref="FixedRotationPoint"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointProperty =
+            DependencyProperty.Register(
+                "FixedRotationPoint", typeof(Point3D), typeof(HelixViewport3D), new UIPropertyMetadata(default(Point3D)));
+
+        /// <summary>
         /// Identifies the <see cref="RotateCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
@@ -790,6 +804,13 @@ namespace HelixToolkit.Wpf
                 "ZoomAroundMouseDownPoint", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// Identifies the <see cref="SnapMouseDownPoint"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SnapMouseDownPointProperty =
+            DependencyProperty.Register(
+                "SnapMouseDownPoint", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="ZoomCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
@@ -857,6 +878,15 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
             "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(HelixViewport3D));
+
+        /// <summary>
+        /// The limit FPS property
+        /// </summary>
+        public static readonly DependencyProperty LimitFPSProperty =
+            DependencyProperty.Register("LimitFPS", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(true, (d,e)=> 
+            {
+                (d as HelixViewport3D).limitFPS = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The adorner layer name.
@@ -2258,6 +2288,40 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to rotate around a fixed point.
+        /// </summary>
+        /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
+        public bool FixedRotationPointEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(FixedRotationPointEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(FixedRotationPointEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the center of rotation.
+        /// </summary>
+        /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
+        public Point3D FixedRotationPoint
+        {
+            get
+            {
+                return (Point3D)this.GetValue(FixedRotationPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(FixedRotationPointProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the rotation cursor.
         /// </summary>
         /// <value>
@@ -2934,6 +2998,23 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to snap the mouse down point to a model.
+        /// </summary>
+        /// <value> <c>true</c> if snapping the mouse down point is enabled; otherwise, <c>false</c> . </value>
+        public bool SnapMouseDownPoint
+        {
+            get
+            {
+                return (bool)this.GetValue(SnapMouseDownPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(SnapMouseDownPointProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the zoom cursor.
         /// </summary>
         /// <value>
@@ -3079,6 +3160,22 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [limit FPS].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [limit FPS]; otherwise, <c>false</c>.
+        /// </value>
+        public bool LimitFPS
+        {
+            get { return (bool)GetValue(LimitFPSProperty); }
+            set { SetValue(LimitFPSProperty, value); }
+        }
+
+        #region Private Variables
+        private bool limitFPS = true;
+        private TimeSpan prevTime;
+        #endregion
         /// <summary>
         /// Changes the camera direction.
         /// </summary>
@@ -3263,6 +3360,7 @@ namespace HelixToolkit.Wpf
                 if (this.cameraController != null)
                 {
                     this.cameraController.Viewport = this.Viewport;
+                    this.cameraController.LimitFPS = this.limitFPS;
                     this.cameraController.LookAtChanged += (s, e) => this.OnLookAtChanged();
                     this.cameraController.ZoomedByRectangle += (s, e) => this.OnZoomedByRectangle();
                 }
@@ -3646,8 +3744,13 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        private void CompositionTargetRendering(object sender, EventArgs e)
+        private void CompositionTargetRendering(object sender, RenderingEventArgs e)
         {
+            if (limitFPS && prevTime == e.RenderingTime)
+            {
+                return;
+            }
+            prevTime = e.RenderingTime;
             this.frameCounter++;
             if (this.ShowFrameRate && this.fpsWatch.ElapsedMilliseconds > 500)
             {

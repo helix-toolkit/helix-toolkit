@@ -96,7 +96,7 @@ cbuffer cbMesh : register(b1)
     bool bAutoTengent;
     bool bHasDisplacementMap = false;
     bool bRenderPBR = false;  
-    float padding12;
+    bool bRenderFlat = false; //Enable flat normal rendering
     float sMaterialShininess = 1.0f; //Ps := surface material's shininess
 
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);

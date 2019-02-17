@@ -393,6 +393,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// The pinch zoom at center property
+        /// </summary>
+        public static readonly DependencyProperty PinchZoomAtCenterProperty =
+            DependencyProperty.Register("PinchZoomAtCenter", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=> 
+            {
+                var viewport = d as Viewport3DX;
+                viewport.CameraController.PinchZoomAtCenter = (bool)e.NewValue;
+            }));
+
+        /// <summary>
         /// The enable touch rotate property
         /// </summary>
         public static readonly DependencyProperty IsThreeFingerPanningEnabledProperty =
@@ -1164,6 +1174,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
 
+        /// <summary>
+        /// The minimum update count property
+        /// </summary>
+        public static readonly DependencyProperty MinimumUpdateCountProperty =
+            DependencyProperty.Register("MinimumUpdateCount", typeof(int), typeof(Viewport3DX), new PropertyMetadata(6, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, (int)e.NewValue);
+                }
+            }));
 
         /// <summary>
         /// Background Color
@@ -1785,7 +1807,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(IsPinchZoomEnabledProperty, value);
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [pinch zoom at center] instead of at finger down point.
+        /// Default is false.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [pinch zoom at center]; otherwise, <c>false</c>.
+        /// </value>
+        public bool PinchZoomAtCenter
+        {
+            get { return (bool)GetValue(PinchZoomAtCenterProperty); }
+            set { SetValue(PinchZoomAtCenterProperty, value); }
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [enable three finger panning].
         /// </summary>
@@ -2980,6 +3013,20 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (SSAOQuality)GetValue(SSAOQualityProperty); }
             set { SetValue(SSAOQualityProperty, value); }
+        }
+
+        /// <summary>
+        /// The update count. Used to render at least N frames for each InvalidateRenderer. 
+        /// D3DImage sometimes not getting refresh if only render once.
+        /// Default = 6.
+        /// </summary>
+        /// <value>
+        /// The minimum update count.
+        /// </value>
+        public int MinimumUpdateCount
+        {
+            get { return (int)GetValue(MinimumUpdateCountProperty); }
+            set { SetValue(MinimumUpdateCountProperty, value); }
         }
     }
 }

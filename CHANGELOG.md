@@ -1,6 +1,29 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.6.1]
+
+### Added
+1. Flat Normal Shading Mode for Phong/PBR/Diffuse Material. Use `EnableFlatShading = true` to enable this mode.(WPF.SharpDX/UWP/Core)
+2. Add LimitPFS option to prevent FPS over shoot on mouse move (WPF)
+3. ManipulationBinding allows to map ManipulationGesture for Wpf.SharpDX (WPF.SharpDX)
+
+### Improvement and Changes
+1. Add LimitFPS option in HelixToolkit.WPF Viewport3D. Prevents mouse movement causes FPS overshooting. (WPF)
+2. Add SnapMouseDownPoint for CameraController and Viewport #1082. (WPF)
+3. Prevent zoom lock if look direction is too small (WPF.SharpDX/UWP/Core)
+
+### Fixed
+1. Fix Camera Rotation with ZoomAroundMouseDownpoint=true (SharpDX) #1068 (WPF.SharpDX/UWP/Core)
+2. Fix exception in Closest3DPointHitTester #1085 (WPF)
+3. Fix panning sometimes not working issue.(WPF.SharpDX/UWP/Core)
+4. ViewportExtensions.Project does not get correct projection #1090. (WPF.SharpDX/UWP/Core)
+5. Fix cube map auto mipmap generation #1087.  (WPF.SharpDX/UWP/Core)
+6. Fix Transform3DHelper.CombineTransform creates too nested Transform3DGroup #1089 (WPF)
+7. Fix local transform not getting calculated for UIElement3D in Visual3DHelper.GetTransform(). This solve mouse rotate getting reversed issue in Rotate Manipulator. (WPF)
+8. Fix Bound one dimension is zero on single point or single axis align line and causes hit test failed.(WPF.SharpDX/UWP/Core)
+9. Fix rounding issue in TextGroupVisual3D CreateTextMaterial #1075 (WPF)
+
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:
 1. Material UV Transform has been changed from  `Matrix`  to  `UVTransform`  struct. (WPF.SharpDX/UWP/Core)

@@ -11,7 +11,7 @@
 
 float3 calcNormal(PSInput input)
 {
-    float3 normal = normalize(input.n);
+    float3 normal = bRenderFlat ? normalize(cross(ddy(input.wp.xyz), ddx(input.wp.xyz))) : normalize(input.n);
     if (bHasNormalMap)
     {
         if (bAutoTengent)
@@ -21,18 +21,18 @@ float3 calcNormal(PSInput input)
         }
         else
         {
-		    // Normalize the per-pixel interpolated tangent-space
+		// Normalize the per-pixel interpolated tangent-space
             float3 tangent = normalize(input.t1);
             float3 biTangent = normalize(input.t2);
 
-		    // Sample the texel in the bump map.
+		// Sample the texel in the bump map.
             float3 bumpMap = texNormalMap.Sample(samplerSurface, input.t);
-		    // Expand the range of the normal value from (0, +1) to (-1, +1).
+		// Expand the range of the normal value from (0, +1) to (-1, +1).
             bumpMap = mad(2.0f, bumpMap, -1.0f);
-		    // Calculate the normal from the data in the bump map.
+		// Calculate the normal from the data in the bump map.
             normal += mad(bumpMap.x, tangent, bumpMap.y * biTangent);
             normal = normalize(normal);
-        }
+        }      
     }
     return normal;
 }
@@ -198,7 +198,6 @@ float4 main(PSInput input) : SV_Target
     const float3 V = normalize(input.vEye.xyz); // view vector
 
     float3 N = calcNormal(input);
-    
     float3 color = (float3) 0;
 
     float4 albedo = float4(input.cDiffuse.xyz, 1);

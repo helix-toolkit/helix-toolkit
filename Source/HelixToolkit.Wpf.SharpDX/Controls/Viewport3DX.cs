@@ -311,6 +311,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController.IsRotationEnabled = this.IsRotationEnabled;
             this.cameraController.EnableTouchRotate = this.IsTouchRotateEnabled;
             this.cameraController.EnablePinchZoom = this.IsPinchZoomEnabled;
+            this.cameraController.PinchZoomAtCenter = this.PinchZoomAtCenter;
             this.cameraController.EnableThreeFingerPan = this.IsThreeFingerPanningEnabled;
             this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
@@ -662,6 +663,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
                 this.renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
                 this.renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
+                this.renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, MinimumUpdateCount);
                 if (ShowFrameRate)
                 {
                     this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;

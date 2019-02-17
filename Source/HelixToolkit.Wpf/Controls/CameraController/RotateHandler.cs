@@ -292,7 +292,12 @@ namespace HelixToolkit.Wpf
                     this.rotationPoint3D = this.Controller.CameraPosition;
                     break;
                 default:
-                    if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
+                    if (this.Controller.FixedRotationPointEnabled)
+                    {
+                        this.rotationPoint = this.Viewport.Point3DtoPoint2D(this.Controller.FixedRotationPoint);
+                        this.rotationPoint3D = this.Controller.FixedRotationPoint;
+                    }
+                    else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {
                         this.LookAt(this.MouseDownNearestPoint3D.Value, 0);
                         this.rotationPoint3D = this.Controller.CameraTarget;

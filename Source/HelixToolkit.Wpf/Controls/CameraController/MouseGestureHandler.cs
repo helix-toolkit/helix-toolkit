@@ -483,7 +483,8 @@ namespace HelixToolkit.Wpf
         {
             this.MouseDownPoint = position;
             this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);
-            NearestPointInCamera nearestPoint = new Closest3DPointHitTester(this.Controller.Viewport, this.Controller.RotataAroundClosestVertexComplexity).CalculateMouseDownNearestPoint(position, true);
+            NearestPointInCamera nearestPoint = new Closest3DPointHitTester(this.Controller.Viewport, this.Controller.RotataAroundClosestVertexComplexity)
+                .CalculateMouseDownNearestPoint(position, Controller.SnapMouseDownPoint);
             this.MouseDownNearestPoint2D = nearestPoint.MouseDownNearestPoint2D;
             this.MouseDownNearestPoint3D = nearestPoint.MouseDownNearestPoint3D;
 

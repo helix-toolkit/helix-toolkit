@@ -21,11 +21,9 @@ namespace HelixToolkit.SharpDX.Core.Controls
         public override void Delta(Vector2 e)
         {
             base.Delta(e);
-            if (Camera.LookDirection.LengthSquared() < 1f && MouseDownNearestPoint3D.HasValue)
+            if (Camera.LookDirection.LengthSquared() < 1e-5f)
             {
-                var look = Camera.LookDirection.Normalized();
-                var v = MouseDownNearestPoint3D.Value - Camera.Position;
-                Camera.LookDirection = look * Vector3.Dot(v, look);
+                return;
             }
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
 

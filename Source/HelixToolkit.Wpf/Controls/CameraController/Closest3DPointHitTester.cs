@@ -93,8 +93,8 @@ namespace HelixToolkit.Wpf
             mViewPort3D.Children.Traverse<GeometryModel3D>(
                 (model, transform) =>
                 {
-                    MeshGeometry3D geometry = model.Geometry as MeshGeometry3D;
-                    if (geometry == null || geometry.Positions == null || geometry.TriangleIndices == null)
+                    if (!(model.Geometry is MeshGeometry3D geometry) || geometry.Positions == null || geometry.TriangleIndices == null
+                    || geometry.Positions.Count == 0 || geometry.TriangleIndices.Count == 0)
                     {
                         return;
                     }

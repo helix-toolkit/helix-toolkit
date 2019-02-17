@@ -201,6 +201,20 @@ namespace HelixToolkit.Wpf
                 "RotateAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
 
         /// <summary>
+        /// Identifies the <see cref="FixedRotationPointEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointEnabledProperty =
+            DependencyProperty.Register(
+                "FixedRotationPointEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
+
+        /// <summary>
+        /// Identifies the <see cref="FixedRotationPoint"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointProperty =
+            DependencyProperty.Register(
+                "FixedRotationPoint", typeof(Point3D), typeof(CameraController), new UIPropertyMetadata(default(Point3D)));
+
+        /// <summary>
         /// Identifies the <see cref="RotateCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
@@ -253,6 +267,13 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty ZoomAroundMouseDownPointProperty =
             DependencyProperty.Register(
                 "ZoomAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
+
+        /// <summary>
+        /// Identifies the <see cref="SnapMouseDownPoint"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SnapMouseDownPointProperty =
+            DependencyProperty.Register(
+                "SnapMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="ZoomCursor"/> dependency property.
@@ -1058,6 +1079,40 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to rotate around a fixed point.
+        /// </summary>
+        /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
+        public bool FixedRotationPointEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(FixedRotationPointEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(FixedRotationPointEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating the center of rotation.
+        /// </summary>
+        /// <value> <c>true</c> if rotation around a fixed point is enabled; otherwise, <c>false</c> . </value>
+        public Point3D FixedRotationPoint
+        {
+            get
+            {
+                return (Point3D)this.GetValue(FixedRotationPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(FixedRotationPointProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the rotate cursor.
         /// </summary>
         /// <value> The rotate cursor. </value>
@@ -1200,6 +1255,23 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to snap the mouse down point to a model.
+        /// </summary>
+        /// <value> <c>true</c> if snapping the mouse down point is enabled; otherwise, <c>false</c> . </value>
+        public bool SnapMouseDownPoint
+        {
+            get
+            {
+                return (bool)this.GetValue(SnapMouseDownPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(SnapMouseDownPointProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the zoom cursor.
         /// </summary>
         /// <value> The zoom cursor. </value>
@@ -1248,6 +1320,7 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ZoomSensitivityProperty, value);
             }
         }
+
 
         /// <summary>
         /// Efficiency option, lower values decrease computation time for camera interaction when
@@ -1299,7 +1372,16 @@ namespace HelixToolkit.Wpf
                 return this.ActualCamera as PerspectiveCamera;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [limit FPS].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [limit FPS]; otherwise, <c>false</c>.
+        /// </value>
+        public bool LimitFPS { set; get; } = true;
+        #region Private Variables
+        private TimeSpan prevTime;
+        #endregion
         /// <summary>
         /// Adds the specified move force.
         /// </summary>
@@ -2140,6 +2222,11 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
+            if (LimitFPS && prevTime == e.RenderingTime)
+            {
+                return;
+            }
+            prevTime = e.RenderingTime;
             var ticks = e.RenderingTime.Ticks;
             var time = 100e-9 * (ticks - this.lastTick);
 
@@ -2274,7 +2361,8 @@ namespace HelixToolkit.Wpf
             {
                 var point = e.GetPosition(this);
 
-                Point3D? nearestPoint = new Closest3DPointHitTester(this.Viewport, this.RotataAroundClosestVertexComplexity).CalculateMouseDownNearestPoint(point, true).MouseDownNearestPoint3D;
+                Point3D? nearestPoint = new Closest3DPointHitTester(this.Viewport, this.RotataAroundClosestVertexComplexity)
+                    .CalculateMouseDownNearestPoint(point, SnapMouseDownPoint).MouseDownNearestPoint3D;
                 if (nearestPoint.HasValue)
                 {
                     this.AddZoomForce(-e.Delta * 0.001, nearestPoint.Value);

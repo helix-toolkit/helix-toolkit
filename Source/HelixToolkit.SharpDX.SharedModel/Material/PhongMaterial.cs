@@ -269,6 +269,25 @@ namespace HelixToolkit.Wpf.SharpDX
                 ((d as Material).Core as PhongMaterialCore).UVTransform = (UVTransform)e.NewValue;
             }));
 
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable flat shading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableFlatShading
+        {
+            get { return (bool)GetValue(EnableFlatShadingProperty); }
+            set { SetValue(EnableFlatShadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableFlatShadingProperty =
+            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false, (d,e)=>
+            {
+                ((d as Material).Core as PhongMaterialCore).EnableFlatShading = (bool)e.NewValue;
+            }));
+
         /// <summary>
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
@@ -618,9 +637,10 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderEmissiveMap = core.RenderEmissiveMap;
             EnableAutoTangent = core.EnableAutoTangent;
             UVTransform = core.UVTransform;
+            EnableFlatShading = core.EnableFlatShading;
         }
 
-        public PhongMaterial CloneMaterial()
+        public virtual PhongMaterial CloneMaterial()
         {
             return new PhongMaterial()
             {
@@ -655,6 +675,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderEmissiveMap = RenderEmissiveMap,
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform,
+                EnableFlatShading = EnableFlatShading,
             };
         }
 
@@ -699,7 +720,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderSpecularColorMap = RenderSpecularColorMap,
                 RenderEmissiveMap = RenderEmissiveMap,
                 EnableAutoTangent = EnableAutoTangent,
-                UVTransform = UVTransform
+                UVTransform = UVTransform,
+                EnableFlatShading = EnableFlatShading,
             };
         }
     }

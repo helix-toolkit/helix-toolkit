@@ -310,7 +310,7 @@ namespace HelixToolkit.UWP
         public static Vector2 Project(this IViewport3DX viewport, Vector3 point)
         {
             var matrix = GetScreenViewProjectionMatrix(viewport);
-            var pointTransformed = Vector3.Transform(point, matrix);
+            var pointTransformed = Vector3.TransformCoordinate(point, matrix);
             var pt = new Vector2((int)pointTransformed.X, (int)pointTransformed.Y);
             return pt;
         }

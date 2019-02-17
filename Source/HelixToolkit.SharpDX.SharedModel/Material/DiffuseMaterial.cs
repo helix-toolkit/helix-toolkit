@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Utilities;
 
 
-    public sealed class DiffuseMaterial : Material
+    public class DiffuseMaterial : Material
     {
         /// <summary>
         /// The diffuse color property
@@ -120,6 +120,24 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as Material).Core as DiffuseMaterialCore).EnableUnLit = (bool)e.NewValue;
                 }));
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable flat shading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableFlatShading
+        {
+            get { return (bool)GetValue(EnableFlatShadingProperty); }
+            set { SetValue(EnableFlatShadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableFlatShadingProperty =
+            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(DiffuseMaterial), new PropertyMetadata(false, (d, e) =>
+            {
+                ((d as Material).Core as DiffuseMaterialCore).EnableFlatShading = (bool)e.NewValue;
+            }));
+
         public DiffuseMaterial() { }
 
         public DiffuseMaterial(DiffuseMaterialCore core) : base(core)
@@ -129,6 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UVTransform = core.UVTransform;
             DiffuseMapSampler = core.DiffuseMapSampler;
             EnableUnLit = core.EnableUnLit;
+            EnableFlatShading = core.EnableFlatShading;
         }
 
         protected override MaterialCore OnCreateCore()
@@ -140,11 +159,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 UVTransform = UVTransform,
                 DiffuseMapSampler = DiffuseMapSampler,
                 EnableUnLit = EnableUnLit,
+                EnableFlatShading = EnableFlatShading,
             };
         }
 
-#if !NETFX_CORE
-        protected override Freezable CreateInstanceCore()
+        public virtual DiffuseMaterial CloneMaterial()
         {
             return new DiffuseMaterial()
             {
@@ -154,7 +173,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 UVTransform = UVTransform,
                 Name = Name,
                 EnableUnLit = EnableUnLit,
+                EnableFlatShading = EnableFlatShading,
             };
+        }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return CloneMaterial();
         }
 #endif
     }

@@ -111,6 +111,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the mouse down point at the nearest hit element (3D world coordinates).
         /// </summary>
         protected Vector3? MouseDownNearestPoint3D { get; set; }
+        /// <summary>
+        /// Gets or sets the mouse down nearest hit model bounding box center.
+        /// </summary>
+        /// <value>
+        /// The mouse down nearest model bound center.
+        /// </value>
+        protected Vector3? MouseDownNearestModelBoundCenter { set; get; }
 
         /// <summary>
         /// Gets or sets the mouse down point (2D screen coordinates).
@@ -399,19 +406,21 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(hits.Count > 0)
                 {
+                    MouseDownNearestPoint3D = hits[0].PointHit;
                     if(hits[0].ModelHit is Element3D ele)
                     {
-                        this.MouseDownNearestPoint3D = ele.BoundsWithTransform.Center;
+                        MouseDownNearestModelBoundCenter = ele.BoundsWithTransform.Center;
                     }
                     else if(hits[0].ModelHit is Model.Scene.SceneNode node)
                     {
-                        MouseDownNearestPoint3D = node.BoundsWithTransform.Center;
+                        MouseDownNearestModelBoundCenter = node.BoundsWithTransform.Center;
                     }
                 }               
             }
             else
             {
-                this.MouseDownNearestPoint3D = null;
+                MouseDownNearestModelBoundCenter = null;
+                MouseDownNearestPoint3D = null;
             }
 
             this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);

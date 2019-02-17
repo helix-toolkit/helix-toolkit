@@ -148,8 +148,8 @@ o object1
 g group1
 usemtl mat1
 v 2 0 0
+v 2 0 1
 v 2 1 0
-v 2 0 -1
 # 3 vertices
 vt 0 1
 vt 1 1
@@ -172,6 +172,124 @@ f 1/1 2/2 3/3
                 if (File.Exists(mtlPath))
                     File.Delete(mtlPath);
             }
+        }
+
+        [Test]
+        public void Export_SwitchYZ_Default()
+        {
+            var originalMesh = new MeshGeometry3D
+            {
+                Positions = { new Point3D(0, 1, 0) },
+                Normals = { new Vector3D(0, 1, 0) },
+                TriangleIndices = { 0, 0, 0 }
+            };
+            
+            byte[] buffer;
+            
+            using (var memory = new MemoryStream())
+            using (var writer = new StreamWriter(memory))
+            {
+                var exporter = new ObjExporter();
+                exporter.ExportNormals = true;
+                exporter.ExportMesh(writer, originalMesh, Transform3D.Identity);
+            
+                writer.Flush();
+                buffer = memory.ToArray();
+            }
+            
+            Model3DGroup modelGroup;
+            
+            using (var memory = new MemoryStream(buffer))
+            {
+                var reader = new ObjReader();
+                modelGroup = reader.Read(memory);
+            }
+            
+            var model3D = (GeometryModel3D)modelGroup.Children[0];
+            var modelMesh = (MeshGeometry3D)model3D.Geometry;
+
+            Assert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
+            Assert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
+        }
+
+        [Test]
+        public void Export_SwitchYZ_True()
+        {
+            var originalMesh = new MeshGeometry3D
+            {
+                Positions = { new Point3D(0, 1, 0) },
+                Normals = { new Vector3D(0, 1, 0) },
+                TriangleIndices = { 0, 0, 0 }
+            };
+            
+            byte[] buffer;
+            
+            using (var memory = new MemoryStream())
+            using (var writer = new StreamWriter(memory))
+            {
+                var exporter = new ObjExporter();
+                exporter.SwitchYZ = true;
+                exporter.ExportNormals = true;
+                exporter.ExportMesh(writer, originalMesh, Transform3D.Identity);
+            
+                writer.Flush();
+                buffer = memory.ToArray();
+            }
+            
+            Model3DGroup modelGroup;
+            
+            using (var memory = new MemoryStream(buffer))
+            {
+                var reader = new ObjReader();
+                reader.SwitchYZ = true;
+                modelGroup = reader.Read(memory);
+            }
+            
+            var model3D = (GeometryModel3D)modelGroup.Children[0];
+            var modelMesh = (MeshGeometry3D)model3D.Geometry;
+
+            Assert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
+            Assert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
+        }
+
+        [Test]
+        public void Export_SwitchYZ_False()
+        {
+            var originalMesh = new MeshGeometry3D
+            {
+                Positions = { new Point3D(0, 1, 0) },
+                Normals = { new Vector3D(0, 1, 0) },
+                TriangleIndices = { 0, 0, 0 }
+            };
+            
+            byte[] buffer;
+            
+            using (var memory = new MemoryStream())
+            using (var writer = new StreamWriter(memory))
+            {
+                var exporter = new ObjExporter();
+                exporter.SwitchYZ = false;
+                exporter.ExportNormals = true;
+                exporter.ExportMesh(writer, originalMesh, Transform3D.Identity);
+            
+                writer.Flush();
+                buffer = memory.ToArray();
+            }
+            
+            Model3DGroup modelGroup;
+            
+            using (var memory = new MemoryStream(buffer))
+            {
+                var reader = new ObjReader();
+                reader.SwitchYZ = false;
+                modelGroup = reader.Read(memory);
+            }
+            
+            var model3D = (GeometryModel3D)modelGroup.Children[0];
+            var modelMesh = (MeshGeometry3D)model3D.Geometry;
+
+            Assert.AreEqual(originalMesh.Positions[0], modelMesh.Positions[0]);
+            Assert.AreEqual(originalMesh.Normals[0], modelMesh.Normals[0]);
         }
     }
 }
