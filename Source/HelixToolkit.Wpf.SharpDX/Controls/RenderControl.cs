@@ -23,18 +23,24 @@ using System.Windows.Forms;
 
 namespace HelixToolkit.Wpf.SharpDX.Controls
 {
+    using System;
+    using System.Windows.Media;
+
     /// <summary>
     /// A Renderable UserControl.
     /// </summary>
     public class RenderControl : UserControl
     {
+        private readonly Visual hostVisual;
+
         private Font fontForDesignMode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderControl"/> class.
         /// </summary>
-        public RenderControl()
+        public RenderControl(Visual hostVisual = null)
         {
+            this.hostVisual = hostVisual;
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.UserPaint, true);
             UpdateStyles();
         }
@@ -66,6 +72,27 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 var sizeText = e.Graphics.MeasureString(text, fontForDesignMode);
 
                 e.Graphics.DrawString(text, fontForDesignMode, new SolidBrush(System.Drawing.Color.Black), (Width - sizeText.Width) / 2, (Height - sizeText.Height) / 2);
+            }
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            if (this.hostVisual != null)
+            {
+                VirtualTouchDevice.RegisterTouchWindow(this.Handle, 0);
+            }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (VirtualTouchDevice.WndProc(this.hostVisual, ref m))
+            {
+                this.DefWndProc(ref m);
+            }
+            else
+            {
+                base.WndProc(ref m);
             }
         }
     }

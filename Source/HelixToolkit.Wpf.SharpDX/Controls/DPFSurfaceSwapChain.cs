@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
-            surfaceD3D = new RenderControl();
+            surfaceD3D = new RenderControl(this);
             Child = surfaceD3D;
             if (deferredRendering)
             {

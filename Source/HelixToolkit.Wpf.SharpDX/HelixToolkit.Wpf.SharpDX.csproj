@@ -118,6 +118,7 @@
     <Compile Include="Controls\MouseHandlers\ManipulationGestureConverter.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationGesture.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationBinding.cs" />
+    <Compile Include="Controls\MouseHandlers\VirtualTouchDevice.cs" />
     <Compile Include="Controls\RectangleAdorner.cs" />
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
