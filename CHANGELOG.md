@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [NextVersion]
+
+### Added
+1. Make it possible to receive touch/manipulation events from swap chain render control (WinForms).(WPF.SharpDX)
+
+### Improvement and Changes
+
+### Fixed
+
 ## [2.6.1] - 2019-02-16
 
 ### Added
