@@ -89,6 +89,11 @@
             ShowCoordinateSystem="true"
             ShowFrameDetails="True"
             ShowFrameRate="True">
+            <hx:Viewport3DX.InputBindings>
+                <hx:ManipulationBinding Command="Rotate" Gesture="Pan" />
+                <hx:ManipulationBinding Command="Pan" Gesture="TwoFingerPan" />
+                <hx:ManipulationBinding Command="Zoom" Gesture="Pinch" />
+            </hx:Viewport3DX.InputBindings>
             <hx:ShadowMap3D />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="White" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
@@ -191,6 +196,11 @@
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
             SharedModelContainer="{Binding ElementName=sharedModel}"
             ShowCoordinateSystem="true">
+            <hx:Viewport3DX.InputBindings>
+                <hx:ManipulationBinding Command="Rotate" Gesture="Pan" />
+                <hx:ManipulationBinding Command="Pan" Gesture="TwoFingerPan" />
+                <hx:ManipulationBinding Command="Zoom" Gesture="Pinch" />
+            </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D Direction="{Binding ElementName=viewport1, Path=Camera.LookDirection}" Color="White" />
             <!--<hx:AxisPlaneGridModel3D Offset="-20" AutoSpacing="False" PlaneColor="#003E3E3E" GridThickness="0.02"/>-->
             <hx:AxisPlaneGridModel3D
