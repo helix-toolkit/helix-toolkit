@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 1. Make it possible to receive touch/manipulation events from swap chain render control (WinForms).(WPF.SharpDX)
+2. ManipulationBinding allows to map ManipulationGesture for UWP (UWP)
 
 ### Improvement and Changes
 
