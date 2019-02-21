@@ -80,6 +80,12 @@ namespace HelixToolkit.UWP
         /// The items.
         /// </value>
         public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
+
+        /// <summary>
+        /// Gets the observable collection of <see cref="InputBinding"/>.
+        /// </summary>
+        public InputBindingCollection InputBindings { get; } = new InputBindingCollection();
+
         /// <summary>
         /// Gets the renderables.
         /// </summary>
