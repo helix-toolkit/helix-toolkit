@@ -85,6 +85,8 @@ namespace HelixToolkit.UWP
             /// </value>
             protected bool NeedClearDepthBuffer { set; get; } = true;
 
+            private List<HitTestResult> screenSpaceHits = new List<HitTestResult>();
+
             public ScreenSpacedNode()
             {
                 this.ChildNodeAdded += ScreenSpacedNode_OnAddChildNode;
@@ -181,7 +183,21 @@ namespace HelixToolkit.UWP
                 r.Normalize();
 
                 ray = new Ray(zn, r);
-                return base.OnHitTest(context, totalModelMatrix, ref ray, ref hits);
+                screenSpaceHits.Clear();
+                if(base.OnHitTest(context, totalModelMatrix, ref ray, ref screenSpaceHits))
+                {
+                    if (hits == null)
+                    {
+                        hits = new List<HitTestResult>();
+                    }
+                    hits.Clear();
+                    hits.AddRange(screenSpaceHits);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }
