@@ -17,10 +17,17 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Model.Scene;
 
-
-
     /// <summary>
-    /// Base class for screen space rendering, such as Coordinate System or ViewBox
+    /// ScreenSpacedElement3D uses a fixed camera to render model (Mainly used for view box and coordinate system rendering) onto screen which is separated from viewport camera.
+    /// <para>
+    /// Default fix camera is perspective camera with FOV 45 degree and camera distance = 20. Look direction is always looking at (0,0,0).
+    /// </para>
+    /// <para>
+    /// User must properly scale the model to fit into the camera frustum. The usual maximum size is from (5,5,5) to (-5,-5,-5) bounding box.
+    /// </para>
+    /// <para>
+    /// User can use <see cref="ScreenSpacedNode.SizeScale"/> to scale the size of the rendering.
+    /// </para>
     /// </summary>
     public abstract class ScreenSpacedElement3D : GroupModel3D
     {
