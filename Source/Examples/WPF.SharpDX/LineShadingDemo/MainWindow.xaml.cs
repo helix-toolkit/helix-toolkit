@@ -44,7 +44,7 @@ namespace LineShadingDemo
                 {
                     foreach (var hit in hits.Where(h => h.IsValid))
                     {
-                        (hit.ModelHit as Element3D).RaiseEvent(new MouseDown3DEventArgs(hit.ModelHit, hit, e.GetPosition(this.view1) ));
+                        (hit.ModelHit as Element3D).RaiseEvent(new MouseDown3DEventArgs(hit.ModelHit, hit, e.GetPosition(this.view1), null, e));
                         if (e.Handled)
                         {
                             break;

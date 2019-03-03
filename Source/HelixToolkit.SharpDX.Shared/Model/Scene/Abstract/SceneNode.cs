@@ -979,19 +979,19 @@ namespace HelixToolkit.UWP
                 return RenderOrderKey.CompareTo(other.RenderOrderKey);
             }
 
-            public void RaiseMouseDownEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit)
+            public void RaiseMouseDownEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit, object originalInputEventArgs = null)
             {
-                MouseDown?.Invoke(this, new SceneNodeMouseDownArgs(viewport, pos, this, hit));
+                MouseDown?.Invoke(this, new SceneNodeMouseDownArgs(viewport, pos, this, hit, originalInputEventArgs));
             }
 
-            public void RaiseMouseMoveEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit)
+            public void RaiseMouseMoveEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit, object originalInputEventArgs = null)
             {
-                MouseMove?.Invoke(this, new SceneNodeMouseMoveArgs(viewport, pos, this, hit));
+                MouseMove?.Invoke(this, new SceneNodeMouseMoveArgs(viewport, pos, this, hit, originalInputEventArgs));
             }
 
-            public void RaiseMouseUpEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit)
+            public void RaiseMouseUpEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit, object originalInputEventArgs = null)
             {
-                MouseUp?.Invoke(this, new SceneNodeMouseUpArgs(viewport, pos, this, hit));
+                MouseUp?.Invoke(this, new SceneNodeMouseUpArgs(viewport, pos, this, hit, originalInputEventArgs));
             }
 
 
@@ -1051,12 +1051,14 @@ namespace HelixToolkit.UWP
             public SceneNode Source { get; }
             public IViewport3DX Viewport { get; }
             public Vector2 Position { get; }
-            public SceneNodeMouseDownArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit)
+            public object OriginalInputEventArgs { get; }
+            public SceneNodeMouseDownArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit, object originalInputEventArgs = null)
             {
                 Viewport = viewport;
                 Position = pos;
                 Source = node;
                 HitResult = hit;
+                OriginalInputEventArgs = originalInputEventArgs;
             }
         }
 
@@ -1066,12 +1068,14 @@ namespace HelixToolkit.UWP
             public SceneNode Source { get; }
             public IViewport3DX Viewport { get; }
             public Vector2 Position { get; }
-            public SceneNodeMouseMoveArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit)
+            public object OriginalInputEventArgs { get; }
+            public SceneNodeMouseMoveArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit, object originalInputEventArgs = null)
             {
                 Viewport = viewport;
                 Position = pos;
                 Source = node;
                 HitResult = hit;
+                OriginalInputEventArgs = originalInputEventArgs;
             }
         }
 
@@ -1081,12 +1085,14 @@ namespace HelixToolkit.UWP
             public SceneNode Source { get; }
             public IViewport3DX Viewport { get; }
             public Vector2 Position { get; }
-            public SceneNodeMouseUpArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit)
+            public object OriginalInputEventArgs { get; }
+            public SceneNodeMouseUpArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit, object originalInputEventArgs = null)
             {
                 Viewport = viewport;
                 Position = pos;
                 Source = node;
                 HitResult = hit;
+                OriginalInputEventArgs = originalInputEventArgs;
             }
         }
         #endregion

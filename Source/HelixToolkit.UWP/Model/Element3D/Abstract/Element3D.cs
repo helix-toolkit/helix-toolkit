@@ -8,6 +8,7 @@ using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
@@ -111,17 +112,17 @@ namespace HelixToolkit.UWP
 
         private void Node_MouseMove(object sender, Model.Scene.SceneNodeMouseMoveArgs e)
         {
-            RaiseMouseMoveEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX);
+            RaiseMouseMoveEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as PointerRoutedEventArgs);
         }
 
         private void Node_MouseUp(object sender, Model.Scene.SceneNodeMouseUpArgs e)
         {
-            RaiseMouseUpEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX);
+            RaiseMouseUpEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as PointerRoutedEventArgs);
         }
 
         private void Node_MouseDown(object sender, Model.Scene.SceneNodeMouseDownArgs e)
         {
-            RaiseMouseDownEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX);
+            RaiseMouseDownEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as PointerRoutedEventArgs);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -151,19 +152,19 @@ namespace HelixToolkit.UWP
 
         public event EventHandler<MouseMove3DEventArgs> OnMouse3DMove;
 
-        internal void RaiseMouseDownEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        internal void RaiseMouseDownEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
         {
-            OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(hitTestResult, p, viewport));
+            OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
         }
 
-        internal void RaiseMouseUpEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        internal void RaiseMouseUpEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
         {
-            OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(hitTestResult, p, viewport));
+            OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
         }
 
-        internal void RaiseMouseMoveEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        internal void RaiseMouseMoveEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
         {
-            OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(hitTestResult, p, viewport));
+            OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
         }
         #endregion
     }
@@ -173,33 +174,40 @@ namespace HelixToolkit.UWP
         public HitTestResult HitTestResult { get; private set; }
         public Viewport3DX Viewport { get; private set; }
         public Point Position { get; private set; }
+        /// <summary>
+        /// The original mouse/touch event that generated this one.
+        /// 
+        /// Useful for knowing what mouse button got pressed.
+        /// </summary>
+        public PointerRoutedEventArgs OriginalInputEventArgs { get; private set; }
 
-        public Mouse3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+        public Mouse3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
         {
             this.HitTestResult = hitTestResult;
             this.Position = position;
             this.Viewport = viewport;
+            this.OriginalInputEventArgs = originalInputEventArgs;
         }
     }
 
     public sealed class MouseDown3DEventArgs : Mouse3DEventArgs
     {
-        public MouseDown3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(hitTestResult, position, viewport)
+        public MouseDown3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
+            : base(hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 
     public sealed class MouseUp3DEventArgs : Mouse3DEventArgs
     {
-        public MouseUp3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(hitTestResult, position, viewport)
+        public MouseUp3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
+            : base(hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 
     public sealed class MouseMove3DEventArgs : Mouse3DEventArgs
     {
-        public MouseMove3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(hitTestResult, position, viewport)
+        public MouseMove3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
+            : base(hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 }

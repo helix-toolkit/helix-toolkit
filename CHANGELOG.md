@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 2. ManipulationBinding allows to map ManipulationGesture for UWP (UWP)
 
 ### Improvement and Changes
+1. Mouse3DEventArgs now also store the mouse/touch/pen event that caused the Mouse3DEvent #1111 (WPF.SharpDX/UWP)
 
 ### Fixed
 
