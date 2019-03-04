@@ -1615,7 +1615,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input event (which mouse button pressed?)
         /// </param>
         private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
@@ -1628,7 +1628,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 return;
             }
-            if (ViewBoxHitTest(pt))
+            if (ViewBoxHitTest(pt, originalInputEventArgs))
             {
                 originalInputEventArgs.Handled = true;
                 return;
@@ -1652,12 +1652,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if(currentHit.ModelHit is Element3D ele)
                     {
-                        ele.RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                        ele.RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
                     else if(currentHit.ModelHit is SceneNode sceneNode)
                     {
-                        sceneNode.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit);
-                        RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                        sceneNode.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
+                        RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
                 }
             }
@@ -1665,17 +1665,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 currentHit = null;
                 // Raise event from Viewport3DX if there's no hit
-                this.RaiseEvent(new MouseDown3DEventArgs(this, null, pt, this));
+                this.RaiseEvent(new MouseDown3DEventArgs(this, null, pt, this, originalInputEventArgs));
             }
         }
 
-        private bool ViewBoxHitTest(Point p)
+        private bool ViewBoxHitTest(Point p, InputEventArgs originalInputEventArgs = null)
         {
             var ray = this.UnProject(p.ToVector2());
             var hits = new List<HitTestResult>();
             if(viewCube.HitTest(RenderContext, ray, ref hits))
             {
-                viewCube.RaiseEvent(new MouseDown3DEventArgs(viewCube, this.currentHit, p, this));
+                viewCube.RaiseEvent(new MouseDown3DEventArgs(viewCube, this.currentHit, p, this, originalInputEventArgs));
                 var normal = hits[0].NormalAtHit;              
                 if (Vector3.Cross(normal, ModelUpDirection.ToVector3()).LengthSquared() < 1e-5)
                 {
@@ -1699,7 +1699,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input event (which mouse button pressed?)
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
@@ -1723,18 +1723,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (currentHit.ModelHit is Element3D ele)
                     {
-                        ele.RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                        ele.RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
                     else if(currentHit.ModelHit is SceneNode sceneNode)
                     {
-                        sceneNode.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit);
-                        RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                        sceneNode.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
+                        RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
                 }
                 else
                 {
                     // Raise event from Viewport3DX if there's no hit
-                    this.RaiseEvent(new MouseMove3DEventArgs(this, null, pt, this));
+                    this.RaiseEvent(new MouseMove3DEventArgs(this, null, pt, this, originalInputEventArgs));
                 }
             }
         }
@@ -1744,7 +1744,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input event (which mouse button pressed?)
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {            
@@ -1762,12 +1762,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 {               
                     if(currentHit.ModelHit is Element3D ele)
                     {
-                        ele.RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                        ele.RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
                     else if(currentHit.ModelHit is SceneNode sceneNode)
                     {
-                        sceneNode.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit);
-                        RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                        sceneNode.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
+                        RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
 
                     this.currentHit = null;
@@ -1776,7 +1776,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                 {
                     // Raise event from Viewport3DX if there's no hit
-                    this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
+                    this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this, originalInputEventArgs));
                 }
             }
         }

@@ -14,6 +14,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using System;
     using Model;
+    using System.Windows.Input;
+
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
@@ -206,17 +208,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void Node_MouseUp(object sender, Model.Scene.SceneNodeMouseUpArgs e)
         {
-            RaiseEvent(new MouseUp3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX));
+            RaiseEvent(new MouseUp3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as InputEventArgs));
         }
 
         private void Node_MouseMove(object sender, Model.Scene.SceneNodeMouseMoveArgs e)
         {
-            RaiseEvent(new MouseMove3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX));
+            RaiseEvent(new MouseMove3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as InputEventArgs));
         }
 
         private void Node_MouseDown(object sender, Model.Scene.SceneNodeMouseDownArgs e)
         {
-            RaiseEvent(new MouseDown3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX));
+            RaiseEvent(new MouseDown3DEventArgs(this, e.HitResult, new Point(e.Position.X, e.Position.Y), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as InputEventArgs));
         }
 
         /// <summary>
@@ -266,34 +268,41 @@ namespace HelixToolkit.Wpf.SharpDX
         public HitTestResult HitTestResult { get; private set; }
         public Viewport3DX Viewport { get; private set; }
         public Point Position { get; private set; }
+        /// <summary>
+        /// The original mouse/touch event that generated this one.
+        /// 
+        /// Useful for knowing what mouse button got pressed.
+        /// </summary>
+        public InputEventArgs OriginalInputEventArgs { get; private set; }
 
-        public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+        public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
             : base(routedEvent, source)
         {
             this.HitTestResult = hitTestResult;
             this.Position = position;
             this.Viewport = viewport;
+            this.OriginalInputEventArgs = originalInputEventArgs;
         }
     }
 
     public class MouseDown3DEventArgs : Mouse3DEventArgs
     {
-        public MouseDown3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(Element3D.MouseDown3DEvent, source, hitTestResult, position, viewport)
+        public MouseDown3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
+            : base(Element3D.MouseDown3DEvent, source, hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 
     public class MouseUp3DEventArgs : Mouse3DEventArgs
     {
-        public MouseUp3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(Element3D.MouseUp3DEvent, source, hitTestResult, position, viewport)
+        public MouseUp3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
+            : base(Element3D.MouseUp3DEvent, source, hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 
     public class MouseMove3DEventArgs : Mouse3DEventArgs
     {
-        public MouseMove3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(Element3D.MouseMove3DEvent, source, hitTestResult, position, viewport)
+        public MouseMove3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
+            : base(Element3D.MouseMove3DEvent, source, hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 }
