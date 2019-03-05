@@ -213,6 +213,14 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
+        /// Call to manually update vertex color buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
+        /// </summary>
+        public void UpdateColors()
+        {
+            RaisePropertyChanged(nameof(Colors));
+        }
+
+        /// <summary>
         /// Create Octree for current model.
         /// </summary>
         public void UpdateOctree(bool force = false)
