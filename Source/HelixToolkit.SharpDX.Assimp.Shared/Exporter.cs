@@ -169,6 +169,53 @@ namespace HelixToolkit.UWP
                 }
                 return ErrorCode.Failed;
             }
+            /// <summary>
+            /// Exports to BLOB.
+            /// </summary>
+            /// <param name="root">The root.</param>
+            /// <param name="formatId">The format identifier.</param>
+            /// <param name="blob">The BLOB.</param>
+            /// <returns></returns>
+            public ErrorCode ExportToBlob(HxScene.SceneNode root, string formatId, out ExportDataBlob blob)
+            {
+                Clear();
+                AssimpContext exporter = null;
+                var useExtern = false;
+                if (Configuration.ExternalContext != null)
+                {
+                    exporter = Configuration.ExternalContext;
+                    useExtern = true;
+                }
+                else
+                {
+                    exporter = new AssimpContext();
+                }
+                var scene = CreateScene(root);
+                var postProcessing = configuration.PostProcessing;
+                if (configuration.FlipWindingOrder)
+                {
+                    postProcessing |= PostProcessSteps.FlipWindingOrder;
+                }
+                blob = null;
+                try
+                {
+                    blob = exporter.ExportToBlob(scene, formatId, postProcessing);
+                    return ErrorCode.Succeed;
+                }
+                catch (Exception ex)
+                {
+                    Log(LogLevel.Error, ex.Message);
+                }
+                finally
+                {
+                    if (!useExtern)
+                    {
+                        exporter.Dispose();
+                    }
+                }
+                
+                return ErrorCode.Failed;
+            }
 
             /// <summary>
             /// Convert a HelixToolkit scene graph to the assimp scene.
@@ -178,6 +225,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public ErrorCode ToAssimpScene(HxScene.SceneNode root, out Scene assimpScene)
             {
+                Clear();
                 assimpScene = CreateScene(root);
                 return ErrorCode.Succeed;
             }
