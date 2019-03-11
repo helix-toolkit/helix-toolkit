@@ -170,6 +170,18 @@ namespace HelixToolkit.UWP
                 return ErrorCode.Failed;
             }
 
+            /// <summary>
+            /// Convert a HelixToolkit scene graph to the assimp scene.
+            /// </summary>
+            /// <param name="root">The HelixToolkit scene graph root node.</param>
+            /// <param name="assimpScene">The assimp scene.</param>
+            /// <returns></returns>
+            public ErrorCode ToAssimpScene(HxScene.SceneNode root, out Scene assimpScene)
+            {
+                assimpScene = CreateScene(root);
+                return ErrorCode.Succeed;
+            }
+
             private Scene CreateScene(HxScene.SceneNode root)
             {
                 CollectAllGeometriesAndMaterials(root);
