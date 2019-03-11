@@ -243,6 +243,17 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
+            /// Converts HelixToolkit Scene directly from assimp scene. User is responsible for providing the assimp scene.
+            /// </summary>
+            /// <param name="assimpScene">The assimp scene.</param>
+            /// <param name="helixScene">The helix scene.</param>
+            /// <returns></returns>
+            public ErrorCode ToHelixToolkitScene(Scene assimpScene, out HelixToolkitScene helixScene)
+            {
+                return BuildScene(assimpScene, out helixScene);
+            }
+
+            /// <summary>
             /// Loads the specified file stream. User must provider custom texture loader to load texture files.
             /// </summary>
             /// <param name="fileStream">The file stream.</param>

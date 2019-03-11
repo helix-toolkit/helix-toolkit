@@ -405,7 +405,6 @@ namespace HelixToolkit.Wpf
             {
                 var element = new ModelUIElement3D();
                 EdgeModels.Add(element);
-                Children.Add(EdgeModels[i]);
                 element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
                 element.MouseEnter += EdggesMouseEnters;
                 element.MouseLeave += EdgesMouseLeaves;
@@ -415,7 +414,6 @@ namespace HelixToolkit.Wpf
             {
                 var element = new ModelUIElement3D();
                 CornerModels.Add(element);
-                Children.Add(CornerModels[i]);
                 element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
                 element.MouseEnter += EdggesMouseEnters;
                 element.MouseLeave += EdgesMouseLeaves;
@@ -495,48 +493,25 @@ namespace HelixToolkit.Wpf
 
         private void EnableDisableEdgeClicks()
         {
+            foreach (var item in EdgeModels)
+            {
+                Children.Remove(item);
+            }
+            foreach (var item in CornerModels)
+            {
+                Children.Remove(item);
+            }
             if (EnableEdgeClicks)
             {
                 foreach (var item in EdgeModels)
                 {
-                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
-                    item.MouseEnter -= EdggesMouseEnters;
-                    item.MouseLeave -= EdgesMouseLeaves;
-                    item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-                    item.MouseEnter += EdggesMouseEnters;
-                    item.MouseLeave += EdgesMouseLeaves;
-                    item.Visibility = Visibility.Visible;
-                    ModelUIElement3D s = item as ModelUIElement3D;
-                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(EdgeBrush);
+                    (item.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(EdgeBrush);
+                    Children.Add(item);
                 }
                 foreach (var item in CornerModels)
                 {
-                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
-                    item.MouseEnter -= CornersMouseEnters;
-                    item.MouseLeave -= CornersMouseLeave;
-                    item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-                    item.MouseEnter += CornersMouseEnters;
-                    item.MouseLeave += CornersMouseLeave;
-                    item.Visibility = Visibility.Visible;
-                    ModelUIElement3D s = item as ModelUIElement3D;
-                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(CornerBrush);
-                }
-            }
-            else
-            {
-                foreach (var item in EdgeModels)
-                {
-                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
-                    item.MouseEnter -= EdggesMouseEnters;
-                    item.MouseLeave -= EdgesMouseLeaves;
-                    item.Visibility = Visibility.Collapsed;
-                }
-                foreach (var item in CornerModels)
-                {
-                    item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
-                    item.MouseEnter -= CornersMouseEnters;
-                    item.MouseLeave -= CornersMouseLeave;
-                    item.Visibility = Visibility.Collapsed;
+                    (item.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(CornerBrush);
+                    Children.Add(item);
                 }
             }
         }
@@ -694,8 +669,10 @@ namespace HelixToolkit.Wpf
 
             var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
             bmp.Render(grid);
-
-            return MaterialHelper.CreateMaterial(new ImageBrush(bmp));
+            bmp.Freeze();
+            var m = MaterialHelper.CreateMaterial(new ImageBrush(bmp));
+            m.Freeze();
+            return m;
         }
 
         /// <summary>
