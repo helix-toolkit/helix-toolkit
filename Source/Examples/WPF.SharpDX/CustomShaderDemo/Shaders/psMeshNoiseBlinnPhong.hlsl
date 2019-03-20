@@ -169,28 +169,12 @@ float4 main(PSInput input) : SV_Target
 
     // get per pixel vector to eye-position
     float3 V = normalize(input.vEye.xyz);
-    // add diffuse sampling
-    float4 diffuse = input.cDiffuse;
-    if (bHasDiffuseMap)
-    {
-	    // SamplerState is defined in Common.fx.
-        diffuse *= texDiffuseMap.Sample(samplerSurface, input.t);
-    }
-
-    float alpha = saturate(abs(cos(input.wp.y + input.wp.y * sin(TimeStamp))));
+    // add time dependend diffuse color
+    float4 diffuse = float4(abs(cos(TimeStamp)), abs(sin(TimeStamp)), abs(cos(TimeStamp) * sin(frac(TimeStamp))), 1);
+    float alpha = whenle(saturate(abs(cos(input.wp.y + TimeStamp + sin(input.wp.x)))), 0.9);
     float4 specular = vMaterialSpecular;
     float shininess = sMaterialShininess;
     float4 reflectColor = vMaterialReflect;
-    if (bBatched)
-    {
-        specular = FloatToRGB(input.c.z);
-        shininess = input.c.x;
-        reflectColor = FloatToRGB(input.c.w);
-    }
-    if (bHasSpecularMap)
-    {
-        specular *= texSpecularMap.Sample(samplerSurface, input.t);
-    }
     float4 color = lightSurface(input.wp, V, N, diffuse, specular, shininess, reflectColor);
     color.a = alpha;
     return color;
