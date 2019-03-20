@@ -271,7 +271,8 @@ namespace HelixToolkit.UWP
         public uint SSAOEnabled;
         public float SSAOBias;
         public float SSAOIntensity;
-        Vector2 padding;
+        public float TimeStamp;
+        float padding;
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;
