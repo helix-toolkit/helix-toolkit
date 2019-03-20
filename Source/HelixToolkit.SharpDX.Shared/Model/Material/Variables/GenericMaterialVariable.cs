@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP
 
             private readonly Dictionary<string, int> resourceIdxDict = new Dictionary<string, int>();
             private readonly Dictionary<string, int> samplerIdxDict = new Dictionary<string, int>();
-            private readonly GenericMaterialCore core;
+            private readonly GenericMaterialCore materialCore;
 
             public GenericMaterialVariable(IEffectsManager manager, IRenderTechnique technique,
                 GenericMaterialCore materialCore, ConstantBufferDescription constantBufferDescription,
@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
                 string depthPassName = DefaultPassNames.DepthPrepass)
                 : base(manager, technique, constantBufferDescription, materialCore)
             {
-                core = materialCore;
+                this.materialCore = materialCore;
                 materialPass = technique[materialShaderPassName];
                 shadowPass = technique[shadowShaderPassName];
                 wireframePass = technique[wireframePassName];
@@ -66,17 +66,23 @@ namespace HelixToolkit.UWP
                     samplerResources[i] = new KeyValuePair<int, SamplerStateProxy>(mapping.Key, null);
                 }
 
-                foreach(var texture in materialCore.TextureDict)
+
+                materialCore.UpdatingResource += MaterialCore_UpdatingResource;
+            }
+
+            protected override void OnInitialPropertyBindings()
+            {
+                base.OnInitialPropertyBindings();
+                foreach (var texture in materialCore.TextureDict)
                 {
                     SetTexture(texture.Key, texture.Value);
                 }
-
-                foreach(var sampler in materialCore.SamplerDict)
+                foreach (var sampler in materialCore.SamplerDict)
                 {
                     SetSampler(sampler.Key, sampler.Value);
                 }
 
-                foreach(var prop in materialCore.FloatDict)
+                foreach (var prop in materialCore.FloatDict)
                 {
                     WriteValue(prop.Key, prop.Value);
                 }
@@ -96,7 +102,6 @@ namespace HelixToolkit.UWP
                 {
                     WriteValue(prop.Key, prop.Value);
                 }
-                materialCore.UpdatingResource += MaterialCore_UpdatingResource;
             }
 
             private void MaterialCore_UpdatingResource(object sender, GenericMaterialCore.UpdateEvent e)
@@ -104,25 +109,25 @@ namespace HelixToolkit.UWP
                 switch (e.Type)
                 {
                     case ResourceType.Sampler:
-                        SetSampler(e.Name, core.GetSampler(e.Name));
+                        SetSampler(e.Name, materialCore.GetSampler(e.Name));
                         break;
                     case ResourceType.Texture:
-                        SetTexture(e.Name, core.GetTexture(e.Name));
+                        SetTexture(e.Name, materialCore.GetTexture(e.Name));
                         break;
                     case ResourceType.Float:
-                        WriteValue(e.Name, core.FloatDict[e.Name]);
+                        WriteValue(e.Name, materialCore.FloatDict[e.Name]);
                         break;
                     case ResourceType.Vector2:
-                        WriteValue(e.Name, core.Vector2Dict[e.Name]);
+                        WriteValue(e.Name, materialCore.Vector2Dict[e.Name]);
                         break;
                     case ResourceType.Vector3:
-                        WriteValue(e.Name, core.Vector3Dict[e.Name]);
+                        WriteValue(e.Name, materialCore.Vector3Dict[e.Name]);
                         break;
                     case ResourceType.Vector4:
-                        WriteValue(e.Name, core.Vector4Dict[e.Name]);
+                        WriteValue(e.Name, materialCore.Vector4Dict[e.Name]);
                         break;
                     case ResourceType.Matrix:
-                        WriteValue(e.Name, core.MatrixDict[e.Name]);
+                        WriteValue(e.Name, materialCore.MatrixDict[e.Name]);
                         break;
                 }
             }
@@ -199,7 +204,7 @@ namespace HelixToolkit.UWP
             {
                 if (disposeManagedResources)
                 {
-                    core.UpdatingResource -= MaterialCore_UpdatingResource;
+                    materialCore.UpdatingResource -= MaterialCore_UpdatingResource;
                 }
                 base.OnDispose(disposeManagedResources);
             }

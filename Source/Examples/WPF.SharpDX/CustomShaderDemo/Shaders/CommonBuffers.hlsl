@@ -24,7 +24,8 @@ cbuffer cbTransforms : register(b0)
     bool SSAOEnabled;
     float SSAOBias;
     float SSAOIntensity;
-    float2 padding0;
+    float TimeStamp;
+    float padding0;
     float OITPower;
     float OITSlope;
     int OITWeightMode;
