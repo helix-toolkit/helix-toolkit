@@ -34,6 +34,9 @@ artifacts:
   - path: '*.nupkg'
     name: HelixToolkit-packages-$(GitVersion_SemVer)
     type: zip
+  - path: '*.snupkg'
+    name: HelixToolkit-packages-symbols-$(GitVersion_SemVer)
+    type: zip
   - path: Source\dist-examples
     name: HelixToolkit-Examples-$(GitVersion_SemVer)
     type: zip
