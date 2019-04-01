@@ -51,9 +51,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The level.
             /// </value>
+            [IgnoreDataMember]
             public FeatureLevel Level
             {
-                set; get;
+                private set; get;
             }
 
             private byte[] byteCode;
@@ -93,32 +94,32 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The constant buffer mappings.
             /// </value>
-            [DataMember]
-            public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
+            [IgnoreDataMember]
+            public ConstantBufferMapping[] ConstantBufferMappings { private set; get; }
             /// <summary>
             /// Gets or sets the texture mappings.
             /// </summary>
             /// <value>
             /// The texture mappings.
             /// </value>
-            [DataMember]
-            public TextureMapping[] TextureMappings { set; get; }
+            [IgnoreDataMember]
+            public TextureMapping[] TextureMappings { private set; get; }
             /// <summary>
             /// Gets or sets the uav mappings.
             /// </summary>
             /// <value>
             /// The uav mappings.
             /// </value>
-            [DataMember]
-            public UAVMapping[] UAVMappings { get; set; }
+            [IgnoreDataMember]
+            public UAVMapping[] UAVMappings { private set; get; }
             /// <summary>
             /// Gets or sets the sampler mappings.
             /// </summary>
             /// <value>
             /// The sampler mappings.
             /// </value>
-            [DataMember]
-            public SamplerMapping[] SamplerMappings { set; get; }
+            [IgnoreDataMember]
+            public SamplerMapping[] SamplerMappings { private set; get; }
 
             /// <summary>
             /// Gets or sets the shader reflector.
@@ -126,7 +127,8 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The shader reflector.
             /// </value>
-            public IShaderReflector ShaderReflector { set; get; }
+            [IgnoreDataMember]
+            public IShaderReflector ShaderReflector { private set; get; }
 
             private readonly IShaderByteCodeReader byteCodeReader;
             #region GS Stream output Only
@@ -248,21 +250,20 @@ namespace HelixToolkit.UWP
                 {
                     return null;
                 }
-                if(ShaderReflector != null)
+                ShaderReflector = ShaderReflector ?? new ShaderReflector();
+                ShaderReflector.Parse(ByteCode, ShaderType);
+                Level = ShaderReflector.FeatureLevel;
+                if (Level > device.FeatureLevel)
                 {
-                    ShaderReflector.Parse(ByteCode, ShaderType);
-                    Level = ShaderReflector.FeatureLevel;
-                    if (Level > device.FeatureLevel)
-                    {
-                        logger?.Log(LogLevel.Warning, $"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
-                        return null;
-                        //throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
-                    }
-                    this.ConstantBufferMappings = ShaderReflector.ConstantBufferMappings.Values.ToArray();
-                    this.TextureMappings = ShaderReflector.TextureMappings.Values.ToArray();
-                    this.UAVMappings = ShaderReflector.UAVMappings.Values.ToArray();
-                    this.SamplerMappings = ShaderReflector.SamplerMappings.Values.ToArray();
+                    logger?.Log(LogLevel.Warning, $"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
+                    return null;
+                    //throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
                 }
+                this.ConstantBufferMappings = ShaderReflector.ConstantBufferMappings.Values.ToArray();
+                this.TextureMappings = ShaderReflector.TextureMappings.Values.ToArray();
+                this.UAVMappings = ShaderReflector.UAVMappings.Values.ToArray();
+                this.SamplerMappings = ShaderReflector.SamplerMappings.Values.ToArray();
+
                 ShaderBase shader = null;
                 switch (ShaderType)
                 {
