@@ -55,6 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 AttachChildren(e.NewItems);
             }
+            InvalidateRender();
         }
 
         protected void AttachChildren(IEnumerable children)
