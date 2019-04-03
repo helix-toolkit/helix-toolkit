@@ -6,11 +6,14 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Make it possible to receive touch/manipulation events from swap chain render control (WinForms).(WPF.SharpDX)
 2. ManipulationBinding allows to map ManipulationGesture for UWP (UWP)
+3. Added TimeStamp in default shader global variable for time based shader animation. (WPF.SharpDX/UWP/Core)
 
 ### Improvement and Changes
 1. Mouse3DEventArgs now also store the mouse/touch/pen event that caused the Mouse3DEvent #1111 (WPF.SharpDX/UWP)
 
 ### Fixed
+Fix RenderTechnicsExample SharpDX crash SharpDX bug #1130 (WPF.SharpDX/UWP/Core)
+Fix find 3d point on single axis aligned 3d line. #1114 (WPF.SharpDX/UWP/Core)
 
 ## [2.6.1] - 2019-02-16
 
