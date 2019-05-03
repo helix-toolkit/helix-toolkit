@@ -126,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 parentWindow.Closed -= ParentWindow_Closed;
             }
-            if (DataContext == null)
+            if (DataContext == null && RenderHost.EffectsManager == null)
             {
                 EndD3D();
             }
