@@ -300,12 +300,12 @@ namespace HelixToolkit.Wpf.Input
         {
             get
             {
-                return (double)this.GetValue(SensivityProperty);
+                return (double)this.GetValue(ZoomSensivityProperty);
             }
 
             set
             {
-                this.SetValue(SensivityProperty, value);
+                this.SetValue(ZoomSensivityProperty, value);
             }
         }
 
