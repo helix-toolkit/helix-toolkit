@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         [DllImport("user32")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool RegisterTouchWindow(IntPtr hWnd, ulong ulFlags);
+        public static extern bool RegisterTouchWindow(IntPtr hWnd, uint ulFlags);
 
         public static bool WndProc(Visual visual, ref Message m)
         {
