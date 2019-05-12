@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Next Release]
+
+### Added
+1. Implement HelixToolkit.Wpf and HelixToolkit.Wpf.SharpDX supports for .Net Core 3.0 WPF.
+
+### Improvement and Changes
+
+### Fixed
+
+
 ## [2.7.0] - 2019-05-12
 
 ### Added
