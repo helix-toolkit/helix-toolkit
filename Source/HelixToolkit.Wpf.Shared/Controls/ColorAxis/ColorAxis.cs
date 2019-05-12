@@ -227,14 +227,14 @@ namespace HelixToolkit.Wpf
                         this.Padding.Left,
                         this.Padding.Top,
                         this.BarWidth,
-                        this.ActualHeight - this.Padding.Bottom - this.Padding.Top);
+                        System.Math.Max(0, this.ActualHeight - this.Padding.Bottom - this.Padding.Top));
                     break;
                 case ColorAxisPosition.Right:
                     this.ColorArea = new Rect(
-                        this.ActualWidth - this.Padding.Right - this.BarWidth,
+                        System.Math.Max(0, this.ActualWidth - this.Padding.Right - this.BarWidth),
                         this.Padding.Top,
                         this.BarWidth,
-                        this.ActualHeight - this.Padding.Bottom - this.Padding.Top);
+                        System.Math.Max(0, this.ActualHeight - this.Padding.Bottom - this.Padding.Top));
                     break;
             }
 

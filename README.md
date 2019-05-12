@@ -29,9 +29,9 @@ Please download full source code to run examples. Or download [compiled version]
 
 Description         | Value
 --------------------|-----------------------
-Web page            | http://helix-toolkit.org/
+Web page            | http://helix-toolkit.github.io/
 Wiki                | https://github.com/helix-toolkit/helix-toolkit/wiki
-Documentation       | http://docs.helix-toolkit.org/
+Documentation       | http://helix-toolkit.readthedocs.io/
 Chat                | https://gitter.im/helix-toolkit/helix-toolkit
 Source repository   | http://github.com/helix-toolkit/helix-toolkit
 Latest build        | http://ci.appveyor.com/project/objorke/helix-toolkit
