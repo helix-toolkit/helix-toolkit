@@ -7,13 +7,10 @@
 using System;
 using System.Collections.Generic;
 using SharpDX;
-
 #if COREWPF
-using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
 
     public class ThreePointLight3D : GroupElement3D, ILight3D

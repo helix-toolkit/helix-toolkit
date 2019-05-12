@@ -11,11 +11,7 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Controls;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 #endif
 {
     namespace Controls

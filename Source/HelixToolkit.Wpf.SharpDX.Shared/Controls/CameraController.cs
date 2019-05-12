@@ -15,13 +15,14 @@ using System.Windows.Input;
 using Vector3 = global::SharpDX.Vector3;
 using Vector2 = global::SharpDX.Vector2;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Utilities;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
+#if !COREWPF
     using Utilities;
+#endif
     /// <summary>
     /// Provides a control that manipulates the camera by mouse and keyboard gestures.
     /// </summary>
@@ -543,12 +544,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             set; get;
         } = new Vector3();
-        #region TouchGesture
+#region TouchGesture
         public bool EnableTouchRotate { set; get; } = true;
         public bool EnablePinchZoom { set; get; } = true;
         public bool EnableThreeFingerPan { set; get; } = true;
         public bool PinchZoomAtCenter { set; get; } = false;
-        #endregion
+#endregion
 
         /// <summary>
         /// Adds the specified move force.

@@ -883,15 +883,22 @@ namespace HelixToolkit.UWP
                         }
                         info.Duplication.GetFrameMoveRects(metaDataSize, moveBuffer, out int moveRectSize);
                         data.MoveRectangles = moveBuffer;
+#if !NETFX_CORE
+                        data.MoveCount = moveRectSize / Marshal.SizeOf(typeof(OutputDuplicateMoveRectangle));
+#else
                         data.MoveCount = moveRectSize / Marshal.SizeOf<OutputDuplicateMoveRectangle>();
-
+#endif
                         if (dirtyBuffer == null || dirtyBuffer.Length < metaDataSize)
                         {
                             dirtyBuffer = new RawRectangle[metaDataSize];
                         }
                         info.Duplication.GetFrameDirtyRects(metaDataSize, dirtyBuffer, out int dirtyRectSize);
                         data.DirtyRectangles = dirtyBuffer;
+#if !NETFX_CORE
+                        data.DirtyCount = dirtyRectSize / Marshal.SizeOf(typeof(RawRectangle));
+#else
                         data.DirtyCount = dirtyRectSize / Marshal.SizeOf<RawRectangle>();
+#endif
                         data.FrameInfo = frameInfo;
                         data.Frame = texture2D;
                         return true;

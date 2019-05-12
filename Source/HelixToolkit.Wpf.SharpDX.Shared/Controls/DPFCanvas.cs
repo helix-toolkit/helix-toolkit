@@ -22,15 +22,17 @@ using global::SharpDX.Direct3D11;
     using Device = SharpDX.Direct3D11.Device;
 #endif
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Render;
 using HelixToolkit.SharpDX.Core.Utilities;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     using Controls;
+#if !COREWPF
     using Render;
     using Utilities;
+#endif
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -301,7 +303,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return null;
         }
 
-        #region IDisposable Support
+#region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -336,6 +338,6 @@ namespace HelixToolkit.Wpf.SharpDX
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-        #endregion
+#endregion
     }
 }

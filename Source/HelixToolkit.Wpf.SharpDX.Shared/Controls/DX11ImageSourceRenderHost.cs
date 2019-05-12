@@ -1,6 +1,6 @@
 ﻿using System;
 using global::SharpDX.Direct3D11;
-
+using System.Diagnostics;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -8,14 +8,16 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 using Device = SharpDX.Direct3D11.Device;
 #endif
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Render;
 #endif
-{
 
+namespace HelixToolkit.Wpf.SharpDX
+{
+#if !COREWPF
     using Render;
-    using System.Diagnostics;
+#endif
+    
     namespace Controls
     {
         public sealed class DX11ImageSourceArgs : EventArgs

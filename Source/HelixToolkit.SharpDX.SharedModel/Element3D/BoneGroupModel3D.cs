@@ -7,10 +7,8 @@ namespace HelixToolkit.UWP
 using System.Windows;
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
 #if !COREWPF

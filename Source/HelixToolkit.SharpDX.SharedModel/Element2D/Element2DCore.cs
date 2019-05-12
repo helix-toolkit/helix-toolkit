@@ -15,11 +15,10 @@ namespace HelixToolkit.UWP.Core2D
 #else
 using System.Windows;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene2D;
-namespace HelixToolkit.SharpDX.Core.Wpf.Core2D
-#else
-namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
+namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
 #if !COREWPF

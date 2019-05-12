@@ -24,16 +24,16 @@ using Vector3 = global::SharpDX.Vector3;
 using global::SharpDX.Direct3D11;
 
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Utilities;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HitTestResult = HelixToolkit.SharpDX.Core.HitTestResult;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
 
-    using Cameras;
 #if !COREWPF
+    using Cameras;
     using Utilities;
     using Model.Scene;
 #endif

@@ -12,10 +12,9 @@ using global::SharpDX;
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using MeshGeometry3D = HelixToolkit.SharpDX.Core.MeshGeometry3D;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     
 #if !COREWPF

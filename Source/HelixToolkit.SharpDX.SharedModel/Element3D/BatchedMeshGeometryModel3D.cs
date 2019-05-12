@@ -16,17 +16,17 @@ using System.Windows;
 using Colors = System.Windows.Media.Colors;
 using Color = System.Windows.Media.Color;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
 using HelixToolkit.SharpDX.Core.Model;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
-#endif
 {
-    using Core;
     using Model;
 #if !COREWPF
+    using Core;
     using Model.Scene;
 #endif
     /// <summary>
@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsThrowingShadowProperty =
         DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
         {
-            if ((d as Element3D).SceneNode is Core.IThrowingShadow t)
+            if ((d as Element3D).SceneNode is IThrowingShadow t)
             {
                 t.IsThrowingShadow = (bool)e.NewValue;
             }
@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
-        /// <see cref="Core.IThrowingShadow.IsThrowingShadow"/>
+        /// <see cref="IThrowingShadow.IsThrowingShadow"/>
         /// </summary>
         public bool IsThrowingShadow
         {

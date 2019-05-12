@@ -6,12 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Media = System.Windows.Media;
-
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
 #endif
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     public class OctreeLineGeometryModel3D : CompositeModel3D
     {

@@ -9,20 +9,24 @@ using System.Windows.Media;
 using HelixToolkit.Logger;
 
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Cameras;
+using HelixToolkit.SharpDX.Core.Render;
 using HelixToolkit.SharpDX.Core.Model.Scene;
 using HelixToolkit.SharpDX.Core.Model.Scene2D;
 using HelixToolkit.SharpDX.Core.Utilities;
-namespace HelixToolkit.SharpDX.Core.Wpf
 #else
 using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX.Model.Scene2D;
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
+#if !COREWPF
     using Cameras;
-    using Controls;  
     using Render;
     using Utilities;
+#endif
+    using Controls; 
 
     [DefaultProperty("Children")]
     [ContentProperty("Items")]

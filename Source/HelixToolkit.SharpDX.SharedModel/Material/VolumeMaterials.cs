@@ -12,15 +12,17 @@ namespace HelixToolkit.UWP
 using System.ComponentModel;
 using System.Windows;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Shaders;
 using HelixToolkit.SharpDX.Core.Model;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
-#endif
 {
+#if !COREWPF
     using Model;
     using Shaders;
+#endif
     public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMaterial
     {
         public SamplerStateDescription Sampler

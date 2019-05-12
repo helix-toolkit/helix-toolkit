@@ -9,11 +9,7 @@
 using System;
 using System.Windows;
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     /// Provides data for the manipulation events.

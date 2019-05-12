@@ -13,11 +13,8 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     /// A virtual <see cref="TouchDevice"/> enabling Windows.Forms controls to generate Touch/Manipulation-Events.

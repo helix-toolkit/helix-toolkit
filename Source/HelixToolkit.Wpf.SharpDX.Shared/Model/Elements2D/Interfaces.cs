@@ -3,11 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Media = System.Windows.Media;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     namespace Elements2D
     {

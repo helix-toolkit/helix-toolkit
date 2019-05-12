@@ -9,17 +9,16 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 #if COREWPF
+using HelixToolkit.SharpDX.Core.Shaders;
 using HelixToolkit.SharpDX.Core.Model;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
 #if !COREWPF
     using Model;
-#endif
     using Shaders;
+#endif
     using Utilities;
 
     /// <summary>

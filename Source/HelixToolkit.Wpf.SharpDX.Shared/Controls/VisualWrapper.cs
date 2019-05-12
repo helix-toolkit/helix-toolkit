@@ -5,11 +5,7 @@ using System.Windows.Markup;
 using System.Windows;
 using System.Windows.Media;
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     ///     The VisualWrapper simply integrates a raw Visual child into a tree

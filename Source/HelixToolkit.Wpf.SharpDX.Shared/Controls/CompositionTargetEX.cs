@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Windows.Media;
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     namespace Controls
     {

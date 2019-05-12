@@ -8,13 +8,14 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+using HelixToolkit.SharpDX.Core.Cameras;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
-#endif
 {
+#if !COREWPF
     using Cameras;
+#endif
     public interface IPerspectiveCameraModel
     {
         double FieldOfView { set; get; }

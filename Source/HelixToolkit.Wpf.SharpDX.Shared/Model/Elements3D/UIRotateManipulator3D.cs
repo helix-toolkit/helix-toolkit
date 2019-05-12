@@ -9,13 +9,13 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
-
 using global::SharpDX;
+
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
 #endif
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     using Utilities;
     using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;

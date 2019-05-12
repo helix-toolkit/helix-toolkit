@@ -6,10 +6,8 @@
 
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene2D;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     using Core2D;
     using global::SharpDX;

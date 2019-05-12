@@ -4,11 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     //public class UIResizeManipulator3D : UIManipulator3D
     //{

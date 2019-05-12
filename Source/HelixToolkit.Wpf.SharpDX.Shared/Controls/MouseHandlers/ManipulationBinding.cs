@@ -10,11 +10,8 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     /// Binds a <see cref="ManipulationGesture"/> to a <see cref="RoutedCommand"/> (or another <see cref="ICommand"/>

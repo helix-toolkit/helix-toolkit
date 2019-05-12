@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>342788cd-c98c-4856-99f3-e38bceacb2b7</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>HelixToolkit.Wpf.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Adorners\DrawingContextExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Adorners\RectangleAdorner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Adorners\TargetSymbolAdorner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\CameraController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\CameraMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\CameraRotationMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\CameraSetting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\Closest3DPointHitTester.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\ClosestVertexResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\ManipulationEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\MouseGestureHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\NearestPointInCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\PanHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\RotateHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\ZoomHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController\ZoomRectangleHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ColorAxis\CategorizedColorAxis.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ColorAxis\ColorAxis.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ColorAxis\ColorAxisPosition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ColorAxis\RangeColorAxis.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\HelixViewport3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\IHelixViewport3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\InputBindingX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Stereo\AnaglyphView3D.xaml.cs">
+      <DependentUpon>AnaglyphView3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Stereo\InterlacedView3D.xaml.cs">
+      <DependentUpon>InterlacedView3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Stereo\StereoControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Stereo\StereoView3D.xaml.cs">
+      <DependentUpon>StereoView3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Stereo\WiggleView3D.xaml.cs">
+      <DependentUpon>WiggleView3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\LinearConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NotNullToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\SelfProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\StringToBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\BitmapExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\ColladaExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\Exporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\Exporters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\IExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\KerkytheaExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\ObjExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\PovRayExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\RenderManExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\StlExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\VrmlExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\X3DExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exporters\XamlExporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\AnimationExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Matrix3DExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Point3DExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Vector3DExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\BoundingSphere.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\LineSegment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\Mesh3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\Plane3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\Ray3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geometry\Triangle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AttachedProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\BrushHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CameraHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CanonicalSplineHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ColorHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DependencyPropertyEx.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ElementSortingHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\GradientBrushes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\GZipHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\IBoundsIgnoredVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\LoopSubdivision.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\MaterialHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Materials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Model3DHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScreenSpace\Billboard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScreenSpace\BillboardGeometryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScreenSpace\CohenSutherlandClipping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScreenSpace\LineGeometryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScreenSpace\PointGeometryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScreenSpace\ScreenGeometryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StereoHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\TextCreator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Transform3DHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Viewport3DHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Visual3DHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\WeakEventListeners\RenderingEventListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\WeakEventListeners\WeakEventListener{TEventManager,TEventArgs}.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\WeakEventManagers\RenderingEventManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\WeakEventManagers\WeakEventManagerBase{TManager}.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\XamlHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\IModelReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\Importers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\LwoReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\ModelImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\ModelReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\ObjReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\OffReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\PlyReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\StLReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Importers\StudioReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\GradientExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\ImageBrushExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\ImageMaterialExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\KeyGestureExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\LinearGradientBrushExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\MaterialExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\PerspectiveCameraExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\TranslateExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Physics\VerletIntegrator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedByPointEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedByRectangleEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\PointSelectionCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\RectangleSelectionCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\SelectionCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\SelectionHitMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\VisualsSelectedByPointEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\VisualsSelectedByRectangleEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\VisualsSelectedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\BoundingBoxVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\ClonedVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\CoordinateSystemVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\CuttingPlaneGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\Expander3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\Exploder3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\FileModelVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\LightVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\MeshNormalsVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\MeshVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\PanoramaCube3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\RenderingModelVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\SortingVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\VectorFieldVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Composite\ViewCubeVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\LightSetups\DefaultLights.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\LightSetups\DirectionalHeadLight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\LightSetups\GenericHeadLight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\LightSetups\LightSetup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\LightSetups\SpotHeadLight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\LightSetups\SunLight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\LightSetups\ThreePointLights.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Manipulators\BindableRotateManipulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Manipulators\BindableTranslateManipulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Manipulators\CombinedManipulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Manipulators\Manipulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Manipulators\RotateManipulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Manipulators\TranslateManipulator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\ArrowVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\BoxVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\CubeVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\EllipsoidVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\ExtrudedVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\GridLinesVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\HelixVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\MeshElement3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\MeshGeometryVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\ParametricSurface3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\ParticleSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\PieSliceVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\PipeVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\QuadVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\RectangleVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\SphereVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\TestModels\Teapot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\TorusVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\TruncatedConeVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\MeshVisuals\TubeVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\ScreenSpaceVisuals\BillboardVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\ScreenSpaceVisuals\BoundingBoxWireFrameVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\ScreenSpaceVisuals\LinesVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\ScreenSpaceVisuals\PointsVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\ScreenSpaceVisuals\ScreenSpaceVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Terrain\TerrainModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Terrain\TerrainVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Terrain\Textures\MapTexture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Terrain\Textures\SlopeDirectionTexture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Terrain\Textures\SlopeTexture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Terrain\Textures\TerrainTexture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Text\BillboardTextGroupVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Text\BillboardTextItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Text\BillboardTextVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Text\SpatialTextItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Text\TextGroupVisual3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Text\TextItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visual3Ds\Text\TextVisual3D.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Stereo\AnaglyphView3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Stereo\InterlacedView3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Stereo\StereoView3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\Stereo\WiggleView3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

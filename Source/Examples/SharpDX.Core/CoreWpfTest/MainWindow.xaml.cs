@@ -9,7 +9,7 @@
 
 namespace CoreWpfTest
 {
-    using HelixToolkit.SharpDX.Core.Wpf;
+    using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.SharpDX.Core.Model.Scene;
     using System.Windows;
     using FileLoadDemo;

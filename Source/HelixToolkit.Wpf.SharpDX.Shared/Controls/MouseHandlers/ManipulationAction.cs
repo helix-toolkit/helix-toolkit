@@ -7,11 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 using System.ComponentModel;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     /// Specifies constants that define actions performed by manipulation.

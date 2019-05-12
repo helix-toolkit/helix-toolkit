@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CoreWpfTest"
-        xmlns:hx="clr-namespace:HelixToolkit.SharpDX.Core.Wpf;assembly=HelixToolkit.SharpDX.Core.Wpf"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>

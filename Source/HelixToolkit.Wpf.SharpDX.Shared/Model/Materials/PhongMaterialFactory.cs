@@ -6,19 +6,14 @@
 //
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using System.Linq;
+using System.Collections.ObjectModel;
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+using global::SharpDX;
+using System;
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
-    using System.Linq;
-    using System.Collections.ObjectModel;
-
-    using global::SharpDX;
-    using System;
-
     public class PhongMaterialCollection : ObservableCollection<PhongMaterial>
     {
         public PhongMaterialCollection()

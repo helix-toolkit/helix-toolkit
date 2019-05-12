@@ -7,23 +7,26 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
-#endif
-{
-    using Cameras;
-    using System;
-    using System.Globalization;
-    using System.Text;
-    using System.Windows;
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Media3D;
+using System;
+using System.Globalization;
+using System.Text;
+using System.Windows;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Media3D;
 
-    using Matrix = global::SharpDX.Matrix;
-    using Matrix3x3 = global::SharpDX.Matrix3x3;
-    using Vector3 = global::SharpDX.Vector3;
+using Matrix = global::SharpDX.Matrix;
+using Matrix3x3 = global::SharpDX.Matrix3x3;
+using Vector3 = global::SharpDX.Vector3;
+
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Cameras;
+#endif
+namespace HelixToolkit.Wpf.SharpDX
+{
+#if !COREWPF
+    using Cameras;
+#endif
 
     /// <summary>
     /// Provides extension methods for the cameras.

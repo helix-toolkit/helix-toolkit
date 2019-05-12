@@ -6,20 +6,19 @@
 //   Represents a composite Model3D.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System.Collections.Specialized;
+using System.Windows;
+using System.Windows.Markup;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
 #if !COREWPF
     using Model.Scene;
 #endif
-    using System.Collections.Specialized;
-    using System.Windows;
-    using System.Windows.Markup;
+
 
     /// <summary>
     ///     Represents a composite Model3D.

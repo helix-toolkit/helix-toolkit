@@ -9,11 +9,8 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     /// Defines a touch input gesture that can be used to invoke a command.

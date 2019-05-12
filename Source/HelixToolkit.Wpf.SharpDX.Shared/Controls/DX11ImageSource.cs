@@ -9,13 +9,11 @@ using System.Windows;
 using System.Windows.Interop;
 using global::SharpDX.Direct3D11;
 using global::SharpDX.Direct3D9;
-using System.Threading;
 using System.Diagnostics.CodeAnalysis;
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
     // 

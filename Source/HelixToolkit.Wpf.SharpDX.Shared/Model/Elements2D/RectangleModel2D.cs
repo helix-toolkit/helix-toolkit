@@ -1,9 +1,7 @@
 ﻿#if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene2D;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
 #if !COREWPF
     using Model.Scene2D;

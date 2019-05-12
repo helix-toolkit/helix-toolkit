@@ -10,11 +10,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     /// A Target symbol adorner. This is shown in the HelixViewport3D when manipulating the camera with the mouse.

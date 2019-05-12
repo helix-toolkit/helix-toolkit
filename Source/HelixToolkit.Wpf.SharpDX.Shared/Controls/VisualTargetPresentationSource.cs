@@ -7,11 +7,7 @@ using System.Windows.Data;
 using System.Windows.Controls;
 using System.Diagnostics.CodeAnalysis;
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     ///     The VisualTargetPresentationSource represents the root

@@ -6,20 +6,20 @@
 //   Provides the dependency properties for Viewport3DX.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
+
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     using Controls;
     using Elements2D;
-    using System;
-    using System.Windows;
-    using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Media.Media3D;
+
 
     /// <summary>
     /// Provides the dependency properties for Viewport3DX.

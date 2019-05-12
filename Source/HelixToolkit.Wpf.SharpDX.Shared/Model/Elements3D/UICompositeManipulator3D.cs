@@ -11,11 +11,8 @@ using System.Windows;
 using System.Windows.Data;
 using global::SharpDX;
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {   
     using Model;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;

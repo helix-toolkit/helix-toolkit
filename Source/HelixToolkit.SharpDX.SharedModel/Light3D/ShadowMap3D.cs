@@ -10,16 +10,15 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 #if COREWPF
+using HelixToolkit.SharpDX.Core.Cameras;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
-#endif
 {
-    using Cameras;
     using Model;
 #if !COREWPF
+    using Cameras;
     using Model.Scene;
 #endif
     /// <summary>

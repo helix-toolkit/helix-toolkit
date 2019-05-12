@@ -9,11 +9,8 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     /// <summary>
     /// Converts a <see cref="ManipulationGesture"/> object to and from other types.

@@ -6,18 +6,13 @@
 //   An adorner showing a rectangle with a crosshair in the middle. This is shown when zooming a rectangle.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Documents;
-    using System.Windows.Media;
-
     /// <summary>
     /// An adorner showing a rectangle with a crosshair in the middle. This is shown when zooming a rectangle.
     /// </summary>

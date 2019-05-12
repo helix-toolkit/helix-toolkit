@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Markup;
 
-[assembly: AssemblyDescription("SharpDX based custom control for WPF")]
+[assembly: AssemblyDescription("SharpDX based custom control for DotNetCore WPF")]
 [assembly: ComVisible(false)]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
 [assembly: XmlnsPrefix("http://helix-toolkit.org/wpf/SharpDX", "hx")]
-[assembly: XmlnsDefinition("http://helix-toolkit.org/wpf/SharpDX", "HelixToolkit.SharpDX.Core.Wpf")]
+[assembly: XmlnsDefinition("http://helix-toolkit.org/wpf/SharpDX", "HelixToolkit.Wpf.SharpDX")]

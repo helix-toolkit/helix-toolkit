@@ -92,11 +92,11 @@ namespace HelixToolkit.UWP
                 {
                     return (RenderCore as IScreenClone).ShowMouseCursor;
                 }
-            } 
-        #endregion
+            }
+            #endregion
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="ScreenDuplicationModel"/> class.
+            /// Initializes a new instance of the <see cref="ScreenDuplicationNode"/> class.
             /// </summary>
             public ScreenDuplicationNode()
             {

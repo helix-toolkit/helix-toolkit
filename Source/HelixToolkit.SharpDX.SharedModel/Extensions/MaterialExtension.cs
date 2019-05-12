@@ -1,10 +1,8 @@
 ﻿#if !NETFX_CORE
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 #else
 namespace HelixToolkit.UWP
 #endif

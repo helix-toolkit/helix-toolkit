@@ -6,6 +6,9 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -16,19 +19,16 @@ using System.Windows;
 using Media3D = System.Windows.Media.Media3D;
 using Media = System.Windows.Media;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
 #if !COREWPF
     using Model.Scene;
 #endif
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
+
     using Utilities;
 
     public class TransformManipulator3D : GroupElement3D

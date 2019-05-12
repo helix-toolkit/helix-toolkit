@@ -117,4 +117,10 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Textures\arial.dds" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Textures\arial.fnt" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 </Project>

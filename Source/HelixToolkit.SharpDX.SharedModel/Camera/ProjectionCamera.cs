@@ -2,6 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Vector3D = SharpDX.Vector3;
@@ -11,15 +14,14 @@ namespace HelixToolkit.UWP
 using System.Windows;
 using System.Windows.Media.Media3D;
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+using HelixToolkit.SharpDX.Core.Cameras;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
-#endif
 {
+#if !COREWPF
     using Cameras;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
+#endif
 
     public interface IProjectionCameraModel : ICameraModel
     {

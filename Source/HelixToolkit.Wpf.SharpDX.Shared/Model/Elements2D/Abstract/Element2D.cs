@@ -5,12 +5,10 @@ using SharpDX;
 using System.Windows;
 using System.Windows.Input;
 using Media = System.Windows.Media;
-
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     using Core2D;
     using Extensions;

@@ -20,18 +20,18 @@ namespace HelixToolkit.UWP
 using System.Windows;
 using System.Windows.Controls;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-using HelixToolkit.SharpDX.Core.Model.Scene2D;
 using HelixToolkit.SharpDX.Core.Core2D;
 using HelixToolkit.SharpDX.Core.Utilities;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+using HelixToolkit.SharpDX.Core.Render;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
-#endif
 {
-    using Render;
+
 #if !COREWPF
+    using Render;
     using Core2D;
     using Model.Scene;
 #endif

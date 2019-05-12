@@ -10,10 +10,8 @@ using System.Windows.Data;
 using Media3D = System.Windows.Media.Media3D;
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
 #if !COREWPF
@@ -204,17 +202,15 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 }
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     namespace Elements2D
     {
 #if !COREWPF
         using Model.Scene2D;
 #else
+        using HelixToolkit.SharpDX.Core;
         using HelixToolkit.SharpDX.Core.Model.Scene2D;
 #endif
         using HorizontalAlignment = System.Windows.HorizontalAlignment;

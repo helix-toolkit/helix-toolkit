@@ -4,10 +4,9 @@ using System.Globalization;
 using System.Windows.Data;
 
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     public class RenderTechniqueConverter : IValueConverter
     {

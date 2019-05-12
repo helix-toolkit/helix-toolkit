@@ -11,11 +11,10 @@ using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;

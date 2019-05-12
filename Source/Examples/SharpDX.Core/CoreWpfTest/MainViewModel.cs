@@ -7,12 +7,12 @@
 namespace FileLoadDemo
 {
     using HelixToolkit.SharpDX.Core;
-    using HelixToolkit.SharpDX.Core.Wpf;
+    using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.SharpDX.Core.Animations;
     using HelixToolkit.SharpDX.Core.Assimp;
     using HelixToolkit.SharpDX.Core.Model;
     using HelixToolkit.SharpDX.Core.Model.Scene;
-    using HelixToolkit.SharpDX.Core.Wpf.Controls;
+    using HelixToolkit.Wpf.SharpDX.Controls;
     using Microsoft.Win32;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

@@ -10,11 +10,8 @@ using System.IO;
 using global::SharpDX;
 using global::SharpDX.Direct3D11;
 using Direct3D11 = global::SharpDX.Direct3D11;
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     public static class RenderUtil
     {

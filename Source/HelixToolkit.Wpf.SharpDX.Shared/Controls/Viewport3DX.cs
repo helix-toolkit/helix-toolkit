@@ -22,20 +22,22 @@ using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Runtime.CompilerServices;
 using Vector3 = global::SharpDX.Vector3;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Cameras;
 using HelixToolkit.SharpDX.Core.Model.Scene;
 using HelixToolkit.SharpDX.Core.Model.Scene2D;
 using HelixToolkit.SharpDX.Core.Utilities;
-namespace HelixToolkit.SharpDX.Core.Wpf
+using HitTestResult = HelixToolkit.SharpDX.Core.HitTestResult;
 #else
 using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX.Model.Scene2D;
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     using Controls;
     using Elements2D;
-    using Cameras;
 #if !COREWPF
+    using Cameras;
     using Utilities;
     using Model;
 #endif

@@ -20,16 +20,18 @@ using Device = SharpDX.Direct3D11.Device;
 #endif
 
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Render;
 using HelixToolkit.SharpDX.Core.Utilities;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
 
     using Controls;
+#if !COREWPF
     using Render;
     using Utilities;
+#endif
 
     /// <summary>
     /// 

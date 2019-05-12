@@ -3,11 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-#if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
 namespace HelixToolkit.Wpf.SharpDX
-#endif
 {
     namespace Converters
     {

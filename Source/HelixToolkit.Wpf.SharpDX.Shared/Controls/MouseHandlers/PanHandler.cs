@@ -7,18 +7,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+using System.Windows.Input;
+using Vector3 = global::SharpDX.Vector3;
+using Vector2 = global::SharpDX.Vector2;
+using System;
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Windows;
-    using System.Windows.Input;
-    using Vector3 = global::SharpDX.Vector3;
-    using Vector2 = global::SharpDX.Vector2;
-    using System;
-
     /// <summary>
     /// Handles panning.
     /// </summary>

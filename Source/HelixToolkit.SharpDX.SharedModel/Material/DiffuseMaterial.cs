@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -11,16 +12,18 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Shaders;
 using HelixToolkit.SharpDX.Core.Model;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
-#endif
 {
+#if !COREWPF
     using Model;
     using Shaders;
-    using System.ComponentModel;
+#endif
+
     using Utilities;
 
 

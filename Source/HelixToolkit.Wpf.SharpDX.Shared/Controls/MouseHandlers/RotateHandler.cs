@@ -14,12 +14,14 @@ using Vector2 = global::SharpDX.Vector2;
 using Quaternion = global::SharpDX.Quaternion;
 using Matrix = global::SharpDX.Matrix;
 #if COREWPF
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Cameras;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
+#if !COREWPF
     using Cameras;
+#endif
     /// <summary>
     /// Handles rotation.
     /// </summary>

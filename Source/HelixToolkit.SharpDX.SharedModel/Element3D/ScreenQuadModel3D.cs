@@ -15,16 +15,16 @@ using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core.Shaders;
+using HelixToolkit.SharpDX.Core;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
 #if !COREWPF
     using Model.Scene;
-#endif
     using Shaders;
+#endif
 
     /// <summary>
     /// 

@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
-      <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
-      <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
+      <PackageLicenseUrl></PackageLicenseUrl>
       <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
       <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
       <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
@@ -15,16 +15,22 @@
       <Version>0.0.0.1</Version>
       <RepositoryType>git</RepositoryType>
       <PackageTags>SharpDX; DirectX; 3D;</PackageTags>
-      <RootNamespace>HelixToolkit.SharpDX.Core.Wpf</RootNamespace>
+      <RootNamespace>HelixToolkit.Wpf.SharpDX</RootNamespace>
       <DelaySign>false</DelaySign>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DX11; DX11_1; MSAA; SHARPDX; COREWPF</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
+    <NoWarn>1701;1702; 1591;</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;DX11; DX11_1; MSAA; SHARPDX; COREWPF</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Wpf.xml</DocumentationFile>
+    <NoWarn>1701;1702; 1591;</NoWarn>
   </PropertyGroup>
 
   <Import Project="..\HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems" Label="Shared" />
@@ -37,6 +43,11 @@
     <PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
     <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
     <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
+        <Version>1.0.0-beta2-18618-05</Version>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.csproj" />

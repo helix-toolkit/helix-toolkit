@@ -7,12 +7,11 @@ using System.Windows.Markup;
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene;
 using HelixToolkit.SharpDX.Core.Render;
-namespace HelixToolkit.SharpDX.Core.Wpf
 #else
 using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX.Render;
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
     [ContentProperty("Content")]
     public class Element3DPresenter : Element3D

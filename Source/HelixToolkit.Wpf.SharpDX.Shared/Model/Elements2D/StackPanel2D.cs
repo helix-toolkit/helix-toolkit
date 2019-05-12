@@ -7,11 +7,10 @@ using System.Linq;
 
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene2D;
-namespace HelixToolkit.SharpDX.Core.Wpf
 #else
 using HelixToolkit.Wpf.SharpDX.Core2D;
-namespace HelixToolkit.Wpf.SharpDX
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 {
 #if !COREWPF
     using Model.Scene2D;

@@ -10,13 +10,11 @@ namespace HelixToolkit.UWP
 using System.Windows;
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
-#endif
 {
-#if !COREWPF
+#if !WINDOWS_UWP && !COREWPF
     using Model.Scene;
 
     public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D

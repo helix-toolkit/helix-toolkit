@@ -11,17 +11,17 @@ using System.Windows;
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model;
 using HelixToolkit.SharpDX.Core.Model.Scene;
-namespace HelixToolkit.SharpDX.Core.Wpf
-#else
-namespace HelixToolkit.Wpf.SharpDX
+using HelixToolkit.SharpDX.Core.Shaders;
 #endif
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
 #if !COREWPF
     using Model.Scene;
-#endif
     using Shaders;
+#endif
+
     /// <summary>
     /// 
     /// </summary>
