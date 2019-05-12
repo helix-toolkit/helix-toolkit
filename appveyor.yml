@@ -9,8 +9,7 @@ skip_commits:
     - '*.md'
     
 install:
-  - cinst gitversion.portable --version=3.6.4 -y
-  - cinst gitlink --version=2.4.0 -y
+  - cinst gitversion.portable --version=4.0.0 -y
 
 configuration: Release
 
@@ -20,21 +19,23 @@ before_build:
   - gitversion /l console /output buildserver /updateAssemblyInfo
   
 build_script:
-  - msbuild Source/HelixToolkit.AppVeyor.sln "/property:Platform=Any CPU" "/property:Version=%GitVersion_NuGetVersion%" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - msbuild Source/HelixToolkit.AppVeyor.sln "/property:Platform=Any CPU" "/property:Version=%GitVersion_NuGetVersion%" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:SourceLinkCreate=true
 
 after_build:
-  - gitlink %APPVEYOR_BUILD_FOLDER% -u https://github.com/%APPVEYOR_REPO_NAME% -b master -f Source/HelixToolkit.AppVeyor.sln
-  - nuget pack Source\HelixToolkit\HelixToolkit.nuspec -version "%GitVersion_NuGetVersion%"
-  - nuget pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
-  - nuget pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%"
-  - nuget pack Source\HelixToolkit.UWP\HelixToolkit.UWP.nuspec -version "%GitVersion_NuGetVersion%"
-  - nuget pack Source\HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.nuspec -version "%GitVersion_NuGetVersion%"
-  - nuget pack Source\HelixToolkit.SharpDX.Assimp.nuspec -version "%GitVersion_NuGetVersion%"
+  - nuget pack Source\HelixToolkit\HelixToolkit.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
+  - nuget pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
+  - nuget pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
+  - nuget pack Source\HelixToolkit.UWP\HelixToolkit.UWP.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
+  - nuget pack Source\HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
+  - nuget pack Source\HelixToolkit.SharpDX.Assimp.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - if "%APPVEYOR_REPO_NAME%" == "helix-toolkit/helix-toolkit" Source\build-dist-examples.cmd
 
 artifacts:
   - path: '*.nupkg'
     name: HelixToolkit-packages-$(GitVersion_SemVer)
+    type: zip
+  - path: '*.snupkg'
+    name: HelixToolkit-packages-symbols-$(GitVersion_SemVer)
     type: zip
   - path: Source\dist-examples
     name: HelixToolkit-Examples-$(GitVersion_SemVer)

@@ -141,15 +141,23 @@
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\MouseHandlers\CameraController.cs" />
     <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
+    <Compile Include="Controls\MouseHandlers\InputBinding.cs" />
+    <Compile Include="Controls\MouseHandlers\InputBindingCollection.cs" />
+    <Compile Include="Controls\MouseHandlers\InputGesture.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationAction.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationBinding.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationGesture.cs" />
     <Compile Include="Controls\MouseHandlers\MouseInputController.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
     <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
     <Compile Include="Controls\MouseHandlers\PanHandler.cs" />
     <Compile Include="Controls\MouseHandlers\RotateHandler.cs" />
+    <Compile Include="Controls\MouseHandlers\ViewportCommand.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Controls\Viewport3DXProperties.cs" />
+    <Compile Include="Controls\ViewportCommands.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
@@ -196,6 +204,11 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.1.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
+      <Version>1.0.0-beta2-18618-05</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="SharpDX">
       <Version>4.2.0</Version>

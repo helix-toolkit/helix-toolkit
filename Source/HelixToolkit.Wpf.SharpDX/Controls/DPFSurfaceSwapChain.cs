@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
-            surfaceD3D = new RenderControl();
+            surfaceD3D = new RenderControl(this);
             Child = surfaceD3D;
             if (deferredRendering)
             {
@@ -126,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 parentWindow.Closed -= ParentWindow_Closed;
             }
-            if (DataContext == null)
+            if (DataContext == null && RenderHost.EffectsManager == null)
             {
                 EndD3D();
             }

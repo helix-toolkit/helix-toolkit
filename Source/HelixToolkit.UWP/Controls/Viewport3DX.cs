@@ -80,6 +80,12 @@ namespace HelixToolkit.UWP
         /// The items.
         /// </value>
         public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
+
+        /// <summary>
+        /// Gets the observable collection of <see cref="InputBinding"/>.
+        /// </summary>
+        public InputBindingCollection InputBindings { get; } = new InputBindingCollection();
+
         /// <summary>
         /// Gets the renderables.
         /// </summary>
@@ -562,7 +568,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input event (which mouse button pressed?)
         /// </param>
         private void MouseDownHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -578,11 +584,11 @@ namespace HelixToolkit.UWP
                 {
                     if (currentHit.ModelHit is Element3D ele)
                     {
-                        ele.RaiseMouseDownEvent(this.currentHit, pt, this);
+                        ele.RaiseMouseDownEvent(this.currentHit, pt, this, originalInputEventArgs);
                     }
                     else if(currentHit.ModelHit is SceneNode node)
                     {
-                        node.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit);
+                        node.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
                     }
                 }
             }
@@ -590,14 +596,14 @@ namespace HelixToolkit.UWP
             {
                 currentHit = null;               
             }
-            this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this));
+            this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this, originalInputEventArgs));
         }
         /// <summary>
         /// Handles hit testing on mouse move.
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input (which mouse button pressed?)
         /// </param>
         private void MouseMoveHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -609,21 +615,21 @@ namespace HelixToolkit.UWP
             {
                 if (currentHit.ModelHit is Element3D ele)
                 {
-                    ele.RaiseMouseMoveEvent(this.currentHit, pt, this);
+                    ele.RaiseMouseMoveEvent(this.currentHit, pt, this, originalInputEventArgs);
                 }
                 else if(currentHit.ModelHit is SceneNode node)
                 {
-                    node.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit);
+                    node.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
                 }
             }
-            this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this));
+            this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this, originalInputEventArgs));
         }
         /// <summary>
         /// Handles hit testing on mouse up.
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input event (which mouse button pressed?)
         /// </param>
         private void MouseUpHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -635,15 +641,15 @@ namespace HelixToolkit.UWP
             {
                 if (currentHit.ModelHit is Element3D ele)
                 {
-                    ele.RaiseMouseUpEvent(this.currentHit, pt, this);
+                    ele.RaiseMouseUpEvent(this.currentHit, pt, this, originalInputEventArgs);
                 }
                 else if(currentHit.ModelHit is SceneNode node)
                 {
-                    node.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit);
+                    node.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
                 }
                 currentHit = null;
             }
-            this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this));
+            this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this, originalInputEventArgs));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -95,6 +95,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PointerSizeHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\RayExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SceneNodeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Vector3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\EventArguments.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\ParametricSurface3DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\BatchedMeshNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\BoneGroupNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ContinuousRenderNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\DynamicCodeSurface3DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\AxisPlaneGridNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />

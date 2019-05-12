@@ -1,0 +1,56 @@
+﻿<Window
+    x:Class="CustomViewCubeDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:local="clr-namespace:CustomViewCubeDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <hx:Viewport3DX
+            x:Name="view1"
+            Camera="{Binding Camera}"
+            EffectsManager="{Binding EffectsManager}"
+            ShowViewCube="False">
+            <hx:Viewport3DX.InputBindings>
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+            </hx:Viewport3DX.InputBindings>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
+            <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}" />
+            <hx:ScreenSpacedGroup3D RelativeScreenLocationX="-0.5">
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding ViewCubeGeometry1}"
+                    Material="{Binding ViewCubeMaterial1}"
+                    Mouse3DDown="MeshGeometryModel3D_Mouse3DDown" />
+            </hx:ScreenSpacedGroup3D>
+            <hx:ScreenSpacedGroup3D RelativeScreenLocationX="0">
+                <hx:MeshGeometryModel3D RenderWireframe="True"
+                    Geometry="{Binding ViewCubeGeometry2}"
+                    Material="{Binding ViewCubeMaterial2}"
+                    Mouse3DDown="MeshGeometryModel3D_Mouse3DDown" />
+            </hx:ScreenSpacedGroup3D>
+            <hx:ScreenSpacedGroup3D RelativeScreenLocationX="0.8" RelativeScreenLocationY="0">
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Geometry}"
+                    Material="{Binding ViewCubeMaterial3}"
+                    Mouse3DDown="MeshGeometryModel3D_Mouse3DDown"
+                    Transform="{Binding ViewCubeTransform3}" />
+            </hx:ScreenSpacedGroup3D>
+            <hx:ScreenSpacedGroup3D RelativeScreenLocationX="-0.8" RelativeScreenLocationY="0" SizeScale="2">
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Geometry}"
+                    Material="{Binding ViewCubeMaterial4}"
+                    Mouse3DDown="MeshGeometryModel3D_Mouse3DDown"
+                    Transform="{Binding ViewCubeTransform3}" />
+            </hx:ScreenSpacedGroup3D>
+        </hx:Viewport3DX>
+    </Grid>
+</Window>

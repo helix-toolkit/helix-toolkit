@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BillboardTextModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneGroupModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneSkinmeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\ContinuousRender3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CrossSectionMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\DepthPrepassElement3D.cs" />

@@ -1,6 +1,22 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.7.0] - 2019-05-12
+
+### Added
+1. Make it possible to receive touch/manipulation events from swap chain render control (WinForms).(WPF.SharpDX)
+2. ManipulationBinding allows to map ManipulationGesture for UWP (UWP)
+3. Added TimeStamp in default shader global variable for time based shader animation. (WPF.SharpDX/UWP/Core)
+
+### Improvement and Changes
+1. Mouse3DEventArgs now also store the mouse/touch/pen event that caused the Mouse3DEvent #1111 (WPF.SharpDX/UWP)
+
+### Fixed
+1. Fix RenderTechnicsExample SharpDX crash SharpDX bug #1130 (WPF.SharpDX/UWP/Core)
+2. Fix find 3d point on single axis aligned 3d line. #1114 (WPF.SharpDX/UWP/Core)
+3. Fix PInvokeStackImbalance #1149 (WPF.SharpDX)
+4. Fix STLReader can not handle"NaN" values. #1150
+
 ## [2.6.1] - 2019-02-16
 
 ### Added
@@ -23,6 +39,7 @@ All notable changes to this project will be documented in this file.
 7. Fix local transform not getting calculated for UIElement3D in Visual3DHelper.GetTransform(). This solve mouse rotate getting reversed issue in Rotate Manipulator. (WPF)
 8. Fix Bound one dimension is zero on single point or single axis align line and causes hit test failed.(WPF.SharpDX/UWP/Core)
 9. Fix rounding issue in TextGroupVisual3D CreateTextMaterial #1075 (WPF)
+10. Fix Assimp importer user specified material type in configuration not working properly. (WPF.SharpDX/UWP/Core)
 
 ## [2.6.0] - 2019-01-01
 ### Potential Breaking Changes:

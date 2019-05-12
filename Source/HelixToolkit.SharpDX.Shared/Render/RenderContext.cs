@@ -26,6 +26,7 @@ namespace HelixToolkit.UWP
     using Shaders;
     using Utilities;
     using Render;
+    using System.Diagnostics;
 
     /// <summary>
     /// The render-context is currently generated per frame
@@ -385,13 +386,14 @@ namespace HelixToolkit.UWP
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights, DeviceContextProxy deviceContext)
-        {
+        {           
             if (updateGlobalTransform)
             {
+                ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                 globalTransform.View = ViewMatrix;
                 globalTransform.Projection = ProjectionMatrix;
                 globalTransform.ViewProjection = ViewMatrix * ProjectionMatrix;
-                ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
+                globalTransform.TimeStamp = (float)Stopwatch.GetTimestamp()/Stopwatch.Frequency;                
                 cbuffer.UploadDataToBuffer(deviceContext, ref globalTransform);
             }
             if (updateLights)

@@ -180,6 +180,7 @@ namespace HelixToolkit.Wpf
         private static Vector3D ParseNormal(string input)
         {
             input = input.ToLowerInvariant();
+            input = input.Replace("nan", "NaN");
             var match = NormalRegex.Match(input);
             if (!match.Success)
             {

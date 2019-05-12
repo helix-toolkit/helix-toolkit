@@ -229,6 +229,14 @@ namespace HelixToolkit.UWP
             }
             return isHit;
         }
+
+        /// <summary>
+        /// Call to manually update texture coordinate buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
+        /// </summary>
+        public void UpdateTextureCoordinates()
+        {
+            RaisePropertyChanged(nameof(TextureCoordinates));
+        }
     }
 
 

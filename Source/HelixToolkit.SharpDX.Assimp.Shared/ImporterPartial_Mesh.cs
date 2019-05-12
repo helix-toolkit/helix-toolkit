@@ -127,7 +127,7 @@ namespace HelixToolkit.UWP
                 var hMesh = new MeshGeometry3D { Positions = hVertices, Indices = builder.TriangleIndices };
                 if (mesh.HasNormals && mesh.Normals.Count == hMesh.Positions.Count)
                 {
-                    hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => x.ToSharpDXVector3()));
+                    hMesh.Normals = new Vector3Collection(mesh.Normals.Select(x => Vector3.Normalize(x.ToSharpDXVector3())));
                 }
                 else
                 {
