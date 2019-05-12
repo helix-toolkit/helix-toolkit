@@ -60,6 +60,14 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
 ## News
+#### 2019-05-12
+[v2.7.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.7.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.7.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.7.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.7.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.7.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.7.0)
+
 #### 2019-02-16
 [v2.6.1](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.6.1)
@@ -79,15 +87,6 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 **Two new packages have been released on version 2.6.0.**
 - `SharpDX.Core` is the base implementation for all HelixToolkit.SharpDX versions(WPF.SharpDX and UWP). It is implemented based on `netstandard` and can be used on other platforms such as WinForms and DotNetCore.
 - `SharpDX.Assimp` ports [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) into HelixToolkit to support 3D model import/export for HelixToolkit.SharpDX versions. Currently import/export supports [SceneNode](https://github.com/helix-toolkit/helix-toolkit/wiki/Use-Element3D-or-SceneNode-under-WPF.SharpDX-or-UWP) only. For more details, please refer to [FileLoadDemo](/Source/Examples/WPF.SharpDX/FileLoadDemo) or [CoreTest](/Source/Examples/SharpDX.Core/CoreTest).
-
-
-#### 2018-10-19
-[V2.5.1](https://github.com/helix-toolkit/helix-toolkit/tree/hotfix/2.5.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-
-**Hotfix: Wrong type cast causes null reference exception when uses custom ViewBox texture.** (SharpDX Version Only)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.5.1)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.5.1)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.5.1)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 
