@@ -293,7 +293,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         private static int[] GetIntValues(string input)
         {
-            var fields = RemoveComments(input).Split(Delimiters);
+            var fields = RemoveComments(input).Split(Delimiters, System.StringSplitOptions.RemoveEmptyEntries);
             var result = new int[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {
@@ -314,7 +314,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         private static double[] GetValues(string input)
         {
-            var fields = RemoveComments(input).Split(Delimiters);
+            var fields = RemoveComments(input).Split(Delimiters, System.StringSplitOptions.RemoveEmptyEntries);
             var result = new double[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {
