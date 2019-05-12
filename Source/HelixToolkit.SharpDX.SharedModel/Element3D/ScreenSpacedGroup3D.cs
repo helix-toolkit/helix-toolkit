@@ -5,10 +5,17 @@ Copyright (c) 2018 Helix Toolkit contributors
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
+#endif
 {
+#if !COREWPF
     using Model.Scene;
+#endif
     /// <summary>
     /// ScreenSpacedGroup3D uses a fixed camera to render model (Mainly used for view box and coordinate system rendering) onto screen which is separated from viewport camera.
     /// <para>

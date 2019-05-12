@@ -11,7 +11,11 @@ using System.Runtime.CompilerServices;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
+#if COREWPF
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #endif
 {
     public static class Media3DExtension

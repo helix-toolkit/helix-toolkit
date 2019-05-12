@@ -7,7 +7,11 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #endif
 {
     using Cameras;

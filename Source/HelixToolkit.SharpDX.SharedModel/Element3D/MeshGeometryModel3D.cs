@@ -13,17 +13,24 @@ namespace HelixToolkit.UWP
 using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
+#endif
     /// <summary>
     /// 
     /// </summary>
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
-        #region Dependency Properties        
+#region Dependency Properties        
         /// <summary>
         /// The front counter clockwise property
         /// </summary>
@@ -128,7 +135,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        #endregion        
+#endregion
         /// <summary>
         /// Called when [create scene node].
         /// </summary>

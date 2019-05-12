@@ -16,11 +16,17 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Threading;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Utilities;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
+#endif
 {
-    
+#if !COREWPF
     using Utilities;
+#endif
     /// <summary>
     /// 
     /// </summary>

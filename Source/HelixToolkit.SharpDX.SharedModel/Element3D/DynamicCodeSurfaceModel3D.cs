@@ -8,11 +8,16 @@ using Media = Windows.UI;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
+#endif
 {
+#if !COREWPF
     using Model.Scene;
-    
 
     public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D
     {
@@ -104,5 +109,6 @@ namespace HelixToolkit.Wpf.SharpDX
             return new DynamicCodeSurface3DNode();
         }
     }
+#endif
 }
 #endif

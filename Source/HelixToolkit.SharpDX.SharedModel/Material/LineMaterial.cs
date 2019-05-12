@@ -9,7 +9,12 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #endif
 {
     using global::SharpDX;

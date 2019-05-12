@@ -13,10 +13,17 @@ namespace HelixToolkit.UWP
 using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
+#endif
 {
+#if !COREWPF
     using Model.Scene;
+#endif
     using Shaders;
 
     /// <summary>

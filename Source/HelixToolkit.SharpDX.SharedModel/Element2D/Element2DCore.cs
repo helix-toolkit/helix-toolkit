@@ -14,10 +14,17 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP.Core2D
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene2D;
+namespace HelixToolkit.SharpDX.Core.Wpf.Core2D
+#else
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
+#endif
 {
+#if !COREWPF
     using Model.Scene2D;
+#endif
     /// <summary>
     /// External Wrapper core to be used for different platform
     /// </summary>

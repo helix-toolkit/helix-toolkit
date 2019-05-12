@@ -12,18 +12,25 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #endif
 {
     using Core;
     using Model;
+#if !COREWPF
     using Model.Scene;
+#endif
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
     public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IApplyPostEffect
     {
-        #region DependencyProperties        
+#region DependencyProperties        
         /// <summary>
         /// The geometry property
         /// </summary>
@@ -302,7 +309,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(EnableViewFrustumCheckProperty);
             }
         }
-        #endregion     
+#endregion
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {

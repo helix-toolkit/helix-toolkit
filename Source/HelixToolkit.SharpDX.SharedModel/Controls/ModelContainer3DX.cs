@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using SharpDX.Direct3D;
-
+using System.ComponentModel;
+using HelixToolkit.Logger;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -18,17 +19,24 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Controls;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core.Model.Scene2D;
+using HelixToolkit.SharpDX.Core.Core2D;
+using HelixToolkit.SharpDX.Core.Utilities;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
+#endif
 {
-    using System.ComponentModel;
-    using Core2D;
-    using HelixToolkit.Logger;
     using Render;
+#if !COREWPF
+    using Core2D;
     using Model.Scene;
-    using Utilities;
+#endif
     using Controls;
-
+    using Utilities;
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
@@ -66,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly HashSet<IViewport3DX> viewports = new HashSet<IViewport3DX>();
         private readonly HashSet<IRenderHost> attachedRenderHosts = new HashSet<IRenderHost>();
-#pragma warning disable 0067        
+#pragma warning disable 0067
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
@@ -509,7 +517,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.IsHitTestVisible = false;
 #if !NETFX_CORE
-            Visibility = Visibility.Collapsed;
+            Visibility = System.Windows.Visibility.Collapsed;
 #endif
         }
 
@@ -613,7 +621,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
              CurrentRenderHost?.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
         }
-        #region IDisposable Support
+#region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)

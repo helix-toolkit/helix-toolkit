@@ -109,12 +109,11 @@ namespace HelixToolkit.UWP
         public const string Volume3D = "Volume3D";
 
         public const string SSAO = "SSAO";
-#if !NETFX_CORE
+
         /// <summary>
         /// 
         /// </summary>
         public const string ScreenDuplication = "ScreenDup";
-#endif
     }
     /// <summary>
     /// 

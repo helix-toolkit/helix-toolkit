@@ -1,5 +1,10 @@
 ﻿#if !NETFX_CORE
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -150,7 +155,7 @@ namespace HelixToolkit.UWP
     }
 }
 
-
+#if !COREWPF
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -172,3 +177,4 @@ namespace HelixToolkit.UWP.Model
         }
     }
 }
+#endif

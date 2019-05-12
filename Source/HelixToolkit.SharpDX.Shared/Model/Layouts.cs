@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP
     /// 
     /// </summary>
     //[StructLayout(LayoutKind.Sequential, Pack = 4)]
-    internal static class BoneMatricesStruct
+    public static class BoneMatricesStruct
     {
         //public const int NumberOfBones = 128;
         //[MarshalAs(UnmanagedType.ByValArray, SizeConst = NumberOfBones)]
@@ -675,7 +675,7 @@ namespace HelixToolkit.UWP
             return new float[] { Rotation, Scaling.X, Scaling.Y, Translation.X, Translation.Y };
         }
     }
-#if !NETFX_CORE
+
     /// <summary>
     /// 
     /// </summary>
@@ -703,7 +703,6 @@ namespace HelixToolkit.UWP
 
         public const int SizeInBytes = 4 * 4 * 12;
     }
-#endif
 
 #pragma warning restore 1591
 }

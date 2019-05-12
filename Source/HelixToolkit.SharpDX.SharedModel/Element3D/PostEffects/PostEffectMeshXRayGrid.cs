@@ -10,18 +10,25 @@ using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
+#endif
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="Element3D" />
     public class PostEffectMeshXRayGrid : Element3D
     {
-        #region Dependency Properties
+#region Dependency Properties
         /// <summary>
         /// The effect name property
         /// </summary>
@@ -139,7 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
 
-        #endregion
+#endregion
 
         protected override SceneNode OnCreateSceneNode()
         {

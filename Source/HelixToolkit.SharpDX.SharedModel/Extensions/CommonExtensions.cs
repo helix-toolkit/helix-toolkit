@@ -20,7 +20,11 @@ using System.Linq;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Extensions
 #else
+#if COREWPF
+namespace HelixToolkit.SharpDX.Core.Wpf.Extensions
+#else
 namespace HelixToolkit.Wpf.SharpDX.Extensions
+#endif
 #endif
 {
     public static class CommonExtensions

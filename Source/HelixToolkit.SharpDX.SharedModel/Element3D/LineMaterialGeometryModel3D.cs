@@ -9,12 +9,18 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
+#endif
 {
-
     using Model;
+#if !COREWPF
     using Model.Scene;
+#endif
     public class LineMaterialGeometryModel3D : GeometryModel3D
     {
 

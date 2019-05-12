@@ -7,35 +7,43 @@ using System.Threading.Tasks;
 #if NETFX_CORE
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
-namespace HelixToolkit.UWP.Controls
+namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Controls;
-namespace HelixToolkit.Wpf.SharpDX.Controls
+#if COREWPF
+namespace HelixToolkit.SharpDX.Core.Wpf
+#else
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 #endif
 {
-    public class HelixItemsControl : ItemsControl
+    namespace Controls
     {
-        public HelixItemsControl()
+        public class HelixItemsControl : ItemsControl
         {
-#if NETFX_CORE
-            ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.None;
-#else
-            Focusable = false;
-            Visibility = Visibility.Collapsed;
-#endif
-            IsHitTestVisible = false;
-            this.DefaultStyleKey = typeof(HelixItemsControl);
-        }
+            public HelixItemsControl()
+            {
+    #if NETFX_CORE
+                ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.None;
+    #else
+                Focusable = false;
+                Visibility = Visibility.Collapsed;
+    #endif
+                IsHitTestVisible = false;
+                this.DefaultStyleKey = typeof(HelixItemsControl);
+            }
 
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            return new Size();
-        }
+            protected override Size ArrangeOverride(Size finalSize)
+            {
+                return new Size();
+            }
 
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            return new Size();
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                return new Size();
+            }
         }
     }
+
 }
