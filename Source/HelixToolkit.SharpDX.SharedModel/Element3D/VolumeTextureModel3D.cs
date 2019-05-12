@@ -8,10 +8,15 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#if !COREWPF
     using Model.Scene;
+#endif
     public class VolumeTextureModel3D : Element3D
     {
         /// <summary>

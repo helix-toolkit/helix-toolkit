@@ -12,7 +12,6 @@ using System;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
-using System.IO;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -25,17 +24,25 @@ using System.Windows;
 using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core.Utilities;
+using static HelixToolkit.SharpDX.Core.Core.ParticleRenderCore;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
     using Utilities;
     using static Core.ParticleRenderCore;
+#endif
 
     public class ParticleStormModel3D : Element3D
     {
-        #region Dependency Properties
+#region Dependency Properties
         public static DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultParticleCount,
             (d, e) =>

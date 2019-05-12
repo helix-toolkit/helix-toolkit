@@ -13,12 +13,17 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
-
+#endif
     /// <summary>
     /// 
     /// </summary>

@@ -9,6 +9,9 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {

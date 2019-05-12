@@ -377,7 +377,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The hit test source.
             /// </value>
-            public object WrapperSource { internal set; get; }
+            public object WrapperSource { set; get; }
 
             private object tag = null;
             /// <summary>

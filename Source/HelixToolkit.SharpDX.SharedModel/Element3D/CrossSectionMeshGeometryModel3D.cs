@@ -10,11 +10,17 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
+#endif
     using global::SharpDX;
 
 
@@ -23,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
     {
-        #region Dependency Properties
+#region Dependency Properties
         /// <summary>
         /// Gets or sets the cutting operation.
         /// </summary>
@@ -269,7 +275,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (Plane)GetValue(Plane4Property);
             }
         }
-        #endregion
+#endregion
 
         protected override SceneNode OnCreateSceneNode()
         {

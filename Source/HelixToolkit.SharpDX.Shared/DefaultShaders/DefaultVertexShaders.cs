@@ -242,7 +242,7 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "vsSSAO";
-    #if !NETFX_CORE
+#if !WINDOWS_UWP
             /// <summary>
             /// 
             /// </summary>
@@ -257,7 +257,7 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "vsScreenDupCursor";
-    #endif
+#endif
         }
 
 
@@ -605,7 +605,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription VSSSAO = new ShaderDescription(nameof(VSSSAO), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSSAO);
 
-#if !NETFX_CORE
+#if !WINDOWS_UWP
             /// <summary>
             /// The vs screen dup
             /// </summary>

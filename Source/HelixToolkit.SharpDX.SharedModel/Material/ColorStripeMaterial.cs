@@ -1,20 +1,24 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
-using System.IO;
 using System.Runtime.Serialization;
-
+using System.Collections.Generic;
+using System.ComponentModel;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Shaders;
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#if !COREWPF
     using Model;
     using Shaders;
-    using System.Collections.Generic;
-    using System.ComponentModel;
+#endif
     using Utilities;
 
     /// <summary>

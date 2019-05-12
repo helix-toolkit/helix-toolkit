@@ -11,10 +11,16 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Media.Media3D;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Cameras;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#if !COREWPF
     using Cameras;
+#endif
+
     public interface IMatrixCameraModel : ICameraModel
     {
         Matrix3D ProjectionMatrix { set; get; }

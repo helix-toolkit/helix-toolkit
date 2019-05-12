@@ -10,18 +10,24 @@ using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
+#endif
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="Element3D" />
     public class PostEffectBloom : Element3D
     {
-        #region Dependency Properties
+#region Dependency Properties
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -170,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Element3DCore).SceneNode as NodePostEffectBloom).BloomCombineSaturation = (float)(double)e.NewValue;
             }));
-        #endregion
+#endregion
 
         protected override SceneNode OnCreateSceneNode()
         {
