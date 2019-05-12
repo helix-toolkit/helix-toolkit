@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [NextVersion]
+## [2.7.0] - 2019-05-12
 
 ### Added
 1. Make it possible to receive touch/manipulation events from swap chain render control (WinForms).(WPF.SharpDX)
@@ -12,9 +12,10 @@ All notable changes to this project will be documented in this file.
 1. Mouse3DEventArgs now also store the mouse/touch/pen event that caused the Mouse3DEvent #1111 (WPF.SharpDX/UWP)
 
 ### Fixed
-Fix RenderTechnicsExample SharpDX crash SharpDX bug #1130 (WPF.SharpDX/UWP/Core)
-Fix find 3d point on single axis aligned 3d line. #1114 (WPF.SharpDX/UWP/Core)
-PInvokeStackImbalance #1149 (WPF.SharpDX)
+1. Fix RenderTechnicsExample SharpDX crash SharpDX bug #1130 (WPF.SharpDX/UWP/Core)
+2. Fix find 3d point on single axis aligned 3d line. #1114 (WPF.SharpDX/UWP/Core)
+3. Fix PInvokeStackImbalance #1149 (WPF.SharpDX)
+4. Fix STLReader can not handle"NaN" values. #1150
 
 ## [2.6.1] - 2019-02-16
 
