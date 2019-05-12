@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 Fix RenderTechnicsExample SharpDX crash SharpDX bug #1130 (WPF.SharpDX/UWP/Core)
 Fix find 3d point on single axis aligned 3d line. #1114 (WPF.SharpDX/UWP/Core)
+PInvokeStackImbalance #1149 (WPF.SharpDX)
 
 ## [2.6.1] - 2019-02-16
 
