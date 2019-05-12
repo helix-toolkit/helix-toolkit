@@ -1,5 +1,5 @@
 image:
-- Visual Studio 2019 Preview
+- Visual Studio 2017
 
 pull_requests:
   do_not_increment_build_number: true
@@ -19,7 +19,6 @@ before_build:
   - gitversion /l console /output buildserver /updateAssemblyInfo
   
 build_script:
-  - msbuild -t:restore Source/HelixToolkit.AppVeyor.sln
   - msbuild Source/HelixToolkit.AppVeyor.sln "/property:Platform=Any CPU" "/property:Version=%GitVersion_NuGetVersion%" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:SourceLinkCreate=true
 
 after_build:

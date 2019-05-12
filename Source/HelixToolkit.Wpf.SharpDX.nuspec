@@ -25,16 +25,10 @@
 	  <group targetFramework="net45">
 		<dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />	  
       </group>	
-	  <group targetFramework="netcoreapp3.0">
-		<dependency id="HelixToolkit" version="[$version$]" />	
-		<dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />	  
-      </group>	
     </dependencies>
   </metadata>
   <files>
     <file src="HelixToolkit.Wpf.SharpDX\bin\Release\HelixToolkit.Wpf.SharpDX.???" target="lib\net45" />
-	<file src="HelixToolkit.SharpDX.Core.Wpf\bin\Release\netcoreapp3.0\HelixToolkit.Wpf.SharpDX.???" target="lib\netcoreapp3.0" />
-    <file src="HelixToolkit.SharpDX.Core.Wpf\bin\Release\netcoreapp3.0\HelixToolkit.Wpf.SharpDX.deps.json" target="lib\netcoreapp3.0" />
 	<file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
