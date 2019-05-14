@@ -120,20 +120,39 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="texture">The stream.</param>
             /// <param name="disableAutoGenMipMap">Disable auto mipmaps generation</param>
+            /// <exception cref="ArgumentOutOfRangeException"/>
             public void CreateView(TextureModel texture, bool disableAutoGenMipMap = false)
             {
                 this.DisposeAndClear();
                 if (texture != null && device != null)
                 {
-                    if (texture.IsCompressed)
+                    if (texture.IsCompressed && texture.CompressedStream != null)
                     {
                         resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, disableAutoGenMipMap));
                         textureView = Collect(new ShaderResourceView(device, resource));
                         TextureFormat = textureView.Description.Format;
                     }
-                    else
+                    else if (texture.NonCompressedData != null && texture.NonCompressedData.Length > 0)
                     {
-                        CreateView(texture.NonCompressedData, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                        if (texture.Width * texture.Height > texture.NonCompressedData.Length)
+                        {
+                            throw new ArgumentOutOfRangeException($"Texture width * height = {texture.Width * texture.Height} is larger than texture data length {texture.NonCompressedData.Length}.");
+                        }
+                        else if (texture.Height <= 1)
+                        {
+                            if (texture.Width == 0)
+                            {
+                                CreateView(texture.NonCompressedData, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                            }
+                            else
+                            {
+                                CreateView(texture.NonCompressedData, texture.Width, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                            }
+                        }
+                        else
+                        {                          
+                            CreateView(texture.NonCompressedData, texture.Width, texture.Height, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                        }
                     }
                 }
             }
@@ -216,14 +235,28 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <typeparam name="T"></typeparam>
             /// <param name="array">The array.</param>
-            /// <param name="format">The pixel format.</param>
+            /// <param name="format">The format.</param>
             /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
-            /// <param name="generateMipMaps"></param>
+            /// <param name="generateMipMaps">if set to <c>true</c> [generate mip maps].</param>
             public void CreateView<T>(T[] array, global::SharpDX.DXGI.Format format,
                 bool createSRV = true, bool generateMipMaps = true) where T : struct
             {
+                CreateView(array, array.Length, format, createSRV, generateMipMaps);
+            }
+            /// <summary>
+            /// Creates the 1D texture view from data array.
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="array">The array.</param>
+            /// <param name="length">data length</param>
+            /// <param name="format">The pixel format.</param>
+            /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+            /// <param name="generateMipMaps"></param>
+            public void CreateView<T>(T[] array, int length, global::SharpDX.DXGI.Format format,
+                bool createSRV = true, bool generateMipMaps = true) where T : struct
+            {
                 this.DisposeAndClear();
-                var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, format, array));
+                var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, Math.Min(array.Length, length), format, array));
                 TextureFormat = format;
                 if (texture.Description.MipLevels == 1 && generateMipMaps)
                 {
@@ -256,10 +289,15 @@ namespace HelixToolkit.UWP
             /// <param name="format">The format.</param>
             /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
             /// <param name="generateMipMaps"></param>
+            /// <exception cref="ArgumentOutOfRangeException"/>
             public void CreateView<T>(T[] array, int width, int height, global::SharpDX.DXGI.Format format,
                 bool createSRV = true, bool generateMipMaps = true) where T : struct
             {
                 this.DisposeAndClear();
+                if(width * height > array.Length)
+                {
+                    throw new ArgumentOutOfRangeException($"Width*Height = {width * height} is larger than array size {array.Length}.");
+                }
                 var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, 
                     format, array));
                 TextureFormat = format;
@@ -341,10 +379,15 @@ namespace HelixToolkit.UWP
             /// <param name="format">The format.</param>
             /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
             /// <param name="generateMipMaps"></param>
+            /// <exception cref="ArgumentOutOfRangeException"/>
             public void CreateView<T>(T[] pixels, int width, int height, int depth,
                 global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true) where T : struct
             {
                 this.DisposeAndClear();
+                if (width * height * depth > pixels.Length)
+                {
+                    throw new ArgumentOutOfRangeException($"Width*Height*Depth = {width * height * depth} is larger than array size {pixels.Length}.");
+                }
                 var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture3D.New(device, width, height, depth,
                     format, pixels));
                 TextureFormat = format;
