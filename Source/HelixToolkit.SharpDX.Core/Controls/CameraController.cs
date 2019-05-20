@@ -895,6 +895,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             }
             var time = (float)(ticks - this.lastTick) / Stopwatch.Frequency;
             time = time == 0 ? 0.016f : time;
+            time = Math.Min(time, 0.05f); // Clamp the maximum time elapse to prevent over shooting
             // should be independent of time
             var factor = this.IsInertiaEnabled ? Clamp((float)Math.Pow(this.InertiaFactor, time / 0.02f), 0.1f, 1) : 0;
             bool needUpdate = false;
