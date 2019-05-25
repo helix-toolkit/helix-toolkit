@@ -7,6 +7,7 @@ using Vector3D = SharpDX.Vector3;
 
 namespace HelixToolkit.UWP
 {
+    using Cameras;
     using System.Diagnostics;
     using Utilities;
     using Windows.UI.Core;
@@ -829,7 +830,7 @@ namespace HelixToolkit.UWP
             this.PushCameraSetting();
             if (this.Viewport.IsInertiaEnabled)
             {
-                this.panSpeed += pan * 40;
+                this.panSpeed += pan;
             }
             else
             {
@@ -1365,7 +1366,17 @@ namespace HelixToolkit.UWP
             axis1.Normalize();
             axis2.Normalize();
             axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
-            var l = this.CameraLookDirection.Length();
+            float l = 0;
+            if (ActualCamera is PerspectiveCamera)
+            {
+                // this should be dependent on distance to target?
+                l = this.CameraLookDirection.Length();
+            }
+            else if (ActualCamera.CameraInternal is OrthographicCameraCore orth)
+            {
+                // this should be dependent on width
+                l = orth.Width;
+            }
             var f = l * 0.001f;
             var move = (-axis1 * f * (float)dx) + (axis2 * f * (float)dy);
 
@@ -1387,6 +1398,7 @@ namespace HelixToolkit.UWP
             }
             var time = (float)(ticks - this.lastTick) / Stopwatch.Frequency;
             time = time == 0 ? 0.016f : time;
+            time = Math.Min(time, 0.05f); // Clamp the maximum time elapse to prevent over shooting
             // should be independent of time
             var factor = Viewport.IsInertiaEnabled ? (float)Clamp(Math.Pow(Viewport.CameraInertiaFactor, time / 0.02f), 0.1f, 1) : 0;
             bool needUpdate = false;

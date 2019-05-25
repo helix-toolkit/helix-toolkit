@@ -515,7 +515,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
             if (this.IsInertiaEnabled)
             {
-                this.panSpeed += pan * 40;
+                this.panSpeed += pan;
             }
             else
             {
@@ -876,7 +876,17 @@ namespace HelixToolkit.SharpDX.Core.Controls
             var axis1 = Vector3.Normalize(Vector3.Cross(this.CameraLookDirection, this.CameraUpDirection));
             var axis2 = Vector3.Normalize(Vector3.Cross(axis1, this.CameraLookDirection));
             axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
-            var l = this.CameraLookDirection.Length();
+            float l = 0;
+            if (ActualCamera is PerspectiveCameraCore)
+            {
+                // this should be dependent on distance to target?
+                l = this.CameraLookDirection.Length();
+            }
+            else if (ActualCamera is OrthographicCameraCore orth)
+            {
+                // this should be dependent on width
+                l = orth.Width;
+            }
             var f = l * 0.001f;
             var move = (-axis1 * f * dx) + (axis2 * f * dy);
             // this should be dependent on distance to target?
@@ -895,6 +905,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             }
             var time = (float)(ticks - this.lastTick) / Stopwatch.Frequency;
             time = time == 0 ? 0.016f : time;
+            time = Math.Min(time, 0.05f); // Clamp the maximum time elapse to prevent over shooting
             // should be independent of time
             var factor = this.IsInertiaEnabled ? Clamp((float)Math.Pow(this.InertiaFactor, time / 0.02f), 0.1f, 1) : 0;
             bool needUpdate = false;

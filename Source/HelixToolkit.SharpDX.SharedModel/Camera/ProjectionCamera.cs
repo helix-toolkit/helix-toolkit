@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty NearPlaneDistanceProperty =
             DependencyProperty.Register(
-                "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e-1, (d, e) =>
+                "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(0.01, (d, e) =>
                 {
                     ((d as Camera).CameraInternal as ProjectionCameraCore).NearPlaneDistance = (float)(double)e.NewValue;
                 }));
