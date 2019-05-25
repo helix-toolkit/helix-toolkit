@@ -17,9 +17,13 @@ using Vector2 = global::SharpDX.Vector2;
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Utilities;
+using HelixToolkit.SharpDX.Model.Cameras;
+#else
+using HelixToolkit.Wpf.SharpDX.Cameras;
 #endif
 namespace HelixToolkit.Wpf.SharpDX
 {
+
 #if !COREWPF
     using Utilities;
 #endif
@@ -616,7 +620,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.PushCameraSetting();
             if (this.IsInertiaEnabled)
             {
-                this.panSpeed += pan * 40;
+                this.panSpeed += pan;
             }
             else
             {
@@ -1212,10 +1216,19 @@ namespace HelixToolkit.Wpf.SharpDX
             var axis1 = Vector3.Normalize(Vector3.Cross(this.CameraLookDirection, this.CameraUpDirection));
             var axis2 = Vector3.Normalize(Vector3.Cross(axis1, this.CameraLookDirection));
             axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
-            var l = this.CameraLookDirection.Length();
+            float l = 0;
+            if(actualCamera is PerspectiveCamera)
+            {
+                // this should be dependent on distance to target?
+                l = this.CameraLookDirection.Length();
+            }
+            else if (actualCamera.CameraInternal is OrthographicCameraCore orth)
+            {
+                // this should be dependent on width
+                l = orth.Width;
+            }
             var f = l * 0.001f;
             var move = (-axis1 * f * dx) + (axis2 * f * dy);
-            // this should be dependent on distance to target?
             return move;
         }
 
