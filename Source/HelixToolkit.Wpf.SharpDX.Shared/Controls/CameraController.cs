@@ -17,7 +17,7 @@ using Vector2 = global::SharpDX.Vector2;
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Utilities;
-using HelixToolkit.SharpDX.Model.Cameras;
+using HelixToolkit.SharpDX.Core.Cameras;
 #else
 using HelixToolkit.Wpf.SharpDX.Cameras;
 #endif
