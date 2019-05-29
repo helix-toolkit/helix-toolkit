@@ -277,6 +277,8 @@ namespace HelixToolkit.UWP
                 {
                     relativePosition.Normalize();
                     relativePosition /= 10;
+                    zoomAround = relativePosition + this.Camera.CameraInternal.Position;
+                    relativeTarget = zoomAround - target;
                 }
                 else//If Zoom in too close, stop it.
                 {
