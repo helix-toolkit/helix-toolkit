@@ -4,12 +4,15 @@ All notable changes to this project will be documented in this file.
 ## [Next Release]
 
 ### Added
-1. Implement HelixToolkit.Wpf and HelixToolkit.Wpf.SharpDX supports for .Net Core 3.0 WPF.
+1. Implement HelixToolkit.Wpf and HelixToolkit.Wpf.SharpDX supports for .Net Core 3.0 WPF. (WPF/WPF.SharpDX)
+2. Supports absolute 3D position mode in ScreenSpacedNode. Ref #1165 (WPF.SharpDX/UWP/Core)
 
 ### Improvement and Changes
 
 ### Fixed
-
+1. OrthoCam width getting clipped on zooming #1164 (WPF.SharpDX/UWP/Core)
+2. Fix panning speed too huge causes object flying too far. Ref #1161 (WPF.SharpDX/UWP/Core)
+3. Orthogaphical Camera (width calc) SharpDX #1158  (WPF.SharpDX/UWP/Core)
 
 ## [2.7.0] - 2019-05-12
 
