@@ -8,11 +8,13 @@ All notable changes to this project will be documented in this file.
 2. Supports absolute 3D position mode in ScreenSpacedNode. Ref #1165 (WPF.SharpDX/UWP/Core)
 
 ### Improvement and Changes
+1. Supports 2D color array texture for TextureModel. Ref #1156 (WPF.SharpDX/UWP/Core)
 
 ### Fixed
 1. OrthoCam width getting clipped on zooming #1164 (WPF.SharpDX/UWP/Core)
 2. Fix panning speed too huge causes object flying too far. Ref #1161 (WPF.SharpDX/UWP/Core)
 3. Orthogaphical Camera (width calc) SharpDX #1158  (WPF.SharpDX/UWP/Core)
+4. Fix symbol link issue for nuget packages.
 
 ## [2.7.0] - 2019-05-12
 
