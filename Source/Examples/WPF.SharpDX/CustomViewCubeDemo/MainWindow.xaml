@@ -32,10 +32,11 @@
                     Mouse3DDown="MeshGeometryModel3D_Mouse3DDown" />
             </hx:ScreenSpacedGroup3D>
             <hx:ScreenSpacedGroup3D RelativeScreenLocationX="0">
-                <hx:MeshGeometryModel3D RenderWireframe="True"
+                <hx:MeshGeometryModel3D
                     Geometry="{Binding ViewCubeGeometry2}"
                     Material="{Binding ViewCubeMaterial2}"
-                    Mouse3DDown="MeshGeometryModel3D_Mouse3DDown" />
+                    Mouse3DDown="MeshGeometryModel3D_Mouse3DDown"
+                    RenderWireframe="True" />
             </hx:ScreenSpacedGroup3D>
             <hx:ScreenSpacedGroup3D RelativeScreenLocationX="0.8" RelativeScreenLocationY="0">
                 <hx:MeshGeometryModel3D
@@ -44,12 +45,22 @@
                     Mouse3DDown="MeshGeometryModel3D_Mouse3DDown"
                     Transform="{Binding ViewCubeTransform3}" />
             </hx:ScreenSpacedGroup3D>
-            <hx:ScreenSpacedGroup3D RelativeScreenLocationX="-0.8" RelativeScreenLocationY="0" SizeScale="2">
+            <hx:ScreenSpacedGroup3D
+                RelativeScreenLocationX="-0.8"
+                RelativeScreenLocationY="0"
+                SizeScale="2">
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding Geometry}"
                     Material="{Binding ViewCubeMaterial4}"
                     Mouse3DDown="MeshGeometryModel3D_Mouse3DDown"
                     Transform="{Binding ViewCubeTransform3}" />
+            </hx:ScreenSpacedGroup3D>
+            <hx:ScreenSpacedGroup3D
+                AbsolutePosition3D="0, 2, 0"
+                Mode="AbsolutePosition3D"
+                SizeScale="2">
+                <hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White" />
+                <hx:BillboardTextModel3D Geometry="{Binding CoordinateText}" />
             </hx:ScreenSpacedGroup3D>
         </hx:Viewport3DX>
     </Grid>

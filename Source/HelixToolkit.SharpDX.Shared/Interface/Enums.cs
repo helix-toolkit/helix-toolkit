@@ -201,4 +201,10 @@ namespace HelixToolkit.UWP
     {
         High, Low
     }
+
+    public enum ScreenSpacedMode
+    {
+        RelativeScreenSpaced,
+        AbsolutePosition3D
+    }
 }

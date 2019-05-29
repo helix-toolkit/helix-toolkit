@@ -85,6 +85,40 @@ namespace HelixToolkit.UWP
                     return (RenderCore as IScreenSpacedRenderParams).SizeScale;
                 }
             }
+            /// <summary>
+            /// Gets or sets the mode. Includes <see cref="ScreenSpacedMode.RelativeScreenSpaced"/> and <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
+            /// </summary>
+            /// <value>
+            /// The mode.
+            /// </value>
+            public ScreenSpacedMode Mode
+            {
+                set
+                {
+                    (RenderCore as IScreenSpacedRenderParams).Mode = value;
+                }
+                get
+                {
+                    return (RenderCore as IScreenSpacedRenderParams).Mode;
+                }
+            }
+            /// <summary>
+            /// Gets or sets the absolute position in 3d. Use by <see cref="Mode"/> = <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
+            /// </summary>
+            /// <value>
+            /// The absolute position3 d.
+            /// </value>
+            public Vector3 AbsolutePosition3D
+            {
+                set
+                {
+                    (RenderCore as IScreenSpacedRenderParams).AbsolutePosition3D = value;
+                }
+                get
+                {
+                    return (RenderCore as IScreenSpacedRenderParams).AbsolutePosition3D;
+                }
+            }
             #endregion
             /// <summary>
             /// Gets or sets a value indicating whether [need clear depth buffer].
@@ -155,10 +189,23 @@ namespace HelixToolkit.UWP
                 var p = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
                 var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
                 float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
-                var offx = (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
-                var offy = (float)(context.ActualHeight / 2 * (1 + screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
-                offx = Math.Max(0, Math.Min(offx, (int)(context.ActualWidth - viewportSize)));
-                offy = Math.Max(0, Math.Min(offy, (int)(context.ActualHeight - viewportSize)));
+                float offx = 0;
+                float offy = 0;
+                switch (Mode)
+                {
+                    case ScreenSpacedMode.RelativeScreenSpaced:
+                        offx = (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
+                        offy = (float)(context.ActualHeight / 2 * (1 + screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
+                        offx = Math.Max(0, Math.Min(offx, (int)(context.ActualWidth - viewportSize)));
+                        offy = Math.Max(0, Math.Min(offy, (int)(context.ActualHeight - viewportSize)));
+                        break;
+                    case ScreenSpacedMode.AbsolutePosition3D:
+                        var abs = Vector3.TransformCoordinate(AbsolutePosition3D, context.ScreenViewProjectionMatrix);
+                        offx = (float)(abs.X - viewportSize / 2);
+                        offy = (float)(abs.Y - viewportSize / 2);
+                        break;
+                }
+
                 var px = p.X - offx;
                 var py = p.Y - offy;
 

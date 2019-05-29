@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Data;
 
 using Media3D = System.Windows.Media.Media3D;
+using Point3D = System.Windows.Media.Media3D.Point3D;
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene;
 #endif
@@ -61,6 +62,25 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EnableMoverProperty =
             DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacedElement3D), new PropertyMetadata(true));
 
+        /// <summary>
+        /// The mode property
+        /// </summary>
+        public static readonly DependencyProperty ModeProperty =
+            DependencyProperty.Register("Mode", typeof(ScreenSpacedMode), typeof(ScreenSpacedElement3D), new PropertyMetadata(ScreenSpacedMode.RelativeScreenSpaced,
+                (d, e) =>
+                {
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).Mode = (ScreenSpacedMode)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// The absolute position3 d property
+        /// </summary>
+        public static readonly DependencyProperty AbsolutePosition3DProperty =
+            DependencyProperty.Register("AbsolutePosition3D", typeof(Point3D), typeof(ScreenSpacedElement3D), new PropertyMetadata(new Point3D(), (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ScreenSpacedNode).AbsolutePosition3D = ((Point3D)e.NewValue).ToVector3();
+            }));
         /// <summary>
         /// Gets or sets a value indicating whether [enable mover].
         /// </summary>
@@ -117,12 +137,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (double)GetValue(SizeScaleProperty);
             }
         }
-
-        //protected override SceneNode OnCreateSceneNode()
-        //{
-            
-        //    return new ScreenSpacedNode();
-        //}
+        /// <summary>
+        /// Gets or sets the mode.
+        /// </summary>
+        /// <value>
+        /// The mode.
+        /// </value>
+        public ScreenSpacedMode Mode
+        {
+            get { return (ScreenSpacedMode)GetValue(ModeProperty); }
+            set { SetValue(ModeProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the absolute position in 3d. Use by <see cref="Mode"/> = <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
+        /// </summary>
+        /// <value>
+        /// The absolute position3 d.
+        /// </value>
+        public Point3D AbsolutePosition3D
+        {
+            get { return (Point3D)GetValue(AbsolutePosition3DProperty); }
+            set { SetValue(AbsolutePosition3DProperty, value); }
+        }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
@@ -131,6 +167,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
                 n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
                 n.SizeScale = (float)this.SizeScale;
+                n.AbsolutePosition3D = AbsolutePosition3D.ToVector3();
+                n.Mode = Mode;
             }
             base.AssignDefaultValuesToSceneNode(node);
             InitializeMover();
