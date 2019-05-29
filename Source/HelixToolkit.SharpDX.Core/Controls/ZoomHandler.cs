@@ -233,6 +233,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 {
                     relativePosition.Normalize();
                     relativePosition /= 10;
+                    zoomAround = relativePosition + this.Camera.Position;
+                    relativeTarget = zoomAround - target;
                 }
                 else//If Zoom in too close, stop it.
                 {

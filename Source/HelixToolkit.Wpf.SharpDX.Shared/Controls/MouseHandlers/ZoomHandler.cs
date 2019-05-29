@@ -268,6 +268,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
                 {
                     relativePosition = Vector3.Normalize(relativePosition) / 10;
+                    zoomAround = relativePosition + this.Camera.CameraInternal.Position;
+                    relativeTarget = zoomAround - target;
                 }
                 else//If Zoom in too close, stop it.
                 {
