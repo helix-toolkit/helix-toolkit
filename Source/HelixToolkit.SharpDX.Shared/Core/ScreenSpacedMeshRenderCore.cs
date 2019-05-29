@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP
         using Utilities;
         using Render;
         using Components;
+
         /// <summary>
         /// 
         /// </summary>
@@ -73,17 +74,20 @@ namespace HelixToolkit.UWP
             /// 
             /// </summary>
             GlobalTransformStruct GlobalTransform { get; }
-            ///// <summary>
-            ///// 
-            ///// </summary>
-            ///// <param name="context"></param>
-            ///// <param name="clearDepthBuffer"></param>
-            //void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer);
-            ///// <summary>
-            ///// 
-            ///// </summary>
-            ///// <param name="context"></param>
-            //void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext);
+            /// <summary>
+            /// Gets or sets the mode.
+            /// </summary>
+            /// <value>
+            /// The mode.
+            /// </value>
+            ScreenSpacedMode Mode { set; get; }
+            /// <summary>
+            /// Gets or sets the absolute position in 3d. Use by <see cref="Mode"/> = <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
+            /// </summary>
+            /// <value>
+            /// The absolute position3 d.
+            /// </value>
+            Vector3 AbsolutePosition3D { set; get; }
         }
         /// <summary>
         /// Used to change view matrix and projection matrix to screen spaced coordinate system.
@@ -126,6 +130,32 @@ namespace HelixToolkit.UWP
                 get
                 {
                     return relativeScreenLocY;
+                }
+            }
+
+            private ScreenSpacedMode mode = ScreenSpacedMode.RelativeScreenSpaced;
+            public ScreenSpacedMode Mode
+            {
+                set
+                {
+                    SetAffectsRender(ref mode, value);
+                }
+                get
+                {
+                    return mode;
+                }
+            }
+
+            private Vector3 absolutePosition3D = Vector3.Zero;
+            public Vector3 AbsolutePosition3D
+            {
+                set
+                {
+                    SetAffectsRender(ref absolutePosition3D, value);
+                }
+                get
+                {
+                    return absolutePosition3D;
                 }
             }
         
@@ -308,26 +338,24 @@ namespace HelixToolkit.UWP
                 globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 1f / viewportSize, 1f / viewportSize);
                 globalTransformCB.Upload(deviceContext, ref globalTrans);
                 GlobalTransform = globalTrans;
-                int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
-                int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
-                offX = Math.Max(0, Math.Min(offX, (int)(Width - viewportSize)));
-                offY = Math.Max(0, Math.Min(offY, (int)(Height - viewportSize)));
-                //if(offX + viewportSize > Width)
-                //{
-                //    offX = (int)(Width - viewportSize);
-                //}
-                //else if(offX < 0)
-                //{
-                //    offX = 0;
-                //}
-                //if(offY + viewportSize > Height)
-                //{
-                //    offY = (int)(Height - viewportSize);
-                //}
-                //else if(offY < 0)
-                //{
-                //    offY = 0;
-                //}
+                int offX = 0;
+                int offY = 0;
+                switch(mode)
+                {
+                    case ScreenSpacedMode.RelativeScreenSpaced:
+                        offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
+                        offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
+                        offX = Math.Max(0, Math.Min(offX, (int)(Width - viewportSize)));
+                        offY = Math.Max(0, Math.Min(offY, (int)(Height - viewportSize)));
+                        break;
+                    case ScreenSpacedMode.AbsolutePosition3D:
+                        var svp = context.ScreenViewProjectionMatrix;
+                        Vector3.TransformCoordinate(ref absolutePosition3D, ref svp, out Vector3 screenPoint);
+                        offX = (int)(screenPoint.X - viewportSize / 2);
+                        offY = (int)(Height - screenPoint.Y - viewportSize / 2);
+                        break;
+                }
+
                 deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
                 deviceContext.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
             }

@@ -8,9 +8,11 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 #if NETFX_CORE
 using Windows.UI.Xaml;
+using Point3D = SharpDX.Vector3;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+using Point3D = System.Windows.Media.Media3D.Point3D;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
@@ -59,12 +61,35 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as Element3DCore).SceneNode as ScreenSpacedNode).SizeScale = (float)(double)e.NewValue;
                 }));
 
-
         /// <summary>
         /// The enable mover property
         /// </summary>
         public static readonly DependencyProperty EnableMoverProperty =
             DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacedElement3D), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The mode property
+        /// </summary>
+        public static readonly DependencyProperty ModeProperty =
+            DependencyProperty.Register("Mode", typeof(ScreenSpacedMode), typeof(ScreenSpacedElement3D), new PropertyMetadata(ScreenSpacedMode.RelativeScreenSpaced,
+                (d,e)=> 
+                {
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).Mode = (ScreenSpacedMode)e.NewValue;
+                }));
+
+
+        /// <summary>
+        /// The absolute position3 d property
+        /// </summary>
+        public static readonly DependencyProperty AbsolutePosition3DProperty =
+            DependencyProperty.Register("AbsolutePosition3D", typeof(Point3D), typeof(ScreenSpacedElement3D), new PropertyMetadata(new Point3D(), (d, e) =>
+            {
+#if NETFX_CORE
+                ((d as Element3DCore).SceneNode as ScreenSpacedNode).AbsolutePosition3D = (Point3D)e.NewValue;
+#else
+                ((d as Element3DCore).SceneNode as ScreenSpacedNode).AbsolutePosition3D = ((Point3D)e.NewValue).ToVector3();
+#endif
+            }));
 
         /// <summary>
         /// Relative Location X on screen. Range from -1~1
@@ -110,7 +135,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (double)GetValue(SizeScaleProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the mode.
+        /// </summary>
+        /// <value>
+        /// The mode.
+        /// </value>
+        public ScreenSpacedMode Mode
+        {
+            get { return (ScreenSpacedMode)GetValue(ModeProperty); }
+            set { SetValue(ModeProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the absolute position in 3d. Use by <see cref="Mode"/> = <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
+        /// </summary>
+        /// <value>
+        /// The absolute position3 d.
+        /// </value>
+        public Point3D AbsolutePosition3D
+        {
+            get { return (Point3D)GetValue(AbsolutePosition3DProperty); }
+            set { SetValue(AbsolutePosition3DProperty, value); }
+        }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
@@ -119,6 +165,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
                 n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
                 n.SizeScale = (float)this.SizeScale;
+                n.Mode = Mode;
+#if NETFX_CORE
+                n.AbsolutePosition3D = AbsolutePosition3D;
+#else
+                n.AbsolutePosition3D = AbsolutePosition3D.ToVector3();
+#endif
             }
             base.AssignDefaultValuesToSceneNode(node);
         }
