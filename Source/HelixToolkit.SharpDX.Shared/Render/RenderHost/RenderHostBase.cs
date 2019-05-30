@@ -571,7 +571,7 @@ namespace HelixToolkit.UWP
 
             private volatile bool UpdatePerFrameRenderableRequested = true;
 
-            private readonly SynchronizationContext syncContext = SynchronizationContext.Current;
+            private SynchronizationContext syncContext { get => SynchronizationContext.Current; }
     #endregion
 
             /// <summary>
