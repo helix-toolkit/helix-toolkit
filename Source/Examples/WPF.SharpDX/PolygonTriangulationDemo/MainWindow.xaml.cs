@@ -109,14 +109,14 @@ namespace PolygonTriangulationDemo
             
             // Generate the Output
             var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
-            geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
-            geometry.Normals = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
+            geometry.Positions = new Vector3Collection();
+            geometry.Normals = new Vector3Collection();
             foreach (var point in mPolygonPoints.Union(holes.SelectMany(h => h)))
             {
                 geometry.Positions.Add(new Vector3(point.X, 0, point.Y + 5));
                 geometry.Normals.Add(new Vector3(0, 1, 0));
             }
-            geometry.Indices = new HelixToolkit.Wpf.SharpDX.Core.IntCollection(sLTI);
+            geometry.Indices = new IntCollection(sLTI);
             triangulatedPolygon.Geometry = geometry;
 
             var lb = new LineBuilder();

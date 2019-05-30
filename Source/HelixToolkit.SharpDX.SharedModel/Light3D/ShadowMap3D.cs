@@ -9,13 +9,18 @@ using Windows.Foundation;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Cameras;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Cameras;
     using Model;
+#if !COREWPF
+    using Cameras;
     using Model.Scene;
-    
+#endif
     /// <summary>
     /// 
     /// </summary>
@@ -55,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty LightCameraProperty =
                 DependencyProperty.Register("LightCamera", typeof(IProjectionCameraModel), typeof(ShadowMap3D), new PropertyMetadata(null, (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as ShadowMapNode).LightCamera = (e.NewValue as Camera).CameraInternal as ProjectionCameraCore;
+                    ((d as Element3DCore).SceneNode as ShadowMapNode).LightCamera = (e.NewValue as Camera)?.CameraInternal as ProjectionCameraCore;
                 }));
 
         /// <summary>

@@ -13,44 +13,52 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 using Device = SharpDX.Direct3D11.Device;
 #endif
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Render
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Render
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class SwapChainRenderHost : DefaultRenderHost
+    namespace Render
     {
-        protected readonly IntPtr surface;
         /// <summary>
-        /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
+        /// 
         /// </summary>
-        /// <param name="surface">The window PTR.</param>
-        public SwapChainRenderHost(IntPtr surface)
+        public class SwapChainRenderHost : DefaultRenderHost
         {
-            this.surface = surface;
-        }
+            protected readonly IntPtr surface;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
+            /// </summary>
+            /// <param name="surface">The window PTR.</param>
+            public SwapChainRenderHost(IntPtr surface)
+            {
+                this.surface = surface;
+            }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
-        /// </summary>
-        /// <param name="surface">The surface.</param>
-        /// <param name="createRenderer">The create renderer.</param>
-        public SwapChainRenderHost(IntPtr surface, Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
-        {
-            this.surface = surface;
-        }
-        /// <summary>
-        /// Creates the render buffer.
-        /// </summary>
-        /// <returns></returns>
-        protected override DX11RenderBufferProxyBase CreateRenderBuffer()
-        {
-            Logger.Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy", nameof(SwapChainRenderHost));
-            return new DX11SwapChainRenderBufferProxy(surface, EffectsManager);
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
+            /// </summary>
+            /// <param name="surface">The surface.</param>
+            /// <param name="createRenderer">The create renderer.</param>
+            public SwapChainRenderHost(IntPtr surface, Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
+            {
+                this.surface = surface;
+            }
+            /// <summary>
+            /// Creates the render buffer.
+            /// </summary>
+            /// <returns></returns>
+            protected override DX11RenderBufferProxyBase CreateRenderBuffer()
+            {
+                Logger.Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy", nameof(SwapChainRenderHost));
+                return new DX11SwapChainRenderBufferProxy(surface, EffectsManager);
+            }
         }
     }
+
 }

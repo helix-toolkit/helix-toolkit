@@ -14,13 +14,19 @@ using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#if !COREWPF
     using Model;
+#endif
     public class PointMaterial : Material
     {
-        #region Dependency Properties
+#region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointMaterial),
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>
@@ -148,8 +154,21 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)this.GetValue(FadingFarDistanceProperty); }
             set { this.SetValue(FadingFarDistanceProperty, value); }
         }
-        #endregion
+#endregion
 
+        public PointMaterial() { }
+
+        public PointMaterial(PointMaterialCore core) : base(core)
+        {
+            Color = core.PointColor.ToColor();
+            Size = new Size(core.Width, core.Height);
+            Figure = core.Figure;
+            FigureRatio = core.FigureRatio;
+            Name = core.Name;
+            EnableDistanceFading = core.EnableDistanceFading;
+            FadingNearDistance = core.FadingNearDistance;
+            FadingFarDistance = core.FadingFarDistance;
+        }
         protected override MaterialCore OnCreateCore()
         {
             return new PointMaterialCore()

@@ -3,59 +3,66 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    /// <summary>
-    /// 
-    /// </summary>
-    public class PointLightNode : LightNode
+    namespace Model.Scene
     {
+        using Core;
         /// <summary>
-        /// Gets or sets the position.
+        /// 
         /// </summary>
-        /// <value>
-        /// The position.
-        /// </value>
-        public Vector3 Position
+        public class PointLightNode : LightNode
         {
-            set { (RenderCore as PointLightCore).Position = value; }
-            get { return (RenderCore as PointLightCore).Position; }
-        }
-        /// <summary>
-        /// Gets or sets the attenuation.
-        /// </summary>
-        /// <value>
-        /// The attenuation.
-        /// </value>
-        public Vector3 Attenuation
-        {
-            set { (RenderCore as PointLightCore).Attenuation = value; }
-            get { return (RenderCore as PointLightCore).Attenuation; }
-        }
-        /// <summary>
-        /// Gets or sets the range.
-        /// </summary>
-        /// <value>
-        /// The range.
-        /// </value>
-        public float Range
-        {
-            set { (RenderCore as PointLightCore).Range = value; }
-            get { return (RenderCore as PointLightCore).Range; }
-        }
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new PointLightCore();
+            /// <summary>
+            /// Gets or sets the position.
+            /// </summary>
+            /// <value>
+            /// The position.
+            /// </value>
+            public Vector3 Position
+            {
+                set { (RenderCore as PointLightCore).Position = value; }
+                get { return (RenderCore as PointLightCore).Position; }
+            }
+            /// <summary>
+            /// Gets or sets the attenuation.
+            /// </summary>
+            /// <value>
+            /// The attenuation.
+            /// </value>
+            public Vector3 Attenuation
+            {
+                set { (RenderCore as PointLightCore).Attenuation = value; }
+                get { return (RenderCore as PointLightCore).Attenuation; }
+            }
+            /// <summary>
+            /// Gets or sets the range.
+            /// </summary>
+            /// <value>
+            /// The range.
+            /// </value>
+            public float Range
+            {
+                set { (RenderCore as PointLightCore).Range = value; }
+                get { return (RenderCore as PointLightCore).Range; }
+            }
+            /// <summary>
+            /// Called when [create render core].
+            /// </summary>
+            /// <returns></returns>
+            protected override RenderCore OnCreateRenderCore()
+            {
+                return new PointLightCore();
+            }
         }
     }
+
 }

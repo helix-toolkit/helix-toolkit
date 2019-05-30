@@ -14,10 +14,11 @@ float4 main(PSInput input) : SV_Target
     {
 		c *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
+    float3 N = bRenderFlat ? normalize(cross(ddy(input.wp.xyz), ddx(input.wp.xyz))) : normalize(input.n);
     if (!bHasNormalMap)//Used for Unlit
     {
         float3 dir = normalize(vEyePos - input.wp.xyz);
-        float f = clamp(0.5 + 0.5 * abs(dot(dir, normalize(input.n))), 0, 1);
+        float f = clamp(0.5 + 0.5 * abs(dot(dir, N)), 0, 1);
         c.rgb *= f;
     }
     return c;

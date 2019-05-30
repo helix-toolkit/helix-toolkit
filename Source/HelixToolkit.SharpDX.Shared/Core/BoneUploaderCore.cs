@@ -5,91 +5,91 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Core
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Render;
-    using Utilities;
-    using Shaders;
-
-    public sealed class BoneUploaderCore : RenderCore
+    namespace Core
     {
-        public event EventHandler BoneChanged;
-        private static readonly Matrix[] empty = new Matrix[0];
-        private bool matricsChanged = true;
-        private Matrix[] boneMatrices = empty;
-        public Matrix[] BoneMatrices
+        using Render;
+        using Utilities;
+        using Shaders;
+
+        public sealed class BoneUploaderCore : RenderCore
         {
-            set
+            public event EventHandler BoneChanged;
+            private static readonly Matrix[] empty = new Matrix[0];
+            private bool matricsChanged = true;
+            private Matrix[] boneMatrices = empty;
+            public Matrix[] BoneMatrices
             {
-                if (SetAffectsRender(ref boneMatrices, value))
+                set
                 {
-                    matricsChanged = true;
-                    if (value == null)
+                    if (SetAffectsRender(ref boneMatrices, value))
                     {
-                        boneMatrices = empty;
+                        matricsChanged = true;
+                        if (value == null)
+                        {
+                            boneMatrices = empty;
+                        }
+                        BoneChanged?.Invoke(this, EventArgs.Empty);
                     }
-                    BoneChanged?.Invoke(this, EventArgs.Empty);
+                }
+                get { return boneMatrices; }
+            }
+
+            public StructuredBufferProxy BoneSkinSB { private set; get; }
+
+            public BoneUploaderCore() : base(RenderType.None)
+            {
+                NeedUpdate = false;
+            }
+
+            public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+            {
+
+            }
+
+            protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
+            {
+                if (matricsChanged)
+                {
+                    BoneSkinSB.UploadDataToBuffer(deviceContext, boneMatrices, boneMatrices.Length);
+                    matricsChanged = false;
                 }
             }
-            get { return boneMatrices; }
-        }
 
-        public StructuredBufferProxy BoneSkinSB { private set; get; }
-
-        public BoneUploaderCore() : base(RenderType.None)
-        {
-            NeedUpdate = false;
-        }
-
-        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
-        {
-
-        }
-
-        protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
-        {
-            if (matricsChanged)
+            protected override bool OnAttach(IRenderTechnique technique)
             {
-                BoneSkinSB.UploadDataToBuffer(deviceContext, boneMatrices, boneMatrices.Length);
-                matricsChanged = false;
+                BoneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes, false));
+                return true;
             }
-        }
 
-        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
-        {
-        }
-
-        protected override bool OnAttach(IRenderTechnique technique)
-        {
-            BoneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes, false));
-            return true;
-        }
-
-        protected override void OnDetach()
-        {
-            BoneSkinSB = null;
-            base.OnDetach();
-        }
+            protected override void OnDetach()
+            {
+                BoneSkinSB = null;
+                base.OnDetach();
+            }
         
-        public void BindBuffer(DeviceContextProxy deviceContext, int slot)
-        {
-            deviceContext.SetShaderResource(VertexShader.Type, slot, BoneSkinSB);
-        }
-
-        protected override void OnDispose(bool disposeManagedResources)
-        {
-            if (disposeManagedResources)
+            public void BindBuffer(DeviceContextProxy deviceContext, int slot)
             {
-                BoneChanged = null;
+                deviceContext.SetShaderResource(VertexShader.Type, slot, BoneSkinSB);
             }
-            base.OnDispose(disposeManagedResources);
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                if (disposeManagedResources)
+                {
+                    BoneChanged = null;
+                }
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
+
 }

@@ -4,6 +4,9 @@ namespace HelixToolkit.UWP
 #else
 using System.ComponentModel;
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
@@ -18,6 +21,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return ColorMaterialCore.Core;
         }
 
+        public VertColorMaterial() { }
+
+        public VertColorMaterial(ColorMaterialCore core) : base(core) { }
 #if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {

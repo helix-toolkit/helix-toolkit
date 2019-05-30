@@ -8,11 +8,17 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Model.Scene;
+#if !COREWPF
     using Core;
+    using Model.Scene;
+#endif
 
     public class DynamicReflectionMap3D : GroupModel3D
     {

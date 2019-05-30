@@ -6,7 +6,11 @@ using System.Collections.Generic;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     /// <summary>
@@ -103,12 +107,13 @@ namespace HelixToolkit.UWP
         public const string Sprite2D = "Sprite2D";
 
         public const string Volume3D = "Volume3D";
-#if !NETFX_CORE
+
+        public const string SSAO = "SSAO";
+
         /// <summary>
         /// 
         /// </summary>
         public const string ScreenDuplication = "ScreenDup";
-#endif
     }
     /// <summary>
     /// 
@@ -123,6 +128,10 @@ namespace HelixToolkit.UWP
         /// The Physics Based Rendering
         /// </summary>
         public const string PBR = "PhysicsBasedRendering";
+        /// <summary>
+        /// The PBR face normal pass
+        /// </summary>
+        public const string PBRFaceNormal = "PhysicsBasedRenderingFaceNormal";
         /// <summary>
         /// 
         /// </summary>
@@ -171,10 +180,12 @@ namespace HelixToolkit.UWP
         /// The mesh transparent
         /// </summary>
         public const string OITPass = "MeshOITPass";
+
         /// <summary>
         /// The oit pass PBR
         /// </summary>
         public const string PBROITPass = "MeshPhysicsBasedOITPass";
+
         /// <summary>
         /// 
         /// </summary>
@@ -213,6 +224,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string EffectBlurHorizontal = "EffectBlurHorizontal";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectOutlineSmooth = "EffectOutlineSmooth";
 
         /// <summary>
         /// 
@@ -275,6 +290,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string FXAAPass = "FXAAPass";
+        /// <summary>
+        /// The ssao pass
+        /// </summary>
+        public const string MeshSSAOPass = "MeshSSAOPass";
     }
     /// <summary>
     /// 

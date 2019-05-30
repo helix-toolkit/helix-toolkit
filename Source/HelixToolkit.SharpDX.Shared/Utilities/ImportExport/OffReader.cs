@@ -9,11 +9,15 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;  
+using System.IO;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Object3DGroup = System.Collections.Generic.List<Object3D>;
@@ -36,6 +40,7 @@ namespace HelixToolkit.UWP
     /// http://segeval.cs.princeton.edu/public/off_format.html
     /// http://paulbourke.net/dataformats/off/
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class OffReader : IModelReader
     {
         /// <summary>

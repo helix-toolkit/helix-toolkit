@@ -1,37 +1,57 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <None Include="..\HelixToolkit.snk" />
+    </ItemGroup>
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-      <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
-      <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <TargetFrameworks>netstandard1.3; netcoreapp2.1</TargetFrameworks>
+      <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
+      <PackageLicenseUrl></PackageLicenseUrl>
       <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
       <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
       <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
       <SignAssembly>true</SignAssembly>
-      <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+      <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
       <Company>HelixToolkit</Company>
       <Authors>HelixToolkit Contributors</Authors>
       <Version>0.0.0.1</Version>
       <RepositoryType>git</RepositoryType>
       <PackageTags>SharpDX; DirectX; 3D;</PackageTags>
+      <RootNamespace>HelixToolkit.SharpDX.Core</RootNamespace>
+      <DelaySign>false</DelaySign>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETSTANDARD1_3</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Release|AnyCPU'">
     <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETSTANDARD1_3</DefineConstants>
-    <DocumentationFile>bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
+    <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Debug|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETCORE2_1</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <OutputPath>bin\Debug\</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Release|AnyCPU'">
+        <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETCORE2_1</DefineConstants>
+        <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <NoWarn>1701;1702;1705;CS1591</NoWarn>
+        <OutputPath>bin\Release\</OutputPath>
+    </PropertyGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <ItemGroup>
+    <None Remove="Resources\arial.dds" />
     <None Remove="Resources\arial.fnt" />
-    <None Remove="Resources\arial.png" />
     <None Remove="Resources\csParticleInsert.cso" />
     <None Remove="Resources\csParticleUpdate.cso" />
     <None Remove="Resources\dsMeshTriTessellation.cso" />
@@ -60,6 +80,7 @@
     <None Remove="Resources\psEffectOutlineQuad.cso" />
     <None Remove="Resources\psEffectOutlineQuadStencil.cso" />
     <None Remove="Resources\psEffectOutlineQualFinal.cso" />
+    <None Remove="Resources\psEffectOutlineSmooth.cso" />
     <None Remove="Resources\psFXAA.cso" />
     <None Remove="Resources\psLine.cso" />
     <None Remove="Resources\psLineColor.cso" />
@@ -84,6 +105,9 @@
     <None Remove="Resources\psShadow.cso" />
     <None Remove="Resources\psSkybox.cso" />
     <None Remove="Resources\psSprite.cso" />
+    <None Remove="Resources\psSSAO.cso" />
+    <None Remove="Resources\psSSAOBlur.cso" />
+    <None Remove="Resources\psSSAOP1.cso" />
     <None Remove="Resources\psViewCube.cso" />
     <None Remove="Resources\psVolume.cso" />
     <None Remove="Resources\psVolumeCube.cso" />
@@ -96,10 +120,12 @@
     <None Remove="Resources\vsCubeMap.cso" />
     <None Remove="Resources\vsMeshBatched.cso" />
     <None Remove="Resources\vsMeshBatchedShadow.cso" />
+    <None Remove="Resources\vsMeshBatchedSSAO.cso" />
     <None Remove="Resources\vsMeshBatchedWireframe.cso" />
     <None Remove="Resources\vsMeshClipPlane.cso" />
     <None Remove="Resources\vsMeshClipPlaneQuad.cso" />
     <None Remove="Resources\vsMeshDefault.cso" />
+    <None Remove="Resources\vsMeshDepth.cso" />
     <None Remove="Resources\vsMeshInstancing.cso" />
     <None Remove="Resources\vsMeshInstancingPBR.cso" />
     <None Remove="Resources\vsMeshInstancingTessellation.cso" />
@@ -108,6 +134,7 @@
     <None Remove="Resources\vsMeshOutlineScreenQuad.cso" />
     <None Remove="Resources\vsMeshPBRClipPlane.cso" />
     <None Remove="Resources\vsMeshShadow.cso" />
+    <None Remove="Resources\vsMeshSSAO.cso" />
     <None Remove="Resources\vsMeshTessellation.cso" />
     <None Remove="Resources\vsMeshTessellationPBR.cso" />
     <None Remove="Resources\vsMeshWireframe.cso" />
@@ -120,14 +147,16 @@
     <None Remove="Resources\vsScreenQuad.cso" />
     <None Remove="Resources\vsSkybox.cso" />
     <None Remove="Resources\vsSprite.cso" />
+    <None Remove="Resources\vsSSAO.cso" />
     <None Remove="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\arial.dds" />
+    <EmbeddedResource Include="Resources\psEffectOutlineSmooth.cso" />
     <EmbeddedResource Include="Resources\psMeshPBROIT.cso" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\arial.fnt" />
-    <EmbeddedResource Include="Resources\arial.png" />
     <EmbeddedResource Include="Resources\csParticleInsert.cso" />
     <EmbeddedResource Include="Resources\csParticleUpdate.cso" />
     <EmbeddedResource Include="Resources\dsMeshTriTessellation.cso" />
@@ -179,6 +208,9 @@
     <EmbeddedResource Include="Resources\psShadow.cso" />
     <EmbeddedResource Include="Resources\psSkybox.cso" />
     <EmbeddedResource Include="Resources\psSprite.cso" />
+    <EmbeddedResource Include="Resources\psSSAO.cso" />
+    <EmbeddedResource Include="Resources\psSSAOBlur.cso" />
+    <EmbeddedResource Include="Resources\psSSAOP1.cso" />
     <EmbeddedResource Include="Resources\psViewCube.cso" />
     <EmbeddedResource Include="Resources\psVolume.cso" />
     <EmbeddedResource Include="Resources\psVolumeCube.cso" />
@@ -191,15 +223,18 @@
     <EmbeddedResource Include="Resources\vsCubeMap.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatched.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatchedShadow.cso" />
+    <EmbeddedResource Include="Resources\vsMeshBatchedSSAO.cso" />
     <EmbeddedResource Include="Resources\vsMeshBatchedWireframe.cso" />
     <EmbeddedResource Include="Resources\vsMeshClipPlane.cso" />
     <EmbeddedResource Include="Resources\vsMeshClipPlaneQuad.cso" />
     <EmbeddedResource Include="Resources\vsMeshDefault.cso" />
+    <EmbeddedResource Include="Resources\vsMeshDepth.cso" />
     <EmbeddedResource Include="Resources\vsMeshInstancing.cso" />
     <EmbeddedResource Include="Resources\vsMeshInstancingTessellation.cso" />
     <EmbeddedResource Include="Resources\vsMeshOutlinePass1.cso" />
     <EmbeddedResource Include="Resources\vsMeshOutlineScreenQuad.cso" />
     <EmbeddedResource Include="Resources\vsMeshShadow.cso" />
+    <EmbeddedResource Include="Resources\vsMeshSSAO.cso" />
     <EmbeddedResource Include="Resources\vsMeshTessellation.cso" />
     <EmbeddedResource Include="Resources\vsMeshWireframe.cso" />
     <EmbeddedResource Include="Resources\vsParticle.cso" />
@@ -211,10 +246,16 @@
     <EmbeddedResource Include="Resources\vsScreenQuad.cso" />
     <EmbeddedResource Include="Resources\vsSkybox.cso" />
     <EmbeddedResource Include="Resources\vsSprite.cso" />
+    <EmbeddedResource Include="Resources\vsSSAO.cso" />
     <EmbeddedResource Include="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="1.3.4" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
@@ -230,5 +271,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+    <PackageReference Include="System.CodeDom">
+      <Version>4.5.0</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

@@ -2,27 +2,29 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Core
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Text;
+using global::SharpDX;
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Globalization;
-    using System.Text;
-
-    using global::SharpDX;
-
     using Utilities;
 
 #if !NETFX_CORE
     [Serializable]
     [TypeConverter(typeof(Vector3CollectionConverter))]
 #endif
-    public sealed class Vector3Collection : ExposedArrayList<Vector3>
+    public sealed class Vector3Collection : FastList<Vector3>
     {
         public Vector3Collection()
         {

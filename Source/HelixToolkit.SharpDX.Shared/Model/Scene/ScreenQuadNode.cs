@@ -7,78 +7,84 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.IO;
-
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-
-    public class ScreenQuadNode : SceneNode
+    namespace Model.Scene
     {
-        /// <summary>
-        /// Gets or sets the texture.
-        /// </summary>
-        /// <value>
-        /// The texture.
-        /// </value>
-        public Stream Texture
-        {
-            set { (RenderCore as DrawScreenQuadCore).Texture = value; }
-            get { return (RenderCore as DrawScreenQuadCore).Texture; }
-        }
-        /// <summary>
-        /// Gets or sets the sampler.
-        /// </summary>
-        /// <value>
-        /// The sampler.
-        /// </value>
-        public SamplerStateDescription Sampler
-        {
-            set { (RenderCore as DrawScreenQuadCore).SamplerDescription = value; }
-            get { return (RenderCore as DrawScreenQuadCore).SamplerDescription; }
-        }
+        using Core;
 
-        private float depth = 1f;
-        public float Depth
+        public class ScreenQuadNode : SceneNode
         {
-            set
+            /// <summary>
+            /// Gets or sets the texture.
+            /// </summary>
+            /// <value>
+            /// The texture.
+            /// </value>
+            public TextureModel Texture
             {
-                if(SetAffectsRender(ref depth, value))
-                {
-                    var core = RenderCore as DrawScreenQuadCore;
-                    core.ModelStruct.TopLeft.Z = core.ModelStruct.TopRight.Z = core.ModelStruct.BottomLeft.Z = core.ModelStruct.BottomRight.Z = value;
-                }
+                set { (RenderCore as DrawScreenQuadCore).Texture = value; }
+                get { return (RenderCore as DrawScreenQuadCore).Texture; }
             }
-            get { return depth; }
-        }
+            /// <summary>
+            /// Gets or sets the sampler.
+            /// </summary>
+            /// <value>
+            /// The sampler.
+            /// </value>
+            public SamplerStateDescription Sampler
+            {
+                set { (RenderCore as DrawScreenQuadCore).SamplerDescription = value; }
+                get { return (RenderCore as DrawScreenQuadCore).SamplerDescription; }
+            }
 
-        public ScreenQuadNode()
-        {
-            IsHitTestVisible = false;
-        }
+            private float depth = 1f;
+            public float Depth
+            {
+                set
+                {
+                    if(SetAffectsRender(ref depth, value))
+                    {
+                        var core = RenderCore as DrawScreenQuadCore;
+                        core.ModelStruct.TopLeft.Z = core.ModelStruct.TopRight.Z = core.ModelStruct.BottomLeft.Z = core.ModelStruct.BottomRight.Z = value;
+                    }
+                }
+                get { return depth; }
+            }
 
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new DrawScreenQuadCore();
-        }
+            public ScreenQuadNode()
+            {
+                IsHitTestVisible = false;
+            }
 
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return EffectsManager[DefaultRenderTechniqueNames.ScreenQuad];
-        }
+            protected override RenderCore OnCreateRenderCore()
+            {
+                return new DrawScreenQuadCore();
+            }
 
-        public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
-        }
+            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            {
+                return EffectsManager[DefaultRenderTechniqueNames.ScreenQuad];
+            }
 
-        protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
+            public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+            {
+                return false;
+            }
+
+            protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            {
+                return false;
+            }
         }
     }
+
 }

@@ -4,22 +4,30 @@ using System.IO;
 using System.Linq;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Shaders;
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#if !COREWPF
     using Model;
     using Shaders;
-    using System.ComponentModel;
+#endif
+
     using Utilities;
 
 
-    public sealed class DiffuseMaterial : Material
+    public class DiffuseMaterial : Material
     {
         /// <summary>
         /// The diffuse color property
@@ -48,8 +56,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
-            DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(DiffuseMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as DiffuseMaterialCore).DiffuseMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("DiffuseMap", typeof(TextureModel), typeof(DiffuseMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as DiffuseMaterialCore).DiffuseMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// Gets or sets the diffuse map.
@@ -57,9 +65,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The diffuse map.
         /// </value>
-        public Stream DiffuseMap
+        public TextureModel DiffuseMap
         {
-            get { return (Stream)this.GetValue(DiffuseMapProperty); }
+            get { return (TextureModel)this.GetValue(DiffuseMapProperty); }
             set { this.SetValue(DiffuseMapProperty, value); }
         }
 
@@ -81,9 +89,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The uv transform property
         /// </summary>
         public static readonly DependencyProperty UVTransformProperty =
-            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(DiffuseMaterial), new PropertyMetadata(Matrix.Identity, (d, e) =>
+            DependencyProperty.Register("UVTransform", typeof(UVTransform), typeof(DiffuseMaterial), new PropertyMetadata(UVTransform.Identity, (d, e) =>
             {
-                ((d as Material).Core as DiffuseMaterialCore).UVTransform = (Matrix)e.NewValue;
+                ((d as Material).Core as DiffuseMaterialCore).UVTransform = (UVTransform)e.NewValue;
             }));
         /// <summary>
         /// Gets or sets the texture uv transform.
@@ -91,9 +99,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The uv transform.
         /// </value>
-        public Matrix UVTransform
+        public UVTransform UVTransform
         {
-            get { return (Matrix)GetValue(UVTransformProperty); }
+            get { return (UVTransform)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
         }
 
@@ -120,6 +128,35 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as Material).Core as DiffuseMaterialCore).EnableUnLit = (bool)e.NewValue;
                 }));
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable flat shading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableFlatShading
+        {
+            get { return (bool)GetValue(EnableFlatShadingProperty); }
+            set { SetValue(EnableFlatShadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableFlatShadingProperty =
+            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(DiffuseMaterial), new PropertyMetadata(false, (d, e) =>
+            {
+                ((d as Material).Core as DiffuseMaterialCore).EnableFlatShading = (bool)e.NewValue;
+            }));
+
+        public DiffuseMaterial() { }
+
+        public DiffuseMaterial(DiffuseMaterialCore core) : base(core)
+        {
+            DiffuseColor = core.DiffuseColor;
+            DiffuseMap = core.DiffuseMap;
+            UVTransform = core.UVTransform;
+            DiffuseMapSampler = core.DiffuseMapSampler;
+            EnableUnLit = core.EnableUnLit;
+            EnableFlatShading = core.EnableFlatShading;
+        }
 
         protected override MaterialCore OnCreateCore()
         {
@@ -130,11 +167,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 UVTransform = UVTransform,
                 DiffuseMapSampler = DiffuseMapSampler,
                 EnableUnLit = EnableUnLit,
+                EnableFlatShading = EnableFlatShading,
             };
         }
 
-#if !NETFX_CORE
-        protected override Freezable CreateInstanceCore()
+        public virtual DiffuseMaterial CloneMaterial()
         {
             return new DiffuseMaterial()
             {
@@ -144,7 +181,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 UVTransform = UVTransform,
                 Name = Name,
                 EnableUnLit = EnableUnLit,
+                EnableFlatShading = EnableFlatShading,
             };
+        }
+
+#if !NETFX_CORE
+        protected override Freezable CreateInstanceCore()
+        {
+            return CloneMaterial();
         }
 #endif
     }

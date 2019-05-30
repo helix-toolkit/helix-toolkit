@@ -5,34 +5,42 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Utilities
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Utilities
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public class UniformRandomVectorGenerator : IRandomVector
+    namespace Utilities
     {
-        public Vector3 MinVector { set; get; } = -Vector3.One;
-
-        public Vector3 MaxVector { set; get; } = Vector3.One;
-
-        public Vector3 RandomVector3
+        public class UniformRandomVectorGenerator : IRandomVector
         {
-            get
-            {
-                return random.NextVector3(MinVector, MaxVector);
-            }
-        }
+            public Vector3 MinVector { set; get; } = -Vector3.One;
 
-        public uint Seed
-        {
-            get
-            {
-                return (uint)Math.Abs(random.Next());
-            }
-        }
+            public Vector3 MaxVector { set; get; } = Vector3.One;
 
-        private readonly Random random = new Random(Environment.TickCount);
+            public Vector3 RandomVector3
+            {
+                get
+                {
+                    return random.NextVector3(MinVector, MaxVector);
+                }
+            }
+
+            public uint Seed
+            {
+                get
+                {
+                    return (uint)Math.Abs(random.Next());
+                }
+            }
+
+            private readonly Random random = new Random(Environment.TickCount);
+        }
     }
+
 }

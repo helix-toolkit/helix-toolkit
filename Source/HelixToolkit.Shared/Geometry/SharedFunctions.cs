@@ -3,7 +3,11 @@ using System;
 using System.Runtime.CompilerServices;
 #if SHARPDX
 #if NETFX_CORE
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
@@ -153,22 +157,22 @@ namespace HelixToolkit.Wpf
             return new Vector3D((DoubleOrSingle)vector.X, (DoubleOrSingle)vector.Y, (DoubleOrSingle)vector.Z);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static System.Windows.Media.Media3D.Vector3DCollection ToVector3DCollection(SharpDX.Core.Vector3Collection collection)
+        public static System.Windows.Media.Media3D.Vector3DCollection ToVector3DCollection(SharpDX.Vector3Collection collection)
         {
             return new System.Windows.Media.Media3D.Vector3DCollection(collection.Select(v => ToVector3D(ref v)));
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static System.Windows.Media.Media3D.Point3DCollection ToPoint3DCollection(SharpDX.Core.Vector3Collection collection)
+        public static System.Windows.Media.Media3D.Point3DCollection ToPoint3DCollection(SharpDX.Vector3Collection collection)
         {
             return new System.Windows.Media.Media3D.Point3DCollection(collection.Select(v => ToPoint3D(ref v)));
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static System.Windows.Media.PointCollection ToPointCollection(SharpDX.Core.Vector2Collection collection)
+        public static System.Windows.Media.PointCollection ToPointCollection(SharpDX.Vector2Collection collection)
         {
             return new System.Windows.Media.PointCollection(collection.Select(v => new System.Windows.Point(v.X, v.Y)));
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static System.Windows.Media.Int32Collection ToInt32Collection(SharpDX.Core.IntCollection collection)
+        public static System.Windows.Media.Int32Collection ToInt32Collection(SharpDX.IntCollection collection)
         {
             return new System.Windows.Media.Int32Collection(collection);
         }

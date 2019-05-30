@@ -15,11 +15,13 @@ using System.Linq;
 using global::SharpDX;
 
 #if !NETFX_CORE
-using System.Windows;
-//using System.Windows.Media.Imaging;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
 #if NETFX_CORE
@@ -59,6 +61,7 @@ namespace HelixToolkit.UWP
     /// http://www.martinreddy.net/gfx/3d/OBJ.spec
     /// http://www.eg-models.de/formats/Format_Obj.html
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class ObjReader : IModelReader
     {
         /// <summary>

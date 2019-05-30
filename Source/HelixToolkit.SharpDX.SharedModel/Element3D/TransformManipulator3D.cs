@@ -6,6 +6,9 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -15,13 +18,17 @@ namespace HelixToolkit.UWP
 using System.Windows;
 using Media3D = System.Windows.Media.Media3D;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#if !COREWPF
     using Model.Scene;
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
+#endif
+
     using Utilities;
 
     public class TransformManipulator3D : GroupElement3D
@@ -58,7 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX
             ScalingGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
             ScalingGeometry.UpdateOctree();
         }
-        #region Dependency Properties
+#region Dependency Properties
         public Element3D Target
         {
             get { return (Element3D)GetValue(TargetProperty); }
@@ -153,8 +160,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d as TransformManipulator3D).sizeScale = (double)e.NewValue;
             }));
 
-        #endregion
-        #region Variables
+#endregion
+#region Variables
         private readonly MeshGeometryModel3D translationX, translationY, translationZ;
         private readonly MeshGeometryModel3D rotationX, rotationY, rotationZ;
         private readonly MeshGeometryModel3D scaleX, scaleY, scaleZ;
@@ -176,7 +183,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool isCaptured = false;
         private double sizeScale = 1;
         private Color4 currentColor;
-        #endregion
+#endregion
         private enum ManipulationType
         {
             None, TranslationX, TranslationY, TranslationZ, RotationX, RotationY, RotationZ, ScaleX, ScaleY, ScaleZ
@@ -189,7 +196,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var rotationYMatrix = Matrix.RotationZ((float)Math.PI / 2);
             var rotationZMatrix = Matrix.RotationY(-(float)Math.PI / 2);
             ctrlGroup = new GroupModel3D();
-            #region Translation Models
+#region Translation Models
             translationX = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             translationY = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             translationZ = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -224,8 +231,8 @@ namespace HelixToolkit.Wpf.SharpDX
             translationGroup.Children.Add(translationY);
             translationGroup.Children.Add(translationZ);
             ctrlGroup.Children.Add(translationGroup);
-            #endregion
-            #region Rotation Models
+#endregion
+#region Rotation Models
             rotationX = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             rotationY = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             rotationZ = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -260,8 +267,8 @@ namespace HelixToolkit.Wpf.SharpDX
             rotationGroup.Children.Add(rotationY);
             rotationGroup.Children.Add(rotationZ);
             ctrlGroup.Children.Add(rotationGroup);
-            #endregion
-            #region Scaling Models
+#endregion
+#region Scaling Models
             scaleX = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             scaleY = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             scaleZ = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -296,7 +303,7 @@ namespace HelixToolkit.Wpf.SharpDX
             scaleGroup.Children.Add(scaleY);
             scaleGroup.Children.Add(scaleZ);
             ctrlGroup.Children.Add(scaleGroup);
-            #endregion
+#endregion
             Children.Add(ctrlGroup);
             xrayEffect = new PostEffectMeshXRayGrid()
             {
@@ -328,7 +335,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        #region Handle Translation
+#region Handle Translation
         private void Translation_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
             if (target == null || !CanBeginTransform(e))
@@ -364,10 +371,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             var up = Vector3.Cross(cameraNormal, direction);
             normal = Vector3.Cross(up, direction);
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                currentHit = hit.Value;
+                currentHit = hit;
                 isCaptured = true;
             }
         }
@@ -378,11 +384,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                var moveDir = hit.Value - currentHit;
-                currentHit = hit.Value;
+                var moveDir = hit - currentHit;
+                currentHit = hit;
                 switch (manipulationType)
                 {
                     case ManipulationType.TranslationX:
@@ -396,14 +401,12 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                 }
                 OnUpdateSelfTransform();
-                OnUpdateTargetMatrix();
+                OnUpdateTargetMatrix();              
             }
-
-
         }
-        #endregion
+#endregion
 
-        #region Handle Rotation
+#region Handle Rotation
         private void Rotation_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
             if (target == null || !CanBeginTransform(e))
@@ -439,11 +442,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             //var up = Vector3.Cross(cameraNormal, direction);
             //normal = Vector3.Cross(up, direction);
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                currentHit = hit.Value;
-                isCaptured = true;
+                currentHit = hit;
+                isCaptured = true;            
             }
         }
 
@@ -453,15 +455,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            var position = this.translationVector + centerOffset;
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
+                var position = this.translationVector + centerOffset;
                 var v = Vector3.Normalize(currentHit - position);
-                var u = Vector3.Normalize(hit.Value - position);
+                var u = Vector3.Normalize(hit - position);
                 var currentAxis = Vector3.Cross(u, v);
                 var axis = Vector3.UnitX;
-                currentHit = hit.Value;
+                currentHit = hit;
                 switch (manipulationType)
                 {
                     case ManipulationType.RotationX:
@@ -490,10 +491,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 OnUpdateTargetMatrix();
             }
-        }
-        #endregion
 
-        #region Handle Scaling
+        }
+#endregion
+
+#region Handle Scaling
         private void Scaling_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
             if (target == null || !CanBeginTransform(e))
@@ -529,10 +531,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             var up = Vector3.Cross(cameraNormal, direction);
             normal = Vector3.Cross(up, direction);
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                currentHit = hit.Value;
+                currentHit = hit;
                 isCaptured = true;
             }
         }
@@ -543,11 +544,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            if (hit.HasValue)
+            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
-                var moveDir = hit.Value - currentHit;
-                currentHit = hit.Value;
+                var moveDir = hit - currentHit;
+                currentHit = hit;
                 var orgAxis = Vector3.Zero;
                 float scale = 1;
                 switch (manipulationType)
@@ -577,7 +577,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 OnUpdateTargetMatrix();
             }
         }
-        #endregion
+#endregion
 
         private void Manipulation_Mouse3DUp(object sender, MouseUp3DEventArgs e)
         {

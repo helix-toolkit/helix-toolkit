@@ -4,12 +4,11 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using System.Diagnostics;
+using System;
 namespace HelixToolkit.SharpDX.Core.Controls
 {
-    using System;
-    using UWP;
-    using UWP.Cameras;
-
+    using Cameras;
+    using System.Collections.Generic;
 
     public abstract class MouseGestureHandler
     {
@@ -100,7 +99,13 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// Gets or sets the mouse down Vector2 at the nearest hit element (3D world coordinates).
         /// </summary>
         protected Vector3? MouseDownNearestPoint3D;
-
+        /// <summary>
+        /// Gets or sets the mouse down nearest hit model bounding box center.
+        /// </summary>
+        /// <value>
+        /// The mouse down nearest model bound center.
+        /// </value>
+        protected Vector3? MouseDownNearestModelBoundCenter { set; get; }
         /// <summary>
         /// Gets or sets the mouse down Vector2 (2D screen coordinates).
         /// </summary>
@@ -142,6 +147,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
         }
 
         private long startTick;
+
+        private List<HitTestResult> hits = new List<HitTestResult>();
 
         public event EventHandler MouseCaptureRequested;
         public event EventHandler MouseReleaseRequested;
@@ -229,7 +236,11 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// </returns>
         protected Ray GetRay(Vector2 position)
         {
-            return this.Controller.Viewport.UnProject(position);
+            if(this.Controller.Viewport.UnProject(position, out var ray))
+            {
+                return ray;
+            }
+            return new Ray();
         }
 
         /// <summary>
@@ -317,14 +328,21 @@ namespace HelixToolkit.SharpDX.Core.Controls
         {
             this.MouseDownPoint = position;
 
-            if (!this.Controller.FixedRotationPointEnabled
-                && this.Controller.Viewport.FindNearest(position, out var nearestPoint, out var normal, out var visual))
+            if (!this.Controller.FixedRotationPointEnabled && this.Controller.Viewport.FindHitsInFrustum(this.MouseDownPoint, ref hits))
             {
-                this.MouseDownNearestPoint3D = nearestPoint;
+                if (hits.Count > 0)
+                {
+                    MouseDownNearestPoint3D = hits[0].PointHit;
+                    if (hits[0].ModelHit is Model.Scene.SceneNode node)
+                    {
+                        MouseDownNearestModelBoundCenter = node.BoundsWithTransform.Center;
+                    }
+                }
             }
             else
             {
-                this.MouseDownNearestPoint3D = null;
+                MouseDownNearestModelBoundCenter = null;
+                MouseDownNearestPoint3D = null;
             }
 
             this.MouseDownPoint3D = this.UnProject(position);

@@ -5,7 +5,7 @@
     <version>$version$</version>
     <title>HelixToolkit for UWP (based on SharpDX)</title>
     <authors>objo, Lunci</authors>
-    <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
+    <license type="expression">MIT</license>
     <projectUrl>http://helix-toolkit.github.io/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

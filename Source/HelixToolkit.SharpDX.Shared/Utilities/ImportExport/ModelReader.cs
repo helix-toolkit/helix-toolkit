@@ -9,11 +9,16 @@
 using System;
 using System.IO;
 using SharpDX;
+
 #if !NETFX_CORE
 using System.Windows.Threading;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;

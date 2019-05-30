@@ -4,10 +4,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using global::SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     public static class MatrixExtensions

@@ -9,6 +9,9 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
@@ -132,6 +135,19 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(FadingFarDistanceProperty, value); }
         }
         #endregion
+
+        public LineMaterial() { }
+
+        public LineMaterial(LineMaterialCore core):base(core)
+        {
+            Name = core.Name;
+            Color = core.LineColor.ToColor();
+            Smoothness = core.Smoothness;
+            Thickness = core.Thickness;
+            EnableDistanceFading = EnableDistanceFading;
+            FadingNearDistance = core.FadingNearDistance;
+            FadingFarDistance = core.FadingFarDistance;
+        }
 
         protected override MaterialCore OnCreateCore()
         {

@@ -15,21 +15,29 @@ namespace HelixToolkit.UWP
 using System.Windows;
 using Colors = System.Windows.Media.Colors;
 using Color = System.Windows.Media.Color;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Core;
     using Model;
+#if !COREWPF
+    using Core;
     using Model.Scene;
+#endif
     /// <summary>
     /// Static mesh batching. Supports multiple <see cref="BatchedMaterials"/>. All geometries are merged into single buffer for rendering. Indivisual material color infomations are encoded into vertex buffer.
     /// <para>
     /// <see cref="Material"/> is used if <see cref="BatchedMaterials"/> = null. And also used for shared material texture binding.
     /// </para>
     /// </summary>
-    public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow
+    public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, IApplyPostEffect
     {
-        #region Dependency Properties
+#region Dependency Properties
         public IList<BatchedMeshGeometryConfig> BatchedGeometries
         {
             get { return (IList<BatchedMeshGeometryConfig>)GetValue(BatchedGeometriesProperty); }
@@ -60,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsThrowingShadowProperty =
         DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
         {
-            if ((d as Element3D).SceneNode is Core.IThrowingShadow t)
+            if ((d as Element3D).SceneNode is IThrowingShadow t)
             {
                 t.IsThrowingShadow = (bool)e.NewValue;
             }
@@ -193,7 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
-        /// <see cref="Core.IThrowingShadow.IsThrowingShadow"/>
+        /// <see cref="IThrowingShadow.IsThrowingShadow"/>
         /// </summary>
         public bool IsThrowingShadow
         {
@@ -436,7 +444,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(InvertNormalProperty);
             }
         }
-        #endregion
+#endregion
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {

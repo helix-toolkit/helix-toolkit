@@ -2,127 +2,136 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using global::SharpDX;
+using global::SharpDX.Direct3D11;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Core
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using global::SharpDX;
-    using global::SharpDX.Direct3D11;
-    using Render;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Utilities;
-
-    /// <summary>
-    /// Used for managing instance buffer update
-    /// </summary>
-    public class ElementsBufferModel<T> : DisposeObject, IElementsBufferModel<T> where T : struct
+    namespace Core
     {
-        public static readonly ElementsBufferModel<T> Empty = new ElementsBufferModel<T>(0);
-        public event EventHandler<EventArgs> ElementChanged;
-        public Guid GUID { get; } = Guid.NewGuid();
-        public bool Initialized { private set; get; }
-        public bool HasElements { private set; get; } = false;
-        public IElementsBufferProxy Buffer { get { return elementBuffer; } }
-        private IElementsBufferProxy elementBuffer;
-        private VertexBufferBinding bufferBinding;
 
-        public bool Changed { get { return instanceChanged; } }
-        private volatile bool instanceChanged = true;
+        using Render;
+        using Utilities;
 
-        private IList<T> elements = null;
-        public IList<T> Elements
+        /// <summary>
+        /// Used for managing instance buffer update
+        /// </summary>
+        public class ElementsBufferModel<T> : DisposeObject, IElementsBufferModel<T> where T : struct
         {
-            set
+            public static readonly ElementsBufferModel<T> Empty = new ElementsBufferModel<T>(0);
+            public event EventHandler<EventArgs> ElementChanged;
+            public Guid GUID { get; } = Guid.NewGuid();
+            public bool Initialized { private set; get; }
+            public bool HasElements { private set; get; } = false;
+            public IElementsBufferProxy Buffer { get { return elementBuffer; } }
+            private IElementsBufferProxy elementBuffer;
+            private VertexBufferBinding bufferBinding;
+
+            public bool Changed { get { return instanceChanged; } }
+            private volatile bool instanceChanged = true;
+
+            private IList<T> elements = null;
+            public IList<T> Elements
             {
-                if (elements != value)
+                set
                 {
-                    elements = value;
-                    instanceChanged = true;
-                    HasElements = elements != null && elements.Any();
-                    ElementChanged?.Invoke(this, EventArgs.Empty);
-                }
-            }
-            get { return elements; }
-        }
-
-        public int ElementCount
-        {
-            get
-            {
-                return HasElements ? Elements.Count : 0;
-            }
-        }
-
-        public int StructSize { private set; get; }
-
-        public ElementsBufferModel(int structSize)
-        {
-            StructSize = structSize;
-        }
-
-        public void Initialize()
-        {
-            elementBuffer = Collect(new DynamicBufferProxy(StructSize, BindFlags.VertexBuffer));
-            Initialized = true;
-            instanceChanged = true;
-        }
-
-        public virtual void AttachBuffer(DeviceContextProxy context, ref int vertexBufferStartSlot)
-        {
-            if (HasElements)
-            {
-                if (instanceChanged)
-                {
-                    lock (elementBuffer)
+                    if (elements != value)
                     {
-                        if (instanceChanged)
-                        {
-                            elementBuffer.UploadDataToBuffer(context, elements, elements.Count);
-                            instanceChanged = false;
-                            bufferBinding = new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset);
-                        }
+                        elements = value;
+                        instanceChanged = true;
+                        HasElements = elements != null && elements.Any();
+                        ElementChanged?.Invoke(this, EventArgs.Empty);
                     }
                 }
-                context.SetVertexBuffers(vertexBufferStartSlot, bufferBinding);
+                get { return elements; }
             }
-            ++vertexBufferStartSlot;
+
+            public int ElementCount
+            {
+                get
+                {
+                    return HasElements ? Elements.Count : 0;
+                }
+            }
+
+            public int StructSize { private set; get; }
+
+            public ElementsBufferModel(int structSize)
+            {
+                StructSize = structSize;
+            }
+
+            public void Initialize()
+            {
+                elementBuffer = Collect(new DynamicBufferProxy(StructSize, BindFlags.VertexBuffer));
+                Initialized = true;
+                instanceChanged = true;
+            }
+
+            public virtual void AttachBuffer(DeviceContextProxy context, ref int vertexBufferStartSlot)
+            {
+                if (HasElements)
+                {
+                    if (instanceChanged)
+                    {
+                        lock (elementBuffer)
+                        {
+                            if (instanceChanged)
+                            {
+                                elementBuffer.UploadDataToBuffer(context, elements, elements.Count);
+                                instanceChanged = false;
+                                bufferBinding = new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset);
+                            }
+                        }
+                    }
+                    context.SetVertexBuffers(vertexBufferStartSlot, bufferBinding);
+                }
+                ++vertexBufferStartSlot;
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                Initialized = false;
+                base.OnDispose(disposeManagedResources);
+            }
+            /// <summary>
+            /// Disposes the internal resources. Object is reusable.
+            /// </summary>
+            public override void DisposeAndClear()
+            {
+                Initialized = false;
+                base.DisposeAndClear();
+            }
         }
 
-        protected override void OnDispose(bool disposeManagedResources)
+        public class MatrixInstanceBufferModel : ElementsBufferModel<Matrix>
         {
-            Initialized = false;
-            base.OnDispose(disposeManagedResources);
+            public MatrixInstanceBufferModel()
+                : base(Matrix.SizeInBytes)
+            {
+            }
         }
-        /// <summary>
-        /// Disposes the internal resources. Object is reusable.
-        /// </summary>
-        public override void DisposeAndClear()
+
+        public class InstanceParamsBufferModel<T> : ElementsBufferModel<T> where T : struct
         {
-            Initialized = false;
-            base.DisposeAndClear();
+            public InstanceParamsBufferModel(int structSize) : base(structSize)
+            { }
         }
-    }
 
-    public class MatrixInstanceBufferModel : ElementsBufferModel<Matrix>
-    {
-        public MatrixInstanceBufferModel()
-            : base(Matrix.SizeInBytes)
+        public class VertexBoneIdBufferModel<T> : ElementsBufferModel<T> where T : struct
         {
+            public VertexBoneIdBufferModel(int structSize) : base(structSize) { }
         }
     }
 
-    public class InstanceParamsBufferModel<T> : ElementsBufferModel<T> where T : struct
-    {
-        public InstanceParamsBufferModel(int structSize) : base(structSize)
-        { }
-    }
-
-    public class VertexBoneIdBufferModel<T> : ElementsBufferModel<T> where T : struct
-    {
-        public VertexBoneIdBufferModel(int structSize) : base(structSize) { }
-    }
 }

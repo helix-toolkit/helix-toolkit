@@ -11,7 +11,11 @@ using System.Windows.Media.Imaging;
 using MediaColor = System.Windows.Media.Color;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Core;
@@ -27,6 +31,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     ///Ported from HelixToolkit.Wpf
     /// </summary>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class StudioReader : IModelReader
     {
         private readonly Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
@@ -533,7 +538,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private static IntCollection ConvertFaceIndices(List<int> subFaces, List<int> faces)
+        private static IntCollection ConvertFaceIndices(List<int> subFaces, IList<int> faces)
         {
             var triangleIndices = new IntCollection(subFaces.Count * 3);// new List<int>(subFaces.Count * 3);
             foreach (int f in subFaces)

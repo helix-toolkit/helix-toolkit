@@ -1,4 +1,7 @@
 ﻿#if !NETFX_CORE
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #else
 namespace HelixToolkit.UWP
@@ -57,7 +60,8 @@ namespace HelixToolkit.UWP
                 AlbedoMap = core.AlbedoMap,
                 NormalMap = core.NormalMap,
                 EmissiveMap = core.EmissiveMap,
-                RMAMap = core.RMAMap,
+                RoughnessMetallicMap = core.RoughnessMetallicMap,
+                AmbientOcculsionMap = core.AmbientOcculsionMap,
                 IrradianceMap = core.IrradianceMap,
                 DisplacementMap = core.DisplacementMap,
                 SurfaceMapSampler = core.SurfaceMapSampler,
@@ -76,7 +80,8 @@ namespace HelixToolkit.UWP
                 RenderEnvironmentMap = core.RenderEnvironmentMap,
                 RenderIrradianceMap = core.RenderIrradianceMap,
                 RenderNormalMap = core.RenderNormalMap,
-                RenderRMAMap = core.RenderRMAMap,
+                RenderRoughnessMetallicMap = core.RenderRoughnessMetallicMap,
+                RenderAmbientOcclusionMap = core.RenderAmbientOcclusionMap,
                 RenderShadowMap = core.RenderShadowMap,
 
                 DisplacementMapScaleMask = core.DisplacementMapScaleMask,
@@ -148,7 +153,7 @@ namespace HelixToolkit.UWP
     }
 }
 
-
+#if !COREWPF
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -170,3 +175,4 @@ namespace HelixToolkit.UWP.Model
         }
     }
 }
+#endif

@@ -13,10 +13,15 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Media.Media3D;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Cameras;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#if !COREWPF
     using Cameras;
+#endif
 
     public interface ICameraModel
     {
@@ -36,7 +41,12 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Specifies what portion of the 3D scene is rendered by the Viewport3DX element.
     /// </summary>
-    public abstract class Camera : DependencyObject, ICameraModel
+    public abstract class Camera :
+#if !NETFX_CORE
+        System.Windows.Media.Animation.Animatable, ICameraModel
+#else
+        DependencyObject, ICameraModel
+#endif
     {
         /// <summary>
         /// Gets or sets the position.

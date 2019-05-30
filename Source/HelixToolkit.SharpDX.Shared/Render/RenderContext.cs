@@ -11,10 +11,14 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Runtime.CompilerServices;
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Cameras;
@@ -22,6 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Shaders;
     using Utilities;
     using Render;
+    using System.Diagnostics;
 
     /// <summary>
     /// The render-context is currently generated per frame
@@ -39,6 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private CameraCore camera;
 
+        public bool IsPerspective { get; private set; }
         /// <summary>
         /// Gets the view matrix.
         /// </summary>
@@ -135,6 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
                     globalTransform.EyePos = this.camera.Position;
                 }
+                IsPerspective = this.camera is PerspectiveCameraCore;
             }
         }
 
@@ -144,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render host.
         /// </value>
-        public IRenderHost RenderHost { get; private set; }
+        public IRenderHost RenderHost { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether is deferred pass.
@@ -280,6 +287,39 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
+        /// Gets or sets a value indicating whether [ssao enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [ssao enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool SSAOEnabled
+        {
+            set { globalTransform.SSAOEnabled = value ? 1u : 0; }
+            get { return globalTransform.SSAOEnabled == 1u ? true : false; }
+        }
+        /// <summary>
+        /// Gets or sets the ssao bias.
+        /// </summary>
+        /// <value>
+        /// The ssao bias.
+        /// </value>
+        public float SSAOBias
+        {
+            set { globalTransform.SSAOBias = value; }
+            get { return globalTransform.SSAOBias; }
+        }
+        /// <summary>
+        /// Gets or sets the ssao intensity.
+        /// </summary>
+        /// <value>
+        /// The ssao intensity.
+        /// </value>
+        public float SSAOIntensity
+        {
+            set { globalTransform.SSAOIntensity = value; }
+            get { return globalTransform.SSAOIntensity; }
+        }
+        /// <summary>
         /// Gets or sets a value indicating whether [update scene graph requested] in this frame.
         /// </summary>
         /// <value>
@@ -346,19 +386,157 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights, DeviceContextProxy deviceContext)
-        {
+        {           
             if (updateGlobalTransform)
             {
+                ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                 globalTransform.View = ViewMatrix;
                 globalTransform.Projection = ProjectionMatrix;
                 globalTransform.ViewProjection = ViewMatrix * ProjectionMatrix;
-                ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
+                globalTransform.TimeStamp = (float)Stopwatch.GetTimestamp()/Stopwatch.Frequency;                
                 cbuffer.UploadDataToBuffer(deviceContext, ref globalTransform);
             }
             if (updateLights)
             {
+                LightScene.LightModels.HasEnvironmentMap = SharedResource.EnvironementMap != null;
+                LightScene.LightModels.EnvironmentMapMipLevels = SharedResource.EnvironmentMapMipLevels;
                 LightScene.UploadToBuffer(deviceContext);
             }
+        }
+        /// <summary>
+        /// Gets the off screen texture. Same as <see cref="GetOffScreenRT(OffScreenTextureSize, global::SharpDX.DXGI.Format)"/> or <see cref="GetOffScreenDS(OffScreenTextureSize, global::SharpDX.DXGI.Format)"/>
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenTexture(OffScreenTextureType type, OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (type)
+            {
+                case OffScreenTextureType.RenderTarget:
+                    return GetOffScreenRT(size, format);
+                case OffScreenTextureType.DepthStencil:
+                    return GetOffScreenDS(size, format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+        /// <summary>
+        /// Gets the off screen render target.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    return RenderHost.RenderBuffer.FullResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    return RenderHost.RenderBuffer.HalfResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    return RenderHost.RenderBuffer.QuarterResRenderTargetPool.Get(format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Gets the off screen rt.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format, out int width, out int height)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    width = RenderHost.RenderBuffer.FullResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.FullResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.FullResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    width = RenderHost.RenderBuffer.HalfResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.HalfResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.HalfResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    width = RenderHost.RenderBuffer.QuarterResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.QuarterResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.QuarterResRenderTargetPool.Get(format);
+                default:
+                    width = height = 0;
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+        /// <summary>
+        /// Gets the off screen depth stencil.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    return RenderHost.RenderBuffer.FullResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    return RenderHost.RenderBuffer.HalfResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    return RenderHost.RenderBuffer.QuarterResDepthStencilPool.Get(format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+        /// <summary>
+        /// Gets the off screen ds.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format, out int width, out int height)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    width = RenderHost.RenderBuffer.FullResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.FullResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.FullResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    width = RenderHost.RenderBuffer.HalfResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.HalfResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.HalfResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    width = RenderHost.RenderBuffer.QuarterResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.QuarterResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.QuarterResDepthStencilPool.Get(format);
+                default:
+                    width = height = 0;
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetPingPongBufferNextRTV()
+        {
+            return RenderHost.RenderBuffer.FullResPPBuffer.NextRTV;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetPingPongBufferCurrentRTV()
+        {
+            return RenderHost.RenderBuffer.FullResPPBuffer.CurrentRTV;
         }
     }
 }

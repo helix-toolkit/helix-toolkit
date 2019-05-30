@@ -10,18 +10,24 @@ using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
+#endif
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="Element3D" />
     public class PostEffectMeshXRay : Element3D
     {
-        #region Dependency Properties
+#region Dependency Properties
         /// <summary>
         /// The effect name property
         /// </summary>
@@ -116,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(EnableDoublePassProperty); }
             set { SetValue(EnableDoublePassProperty, value); }
         }
-        #endregion
+#endregion
 
         protected override SceneNode OnCreateSceneNode()
         {

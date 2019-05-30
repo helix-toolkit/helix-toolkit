@@ -186,7 +186,7 @@ float3 Diffuse_IBL(in float3 N)
 // according to roughness, then modulating by Fresnel term. 
 float3 Specular_IBL(in float3 N, in float3 V, in float lodBias)
 {
-    float mip = lodBias * NumRadianceMipLevels;
+    float mip = lodBias * NumEnvironmentMapMipLevels;
     float3 dir = reflect(-V, N);
     return texCubeMap.SampleLevel(samplerIBL, dir, mip).rgb;
 }

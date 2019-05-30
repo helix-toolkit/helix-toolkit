@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using HelixToolkit.UWP;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
@@ -67,8 +68,8 @@ namespace SimpleDemoW10
             }
         }
 
-        private Stream particleTexture;
-        public Stream ParticleTexture
+        private TextureModel particleTexture;
+        public TextureModel ParticleTexture
         {
             set
             {

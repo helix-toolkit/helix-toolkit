@@ -51,7 +51,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="#A5A5A5" />
+            <hx:AmbientLight3D Color="#676767" />
             <hx:DirectionalLight3D Direction="0,-1, -0.5" Color="{Binding DirectionalLightColor}" />
             <!--<hx:DirectionalLight3D Direction="1, -1, -1" Color="{Binding DirectionalLightColor}" />
             <hx:DirectionalLight3D Direction="1,1,1" Color="{Binding DirectionalLightColor}" />-->

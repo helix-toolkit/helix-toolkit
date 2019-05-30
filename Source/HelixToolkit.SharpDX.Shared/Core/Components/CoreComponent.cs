@@ -1,65 +1,75 @@
-﻿using System;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Core.Components
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Core.Components
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public abstract class CoreComponent : DisposeObject
+    namespace Core.Components
     {
-        public event EventHandler InvalidateRender;
-        public bool IsAttached { private set; get; } = false;
-        public IRenderTechnique Technique { private set; get; }
-
-        public void Attach(IRenderTechnique technique)
+        public abstract class CoreComponent : DisposeObject
         {
-            if (!IsAttached)
+            public event EventHandler InvalidateRender;
+            public bool IsAttached { private set; get; } = false;
+            public IRenderTechnique Technique { private set; get; }
+
+            public void Attach(IRenderTechnique technique)
             {
-                IsAttached = true;
-                Technique = technique;
-                OnAttach(technique);
-            }
-        }
-
-        protected abstract void OnAttach(IRenderTechnique technique);
-
-        public void Detach()
-        {
-            IsAttached = false;
-            OnDetach();
-            DisposeAndClear();
-        }
-
-        protected abstract void OnDetach();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="backingField"></param>
-        /// <param name="value"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
+                if (!IsAttached)
+                {
+                    IsAttached = true;
+                    Technique = technique;
+                    OnAttach(technique);
+                }
             }
 
-            backingField = value;
-            this.RaisePropertyChanged(propertyName);
-            RaiseInvalidateRender();
-            return true;
-        }
+            protected abstract void OnAttach(IRenderTechnique technique);
 
-        public void RaiseInvalidateRender()
-        {
-            InvalidateRender?.Invoke(this, EventArgs.Empty);
+            public void Detach()
+            {
+                IsAttached = false;
+                OnDetach();
+                DisposeAndClear();
+            }
+
+            protected abstract void OnDetach();
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="backingField"></param>
+            /// <param name="value"></param>
+            /// <returns></returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            protected bool SetAffectsRender<T>(ref T backingField, T value)
+            {
+                if (EqualityComparer<T>.Default.Equals(backingField, value))
+                {
+                    return false;
+                }
+
+                backingField = value;
+                RaiseInvalidateRender();
+                return true;
+            }
+
+            public void RaiseInvalidateRender()
+            {
+                InvalidateRender?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
+
 }

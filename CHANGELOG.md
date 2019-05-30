@@ -1,20 +1,100 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Next Version]
+## [Next Release]
+
 ### Added
-1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.
-2. Supports [ImGui](https://github.com/ocornut/imgui) (using [ImGui.NET](https://github.com/mellinoe/ImGui.NET)) for SharpDX.Core. Details refer to [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest).
-3. Supports Line/Point non-fixedSize thickness rendering.
+1. Implement HelixToolkit.Wpf and HelixToolkit.Wpf.SharpDX supports for .Net Core 3.0 WPF. (WPF/WPF.SharpDX)
+2. Supports absolute 3D position mode in ScreenSpacedNode. Helps to have multiple coordinate system in world space and zooming does not affect the coordinate system size. See [CustomViewCubeDemo](/Source/Examples/WPF.SharpDX/CustomViewCubeDemo) for details. Ref #1165 (WPF.SharpDX/UWP/Core)
 
 ### Improvement and Changes
+1. Supports 2D color array texture for TextureModel. Ref #1156 (WPF.SharpDX/UWP/Core)
+
+### Fixed
+1. OrthoCam width getting clipped on zooming #1164 (WPF.SharpDX/UWP/Core)
+2. Fix panning speed too huge causes object flying too far. Ref #1161 (WPF.SharpDX/UWP/Core)
+3. Orthogaphical Camera (width calc) SharpDX #1158  (WPF.SharpDX/UWP/Core)
+4. Fix symbol link issue for nuget packages.
+
+## [2.7.0] - 2019-05-12
+
+### Added
+1. Make it possible to receive touch/manipulation events from swap chain render control (WinForms).(WPF.SharpDX)
+2. ManipulationBinding allows to map ManipulationGesture for UWP (UWP)
+3. Added TimeStamp in default shader global variable for time based shader animation. (WPF.SharpDX/UWP/Core)
+
+### Improvement and Changes
+1. Mouse3DEventArgs now also store the mouse/touch/pen event that caused the Mouse3DEvent #1111 (WPF.SharpDX/UWP)
+
+### Fixed
+1. Fix RenderTechnicsExample SharpDX crash SharpDX bug #1130 (WPF.SharpDX/UWP/Core)
+2. Fix find 3d point on single axis aligned 3d line. #1114 (WPF.SharpDX/UWP/Core)
+3. Fix PInvokeStackImbalance #1149 (WPF.SharpDX)
+4. Fix STLReader can not handle"NaN" values. #1150
+
+## [2.6.1] - 2019-02-16
+
+### Added
+1. Flat Normal Shading Mode for Phong/PBR/Diffuse Material. Use `EnableFlatShading = true` to enable this mode.(WPF.SharpDX/UWP/Core)
+2. Add LimitPFS option to prevent FPS over shoot on mouse move (WPF)
+3. ManipulationBinding allows to map ManipulationGesture for Wpf.SharpDX (WPF.SharpDX)
+
+### Improvement and Changes
+1. Add LimitFPS option in HelixToolkit.WPF Viewport3D. Prevents mouse movement causes FPS overshooting. (WPF)
+2. Add SnapMouseDownPoint for CameraController and Viewport #1082. (WPF)
+3. Prevent zoom lock if look direction is too small (WPF.SharpDX/UWP/Core)
+
+### Fixed
+1. Fix Camera Rotation with ZoomAroundMouseDownpoint=true (SharpDX) #1068 (WPF.SharpDX/UWP/Core)
+2. Fix exception in Closest3DPointHitTester #1085 (WPF)
+3. Fix panning sometimes not working issue.(WPF.SharpDX/UWP/Core)
+4. ViewportExtensions.Project does not get correct projection #1090. (WPF.SharpDX/UWP/Core)
+5. Fix cube map auto mipmap generation #1087.  (WPF.SharpDX/UWP/Core)
+6. Fix Transform3DHelper.CombineTransform creates too nested Transform3DGroup #1089 (WPF)
+7. Fix local transform not getting calculated for UIElement3D in Visual3DHelper.GetTransform(). This solve mouse rotate getting reversed issue in Rotate Manipulator. (WPF)
+8. Fix Bound one dimension is zero on single point or single axis align line and causes hit test failed.(WPF.SharpDX/UWP/Core)
+9. Fix rounding issue in TextGroupVisual3D CreateTextMaterial #1075 (WPF)
+10. Fix Assimp importer user specified material type in configuration not working properly. (WPF.SharpDX/UWP/Core)
+
+## [2.6.0] - 2019-01-01
+### Potential Breaking Changes:
+1. Material UV Transform has been changed from  `Matrix`  to  `UVTransform`  struct. (WPF.SharpDX/UWP/Core)
+2. Material Texture has been changed from `Stream` to `TextureModel`. This change allows more powerful texture support in future. In most cases, `Stream` will be implicit convert to `TextureModel` to reduce breaking changes. However, it may have issue if you are using XAML binding to a Texture stream in ViewModel. (WPF.SharpDX/UWP/Core)
+3. `GroupModel3D` and `ItemsModel3D` will no longer support using XAML Children and ItemsSource at the same time (To be consistent with other WPF controls such as ListView).(WPF.SharpDX/UWP/Core)
+4. PBR material `RMAMap` property has been renamed and separated into `RoughnessMetallicMap` and `AmbientOcclusionMap`. 
+5. `AmbientColor` in InstancingParams has been removed.(WPF.SharpDX/UWP/Core)
+6. Remove `Core` namespace on Vector3Collection/Vector2Collection/IntCollection. Base class is changed to `FastList<T>`.
+
+### Added
+1. Volume 3D Texture Rendering. [Demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/VolumeRendering) is added.  (WPF.SharpDX/UWP/Core)
+2. Supports [ImGui](https://github.com/ocornut/imgui) (using [ImGui.NET](https://github.com/mellinoe/ImGui.NET)) for SharpDX.Core. Details refer to [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest).  (WPF.SharpDX and UWP)
+3. Supports Line/Point non-fixedSize thickness rendering.  (WPF.SharpDX/UWP/Core)
+4. Supports SSAO.  (WPF.SharpDX/UWP/Core)
+5. Adds Assimp Import/Export support for SharpDX versions. (WPF.SharpDX/UWP/Core)
+6. Demo Winform Integration. [CoreTest demo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/SharpDX.Core/CoreTest)
+
+### Improvement and Changes
+1. Add `FastList` and change `Vector3Collection`/`IntCollection` base class to FastList for direct underlying array access. (WPF.SharpDX and UWP)
+2. Improved off-screen texture pooling. (WPF.SharpDX/UWP/Core)
+3. Improved post effects quality. (WPF.SharpDX/UWP/Core)
+4. Fixed Material creation performance issue. #1015, #1022  (WPF.SharpDX/UWP/Core)
+5. Adding BeginAnimation function to SharpDX Camera #1039  (WPF.SharpDX and UWP)
+6. Improves scene node for direct usage. (WPF.SharpDX/UWP/Core)
+7. Merge common Viewport3DX extension functions into shared project.  (WPF.SharpDX/UWP/Core)
+8. Improve unnecessary graphics resource dispose/recreate after switching tab in TabControl. Ref #1013  (WPF.SharpDX/UWP)
+9. Improve rotation around mouse down point #1028 (WPF)
+10. SortingVisual causes lag when using large models #1036 (WPF)
+11. GroupModel3D and ItemsModel3D supports ObservableCollection.Move. Ref #1048 (WPF.SharpDX and UWP)
 
 ### Fixed
 1. Make DPFCanvas work over Remote Desktop again #998. (WPF.SharpDX and UWP)
 2. Transparent sorting and materials (SharpDX) #994. (WPF.SharpDX and UWP)
-3. Fixed manual render order not working issue. (WPF.SharpDX and UWP)
-4. TaskCanceledException not caught in OnDetached #988. (WPF.SharpDX and UWP)
+3. Fixed manual render order not working issue. (WPF.SharpDX/UWP/Core)
+4. TaskCanceledException not caught in OnDetached #988. (WPF.SharpDX/UWP/Core)
 5. ViewCube is acting on Mouse Move #969. (WPF.SharpDX and UWP)
+6. LookDirection length in FitView #1009 (WPF) 
+7. D3D Counter is negative (SharpDX) SharpDX bug #1040(WPF.SharpDX and UWP)
+8. Zooming at small look directions causes camera shaking. #1032 (WPF)
 
 ## [2.5.1] - 2018-10-24
 Hot fix for v2.5.0.

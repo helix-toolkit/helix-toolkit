@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
     using Point = Windows.Foundation.Point;
     using System;
     using Windows.UI.Xaml.Input;
+    using System.Collections.Generic;
 
     /// <summary>
     /// An abstract base class for the mouse gesture handlers.
@@ -112,7 +113,13 @@ namespace HelixToolkit.UWP
         /// Gets or sets the mouse down point at the nearest hit element (3D world coordinates).
         /// </summary>
         protected Point3D? MouseDownNearestPoint3D;
-
+        /// <summary>
+        /// Gets or sets the mouse down nearest hit model bounding box center.
+        /// </summary>
+        /// <value>
+        /// The mouse down nearest model bound center.
+        /// </value>
+        protected Vector3? MouseDownNearestModelBoundCenter { set; get; }
         /// <summary>
         /// Gets or sets the mouse down point (2D screen coordinates).
         /// </summary>
@@ -158,6 +165,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         private CoreCursor OldCursor { get; set; }
 
+        private List<HitTestResult> hits = new List<HitTestResult>();
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
@@ -245,13 +253,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         public Point3D? UnProject(Point p, Point3D position, Vector3D normal)
         {
-            var ray = this.GetRay(p);
-            if (ray == null)
-            {
-                return null;
-            }
-
-            return ray.PlaneIntersection(position, normal);
+            return UnProject(p.ToVector2(), position, normal);
         }
 
         public Point3D? UnProject(Vector2 p, Point3D position, Vector3D normal)
@@ -262,7 +264,14 @@ namespace HelixToolkit.UWP
                 return null;
             }
 
-            return ray.PlaneIntersection(position, normal);
+            if (ray.PlaneIntersection(position, normal, out var intersection))
+            {
+                return intersection;
+            }
+            else
+            {
+                return null;
+            }
         }
         /// <summary>
         /// Un-projects a point from the screen (2D) to a point on the plane trough the camera target point.
@@ -385,7 +394,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected Point Project(Point3D p)
         {
-            return this.Controller.Viewport.Project(p);
+            return this.Controller.Viewport.Project(p).ToPoint();
         }
 
         /// <summary>
@@ -397,15 +406,25 @@ namespace HelixToolkit.UWP
         private void SetMouseDownPoint(Point position)
         {
             this.MouseDownPoint = position.ToVector2();
-
-            if (!this.Controller.Viewport.FixedRotationPointEnabled 
-                && this.Controller.Viewport.FindNearest(position, out var nearestPoint, out var normal, out var visual))
+            if (!this.Controller.Viewport.FixedRotationPointEnabled && this.Controller.Viewport.FindHitsInFrustum(this.MouseDownPoint, ref hits))
             {
-                this.MouseDownNearestPoint3D = nearestPoint;
+                if (hits.Count > 0)
+                {
+                    MouseDownNearestPoint3D = hits[0].PointHit;
+                    if (hits[0].ModelHit is Element3D ele)
+                    {
+                        MouseDownNearestModelBoundCenter = ele.BoundsWithTransform.Center;
+                    }
+                    else if (hits[0].ModelHit is Model.Scene.SceneNode node)
+                    {
+                        MouseDownNearestModelBoundCenter = node.BoundsWithTransform.Center;
+                    }
+                }
             }
             else
             {
-                this.MouseDownNearestPoint3D = null;
+                MouseDownNearestModelBoundCenter = null;
+                MouseDownNearestPoint3D = null;
             }
 
             this.MouseDownPoint3D = this.UnProject(position);

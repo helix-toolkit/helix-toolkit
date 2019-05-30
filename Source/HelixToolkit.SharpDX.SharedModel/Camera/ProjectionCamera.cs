@@ -2,6 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Vector3D = SharpDX.Vector3;
@@ -10,12 +13,15 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Media.Media3D;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Cameras;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#if !COREWPF
     using Cameras;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
+#endif
 
     public interface IProjectionCameraModel : ICameraModel
     {
@@ -65,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty NearPlaneDistanceProperty =
             DependencyProperty.Register(
-                "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e-1, (d, e) =>
+                "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(0.01, (d, e) =>
                 {
                     ((d as Camera).CameraInternal as ProjectionCameraCore).NearPlaneDistance = (float)(double)e.NewValue;
                 }));

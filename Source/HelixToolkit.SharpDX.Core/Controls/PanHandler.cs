@@ -1,5 +1,6 @@
 ﻿using SharpDX;
 
+
 namespace HelixToolkit.SharpDX.Core.Controls
 {
     public sealed class PanHandler : MouseGestureHandler
@@ -20,6 +21,10 @@ namespace HelixToolkit.SharpDX.Core.Controls
         public override void Delta(Vector2 e)
         {
             base.Delta(e);
+            if (Camera.LookDirection.LengthSquared() < 1e-5f)
+            {
+                return;
+            }
             var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
@@ -52,7 +57,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 this.Controller.StopSpin();
                 this.Controller.StopZooming();
             }
-            if (this.CameraMode == UWP.CameraMode.FixedPosition)
+            if (this.CameraMode == CameraMode.FixedPosition)
             {
                 return;
             }
@@ -114,7 +119,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// </returns>
         protected override bool CanStart()
         {
-            return this.Controller.IsPanEnabled && this.Controller.CameraMode != UWP.CameraMode.FixedPosition;
+            return this.Controller.IsPanEnabled && this.Controller.CameraMode != CameraMode.FixedPosition;
         }
 
         /// <summary>

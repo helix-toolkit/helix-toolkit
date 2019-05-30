@@ -12,10 +12,14 @@ using SharpDX.Mathematics.Interop;
 using SharpDX.WIC;
 using System.Linq;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Utilities.ImagePacker;
@@ -157,13 +161,16 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             using (var bmp = CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
              {
-                 using (var brush = new LinearGradientBrush(target, new LinearGradientBrushProperties()
+                 using(var gradientCol = new GradientStopCollection(target, gradients, gamma, extendMode))
                  {
-                     StartPoint = startPoint,
-                     EndPoint = endPoint
-                 }, new GradientStopCollection(target, gradients, gamma, extendMode)))
-                 {
-                     target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
+                     using (var brush = new LinearGradientBrush(target, new LinearGradientBrushProperties()
+                     {
+                         StartPoint = startPoint,
+                         EndPoint = endPoint
+                     }, gradientCol))
+                     {
+                         target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
+                     }
                  }
              }))
             {
@@ -178,15 +185,18 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             using (var bmp = CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
             {
-                using (var brush = new RadialGradientBrush(target, new RadialGradientBrushProperties()
+                using(var gradientCol = new GradientStopCollection(target, gradients, gamma, extendMode))
                 {
-                    Center = center,
-                    GradientOriginOffset = gradientOriginOffset,
-                    RadiusX = radiusX,
-                    RadiusY = radiusY,
-                }, new GradientStopCollection(target, gradients, gamma, extendMode)))
-                {
-                    target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
+                    using (var brush = new RadialGradientBrush(target, new RadialGradientBrushProperties()
+                    {
+                        Center = center,
+                        GradientOriginOffset = gradientOriginOffset,
+                        RadiusX = radiusX,
+                        RadiusY = radiusY,
+                    }, gradientCol))
+                    {
+                        target.FillRectangle(new RawRectangleF(0, 0, width, height), brush);
+                    }
                 }
             }))
             {

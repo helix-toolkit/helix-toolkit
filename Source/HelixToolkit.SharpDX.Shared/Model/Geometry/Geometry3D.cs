@@ -2,18 +2,24 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+using System;
+using global::SharpDX;
+using System.Runtime.Serialization;
+using System.Collections.Generic;
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using System;
-    using global::SharpDX;
+
     using Core;
     using Model;
-    using System.Runtime.Serialization;
-    using System.Collections.Generic;
+
 
 #if !NETFX_CORE
     [Serializable]
@@ -25,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string TriangleBuffer = "TriangleBuffer";
         [DataMember]
         public Guid GUID { set; get; } = Guid.NewGuid();
-        
+
         private IntCollection indices = null;
 
         /// <summary>
@@ -207,6 +213,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Call to manually update vertex color buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
+        /// </summary>
+        public void UpdateColors()
+        {
+            RaisePropertyChanged(nameof(Colors));
+        }
+
+        /// <summary>
         /// Create Octree for current model.
         /// </summary>
         public void UpdateOctree(bool force = false)
@@ -287,11 +301,14 @@ namespace HelixToolkit.Wpf.SharpDX
             target.Colors = this.Colors;
             target.Bound = this.Bound;
             target.BoundingSphere = this.BoundingSphere;
-            target.ManualSetOctree(Octree);
             target.OctreeParameter.MinimumOctantSize = OctreeParameter.MinimumOctantSize;
             target.OctreeParameter.MinObjectSizeToSplit = OctreeParameter.MinObjectSizeToSplit;
             target.OctreeParameter.Cubify = OctreeParameter.Cubify;
             target.OctreeParameter.EnableParallelBuild = OctreeParameter.EnableParallelBuild;
+            if (Octree != null)
+            {
+                target.ManualSetOctree(Octree);
+            }
             OnAssignTo(target);
         }
 

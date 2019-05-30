@@ -50,14 +50,7 @@ HSInput main(VSInstancingInput input)
 #if !defined(INSTANCINGPARAM)
     output.c = input.c;
     output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
-    if (!bRenderPBR)
-    {
-        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
-    }
-    else
-    {
-        output.c2 = vMaterialSpecular;
-    }
+    output.c2 = vMaterialEmissive;
 #endif
 
 #if defined(INSTANCINGPARAM)
@@ -65,29 +58,14 @@ HSInput main(VSInstancingInput input)
     {
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
         output.c = vMaterialDiffuse;
-        if (!bRenderPBR)
-        {
-            output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
-        }
-        else
-        {
-            output.c2 = vMaterialSpecular;
-        }
+        output.c2 = vMaterialEmissive;
     }
     else
     {
 		//set texture coords and color
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy + input.tOffset;
         output.c = input.diffuseC;
-        
-        if (!bRenderPBR)
-        {
-            output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
-        }
-        else
-        {
-            output.c2 = input.ambientC;
-        }
+        output.c2 = input.emissiveC;
     }
 #endif
 
