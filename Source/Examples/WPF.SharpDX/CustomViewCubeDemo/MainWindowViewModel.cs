@@ -11,6 +11,7 @@ namespace CustomViewCubeDemo
     public class MainWindowViewModel : DemoCore.BaseViewModel
     {
         public Geometry3D Geometry { private set; get; }
+        public Geometry3D RectGeometry { private set; get; }
         public Material Material { private set; get; }
         public Geometry3D ViewCubeGeometry1 { private set; get; }
         public Geometry3D ViewCubeGeometry2 { private set; get; }
@@ -45,6 +46,10 @@ namespace CustomViewCubeDemo
             var models = reader.Read("bunny.obj");
             Geometry = models[0].Geometry;
             Material = PhongMaterials.Red;
+
+            builder = new MeshBuilder();
+            builder.AddBox(new Vector3(0, 0, -4), 2, 2, 6);
+            RectGeometry = builder.ToMeshGeometry3D();
         }
 
         private void InitializeViewCubes()
