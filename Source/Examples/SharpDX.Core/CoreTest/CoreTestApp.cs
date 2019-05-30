@@ -1,10 +1,13 @@
 ﻿//#define TESTADDREMOVE
 
-using HelixToolkit.SharpDX.Core;
-using HelixToolkit.SharpDX.Core.Cameras;
 using HelixToolkit.SharpDX.Core.Controls;
 using HelixToolkit.SharpDX.Core.Model;
-using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.UWP;
+using HelixToolkit.UWP.Cameras;
+using HelixToolkit.UWP.Core;
+using HelixToolkit.UWP.Model;
+using HelixToolkit.UWP.Model.Scene;
+using HelixToolkit.UWP.Shaders;
 using ImGuiNET;
 using SharpDX;
 using SharpDX.Windows;
@@ -13,52 +16,32 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace CoreTest
 {
     public class CoreTestApp
     {
-        public ViewportCore Viewport { get => viewport; }
         private readonly ViewportCore viewport;
         private readonly Form window;
         private readonly EffectsManager effectsManager;
         private CameraCore camera;
         private Geometry3D box, sphere, points, lines;
-        private GroupNode groupSphere, groupBox, groupPoints, groupLines, groupModel, groupEffects;
-        private EnvironmentMapNode environmentMap;
-        private DirectionalLightNode directionalLight;
-        private AmbientLightNode ambientLight;
-        private const int NumItems = 400;
+        private GroupNode groupSphere, groupBox, groupPoints, groupLines;
+        private const int NumItems = 40;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
         private MaterialCore[] materialList;
         private long previousTime;
         private bool resizeRequested = false;
+        private IO io = ImGui.GetIO();
         private CameraController cameraController;
-        private Stack<IEnumerator<SceneNode>> stackCache = new Stack<IEnumerator<SceneNode>>();
-        private IApplyPostEffect currentHighlight = null;
-
-        private ViewportOptions options = new ViewportOptions()
-        {
-            AmbientLightIntensity = 0.2f,
-            BackgroundColor = new System.Numerics.Vector3(0.4f, 0.4f, 0.4f),
-            DirectionalLightFollowCamera = true,
-            DirectionLightIntensity = 0.8f,
-            EnableFrustum = true,
-            EnableFXAA = true,
-            EnableSSAO = true,
-            WalkAround = false,
-            ShowRenderDetail = false,
-            ShowEnvironmentMap = false,
-        };
 
         public CoreTestApp(Form window)
         {
             viewport = new ViewportCore(window.Handle);
             cameraController = new CameraController(viewport);
-            cameraController.CameraMode = CameraMode.Inspect;
-            cameraController.CameraRotationMode = CameraRotationMode.Trackball;
             this.window = window;
             window.ResizeEnd += Window_ResizeEnd;
             window.Load += Window_Load;
@@ -73,34 +56,16 @@ namespace CoreTest
             effectsManager = new DefaultEffectsManager();
             effectsManager.AddTechnique(ImGuiNode.RenderTechnique);
             viewport.EffectsManager = effectsManager;           
-            viewport.StartRendering += Viewport_OnStartRendering;
-            viewport.StopRendering += Viewport_OnStopRendering;
-            viewport.ErrorOccurred += Viewport_OnErrorOccurred;
-            viewport.CoordinateSystemLabelColor = new Color4(1, 1, 0, 1);
-            options.Viewport = viewport;
-            AssignViewportOption();
+            viewport.OnStartRendering += Viewport_OnStartRendering;
+            viewport.OnStopRendering += Viewport_OnStopRendering;
+            viewport.OnErrorOccurred += Viewport_OnErrorOccurred;
+            //viewport.FXAALevel = FXAALevel.Low;
+            viewport.RenderHost.EnableRenderFrustum = false;
+            viewport.RenderHost.RenderConfiguration.EnableRenderOrder = true;
+            viewport.BackgroundColor = new Color4(0.45f, 0.55f, 0.6f, 1f);
             InitializeScene();
         }
 
-        private void AssignViewportOption()
-        {
-            viewport.FXAALevel = options.EnableFXAA ? FXAALevel.Low : FXAALevel.None;
-            viewport.EnableRenderFrustum = options.EnableFrustum;
-            viewport.BackgroundColor = new Color4(options.BackgroundColor.X, options.BackgroundColor.Y, options.BackgroundColor.Z, 1);
-            viewport.EnableSSAO = options.EnableSSAO;
-            viewport.ShowRenderDetail = options.ShowRenderDetail;
-            if (options.ShowWireframeChanged)
-            {
-                options.ShowWireframeChanged = false;
-                foreach(var node in groupModel.Items.Traverse(true, stackCache))
-                {
-                    if(node is MeshNode m)
-                    {
-                        m.RenderWireframe = options.ShowWireframe;
-                    }
-                }
-            }
-        }
 
 
         private void InitializeScene()
@@ -109,27 +74,15 @@ namespace CoreTest
             {
                 LookDirection = new Vector3(0, 0, 50),
                 Position = new Vector3(0, 0, -50),
-                FarPlaneDistance = 5000,
-                NearPlaneDistance = 1f,
+                FarPlaneDistance = 1000,
+                NearPlaneDistance = 0.1f,
                 FieldOfView = 45,
                 UpDirection = new Vector3(0, 1, 0)
             };
             viewport.CameraCore = camera;
-            directionalLight = new DirectionalLightNode()
-            {
-                Direction = new Vector3(0, -1, 1),
-                Color = Color.White.ToColor4().ChangeIntensity(options.DirectionLightIntensity)
-            };
-            viewport.Items.AddChildNode(directionalLight);
+            viewport.Items.Add(new DirectionalLightNode() { Direction = new Vector3(0, -1, 1), Color = Color.White });
+            viewport.Items.Add(new PointLightNode() { Position = new Vector3(0, 0, -20), Color = Color.Yellow, Range = 20, Attenuation = Vector3.One });
 
-            ambientLight = new AmbientLightNode()
-            {
-                Color = Color.White.ToColor4().ChangeIntensity(options.AmbientLightIntensity)
-            };
-            viewport.Items.AddChildNode(ambientLight);
-
-            groupModel = new GroupNode();
-            viewport.Items.AddChildNode(groupModel);
             var builder = new MeshBuilder(true, true, true);
             builder.AddSphere(Vector3.Zero, 1, 12, 12);
             sphere = builder.ToMesh();
@@ -144,7 +97,6 @@ namespace CoreTest
             groupBox = new GroupNode();
             groupLines = new GroupNode();
             groupPoints = new GroupNode();
-            groupEffects = new GroupNode();
             InitializeMaterials();
             materialList = materials.Values.ToArray();
             var materialCount = materialList.Length;
@@ -173,43 +125,35 @@ namespace CoreTest
             //    groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } });
             //}
 
-            groupModel.AddChildNode(groupSphere);
+            viewport.Items.Add(groupSphere);
             groupSphere.AddChildNode(groupBox);
             groupSphere.AddChildNode(groupPoints);
             groupSphere.AddChildNode(groupLines);
 
+            var viewbox = new ViewBoxNode();
+            viewport.Items.Add(viewbox);
             var imGui = new ImGuiNode();
-            viewport.Items.AddChildNode(imGui);
+            viewport.Items.Add(imGui);
             imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
-            groupEffects.AddChildNode(new NodePostEffectBorderHighlight() { EffectName = "highlightEffect", Color = Color.Yellow });
-            viewport.Items.AddChildNode(groupEffects);
-            var environmentTexture = new MemoryStream();
-            using (var fs = File.Open("Cubemap_Grandcanyon.dds", FileMode.Open))
-            {
-                fs.CopyTo(environmentTexture);
-            }
-            environmentMap = new EnvironmentMapNode() { Texture = environmentTexture };
-            viewport.Items.AddChildNode(environmentMap);
-            viewport.NodeHitOnMouseDown += Viewport_NodeHitOnMouseDown;
-        }
-
-        private void Viewport_NodeHitOnMouseDown(object sender, SceneNodeMouseDownArgs e)
-        {
-            if(currentHighlight != null)
-            {
-                currentHighlight.PostEffects = "";
-            }
-            currentHighlight = null;
-            if(e.HitResult.ModelHit is IApplyPostEffect s)
-            {
-                currentHighlight = s;
-                currentHighlight.PostEffects = "highlightEffect";
-            }
+            io.KeyMap[GuiKey.Tab] = (int)Keys.Tab;
+            io.KeyMap[GuiKey.LeftArrow] = (int)Keys.Left;
+            io.KeyMap[GuiKey.RightArrow] = (int)Keys.Right;
+            io.KeyMap[GuiKey.UpArrow] = (int)Keys.Up;
+            io.KeyMap[GuiKey.DownArrow] = (int)Keys.Down;
+            io.KeyMap[GuiKey.PageUp] = (int)Keys.PageUp;
+            io.KeyMap[GuiKey.PageDown] = (int)Keys.PageDown;
+            io.KeyMap[GuiKey.Home] = (int)Keys.Home;
+            io.KeyMap[GuiKey.End] = (int)Keys.End;
+            io.KeyMap[GuiKey.Delete] = (int)Keys.Delete;
+            io.KeyMap[GuiKey.Backspace] = (int)Keys.Back;
+            io.KeyMap[GuiKey.Enter] = (int)Keys.Enter;
+            io.KeyMap[GuiKey.Escape] = (int)Keys.Escape;
         }
 
         private void ImGui_UpdatingImGuiUI(object sender, EventArgs e)
         {
-            SceneUI.DrawUI((int)viewport.ActualWidth, (int)viewport.ActualHeight, ref options, groupModel);
+            bool open = true;
+            ImGuiNative.igShowDemoWindow(ref open);
         }
 
         private void InitializeMaterials()
@@ -256,26 +200,15 @@ namespace CoreTest
                     resizeRequested = false;
                     return;
                 }
-
                 var pos = camera.Position;
                 var t = Stopwatch.GetTimestamp();
                 var elapse = t - previousTime;
                 previousTime = t;
                 cameraController.OnTimeStep();
-                if (options.DirectionalLightFollowCamera)
-                {
-                    directionalLight.Direction = camera.LookDirection.Normalized();
-                }
-                AssignViewportOption();
-                directionalLight.Color = Color.White.ToColor4().ChangeIntensity(options.DirectionLightIntensity);
-                ambientLight.Color = Color.White.ToColor4().ChangeIntensity(options.AmbientLightIntensity);
-                ChangeEnvironmentMapVisibility(options.ShowEnvironmentMap);
+
                 viewport.Render();
 
-                if (options.PlayAnimation && options.AnimationUpdater != null)
-                {
-                    options.AnimationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
-                }
+                
 #if TESTADDREMOVE
                 if (groupSphere.Items.Count > 0 && !isAddingNode)
                 {
@@ -305,34 +238,7 @@ namespace CoreTest
             });
         }
 
-        private void ChangeEnvironmentMapVisibility(bool visible)
-        {
-            if(environmentMap.Visible != visible)
-            {
-                environmentMap.Visible = visible;
-                foreach(var model in groupModel.Traverse())
-                {
-                    if(model is MeshNode mesh)
-                    {
-                        if(mesh.Material is PBRMaterialCore pbr)
-                        {
-                            pbr.RenderEnvironmentMap = visible;
-                        }
-                        else if(mesh.Material is PhongMaterialCore phong)
-                        {
-                            phong.RenderEnvironmentMap = visible;
-                        }
-                    }
-                }
-            }
-        }
-
         private void Window_ResizeEnd(object sender, EventArgs e)
-        {
-            resizeRequested = true;
-        }
-
-        public void RequestResize()
         {
             resizeRequested = true;
         }
@@ -349,21 +255,18 @@ namespace CoreTest
         #region Handle mouse event
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            var io = ImGui.GetIO();
             if (!cameraController.IsMouseCaptured)
             {
-                io.MousePos = new System.Numerics.Vector2(e.X, e.Y);
+                io.MousePosition = new System.Numerics.Vector2(e.X, e.Y);
             }
             else if (!io.WantCaptureMouse)
             {
                 cameraController.MouseMove(new Vector2(e.X, e.Y));
-                viewport.MouseMove(new Vector2(e.X, e.Y));
             }
         }
 
         private void Window_MouseUp(object sender, MouseEventArgs e)
         {
-            var io = ImGui.GetIO();
             switch (e.Button)
             {
                 case MouseButtons.Left:
@@ -381,7 +284,6 @@ namespace CoreTest
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
-                        viewport.MouseUp(new Vector2(e.X, e.Y));
                         break;
                     case MouseButtons.Right:
                         cameraController.EndRotate(new Vector2(e.X, e.Y));
@@ -395,7 +297,6 @@ namespace CoreTest
 
         private void Window_MouseDown(object sender, MouseEventArgs e)
         {
-            var io = ImGui.GetIO();
             if (!cameraController.IsMouseCaptured)
             {
                 switch (e.Button)
@@ -415,7 +316,6 @@ namespace CoreTest
                     switch (e.Button)
                     {
                         case MouseButtons.Left:
-                            viewport.MouseDown(new Vector2(e.X, e.Y));
                             break;
                         case MouseButtons.Right:
                             cameraController.StartRotate(new Vector2(e.X, e.Y));
@@ -444,7 +344,6 @@ namespace CoreTest
 
         private void Window_MouseWheel(object sender, MouseEventArgs e)
         {
-            var io = ImGui.GetIO();
             if (!cameraController.IsMouseCaptured)
             {
                 io.MouseWheel = (int)(e.Delta * 0.01f);
@@ -456,28 +355,25 @@ namespace CoreTest
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            var io = ImGui.GetIO();
+        {        
             io.KeysDown[e.KeyValue] = true;
-            io.KeyShift = e.Shift;
-            io.KeyCtrl = e.Control;
-            io.KeyAlt = e.Alt;
+            io.ShiftPressed = e.Shift;
+            io.CtrlPressed = e.Control;
+            io.AltPressed = e.Alt;
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            var io = ImGui.GetIO();
             io.KeysDown[e.KeyValue] = false;
-            io.KeyShift = e.Shift;
-            io.KeyCtrl = e.Control;
-            io.KeyAlt = e.Alt;
+            io.ShiftPressed = e.Shift;
+            io.CtrlPressed = e.Control;
+            io.AltPressed = e.Alt;
         }
 
 
         private void Window_KeyPress(object sender, KeyPressEventArgs e)
         {
-            var io = ImGui.GetIO();
-            io.AddInputCharacter(e.KeyChar);
+            ImGui.AddInputCharacter(e.KeyChar);
         }
         #endregion
     }

@@ -2,22 +2,18 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using global::SharpDX;
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
+#if NETFX_CORE
 namespace HelixToolkit.UWP
-#endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Core;
+    using System.Runtime.Serialization;
+    using global::SharpDX;
     using Utilities;
 #if !NETFX_CORE
     [Serializable]
@@ -228,14 +224,6 @@ namespace HelixToolkit.UWP
                 }
             }
             return isHit;
-        }
-
-        /// <summary>
-        /// Call to manually update texture coordinate buffer.
-        /// </summary>
-        public void UpdateTextureCoordinates()
-        {
-            RaisePropertyChanged(nameof(TextureCoordinates));
         }
     }
 

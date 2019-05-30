@@ -6,70 +6,62 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Model
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.Wpf.SharpDX.Model
 #endif
 {
-    namespace Model
+    public abstract class ObservableObject : INotifyPropertyChanged
     {
-        public abstract class ObservableObject : INotifyPropertyChanged
+        private bool disablePropertyChangedEvent = false;
+        public bool DisablePropertyChangedEvent
         {
-            private bool disablePropertyChangedEvent = false;
-            public bool DisablePropertyChangedEvent
+            set
             {
-                set
+                if (disablePropertyChangedEvent == value)
                 {
-                    if (disablePropertyChangedEvent == value)
-                    {
-                        return;
-                    }
-                    disablePropertyChangedEvent = value;
-                    RaisePropertyChanged();
+                    return;
                 }
-                get
-                {
-                    return disablePropertyChangedEvent;
-                }
+                disablePropertyChangedEvent = value;
+                RaisePropertyChanged();
             }
-
-            public event PropertyChangedEventHandler PropertyChanged;
-            protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+            get
             {
-                if(!DisablePropertyChangedEvent)
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-
-            protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-            {
-                if (EqualityComparer<T>.Default.Equals(backingField, value))
-                {
-                    return false;
-                }
-
-                backingField = value;
-                this.RaisePropertyChanged(propertyName);
-                return true;
-            }
-
-            protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
-            {
-                if (EqualityComparer<T>.Default.Equals(backingField, value))
-                {
-                    return false;
-                }
-
-                backingField = value;
-                if (raisePropertyChanged)
-                { this.RaisePropertyChanged(propertyName); }
-                return true;
+                return disablePropertyChangedEvent;
             }
         }
-    }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if(!DisablePropertyChangedEvent)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            return true;
+        }
+
+        protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            if (raisePropertyChanged)
+            { this.RaisePropertyChanged(propertyName); }
+            return true;
+        }
+    }
 }

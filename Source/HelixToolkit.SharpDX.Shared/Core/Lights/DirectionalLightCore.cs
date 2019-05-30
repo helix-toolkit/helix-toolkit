@@ -5,41 +5,33 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Core
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.UWP.Core
 #endif
 {
-    namespace Core
+    using Model;
+    public class DirectionalLightCore : LightCoreBase
     {
-        using Model;
-        public class DirectionalLightCore : LightCoreBase
+        private Vector3 direction;
+        public Vector3 Direction
         {
-            private Vector3 direction;
-            public Vector3 Direction
+            set
             {
-                set
-                {
-                    SetAffectsRender(ref direction, value);
-                }
-                get { return direction; }
+                SetAffectsRender(ref direction, value);
             }
+            get { return direction; }
+        }
 
-            public DirectionalLightCore()
-            {
-                LightType = LightType.Directional;
-            }
+        public DirectionalLightCore()
+        {
+            LightType = LightType.Directional;
+        }
 
-            protected override void OnRender(Light3DSceneShared lightScene, int index)
-            {
-                base.OnRender(lightScene, index);
-                lightScene.LightModels.Lights[index].LightDir = -Vector3.TransformNormal(direction, ModelMatrix).Normalized().ToVector4(0);
-            }
+        protected override void OnRender(Light3DSceneShared lightScene, int index)
+        {
+            base.OnRender(lightScene, index);
+            lightScene.LightModels.Lights[index].LightDir = -Vector3.TransformNormal(direction, ModelMatrix).Normalized().ToVector4(0);
         }
     }
-
 }

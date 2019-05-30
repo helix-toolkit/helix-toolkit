@@ -166,9 +166,9 @@
 
             // ----------------------------------------------
             // setup scene
-            this.AmbientLightColor = Colors.Gray;
+            this.AmbientLightColor = Colors.DimGray;
 
-            this.Light1Color = Colors.LightGray;
+            this.Light1Color = Colors.White;
             this.Light2Color = Colors.Red;
             this.Light3Color = Colors.LightYellow;
             this.Light4Color = Colors.LightBlue;

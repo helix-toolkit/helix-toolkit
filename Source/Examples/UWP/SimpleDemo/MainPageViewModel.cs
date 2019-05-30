@@ -102,7 +102,7 @@ namespace SimpleDemoW10
             get { return transform4; }
         }
 
-        public TextureModel EnvironmentMap { private set; get; }
+        public Stream EnvironmentMap { private set; get; }
 
         public Vector3 DirectionalLightDirection { get; } = new Vector3(-0.5f, -1, 0);
         private DispatcherTimer timer;
@@ -148,14 +148,13 @@ namespace SimpleDemoW10
             Material1.RenderDiffuseMap = false;
             Material1.RenderNormalMap = false;
             Material1.RenderEnvironmentMap = true;
-            Material1.RenderShadowMap = true;
            
             var lineBuilder = new LineBuilder();
             lineBuilder.AddLine(Vector3.Zero, new Vector3(5, 0, 0));
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 5, 0));
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 0, 5));
             LineGeometry = lineBuilder.ToLineGeometry3D();
-            LineGeometry.Colors = new Color4Collection() { Color.Red, Color.Red, Color.Green, Color.Green, Color.Blue, Color.Blue };
+            LineGeometry.Colors = new HelixToolkit.UWP.Core.Color4Collection() { Color.Red, Color.Red, Color.Green, Color.Green, Color.Blue, Color.Blue };
 
             builder = new MeshBuilder();
             builder.AddSphere(new Vector3(), 3);
@@ -174,7 +173,6 @@ namespace SimpleDemoW10
 
             FloorMaterial = PhongMaterials.Obsidian;
             FloorMaterial.ReflectiveColor = Color.Silver;
-            FloorMaterial.RenderShadowMap = true;
 
             EnvironmentMap = LoadTexture("Cubemap_Grandcanyon.dds");
 

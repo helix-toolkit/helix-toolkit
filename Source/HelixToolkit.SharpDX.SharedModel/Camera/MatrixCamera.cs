@@ -11,16 +11,10 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Media.Media3D;
-#if COREWPF
-using HelixToolkit.SharpDX.Core.Cameras;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
     using Cameras;
-#endif
-
     public interface IMatrixCameraModel : ICameraModel
     {
         Matrix3D ProjectionMatrix { set; get; }
@@ -136,12 +130,5 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public override bool CreateLeftHandSystem { set; get; }
-
-#if !NETFX_CORE
-        protected override Freezable CreateInstanceCore()
-        {
-            return new MatrixCamera();
-        }
-#endif
     }
 }

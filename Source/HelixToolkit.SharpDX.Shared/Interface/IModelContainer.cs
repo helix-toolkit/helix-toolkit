@@ -1,13 +1,9 @@
 ﻿using System.Collections.Generic;
 
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
+#if NETFX_CORE
 namespace HelixToolkit.UWP
-#endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model.Scene;
@@ -36,6 +32,6 @@ namespace HelixToolkit.UWP
         IRenderHost CurrentRenderHost { set; get; }
 
         void Attach(IRenderHost host);
-        void Detach(IRenderHost host);
+        void Detach();
     }
 }

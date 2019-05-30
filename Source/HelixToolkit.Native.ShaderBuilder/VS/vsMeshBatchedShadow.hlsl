@@ -1,7 +1,7 @@
 #ifndef VSMESHBATCHEDSHADOW_HLSL
 #define VSMESHBATCHEDSHADOW_HLSL
 
-#define MESHSIMPLE
+#define MESH
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )

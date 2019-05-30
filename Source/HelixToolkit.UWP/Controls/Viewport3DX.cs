@@ -80,12 +80,6 @@ namespace HelixToolkit.UWP
         /// The items.
         /// </value>
         public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
-
-        /// <summary>
-        /// Gets the observable collection of <see cref="InputBinding"/>.
-        /// </summary>
-        public InputBindingCollection InputBindings { get; } = new InputBindingCollection();
-
         /// <summary>
         /// Gets the renderables.
         /// </summary>
@@ -107,8 +101,8 @@ namespace HelixToolkit.UWP
                         yield return item;
                     }
                 }
-                yield return viewCube.SceneNode;
-                yield return coordinateSystem.SceneNode;
+                yield return viewCube;
+                yield return coordinateSystem;
             }
         }
 
@@ -164,7 +158,7 @@ namespace HelixToolkit.UWP
         /// The nearest valid result during a hit test.
         /// </summary>
         private HitTestResult currentHit;
-        private List<HitTestResult> hits = new List<HitTestResult>();
+
         private bool enableMouseButtonHitTest = true;
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
@@ -221,7 +215,6 @@ namespace HelixToolkit.UWP
             this.cameraController.EnableTouchRotate = this.IsTouchRotateEnabled;
             this.cameraController.EnablePinchZoom = this.IsPinchZoomEnabled;
             this.cameraController.EnableThreeFingerPan = this.IsThreeFingerPanningEnabled;
-            this.cameraController.PinchZoomAtCenter = this.PinchZoomAtCenter;
             this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
             this.cameraController.MaximumFieldOfView = this.MaximumFieldOfView;
@@ -319,11 +312,6 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
                     renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                     renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
-                    renderHostInternal.RenderConfiguration.EnableSSAO = EnableSSAO;
-                    renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
-                    renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
-                    renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
-                    renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, MinimumUpdateCount);
                     renderHostInternal.Rendered += this.RaiseRenderHostRendered;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
 
@@ -446,7 +434,7 @@ namespace HelixToolkit.UWP
                 {
                     e.Detach();
                 }
-                SharedModelContainerInternal?.Detach(renderHostInternal);
+                SharedModelContainerInternal?.Detach();
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Detach();
@@ -568,7 +556,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event (which mouse button pressed?)
+        /// The original input event for future use (which mouse button pressed?)
         /// </param>
         private void MouseDownHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -576,34 +564,28 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-           
-            if (this.FindHits(pt.ToVector2(), ref hits) && hits.Count > 0)
+
+            var hits = this.FindHits(pt);
+            if (hits.Count > 0)
             {
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
-                if (this.currentHit != null)
+                if (this.currentHit != null && currentHit.ModelHit is Element3D ele)
                 {
-                    if (currentHit.ModelHit is Element3D ele)
-                    {
-                        ele.RaiseMouseDownEvent(this.currentHit, pt, this, originalInputEventArgs);
-                    }
-                    else if(currentHit.ModelHit is SceneNode node)
-                    {
-                        node.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
-                    }
+                    ele.RaiseMouseDownEvent(this.currentHit, pt, this);
                 }
             }
             else
             {
                 currentHit = null;               
             }
-            this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this, originalInputEventArgs));
+            this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this));
         }
         /// <summary>
         /// Handles hit testing on mouse move.
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input (which mouse button pressed?)
+        /// The original input event for future use (which mouse button pressed?)
         /// </param>
         private void MouseMoveHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -611,25 +593,18 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            if (this.currentHit != null)
+            if (this.currentHit != null && currentHit.ModelHit is Element3D ele)
             {
-                if (currentHit.ModelHit is Element3D ele)
-                {
-                    ele.RaiseMouseMoveEvent(this.currentHit, pt, this, originalInputEventArgs);
-                }
-                else if(currentHit.ModelHit is SceneNode node)
-                {
-                    node.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
-                }
+                ele.RaiseMouseMoveEvent(this.currentHit, pt, this);
             }
-            this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this, originalInputEventArgs));
+            this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this));
         }
         /// <summary>
         /// Handles hit testing on mouse up.
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event (which mouse button pressed?)
+        /// The original input event for future use (which mouse button pressed?)
         /// </param>
         private void MouseUpHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -637,19 +612,12 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            if (currentHit != null)
+            if (currentHit != null && currentHit.ModelHit is Element3D ele)
             {
-                if (currentHit.ModelHit is Element3D ele)
-                {
-                    ele.RaiseMouseUpEvent(this.currentHit, pt, this, originalInputEventArgs);
-                }
-                else if(currentHit.ModelHit is SceneNode node)
-                {
-                    node.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
-                }
+                ele.RaiseMouseUpEvent(this.currentHit, pt, this);               
                 currentHit = null;
             }
-            this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this, originalInputEventArgs));
+            this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

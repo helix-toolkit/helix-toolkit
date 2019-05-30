@@ -7,68 +7,60 @@ using SharpDX.Direct3D11;
 using System.IO;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Model
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.UWP.Model
 #endif
 {
-    namespace Model
+    using Shaders;
+    using Core;
+    public sealed class BillboardMaterialCore : MaterialCore, IBillboardRenderParams
     {
-        using Shaders;
-        using Core;
-        public sealed class BillboardMaterialCore : MaterialCore, IBillboardRenderParams
+        private bool fixedSize = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [fixed size].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
+        /// </value>
+        public bool FixedSize
         {
-            private bool fixedSize = true;
-            /// <summary>
-            /// Gets or sets a value indicating whether [fixed size].
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
-            /// </value>
-            public bool FixedSize
+            set
             {
-                set
-                {
-                    Set(ref fixedSize, value);
-                }
-                get { return fixedSize; }
+                Set(ref fixedSize, value);
             }
+            get { return fixedSize; }
+        }
 
-            private BillboardType type = BillboardType.SingleText;
-            public BillboardType Type
+        private BillboardType type = BillboardType.SingleText;
+        public BillboardType Type
+        {
+            set
             {
-                set
-                {
-                    Set(ref type, value);
-                }
-                get { return type; }
+                Set(ref type, value);
             }
+            get { return type; }
+        }
 
-            private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerClampAni1;
-            /// <summary>
-            /// Billboard texture sampler description
-            /// </summary>
-            public SamplerStateDescription SamplerDescription
+        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerClampAni1;
+        /// <summary>
+        /// Billboard texture sampler description
+        /// </summary>
+        public SamplerStateDescription SamplerDescription
+        {
+            set
             {
-                set
-                {
-                    Set(ref samplerDescription, value);
-                }
-                get
-                {
-                    return samplerDescription;
-                }
+                Set(ref samplerDescription, value);
             }
-
-            public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
+            get
             {
-                return new BillboardMaterialVariable(manager, technique, this);
+                return samplerDescription;
             }
         }
-    }
 
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
+        {
+            return new BillboardMaterialVariable(manager, technique, this);
+        }
+    }
 }

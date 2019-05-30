@@ -8,185 +8,217 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Format = global::SharpDX.DXGI.Format;
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Core
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.UWP.Core
 #endif
 {
-    namespace Core
+    using Model;
+    using Model.Scene;
+    using Render;
+    using Shaders;
+    using Components;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IPostEffectMeshXRay : IPostEffect
     {
-        using Model;
-        using Model.Scene;
-        using Render;
-        using Shaders;
-        using Components;
-
         /// <summary>
-        /// 
+        /// Gets or sets the color.
         /// </summary>
-        public interface IPostEffectMeshXRay : IPostEffect
+        /// <value>
+        /// The color.
+        /// </value>
+        Color4 Color { set; get; }
+        /// <summary>
+        /// Gets or sets the outline fading factor.
+        /// </summary>
+        /// <value>
+        /// The outline fading factor.
+        /// </value>
+        float OutlineFadingFactor { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
+        /// </value>
+        bool DoublePass { set; get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PostEffectMeshXRayCore : RenderCore, IPostEffectMeshXRay
+    {
+        #region Variables
+        private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
+        private DepthPrepassCore depthPrepassCore;
+        private readonly ConstantBufferComponent modelCB;
+        private BorderEffectStruct modelStruct;
+        #endregion
+        #region Properties
+        private string effectName = DefaultRenderTechniqueNames.PostEffectMeshXRay;
+        /// <summary>
+        /// Gets or sets the name of the effect.
+        /// </summary>
+        /// <value>
+        /// The name of the effect.
+        /// </value>
+        public string EffectName
         {
-            /// <summary>
-            /// Gets or sets the color.
-            /// </summary>
-            /// <value>
-            /// The color.
-            /// </value>
-            Color4 Color { set; get; }
-            /// <summary>
-            /// Gets or sets the outline fading factor.
-            /// </summary>
-            /// <value>
-            /// The outline fading factor.
-            /// </value>
-            float OutlineFadingFactor { set; get; }
-            /// <summary>
-            /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
-            /// </value>
-            bool EnableDoublePass { set; get; }
+            set { SetAffectsCanRenderFlag(ref effectName, value); }
+            get { return effectName; }
         }
+
         /// <summary>
-        /// 
+        /// Gets or sets the color of the border.
         /// </summary>
-        public class PostEffectMeshXRayCore : RenderCore, IPostEffectMeshXRay
+        /// <value>
+        /// The color of the border.
+        /// </value>
+        public Color4 Color
         {
-            #region Variables
-            private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
-            private DepthPrepassCore depthPrepassCore;
-            private readonly ConstantBufferComponent modelCB;
-            private BorderEffectStruct modelStruct;
-            #endregion
-            #region Properties
-            private string effectName = DefaultRenderTechniqueNames.PostEffectMeshXRay;
-            /// <summary>
-            /// Gets or sets the name of the effect.
-            /// </summary>
-            /// <value>
-            /// The name of the effect.
-            /// </value>
-            public string EffectName
+            set
             {
-                set { SetAffectsCanRenderFlag(ref effectName, value); }
-                get { return effectName; }
+                SetAffectsRender(ref modelStruct.Color, value);
             }
+            get { return modelStruct.Color; }
+        }
 
-            /// <summary>
-            /// Gets or sets the color of the border.
-            /// </summary>
-            /// <value>
-            /// The color of the border.
-            /// </value>
-            public Color4 Color
+        /// <summary>
+        /// Outline fading
+        /// </summary>
+        public float OutlineFadingFactor
+        {
+            set
             {
-                set
-                {
-                    SetAffectsRender(ref modelStruct.Color, value);
-                }
-                get { return modelStruct.Color; }
+                SetAffectsRender(ref modelStruct.Param.M11, value);
             }
+            get { return modelStruct.Param.M11; }
+        }
 
-            /// <summary>
-            /// Outline fading
-            /// </summary>
-            public float OutlineFadingFactor
+        private bool doublePass = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DoublePass
+        {
+            set
             {
-                set
-                {
-                    SetAffectsRender(ref modelStruct.Param.M11, value);
-                }
-                get { return modelStruct.Param.M11; }
+                SetAffectsRender(ref doublePass, value);
             }
-
-            private bool doublePass = false;
-            /// <summary>
-            /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
-            /// </value>
-            public bool EnableDoublePass
+            get
             {
-                set
-                {
-                    SetAffectsRender(ref doublePass, value);
-                }
-                get
-                {
-                    return doublePass;
-                }
+                return doublePass;
             }
-            #endregion
-            /// <summary>
-            /// Initializes a new instance of the <see cref="PostEffectMeshXRayCore"/> class.
-            /// </summary>
-            public PostEffectMeshXRayCore() : base(RenderType.PostProc)
-            {
-                modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
-                Color = global::SharpDX.Color.Blue;           
-            }
+        }
+        #endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostEffectMeshXRayCore"/> class.
+        /// </summary>
+        public PostEffectMeshXRayCore() : base(RenderType.PostProc)
+        {
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
+            Color = global::SharpDX.Color.Blue;           
+        }
 
 
-            protected override bool OnAttach(IRenderTechnique technique)
-            {
-                depthPrepassCore = Collect(new DepthPrepassCore());
-                depthPrepassCore.Attach(technique);
-                return true;
-            }
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            depthPrepassCore = Collect(new DepthPrepassCore());
+            depthPrepassCore.Attach(technique);
+            return true;
+        }
 
-            protected override void OnDetach()
-            {
-                depthPrepassCore.Detach();
-                depthPrepassCore = null;
-                base.OnDetach();
-            }
+        protected override void OnDetach()
+        {
+            depthPrepassCore.Detach();
+            depthPrepassCore = null;
+            base.OnDetach();
+        }
 
-            /// <summary>
-            /// Called when [render].
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="deviceContext">The device context.</param>
-            public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            var buffer = context.RenderHost.RenderBuffer;
+            bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
+            var dPass = DoublePass;
+            var depthStencilBuffer = hasMSAA ? buffer.FullResDepthStencilPool.Get(Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
+
+            BindTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
+            if (hasMSAA)
             {
-                var buffer = context.RenderHost.RenderBuffer;
-                bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
-                var dPass = EnableDoublePass;
-                var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
-                deviceContext.SetRenderTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
-                if (hasMSAA)
-                {
-                    //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.
-                    deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
-                    depthPrepassCore.Render(context, deviceContext);
-                }
+                //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.
+                deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
+                depthPrepassCore.Render(context, deviceContext);
+            }
+            var frustum = context.BoundingFrustum;
+            if (dPass)
+            {                
                 deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 1, 0);
-                if (dPass)
-                {                                   
-                    for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                {
+                    var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
+                    if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
                     {
-                        var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                        if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
-                        {
-                            currentCores.Add(new KeyValuePair<SceneNode, IEffectAttributes>(mesh, effect));
-                            context.CustomPassName = DefaultPassNames.EffectMeshXRayP1;
-                            var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP1];
-                            if (pass.IsNULL) { continue; }
-                            pass.BindShader(deviceContext);
-                            pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                            mesh.RenderCustom(context, deviceContext);
-                        }
+                        continue;
                     }
-                    modelCB.Upload(deviceContext, ref modelStruct);
-                    for (int i = 0; i < currentCores.Count; ++i)
+                    if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                     {
-                        var mesh = currentCores[i];
-                        IEffectAttributes effect = mesh.Value;
+                        currentCores.Add(new KeyValuePair<SceneNode, IEffectAttributes>(mesh, effect));
+                        context.CustomPassName = DefaultPassNames.EffectMeshXRayP1;
+                        var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP1];
+                        if (pass.IsNULL) { continue; }
+                        pass.BindShader(deviceContext);
+                        pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                        mesh.RenderCustom(context, deviceContext);
+                    }
+                }
+                modelCB.Upload(deviceContext, ref modelStruct);
+                for (int i = 0; i < currentCores.Count; ++i)
+                {
+                    var mesh = currentCores[i];
+                    IEffectAttributes effect = mesh.Value;
+                    var color = Color;
+                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                    {
+                        color = colorStr.ToColor4();
+                    }
+                    if (modelStruct.Color != color)
+                    {
+                        modelStruct.Color = color;
+                        modelCB.Upload(deviceContext, ref modelStruct);
+                    }
+
+                    context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
+                    var pass = mesh.Key.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
+                    if (pass.IsNULL) { continue; }
+                    pass.BindShader(deviceContext);
+                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                    mesh.Key.RenderCustom(context, deviceContext);
+                }
+                currentCores.Clear();                
+            }
+            else
+            {
+                modelCB.Upload(deviceContext, ref modelStruct);
+                for (int i =0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                {
+                    var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
+                    if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                    {
+                        continue;
+                    }
+                    if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                    {
                         var color = Color;
                         if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
                         {
@@ -197,56 +229,46 @@ namespace HelixToolkit.UWP
                             modelStruct.Color = color;
                             modelCB.Upload(deviceContext, ref modelStruct);
                         }
-
                         context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
-                        var pass = mesh.Key.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
+                        var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
                         if (pass.IsNULL) { continue; }
                         pass.BindShader(deviceContext);
-                        pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                        mesh.Key.RenderCustom(context, deviceContext);
+                        pass.BindStates(deviceContext, StateType.BlendState);
+                        deviceContext.SetDepthStencilState(pass.DepthStencilState, 0);
+                        mesh.RenderCustom(context, deviceContext);
                     }
-                    currentCores.Clear();                
-                }
-                else
-                {
-                    modelCB.Upload(deviceContext, ref modelStruct);
-                    for (int i =0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
-                    {
-                        var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                        if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
-                        {
-                            var color = Color;
-                            if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
-                            {
-                                color = colorStr.ToColor4();
-                            }
-                            if (modelStruct.Color != color)
-                            {
-                                modelStruct.Color = color;
-                                modelCB.Upload(deviceContext, ref modelStruct);
-                            }
-                            context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
-                            var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
-                            if (pass.IsNULL) { continue; }
-                            pass.BindShader(deviceContext);
-                            pass.BindStates(deviceContext, StateType.BlendState);
-                            deviceContext.SetDepthStencilState(pass.DepthStencilState, 0);
-                            mesh.RenderCustom(context, deviceContext);
-                        }
-                    }
-                }
-                if (hasMSAA)
-                {
-                    deviceContext.ClearRenderTagetBindings();
-                    depthStencilBuffer.Dispose();
                 }
             }
-
-            protected override bool OnUpdateCanRenderFlag()
+            if (hasMSAA)
             {
-                return IsAttached && !string.IsNullOrEmpty(EffectName);
+                deviceContext.ClearRenderTagetBindings();
+                buffer.FullResDepthStencilPool.Put(Format.D32_Float_S8X24_UInt, depthStencilBuffer);
             }
         }
-    }
 
+        protected override bool OnUpdateCanRenderFlag()
+        {
+            return IsAttached && !string.IsNullOrEmpty(EffectName);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
+        {
+            if (clear)
+            {
+                context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
+            }
+            context.SetRenderTargets(dsv, targetView == null ? null : new RenderTargetView[] { targetView });
+            context.SetViewport(0, 0, width, height);
+            context.SetScissorRectangle(0, 0, width, height);
+        }
+
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+    }
 }

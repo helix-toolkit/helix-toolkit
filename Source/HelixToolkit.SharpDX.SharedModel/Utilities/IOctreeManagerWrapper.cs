@@ -1,9 +1,6 @@
 ﻿#if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
-#if COREWPF
-using HelixToolkit.SharpDX.Core;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {

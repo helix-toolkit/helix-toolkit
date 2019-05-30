@@ -8,27 +8,19 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core.Model;
-using HelixToolkit.SharpDX.Core.Model.Scene;
-using HelixToolkit.SharpDX.Core.Shaders;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
     using Model.Scene;
     using Shaders;
-#endif
-
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="GeometryModel3D" />
     public class BillboardTextModel3D : GeometryModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// Fixed sized billboard. Default = true. 
         /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
@@ -98,9 +90,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 (d as BillboardTextModel3D).material.SamplerDescription = (SamplerStateDescription)e.NewValue;
             }));
-#endregion
+        #endregion
 
-#region Overridable Methods        
+        #region Overridable Methods        
 
         protected readonly BillboardMaterialCore material = new BillboardMaterialCore();
         /// <summary>
@@ -125,6 +117,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             base.AssignDefaultValuesToSceneNode(core);       
         }
-#endregion
+        #endregion
     }
 }

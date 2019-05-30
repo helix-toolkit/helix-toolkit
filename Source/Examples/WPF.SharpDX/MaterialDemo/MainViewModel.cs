@@ -121,7 +121,7 @@ namespace MaterialDemo
             {
                 var ob = objs[i];
                 var vertColor = new Color4((float)i / objs.Count, 0, 1 - (float)i / objs.Count, 1);
-                ob.Geometry.Colors = new Color4Collection(Enumerable.Repeat(vertColor, ob.Geometry.Positions.Count));
+                ob.Geometry.Colors = new HelixToolkit.Wpf.SharpDX.Core.Color4Collection(Enumerable.Repeat(vertColor, ob.Geometry.Positions.Count));
                 ob.Geometry.UpdateOctree();
                 ob.Geometry.UpdateBounds();
 
@@ -152,12 +152,9 @@ namespace MaterialDemo
                             AlbedoColor = p.DiffuseColor,
                             AlbedoMap = p.DiffuseMap,
                             NormalMap = p.NormalMap,
-                            RoughnessMetallicMap = p.SpecularColorMap,
-                            AmbientOcculsionMap = p.SpecularColorMap,
+                            RMAMap = p.SpecularColorMap,
                             RenderShadowMap = true,
                             RenderEnvironmentMap=true,
-                            MetallicFactor = 1, // Set to 1 if using RMA Map
-                            RoughnessFactor = 1 // Set to 1 if using RMA Map
                         };                      
                     }
                     //if (ob.Transform != null && ob.Transform.Count > 0)

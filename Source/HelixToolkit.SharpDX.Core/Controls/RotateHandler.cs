@@ -5,7 +5,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 namespace HelixToolkit.SharpDX.Core.Controls
 {
-    using Cameras;
+    using UWP;
+    using UWP.Cameras;
 
     public sealed class RotateHandler : MouseGestureHandler
     {

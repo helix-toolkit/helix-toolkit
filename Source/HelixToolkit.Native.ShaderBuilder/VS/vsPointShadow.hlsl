@@ -1,7 +1,7 @@
 #ifndef VSPOINTSHADOW_HLSL
 #define VSPOINTSHADOW_HLSL
 
-#define MESHSIMPLE
+#define POINTLINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 

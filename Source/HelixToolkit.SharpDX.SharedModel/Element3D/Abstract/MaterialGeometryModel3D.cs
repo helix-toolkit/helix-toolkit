@@ -11,23 +11,18 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core.Model.Scene;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
     using Model.Scene;
-#endif
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="GeometryModel3D" />
     public abstract class MaterialGeometryModel3D : GeometryModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// 
         /// </summary>
@@ -65,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsTransparentProperty); }
             set { SetValue(IsTransparentProperty, value); }
         }
-#endregion
+        #endregion        
         /// <summary>
         /// Assigns the default values to scene node.
         /// </summary>

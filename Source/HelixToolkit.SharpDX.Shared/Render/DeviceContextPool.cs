@@ -10,111 +10,103 @@ using SharpDX.Direct3D11;
 using Device = SharpDX.Direct3D11.Device1;
 #endif
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Render
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.UWP.Render
 #endif
 {
-    namespace Render
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IDeviceContextPool
     {
         /// <summary>
-        /// 
+        /// Gets this instance.
         /// </summary>
-        public interface IDeviceContextPool
+        /// <returns></returns>
+        DeviceContextProxy Get();
+        /// <summary>
+        /// Puts the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void Put(DeviceContextProxy context);
+        /// <summary>
+        /// Resets the draw calls.
+        /// </summary>
+        int ResetDrawCalls();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DeviceContextPool : DisposeObject, IDeviceContextPool
+    {
+        private readonly ConcurrentBag<DeviceContextProxy> contextPool = new ConcurrentBag<DeviceContextProxy>();
+
+        private readonly Device device;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceContextPool"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        public DeviceContextPool(Device device)
         {
-            /// <summary>
-            /// Gets this instance.
-            /// </summary>
-            /// <returns></returns>
-            DeviceContextProxy Get();
-            /// <summary>
-            /// Puts the specified context.
-            /// </summary>
-            /// <param name="context">The context.</param>
-            void Put(DeviceContextProxy context);
-            /// <summary>
-            /// Resets the draw calls.
-            /// </summary>
-            int ResetDrawCalls();
+            this.device = device;
         }
         /// <summary>
-        /// 
+        /// Gets this instance from pool
         /// </summary>
-        public sealed class DeviceContextPool : DisposeObject, IDeviceContextPool
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public DeviceContextProxy Get()
         {
-            private readonly ConcurrentBag<DeviceContextProxy> contextPool = new ConcurrentBag<DeviceContextProxy>();
-
-            private readonly Device device;
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DeviceContextPool"/> class.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            public DeviceContextPool(Device device)
+            if (contextPool.TryTake(out DeviceContextProxy context))
             {
-                this.device = device;
+                return context;
             }
-            /// <summary>
-            /// Gets this instance from pool
-            /// </summary>
-            /// <returns></returns>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public DeviceContextProxy Get()
+            else
             {
-                if (contextPool.TryTake(out DeviceContextProxy context))
+                lock (this)
                 {
-                    return context;
+                    return Collect(new DeviceContextProxy(device));
                 }
-                else
-                {
-                    lock (this)
-                    {
-                        return Collect(new DeviceContextProxy(device));
-                    }
-                }
-            }
-            /// <summary>
-            /// Puts the specified context back to the pool after use
-            /// </summary>
-            /// <param name="context">The context.</param>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void Put(DeviceContextProxy context)
-            {
-                context.ClearRenderTagetBindings();
-                context.Reset();
-                contextPool.Add(context);
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public int ResetDrawCalls()
-            {
-                int totalCalls = 0;
-                foreach(var ctx in contextPool)
-                {
-                    totalCalls += ctx.NumberOfDrawCalls;
-                    ctx.ResetDrawCalls();
-                }
-                return totalCalls;
-            }
-            /// <summary>
-            /// Releases unmanaged and - optionally - managed resources.
-            /// </summary>
-            /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-            protected override void OnDispose(bool disposeManagedResources)
-            {
-                while (!contextPool.IsEmpty)
-                {
-                    if(contextPool.TryTake(out DeviceContextProxy context))
-                    {
-                        RemoveAndDispose(ref context);
-                    }
-                }
-                base.OnDispose(disposeManagedResources);
             }
         }
-    }
+        /// <summary>
+        /// Puts the specified context back to the pool after use
+        /// </summary>
+        /// <param name="context">The context.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Put(DeviceContextProxy context)
+        {
+            context.ClearRenderTagetBindings();
+            context.Reset();
+            contextPool.Add(context);
+        }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int ResetDrawCalls()
+        {
+            int totalCalls = 0;
+            foreach(var ctx in contextPool)
+            {
+                totalCalls += ctx.NumberOfDrawCalls;
+                ctx.ResetDrawCalls();
+            }
+            return totalCalls;
+        }
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            while (!contextPool.IsEmpty)
+            {
+                if(contextPool.TryTake(out DeviceContextProxy context))
+                {
+                    RemoveAndDispose(ref context);
+                }
+            }
+            base.OnDispose(disposeManagedResources);
+        }
+    }
 }

@@ -4,45 +4,37 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Model
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+using HelixToolkit.UWP.Utilities;
+namespace HelixToolkit.UWP.Model
 #endif
 {
-    namespace Model
+    /// <summary>
+    /// 
+    /// </summary>
+    public abstract class MaterialCore : ObservableObject, IMaterial
     {
-        using Utilities;
-        /// <summary>
-        /// 
-        /// </summary>
-        public abstract class MaterialCore : ObservableObject, IMaterial
+        private string name;
+        public string Name
         {
-            private string name = "Material";
-            public string Name
+            set
             {
-                set
-                {
-                    Set(ref name, value);
-                }
-                get
-                {
-                    return name;
-                }
+                Set(ref name, value);
             }
-
-            public Guid Guid { get; } = Guid.NewGuid();
-            /// <summary>
-            /// Creates the material variables.
-            /// </summary>
-            /// <param name="manager">The manager.</param>
-            /// <param name="technique">The technique.</param>
-            /// <returns></returns>
-            public abstract MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique);
+            get
+            {
+                return name;
+            }
         }
-    }
 
+        public Guid Guid { get; } = Guid.NewGuid();
+        /// <summary>
+        /// Creates the material variables.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="technique">The technique.</param>
+        /// <returns></returns>
+        public abstract MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique);
+    }
 }

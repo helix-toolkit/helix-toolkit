@@ -34,14 +34,12 @@ namespace HelixToolkit.UWP
                 if (e.OldValue != null)
                 {
                     model.Items.Remove(e.OldValue);
-                    if (e.OldValue is Element3D ele)
-                    { (model.SceneNode as GroupNode).RemoveChildNode(ele.SceneNode); }
+                    (model.SceneNode as GroupNode).RemoveChildNode(e.OldValue as Element3D);
                 }
                 if (e.NewValue != null)
                 {
                     model.Items.Add(e.NewValue);
-                    if (e.NewValue is Element3D ele)
-                    { (model.SceneNode as GroupNode).AddChildNode(ele.SceneNode); }
+                    (model.SceneNode as GroupNode).AddChildNode(e.NewValue as Element3D);
                 }
             }));
 

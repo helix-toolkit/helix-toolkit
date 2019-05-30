@@ -4,14 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
+#if NETFX_CORE
 namespace HelixToolkit.UWP
-#endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Utilities;
@@ -159,24 +155,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="value">if set to <c>true</c> [value].</param>
         public BoolArgs(bool value)
-        {
-            Value = value;
-        }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class StringArgs : EventArgs
-    {
-        /// <summary>
-        /// The value
-        /// </summary>
-        public readonly string Value;
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringArgs"/> class.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public StringArgs(string value)
         {
             Value = value;
         }

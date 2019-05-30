@@ -83,7 +83,6 @@
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding SphereModel}"
                 Material="{Binding SphereMaterial}" />
-            <hx:ContinuousRender3D/>
         </hx:Viewport3DX>
 
         <StackPanel

@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using global::SharpDX;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Media = Windows.UI;
@@ -10,24 +9,20 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using Media = System.Windows.Media;
-#if COREWPF
-using HelixToolkit.SharpDX.Core.Model;
-using HelixToolkit.SharpDX.Core.Model.Scene;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using global::SharpDX;
     using Model;
-#if !COREWPF
     using Model.Scene;
-#endif
+
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="GeometryModel3D" />
     public class LineGeometryModel3D : GeometryModel3D
     {
-#region Dependency Properties        
+        #region Dependency Properties        
         /// <summary>
         /// The color property
         /// </summary>
@@ -133,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(FixedSizeProperty);
             }
         }
-#endregion
+        #endregion        
 
         protected readonly LineMaterialCore material = new LineMaterialCore();
         /// <summary>

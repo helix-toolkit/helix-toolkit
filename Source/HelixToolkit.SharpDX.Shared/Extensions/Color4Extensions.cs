@@ -10,14 +10,10 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
+#if NETFX_CORE
 namespace HelixToolkit.UWP
-#endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     /// <summary>
@@ -237,12 +233,6 @@ namespace HelixToolkit.UWP
         {
             Colors.TryGetValue(name, out object color);
             return color;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Color4 ChangeIntensity(this Color4 c, float intensity)
-        {
-            return new Color4(c.Red * intensity, c.Green * intensity, c.Blue * intensity, c.Alpha);
         }
     }
 }

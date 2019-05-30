@@ -4,14 +4,10 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using System;
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
+#if NETFX_CORE
 namespace HelixToolkit.UWP
-#endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     /// <summary>

@@ -11,18 +11,11 @@ namespace HelixToolkit.UWP
 #else
 using System.ComponentModel;
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core;
-using HelixToolkit.SharpDX.Core.Shaders;
-using HelixToolkit.SharpDX.Core.Model;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
     using Model;
     using Shaders;
-#endif
     public abstract class VolumeTextureMaterialBase : Material, IVolumeTextureMaterial
     {
         public SamplerStateDescription Sampler
@@ -162,19 +155,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).TransferMap = (Color4[])e.NewValue;
                 }));
-
-        public VolumeTextureMaterialBase() { }
-
-        public VolumeTextureMaterialBase(IVolumeTextureMaterial core) :base(core as MaterialCore)
-        {
-            SampleDistance = core.SampleDistance;
-            MaxIterations = core.MaxIterations;
-            Sampler = core.Sampler;
-            Color = core.Color;
-            TransferMap = core.TransferMap;
-            IsoValue = core.IsoValue;
-            IterationOffset = core.IterationOffset;
-        }
     }
 
     /// <summary>
@@ -202,15 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).VolumeTexture = (Stream)e.NewValue;
                 }));
 
-        public VolumeTextureDDS3DMaterial()
-        {
 
-        }
-
-        public VolumeTextureDDS3DMaterial(VolumeTextureDDS3DMaterialCore core) : base(core)
-        {
-            Texture = core.VolumeTexture;
-        }
         protected override MaterialCore OnCreateCore()
         {
             return new VolumeTextureDDS3DMaterialCore()
@@ -274,13 +246,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).VolumeTexture = (VolumeTextureParams)e.NewValue;
                 }));
-
-        public VolumeTextureRawDataMaterial() { }
-
-        public VolumeTextureRawDataMaterial(VolumeTextureRawDataMaterialCore core) : base(core)
-        {
-            Texture = core.VolumeTexture;
-        }
 
         protected override MaterialCore OnCreateCore()
         {
@@ -346,13 +311,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).VolumeTexture = (VolumeTextureGradientParams)e.NewValue;
                 }));
-
-        public VolumeTextureDiffuseMaterial() { }
-
-        public VolumeTextureDiffuseMaterial(VolumeTextureDiffuseMaterialCore core) : base(core)
-        {
-            Texture = core.VolumeTexture;
-        }
 
         protected override MaterialCore OnCreateCore()
         {

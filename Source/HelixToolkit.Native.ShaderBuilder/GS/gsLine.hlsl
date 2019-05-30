@@ -24,10 +24,10 @@ void makeLine(out float4 points[4], in float4 posA, in float4 posB, in float wid
     float2 B2w = Bw + binormal;
 
     // bring back corners in projection frame
-    points[1] = windowToProj(A1w, posA.z, posA.w);
-    points[0] = windowToProj(A2w, posA.z, posA.w);
-    points[3] = windowToProj(B1w, posB.z, posB.w);
-    points[2] = windowToProj(B2w, posB.z, posB.w);
+    points[0] = windowToProj(A1w, posA.z, posA.w);
+    points[1] = windowToProj(A2w, posA.z, posA.w);
+    points[2] = windowToProj(B1w, posB.z, posB.w);
+    points[3] = windowToProj(B2w, posB.z, posB.w);
 }
 
 void makeLineNonFixed(out float4 points[4], in float4 posA, in float4 posB, in float width)
@@ -51,10 +51,10 @@ void makeLineNonFixed(out float4 points[4], in float4 posA, in float4 posB, in f
     float4 B2w = float4(b2w, posB.z, posB.w);
 
     // bring back corners in projection frame
-    points[1] = mul(A1w, mProjection);
-    points[0] = mul(A2w, mProjection);
-    points[3] = mul(B1w, mProjection);
-    points[2] = mul(B2w, mProjection);
+    points[0] = mul(A1w, mProjection);
+    points[1] = mul(A2w, mProjection);
+    points[2] = mul(B1w, mProjection);
+    points[3] = mul(B2w, mProjection);
 }
 
 [maxvertexcount(4)]

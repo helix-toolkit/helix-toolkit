@@ -5,32 +5,24 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using SharpDX;
 
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Model.Scene2D
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
-    namespace Model.Scene2D
+    using Core2D;
+    public class EllipseNode2D : ShapeNode2D
     {
-        using Core2D;
-        public class EllipseNode2D : ShapeNode2D
+        protected override ShapeRenderCore2DBase CreateShapeRenderCore()
         {
-            protected override ShapeRenderCore2DBase CreateShapeRenderCore()
-            {
-                return new EllipseRenderCore2D();
-            }
+            return new EllipseRenderCore2D();
+        }
 
-            protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
-            {
-                hitResult = null;
-                return false;
-            }
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            hitResult = null;
+            return false;
         }
     }
-
 }

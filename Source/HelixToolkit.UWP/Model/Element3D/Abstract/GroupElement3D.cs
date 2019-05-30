@@ -2,16 +2,18 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
+
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Markup;
+using System.Collections.Generic;
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 {
     using Model.Scene;
-    
+   
+
     /// <summary>
     /// 
     /// </summary>
@@ -122,59 +124,54 @@ namespace HelixToolkit.UWP
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var node = SceneNode as GroupNode;
-            switch (e.Action)
+            if (e.OldItems != null)
             {
-                case NotifyCollectionChangedAction.Remove:
-                case NotifyCollectionChangedAction.Replace:
-                    if (e.OldItems != null)
-                    {
-                        foreach (Element3D item in e.OldItems)
-                        {
-                            if (node.RemoveChildNode(item.SceneNode))
-                            {
-                                Items.Remove(item);
-                            }
-                        }
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    Items.Clear();
-                    node.Clear();
-                    break;
+                DetachChildren(e.OldItems);
+            }           
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                Items.Clear();
+                var node = SceneNode as GroupNode;
+                node.Clear();
+                AttachChildren(sender as IList);
+                if (OctreeManager != null)
+                {
+                    Items.Add(OctreeManager);
+                }
             }
-
-            switch (e.Action)
+            else if (e.NewItems != null)
             {
-                case NotifyCollectionChangedAction.Reset:
-                    if (sender is IList list)
-                    {
-                        foreach (Element3D item in list)
-                        {
-                            if (node.AddChildNode(item.SceneNode))
-                            {
-                                Items.Add(item);
-                            }
-                        }
-                    }
-                    if (OctreeManager != null)
-                    {
-                        Items.Add(OctreeManager);
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Add:
-                case NotifyCollectionChangedAction.Replace:
-                    foreach (Element3D item in e.NewItems)
-                    {
-                        if (node.AddChildNode(item.SceneNode))
-                        {
-                            Items.Add(item);
-                        }
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                    node.MoveChildNode(e.OldStartingIndex, e.NewStartingIndex);
-                    break;
+                AttachChildren(e.NewItems);
+            }
+        }
+        /// <summary>
+        /// Attaches the children.
+        /// </summary>
+        /// <param name="children">The children.</param>
+        protected void AttachChildren(IList children)
+        {
+            var node = SceneNode as GroupNode;
+            foreach (Element3D c in children)
+            {
+                if (node.AddChildNode(c))
+                {
+                    Items.Add(c);
+                }               
+            }
+        }
+        /// <summary>
+        /// Detaches the children.
+        /// </summary>
+        /// <param name="children">The children.</param>
+        protected void DetachChildren(IList children)
+        {
+            var node = SceneNode as GroupNode;
+            foreach (Element3D c in children)
+            {                
+                if(node.RemoveChildNode(c))
+                {
+                    Items.Remove(c);
+                }
             }
         }
 
@@ -191,11 +188,6 @@ namespace HelixToolkit.UWP
                     Children.Remove(child);
                 }
             }
-            if(itemsSourceInternal == null && itemsSource != null && Children.Count > 0)
-            {
-                throw new InvalidOperationException("Children must be empty before using ItemsSource");
-            }
-            Children.Clear();
             itemsSourceInternal = itemsSource;
             if (itemsSourceInternal != null)
             {
@@ -212,37 +204,19 @@ namespace HelixToolkit.UWP
 
         private void S_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
+            if (e.OldItems != null)
             {
-                case NotifyCollectionChangedAction.Reset:
-                    Children.Clear();
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                case NotifyCollectionChangedAction.Replace:
-                    foreach (Element3D item in e.OldItems)
-                    {
-                        Children.Remove(item);
-                    }
-                    break;
+                foreach (Element3D item in e.OldItems)
+                {
+                    Children.Remove(item);
+                }
             }
-            switch (e.Action)
+            if (e.NewItems != null)
             {
-                case NotifyCollectionChangedAction.Reset:
-                    foreach (Element3D item in itemsSourceInternal)
-                    {
-                        Children.Add(item);
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Add:
-                case NotifyCollectionChangedAction.Replace:
-                    foreach (Element3D item in e.NewItems)
-                    {
-                        Children.Add(item);
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Move:
-                    Children.Move(e.OldStartingIndex, e.NewStartingIndex);
-                    break;
+                foreach (Element3D item in e.NewItems)
+                {
+                    Children.Add(item);
+                }
             }
         }
     }

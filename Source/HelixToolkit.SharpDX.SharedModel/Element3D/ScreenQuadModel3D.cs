@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using global::SharpDX.Direct3D11;
 using System;
+using System.IO;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Color = Windows.UI.Color;
@@ -13,34 +14,27 @@ namespace HelixToolkit.UWP
 using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
-#if COREWPF
-using HelixToolkit.SharpDX.Core.Model.Scene;
-using HelixToolkit.SharpDX.Core.Shaders;
-using HelixToolkit.SharpDX.Core;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
     using Model.Scene;
     using Shaders;
-#endif
 
     /// <summary>
     /// 
     /// </summary>
     public class ScreenQuadModel3D : Element3D
     {
-        public TextureModel Texture
+        public Stream Texture
         {
-            get { return (TextureModel)GetValue(TextureProperty); }
+            get { return (Stream)GetValue(TextureProperty); }
             set { SetValue(TextureProperty, value); }
         }
 
         public static readonly DependencyProperty TextureProperty =
-            DependencyProperty.Register("Texture", typeof(TextureModel), typeof(ScreenQuadModel3D), new PropertyMetadata(null, (d,e)=>
+            DependencyProperty.Register("Texture", typeof(Stream), typeof(ScreenQuadModel3D), new PropertyMetadata(null, (d,e)=>
             {
-                ((d as ScreenQuadModel3D).SceneNode as ScreenQuadNode).Texture = (TextureModel)e.NewValue;
+                ((d as ScreenQuadModel3D).SceneNode as ScreenQuadNode).Texture = (Stream)e.NewValue;
             }));
 
 

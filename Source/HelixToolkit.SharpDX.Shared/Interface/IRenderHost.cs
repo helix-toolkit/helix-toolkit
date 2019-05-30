@@ -20,19 +20,16 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
 namespace HelixToolkit.UWP
-#endif
 #endif
 {
 
+    using Utilities;
+    using Model.Scene;
     using Core2D;
     using HelixToolkit.Logger;
-    using Model.Scene;
+    using Core;
     using Render;
-    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -222,7 +219,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The per frame renderable.
         /// </value>
-        FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
+        List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
         /// <summary>
         /// Gets the current frame lights
         /// </summary>
@@ -236,40 +233,26 @@ namespace HelixToolkit.UWP
         /// <value>
         /// Gets the per frame nodes with post effects.
         /// </value>
-        FastList<SceneNode> PerFrameNodesWithPostEffect { get; }
+        List<SceneNode> PerFrameNodesWithPostEffect { get; }
         /// <summary>
         /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
         /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        FastList<SceneNode> PerFrameOpaqueNodes { get; }
-        /// <summary>
-        /// Gets the per frame opaque nodes in frustum.
-        /// </summary>
-        /// <value>
-        /// The per frame opaque nodes in frustum.
-        /// </value>
-        FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
-        /// <summary>
-        /// Gets the per frame transparent nodes in frustum.
-        /// </summary>
-        /// <value>
-        /// The per frame transparent nodes in frustum.
-        /// </value>
-        FastList<SceneNode> PerFrameTransparentNodesInFrustum { get; }
+        List<SceneNode> PerFrameOpaqueNodes { get; }
         /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle"/>
         /// </summary>
         /// <value>
         /// The per frame particle nodes.
         /// </value>
-        FastList<SceneNode> PerFrameParticleNodes { get; }
+        List<SceneNode> PerFrameParticleNodes { get; }
         /// <summary>
         /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>
         /// </summary>
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        FastList<SceneNode> PerFrameTransparentNodes { get; }
+        List<SceneNode> PerFrameTransparentNodes { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>
@@ -280,14 +263,6 @@ namespace HelixToolkit.UWP
         /// Ends the d3 d.
         /// </summary>
         void EndD3D();
-        /// <summary>
-        /// Starts the rendering. Trigger <see cref="StartRenderLoop"/>
-        /// </summary>
-        void StartRendering();
-        /// <summary>
-        /// Stops the rendering. Trigger <see cref="StopRenderLoop"/>
-        /// </summary>
-        void StopRendering();
         /// <summary>
         /// Updates the and render.
         /// </summary>
@@ -346,5 +321,90 @@ namespace HelixToolkit.UWP
         /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
         /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
         void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer);
+    }
+
+    public sealed class DX11RenderHostConfiguration
+    {
+        /// <summary>
+        /// The render d2d
+        /// </summary>
+        public bool RenderD2D { set; get; } = true;
+        /// <summary>
+        /// The update global variable
+        /// </summary>
+        public bool UpdatePerFrameData { set; get; } = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [render lights].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render lights]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderLights { set; get; } = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [clear render target before each frame].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [clear render target before each frame]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ClearEachFrame { set; get; } = true;
+
+        /// <summary>
+        /// Auto update octree in geometry during rendering. 
+        /// </summary>
+        public bool AutoUpdateOctree { set; get; } = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable oit rendering].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableOITRendering { set; get; } = true;
+        /// <summary>
+        /// Gets or sets the OIT weight power used for color weight calculation. Default = 3.
+        /// </summary>
+        /// <value>
+        /// The OIT weight power.
+        /// </value>
+        public float OITWeightPower { set; get; } = 3;
+
+        /// <summary>
+        /// Gets or sets the oit weight depth slope. Used to increase resolution for particular range of depth values. 
+        /// <para>If value = 2, the depth range from 0-0.5 expands to 0-1 to increase resolution. However, values from 0.5 - 1 will be pushed to 1</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight depth slope.
+        /// </value>
+        public float OITWeightDepthSlope { set; get; } = 1;
+        /// <summary>
+        /// Gets or sets the oit weight mode.
+        /// <para>Please refer to http://jcgt.org/published/0002/02/09/ </para>
+        /// <para>Linear0: eq7; Linear1: eq8; Linear2: eq9; NonLinear: eq10</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight mode.
+        /// </value>
+        public OITWeightMode OITWeightMode
+        {
+            set; get;
+        } = OITWeightMode.Linear1;
+        /// <summary>
+        /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
+        /// </summary>
+        public FXAALevel FXAALevel { set; get; } = FXAALevel.None;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable render order] specified by user.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable render order]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableRenderOrder { set; get; } = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable vertical synchronize].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable v synchronize]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableVSync { set; get; } = true;
     }
 }

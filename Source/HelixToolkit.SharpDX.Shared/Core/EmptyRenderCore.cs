@@ -4,45 +4,45 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Core
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.UWP.Core
 #endif
 {
-    namespace Core
+    using Render;
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class EmptyRenderCore : RenderCore
     {
-        using Render;
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="EmptyRenderCore"/> class.
         /// </summary>
-        public sealed class EmptyRenderCore : RenderCore
+        public EmptyRenderCore() : base(RenderType.None)
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="EmptyRenderCore"/> class.
-            /// </summary>
-            public EmptyRenderCore() : base(RenderType.None)
-            {
-            }
+        }
 
-            /// <summary>
-            /// Called when [render].
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="deviceContext">The device context.</param>
-            public override void Render(RenderContext context, DeviceContextProxy deviceContext)
-            {
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        {
 
-            }
+        }
 
-            protected override bool OnAttach(IRenderTechnique technique)
-            {
-                return true;
-            }
+        public override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            return true;
         }
     }
-
 }

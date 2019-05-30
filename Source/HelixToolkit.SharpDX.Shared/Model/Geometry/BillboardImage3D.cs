@@ -11,14 +11,10 @@ using System.IO;
 #else
 using System.Windows.Media.Imaging;
 #endif
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
+#if NETFX_CORE
 namespace HelixToolkit.UWP
-#endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     public class BillboardImage3D : BillboardBase

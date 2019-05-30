@@ -2,14 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Core
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.Wpf.SharpDX.Core
 #endif
 {
     using System;
@@ -24,7 +20,7 @@ namespace HelixToolkit.UWP
     [Serializable]
     [TypeConverter(typeof(IntCollectionConverter))]
 #endif
-    public sealed class IntCollection : FastList<int>
+    public sealed class IntCollection : ExposedArrayList<int>
     {
         public IntCollection()
         {
