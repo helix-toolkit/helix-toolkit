@@ -25,6 +25,7 @@
             </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
             <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}" />
+            <hx:MeshGeometryModel3D Geometry="{Binding RectGeometry}" Material="{Binding Material}" />
             <hx:ScreenSpacedGroup3D RelativeScreenLocationX="-0.5">
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding ViewCubeGeometry1}"
@@ -61,6 +62,25 @@
                 SizeScale="2">
                 <hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White" />
                 <hx:BillboardTextModel3D Geometry="{Binding CoordinateText}" />
+            </hx:ScreenSpacedGroup3D>
+            <hx:ScreenSpacedGroup3D
+                AbsolutePosition3D="0, 0, -7"
+                Mode="AbsolutePosition3D"
+                SizeScale="2">
+                <hx:ScreenSpacedGroup3D.Transform>
+                    <RotateTransform3D>
+                        <RotateTransform3D.Rotation>
+                            <AxisAngleRotation3D Angle="90" Axis="0, 1, 0" />
+                        </RotateTransform3D.Rotation>
+                    </RotateTransform3D>
+                </hx:ScreenSpacedGroup3D.Transform>
+                <hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White" />
+            </hx:ScreenSpacedGroup3D>
+            <hx:ScreenSpacedGroup3D
+                AbsolutePosition3D="0, 0, -1"
+                Mode="AbsolutePosition3D"
+                SizeScale="2">
+                <hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White" />
             </hx:ScreenSpacedGroup3D>
         </hx:Viewport3DX>
     </Grid>
