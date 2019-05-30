@@ -8,14 +8,11 @@ using Media = Windows.UI;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core.Model.Scene;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !WINDOWS_UWP && !COREWPF
     using Model.Scene;
+    
 
     public class DynamicCodeSurfaceModel3D : MeshGeometryModel3D
     {
@@ -92,14 +89,17 @@ namespace HelixToolkit.Wpf.SharpDX
             var n = SceneNode as DynamicCodeSurface3DNode;
             n.Source = SourceCode;
             n.ParameterW = (float)ParameterW;
-            n.OnCompileError += N_OnCompileError;
+            n.PropertyChanged += N_PropertyChanged;
             base.AssignDefaultValuesToSceneNode(node);
         }
 
-        private void N_OnCompileError(object sender, System.EventArgs e)
+        private void N_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (sender is DynamicCodeSurface3DNode n)
-                ErrorList = n.Errors;
+            if(e.PropertyName == nameof(DynamicCodeSurface3DNode.Errors))
+            {
+                var s = sender as DynamicCodeSurface3DNode;
+                ErrorList = s.Errors;
+            }
         }
 
         protected override SceneNode OnCreateSceneNode()
@@ -107,6 +107,5 @@ namespace HelixToolkit.Wpf.SharpDX
             return new DynamicCodeSurface3DNode();
         }
     }
-#endif
 }
 #endif

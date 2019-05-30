@@ -1,21 +1,16 @@
-﻿/*
-The MIT License (MIT)
-Copyright (c) 2018 Helix Toolkit contributors
-*/
-using global::SharpDX.Direct3D11;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
 namespace HelixToolkit.UWP
 #endif
-#endif
 {
+    using global::SharpDX.Direct3D11;
+    
     using Utilities;
     /// <summary>
     /// Use for texture resource sharing between models. It uses texture stream as key for each texture.
@@ -25,8 +20,8 @@ namespace HelixToolkit.UWP
     public sealed class TextureResourceManager : IDisposable, ITextureResourceManager
     {
         public int Count { get { return resourceDictionaryMipMaps.Count + resourceDictionaryNoMipMaps.Count; } }
-        private readonly Dictionary<object, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<object, ShaderResourceViewProxy>();
-        private readonly Dictionary<object, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<object, ShaderResourceViewProxy>();
+        private readonly Dictionary<Stream, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<Stream, ShaderResourceViewProxy>();
+        private readonly Dictionary<Stream, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<Stream, ShaderResourceViewProxy>();
         private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureResourceManager"/> class.
@@ -38,30 +33,30 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// Registers the specified texture model. This creates mipmaps automatically
+        /// Registers the specified texture stream. This creates mipmaps automatically
         /// </summary>
-        /// <param name="textureStream">The texture model.</param>
+        /// <param name="textureStream">The texture stream.</param>
         /// <returns></returns>
-        public ShaderResourceViewProxy Register(TextureModel textureStream)
+        public ShaderResourceViewProxy Register(Stream textureStream)
         {
             return Register(textureStream, false);
         }
         /// <summary>
         /// Registers the specified material unique identifier.
         /// </summary>
-        /// <param name="textureModel">The texture model.</param>
+        /// <param name="textureStream">The texture steam.</param>
         /// <param name="disableAutoGenMipMap">Disable generate mipmaps automatically</param>
         /// <returns></returns>
-        public ShaderResourceViewProxy Register(TextureModel textureModel, bool disableAutoGenMipMap)
+        public ShaderResourceViewProxy Register(Stream textureStream, bool disableAutoGenMipMap)
         {
-            if (textureModel == null || textureModel.GetKey() == null)
+            if (textureStream == null)
             {
                 return null;
             }
             var targetDict = disableAutoGenMipMap ? resourceDictionaryNoMipMaps : resourceDictionaryMipMaps;
             lock (targetDict)
             {
-                if (targetDict.TryGetValue(textureModel.GetKey(), out ShaderResourceViewProxy view))
+                if (targetDict.TryGetValue(textureStream, out ShaderResourceViewProxy view))
                 {
                     view.IncRef();
                     return view;
@@ -69,15 +64,15 @@ namespace HelixToolkit.UWP
                 else
                 {
                     var proxy = new ShaderResourceViewProxy(device);
-                    proxy.CreateView(textureModel, disableAutoGenMipMap);
+                    proxy.CreateView(textureStream, disableAutoGenMipMap);
                     proxy.Disposed += (s, e) =>
                     {
                         lock (targetDict)
                         {
-                            targetDict.Remove(textureModel.GetKey());
+                            targetDict.Remove(textureStream);
                         }
                     };
-                    targetDict.Add(textureModel.GetKey(), proxy);
+                    targetDict.Add(textureStream, proxy);
                     return proxy;
                 }
             }

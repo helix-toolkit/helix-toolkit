@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using SharpDX.Direct3D;
-using System.ComponentModel;
-using HelixToolkit.Logger;
+
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -19,24 +18,17 @@ namespace HelixToolkit.UWP
 #else
 using System.Windows;
 using System.Windows.Controls;
-#if COREWPF
-using HelixToolkit.SharpDX.Core;
-using HelixToolkit.SharpDX.Core.Model.Scene;
-using HelixToolkit.SharpDX.Core.Core2D;
-using HelixToolkit.SharpDX.Core.Utilities;
-using HelixToolkit.SharpDX.Core.Render;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-
-#if !COREWPF
-    using Render;
+    using System.ComponentModel;
     using Core2D;
+    using HelixToolkit.Logger;
+    using Render;
     using Model.Scene;
-#endif
-    using Controls;
     using Utilities;
+    using Controls;
+
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
@@ -72,9 +64,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public LogWrapper Logger { get { return CurrentRenderHost != null ? CurrentRenderHost.Logger : NullLogger; } }
 
-        private readonly HashSet<IViewport3DX> viewports = new HashSet<IViewport3DX>();
-        private readonly HashSet<IRenderHost> attachedRenderHosts = new HashSet<IRenderHost>();
-#pragma warning disable 0067
+        private readonly IList<IViewport3DX> viewports = new List<IViewport3DX>();
+#pragma warning disable 0067        
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
@@ -149,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameFlattenedScene : Constants.EmptyRenderablePair; } }
+        public List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameFlattenedScene : Constants.EmptyRenderablePair; } }
         /// <summary>
         /// Gets the current frame Lights for rendering.
         /// </summary>
@@ -163,42 +154,29 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame post effect cores.
         /// </value>
-        public FastList<SceneNode> PerFrameNodesWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameNodesWithPostEffect : Constants.EmptyRenderable; } }
+        public List<SceneNode> PerFrameNodesWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameNodesWithPostEffect : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the per frame general render cores.
         /// </summary>
         /// <value>
         /// The per frame general render cores.
         /// </value>
-        public FastList<SceneNode> PerFrameOpaqueNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodes : Constants.EmptyRenderable; } }
-        /// <summary>
-        /// Gets the per frame opaque nodes in frustum.
-        /// </summary>
-        /// <value>
-        /// The per frame opaque nodes in frustum.
-        /// </value>
-        public FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodesInFrustum : Constants.EmptyRenderable; } }
+        public List<SceneNode> PerFrameOpaqueNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodes : Constants.EmptyRenderable; } }
+
         /// <summary>
         /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>
         /// </summary>
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        public FastList<SceneNode> PerFrameTransparentNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable; } }
-        /// <summary>
-        /// Gets the per frame transparent nodes in frustum.
-        /// </summary>
-        /// <value>
-        /// The per frame transparent nodes in frustum.
-        /// </value>
-        public FastList<SceneNode> PerFrameTransparentNodesInFrustum { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodesInFrustum : Constants.EmptyRenderable; } }
+        public List<SceneNode> PerFrameTransparentNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle" />
         /// </summary>
         /// <value>
         /// The per frame particle nodes.
         /// </value>
-        public FastList<SceneNode> PerFrameParticleNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameParticleNodes : Constants.EmptyRenderable; } }
+        public List<SceneNode> PerFrameParticleNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameParticleNodes : Constants.EmptyRenderable; } }
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>
@@ -215,10 +193,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="viewport"></param>
         public void AttachViewport3DX(IViewport3DX viewport)
         {
-            if (viewports.Add(viewport))
-            {
-                viewport.EffectsManager = this.EffectsManager;
-            }
+            viewports.Add(viewport);
+            viewport.EffectsManager = this.EffectsManager;
         }
         /// <summary>
         /// </summary>
@@ -232,9 +208,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateRender()
         {
-            foreach(var v in attachedRenderHosts)
+            foreach(var v in viewports)
             {
-                v.InvalidateRender();
+                v.RenderHost?.InvalidateRender();
             }
         }
 
@@ -243,9 +219,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateSceneGraph()
         {
-            foreach (var v in attachedRenderHosts)
+            foreach (var v in viewports)
             {
-                v.InvalidateSceneGraph();
+                v.RenderHost?.InvalidateSceneGraph();
             }
         }
         /// <summary>
@@ -253,9 +229,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidatePerFrameRenderables()
         {
-            foreach (var v in attachedRenderHosts)
+            foreach (var v in viewports)
             {
-                v.InvalidatePerFrameRenderables();
+                v.RenderHost?.InvalidatePerFrameRenderables();
             }
         }
         /// <summary>
@@ -517,7 +493,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.IsHitTestVisible = false;
 #if !NETFX_CORE
-            Visibility = System.Windows.Visibility.Collapsed;
+            Visibility = Visibility.Collapsed;
 #endif
         }
 
@@ -527,45 +503,30 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
-            if (host != null && attachedRenderHosts.Add(host))
+            if (Interlocked.Increment(ref d3dCounter) == 1 && host.EffectsManager != null)
             {
-                if (Interlocked.Increment(ref d3dCounter) == 1 && host.EffectsManager != null)
+                foreach (var renderable in Renderables)
                 {
-                    foreach (var renderable in Renderables)
-                    {
-                        renderable.Attach(this);
-                    }
+                    renderable.Attach(host);
                 }
             }
         }
         /// <summary>
         /// Detaches this instance.
         /// </summary>
-        /// <param name="host"></param>
         /// <exception cref="IndexOutOfRangeException">D3DCounter is negative.</exception>
-        public void Detach(IRenderHost host)
+        public void Detach()
         {
-            if (host != null && attachedRenderHosts.Remove(host))
+            if (Interlocked.Decrement(ref d3dCounter) == 0)
             {
-                if (Interlocked.Decrement(ref d3dCounter) == 0)
+                foreach (var renderable in Renderables)
                 {
-                    foreach (var renderable in Renderables)
-                    {
-                        renderable.Detach();
-                    }
+                    renderable.Detach();
                 }
-                else if (d3dCounter < 0)
-                {
-                    throw new IndexOutOfRangeException("D3DCounter is negative.");
-                } 
             }
-        }
-
-        private void Detach()
-        {
-            foreach (var renderable in Renderables)
+            else if (d3dCounter < 0)
             {
-                renderable.Detach();
+                throw new IndexOutOfRangeException("D3DCounter is negative.");
             }
         }
         /// <summary>
@@ -581,16 +542,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Ends the d3 d.
         /// </summary>
         public void EndD3D()
-        {
-
-        }
-
-        public void StartRendering()
-        {
-
-        }
-
-        public void StopRendering()
         {
 
         }
@@ -621,7 +572,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
              CurrentRenderHost?.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
         }
-#region IDisposable Support
+        #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -630,7 +581,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (disposing)
                 {
-                    attachedRenderHosts.Clear();
                     Detach();
                     // TODO: dispose managed state (managed objects).
                     viewports.Clear();

@@ -8,11 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
 #if NETFX_CORE
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
 namespace HelixToolkit.UWP
-#endif
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
@@ -29,11 +25,7 @@ namespace HelixToolkit.Wpf
     using System.Linq;
     using global::SharpDX;
 #if NETFX_CORE
-#if CORE
-    using HelixToolkit.SharpDX.Core;
-#else
     using HelixToolkit.UWP;
-#endif
     using HelixToolkit.Wpf;
 #else
 #endif
@@ -44,10 +36,10 @@ namespace HelixToolkit.Wpf
     using Point = global::SharpDX.Vector2;
     using Point3D = global::SharpDX.Vector3;
     using Vector3D = global::SharpDX.Vector3;
-    using Vector3DCollection = Vector3Collection;
-    using Point3DCollection = Vector3Collection;
-    using PointCollection = Vector2Collection;
-    using Int32Collection = IntCollection;
+    using Vector3DCollection = Core.Vector3Collection;
+    using Point3DCollection = Core.Vector3Collection;
+    using PointCollection = Core.Vector2Collection;
+    using Int32Collection = Core.IntCollection;
     using DoubleOrSingle = System.Single;
 #else
     using System.Linq;
@@ -4483,8 +4475,8 @@ namespace HelixToolkit.Wpf
             {
                 Vector3DCollection tan, bitan;
                 ComputeTangents(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out tan, out bitan);
-                this.tangents.AddRange(tan);
-                this.bitangents.AddRange(bitan);
+                ((List<Vector3D>)this.tangents).AddRange(tan);
+                ((List<Vector3D>)this.bitangents).AddRange(bitan);
             }
 
             return new MeshGeometry3D()

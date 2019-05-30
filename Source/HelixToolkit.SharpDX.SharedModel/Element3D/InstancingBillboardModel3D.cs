@@ -5,23 +5,17 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core;
-using HelixToolkit.SharpDX.Core.Model.Scene;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
     using Model.Scene;
-#endif
     /// <summary>
     /// 
     /// </summary>
     public class InstancingBillboardModel3D : BillboardTextModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// List of instance parameter. 
         /// </summary>
@@ -40,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (IList<BillboardInstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
             set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
-#endregion
+        #endregion
         /// <summary>
         /// Called when [create scene node].
         /// </summary>

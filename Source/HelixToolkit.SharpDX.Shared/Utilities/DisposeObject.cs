@@ -5,23 +5,21 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
 namespace HelixToolkit.UWP
-#endif
 #endif
 {
     /// <summary>
     /// Modified version of DisposeCollector from SharpDX. Add null check in RemoveAndDispose(ref object)
     /// </summary>
-    public abstract class DisposeObject : IDisposable
+    public abstract class DisposeObject : IDisposable, INotifyPropertyChanged
     {
         /// <summary>
         /// Occurs when this instance is starting to be disposed.
@@ -175,26 +173,84 @@ namespace HelixToolkit.UWP
 
         #endregion
 
-
+        #region INotifyPropertyChanged
+        private bool disablePropertyChangedEvent = false;
+        /// <summary>
+        /// Disable property changed event calling
+        /// </summary>
+        public bool DisablePropertyChangedEvent
+        {
+            set
+            {
+                if (disablePropertyChangedEvent == value)
+                {
+                    return;
+                }
+                disablePropertyChangedEvent = value;
+                RaisePropertyChanged();
+            }
+            get
+            {
+                return disablePropertyChangedEvent;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyName"></param>
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (!DisablePropertyChangedEvent)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="backingField"></param>
         /// <param name="value"></param>
+        /// <param name="propertyName"></param>
         /// <returns></returns>
-        protected bool Set<T>(ref T backingField, T value)
+        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
             {
                 return false;
             }
+
             backingField = value;
+            this.RaisePropertyChanged(propertyName);
             return true;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField"></param>
+        /// <param name="value"></param>
+        /// <param name="raisePropertyChanged"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            if (raisePropertyChanged)
+            { this.RaisePropertyChanged(propertyName); }
+            return true;
+        }
+        #endregion
     }
 
-    public abstract class ReferenceCountDisposeObject : IDisposable
+    public abstract class ReferenceCountDisposeObject : IDisposable, INotifyPropertyChanged
     {
         /// <summary>
         /// Occurs when this instance is starting to be disposed.
@@ -315,10 +371,7 @@ namespace HelixToolkit.UWP
         /// 	<c>true</c> if this instance is disposed; otherwise, <c>false</c>.
         /// </value>
         public bool IsDisposed { get; private set; }
-        /// <summary>
-        /// Flag if this object is in object pool. Set to true to avoid disposing and return it to the pool
-        /// </summary>
-        internal bool IsPooled = false;
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -339,7 +392,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         internal void ForceDispose()
         {
-            IsPooled = false;
             Interlocked.Exchange(ref refCounter, 1);
             Dispose();
         }
@@ -348,11 +400,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         private void Dispose(bool disposing)
         {
-            if (IsPooled)
-            {
-                OnPutBackToPool();
-            }
-            else if (Interlocked.Decrement(ref refCounter) == 0 && !IsDisposed)
+            // TODO Should we throw an exception if this method is called more than once?
+            if (Interlocked.Decrement(ref refCounter) == 0 && !IsDisposed)
             {
                 Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
 
@@ -367,17 +416,51 @@ namespace HelixToolkit.UWP
             }
         }
 
-        protected virtual void OnPutBackToPool() {}
         #endregion
 
+        #region INotifyPropertyChanged
+        private bool disablePropertyChangedEvent = false;
+        /// <summary>
+        /// Disable property changed event calling
+        /// </summary>
+        public bool DisablePropertyChangedEvent
+        {
+            set
+            {
+                if (disablePropertyChangedEvent == value)
+                {
+                    return;
+                }
+                disablePropertyChangedEvent = value;
+                RaisePropertyChanged();
+            }
+            get
+            {
+                return disablePropertyChangedEvent;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyName"></param>
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (!DisablePropertyChangedEvent)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="backingField"></param>
         /// <param name="value"></param>
+        /// <param name="propertyName"></param>
         /// <returns></returns>
-        protected bool Set<T>(ref T backingField, T value)
+        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
             {
@@ -385,7 +468,30 @@ namespace HelixToolkit.UWP
             }
 
             backingField = value;
+            this.RaisePropertyChanged(propertyName);
             return true;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField"></param>
+        /// <param name="value"></param>
+        /// <param name="raisePropertyChanged"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            if (raisePropertyChanged)
+            { this.RaisePropertyChanged(propertyName); }
+            return true;
+        }
+        #endregion
     }
 }

@@ -23,9 +23,6 @@
                 Click="Button_Click_Initialize">
                 Initialize Viewport
             </Button>
-            <Button x:Name="buttonRemoveViewport" Click="ButtonRemove_Click">
-                Remove Viewport
-            </Button>
             <Button
                 x:Name="buttonAdd"
                 Margin="4"

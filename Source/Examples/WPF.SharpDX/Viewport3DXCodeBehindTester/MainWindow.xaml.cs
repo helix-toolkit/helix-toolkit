@@ -30,14 +30,13 @@ namespace Viewport3DXCodeBehindTester
         private Viewport3DX viewport;
         private Models models = new Models();
         private ViewModel viewmodel = new ViewModel();
-        private SceneNodeGroupModel3D sceneNodeGroup;
+        private SceneNodeGroupModel3D sceneNodeGroup = new SceneNodeGroupModel3D();
 
         public MainWindow()
         {
             InitializeComponent();
             manager = new DefaultEffectsManager();
             DataContext = viewmodel;
-            buttonRemoveViewport.IsEnabled = false;
         }
 
         private void Button_Click_Add(object sender, RoutedEventArgs e)
@@ -67,13 +66,11 @@ namespace Viewport3DXCodeBehindTester
             viewport.EffectsManager = manager;
             viewport.Items.Add(new DirectionalLight3D() { Direction = new System.Windows.Media.Media3D.Vector3D(-1, -1, -1) });
             viewport.Items.Add(new AmbientLight3D() { Color = Color.FromArgb(255, 50, 50, 50) });
-            sceneNodeGroup = new SceneNodeGroupModel3D();
             viewport.Items.Add(sceneNodeGroup);
             viewport.MouseDown3D += Viewport_MouseDown3D;
             Grid.SetColumn(viewport, 0);
             mainGrid.Children.Add(viewport);
             buttonInit.IsEnabled = false;
-            buttonRemoveViewport.IsEnabled = true;
             viewmodel.EnableButtons = true;
         }
 
@@ -96,13 +93,6 @@ namespace Viewport3DXCodeBehindTester
         private void buttonSceneNode_Click(object sender, RoutedEventArgs e)
         {
             sceneNodeGroup.AddNode(models.GetSceneNodeRandom());
-        }
-
-        private void ButtonRemove_Click(object sender, RoutedEventArgs e)
-        {
-            mainGrid.Children.Remove(viewport);
-            buttonInit.IsEnabled = true;
-            buttonRemoveViewport.IsEnabled = false;
         }
     }
 

@@ -203,7 +203,6 @@ FakesAssemblies/
 /Source/HelixToolkit.SharpDX.Shared/Shaders/_deferred.bfx
 /Source/HelixToolkit.SharpDX.Shared/Shaders/_default.bfx
 /Source/HelixToolkit.Wpf.SharpDX/Resources/*.cso
-**/.vs/**
+/Source/.vs/
 /Source/HelixToolkit.UWP/Resources/*.cso
 /Source/HelixToolkit.SharpDX.Core/Resources/*.cso
-/Source/MigrationBackup/**

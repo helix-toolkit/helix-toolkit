@@ -7,15 +7,10 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core.Cameras;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
     using Cameras;
-#endif
     public interface IOrthographicCameraModel : IProjectionCameraModel
     {
         double Width { set; get; }
@@ -109,12 +104,5 @@ namespace HelixToolkit.Wpf.SharpDX
                 return true;
             }
         }
-
-#if !NETFX_CORE
-        protected override Freezable CreateInstanceCore()
-        {
-            return new OrthographicCamera();
-        }
-#endif
     }
 }

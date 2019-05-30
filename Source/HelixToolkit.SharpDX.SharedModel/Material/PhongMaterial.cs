@@ -9,18 +9,12 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core;
-using HelixToolkit.SharpDX.Core.Shaders;
-using HelixToolkit.SharpDX.Core.Model;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
+    using System.ComponentModel;
     using Model;
     using Shaders;
-#endif
     using Utilities;
 
     /// <summary>
@@ -96,43 +90,43 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
-            DependencyProperty.Register("DiffuseMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMap = e.NewValue as TextureModel; }));
+            DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// Supports alpha channel image, such as PNG.
-        /// Usage: Load the image file(BMP, PNG, etc) as a TextureModel.
+        /// Usage: Load the image file(BMP, PNG, etc) as a stream.
         /// It can be used to replace DiffuseMap, or used as a mask and apply onto diffuse map. 
         /// The color will be cDiffuse*cAlpha.
         /// </summary>
         public static readonly DependencyProperty DiffuseAlphaMapProperty =
-            DependencyProperty.Register("DiffuseAlphaMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null, 
-                (d,e)=> { ((d as Material).Core as PhongMaterialCore).DiffuseAlphaMap = e.NewValue as TextureModel; }));
+            DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null, 
+                (d,e)=> { ((d as Material).Core as PhongMaterialCore).DiffuseAlphaMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapProperty =
-            DependencyProperty.Register("NormalMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).NormalMap = e.NewValue as TextureModel; }));
+            DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).NormalMap = e.NewValue as Stream; }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty SpecularColorMapProperty =
-            DependencyProperty.Register("SpecularColorMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).SpecularColorMap = e.NewValue as TextureModel; }));
+            DependencyProperty.Register("SpecularColorMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).SpecularColorMap = e.NewValue as Stream; }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapProperty =
-            DependencyProperty.Register("DisplacementMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMap = e.NewValue as TextureModel; }));
+            DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMap = e.NewValue as Stream; }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty EmissiveMapProperty =
-            DependencyProperty.Register("EmissiveMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as PhongMaterialCore).EmissiveMap = e.NewValue as TextureModel; }));
+            DependencyProperty.Register("EmissiveMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).EmissiveMap = e.NewValue as Stream; }));
         /// <summary>
         /// 
         /// </summary>
@@ -270,29 +264,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The uv transform property
         /// </summary>
         public static readonly DependencyProperty UVTransformProperty =
-            DependencyProperty.Register("UVTransform", typeof(UVTransform), typeof(PhongMaterial), new PropertyMetadata(UVTransform.Identity, (d,e)=>
+            DependencyProperty.Register("UVTransform", typeof(Matrix), typeof(PhongMaterial), new PropertyMetadata(Matrix.Identity, (d,e)=>
             {
-                ((d as Material).Core as PhongMaterialCore).UVTransform = (UVTransform)e.NewValue;
+                ((d as Material).Core as PhongMaterialCore).UVTransform = (Matrix)e.NewValue;
             }));
 
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable flat shading].
+        /// Constructs a Shading Material which correspnds with 
+        /// the Phong and BlinnPhong lighting models.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable flat shading]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableFlatShading
-        {
-            get { return (bool)GetValue(EnableFlatShadingProperty); }
-            set { SetValue(EnableFlatShadingProperty, value); }
-        }
-
-        public static readonly DependencyProperty EnableFlatShadingProperty =
-            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false, (d,e)=>
-            {
-                ((d as Material).Core as PhongMaterialCore).EnableFlatShading = (bool)e.NewValue;
-            }));
+        public PhongMaterial() { }
 
         /// <summary>
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
@@ -372,47 +354,47 @@ namespace HelixToolkit.Wpf.SharpDX
         /// System.Windows.Media.Brush to be applied as a System.Windows.Media.Media3D.Material
         /// to a 3-D model.
         /// </summary>
-        public TextureModel DiffuseMap
+        public Stream DiffuseMap
         {
-            get { return (TextureModel)this.GetValue(DiffuseMapProperty); }
+            get { return (Stream)this.GetValue(DiffuseMapProperty); }
             set { this.SetValue(DiffuseMapProperty, value); }
         }
 
 
-        public TextureModel DiffuseAlphaMap
+        public Stream DiffuseAlphaMap
         {
-            get { return (TextureModel)this.GetValue(DiffuseAlphaMapProperty); }
+            get { return (Stream)this.GetValue(DiffuseAlphaMapProperty); }
             set { this.SetValue(DiffuseAlphaMapProperty, value); }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public TextureModel NormalMap
+        public Stream NormalMap
         {
-            get { return (TextureModel)this.GetValue(NormalMapProperty); }
+            get { return (Stream)this.GetValue(NormalMapProperty); }
             set { this.SetValue(NormalMapProperty, value); }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public TextureModel SpecularColorMap
+        public Stream SpecularColorMap
         {
-            get { return (TextureModel)this.GetValue(SpecularColorMapProperty); }
+            get { return (Stream)this.GetValue(SpecularColorMapProperty); }
             set { this.SetValue(SpecularColorMapProperty, value); }
         }
         /// <summary>
         /// 
         /// </summary>
-        public TextureModel DisplacementMap
+        public Stream DisplacementMap
         {
-            get { return (TextureModel)this.GetValue(DisplacementMapProperty); }
+            get { return (Stream)this.GetValue(DisplacementMapProperty); }
             set { this.SetValue(DisplacementMapProperty, value); }
         }
-        public TextureModel EmissiveMap
+        public Stream EmissiveMap
         {
-            get { return (TextureModel)this.GetValue(EmissiveMapProperty); }
+            get { return (Stream)this.GetValue(EmissiveMapProperty); }
             set { this.SetValue(EmissiveMapProperty, value); }
         }
         /// <summary>
@@ -595,58 +577,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The uv transform.
         /// </value>
-        public UVTransform UVTransform
+        public Matrix UVTransform
         {
-            get { return (UVTransform)GetValue(UVTransformProperty); }
+            get { return (Matrix)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
         }
 
-        /// <summary>
-        /// Constructs a Shading Material which correspnds with 
-        /// the Phong and BlinnPhong lighting models.
-        /// </summary>
-        public PhongMaterial() { }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PhongMaterial"/> class.
-        /// </summary>
-        /// <param name="core">The core.</param>
-        public PhongMaterial(PhongMaterialCore core) : base(core)
-        {
-            AmbientColor = core.AmbientColor;
-            DiffuseColor = core.DiffuseColor;
-            DisplacementMap = core.DisplacementMap;
-            EmissiveColor = core.EmissiveColor;
-            Name = core.Name;
-            NormalMap = core.NormalMap;
-            ReflectiveColor = core.ReflectiveColor;
-            SpecularColor = core.SpecularColor;
-            SpecularShininess = core.SpecularShininess;
-            DiffuseMap = core.DiffuseMap;
-            DiffuseAlphaMap = core.DiffuseAlphaMap;
-            SpecularColorMap = core.SpecularColorMap;
-            EmissiveMap = core.EmissiveMap;
-            DisplacementMapScaleMask = core.DisplacementMapScaleMask;
-            DiffuseMapSampler = core.DiffuseMapSampler;
-            DisplacementMapSampler = core.DisplacementMapSampler;
-            MaxTessellationDistance = core.MaxTessellationDistance;
-            MinTessellationDistance = core.MinTessellationDistance;
-            MaxDistanceTessellationFactor = core.MaxDistanceTessellationFactor;
-            MinDistanceTessellationFactor = core.MinDistanceTessellationFactor;
-            EnableTessellation = core.EnableTessellation;
-            RenderDiffuseAlphaMap = core.RenderDiffuseAlphaMap;
-            RenderDiffuseMap = core.RenderDiffuseMap;
-            RenderDisplacementMap = core.RenderDisplacementMap;
-            RenderNormalMap = core.RenderNormalMap;
-            RenderEnvironmentMap = core.RenderEnvironmentMap;
-            RenderShadowMap = core.RenderShadowMap;
-            RenderSpecularColorMap = core.RenderSpecularColorMap;
-            RenderEmissiveMap = core.RenderEmissiveMap;
-            EnableAutoTangent = core.EnableAutoTangent;
-            UVTransform = core.UVTransform;
-            EnableFlatShading = core.EnableFlatShading;
-        }
-
-        public virtual PhongMaterial CloneMaterial()
+        public PhongMaterial CloneMaterial()
         {
             return new PhongMaterial()
             {
@@ -681,7 +618,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderEmissiveMap = RenderEmissiveMap,
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform,
-                EnableFlatShading = EnableFlatShading,
             };
         }
 
@@ -726,8 +662,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RenderSpecularColorMap = RenderSpecularColorMap,
                 RenderEmissiveMap = RenderEmissiveMap,
                 EnableAutoTangent = EnableAutoTangent,
-                UVTransform = UVTransform,
-                EnableFlatShading = EnableFlatShading,
+                UVTransform = UVTransform
             };
         }
     }

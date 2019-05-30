@@ -6,46 +6,38 @@
 //   Extended <see cref="EventArgs"/> to relay an <see cref="Exception"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Utilities
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.Wpf.SharpDX.Utilities
 #endif
 {
-    namespace Utilities
+    using System;
+
+    /// <summary>
+    /// Extended <see cref="EventArgs"/> to relay an <see cref="Exception"/>.
+    /// </summary>
+    public class RelayExceptionEventArgs : EventArgs
     {
         /// <summary>
-        /// Extended <see cref="EventArgs"/> to relay an <see cref="Exception"/>.
+        /// The <see cref="Exception"/> to be relayed.
         /// </summary>
-        public class RelayExceptionEventArgs : EventArgs
+        public Exception Exception { get; private set; }
+
+        /// <summary>
+        ///  Gets or sets a value indicating whether the <see cref="Exception"/> is handled.
+        /// </summary>
+        public bool Handled { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RelayExceptionEventArgs"/> class.
+        /// </summary>
+        /// <param name="exception">The <see cref="Exception"/> to be relayed.</param>
+        public RelayExceptionEventArgs(Exception exception)
         {
-            /// <summary>
-            /// The <see cref="Exception"/> to be relayed.
-            /// </summary>
-            public Exception Exception { get; private set; }
-
-            /// <summary>
-            ///  Gets or sets a value indicating whether the <see cref="Exception"/> is handled.
-            /// </summary>
-            public bool Handled { get; set; }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="RelayExceptionEventArgs"/> class.
-            /// </summary>
-            /// <param name="exception">The <see cref="Exception"/> to be relayed.</param>
-            public RelayExceptionEventArgs(Exception exception)
-            {
-                this.Exception = exception;
-                this.Handled = false;
-            }
+            this.Exception = exception;
+            this.Handled = false;
         }
     }
-    
-
-
 }

@@ -5,20 +5,15 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core;
-using HelixToolkit.SharpDX.Core.Model.Scene;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
     using Model.Scene;
-#endif
+
     public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
     {
-#region DependencyProperties
+        #region DependencyProperties
         /// <summary>
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
         /// </summary>
@@ -100,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
 
-#endregion
+        #endregion
 
         protected override SceneNode OnCreateSceneNode()
         {

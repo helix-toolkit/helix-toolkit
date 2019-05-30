@@ -83,7 +83,7 @@ namespace InstancingDemo
             var l1 = new LineBuilder();
             l1.AddBox(new Vector3(0, 0, 0), 1.1, 1.1, 1.1);
             Lines = l1.ToLineGeometry3D();
-            Lines.Colors = new Color4Collection(Enumerable.Repeat(Colors.White.ToColor4(), Lines.Positions.Count));
+            Lines.Colors = new HelixToolkit.Wpf.SharpDX.Core.Color4Collection(Enumerable.Repeat(Colors.White.ToColor4(), Lines.Positions.Count));
             // model trafo
             ModelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
 
@@ -92,7 +92,7 @@ namespace InstancingDemo
             ModelMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
             ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
-            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap.CompressedStream, 20, 20);
+            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
             Texture = LoadFileToMemory("Cubemap_Grandcanyon.dds");
             CreateModels();
             timer.Interval = TimeSpan.FromMilliseconds(30);

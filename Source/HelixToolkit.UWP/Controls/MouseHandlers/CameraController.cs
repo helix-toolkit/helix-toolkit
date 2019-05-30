@@ -7,7 +7,6 @@ using Vector3D = SharpDX.Vector3;
 
 namespace HelixToolkit.UWP
 {
-    using Cameras;
     using System.Diagnostics;
     using Utilities;
     using Windows.UI.Core;
@@ -522,7 +521,6 @@ namespace HelixToolkit.UWP
         public bool EnableTouchRotate { set; get; } = true;
         public bool EnablePinchZoom { set; get; } = true;
         public bool EnableThreeFingerPan { set; get; } = true;
-        public bool PinchZoomAtCenter { set; get; } = false;
         #endregion
         /// <summary>
         /// The camera history stack.
@@ -531,11 +529,6 @@ namespace HelixToolkit.UWP
         /// Implemented as a list since we want to remove items at the bottom of the stack.
         /// </remarks>
         private readonly SimpleRingBuffer<CameraSetting> cameraHistory = new SimpleRingBuffer<CameraSetting>(100);
-
-        /// <summary>
-        /// Decides if combined manipulation is allowed.
-        /// </summary>
-        private bool allowCombinedManipulation;
 
         /// <summary>
         /// The change field of view event handler.
@@ -563,11 +556,6 @@ namespace HelixToolkit.UWP
         private Vector3D moveSpeed;
 
         /// <summary>
-        /// The number of fingers used for panning.
-        /// </summary>
-        private int panFingerCount;
-
-        /// <summary>
         /// The pan event handler.
         /// </summary>
         private PanHandler panHandler;
@@ -581,11 +569,6 @@ namespace HelixToolkit.UWP
         ///// The rectangle adorner.
         ///// </summary>
         //private RectangleAdorner rectangleAdorner;
-
-        /// <summary>
-        /// The number of fingers used for rotating.
-        /// </summary>
-        private int rotateFingerCount;
 
         /// <summary>
         /// The rotation event handler.
@@ -636,11 +619,6 @@ namespace HelixToolkit.UWP
         /// The number of touch manipulators (fingers) in the last touch delta event
         /// </summary>
         private int manipulatorCount;
-
-        /// <summary>
-        /// The number of fingers used for zooming.
-        /// </summary>
-        private int zoomFingerCount;
 
         /// <summary>
         /// The zoom event handler.
@@ -830,7 +808,7 @@ namespace HelixToolkit.UWP
             this.PushCameraSetting();
             if (this.Viewport.IsInertiaEnabled)
             {
-                this.panSpeed += pan;
+                this.panSpeed += pan * 40;
             }
             else
             {
@@ -1114,7 +1092,6 @@ namespace HelixToolkit.UWP
             if (Viewport.PointerCaptures == null)
             { return; }
             int n = Viewport.PointerCaptures.Count();
-            var p = e.Position;
             var position = new Point(touchPreviousPoint.X + e.Cumulative.Translation.X, touchPreviousPoint.Y + e.Cumulative.Translation.Y);
 
             // http://msdn.microsoft.com/en-us/library/system.windows.uielement.manipulationdelta.aspx
@@ -1125,99 +1102,88 @@ namespace HelixToolkit.UWP
             if (this.manipulatorCount != n)
             {
                 // the number of manipulators has changed
-
-                // cancel old manipulations
-                var combine = true;
-                if (this.manipulatorCount == this.rotateFingerCount) // && combine)
+                switch (this.manipulatorCount)
                 {
-                    this.rotateHandler.Completed(position);
-                    combine = this.allowCombinedManipulation;
+                    case 1:
+                        this.rotateHandler.Completed(position);
+                        break;
+                    case 2:
+                        this.zoomHandler.Completed(e.Position);
+                        break;
+                    case 3:
+                        this.panHandler.Completed(position);
+                        break;
                 }
 
-                if (this.manipulatorCount == this.zoomFingerCount && combine)
+                switch (n)
                 {
-                    this.zoomHandler.Completed(p);
-                    combine = this.allowCombinedManipulation;
+                    case 1:
+                        if (EnableTouchRotate)
+                        {
+                            this.rotateHandler.Started(position);
+                            e.Handled = true;
+                        }
+                        break;
+                    case 2:
+                        if (EnablePinchZoom)
+                        {
+                            this.zoomHandler.Started(e.Position);
+                            e.Handled = true;
+                        }
+                        break;
+                    case 3:
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Started(position);
+                            e.Handled = true;
+                        }
+                        break;
                 }
 
-                if (this.manipulatorCount == this.panFingerCount && combine)
-                {
-                    this.panHandler.Completed(position);
-                    //combine = this.allowCombinedManipulation;
-                }
-
-                // start new manipulations
-                combine = true;
-                if (this.EnableTouchRotate && n == this.rotateFingerCount) // && combine)
-                {
-                    this.rotateHandler.Started(position);
-                    e.Handled = true;
-                    combine = this.allowCombinedManipulation;
-                }
-
-                if (this.EnablePinchZoom && n == this.zoomFingerCount && combine)
-                {
-                    this.zoomHandler.Started(p);
-                    e.Handled = true;
-                    combine = this.allowCombinedManipulation;
-                }
-
-                if (this.EnableThreeFingerPan && n == this.panFingerCount && combine)
-                {
-                    this.panHandler.Started(position);
-                    e.Handled = true;
-                    //combine = this.allowCombinedManipulation;
-                }
-
-                this.manipulatorCount = n;
                 // skip this event, the origin may have changed
+                this.manipulatorCount = n;
+                
                 return;
             }
             else
             {
-                if (this.EnableTouchRotate && n == this.rotateFingerCount)
+                switch (n)
                 {
-                    this.rotateHandler.Delta(position.ToVector2());
-                    e.Handled = true;
-                    if (!this.allowCombinedManipulation) return;
-                }
-
-                if (this.EnablePinchZoom && n == this.zoomFingerCount)
-                {
-                    if (prevScale == 1)
-                    {
-                        prevScale = e.Cumulative.Scale;
-                    }
-                    else
-                    {
-                        if (this.PinchZoomAtCenter)
+                    case 1:
+                        if (EnableTouchRotate)
                         {
-                            var s = e.Cumulative.Scale;
-                            this.zoomHandler.Zoom(prevScale - s, CameraPosition + CameraLookDirection, true);
-                            prevScale = s;
+                            this.rotateHandler.Delta(position.ToVector2());
+                            e.Handled = true;
                         }
-                        else
+                        break;
+                    case 2:
+                        if (EnablePinchZoom)
                         {
-                            var zoomAroundPoint = this.zoomHandler.UnProject(
-                                p, this.zoomHandler.Origin, this.CameraLookDirection);
-                            if (zoomAroundPoint.HasValue)
+                            if(prevScale == 1)
                             {
-                                var s = e.Cumulative.Scale;
-                                this.zoomHandler.Zoom(prevScale - s, zoomAroundPoint.Value, true);
-                                prevScale = s;
+                                prevScale = e.Cumulative.Scale;
+                            }
+                            else
+                            {
+                                var zoomAroundPoint = this.zoomHandler.UnProject(
+                                    e.Position, this.zoomHandler.Origin, this.CameraLookDirection);
+                                if (zoomAroundPoint != null)
+                                {
+                                    float s = e.Cumulative.Scale;
+                                    this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
+                                    prevScale = s;
+                                }
                             }
                         }
-                    }
-
-                    e.Handled = true;
-                    if (!this.allowCombinedManipulation) return;
-                }
-
-                if (this.EnableThreeFingerPan && n == this.panFingerCount)
-                {
-                    this.panHandler.Delta(position.ToVector2());
-                    e.Handled = true;
-                    //if (!this.allowCombinedManipulation) return;
+                        e.Handled = true;
+                        break;
+                    case 3:
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Delta(position.ToVector2());
+                            e.Handled = true;
+                        }
+                        break;
                 }
             }
         }
@@ -1233,34 +1199,6 @@ namespace HelixToolkit.UWP
             this.touchPreviousPoint = e.Position;
             this.manipulatorCount = 0;
             this.prevScale = 1;
-            this.panFingerCount = -1;
-            this.zoomFingerCount = -1;
-            this.rotateFingerCount = -1;
-            this.allowCombinedManipulation = false;
-
-            foreach (var mb in this.Viewport.InputBindings.OfType<ManipulationBinding>())
-            {
-                this.allowCombinedManipulation = true;
-                if (mb.Command == ViewportCommands.Pan)
-                {
-                    this.panFingerCount = mb.FingerCount;
-                }
-                else if (mb.Command == ViewportCommands.Zoom)
-                {
-                    this.zoomFingerCount = mb.FingerCount;
-                }
-                else if (mb.Command == ViewportCommands.Rotate)
-                {
-                    this.rotateFingerCount = mb.FingerCount;
-                }
-            }
-
-            if (!this.allowCombinedManipulation)
-            {
-                this.panFingerCount = 3;
-                this.zoomFingerCount = 2;
-                this.rotateFingerCount = 1;
-            }
         }
 
         /// <summary>
@@ -1366,17 +1304,7 @@ namespace HelixToolkit.UWP
             axis1.Normalize();
             axis2.Normalize();
             axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
-            float l = 0;
-            if (ActualCamera is PerspectiveCamera)
-            {
-                // this should be dependent on distance to target?
-                l = this.CameraLookDirection.Length();
-            }
-            else if (ActualCamera.CameraInternal is OrthographicCameraCore orth)
-            {
-                // this should be dependent on width
-                l = orth.Width;
-            }
+            var l = this.CameraLookDirection.Length();
             var f = l * 0.001f;
             var move = (-axis1 * f * (float)dx) + (axis2 * f * (float)dy);
 
@@ -1398,7 +1326,6 @@ namespace HelixToolkit.UWP
             }
             var time = (float)(ticks - this.lastTick) / Stopwatch.Frequency;
             time = time == 0 ? 0.016f : time;
-            time = Math.Min(time, 0.05f); // Clamp the maximum time elapse to prevent over shooting
             // should be independent of time
             var factor = Viewport.IsInertiaEnabled ? (float)Clamp(Math.Pow(Viewport.CameraInertiaFactor, time / 0.02f), 0.1f, 1) : 0;
             bool needUpdate = false;
@@ -1488,7 +1415,7 @@ namespace HelixToolkit.UWP
             if (Viewport.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetCurrentPoint(Viewport).Position;
-                if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3D normal, out Element3D visual, out var node))
+                if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3D normal, out Element3D visual))
                 {
                     this.AddZoomForce(-delta * 0.001, nearestPoint);
                     e.Handled = true;

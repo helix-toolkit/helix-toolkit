@@ -2,8 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
 using System.Collections.Generic;
+using SharpDX;
+using System.IO;
+using System.Linq;
 #if NETFX_CORE
 
 #else
@@ -11,16 +13,14 @@ using System.Windows.Media.Imaging;
 #endif
 
 
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
+#if NETFX_CORE
 namespace HelixToolkit.UWP
-#endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Core;
+    using System;
     using System.Diagnostics;
 
     public abstract class BillboardBase : Geometry3D, IBillboardText
@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP
             get;
         }
 
-        public TextureModel Texture
+        public Stream Texture
         {
             protected set;
             get;
@@ -67,7 +67,7 @@ namespace HelixToolkit.UWP
 
         private bool isInitialized = false;
 
-        public IList<BillboardVertex> BillboardVertices { get; } = new FastList<BillboardVertex>();
+        public IList<BillboardVertex> BillboardVertices { get; } = new List<BillboardVertex>();
 
         public BillboardBase()
         {

@@ -18,10 +18,10 @@ void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
     float2 B2w = float2(Aw.x + w2, Aw.y - h2);
 
     // bring back corners in projection frame
-    points[1] = windowToProj(A1w, posA.z, posA.w);
-    points[0] = windowToProj(A2w, posA.z, posA.w);
-    points[3] = windowToProj(B2w, posA.z, posA.w);
-    points[2] = windowToProj(B1w, posA.z, posA.w);
+    points[0] = windowToProj(A1w, posA.z, posA.w);
+    points[1] = windowToProj(A2w, posA.z, posA.w);
+    points[2] = windowToProj(B2w, posA.z, posA.w);
+    points[3] = windowToProj(B1w, posA.z, posA.w);
 }
 
 void makeNonFixedQuad(out float4 points[4], in float4 posA, in float w, in float h)
@@ -38,10 +38,10 @@ void makeNonFixedQuad(out float4 points[4], in float4 posA, in float w, in float
     float4 B2w = float4(Aw.x + w2, Aw.y - h2, posA.z, posA.w);
 
     // bring back corners in projection frame
-    points[1] = mul(A1w, mProjection);
-    points[0] = mul(A2w, mProjection);
-    points[3] = mul(B2w, mProjection);
-    points[2] = mul(B1w, mProjection);
+    points[0] = mul(A1w, mProjection);
+    points[1] = mul(A2w, mProjection);
+    points[2] = mul(B2w, mProjection);
+    points[3] = mul(B1w, mProjection);
 }
 
 [maxvertexcount(4)]

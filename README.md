@@ -4,34 +4,26 @@
 
 **Helix Toolkit is a collection of 3D components for .NET Framework.**
 
-[**HelixToolkit.WPF:**](/Source/HelixToolkit.Wpf) 
+[**HelixToolkit.WPF:**](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/HelixToolkit.Wpf) 
 Adds variety of functionalities/models on the top of internal WPF 3D model (Media3D namespace). 
 
-[**HelixToolkit.SharpDX.WPF:**](/Source/HelixToolkit.Wpf.SharpDX) 
+[**HelixToolkit.SharpDX.WPF:**](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/HelixToolkit.Wpf.SharpDX) 
 3D Components and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for high performance usage.
 
-[**HelixToolkit.UWP:**](/Source/HelixToolkit.UWP) 
+[**HelixToolkit.UWP:**](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/HelixToolkit.UWP) 
 3D Components and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for Universal Windows App.
 
-[**HelixToolkit.SharpDX.Core:**](/Source/HelixToolkit.SharpDX.Core) 
-3D Components and Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for netstandard and .NET Core.
-
-[**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.Wpf.SharpDX.Assimp) 
-[Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
-
-[**Examples:**](/develop/Source/Examples)
+[**Examples:**](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples)
 Please download full source code to run examples. Or download [compiled version](https://ci.appveyor.com/project/objorke/helix-toolkit/branch/develop/artifacts)
 
-[![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit.svg?style=popout)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7?svg=true)](https://ci.appveyor.com/project/objorke/helix-toolkit)
-[![Release](https://img.shields.io/github/release/helix-toolkit/helix-toolkit.svg?style=popout)](https://www.nuget.org/packages?q=Helix-Toolkit)
-[![Chat](https://img.shields.io/gitter/room/helix-toolkit/helix-toolkit.svg)](https://gitter.im/helix-toolkit/helix-toolkit)
 
 Description         | Value
 --------------------|-----------------------
-Web page            | http://helix-toolkit.github.io/
-Wiki                | https://github.com/helix-toolkit/helix-toolkit/wiki
-Documentation       | http://helix-toolkit.readthedocs.io/
+License             | The MIT License (MIT)
+Web page            | http://helix-toolkit.org/
+Documentation       | http://docs.helix-toolkit.org/
+Forum               | http://forum.helix-toolkit.org/
 Chat                | https://gitter.im/helix-toolkit/helix-toolkit
 Source repository   | http://github.com/helix-toolkit/helix-toolkit
 Latest build        | http://ci.appveyor.com/project/objorke/helix-toolkit
@@ -45,7 +37,7 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 **Visual Studio 2017. Windows 10 SDK (Min Ver.10.0.10586.0).**
 
-**Missing `.cso` error during the build?** Windows 10 SDK **Ver.10.0.10586.0** can be selected and installed using Visual Studio 2017 installer. If you already installed the higher SDK version, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the version installed on your machine.
+Windows 10 SDK **Ver.10.0.10586.0** can be selected and installed using Visual Studio 2017 installer.If you installed the higher version only, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the proper version installed on your machine.
 
 ## Notes
 
@@ -57,37 +49,37 @@ HelixToolkit default is using right-handed Cartesian coordinate system, includin
 #### 3. Following features are not supported currently on FeatureLevel 10 graphics card:
 FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
-#### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
+#### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki)
 
 ## News
-#### 2019-05-12
-[v2.7.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.7.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.7.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.7.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.7.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.7.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.7.0)
 
-#### 2019-02-16
-[v2.6.1](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.6.1)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.6.1)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.6.1)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.6.1)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.6.1)
+#### 2018-10-19
+[V2.5.1](https://github.com/helix-toolkit/helix-toolkit/tree/hotfix/2.5.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 
-#### 2019-01-04
-[v2.6.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.6.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.6.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.6.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.6.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.6.0)
+**Hotfix: Wrong type cast causes null reference exception when uses custom ViewBox texture.** (SharpDX Version Only)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.5.1)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.5.1)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.5.1)
 
-**Two new packages have been released on version 2.6.0.**
-- `SharpDX.Core` is the base implementation for all HelixToolkit.SharpDX versions(WPF.SharpDX and UWP). It is implemented based on `netstandard` and can be used on other platforms such as WinForms and DotNetCore.
-- `SharpDX.Assimp` ports [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) into HelixToolkit to support 3D model import/export for HelixToolkit.SharpDX versions. Currently import/export supports [SceneNode](https://github.com/helix-toolkit/helix-toolkit/wiki/Use-Element3D-or-SceneNode-under-WPF.SharpDX-or-UWP) only. For more details, please refer to [FileLoadDemo](/Source/Examples/WPF.SharpDX/FileLoadDemo) or [CoreTest](/Source/Examples/SharpDX.Core/CoreTest).
+
+#### 2018-10-19
+[V2.5.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.5.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.5.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.5.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.5.0)
+
+#### 2018-08-26
+[V2.4.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.4.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.4.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.4.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.4.0)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 
-##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](/CHANGELOG.md)
+#### 2018-07-22
+[V2.3.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.3.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.3.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.3.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.3.0)
+
+##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](https://github.com/helix-toolkit/helix-toolkit/blob/develop/CHANGELOG.md)

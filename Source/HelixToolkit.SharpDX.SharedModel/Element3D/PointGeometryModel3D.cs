@@ -14,25 +14,17 @@ using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
-#if COREWPF
-using HelixToolkit.SharpDX.Core;
-using HelixToolkit.SharpDX.Core.Model;
-using HelixToolkit.SharpDX.Core.Model.Scene;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-
-#if !COREWPF
     using Model;
     using Model.Scene;
-#endif
     /// <summary>
     /// 
     /// </summary>
     public class PointGeometryModel3D : GeometryModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>
@@ -131,7 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(FixedSizeProperty);
             }
         }
-#endregion
+        #endregion
 
         protected readonly PointMaterialCore material = new PointMaterialCore();
         /// <summary>

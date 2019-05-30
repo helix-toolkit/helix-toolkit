@@ -10,250 +10,250 @@ using SharpDX.Direct3D;
 using SharpDX.DXGI;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Core
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.UWP.Core
 #endif
 {
-    namespace Core
+    using Shaders;
+    using Utilities;
+    using Render;
+    using Components;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ShadowMapCore : RenderCore, IShadowMapRenderParams
     {
-        using Shaders;
-        using Utilities;
-        using Render;
-        using Components;
+        public sealed class UpdateLightSourceEventArgs : EventArgs
+        {
+            public RenderContext Context { private set; get; }
+            public UpdateLightSourceEventArgs(RenderContext context)
+            {
+                Context = context;
+            }
+        }
+        public event EventHandler<UpdateLightSourceEventArgs> OnUpdateLightSource;
+        #region Variables
+        private ShaderResourceViewProxy viewResource;
+        private int currentFrame = 0;
+        private bool resolutionChanged = true;
+        private ShadowMapParamStruct modelStruct;
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual Texture2DDescription ShadowMapTextureDesc
+        {
+            get
+            {
+                return new Texture2DDescription()
+                {
+                    Format = Format.R32_Typeless, //!!!! because of depth and shader resource
+                                                  //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
+                    ArraySize = 1,
+                    MipLevels = 1,
+                    Width = Width,
+                    Height = Height,
+                    SampleDescription = new SampleDescription(1, 0),
+                    Usage = ResourceUsage.Default,
+                    BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
+                    CpuAccessFlags = CpuAccessFlags.None,
+                    OptionFlags = ResourceOptionFlags.None,
+                };
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual DepthStencilViewDescription DepthStencilViewDesc
+        {
+            get
+            {
+                return new DepthStencilViewDescription()
+                {
+                    Format = Format.D32_Float,
+                    Dimension = DepthStencilViewDimension.Texture2D,
+                    Texture2D = new DepthStencilViewDescription.Texture2DResource()
+                    {
+                        MipSlice = 0
+                    }
+                };
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual ShaderResourceViewDescription ShaderResourceViewDesc
+        {
+            get
+            {
+                return new ShaderResourceViewDescription()
+                {
+                    Format = Format.R32_Float,
+                    Dimension = ShaderResourceViewDimension.Texture2D,
+                    Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+                    {
+                        MipLevels = 1,
+                        MostDetailedMip = 0,
+                    }
+                };
+            }
+        }
+
+        private readonly ConstantBufferComponent modelCB;
+        #endregion
+        #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Width
+        {
+            set
+            {
+                if(SetAffectsRender(ref modelStruct.ShadowMapSize.X, value))
+                {
+                    resolutionChanged = true;
+                }
+            }
+            get
+            {
+                return (int)modelStruct.ShadowMapSize.X;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Height
+        {
+            set
+            {
+                if (SetAffectsRender(ref modelStruct.ShadowMapSize.Y, value))
+                {
+                    resolutionChanged = true;
+                }
+            }
+            get
+            {
+                return (int)modelStruct.ShadowMapSize.Y;
+            }
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        public class ShadowMapCore : RenderCore, IShadowMapRenderParams
+        public float Intensity
         {
-            public sealed class UpdateLightSourceEventArgs : EventArgs
+            set
             {
-                public RenderContext Context { private set; get; }
-                public UpdateLightSourceEventArgs(RenderContext context)
-                {
-                    Context = context;
-                }
+                SetAffectsRender(ref modelStruct.ShadowMapInfo.X, value);
             }
-            public event EventHandler<UpdateLightSourceEventArgs> OnUpdateLightSource;
-            #region Variables
-            private ShaderResourceViewProxy viewResource;
-            private int currentFrame = 0;
-            private bool resolutionChanged = true;
-            private ShadowMapParamStruct modelStruct;
-            /// <summary>
-            /// 
-            /// </summary>
-            protected virtual Texture2DDescription ShadowMapTextureDesc
+            get { return modelStruct.ShadowMapInfo.X; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public float Bias
+        {
+            set
             {
-                get
-                {
-                    return new Texture2DDescription()
-                    {
-                        Format = Format.R32_Typeless, //!!!! because of depth and shader resource
-                                                      //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-                        ArraySize = 1,
-                        MipLevels = 1,
-                        Width = Width,
-                        Height = Height,
-                        SampleDescription = new SampleDescription(1, 0),
-                        Usage = ResourceUsage.Default,
-                        BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
-                        CpuAccessFlags = CpuAccessFlags.None,
-                        OptionFlags = ResourceOptionFlags.None,
-                    };
-                }
+                SetAffectsRender(ref modelStruct.ShadowMapInfo.Z, value);
             }
-            /// <summary>
-            /// 
-            /// </summary>
-            protected virtual DepthStencilViewDescription DepthStencilViewDesc
+            get { return modelStruct.ShadowMapInfo.Z; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Matrix LightViewProjectMatrix
+        {
+            set
             {
-                get
-                {
-                    return new DepthStencilViewDescription()
-                    {
-                        Format = Format.D32_Float,
-                        Dimension = DepthStencilViewDimension.Texture2D,
-                        Texture2D = new DepthStencilViewDescription.Texture2DResource()
-                        {
-                            MipSlice = 0
-                        }
-                    };
-                }
+                SetAffectsRender(ref modelStruct.LightViewProjection, value);
             }
-            /// <summary>
-            /// 
-            /// </summary>
-            protected virtual ShaderResourceViewDescription ShaderResourceViewDesc
+            get { return modelStruct.LightViewProjection; }
+        }
+        /// <summary>
+        /// Set to true if found the light source, otherwise false.
+        /// </summary>
+        public bool FoundLightSource { set; get; } = false;
+        /// <summary>
+        /// Update shadow map every N frames
+        /// </summary>
+        public int UpdateFrequency { set; get; } = 1;
+        #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ShadowMapCore() : base(RenderType.PreProc)
+        {
+            modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.ShadowParamCB, ShadowMapParamStruct.SizeInBytes)));
+            Bias = 0.0015f;
+            Intensity = 0.5f;
+            Width = Height = 1024;
+        }
+
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
+            ++currentFrame;
+            currentFrame %= Math.Max(1, UpdateFrequency);
+            if(!FoundLightSource || currentFrame != 0)
             {
-                get
-                {
-                    return new ShaderResourceViewDescription()
-                    {
-                        Format = Format.R32_Float,
-                        Dimension = ShaderResourceViewDimension.Texture2D,
-                        Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-                        {
-                            MipLevels = 1,
-                            MostDetailedMip = 0,
-                        }
-                    };
-                }
+                return;
+            }
+            if (resolutionChanged)
+            {
+                RemoveAndDispose(ref viewResource);
+                viewResource = Collect(new ShaderResourceViewProxy(Device, ShadowMapTextureDesc));
+                viewResource.CreateView(DepthStencilViewDesc);
+                viewResource.CreateView(ShaderResourceViewDesc);
+                resolutionChanged = false;
             }
 
-            private readonly ConstantBufferComponent modelCB;
-            #endregion
-            #region Properties
-            /// <summary>
-            /// 
-            /// </summary>
-            public int Width
-            {
-                set
-                {
-                    if(SetAffectsRender(ref modelStruct.ShadowMapSize.X, value))
-                    {
-                        resolutionChanged = true;
-                    }
-                }
-                get
-                {
-                    return (int)modelStruct.ShadowMapSize.X;
-                }
-            }
-            /// <summary>
-            /// 
-            /// </summary>
-            public int Height
-            {
-                set
-                {
-                    if (SetAffectsRender(ref modelStruct.ShadowMapSize.Y, value))
-                    {
-                        resolutionChanged = true;
-                    }
-                }
-                get
-                {
-                    return (int)modelStruct.ShadowMapSize.Y;
-                }
-            }
+            deviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
+            var orgFrustum = context.BoundingFrustum;
+            var frustum = new BoundingFrustum(LightViewProjectMatrix);
+            context.BoundingFrustum = frustum;
+#if !TEST
+            deviceContext.SetViewport(0, 0, Width, Height);
 
-            /// <summary>
-            /// 
-            /// </summary>
-            public float Intensity
+            deviceContext.SetDepthStencilOnly(viewResource.DepthStencilView);
+            modelStruct.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
+            modelCB.Upload(deviceContext, ref modelStruct);
+            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
-                set
+                //Only support opaque object for throwing shadows.
+                var core = context.RenderHost.PerFrameOpaqueNodes[i];
+                if (core.RenderCore.IsThrowingShadow && core.TestViewFrustum(ref frustum))
                 {
-                    SetAffectsRender(ref modelStruct.ShadowMapInfo.X, value);
+                    core.RenderShadow(context, deviceContext);
                 }
-                get { return modelStruct.ShadowMapInfo.X; }
             }
+            context.BoundingFrustum = orgFrustum;
+            context.RenderHost.SetDefaultRenderTargets(false);
+            context.SharedResource.ShadowView = viewResource;
+#endif
+        }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            public float Bias
-            {
-                set
-                {
-                    SetAffectsRender(ref modelStruct.ShadowMapInfo.Z, value);
-                }
-                get { return modelStruct.ShadowMapInfo.Z; }
-            }
-            /// <summary>
-            /// 
-            /// </summary>
-            public Matrix LightViewProjectMatrix
-            {
-                set
-                {
-                    SetAffectsRender(ref modelStruct.LightViewProjection, value);
-                }
-                get { return modelStruct.LightViewProjection; }
-            }
-            /// <summary>
-            /// Set to true if found the light source, otherwise false.
-            /// </summary>
-            public bool FoundLightSource { set; get; } = false;
-            /// <summary>
-            /// Update shadow map every N frames
-            /// </summary>
-            public int UpdateFrequency { set; get; } = 1;
-            #endregion
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            return true;
+        }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            public ShadowMapCore() : base(RenderType.PreProc)
-            {
-                modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.ShadowParamCB, ShadowMapParamStruct.SizeInBytes)));
-                Bias = 0.0015f;
-                Intensity = 0.5f;
-                Width = Height = 1024;
-            }
+        protected override void OnDetach()
+        {
+            viewResource = null;
+            resolutionChanged = true;
+            base.OnDetach();
+        }
 
-            public override void Render(RenderContext context, DeviceContextProxy deviceContext)
-            {
-                OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
-                ++currentFrame;
-                currentFrame %= Math.Max(1, UpdateFrequency);
-                if(!FoundLightSource || currentFrame != 0)
-                {
-                    return;
-                }
-                if (resolutionChanged)
-                {
-                    RemoveAndDispose(ref viewResource);
-                    viewResource = Collect(new ShaderResourceViewProxy(Device, ShadowMapTextureDesc));
-                    viewResource.CreateView(DepthStencilViewDesc);
-                    viewResource.CreateView(ShaderResourceViewDesc);
-                    resolutionChanged = false;
-                }
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
 
-                deviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
-                var orgFrustum = context.BoundingFrustum;
-                var frustum = new BoundingFrustum(LightViewProjectMatrix);
-                context.BoundingFrustum = frustum;
-    #if !TEST
-                deviceContext.SetViewport(0, 0, Width, Height);
-
-                deviceContext.SetDepthStencilOnly(viewResource.DepthStencilView);
-                modelStruct.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
-                modelCB.Upload(deviceContext, ref modelStruct);
-                for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
-                {
-                    //Only support opaque object for throwing shadows.
-                    var core = context.RenderHost.PerFrameOpaqueNodes[i];
-                    if (core.RenderCore.IsThrowingShadow && core.TestViewFrustum(ref frustum))
-                    {
-                        core.RenderShadow(context, deviceContext);
-                    }
-                }
-                context.BoundingFrustum = orgFrustum;
-                context.RenderHost.SetDefaultRenderTargets(false);
-                context.SharedResource.ShadowView = viewResource;
-    #endif
-            }
-
-            protected override bool OnAttach(IRenderTechnique technique)
-            {
-                return true;
-            }
-
-            protected override void OnDetach()
-            {
-                viewResource = null;
-                resolutionChanged = true;
-                base.OnDetach();
-            }
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
         }
     }
-
 }

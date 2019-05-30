@@ -3,32 +3,24 @@ using System.Collections.Generic;
 using System.Text;
 using SharpDX;
 
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Core2D
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    namespace Core2D
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class EmptyRenderCore2D : RenderCore2DBase
     {
         /// <summary>
-        /// 
+        /// Called when [render].
         /// </summary>
-        public sealed class EmptyRenderCore2D : RenderCore2DBase
+        /// <param name="matrices">The matrices.</param>
+        protected override void OnRender(RenderContext2D matrices)
         {
-            /// <summary>
-            /// Called when [render].
-            /// </summary>
-            /// <param name="matrices">The matrices.</param>
-            protected override void OnRender(RenderContext2D matrices)
-            {
             
-            }
         }
     }
-
 }

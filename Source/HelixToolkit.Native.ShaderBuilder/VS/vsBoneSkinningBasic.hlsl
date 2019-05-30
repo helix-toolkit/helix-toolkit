@@ -1,5 +1,6 @@
 #ifndef VSBONESKINNING_HLSL
 #define VSBONESKINNING_HLSL
+#define MESH
 #include"..\Common\Common.hlsl"
 
 VSSkinnedOutput main(VSSkinnedInput input)

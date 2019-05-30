@@ -1,42 +1,33 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Model
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.Wpf.SharpDX.Model
 #endif
 {
-    namespace Model
+    /// <summary>
+    /// Render order key
+    /// </summary>
+    public struct OrderKey : IComparable<OrderKey>
     {
-        /// <summary>
-        /// Render order key
-        /// </summary>
-        public struct OrderKey : IComparable<OrderKey>
+        public uint Key;
+
+        public OrderKey(uint key)
         {
-            public uint Key { get; }
+            Key = key;
+        }
 
-            public OrderKey(uint key)
-            {
-                Key = key;
-            }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static OrderKey Create(ushort order, ushort materialID)
+        {
+            return new OrderKey(((uint)order << 16) | materialID);
+        }
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static OrderKey Create(ushort order, ushort materialID)
-            {
-                //return new OrderKey(((uint)order << 16) | materialID);
-                return new OrderKey(order);
-            }
-
-            public int CompareTo(OrderKey other)
-            {
-                return Key.CompareTo(other.Key);
-            }
+        public int CompareTo(OrderKey other)
+        {
+            return Key.CompareTo(other.Key);
         }
     }
-
 }

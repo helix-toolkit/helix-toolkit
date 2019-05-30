@@ -1,4 +1,4 @@
-﻿using HelixToolkit.SharpDX.Core;
+﻿using HelixToolkit.UWP;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 

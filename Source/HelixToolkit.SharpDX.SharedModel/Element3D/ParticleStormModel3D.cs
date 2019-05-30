@@ -12,6 +12,7 @@ using System;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
+using System.IO;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
@@ -24,25 +25,17 @@ using System.Windows;
 using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
-#if COREWPF
-using HelixToolkit.SharpDX.Core;
-using HelixToolkit.SharpDX.Core.Model.Scene;
-using HelixToolkit.SharpDX.Core.Utilities;
-using static HelixToolkit.SharpDX.Core.Core.ParticleRenderCore;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
     using Model.Scene;
     using Utilities;
     using static Core.ParticleRenderCore;
-#endif
 
     public class ParticleStormModel3D : Element3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         public static DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultParticleCount,
             (d, e) =>
@@ -306,15 +299,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty ParticleTextureProperty = DependencyProperty.Register("ParticleTexture", typeof(TextureModel), typeof(ParticleStormModel3D),
+        public static DependencyProperty ParticleTextureProperty = DependencyProperty.Register("ParticleTexture", typeof(Stream), typeof(ParticleStormModel3D),
             new PropertyMetadata(null,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).ParticleTexture = (TextureModel)e.NewValue;
+                ((d as Element3DCore).SceneNode as ParticleStormNode).ParticleTexture = (Stream)e.NewValue;
             }
             ));
 
-        public TextureModel ParticleTexture
+        public Stream ParticleTexture
         {
             set
             {
@@ -322,7 +315,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (TextureModel)GetValue(ParticleTextureProperty);
+                return (Stream)GetValue(ParticleTextureProperty);
             }
         }
 

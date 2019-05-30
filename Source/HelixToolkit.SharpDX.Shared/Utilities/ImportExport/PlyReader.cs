@@ -1,15 +1,11 @@
 ﻿using SharpDX;
-using System;
 using System.Collections.Generic;
 using System.IO;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
 namespace HelixToolkit.UWP
-#endif
 #endif
 {
     using Mesh3DGroup = List<Object3D>;
@@ -25,7 +21,6 @@ namespace HelixToolkit.UWP
     /// This reader only reads ascii ply formats.
     /// This was initially meant to read models exported by Blender 3D Software.
     /// </remarks>
-    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class PlyReader : ModelReader
     {
         /// <summary>

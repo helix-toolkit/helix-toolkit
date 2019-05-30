@@ -5,51 +5,62 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define TEST
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Core
 #else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
-namespace HelixToolkit.UWP
-#endif
+namespace HelixToolkit.UWP.Core
 #endif
 {
-    namespace Core
+    using Render;
+    using Shaders;
+    /// <summary>
+    /// Do a depth prepass before rendering.
+    /// <para>Must customize the DefaultEffectsManager and set DepthStencilState to DefaultDepthStencilDescriptions.DSSDepthEqualNoWrite in default ShaderPass from EffectsManager to achieve best performance.</para>
+    /// </summary>
+    public sealed class DepthPrepassCore : RenderCore
     {
-        using Render;
-        using Shaders;
         /// <summary>
-        /// Do a depth prepass before rendering.
-        /// <para>Must customize the DefaultEffectsManager and set DepthStencilState to DefaultDepthStencilDescriptions.DSSDepthEqualNoWrite in default ShaderPass from EffectsManager to achieve best performance.</para>
+        /// Initializes a new instance of the <see cref="DepthPrepassCore"/> class.
         /// </summary>
-        public sealed class DepthPrepassCore : RenderCore
+        public DepthPrepassCore() : base(RenderType.PreProc)
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DepthPrepassCore"/> class.
-            /// </summary>
-            public DepthPrepassCore() : base(RenderType.PreProc)
-            {
-            }
+        }
 
-            /// <summary>
-            /// Called when [render].
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="deviceContext">The device context.</param>
-            public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        {
+            context.CustomPassName = DefaultPassNames.DepthPrepass;
+            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
-                context.CustomPassName = DefaultPassNames.DepthPrepass;
-                for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodesInFrustum.Count; ++i)
+                var core = context.RenderHost.PerFrameOpaqueNodes[i];
+                if (core.RenderType == RenderType.Opaque)
                 {
-                    context.RenderHost.PerFrameOpaqueNodesInFrustum[i].RenderDepth(context, deviceContext, null);
+                    var pass = core.EffectTechnique[DefaultPassNames.DepthPrepass];
+                    if (pass.IsNULL)
+                    {
+                        continue;
+                    }
+                    pass.BindShader(deviceContext);
+                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                    core.RenderCustom(context, deviceContext);
                 }
             }
+        }
 
-            protected override bool OnAttach(IRenderTechnique technique)
-            {
-                return true;
-            }
+        public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        public sealed override void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+        {
+        }
+
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            return true;
         }
     }
-
 }

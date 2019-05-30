@@ -5,15 +5,10 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-#if COREWPF
-using HelixToolkit.SharpDX.Core.Model.Scene;
-#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
     using Model.Scene;
-#endif
     /// <summary>
     /// Used to share bone matrices for multiple <see cref="BoneSkinMeshGeometryModel3D"/>
     /// </summary>

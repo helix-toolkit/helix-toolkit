@@ -5,14 +5,10 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System.Collections.Generic;
 using System.IO;
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-#if CORE
-namespace HelixToolkit.SharpDX.Core
-#else
+#if NETFX_CORE
 namespace HelixToolkit.UWP
-#endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Render;
@@ -36,7 +32,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The texture.
         /// </value>
-        TextureModel Texture { get; }
+        Stream Texture { get; }
 
         /// <summary>
         /// Draws the texture.
