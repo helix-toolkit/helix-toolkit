@@ -82,10 +82,10 @@ namespace HelixToolkit.UWP
             /// </value>
             ScreenSpacedMode Mode { set; get; }
             /// <summary>
-            /// Gets or sets the absolute position in 3d. Use by <see cref="Mode"/> = <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
+            /// Gets or sets the absolute position. Used in <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
             /// </summary>
             /// <value>
-            /// The absolute position3 d.
+            /// The absolute position.
             /// </value>
             Vector3 AbsolutePosition3D { set; get; }
         }
@@ -96,7 +96,7 @@ namespace HelixToolkit.UWP
         public class ScreenSpacedMeshRenderCore : RenderCore, IScreenSpacedRenderParams
         {
             public event EventHandler<BoolArgs> OnCoordinateSystemChanged;
-        
+
             private readonly ConstantBufferComponent globalTransformCB;
             private Matrix projectionMatrix;
             public GlobalTransformStruct GlobalTransform { private set; get; }
@@ -146,19 +146,19 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            private Vector3 absolutePosition3D = Vector3.Zero;
+            private Vector3 absolutePosition;
             public Vector3 AbsolutePosition3D
             {
                 set
                 {
-                    SetAffectsRender(ref absolutePosition3D, value);
+                    SetAffectsRender(ref absolutePosition, value);
                 }
                 get
                 {
-                    return absolutePosition3D;
+                    return absolutePosition;
                 }
             }
-        
+
             private float sizeScale = 1;
             /// <summary>
             /// Size scaling
@@ -194,7 +194,7 @@ namespace HelixToolkit.UWP
                 get { return isRightHand; }
                 private set
                 {
-                    if(Set(ref isRightHand, value))
+                    if (Set(ref isRightHand, value))
                     {
                         OnCoordinateSystemChanged?.Invoke(this, value ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
                     }
@@ -221,6 +221,8 @@ namespace HelixToolkit.UWP
             /// Fov in radian
             /// </summary>
             public float Fov { get; } = (float)(45 * Math.PI / 180);
+
+            internal Vector3 OrthoTranslation;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ScreenSpacedMeshRenderCore"/> class.
@@ -259,13 +261,18 @@ namespace HelixToolkit.UWP
             /// <param name="scale">The scale.</param>
             protected virtual void OnCreateProjectionMatrix(float scale)
             {
-                if (IsPerspective)
+                projectionMatrix = CreateProjectionMatrix(IsPerspective, IsRightHand, scale, Fov, 0.001f, 100f, CameraDistance, CameraDistance);
+            }
+
+            private static Matrix CreateProjectionMatrix(bool isPerspective, bool isRightHand, float scale, float fov, float near, float far, float w, float h)
+            {
+                if (isPerspective)
                 {
-                    projectionMatrix = IsRightHand ? Matrix.PerspectiveFovRH(Fov, 1, 0.001f, 100f) : Matrix.PerspectiveFovLH(Fov, 1, 0.1f, 100f);
+                    return isRightHand ? Matrix.PerspectiveFovRH(fov, w / h, near, far) : Matrix.PerspectiveFovLH(fov, w / h, near, far);
                 }
                 else
                 {
-                    projectionMatrix = IsRightHand ? Matrix.OrthoRH(CameraDistance, CameraDistance, 0.1f, 100f) : Matrix.OrthoLH(CameraDistance, CameraDistance, 0.1f, 100f);
+                    return isRightHand ? Matrix.OrthoRH(w, h, near, far) : Matrix.OrthoLH(w, h, near, far);
                 }
             }
             /// <summary>
@@ -313,7 +320,7 @@ namespace HelixToolkit.UWP
             /// <param name="clearDepthBuffer">if set to <c>true</c> [clear depth buffer].</param>
             protected virtual void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
             {
-                if(context.ActualWidth < Size || context.ActualHeight < Size)
+                if (context.ActualWidth < Size || context.ActualHeight < Size)
                 {
                     return;
                 }
@@ -330,6 +337,29 @@ namespace HelixToolkit.UWP
                 }
                 IsRightHand = !context.Camera.CreateLeftHandSystem;
                 float viewportSize = Size * SizeScale;
+                switch (mode)
+                {
+                    case ScreenSpacedMode.RelativeScreenSpaced:
+                        RenderRelativeScreenSpaced(context, deviceContext);
+                        break;
+                    case ScreenSpacedMode.AbsolutePosition3D:
+                        switch (context.IsPerspective)
+                        {
+                            case true:
+                                RenderAbsolutePositionPerspective(context, deviceContext);
+                                break;
+                            case false:
+                                RenderAbsolutePositionOrtho(context, deviceContext);
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            private void RenderRelativeScreenSpaced(RenderContext context, DeviceContextProxy deviceContext)
+            {
+                IsRightHand = !context.Camera.CreateLeftHandSystem;
+                float viewportSize = Size * SizeScale;
                 var globalTrans = context.GlobalTransform;
                 UpdateProjectionMatrix((float)context.ActualWidth, (float)context.ActualHeight);
                 globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
@@ -340,24 +370,63 @@ namespace HelixToolkit.UWP
                 GlobalTransform = globalTrans;
                 int offX = 0;
                 int offY = 0;
-                switch(mode)
-                {
-                    case ScreenSpacedMode.RelativeScreenSpaced:
-                        offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
-                        offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
-                        offX = Math.Max(0, Math.Min(offX, (int)(Width - viewportSize)));
-                        offY = Math.Max(0, Math.Min(offY, (int)(Height - viewportSize)));
-                        break;
-                    case ScreenSpacedMode.AbsolutePosition3D:
-                        var svp = context.ScreenViewProjectionMatrix;
-                        Vector3.TransformCoordinate(ref absolutePosition3D, ref svp, out Vector3 screenPoint);
-                        offX = (int)(screenPoint.X - viewportSize / 2);
-                        offY = (int)(Height - screenPoint.Y - viewportSize / 2);
-                        break;
-                }
-
+                offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
+                offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
+                offX = Math.Max(0, Math.Min(offX, (int)(Width - viewportSize)));
+                offY = Math.Max(0, Math.Min(offY, (int)(Height - viewportSize)));
                 deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
                 deviceContext.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
+            }
+
+            private void RenderAbsolutePositionPerspective(RenderContext context, DeviceContextProxy deviceContext)
+            {
+                float distance = Size / 2 / SizeScale;
+                var globalTrans = context.GlobalTransform;
+                var viewInv = globalTrans.View.PsudoInvert();
+
+                Vector3 newPos;
+                //Determine new camera position. So the size of the object keeps the same. Decouple it from global zooming
+                var pos = Vector3.Normalize(absolutePosition - globalTrans.EyePos);
+                newPos = absolutePosition - pos * distance;
+                newPos -= absolutePosition; // Need to do additional translation, since translation is not in model matrix.
+                viewInv.M41 = newPos.X;
+                viewInv.M42 = newPos.Y;
+                viewInv.M43 = newPos.Z;
+                globalTrans.View = viewInv.PsudoInvert();
+                // Create new projection matrix with proper near/far field.
+                float w = globalTrans.Viewport.X;
+                float h = globalTrans.Viewport.Y;
+                globalTrans.Projection = CreateProjectionMatrix(context.IsPerspective, IsRightHand, 1,
+                    globalTrans.Frustum.X, 0.01f, 500 / SizeScale, w, h);
+                globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
+                globalTrans.EyePos = newPos;
+                globalTransformCB.Upload(deviceContext, ref globalTrans);
+                GlobalTransform = globalTrans;
+                deviceContext.SetViewport(0, 0, context.ActualWidth, context.ActualHeight);
+                deviceContext.SetScissorRectangle(0, 0, (int)context.ActualWidth, (int)context.ActualHeight);
+            }
+
+            private void RenderAbsolutePositionOrtho(RenderContext context, DeviceContextProxy deviceContext)
+            {
+                IsRightHand = !context.Camera.CreateLeftHandSystem;
+                float viewportSize = Size * SizeScale;
+                var globalTrans = context.GlobalTransform;
+                UpdateProjectionMatrix((float)context.ActualWidth, (float)context.ActualHeight);
+                globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
+                globalTrans.Projection = projectionMatrix;
+                globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
+                globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 1f / viewportSize, 1f / viewportSize);
+                globalTransformCB.Upload(deviceContext, ref globalTrans);
+                GlobalTransform = globalTrans;
+                float offX = 0;
+                float offY = 0;
+                var svp = context.ScreenViewProjectionMatrix;
+                var pos = absolutePosition;
+                Vector3.TransformCoordinate(ref pos, ref svp, out Vector3 screenPoint);
+                offX = (screenPoint.X - viewportSize / 2);
+                offY = (screenPoint.Y - viewportSize / 2);
+                deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
+                deviceContext.SetScissorRectangle((int)Math.Round(offX), (int)Math.Round(offY), (int)(viewportSize + offX), (int)(viewportSize + offY));
             }
         }
     }
