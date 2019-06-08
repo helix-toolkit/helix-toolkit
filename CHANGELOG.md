@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Implement HelixToolkit.Wpf and HelixToolkit.Wpf.SharpDX supports for .Net Core 3.0 WPF. (WPF/WPF.SharpDX)
 2. Supports absolute 3D position mode in ScreenSpacedNode. Helps to have multiple coordinate system in world space and zooming does not affect the coordinate system size. See [CustomViewCubeDemo](/Source/Examples/WPF.SharpDX/CustomViewCubeDemo) for details. Ref #1165 (WPF.SharpDX/UWP/Core)
+3. Supports GPU generated arrow head/tail for line rendeirng. Detail refer to [LineShadingDemo](/Source/Examples/WPF.SharpDX/LineShadingDemo/) (WPF.SharpDX/UWP/Core)
 
 ### Improvement and Changes
 1. Supports 2D color array texture for TextureModel. Ref #1156 (WPF.SharpDX/UWP/Core)
