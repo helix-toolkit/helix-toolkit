@@ -32,6 +32,14 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
+        public const string LinesArrowHead = "RenderLinesArrowHead";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string LinesArrowHeadTail = "RenderLinesArrowHeadTail";
+        /// <summary>
+        /// 
+        /// </summary>
         public const string Points = "RenderPoints";
         /// <summary>
         /// 

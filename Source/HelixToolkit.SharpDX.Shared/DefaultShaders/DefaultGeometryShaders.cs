@@ -37,6 +37,26 @@ namespace HelixToolkit.UWP
                 get;
             } = "gsLine";
             /// <summary>
+            /// Gets the gs line arrow head.
+            /// </summary>
+            /// <value>
+            /// The gs line arrow head.
+            /// </value>
+            public static string GSLineArrowHead
+            {
+                get;
+            } = "gsLineArrowHead";
+            /// <summary>
+            /// Gets the gs line arrow tail.
+            /// </summary>
+            /// <value>
+            /// The gs line arrow tail.
+            /// </value>
+            public static string GSLineArrowHeadTail
+            {
+                get;
+            } = "gsLineArrowHeadTail";
+            /// <summary>
             /// 
             /// </summary>
             public static string GSBillboard
@@ -84,6 +104,16 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription GSLine = new ShaderDescription(nameof(GSLine), ShaderStage.Geometry, new ShaderReflector(),
                 DefaultGSShaderByteCodes.GSLine);
+            /// <summary>
+            /// 
+            /// </summary>
+            public static readonly ShaderDescription GSLineArrowHead = new ShaderDescription(nameof(GSLineArrowHead), ShaderStage.Geometry, new ShaderReflector(),
+                DefaultGSShaderByteCodes.GSLineArrowHead);
+            /// <summary>
+            /// 
+            /// </summary>
+            public static readonly ShaderDescription GSLineArrowHeadTail = new ShaderDescription(nameof(GSLineArrowHeadTail), ShaderStage.Geometry, new ShaderReflector(),
+                DefaultGSShaderByteCodes.GSLineArrowHeadTail);
             /// <summary>
             /// 
             /// </summary>

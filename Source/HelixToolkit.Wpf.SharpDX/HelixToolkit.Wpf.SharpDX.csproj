@@ -134,6 +134,8 @@
     <None Include="Resources\dsMeshTriTessellation.cso" />
     <None Include="Resources\gsBillboard.cso" />
     <None Include="Resources\gsLine.cso" />
+    <None Include="Resources\gsLineArrowHead.cso" />
+    <None Include="Resources\gsLineArrowHeadTail.cso" />
     <None Include="Resources\gsMeshNormalVector.cso" />
     <None Include="Resources\gsMeshSkinnedOut.cso" />
     <None Include="Resources\gsParticle.cso" />

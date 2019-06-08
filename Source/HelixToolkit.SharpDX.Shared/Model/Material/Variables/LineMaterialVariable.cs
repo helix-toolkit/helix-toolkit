@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public sealed class LineMaterialVariable : MaterialVariable
+        public class LineMaterialVariable : MaterialVariable
         {
             private readonly LineMaterialCore material;
 

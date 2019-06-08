@@ -222,8 +222,6 @@ namespace HelixToolkit.UWP
             /// </summary>
             public float Fov { get; } = (float)(45 * Math.PI / 180);
 
-            internal Vector3 OrthoTranslation;
-
             /// <summary>
             /// Initializes a new instance of the <see cref="ScreenSpacedMeshRenderCore"/> class.
             /// </summary>
