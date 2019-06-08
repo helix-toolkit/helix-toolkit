@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP
     {
         using Core;
         [DataContract]
-        public sealed class LineMaterialCore : MaterialCore, ILineRenderParams
+        public class LineMaterialCore : MaterialCore, ILineRenderParams
         {
             #region Properties
             private float thickness = 0.5f;

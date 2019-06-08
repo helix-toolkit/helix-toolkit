@@ -39,18 +39,35 @@ namespace LineShadingDemo
         public PhongMaterial Material1 { get; private set; }
         public PhongMaterial Material2 { get; private set; }
         public PhongMaterial Material3 { get; private set; }        
+        public LineMaterial LineMaterial { get; private set; }
         public Color GridColor { get; private set; }
 
         public Transform3D Model1Transform { get; private set; }
         public Transform3D Model2Transform { get; private set; }
         public Transform3D Model3Transform { get; private set; }
+        public Transform3D Model4Transform { get; private set; }
         public Transform3D GridTransform { get; private set; }
 
         public Vector3D DirectionalLightDirection { get; private set; }
         public Color DirectionalLightColor { get; private set; }
         public Color AmbientLightColor { get; private set; }
 
-      
+        private bool enableArrowHeadTail = false;
+        public bool EnableArrowHeadTail
+        {
+            set
+            {
+                if(SetValue(ref enableArrowHeadTail, value))
+                {
+                    LineMaterial = value ?
+                        new LineArrowHeadTailMaterial() { ArrowSize = 0.04, Color = Colors.White } 
+                    : new LineArrowHeadMaterial() { ArrowSize = 0.04, Color = Colors.White };
+                    OnPropertyChanged(nameof(LineMaterial));
+                }
+            }
+            get { return enableArrowHeadTail; }
+        }
+
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
@@ -100,11 +117,12 @@ namespace LineShadingDemo
             this.Model1Transform = new TranslateTransform3D(0, 0, 0);
             this.Model2Transform = new TranslateTransform3D(-2, 0, 0);
             this.Model3Transform = new TranslateTransform3D(+2, 0, 0);
-
+            this.Model4Transform = new TranslateTransform3D(0, 2, 0);
             // model materials
             this.Material1 = PhongMaterials.PolishedGold;
             this.Material2 = PhongMaterials.Copper;
-            this.Material3 = PhongMaterials.Glass;                        
+            this.Material3 = PhongMaterials.Glass;
+            this.LineMaterial = new LineArrowHeadMaterial() { ArrowSize = 0.04, Color = Colors.White};
         }
     }
 }

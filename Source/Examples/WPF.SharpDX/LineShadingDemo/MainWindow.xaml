@@ -92,6 +92,10 @@
                 Thickness="{Binding LineThickness}"
                 Transform="{Binding GridTransform}"
                 Color="{Binding GridColor}" />
+            <hx:LineMaterialGeometryModel3D
+                Geometry="{Binding Lines}"
+                Material="{Binding LineMaterial}"
+                Transform="{Binding Model4Transform}" />
         </hx:Viewport3DX>
         <StackPanel Grid.Row="1">
             <Expander
@@ -126,6 +130,7 @@
                         Maximum="20"
                         Minimum="0"
                         Value="{Binding LineSmoothness}" />
+                    <CheckBox IsChecked="{Binding EnableArrowHeadTail}">Arrow Head and Tail</CheckBox>
                 </StackPanel>
             </Expander>
         </StackPanel>

@@ -89,6 +89,8 @@ namespace DynamicTextureDemo
         public PointGeometry3D PointModel { private set; get; }
         public LineGeometry3D LineModel { private set; get; }
 
+        public LineMaterial LineMaterial { private set; get; }
+
         //public MeshGeometry3D Other { get; private set; }
         public Color AmbientLightColor { get; set; }
         DispatcherTimer timer = new DispatcherTimer();
@@ -218,6 +220,7 @@ namespace DynamicTextureDemo
             }
             colors.Add(Colors.Blue.ToColor4());
             LineModel.Colors = colors;
+            LineMaterial = new LineArrowHeadMaterial() { Color = Colors.White, Thickness = 0.5, ArrowSize = 0.02};
             #endregion
             var token = cts.Token;
             Task.Run(() =>
