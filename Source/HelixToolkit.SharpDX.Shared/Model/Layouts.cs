@@ -393,7 +393,7 @@ namespace HelixToolkit.UWP
         //public Vector4 Color;
         //public Bool4 BoolParams;
 
-        public const int SizeInBytes = 4 * (4 * 4) + PointLineModelStruct.SizeInBytes;
+        public const int SizeInBytes = 4 * (4 * 5) + PointLineModelStruct.SizeInBytes;
         public const string FadeNearDistance = "fadeNearDistance";//float
         public const string FadeFarDistance = "fadeFarDistance";//float
         public const string EnableDistanceFading = "enableDistanceFading";//bool
@@ -401,6 +401,9 @@ namespace HelixToolkit.UWP
         public const string ColorStr = "pColor";//vector4
         public const string FixedSize = "fixedSize";//bool
         public const string BoolParamsStr = "pbParams";//bool3
+        public const string HasTextureStr = "bHasTexture"; //bool
+        public const string TextureScaleStr = "pTextureScale";//float;
+        public const string AlphaThresholdStr = "pAlphaThreshold"; // float; 
     }
 
     /// <summary>

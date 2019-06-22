@@ -147,7 +147,10 @@ cbuffer cbPointLineModel : register(b4)
     bool enableDistanceFading;
     float fadeNearDistance;
     float fadeFarDistance;
-    float padding2;
+    bool bHasTexture = false;
+    float pTextureScale = 1;
+    float pAlphaThreshold = 0;
+    float2 padding2;
 };
 #endif
 #if defined(VOLUME) // model for line, point and billboard
@@ -308,6 +311,7 @@ TextureCube<float3> texCubeMap : register(t20); // Radiance Map
 Texture2D<float> texShadowMap : register(t30);
 
 Texture2D texSSAOMap : register(t31);
+
 #if defined(SSAO)
 Texture2D<float3> texSSAONoise : register(t32);
 Texture2D<float> texSSAODepth : register(t33);
