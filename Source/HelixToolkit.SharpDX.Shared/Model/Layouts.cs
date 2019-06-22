@@ -272,7 +272,7 @@ namespace HelixToolkit.UWP
         public float SSAOBias;
         public float SSAOIntensity;
         public float TimeStamp;
-        float padding;
+        public bool IsPerspective;
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;
