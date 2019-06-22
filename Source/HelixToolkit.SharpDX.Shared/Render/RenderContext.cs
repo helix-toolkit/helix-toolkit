@@ -142,6 +142,7 @@ namespace HelixToolkit.UWP
                     globalTransform.EyePos = this.camera.Position;
                 }
                 IsPerspective = this.camera is PerspectiveCameraCore;
+                globalTransform.IsPerspective = IsPerspective;
             }
         }
 

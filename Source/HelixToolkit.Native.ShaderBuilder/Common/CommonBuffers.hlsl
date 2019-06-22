@@ -25,7 +25,7 @@ cbuffer cbTransforms : register(b0)
     float SSAOBias;
     float SSAOIntensity;
     float TimeStamp; // by seconds
-    float padding0;
+    bool IsPerspective;
     float OITPower;
     float OITSlope;
     int OITWeightMode;
