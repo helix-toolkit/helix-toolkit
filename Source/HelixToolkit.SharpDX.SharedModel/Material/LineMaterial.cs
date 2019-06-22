@@ -2,6 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using global::SharpDX;
+using SharpDX.Direct3D11;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Media = Windows.UI;
@@ -10,16 +12,20 @@ namespace HelixToolkit.UWP
 using System.Windows;
 using Media = System.Windows.Media;
 #if COREWPF
+using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model;
+using HelixToolkit.SharpDX.Core.Shaders;
 #endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using global::SharpDX;
+#if !COREWPF
     using Model;
+    using Shaders;
+#endif
     public class LineMaterial : Material
     {
-        #region Dependency Properties        
+#region Dependency Properties        
         /// <summary>
         /// The color property
         /// </summary>
@@ -66,6 +72,36 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as LineMaterial).Core as LineMaterialCore).FadingFarDistance = (float)(double)e.NewValue;
                 }));
+
+        public static readonly DependencyProperty TextureProperty =
+            DependencyProperty.Register("Texture", typeof(TextureModel), typeof(LineMaterial), new PropertyMetadata(null,
+                (d, e)=> 
+                {
+                    ((d as LineMaterial).Core as LineMaterialCore).Texture = e.NewValue == null ? null : (TextureModel)e.NewValue;
+                }));
+
+
+        public static readonly DependencyProperty TextureScaleProperty =
+            DependencyProperty.Register("TextureScale", typeof(double), typeof(LineMaterial), new PropertyMetadata(1.0, (d, e) =>
+            {
+                ((d as LineMaterial).Core as LineMaterialCore).TextureScale = (float)(double)e.NewValue;
+            }));
+
+
+
+        public static readonly DependencyProperty SamplerDescriptionProperty =
+            DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(LineMaterial), new PropertyMetadata(DefaultSamplers.LineSamplerUWrapVClamp,
+                (d, e)=> 
+                {
+                    ((d as LineMaterial).Core as LineMaterialCore).SamplerDescription = (SamplerStateDescription)e.NewValue;
+                }));
+
+        public static readonly DependencyProperty FixedSizeProperty =
+            DependencyProperty.Register("FixedSize", typeof(bool), typeof(LineMaterial), new PropertyMetadata(true, (d, e) =>
+            {
+                ((d as LineMaterial).Core as LineMaterialCore).FixedSize = (bool)e.NewValue;
+            }));
+
 
         /// <summary>
         /// Gets or sets the color.
@@ -134,6 +170,51 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)this.GetValue(FadingFarDistanceProperty); }
             set { this.SetValue(FadingFarDistanceProperty, value); }
         }
+        /// <summary>
+        /// Gets or sets the texture.
+        /// </summary>
+        /// <value>
+        /// The texture.
+        /// </value>
+        public TextureModel Texture
+        {
+            get { return (TextureModel)GetValue(TextureProperty); }
+            set { SetValue(TextureProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the texture scale. Scale on texture X length
+        /// </summary>
+        /// <value>
+        /// The texture scale.
+        /// </value>
+        public double TextureScale
+        {
+            get { return (double)GetValue(TextureScaleProperty); }
+            set { SetValue(TextureScaleProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the sampler.
+        /// </summary>
+        /// <value>
+        /// The sampler.
+        /// </value>
+        public SamplerStateDescription SamplerDescription
+        {
+            get { return (SamplerStateDescription)GetValue(SamplerDescriptionProperty); }
+            set { SetValue(SamplerDescriptionProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [fixed size].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
+        /// </value>
+        public bool FixedSize
+        {
+            get { return (bool)GetValue(FixedSizeProperty); }
+            set { SetValue(FixedSizeProperty, value); }
+        }
         #endregion
 
         public LineMaterial() { }
@@ -147,6 +228,10 @@ namespace HelixToolkit.Wpf.SharpDX
             EnableDistanceFading = EnableDistanceFading;
             FadingNearDistance = core.FadingNearDistance;
             FadingFarDistance = core.FadingFarDistance;
+            Texture = core.Texture;
+            TextureScale = core.TextureScale;
+            SamplerDescription = core.SamplerDescription;
+            FixedSize = core.FixedSize;
         }
 
         protected override MaterialCore OnCreateCore()
@@ -159,7 +244,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 Thickness = (float)Thickness,
                 EnableDistanceFading = EnableDistanceFading,
                 FadingNearDistance = (float)FadingNearDistance,
-                FadingFarDistance = (float)FadingFarDistance
+                FadingFarDistance = (float)FadingFarDistance,
+                Texture = Texture,
+                TextureScale = (float)TextureScale,
+                SamplerDescription = SamplerDescription,
+                FixedSize = FixedSize
             };
         }
 
@@ -174,7 +263,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 Thickness = Thickness,
                 EnableDistanceFading = EnableDistanceFading,
                 FadingNearDistance = FadingNearDistance,
-                FadingFarDistance = FadingFarDistance
+                FadingFarDistance = FadingFarDistance,
+                Texture = Texture,
+                TextureScale = TextureScale,
+                SamplerDescription = SamplerDescription,
+                FixedSize = FixedSize
             };
         }
 #endif

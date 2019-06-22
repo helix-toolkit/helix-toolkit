@@ -25,13 +25,21 @@ float4 main(PSInputPS input) : SV_Target
 
     // Standard wire color
     float4 color = input.c;
-	
-	//color = texDiffuseMap.Sample(SSLinearSamplerWrap, input.t.xy);	
-    color.a = alpha;
+    if (bHasTexture)
+    {
+        //Use tex.z to mark some pixels only use input color. Such as arrow head/tail, to ignore the texture color.
+        color = color * (1 - input.tex.z) + color * texDiffuseMap.SampleLevel(samplerBillboard, input.tex.xy, 0) * input.tex.z;
+    }
+    color.a *= alpha;
     if (enableDistanceFading)
     {
         color.a *= 1 - clamp((input.vEye.w - fadeNearDistance) / (fadeFarDistance - fadeNearDistance), 0, 1);
     }
+    if (color.a < pAlphaThreshold)
+    {
+        discard;
+    }
+    //color *= whengt(color.a, pAlphaThreshold);
     return color;
 }
 

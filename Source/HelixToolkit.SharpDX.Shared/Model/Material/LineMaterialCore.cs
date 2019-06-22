@@ -4,6 +4,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using System.Runtime.Serialization;
+using SharpDX.Direct3D11;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -17,6 +19,8 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         using Core;
+        using Shaders;
+
         [DataContract]
         public class LineMaterialCore : MaterialCore, ILineRenderParams
         {
@@ -98,6 +102,63 @@ namespace HelixToolkit.UWP
             {
                 set { Set(ref fixedSize, value); }
                 get { return fixedSize; }
+            }
+
+            private TextureModel texture;
+            /// <summary>
+            /// Gets or sets the texture.
+            /// </summary>
+            /// <value>
+            /// The texture.
+            /// </value>
+            public TextureModel Texture
+            {
+                set { Set(ref texture, value); }
+                get { return texture; }
+            }
+
+            private float textureScale = 1;
+            /// <summary>
+            /// Gets or sets the texture scale.
+            /// </summary>
+            /// <value>
+            /// The texture scale.
+            /// </value>
+            public float TextureScale
+            {
+                set { Set(ref textureScale, value); }
+                get { return textureScale; }
+            }
+
+            private float alphaThreshold = 0.2f;
+            /// <summary>
+            /// Gets or sets the alpha threshold. Pixel with color alpha value smaller than threshold will be set to transparent.
+            /// <para>This is used to avoid sampler color interpolation effects.</para>
+            /// </summary>
+            /// <value>
+            /// The alpha threshold
+            /// </value>
+            public float AlphaThreshold
+            {
+                set { Set(ref alphaThreshold, value); }
+                get { return alphaThreshold; }
+            }
+
+
+            private SamplerStateDescription samplerDescription = DefaultSamplers.LineSamplerUWrapVClamp;
+            /// <summary>
+            /// Billboard texture sampler description
+            /// </summary>
+            public SamplerStateDescription SamplerDescription
+            {
+                set
+                {
+                    Set(ref samplerDescription, value);
+                }
+                get
+                {
+                    return samplerDescription;
+                }
             }
             #endregion
 

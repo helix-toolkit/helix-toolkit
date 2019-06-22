@@ -7,7 +7,7 @@
 void mainArrowHeadTail(line GSInputPS input[2], inout TriangleStream<PSInputPS> outStream)
 {
     PSInputPS output = (PSInputPS) 0;
-		
+    float texX = length(input[0].wp.xyz - input[1].wp.xyz) / max(1e-5, pTextureScale);
     float4 lineCorners[4] = { (float4) 0, (float4) 0, (float4) 0, (float4) 0 };
     if (fixedSize)
         makeLine(lineCorners, input[0].p, input[1].p, pfParams.x);
@@ -17,21 +17,25 @@ void mainArrowHeadTail(line GSInputPS input[2], inout TriangleStream<PSInputPS> 
     output.c = input[0].c;
     output.p = lineCorners[0];
     output.t = float3(1, 1, 1);
+    output.tex = float3(texX, 1, 1);
     outStream.Append(output);
 	
     output.p = lineCorners[1];
     output.c = input[0].c;
     output.t = float3(1, -1, 1);
+    output.tex = float3(texX, 0, 1);
     outStream.Append(output);
  
     output.vEye = input[1].vEye;
     output.c = input[1].c;
     output.p = lineCorners[2];
     output.t = float3(-1, 1, 1);
+    output.tex = float3(0, 1, 1);
     outStream.Append(output);
 	
     output.p = lineCorners[3];
     output.t = float3(-1, -1, 1);
+    output.tex = float3(0, 0, 1);
     outStream.Append(output);
 	
     outStream.RestartStrip();
@@ -39,6 +43,7 @@ void mainArrowHeadTail(line GSInputPS input[2], inout TriangleStream<PSInputPS> 
     output.vEye = input[1].vEye;
     output.t = float3(0, 0, 0);
     output.c = input[1].c;
+    output.tex = float3(0, 0, 0);
     float4 cone[10];
     makeCone(cone, input[1].wp, input[0].wp, pfParams.z);
     // Make head

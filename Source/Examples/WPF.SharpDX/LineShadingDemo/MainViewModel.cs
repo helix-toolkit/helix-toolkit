@@ -40,6 +40,7 @@ namespace LineShadingDemo
         public PhongMaterial Material2 { get; private set; }
         public PhongMaterial Material3 { get; private set; }        
         public LineMaterial LineMaterial { get; private set; }
+        public LineMaterial GridMaterial { private set; get; }
         public Color GridColor { get; private set; }
 
         public Transform3D Model1Transform { get; private set; }
@@ -122,7 +123,12 @@ namespace LineShadingDemo
             this.Material1 = PhongMaterials.PolishedGold;
             this.Material2 = PhongMaterials.Copper;
             this.Material3 = PhongMaterials.Glass;
-            this.LineMaterial = new LineArrowHeadMaterial() { ArrowSize = 0.04, Color = Colors.White};
+            this.LineMaterial = new LineArrowHeadMaterial() { ArrowSize = 0.04, Color = Colors.White, TextureScale = 0.4 };
+            this.GridMaterial = new LineMaterial() { Color = Colors.Red, TextureScale = 0.4};
+            var dash = LoadFileToMemory("Dash.png");
+            var dotLine = LoadFileToMemory("DotLine.png");
+            GridMaterial.Texture = dotLine;
+            LineMaterial.Texture = dash;
         }
     }
 }

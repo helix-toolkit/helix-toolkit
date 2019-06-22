@@ -42,7 +42,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 EnableDistanceFading = EnableDistanceFading,
                 FadingNearDistance = (float)FadingNearDistance,
                 FadingFarDistance = (float)FadingFarDistance,
-                ArrowSize = (float)ArrowSize,
+                Texture = Texture,
+                TextureScale = (float)TextureScale,
+                SamplerDescription = SamplerDescription,
+                ArrowSize = (float)ArrowSize,               
+                FixedSize = FixedSize
             };
         }
     }
@@ -60,7 +64,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 EnableDistanceFading = EnableDistanceFading,
                 FadingNearDistance = (float)FadingNearDistance,
                 FadingFarDistance = (float)FadingFarDistance,
+                Texture = Texture,
+                TextureScale = (float)TextureScale,
+                SamplerDescription = SamplerDescription,
                 ArrowSize = (float)ArrowSize,
+                FixedSize = FixedSize
             };
         }
     }
