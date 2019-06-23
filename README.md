@@ -60,6 +60,14 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
 ## News
+#### 2019-06-22
+[v2.8.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.8.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.8.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.8.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.8.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.8.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.8.0)
+
 #### 2019-05-12
 [v2.7.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.7.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.7.0)
@@ -75,14 +83,6 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.6.1)
 - [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.6.1)
 - [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.6.1)
-
-#### 2019-01-04
-[v2.6.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.6.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.6.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.6.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.6.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.6.0)
 
 **Two new packages have been released on version 2.6.0.**
 - `SharpDX.Core` is the base implementation for all HelixToolkit.SharpDX versions(WPF.SharpDX and UWP). It is implemented based on `netstandard` and can be used on other platforms such as WinForms and DotNetCore.
