@@ -321,5 +321,7 @@
     <FxCompile Include="PS\psEffectOutlineSmooth.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="GS\gsLineArrowHead.hlsl" />
+    <FxCompile Include="GS\gsLineArrowHeadTail.hlsl" />
   </ItemGroup>
 </Project>

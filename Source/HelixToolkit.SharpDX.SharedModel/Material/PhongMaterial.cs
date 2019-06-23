@@ -9,12 +9,18 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Shaders;
+using HelixToolkit.SharpDX.Core.Model;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using System.ComponentModel;
+#if !COREWPF
     using Model;
     using Shaders;
+#endif
     using Utilities;
 
     /// <summary>

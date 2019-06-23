@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP
     /// 
     /// </summary>
     //[StructLayout(LayoutKind.Sequential, Pack = 4)]
-    internal static class BoneMatricesStruct
+    public static class BoneMatricesStruct
     {
         //public const int NumberOfBones = 128;
         //[MarshalAs(UnmanagedType.ByValArray, SizeConst = NumberOfBones)]
@@ -272,7 +272,7 @@ namespace HelixToolkit.UWP
         public float SSAOBias;
         public float SSAOIntensity;
         public float TimeStamp;
-        float padding;
+        public bool IsPerspective;
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;
@@ -393,7 +393,7 @@ namespace HelixToolkit.UWP
         //public Vector4 Color;
         //public Bool4 BoolParams;
 
-        public const int SizeInBytes = 4 * (4 * 4) + PointLineModelStruct.SizeInBytes;
+        public const int SizeInBytes = 4 * (4 * 5) + PointLineModelStruct.SizeInBytes;
         public const string FadeNearDistance = "fadeNearDistance";//float
         public const string FadeFarDistance = "fadeFarDistance";//float
         public const string EnableDistanceFading = "enableDistanceFading";//bool
@@ -401,6 +401,9 @@ namespace HelixToolkit.UWP
         public const string ColorStr = "pColor";//vector4
         public const string FixedSize = "fixedSize";//bool
         public const string BoolParamsStr = "pbParams";//bool3
+        public const string HasTextureStr = "bHasTexture"; //bool
+        public const string TextureScaleStr = "pTextureScale";//float;
+        public const string AlphaThresholdStr = "pAlphaThreshold"; // float; 
     }
 
     /// <summary>
@@ -675,7 +678,7 @@ namespace HelixToolkit.UWP
             return new float[] { Rotation, Scaling.X, Scaling.Y, Translation.X, Translation.Y };
         }
     }
-#if !NETFX_CORE
+
     /// <summary>
     /// 
     /// </summary>
@@ -703,7 +706,6 @@ namespace HelixToolkit.UWP
 
         public const int SizeInBytes = 4 * 4 * 12;
     }
-#endif
 
 #pragma warning restore 1591
 }

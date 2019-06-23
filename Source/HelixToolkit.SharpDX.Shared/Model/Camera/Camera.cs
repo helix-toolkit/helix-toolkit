@@ -342,7 +342,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    Width = oldWidth + (newWidth - oldWidth) / (accumTime / aniTime);
+                    Width = oldWidth + (newWidth - oldWidth) * (accumTime / aniTime);
                     return true;
                 }
             }

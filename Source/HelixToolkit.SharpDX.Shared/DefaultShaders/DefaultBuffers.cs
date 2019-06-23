@@ -33,9 +33,7 @@ namespace HelixToolkit.UWP
             public const string ScreenQuadCB = "cbScreenQuad";
             public const string VolumeModelCB = "cbVolumeModel";
             public const string SSAOCB = "cbSSAO";
-    #if !NETFX_CORE
             public const string ScreenDuplicationCB = "cbScreenClone";
-    #endif
             //-----------Materials--------------------
             public const string DiffuseMapTB = "texDiffuseMap";
             public const string AlphaMapTB = "texAlphaMap";

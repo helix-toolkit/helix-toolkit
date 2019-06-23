@@ -182,6 +182,19 @@ namespace HelixToolkit.UWP
                 Filter = Filter.MinMagMipPoint,
                 MaximumLod = 0
             };
+
+            /// <summary>
+            /// The point sampler wrap
+            /// </summary>
+            public static readonly SamplerStateDescription LineSamplerUWrapVClamp = new SamplerStateDescription()
+            {
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Border,
+                AddressW = TextureAddressMode.Wrap,
+                Filter = Filter.MinMagMipPoint,
+                BorderColor = new global::SharpDX.Mathematics.Interop.RawColor4(0, 0, 0, 0),
+                MaximumLod = 0
+            };
         }
     }
 

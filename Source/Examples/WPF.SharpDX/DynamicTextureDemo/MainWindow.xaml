@@ -64,14 +64,11 @@
                     <TranslateTransform3D OffsetX="-10" />
                 </hx:PointGeometryModel3D.Transform>
             </hx:PointGeometryModel3D>
-            <hx:LineGeometryModel3D
-                Geometry="{Binding LineModel}"
-                Thickness="0.5"
-                Color="White">
-                <hx:LineGeometryModel3D.Transform>
+            <hx:LineMaterialGeometryModel3D Geometry="{Binding LineModel}" Material="{Binding LineMaterial}">
+                <hx:LineMaterialGeometryModel3D.Transform>
                     <TranslateTransform3D OffsetX="10" />
-                </hx:LineGeometryModel3D.Transform>
-            </hx:LineGeometryModel3D>
+                </hx:LineMaterialGeometryModel3D.Transform>
+            </hx:LineMaterialGeometryModel3D>
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"

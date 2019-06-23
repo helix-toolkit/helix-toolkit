@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,6 +15,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,7 +28,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;DX11; MSAA; SHARPDX;</DefineConstants>
@@ -39,6 +40,7 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1591;</NoWarn>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -106,109 +108,8 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Controls\CameraController.cs" />
-    <Compile Include="Controls\CompositionTargetEX.cs" />
-    <Compile Include="Controls\DPFCanvas.cs" />
-    <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
-    <Compile Include="Controls\DrawingContextExtensions.cs" />
-    <Compile Include="Controls\DX11ImageSourceRenderHost.cs" />
-    <Compile Include="Controls\IRenderCanvas.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationAction.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationActionConverter.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationGestureConverter.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationGesture.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationBinding.cs" />
-    <Compile Include="Controls\MouseHandlers\VirtualTouchDevice.cs" />
-    <Compile Include="Controls\RectangleAdorner.cs" />
-    <Compile Include="Controls\RenderControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\ScreenDuplicationViewport3DX.cs" />
-    <Compile Include="Controls\TargetSymbolAdorner.cs" />
-    <Compile Include="Controls\VisualTargetPresentationSource.cs" />
-    <Compile Include="Controls\VisualWrapper.cs" />
-    <Compile Include="Controls\WinformHostExtend.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
-    <Compile Include="Extensions\BitmapExtension.cs" />
-    <Compile Include="Extensions\Geometry3DExtensions.cs" />
-    <Compile Include="Controls\RenderTechniqueConverter.cs" />
-    <Compile Include="Controls\Trackball.cs" />
-    <Compile Include="Controls\Viewport3DX.cs" />
-    <Compile Include="Controls\CameraExtensions.cs" />
-    <Compile Include="Controls\DX11ImageSource.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
-    <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\PanHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\RotateHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
-    <Compile Include="Controls\RenderUtil.cs" />
-    <Compile Include="Controls\Viewport3DX.Properties.cs" />
-    <Compile Include="Controls\ViewportExtensions.cs" />
-    <Compile Include="Controls\ViewportCommands.cs" />
-    <Compile Include="Extensions\Matrix3DExtensions.cs" />
-    <Compile Include="Extensions\TypeConvertExtensions.cs" />
-    <Compile Include="Model\Elements2D\Abstract\Clickable2D.cs" />
-    <Compile Include="Model\Elements2D\Abstract\ContentElement2D.cs" />
-    <Compile Include="Model\Elements2D\FrameStatisticsModel2D.cs" />
-    <Compile Include="Model\Elements2D\ImageModel2D.cs" />
-    <Compile Include="Model\Elements2D\Panel2D.cs" />
-    <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
-    <Compile Include="Model\Elements2D\Border2D.cs" />
-    <Compile Include="Model\Elements2D\Button2D.cs" />
-    <Compile Include="Model\Elements2D\ContentPresenter2D.cs" />
-    <Compile Include="Model\Elements2D\EllipseModel2D.cs" />
-    <Compile Include="Model\Elements2D\Interfaces.cs" />
-    <Compile Include="Model\Elements2D\Overlay.cs" />
-    <Compile Include="Model\Elements2D\RectangleModel2D.cs" />
-    <Compile Include="Model\Elements2D\RelativePositionCanvas2D.cs" />
-    <Compile Include="Model\Elements2D\StackPanel2D.cs" />
-    <Compile Include="Model\Elements2D\TextModel2D.cs" />
-    <Compile Include="Model\Elements2D\Abstract\Element2D.cs" />
-    <Compile Include="Model\Elements2D\Canvas2D.cs" />
-    <Compile Include="Model\Elements3D\CameraModel3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />
-    <Compile Include="Model\Elements3D\Element3DPresenter.cs" />
-    <Compile Include="Model\Elements3D\OctreeLineGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\ScreenDuplicationModel.cs" />
-    <Compile Include="Model\Elements3D\SortingGroupModel3D.cs" />
-    <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
-    <Compile Include="Model\Materials\PhongMaterialFactory.cs" />
-    <Compile Include="Model\Scene\SceneNode.cs" />
-    <Compile Include="Model\Scene\SceneNode2D.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
-    <Compile Include="Model\Elements3D\CompositeModel3D.cs" />
-    <Compile Include="Model\Elements3D\DraggableGeometryModel3D.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Model\Elements3D\GroupModel3D.cs" />
-    <Compile Include="Model\Elements3D\ItemsModel3D.cs" />
-    <Compile Include="Model\Elements3D\Light3DCollection.cs" />
-    <Compile Include="Model\Elements3D\UICompositeManipulator3D.cs" />
-    <Compile Include="Model\Elements3D\UIManipulator3D.cs" />
-    <Compile Include="Model\Elements3D\UIResizeManipulator3D.cs" />
-    <Compile Include="Model\Elements3D\UIRotateManipulator3D.cs" />
-    <Compile Include="Model\Elements3D\UITranslateManipulator3D.cs" />
-    <Compile Include="Model\Lights3D\AmbientLight3D.cs" />
-    <Compile Include="Model\Lights3D\DirectionalLight3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\Element3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\GroupElement3D.cs" />
-    <Compile Include="Model\Lights3D\Light3D.cs" />
-    <Compile Include="Model\Lights3D\PointLight3D.cs" />
-    <Compile Include="Model\Lights3D\SpotLight3D.cs" />
-    <Compile Include="Model\Interfaces.cs" />
-    <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
-    <Compile Include="Utilities\Exporter.cs" />
-    <Compile Include="Utilities\IExporter.cs" />
-    <Compile Include="Utilities\ObjExporter.cs" />
-    <Compile Include="Utilities\TypeConverter.cs" />
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Settings.Designer.cs">
@@ -228,12 +129,13 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Textures\arial.fnt" />
     <None Include="Resources\csParticleInsert.cso" />
     <None Include="Resources\csParticleUpdate.cso" />
     <None Include="Resources\dsMeshTriTessellation.cso" />
     <None Include="Resources\gsBillboard.cso" />
     <None Include="Resources\gsLine.cso" />
+    <None Include="Resources\gsLineArrowHead.cso" />
+    <None Include="Resources\gsLineArrowHeadTail.cso" />
     <None Include="Resources\gsMeshNormalVector.cso" />
     <None Include="Resources\gsMeshSkinnedOut.cso" />
     <None Include="Resources\gsParticle.cso" />
@@ -324,12 +226,6 @@
     <None Include="Resources\vsVolume.cso" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Model\ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Textures\arial.dds" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">
       <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
       <Name>HelixToolkit</Name>
@@ -361,13 +257,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\Camera\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\HelixToolkit.snk" />
   </ItemGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems" Label="Shared" />
+  <Import Project="..\HelixToolkit.Wpf.SharpDX.Shared\HelixToolkit.Wpf.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

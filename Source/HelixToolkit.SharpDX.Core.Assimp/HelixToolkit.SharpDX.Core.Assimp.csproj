@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3; netcoreapp2.1</TargetFrameworks>
-      <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
-      <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
+      <PackageLicenseUrl></PackageLicenseUrl>
       <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
       <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
       <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
@@ -15,6 +15,7 @@
       <RepositoryType>git</RepositoryType>
       <PackageTags>SharpDX; DirectX; 3D;</PackageTags>
       <DelaySign>false</DelaySign>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Release|AnyCPU'">

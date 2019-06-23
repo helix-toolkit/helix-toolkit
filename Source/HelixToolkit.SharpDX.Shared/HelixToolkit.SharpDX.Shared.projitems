@@ -134,6 +134,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardImage3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\BillboardMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\GenericMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\LineArrowMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\LineMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PBRMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PointMaterialCore.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\ColorStripeMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\DiffuseMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\GenericMaterialVariable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\LineArrowMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\LineMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PassOnlyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
@@ -262,7 +264,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\RenderTaskScheduler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\ScreenCloneRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\SwapChainRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\BufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />

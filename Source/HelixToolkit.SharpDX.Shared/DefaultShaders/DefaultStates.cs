@@ -598,7 +598,7 @@ namespace HelixToolkit.UWP
                 IsMultisampleEnabled = false,
                 IsAntialiasedLineEnabled = false,
             };
-    #if !NETFX_CORE        
+#if !WINDOWS_UWP
             /// <summary>
             /// The screen duplication RasterizerState
             /// </summary>
@@ -614,7 +614,7 @@ namespace HelixToolkit.UWP
                 IsAntialiasedLineEnabled = false,
                 IsScissorEnabled = true
             };
-    #endif
+#endif
         }
     }
 

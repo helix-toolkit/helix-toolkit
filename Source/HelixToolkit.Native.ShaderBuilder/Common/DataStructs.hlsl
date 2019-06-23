@@ -281,9 +281,10 @@ struct PSInputPS
 {
 	float4 p : SV_POSITION;
     float4 vEye : POSITION0;
-	float4 c : COLOR;
-	noperspective
-	float3 t : TEXCOORD;
+	float4 c : COLOR;   
+    float3 tex : TEXCOORD0;
+    noperspective
+    float3 t : TEXCOORD1;
 };
 
 //--------------------------------------------------------------------------------------

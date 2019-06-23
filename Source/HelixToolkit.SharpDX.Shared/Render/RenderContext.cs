@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP
             get
             {
                 return new Matrix((float)(ActualWidth / 2), 0, 0, 0,
-                    0, (float)(ActualHeight / 2), 0, 0,
+                    0, -(float)(ActualHeight / 2), 0, 0,
                     0, 0, 1, 0,
                     (float)((ActualWidth - 1) / 2), (float)((ActualHeight - 1) / 2), 0, 1);
             }
@@ -131,7 +131,7 @@ namespace HelixToolkit.UWP
                     globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 1f/(float)ActualWidth, 1f/(float)ActualHeight);
                     var ar = globalTransform.Viewport.X / globalTransform.Viewport.Y;
 
-                    var fov = (c is PerspectiveCameraCore pc) ? pc.FieldOfView : 90f;
+                    var fov = ((c is PerspectiveCameraCore pc) ? pc.FieldOfView : 90f) * Math.PI / 180;
 
                     var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
                     var zf = c.FarPlaneDistance + 0.0;
@@ -142,6 +142,7 @@ namespace HelixToolkit.UWP
                     globalTransform.EyePos = this.camera.Position;
                 }
                 IsPerspective = this.camera is PerspectiveCameraCore;
+                globalTransform.IsPerspective = IsPerspective;
             }
         }
 
