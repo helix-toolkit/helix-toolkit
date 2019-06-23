@@ -60,9 +60,11 @@ namespace LineShadingDemo
             {
                 if(SetValue(ref enableArrowHeadTail, value))
                 {
+                    var texture = LineMaterial.Texture;
+                    var tscale = LineMaterial.TextureScale;
                     LineMaterial = value ?
-                        new LineArrowHeadTailMaterial() { ArrowSize = 0.04, Color = Colors.White } 
-                    : new LineArrowHeadMaterial() { ArrowSize = 0.04, Color = Colors.White };
+                        new LineArrowHeadTailMaterial() { ArrowSize = 0.04, Color = Colors.White, Texture = texture, TextureScale = tscale} 
+                    : new LineArrowHeadMaterial() { ArrowSize = 0.04, Color = Colors.White, Texture = texture, TextureScale = tscale };
                     OnPropertyChanged(nameof(LineMaterial));
                 }
             }
