@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Next Version]
+### Added
+
+### Improvement and Changes
+
+### Fixed
+1. FindHits not working with large scale transfroms (SharpDX) #1193
+
+
 ## [2.8.0] - 2019-06-22
 
 ### Added
