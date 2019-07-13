@@ -455,6 +455,14 @@ namespace HelixToolkit.UWP
                         group.AddChildNode(hxNode);
                     }
                 }
+                if(node.Metadata.Count > 0)
+                {
+                    group.Metadata = new Metadata();
+                    foreach (var metadata in node.Metadata.ToHelixMetadata())
+                    {
+                        group.Metadata.Add(metadata.Key, metadata.Value);
+                    }
+                }
                 return group;
             }
             /// <summary>
