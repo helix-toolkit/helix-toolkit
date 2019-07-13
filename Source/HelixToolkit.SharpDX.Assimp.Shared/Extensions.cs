@@ -1,7 +1,6 @@
 ﻿using Assimp;
-using SharpDX.IO;
 using System;
-using System.IO;
+using System.Collections.Generic;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -155,6 +154,90 @@ namespace HelixToolkit.UWP
             public static UVTransform ToHelixUVTransform(this global::Assimp.UVTransform transform)
             {
                 return new UVTransform(transform.Rotation, transform.Scaling.ToSharpDXVector2(), transform.Translation.ToSharpDXVector2());
+            }
+
+            /// <summary>
+            /// To the type of the helix metadata.
+            /// </summary>
+            /// <param name="type">The type.</param>
+            /// <returns></returns>
+            /// <exception cref="NotSupportedException">Type {type} is not supported.</exception>
+            public static Model.MetaDataType ToHelixMetadataType(this global::Assimp.MetaDataType type)
+            {
+                switch(type)
+                {
+                    case MetaDataType.Bool:
+                        return Model.MetaDataType.Bool;
+                    case MetaDataType.Double:
+                        return Model.MetaDataType.Double;
+                    case MetaDataType.Float:
+                        return Model.MetaDataType.Float;
+                    case MetaDataType.Int32:
+                        return Model.MetaDataType.Int32;
+                    case MetaDataType.String:
+                        return Model.MetaDataType.String;
+                    case MetaDataType.UInt64:
+                        return Model.MetaDataType.UInt64;
+                    case MetaDataType.Vector3D:
+                        return Model.MetaDataType.Vector3D;
+                    default:
+                        throw new NotSupportedException($"Type {type} is not supported.");
+                }
+            }
+
+            /// <summary>
+            /// To the type of the assimp metadata.
+            /// </summary>
+            /// <param name="type">The type.</param>
+            /// <returns></returns>
+            /// <exception cref="NotSupportedException">Type {type} is not supported.</exception>
+            public static MetaDataType ToAssimpMetadataType(this Model.MetaDataType type)
+            {
+                switch (type)
+                {
+                    case Model.MetaDataType.Bool:
+                        return MetaDataType.Bool;
+                    case Model.MetaDataType.Double:
+                        return MetaDataType.Double;
+                    case Model.MetaDataType.Float:
+                        return MetaDataType.Float;
+                    case Model.MetaDataType.Int32:
+                        return MetaDataType.Int32;
+                    case Model.MetaDataType.String:
+                        return MetaDataType.String;
+                    case Model.MetaDataType.UInt64:
+                        return MetaDataType.UInt64;
+                    case Model.MetaDataType.Vector3D:
+                        return MetaDataType.Vector3D;
+                    default:
+                        throw new NotSupportedException($"Type {type} is not supported.");
+                }
+            }
+
+            /// <summary>
+            /// To the helix metadata.
+            /// </summary>
+            /// <param name="m">The m.</param>
+            /// <returns></returns>
+            public static IEnumerable<KeyValuePair<string, Model.Metadata.Entry>> ToHelixMetadata(this Metadata m)
+            {
+                foreach(var d in m)
+                {
+                    yield return new KeyValuePair<string, Model.Metadata.Entry>(d.Key, new Model.Metadata.Entry(d.Value.DataType.ToHelixMetadataType(), d.Value.Data));
+                }
+            }
+
+            /// <summary>
+            /// To the assimp metadata.
+            /// </summary>
+            /// <param name="m">The m.</param>
+            /// <returns></returns>
+            public static IEnumerable<KeyValuePair<string, Metadata.Entry>> ToAssimpMetadata(this Model.Metadata m)
+            {
+                foreach (var d in m)
+                {
+                    yield return new KeyValuePair<string, Metadata.Entry>(d.Key, new Metadata.Entry(d.Value.DataType.ToAssimpMetadataType(), d.Value.Data));
+                }
             }
         }
     }
