@@ -568,7 +568,7 @@ namespace HelixToolkit.UWP
                 modelHits.Clear();
                 var modelInv = modelMatrix.Inverted();
                 if (modelInv == Matrix.Zero) { return false; }//Cannot be inverted
-                var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.TransformNormal(rayWS.Direction, modelInv));
+                var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
 
                 int parent = -1;
                 int curr = -1;
