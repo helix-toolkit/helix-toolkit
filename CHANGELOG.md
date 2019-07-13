@@ -3,11 +3,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Next Version]
 ### Added
+1. Assimp Metadata #1195 (WPF.SharpDX/UWP/Core)
 
 ### Improvement and Changes
 
 ### Fixed
-1. FindHits not working with large scale transfroms (SharpDX) #1193
+1. FindHits not working with large scale transfroms #1193 (WPF.SharpDX/UWP/Core)
 
 
 ## [2.8.0] - 2019-06-22
