@@ -6,7 +6,7 @@
     <title>HelixToolkit for netstandard and netcore (based on SharpDX)</title>
     <authors>objo, Lunci</authors>
     <license type="expression">MIT</license>
-    <projectUrl>http://helix-toolkit.github.io/</projectUrl>
+    <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom 3D controls for netstandard and netcore based on SharpDX.</description>
