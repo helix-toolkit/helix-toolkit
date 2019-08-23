@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
     using Point = Windows.Foundation.Point;
     using System;
     using Windows.UI.Xaml.Input;
+    using System.Collections.Generic;
 
     /// <summary>
     /// An abstract base class for the mouse gesture handlers.
@@ -27,12 +28,12 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseGestureHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
+        /// <param name="cameraController">
         /// The viewport.
         /// </param>
-        protected MouseGestureHandler(CameraController viewport)
+        protected MouseGestureHandler(CameraController cameraController)
         {
-            this.CameraController = viewport;
+            this.Controller = cameraController;
             //this.ManipulationWatch = new Stopwatch();
         }
 
@@ -43,7 +44,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                if (CameraController.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
+                if (Controller.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                 {
                     return this.MouseDownNearestPoint3D.Value;
                 }
@@ -64,7 +65,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.ActualCamera as ProjectionCamera;
+                return this.Controller.ActualCamera as ProjectionCamera;
             }
         }
 
@@ -76,26 +77,26 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.CameraMode;
+                return this.Controller.CameraMode;
             }
         }
 
         /// <summary>
         /// Gets or sets the last point (in 2D screen coordinates).
         /// </summary>
-        protected Point LastPoint { get; set; }
+        protected Vector2 LastPoint;
 
         /// <summary>
         /// Gets or sets the last point (in 3D world coordinates).
         /// </summary>
-        protected Point3D? LastPoint3D { get; set; }
+        protected Point3D? LastPoint3D;
         /// <summary>
         /// Use to invert the left handed system
         /// </summary>
         /// <value>
         /// The inv.
         /// </value>
-        protected int inv { private set; get; } = 1;
+        protected int inv = 1;
         /// <summary>
         /// Gets the model up direction.
         /// </summary>
@@ -104,24 +105,30 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.ModelUpDirection;
+                return this.Controller.ModelUpDirection;
             }
         }
 
         /// <summary>
         /// Gets or sets the mouse down point at the nearest hit element (3D world coordinates).
         /// </summary>
-        protected Point3D? MouseDownNearestPoint3D { get; set; }
-
+        protected Point3D? MouseDownNearestPoint3D;
+        /// <summary>
+        /// Gets or sets the mouse down nearest hit model bounding box center.
+        /// </summary>
+        /// <value>
+        /// The mouse down nearest model bound center.
+        /// </value>
+        protected Vector3? MouseDownNearestModelBoundCenter { set; get; }
         /// <summary>
         /// Gets or sets the mouse down point (2D screen coordinates).
         /// </summary>
-        protected Point MouseDownPoint { get; set; }
+        protected Vector2 MouseDownPoint;
 
         /// <summary>
         /// Gets or sets the mouse down point (3D world coordinates).
         /// </summary>
-        protected Point3D? MouseDownPoint3D { get; set; }
+        protected Point3D? MouseDownPoint3D;
 
         /// <summary>
         /// Gets the rotation sensitivity.
@@ -131,7 +138,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.RotationSensitivity;
+                return this.Controller.RotationSensitivity;
             }
         }
 
@@ -139,7 +146,7 @@ namespace HelixToolkit.UWP
         /// Gets the viewport.
         /// </summary>
         /// <value>The viewport.</value>
-        protected CameraController CameraController { get; private set; }
+        protected CameraController Controller { get; private set; }
 
         /// <summary>
         /// Gets the zoom sensitivity.
@@ -149,7 +156,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.ZoomSensitivity;
+                return this.Controller.ZoomSensitivity;
             }
         }
 
@@ -158,16 +165,17 @@ namespace HelixToolkit.UWP
         /// </summary>
         private CoreCursor OldCursor { get; set; }
 
+        private List<HitTestResult> hits = new List<HitTestResult>();
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="Point"/> instance containing the event data.
+        /// The <see cref="Vector2"/> instance containing the event data.
         /// </param>
         public virtual void Completed(Point e)
         {
             var elapsed = (double)(Stopwatch.GetTimestamp() - startTick) / Stopwatch.Frequency * 1000; //this.ManipulationWatch.ElapsedMilliseconds;
-            if (elapsed > 0 && elapsed < this.CameraController.SpinReleaseTime)
+            if (elapsed > 0 && elapsed < this.Controller.SpinReleaseTime)
             {
                 this.OnInertiaStarting(elapsed);
             }
@@ -178,9 +186,9 @@ namespace HelixToolkit.UWP
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="Point"/> instance containing the event data.
+        /// The <see cref="Vector2"/> instance containing the event data.
         /// </param>
-        public virtual void Delta(Point e)
+        public virtual void Delta(Vector2 e)
         {
         }
 
@@ -199,14 +207,14 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            this.CameraController.Viewport.PointerReleased -= OnMouseUp;
-            this.CameraController.Viewport.PointerMoved -= OnMouseMove;
+            this.Controller.Viewport.PointerReleased -= OnMouseUp;
+            this.Controller.Viewport.PointerMoved -= OnMouseMove;
 
-            this.CameraController.Viewport.PointerReleased += OnMouseUp;
+            this.Controller.Viewport.PointerReleased += OnMouseUp;
             //this.Viewport.Focus();
-            this.CameraController.Viewport.CapturePointer(e.Pointer);
+            this.Controller.Viewport.CapturePointer(e.Pointer);
             this.OnMouseDown(sender, e);
-            this.CameraController.Viewport.PointerMoved += OnMouseMove;
+            this.Controller.Viewport.PointerMoved += OnMouseMove;
         }
 
         private long startTick;
@@ -224,6 +232,8 @@ namespace HelixToolkit.UWP
             //this.ManipulationWatch.Restart();
             startTick = Stopwatch.GetTimestamp();
             inv = Camera.CreateLeftHandSystem ? -1 : 1;
+            Controller.StopAnimations();
+            Controller.PushCameraSetting();
         }
 
         /// <summary>
@@ -243,15 +253,26 @@ namespace HelixToolkit.UWP
         /// </returns>
         public Point3D? UnProject(Point p, Point3D position, Vector3D normal)
         {
+            return UnProject(p.ToVector2(), position, normal);
+        }
+
+        public Point3D? UnProject(Vector2 p, Point3D position, Vector3D normal)
+        {
             var ray = this.GetRay(p);
             if (ray == null)
             {
                 return null;
             }
 
-            return ray.PlaneIntersection(position, normal);
+            if (ray.PlaneIntersection(position, normal, out var intersection))
+            {
+                return intersection;
+            }
+            else
+            {
+                return null;
+            }
         }
-
         /// <summary>
         /// Un-projects a point from the screen (2D) to a point on the plane trough the camera target point.
         /// </summary>
@@ -296,9 +317,13 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected Ray GetRay(Point position)
         {
-            return this.CameraController.Viewport.UnProject(position);
+            return this.Controller.Viewport.UnProject(position);
         }
 
+        protected Ray GetRay(Vector2 position)
+        {
+            return this.Controller.Viewport.UnProject(position);
+        }
         /// <summary>
         /// Called when inertia is starting.
         /// </summary>
@@ -320,7 +345,7 @@ namespace HelixToolkit.UWP
         /// </param>
         protected virtual void OnMouseDown(object sender, PointerRoutedEventArgs e)
         {
-            this.Started(e.GetCurrentPoint(this.CameraController.Viewport).Position);
+            this.Started(e.GetCurrentPoint(this.Controller.Viewport).Position);
 
             this.OldCursor = Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor;
             Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new CoreCursor(this.GetCursor(), OldCursor.Id);
@@ -337,7 +362,7 @@ namespace HelixToolkit.UWP
         /// </param>
         protected virtual void OnMouseMove(object sender, PointerRoutedEventArgs e)
         {
-            this.Delta(e.GetCurrentPoint(this.CameraController.Viewport).Position);
+            this.Delta(e.GetCurrentPoint(this.Controller.Viewport).Position.ToVector2());
         }
 
         /// <summary>
@@ -351,11 +376,11 @@ namespace HelixToolkit.UWP
         /// </param>
         protected virtual void OnMouseUp(object sender, PointerRoutedEventArgs e)
         {
-            this.CameraController.Viewport.PointerMoved -= this.OnMouseMove;
-            this.CameraController.Viewport.PointerReleased -= this.OnMouseUp;
-            this.CameraController.Viewport.ReleasePointerCapture(e.Pointer);
+            this.Controller.Viewport.PointerMoved -= this.OnMouseMove;
+            this.Controller.Viewport.PointerReleased -= this.OnMouseUp;
+            this.Controller.Viewport.ReleasePointerCapture(e.Pointer);
             Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = this.OldCursor;
-            this.Completed(e.GetCurrentPoint(this.CameraController.Viewport).Position);
+            this.Completed(e.GetCurrentPoint(this.Controller.Viewport).Position);
         }
 
         /// <summary>
@@ -369,7 +394,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected Point Project(Point3D p)
         {
-            return this.CameraController.Viewport.Project(p);
+            return this.Controller.Viewport.Project(p).ToPoint();
         }
 
         /// <summary>
@@ -380,21 +405,29 @@ namespace HelixToolkit.UWP
         /// </param>
         private void SetMouseDownPoint(Point position)
         {
-            this.MouseDownPoint = position;
-
-            Point3D nearestPoint;
-            Vector3D normal;
-            Element3D visual;
-            if (!this.CameraController.Viewport.FixedRotationPointEnabled && this.CameraController.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
+            this.MouseDownPoint = position.ToVector2();
+            if (!this.Controller.Viewport.FixedRotationPointEnabled && this.Controller.Viewport.FindHitsInFrustum(this.MouseDownPoint, ref hits))
             {
-                this.MouseDownNearestPoint3D = nearestPoint;
+                if (hits.Count > 0)
+                {
+                    MouseDownNearestPoint3D = hits[0].PointHit;
+                    if (hits[0].ModelHit is Element3D ele)
+                    {
+                        MouseDownNearestModelBoundCenter = ele.BoundsWithTransform.Center;
+                    }
+                    else if (hits[0].ModelHit is Model.Scene.SceneNode node)
+                    {
+                        MouseDownNearestModelBoundCenter = node.BoundsWithTransform.Center;
+                    }
+                }
             }
             else
             {
-                this.MouseDownNearestPoint3D = null;
+                MouseDownNearestModelBoundCenter = null;
+                MouseDownNearestPoint3D = null;
             }
 
-            this.MouseDownPoint3D = this.UnProject(this.MouseDownPoint);
+            this.MouseDownPoint3D = this.UnProject(position);
         }
     }
 }

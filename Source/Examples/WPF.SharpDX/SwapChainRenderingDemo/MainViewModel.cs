@@ -153,7 +153,6 @@
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             
 
             // ----------------------------------------------
@@ -167,9 +166,9 @@
 
             // ----------------------------------------------
             // setup scene
-            this.AmbientLightColor = Colors.DimGray;
+            this.AmbientLightColor = Colors.Gray;
 
-            this.Light1Color = Colors.White;
+            this.Light1Color = Colors.LightGray;
             this.Light2Color = Colors.Red;
             this.Light3Color = Colors.LightYellow;
             this.Light4Color = Colors.LightBlue;

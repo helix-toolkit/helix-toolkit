@@ -6,10 +6,14 @@ using global::SharpDX;
 using System;
 using System.Collections.Generic;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     /// <summary>
@@ -50,9 +54,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 //We are doing a relative distance comparison to find the maximum distance
                 //from the center of our sphere.
-                float distance;
                 var p = points[i];
-                Vector3.DistanceSquared(ref center, ref p, out distance);
+                Vector3.DistanceSquared(ref center, ref p, out float distance);
 
                 if (distance > radius)
                     radius = distance;

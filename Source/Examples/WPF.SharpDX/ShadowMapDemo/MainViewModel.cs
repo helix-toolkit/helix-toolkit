@@ -22,6 +22,7 @@ namespace ShadowMapDemo
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using System.Diagnostics;
+    using System.Windows;
 
     public class MainViewModel : BaseViewModel
     {
@@ -50,17 +51,16 @@ namespace ShadowMapDemo
         //public Vector3 DirectionalLightDirection { get; private set; }
         public Media.Color DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
-        public Vector2 ShadowMapResolution { get; private set; }
+        public Size ShadowMapResolution { get; private set; }
 
         public double XValue { get { return this.xvalue; } set { this.SetXValue(value); } }
-        public Camera Camera1 { private set; get; }
+        public ProjectionCamera Camera1 { private set; get; }
         //public Camera Camera2 { private set; get; }
 
         public MainViewModel()
         {
 
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             Title = "Shadow Map Demo";
             SubTitle = "WPF & SharpDX";
 
@@ -69,7 +69,7 @@ namespace ShadowMapDemo
             this.DirectionalLightColor = Media.Colors.White;
             //this.DirectionalLightDirection = new Vector3(-1, -1, -1);
            // this.LightDirectionTransform = CreateAnimatedTransform(-DirectionalLightDirection.ToVector3D(), new Vector3D(0, 1, -1), 24);
-            this.ShadowMapResolution = new Vector2(2048, 2048);
+            this.ShadowMapResolution = new Size(2048, 2048);
 
             // camera setup
             this.Camera = new PerspectiveCamera { Position =new Point3D(0,1,1), LookDirection = new Vector3D(0,-1,-1), UpDirection = new Vector3D(0, 1, 0) };
@@ -100,7 +100,7 @@ namespace ShadowMapDemo
             RedMaterial = PhongMaterials.Glass;
             GreenMaterial = PhongMaterials.Green;
             BlueMaterial = PhongMaterials.Blue;
-
+            GrayMaterial.RenderShadowMap = RedMaterial.RenderShadowMap = GreenMaterial.RenderShadowMap = BlueMaterial.RenderShadowMap = true;
             //var b3 = new MeshBuilder();
             //b3.AddBox(new Vector3(), 0.3f, 0.3f, 0.3f, BoxFaces.All);
             //b3.AddCone(new Vector3(0, 0.3f, 0), new Vector3(0, 0f, 0), 0.2f, true, 24);

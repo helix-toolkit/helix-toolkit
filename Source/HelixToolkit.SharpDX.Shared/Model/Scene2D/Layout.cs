@@ -5,63 +5,71 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene2D
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public enum HorizontalAlignment
+    namespace Model.Scene2D
     {
-        Left, Right, Center, Stretch
-    }
-
-    public enum VerticalAlignment
-    {
-        Top, Bottom, Center, Stretch
-    }
-
-    public enum Visibility
-    {
-        Visible, Collapsed, Hidden
-    }
-
-    public enum Orientation
-    {
-        Horizontal, Vertical
-    }
-
-    public struct Thickness : IEquatable<Thickness>
-    {
-        public float Left;
-        public float Right;
-        public float Top;
-        public float Bottom;
-
-        public Thickness(float size)
+        public enum HorizontalAlignment
         {
-            Left = size;
-            Right = size;
-            Top = size;
-            Bottom = size;
+            Left, Right, Center, Stretch
         }
 
-        public Thickness(float left, float right, float top, float bottom)
+        public enum VerticalAlignment
         {
-            Left = left;
-            Right = right;
-            Top = top;
-            Bottom = bottom;
+            Top, Bottom, Center, Stretch
         }
 
-        public bool Equals(Thickness other)
+        public enum Visibility
         {
-            return this.Left == other.Left && this.Right == other.Right && this.Top == other.Top && this.Bottom == other.Bottom;
+            Visible, Collapsed, Hidden
         }
 
-        public static implicit operator Vector4(Thickness t)
+        public enum Orientation
         {
-            return new Vector4(t.Left, t.Top, t.Right, t.Bottom);
+            Horizontal, Vertical
+        }
+
+        public struct Thickness : IEquatable<Thickness>
+        {
+            public float Left;
+            public float Right;
+            public float Top;
+            public float Bottom;
+
+            public Thickness(float size)
+            {
+                Left = size;
+                Right = size;
+                Top = size;
+                Bottom = size;
+            }
+
+            public Thickness(float left, float right, float top, float bottom)
+            {
+                Left = left;
+                Right = right;
+                Top = top;
+                Bottom = bottom;
+            }
+
+            public bool Equals(Thickness other)
+            {
+                return this.Left == other.Left && this.Right == other.Right && this.Top == other.Top && this.Bottom == other.Bottom;
+            }
+
+            public static implicit operator Vector4(Thickness t)
+            {
+                return new Vector4(t.Left, t.Top, t.Right, t.Bottom);
+            }
         }
     }
+
 }

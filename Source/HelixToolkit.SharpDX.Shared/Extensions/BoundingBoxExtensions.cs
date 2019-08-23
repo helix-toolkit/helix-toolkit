@@ -7,10 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     /// <summary>
@@ -38,8 +42,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3.Min(ref min, ref point, out min);
                 Vector3.Max(ref max, ref point, out max);
             }
-
-            return new BoundingBox(min, max);
+            var diff = max - min;
+            if (diff.AnySmallerOrEqual(0.0001f)) // Avoid bound too small on one dimension.
+            {
+                return new BoundingBox(min - new Vector3(0.1f), max + new Vector3(0.1f));
+            }
+            else
+            {
+                return new BoundingBox(min, max);
+            }
         }
 
         /// <summary>

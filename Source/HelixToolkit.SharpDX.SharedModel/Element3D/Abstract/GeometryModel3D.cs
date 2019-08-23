@@ -12,18 +12,25 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Core;
     using Model;
+#if !COREWPF
+    using Core;
     using Model.Scene;
+#endif
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
-    public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow
+    public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IApplyPostEffect
     {
-        #region DependencyProperties        
+#region DependencyProperties        
         /// <summary>
         /// The geometry property
         /// </summary>
@@ -33,6 +40,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Element3DCore).SceneNode as GeometryNode).Geometry = e.NewValue as Geometry3D;
                 }));
+        public static readonly DependencyProperty IsThrowingShadowProperty =
+                DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false, (d, e) =>
+                {
+                    if ((d as Element3D).SceneNode is IThrowingShadow t)
+                    {
+                        t.IsThrowingShadow = (bool)e.NewValue;
+                    }
+                }));
+
         /// <summary>
         /// The depth bias property
         /// </summary>
@@ -127,7 +143,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(GeometryProperty, value);
             }
         }
-
+        /// <summary>
+        /// <see cref="IThrowingShadow.IsThrowingShadow"/>
+        /// </summary>
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                SetValue(IsThrowingShadowProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsThrowingShadowProperty);
+            }
+        }
         /// <summary>
         /// List of instance matrix.
         /// </summary>
@@ -280,7 +309,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(EnableViewFrustumCheckProperty);
             }
         }
-        #endregion     
+#endregion
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {

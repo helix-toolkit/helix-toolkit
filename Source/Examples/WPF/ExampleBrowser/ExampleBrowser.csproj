@@ -43,20 +43,8 @@
     <Reference Include="3DTools">
       <HintPath>..\..\..\..\Components\3DTools.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Petzold.Media3D">
       <HintPath>..\..\..\..\Components\Petzold.Media3D.dll</HintPath>
-    </Reference>
-    <Reference Include="PropertyTools, Version=2.0.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.0\lib\net45\PropertyTools.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PropertyTools.Wpf, Version=2.0.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.0\lib\net45\PropertyTools.Wpf.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -1048,9 +1036,6 @@
       <Link>Examples\CuttingPlanes\Astronaut.3ds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1071,6 +1056,13 @@
       <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="NAudio">
+      <Version>1.7.3</Version>
+    </PackageReference>
+    <PackageReference Include="PropertyTools.Wpf">
+      <Version>2.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

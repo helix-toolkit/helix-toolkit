@@ -11,16 +11,22 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Runtime.CompilerServices;
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Cameras;
     using Model;
     using Shaders;
     using Utilities;
+    using Render;
+    using System.Diagnostics;
 
     /// <summary>
     /// The render-context is currently generated per frame
@@ -28,38 +34,24 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public sealed class RenderContext : DisposeObject
     {
-        private Matrix worldMatrix = Matrix.Identity;
-        private Matrix viewMatrix;
-        private Matrix projectionMatrix;
-
         /// <summary>
         /// Gets or sets the bounding frustum.
         /// </summary>
         /// <value>
         /// The bounding frustum.
         /// </value>
-        public BoundingFrustum BoundingFrustum { set; get; }
+        public BoundingFrustum BoundingFrustum;
 
         private CameraCore camera;
 
-        private bool matrixChanged = true;
-
+        public bool IsPerspective { get; private set; }
         /// <summary>
         /// Gets the view matrix.
         /// </summary>
         /// <value>
         /// The view matrix.
         /// </value>
-        public Matrix ViewMatrix
-        {
-            get { return viewMatrix; }
-            private set
-            {
-                if (viewMatrix == value) { return; }
-                viewMatrix = value;
-                matrixChanged = true;
-            }
-        }
+        public Matrix ViewMatrix;
 
         /// <summary>
         /// Gets or sets the projection matrix.
@@ -67,39 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The projection matrix.
         /// </value>
-        public Matrix ProjectionMatrix
-        {
-            get { return projectionMatrix; }
-            set
-            {
-                if (projectionMatrix == value)
-                {
-                    return;
-                }
-                projectionMatrix = value;
-                matrixChanged = true;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the world matrix.
-        /// </summary>
-        /// <value>
-        /// The world matrix.
-        /// </value>
-        public Matrix WorldMatrix
-        {
-            get { return worldMatrix; }
-            set
-            {
-                if (worldMatrix == value)
-                {
-                    return;
-                }
-                worldMatrix = value;
-                matrixChanged = true;
-            }
-        }
+        public Matrix ProjectionMatrix;
 
         /// <summary>
         /// Gets the viewport matrix.
@@ -112,13 +72,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return new Matrix((float)(ActualWidth / 2), 0, 0, 0,
-                    0, (float)(-ActualHeight / 2), 0, 0,
+                    0, -(float)(ActualHeight / 2), 0, 0,
                     0, 0, 1, 0,
                     (float)((ActualWidth - 1) / 2), (float)((ActualHeight - 1) / 2), 0, 1);
             }
         }
-
-        private Matrix screenViewProjectionMatrix = Matrix.Identity;
 
         /// <summary>
         /// Gets the screen view projection matrix.
@@ -126,13 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The screen view projection matrix.
         /// </value>
-        public Matrix ScreenViewProjectionMatrix
-        {
-            get
-            {
-                return GetScreenViewProjectionMatrix();
-            }
-        }
+        public Matrix ScreenViewProjectionMatrix { get; private set; } = Matrix.Identity;
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable bounding frustum].
@@ -140,15 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if [enable bounding frustum]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableBoundingFrustum { set; get; } = false;
-
-        /// <summary>
-        /// Gets or sets the device context.
-        /// </summary>
-        /// <value>
-        /// The device context.
-        /// </value>
-        public DeviceContext DeviceContext { private set; get; }
+        public bool EnableBoundingFrustum = false;
 
         /// <summary>
         /// Gets the actual width.
@@ -156,7 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The actual width.
         /// </value>
-        public double ActualWidth { get { return RenderHost.ActualWidth; } }
+        public float ActualWidth { get { return RenderHost.ActualWidth; } }
 
         /// <summary>
         /// Gets the actual height.
@@ -164,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The actual height.
         /// </value>
-        public double ActualHeight { get { return RenderHost.ActualHeight; } }
+        public float ActualHeight { get { return RenderHost.ActualHeight; } }
 
         /// <summary>
         /// Gets or sets the camera.
@@ -187,8 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 1f/(float)ActualWidth, 1f/(float)ActualHeight);
                     var ar = globalTransform.Viewport.X / globalTransform.Viewport.Y;
 
-                    var pc = c as PerspectiveCameraCore;
-                    var fov = (pc != null) ? pc.FieldOfView : 90f;
+                    var fov = ((c is PerspectiveCameraCore pc) ? pc.FieldOfView : 90f) * Math.PI / 180;
 
                     var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
                     var zf = c.FarPlaneDistance + 0.0;
@@ -198,6 +141,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
                     globalTransform.EyePos = this.camera.Position;
                 }
+                IsPerspective = this.camera is PerspectiveCameraCore;
+                globalTransform.IsPerspective = IsPerspective;
             }
         }
 
@@ -207,15 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render host.
         /// </value>
-        public IRenderHost RenderHost { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether is shadow pass.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if is shadow pass; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsShadowPass { get; set; } = false;
+        public IRenderHost RenderHost { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether is deferred pass.
@@ -223,22 +160,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if this instance is deferred pass; otherwise, <c>false</c>.
         /// </value>
-        public bool IsDeferredPass { get; set; }
+        public bool IsDeferredPass;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether is custom pass.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is custom pass; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsCustomPass { set; get; } = false;
         /// <summary>
         /// Gets or sets a value indicating whether is order independent transparent pass.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is oit pass; otherwise, <c>false</c>.
         /// </value>
-        public bool IsOITPass { set; get; } = false;
+        public bool IsOITPass = false;
 
         /// <summary>
         /// Gets or sets the name of the custom pass.
@@ -246,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The name of the custom pass.
         /// </value>
-        public string CustomPassName { set; get; } = "";
+        public string CustomPassName = "";
 
         /// <summary>
         /// Gets or sets the time stamp.
@@ -254,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The time stamp.
         /// </value>
-        public TimeSpan TimeStamp { set; get; }
+        public TimeSpan TimeStamp;
 
         /// <summary>
         /// Gets or sets the light scene.
@@ -262,9 +192,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The light scene.
         /// </value>
-        public Light3DSceneShared LightScene { private set; get; }
+        public readonly Light3DSceneShared LightScene;
 
-        private ConstantBufferProxy cbuffer;
+        private readonly ConstantBufferProxy cbuffer;
 
         private GlobalTransformStruct globalTransform;
 
@@ -282,10 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The shared resource.
         /// </value>
-        public ContextSharedResource SharedResource
-        {
-            private set; get;
-        }
+        public readonly ContextSharedResource SharedResource;
 
         /// <summary>
         /// Gets or sets a value indicating whether [update octree] automatically.
@@ -293,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if [update octree]; otherwise, <c>false</c>.
         /// </value>
-        public bool AutoUpdateOctree { set; get; } = true;
+        public bool AutoUpdateOctree = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether this render pass is using inverted cull mode.
@@ -303,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> Set invert cullmode flag; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInvertCullMode { set; get; } = false;
+        public bool IsInvertCullMode = false;
 
         /// <summary>
         /// Gets or sets the oit weight power used for color weight calculation. Default = 3;
@@ -360,19 +287,75 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (OITWeightMode)globalTransform.OITWeightMode;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [ssao enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [ssao enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool SSAOEnabled
+        {
+            set { globalTransform.SSAOEnabled = value ? 1u : 0; }
+            get { return globalTransform.SSAOEnabled == 1u ? true : false; }
+        }
+        /// <summary>
+        /// Gets or sets the ssao bias.
+        /// </summary>
+        /// <value>
+        /// The ssao bias.
+        /// </value>
+        public float SSAOBias
+        {
+            set { globalTransform.SSAOBias = value; }
+            get { return globalTransform.SSAOBias; }
+        }
+        /// <summary>
+        /// Gets or sets the ssao intensity.
+        /// </summary>
+        /// <value>
+        /// The ssao intensity.
+        /// </value>
+        public float SSAOIntensity
+        {
+            set { globalTransform.SSAOIntensity = value; }
+            get { return globalTransform.SSAOIntensity; }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [update scene graph requested] in this frame.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [update scene graph requested]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UpdateSceneGraphRequested
+        {
+            internal set;get;
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [update per frame renderable requested] in this frame.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [update per frame renderable requested]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UpdatePerFrameRenderableRequested
+        {
+            internal set;get;
+        }
+        /// <summary>
+        /// Gets a value indicating whether this instance is shadow map enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is shadow map enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsShadowMapEnabled => RenderHost.IsShadowMapEnabled;
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
         /// <param name="renderHost">The render host.</param>
-        /// <param name="renderContext">The render context.</param>
-        public RenderContext(IRenderHost renderHost, DeviceContext renderContext)
+        public RenderContext(IRenderHost renderHost)
         {
             this.RenderHost = renderHost;
-            this.IsShadowPass = false;
             this.IsDeferredPass = false;
             cbuffer = renderHost.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
-            DeviceContext = renderContext;
             LightScene = Collect(new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool));
             SharedResource = Collect(new ContextSharedResource());
             OITWeightPower = 3;
@@ -387,40 +370,174 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Matrix GetScreenViewProjectionMatrix()
         {
-            return screenViewProjectionMatrix;
+            return ScreenViewProjectionMatrix;
         }
 
         /// <summary>
         /// Call to update constant buffer for per frame
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UpdatePerFrameData()
+        public void UpdatePerFrameData(DeviceContextProxy deviceContext)
         {
-            UpdatePerFrameData(true, true);
+            UpdatePerFrameData(true, true, deviceContext);
         }
 
         /// <summary>
         /// Call to update constant buffer for per frame
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights)
-        {
+        public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights, DeviceContextProxy deviceContext)
+        {           
             if (updateGlobalTransform)
             {
-                if (matrixChanged)
-                {
-                    globalTransform.View = ViewMatrix;
-                    globalTransform.Projection = ProjectionMatrix;
-                    globalTransform.ViewProjection = globalTransform.View * globalTransform.Projection;
-                    screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
-                    matrixChanged = false;
-                }
-                cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
+                ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
+                globalTransform.View = ViewMatrix;
+                globalTransform.Projection = ProjectionMatrix;
+                globalTransform.ViewProjection = ViewMatrix * ProjectionMatrix;
+                globalTransform.TimeStamp = (float)Stopwatch.GetTimestamp()/Stopwatch.Frequency;                
+                cbuffer.UploadDataToBuffer(deviceContext, ref globalTransform);
             }
             if (updateLights)
             {
-                LightScene.UploadToBuffer(DeviceContext);
+                LightScene.LightModels.HasEnvironmentMap = SharedResource.EnvironementMap != null;
+                LightScene.LightModels.EnvironmentMapMipLevels = SharedResource.EnvironmentMapMipLevels;
+                LightScene.UploadToBuffer(deviceContext);
             }
+        }
+        /// <summary>
+        /// Gets the off screen texture. Same as <see cref="GetOffScreenRT(OffScreenTextureSize, global::SharpDX.DXGI.Format)"/> or <see cref="GetOffScreenDS(OffScreenTextureSize, global::SharpDX.DXGI.Format)"/>
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenTexture(OffScreenTextureType type, OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (type)
+            {
+                case OffScreenTextureType.RenderTarget:
+                    return GetOffScreenRT(size, format);
+                case OffScreenTextureType.DepthStencil:
+                    return GetOffScreenDS(size, format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+        /// <summary>
+        /// Gets the off screen render target.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    return RenderHost.RenderBuffer.FullResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    return RenderHost.RenderBuffer.HalfResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    return RenderHost.RenderBuffer.QuarterResRenderTargetPool.Get(format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Gets the off screen rt.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenRT(OffScreenTextureSize size, global::SharpDX.DXGI.Format format, out int width, out int height)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    width = RenderHost.RenderBuffer.FullResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.FullResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.FullResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    width = RenderHost.RenderBuffer.HalfResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.HalfResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.HalfResRenderTargetPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    width = RenderHost.RenderBuffer.QuarterResRenderTargetPool.Width;
+                    height = RenderHost.RenderBuffer.QuarterResRenderTargetPool.Height;
+                    return RenderHost.RenderBuffer.QuarterResRenderTargetPool.Get(format);
+                default:
+                    width = height = 0;
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+        /// <summary>
+        /// Gets the off screen depth stencil.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    return RenderHost.RenderBuffer.FullResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    return RenderHost.RenderBuffer.HalfResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    return RenderHost.RenderBuffer.QuarterResDepthStencilPool.Get(format);
+                default:
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+        /// <summary>
+        /// Gets the off screen ds.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetOffScreenDS(OffScreenTextureSize size, global::SharpDX.DXGI.Format format, out int width, out int height)
+        {
+            switch (size)
+            {
+                case OffScreenTextureSize.Full:
+                    width = RenderHost.RenderBuffer.FullResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.FullResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.FullResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Half:
+                    width = RenderHost.RenderBuffer.HalfResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.HalfResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.HalfResDepthStencilPool.Get(format);
+                case OffScreenTextureSize.Quarter:
+                    width = RenderHost.RenderBuffer.QuarterResDepthStencilPool.Width;
+                    height = RenderHost.RenderBuffer.QuarterResDepthStencilPool.Height;
+                    return RenderHost.RenderBuffer.QuarterResDepthStencilPool.Get(format);
+                default:
+                    width = height = 0;
+                    return ShaderResourceViewProxy.Empty;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetPingPongBufferNextRTV()
+        {
+            return RenderHost.RenderBuffer.FullResPPBuffer.NextRTV;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceViewProxy GetPingPongBufferCurrentRTV()
+        {
+            return RenderHost.RenderBuffer.FullResPPBuffer.CurrentRTV;
         }
     }
 }

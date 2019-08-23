@@ -15,11 +15,13 @@ using System.Linq;
 using global::SharpDX;
 
 #if !NETFX_CORE
-using System.Windows;
-//using System.Windows.Media.Imaging;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
 #if NETFX_CORE
@@ -39,6 +41,7 @@ namespace HelixToolkit.UWP
     using Ray3D = global::SharpDX.Ray;
     using Vector3D = global::SharpDX.Vector3;
     using Model;
+    using Core;
 
     public class Object3D
     {
@@ -58,6 +61,7 @@ namespace HelixToolkit.UWP
     /// http://www.martinreddy.net/gfx/3d/OBJ.spec
     /// http://www.eg-models.de/formats/Format_Obj.html
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class ObjReader : IModelReader
     {
         /// <summary>
@@ -74,6 +78,7 @@ namespace HelixToolkit.UWP
             this.DefaultColor = global::SharpDX.Color.Gold;
 
             this.Points = new List<Point3D>();
+            this.Colors = new List<Color4>();
             this.TextureCoordinates = new List<Point>();
             this.Normals = new List<Vector3D>();
 
@@ -383,7 +388,13 @@ namespace HelixToolkit.UWP
         /// Gets or sets the points.
         /// </summary>
         private IList<Point3D> Points { get; set; }
-
+        /// <summary>
+        /// Gets or sets the vertex colors.
+        /// </summary>
+        /// <value>
+        /// The colors.
+        /// </value>
+        private IList<Color4> Colors { set; get; }
         /// <summary>
         /// Gets or sets the stream reader.
         /// </summary>
@@ -544,6 +555,7 @@ namespace HelixToolkit.UWP
             var currentGroup = this.CurrentGroup;
             var builder = currentGroup.MeshBuilder;
             var positions = builder.Positions;
+            var colors = currentGroup.VertexColors;
             var textureCoordinates = builder.TextureCoordinates;
             var normals = builder.Normals;
 
@@ -667,7 +679,8 @@ namespace HelixToolkit.UWP
                 {
                     // add vertex
                     positions.Add(this.Points[vi - 1]);
-
+                    if (Colors.Count == Points.Count)
+                    { colors.Add(this.Colors[vi - 1]); }
                     // add texture coordinate (if enabled)
                     if (builder.HasTexCoords)
                     {
@@ -781,6 +794,17 @@ namespace HelixToolkit.UWP
             {
                 this.Points.Add(new Point3D((float)fields[0], (float)fields[1], (float)fields[2]));
             }
+            if(fields.Count >= 6)
+            {
+                if (fields.Count == 6)
+                {
+                    this.Colors.Add(new Color4((float)fields[3], (float)fields[4], (float)fields[5], 1f));
+                }
+                else
+                {
+                    this.Colors.Add(new Color4((float)fields[3], (float)fields[4], (float)fields[5], (float)fields[6]));
+                }
+            }
         }
 
         /// <summary>
@@ -838,7 +862,7 @@ namespace HelixToolkit.UWP
         /// </param>
         private void LoadMaterialLib(string mtlFile)
         {
-            var path = Path.GetFullPath(Path.Combine(this.TexturePath, "./" + mtlFile));
+            string path = PathHelpers.GetFullPath(this.TexturePath, mtlFile);
             if (!File.Exists(path))
             {
                 return;
@@ -997,7 +1021,7 @@ namespace HelixToolkit.UWP
             /// List of mesh builders.
             /// </summary>
             private readonly IList<MeshBuilder> meshBuilders;
-
+            private readonly IList<Color4Collection> vertexColors;
             /// <summary>
             /// List of materials.
             /// </summary>
@@ -1014,6 +1038,7 @@ namespace HelixToolkit.UWP
                 this.Name = name;
                 this.meshBuilders = new List<MeshBuilder>();
                 this.materials = new List<PhongMaterialCore>();
+                this.vertexColors = new List<Color4Collection>();
                 this.AddMesh();
             }
 
@@ -1041,6 +1066,10 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            public Color4Collection VertexColors
+            {
+                get { return this.vertexColors[this.vertexColors.Count - 1]; }
+            }
             /// <summary>
             /// Gets or sets the group name.
             /// </summary>
@@ -1054,6 +1083,7 @@ namespace HelixToolkit.UWP
             {
                 var meshBuilder = new MeshBuilder(true, true);
                 this.meshBuilders.Add(meshBuilder);
+                this.vertexColors.Add(new Color4Collection());
                 this.materials.Add(new PhongMaterialCore() { DiffuseColor = new Color(0, 1, 0, 1) });
             }
 
@@ -1066,10 +1096,11 @@ namespace HelixToolkit.UWP
                 for (int i = 0; i < this.meshBuilders.Count; i++)
                 {
                     this.meshBuilders[i].ComputeNormalsAndTangents(info.Faces, true);
+                    var mesh = this.meshBuilders[i].ToMeshGeometry3D();
+                    mesh.Colors = this.vertexColors[i];
                     yield return new Object3D
                     {
-
-                        Geometry = this.meshBuilders[i].ToMeshGeometry3D(),
+                        Geometry = mesh,
                         Material = this.materials[i],
                         Transform = new List<Matrix>()
                     };
@@ -1198,7 +1229,7 @@ namespace HelixToolkit.UWP
                 MemoryStream diffuseMapMS = null;
                 if (DiffuseMap != null)
                 {
-                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.DiffuseMap)), FileMode.Open))
+                    using (var fs = new FileStream(PathHelpers.GetFullPath(texturePath, this.DiffuseMap), FileMode.Open))
                     {
                         diffuseMapMS = new MemoryStream();
                         fs.CopyTo(diffuseMapMS);
@@ -1207,7 +1238,7 @@ namespace HelixToolkit.UWP
                 MemoryStream bumpMapMS = null;
                 if (BumpMap != null)
                 {
-                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.BumpMap)), FileMode.Open))
+                    using (var fs = new FileStream(PathHelpers.GetFullPath(texturePath, this.BumpMap), FileMode.Open))
                     {
                         bumpMapMS = new MemoryStream();
                         fs.CopyTo(bumpMapMS);
@@ -1216,10 +1247,19 @@ namespace HelixToolkit.UWP
                 MemoryStream alphaMapMS = null;
                 if (AlphaMap != null)
                 {
-                    using (var fs = new FileStream(Path.GetFullPath(Path.Combine(texturePath, "./" + this.AlphaMap)), FileMode.Open))
+                    using (var fs = new FileStream(PathHelpers.GetFullPath(texturePath, this.AlphaMap), FileMode.Open))
                     {
                         alphaMapMS = new MemoryStream();
                         fs.CopyTo(alphaMapMS);
+                    }
+                }
+                MemoryStream specularMapMS = null;
+                if (SpecularMap != null)
+                {
+                    using (var fs = new FileStream(PathHelpers.GetFullPath(texturePath, this.SpecularMap), FileMode.Open))
+                    {
+                        specularMapMS = new MemoryStream();
+                        fs.CopyTo(specularMapMS);
                     }
                 }
                 var mat = new PhongMaterialCore()
@@ -1227,12 +1267,12 @@ namespace HelixToolkit.UWP
                     AmbientColor = this.Ambient,
                     //AmbientMap = this.AmbientMap,
 
-                    DiffuseColor = this.Diffuse,
+                    DiffuseColor = new Color4(this.Diffuse.Red, this.Diffuse.Green, this.Diffuse.Blue, (float)Dissolved),
                     DiffuseMap = diffuseMapMS,
 
                     SpecularColor = this.Specular,
                     SpecularShininess = (float)this.SpecularCoefficient,
-                    //SpecularMap = this.SpecularMap,
+                    SpecularColorMap = specularMapMS,
 
                     NormalMap = bumpMapMS,
                     DiffuseAlphaMap = alphaMapMS,
@@ -1252,6 +1292,33 @@ namespace HelixToolkit.UWP
             //    return bmp;
             //}
 
+        }
+
+        /// <summary>
+        /// Path helpers.
+        /// </summary>
+        private static class PathHelpers
+        {
+            /// <summary>
+            /// Gets a full path.
+            /// </summary>
+            /// <param name="basePath">
+            /// The base path.
+            /// </param>
+            /// <param name="path">
+            /// The path.
+            /// </param>
+            public static string GetFullPath(string basePath, string path)
+            {
+                if (path.Length > 1
+                    && (path[0] == Path.DirectorySeparatorChar || path[0] == Path.AltDirectorySeparatorChar)
+                    && (path[1] != Path.DirectorySeparatorChar && path[1] != Path.AltDirectorySeparatorChar))
+                {
+                    path = path.Substring(1);
+                }
+    
+                return Path.GetFullPath(Path.Combine(basePath, path));
+            }
         }
     }
 }

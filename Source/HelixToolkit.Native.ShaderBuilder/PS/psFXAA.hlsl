@@ -1,3 +1,8 @@
+#define FXAA_PC 1
+//#define FXAA_HLSL_4 1
+#define FXAA_HLSL_5 1
+#define FXAA_QUALITY__PRESET 15
+#define FXAA_GREEN_AS_LUMA 0
 //----------------------------------------------------------------------------------
 // File:        FXAA\media/FXAA.hlsl
 // SDK Version: v1.2 
@@ -201,10 +206,6 @@ A. Or use FXAA_GREEN_AS_LUMA.
 // 0 = Don't use API.
 //
 /*--------------------------------------------------------------------------*/
-#define FXAA_PC 1
-//#define FXAA_HLSL_4 1
-#define FXAA_HLSL_5 1
-//#define FXAA_GREEN_AS_LUMA 1
 
 #ifndef FXAA_PS3
     #define FXAA_PS3 0
@@ -2137,8 +2138,8 @@ Texture2D    InputTexture : register(t0);
 
 float4 main(MeshOutlinePS_INPUT Input) : SV_Target
 {
-    //return texDiffuseMap.Sample(samplerDiffuse, Input.Tex.xy);
-    FxaaTex InputFXAATex = { samplerDiffuse, texDiffuseMap };
+    //return texDiffuseMap.Sample(samplerSurface, Input.Tex.xy);
+    FxaaTex InputFXAATex = { samplerSurface, texDiffuseMap };
     float4 c = FxaaPixelShader(
         Input.Tex.xy, // FxaaFloat2 pos,
         FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f), // FxaaFloat4 fxaaConsolePosPos,

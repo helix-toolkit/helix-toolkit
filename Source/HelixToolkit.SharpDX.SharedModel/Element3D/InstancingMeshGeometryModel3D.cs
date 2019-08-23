@@ -5,15 +5,20 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
-
+#endif
     public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
     {
-        #region DependencyProperties
+#region DependencyProperties
         /// <summary>
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
         /// </summary>
@@ -29,13 +34,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var d = s as InstancingMeshGeometryModel3D;
 #if NETFX_CORE
-                if(e.OldValue != null && d.itemsContainer != null)
+                if(e.OldValue != null)
                 {
-                    d.itemsContainer.Items.Remove(e.OldValue);
+                    d.Items.Remove(e.OldValue);
                 }
-                if(e.NewValue != null && d.itemsContainer != null)
+                if(e.NewValue != null)
                 {
-                    d.itemsContainer.Items.Add(e.NewValue);
+                    d.Items.Add(e.NewValue);
                 }
 #else
                 if (e.OldValue != null)
@@ -95,7 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(InstanceAdvArrayProperty, value); }
         }
 
-        #endregion
+#endregion
 
         protected override SceneNode OnCreateSceneNode()
         {
@@ -105,9 +110,9 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if(OctreeManager != null && !itemsContainer.Items.Contains(OctreeManager))
+            if(OctreeManager != null && !Items.Contains(OctreeManager))
             {
-                itemsContainer.Items.Add(OctreeManager);
+                Items.Add(OctreeManager);
             }
         }
 #endif

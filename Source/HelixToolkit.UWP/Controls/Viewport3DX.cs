@@ -72,16 +72,20 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The camera core.
         /// </value>
-        public CameraCore CameraCore { get { return this.Camera; } }
+        public CameraCore CameraCore { get { return this.cameraController.ActualCamera; } }
         /// <summary>
-        /// Gets the world matrix.
+        /// Gets the items.
         /// </summary>
         /// <value>
-        /// The world matrix.
+        /// The items.
         /// </value>
-        public Matrix WorldMatrix { get; } = Matrix.Identity;
-
         public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
+
+        /// <summary>
+        /// Gets the observable collection of <see cref="InputBinding"/>.
+        /// </summary>
+        public InputBindingCollection InputBindings { get; } = new InputBindingCollection();
+
         /// <summary>
         /// Gets the renderables.
         /// </summary>
@@ -103,8 +107,8 @@ namespace HelixToolkit.UWP
                         yield return item;
                     }
                 }
-                yield return viewCube;
-                yield return coordinateSystem;
+                yield return viewCube.SceneNode;
+                yield return coordinateSystem.SceneNode;
             }
         }
 
@@ -141,6 +145,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public RenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
 
+        public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)ActualWidth, (int)ActualHeight); } }
         /// <summary>
         /// Gets or sets the render host internal.
         /// </summary>
@@ -159,7 +164,7 @@ namespace HelixToolkit.UWP
         /// The nearest valid result during a hit test.
         /// </summary>
         private HitTestResult currentHit;
-
+        private List<HitTestResult> hits = new List<HitTestResult>();
         private bool enableMouseButtonHitTest = true;
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
@@ -216,6 +221,7 @@ namespace HelixToolkit.UWP
             this.cameraController.EnableTouchRotate = this.IsTouchRotateEnabled;
             this.cameraController.EnablePinchZoom = this.IsPinchZoomEnabled;
             this.cameraController.EnableThreeFingerPan = this.IsThreeFingerPanningEnabled;
+            this.cameraController.PinchZoomAtCenter = this.PinchZoomAtCenter;
             this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
             this.cameraController.MaximumFieldOfView = this.MaximumFieldOfView;
@@ -223,6 +229,8 @@ namespace HelixToolkit.UWP
             this.cameraController.ModelUpDirection = this.ModelUpDirection;
             this.cameraController.ZoomDistanceLimitFar = this.ZoomDistanceLimitFar;
             this.cameraController.ZoomDistanceLimitNear = this.ZoomDistanceLimitNear;
+            this.cameraController.FixedRotationPoint = this.FixedRotationPoint;
+            this.cameraController.FixedRotationPointEnabled = this.FixedRotationPointEnabled;
             #endregion
         }
 
@@ -279,6 +287,12 @@ namespace HelixToolkit.UWP
                     itemsContainer.Items.Add(item);
                 }
             }
+
+            if (hostPresenter != null)
+            {
+                renderHostInternal.Rendered -= this.RaiseRenderHostRendered;
+                renderHostInternal.ExceptionOccurred -= RenderHostInternal_ExceptionOccurred;
+            }
             hostPresenter = GetTemplateChild(ViewportPartNames.PART_HostPresenter) as ContentPresenter;
             if (hostPresenter != null)
             {
@@ -286,10 +300,10 @@ namespace HelixToolkit.UWP
                 renderHostInternal = (hostPresenter.Content as SwapChainRenderHost).RenderHost;
                 if (renderHostInternal != null)
                 {
+                    renderHostInternal.RenderConfiguration.RenderD2D = false;
                     renderHostInternal.Viewport = this;
                     renderHostInternal.IsRendering = Visibility == Visibility.Visible;
                     renderHostInternal.EffectsManager = this.EffectsManager;
-                    renderHostInternal.RenderTechnique = this.RenderTechnique;
                     renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
                     renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
                     renderHostInternal.IsShadowMapEnabled = this.IsShadowMappingEnabled;
@@ -304,19 +318,52 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                     renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
                     renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
-                    renderHostInternal.OnRendered -= this.OnRendered;
-                    renderHostInternal.OnRendered += this.OnRendered;
-                    renderHostInternal.ExceptionOccurred -= RenderHostInternal_ExceptionOccurred;
+                    renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
+                    renderHostInternal.RenderConfiguration.EnableSSAO = EnableSSAO;
+                    renderHostInternal.RenderConfiguration.SSAORadius = (float)SSAOSamplingRadius;
+                    renderHostInternal.RenderConfiguration.SSAOIntensity = (float)SSAOIntensity;
+                    renderHostInternal.RenderConfiguration.SSAOQuality = SSAOQuality;
+                    renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, MinimumUpdateCount);
+                    renderHostInternal.Rendered += this.RaiseRenderHostRendered;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
+
+                    if (ShowFrameRate)
+                    {
+                        this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
+                    }
+                    else
+                    {
+                        this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.FPS;
+                    }
+                    if (ShowFrameDetails)
+                    {
+                        this.renderHostInternal.ShowRenderDetail |= RenderDetail.Statistics;
+                    }
+                    else
+                    {
+                        this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.Statistics;
+                    }
+                    if (ShowTriangleCountInfo)
+                    {
+                        this.renderHostInternal.ShowRenderDetail |= RenderDetail.TriangleInfo;
+                    }
+                    else
+                    {
+                        this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.TriangleInfo;
+                    }
+                    if (ShowCameraInfo)
+                    {
+                        this.renderHostInternal.ShowRenderDetail |= RenderDetail.Camera;
+                    }
+                    else
+                    {
+                        this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.Camera;
+                    }
                 }
             }
             if(viewCube == null)
             {
                 viewCube = GetTemplateChild(ViewportPartNames.PART_ViewCube) as ViewBoxModel3D;
-                if(viewCube != null)
-                {
-                    viewCube.ViewBoxClickedEvent += ViewCube_ViewBoxClickedEvent;
-                }
             }
 
             if (viewCube == null)
@@ -378,7 +425,7 @@ namespace HelixToolkit.UWP
                 {
                     e.Attach(host);
                 }
-                sharedModelContainerInternal?.Attach(host);
+                SharedModelContainerInternal?.Attach(host);
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Attach(host);
@@ -399,7 +446,7 @@ namespace HelixToolkit.UWP
                 {
                     e.Detach();
                 }
-                sharedModelContainerInternal?.Detach();
+                SharedModelContainerInternal?.Detach(renderHostInternal);
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Detach();
@@ -475,8 +522,7 @@ namespace HelixToolkit.UWP
 
         private bool ViewBoxHitTest(Point p)
         {
-            var camera = Camera as ProjectionCamera;
-            if (camera == null)
+            if (!(Camera is ProjectionCamera camera))
             {
                 return false;
             }
@@ -485,6 +531,16 @@ namespace HelixToolkit.UWP
             var hits = new List<HitTestResult>();
             if (viewCube.HitTest(RenderContext, ray, ref hits))
             {
+                var normal = hits[0].NormalAtHit;
+                if (Vector3.Cross(normal, ModelUpDirection).LengthSquared() < 1e-5)
+                {
+                    var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);
+                    ViewCubeClicked(hits[0].NormalAtHit, vecLeft);
+                }
+                else
+                {
+                    ViewCubeClicked(hits[0].NormalAtHit, ModelUpDirection);
+                }
                 return true;
             }
             else
@@ -493,19 +549,18 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private void ViewCube_ViewBoxClickedEvent(object sender, ViewBoxNode.ViewBoxClickedEventArgs e)
+        private void ViewCubeClicked(Vector3 lookDirection, Vector3 upDirection)
         {
-            var pc = this.Camera as ProjectionCamera;
-            if (pc == null)
+            if (!(this.Camera is ProjectionCamera pc))
             {
                 return;
             }
 
             var target = pc.Position + pc.LookDirection;
             float distance = pc.LookDirection.Length();
-            var look = e.LookDirection * distance;
+            var look = lookDirection * distance;
             var newPosition = target - look;
-            pc.AnimateTo(newPosition, look, e.UpDirection, 500);
+            pc.AnimateTo(newPosition, look, upDirection, 500);
         }
 
         /// <summary>
@@ -513,7 +568,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input event (which mouse button pressed?)
         /// </param>
         private void MouseDownHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -521,28 +576,34 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-
-            var hits = this.FindHits(pt);
-            if (hits.Count > 0)
+           
+            if (this.FindHits(pt.ToVector2(), ref hits) && hits.Count > 0)
             {
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
                 if (this.currentHit != null)
                 {
-                    (this.currentHit.ModelHit as Element3D)?.RaiseMouseDownEvent(this.currentHit, pt, this);
+                    if (currentHit.ModelHit is Element3D ele)
+                    {
+                        ele.RaiseMouseDownEvent(this.currentHit, pt, this, originalInputEventArgs);
+                    }
+                    else if(currentHit.ModelHit is SceneNode node)
+                    {
+                        node.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
+                    }
                 }
             }
             else
             {
                 currentHit = null;               
             }
-            this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this));
+            this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this, originalInputEventArgs));
         }
         /// <summary>
         /// Handles hit testing on mouse move.
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input (which mouse button pressed?)
         /// </param>
         private void MouseMoveHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -552,16 +613,23 @@ namespace HelixToolkit.UWP
             }
             if (this.currentHit != null)
             {
-                (this.currentHit.ModelHit as Element3D)?.RaiseMouseMoveEvent(this.currentHit, pt, this);
+                if (currentHit.ModelHit is Element3D ele)
+                {
+                    ele.RaiseMouseMoveEvent(this.currentHit, pt, this, originalInputEventArgs);
+                }
+                else if(currentHit.ModelHit is SceneNode node)
+                {
+                    node.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
+                }
             }
-            this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this));
+            this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this, originalInputEventArgs));
         }
         /// <summary>
         /// Handles hit testing on mouse up.
         /// </summary>
         /// <param name="pt">The hit point.</param>
         /// <param name="originalInputEventArgs">
-        /// The original input event for future use (which mouse button pressed?)
+        /// The original input event (which mouse button pressed?)
         /// </param>
         private void MouseUpHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
         {
@@ -571,10 +639,17 @@ namespace HelixToolkit.UWP
             }
             if (currentHit != null)
             {
-                (this.currentHit.ModelHit as Element3D)?.RaiseMouseUpEvent(this.currentHit, pt, this);               
+                if (currentHit.ModelHit is Element3D ele)
+                {
+                    ele.RaiseMouseUpEvent(this.currentHit, pt, this, originalInputEventArgs);
+                }
+                else if(currentHit.ModelHit is SceneNode node)
+                {
+                    node.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
+                }
                 currentHit = null;
             }
-            this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this));
+            this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this, originalInputEventArgs));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -596,6 +671,7 @@ namespace HelixToolkit.UWP
         {
             CameraController.OnTimeStep(timeStamp.Ticks);
             this.FrameRate = Math.Round(renderHostInternal.RenderStatistics.FPSStatistics.AverageFrequency, 2);
+            this.RenderDetailOutput = renderHostInternal.RenderStatistics.GetDetailString();
         }
 
         /// <summary>
@@ -613,7 +689,6 @@ namespace HelixToolkit.UWP
         public void AddMoveForce(double dx, double dy, double dz)
         {
             CameraController.AddMoveForce(new Vector3((float)dx, (float)dy, (float)dz));
-            InvalidateRender();
         }
 
         /// <summary>
@@ -625,7 +700,6 @@ namespace HelixToolkit.UWP
         public void AddMoveForce(Vector3 delta)
         {
             CameraController.AddMoveForce(delta);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -640,7 +714,6 @@ namespace HelixToolkit.UWP
         public void AddPanForce(double dx, double dy)
         {
             CameraController.AddPanForce(dx, dy);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -652,7 +725,6 @@ namespace HelixToolkit.UWP
         public void AddPanForce(Vector3 pan)
         {
             CameraController.AddPanForce(pan);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -667,7 +739,6 @@ namespace HelixToolkit.UWP
         public void AddRotateForce(double dx, double dy)
         {
             CameraController.AddRotateForce(dx, dy);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -679,7 +750,6 @@ namespace HelixToolkit.UWP
         public void AddZoomForce(double dx)
         {
             CameraController.AddZoomForce(dx);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -694,7 +764,6 @@ namespace HelixToolkit.UWP
         public void AddZoomForce(double dx, Vector3 zoomOrigin)
         {
             CameraController.AddZoomForce(dx, zoomOrigin);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -744,6 +813,12 @@ namespace HelixToolkit.UWP
         public void LookAt(Vector3 p, double animationTime)
         {
             this.CameraController?.ActualCamera?.LookAt(p, animationTime);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void RaiseRenderHostRendered(object sender, EventArgs e)
+        {
+            this.OnRendered?.Invoke(sender, e);
         }
     }
 }

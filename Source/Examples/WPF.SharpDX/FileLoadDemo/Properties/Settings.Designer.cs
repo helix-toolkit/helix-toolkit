@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TemplateDemo.Properties
+namespace FileLoadDemo.Properties
 {
 
 

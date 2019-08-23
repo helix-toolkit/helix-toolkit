@@ -1,0 +1,9 @@
+﻿// http://en.wikipedia.org/wiki/Enneper_surface
+double b=3;
+double c=5;
+double d=4; // 1
+u=(u-0.5)*c;
+v=(v-0.5)*c;
+x = u*(d-u*u/b+v*v)/b;
+y = -v*(d-v*v/b+u*u)/b;
+z = (u*u-v*v)/b;

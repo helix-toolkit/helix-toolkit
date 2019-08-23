@@ -118,15 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="random4x4_dot3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\textures\random4x4_dot3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="random_dot3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\textures\random_dot3.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DefaultViewboxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\textures\defaultviewboxtexture.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="psMeshBlinnPhong" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshblinnphong.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -147,9 +138,6 @@
   </data>
   <data name="psMeshXRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshxray.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="vsBoneSkinning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsboneskinning.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="vsCubeMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vscubemap.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -202,9 +190,6 @@
   <data name="vsBillboardInstancing" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsbillboardinstancing.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsBoneSkinningTessellation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsboneskinningtessellation.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="csParticleInsert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\csparticleinsert.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -232,9 +217,6 @@
   <data name="psShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsBoneSkinningShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsboneskinningshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="vsMeshShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -258,9 +240,6 @@
   </data>
   <data name="vsMeshWireframe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshwireframe.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="vsBoneSkinningWireframe" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsboneskinningwireframe.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="psDepthStencilOnly" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psdepthstencilonly.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -330,5 +309,98 @@
   </data>
   <data name="psLuma" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psluma.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectMeshXRayGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectmeshxraygrid.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gsMeshNormalVector" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gsmeshnormalvector.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psMeshColorStripe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psmeshcolorstripe.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectMeshDiffuseXRayGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectmeshdiffusexraygrid.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psMeshDiffuseMapOIT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psmeshdiffusemapoit.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshBatched" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshbatched.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshBatchedWireframe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshbatchedwireframe.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshBatchedShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshbatchedshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gsMeshSkinnedOut" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gsmeshskinnedout.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsBoneSkinningBasic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsboneskinningbasic.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psPlaneGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psplanegrid.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsPlaneGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsplanegrid.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psMeshPBR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psmeshpbr.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psMeshPBROIT" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psmeshpbroit.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsScreenQuad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsscreenquad.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psSprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pssprite.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsSprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vssprite.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psVolume" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psvolume.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsVolume" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsvolume.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psVolumeCube" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psvolumecube.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psVolumeDiffuse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psvolumediffuse.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshDepth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshdepth.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psSSAO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psssao.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psSSAOP1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psssaop1.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshSSAO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshssao.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsSSAO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsssao.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psSSAOBlur" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psssaoblur.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshBatchedSSAO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshbatchedssao.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectOutlineSmooth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectoutlinesmooth.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gsLineArrowHead" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gslinearrowhead.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gsLineArrowHeadTail" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gslinearrowheadtail.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

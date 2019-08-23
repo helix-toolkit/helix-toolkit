@@ -1,15 +1,20 @@
-﻿using System.IO;
-
+﻿
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
+#endif
     /// <summary>
     /// 
     /// </summary>
@@ -18,10 +23,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The texture property
         /// </summary>
-        public static readonly DependencyProperty TextureProperty = DependencyProperty.Register("Texture", typeof(Stream), typeof(EnvironmentMap3D),
+        public static readonly DependencyProperty TextureProperty = DependencyProperty.Register("Texture", typeof(TextureModel), typeof(EnvironmentMap3D),
             new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as EnvironmentMapNode).Texture = (Stream)e.NewValue;
+                ((d as Element3DCore).SceneNode as EnvironmentMapNode).Texture = (TextureModel)e.NewValue;
             }));
         /// <summary>
         /// Gets or sets the texture.
@@ -29,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The texture.
         /// </value>
-        public Stream Texture
+        public TextureModel Texture
         {
             set
             {
@@ -37,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Stream)GetValue(TextureProperty);
+                return (TextureModel)GetValue(TextureProperty);
             }
         }
         /// <summary>

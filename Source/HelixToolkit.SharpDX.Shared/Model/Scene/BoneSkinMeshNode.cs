@@ -2,133 +2,133 @@
 The MIT License(MIT)
 Copyright(c) 2018 Helix Toolkit contributors
 */
-
+using System;
 using SharpDX;
 using System.Collections.Generic;
+using System.Linq;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    /// <summary>
-    /// 
-    /// </summary>
-    public class BoneSkinMeshNode : MeshNode
+    namespace Model.Scene
     {
+        using Core;
         /// <summary>
-        /// Gets or sets the vertex bone ids.
+        /// 
         /// </summary>
-        /// <value>
-        /// The vertex bone ids.
-        /// </value>
-        public IList<BoneIds> VertexBoneIds
+        public class BoneSkinMeshNode : MeshNode, Animations.IBoneMatricesNode
         {
-            set
+            /// <summary>
+            /// Gets or sets the bone matrices.
+            /// </summary>
+            /// <value>
+            /// The bone matrices.
+            /// </value>
+            public Matrix[] BoneMatrices
             {
-                bonesBufferModel.Elements = value;
+                set
+                {
+                    (RenderCore as BoneSkinRenderCore).BoneMatrices = value;
+                }
+                get
+                {
+                    return (RenderCore as BoneSkinRenderCore).BoneMatrices;
+                }
             }
-            get { return bonesBufferModel.Elements; }
-        }
-        /// <summary>
-        /// Gets or sets the bone matrices.
-        /// </summary>
-        /// <value>
-        /// The bone matrices.
-        /// </value>
-        public BoneMatricesStruct BoneMatrices
-        {
-            set
+            /// <summary>
+            /// Gets or sets the bones.
+            /// </summary>
+            /// <value>
+            /// The bones.
+            /// </value>
+            public Animations.Bone[] Bones { set; get; }
+            /// <summary>
+            /// Gets or sets a value indicating whether this node is used to show skeleton. Only used as an indication.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this node is used to show skeleton; otherwise, <c>false</c>.
+            /// </value>
+            public bool IsSkeletonNode { set; get; }
+            /// <summary>
+            /// Gets or sets a value indicating whether this node has bone group. 
+            /// <see cref="BoneGroupNode"/> shares bones with multiple <see cref="BoneSkinMeshNode"/>
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if this instance has bone group; otherwise, <c>false</c>.
+            /// </value>
+            public bool HasBoneGroup { internal set; get; }
+            /// <summary>
+            /// Called when [create render core].
+            /// </summary>
+            /// <returns></returns>
+            protected override RenderCore OnCreateRenderCore()
             {
-                (RenderCore as BoneSkinRenderCore).BoneMatrices = value;
+                return new BoneSkinRenderCore();
             }
-            get
+
+            protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
             {
-                return (RenderCore as BoneSkinRenderCore).BoneMatrices;
+                return !(EffectsManager.GeometryBufferManager.Register<BoneSkinnedMeshBufferModel>(modelGuid, geometry) is IBoneSkinMeshBufferModel buffer) ? 
+                    EmptyGeometryBufferModel.Empty : new BoneSkinPreComputeBufferModel(buffer, buffer.VertexStructSize.FirstOrDefault()) as IAttachableBufferModel;
             }
-        }
-        /// <summary>
-        /// The bones buffer model
-        /// </summary>
-        protected readonly IElementsBufferModel<BoneIds> bonesBufferModel = new VertexBoneIdBufferModel<BoneIds>(BoneIds.SizeInBytes);
-        private IBoneSkinRenderParams boneSkinRenderCore
-        {
-            get { return (IBoneSkinRenderParams)RenderCore; }
-        }
-        /// <summary>
-        /// Called when [create render technique].
-        /// </summary>
-        /// <param name="host">The host.</param>
-        /// <returns></returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.BoneSkinBlinn];
-        }
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new BoneSkinRenderCore();
-        }
-        /// <summary>
-        /// Assigns the default values to core.
-        /// </summary>
-        /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(RenderCore core)
-        {
-            base.AssignDefaultValuesToCore(core);
-            boneSkinRenderCore.BoneMatrices = BoneMatrices;
-        }
-        /// <summary>
-        /// Called when [attach].
-        /// </summary>
-        /// <param name="host">The host.</param>
-        /// <returns></returns>
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
+            /// <summary>
+            /// Views the frustum test.
+            /// </summary>
+            /// <param name="viewFrustum">The view frustum.</param>
+            /// <returns></returns>
+            public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
             {
-                bonesBufferModel.Initialize();
-                boneSkinRenderCore.VertexBoneIdBuffer = bonesBufferModel;
                 return true;
             }
-            else
+            /// <summary>
+            /// Determines whether this instance [can hit test] the specified context.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <returns>
+            ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
+            /// </returns>
+            protected override bool CanHitTest(RenderContext context)
             {
-                return false;
+                return false;//return base.CanHitTest(context) && !hasBoneParameter;
             }
-        }
-        /// <summary>
-        /// Called when [detach].
-        /// </summary>
-        protected override void OnDetach()
-        {
-            bonesBufferModel.DisposeAndClear();
-            base.OnDetach();
-        }
-
-        /// <summary>
-        /// Views the frustum test.
-        /// </summary>
-        /// <param name="viewFrustum">The view frustum.</param>
-        /// <returns></returns>
-        public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
-        {
-            return true;
-        }
-        /// <summary>
-        /// Determines whether this instance [can hit test] the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanHitTest(RenderContext context)
-        {
-            return false;//return base.CanHitTest(context) && !hasBoneParameter;
+            /// <summary>
+            /// Creates the skeleton node.
+            /// </summary>
+            /// <param name="material">The material.</param>
+            /// <param name="effectName">Name of the effect.</param>
+            /// <param name="scale">The scale.</param>
+            /// <returns></returns>
+            public BoneSkinMeshNode CreateSkeletonNode(MaterialCore material, string effectName, float scale = 0.1f)
+            {
+                return CreateSkeletonNode(this, material, effectName, scale);
+            }
+            /// <summary>
+            /// Creates the skeleton node.
+            /// </summary>
+            /// <param name="node">The node.</param>
+            /// <param name="material">The material.</param>
+            /// <param name="effectName">Name of the effect.</param>
+            /// <param name="scale">The scale.</param>
+            /// <returns></returns>
+            public static BoneSkinMeshNode CreateSkeletonNode(BoneSkinMeshNode node, MaterialCore material, string effectName, float scale)
+            {
+                var skNode = new BoneSkinMeshNode()
+                {
+                    Material = material,
+                    IsSkeletonNode = true,
+                };
+                skNode.Geometry = BoneSkinnedMeshGeometry3D.CreateSkeletonMesh(node.Bones, scale);
+                skNode.PostEffects = effectName;
+                skNode.Bones = node.Bones;
+                return skNode;
+            }
         }
     }
 }

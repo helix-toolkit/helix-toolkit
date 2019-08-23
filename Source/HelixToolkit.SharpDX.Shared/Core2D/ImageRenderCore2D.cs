@@ -9,96 +9,104 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using D2D = global::SharpDX.Direct2D1;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Core2D
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public class ImageRenderCore2D : RenderCore2DBase
+    namespace Core2D
     {
-        private D2D.Bitmap bitmap;
-        /// <summary>
-        /// Gets or sets the bitmap.
-        /// </summary>
-        /// <value>
-        /// The bitmap.
-        /// </value>
-        public D2D.Bitmap Bitmap
+        public class ImageRenderCore2D : RenderCore2DBase
         {
-            set
+            private D2D.Bitmap bitmap;
+            /// <summary>
+            /// Gets or sets the bitmap.
+            /// </summary>
+            /// <value>
+            /// The bitmap.
+            /// </value>
+            public D2D.Bitmap Bitmap
             {
-                var old = bitmap;
-                if (SetAffectsRender(ref bitmap, value))
+                set
                 {
-                    RemoveAndDispose(ref old);
-                    if (value != null)
+                    var old = bitmap;
+                    if (SetAffectsRender(ref bitmap, value))
                     {
-                        Collect(value);
-                        ImageSize = bitmap.Size;
+                        RemoveAndDispose(ref old);
+                        if (value != null)
+                        {
+                            Collect(value);
+                            ImageSize = bitmap.Size;
+                        }
+                        else { ImageSize = new Size2F(); }
                     }
-                    else { ImageSize = new Size2F(); }
+                }
+                get
+                {
+                    return bitmap;
                 }
             }
-            get
-            {
-                return bitmap;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the size of the image.
-        /// </summary>
-        /// <value>
-        /// The size of the image.
-        /// </value>
-        public Size2F ImageSize { private set; get; }
+            /// <summary>
+            /// Gets or sets the size of the image.
+            /// </summary>
+            /// <value>
+            /// The size of the image.
+            /// </value>
+            public Size2F ImageSize { private set; get; }
 
-        private float opacity = 1;
-        /// <summary>
-        /// Gets or sets the opacity.
-        /// </summary>
-        /// <value>
-        /// The opacity.
-        /// </value>
-        public float Opacity
-        {
-            set
+            private float opacity = 1;
+            /// <summary>
+            /// Gets or sets the opacity.
+            /// </summary>
+            /// <value>
+            /// The opacity.
+            /// </value>
+            public float Opacity
             {
-                SetAffectsRender(ref opacity, value);
+                set
+                {
+                    SetAffectsRender(ref opacity, value);
+                }
+                get
+                {
+                    return opacity;
+                }
             }
-            get
-            {
-                return opacity;
-            }
-        }
 
-        private D2D.BitmapInterpolationMode interpolationMode = D2D.BitmapInterpolationMode.Linear;
-        /// <summary>
-        /// Gets or sets the interpolation mode.
-        /// </summary>
-        /// <value>
-        /// The interpolation mode.
-        /// </value>
-        public D2D.BitmapInterpolationMode InterpolationMode
-        {
-            set
+            private D2D.BitmapInterpolationMode interpolationMode = D2D.BitmapInterpolationMode.Linear;
+            /// <summary>
+            /// Gets or sets the interpolation mode.
+            /// </summary>
+            /// <value>
+            /// The interpolation mode.
+            /// </value>
+            public D2D.BitmapInterpolationMode InterpolationMode
             {
-                Set(ref interpolationMode, value);
+                set
+                {
+                    Set(ref interpolationMode, value);
+                }
+                get
+                {
+                    return interpolationMode;
+                }
             }
-            get
+
+            protected override bool CanRender(RenderContext2D context)
             {
-                return interpolationMode;
+                return base.CanRender(context) && Bitmap != null;
             }
-        }
 
-        protected override bool CanRender(RenderContext2D context)
-        {
-            return base.CanRender(context) && Bitmap != null;
-        }
-
-        protected override void OnRender(RenderContext2D context)
-        {
-            context.DeviceContext.DrawBitmap(Bitmap, LayoutBound, Opacity, InterpolationMode);
+            protected override void OnRender(RenderContext2D context)
+            {
+                context.DeviceContext.DrawBitmap(Bitmap, LayoutBound, Opacity, InterpolationMode);
+            }
         }
     }
+
 }

@@ -492,7 +492,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="textureData"></param>
         /// <param name="fixedPointer"></param>
         /// <returns></returns>
-        protected static DataBox GetDataBox<T>(Format format, int width, int height, int depth, T[] textureData, IntPtr fixedPointer) where T : struct
+        internal static DataBox GetDataBox<T>(Format format, int width, int height, int depth, T[] textureData, IntPtr fixedPointer) where T : struct
         {
             // Check that the textureData size is correct
             if (textureData == null) throw new ArgumentNullException("textureData");

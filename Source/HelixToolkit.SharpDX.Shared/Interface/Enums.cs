@@ -4,10 +4,15 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
 using System.Runtime.CompilerServices;
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+using System.Runtime.Serialization;
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     /// <summary>
@@ -62,14 +67,22 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     [Flags]
+    [DataContract]
     public enum ShaderStage
     {
+        [EnumMember]
         None = 0,
+        [EnumMember]
         Vertex = 1,
+        [EnumMember]
         Hull = 1 << 2,
+        [EnumMember]
         Domain = 1 << 3,
+        [EnumMember]
         Geometry = 1 << 4,
+        [EnumMember]
         Pixel = 1 << 5,
+        [EnumMember]
         Compute = 1 << 6
     }
 
@@ -82,7 +95,8 @@ namespace HelixToolkit.Wpf.SharpDX
         None = 0,
         RasterState = 1,
         DepthStencilState = 1 << 2,
-        BlendState = 1 << 3
+        BlendState = 1 << 3,
+        All = RasterState | DepthStencilState | BlendState
     }
 
     [Flags]
@@ -130,5 +144,67 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return (option & flag) != 0;
         }
+    }
+
+    /// <summary>
+    /// Defines the cutting operation.
+    /// </summary>
+    public enum CuttingOperation
+    {
+        /// <summary>
+        /// The intersect operation.
+        /// </summary>
+        Intersect = 0,
+
+        /// <summary>
+        /// The subtract operation.
+        /// </summary>
+        Subtract = 1,
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum OutlineMode
+    {
+        Merged = 0,
+        Separated = 1
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum Axis
+    {
+        X = 0,
+        Y = 1,
+        Z = 2
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum GridPattern
+    {
+        Tile = 0,
+        Grid = 1
+    }
+
+    public enum OffScreenTextureSize
+    {
+        Full = 1, Half = 2, Quarter = 4
+    }
+
+    public enum OffScreenTextureType
+    {
+        RenderTarget, DepthStencil
+    }
+
+    public enum SSAOQuality
+    {
+        High, Low
+    }
+
+    public enum ScreenSpacedMode
+    {
+        RelativeScreenSpaced,
+        AbsolutePosition3D
     }
 }

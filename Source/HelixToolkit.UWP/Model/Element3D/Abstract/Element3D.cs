@@ -8,6 +8,7 @@ using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
@@ -60,37 +61,28 @@ namespace HelixToolkit.UWP
             get { return (Matrix)this.GetValue(Transform3DProperty); }
             set { this.SetValue(Transform3DProperty, value); }
         }
-        /// <summary>
-        /// The is throwing shadow property
-        /// </summary>
-        public static readonly DependencyProperty IsThrowingShadowProperty =
-            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
-            {
-                if ((d as Element3DCore).SceneNode is Core.IThrowingShadow t)
-                {
-                    t.IsThrowingShadow = (bool)e.NewValue;
-                }
-            }));
-        /// <summary>
-        /// <see cref="Core.IThrowingShadow.IsThrowingShadow"/>
-        /// </summary>
-        public bool IsThrowingShadow
-        {
-            set
-            {
-                SetValue(IsThrowingShadowProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsThrowingShadowProperty);
-            }
-        }
-        #endregion
 
         /// <summary>
-        /// The items container
+        /// Gets or sets the manual render order.
         /// </summary>
-        protected ItemsControl itemsContainer { private set; get; }
+        /// <value>
+        /// The render order.
+        /// </value>
+        public int RenderOrder
+        {
+            get { return (int)GetValue(RenderOrderProperty); }
+            set { SetValue(RenderOrderProperty, value); }
+        }
+
+        /// <summary>
+        /// The render order property
+        /// </summary>
+        public static readonly DependencyProperty RenderOrderProperty =
+            DependencyProperty.Register("RenderOrder", typeof(int), typeof(Element3D), new PropertyMetadata(0, (d, e) =>
+            {
+                (d as Element3D).SceneNode.RenderOrder = (ushort)Math.Max(0, Math.Min(ushort.MaxValue, (int)e.NewValue));
+            }));
+        #endregion
         private static readonly Size oneSize = new Size(1, 1);
 
         /// <summary>
@@ -107,7 +99,30 @@ namespace HelixToolkit.UWP
             RegisterPropertyChangedCallback(IsHitTestVisibleProperty, (s, e) =>
             {
                 SceneNode.IsHitTestVisible = (bool)s.GetValue(e);
-            });            
+            });
+            OnSceneNodeCreated += Element3D_OnSceneNodeCreated;
+        }
+
+        private void Element3D_OnSceneNodeCreated(object sender, SceneNodeCreatedEventArgs e)
+        {
+            e.Node.MouseDown += Node_MouseDown;
+            e.Node.MouseUp += Node_MouseUp;
+            e.Node.MouseMove += Node_MouseMove;
+        }
+
+        private void Node_MouseMove(object sender, Model.Scene.SceneNodeMouseMoveArgs e)
+        {
+            RaiseMouseMoveEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as PointerRoutedEventArgs);
+        }
+
+        private void Node_MouseUp(object sender, Model.Scene.SceneNodeMouseUpArgs e)
+        {
+            RaiseMouseUpEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as PointerRoutedEventArgs);
+        }
+
+        private void Node_MouseDown(object sender, Model.Scene.SceneNodeMouseDownArgs e)
+        {
+            RaiseMouseDownEvent(e.HitResult, e.Position.ToPoint(), e.Viewport as Viewport3DX, e.OriginalInputEventArgs as PointerRoutedEventArgs);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -120,15 +135,15 @@ namespace HelixToolkit.UWP
             return oneSize;
         }
 
-        /// <summary>
-        /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
-        /// </summary>
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            itemsContainer = GetTemplateChild("PART_ItemsContainer") as ItemsControl;
-            itemsContainer?.Items.Clear();
-        }
+        ///// <summary>
+        ///// Invoked whenever application code or internal processes(such as a rebuilding layout pass) call ApplyTemplate.In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
+        ///// </summary>
+        //protected override void OnApplyTemplate()
+        //{
+        //    base.OnApplyTemplate();
+        //    itemsContainer = GetTemplateChild("PART_ItemsContainer") as ItemsControl;
+        //    itemsContainer?.Items.Clear();
+        //}
 
         #region Events
         public event EventHandler<MouseDown3DEventArgs> OnMouse3DDown;
@@ -137,19 +152,19 @@ namespace HelixToolkit.UWP
 
         public event EventHandler<MouseMove3DEventArgs> OnMouse3DMove;
 
-        internal void RaiseMouseDownEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        internal void RaiseMouseDownEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
         {
-            OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(hitTestResult, p, viewport));
+            OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
         }
 
-        internal void RaiseMouseUpEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        internal void RaiseMouseUpEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
         {
-            OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(hitTestResult, p, viewport));
+            OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
         }
 
-        internal void RaiseMouseMoveEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        internal void RaiseMouseMoveEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
         {
-            OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(hitTestResult, p, viewport));
+            OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(hitTestResult, p, viewport, originalInputEventArgs));
         }
         #endregion
     }
@@ -159,33 +174,40 @@ namespace HelixToolkit.UWP
         public HitTestResult HitTestResult { get; private set; }
         public Viewport3DX Viewport { get; private set; }
         public Point Position { get; private set; }
+        /// <summary>
+        /// The original mouse/touch event that generated this one.
+        /// 
+        /// Useful for knowing what mouse button got pressed.
+        /// </summary>
+        public PointerRoutedEventArgs OriginalInputEventArgs { get; private set; }
 
-        public Mouse3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+        public Mouse3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
         {
             this.HitTestResult = hitTestResult;
             this.Position = position;
             this.Viewport = viewport;
+            this.OriginalInputEventArgs = originalInputEventArgs;
         }
     }
 
     public sealed class MouseDown3DEventArgs : Mouse3DEventArgs
     {
-        public MouseDown3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(hitTestResult, position, viewport)
+        public MouseDown3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
+            : base(hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 
     public sealed class MouseUp3DEventArgs : Mouse3DEventArgs
     {
-        public MouseUp3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(hitTestResult, position, viewport)
+        public MouseUp3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
+            : base(hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 
     public sealed class MouseMove3DEventArgs : Mouse3DEventArgs
     {
-        public MouseMove3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(hitTestResult, position, viewport)
+        public MouseMove3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, PointerRoutedEventArgs originalInputEventArgs = null)
+            : base(hitTestResult, position, viewport, originalInputEventArgs)
         { }
     }
 }

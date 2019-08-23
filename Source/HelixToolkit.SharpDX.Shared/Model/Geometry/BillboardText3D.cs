@@ -2,15 +2,14 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Collections.Generic;
+using Cyotek.Drawing.BitmapFont;
 using SharpDX;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using Cyotek.Drawing.BitmapFont;
 #if CORE
-
 #else
 #if NETFX_CORE
 using Media = Windows.UI.Xaml.Media;
@@ -19,15 +18,27 @@ using Media = System.Windows.Media;
 #endif
 #endif
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
+    using global::SharpDX.DirectWrite;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
+
+    public class TextInfoExt : TextInfo
+    {
+        public string FontFamily = "Arial";
+        public FontWeight FontWeight = FontWeight.Normal;
+        public FontStyle FontStyle = FontStyle.Normal;
+        public Vector4 Padding = Vector4.Zero;
+        public int Size = 12;
+    }
 
     public class TextInfo
     {
@@ -43,6 +54,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public float AcutalHeight { protected set; get; }
 
         public float Scale { set; get; } = 1;
+        /// <summary>
+        /// Gets or sets the rotation angle in radians.
+        /// </summary>
+        /// <value>
+        /// The angle in radians.
+        /// </value>
+        public float Angle { set; get; } = 0;
 
         public TextInfo()
         {
@@ -72,37 +90,38 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly static BitmapFont bmpFont;
 
         public static Stream TextureStatic { get; private set; }
-
+        const float textureScale = 0.66f;
+        const string FontName = "arial";
         static BillboardText3D()
         {
 #if CORE
             var assembly = typeof(BillboardText3D).GetTypeInfo().Assembly;
-            Stream fontInfo = assembly.GetManifestResourceStream(@"HelixToolkit.SharpDX.Core.Resources.arial.fnt");
+            Stream fontInfo = assembly.GetManifestResourceStream($"HelixToolkit.SharpDX.Core.Resources.{FontName}.fnt");
             bmpFont = new BitmapFont();
             bmpFont.Load(fontInfo);
-            Stream font = assembly.GetManifestResourceStream(@"HelixToolkit.SharpDX.Core.Resources.arial.png");
+            Stream font = assembly.GetManifestResourceStream($"HelixToolkit.SharpDX.Core.Resources.{FontName}.dds");
             TextureStatic = font;
 #else
 #if !NETFX_CORE
             var assembly = Assembly.GetExecutingAssembly();
 
             //Read the texture description           
-            var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt");
+            var texDescriptionStream = assembly.GetManifestResourceStream($"HelixToolkit.Wpf.SharpDX.Textures.{FontName}.fnt");
 
             bmpFont = new BitmapFont();
             bmpFont.Load(texDescriptionStream);// BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
             texDescriptionStream.Dispose();
             //Read the texture          
-            var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
+            var texImageStream = assembly.GetManifestResourceStream($"HelixToolkit.Wpf.SharpDX.Textures.{FontName}.dds");
             TextureStatic = MemoryStream.Synchronized(texImageStream);
 #else
             var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "HelixToolkit.UWP");
-            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.fnt");
+            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\Resources\\{FontName}.fnt");
             bmpFont = new BitmapFont();
             var fileStream = new MemoryStream(sampleFile);
             bmpFont.Load(fileStream);
 
-            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.png");
+            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\Resources\\{FontName}.dds");
             TextureStatic = new MemoryStream(texFile);         
 #endif
 #endif
@@ -116,12 +135,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public virtual BitmapFont BitmapFont
+        public BitmapFont BitmapFont
         {
-            get
-            {
-                return bmpFont;
-            }
+            get;
         }
 
         private ObservableCollection<TextInfo> textInfo = new ObservableCollection<TextInfo>();
@@ -146,6 +162,24 @@ namespace HelixToolkit.Wpf.SharpDX
         public BillboardText3D()
         {
             textInfo.CollectionChanged += CollectionChanged;
+            Texture = TextureStatic;
+            BitmapFont = bmpFont;
+        }
+
+        public BillboardText3D(BitmapFont bitmapFont, Stream fontTexture)
+        {
+            textInfo.CollectionChanged += CollectionChanged;
+            Texture = fontTexture;
+            BitmapFont = bitmapFont;
+        }
+
+        protected override void OnAssignTo(Geometry3D target)
+        {
+            base.OnAssignTo(target);
+            if(target is BillboardText3D billboard)
+            {
+                billboard.TextInfo = this.TextInfo;
+            }
         }
 
         private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -153,16 +187,16 @@ namespace HelixToolkit.Wpf.SharpDX
             IsInitialized = false;
         }
 
-        protected override void OnDrawTexture(IDeviceResources deviceResources)
-        {
-            Texture = TextureStatic;
+        protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
+        {           
             Width = 0;
             Height = 0;
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
             var tempList = new List<BillboardVertex>(100);
+
             foreach (var textInfo in TextInfo)
             {
-                tempList.Clear();
+                int tempPrevCount = tempList.Count;
                 int x = 0;
                 int y = 0;
                 var w = BitmapFont.TextureSize.Width;
@@ -191,33 +225,44 @@ namespace HelixToolkit.Wpf.SharpDX
                     previousCharacter = character;
                     if (tempList.Count > 0)
                     {
-                        rect.Width = Math.Max(rect.Width, x * textInfo.Scale);
+                        rect.Width = Math.Max(rect.Width, x * textInfo.Scale * textureScale);
                         rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
                     }
                 }
+                var transform = textInfo.Angle != 0 ? Matrix3x2.Rotation(textInfo.Angle) : Matrix3x2.Identity;
                 var halfW = rect.Width / 2;
                 var halfH = rect.Height / 2;
+                //Add backbround vertex first. This also used for hit test
                 BillboardVertices.Add(new BillboardVertex()
                 {
                     Position = textInfo.Origin.ToVector4(),
                     Background = textInfo.Background,
                     TexTL = Vector2.Zero,
                     TexBR = Vector2.Zero,
-                    OffTL = new Vector2(-halfW, halfH),
-                    OffBR = new Vector2(halfW, -halfH),
+                    OffTL = Matrix3x2.TransformPoint(transform, new Vector2(-halfW, halfH)),
+                    OffBR = Matrix3x2.TransformPoint(transform, new Vector2(halfW, -halfH)),
+                    OffTR = Matrix3x2.TransformPoint(transform, new Vector2(-halfW, -halfH)),
+                    OffBL = Matrix3x2.TransformPoint(transform, new Vector2(halfW, halfH)),
                 });
 
                 textInfo.UpdateTextInfo(rect.Width, rect.Height);
 
-                foreach(var vert in tempList)
+                for(int k = tempPrevCount; k < tempList.Count; ++k)
                 {
-                    var v = vert;
-                    v.OffTL += new Vector2(-halfW, halfH);
-                    v.OffBR += new Vector2(-halfW, halfH);
-                    BillboardVertices.Add(v);
+                    var v = tempList[k];
+                    v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + new Vector2(-halfW, halfH));
+                    v.OffBR = Matrix3x2.TransformPoint(transform, v.OffBR + new Vector2(-halfW, halfH));
+                    v.OffTR = Matrix3x2.TransformPoint(transform, v.OffTR + new Vector2(-halfW, halfH));
+                    v.OffBL = Matrix3x2.TransformPoint(transform, v.OffBL + new Vector2(-halfW, halfH));
+                    tempList[k] = v;
                 }
                 Width += rect.Width;
                 Height += rect.Height;
+            }
+
+            foreach(var v in tempList)
+            {
+                BillboardVertices.Add(v);
             }
         }
 
@@ -250,10 +295,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var cv = character.Bounds.Top;
             var tl = new Vector2(origin.X + kerning, origin.Y );
             var br = new Vector2(origin.X + cw + kerning, origin.Y - ch);
-
+            var offTL = tl * info.Scale * textureScale;
+            var offBR = br * info.Scale * textureScale;
+            var offTR = new Vector2(offBR.X, offTL.Y);
+            var offBL = new Vector2(offTL.X, offBR.Y);
             var uv_tl = new Vector2(cu / w, cv / h);
             var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
-
+            
             return new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
@@ -261,74 +309,30 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = Color.Transparent,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl * info.Scale,
-                OffBR = br * info.Scale
+                OffTL = offTL,
+                OffBL = offBL,
+                OffBR = offBR,
+                OffTR = offTR
             };
         }
 
         public override bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
             object originalSource, bool fixedSize)
         {
-            var h = false;
-            var result = new BillboardHitResult();
-            result.Distance = double.MaxValue;
-
-            if (context == null || Width == 0 || Height == 0)
+            if (!IsInitialized || context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
                 return false;
             }
-            var scale = modelMatrix.ScaleVector;
-            var projectionMatrix = context.ProjectionMatrix;
-            var viewMatrix = context.ViewMatrix;
-            var viewMatrixInv = viewMatrix.PsudoInvert();
-            var visualToScreen = context.ScreenViewProjectionMatrix;
-            int index = -1;
-            foreach (var info in TextInfo)
-            {
-                ++index;
-                var c = Vector3.TransformCoordinate(info.Origin, modelMatrix);
-                var dir = c - rayWS.Position;
-                dir.Normalize();
-                if (Vector3.Dot(dir, rayWS.Direction.Normalized()) < 0)
-                {
-                    continue;
-                }
 
-                if (!fixedSize && !info.BoundSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS))
-                {
-                    continue;
-                }
-                var left = -(info.ActualWidth * scale.X) / 2;
-                var right = -left;
-                var top = -(info.AcutalHeight * scale.Y) / 2;
-                var bottom = -top;
-                var b = GetHitTestBound(c, 
-                    left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
-                    fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
+            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, textInfo.Count)
+                : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, textInfo.Count);
+        }
 
-                if (rayWS.Intersects(ref b))
-                {
-                    float distance;
-                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out distance))
-                    {
-                        h = true;
-                        result.ModelHit = originalSource;
-                        result.IsValid = true;
-                        result.PointHit = rayWS.Position + (rayWS.Direction * distance);
-                        result.Distance = distance;
-                        result.TextInfo = info;
-                        result.TextInfoIndex = index;
-                        Debug.WriteLine($"Hit; Text:{info.Text}; HitPoint:{result.PointHit};");
-                        break;
-                    }
-                }
-            }
-            if (h)
-            {
-                hits.Add(result);
-            }
-            return h;
+        protected override void AssignResultAdditional(BillboardHitResult result, int index)
+        {
+            base.AssignResultAdditional(result, index);
+            result.TextInfo = textInfo[index];
+            result.TextInfoIndex = index;
         }
     }
-
 }

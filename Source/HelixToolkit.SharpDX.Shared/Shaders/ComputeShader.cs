@@ -2,164 +2,176 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Shaders
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Shaders
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class ComputeShader : ShaderBase
+    namespace Shaders
     {
-        private readonly global::SharpDX.Direct3D11.ComputeShader shader;
-
+        using Render;
+        using Utilities;
         /// <summary>
-        /// Vertex Shader
+        /// 
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="name"></param>
-        /// <param name="byteCode"></param>
-        public ComputeShader(Device device, string name, byte[] byteCode)
-            :base(name, ShaderStage.Compute)
+        public sealed class ComputeShader : ShaderBase
         {
-            shader = Collect(new global::SharpDX.Direct3D11.ComputeShader(device, byteCode));
-        }
-
-        /// <summary>
-        /// <see cref="ShaderBase.Bind(DeviceContext)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        public override void Bind(DeviceContext context)
-        {
-            context.ComputeShader.Set(shader);
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindConstantBuffers(DeviceContext)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        public override void BindConstantBuffers(DeviceContext context)
-        {
-            foreach (var buff in this.ConstantBufferMapping.Mappings)
+            internal global::SharpDX.Direct3D11.ComputeShader Shader { private set; get; }
+            public static readonly ComputeShader NullComputeShader = new ComputeShader("NULL");
+            public static readonly ComputeShaderType Type;
+            /// <summary>
+            /// Vertex Shader
+            /// </summary>
+            /// <param name="device"></param>
+            /// <param name="name"></param>
+            /// <param name="byteCode"></param>
+            public ComputeShader(Device device, string name, byte[] byteCode)
+                :base(name, ShaderStage.Compute)
             {
-                context.ComputeShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                Shader = Collect(new global::SharpDX.Direct3D11.ComputeShader(device, byteCode));
             }
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindTexture(DeviceContext, string, ShaderResourceView)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="name"></param>
-        /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
-        {
-            int slot = ShaderResourceViewMapping.TryGetBindSlot(name);
-            if (slot < 0)
-            { return; }
-            context.ComputeShader.SetShaderResource(slot, texture);
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindTexture(DeviceContext, int, ShaderResourceView)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="slot"></param>
-        /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, int slot, ShaderResourceView texture)
-        {
-            if (slot < 0)
-            { return; }
-            context.ComputeShader.SetShaderResource(slot, texture);
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="textures"></param>
-        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
-        {
-            foreach (var texture in textures)
-            {
-                context.ComputeShader.SetShaderResource(texture.Key, texture.Value);
-            }
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindUAV(DeviceContext, int, UnorderedAccessView)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="slot"></param>
-        /// <param name="uav"></param>
-        public override void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav)
-        {
-            context.ComputeShader.SetUnorderedAccessView(slot, uav);
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindUAV(DeviceContext, string, UnorderedAccessView)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="name"></param>
-        /// <param name="uav"></param>
-        public override void BindUAV(DeviceContext context, string name, UnorderedAccessView uav)
-        {
-            int slot = UnorderedAccessViewMapping.TryGetBindSlot(name);
-            if (slot < 0)
-            { return; }
-            context.ComputeShader.SetUnorderedAccessView(slot, uav);
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindUAVs(DeviceContext, IEnumerable{KeyValuePair{int, UnorderedAccessView}})"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="uavs"></param>
-        public override void BindUAVs(DeviceContext context, IEnumerable<KeyValuePair<int, UnorderedAccessView>> uavs)
-        {
-            foreach(var uav in uavs)
-            {
-                context.ComputeShader.SetUnorderedAccessView(uav.Key, uav.Value);
-            }
-        }
 
-        /// <summary>
-        /// <see cref="ShaderBase.BindSampler(DeviceContext, int, SamplerState)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="slot"></param>
-        /// <param name="sampler"></param>
-        public override void BindSampler(DeviceContext context, int slot, SamplerState sampler)
-        {
-            if (slot < 0)
-            { return; }
-            context.ComputeShader.SetSampler(slot, sampler);
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindSampler(DeviceContext, string, SamplerState)"/> 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="name"></param>
-        /// <param name="sampler"></param>
-        public override void BindSampler(DeviceContext context, string name, SamplerState sampler)
-        {
-            int slot = SamplerMapping.TryGetBindSlot(name);
-            if (slot < 0)
-            { return; }
-            context.ComputeShader.SetSampler(slot, sampler);
-        }
-
-        /// <summary>
-        /// <see cref="ShaderBase.BindSamplers(DeviceContext, IEnumerable{KeyValuePair{int, SamplerState}})"/> 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="samplers"></param>
-        public override void BindSamplers(DeviceContext context, IEnumerable<KeyValuePair<int, SamplerState>> samplers)
-        {
-            foreach (var sampler in samplers)
+            private ComputeShader(string name)
+                :base(name, ShaderStage.Compute, true)
             {
-                context.ComputeShader.SetSampler(sampler.Key, sampler.Value);
+
+            }
+
+            /// <summary>
+            /// Binds shader to pipeline
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="bindConstantBuffer"></param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void Bind(DeviceContextProxy context, bool bindConstantBuffer = true)
+            {
+                context.SetShader(this);
+            }
+            /// <summary>
+            /// Binds the texture.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="texture">The texture.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindTexture(DeviceContextProxy context, string name, ShaderResourceViewProxy texture)
+            {
+                int slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
+                context.SetShaderResource(Type, slot, texture);
+            }
+            /// <summary>
+            /// Binds the texture.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="slot">The slot.</param>
+            /// <param name="texture">The texture.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindTexture(DeviceContextProxy context, int slot, ShaderResourceViewProxy texture)
+            {
+                context.SetShaderResource(Type, slot, texture);
+            }
+            /// <summary>
+            /// Binds the textures.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="textures">The textures.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindTextures(DeviceContextProxy context, IList<KeyValuePair<int, ShaderResourceViewProxy>> textures)
+            {
+                foreach (var texture in textures)
+                {
+                    context.SetShaderResource(Type, texture.Key, texture.Value);
+                }
+            }
+            /// <summary>
+            /// Binds the sampler.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="slot">The slot.</param>
+            /// <param name="sampler">The sampler.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindSampler(DeviceContextProxy context, int slot, SamplerStateProxy sampler)
+            {
+                context.SetSampler(Type, slot, sampler);
+            }
+            /// <summary>
+            /// Binds the sampler.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="sampler">The sampler.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindSampler(DeviceContextProxy context, string name, SamplerStateProxy sampler)
+            {
+                int slot = this.SamplerMapping.TryGetBindSlot(name);
+                context.SetSampler(Type, slot, sampler);
+            }
+
+            /// <summary>
+            /// Binds the samplers.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="samplers">The samplers.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindSamplers(DeviceContextProxy context, IList<KeyValuePair<int, SamplerStateProxy>> samplers)
+            {
+                foreach (var sampler in samplers)
+                {
+                    context.SetSampler(Type, sampler.Key, sampler.Value);
+                }
+            }
+            /// <summary>
+            /// Binds the UnorderedAccessView.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="slot">The slot.</param>
+            /// <param name="uav">The uav.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindUAV(DeviceContextProxy context, int slot, UAVBufferViewProxy uav)
+            {
+                context.SetUnorderedAccessView(Type, slot, uav);
+            }
+            /// <summary>
+            /// Binds the UnorderedAccessView.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="uav">The uav.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindUAV(DeviceContextProxy context, string name, UAVBufferViewProxy uav)
+            {
+                int slot = this.UnorderedAccessViewMapping.TryGetBindSlot(name);
+                context.SetUnorderedAccessView(Type, slot, uav);
+            }
+            /// <summary>
+            /// Binds the UnorderedAccessViews.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="uavs">The uavs.</param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void BindUAVs(DeviceContextProxy context, IList<KeyValuePair<int, UAVBufferViewProxy>> uavs)
+            {
+                foreach (var uav in uavs)
+                {
+                    context.SetUnorderedAccessView(Type, uav.Key, uav.Value);
+                }
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static implicit operator ComputeShaderType(ComputeShader s)
+            {
+                return Type;
             }
         }
     }
+
 }

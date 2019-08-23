@@ -6,33 +6,41 @@ using D2D = SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Core2D
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
 #endif
-{    
-    /// <summary>
-    /// <see href="https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/"/>
-    /// </summary>
-    public interface ISegment
+#endif
+{
+    namespace Core2D
     {
-        bool IsDirty { get; }
-        void Create(D2D.GeometrySink sink);
-    }
-
-    /// <summary>
-    /// <see href="https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/"/>
-    /// </summary>
-    public abstract class Segment : ISegment
-    {
-        public bool IsDirty { private set; get; } = false;
-
-        protected void Invalidate()
+        /// <summary>
+        /// <see href="https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/"/>
+        /// </summary>
+        public interface ISegment
         {
-            IsDirty = true;
+            bool IsDirty { get; }
+            void Create(D2D.GeometrySink sink);
         }
 
-        public abstract void Create(D2D.GeometrySink sink);
+        /// <summary>
+        /// <see href="https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/"/>
+        /// </summary>
+        public abstract class Segment : ISegment
+        {
+            public bool IsDirty { private set; get; } = false;
+
+            protected void Invalidate()
+            {
+                IsDirty = true;
+            }
+
+            public abstract void Create(D2D.GeometrySink sink);
+        }
     }
+
 }

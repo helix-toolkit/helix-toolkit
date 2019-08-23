@@ -70,12 +70,6 @@
                     <hx:GeometryModel3DOctreeManager />
                 </hx:ItemsModel3D.OctreeManager>
             </hx:ItemsModel3D>
-            <hx:LineGeometryModel3D
-                Geometry="{Binding OITVM.GridModel}"
-                IsHitTestVisible="False"
-                Thickness="0.5"
-                Transform3D="{Binding OITVM.GridTransform}"
-                Color="#4F4E4E" />
         </hx:ModelContainer3DX>
         <hx:Viewport3DX
             x:Name="viewport"
@@ -85,27 +79,31 @@
             Camera="{Binding Camera}"
             EnableAutoOctreeUpdate="True"
             EnableDeferredRendering="True"
-            EnableDesignModeRendering="True"
+            EnableDesignModeRendering="False"
             EnableSharedModelMode="True"
             FXAALevel="Low"
             IsShadowMappingEnabled="True"
             ModelUpDirection="{Binding UpDirection}"
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
             SharedModelContainer="{Binding ElementName=sharedModel}"
-            ShowCoordinateSystem="true">
+            ShowCoordinateSystem="true"
+            ShowFrameDetails="True"
+            ShowFrameRate="True">
+            <hx:Viewport3DX.InputBindings>
+                <hx:ManipulationBinding Command="Rotate" Gesture="Pan" />
+                <hx:ManipulationBinding Command="Pan" Gesture="TwoFingerPan" />
+                <hx:ManipulationBinding Command="Zoom" Gesture="Pinch" />
+            </hx:Viewport3DX.InputBindings>
             <hx:ShadowMap3D />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="White" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
-            <hx:GroupModel3D IsThrowingShadow="True">
-                <hx:DynamicReflectionMap3D>
+            <hx:GroupModel3D>
+                <hx:DynamicReflectionMap3D IsDynamicScene="True">
                     <hx:MeshGeometryModel3D
                         CullMode="Back"
                         Geometry="{Binding Sphere}"
                         IsThrowingShadow="True"
-                        Material="{Binding Material1}"
-                        RenderEnvironmentMap="True"
-                        RenderNormalMap="False"
-                        RenderShadowMap="True" />
+                        Material="{Binding Material1}" />
                 </hx:DynamicReflectionMap3D>
                 <hx:LineGeometryModel3D
                     Geometry="{Binding LineGeometry}"
@@ -113,7 +111,7 @@
                     Color="White" />
                 <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" IsTransparent="True" />
             </hx:GroupModel3D>
-            <hx:GroupModel3D IsThrowingShadow="True" Transform3D="{Binding Transform}">
+            <hx:GroupModel3D Transform3D="{Binding Transform}">
                 <hx:GroupModel3D.OctreeManager>
                     <hx:GeometryModel3DOctreeManager />
                 </hx:GroupModel3D.OctreeManager>
@@ -122,27 +120,21 @@
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform1}" />
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform2}" />
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform3}" />
             </hx:GroupModel3D>
-            <hx:GroupModel3D IsThrowingShadow="True" Transform3D="{Binding Transform4}">
+            <hx:GroupModel3D Transform3D="{Binding Transform4}">
                 <hx:PointGeometryModel3D
                     Geometry="{Binding PointGeometry}"
                     IsThrowingShadow="True"
@@ -153,8 +145,7 @@
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
                 IsHitTestVisible="False"
-                Material="{Binding FloorMaterial}"
-                RenderShadowMap="True" />
+                Material="{Binding FloorMaterial}" />
             <hx:ParticleStormModel3D
                 Acceleration="{Binding Acceleration}"
                 AnimateSpriteByEnergy="False"
@@ -178,6 +169,12 @@
                 SourceAlphaBlend="{Binding SourceAlphaBlendOption}"
                 SourceBlend="{Binding SourceBlendOption}"
                 Turbulance="20" />
+            <hx:LineGeometryModel3D
+                Geometry="{Binding OITVM.GridModel}"
+                IsHitTestVisible="False"
+                Thickness="0.5"
+                Transform3D="{Binding OITVM.GridTransform}"
+                Color="#4F4E4E" />
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
         <hx:Viewport3DX
@@ -185,10 +182,10 @@
             Grid.Row="1"
             Grid.Column="1"
             Background="Black"
-            BackgroundColor="#C8C8C8"
+            BackgroundColor="Silver"
             Camera="{Binding Camera1}"
             CameraMode="Inspect"
-            CameraRotationMode="Trackball"
+            CameraRotationMode="Turntable"
             EnableAutoOctreeUpdate="True"
             EnableDeferredRendering="True"
             EnableDesignModeRendering="True"
@@ -199,7 +196,17 @@
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
             SharedModelContainer="{Binding ElementName=sharedModel}"
             ShowCoordinateSystem="true">
+            <hx:Viewport3DX.InputBindings>
+                <hx:ManipulationBinding Command="Rotate" Gesture="Pan" />
+                <hx:ManipulationBinding Command="Pan" Gesture="TwoFingerPan" />
+                <hx:ManipulationBinding Command="Zoom" Gesture="Pinch" />
+            </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D Direction="{Binding ElementName=viewport1, Path=Camera.LookDirection}" Color="White" />
+            <!--<hx:AxisPlaneGridModel3D Offset="-20" AutoSpacing="False" PlaneColor="#003E3E3E" GridThickness="0.02"/>-->
+            <hx:AxisPlaneGridModel3D
+                PlaneColor="#FFBDBDBD"
+                UpAxis="Z"
+                Offset="-20" />
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
         <TextBlock
@@ -209,21 +216,29 @@
             FontSize="32"
             FontStretch="Condensed"
             Foreground="Red"
-            Text="HelixToolkit + SharpDX in Windows 10" />
+            Text="HelixToolkit + SharpDX in Windows 10">
+            <TextBlock.CacheMode>
+                <BitmapCache />
+            </TextBlock.CacheMode>
+        </TextBlock>
         <TextBlock
             Grid.Row="1"
-            HorizontalAlignment="Right"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            FontSize="24"
-            FontWeight="Bold"
+            FontSize="12"
             Foreground="Blue"
-            Text="{Binding ElementName=viewport, Path=FrameRate}" />
+            IsHitTestVisible="False"
+            Text="{Binding ElementName=viewport, Path=RenderDetailOutput}" />
         <StackPanel
             Grid.Row="1"
             Grid.Column="1"
+            Margin="8"
             HorizontalAlignment="Right"
-            Orientation="Vertical" Margin="8">
-            <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}"/>
+            Orientation="Vertical">
+            <StackPanel.CacheMode>
+                <BitmapCache />
+            </StackPanel.CacheMode>
+            <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}" />
             <StackPanel Orientation="Horizontal">
                 <TextBlock Foreground="Black">OIT Weight Power:</TextBlock>
             </StackPanel>

@@ -74,10 +74,29 @@ namespace LightingDemo
         public bool RenderLight2 { get; set; }
         public bool RenderLight3 { get; set; }
         public bool RenderLight4 { get; set; }
+        private bool renderDiffuseMap = true;
+        public bool RenderDiffuseMap {
+            set
+            {
+                if(SetValue(ref renderDiffuseMap, value))
+                {
+                    ModelMaterial.RenderDiffuseMap = FloorMaterial.RenderDiffuseMap = value;
+                }
+            }
+            get { return renderDiffuseMap; }
+        }
 
-        public bool RenderDiffuseMap { set; get; } = true;
-
-        public bool RenderNormalMap { set; get; } = true;
+        private bool renderNormalMap = true;
+        public bool RenderNormalMap {
+            set
+            {
+                if(SetValue(ref renderNormalMap, value))
+                {
+                    ModelMaterial.RenderNormalMap = FloorMaterial.RenderNormalMap = value;
+                }
+            }
+            get { return renderNormalMap; }
+        }
 
         public string[] TextureFiles { get; } = new string[] { @"TextureCheckerboard2.jpg", @"TextureCheckerboard3.jpg", @"TextureNoise1.jpg", @"TextureNoise1_dot3.jpg", @"TextureCheckerboard2_dot3.jpg" };
 
@@ -176,7 +195,6 @@ namespace LightingDemo
         {
             //    RenderTechniquesManager = new DefaultRenderTechniquesManager();           
             EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
             this.Title = "Lighting Demo";
@@ -265,15 +283,14 @@ namespace LightingDemo
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = ModelMaterial.NormalMap,
-                //DisplacementMap = LoadFileToMemory(new System.Uri("Particle.png", System.UriKind.RelativeOrAbsolute).ToString()),
-                //DisplacementMapScaleMask = new Vector4(-1f,0,0,-1f)
+                RenderShadowMap = true
             };
             ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
-
+            
             ReflectMaterial = PhongMaterials.PolishedSilver;
             ReflectMaterial.ReflectiveColor = global::SharpDX.Color.Silver;
-
-            InitialObjectTransforms();
+            ReflectMaterial.RenderEnvironmentMap = true;
+            InitialObjectTransforms();           
         }
 
         private void InitialObjectTransforms()

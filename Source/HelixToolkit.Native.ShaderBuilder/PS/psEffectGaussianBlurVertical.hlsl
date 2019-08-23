@@ -2,30 +2,27 @@
 #include"..\Common\CommonBuffers.hlsl"
 #pragma pack_matrix( row_major )
 
-static const int KSize = 4;
+static const int KSize = 5;
 static const float offset[KSize] =
 {
-    0.0, 1.4117647059, 3.2941176471, 5.176470588
+    0, 1, 2, 3, 4
 };
 static const float weight[KSize] =
 {
-    0.19648255, 0.29690696, 0.09447040, 0.01038136
+    0.2270270270, 0.1945945946, 0.1216216216, 0.0540540541, 0.0162162162
 };
 
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
-    float4 color = texDiffuseMap.Sample(samplerDiffuse, input.Tex);
-    float a = color.a * weight[0];
-    float k = vViewport.w * Param._m01;
+    float4 color = texDiffuseMap.Sample(samplerSurface, input.Tex) * weight[0];
+    float k = vViewport.w * Param._m01 * viewportScale;
     [unroll]
     for (int i = 1; i < KSize; ++i)
     {
         float offY = offset[i] * k;
-        float4 c = texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(0, offY));
-        c += texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(0, offY));
-        color += c;
-        a = mad(weight[i], c.a, a);
+        float4 c = texDiffuseMap.Sample(samplerSurface, input.Tex + float2(0, offY));
+        c += texDiffuseMap.Sample(samplerSurface, input.Tex - float2(0, offY));
+        color += c * weight[i];
     }
-    color.a = a;
     return saturate(color);
 }

@@ -2,79 +2,67 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Shaders
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Shaders
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class HullShader : ShaderBase
+    namespace Shaders
     {
-        private readonly global::SharpDX.Direct3D11.HullShader shader;
+        using Render;
+
 
         /// <summary>
-        /// Vertex Shader
+        /// 
         /// </summary>
-        /// <param name="device"></param>
-        /// <param name="name"></param>
-        /// <param name="byteCode"></param>
-        public HullShader(Device device, string name, byte[] byteCode)
-            :base(name, ShaderStage.Hull)
+        public sealed class HullShader : ShaderBase
         {
-            shader = Collect(new global::SharpDX.Direct3D11.HullShader(device, byteCode));
-        }
-
-        /// <summary>
-        /// <see cref="ShaderBase.Bind(DeviceContext)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        public override void Bind(DeviceContext context)
-        {
-            context.HullShader.Set(shader);
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindConstantBuffers(DeviceContext)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        public override void BindConstantBuffers(DeviceContext context)
-        {
-            foreach (var buff in this.ConstantBufferMapping.Mappings)
+            internal global::SharpDX.Direct3D11.HullShader Shader { private set; get; }
+            public static readonly HullShader NullHullShader = new HullShader("NULL");
+            public static readonly HullShaderType Type;
+            /// <summary>
+            /// Vertex Shader
+            /// </summary>
+            /// <param name="device"></param>
+            /// <param name="name"></param>
+            /// <param name="byteCode"></param>
+            public HullShader(Device device, string name, byte[] byteCode)
+                :base(name, ShaderStage.Hull)
             {
-                context.HullShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                Shader = Collect(new global::SharpDX.Direct3D11.HullShader(device, byteCode));
+            }
+
+            private HullShader(string name)
+                :base(name, ShaderStage.Hull, true)
+            {
+
+            }
+
+            /// <summary>
+            /// Binds shader to pipeline
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="bindConstantBuffer"></param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void Bind(DeviceContextProxy context, bool bindConstantBuffer = true)
+            {
+                context.SetShader(this);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static implicit operator HullShaderType(HullShader s)
+            {
+                return Type;
             }
         }
-        /// <summary>
-        /// <see cref="ShaderBase.BindTexture(DeviceContext, string, ShaderResourceView)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="name"></param>
-        /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
-        {
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindTexture(DeviceContext, int, ShaderResourceView)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="index"></param>
-        /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, int index, ShaderResourceView texture)
-        {
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="textures"></param>
-        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
-        {
-        }
     }
+
 }

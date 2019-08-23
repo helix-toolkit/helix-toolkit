@@ -19,8 +19,13 @@ using Color = System.Windows.Media.Color;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+using Vector3D = SharpDX.Vector3;
+namespace HelixToolkit.SharpDX.Core
+#else
 using Vector3D = SharpDX.Vector3;
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;    
@@ -35,6 +40,7 @@ namespace HelixToolkit.UWP
     /// <remarks>
     /// The format is documented on <a href="http://en.wikipedia.org/wiki/STL_(file_format)">Wikipedia</a>.
     /// </remarks>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class StLReader : ModelReader
     {
         /// <summary>
@@ -151,12 +157,12 @@ namespace HelixToolkit.UWP
             int idx = line.IndexOf(' ');
             if (idx == -1)
             {
-                id = line;
+                id = line.ToLowerInvariant();
                 values = string.Empty;
             }
             else
             {
-                id = line.Substring(0, idx).ToLower();
+                id = line.Substring(0, idx).ToLowerInvariant();
                 values = line.Substring(idx + 1);
             }
         }
@@ -172,6 +178,8 @@ namespace HelixToolkit.UWP
         /// </returns>
         private static Vector3D ParseNormal(string input)
         {
+            input = input.ToLowerInvariant();
+            input = input.Replace("nan", "NaN");
             var match = NormalRegex.Match(input);
             if (!match.Success)
             {
@@ -276,6 +284,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         private static bool TryParseVertex(string line, out Point3D point)
         {
+            line = line.ToLowerInvariant();
             var match = VertexRegex.Match(line);
             if (!match.Success)
             {
@@ -310,6 +319,13 @@ namespace HelixToolkit.UWP
             while (true)
             {
                 var line = reader.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+
+                line = line.Trim();
+
                 Point3D point;
                 if (TryParseVertex(line, out point))
                 {

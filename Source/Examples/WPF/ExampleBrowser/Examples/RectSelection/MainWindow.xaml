@@ -6,6 +6,8 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="7, 5">
             <ComboBox SelectedValue="{Binding SelectionMode}" ItemsSource="{Binding SelectionModes}"/>
+            <TextBlock Text="SelectedVisuals:"/>
+            <TextBlock Text="{Binding SelectedVisuals}"/>
         </StackPanel>
         <helix:HelixViewport3D x:Name="view1" x:FieldModifier="private">
             <helix:DefaultLights />

@@ -2,205 +2,254 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using global::SharpDX.Direct3D11;
+using global::SharpDX;
+
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Core
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Shaders;
-    using Render;
-    using global::SharpDX.Direct3D11;
-    using global::SharpDX;
-    using Utilities;
-    public class MeshRenderCore : MaterialGeometryRenderCore, IMeshRenderParams, IDynamicReflectable
+    namespace Core
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool InvertNormal
-        {
-            set
-            {
-                SetAffectsRender(ref modelStruct.InvertNormal, (value ? 1 : 0));
-            }
-            get
-            {
-                return modelStruct.InvertNormal == 1 ? true : false;
-            }
-        }
-        private bool renderWireframe = false;
-        /// <summary>
-        /// Gets or sets a value indicating whether [render wireframe].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render wireframe]; otherwise, <c>false</c>.
-        /// </value>
-        public bool RenderWireframe
-        {
-            set
-            {
-                SetAffectsRender(ref renderWireframe, value);
-            }
-            get
-            {
-                return renderWireframe;
-            }
-        }
+        using Shaders;
+        using Render;
+        using Utilities;
+        using Model;
+    
 
-        /// <summary>
-        /// Gets or sets the color of the wireframe.
-        /// </summary>
-        /// <value>
-        /// The color of the wireframe.
-        /// </value>
-        public Color4 WireframeColor
+        public class MeshRenderCore : GeometryRenderCore, IMeshRenderParams, IDynamicReflectable
         {
-            set
+            #region Variables
+            /// <summary>
+            /// Gets the raster state wireframe.
+            /// </summary>
+            /// <value>
+            /// The raster state wireframe.
+            /// </value>
+            protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
+            private RasterizerStateProxy rasterStateWireframe = null;
+
+            #endregion
+
+            #region Properties
+            /// <summary>
+            /// 
+            /// </summary>
+            public bool InvertNormal
             {
-                SetAffectsRender(ref modelStruct.WireframeColor, value);
-            }
-            get { return modelStruct.WireframeColor; }
-        }
-
-        private RasterizerStateProxy rasterStateWireframe = null;
-
-        /// <summary>
-        /// Gets or sets the dynamic reflector.
-        /// </summary>
-        /// <value>
-        /// The dynamic reflector.
-        /// </value>
-        public IDynamicReflector DynamicReflector
-        {
-            set; get;
-        }
-
-        private string transparentPassName = DefaultPassNames.OITPass;
-        /// <summary>
-        /// Gets or sets the name of the mesh transparent pass.
-        /// </summary>
-        /// <value>
-        /// The name of the transparent pass.
-        /// </value>
-        public string TransparentPassName
-        {
-            set
-            {
-                if(SetAffectsRender(ref transparentPassName, value) && IsAttached)
+                set
                 {
-                    TransparentPass = EffectTechnique[value];
+                    SetAffectsRender(ref modelStruct.InvertNormal, (value ? 1 : 0));
+                }
+                get
+                {
+                    return modelStruct.InvertNormal == 1 ? true : false;
                 }
             }
-            get
+            private bool renderWireframe = false;
+            /// <summary>
+            /// Gets or sets a value indicating whether [render wireframe].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [render wireframe]; otherwise, <c>false</c>.
+            /// </value>
+            public bool RenderWireframe
             {
-                return transparentPassName;
-            }
-        }
-
-        /// <summary>
-        /// Gets the raster state wireframe.
-        /// </summary>
-        /// <value>
-        /// The raster state wireframe.
-        /// </value>
-        protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
-
-        protected ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
-        protected ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
-        protected ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
-
-        public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
-
-        private int shadowMapSlot;
-
-        protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
-        {
-            if (base.CreateRasterState(description, force))
-            {
-                RemoveAndDispose(ref rasterStateWireframe);
-                var wireframeDesc = description;
-                wireframeDesc.FillMode = FillMode.Wireframe;
-                wireframeDesc.DepthBias = -100;
-                wireframeDesc.SlopeScaledDepthBias = -2f;
-                wireframeDesc.DepthBiasClamp = -0.00008f;
-                rasterStateWireframe = Collect(EffectTechnique.EffectsManager.StateManager.Register(wireframeDesc));
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override bool OnAttach(IRenderTechnique technique)
-        {
-            if (base.OnAttach(technique))
-            {
-                WireframePass = technique.GetPass(DefaultPassNames.Wireframe);
-                WireframeOITPass = technique.GetPass(DefaultPassNames.WireframeOITPass);
-                TransparentPass = technique.GetPass(TransparentPassName);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override void OnDetach()
-        {
-            DynamicReflector = null;
-            base.OnDetach();
-        }
-
-        protected override void OnDefaultPassChanged(ShaderPass pass)
-        {
-            base.OnDefaultPassChanged(pass);
-            shadowMapSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
-        }
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
-        {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.RenderOIT = context.IsOITPass ? 1 : 0;
-        }
-
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
-        {
-            ShaderPass pass = DefaultShaderPass;
-            if (RenderType == RenderType.Transparent && context.IsOITPass)
-            {
-                pass = TransparentPass;
-            }
-            pass.BindShader(deviceContext);
-            pass.BindStates(deviceContext, DefaultStateBinding);
-            if (!BindMaterialTextures(deviceContext, pass))
-            {
-                return;
-            }
-            if (context.RenderHost.IsShadowMapEnabled)
-            {
-                pass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
-            }
-            DynamicReflector?.BindCubeMap(deviceContext);
-            OnDraw(deviceContext, InstanceBuffer);
-            DynamicReflector?.UnBindCubeMap(deviceContext);
-            if (RenderWireframe && WireframePass != ShaderPass.NullPass)
-            {
-                if (RenderType == RenderType.Transparent && context.IsOITPass)
+                set
                 {
-                    pass = WireframeOITPass;
+                    SetAffectsRender(ref renderWireframe, value);
+                }
+                get
+                {
+                    return renderWireframe;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the color of the wireframe.
+            /// </summary>
+            /// <value>
+            /// The color of the wireframe.
+            /// </value>
+            public Color4 WireframeColor
+            {
+                set
+                {
+                    SetAffectsRender(ref modelStruct.WireframeColor, value);
+                }
+                get { return modelStruct.WireframeColor; }
+            }
+
+
+
+            /// <summary>
+            /// Gets or sets the dynamic reflector.
+            /// </summary>
+            /// <value>
+            /// The dynamic reflector.
+            /// </value>
+            public IDynamicReflector DynamicReflector
+            {
+                set; get;
+            }
+            /// <summary>
+            /// Gets or sets a value indicating whether this <see cref="MeshRenderCore"/> is batched.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if batched; otherwise, <c>false</c>.
+            /// </value>
+            public bool Batched
+            {
+                set; get;
+            } = false;
+
+            private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
+            /// <summary>
+            /// Used to wrap all material resources
+            /// </summary>
+            public MaterialVariable MaterialVariables
+            {
+                set
+                {
+                    if (SetAffectsCanRenderFlag(ref materialVariables, value))
+                    {
+                        materialVariables = materialVariables ?? EmptyMaterialVariable.EmptyVariable;
+                    }
+                }
+                get
+                {
+                    return materialVariables;
+                }
+            }
+            #endregion
+
+            protected ModelStruct modelStruct = new ModelStruct() { World = Matrix.Identity };
+
+            protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
+            {
+                if (base.CreateRasterState(description, force))
+                {
+                    RemoveAndDispose(ref rasterStateWireframe);
+                    var wireframeDesc = description;
+                    wireframeDesc.FillMode = FillMode.Wireframe;
+                    wireframeDesc.DepthBias = -100;
+                    wireframeDesc.SlopeScaledDepthBias = -2f;
+                    wireframeDesc.DepthBiasClamp = -0.00008f;
+                    rasterStateWireframe = Collect(EffectTechnique.EffectsManager.StateManager.Register(wireframeDesc));
+                    return true;
                 }
                 else
                 {
-                    pass = WireframePass;
+                    return false;
                 }
-                pass.BindShader(deviceContext, false);
+            }
+
+            protected override void OnDetach()
+            {
+                rasterStateWireframe = null;
+                base.OnDetach();
+            }
+
+            protected override bool OnUpdateCanRenderFlag()
+            {
+                return base.OnUpdateCanRenderFlag() && materialVariables != EmptyMaterialVariable.EmptyVariable;
+            }
+
+            protected virtual void OnUpdatePerModelStruct(RenderContext context)
+            {
+                modelStruct.World = ModelMatrix;
+                modelStruct.HasInstances = InstanceBuffer.HasElements ? 1 : 0;
+                modelStruct.Batched = Batched ? 1 : 0;
+            }
+
+            protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
+            {
+                ShaderPass pass = MaterialVariables.GetPass(RenderType, context);
+                if (pass.IsNULL)
+                { return; }
+                OnUpdatePerModelStruct(context);
+                if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, ModelStruct.SizeInBytes))
+                {
+                    return;
+                }
+                pass.BindShader(deviceContext);
                 pass.BindStates(deviceContext, DefaultStateBinding);
-                deviceContext.SetRasterState(RasterStateWireframe);
-                OnDraw(deviceContext, InstanceBuffer);
+                if (!materialVariables.BindMaterialResources(context, deviceContext, pass))
+                {
+                    return;
+                }
+
+                DynamicReflector?.BindCubeMap(deviceContext);
+                materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+                DynamicReflector?.UnBindCubeMap(deviceContext);
+
+                if (RenderWireframe)
+                {
+                    pass = materialVariables.GetWireframePass(RenderType, context);
+                    if (pass.IsNULL)
+                    {
+                        return;
+                    }
+                    pass.BindShader(deviceContext, false);
+                    pass.BindStates(deviceContext, DefaultStateBinding);
+                    deviceContext.SetRasterState(RasterStateWireframe);
+                    materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+                }
+            }
+
+            protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+            {
+                if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, ModelStruct.SizeInBytes))
+                {
+                    return;
+                }
+                materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+            }
+
+            protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+            {
+                var pass = materialVariables.GetShadowPass(RenderType, context);
+                if (pass.IsNULL)
+                { return; }
+                var v = new SimpleMeshStruct()
+                {
+                    World = ModelMatrix,
+                    HasInstances = InstanceBuffer.HasElements ? 1 : 0
+                };
+                if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
+                {
+                    return;
+                }
+                pass.BindShader(deviceContext);
+                pass.BindStates(deviceContext, ShadowStateBinding);
+                materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
+            }
+
+            protected override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext, ShaderPass customPass)
+            {
+                var pass = customPass ?? materialVariables.GetDepthPass(RenderType, context);
+                if (pass.IsNULL)
+                { return; }
+                var v = new SimpleMeshStruct()
+                {
+                    World = ModelMatrix,
+                    HasInstances = InstanceBuffer.HasElements ? 1 : 0
+                };
+                if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
+                {
+                    return;
+                }
+                pass.BindShader(deviceContext);
+                pass.BindStates(deviceContext, ShadowStateBinding);
+                materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
             }
         }
     }
+
 }

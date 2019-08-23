@@ -30,10 +30,11 @@
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
             EnableAutoOctreeUpdate="True"
+            EnableD2DRendering="False"
             EnableDeferredRendering="False"
+            EnableSSAO="True"
             EnableSwapChainRendering="True"
             FXAALevel="Low"
-            RenderTechnique="{Binding RenderTechnique}"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">
@@ -114,6 +115,16 @@
                 IsChecked="{Binding ElementName=floor, Path=RenderWireframe}">
                 Show Wireframe
             </CheckBox>
+            <CheckBox
+                Margin="4"
+                Foreground="White"
+                IsChecked="{Binding ElementName=view1, Path=EnableSSAO}">
+                Enable SSAO
+            </CheckBox>
+            <Slider
+                Maximum="4"
+                Minimum="0.5"
+                Value="{Binding ElementName=view1, Path=SSAOSamplingRadius}" />
         </StackPanel>
         <StackPanel
             Grid.Row="1"

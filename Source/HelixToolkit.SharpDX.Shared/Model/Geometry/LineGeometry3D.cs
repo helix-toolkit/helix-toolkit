@@ -2,15 +2,20 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+using global::SharpDX;
+using System;
+using System.Collections.Generic;
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using global::SharpDX;
-    using System;
-    using System.Collections.Generic;
+
     using Utilities;
 #if !NETFX_CORE
     [Serializable]
@@ -48,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if(Octree != null) 
             {
-                return Octree.HitTest(context, originalSource, modelMatrix, rayWS, ref hits, hitTestThickness);
+                return Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ref hits, hitTestThickness);
             }
             else
             {
@@ -59,16 +64,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     var t0 = Vector3.TransformCoordinate(line.P0, modelMatrix);
                     var t1 = Vector3.TransformCoordinate(line.P1, modelMatrix);
-                    Vector3 sp, tp;
-                    float sc, tc;
-                    var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
+                    var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc);
                     var svpm = context.ScreenViewProjectionMatrix;
-                    Vector4 sp4;
-                    Vector4 tp4;
-                    Vector3.Transform(ref sp, ref svpm, out sp4);
-                    Vector3.Transform(ref tp, ref svpm, out tp4);
-                    var sp3 = sp4.ToVector3();
-                    var tp3 = tp4.ToVector3();
+                    Vector3.TransformCoordinate(ref sp, ref svpm, out var sp3);
+                    Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);
                     var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
                     var dist = tv2.Length();
                     if (dist < lastDist && dist <= hitTestThickness)
@@ -85,6 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.TriangleIndices = null; // Since triangles are shader-generated
                         result.RayHitPointScalar = sc;
                         result.LineHitPointScalar = tc;
+                        result.Geometry = this;
                     }
 
                     lineIndex++;

@@ -1,0 +1,85 @@
+﻿<Window
+    x:Class="VolumeRendering.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:local="clr-namespace:VolumeRendering"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="1000"
+    Height="800"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <local:MainViewModel x:Key="viewModel" />
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </Window.Resources>
+    <Grid DataContext="{StaticResource viewModel}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX
+            BackgroundColor="Black"
+            Camera="{Binding Camera}"
+            CameraRotationMode="Trackball"
+            EffectsManager="{Binding EffectsManager}"
+            ShowCameraTarget="False">
+            <hx:VolumeTextureModel3D Transform="{Binding Transform}" VolumeMaterial="{Binding VolumeMaterial}" />
+        </hx:Viewport3DX>
+        <StackPanel
+            Grid.Column="1"
+            Width="120"
+            Orientation="Vertical">
+            <Button Margin="4" Command="{Binding LoadSkullCommand}">Load Skull</Button>
+            <Button Margin="4" Command="{Binding LoadTeapotCommand}">Load Teapot</Button>
+            <Button Margin="4" Command="{Binding LoadCloudCommand}">Load Noise</Button>
+            <Button Margin="4" Command="{Binding LoadBeetleCommand}">Load Beetle</Button>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="4">IterationOffset:</TextBlock>
+                <TextBlock Text="{Binding IterationOffset}" />
+            </StackPanel>
+
+            <Slider
+                Margin="4,0"
+                Maximum="255"
+                Minimum="0"
+                Value="{Binding IterationOffset}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="4">IsoValue:</TextBlock>
+                <TextBlock Text="{Binding IsoValue}" />
+            </StackPanel>
+            <Slider
+                Margin="4,0"
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding IsoValue}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="4">SampleDistance:</TextBlock>
+                <TextBlock Text="{Binding SampleDistance}" />
+            </StackPanel>
+            <Slider
+                Margin="4,0"
+                Maximum="5"
+                Minimum="1"
+                Value="{Binding SampleDistance}" />
+        </StackPanel>
+        <Grid Grid.ColumnSpan="2" Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}">
+            <Rectangle
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Fill="#9A000000" />
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <TextBlock FontSize="18" Foreground="White">Loading and processing data.</TextBlock>
+                <ProgressBar
+                    Width="200"
+                    Height="20"
+                    Margin="10"
+                    IsIndeterminate="True" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

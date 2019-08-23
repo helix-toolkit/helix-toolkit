@@ -36,7 +36,6 @@
             FXAALevel="{Binding FXAA}"
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             ShowFrameDetails="True"
             ShowFrameRate="True"
@@ -79,7 +78,7 @@
                 Range="100"
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light1Color}" />
-            <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
+            <hx:GroupModel3D>
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Sphere}"
@@ -109,29 +108,24 @@
                     Material="{Binding LightModelMaterial}"
                     Transform="{Binding Light4Transform}" />
             </hx:GroupModel3D>
-            <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
+            <hx:GroupModel3D>
                 <hx:MeshGeometryModel3D
                     x:Name="model"
                     Geometry="{Binding Model}"
                     IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
                     Material="{Binding ModelMaterial}"
-                    RenderDiffuseMap="{Binding RenderDiffuseMap}"
-                    RenderNormalMap="{Binding RenderNormalMap}"
-                    RenderShadowMap="True"
                     Transform="{Binding ModelTransform}" />
-                <hx:DynamicReflectionMap3D>
+                <hx:DynamicReflectionMap3D IsDynamicScene="True">
                     <hx:MeshGeometryModel3D
                         x:Name="model1"
                         CullMode="Back"
                         Geometry="{Binding Sphere}"
                         IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
                         Material="{Binding ReflectMaterial}"
-                        RenderEnvironmentMap="True"
-                        RenderShadowMap="True"
                         Transform="{Binding Model1Transform}" />
                 </hx:DynamicReflectionMap3D>
 
-                <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
+                <hx:GroupModel3D>
                     <hx:MeshGeometryModel3D
                         CullMode="Back"
                         Geometry="{Binding FlyingObject}"
@@ -185,13 +179,8 @@
                 <hx:MeshGeometryModel3D
                     x:Name="floor"
                     CullMode="Back"
-                    EnableTessellation="{Binding ElementName=model, Path=EnableTessellation}"
                     Geometry="{Binding Floor}"
                     Material="{Binding FloorMaterial}"
-                    MinTessellationFactor="{Binding ElementName=model, Path=MinTessellationFactor}"
-                    RenderDiffuseMap="{Binding RenderDiffuseMap}"
-                    RenderNormalMap="{Binding RenderNormalMap}"
-                    RenderShadowMap="True"
                     Transform="{Binding FloorTransform}" />
             </hx:GroupModel3D>
             <hx:PostEffectBloom x:Name="bloom" />
@@ -211,11 +200,6 @@
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
                 <StackPanel Orientation="Vertical">
-                    <!--<ComboBox  Grid.Row="3" Text="- Select Model -" ItemsSource="{Binding ShadingModelCollection}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3"/>-->
-                    <ComboBox
-                        Margin="3"
-                        ItemsSource="{Binding EffectsManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechniqueName}" />
                     <TextBlock>MSAA</TextBlock>
                     <ComboBox
                         Margin="3"
@@ -226,7 +210,7 @@
                         Margin="3"
                         ItemsSource="{Binding FXAAs}"
                         SelectedItem="{Binding FXAA}" />
-                    <CheckBox x:Name="tessCheckBox" IsChecked="{Binding ElementName=model, Path=EnableTessellation}">Enable Tessellation</CheckBox>
+                    <CheckBox x:Name="tessCheckBox" IsChecked="{Binding ModelMaterial.EnableTessellation}">Enable Tessellation</CheckBox>
                     <Slider
                         Grid.Row="9"
                         Grid.ColumnSpan="2"
@@ -236,7 +220,7 @@
                         Maximum="5"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding MinTessellationFactor, ElementName=model}" />
+                        Value="{Binding ModelMaterial.MinDistanceTessellationFactor}" />
                 </StackPanel>
             </Expander>
             <Expander
@@ -297,14 +281,6 @@
                     Value="{Binding ElementName=bloom, Path=NumberOfBlurPass}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock>Max DownSampling:</TextBlock>
-                <Slider
-                    Width="80"
-                    Maximum="4"
-                    Minimum="1"
-                    Value="{Binding ElementName=bloom, Path=MaximumDownSamplingStep}" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
                 <TextBlock>BloomCombineIntensity:</TextBlock>
                 <Slider
                     Width="80"
@@ -337,35 +313,5 @@
                     Value="{Binding ElementName=bloom, Path=BloomPassIntensity}" />
             </StackPanel>
         </StackPanel>
-        <StatusBar
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            VerticalAlignment="Bottom">
-            <StatusBar.Background>
-                <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
-            </StatusBar.Background>
-            <StatusBarItem>
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Text="{Binding FrameRateText, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.Position, StringFormat=Position: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.LookDirection, StringFormat=LookDirection: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.UpDirection, StringFormat=UpDirection: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}" />
-            </StatusBarItem>
-        </StatusBar>
     </Grid>
 </Window>

@@ -1,40 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
 {
     using Model.Scene;
+
     using System.Collections.Specialized;
 
     public class ItemsModel3D : Element3D, IHitable
     {
         /// <summary>
-        ///     The item template property
-        /// </summary>
-        public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-            "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
-
-        /// <summary>
-        ///     Gets or sets the <see cref="DataTemplate" /> used to display each item.
-        /// </summary>
-        /// <value>
-        ///     The item template.
-        /// </value>
-        public DataTemplate ItemTemplate
-        {
-            get { return (DataTemplate)this.GetValue(ItemTemplateProperty); }
-            set { this.SetValue(ItemTemplateProperty, value); }
-        }
-
-        /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public static readonly DependencyProperty ItemsSourceProperty =
+        public new static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsModel3D),
                 new PropertyMetadata(null,
                     (d, e) => {
@@ -51,12 +32,12 @@ namespace HelixToolkit.UWP
                 var d = s as ItemsModel3D;
                 if (e.OldValue != null)
                 {
-                    d.itemsContainer?.Items.Remove(e.OldValue);
+                    d.Items.Remove(e.OldValue);
                 }
 
                 if (e.NewValue != null)
                 {
-                    d.itemsContainer?.Items.Add(e.NewValue);
+                    d.Items.Add(e.NewValue);
                 }
                 (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
@@ -64,7 +45,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public IEnumerable ItemsSource
+        public new IEnumerable ItemsSource
         {
             get { return (IEnumerable)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
@@ -83,7 +64,7 @@ namespace HelixToolkit.UWP
 
         private IOctreeBasic Octree
         {
-            get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
+            get { return (SceneNode as GroupNode).OctreeManager?.Octree; }
         }
 
         /// <summary>
@@ -109,20 +90,17 @@ namespace HelixToolkit.UWP
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if (itemsContainer != null)
+            Items.Clear();
+            foreach (var item in Children)
             {
-                itemsContainer.Items.Clear();
-                foreach (var item in Children)
+                if (item.Parent != this)
                 {
-                    if (item.Parent != itemsContainer)
-                    {
-                        itemsContainer.Items.Add(item);
-                    }
+                    Items.Add(item);
                 }
-                if (OctreeManager != null)
-                {
-                    itemsContainer.Items.Add(OctreeManager);
-                }
+            }
+            if (OctreeManager != null)
+            {
+                Items.Add(OctreeManager);
             }
         }
 
@@ -143,13 +121,13 @@ namespace HelixToolkit.UWP
             }
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                itemsContainer?.Items.Clear();
+                Items.Clear();
                 var node = SceneNode as GroupNode;
                 node.Clear();
                 AttachChildren(sender as IList);
                 if (OctreeManager != null)
                 {
-                    itemsContainer?.Items.Add(OctreeManager);
+                    Items.Add(OctreeManager);
                 }
             }
             else if (e.NewItems != null)
@@ -166,9 +144,9 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {
-                if (node.AddChildNode(c) && itemsContainer != null)
+                if (node.AddChildNode(c.SceneNode))
                 {
-                    itemsContainer.Items.Add(c);
+                    Items.Add(c);
                 }
             }
         }
@@ -181,9 +159,9 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {
-                if (node.RemoveChildNode(c) && itemsContainer != null)
+                if (node.RemoveChildNode(c.SceneNode))
                 {
-                    itemsContainer.Items.Remove(c);
+                    Items.Remove(c);
                 }
             }
         }
@@ -213,39 +191,8 @@ namespace HelixToolkit.UWP
                 return;
             }
 
-            if (this.ItemTemplate == null)
-            {
-                foreach (var item in this.ItemsSource)
-                {
-                    var model = item as Element3D;
-                    if (model != null)
-                    {
-                        this.Children.Add(model);
-                        elementDict.Add(item, model);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                    }
-                }
-            }
-            else
-            {
-                foreach (var item in this.ItemsSource)
-                {
-                    var model = this.ItemTemplate.LoadContent() as Element3D;
-                    if (model != null)
-                    {
-                        model.DataContext = item;
-                        this.Children.Add(model);
-                        elementDict.Add(item, model);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                    }
-                }
-            }
+            AddItems(ItemsSource);
+
             if (Children.Count > 0)
             {
                 var groupNode = SceneNode as GroupNode;
@@ -263,8 +210,7 @@ namespace HelixToolkit.UWP
                     {
                         foreach (var item in e.OldItems)
                         {
-                            Element3D element;
-                            if (elementDict.TryGetValue(item, out element))
+                            if (elementDict.TryGetValue(item, out Element3D element))
                             {
                                 Children.Remove(element);
                                 elementDict.Remove(item);
@@ -281,83 +227,70 @@ namespace HelixToolkit.UWP
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Reset:
-                    if (this.ItemsSource != null)
-                    {
-                        if (this.ItemTemplate == null)
-                        {
-                            foreach (var item in this.ItemsSource)
-                            {
-                                var model = item as Element3D;
-                                if (model != null)
-                                {
-                                    this.Children.Add(model);
-                                    elementDict.Add(item, model);
-                                }
-                                else
-                                {
-                                    throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (var item in this.ItemsSource)
-                            {
-                                var model = this.ItemTemplate.LoadContent() as Element3D;
-                                if (model != null)
-                                {
-                                    model.DataContext = item;
-                                    this.Children.Add(model);
-                                    elementDict.Add(item, model);
-                                }
-                                else
-                                {
-                                    throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                                }
-                            }
-                        }
-                    }
+                    AddItems(ItemsSource);
                     InvalidateRender();
                     break;
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
-                    if (e.NewItems != null)
-                    {
-                        if (this.ItemTemplate != null)
-                        {
-                            foreach (var item in e.NewItems)
-                            {
-                                var model = this.ItemTemplate.LoadContent() as Element3D;
-                                if (model != null)
-                                {
-                                    model.DataContext = item;
-                                    this.Children.Add(model);
-                                    elementDict.Add(item, model);
-                                }
-                                else
-                                {
-                                    throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (var item in e.NewItems)
-                            {
-                                var model = item as Element3D;
-                                if (model != null)
-                                {
-                                    this.Children.Add(model);
-                                    elementDict.Add(item, model);
-                                }
-                                else
-                                {
-                                    throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
-                                }
-                            }
-                        }
-                    }
+                    AddItems(e.NewItems);
                     break;
+            }
+        }
+
+        private void AddItems(IEnumerable items)
+        {
+            if (items == null)
+            {
+                return;
+            }
+
+            foreach (var item in items)
+            {
+                if (this.ItemTemplate != null)
+                {
+                    AddFromTemplate(item, this.ItemTemplate);
+                }
+                else if (this.ItemTemplateSelector != null)
+                {
+                    DataTemplate template = this.ItemTemplateSelector.SelectTemplate(item, this);
+
+                    if (template != null)
+                    {
+                        AddFromTemplate(item, template);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("No template for item.");
+                    }
+                }
+                else
+                {
+                    if (item is Element3D model)
+                    {
+                        this.Children.Add(model);
+                        elementDict.Add(item, model);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Item is not a Model3D.");
+                    }
+                }
+            }
+        }
+
+        private void AddFromTemplate(object item, DataTemplate template)
+        {
+            if (template.LoadContent() is Element3D model)
+            {
+                model.DataContext = item;
+
+                this.Children.Add(model);
+
+                elementDict.Add(item, model);
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot create a Model3D from ItemTemplate.");
             }
         }
 

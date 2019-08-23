@@ -8,11 +8,17 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Model.Scene;
+#if !COREWPF
     using Core;
+    using Model.Scene;
+#endif
 
     public class DynamicReflectionMap3D : GroupModel3D
     {
@@ -126,10 +132,42 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this scene is dynamic scene.
+        /// If true, reflection map will be updated in each frame. Otherwise it will only be updated if scene graph or visibility changed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is dynamic scene; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDynamicScene
+        {
+            get { return (bool)GetValue(IsDynamicSceneProperty); }
+            set { SetValue(IsDynamicSceneProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsDynamicSceneProperty =
+            DependencyProperty.Register("IsDynamicScene", typeof(bool), typeof(DynamicReflectionMap3D), new PropertyMetadata(false, (d, e) =>
+            {
+                ((d as Element3D).SceneNode as IDynamicReflector).IsDynamicScene = (bool)e.NewValue;
+            }));
 
         protected override SceneNode OnCreateSceneNode()
         {
             return new DynamicReflectionNode();
+        }
+
+        protected override void AssignDefaultValuesToSceneNode(SceneNode node)
+        {
+            base.AssignDefaultValuesToSceneNode(node);
+            if(node is DynamicReflectionNode n)
+            {
+                n.IsDynamicScene = IsDynamicScene;
+                n.IsLeftHanded = IsLeftHanded;
+                n.NearField = (float)NearField;
+                n.FarField = (float)FarField;
+                n.EnableReflector = EnableReflector;
+                n.FaceSize = Size;
+            }
         }
     }
 }

@@ -28,8 +28,6 @@ namespace DemoCore
 
         private Camera camera;
 
-        private IRenderTechnique renderTechnique;
-
         private string subTitle;
 
         private string title;
@@ -57,20 +55,6 @@ namespace DemoCore
                 SetValue(ref subTitle, value, "SubTitle");
             }
         }
-
-        public IRenderTechnique RenderTechnique
-        {
-            get
-            {
-                return renderTechnique;
-            }
-            set
-            {
-                SetValue(ref renderTechnique, value, "RenderTechnique");
-            }
-        }
-
-        public List<string> ShadingModelCollection { get; private set; }
 
         public List<string> CameraModelCollection { get; private set; }
 
@@ -104,20 +88,13 @@ namespace DemoCore
                                        : value is OrthographicCamera ? Orthographic : null;
             }
         }
-
-        public IEffectsManager EffectsManager { get; protected set; }
-
-        private string renderTechniqueName = DefaultRenderTechniqueNames.Blinn;
-        public string RenderTechniqueName
+        private IEffectsManager effectsManager;
+        public IEffectsManager EffectsManager
         {
-            set
+            get { return effectsManager; }
+            protected set
             {
-                renderTechniqueName = value;
-                RenderTechnique = EffectsManager[value];
-            }
-            get
-            {
-                return renderTechniqueName;
+                SetValue(ref effectsManager, value);
             }
         }
 

@@ -4,41 +4,49 @@ using System.Collections.Generic;
 using System.Text;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Shaders
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Shaders
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IShaderReflector
+    namespace Shaders
     {
         /// <summary>
         /// 
         /// </summary>
-        FeatureLevel FeatureLevel { get; }
-        /// <summary>
-        /// Pass the byte code, reflect all shader buffer bindings
-        /// </summary>
-        /// <param name="byteCode"></param>
-        /// <param name="stage"></param>
-        void Parse(byte[] byteCode, ShaderStage stage);
-        /// <summary>
-        /// Get constant buffer mapping.
-        /// </summary>
-        IDictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; }
-        /// <summary>
-        /// Get texture buffer mapping.
-        /// </summary>
-        IDictionary<string, TextureMapping> TextureMappings { get; }
-        /// <summary>
-        /// Get Unordered Access View buffer mapping.
-        /// </summary>
-        IDictionary<string, UAVMapping> UAVMappings { get; }
-        /// <summary>
-        /// Get Sampler mapping
-        /// </summary>
-        IDictionary<string, SamplerMapping> SamplerMappings { get; }
+        public interface IShaderReflector
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            FeatureLevel FeatureLevel { get; }
+            /// <summary>
+            /// Pass the byte code, reflect all shader buffer bindings
+            /// </summary>
+            /// <param name="byteCode"></param>
+            /// <param name="stage"></param>
+            void Parse(byte[] byteCode, ShaderStage stage);
+            /// <summary>
+            /// Get constant buffer mapping.
+            /// </summary>
+            Dictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; }
+            /// <summary>
+            /// Get texture buffer mapping.
+            /// </summary>
+            Dictionary<string, TextureMapping> TextureMappings { get; }
+            /// <summary>
+            /// Get Unordered Access View buffer mapping.
+            /// </summary>
+            Dictionary<string, UAVMapping> UAVMappings { get; }
+            /// <summary>
+            /// Get Sampler mapping
+            /// </summary>
+            Dictionary<string, SamplerMapping> SamplerMappings { get; }
+        }
     }
+
 }

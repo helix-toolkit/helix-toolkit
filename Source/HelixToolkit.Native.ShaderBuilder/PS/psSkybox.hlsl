@@ -9,6 +9,7 @@
 float4 main(PSInputCube input) : SV_Target
 {
     //return float4(0, 0, 1, 1);
-    return texCubeMap.Sample(samplerCube, input.t);
+    return float4(texCubeMap.SampleLevel(samplerCube, input.t, 0), 1);
+
 }
 #endif

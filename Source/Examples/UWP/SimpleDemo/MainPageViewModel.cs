@@ -102,7 +102,7 @@ namespace SimpleDemoW10
             get { return transform4; }
         }
 
-        public Stream EnvironmentMap { private set; get; }
+        public TextureModel EnvironmentMap { private set; get; }
 
         public Vector3 DirectionalLightDirection { get; } = new Vector3(-0.5f, -1, 0);
         private DispatcherTimer timer;
@@ -121,7 +121,7 @@ namespace SimpleDemoW10
             EffectsManager = new DefaultEffectsManager(new Logger());
 
             Camera = new PerspectiveCamera() { Position = new Vector3(40, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = UpDirection, FarPlaneDistance = 500, NearPlaneDistance = 0.1 };
-            Camera1 = new OrthographicCamera() { Position = new Vector3(60, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = upDirection, Width = 30, FarPlaneDistance = 500, NearPlaneDistance = 20};
+            Camera1 = new OrthographicCamera() { Position = new Vector3(60, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = upDirection, Width = 30, FarPlaneDistance = 2000, NearPlaneDistance = 20};
             var builder = new MeshBuilder(true, true, true);
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
             builder.AddSphere(new Vector3(0, 2, 0), 1.5);
@@ -138,19 +138,24 @@ namespace SimpleDemoW10
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
                 SpecularShininess = 10f,
-                ReflectiveColor = new Color4(0.2f, 0.2f, 0.2f, 0.5f)
+                ReflectiveColor = new Color4(0.2f, 0.2f, 0.2f, 0.5f),
+                RenderEnvironmentMap= true
             };
             Material.DiffuseMap = LoadTexture("TextureCheckerboard2.jpg");
             Material.NormalMap = LoadTexture("TextureCheckerboard2_dot3.jpg");
-            Material1 = Material.Clone();
+            Material1 = Material.CloneMaterial();
             Material1.ReflectiveColor = Color.Silver;
-
+            Material1.RenderDiffuseMap = false;
+            Material1.RenderNormalMap = false;
+            Material1.RenderEnvironmentMap = true;
+            Material1.RenderShadowMap = true;
+           
             var lineBuilder = new LineBuilder();
             lineBuilder.AddLine(Vector3.Zero, new Vector3(5, 0, 0));
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 5, 0));
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 0, 5));
             LineGeometry = lineBuilder.ToLineGeometry3D();
-            LineGeometry.Colors = new HelixToolkit.UWP.Core.Color4Collection() { Color.Red, Color.Red, Color.Green, Color.Green, Color.Blue, Color.Blue };
+            LineGeometry.Colors = new Color4Collection() { Color.Red, Color.Red, Color.Green, Color.Green, Color.Blue, Color.Blue };
 
             builder = new MeshBuilder();
             builder.AddSphere(new Vector3(), 3);
@@ -169,6 +174,7 @@ namespace SimpleDemoW10
 
             FloorMaterial = PhongMaterials.Obsidian;
             FloorMaterial.ReflectiveColor = Color.Silver;
+            FloorMaterial.RenderShadowMap = true;
 
             EnvironmentMap = LoadTexture("Cubemap_Grandcanyon.dds");
 

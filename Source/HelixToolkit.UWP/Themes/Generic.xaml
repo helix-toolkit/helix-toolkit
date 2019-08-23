@@ -62,7 +62,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="controls:Element3D">
+    <!--<Style TargetType="controls:Element3D">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Element3D">
@@ -71,7 +71,15 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    <Style TargetType="controls:GroupModel3D">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:GroupModel3D">
+                    <controls1:HelixItemsControl x:Name="PART_ItemsContainer" IsHitTestVisible="False" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
     <local:PerspectiveCamera
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:local="using:HelixToolkit.UWP"
@@ -82,8 +90,43 @@
         xmlns:local="using:HelixToolkit.UWP"
         x:Key="orthographicCamera" />
 
+    <local:MatrixCamera
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="matrixCamera" />
+
     <local:PhongMaterial
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:local="using:HelixToolkit.UWP"
         x:Key="phongMaterial" />
+
+    <local:DiffuseMaterial
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="diffuseMaterial" />
+
+    <local:NormalMaterial
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="normalMaterial" />
+
+    <local:NormalVectorMaterial
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="normalVectorMaterial" />
+
+    <local:VertColorMaterial
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="vertColorMaterial" />
+
+    <local:PositionColorMaterial
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="positionColorMaterial" />
+
+    <local:ColorStripeMaterial
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="colorStripeMaterial" />
 </ResourceDictionary>

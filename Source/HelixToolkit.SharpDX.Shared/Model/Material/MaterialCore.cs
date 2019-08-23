@@ -2,26 +2,47 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Model
+namespace HelixToolkit.Wpf.SharpDX
 #else
-using HelixToolkit.UWP.Utilities;
-namespace HelixToolkit.UWP.Model
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public class MaterialCore : ObservableObject, IMaterial
+    namespace Model
     {
-        private string name;
-        public string Name
+        using Utilities;
+        /// <summary>
+        /// 
+        /// </summary>
+        public abstract class MaterialCore : ObservableObject, IMaterial
         {
-            set
+            private string name = "Material";
+            public string Name
             {
-                Set(ref name, value);
+                set
+                {
+                    Set(ref name, value);
+                }
+                get
+                {
+                    return name;
+                }
             }
-            get
-            {
-                return name;
-            }
+
+            public Guid Guid { get; } = Guid.NewGuid();
+            /// <summary>
+            /// Creates the material variables.
+            /// </summary>
+            /// <param name="manager">The manager.</param>
+            /// <param name="technique">The technique.</param>
+            /// <returns></returns>
+            public abstract MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique);
         }
     }
+
 }

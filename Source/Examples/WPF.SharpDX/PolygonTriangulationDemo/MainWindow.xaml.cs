@@ -40,10 +40,6 @@ namespace PolygonTriangulationDemo
             // Setup the ViewModel
             mViewModel = new MainViewModel();
             this.DataContext = mViewModel;
-
-            // Setup the Camera and raise the EventHandler once at the Start
-            mViewModel.Camera.Changed += Camera_Changed;
-            Camera_Changed(mViewModel.Camera, new EventArgs());
             
             // Setup the Line Drawing Handler
             mViewModel.PropertyChanged += ((s, e) =>
@@ -61,24 +57,6 @@ namespace PolygonTriangulationDemo
                     }
                 }
             });
-        }
-
-        /// <summary>
-        /// On Camera change, display Position and Direction Info
-        /// </summary>
-        /// <param name="sender">The Sender (i.e. the Camera)</param>
-        /// <param name="e">The Event Args</param>
-        void Camera_Changed(object sender, EventArgs e)
-        {
-            var cam = (HelixToolkit.Wpf.SharpDX.PerspectiveCamera)sender;
-            var pos = String.Format("X: {0:0.###}, ", cam.Position.X) +
-                      String.Format("Y: {0:0.###}, ", cam.Position.Y) +
-                      String.Format("Z: {0:0.###}", cam.Position.Z);
-            var dir = String.Format("X: {0:0.###}, ", cam.LookDirection.X) +
-                      String.Format("Y: {0:0.###}, ", cam.LookDirection.Y) +
-                      String.Format("Z: {0:0.###}", cam.LookDirection.Z); 
-            // Set the Label Content
-            statusLabel.Content = "View from " + pos + ", view direction " + dir;
         }
 
         /// <summary>
@@ -131,14 +109,14 @@ namespace PolygonTriangulationDemo
             
             // Generate the Output
             var geometry = new HelixToolkit.Wpf.SharpDX.MeshGeometry3D();
-            geometry.Positions = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
-            geometry.Normals = new HelixToolkit.Wpf.SharpDX.Core.Vector3Collection();
+            geometry.Positions = new Vector3Collection();
+            geometry.Normals = new Vector3Collection();
             foreach (var point in mPolygonPoints.Union(holes.SelectMany(h => h)))
             {
                 geometry.Positions.Add(new Vector3(point.X, 0, point.Y + 5));
                 geometry.Normals.Add(new Vector3(0, 1, 0));
             }
-            geometry.Indices = new HelixToolkit.Wpf.SharpDX.Core.IntCollection(sLTI);
+            geometry.Indices = new IntCollection(sLTI);
             triangulatedPolygon.Geometry = geometry;
 
             var lb = new LineBuilder();

@@ -16,6 +16,7 @@ namespace SharpDX.Toolkit.Graphics
     /// </summary>
     public class WICHelper
     {
+        private static readonly object lockObj = new object();
         private static WIC.ImagingFactory _factory = new ImagingFactory();
 
         private static ImagingFactory Factory { get { return _factory ?? (_factory = new ImagingFactory()); } }
@@ -632,7 +633,21 @@ namespace SharpDX.Toolkit.Graphics
         /// </summary>
         public static void Dispose()
         {
-            Utilities.Dispose(ref _factory);
+            if (_factory == null)
+                return;
+
+            try
+            {
+                lock (lockObj)
+                {
+                    _factory?.Dispose();
+                }
+            }
+            catch
+            {
+            }
+
+            _factory = null;
         }
 
         public static void SaveGifToWICMemory(PixelBuffer[] pixelBuffers, int count, ImageDescription description, Stream imageStream)

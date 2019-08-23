@@ -11,7 +11,11 @@ using System.Windows.Media.Imaging;
 using MediaColor = System.Windows.Media.Color;
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using Core;
@@ -27,6 +31,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     ///Ported from HelixToolkit.Wpf
     /// </summary>
+    [Obsolete("Suggest to use HelixToolkit.SharpDX.Assimp")]
     public class StudioReader : IModelReader
     {
         private readonly Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
@@ -181,10 +186,10 @@ namespace HelixToolkit.UWP
                     throw new FileFormatException("Unknown file");
                 }
                 int headerSize = this.ReadChunkSize(reader);
-                if (headerSize != length)
-                {
-                    throw new FileFormatException("Incomplete file (file length does not match header)");
-                }
+                //if (headerSize != length)
+                //{
+                //    throw new FileFormatException("Incomplete file (file length does not match header)");
+                //}
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
                 {
                     var id = this.ReadChunkId(reader);
@@ -420,7 +425,7 @@ namespace HelixToolkit.UWP
 
             if (facesets == null || facesets.Count == 0)
             {
-                triangleIndices = ConvertFaceIndices(faces, faces);
+                triangleIndices = faces;
                 CreateMesh(positions, textureCoordinates, triangleIndices, transforms, out normals, out tangents, out bitangents, new PhongMaterial()
                 {
                     Name = "Gray",
@@ -533,7 +538,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private static IntCollection ConvertFaceIndices(List<int> subFaces, List<int> faces)
+        private static IntCollection ConvertFaceIndices(List<int> subFaces, IList<int> faces)
         {
             var triangleIndices = new IntCollection(subFaces.Count * 3);// new List<int>(subFaces.Count * 3);
             foreach (int f in subFaces)
@@ -554,7 +559,7 @@ namespace HelixToolkit.UWP
             {
                 float x = reader.ReadSingle();
                 float y = reader.ReadSingle();
-                pts.Add(new Vector2(x, y));
+                pts.Add(new Vector2(x,1- y));
             }
             return pts;
         }
@@ -722,11 +727,11 @@ namespace HelixToolkit.UWP
                     texture = Path.ChangeExtension(texture, ".png");
                 }
                 var actualTexturePath = this.TexturePath ?? string.Empty;
-                string path = Path.Combine(actualTexturePath, texture);
+                string path = Path.GetFullPath(Path.Combine(actualTexturePath, texture));
                 if (File.Exists(path))
                 {
                     var stream = new MemoryStream();
-                    using (var fileStream = File.OpenRead(new Uri(path, UriKind.Relative).AbsolutePath))
+                    using (var fileStream = File.OpenRead(path))
                     {
                         fileStream.CopyTo(stream);
                         return stream;
@@ -812,8 +817,6 @@ namespace HelixToolkit.UWP
             {
                 case ChunkID.COL_RGB:
                     {
-                        // this code has not been tested...
-                        Debug.Assert(false);
                         float r = reader.ReadSingle();
                         float g = reader.ReadSingle();
                         float b = reader.ReadSingle();

@@ -36,7 +36,6 @@
             EnableDeferredRendering="True"
             EnableRenderFrustum="True"
             EnableSwapChainRendering="True"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameDetails="True"
             ShowFrameRate="True"
@@ -102,7 +101,10 @@
                 IsRendering="{Binding OctreeFrameVisible}"
                 LineColor="Blue"
                 Octree="{Binding LinesModel.Octree}" />
-            <hx:OctreeLineGeometryModel3D x:Name="dynamicOctree" IsRendering="False" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
+            <hx:OctreeLineGeometryModel3D
+                x:Name="dynamicOctree"
+                IsRendering="False"
+                Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"

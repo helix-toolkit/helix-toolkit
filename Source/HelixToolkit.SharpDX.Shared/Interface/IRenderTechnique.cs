@@ -4,10 +4,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using ShaderManager;
@@ -16,8 +20,16 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderTechnique : IDisposable
+    public interface IRenderTechnique : IDisposable, IGUID
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        TechniqueDescription Description { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        bool IsNull { get; }
         /// <summary>
         /// 
         /// </summary>
@@ -67,5 +79,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="name"></param>
         /// <returns></returns>
         ShaderPass this[string name] { get; }
+        /// <summary>
+        /// Adds the pass.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
+        bool AddPass(ShaderPassDescription description);
+        /// <summary>
+        /// Removes the pass.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        bool RemovePass(string name);
     }
 }

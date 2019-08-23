@@ -1,87 +1,112 @@
-﻿<Window x:Class="ShadowMapDemo.MultiViewportWin"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
-        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
-        xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics" 
-        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        xmlns:local="clr-namespace:ShadowMapDemo"
-        mc:Ignorable="d"         
-        Title="Multiviewports"
-        Height="500" Width="900">
+﻿<Window
+    x:Class="ShadowMapDemo.MultiViewportWin"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:local="clr-namespace:ShadowMapDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Title="Multiviewports"
+    Width="900"
+    Height="500"
+    mc:Ignorable="d">
     <Window.Resources>
-        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <hx:ModelContainer3DX x:Name="sharedModels" EffectsManager="{Binding EffectsManager}"  RenderTechnique="{Binding RenderTechnique}">
+        <hx:ModelContainer3DX x:Name="sharedModels" EffectsManager="{Binding EffectsManager}">
             <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" />
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
-            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"/>
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}" />
 
-            <hx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform="{Binding Model1Transform}" Material="{Binding RedMaterial}"  />
-            <hx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform="{Binding Model2Transform}" Material="{Binding GreenMaterial}" Instances="{Binding Instances}"/>
-            <hx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform="{Binding Model3Transform}" Material="{Binding BlueMaterial}" />
-            <hx:MeshGeometryModel3D x:Name="plane"  Geometry="{Binding Plane}" Transform="{Binding PlaneTransform}"  Material="{Binding GrayMaterial}" />
-            <hx:LineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform="{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}"/>
-            <hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform="{Binding GridTransform}"   Color="{Binding GridColor}"/>
+            <hx:MeshGeometryModel3D
+                x:Name="model1"
+                Geometry="{Binding Model}"
+                Material="{Binding RedMaterial}"
+                Transform="{Binding Model1Transform}" />
+            <hx:MeshGeometryModel3D
+                x:Name="model2"
+                Geometry="{Binding Model}"
+                Instances="{Binding Instances}"
+                Material="{Binding GreenMaterial}"
+                Transform="{Binding Model2Transform}" />
+            <hx:MeshGeometryModel3D
+                x:Name="model3"
+                Geometry="{Binding Model}"
+                Material="{Binding BlueMaterial}"
+                Transform="{Binding Model3Transform}" />
+            <hx:MeshGeometryModel3D
+                x:Name="plane"
+                Geometry="{Binding Plane}"
+                Material="{Binding GrayMaterial}"
+                Transform="{Binding PlaneTransform}" />
+            <hx:LineGeometryModel3D
+                x:Name="lines"
+                Geometry="{Binding Lines}"
+                Transform="{Binding Model1Transform}"
+                Color="{x:Static sdxm:Color.Black}" />
+            <hx:LineGeometryModel3D
+                x:Name="grid"
+                Geometry="{Binding Grid}"
+                Transform="{Binding GridTransform}"
+                Color="{Binding GridColor}" />
 
         </hx:ModelContainer3DX>
-        <hx:Viewport3DX 
-            Grid.Column="0" 
-            x:Name="view1" 
-            Camera="{Binding Camera1}"
+        <hx:Viewport3DX
+            x:Name="view1"
             Title="{Binding Title}"
-            SubTitle="{Binding SubTitle}"
-            TextBrush="Black"                       
+            Grid.Column="0"
+            Camera="{Binding Camera1}"
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False"   
-            IsShadowMappingEnabled="True"
             EnableSharedModelMode="True"
+            IsShadowMappingEnabled="True"
             SharedModelContainer="{Binding ElementName=sharedModels}"
-            >
+            SubTitle="{Binding SubTitle}"
+            TextBrush="Black"
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
-                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
-                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView"/>
-                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView"/>
-                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView"/>
-                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView"/>
-                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
             </hx:Viewport3DX.InputBindings>
 
         </hx:Viewport3DX>
-        <hx:Viewport3DX 
-            Grid.Column="1" 
-            x:Name="view2" 
-            Camera="{Binding Camera2}"
+        <hx:Viewport3DX
+            x:Name="view2"
             Title="{Binding Title}"
-            SubTitle="{Binding SubTitle}"
-            TextBrush="Black"                       
+            Grid.Column="1"
+            Camera="{Binding Camera2}"
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False"   
-            IsShadowMappingEnabled="True"
             EnableSharedModelMode="True"
+            IsShadowMappingEnabled="True"
             SharedModelContainer="{Binding ElementName=sharedModels}"
-            >
+            SubTitle="{Binding SubTitle}"
+            TextBrush="Black"
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
-                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
-                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView"/>
-                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView"/>
-                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView"/>
-                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView"/>
-                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
             </hx:Viewport3DX.InputBindings>
 
         </hx:Viewport3DX>

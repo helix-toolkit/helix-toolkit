@@ -31,7 +31,6 @@
             FixedRotationPoint="0,0,0"
             FixedRotationPointEnabled="True"
             MSAA="Disable"
-            RenderTechnique="{Binding RenderTechnique}"
             RotateAroundMouseDownPoint="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -46,22 +45,36 @@
                 <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
-            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" />
             <hx:CrossSectionMeshGeometryModel3D
+                x:Name="crossModel"
                 CrossSectionColor="GreenYellow"
                 CullMode="Back"
+                CuttingOperation="{Binding CuttingOperation}"
                 EnablePlane1="{Binding EnablePlane1}"
                 EnablePlane2="{Binding EnablePlane2}"
                 FillMode="Solid"
                 Geometry="{Binding Model}"
+                IsHitTestVisible="False"
                 Material="{Binding ModelMaterial}"
                 Plane1="{Binding Plane1}"
                 Plane2="{Binding Plane2}"
                 Transform="{Binding ModelTransform}" />
-            <hx:MeshGeometryModel3D
+            <local:CrossSectionPlaneManipulator3D
+                CornerScale="4"
+                CutPlane="{Binding Plane1, Mode=TwoWay}"
+                EdgeThicknessScale="4"
+                IsRendering="{Binding EnablePlane1}"
+                SizeScale="10" />
+            <local:CrossSectionPlaneManipulator3D
+                CornerScale="4"
+                CutPlane="{Binding Plane2, Mode=TwoWay}"
+                EdgeThicknessScale="4"
+                IsRendering="{Binding EnablePlane2}"
+                SizeScale="10" />
+            <hx:AxisPlaneGridModel3D />
+            <!--<hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Plane1Model}"
                 IsRendering="{Binding EnablePlane1}"
@@ -74,7 +87,7 @@
                 IsRendering="{Binding EnablePlane2}"
                 IsTransparent="True"
                 Material="{Binding PlaneMaterial}"
-                Transform="{Binding Plane2Transform}" />
+                Transform="{Binding Plane2Transform}" />-->
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"
@@ -94,12 +107,13 @@
                 IsChecked="{Binding EnablePlane2}">
                 Cut Plane 2
             </CheckBox>
-            <CheckBox
+            <ComboBox
                 Margin="4"
-                Foreground="White"
-                IsChecked="{Binding EnableAnimation}">
-                Animate
-            </CheckBox>
+                Foreground="Black"
+                SelectedIndex="{Binding CuttingOperationIndex}">
+                <ComboBoxItem>Intersect</ComboBoxItem>
+                <ComboBoxItem>Substract</ComboBoxItem>
+            </ComboBox>
         </StackPanel>
     </Grid>
 </Window>

@@ -3,24 +3,32 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Core2D
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core2D
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public class RectangleRenderCore2D : ShapeRenderCore2DBase
+    namespace Core2D
     {
-        protected override void OnRender(RenderContext2D context)
+        public class RectangleRenderCore2D : ShapeRenderCore2DBase
         {
-            if (FillBrush != null)
+            protected override void OnRender(RenderContext2D context)
             {
-                context.DeviceContext.FillRectangle(LayoutBound, FillBrush);
-            }
-            if (StrokeBrush != null && StrokeStyle != null)
-            {
-                context.DeviceContext.DrawRectangle(LayoutBound, StrokeBrush, StrokeWidth, StrokeStyle);
+                if (FillBrush != null)
+                {
+                    context.DeviceContext.FillRectangle(LayoutBound, FillBrush);
+                }
+                if (StrokeBrush != null && StrokeStyle != null)
+                {
+                    context.DeviceContext.DrawRectangle(LayoutBound, StrokeBrush, StrokeWidth, StrokeStyle);
+                }
             }
         }
     }
+
 }

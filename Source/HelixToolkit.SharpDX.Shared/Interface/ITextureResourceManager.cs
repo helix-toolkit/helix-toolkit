@@ -1,17 +1,33 @@
 ﻿using System;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
     using System.IO;
+    using Utilities;
     using Model;
-
     public interface ITextureResourceManager
     {
-        SharedTextureResourceProxy Register(Guid modelGuid, Stream textureStream);
-        void Unregister(Guid modelGuid, Stream textureStream);
+        int Count { get; }
+        /// <summary>
+        /// Registers the specified texture stream. This creates mipmaps automatically
+        /// </summary>
+        /// <param name="textureStream">The texture stream.</param>
+        /// <returns></returns>
+        ShaderResourceViewProxy Register(TextureModel textureStream);
+        /// <summary>
+        /// Registers the specified texture stream.
+        /// </summary>
+        /// <param name="textureStream">The texture stream.</param>
+        /// <param name="disableAutoGenMipMap">if set to <c>true</c> [disable automatic gen mip map].</param>
+        /// <returns></returns>
+        ShaderResourceViewProxy Register(TextureModel textureStream, bool disableAutoGenMipMap);
     }
 }

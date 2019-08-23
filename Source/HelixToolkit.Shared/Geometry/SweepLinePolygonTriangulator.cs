@@ -8,7 +8,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
 #if NETFX_CORE
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif

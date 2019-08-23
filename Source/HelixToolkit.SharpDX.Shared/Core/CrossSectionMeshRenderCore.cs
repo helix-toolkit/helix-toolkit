@@ -3,268 +3,249 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Core
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Shaders;
-    using Utilities;
-    using Render;
-
-    public class CrossSectionMeshRenderCore : PatchMeshRenderCore, ICrossSectionRenderParams
+    namespace Core
     {
-        #region Shader Variables
-
-        /// <summary>
-        /// Used to draw back faced triangles onto stencil buffer
-        /// </summary>
-        private RasterizerStateProxy backfaceRasterState;
-
-        #endregion
-        #region Properties
-        /// <summary>
-        /// Defines the sectionColor
-        /// </summary>       
-        public Color4 SectionColor
+        using Render;
+        using Shaders;
+        using Utilities;
+        using Components;
+        public class CrossSectionMeshRenderCore : MeshRenderCore, ICrossSectionRenderParams
         {
-            set
-            {
-                SetAffectsRender(ref clipParameter.CrossSectionColors, value);
-            }
-            get { return clipParameter.CrossSectionColors.ToColor4(); }
-        }
+            #region Shader Variables
+            private ShaderPass drawBackfacePass;
+            private ShaderPass drawScreenQuadPass;
+            /// <summary>
+            /// Used to draw back faced triangles onto stencil buffer
+            /// </summary>
+            private RasterizerStateProxy backfaceRasterState;
 
-        /// <summary>
-        /// Defines the plane1Enabled
-        /// </summary>
-        public bool Plane1Enabled
-        {
-            set
+            private readonly ConstantBufferComponent clipParamCB;
+
+            private bool needsAssignVariables = true;
+            #endregion
+            #region Properties
+            private CuttingOperation cuttingOperation = CuttingOperation.Intersect;
+            /// <summary>
+            /// Gets or sets the cutting operation.
+            /// </summary>
+            /// <value>
+            /// The cutting operation.
+            /// </value>
+            public CuttingOperation CuttingOperation
             {
-                if(clipParameter.EnableCrossPlane.X != value)
+                set
                 {
-                    clipParameter.EnableCrossPlane.X = value;
-                    InvalidateRenderer();
+                    if(SetAffectsRender(ref cuttingOperation, value))
+                    {
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CuttingOperationStr, (int)value);
+                    }
+                }
+                get { return cuttingOperation; }
+            }
+
+            private Color4 sectionColor = Color.Green;
+            /// <summary>
+            /// Defines the sectionColor
+            /// </summary>       
+            public Color4 SectionColor
+            {
+                set
+                {
+                    if(SetAffectsRender(ref sectionColor, value))
+                    {
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossSectionColorStr, value);
+                    }
+                }
+                get { return sectionColor; }
+            }
+
+            private Bool4 planeEnabled;
+            public Bool4 PlaneEnabled
+            {
+                set
+                {
+                    if(SetAffectsRender(ref planeEnabled, value))
+                    {
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.EnableCrossPlaneStr, value);
+                    }
+                }
+                get { return planeEnabled; }
+            }
+
+            private Vector4 plane1Params;
+            /// <summary>
+            /// Defines the plane 1(Normal + d)
+            /// </summary>
+            public Vector4 Plane1Params
+            {
+                set
+                {
+                    if(SetAffectsRender(ref plane1Params, value))
+                    {
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane1ParamsStr, value);
+                    }
+                }
+                get
+                {
+                    return plane1Params;
                 }
             }
-            get { return clipParameter.EnableCrossPlane.X; }
-        }
 
-        /// <summary>
-        /// Defines the plane2Enabled
-        /// </summary>
-        public bool Plane2Enabled
-        {
-            set
+            private Vector4 plane2Params;
+            /// <summary>
+            /// Defines the plane 2(Normal + d)
+            /// </summary>
+            public Vector4 Plane2Params
             {
-                if (clipParameter.EnableCrossPlane.Y != value)
+                set
                 {
-                    clipParameter.EnableCrossPlane.Y = value;
-                    InvalidateRenderer();
+                    if (SetAffectsRender(ref plane2Params, value))
+                    {
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane2ParamsStr, value);
+                    }
+                }
+                get
+                {
+                    return plane2Params;
                 }
             }
-            get { return clipParameter.EnableCrossPlane.Y; }
-        }
 
-        /// <summary>
-        /// Defines the plane3Enabled
-        /// </summary>
-        public bool Plane3Enabled
-        {
-            set
+            private Vector4 plane3Params;
+            /// <summary>
+            /// Defines the plane 3(Normal + d)
+            /// </summary>
+            public Vector4 Plane3Params
             {
-                if (clipParameter.EnableCrossPlane.Z != value)
+                set
                 {
-                    clipParameter.EnableCrossPlane.Z = value;
-                    InvalidateRenderer();
+                    if (SetAffectsRender(ref plane3Params, value))
+                    {
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane3ParamsStr, value);
+                    }
+                }
+                get
+                {
+                    return plane3Params;
                 }
             }
-            get { return clipParameter.EnableCrossPlane.Z; }
-        }
 
-        /// <summary>
-        /// Defines the plane4Enabled
-        /// </summary>
-        public bool Plane4Enabled
-        {
-            set
+            private Vector4 plane4Params;
+            /// <summary>
+            /// Defines the plane 4(Normal + d)
+            /// </summary>
+            public Vector4 Plane4Params
             {
-                if (clipParameter.EnableCrossPlane.W != value)
+                set
                 {
-                    clipParameter.EnableCrossPlane.W = value;
-                    InvalidateRenderer();
+                    if (SetAffectsRender(ref plane4Params, value))
+                    {
+                        clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane4ParamsStr, value);
+                    }
+                }
+                get
+                {
+                    return plane4Params;
                 }
             }
-            get { return clipParameter.EnableCrossPlane.W; }
-        }
 
-        /// <summary>
-        /// Defines the plane 1(Normal + d)
-        /// </summary>
-        public Vector4 Plane1Params
-        {
-            set
+            #endregion
+
+            public CrossSectionMeshRenderCore()
             {
-                if(clipParameter.CrossPlaneParams.Row1 != value)
+                clipParamCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.ClipParamsCB, ClipPlaneStruct.SizeInBytes)));
+            }
+
+            protected override bool OnAttach(IRenderTechnique technique)
+            {
+                if (base.OnAttach(technique))
                 {
-                    clipParameter.CrossPlaneParams.Row1 = value;
-                    InvalidateRenderer();
+                    needsAssignVariables = true;
+                    drawBackfacePass = technique[DefaultPassNames.Backface];
+                    drawScreenQuadPass = technique[DefaultPassNames.ScreenQuad];
+                    return true;
                 }
+                else { return false; }
             }
-            get
-            {
-                return clipParameter.CrossPlaneParams.Row1;
-            }
-        }
 
-        /// <summary>
-        /// Defines the plane 2(Normal + d)
-        /// </summary>
-        public Vector4 Plane2Params
-        {
-            set
+            protected override void OnDetach()
             {
-                if (clipParameter.CrossPlaneParams.Row2 != value)
+                backfaceRasterState = null;          
+                base.OnDetach();
+            }
+
+            protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
+            {
+                if(!base.CreateRasterState(description, force))
                 {
-                    clipParameter.CrossPlaneParams.Row2 = value;
-                    InvalidateRenderer();
+                    return false;
                 }
-            }
-            get
-            {
-                return clipParameter.CrossPlaneParams.Row2;
-            }
-        }
-
-        /// <summary>
-        /// Defines the plane 3(Normal + d)
-        /// </summary>
-        public Vector4 Plane3Params
-        {
-            set
-            {
-                if (clipParameter.CrossPlaneParams.Row3 != value)
+                #region Create states
+                RemoveAndDispose(ref backfaceRasterState);
+                this.backfaceRasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(new RasterizerStateDescription()
                 {
-                    clipParameter.CrossPlaneParams.Row3 = value;
-                    InvalidateRenderer();
-                }
-            }
-            get
-            {
-                return clipParameter.CrossPlaneParams.Row3;
-            }
-        }
-
-        /// <summary>
-        /// Defines the plane 4(Normal + d)
-        /// </summary>
-        public Vector4 Plane4Params
-        {
-            set
-            {
-                if (clipParameter.CrossPlaneParams.Row4 != value)
-                {
-                    clipParameter.CrossPlaneParams.Row4 = value;
-                    InvalidateRenderer();
-                }
-            }
-            get
-            {
-                return clipParameter.CrossPlaneParams.Row4;
-            }
-        }
-
-        #endregion
-
-        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
-
-        private ConstantBufferProxy clipParamCB;
-
-        private ShaderPass drawBackfacePass;
-        private ShaderPass drawScreenQuadPass;
-
-        protected override bool OnAttach(IRenderTechnique technique)
-        {
-            if (base.OnAttach(technique))
-            {
-                clipParamCB = technique.ConstantBufferPool.Register(GetClipParamsCBDescription());
-                drawBackfacePass = technique[DefaultPassNames.Backface];
-                drawScreenQuadPass = technique[DefaultPassNames.ScreenQuad];
+                    FillMode = FillMode.Solid,
+                    CullMode = CullMode.Front,
+                    DepthBias = description.DepthBias,
+                    DepthBiasClamp = description.DepthBiasClamp,
+                    SlopeScaledDepthBias = description.SlopeScaledDepthBias,
+                    IsDepthClipEnabled = description.IsDepthClipEnabled,
+                    IsFrontCounterClockwise = description.IsFrontCounterClockwise,
+                    IsMultisampleEnabled = false,
+                    IsScissorEnabled = false
+                }));
+                #endregion
                 return true;
             }
-            else { return false; }
-        }
 
-        protected virtual ConstantBufferDescription GetClipParamsCBDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.ClipParamsCB, ClipPlaneStruct.SizeInBytes);
-        }
-
-        protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
-        {
-            if(!base.CreateRasterState(description, force))
+            protected override void OnRender(RenderContext renderContext, DeviceContextProxy deviceContext)
             {
-                return false;
+                if (needsAssignVariables)
+                {
+                    lock (clipParamCB)
+                    {
+                        if (needsAssignVariables)
+                        {
+                            clipParamCB.WriteValueByName(ClipPlaneStruct.CuttingOperationStr, (int)cuttingOperation);
+                            clipParamCB.WriteValueByName(ClipPlaneStruct.CrossSectionColorStr, sectionColor);
+                            clipParamCB.WriteValueByName(ClipPlaneStruct.EnableCrossPlaneStr, planeEnabled);
+                            clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane1ParamsStr, plane1Params);
+                            clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane2ParamsStr, plane2Params);
+                            clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane3ParamsStr, plane3Params);
+                            clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane4ParamsStr, plane4Params);
+                            needsAssignVariables = false;
+                        }
+                    }
+                }
+                clipParamCB.Upload(deviceContext);
+                base.OnRender(renderContext, deviceContext);
+                // Draw backface into stencil buffer
+                var dsView = renderContext.RenderHost.DepthStencilBufferView;
+                deviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
+                deviceContext.SetDepthStencilOnly(dsView);//Remove render target
+                deviceContext.SetRasterState(backfaceRasterState);
+                drawBackfacePass.BindShader(deviceContext);
+                drawBackfacePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                DrawIndexed(deviceContext, GeometryBuffer.IndexBuffer, InstanceBuffer);
+
+                //Draw full screen quad to fill cross section            
+                deviceContext.SetRasterState(RasterState);
+                drawScreenQuadPass.BindShader(deviceContext);
+                drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                renderContext.RenderHost.SetDefaultRenderTargets(false);//Rebind render target
+                deviceContext.Draw(4, 0);
             }
-            #region Create states
-            RemoveAndDispose(ref backfaceRasterState);
-            this.backfaceRasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(new RasterizerStateDescription()
-            {
-                FillMode = FillMode.Solid,
-                CullMode = CullMode.Front,
-                DepthBias = description.DepthBias,
-                DepthBiasClamp = description.DepthBiasClamp,
-                SlopeScaledDepthBias = description.SlopeScaledDepthBias,
-                IsDepthClipEnabled = description.IsDepthClipEnabled,
-                IsFrontCounterClockwise = description.IsFrontCounterClockwise,
-                IsMultisampleEnabled = false,
-                IsScissorEnabled = false
-            }));
-            #endregion
-            return true;
-        }
-
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
-        {
-            base.OnUploadPerModelConstantBuffers(context);
-            clipParamCB.UploadDataToBuffer(context, ref clipParameter);
-        }
-
-        protected override void OnRender(RenderContext renderContext, DeviceContextProxy deviceContext)
-        {
-            base.OnRender(renderContext, deviceContext);
-            // Draw backface into stencil buffer
-            DepthStencilView dsView;
-            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-            if (dsView == null)
-            {
-                return;
-            }
-            deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
-            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, new RenderTargetView[0]);//Remove render target
-            deviceContext.SetRasterState(backfaceRasterState);
-            drawBackfacePass.BindShader(deviceContext);
-            drawBackfacePass.BindStates(deviceContext, StateType.BlendState);
-            deviceContext.SetDepthStencilState(drawBackfacePass.DepthStencilState, 1); //Draw backface onto stencil buffer, set value to 1
-            OnDraw(deviceContext, InstanceBuffer);
-
-            //Draw full screen quad to fill cross section            
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            deviceContext.SetRasterState(RasterState);
-            drawScreenQuadPass.BindShader(deviceContext);
-            drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState);
-            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets);//Rebind render target
-            deviceContext.SetDepthStencilState(drawScreenQuadPass.DepthStencilState, 1); //Only pass stencil buffer test if value is 1
-            deviceContext.DeviceContext.Draw(4, 0);
-
-            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
-            dsView.Dispose();
-            foreach (var t in renderTargets)
-            { t.Dispose(); }
         }
     }
+
 }

@@ -4,51 +4,45 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Core
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Render;
-    using Shaders;
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class EmptyRenderCore : RenderCoreBase<ModelStruct>
+    namespace Core
     {
+        using Render;
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmptyRenderCore"/> class.
+        /// 
         /// </summary>
-        public EmptyRenderCore() : base(RenderType.None)
+        public sealed class EmptyRenderCore : RenderCore
         {
-        }
-        /// <summary>
-        /// Gets the model constant buffer description.
-        /// </summary>
-        /// <returns></returns>
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
-        }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="EmptyRenderCore"/> class.
+            /// </summary>
+            public EmptyRenderCore() : base(RenderType.None)
+            {
+            }
 
-        /// <summary>
-        /// Called when [render].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
-        {
+            /// <summary>
+            /// Called when [render].
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="deviceContext">The device context.</param>
+            public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+            {
 
-        }
+            }
 
-        /// <summary>
-        /// Called when [update per model structure].
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
-        {
-           
+            protected override bool OnAttach(IRenderTechnique technique)
+            {
+                return true;
+            }
         }
     }
+
 }

@@ -6,7 +6,11 @@ using System.Collections.Generic;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #endif
 {
     /// <summary>
@@ -17,39 +21,22 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string Blinn = "RenderBlinn";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Diffuse = "RenderDiffuse";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Colors = "RenderColors";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Positions = "RenderPositions";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Normals = "RenderNormals";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string PerturbedNormals = "RenderPerturbedNormals";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Tangents = "RenderTangents";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string TexCoords = "RenderTexCoords";
+        public const string Mesh = "RenderMesh";
+
+        public const string MeshBatched = "RenderMeshBatch";
+
         /// <summary>
         /// 
         /// </summary>
         public const string Lines = "RenderLines";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string LinesArrowHead = "RenderLinesArrowHead";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string LinesArrowHeadTail = "RenderLinesArrowHeadTail";
         /// <summary>
         /// 
         /// </summary>
@@ -69,11 +56,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string InstancingBlinn = "RenderInstancingBlinn";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string BoneSkinBlinn = "RenderBoneSkinBlinn";
+        public const string InstancingMesh = "RenderInstancingMesh";
         /// <summary>
         /// 
         /// </summary>
@@ -114,14 +97,31 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string MeshOITQuad = "MeshOITQuad";
-
+        /// <summary>
+        /// The post effect fxaa
+        /// </summary>
         public const string PostEffectFXAA = "PostEffectFXAA";
-#if !NETFX_CORE
+        /// <summary>
+        /// The post effect mesh x ray grid
+        /// </summary>
+        public const string PostEffectMeshXRayGrid = "PostEffectMeshXRayGrid";
+        /// <summary>
+        /// The plane grid
+        /// </summary>
+        public const string PlaneGrid = "PlaneGrid";
+
+        public const string ScreenQuad = "ScreenQuad";
+
+        public const string Sprite2D = "Sprite2D";
+
+        public const string Volume3D = "Volume3D";
+
+        public const string SSAO = "SSAO";
+
         /// <summary>
         /// 
         /// </summary>
         public const string ScreenDuplication = "ScreenDup";
-#endif
     }
     /// <summary>
     /// 
@@ -132,11 +132,68 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Default = "Default";
-
+        /// <summary>
+        /// The Physics Based Rendering
+        /// </summary>
+        public const string PBR = "PhysicsBasedRendering";
+        /// <summary>
+        /// The PBR face normal pass
+        /// </summary>
+        public const string PBRFaceNormal = "PhysicsBasedRenderingFaceNormal";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Diffuse = "RenderDiffuse";
+        /// <summary>
+        /// The diffuse oit
+        /// </summary>
+        public const string DiffuseOIT = "RenderDiffuseOIT";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Colors = "RenderColors";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Positions = "RenderPositions";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Normals = "RenderNormals";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string NormalVector = "RenderNormalVector";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string PerturbedNormals = "RenderPerturbedNormals";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Tangents = "RenderTangents";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string TexCoords = "RenderTexCoords";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string ViewCube = "RenderViewCube";
+        /// <summary>
+        ///
+        /// </summary>
+        public const string ColorStripe1D = "ColorStripe1D";
         /// <summary>
         /// The mesh transparent
         /// </summary>
         public const string OITPass = "MeshOITPass";
+
+        /// <summary>
+        /// The oit pass PBR
+        /// </summary>
+        public const string PBROITPass = "MeshPhysicsBasedOITPass";
+
         /// <summary>
         /// 
         /// </summary>
@@ -150,11 +207,21 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
+        public const string MeshPBRTriTessellation = "MeshPBRTriTessellation";
+
+        public const string MeshPBRTriTessellationOIT = "MeshPBRTriTessellationOIT";
+        /// <summary>
+        /// 
+        /// </summary>
         public const string MeshQuadTessellation = "MeshQuadTessellation";
         /// <summary>
         /// 
         /// </summary>
         public const string MeshOutline = "RenderMeshOutline";
+        /// <summary>
+        /// The mesh bone skinned
+        /// </summary>
+        public const string PreComputeMeshBoneSkinned = "MeshBoneSkinned";
 
         /// <summary>
         /// 
@@ -165,6 +232,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string EffectBlurHorizontal = "EffectBlurHorizontal";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectOutlineSmooth = "EffectOutlineSmooth";
 
         /// <summary>
         /// 
@@ -179,6 +250,22 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string EffectMeshXRayP2 = "EffectMeshXRayP2";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRayGridP1 = "EffectMeshXRayGridP1";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRayGridP2 = "EffectMeshXRayGridP2";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRayGridP3 = "EffectMeshXRayGridP3";
+        /// <summary>
+        /// The effect mesh diffuse x ray grid p3
+        /// </summary>
+        public const string EffectMeshDiffuseXRayGridP3 = "EffectMeshDiffueXRayGridP3";
         /// <summary>
         /// 
         /// </summary>
@@ -211,6 +298,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string FXAAPass = "FXAAPass";
+        /// <summary>
+        /// The ssao pass
+        /// </summary>
+        public const string MeshSSAOPass = "MeshSSAOPass";
     }
     /// <summary>
     /// 

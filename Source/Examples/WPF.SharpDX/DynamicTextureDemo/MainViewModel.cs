@@ -20,6 +20,8 @@ using Plane = SharpDX.Plane;
 using Vector3 = SharpDX.Vector3;
 using Colors = System.Windows.Media.Colors;
 using Color4 = SharpDX.Color4;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace DynamicTextureDemo
 {
@@ -84,6 +86,10 @@ namespace DynamicTextureDemo
         //public PhongMaterial OtherMaterial { set; get; }
         public MeshGeometry3D Model { get; private set; }
         public MeshGeometry3D InnerModel { get; private set; }
+        public PointGeometry3D PointModel { private set; get; }
+        public LineGeometry3D LineModel { private set; get; }
+
+        public LineMaterial LineMaterial { private set; get; }
 
         //public MeshGeometry3D Other { get; private set; }
         public Color AmbientLightColor { get; set; }
@@ -92,7 +98,8 @@ namespace DynamicTextureDemo
         public bool DynamicTexture { set; get; } = true;
         public bool DynamicVertices { set; get; } = false;
         public bool DynamicTriangles { set; get; } = false;
-
+        public bool DynamicPointColor { set; get; } = true;
+        public bool AnimateUVOffset { set; get; } = true;
         public bool ReverseInnerRotation { set; get; } = false;
 
         private Vector3D camLookDir = new Vector3D(-10, -10, -10);
@@ -118,12 +125,15 @@ namespace DynamicTextureDemo
         private Random rnd = new Random();
         private bool isRemoving = true;
         private int removedIndex = 0;
+        private CancellationTokenSource cts = new CancellationTokenSource();
+        private SynchronizationContext context = SynchronizationContext.Current;
+        private int counter = 0;
+
         public MainViewModel()
         {            // titles
             this.Title = "DynamicTexture Demo";
             this.SubTitle = "WPF & SharpDX";
-            EffectsManager = new DefaultEffectsManager();
-            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];            
+            EffectsManager = new DefaultEffectsManager();           
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
                 Position = new Point3D(10, 10, 10),
@@ -133,19 +143,20 @@ namespace DynamicTextureDemo
             this.Light1Color = Colors.White;
             this.Light1Direction = new Vector3D(-10, -10, -10);
             this.AmbientLightColor = Colors.Black;
-            SetupCameraBindings(this.Camera);
 
             var b2 = new MeshBuilder(true, true, true);
             b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
             this.Model = b2.ToMeshGeometry3D();
+            Model.IsDynamic = true;
             this.InnerModel = new MeshGeometry3D()
             {
                 Indices = Model.Indices,
                 Positions = Model.Positions,
-                Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; })),
+                Normals = Model.Normals,
                 TextureCoordinates = Model.TextureCoordinates,
                 Tangents = Model.Tangents,
-                BiTangents = Model.BiTangents
+                BiTangents = Model.BiTangents,
+                IsDynamic = true
             };
 
             var image = LoadFileToMemory(new System.Uri(@"test.png", System.UriKind.RelativeOrAbsolute).ToString());
@@ -174,11 +185,55 @@ namespace DynamicTextureDemo
 
             initialPosition = Model.Positions;
             initialIndicies = Model.Indices;
+            #region Point Model
+            PointModel = new PointGeometry3D()
+            {
+                IsDynamic = true, Positions = Model.Positions
+            };
+            int count = PointModel.Positions.Count;
+            var colors = new Color4Collection(count);
+            for (int i = 0; i < count / 2; ++i)
+            {
+                colors.Add(new Color4(0, 1, 1, 1));
+            }
+            for (int i = 0; i < count / 2; ++i)
+            {
+                colors.Add(new Color4(0, 0, 0, 0));
+            }
+            PointModel.Colors = colors;
+            #endregion
 
-
-            timer.Interval = TimeSpan.FromMilliseconds(16);
-            timer.Tick += Timer_Tick;
-            timer.Start();
+            #region Line Model
+            LineModel = new LineGeometry3D() { IsDynamic =true, Positions = new Vector3Collection(PointModel.Positions) };
+            LineModel.Positions.Add(Vector3.Zero);
+            var indices = new IntCollection(count * 2);
+            for(int i = 0; i < count; ++i)
+            {
+                indices.Add(count);
+                indices.Add(i);
+            }
+            LineModel.Indices = indices;
+            colors = new Color4Collection(LineModel.Positions.Count);           
+            for(int i = 0; i < count; ++i)
+            {
+                colors.Add(new Color4((float)i / count,1-(float)i / count, 0, 1));
+            }
+            colors.Add(Colors.Blue.ToColor4());
+            LineModel.Colors = colors;
+            LineMaterial = new LineArrowHeadMaterial() { Color = Colors.White, Thickness = 0.5, ArrowSize = 0.02};
+            #endregion
+            var token = cts.Token;
+            Task.Run(() =>
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    Timer_Tick();
+                    Task.Delay(16).Wait();
+                }
+            }, token);
+            //timer.Interval = TimeSpan.FromMilliseconds(16);
+            //timer.Tick += Timer_Tick;
+            //timer.Start();
         }
 
         public static Stream ToStream(System.Drawing.Image image, ImageFormat format)
@@ -189,61 +244,73 @@ namespace DynamicTextureDemo
             return stream;
         }
 
-        public void SetupCameraBindings(Camera camera)
+        private void Timer_Tick()
         {
-            if (camera is ProjectionCamera)
-            {
-                SetBinding("CamLookDir", camera, ProjectionCamera.LookDirectionProperty, this);
-            }
-        }
-
-        private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay)
-        {
-            var binding = new Binding(path);
-            binding.Source = viewModel;
-            binding.Mode = mode;
-            BindingOperations.SetBinding(dobj, property, binding);
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
+            ++counter;
+            counter %= 128;
             if (DynamicTexture)
             {
-                var texture = new Vector2Collection(Model.TextureCoordinates);
-                for (int i = 1; i < Model.TextureCoordinates.Count; ++i)
+                Vector2Collection texture = null;
+                if (!AnimateUVOffset)
                 {
-                    texture[i - 1] = Model.TextureCoordinates[i];
+                    texture = new Vector2Collection(Model.TextureCoordinates);
+                    var t0 = texture[0];
+                    for (int i = 1; i < texture.Count; ++i)
+                    {
+                        texture[i - 1] = texture[i];
+                    }
+                    texture[texture.Count - 1] = t0;    
                 }
-                texture[texture.Count - 1] = Model.TextureCoordinates[0];
-                Model.TextureCoordinates = texture;
-                if (ReverseInnerRotation)
+            
+                context.Send((o) =>
                 {
-                    var texture1 = new Vector2Collection(texture);
-                    texture1.Reverse();
-                    InnerModel.TextureCoordinates = texture1;
-                }
-                else
-                {
-                    InnerModel.TextureCoordinates = texture;
-                }
+                    if (!AnimateUVOffset)
+                    {
+                        Model.TextureCoordinates = texture;
+                        if (ReverseInnerRotation)
+                        {
+                            var texture1 = new Vector2Collection(texture);
+                            texture1.Reverse();                   
+                            InnerModel.TextureCoordinates = texture1;
+                        }
+                        else
+                        {
+                            InnerModel.TextureCoordinates = texture;
+                        }
+                    }
+                    else
+                    {
+                        ModelMaterial.UVTransform = new UVTransform(0, Vector2.One,
+                            ModelMaterial.UVTransform.Translation + new Vector2(0.005f, -0.01f));
+                        InnerModelMaterial.UVTransform = new UVTransform(0, Vector2.One,
+                            InnerModelMaterial.UVTransform.Translation + new Vector2(-0.01f, 0.005f));
+                    }
+                }, null);
+
             }
             if (DynamicVertices)
             {
                 var positions = new Vector3Collection(initialPosition);
                 for (int i = 0; i < positions.Count; ++i)
                 {
-                    positions[i] = positions[i] * (float)rnd.Next(95, 105) / 100;
+                    var off = (float)Math.Sin(Math.PI*(float)(counter + i)/64);
+                    var p = positions[i];
+                    p *= 0.8f + off * 0.2f;
+                    positions[i] = p;
                 }
-                Model.Normals = MeshGeometryHelper.CalculateNormals(positions, Model.Indices);
-                InnerModel.Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; }));
-                Model.Positions = positions;
-                InnerModel.Positions = positions;
-                //Alternative implementation
-                //Floor.DisablePropertyChangedEvent = true;
-                //Floor.Positions = positions;
-                //Floor.CalculateNormals();
-                //Floor.DisablePropertyChangedEvent = false;
-                //Floor.UpdateVertex();
+                var linePositions = new Vector3Collection(positions);
+                linePositions.Add(Vector3.Zero);
+                //var normals =  MeshGeometryHelper.CalculateNormals(positions, initialIndicies);
+                //var innerNormals =  new Vector3Collection(normals.Select(x => { return x * -1; }));
+                context.Send((o) =>
+                {
+                    //Model.Normals = normals;
+                    //InnerModel.Normals = innerNormals;
+                    //Model.Positions = positions;
+                    //InnerModel.Positions = positions;
+                    PointModel.Positions = positions;
+                    LineModel.Positions = linePositions;
+                }, null);
             }
             if (DynamicTriangles)
             {
@@ -267,15 +334,48 @@ namespace DynamicTextureDemo
                     }
                 }
                 indices.RemoveRange(0, removedIndex);
-                Model.Indices = indices;
-                InnerModel.Indices = indices;
+                context.Send((o) =>
+                {
+                    Model.Indices = indices;
+                    InnerModel.Indices = indices;
+                }, null);
+            }
+            if (DynamicTexture)
+            {
+                var colors = new Color4Collection(PointModel.Colors);
+                for(int k = 0; k < 10; ++k)
+                {
+                    var c = colors[colors.Count - 1];
+                    for (int i = colors.Count - 1; i > 0; --i)
+                    {
+                        colors[i] = colors[i - 1];
+                    }
+                    colors[0] = c;
+                }
+                var lineColors = new Color4Collection(LineModel.Colors);
+                for (int k = 0; k < 10; ++k)
+                {
+                    var c = lineColors[colors.Count - 2];
+                    for (int i = lineColors.Count - 2; i > 0; --i)
+                    {
+                        lineColors[i] = lineColors[i - 1];
+                    }
+                    lineColors[0] = c;
+                }
+                context.Send((o) =>
+                {
+                    PointModel.Colors = colors;
+                    LineModel.Colors = lineColors;
+                }, null);
             }
         }
 
         protected override void Dispose(bool disposing)
         {
-            timer.Stop();
-            timer.Tick -= Timer_Tick;
+            //timer.Stop();
+            //timer.Tick -= Timer_Tick;
+            cts.Cancel(true);
+            cts.Dispose();
             base.Dispose(disposing);
         }
     }

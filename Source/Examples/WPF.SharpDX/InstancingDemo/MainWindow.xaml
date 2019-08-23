@@ -31,7 +31,6 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             EnableRenderFrustum="false"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -54,8 +53,10 @@
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}">
                 <hx:InstancingMeshGeometryModel3D.OctreeManager>
-                    <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" 
-                                                       EnableOctreeOutput="True"/>
+                    <hx:InstancingModel3DOctreeManager
+                        x:Name="manager"
+                        EnableOctreeOutput="True"
+                        RecordHitPathBoundingBoxes="True" />
                 </hx:InstancingMeshGeometryModel3D.OctreeManager>
             </hx:InstancingMeshGeometryModel3D>
             <hx:OctreeLineGeometryModel3D
@@ -82,38 +83,6 @@
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="0" Grid.Column="1">
-            <!--<Expander
-                x:Name="shadingPanel"
-                Width="150"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                BorderBrush="LightGray"
-                Header="Render Technique"
-                IsExpanded="True">
-                <Expander.Background>
-                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
-                </Expander.Background>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="23*" />
-                        <ColumnDefinition Width="51*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <ComboBox
-                        Grid.Row="0"
-                        Grid.ColumnSpan="2"
-                        Margin="3"
-                        DisplayMemberPath="Key"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValuePath="Value" />
-                </Grid>
-            </Expander>-->
             <Expander
                 Width="150"
                 Margin="10"

@@ -55,7 +55,14 @@ namespace HelixToolkit.UWP
 
         private void SwapChainRenderHost_Unloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            EndD3D();
+            if (DataContext == null && renderHost.EffectsManager == null)
+            {
+                EndD3D();
+            }
+            else
+            {
+                renderHost.StopRendering();
+            }
         }
 
         private void SwapChainRenderHost_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -100,7 +107,7 @@ namespace HelixToolkit.UWP
             {
                 try
                 {
-                    renderHost.Resize(ActualWidth, ActualHeight);
+                    renderHost.Resize((int)ActualWidth, (int)ActualHeight);
                 }
                 catch (Exception ex)
                 {
@@ -122,7 +129,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         private bool StartD3D()
         {
-            RenderHost.StartD3D(ActualWidth, ActualHeight);
+            RenderHost.StartD3D((int)ActualWidth, (int)ActualHeight);
             return true;
         }
 
@@ -144,8 +151,7 @@ namespace HelixToolkit.UWP
         {
             EndD3D();
 
-            var sdxException = exception as SharpDXException;
-            if (sdxException != null &&
+            if (exception is SharpDXException sdxException &&
                 (sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceRemoved ||
                  sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceReset))
             {

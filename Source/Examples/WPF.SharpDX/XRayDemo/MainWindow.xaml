@@ -23,7 +23,6 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             FXAALevel="Low"
-            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
@@ -64,12 +63,15 @@
                 Material="{Binding ModelMaterial}"
                 OutlineColor="Yellow"
                 OutlineFadingFactor="{Binding ElementName=xrayEffect, Path=OutlineFadingFactor}"
+                PostEffects="xrayGrid"
                 Transform="{Binding ModelTransform}" />
 
             <hx:PostEffectMeshXRay
                 x:Name="xrayEffect"
                 EffectName="xray"
                 EnableDoublePass="True" />
+
+            <hx:PostEffectMeshXRayGrid x:Name="xrayGridEffect" EffectName="xrayGrid" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
@@ -85,6 +87,22 @@
                 Maximum="4"
                 Minimum="1"
                 Value="{Binding ElementName=xrayEffect, Path=OutlineFadingFactor}" />
+            <Label Foreground="White">Grid Color:</Label>
+            <pt:ColorPicker Margin="4" SelectedColor="{Binding ElementName=xrayGridEffect, Path=GridColor}" />
+            <Label Foreground="White">Grid Density</Label>
+            <Slider
+                Maximum="20"
+                Minimum="1"
+                Value="{Binding ElementName=xrayGridEffect, Path=GridDensity}" />
+            <Label Foreground="White">Dimming Factor</Label>
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding ElementName=xrayGridEffect, Path=DimmingFactor}" />
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding ElementName=xrayGridEffect, Path=BlendingFactor}" />
         </StackPanel>
     </Grid>
 </Window>

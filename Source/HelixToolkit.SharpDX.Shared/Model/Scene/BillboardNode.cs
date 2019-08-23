@@ -8,138 +8,128 @@ using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct3D11;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    /// <summary>
-    /// 
-    /// </summary>
-    public class BillboardNode : GeometryNode
+    namespace Model.Scene
     {
+        using Core;
         /// <summary>
-        /// Gets or sets a value indicating whether [fixed size].
+        /// 
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
-        /// </value>
-        public bool FixedSize
+        public class BillboardNode : MaterialGeometryNode
         {
-            set
+            /// <summary>
+            /// Called when [create render core].
+            /// </summary>
+            /// <returns></returns>
+            protected override RenderCore OnCreateRenderCore()
             {
-                (RenderCore as IBillboardRenderParams).FixedSize = value;
+                return new PointLineRenderCore();
             }
-            get { return (RenderCore as IBillboardRenderParams).FixedSize; }
-        }
 
-        private bool isTransparent = false;
-        /// <summary>
-        /// Specifiy if model material is transparent. 
-        /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
-        /// </summary>
-        public bool IsTransparent
-        {
-            get { return isTransparent; }
-            set
+            /// <summary>
+            /// Called when [create buffer model].
+            /// </summary>
+            /// <param name="modelGuid"></param>
+            /// <param name="geometry"></param>
+            /// <returns></returns>
+            protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
             {
-                if (Set(ref isTransparent, value))
+                var buffer = geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicBillboardBufferModel>(modelGuid, geometry) 
+                    : EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);
+                if (geometry is IBillboardText b && Material is IBillboardRenderParams m)
                 {
-                    if (RenderCore.RenderType == RenderType.Opaque || RenderCore.RenderType == RenderType.Transparent)
-                    {
-                        RenderCore.RenderType = value ? RenderType.Transparent : RenderType.Opaque;
-                    }
+                    m.Type = b.Type;
+                }
+                return buffer;
+            }
+
+            /// <summary>
+            /// Override this function to set render technique during Attach Host.
+            /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
+            /// </summary>
+            /// <param name="host"></param>
+            /// <returns>
+            /// Return RenderTechnique
+            /// </returns>
+            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            {
+                return host.EffectsManager[DefaultRenderTechniqueNames.BillboardText];
+            }
+
+            public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
+            {
+                if (!EnableViewFrustumCheck)
+                {
+                    return true;
+                }
+                return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref BoundManager.BoundsSphereWithTransform);// viewFrustum.Intersects(ref sphere);
+            }
+
+            /// <summary>
+            /// Called when [check geometry].
+            /// </summary>
+            /// <param name="geometry">The geometry.</param>
+            /// <returns></returns>
+            protected override bool OnCheckGeometry(Geometry3D geometry)
+            {
+                return geometry is IBillboardText;
+            }
+            /// <summary>
+            /// Create raster state description.
+            /// </summary>
+            /// <returns></returns>
+            protected override RasterizerStateDescription CreateRasterState()
+            {
+                return new RasterizerStateDescription()
+                {
+                    FillMode = FillMode.Solid,
+                    CullMode = CullMode.None,
+                    DepthBias = DepthBias,
+                    DepthBiasClamp = -1000,
+                    SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
+                    IsDepthClipEnabled = true,
+                    IsFrontCounterClockwise = false,
+
+                    IsMultisampleEnabled = false,
+                    //IsAntialiasedLineEnabled = true,                    
+                    IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
+                };
+            }
+
+            /// <summary>
+            /// Called when [hit test].
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="totalModelMatrix">The total model matrix.</param>
+            /// <param name="ray">The ray.</param>
+            /// <param name="hits">The hits.</param>
+            /// <returns></returns>
+            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            {
+                if (Material is BillboardMaterialCore c)
+                {
+                    return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, c.FixedSize);
+                }
+                else
+                {
+                    return false;
                 }
             }
-        }
 
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new BillboardRenderCore();
-        }
-
-        /// <summary>
-        /// Called when [create buffer model].
-        /// </summary>
-        /// <param name="modelGuid"></param>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        protected override IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
-        {
-            return EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);
-        }
-
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.BillboardText];
-        }
-
-        public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
-        {
-            if (!EnableViewFrustumCheck)
+            protected override bool PreHitTestOnBounds(ref Ray ray)
             {
                 return true;
             }
-            var sphere = this.BoundsSphereWithTransform;
-            return viewFrustum.Intersects(ref sphere);
-        }
-
-        /// <summary>
-        /// Called when [check geometry].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        protected override bool OnCheckGeometry(Geometry3D geometry)
-        {
-            return geometry is IBillboardText;
-        }
-        /// <summary>
-        /// Create raster state description.
-        /// </summary>
-        /// <returns></returns>
-        protected override RasterizerStateDescription CreateRasterState()
-        {
-            return new RasterizerStateDescription()
-            {
-                FillMode = FillMode.Solid,
-                CullMode = CullMode.None,
-                DepthBias = DepthBias,
-                DepthBiasClamp = -1000,
-                SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
-                IsDepthClipEnabled = true,
-                IsFrontCounterClockwise = false,
-
-                IsMultisampleEnabled = false,
-                //IsAntialiasedLineEnabled = true,                    
-                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
-            };
-        }
-
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, FixedSize);
         }
     }
+
 }

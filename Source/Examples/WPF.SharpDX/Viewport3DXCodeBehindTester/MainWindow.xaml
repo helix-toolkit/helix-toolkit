@@ -23,6 +23,9 @@
                 Click="Button_Click_Initialize">
                 Initialize Viewport
             </Button>
+            <Button x:Name="buttonRemoveViewport" Click="ButtonRemove_Click">
+                Remove Viewport
+            </Button>
             <Button
                 x:Name="buttonAdd"
                 Margin="4"
@@ -47,6 +50,9 @@
                 Click="buttonEnvironment_Click"
                 IsEnabled="{Binding EnableEnvironmentButtons}">
                 Add Environment
+            </Button>
+            <Button x:Name="buttonSceneNode" IsEnabled="{Binding EnableButtons}" Margin="4" Click="buttonSceneNode_Click">
+                Add SceneNode
             </Button>
         </StackPanel>
     </Grid>

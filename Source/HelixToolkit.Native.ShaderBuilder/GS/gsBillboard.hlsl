@@ -7,7 +7,7 @@
 
 //--------------------------------------------------------------------------------
 [maxvertexcount(4)]
-void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream)
+void main(point GSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream)
 {
     float4 ndcPosition0 = input[0].p;
     float4 ndcPosition1 = input[0].p;
@@ -15,12 +15,12 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     float4 ndcPosition3 = input[0].p;
 
 	// Transform to clip space
-    if (!pbParams.x)// if not fixed size billboard
+    if (!fixedSize)// if not fixed size billboard
     {
-        ndcPosition0.xy += float2(input[0].offTL.x, input[0].offBR.y);
+        ndcPosition0.xy += input[0].offTR;
         ndcPosition1.xy += input[0].offBR;
         ndcPosition2.xy += input[0].offTL;
-        ndcPosition3.xy += float2(input[0].offBR.x, input[0].offTL.y);
+        ndcPosition3.xy += input[0].offBL;
     }
 
     ndcPosition0 = mul(ndcPosition0, mProjection);
@@ -33,13 +33,13 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     float4 ndcTranslated2 = ndcPosition2 / ndcPosition2.w;
     float4 ndcTranslated3 = ndcPosition3 / ndcPosition3.w;
 
-    if (pbParams.x)// if fixed sized billboard
+    if (fixedSize)// if fixed sized billboard
     {
 		// Translate offset into normalized device coordinates.
-        ndcTranslated0.xy += windowToNdc(float2(input[0].offTL.x, input[0].offBR.y));
+        ndcTranslated0.xy += windowToNdc(input[0].offTR);
         ndcTranslated1.xy += windowToNdc(input[0].offBR);
         ndcTranslated2.xy += windowToNdc(input[0].offTL);
-        ndcTranslated3.xy += windowToNdc(float2(input[0].offBR.x, input[0].offTL.y));
+        ndcTranslated3.xy += windowToNdc(input[0].offBL);
     }
 
     float3 vEye = vEyePos - input[0].p.xyz;
@@ -49,7 +49,7 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     output.p = float4(ndcTranslated0.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
-    output.t = float2(input[0].t0.x, input[0].t3.y);
+    output.t = float2(input[0].t3.x, input[0].t0.y);
     output.vEye = eye;
     SpriteStream.Append(output);
 
@@ -70,7 +70,7 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     output.p = float4(ndcTranslated3.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
-    output.t = float2(input[0].t3.x, input[0].t0.y);    
+    output.t = float2(input[0].t0.x, input[0].t3.y);    
     output.vEye = eye;
     SpriteStream.Append(output);
 

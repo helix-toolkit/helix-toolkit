@@ -3,56 +3,58 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+using System.Collections.Generic;
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    /// <summary>
-    /// 
-    /// </summary>
-    public abstract class LightNode : SceneNode, ILight3D
+    namespace Model.Scene
     {
-        /// <summary>
-        /// Gets or sets the color.
-        /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
-        public Color4 Color
-        {
-            set { (RenderCore as LightCoreBase).Color = value; }
-            get { return (RenderCore as LightCoreBase).Color; }
-        }
-        /// <summary>
-        /// Gets the type of the light.
-        /// </summary>
-        /// <value>
-        /// The type of the light.
-        /// </value>
-        public LightType LightType
-        {
-            get { return (RenderCore as LightCoreBase).LightType; }
-        }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref System.Collections.Generic.List<HitTestResult> hits)
-        {
-            return false;
-        }
+        using Core;
 
-        protected override bool CanHitTest(RenderContext context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public abstract class LightNode : SceneNode, ILight3D
         {
-            return false;
+            /// <summary>
+            /// Gets or sets the color.
+            /// </summary>
+            /// <value>
+            /// The color.
+            /// </value>
+            public Color4 Color
+            {
+                set { (RenderCore as LightCoreBase).Color = value; }
+                get { return (RenderCore as LightCoreBase).Color; }
+            }
+            /// <summary>
+            /// Gets the type of the light.
+            /// </summary>
+            /// <value>
+            /// The type of the light.
+            /// </value>
+            public LightType LightType
+            {
+                get { return (RenderCore as LightCoreBase).LightType; }
+            }
+
+            public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+            {
+                return false;
+            }
+
+            protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            {
+                return false;
+            }
         }
     }
+
 }

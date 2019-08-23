@@ -2,79 +2,80 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Shaders
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Shaders
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class GeometryShader : ShaderBase
+    namespace Shaders
     {
-        private global::SharpDX.Direct3D11.GeometryShader shader;
+        using Render;
         /// <summary>
-        /// Initializes a new instance of the <see cref="GeometryShader"/> class.
+        /// 
         /// </summary>
-        /// <param name="device">The device.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="byteCode">The byte code.</param>
-        public GeometryShader(Device device, string name, byte[] byteCode) : base(name, ShaderStage.Geometry)
+        public sealed class GeometryShader : ShaderBase
         {
-            shader = Collect(new global::SharpDX.Direct3D11.GeometryShader(device, byteCode));
-        }
-        /// <summary>
-        /// Binds the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public override void Bind(DeviceContext context)
-        {
-            context.GeometryShader.Set(shader);
-        }
-        /// <summary>
-        /// Binds the constant buffers.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public override void BindConstantBuffers(DeviceContext context)
-        {
-            foreach (var buff in this.ConstantBufferMapping.Mappings)
+            internal global::SharpDX.Direct3D11.GeometryShader Shader { private set; get; }
+            public static readonly GeometryShader NullGeometryShader = new GeometryShader("NULL");
+            public static readonly GeometryShaderType Type;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="GeometryShader"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="byteCode">The byte code.</param>
+            public GeometryShader(Device device, string name, byte[] byteCode) : base(name, ShaderStage.Geometry)
             {
-                context.GeometryShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                Shader = Collect(new global::SharpDX.Direct3D11.GeometryShader(device, byteCode));
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="GeometryShader"/> class. This is used for stream out geometry shader
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="byteCode">The byte code.</param>
+            /// <param name="streamOutputElements">The stream output elements.</param>
+            /// <param name="bufferStrides">The buffer strides.</param>
+            /// <param name="rasterizedStream">The rasterized stream.</param>
+            public GeometryShader(Device device, string name, byte[] byteCode, StreamOutputElement[] streamOutputElements, int[] bufferStrides, 
+                int rasterizedStream = global::SharpDX.Direct3D11.GeometryShader.StreamOutputNoRasterizedStream)
+                : base(name, ShaderStage.Geometry)
+            {
+                Shader = Collect(new global::SharpDX.Direct3D11.GeometryShader(device, byteCode, streamOutputElements, bufferStrides, rasterizedStream));
+            }
+
+            private GeometryShader(string name)
+                :base(name, ShaderStage.Geometry, true)
+            {
+
+            }
+
+            /// <summary>
+            /// Binds shader to pipeline
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="bindConstantBuffer"></param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void Bind(DeviceContextProxy context, bool bindConstantBuffer = true)
+            {
+                context.SetShader(this);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static implicit operator GeometryShaderType(GeometryShader s)
+            {
+                return Type;
             }
         }
-        /// <summary>
-        /// Binds the texture.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="texture">The texture.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void BindTexture(DeviceContext context, int index, ShaderResourceView texture)
-        {
-        }
-        /// <summary>
-        /// Binds the texture.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="texture">The texture.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
-        {
-        }
-        /// <summary>
-        /// Binds the textures.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="textures">The textures.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
-        {
-        }
     }
+
 }

@@ -1,14 +1,14 @@
 #ifndef VSPOINTSHADOW_HLSL
 #define VSPOINTSHADOW_HLSL
 
-#define POINTLINE
+#define MESHSIMPLE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 
 GSInputPS main(VSInputPS input)
 {
     GSInputPS output = (GSInputPS) 0;
-    if (pHasInstances)
+    if (bHasInstances)
     {
         matrix mInstance =
         {
@@ -20,10 +20,10 @@ GSInputPS main(VSInputPS input)
         input.p = mul(input.p, mInstance);
     }
 
-    output.p = input.p;
+    output.wp = mul(mWorld, input.p);
 
 	//set position into clip space	
-    output.p = mul(output.p, mul(pWorld, vLightViewProjection));
+    output.p = mul(output.wp, vLightViewProjection);
     return output;
 }
 

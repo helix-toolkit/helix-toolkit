@@ -8,7 +8,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
 #if NETFX_CORE
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
 namespace HelixToolkit.UWP
+#endif
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
@@ -25,7 +29,11 @@ namespace HelixToolkit.Wpf
     using System.Linq;
     using global::SharpDX;
 #if NETFX_CORE
+#if CORE
+    using HelixToolkit.SharpDX.Core;
+#else
     using HelixToolkit.UWP;
+#endif
     using HelixToolkit.Wpf;
 #else
 #endif
@@ -36,10 +44,10 @@ namespace HelixToolkit.Wpf
     using Point = global::SharpDX.Vector2;
     using Point3D = global::SharpDX.Vector3;
     using Vector3D = global::SharpDX.Vector3;
-    using Vector3DCollection = Core.Vector3Collection;
-    using Point3DCollection = Core.Vector3Collection;
-    using PointCollection = Core.Vector2Collection;
-    using Int32Collection = Core.IntCollection;
+    using Vector3DCollection = Vector3Collection;
+    using Point3DCollection = Vector3Collection;
+    using PointCollection = Vector2Collection;
+    using Int32Collection = IntCollection;
     using DoubleOrSingle = System.Single;
 #else
     using System.Linq;
@@ -1957,15 +1965,18 @@ namespace HelixToolkit.Wpf
         public void AddPolygon(IList<Point> points, Vector3D axisX, Vector3D axisY, Point3D origin)
         {
             var indices = SweepLinePolygonTriangulator.Triangulate(points);
-            var index0 = this.positions.Count;
-            foreach (var p in points)
+            if (indices != null)
             {
-                this.positions.Add(origin + (axisX * p.X) + (axisY * p.Y));
-            }
+                var index0 = this.positions.Count;
+                foreach (var p in points)
+                {
+                    this.positions.Add(origin + (axisX * p.X) + (axisY * p.Y));
+                }
 
-            foreach (var i in indices)
-            {
-                this.triangleIndices.Add(index0 + i);
+                foreach (var i in indices)
+                {
+                    this.triangleIndices.Add(index0 + i);
+                }
             }
         }
         /// <summary>
@@ -3334,6 +3345,9 @@ namespace HelixToolkit.Wpf
                 throw new ArgumentNullException("fanTextureCoordinates");
             }
 
+            if (fanPositions.Count < 3)
+                return;
+
             int index0 = this.positions.Count;
             foreach (var p in fanPositions)
             {
@@ -4469,8 +4483,8 @@ namespace HelixToolkit.Wpf
             {
                 Vector3DCollection tan, bitan;
                 ComputeTangents(this.positions, this.normals, this.textureCoordinates, this.triangleIndices, out tan, out bitan);
-                ((List<Vector3D>)this.tangents).AddRange(tan);
-                ((List<Vector3D>)this.bitangents).AddRange(bitan);
+                this.tangents.AddRange(tan);
+                this.bitangents.AddRange(bitan);
             }
 
             return new MeshGeometry3D()

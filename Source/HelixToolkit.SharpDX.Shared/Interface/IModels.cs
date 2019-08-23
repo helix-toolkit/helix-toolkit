@@ -5,14 +5,17 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System.Collections.Generic;
 using System.IO;
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    using global::SharpDX.Direct3D11;
+    using Render;
     using System;
     using Utilities;
     /// <summary>
@@ -33,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The texture.
         /// </value>
-        Stream Texture { get; }
+        TextureModel Texture { get; }
 
         /// <summary>
         /// Draws the texture.
@@ -69,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [Flags]
     public enum BillboardType
     {
-        SingleText = 1, MultipleText = 2, SingleImage = 4
+        SingleText = 1, MultipleText = 2, Image = 4
     }
     /// <summary>
     /// 
@@ -110,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void ResetLightCount();
         /// <summary>
-        /// Increments the light count. Increment during each light render (except Ambient light). <see cref="LightCoreBase.Render(RenderContext, Render.DeviceContextProxy)"/>
+        /// Increments the light count. Increment during each light render (except Ambient light).
         /// </summary>
         void IncrementLightCount();
         /// <summary>
@@ -118,6 +121,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="context">The context.</param>
-        void UploadToBuffer(IBufferProxy buffer, DeviceContext context);
+        void UploadToBuffer(IBufferProxy buffer, DeviceContextProxy context);
     }
 }

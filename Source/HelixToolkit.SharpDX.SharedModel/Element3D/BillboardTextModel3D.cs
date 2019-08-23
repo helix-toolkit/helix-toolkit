@@ -2,16 +2,25 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using SharpDX.Direct3D11;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
+#if COREWPF
+using HelixToolkit.SharpDX.Core.Model;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core.Shaders;
+#endif
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
+#if !COREWPF
     using Model.Scene;
+    using Shaders;
+#endif
 
     /// <summary>
     /// 
@@ -19,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="GeometryModel3D" />
     public class BillboardTextModel3D : GeometryModel3D
     {
-        #region Dependency Properties
+#region Dependency Properties
         /// <summary>
         /// Fixed sized billboard. Default = true. 
         /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
@@ -29,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as BillboardNode).FixedSize = (bool)e.NewValue;
+                    (d as BillboardTextModel3D).material.FixedSize = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -68,17 +77,39 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsTransparentProperty); }
             set { SetValue(IsTransparentProperty, value); }
         }
-        #endregion
 
-        #region Overridable Methods        
+        /// <summary>
+        /// Gets or sets the sampler description.
+        /// </summary>
+        /// <value>
+        /// The sampler description.
+        /// </value>
+        public SamplerStateDescription SamplerDescription
+        {
+            get { return (SamplerStateDescription)GetValue(SamplerDescriptionProperty); }
+            set { SetValue(SamplerDescriptionProperty, value); }
+        }
 
+        /// <summary>
+        /// The sampler description property
+        /// </summary>
+        public static readonly DependencyProperty SamplerDescriptionProperty =
+            DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(BillboardTextModel3D), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d,e) =>
+            {
+                (d as BillboardTextModel3D).material.SamplerDescription = (SamplerStateDescription)e.NewValue;
+            }));
+#endregion
+
+#region Overridable Methods        
+
+        protected readonly BillboardMaterialCore material = new BillboardMaterialCore();
         /// <summary>
         /// Called when [create scene node].
         /// </summary>
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new BillboardNode();
+            return new BillboardNode() { Material = material };
         }
         /// <summary>
         /// Assigns the default values to core.
@@ -88,10 +119,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (core is BillboardNode n)
             {
-                n.FixedSize = FixedSize;
+                material.FixedSize = FixedSize;
+                n.IsTransparent = IsTransparent;
+                material.SamplerDescription = SamplerDescription;
             }
             base.AssignDefaultValuesToSceneNode(core);       
         }
-        #endregion
+#endregion
     }
 }

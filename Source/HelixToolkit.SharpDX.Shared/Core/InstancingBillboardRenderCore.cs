@@ -2,57 +2,68 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX.Direct3D11;
 using System;
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Core
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    public class InstancingBillboardRenderCore : BillboardRenderCore
+    namespace Core
     {
-        private IElementsBufferModel parameterBufferModel;
-        public IElementsBufferModel ParameterBuffer
+        using Render;
+
+        public class InstancingBillboardRenderCore : PointLineRenderCore
         {
-            set
+            private IElementsBufferModel parameterBufferModel;
+            public IElementsBufferModel ParameterBuffer
             {
-                if (parameterBufferModel == value)
+                set
                 {
-                    return;
+                    var old = parameterBufferModel;
+                    if(SetAffectsCanRenderFlag(ref parameterBufferModel, value))
+                    {
+                        if (old != null)
+                        {
+                            old.ElementChanged -= OnElementChanged;
+                        }
+                        if (parameterBufferModel != null)
+                        {
+                            parameterBufferModel.ElementChanged += OnElementChanged;
+                        }
+                    }                
                 }
-                if (parameterBufferModel != null)
+                get { return parameterBufferModel; }
+            }
+
+            protected override bool OnUpdateCanRenderFlag()
+            {
+                return base.OnUpdateCanRenderFlag() && InstanceBuffer != null && InstanceBuffer.HasElements;
+            }
+
+            protected override void OnUpdatePerModelStruct()
+            {
+                base.OnUpdatePerModelStruct();
+                modelStruct.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
+            }
+
+            protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
+            {
+                if (base.OnAttachBuffers(context, ref vertStartSlot))
                 {
-                    parameterBufferModel.OnElementChanged -= ParameterBufferModel_OnElementChanged;
+                    ParameterBuffer?.AttachBuffer(context, ref vertStartSlot);
+                    return true;
                 }
-                parameterBufferModel = value;
-                if (parameterBufferModel != null)
+                else
                 {
-                    parameterBufferModel.OnElementChanged += ParameterBufferModel_OnElementChanged;
+                    return false;
                 }
             }
-            get { return parameterBufferModel; }
-        }
-
-        private void ParameterBufferModel_OnElementChanged(object sender, EventArgs e)
-        {
-            InvalidateRenderer();
-        }
-        protected override bool CanRender(RenderContext context)
-        {
-            return base.CanRender(context) && InstanceBuffer != null && InstanceBuffer.HasElements;
-        }
-
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
-        {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
-        }
-
-        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
-        {
-            base.OnAttachBuffers(context, ref vertStartSlot);
-            ParameterBuffer?.AttachBuffer(context, ref vertStartSlot);
         }
     }
+
 }

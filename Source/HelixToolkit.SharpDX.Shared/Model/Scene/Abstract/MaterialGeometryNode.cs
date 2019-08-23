@@ -2,142 +2,112 @@
 The MIT License(MIT)
 Copyright(c) 2018 Helix Toolkit contributors
 */
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-
-    public abstract class MaterialGeometryNode : GeometryNode
+    namespace Model.Scene
     {
-        private bool isTransparent = false;
+        using Core;
 
-        private MaterialCore material;
-
-        /// <summary>
-        /// Specifiy if model material is transparent.
-        /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
-        /// </summary>
-        public bool IsTransparent
+        public abstract class MaterialGeometryNode : GeometryNode
         {
-            get { return isTransparent; }
-            set
+            private bool isTransparent = false;
+            /// <summary>
+            /// Specifiy if model material is transparent.
+            /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
+            /// </summary>
+            public bool IsTransparent
             {
-                if (Set(ref isTransparent, value))
+                get { return isTransparent; }
+                set
                 {
-                    if (RenderCore.RenderType == RenderType.Opaque || RenderCore.RenderType == RenderType.Transparent)
+                    if (Set(ref isTransparent, value))
                     {
-                        RenderCore.RenderType = value ? RenderType.Transparent : RenderType.Opaque;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public MaterialCore Material
-        {
-            get { return material; }
-            set
-            {
-                if (Set(ref material, value))
-                {
-                    (RenderCore as IMaterialRenderParams).Material = material;
-                    if (RenderHost != null)
-                    {
-                        if (IsAttached)
+                        if (RenderType == RenderType.Opaque || RenderType == RenderType.Transparent)
                         {
-                            AttachMaterial();
-                            InvalidateRender();
-                        }
-                        else
-                        {
-                            var host = RenderHost;
-                            Detach();
-                            Attach(host);
+                            RenderType = value ? RenderType.Transparent : RenderType.Opaque;
                         }
                     }
                 }
             }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDiffuseAlphaMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderDiffuseAlphaMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderDiffuseAlphaMap = value; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDiffuseMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderDiffuseMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderDiffuseMap = value; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDisplacementMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderDisplacementMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderDisplacementMap = value; }
-        }
-
-        /// <summary>
-        /// Render environment map on this mesh if has environment map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderEnvironmentMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderEnvironmentMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderEnvironmentMap = value; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderNormalMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderNormalMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderNormalMap = value; }
-        }
-        /// <summary>
-        /// Render shadow on this mesh if has shadow map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderShadowMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderShadowMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderShadowMap = value; }
-        }
-        /// <summary>
-        ///
-        /// </summary>
-        protected virtual void AttachMaterial()
-        {
-            var core = RenderCore as IMaterialRenderParams;
-            core.Material = this.Material;
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            // --- attach
-            if (!base.OnAttach(host))
+            private MaterialVariable materialVariable;
+            private MaterialCore material;
+            /// <summary>
+            ///
+            /// </summary>
+            public MaterialCore Material
             {
-                return false;
+                get { return material; }
+                set
+                {
+                    if (Set(ref material, value))
+                    {
+                        if (RenderHost != null)
+                        {
+                            if (IsAttached)
+                            {
+                                AttachMaterial();
+                                InvalidateRender();
+                            }
+                            else
+                            {
+                                Detach();
+                                Attach(RenderHost);
+                            }
+                        }
+                    }
+                }
             }
-            // --- material
-            this.AttachMaterial();
-            return true;
+
+            protected virtual void AttachMaterial()
+            {
+                RemoveAndDispose(ref materialVariable);
+                if(material != null && RenderCore is IMaterialRenderParams core)
+                {
+                    materialVariable = core.MaterialVariables = Collect(EffectsManager.MaterialVariableManager.Register(material, EffectTechnique));
+                }
+            }
+
+            protected override OrderKey OnUpdateRenderOrderKey()
+            {
+                return OrderKey.Create(RenderOrder, materialVariable == null ? (ushort)0 : materialVariable.ID);
+            }
+
+            protected override bool CanRender(RenderContext context)
+            {
+                return base.CanRender(context) && materialVariable != null;
+            }
+
+            protected override bool OnAttach(IRenderHost host)
+            {
+                if (base.OnAttach(host))
+                {
+                    AttachMaterial();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            protected override void OnDetach()
+            {
+                materialVariable = null;
+                if (RenderCore is IMaterialRenderParams core)
+                {
+                    core.MaterialVariables = null;
+                }
+                base.OnDetach();
+            }
         }
     }
+
 }

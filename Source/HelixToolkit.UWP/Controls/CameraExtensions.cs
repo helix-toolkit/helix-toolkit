@@ -26,8 +26,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public static void LookAt(this Camera camera, Vector3 target, double animationTime)
         {
-            var projectionCamera = camera as ProjectionCamera;
-            if (projectionCamera == null)
+            if (!(camera is ProjectionCamera projectionCamera))
             {
                 return;
             }
@@ -53,8 +52,7 @@ namespace HelixToolkit.UWP
         public static void LookAt(
             this Camera camera, Vector3 target, Vector3 newLookDirection, double animationTime)
         {
-            var projectionCamera = camera as ProjectionCamera;
-            if (projectionCamera == null)
+            if (!(camera is ProjectionCamera projectionCamera))
             {
                 return;
             }
@@ -176,62 +174,51 @@ namespace HelixToolkit.UWP
         /// </param>
         public static void ZoomToRectangle(this Camera camera, Viewport3DX viewport, Rect zoomRectangle)
         {
-            var pcam = camera as ProjectionCamera;
-            if (pcam == null)
+            if (!(camera is ProjectionCamera pcam))
             {
                 return;
             }
 
-            var topLeftRay = viewport.UnProjectToRay(new Point(zoomRectangle.Top, zoomRectangle.Left));
-            var topRightRay = viewport.UnProjectToRay(new Point(zoomRectangle.Top, zoomRectangle.Right));
-            var centerRay =
-                viewport.UnProjectToRay(
-                    new Point(
-                        (zoomRectangle.Left + zoomRectangle.Right) * 0.5,
-                        (zoomRectangle.Top + zoomRectangle.Bottom) * 0.5));
-
-            if (topLeftRay == null || topRightRay == null || centerRay == null)
+            if(viewport.UnProject(new Vector2((float)zoomRectangle.Top, (float)zoomRectangle.Left), out var topLeftRay)
+                && viewport.UnProject(new Vector2((float)zoomRectangle.Top, (float)zoomRectangle.Right), out var topRightRay)
+                && viewport.UnProject(
+                    new Vector2(
+                        ((float)zoomRectangle.Left + (float)zoomRectangle.Right) * 0.5f,
+                        ((float)zoomRectangle.Top + (float)zoomRectangle.Bottom) * 0.5f), out var centerRay))
             {
-                // could not invert camera matrix
-                return;
-            }
-
-            var u = topLeftRay.Direction;
-            var v = topRightRay.Direction;
-            var w = centerRay.Direction;
-            u.Normalize();
-            v.Normalize();
-            w.Normalize();
-            var perspectiveCamera = camera as PerspectiveCamera;
-            if (perspectiveCamera != null)
-            {
-                var distance = pcam.LookDirection.Length();
-
-                // option 1: change distance
-                var newDistance = distance * zoomRectangle.Width / viewport.ActualWidth;
-                var newLookDirection = (float)newDistance * w;
-                var newPosition = perspectiveCamera.Position + ((distance - (float)newDistance) * w);
-                var newTarget = newPosition + newLookDirection;
-                LookAt(pcam, newTarget, newLookDirection, 200);
-
-                // option 2: change fov
-                // double newFieldOfView = Math.Acos(Vector3D.DotProduct(u, v));
-                // var newTarget = camera.Position + distance * w;
-                // pcamera.FieldOfView = newFieldOfView * 180 / Math.PI;
-                // LookAt(camera, newTarget, distance * w, 0);
-            }
-
-            var orthographicCamera = camera as OrthographicCamera;
-            if (orthographicCamera != null)
-            {
-                orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
-                var oldTarget = pcam.Position + pcam.LookDirection;
-                var distance = pcam.LookDirection.Length();
-                var newTarget = centerRay.PlaneIntersection(oldTarget, w);
-                if (newTarget != null)
+                var u = topLeftRay.Direction;
+                var v = topRightRay.Direction;
+                var w = centerRay.Direction;
+                u.Normalize();
+                v.Normalize();
+                w.Normalize();
+                if (camera is PerspectiveCamera perspectiveCamera)
                 {
-                    orthographicCamera.LookDirection = w * distance;
-                    orthographicCamera.Position = newTarget.Value - orthographicCamera.LookDirection;
+                    var distance = pcam.LookDirection.Length();
+
+                    // option 1: change distance
+                    var newDistance = distance * zoomRectangle.Width / viewport.ActualWidth;
+                    var newLookDirection = (float)newDistance * w;
+                    var newPosition = perspectiveCamera.Position + ((distance - (float)newDistance) * w);
+                    var newTarget = newPosition + newLookDirection;
+                    LookAt(pcam, newTarget, newLookDirection, 200);
+
+                    // option 2: change fov
+                    // double newFieldOfView = Math.Acos(Vector3D.DotProduct(u, v));
+                    // var newTarget = camera.Position + distance * w;
+                    // pcamera.FieldOfView = newFieldOfView * 180 / Math.PI;
+                    // LookAt(camera, newTarget, distance * w, 0);
+                }
+                else if (camera is OrthographicCamera orthographicCamera)
+                {
+                    orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
+                    var oldTarget = pcam.Position + pcam.LookDirection;
+                    var distance = pcam.LookDirection.Length();
+                    if(centerRay.PlaneIntersection(oldTarget, w, out var newTarget))
+                    {
+                        orthographicCamera.LookDirection = w * distance;
+                        orthographicCamera.Position = newTarget - orthographicCamera.LookDirection;
+                    }
                 }
             }
         }
@@ -270,9 +257,8 @@ namespace HelixToolkit.UWP
         /// </param>
         public static void CopyTo(this Camera source, Camera dest)
         {
-            var projectionSource = source as ProjectionCamera;
             var projectionDest = dest as ProjectionCamera;
-            if (projectionSource == null || projectionDest == null)
+            if (!(source is ProjectionCamera projectionSource) || projectionDest == null)
             {
                 return;
             }
@@ -281,22 +267,17 @@ namespace HelixToolkit.UWP
             projectionDest.Position = projectionSource.Position;
             projectionDest.UpDirection = projectionSource.UpDirection;
 
-            var psrc = source as PerspectiveCamera;
-            var osrc = source as OrthographicCamera;
-            var pdest = dest as PerspectiveCamera;
-            var odest = dest as OrthographicCamera;
-            if (pdest != null)
+            if (dest is PerspectiveCamera pdest)
             {
                 projectionDest.NearPlaneDistance = projectionSource.NearPlaneDistance > 0 ? projectionSource.NearPlaneDistance : 1e-1;
                 projectionDest.FarPlaneDistance = projectionSource.FarPlaneDistance;
 
                 double fov = 45;
-                if (psrc != null)
+                if (source is PerspectiveCamera psrc)
                 {
                     fov = psrc.FieldOfView;
                 }
-
-                if (osrc != null)
+                else if (source is OrthographicCamera osrc)
                 {
                     double dist = projectionSource.LookDirection.Length();
                     fov = Math.Atan2(osrc.Width / 2, dist) * (180 / Math.PI);
@@ -304,20 +285,18 @@ namespace HelixToolkit.UWP
 
                 pdest.FieldOfView = fov;
             }
-
-            if (odest != null)
+            else if (dest is OrthographicCamera odest)
             {
                 projectionDest.NearPlaneDistance = projectionSource.NearPlaneDistance;
                 projectionDest.FarPlaneDistance = projectionSource.FarPlaneDistance;
 
                 double width = 100;
-                if (psrc != null)
+                if (source is PerspectiveCamera psrc)
                 {
                     double dist = projectionSource.LookDirection.Length();
                     width = Math.Tan(psrc.FieldOfView / 180 * Math.PI) * 2 * dist;
                 }
-
-                if (osrc != null)
+                else if (source is OrthographicCamera osrc)
                 {
                     width = osrc.Width;
                 }
@@ -334,14 +313,11 @@ namespace HelixToolkit.UWP
         /// </param>
         public static void Reset(this Camera camera)
         {
-            var projectionCamera = camera as PerspectiveCamera;
-            if (projectionCamera != null)
+            if (camera is PerspectiveCamera projectionCamera)
             {
                 Reset(projectionCamera);
             }
-
-            var ocamera = camera as OrthographicCamera;
-            if (ocamera != null)
+            else if (camera is OrthographicCamera ocamera)
             {
                 Reset(ocamera);
             }
@@ -403,7 +379,7 @@ namespace HelixToolkit.UWP
         public static void ZoomExtents(
             this Camera camera, Viewport3DX viewport, double animationTime = 0)
         {
-            var bounds = viewport.FindBounds();
+            var bounds = viewport.FindBoundsInternal();
 
             if (bounds.Maximum.IsUndefined() || bounds.Maximum == bounds.Minimum)
             {
@@ -431,8 +407,7 @@ namespace HelixToolkit.UWP
         public static void ZoomExtents(
             this Camera camera, Viewport3DX viewport, BoundingBox bounds, double animationTime = 0)
         {
-            var projectionCamera = camera as ProjectionCamera;
-            if (projectionCamera == null)
+            if (!(camera is ProjectionCamera projectionCamera))
             {
                 return;
             }
@@ -464,8 +439,7 @@ namespace HelixToolkit.UWP
         public static void ZoomExtents(
             this Camera camera, Viewport3DX viewport, Vector3 center, double radius, double animationTime = 0)
         {
-            var projectionCamera = camera as ProjectionCamera;
-            if (projectionCamera == null)
+            if (!(camera is ProjectionCamera projectionCamera))
             {
                 return;
             }

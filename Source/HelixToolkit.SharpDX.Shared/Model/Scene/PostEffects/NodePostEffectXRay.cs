@@ -5,106 +5,114 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Collections.Generic;
-
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model.Scene
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.Wpf.SharpDX.Model.Scene
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using Core;
-    /// <summary>
-    /// 
-    /// </summary>
-    public class NodePostEffectXRay : SceneNode
+    namespace Model.Scene
     {
-        #region Properties
+        using Core;
         /// <summary>
-        /// Gets or sets the name of the effect.
+        /// 
         /// </summary>
-        /// <value>
-        /// The name of the effect.
-        /// </value>
-        public string EffectName
+        public class NodePostEffectXRay : SceneNode
         {
-            set
+            #region Properties
+            /// <summary>
+            /// Gets or sets the name of the effect.
+            /// </summary>
+            /// <value>
+            /// The name of the effect.
+            /// </value>
+            public string EffectName
             {
-                (RenderCore as IPostEffectMeshXRay).EffectName = value;
+                set
+                {
+                    (RenderCore as IPostEffectMeshXRay).EffectName = value;
+                }
+                get
+                {
+                    return (RenderCore as IPostEffectMeshXRay).EffectName;
+                }
             }
-            get
+            /// <summary>
+            /// Gets or sets the color.
+            /// </summary>
+            /// <value>
+            /// The color.
+            /// </value>
+            public Color4 Color
             {
-                return (RenderCore as IPostEffectMeshXRay).EffectName;
+                set
+                {
+                    (RenderCore as IPostEffectMeshXRay).Color = value;
+                }
+                get
+                {
+                    return (RenderCore as IPostEffectMeshXRay).Color;
+                }
             }
-        }
-        /// <summary>
-        /// Gets or sets the color.
-        /// </summary>
-        /// <value>
-        /// The color.
-        /// </value>
-        public Color4 Color
-        {
-            set
+            /// <summary>
+            /// Gets or sets the outline fading factor.
+            /// </summary>
+            /// <value>
+            /// The outline fading factor.
+            /// </value>
+            public float OutlineFadingFactor
             {
-                (RenderCore as IPostEffectMeshXRay).Color = value;
+                set
+                {
+                    (RenderCore as IPostEffectMeshXRay).OutlineFadingFactor = value;
+                }
+                get
+                {
+                    return (RenderCore as IPostEffectMeshXRay).OutlineFadingFactor;
+                }
             }
-            get
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable double pass].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable double pass]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnableDoublePass
             {
-                return (RenderCore as IPostEffectMeshXRay).Color;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the outline fading factor.
-        /// </summary>
-        /// <value>
-        /// The outline fading factor.
-        /// </value>
-        public float OutlineFadingFactor
-        {
-            set
-            {
-                (RenderCore as IPostEffectMeshXRay).OutlineFadingFactor = value;
-            }
-            get
-            {
-                return (RenderCore as IPostEffectMeshXRay).OutlineFadingFactor;
-            }
-        }
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable double pass].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable double pass]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableDoublePass
-        {
-            set
-            {
-                (RenderCore as IPostEffectMeshXRay).DoublePass = value;
-            }
-            get
-            {
-                return (RenderCore as IPostEffectMeshXRay).DoublePass;
-            }
-        } 
-        #endregion
+                set
+                {
+                    (RenderCore as IPostEffectMeshXRay).EnableDoublePass = value;
+                }
+                get
+                {
+                    return (RenderCore as IPostEffectMeshXRay).EnableDoublePass;
+                }
+            } 
+            #endregion
 
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new PostEffectMeshXRayCore();
-        }
+            /// <summary>
+            /// Called when [create render core].
+            /// </summary>
+            /// <returns></returns>
+            protected override RenderCore OnCreateRenderCore()
+            {
+                return new PostEffectMeshXRayCore();
+            }
 
-        protected override bool CanHitTest(RenderContext context)
-        {
-            return false;
-        }
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
+            public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+            {
+                return false;
+            }
+
+            protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            {
+                return false;
+            }
         }
     }
+
 }

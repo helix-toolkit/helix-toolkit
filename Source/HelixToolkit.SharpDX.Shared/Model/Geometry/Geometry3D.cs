@@ -2,18 +2,24 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if NETFX_CORE
-namespace HelixToolkit.UWP
-#else
+using System;
+using global::SharpDX;
+using System.Runtime.Serialization;
+using System.Collections.Generic;
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
 #endif
 {
-    using System;
-    using global::SharpDX;
+
     using Core;
     using Model;
-    using System.Runtime.Serialization;
-    using System.Collections.Generic;
+
 
 #if !NETFX_CORE
     [Serializable]
@@ -25,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public const string TriangleBuffer = "TriangleBuffer";
         [DataMember]
         public Guid GUID { set; get; } = Guid.NewGuid();
-        
+
         private IntCollection indices = null;
 
         /// <summary>
@@ -136,9 +142,35 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if [octree dirty]; otherwise, <c>false</c>.
         /// </value>
-        public bool OctreeDirty { get { return octreeDirty; } }
-
-        private volatile bool octreeDirty = true;
+        public bool OctreeDirty { get; private set; } = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is dynamic. Must be set before passing to GeometryModel3D.
+        /// <para>When set to true, the internal vertex/index buffer will be created using dynamic buffer.</para> 
+        /// <para>Default is false, which is using immutable.</para>
+        /// <para>Dynamic buffer is useful if user streaming similar sizes of Vertices/Indices into this geometry, this will avoid unnecessary buffer creation and reuse the existing dynamic buffer if the max size less than the size of existing buffer.</para>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is dynamic; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDynamic { set; get; } = false;
+        /// <summary>
+        /// The pre defined vertex count. Only used when <see cref="IsDynamic"/> = true.
+        /// <para>The pre define vertex count allows user to initialize a dynamic buffer with a minimum pre-define size.</para>
+        /// <para>Example: If the vertex count increments from 0 to around 3000 during vertex array streaming, 
+        /// pre-define a size of 3000 for this geometry allows the dynamic buffer to be reused and avoid recreating dynamic buffer 3000 times.</para>
+        /// </summary>
+        public int PreDefinedVertexCount = 0;
+        /// <summary>
+        /// The pre defined index count. Used when <see cref="IsDynamic"/> = true.
+        ///  <para>The pre define index count allows user to initialize a dynamic buffer with a minimum pre-define size.</para>
+        /// <para>Example: If the index count increments from 0 to around 3000 during index array streaming, 
+        /// pre-define a size of 3000 for this geometry allows the dynamic buffer to be reused and avoid recreating dynamic buffer 3000 times.</para>
+        /// </summary>
+        public int PreDefinedIndexCount = 0;
+        /// <summary>
+        /// The disable update bound, only used in <see cref="AssignTo(Geometry3D)"/>
+        /// </summary>
+        protected bool DisableUpdateBound = false;
 
         private readonly object octreeLock = new object();
         /// <summary>
@@ -154,9 +186,15 @@ namespace HelixToolkit.Wpf.SharpDX
             OctreeParameter.PropertyChanged += OctreeParameter_PropertyChanged;
         }
 
+        public Geometry3D(bool isDynamic) 
+            : this()
+        {
+            IsDynamic = isDynamic;
+        }
+
         private void OctreeParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            octreeDirty = true;
+            OctreeDirty = true;
         }
 
         /// <summary>
@@ -175,21 +213,29 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Call to manually update vertex color buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
+        /// </summary>
+        public void UpdateColors()
+        {
+            RaisePropertyChanged(nameof(Colors));
+        }
+
+        /// <summary>
         /// Create Octree for current model.
         /// </summary>
         public void UpdateOctree(bool force = false)
         {
             if (CanCreateOctree())
             {
-                if (octreeDirty || force)
+                if (OctreeDirty || force)
                 {
                     lock (octreeLock)
                     {
-                        if (octreeDirty || force)
+                        if (OctreeDirty || force)
                         {
                             this.Octree = CreateOctree(this.OctreeParameter);              
                             this.Octree?.BuildTree();                                
-                            octreeDirty = false;   
+                            OctreeDirty = false;   
                         }                 
                     }
                     RaisePropertyChanged(nameof(Octree));
@@ -198,7 +244,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 this.Octree = null;
-                octreeDirty = true;
+                OctreeDirty = true;
             }
         }
         
@@ -224,14 +270,62 @@ namespace HelixToolkit.Wpf.SharpDX
         public void ClearOctree()
         {
             Octree = null;
-            octreeDirty = true;
+            OctreeDirty = true;
+        }
+        /// <summary>
+        /// Manuals the set octree.
+        /// </summary>
+        /// <param name="octree">The octree.</param>
+        public void ManualSetOctree(IOctreeBasic octree)
+        {
+            Octree = octree;
+            OctreeDirty = false;
+        }
+
+        /// <summary>
+        /// Assigns internal properties to another geometry3D. This does not assign <see cref="IsDynamic"/>/<see cref="PreDefinedIndexCount"/>/<see cref="PreDefinedVertexCount"/>
+        /// <para>
+        /// Following properties are assigned:
+        /// <see cref="Positions"/>, <see cref="Indices"/>, <see cref="Colors"/>, <see cref="Bound"/>, <see cref="BoundingSphere"/>, <see cref="Octree"/>, <see cref="OctreeParameter"/>
+        /// </para>
+        /// <para>Override <see cref="OnAssignTo(Geometry3D)"/> to assign custom properties in child class</para>
+        /// </summary>
+        /// <param name="target">The target.</param>
+        public void AssignTo(Geometry3D target)
+        {
+            target.DisableUpdateBound = true;
+            target.Positions = this.Positions;
+            target.ClearOctree();
+            target.DisableUpdateBound = false;
+            target.Indices = this.Indices;
+            target.Colors = this.Colors;
+            target.Bound = this.Bound;
+            target.BoundingSphere = this.BoundingSphere;
+            target.OctreeParameter.MinimumOctantSize = OctreeParameter.MinimumOctantSize;
+            target.OctreeParameter.MinObjectSizeToSplit = OctreeParameter.MinObjectSizeToSplit;
+            target.OctreeParameter.Cubify = OctreeParameter.Cubify;
+            target.OctreeParameter.EnableParallelBuild = OctreeParameter.EnableParallelBuild;
+            if (Octree != null)
+            {
+                target.ManualSetOctree(Octree);
+            }
+            OnAssignTo(target);
+        }
+
+        protected virtual void OnAssignTo(Geometry3D target)
+        {
+
         }
         /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere
         /// </summary>
         public virtual void UpdateBounds()
         {
-            if (position == null || position.Count == 0)
+            if (DisableUpdateBound)
+            {
+                return;
+            }
+            else if (position == null || position.Count == 0)
             {
                 Bound = new BoundingBox();
                 BoundingSphere = new BoundingSphere();
@@ -241,9 +335,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 Bound = BoundingBoxExtensions.FromPoints(Positions);
                 BoundingSphere = BoundingSphereExtensions.FromPoints(Positions);
             }
-            if(Bound.Maximum.IsUndefined() || Bound.Minimum.IsUndefined() || BoundingSphere.Center.IsUndefined())
+            if(Bound.Maximum.IsUndefined() || Bound.Minimum.IsUndefined() || BoundingSphere.Center.IsUndefined()
+                || float.IsInfinity(Bound.Center.X) || float.IsInfinity(Bound.Center.Y) || float.IsInfinity(Bound.Center.Z))
             {
-                throw new Exception("Position vertex contains invalid value(Example: Float.NaN).");
+                throw new Exception("Position vertex contains invalid value(Example: Float.NaN, Float.Infinity).");
             }
         }
 

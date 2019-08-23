@@ -22,30 +22,57 @@ struct LightStruct
     matrix mLightProj; //56
 };
 
+struct VSSkinnedInput
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+    int4 bones : BONEIDS;
+    float4 boneWeights : BONEWEIGHTS;
+};
+
+struct VSSkinnedOutput
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+};
 
 struct VSInput
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
-	float2 t : TEXCOORD;
 	float3 n : NORMAL;
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
-
+	float2 t : TEXCOORD;
+    float4 c : COLOR;
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
 	float4 mr2 : TEXCOORD3;
 	float4 mr3 : TEXCOORD4;
 };
 
+struct VSInputBatched
+{
+    float4 p : POSITION;
+    float3 n : NORMAL;
+    float3 t1 : TANGENT;
+    float3 t2 : BINORMAL;
+    float2 t : TEXCOORD;
+    float4 c : COLOR; // if batched x: diffuse, y: emissive, z: specular, w: reflect; PBR : albedo
+    float4 c1 : COLOR1; // if batched x: ambient, y: specular shininess, z: diffuse alpha; PBR : AO, Roughtness, Metallic
+};
+
 struct VSBoneSkinInput
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
-	float2 t : TEXCOORD;
 	float3 n : NORMAL;
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
+	float2 t : TEXCOORD;
+	float4 c : COLOR;
 
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
@@ -63,11 +90,11 @@ struct VSBoneSkinInput
 struct VSInstancingInput
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
-	float2 t : TEXCOORD;
 	float3 n : NORMAL;
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
+	float2 t : TEXCOORD;
+	float4 c : COLOR;
 
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
@@ -75,8 +102,7 @@ struct VSInstancingInput
 	float4 mr3 : TEXCOORD4;
 
 	float4 diffuseC : COLOR1;
-	float4 ambientC : COLOR2;
-	float4 emissiveC : COLOR3;
+	float4 emissiveC : COLOR2;
 	float2 tOffset : TEXCOORD5;
 };
 
@@ -85,15 +111,23 @@ struct PSInput
 {
 	float4 p : SV_POSITION;
     float4 vEye : POSITION0;
-	float3 n : NORMAL; // normal
+    float3 n : NORMAL; // normal
     float4 wp : POSITION1;
 	float4 sp : TEXCOORD1;
 	float2 t : TEXCOORD0; // tex coord	
 	float3 t1 : TANGENT; // tangent
 	float3 t2 : BINORMAL; // bi-tangent	
 	float4 c : COLOR; // solid color (for debug)
-    float4 c2 : COLOR1; //vMaterialEmissive + vMaterialAmbient * vLightAmbient
+    float4 c2 : COLOR1; //vMaterialEmissive
     float4 cDiffuse : COLOR2; //vMaterialDiffuse
+};
+
+struct PSPlaneGridInput
+{
+    float4 p : SV_POSITION;
+    float2 uv : POSITION0;
+    float3 wp : POSITION1;
+    float4 sp : POSITION2;
 };
 
 struct PSWireframeInput
@@ -169,11 +203,26 @@ struct VSInputBT
     float2 t0 : TEXCOORD0;
     float2 t3 : TEXCOORD1;
     float2 offTL : TEXCOORD2;
-    float2 offBR : TEXCOORD3;
-    float4 mr0 : TEXCOORD4;
-    float4 mr1 : TEXCOORD5;
-    float4 mr2 : TEXCOORD6;
-    float4 mr3 : TEXCOORD7;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
+    float4 mr0 : TEXCOORD6;
+    float4 mr1 : TEXCOORD7;
+    float4 mr2 : TEXCOORD8;
+    float4 mr3 : TEXCOORD9;
+};
+
+struct GSInputBT
+{
+    float4 p : POSITION;
+    float4 foreground : COLOR;
+    float4 background : COLOR1;
+    float2 t0 : TEXCOORD0;
+    float2 t3 : TEXCOORD1;
+    float2 offTL : TEXCOORD2;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
 };
 
 struct VSInputBTInstancing
@@ -184,15 +233,17 @@ struct VSInputBTInstancing
     float2 t0 : TEXCOORD0;
     float2 t3 : TEXCOORD1;
     float2 offTL : TEXCOORD2;
-    float2 offBR : TEXCOORD3;
-    float4 mr0 : TEXCOORD4;
-    float4 mr1 : TEXCOORD5;
-    float4 mr2 : TEXCOORD6;
-    float4 mr3 : TEXCOORD7;
+    float2 offTR : TEXCOORD3;
+    float2 offBL : TEXCOORD4;
+    float2 offBR : TEXCOORD5;
+    float4 mr0 : TEXCOORD6;
+    float4 mr1 : TEXCOORD7;
+    float4 mr2 : TEXCOORD8;
+    float4 mr3 : TEXCOORD9;
 
 	float4 diffuseC : COLOR2;
-	float2 tScale : TEXCOORD8;
-	float2 tOffset : TEXCOORD9;
+	float2 tScale : TEXCOORD10;
+	float2 tOffset : TEXCOORD11;
 };
 
 struct PSInputBT
@@ -220,16 +271,20 @@ struct VSInputPS
 
 struct GSInputPS
 {
-	float4 p : POSITION;
+    float4 p : SV_POSITION;
+    float4 wp : POSITION0;
 	float4 c : COLOR;
+    float4 vEye : POSITION1;
 };
 
 struct PSInputPS
 {
 	float4 p : SV_POSITION;
-	noperspective
-		float3 t : TEXCOORD;
-	float4 c : COLOR;
+    float4 vEye : POSITION0;
+	float4 c : COLOR;   
+    float3 tex : TEXCOORD0;
+    noperspective
+    float3 t : TEXCOORD1;
 };
 
 //--------------------------------------------------------------------------------------
@@ -277,11 +332,11 @@ struct HSInput
 struct VSIn
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
-	float2 t : TEXCOORD;
 	float3 n : NORMAL;
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
+	float2 t : TEXCOORD;
+	float4 c : COLOR;
 };
 
 //
@@ -346,5 +401,28 @@ struct MeshOutlinePS_INPUT
     float4 Pos : SV_POSITION;
     noperspective
     float2 Tex : TEXCOORD0;
+};
+
+struct SpriteVS_INPUT
+{
+    float2 Pos : POSITION;
+    float2 UV : TEXCOORD0;
+    float4 Color : COLOR0;
+};
+
+struct SpritePS_INPUT
+{
+    float4 Pos : SV_POSITION;
+    float4 Color : COLOR0;
+    float2 UV : TEXCOORD0;   
+};
+
+struct VolumePS_INPUT
+{
+    float4 pos : SV_POSITION;
+    float4 wp : POSITION0;
+    float4 mPos : TEXCOORD0;
+    noperspective
+    float2 tex : TEXCOORD1;
 };
 #endif
