@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP
             private void EnsureBitmapCache(RenderContext2D context, Size2 size, int maxSize)
             {
                 IsBitmapCacheValid = false;
-                if (size.Width == 0 || size.Height == 0 || !EnableBitmapCache || size.Width * size.Height < MinimumBitmapSize)
+                if (size.Width <= 0 || size.Height <= 0 || !EnableBitmapCache || size.Width * size.Height < MinimumBitmapSize)
                 {
                     Disposer.RemoveAndDispose(ref bitmapCache);
                 }
