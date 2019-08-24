@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 1. FindHits not working with large scale transfroms #1193 (WPF.SharpDX/UWP/Core)
 2. Fix line arrow head transform not correct #1205. (WPF.SharpDX/UWP/Core)
 3. ItemsModel3D doesn't implement ItemTemplateSelector #1203 (UWP)
+4. 2DControl crash with SharpDX #1125 (WPF.SharpDX/UWP/Core)
 
 ## [2.8.0] - 2019-06-22
 
