@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Next Version]
 ### Added
 1. Assimp Metadata #1195 (WPF.SharpDX/UWP/Core)
+2. Added Helixtoolkit.Wpf.Input as nuget package.
 
 ### Improvement and Changes
 
