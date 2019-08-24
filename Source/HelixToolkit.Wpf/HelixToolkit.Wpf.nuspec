@@ -12,18 +12,18 @@
     <description>Provides custom controls and extensions for WPF 3D.</description>
     <tags>wpf wpf3d 3D</tags>
     <dependencies>
-	  <group>
-        <dependency id="HelixToolkit" version="[$version$]" />	  
-	  </group>
-	  <group targetFramework="net45">
-      </group>	
+      <group>
+        <dependency id="HelixToolkit" version="[$version$]" />
+      </group>
+      <group targetFramework="net45">
+      </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="HelixToolkit.Wpf\bin\Release\HelixToolkit.Wpf.???" target="lib\net45" />
-    <file src="..\LICENSE" />
-    <file src="..\AUTHORS" />
-    <file src="..\CONTRIBUTORS" />
-    <file src="..\README.md" />
+    <file src="bin\Release\HelixToolkit.Wpf.???" target="lib\net45" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
   </files>
 </package>

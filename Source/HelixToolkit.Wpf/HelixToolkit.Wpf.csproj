@@ -90,6 +90,7 @@
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
     <Resource Include="ShaderEffects\AnaglyphEffect.ps" />
+    <None Include="HelixToolkit.Wpf.nuspec" />
     <None Include="ShaderEffects\compileEffects.cmd" />
     <Resource Include="ShaderEffects\InterlacedEffect.ps" />
   </ItemGroup>
