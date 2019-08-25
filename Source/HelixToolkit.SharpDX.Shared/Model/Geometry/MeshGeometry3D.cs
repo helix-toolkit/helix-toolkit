@@ -184,7 +184,7 @@ namespace HelixToolkit.UWP
                     return false;
                 }
                 //transform ray into model coordinates
-                var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.TransformNormal(rayWS.Direction, modelInvert));
+                var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInvert)));
 
                 var b = this.Bound;
                 //Do hit test in local space

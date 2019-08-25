@@ -24,8 +24,6 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableD2DRendering="False"
-            EnableSwapChainRendering="True"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"

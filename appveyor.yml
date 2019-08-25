@@ -23,7 +23,8 @@ build_script:
 
 after_build:
   - nuget pack Source\HelixToolkit\HelixToolkit.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
+  - nuget pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
+  - nuget pack Source\HelixToolkit.Wpf.Input\HelixToolkit.Wpf.Input.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - nuget pack Source\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - nuget pack Source\HelixToolkit.UWP\HelixToolkit.UWP.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - nuget pack Source\HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg

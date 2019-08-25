@@ -6,7 +6,7 @@
     <title>Helix Toolkit (portable library)</title>
     <authors>objo</authors>
     <license type="expression">MIT</license>
-    <projectUrl>http://helix-toolkit.github.io/</projectUrl>
+    <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Portable core assembly that is referenced by the other Helix Toolkit packages.</description>

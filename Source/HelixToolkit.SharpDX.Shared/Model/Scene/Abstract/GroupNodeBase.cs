@@ -59,6 +59,14 @@ namespace HelixToolkit.UWP
                 public static implicit operator SceneNode(OnChildNodeChangedArgs args) { return args.Node; }
             }
             protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
+            /// <summary>
+            /// Gets or sets the metadata.
+            /// Metadata is used to store additional data to describe the scene node.
+            /// </summary>
+            /// <value>
+            /// The metadata.
+            /// </value>
+            public Metadata Metadata { set; get; }
 
             public event EventHandler<OnChildNodeChangedArgs> ChildNodeAdded;
             public event EventHandler<OnChildNodeChangedArgs> ChildNodeRemoved;

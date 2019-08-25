@@ -22,7 +22,7 @@ const static float4 cone[10] =
 void makeCone(out float4 points[10], in float4 posA, in float4 posB, in float scale)
 {
     float3 dir = normalize(posA.xyz - posB.xyz);
-    float3 axis = cross(float3(0, 1, 0), dir);
+    float3 axis = normalize(cross(float3(0, 1, 0), dir));
     float cosA = dot(float3(0, 1, 0), dir);
     float4x4 transform = float4x4(scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, 1);
     if (1 - abs(cosA) > 1e-3)

@@ -272,6 +272,13 @@ namespace HelixToolkit.UWP
                             Log(LogLevel.Warning, $"Current node type does not support yet. Type: {s.GetType().Name}");
                         }
                     }
+                    if(group.Metadata != null)
+                    {
+                        foreach(var metadata in group.Metadata.ToAssimpMetadata())
+                        {
+                            node.Metadata.Add(metadata.Key, metadata.Value);
+                        }
+                    }
                 }
                 else if(current is HxScene.GeometryNode geo)
                 {
@@ -284,7 +291,7 @@ namespace HelixToolkit.UWP
                 else
                 {
                     Log(LogLevel.Warning, $"Current node type does not support yet. Type: {current.GetType().Name}");
-                }
+                }                
                 return node;
             }
 
