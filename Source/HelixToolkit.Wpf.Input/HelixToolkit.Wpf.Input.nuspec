@@ -14,7 +14,6 @@
     <dependencies>
       <group>
         <dependency id="HelixToolkit.Wpf" version="[$version$]" />
-        <dependency id="TDx.TDxInput" version="1.1" />
       </group>
       <group targetFramework="net45">
       </group>
@@ -22,6 +21,7 @@
   </metadata>
   <files>
     <file src="bin\Release\HelixToolkit.Wpf.Input.???" target="lib\net45" />
+    <file src="bin\Release\TDx.TDxInput.dll" target="lib\net45" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
