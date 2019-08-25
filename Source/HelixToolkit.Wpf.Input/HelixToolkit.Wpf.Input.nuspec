@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>HelixToolkit.Wpf.Input</id>
+    <version>$version$</version>
+    <title>Helix Toolkit SpaceNavigator Decorator for WPF</title>
+    <authors>objo</authors>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides SpaceNavigator decorator for custom controls and extensions for WPF 3D.</description>
+    <tags>wpf wpf3d 3D input SpaceNavigator</tags>
+    <dependencies>
+      <group>
+        <dependency id="HelixToolkit.Wpf" version="[$version$]" />
+        <dependency id="TDx.TDxInput" version="1.1" />
+      </group>
+      <group targetFramework="net45">
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\HelixToolkit.Wpf.Input.???" target="lib\net45" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+  </files>
+</package>
