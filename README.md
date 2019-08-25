@@ -63,7 +63,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 2019-08-24
 [v2.9.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.9.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.9.0)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf/2.9.0)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.9.0)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.9.0)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.9.0)
 - [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.9.0)
