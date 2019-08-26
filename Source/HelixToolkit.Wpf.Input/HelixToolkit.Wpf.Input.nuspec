@@ -22,6 +22,7 @@
   </metadata>
   <files>
     <file src="bin\Release\HelixToolkit.Wpf.Input.???" target="lib\net45" />
+    <file src="bin\Release\TDx.TDxInput.???" target="lib\net45" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
