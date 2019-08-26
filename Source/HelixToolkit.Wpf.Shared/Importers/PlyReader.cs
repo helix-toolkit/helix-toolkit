@@ -259,10 +259,10 @@ namespace HelixToolkit.Wpf
                     plyBody = ReadASCII(plyFileStream, plyHeader);
                     break;
                 case PlyFormatTypes.binary_big_endian:
-                    plyBody = ReadBinaryBEOrLE(plyFileStream, plyHeader, true);
+                    plyBody = ReadBinary(plyFileStream, plyHeader, true);
                     break;
                 case PlyFormatTypes.binary_little_endian:
-                    plyBody = ReadBinaryBEOrLE(plyFileStream, plyHeader, false);
+                    plyBody = ReadBinary(plyFileStream, plyHeader, false);
                     break;
                 default:
                     break;
@@ -368,12 +368,33 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public enum PlyHeaderItems
         {
+            /// <summary>
+            /// The beginning of a ply file.
+            /// </summary>
             ply,
+            /// <summary>
+            /// The format of a ply file.
+            /// </summary>
             format,
+            /// <summary>
+            /// A comment in a ply file.
+            /// </summary>
             comment,
+            /// <summary>
+            /// An object info in a ply header
+            /// </summary>
             obj_info,
+            /// <summary>
+            /// The declaration of an element.
+            /// </summary>
             element,
+            /// <summary>
+            /// The property to be attached to an element.
+            /// </summary>
             property,
+            /// <summary>
+            /// The end of header declaration.
+            /// </summary>
             end_header
         }
 
@@ -712,6 +733,13 @@ namespace HelixToolkit.Wpf
             return result;
         }
 
+        /// <summary>
+        /// Reads the value of a property in the specified data type.
+        /// </summary>
+        /// <param name="plyDataType"></param>
+        /// <param name="reader"></param>
+        /// <param name="bigEndian"></param>
+        /// <returns></returns>
         private object ConvertPropValueBinary(PlyDataTypes plyDataType, BinaryReader reader, bool bigEndian)
         {
             object result = "";
@@ -869,7 +897,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="s">The stream to read from.</param>
         /// <param name="plyHeader">The header of the ply file.</param>
-        private List<PlyElement> ReadBinaryBEOrLE(Stream s, PlyHeader plyHeader, bool bigEndian)
+        /// <param name="bigEndian">Specifies whether the byte order is big endian or little endian.</param>
+        /// <returns>
+        /// The list of Ply elements declared in the header.
+        /// </returns>
+        private List<PlyElement> ReadBinary(Stream s, PlyHeader plyHeader, bool bigEndian)
         {
             var plyBody = new List<PlyElement>();
             var streamEncoding = bigEndian ? Encoding.BigEndianUnicode : Encoding.Unicode;
