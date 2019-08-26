@@ -180,7 +180,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Loads the specified filepath.
+        /// Loads a plyfile from the specified filepath.
         /// </summary>
         /// <param name="path">The filepath.</param>
         public void Load(string path)
@@ -192,6 +192,15 @@ namespace HelixToolkit.Wpf
             }
         }
 
+        /// <summary>
+        /// Loads a ply file from the stream but doesn't consume it.
+        /// </summary>
+        /// <param name="plyFileStream"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// This could be useful when we have several streams of plyfiles to reconstruct
+        /// into a single mesh, without updating the Header and Body properties of this reader.
+        /// </remarks>
         public Tuple<PlyHeader, List<PlyElement>> LoadPlyFile(Stream plyFileStream)
         {
             var headerLines = new List<string>();
@@ -278,14 +287,14 @@ namespace HelixToolkit.Wpf
         public List<PlyElement> Body { get; private set; }
         #endregion
 
-        #region Data & data structures
+        #region Data
         /// <summary>
         /// The supported version of the ply format.
         /// </summary>
         public static readonly Version SUPPORTEDVERSION = new Version(1, 0, 0);
 
         /// <summary>
-        /// Specifies the type of ply model formats.
+        /// Specifies the types of ply model formats.
         /// </summary>
         public enum PlyFormatTypes
         {
@@ -304,7 +313,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Specifies the type of ply data types.
+        /// Specifies the types of ply data types.
         /// </summary>
         public enum PlyDataTypes
         {
@@ -355,7 +364,7 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Specifies the type of item in a ply header.
+        /// Specifies the types of items in a ply header.
         /// </summary>
         public enum PlyHeaderItems
         {
@@ -485,6 +494,10 @@ namespace HelixToolkit.Wpf
             }
 
             public PlyFormatTypes FormatType { get; }
+
+            /// <summary>
+            /// The version of the ply file.
+            /// </summary>
             public Version Version { get; }
             public string[] Comments { get; }
             public Tuple<string, string>[] ObjectInfos { get; }
