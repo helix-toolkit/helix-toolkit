@@ -421,6 +421,15 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public class PlyProperty
         {
+            /// <summary>
+            /// Initializes a new ply property with the specified values.
+            /// </summary>
+            /// <param name="name">The name of the property.</param>
+            /// <param name="type">The type of the property.</param>
+            /// <param name="value">The value of the property.</param>
+            /// <param name="isList">Specifies whether the property is a list or not.</param>
+            /// <param name="listContentType">The type of contents in the list if it is a list.</param>
+            /// <param name="listContentValues">The items in the property's list.</param>
             public PlyProperty(string name, PlyDataTypes type, object value, bool isList, PlyDataTypes listContentType, object[] listContentValues)
             {
                 Name = name;
@@ -484,6 +493,14 @@ namespace HelixToolkit.Wpf
                 Elements = new PlyElement[] { };
             }
 
+            /// <summary>
+            /// Initializes a new Ply header with the given values.
+            /// </summary>
+            /// <param name="plyFormatType"></param>
+            /// <param name="version"></param>
+            /// <param name="elements"></param>
+            /// <param name="objInfos"></param>
+            /// <param name="comments"></param>
             public PlyHeader(PlyFormatTypes plyFormatType, Version version, PlyElement[] elements, Tuple<string, string>[] objInfos, string[] comments)
             {
                 FormatType = plyFormatType;
@@ -493,14 +510,29 @@ namespace HelixToolkit.Wpf
                 Elements = elements;
             }
 
+            /// <summary>
+            /// The format of the ply file's body.
+            /// </summary>
             public PlyFormatTypes FormatType { get; }
 
             /// <summary>
             /// The version of the ply file.
             /// </summary>
             public Version Version { get; }
+
+            /// <summary>
+            /// Gets the comments made in the file.
+            /// </summary>
             public string[] Comments { get; }
+
+            /// <summary>
+            /// Gets the object informations for this file (mostly producer independent).
+            /// </summary>
             public Tuple<string, string>[] ObjectInfos { get; }
+
+            /// <summary>
+            /// Gets the elements declared in the header.
+            /// </summary>
             public PlyElement[] Elements { get; }
         }
 
@@ -508,6 +540,11 @@ namespace HelixToolkit.Wpf
 
         #region Private methods
 
+        /// <summary>
+        /// Reads and validates the header lines of a ply file.
+        /// </summary>
+        /// <param name="headerLines">The lines to read.</param>
+        /// <returns></returns>
         private PlyHeader ReadHeader(string[] headerLines)
         {
             if (headerLines.Length > 2 && (PlyHeaderItems)Enum.Parse(typeof(PlyHeaderItems), headerLines[0]) == PlyHeaderItems.ply
@@ -631,6 +668,12 @@ namespace HelixToolkit.Wpf
                 throw new InvalidDataException("Invalid ply file.");
         }
 
+        /// <summary>
+        /// Converts the value of a property to the specified data type.
+        /// </summary>
+        /// <param name="plyDataType">The type to convert to.</param>
+        /// <param name="propValue">The value to convert.</param>
+        /// <returns></returns>
         private object ConvertPropValueASCII(PlyDataTypes plyDataType, string propValue)
         {
             object result = null;
@@ -669,7 +712,7 @@ namespace HelixToolkit.Wpf
             return result;
         }
 
-        private object ConvertPropValueBEOrLE(PlyDataTypes plyDataType, BinaryReader reader, bool bigEndian)
+        private object ConvertPropValueBinary(PlyDataTypes plyDataType, BinaryReader reader, bool bigEndian)
         {
             object result = "";
             var reverseBytes = bigEndian && BitConverter.IsLittleEndian;
@@ -846,13 +889,13 @@ namespace HelixToolkit.Wpf
                             var currentHeadProp = currentHeadElement.Instances[0][k];
                             if (currentHeadProp.IsList)
                             {
-                                var itemsNumStr = ConvertPropValueBEOrLE(currentHeadProp.Type, reader, bigEndian);
+                                var itemsNumStr = ConvertPropValueBinary(currentHeadProp.Type, reader, bigEndian);
                                 if (int.TryParse(itemsNumStr.ToString(), out int itemsNum))
                                 {
                                     var listContentItems = new List<object>();
                                     for (int l = 0; l < itemsNum; l++)
                                     {
-                                        var listContentItem = ConvertPropValueBEOrLE(currentHeadProp.ListContentType, reader, bigEndian);
+                                        var listContentItem = ConvertPropValueBinary(currentHeadProp.ListContentType, reader, bigEndian);
                                         listContentItems.Add(listContentItem);
                                     }
                                     var plyProp = new PlyProperty(currentHeadProp.Name, currentHeadProp.Type,
@@ -865,7 +908,7 @@ namespace HelixToolkit.Wpf
                             else
                             {
                                 var newProperty = new PlyProperty(currentHeadProp.Name, currentHeadProp.Type,
-                                    ConvertPropValueBEOrLE(currentHeadProp.Type, reader, bigEndian), currentHeadProp.IsList, currentHeadProp.ListContentType, currentHeadProp.ListContentValues);
+                                    ConvertPropValueBinary(currentHeadProp.Type, reader, bigEndian), currentHeadProp.IsList, currentHeadProp.ListContentType, currentHeadProp.ListContentValues);
                                 currentInstanceProperties.Add(newProperty);
                             }
                         }
