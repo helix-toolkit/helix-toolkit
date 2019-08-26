@@ -13,8 +13,10 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Polygon File Format Reader.
     /// </summary>
-    /// <see cref="https://www.cc.gatech.edu/projects/large_models/ply.html"/>
-    /// <see cref="http://graphics.stanford.edu/data/3Dscanrep/"/>
+    /// <remarks>
+    /// https://www.cc.gatech.edu/projects/large_models/ply.html
+    /// http://graphics.stanford.edu/data/3Dscanrep/
+    /// </remarks>
     public class PlyReader : ModelReader
     {
         /// <summary>
@@ -101,7 +103,7 @@ namespace HelixToolkit.Wpf
             {
                 foreach (var faceProp in faceElement.Instances)
                 {
-                    var vertexIndicesProperties = (from item in faceProp where item.IsList && item.Name == "vertex_indices" select item).ToArray();
+                    var vertexIndicesProperties = (from item in faceProp where item.IsList && item.Name == "vertex_indices" || item.Name == "vertex_index" select item).ToArray();
                     if (vertexIndicesProperties.Length > 0)
                     {
                         var vertexIndices = new List<int>();
@@ -657,64 +659,50 @@ namespace HelixToolkit.Wpf
         private object ConvertPropValueBEOrLE(PlyDataTypes plyDataType, BinaryReader reader, bool bigEndian)
         {
             object result = "";
+            var reverseBytes = bigEndian && BitConverter.IsLittleEndian;
             switch (plyDataType)
             {
                 case PlyDataTypes._char:
                     {
-                        var bytes = reader.ReadBytes(1);
-                        result = bigEndian ? BitConverter.ToChar(bytes, 0) : BitConverter.ToChar(bytes, 0);
-                        //result = reader.ReadChar();
+                        result = reverseBytes ? BitConverter.ToChar(reader.ReadBytes(1).Reverse().ToArray(), 0) : reader.ReadChar();
                         break;
                     }
                 case PlyDataTypes._uint8:
                 case PlyDataTypes._uchar:
                     {
-                        var bytes = reader.ReadByte();
-                        result = bytes;
+                        result = reader.ReadByte();
                         break;
                     }
                 case PlyDataTypes._short:
                     {
-                        var bytes = reader.ReadBytes(2);
-                        result = bigEndian ? BitConverter.ToInt16(new byte[] { bytes[1], bytes[0] }, 0) : BitConverter.ToInt16(bytes, 0);
-                        //result = reader.ReadInt16();
+                        result = reverseBytes ? BitConverter.ToInt16(reader.ReadBytes(2).Reverse().ToArray(), 0) : reader.ReadInt16();
                         break;
                     }
                 case PlyDataTypes._ushort:
                     {
-                        var bytes = reader.ReadBytes(2);
-                        result = bigEndian ? BitConverter.ToUInt16(new byte[] { bytes[1], bytes[0] }, 0) : BitConverter.ToUInt16(bytes, 0);
-                        //result = reader.ReadUInt16();
+                        result = reverseBytes ? BitConverter.ToUInt16(reader.ReadBytes(2).Reverse().ToArray(), 0) : reader.ReadUInt16();
                         break;
                     }
                 case PlyDataTypes._int:
                 case PlyDataTypes._int32:
                     {
-                        var bytes = reader.ReadBytes(4);
-                        result = bigEndian ? BitConverter.ToInt32(new byte[] { bytes[3], bytes[2], bytes[1], bytes[0] }, 0) : BitConverter.ToInt32(bytes, 0);
-                        //result = reader.ReadInt32();
+                        result = reverseBytes ? BitConverter.ToInt32(reader.ReadBytes(4).Reverse().ToArray(), 0) : reader.ReadInt32();
                         break;
                     }
                 case PlyDataTypes._uint:
                     {
-                        var bytes = reader.ReadBytes(4);
-                        result = bigEndian ? BitConverter.ToUInt32(new byte[] { bytes[3], bytes[2], bytes[1], bytes[0] }, 0) : BitConverter.ToUInt32(bytes, 0);
-                        //result = reader.ReadUInt32();
+                        result = reverseBytes ? BitConverter.ToUInt32(reader.ReadBytes(4).Reverse().ToArray(), 0) : reader.ReadUInt32();
                         break;
                     }
                 case PlyDataTypes._float:
                 case PlyDataTypes._float32:
                     {
-                        var bytes = reader.ReadBytes(4);
-                        result = bigEndian ? BitConverter.ToSingle(new byte[] { bytes[3], bytes[2], bytes[1], bytes[0] }, 0) : BitConverter.ToSingle(bytes, 0);
-                        //result = reader.ReadSingle();
+                        result = reverseBytes ? BitConverter.ToSingle(reader.ReadBytes(4).Reverse().ToArray(), 0) : reader.ReadSingle();
                         break;
                     }
                 case PlyDataTypes._double:
                     {
-                        var bytes = reader.ReadBytes(8);
-                        result = bigEndian ? BitConverter.ToDouble(new byte[] { bytes[7], bytes[6], bytes[5], bytes[4], bytes[3], bytes[2], bytes[1], bytes[0] }, 0) : BitConverter.ToDouble(bytes, 0);
-                        //result = reader.ReadDouble();
+                        result = reverseBytes ? BitConverter.ToDouble(reader.ReadBytes(8).Reverse().ToArray(), 0) : reader.ReadDouble();
                         break;
                     }
                 default:
