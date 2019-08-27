@@ -13,11 +13,9 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Polygon File Format Reader.
     /// </summary>
+    /// <remarks>
     /// https://www.cc.gatech.edu/projects/large_models/ply.html
     /// http://graphics.stanford.edu/data/3Dscanrep/
-    /// <remarks>
-    /// This reader only reads ascii ply formats.
-    /// This was initially meant to read models exported by Blender 3D Software.
     /// </remarks>
     public class PlyReader : ModelReader
     {
@@ -27,7 +25,8 @@ namespace HelixToolkit.Wpf
         /// <param name="dispatcher"></param>
         public PlyReader(Dispatcher dispatcher = null) : base(dispatcher)
         {
-            InitializeProperties();
+            Header = new PlyHeader();
+            Body = new List<PlyElement>();
         }
 
         #region Public methods
@@ -38,7 +37,6 @@ namespace HelixToolkit.Wpf
         /// <returns>A <see cref="Model3DGroup" />.</returns>
         public override Model3DGroup Read(Stream s)
         {
-            InitializeProperties();
             this.Load(s);
             return this.CreateModel3D();
         }
@@ -50,8 +48,7 @@ namespace HelixToolkit.Wpf
         /// <returns>The model.</returns>
         public override Model3DGroup Read(string path)
         {
-            InitializeProperties();
-            plymodelURI =path;
+            this.Directory = Path.GetDirectoryName(path);
             Load(path);
             using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -68,33 +65,58 @@ namespace HelixToolkit.Wpf
         public Mesh3D CreateMesh()
         {
             var mesh = new Mesh3D();
-            if (Vertices.Count>0)
+
+            var vertexElement = Body.Find(item => item.Name == "vertex");
+            if (vertexElement != null && vertexElement.Count > 0)
             {
-                foreach (var vert in Vertices)
+                foreach (var vertProp in vertexElement.Instances)
                 {
-                    mesh.Vertices.Add(vert);
+                    var vertPropList = vertProp.ToList();
+                    var xProp = vertPropList.Find(item => !item.IsList && item.Name == "x");
+                    var yProp = vertPropList.Find(item => !item.IsList && item.Name == "y");
+                    var zProp = vertPropList.Find(item => !item.IsList && item.Name == "z");
+
+                    if (xProp != null && yProp != null && zProp != null)
+                    {
+                        var xCoord = double.Parse(xProp.Value?.ToString() ?? "0");
+                        var yCoord = double.Parse(yProp.Value?.ToString() ?? "0");
+                        var zCoord = double.Parse(zProp.Value?.ToString() ?? "0");
+                        var vertex = new Point3D(xCoord, yCoord, zCoord);
+                        mesh.Vertices.Add(vertex);
+                    }
+
+                    //var sProp = vertPropList.Find(item => !item.IsList && item.Name == "s");
+                    //var tProp = vertPropList.Find(item => !item.IsList && item.Name == "t");
+
+                    //if (sProp != null && tProp != null)
+                    //{
+                    //    var sCoord = double.Parse(sProp.Value.ToString());
+                    //    var tCoord = double.Parse(tProp.Value.ToString());
+                    //    var texturePt = new Point(sCoord, tCoord);
+                    //    mesh.TextureCoordinates.Add(texturePt);
+                    //}
                 }
             }
 
-            if (Faces.Count>0)
+            var faceElement = Body.Find(item => item.Name == "face");
+            if (faceElement != null && faceElement.Count > 0)
             {
-                foreach (var face in Faces)
+                foreach (var faceProp in faceElement.Instances)
                 {
-                    mesh.Faces.Add((int[])face.Clone());
+                    var vertexIndicesProperties = (from item in faceProp where item.IsList && item.Name == "vertex_indices" || item.Name == "vertex_index" select item).ToArray();
+                    if (vertexIndicesProperties.Length > 0)
+                    {
+                        var vertexIndices = new List<int>();
+                        foreach (var item in vertexIndicesProperties[0].ListContentValues)
+                        {
+                            vertexIndices.Add(Convert.ToInt32(item ?? "0"));
+                        }
+                        mesh.Faces.Add(vertexIndices.ToArray());
+                    }
+
                 }
             }
 
-            if (TextureCoordinates.Count>0)
-            {
-                foreach (Point item in TextureCoordinates)
-                {
-                    mesh.TextureCoordinates.Add(item);
-                }
-            }
-            if (TextureCoordinates.Count==0)
-            {
-                TextureCoordinates = null;
-            }
             return mesh;
         }
 
@@ -106,55 +128,8 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public MeshGeometry3D CreateMeshGeometry3D()
         {
-            var mb = new MeshBuilder(true, true);
-            
-            if (Vertices.Count>0)
-            {
-                foreach (var p in this.Vertices)
-                {
-                    mb.Positions.Add(p);
-                }
-            }
-            
-            if (Faces.Count>0)
-            {
-                foreach (var face in Faces)
-                {
-                    mb.AddTriangleFan(face);
-                }
-            }
-
-            if (Normals.Count>0)
-            {
-                mb.CreateNormals=true;
-                foreach (var item in Normals)
-                {
-                    mb.Normals.Add(item);
-                }
-            }
-            if (Normals.Count==0)
-            {
-                Normals = null;
-                mb.Normals = null;
-                mb.CreateNormals = false;
-            }
-
-            if (TextureCoordinates.Count>0)
-            {
-                mb.CreateTextureCoordinates = true;
-                foreach (var item in TextureCoordinates)
-                {
-                    mb.TextureCoordinates.Add(item);
-                }
-            }
-            if (TextureCoordinates.Count==0)
-            {
-                TextureCoordinates = null;
-                mb.TextureCoordinates = null;
-                mb.CreateTextureCoordinates = false;
-            }
-            
-            return mb.ToMesh();
+            var mesh = CreateMesh();
+            return mesh.ToMeshGeometry3D();
         }
 
         /// <summary>
@@ -194,177 +169,134 @@ namespace HelixToolkit.Wpf
         /// <param name="s">The stream containing the ply file.</param>
         public void Load(Stream s)
         {
-            InitializeProperties();
-            //Get the model format from the header in order for the correct strategy to be used
-            using (var textReader = new StreamReader(s))
-            {
-                int linCount = 0;
-                //!textReader.EndOfStream
-                while (!textReader.EndOfStream)
-                {
-                    string lineTxt = textReader.ReadLine();
-                    string[] initarr = lineTxt.Split(' ');
-                    if (initarr[0] == "format")
-                    {
-                        if (initarr[1] == "ascii")
-                        {
-                            modelFormat = PlyFormatTypes.ascii;
-                            
-                        }
+            Header = new PlyHeader();
+            Body = new List<PlyElement>();
+            var plyFileData = LoadPlyFile(s);
 
-                        else if (initarr[1] == "binary_big_endian")
-                        {
-                            modelFormat = PlyFormatTypes.binary_big_endian;
-                        }
-
-                        else if (initarr[1] == "binary_little_endian")
-                        {
-                            modelFormat = PlyFormatTypes.binary_little_endian;
-                        }
-
-                    }
-                    else { continue; }
-                    linCount += 1;
-                }               
-            }
-
-            #region MyRegion
-            switch (modelFormat)
-            {
-                case PlyFormatTypes.ascii:
-                    {
-                        if (plymodelURI.Length>6)
-                        {
-                            using (FileStream fs = new FileStream(plymodelURI, FileMode.Open, FileAccess.Read))
-                            {
-                                Load_ascii(fs);
-                            }
-                        }
-                        
-                        
-                        break;
-                    }
-
-                case PlyFormatTypes.binary_big_endian:
-                    {
-                        if (plymodelURI.Length > 6)
-                        {
-                            using (FileStream fs = new FileStream(plymodelURI, FileMode.Open, FileAccess.Read))
-                            {
-                                Load_binaryBE(fs);
-                            }
-                        }
-                        break;
-                    }
-
-                case PlyFormatTypes.binary_little_endian:
-                    {
-
-                        break;
-                    }
-                default:
-                    break;
-            }
-            #endregion
-
-
-
+            Header = plyFileData.Item1;
+            Body = plyFileData.Item2;
+            //var location = "";
+            //DumpFileAsASCII(location, plyHeader, plyBody);
         }
+
         /// <summary>
-        /// Loads the specified filepath.
+        /// Loads a plyfile from the specified filepath.
         /// </summary>
-        /// <param name="filepath">The filepath.</param>
-        public void Load(string filepath)
+        /// <param name="path">The filepath.</param>
+        public void Load(string path)
         {
-            InitializeProperties();
-            plymodelURI = filepath;
-            using (FileStream fs=new FileStream(filepath,FileMode.Open,FileAccess.Read))
+            this.Directory = Path.GetDirectoryName(path);
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 Load(fs);
             }
         }
-        
+
+        /// <summary>
+        /// Loads a ply file from the stream but doesn't consume it.
+        /// </summary>
+        /// <param name="plyFileStream"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// This could be useful when we have several streams of plyfiles to reconstruct
+        /// into a single mesh, without updating the Header and Body properties of this reader.
+        /// </remarks>
+        public Tuple<PlyHeader, List<PlyElement>> LoadPlyFile(Stream plyFileStream)
+        {
+            var headerLines = new List<string>();
+            Int64 startPosition = 0;
+            var textReader = new StreamReader(plyFileStream);
+            plyFileStream.Position = 0;
+            plyFileStream.Seek(0, SeekOrigin.Begin);
+
+            var readingHeader = true;
+            var headerLineBuilders = new List<StringBuilder>() { new StringBuilder() };
+            var newLineCharMet = false;
+
+            while (readingHeader && textReader.EndOfStream == false)
+            {
+                var currentChar = (char)textReader.Read();
+
+                if (currentChar == '\r' || currentChar == '\n')
+                {
+                    if (newLineCharMet)
+                        startPosition++;
+                    else
+                    {
+                        newLineCharMet = true;
+                        headerLineBuilders.Add(new StringBuilder());
+                        startPosition++;
+                    }
+                }
+                else
+                {
+                    if (headerLineBuilders.Count > 2 && headerLineBuilders[headerLineBuilders.Count - 2].ToString() == "end_header")
+                    {
+                        headerLineBuilders.RemoveAt(headerLineBuilders.Count - 1);
+                        readingHeader = false;
+                    }
+                    else
+                    {
+                        newLineCharMet = false;
+                        headerLineBuilders.Last().Append(currentChar.ToString());
+                        startPosition++;
+                    }
+                }
+            }
+
+            foreach (var headerLineBuilder in headerLineBuilders)
+            {
+                headerLines.Add(headerLineBuilder.ToString());
+            }
+
+            var plyHeader = ReadHeader(headerLines.ToArray());
+            var plyBody = new List<PlyElement>();
+            plyFileStream.Position = startPosition;
+
+            switch (plyHeader.FormatType)
+            {
+                case PlyFormatTypes.ascii:
+                    plyBody = ReadASCII(plyFileStream, plyHeader);
+                    break;
+                case PlyFormatTypes.binary_big_endian:
+                    plyBody = ReadBinary(plyFileStream, plyHeader, true);
+                    break;
+                case PlyFormatTypes.binary_little_endian:
+                    plyBody = ReadBinary(plyFileStream, plyHeader, false);
+                    break;
+                default:
+                    break;
+            }
+
+            textReader.Dispose();
+            textReader.Close();
+            return new Tuple<PlyHeader, List<PlyElement>>(plyHeader, plyBody);
+        }
+
         #endregion
 
         #region Properties
-        
-        
         /// <summary>
-        /// Gets or sets the vertices of this ply model.
+        /// Gets or sets the header of the loaded ply file.
         /// </summary>
-        public IList<Point3D> Vertices { get; private set; }
-        /// <summary>
-        /// Gets the faces.
-        /// </summary>
-        /// <value>
-        /// The faces.
-        /// </value>
-        public IList<int[]> Faces { get; private set; }
+        public PlyHeader Header { get; private set; }
 
         /// <summary>
-        /// Gets or sets the normal vectors of this ply model.
+        /// Gets or sets the body of the loaded ply file.
         /// </summary>
-        public IList<Vector3D> Normals { get; private set; }
-        
-        /// <summary>
-        /// Gets or sets the texture coordinates of the ply model.
-        /// </summary>
-        /// <remarks>S,T->X,Y</remarks>
-        public IList<Point> TextureCoordinates { get; private set; }
-        
-        /// <summary>
-        /// Gets or sets the number of vertices.
-        /// </summary>
-        public int VerticesNumber { get; private set; }
-        
-        /// <summary>
-        /// Gets or sets the number of faces.
-        /// </summary>
-        public int FacesNumber { get; private set; }
-
-        /// <summary>
-        /// Contains information about the Ply file received.
-        /// </summary>
-        public Dictionary<string, double> ObjectInformation { get; private set; }
-
-        #endregion
-        
-        #region Initialized Variables
-        /// <summary>
-        /// Stores the type of ply format in the <see cref="Stream"/>.
-        /// </summary>
-        private PlyFormatTypes modelFormat = PlyFormatTypes.ascii;
-        
-        /// <summary>
-        /// Tells us what the current element in the header is, 
-        /// so we can pick its property values in the subsequent lines.
-        /// </summary>
-        /// <remarks>
-        /// Only useful in reading the ply header.
-        /// </remarks>
-        private PlyElements currentElement = PlyElements.none;
-        /// <summary>
-        /// The line containing data about an element(It starts just after the "end_header" statement).
-        /// </summary>
-        private int elementLine_Current = 0;
-        /* A cummulative sum of each element count in the current ply model.
-         * This helps to provide a range of the element position as we move through the ascii Ply file.
-         */
-        //private int ElLine_SeqCount = 0;//[Deprecated].
-        /// <summary>
-        /// Gets the number of lines that contains element data.
-        /// </summary>
-        private int elementLines_Count = 0;
-        private string plymodelURI = "";
-        private Dictionary<string, PLYElement> elements_range = new Dictionary<string, PLYElement>();
-
+        public List<PlyElement> Body { get; private set; }
         #endregion
 
-        #region private Types
+        #region Data
         /// <summary>
-        /// Contains a list of ply formatted model types.
+        /// The supported version of the ply format.
         /// </summary>
-        private enum PlyFormatTypes
+        public static readonly Version SUPPORTEDVERSION = new Version(1, 0, 0);
+
+        /// <summary>
+        /// Specifies the types of ply model formats.
+        /// </summary>
+        public enum PlyFormatTypes
         {
             /// <summary>
             /// ASCII ply format.
@@ -377,514 +309,728 @@ namespace HelixToolkit.Wpf
             /// <summary>
             /// Binary little endian ply format.
             /// </summary>
-            binary_little_endian,
-
-
-            /// <summary>
-            /// An unrecognized format.
-            /// </summary>
-            none
+            binary_little_endian
         }
 
         /// <summary>
-        /// Contains a list of supported ply elements.
+        /// Specifies the types of ply data types.
         /// </summary>
-        private enum PlyElements
+        public enum PlyDataTypes
         {
             /// <summary>
-            /// The vertex ply element.
+            /// character
             /// </summary>
-            vertex,
+            _char,
             /// <summary>
-            /// The face ply element.
+            /// unsigned character
             /// </summary>
-            face,
-
+            _uchar,
             /// <summary>
-            /// An unrecognized element.
+            /// short integer
             /// </summary>
-            none
+            _short,
+            /// <summary>
+            /// unsigned short integer
+            /// </summary>
+            _ushort,
+            /// <summary>
+            /// integer
+            /// </summary>
+            _int,
+            /// <summary>
+            /// integer
+            /// </summary>
+            _int32,
+            /// <summary>
+            /// unsigned integer
+            /// </summary>
+            _uint,
+            /// <summary>
+            /// unsigned integer
+            /// </summary>
+            _uint8,
+            /// <summary>
+            /// single-precision float
+            /// </summary>
+            _float,
+            /// <summary>
+            /// single-precision float
+            /// </summary>
+            _float32,
+            /// <summary>
+            /// double-precision float
+            /// </summary>
+            _double,
         }
 
         /// <summary>
-        /// A class that attempts to define ply elements.
+        /// Specifies the types of items in a ply header.
         /// </summary>
-        private class PLYElement
+        public enum PlyHeaderItems
         {
-            public int PropertyIndex = 0;
-
             /// <summary>
-            /// Stores the property string with its index.
+            /// The beginning of a ply file.
             /// </summary>
-            public Dictionary<string, int> Property_with_Index = new Dictionary<string, int>();
-
+            ply,
             /// <summary>
-            /// Initializes a new PLY element.
+            /// The format of a ply file.
             /// </summary>
-            /// <param name="_y1">The lower or start range.</param>
-            /// <param name="_y2">The upper or end range.</param>
-            /// <param name="hasNormals"></param>
-            /// <param name="hasTextures"></param>
-            public PLYElement(int _y1 = 0, int _y2 = 1, bool hasNormals = false, bool hasTextures = false)
+            format,
+            /// <summary>
+            /// A comment in a ply file.
+            /// </summary>
+            comment,
+            /// <summary>
+            /// An object info in a ply header
+            /// </summary>
+            obj_info,
+            /// <summary>
+            /// The declaration of an element.
+            /// </summary>
+            element,
+            /// <summary>
+            /// The property to be attached to an element.
+            /// </summary>
+            property,
+            /// <summary>
+            /// The end of header declaration.
+            /// </summary>
+            end_header
+        }
+
+        /// <summary>
+        /// Represents a ply element.
+        /// </summary>
+        public class PlyElement
+        {
+            /// <summary>
+            /// Initializes a new <see cref="PlyElement"/>.
+            /// </summary>
+            /// <param name="name">The name of this element.</param>
+            /// <param name="count">The number of instances of this element.</param>
+            /// <param name="instances">The instances of this elements properties.</param>
+            public PlyElement(string name, int count, List<PlyProperty[]> instances)
             {
-                PropertyIndex = 0;
-                Property_with_Index = new Dictionary<string, int>();
-                StartRange = _y1;
-                EndRange = _y2;
-                ContainsNormals = hasNormals;
-                ContainsTextureCoordinates = hasTextures;
-                ElementCount = EndRange - StartRange;
+                Name = name;
+                Count = count;
+                Instances = instances;
             }
 
-            #region Element class properties
             /// <summary>
-            /// The point from which the current element starts to get picked.
+            /// The name of this element.
             /// </summary>
-            public int StartRange { get; set; }
-            
-            /// <summary>
-            /// The point at which the current element stops to get picked.
-            /// </summary>
-            public int EndRange { get; set; }
+            public string Name { get; }
 
             /// <summary>
-            /// Specifies whether or not the vertex element has a normal.
+            /// The number of times this element is expected to appear.
             /// </summary>
-            public bool ContainsNormals { get; set; } = false;
+            public int Count { get; }
 
             /// <summary>
-            /// Whether or not the vertex element has a texture coordinate.
+            /// The instances of this elements properties.
             /// </summary>
             /// <remarks>
-            /// for vertices only.
+            /// An element can have any number of properties and that list
+            /// of properties can appear <see cref="Count"/> number of times.
+            /// This property holds those values.
             /// </remarks>
-            public bool ContainsTextureCoordinates { get; set; } = false;
+            public List<PlyProperty[]> Instances { get; }
+        }
 
+        /// <summary>
+        /// Represents a property of a <see cref="PlyElement"/>.
+        /// </summary>
+        public class PlyProperty
+        {
             /// <summary>
-            /// Stores the number of the specified element in the current Ply model.
+            /// Initializes a new ply property with the specified values.
             /// </summary>
-            public int ElementCount { get; private set; }
-            
-            #endregion
-            
-            /// <summary>
-            /// Returns a value specifying whether the index: <paramref name="num"/> is in this <see cref="PLYElement"/> range.
-            /// </summary>
-            /// <param name="num">The index.</param>
-            /// <returns></returns>
-            public bool ContainsNumber(int num)
+            /// <param name="name">The name of the property.</param>
+            /// <param name="type">The type of the property.</param>
+            /// <param name="value">The value of the property.</param>
+            /// <param name="isList">Specifies whether the property is a list or not.</param>
+            /// <param name="listContentType">The type of contents in the list if it is a list.</param>
+            /// <param name="listContentValues">The items in the property's list.</param>
+            public PlyProperty(string name, PlyDataTypes type, object value, bool isList, PlyDataTypes listContentType, object[] listContentValues)
             {
-                if (num >= StartRange && num <= EndRange)
-                {
-                    return true;
-                }
-                else { return false; }
+                Name = name;
+                Type = type;
+                Value = value;
+                IsList = isList;
+                ListContentType = listContentType;
+                ListContentValues = listContentValues;
             }
 
+            /// <summary>
+            /// The name of this property.
+            /// </summary>
+            public string Name { get; }
+
+            /// <summary>
+            /// For a scalar property: the type of value it holds.<para/>
+            /// For a vector property: the type of the items count value.
+            /// </summary>
+            /// <remarks>
+            /// A scalar property is a property where <see cref="IsList"/> is false.
+            /// </remarks>
+            public PlyDataTypes Type { get; }
+
+            /// <summary>
+            /// For a scalar property: The value of this property.<para/>
+            /// For a vector property: The number of items in the list.
+            /// </summary>
+            public object Value { get; }
+
+            /// <summary>
+            /// Specifies whether this property is a scalar or vector (list).
+            /// </summary>
+            public bool IsList { get; }
+
+            /// <summary>
+            /// The type of items in the list.
+            /// </summary>
+            public PlyDataTypes ListContentType { get; }
+
+            /// <summary>
+            /// The value of the items in the list.
+            /// </summary>
+            public object[] ListContentValues { get; }
+        }
+
+        /// <summary>
+        /// Represents the header of a ply file.
+        /// </summary>
+        public class PlyHeader
+        {
+            /// <summary>
+            /// Initializes a ply header with type <see cref="PlyFormatTypes.ascii"/> and no elements, comments and object infos.
+            /// </summary>
+            public PlyHeader()
+            {
+                FormatType = PlyFormatTypes.ascii;
+                Version = SUPPORTEDVERSION;
+                Comments = new string[] { };
+                ObjectInfos = new Tuple<string, string>[] { };
+                Elements = new PlyElement[] { };
+            }
+
+            /// <summary>
+            /// Initializes a new Ply header with the given values.
+            /// </summary>
+            /// <param name="plyFormatType"></param>
+            /// <param name="version"></param>
+            /// <param name="elements"></param>
+            /// <param name="objInfos"></param>
+            /// <param name="comments"></param>
+            public PlyHeader(PlyFormatTypes plyFormatType, Version version, PlyElement[] elements, Tuple<string, string>[] objInfos, string[] comments)
+            {
+                FormatType = plyFormatType;
+                Version = version;
+                ObjectInfos = objInfos;
+                Comments = comments;
+                Elements = elements;
+            }
+
+            /// <summary>
+            /// The format of the ply file's body.
+            /// </summary>
+            public PlyFormatTypes FormatType { get; }
+
+            /// <summary>
+            /// The version of the ply file.
+            /// </summary>
+            public Version Version { get; }
+
+            /// <summary>
+            /// Gets the comments made in the file.
+            /// </summary>
+            public string[] Comments { get; }
+
+            /// <summary>
+            /// Gets the object informations for this file (mostly producer independent).
+            /// </summary>
+            public Tuple<string, string>[] ObjectInfos { get; }
+
+            /// <summary>
+            /// Gets the elements declared in the header.
+            /// </summary>
+            public PlyElement[] Elements { get; }
         }
 
         #endregion
 
         #region Private methods
 
-        private bool IsDigitChar(char input)
-        {
-            if (input == '-' || input == '+' || input == '0' || input == '1' || input == '2' || input == '3' || input == '4' || input == '5' || input == '6' || input == '7' || input == '8' || input == '9' || input == '.')
-            {
-                return true;
-            }
-            else { return false; }
-        }
-
-        private void InitializeProperties()
-        {
-            #region public:
-            Vertices = new List<Point3D>();
-            Faces = new List<int[]>();
-            Normals = new List<Vector3D>();
-            TextureCoordinates = new List<Point>();
-            FacesNumber = 0;
-            VerticesNumber = 0;
-            ObjectInformation = new Dictionary<string, double>();
-
-            #endregion
-
-            #region private:
-            modelFormat = PlyFormatTypes.none;
-            currentElement = PlyElements.none;
-            elementLine_Current = 0;
-            elementLines_Count = 0;
-            elements_range = new Dictionary<string, PLYElement>();
-            #endregion
-
-        }
-        
         /// <summary>
-        /// Loads an ascii format ply file.
+        /// Reads and validates the header lines of a ply file.
         /// </summary>
-        /// <param name="s"></param>
-        private void Load_ascii(Stream s)
+        /// <param name="headerLines">The lines to read.</param>
+        /// <returns></returns>
+        private PlyHeader ReadHeader(string[] headerLines)
         {
-            
-            using (var reader = new StreamReader(s))
+            if (headerLines.Length > 2 && (PlyHeaderItems)Enum.Parse(typeof(PlyHeaderItems), headerLines[0]) == PlyHeaderItems.ply
+                && (PlyHeaderItems)Enum.Parse(typeof(PlyHeaderItems), headerLines[headerLines.Length - 1]) == PlyHeaderItems.end_header)
             {
+                var formatSpecLineParts = headerLines[1].Split(' ');
+                var formatStr = formatSpecLineParts[0];
+                var formatTypeStr = formatSpecLineParts[1];
+                var fileVersion = Version.Parse(formatSpecLineParts[2]);
+
+                if ((PlyHeaderItems)Enum.Parse(typeof(PlyHeaderItems), formatStr) == PlyHeaderItems.format
+                    && Enum.TryParse(formatTypeStr, out PlyFormatTypes formatType) && fileVersion <= SUPPORTEDVERSION)
+                {
+                    var comments = new List<string>();
+                    var objInfos = new List<Tuple<string, string>>();
+                    var elements = new List<PlyElement>();
+
+                    for (int i = 2; i < headerLines.Length - 1; i++)
+                    {
+                        var lineParts = headerLines[i].Split(' ');
+                        if (Enum.TryParse(lineParts[0], out PlyHeaderItems headerItemType))
+                        {
+                            switch (headerItemType)
+                            {
+                                case PlyHeaderItems.element:
+                                    {
+                                        if (lineParts.Length == 3)
+                                        {
+                                            var elementName = lineParts[1];
+                                            var elementCount = int.Parse(lineParts[2]);
+                                            var element = new PlyElement(elementName, elementCount, new List<PlyProperty[]> { new PlyProperty[] { } });
+                                            elements.Add(element);
+                                        }
+                                        break;
+                                    }
+                                case PlyHeaderItems.property:
+                                    {
+                                        if (lineParts.Length >= 3 && elements.Count > 0)
+                                        {
+                                            if (lineParts[1] != "list" && lineParts.Length == 3)
+                                            {
+                                                if (Enum.TryParse($"_{lineParts[1]}", out PlyDataTypes propertyType))
+                                                {
+                                                    var propertyName = lineParts[2];
+
+                                                    var property = new PlyProperty(propertyName, propertyType, null, false, PlyDataTypes._char, null);
+
+                                                    var newPropertyList = new List<PlyProperty>();
+                                                    for (int j = 0; j < elements.Last().Instances[0].Length; j++)
+                                                    {
+                                                        newPropertyList.Add(elements.Last().Instances[0][j]);
+                                                    }
+                                                    newPropertyList.Add(property);
+                                                    elements.Last().Instances[0] = newPropertyList.ToArray();
+                                                }
+                                                else
+                                                    throw new InvalidDataException($"Invalid data type, {lineParts[1]}.");
+                                            }
+                                            else if (lineParts[1] == "list" && lineParts.Length == 5)
+                                            {
+                                                //array property
+                                                if (Enum.TryParse($"_{lineParts[2]}", out PlyDataTypes propertyType) && Enum.TryParse($"_{lineParts[3]}", out PlyDataTypes listContentType))
+                                                {
+                                                    var propertyName = lineParts[4];
+
+                                                    var property = new PlyProperty(propertyName, propertyType, null, true, listContentType, null);
+
+                                                    var newPropertyList = new List<PlyProperty>();
+                                                    for (int j = 0; j < elements.Last().Instances[0].Length; j++)
+                                                    {
+                                                        newPropertyList.Add(elements.Last().Instances[0][j]);
+                                                    }
+                                                    newPropertyList.Add(property);
+                                                    elements.Last().Instances[0] = newPropertyList.ToArray();
+
+                                                }
+                                                else
+                                                    throw new InvalidDataException($"Invalid data type, {lineParts[1]}.");
+                                            }
+                                            else
+                                                throw new InvalidDataException("Invalid property definition.");
+                                        }
+                                        break;
+                                    }
+                                case PlyHeaderItems.obj_info:
+                                    {
+                                        if (lineParts.Length == 3)
+                                        {
+                                            objInfos.Add(new Tuple<string, string>(lineParts[1], lineParts[2]));
+                                        }
+                                        else
+                                        {
+                                            objInfos.Add(new Tuple<string, string>($"htk_info_{objInfos.Count}", headerLines[i].Substring(lineParts[0].Length + 1)));
+                                        }
+                                        break;
+                                    }
+                                case PlyHeaderItems.comment:
+                                    {
+                                        comments.Add(headerLines[i].Substring(lineParts[0].Length + 1));
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        throw new InvalidDataException($"Unknown header item, {lineParts[0]}.");
+                                    }
+                            }
+                        }
+                        else
+                            throw new InvalidDataException($"Unknown header item, {lineParts[0]}.");
+                    }
+
+                    var plyHeader = new PlyHeader(formatType, fileVersion, elements.ToArray(), objInfos.ToArray(), comments.ToArray());
+                    return plyHeader;
+                }
+                else
+                {
+                    throw new InvalidDataException("Invalid format specification.");
+                }
+            }
+            else
+                throw new InvalidDataException("Invalid ply file.");
+        }
+
+        /// <summary>
+        /// Converts the value of a property to the specified data type.
+        /// </summary>
+        /// <param name="plyDataType">The type to convert to.</param>
+        /// <param name="propValue">The value to convert.</param>
+        /// <returns></returns>
+        private object ConvertPropValueASCII(PlyDataTypes plyDataType, string propValue)
+        {
+            object result = null;
+            switch (plyDataType)
+            {
+                case PlyDataTypes._char:
+                    result = Convert.ToChar(propValue);
+                    break;
+                case PlyDataTypes._uint8:
+                case PlyDataTypes._uchar:
+                    result = Convert.ToByte(propValue);
+                    break;
+                case PlyDataTypes._short:
+                    result = short.Parse(propValue);
+                    break;
+                case PlyDataTypes._ushort:
+                    result = ushort.Parse(propValue);
+                    break;
+                case PlyDataTypes._int:
+                case PlyDataTypes._int32:
+                    result = int.Parse(propValue);
+                    break;
+                case PlyDataTypes._uint:
+                    result = uint.Parse(propValue);
+                    break;
+                case PlyDataTypes._float:
+                case PlyDataTypes._float32:
+                    result = float.Parse(propValue);
+                    break;
+                case PlyDataTypes._double:
+                    result = double.Parse(propValue);
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Reads the value of a property in the specified data type.
+        /// </summary>
+        /// <param name="plyDataType"></param>
+        /// <param name="reader"></param>
+        /// <param name="bigEndian"></param>
+        /// <returns></returns>
+        private object ConvertPropValueBinary(PlyDataTypes plyDataType, BinaryReader reader, bool bigEndian)
+        {
+            object result = "";
+            var reverseBytes = bigEndian && BitConverter.IsLittleEndian;
+            switch (plyDataType)
+            {
+                case PlyDataTypes._char:
+                    {
+                        result = reverseBytes ? BitConverter.ToChar(reader.ReadBytes(1).Reverse().ToArray(), 0) : reader.ReadChar();
+                        break;
+                    }
+                case PlyDataTypes._uint8:
+                case PlyDataTypes._uchar:
+                    {
+                        result = reader.ReadByte();
+                        break;
+                    }
+                case PlyDataTypes._short:
+                    {
+                        result = reverseBytes ? BitConverter.ToInt16(reader.ReadBytes(2).Reverse().ToArray(), 0) : reader.ReadInt16();
+                        break;
+                    }
+                case PlyDataTypes._ushort:
+                    {
+                        result = reverseBytes ? BitConverter.ToUInt16(reader.ReadBytes(2).Reverse().ToArray(), 0) : reader.ReadUInt16();
+                        break;
+                    }
+                case PlyDataTypes._int:
+                case PlyDataTypes._int32:
+                    {
+                        result = reverseBytes ? BitConverter.ToInt32(reader.ReadBytes(4).Reverse().ToArray(), 0) : reader.ReadInt32();
+                        break;
+                    }
+                case PlyDataTypes._uint:
+                    {
+                        result = reverseBytes ? BitConverter.ToUInt32(reader.ReadBytes(4).Reverse().ToArray(), 0) : reader.ReadUInt32();
+                        break;
+                    }
+                case PlyDataTypes._float:
+                case PlyDataTypes._float32:
+                    {
+                        result = reverseBytes ? BitConverter.ToSingle(reader.ReadBytes(4).Reverse().ToArray(), 0) : reader.ReadSingle();
+                        break;
+                    }
+                case PlyDataTypes._double:
+                    {
+                        result = reverseBytes ? BitConverter.ToDouble(reader.ReadBytes(8).Reverse().ToArray(), 0) : reader.ReadDouble();
+                        break;
+                    }
+                default:
+                    throw new InvalidOperationException("Unimplemented data conversion.");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Reads a ply file in an ascii format.
+        /// </summary>
+        /// <param name="s">The stream to read from.</param>
+        /// <param name="plyHeader">The header of the ply file.</param>
+        private List<PlyElement> ReadASCII(Stream s, PlyHeader plyHeader)
+        {
+            var plyBody = new List<PlyElement>();
+            using (var reader = new StreamReader(s, Encoding.ASCII))
+            {
+                //The index of the element being read from the header.
+                var currentElementIdx = 0;
+                //The index of the instances of the current element.
+                var currentIdx = 0;
+                var currentPlyElementProperties = new List<PlyProperty[]>();
+                var currentHeadElement = plyHeader.Elements[currentElementIdx];
+                var debLineNo = 0;
                 while (!reader.EndOfStream)
                 {
-
-                    var curline = reader.ReadLine();
-                    string[] strarr = curline.Split(' ');
-                    if (curline == null)
+                    debLineNo++;
+                    if (currentElementIdx < plyHeader.Elements.Length)
                     {
-                        //reader.Close();
-                    }
-
-                    #region Heading
-                    //comment Line
-                    else if (strarr[0] == "comment"|| strarr[0] == "format"|| strarr[0] == "ply")
-                    {
-                        
-
-                    }
-
-                    //obj_info Line
-                    else if (strarr[0] == "obj_info")
-                    {
-                        //ObjectInformation.Add(strarr[1], double.Parse(strarr[2]));
-                    }
-
-                    //element Line
-                    else if (strarr[0] == "element")
-                    {
-                        /* Supported elements
-                         * vertex
-                         * face
-                         */
-                        
-                        if (strarr[1] == "vertex")
+                        var currentLine = reader.ReadLine()?.Trim();
+                        var lineDataArr = currentLine?.Split(' ');
+                        readElementInstance:
+                        if (currentIdx < currentHeadElement.Count)
                         {
-                            VerticesNumber = int.Parse(strarr[2]);
-                            //Add the vertex element to the dictionary, including its contextual range
-                            elements_range.Add("vertex", new PLYElement(elementLines_Count+1, elementLines_Count + VerticesNumber));
-                            elementLines_Count += int.Parse(strarr[2]);
-                            //set the current element as a "vertex"element 
-                            currentElement = PlyElements.vertex;
-                        }
-
-                        else if (strarr[1] == "face")
-                        {
-                            FacesNumber = int.Parse(strarr[2]);
-
-                            elements_range.Add("face", new PLYElement(elementLines_Count+1, elementLines_Count + FacesNumber));
-                            elementLines_Count += int.Parse(strarr[2]);
-                            currentElement = PlyElements.face;
-                           
-                        }
-
-                        else
-                        {
-                            int miscElementNumber = int.Parse(strarr[2]);
-
-                            elements_range.Add(strarr[1], new PLYElement(elementLines_Count, elementLines_Count + miscElementNumber));
-                            elementLines_Count += int.Parse(strarr[2]);
-                            currentElement = PlyElements.none;
-                        }
-                    }
-
-                    //property Line
-                    else if (strarr[0] == "property")
-                    {
-                        //Ignore the numerical data type for now
-
-                        switch (currentElement)
-                        {
-                            case PlyElements.vertex:
-                                {
-                                    int propInd = elements_range["vertex"].PropertyIndex;
-                                    elements_range["vertex"].Property_with_Index.Add(strarr[2], propInd);
-                                    //Increase the property index if there's an element which has/hasn't been supported.
-                                    elements_range["vertex"].PropertyIndex += 1;
-                                    if (strarr[2] == "nx" || strarr[2] == "ny" || strarr[2] == "nz")
-                                    {
-                                        elements_range["vertex"].ContainsNormals = true;
-                                    }
-                                    else if (strarr[2] == "s"|| strarr[2] == "t")
-                                    {
-                                        elements_range["vertex"].ContainsTextureCoordinates = true;
-                                    }
-                                    
-                                    break;
-                                }
-
-                            case PlyElements.face:
-                                {
-                                    //nothing to do yet
-
-                                    break;
-                                }
-
-                            default:
-                                break;
-                        }
-                    }
-
-                    else if (strarr[0] == "end_header")
-                    {
-                        //end info, begin number collection.
-                        elementLine_Current = 0;
-                        
-                    }
-
-                    #endregion
-
-                    /* We pick the elements and its properties by checking whether the current
-                     * element line is contained in the element range.
-                     * The picking occurs if the first character in the string indicates a number follows.
-                     */
-                    else if (IsDigitChar(strarr[0][0]) == true)
-                    {
-                        elementLine_Current++;
-                        if ( elements_range.ContainsKey("vertex"))
-                        {
-                            
-                            if (elements_range["vertex"].ContainsNumber(elementLine_Current) == true)
+                            var plyHeadProperties = currentHeadElement.Instances[0];
+                            //The number of items from the current lineDataArr start position(0)
+                            //This allows an element to contain multiple lists and properties
+                            var idxOffset = 0;
+                            var plyBodyProperties = new List<PlyProperty>();
+                            for (int i = 0; i < plyHeadProperties.Length; i++)
                             {
-                                //Get vertices
-                                int x_Indx = elements_range["vertex"].Property_with_Index["x"];
-                                int y_Indx = elements_range["vertex"].Property_with_Index["y"];
-                                int z_Indx = elements_range["vertex"].Property_with_Index["z"];
-                                Point3D pt = new Point3D()
+                                var currentPlyHeadProp = plyHeadProperties[i];
+                                if (currentPlyHeadProp.IsList)
                                 {
-                                    X = double.Parse(strarr[x_Indx]),
-                                    Y = double.Parse(strarr[y_Indx]),
-                                    Z = double.Parse(strarr[z_Indx])
-                                };
-                                Vertices.Add(pt);
-
-                                if (elements_range["vertex"].ContainsNormals == true)
-                                {
-                                    int nx_Indx = elements_range["vertex"].Property_with_Index["nx"];
-                                    int ny_Indx = elements_range["vertex"].Property_with_Index["ny"];
-                                    int nz_Indx = elements_range["vertex"].Property_with_Index["nz"];
-
-                                    Vector3D vect3d = new Vector3D
+                                    var itemsNumStr = ConvertPropValueASCII(currentPlyHeadProp.Type, lineDataArr[idxOffset]);
+                                    if (int.TryParse(itemsNumStr.ToString(), out int itemsNum))
                                     {
-                                        X = double.Parse(strarr[nx_Indx]),
-                                        Y = double.Parse(strarr[ny_Indx]),
-                                        Z = double.Parse(strarr[nz_Indx])
-                                    };
-                                    Normals.Add(vect3d);
-                                }
+                                        idxOffset++;
 
-                                if (elements_range["vertex"].ContainsTextureCoordinates == true)
+                                        var listContentItems = new List<object>();
+                                        for (int j = 0; j < itemsNum; j++)
+                                        {
+                                            var listContentItem = ConvertPropValueASCII(currentPlyHeadProp.ListContentType, lineDataArr[idxOffset]);
+                                            listContentItems.Add(listContentItem);
+                                            idxOffset++;
+                                        }
+                                        var plyBodyProp = new PlyProperty(currentPlyHeadProp.Name, currentPlyHeadProp.Type,
+                                            itemsNum, currentPlyHeadProp.IsList, currentPlyHeadProp.ListContentType, listContentItems.ToArray());
+                                        plyBodyProperties.Add(plyBodyProp);
+                                    }
+                                    else
+                                        throw new InvalidDataException("Invalid list items count.");
+                                }
+                                else
                                 {
-                                    int s_Indx = elements_range["vertex"].Property_with_Index["s"];
-                                    int t_Indx = elements_range["vertex"].Property_with_Index["t"];
-
-                                    Point texpt = new Point
-                                    {
-                                        X = double.Parse(strarr[s_Indx]),
-                                        Y = double.Parse(strarr[t_Indx]),
-                                    };
-                                    TextureCoordinates.Add(texpt);
+                                    var plyBodyProp = new PlyProperty(currentPlyHeadProp.Name, currentPlyHeadProp.Type,
+                                        ConvertPropValueASCII(currentPlyHeadProp.Type, lineDataArr[idxOffset]), currentPlyHeadProp.IsList, currentPlyHeadProp.ListContentType, null);
+                                    plyBodyProperties.Add(plyBodyProp);
+                                    idxOffset++;
                                 }
-
                             }
 
+                            currentPlyElementProperties.Add(plyBodyProperties.ToArray());
+                            currentIdx++;
                         }
-
-                        if (elements_range.ContainsKey("face"))
+                        else if (currentIdx == currentHeadElement.Count)
                         {
-                            
-                            if (elements_range["face"].ContainsNumber(elementLine_Current) == true)
-                            {
-                                
-                                List<int> facepos = new List<int>();
-                                for (int i = 1; i <= int.Parse(strarr[0]); i++)
-                                {
-                                    facepos.Add(int.Parse(strarr[i]));
-                                }
-                                Faces.Add(facepos.ToArray());
-                            }
-                            
-                        }
+                            var plyBodyElement = new PlyElement(currentHeadElement.Name, currentHeadElement.Count, currentPlyElementProperties);
+                            plyBody.Add(plyBodyElement);
 
+                            currentElementIdx++;
+                            currentIdx = 0;
+                            currentPlyElementProperties = new List<PlyProperty[]>();
+                            currentHeadElement = plyHeader.Elements[currentElementIdx];
+                            goto readElementInstance;
+                        }
                         else
                         {
-                            continue;
+                            throw new InvalidOperationException("Index was pushed too far out.");
                         }
-                        //should increase the elementLine_Current iff 
-                        //the line contains element data.
                     }
+                    else if (currentElementIdx == plyHeader.Elements.Length)
+                    {
 
-                    else { continue; }
-
-                    
+                    }
                 }
 
-                
+                var lastPlyBodyElement = new PlyElement(currentHeadElement.Name, currentHeadElement.Count, currentPlyElementProperties);
+                plyBody.Add(lastPlyBodyElement);
             }
-
+            return plyBody;
         }
 
         /// <summary>
-        /// Loads a binary_big_endian format ply file.
+        /// Reads a ply file in a binary big endian format or in a binary little endian format.
         /// </summary>
-        /// <param name="s"></param>
-        private void Load_binaryBE(Stream s)
+        /// <param name="s">The stream to read from.</param>
+        /// <param name="plyHeader">The header of the ply file.</param>
+        /// <param name="bigEndian">Specifies whether the byte order is big endian or little endian.</param>
+        /// <returns>
+        /// The list of Ply elements declared in the header.
+        /// </returns>
+        private List<PlyElement> ReadBinary(Stream s, PlyHeader plyHeader, bool bigEndian)
         {
-            using (var reader = new BinaryReader(s))
+            var plyBody = new List<PlyElement>();
+            var streamEncoding = bigEndian ? Encoding.BigEndianUnicode : Encoding.Unicode;
+            using (var reader = new BinaryReader(s, streamEncoding))
             {
-                while (reader.ReadString() != null)
+                for (int i = 0; i < plyHeader.Elements.Length; i++)
                 {
-                    var curline = reader.ReadString();
-                    string[] strarr = curline.Split(' ');
-                    //comment Line
-                    if (strarr[0] == "comment")
+                    var currentHeadElement = plyHeader.Elements[i];
+                    var currentElementInstanceProperties = new List<PlyProperty[]>();
+
+                    for (int j = 0; j < currentHeadElement.Count; j++)
                     {
-                        continue;
-                    }
+                        var currentInstanceProperties = new List<PlyProperty>();
 
-                    //obj_info Line
-                    if (strarr[0] == "obj_info")
-                    {
-                        ObjectInformation.Add(strarr[1], double.Parse(strarr[2]));
-                    }
-
-                    //element Line
-                    if (strarr[0] == "element")
-                    {
-                        /* Supported elements
-                         * vertex
-                         * face
-                         */
-
-                        if (strarr[1] == "vertex")
+                        for (int k = 0; k < currentHeadElement.Instances[0].Length; k++)
                         {
-                            VerticesNumber = int.Parse(strarr[2]);
-                            
-                            //Add the vertex element to the dictionary, including its contextual range
-                            elements_range.Add("vertex", new PLYElement(_y1: elementLines_Count, _y2: elementLines_Count + VerticesNumber));
-                            elementLines_Count += int.Parse(strarr[2]);
-                            currentElement = PlyElements.vertex;
-                        }
-
-                        else if (strarr[1] == "face")
-                        {
-                            FacesNumber = int.Parse(strarr[2]);
-                            
-                            elements_range.Add("face", new PLYElement(elementLines_Count, elementLines_Count + FacesNumber));
-                            elementLines_Count += int.Parse(strarr[2]);
-                            currentElement = PlyElements.face;
-                        }
-                        else
-                        {
-                            int miscElementNumber = int.Parse(strarr[2]);
-                            
-                            elements_range.Add(strarr[1], new PLYElement(elementLines_Count, elementLines_Count+miscElementNumber));
-                            elementLines_Count += int.Parse(strarr[2]);
-
-                        }
-                    }
-
-                    //property Line
-                    if (strarr[0] == "property")
-                    {
-                        //Ignore the numerical data type for now
-
-                        switch (currentElement)
-                        {
-                            case PlyElements.vertex:
-                                {
-                                    if (strarr[2] == "nx" || strarr[2] == "ny" || strarr[2] == "nz")
-                                    {
-                                        elements_range["vertex"].ContainsNormals = true;
-                                    }
-
-                                    int propInd = elements_range["vertex"].PropertyIndex;
-                                    elements_range["vertex"].Property_with_Index.Add(strarr[2], propInd);
-                                    //Increase the property index if there's an element which has/hasn't been supported.
-                                    elements_range["vertex"].PropertyIndex += 1;
-                                    break;
-                                }
-
-                            case PlyElements.face:
-                                {
-                                    //nothing to do yet
-
-                                    break;
-                                }
-
-                            default:
-                                break;
-                        }
-                    }
-
-                    if (strarr[0] == "end_header")
-                    {
-                        //end info, begin number collection.
-                        elementLine_Current = 0;
-
-                    }
-
-                    /* We pick the elements and its properties by checking whether the current
-                     * element line is contained in the element range.
-                     */
-                    if (elements_range["vertex"].ContainsNumber(elementLine_Current))
-                    {
-                        //Get vertices
-                        int x_Indx = elements_range["vertex"].Property_with_Index["x"];
-                        int y_Indx = elements_range["vertex"].Property_with_Index["y"];
-                        int z_Indx = elements_range["vertex"].Property_with_Index["z"];
-                        Point3D pt = new Point3D()
-                        {
-                            X = double.Parse(strarr[x_Indx]),
-                            Y = double.Parse(strarr[y_Indx]),
-                            Z = double.Parse(strarr[z_Indx])
-                        };
-                        Vertices.Add(pt);
-
-                        if (elements_range["vertex"].ContainsNormals == true)
-                        {
-                            int nx_Indx = elements_range["vertex"].Property_with_Index["nx"];
-                            int ny_Indx = elements_range["vertex"].Property_with_Index["ny"];
-                            int nz_Indx = elements_range["vertex"].Property_with_Index["nz"];
-
-                            Vector3D vect3 = new Vector3D
+                            var currentHeadProp = currentHeadElement.Instances[0][k];
+                            if (currentHeadProp.IsList)
                             {
-                                X = double.Parse(strarr[nx_Indx]),
-                                Y = double.Parse(strarr[ny_Indx]),
-                                Z = double.Parse(strarr[nz_Indx])
-                            };
+                                var itemsNumStr = ConvertPropValueBinary(currentHeadProp.Type, reader, bigEndian);
+                                if (int.TryParse(itemsNumStr.ToString(), out int itemsNum))
+                                {
+                                    var listContentItems = new List<object>();
+                                    for (int l = 0; l < itemsNum; l++)
+                                    {
+                                        var listContentItem = ConvertPropValueBinary(currentHeadProp.ListContentType, reader, bigEndian);
+                                        listContentItems.Add(listContentItem);
+                                    }
+                                    var plyProp = new PlyProperty(currentHeadProp.Name, currentHeadProp.Type,
+                                        itemsNum, currentHeadProp.IsList, currentHeadProp.ListContentType, listContentItems.ToArray());
+                                    currentInstanceProperties.Add(plyProp);
+                                }
+                                else
+                                    throw new InvalidDataException("Invalid list items count.");
+                            }
+                            else
+                            {
+                                var newProperty = new PlyProperty(currentHeadProp.Name, currentHeadProp.Type,
+                                    ConvertPropValueBinary(currentHeadProp.Type, reader, bigEndian), currentHeadProp.IsList, currentHeadProp.ListContentType, currentHeadProp.ListContentValues);
+                                currentInstanceProperties.Add(newProperty);
+                            }
                         }
 
-                        if (elements_range["vertex"].ContainsTextureCoordinates == true)
-                        {
-
-                        }
+                        currentElementInstanceProperties.Add(currentInstanceProperties.ToArray());
                     }
-                    if (elements_range["face"].ContainsNumber(elementLine_Current))
-                    {
-                        List<int> facepos = new List<int>();
-                        for (int i = 1; i <= int.Parse(strarr[0]); i++)
-                        {
-                            facepos.Add(int.Parse(strarr[i]));
-                        }
-                        Faces.Add(facepos.ToArray());
-                    }
 
-
-                    elementLine_Current++;
+                    var plyElement = new PlyElement(currentHeadElement.Name, currentHeadElement.Count, currentElementInstanceProperties);
+                    plyBody.Add(plyElement);
                 }
             }
-            BinaryReader br = new BinaryReader(s);
-            br.ReadString();
 
+
+            return plyBody;
+        }
+
+        /// <summary>
+        /// Writes the ply header and body to a ply file in an ASCII format.
+        /// </summary>
+        /// <param name="dumpPath"></param>
+        /// <param name="plyHeader"></param>
+        /// <param name="plyBody"></param>
+        private void DumpAsASCII(string dumpPath, PlyHeader plyHeader, List<PlyElement> plyBody)
+        {
+            using (var fs = new FileStream(dumpPath, FileMode.Create, FileAccess.Write))
+            {
+                using (var sw = new StreamWriter(fs))
+                {
+                    #region Header
+                    sw.WriteLine("ply");
+                    sw.WriteLine("format ascii 1.0");
+                    foreach (var comment in plyHeader.Comments)
+                    {
+                        sw.WriteLine($"comment {comment}");
+                    }
+
+                    foreach (var objInfo in plyHeader.ObjectInfos)
+                    {
+                        sw.WriteLine($"obj_info {objInfo.Item1} {objInfo.Item2}");
+                    }
+
+                    foreach (var element in plyHeader.Elements)
+                    {
+                        sw.WriteLine($"element {element.Name} {element.Count}");
+                        foreach (var propertyTemplate in element.Instances[0])
+                        {
+                            if (propertyTemplate.IsList)
+                            {
+                                sw.WriteLine($"property list {propertyTemplate.Type.ToString().Substring(1)} {propertyTemplate.ListContentType.ToString().Substring(1)} {propertyTemplate.Name}");
+                            }
+                            else
+                            {
+                                sw.WriteLine($"property {propertyTemplate.Type.ToString().Substring(1)} {propertyTemplate.Name}");
+                            }
+                        }
+                    }
+                    sw.WriteLine("end_header");
+                    #endregion
+
+                    #region Body
+                    foreach (var element in plyBody)
+                    {
+                        foreach (var instances in element.Instances)
+                        {
+                            var instanceBuilder = new StringBuilder();
+                            foreach (var property in instances)
+                            {
+                                if (property.IsList)
+                                {
+                                    instanceBuilder.Append($" {property.ListContentValues.Length}");
+                                    for (int i = 0; i < property.ListContentValues.Length; i++)
+                                    {
+                                        instanceBuilder.Append($" {property.ListContentValues[i]}");
+                                    }
+                                }
+                                else
+                                {
+                                    instanceBuilder.Append($" {property.Value?.ToString()}");
+                                }
+                            }
+                            sw.WriteLine(instanceBuilder.ToString().Trim());
+                        }
+                    }
+                    #endregion
+
+                }
+            }
         }
 
         #endregion
 
-
-
     }
 }
- 
