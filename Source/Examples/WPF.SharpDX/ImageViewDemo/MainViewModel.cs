@@ -33,7 +33,7 @@ namespace ImageViewDemo
         private Color gridColor;
         private Media3D.Transform3D planeTransform;
         private Media3D.Transform3D gridTransform;
-        private Vector3 directionalLightDirection;
+        private Vector3D directionalLightDirection;
         private Color4 directionalLightColor;
         private Color4 ambientLightColor;
 
@@ -91,7 +91,7 @@ namespace ImageViewDemo
             }
         }
 
-        public Vector3 DirectionalLightDirection
+        public Vector3D DirectionalLightDirection
         {
             get { return this.directionalLightDirection; }
             set
@@ -139,7 +139,7 @@ namespace ImageViewDemo
             // setup lighting            
             this.AmbientLightColor = new Color4(0f, 0f, 0f, 0f);
             this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection = new Vector3(-0, -0, -10);
+            this.DirectionalLightDirection = new Vector3D(-0, -0, -10);
 
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid(Vector3.UnitZ, -5, 5, -5, 5);
