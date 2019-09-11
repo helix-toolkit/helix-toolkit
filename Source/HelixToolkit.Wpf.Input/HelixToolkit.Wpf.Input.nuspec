@@ -14,7 +14,6 @@
     <dependencies>
       <group>
         <dependency id="HelixToolkit.Wpf" version="[$version$]" />
-        <dependency id="TDx.TDxInput" version="1.1" />
       </group>
       <group targetFramework="net45">
       </group>
