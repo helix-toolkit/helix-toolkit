@@ -14,9 +14,13 @@ using SharpDX.Direct3D11;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
 {
+    using SharpDX.Utilities;
+
     class CanvasMock : IRenderCanvas
     {
         public IRenderHost RenderHost { private set; get; } = new DefaultRenderHost();
+
+        public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
 
         public CanvasMock()
         {
