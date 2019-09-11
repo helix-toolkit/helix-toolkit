@@ -317,11 +317,17 @@
     <FxCompile Include="VS\vsSSAO.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
-    <FxCompile Include="VS\vsMeshBatchedSSAO.hlsl" />
     <FxCompile Include="PS\psEffectOutlineSmooth.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
-    <FxCompile Include="GS\gsLineArrowHead.hlsl" />
-    <FxCompile Include="GS\gsLineArrowHeadTail.hlsl" />
+    <FxCompile Include="GS\gsLineArrowHead.hlsl">
+      <Filter>GS</Filter>
+    </FxCompile>
+    <FxCompile Include="GS\gsLineArrowHeadTail.hlsl">
+      <Filter>GS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsMeshBatchedSSAO.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
