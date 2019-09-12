@@ -12,10 +12,8 @@
     <description>Provides SpaceNavigator decorator for custom controls and extensions for WPF 3D.</description>
     <tags>wpf wpf3d 3D input SpaceNavigator</tags>
     <dependencies>
-      <group>
-        <dependency id="HelixToolkit.Wpf" version="[$version$]" />
-      </group>
       <group targetFramework="net45">
+        <dependency id="HelixToolkit.Wpf" version="[$version$]" />
       </group>
     </dependencies>
   </metadata>
