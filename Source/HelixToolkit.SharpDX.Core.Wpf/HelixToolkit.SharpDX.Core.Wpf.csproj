@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
+      <UseWindowsForms>true</UseWindowsForms>
       <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
       <PackageLicenseUrl></PackageLicenseUrl>
       <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
