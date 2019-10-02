@@ -46,9 +46,10 @@ void mainArrowHeadTail(line GSInputPS input[2], inout TriangleStream<PSInputPS> 
     output.tex = float3(0, 0, 0);
     float4 cone[10];
     makeCone(cone, input[1].wp, input[0].wp, pfParams.z);
+    int i = 0;
     // Make head
     [unroll]
-    for (int i = 0; i < 10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         output.p = mul(cone[i], mViewProjection);
         outStream.Append(output);
@@ -61,7 +62,7 @@ void mainArrowHeadTail(line GSInputPS input[2], inout TriangleStream<PSInputPS> 
     makeCone(cone, input[0].wp, input[1].wp, pfParams.z);
 
     [unroll]
-    for (int i = 0; i < 10; ++i)
+    for (i = 0; i < 10; ++i)
     {
         output.p = mul(cone[i], mViewProjection);
         outStream.Append(output);

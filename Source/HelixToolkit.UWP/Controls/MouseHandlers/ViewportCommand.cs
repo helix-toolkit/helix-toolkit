@@ -73,12 +73,9 @@ namespace HelixToolkit.UWP
     }
 
     /// <summary>
-    /// A <see cref="MarkupExtension"/> to provide a <see cref="ViewportCommand"/> in XAML like this:
-    /// <code><hx:ManipulationBinding Command="{hx:ViewportCommand Rotate}" Gesture="Pan" /></code>
+    /// 
     /// </summary>
-    /// <remarks>
-    /// Requires Min Target Platform Version "Windows 10 Fall Creators Update (introduced v10.0.16299.0)".
-    /// </remarks>
+    /// <seealso cref="Windows.UI.Xaml.Markup.MarkupExtension" />
     public class ViewportCommandExtension : MarkupExtension
     {
         private readonly ViewportCommand value;
