@@ -12,24 +12,22 @@
     <description>Provides custom controls for WPF and a scene graph based on SharpDX.</description>
     <tags>wpf SharpDX DirectX 3D</tags>
     <dependencies>
-	  <group>
-		<dependency id="SharpDX" version="4.2.0" />
-		<dependency id="SharpDX.D3DCompiler" version="4.2.0" />
-		<dependency id="SharpDX.Direct2D1" version="4.2.0" />
-		<dependency id="SharpDX.Direct3D11" version="4.2.0" />
-		<dependency id="SharpDX.Direct3D9" version="4.2.0" />
-		<dependency id="SharpDX.DXGI" version="4.2.0" />
-		<dependency id="SharpDX.Mathematics" version="4.2.0" />	  
-		<dependency id="HelixToolkit" version="[$version$]" />	
-	  </group>
-	  <group targetFramework="net45">
-		<dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />	  
+	    <group targetFramework="net45">
+		    <dependency id="HelixToolkit" version="[$version$]" />	
+		    <dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />	  
+		    <dependency id="SharpDX" version="4.2.0" />
+		    <dependency id="SharpDX.D3DCompiler" version="4.2.0" />
+		    <dependency id="SharpDX.Direct2D1" version="4.2.0" />
+		    <dependency id="SharpDX.Direct3D11" version="4.2.0" />
+		    <dependency id="SharpDX.Direct3D9" version="4.2.0" />
+		    <dependency id="SharpDX.DXGI" version="4.2.0" />
+		    <dependency id="SharpDX.Mathematics" version="4.2.0" />	  
       </group>	
     </dependencies>
   </metadata>
   <files>
     <file src="HelixToolkit.Wpf.SharpDX\bin\Release\HelixToolkit.Wpf.SharpDX.???" target="lib\net45" />
-	<file src="..\LICENSE" />
+    <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
     <file src="..\README.md" />

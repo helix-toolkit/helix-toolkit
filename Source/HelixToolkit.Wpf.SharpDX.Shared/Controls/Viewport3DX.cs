@@ -624,6 +624,11 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref renderHostInternal);
             hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 
+            if (this.hostPresenter?.Content is IRenderCanvas renderCanvas)
+            {
+                renderCanvas.ExceptionOccurred -= this.HandleRenderException;
+            }
+
             if (EnableSwapChainRendering)
             {
                 double dpiXScale = 1;
@@ -647,7 +652,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
             }
 
-            renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
+            renderCanvas = (IRenderCanvas)this.hostPresenter.Content;
+            this.renderHostInternal = renderCanvas.RenderHost;
+            renderCanvas.ExceptionOccurred += this.HandleRenderException;
             if (this.renderHostInternal != null)
             {
                 this.renderHostInternal.Rendered += this.RaiseRenderHostRendered;
