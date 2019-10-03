@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>HelixToolkit.SharpDX.Core.Wpf</id>
+    <version>$version$</version>
+    <title>HelixToolkit for .net core WPF(based on SharpDX)</title>
+    <authors>objo, Lunci</authors>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides custom 3D controls for netcore WPF based on SharpDX.</description>
+    <tags>netcore Wpf SharpDX 3D</tags>
+    <dependencies>
+	   <group targetFramework="netcoreapp3.0">
+		<dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />
+		<dependency id="HelixToolkit" version="[$version$]" />
+		<dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
+		<dependency id="SharpDX" version="4.2.0" />
+		<dependency id="SharpDX.D3DCompiler" version="4.2.0" />
+		<dependency id="SharpDX.Direct2D1" version="4.2.0" />
+		<dependency id="SharpDX.Direct3D9" version="4.2.0" />
+		<dependency id="SharpDX.Direct3D11" version="4.2.0" />
+		<dependency id="SharpDX.DXGI" version="4.2.0" />
+		<dependency id="SharpDX.Mathematics" version="4.2.0" />	 
+		<dependency id="System.ComponentModel.TypeConverter" version="4.3.0"/>
+		<dependency id="System.Drawing.Primitives" version="4.3.0"/>		
+		<dependency id="System.Private.DataContractSerialization" version="4.3.0"/>
+		<dependency id="System.Reflection.TypeExtensions" version="4.3.0"/>
+		<dependency id="System.Runtime.Serialization.Primitives" version="4.3.0"/>
+		<dependency id="System.Runtime.Serialization.Xml" version="4.3.0"/>
+		<dependency id="System.Threading.Tasks.Parallel" version="4.3.0"/>		
+	   </group>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="bin\Release\netcoreapp3.0\HelixToolkit.SharpDX.Core.Wpf.???" target="lib\netcoreapp3.0" />
+	<file src="bin\Release\netcoreapp3.0\HelixToolkit.SharpDX.Core.Wpf.deps.json" target="lib\netcoreapp3.0" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+  </files>
+</package>
