@@ -43,9 +43,9 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 ## Project Build
 
-**Visual Studio 2017. Windows 10 SDK (Min Ver.10.0.10586.0).**
+**Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.17763).**
 
-**Missing `.cso` error during the build?** Windows 10 SDK **Ver.10.0.10586.0** can be selected and installed using Visual Studio 2017 installer. If you already installed the higher SDK version, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the version installed on your machine.
+**Missing `.cso` error during the build?** Windows 10 SDK **Ver.10.0.17763** can be selected and installed using Visual Studio 2019 installer. If you already installed the higher SDK version, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the version installed on your machine.
 
 ## Notes
 
@@ -60,6 +60,11 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
 ## News
+#### DotNet Core 3.0 WPF support (2019-10-03)
+Two new packages are available in pre-release myget feed.
+- **HelixToolkit.Core.Wpf**
+- **HelixToolkit.SharpDX.Core.Wpf**
+
 #### 2019-08-24
 [v2.9.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.9.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.9.0)
