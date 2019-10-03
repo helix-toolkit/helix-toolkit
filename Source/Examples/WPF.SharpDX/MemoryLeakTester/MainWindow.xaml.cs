@@ -32,7 +32,7 @@ namespace MemoryLeakTester
         public MainWindow()
         {
             InitializeComponent();
-            ProjectWinPairs.Add(new Tuple<string, Type>("CustomShaderDemo", typeof(CustomShaderDemo.MainWindow)));
+            //ProjectWinPairs.Add(new Tuple<string, Type>("CustomShaderDemo", typeof(CustomShaderDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("BoneSkinDemo", typeof(BoneSkinDemo.MainWindow)));
            // ProjectWinPairs.Add(new Tuple<string, Type>("DeferredShadingDemo", typeof(DeferredShadingDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("DynamicTextureDemo", typeof(DynamicTextureDemo.MainWindow)));

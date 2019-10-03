@@ -120,10 +120,6 @@
       <Project>{7b612920-493c-448b-b21b-d5a453045aad}</Project>
       <Name>CrossSectionDemo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CustomShaderDemo\CustomShaderDemo.csproj">
-      <Project>{829730d4-b471-4d12-b8b8-4900761e0722}</Project>
-      <Name>CustomShaderDemo</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DemoCore\DemoCore.csproj">
       <Project>{b475c12b-80f9-4bc0-88e5-815c88593bee}</Project>
       <Name>DemoCore</Name>
