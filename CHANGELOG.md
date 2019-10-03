@@ -1,6 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Next Version]
+### Added
+1. Added HelixToolkit.Core.Wpf nuget package to support .net core 3.0 WPF.
+2. Added HelixToolkit.SharpDX.Core.Wpf nuget package to support .net core 3.0 WPF.
+
+### Improvement and Changes
+1. Upgrade to use Visual Studio 2019 (Required by .net core 3.0).
+2. Upgrade minimum Windows SDK version to 10.0.17763 on shader builder project. (Required by Visual Studio 2019).
+
+### Fixed
+1. Fixed single point hit test in SharpDX version #1225. (WPF.SharpDX/UWP/Core)
+2. Fixed nuget dependencies not getting installed. (WPF.SharpDX/UWP/Core)
+
 ## [2.9.0] - 2019-08-24
 ### Added
 1. Assimp Metadata #1195 (WPF.SharpDX/UWP/Core)
