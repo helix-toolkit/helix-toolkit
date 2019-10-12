@@ -800,6 +800,52 @@ namespace HelixToolkit.UWP
             }
         }
 
+
+        // Using a DependencyProperty as the backing store for AllowUpDownRotation.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AllowUpDownRotationProperty =
+            DependencyProperty.Register("AllowUpDownRotation", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                float allowX = viewport.cameraController.AllowRotateXY.X;
+                float allowY = (bool)e.NewValue ? 1 : 0;
+                viewport.CameraController.AllowRotateXY = new global::SharpDX.Vector2(allowX, allowY);
+            }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether globally [allow up down rotation].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [allow up down rotation]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AllowUpDownRotation
+        {
+            get { return (bool)GetValue(AllowUpDownRotationProperty); }
+            set { SetValue(AllowUpDownRotationProperty, value); }
+        }
+
+
+        // Using a DependencyProperty as the backing store for AllowLeftRightRotation.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AllowLeftRightRotationProperty =
+            DependencyProperty.Register("AllowLeftRightRotation", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                float allowX = (bool)e.NewValue ? 1 : 0;
+                float allowY = viewport.cameraController.AllowRotateXY.Y;
+                viewport.CameraController.AllowRotateXY = new global::SharpDX.Vector2(allowX, allowY);
+            }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether globally [allow left right rotation].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [allow left right rotation]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AllowLeftRightRotation
+        {
+            get { return (bool)GetValue(AllowLeftRightRotationProperty); }
+            set { SetValue(AllowLeftRightRotationProperty, value); }
+        }
+
         /// <summary>
         /// The zoom sensitivity property
         /// </summary>

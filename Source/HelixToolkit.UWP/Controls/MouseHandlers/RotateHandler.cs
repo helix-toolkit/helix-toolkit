@@ -139,6 +139,8 @@ namespace HelixToolkit.UWP
                 Controller.StopZooming();
                 Controller.StopPanning();
             }
+            p0 = Vector2.Multiply(p0, Controller.AllowRotateXY);
+            p1 = Vector2.Multiply(p1, Controller.AllowRotateXY);
             var newPos = Camera.CameraInternal.Position;
             var newLook = Camera.CameraInternal.LookDirection;
             var newUp = Vector3D.Normalize(Camera.CameraInternal.UpDirection);

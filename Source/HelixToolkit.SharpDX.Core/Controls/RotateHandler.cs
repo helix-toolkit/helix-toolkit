@@ -107,6 +107,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 Controller.StopZooming();
                 Controller.StopPanning();
             }
+            p0 = Vector2.Multiply(p0, Controller.AllowRotateXY);
+            p1 = Vector2.Multiply(p1, Controller.AllowRotateXY);
             var newPos = Camera.Position;
             var newLook = Camera.LookDirection;
             var newUp = Vector3.Normalize(Camera.UpDirection);

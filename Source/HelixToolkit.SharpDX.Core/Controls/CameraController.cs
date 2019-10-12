@@ -443,6 +443,19 @@ namespace HelixToolkit.SharpDX.Core.Controls
         }
 
         /// <summary>
+        /// Gets or sets to allow rotate x direction and y direction globally. X, Y is screen space.
+        /// <para>X = 1: Allow left/right rotation. Y = 1: Allow up/down rotation</para>
+        /// <para>Default is (1, 1)</para>
+        /// </summary>
+        /// <value>
+        /// The allow rotate xy.
+        /// </value>
+        public Vector2 AllowRotateXY
+        {
+            set; get;
+        } = Vector2.One;
+
+        /// <summary>
         /// Gets or sets Viewport.
         /// </summary>
         public ViewportCore Viewport
