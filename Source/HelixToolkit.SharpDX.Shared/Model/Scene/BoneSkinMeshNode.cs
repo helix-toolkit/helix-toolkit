@@ -87,12 +87,12 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
             {
-                return true;
+                return BoneMatrices == null ? base.TestViewFrustum(ref viewFrustum) : true;
             }
 
             protected override bool PreHitTestOnBounds(ref Ray ray)
             {
-                return true;
+                return BoneMatrices == null ? base.PreHitTestOnBounds(ref ray) : true;
             }
             /// <summary>
             /// Creates the skeleton node.

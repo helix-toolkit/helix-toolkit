@@ -176,6 +176,7 @@ namespace HelixToolkit.UWP
             var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInvert)));
 
             int index = 0;
+            float minDistance = float.MaxValue;
             foreach (var t in skinnedTriangles(skinnedVertices))
             {
                 var v0 = t.P0;
@@ -183,11 +184,11 @@ namespace HelixToolkit.UWP
                 var v2 = t.P2;
                 if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out float d))
                 {
-                    if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+                    if (d >= 0 && d < minDistance) // If d is NaN, the condition is false.
                     {
+                        minDistance = d;
                         result.IsValid = true;
                         result.ModelHit = originalSource;
-                        // transform hit-info to world space now:
                         var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
                         result.PointHit = pointWorld;
                         result.Distance = (rayWS.Position - pointWorld).Length();
