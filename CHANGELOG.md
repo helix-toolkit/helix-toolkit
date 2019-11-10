@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Added HelixToolkit.Core.Wpf nuget package to support .net core 3.0 WPF.
 2. Added HelixToolkit.SharpDX.Core.Wpf nuget package to support .net core 3.0 WPF.
+3. Supports hit test on bone skinned mesh. (WPF.SharpDX/UWP/Core) (`Note: Implementation copies skinned vertices from GPU, it does not do bounding box check and may introduce potential performance hit. Please use cautiously.`)
 
 ### Improvement and Changes
 1. Upgrade to use Visual Studio 2019 (Required by .net core 3.0).
