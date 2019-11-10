@@ -191,6 +191,7 @@ namespace HelixToolkit.UWP
                 if (rayModel.Intersects(ref b))
                 {
                     int index = 0;
+                    float minDistance = float.MaxValue;
                     foreach (var t in Triangles)
                     {
                         var v0 = t.P0;
@@ -198,8 +199,9 @@ namespace HelixToolkit.UWP
                         var v2 = t.P2;
                         if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out float d))
                         {
-                            if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
+                            if (d >= 0 && d < minDistance) // If d is NaN, the condition is false.
                             {
+                                minDistance = d;
                                 result.IsValid = true;
                                 result.ModelHit = originalSource;
                                 // transform hit-info to world space now:

@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP
     namespace Core
     {
         using Render;
+        using System.Runtime.InteropServices;
         using Utilities;
         /// <summary>
         /// 
@@ -94,9 +95,12 @@ namespace HelixToolkit.UWP
 
             public Guid GUID { get; } = new Guid();
             private bool vertexBufferUpdate = true;
+            private bool stagingBufferValid = false;
             private readonly IBoneSkinMeshBufferModel MeshBuffer;
             private IElementsBufferProxy skinnedVertexBuffer;
             private IElementsBufferProxy originalVertexBuffer;
+            private IElementsBufferProxy skinnedVertexStagingBuffer;
+
             private VertexBufferBinding[] skinnedOutputBindings = new VertexBufferBinding[0];
             private VertexBufferBinding[] VertexBufferBindings = new VertexBufferBinding[0];
 
@@ -110,7 +114,12 @@ namespace HelixToolkit.UWP
                 MeshBuffer = Collect(meshBuffer);
                 MeshBuffer.VertexBufferUpdated += MeshBuffer_OnVertexBufferUpdated;
                 MeshBuffer.BoneIdBufferUpdated += MeshBuffer_OnBoneIdBufferUpdated;
-                skinnedVertexBuffer = Collect(new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer | BindFlags.StreamOutput, ResourceOptionFlags.None, ResourceUsage.Default));
+                skinnedVertexBuffer = Collect(new ImmutableBufferProxy(structSize,
+                    BindFlags.VertexBuffer | BindFlags.StreamOutput,
+                    ResourceOptionFlags.None, ResourceUsage.Default));
+                skinnedVertexStagingBuffer = Collect(new ImmutableBufferProxy(structSize,
+                    BindFlags.None, CpuAccessFlags.Read, ResourceOptionFlags.BufferStructured,
+                    ResourceUsage.Staging));
             }
 
             private void MeshBuffer_OnBoneIdBufferUpdated(object sender, EventArgs e)
@@ -128,6 +137,7 @@ namespace HelixToolkit.UWP
             private void MeshBuffer_OnVertexBufferUpdated(object sender, EventArgs e)
             {
                 vertexBufferUpdate = true;
+                stagingBufferValid = false;
             }
 
             /// <summary>
@@ -140,6 +150,7 @@ namespace HelixToolkit.UWP
                 context.SetVertexBuffers(0, skinnedOutputBindings);
                 context.SetIndexBuffer(null, Format.Unknown, 0);
                 context.SetStreamOutputTarget(skinnedVertexBuffer.Buffer, skinnedVertexBuffer.Offset);
+                stagingBufferValid = false;
             }
 
             /// <summary>
@@ -207,8 +218,10 @@ namespace HelixToolkit.UWP
                                 originalVertexBuffer = VertexBuffer[0];
                                 if (skinnedVertexBuffer.Buffer == null || skinnedVertexBuffer.ElementCount != originalVertexBuffer.ElementCount)
                                 {
-                                    skinnedVertexBuffer.UploadDataToBuffer(context, new float[originalVertexBuffer.ElementCount * originalVertexBuffer.StructureSize], originalVertexBuffer.ElementCount);
+                                    var array = new float[originalVertexBuffer.ElementCount * originalVertexBuffer.StructureSize];
+                                    skinnedVertexBuffer.UploadDataToBuffer(context, array, originalVertexBuffer.ElementCount);
                                     context.CopyResource(originalVertexBuffer.Buffer, skinnedVertexBuffer.Buffer);
+                                    skinnedVertexStagingBuffer.UploadDataToBuffer(context, array, originalVertexBuffer.ElementCount);
                                 }
                                 VertexBuffer[0] = skinnedVertexBuffer;
                                 VertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
@@ -225,6 +238,7 @@ namespace HelixToolkit.UWP
                             }
                             vertexBufferUpdate = false;
                             updated = true;
+                            stagingBufferValid = false;
                         }
                     }
                 }
@@ -237,6 +251,40 @@ namespace HelixToolkit.UWP
                 {
                     context.CopyResource(originalVertexBuffer.Buffer, skinnedVertexBuffer.Buffer);
                 }
+            }
+            /// <summary>
+            /// Copies the skinned to array.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="array">The array.</param>
+            /// <returns>Number of vertex has been copied.</returns>
+            public int CopySkinnedToArray(DeviceContextProxy context, global::SharpDX.Vector3[] array)
+            {
+                if(skinnedVertexBuffer.Buffer != null && skinnedVertexStagingBuffer.Buffer != null)
+                {
+                    var size = Math.Min(array.Length, skinnedVertexStagingBuffer.ElementCount);
+                    if (!stagingBufferValid)
+                    {
+                        context.CopyResource(skinnedVertexBuffer.Buffer, skinnedVertexStagingBuffer.Buffer);
+                        stagingBufferValid = true;
+                    }
+                    var box = context.MapSubresource(skinnedVertexStagingBuffer.Buffer, MapMode.Read, 
+                        global::SharpDX.Direct3D11.MapFlags.None, out var stream);
+                    using (stream)
+                    {
+                        unsafe
+                        {                           
+                            byte* p = (byte*)box.DataPointer;
+                            for(var i = 0; i < size; ++i)
+                            {
+                                array[i] = *(global::SharpDX.Vector3*)p;
+                                p += skinnedVertexStagingBuffer.StructureSize;
+                            }
+                        }
+                        return size;
+                    }
+                }
+                return 0;
             }
 
             protected override void OnDispose(bool disposeManagedResources)

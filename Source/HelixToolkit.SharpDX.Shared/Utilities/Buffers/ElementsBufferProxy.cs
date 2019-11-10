@@ -73,6 +73,8 @@ namespace HelixToolkit.UWP
             /// </summary>
             public ResourceOptionFlags OptionFlags { private set; get; }
             public ResourceUsage Usage { private set; get; } = ResourceUsage.Immutable;
+
+            public CpuAccessFlags CpuAccess { private set; get; } = CpuAccessFlags.None;
             /// <summary>
             ///
             /// </summary>
@@ -85,6 +87,25 @@ namespace HelixToolkit.UWP
             {
                 OptionFlags = optionFlags;
                 Usage = usage;
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ImmutableBufferProxy"/> class.
+            /// </summary>
+            /// <param name="structureSize">Size of the structure.</param>
+            /// <param name="bindFlags">The bind flags.</param>
+            /// <param name="cpuAccess">The cpu access.</param>
+            /// <param name="optionFlags">The option flags.</param>
+            /// <param name="usage">The usage.</param>
+            public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, 
+                CpuAccessFlags cpuAccess,
+                ResourceOptionFlags optionFlags = ResourceOptionFlags.None, 
+                ResourceUsage usage = ResourceUsage.Immutable)
+                : base(structureSize, bindFlags)
+            {
+                OptionFlags = optionFlags;
+                Usage = usage;
+                CpuAccess = cpuAccess;
             }
 
             /// <summary>
@@ -119,7 +140,7 @@ namespace HelixToolkit.UWP
                 var buffdesc = new BufferDescription()
                 {
                     BindFlags = this.BindFlags,
-                    CpuAccessFlags = CpuAccessFlags.None,
+                    CpuAccessFlags = CpuAccess,
                     OptionFlags = this.OptionFlags,
                     SizeInBytes = StructureSize * count,
                     StructureByteStride = StructureSize,
@@ -147,7 +168,7 @@ namespace HelixToolkit.UWP
                 var buffdesc = new BufferDescription()
                 {
                     BindFlags = this.BindFlags,
-                    CpuAccessFlags = CpuAccessFlags.None,
+                    CpuAccessFlags = CpuAccess,
                     OptionFlags = this.OptionFlags,
                     SizeInBytes = countByBytes,
                     StructureByteStride = StructureSize,
@@ -182,6 +203,8 @@ namespace HelixToolkit.UWP
             /// The capacity used.
             /// </value>
             public int CapacityUsed { private set; get; }
+
+            public CpuAccessFlags CpuAccess { private set; get; } = CpuAccessFlags.Write;
             /// <summary>
             ///
             /// </summary>
@@ -213,6 +236,25 @@ namespace HelixToolkit.UWP
                 CanOverwrite = canOverWrite;
                 this.OptionFlags = optionFlags;
                 LazyResize = lazyResize;
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DynamicBufferProxy"/> class.
+            /// </summary>
+            /// <param name="structureSize">Size of the structure.</param>
+            /// <param name="bindFlags">The bind flags.</param>
+            /// <param name="canOverWrite">if set to <c>true</c> [can over write].</param>
+            /// <param name="cpuAccess">The cpu access.</param>
+            /// <param name="optionFlags">The option flags.</param>
+            /// <param name="lazyResize">if set to <c>true</c> [lazy resize].</param>
+            public DynamicBufferProxy(int structureSize, BindFlags bindFlags, bool canOverWrite,
+                CpuAccessFlags cpuAccess,
+                ResourceOptionFlags optionFlags = ResourceOptionFlags.None, bool lazyResize = true)
+                : base(structureSize, bindFlags)
+            {
+                CanOverwrite = canOverWrite;
+                this.OptionFlags = optionFlags;
+                LazyResize = lazyResize;
+                CpuAccess = cpuAccess;
             }
             /// <summary>
             /// <see cref="IElementsBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, IList{T}, int)"/>
@@ -353,7 +395,7 @@ namespace HelixToolkit.UWP
                 var buffdesc = new BufferDescription()
                 {
                     BindFlags = this.BindFlags,
-                    CpuAccessFlags = CpuAccessFlags.Write,
+                    CpuAccessFlags = CpuAccess,
                     OptionFlags = this.OptionFlags,
                     SizeInBytes = StructureSize * System.Math.Max(count, minBufferCount),
                     StructureByteStride = StructureSize,
