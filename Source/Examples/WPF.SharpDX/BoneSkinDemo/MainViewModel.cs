@@ -184,8 +184,8 @@ namespace BoneSkinDemo
         private void M_MouseDown(object sender, SceneNodeMouseDownArgs e)
         {
             var result = e.HitResult;
-            HitLineGeometry.Positions[0] = result.PointHit;
-            HitLineGeometry.Positions[1] = result.PointHit + result.NormalAtHit;
+            HitLineGeometry.Positions[0] = result.PointHit - result.NormalAtHit * 0.5f;
+            HitLineGeometry.Positions[1] = result.PointHit + result.NormalAtHit * 0.5f;
             HitLineGeometry.UpdateVertices();
         }
 

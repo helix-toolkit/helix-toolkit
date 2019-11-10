@@ -87,12 +87,12 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
             {
-                return BoneMatrices == null ? base.TestViewFrustum(ref viewFrustum) : true;
+                return BoneMatrices.Length == 0 ? base.TestViewFrustum(ref viewFrustum) : true;
             }
 
             protected override bool PreHitTestOnBounds(ref Ray ray)
             {
-                return BoneMatrices == null ? base.PreHitTestOnBounds(ref ray) : true;
+                return BoneMatrices.Length == 0 ? base.PreHitTestOnBounds(ref ray) : true;
             }
             /// <summary>
             /// Creates the skeleton node.
@@ -185,7 +185,7 @@ namespace HelixToolkit.UWP
 
             protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
             {
-                if(Geometry is BoneSkinnedMeshGeometry3D skGeometry)
+                if(BoneMatrices.Length > 0 && Geometry is BoneSkinnedMeshGeometry3D skGeometry)
                 {
                     if(RenderCore is BoneSkinRenderCore skCore)
                     {
