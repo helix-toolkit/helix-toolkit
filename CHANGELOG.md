@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 1. Fixed single point hit test in SharpDX version #1225. (WPF.SharpDX/UWP/Core)
 2. Fixed nuget dependencies not getting installed. (WPF.SharpDX/UWP/Core)
+3. Fixed wrong distance comparison on mesh hit test. (WPF.SharpDX/UWP/Core)
 
 ## [2.9.0] - 2019-08-24
 ### Added
