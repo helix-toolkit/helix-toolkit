@@ -64,6 +64,8 @@ namespace HelixToolkit.UWP
             ///   <c>true</c> if this instance has bone group; otherwise, <c>false</c>.
             /// </value>
             public bool HasBoneGroup { internal set; get; }
+
+            private Vector3[] skinnedVerticesCache = new Vector3[0];
             /// <summary>
             /// Called when [create render core].
             /// </summary>
@@ -87,16 +89,10 @@ namespace HelixToolkit.UWP
             {
                 return true;
             }
-            /// <summary>
-            /// Determines whether this instance [can hit test] the specified context.
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <returns>
-            ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-            /// </returns>
-            protected override bool CanHitTest(RenderContext context)
+
+            protected override bool PreHitTestOnBounds(ref Ray ray)
             {
-                return false;//return base.CanHitTest(context) && !hasBoneParameter;
+                return true;
             }
             /// <summary>
             /// Creates the skeleton node.
@@ -128,6 +124,83 @@ namespace HelixToolkit.UWP
                 skNode.PostEffects = effectName;
                 skNode.Bones = node.Bones;
                 return skNode;
+            }
+            /// <summary>
+            /// Try to get skinned vertices. Skinned vertices are copied from GPU.
+            /// </summary>
+            /// <param name="manager"></param>
+            /// <returns>New array with vertex positions</returns>
+            public Vector3[] TryGetSkinnedVertices(IEffectsManager manager)
+            {
+                if (Geometry is BoneSkinnedMeshGeometry3D skGeometry)
+                {
+                    if (RenderCore is BoneSkinRenderCore skCore)
+                    {
+#if DX11_1
+                        var proxy = new Render.DeviceContextProxy(manager.Device.ImmediateContext1, manager.Device);
+#else
+                        var proxy = new Render.DeviceContextProxy(manager.Device.ImmediateContext, manager.Device);
+#endif
+                        var array = new Vector3[skGeometry.Positions.Count];
+                        if(skCore.CopySkinnedToArray(proxy, array) > 0)
+                        {
+                            return array;
+                        }
+                    }
+                }
+                return null;
+            }
+            /// <summary>
+            /// Try to get skinned vertices. Skinned vertices are copied from GPU.
+            /// </summary>
+            /// <param name="manager"></param>
+            /// <param name="array">Vertex positions will be copied into this array</param>
+            /// <returns></returns>
+            public int TryGetSkinnedVertices(IEffectsManager manager, Vector3[] array)
+            {
+                if (Geometry is BoneSkinnedMeshGeometry3D skGeometry)
+                {
+                    if (RenderCore is BoneSkinRenderCore skCore)
+                    {
+#if DX11_1
+                        var proxy = new Render.DeviceContextProxy(manager.Device.ImmediateContext1, manager.Device);
+#else
+                        var proxy = new Render.DeviceContextProxy(manager.Device.ImmediateContext, manager.Device);
+#endif
+                        return skCore.CopySkinnedToArray(proxy, array);
+                    }
+                }
+                return 0;
+            }
+            /// <summary>
+            /// Get the skinned vertices cache used for hit test.
+            /// This cache will only be updated after each hit test.
+            /// To get latest skinned vertices, please use <see cref="TryGetSkinnedVertices"/>. 
+            /// </summary>
+            /// <returns></returns>
+            public Vector3[] TryGetSkinnedVerticesCache()
+            {
+                return skinnedVerticesCache;
+            }
+
+            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+            {
+                if(Geometry is BoneSkinnedMeshGeometry3D skGeometry)
+                {
+                    if(RenderCore is BoneSkinRenderCore skCore)
+                    {
+                        if(skinnedVerticesCache.Length < skGeometry.Positions.Count)
+                        {
+                            skinnedVerticesCache = new Vector3[skGeometry.Positions.Count];
+                        }
+                        if (skCore.CopySkinnedToArray(context.RenderHost.ImmediateDeviceContext, skinnedVerticesCache) > 0)
+                        {
+                            return skGeometry.HitTestWithSkinnedVertices(context, skinnedVerticesCache,
+                                totalModelMatrix, ref rayWS, ref hits, WrapperSource);
+                        }
+                    }
+                }
+                return base.OnHitTest(context, totalModelMatrix, ref rayWS, ref hits);
             }
         }
     }

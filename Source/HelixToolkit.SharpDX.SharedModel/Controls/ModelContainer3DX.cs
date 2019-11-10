@@ -140,6 +140,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public DeviceContextProxy ImmediateDeviceContext { get => currentRenderHost?.ImmediateDeviceContext; }
+
         public new float ActualWidth { get => 0; }
         public new float ActualHeight { get => 0; }
 
