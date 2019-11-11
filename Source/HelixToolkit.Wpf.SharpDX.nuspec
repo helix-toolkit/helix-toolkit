@@ -7,7 +7,7 @@
     <authors>objo, Lunci</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
+    <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom controls for WPF and a scene graph based on SharpDX.</description>
     <tags>wpf SharpDX DirectX 3D</tags>
@@ -31,5 +31,6 @@
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
     <file src="..\README.md" />
+	<file src="..\Images\helixtoolkit.png" target="" />
   </files>
 </package>
