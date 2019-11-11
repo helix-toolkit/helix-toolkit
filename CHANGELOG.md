@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Next Version]
+## [2.10.0] - 2019-11-10
 ### Added
 1. Added HelixToolkit.Core.Wpf nuget package to support .net core 3.0 WPF.
 2. Added HelixToolkit.SharpDX.Core.Wpf nuget package to support .net core 3.0 WPF.
