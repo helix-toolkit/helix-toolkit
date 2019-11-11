@@ -175,7 +175,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Get the skinned vertices cache used for hit test.
             /// This cache will only be updated after each hit test.
-            /// To get latest skinned vertices, please use <see cref="TryGetSkinnedVertices"/>. 
+            /// To get latest skinned vertices, please use <see cref="TryGetSkinnedVertices(IEffectsManager)"/>. 
             /// </summary>
             /// <returns></returns>
             public Vector3[] TryGetSkinnedVerticesCache()

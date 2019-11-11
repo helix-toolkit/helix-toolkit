@@ -58,6 +58,13 @@ namespace HelixToolkit.UWP
             /// <param name="minBufferCountByBytes">The minimum buffer count by bytes.</param>
             unsafe void UploadDataToBuffer(DeviceContextProxy context, System.IntPtr data, int countByBytes, int offsetByBytes, int minBufferCountByBytes = default(int));
             /// <summary>
+            /// Creates the buffer with size = count * structure size;
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="count">The count.</param>
+            void CreateBuffer(DeviceContextProxy context, int count);
+
+            /// <summary>
             /// <see cref="DisposeObject.DisposeAndClear"/>
             /// </summary>
             void DisposeAndClear();
@@ -175,6 +182,30 @@ namespace HelixToolkit.UWP
                     Usage = Usage
                 };
                 buffer = Collect(new Buffer(context, data, buffdesc));
+            }
+            /// <summary>
+            /// Creates the buffer with size of count * structure size.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="count">The element count.</param>
+            public void CreateBuffer(DeviceContextProxy context, int count)
+            {
+                RemoveAndDispose(ref buffer);
+                ElementCount = count;
+                if (count == 0)
+                {
+                    return;
+                }
+                var buffdesc = new BufferDescription()
+                {
+                    BindFlags = this.BindFlags,
+                    CpuAccessFlags = CpuAccess,
+                    OptionFlags = this.OptionFlags,
+                    SizeInBytes = StructureSize * count,
+                    StructureByteStride = StructureSize,
+                    Usage = Usage
+                };
+                buffer = Collect(new Buffer(context, buffdesc));
             }
         }
 
@@ -405,6 +436,16 @@ namespace HelixToolkit.UWP
                 CapacityUsed = 0;
                 buffer = Collect(new Buffer(device, buffdesc));
                 OnBufferChanged(buffer);
+            }
+
+            /// <summary>
+            /// Creates the buffer with size of count * structure size.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="count">The element count.</param>
+            public void CreateBuffer(DeviceContextProxy context, int count)
+            {
+                Initialize(context, count);
             }
 
             protected virtual void OnBufferChanged(Buffer newBuffer) { }
