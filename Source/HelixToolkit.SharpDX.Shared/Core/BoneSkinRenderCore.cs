@@ -122,6 +122,11 @@ namespace HelixToolkit.UWP
                 internalBoneBuffer.Detach();
                 base.OnDetach();
             }
+
+            public int CopySkinnedToArray(DeviceContextProxy context, Vector3[] array)
+            {
+                return preComputeBoneBuffer.CopySkinnedToArray(context, array);
+            }
         }
     }
 

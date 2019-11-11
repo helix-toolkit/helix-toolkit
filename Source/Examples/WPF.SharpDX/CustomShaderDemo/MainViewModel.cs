@@ -6,23 +6,18 @@
 
 namespace CustomShaderDemo
 {
-    using System.Linq;
-    using System.Windows.Media;
     using DemoCore;
-
-    using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
-    using HelixToolkit.Wpf.SharpDX.Core;
-
     using SharpDX;
-    using Media3D = System.Windows.Media.Media3D;
+    using SharpDX.Direct3D11;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Input;
+    using System.Windows.Media;
     using Color = System.Windows.Media.Color;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using System.Collections.Generic;
-    using System.Windows.Input;
-    using System;
-    using SharpDX.Direct3D11;
 
     public class MainViewModel : BaseViewModel
     {

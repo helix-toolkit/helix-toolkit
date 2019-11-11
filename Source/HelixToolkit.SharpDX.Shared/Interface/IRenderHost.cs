@@ -73,6 +73,13 @@ namespace HelixToolkit.UWP
         /// </value>
         Device Device { get; }
         /// <summary>
+        /// Gets the immediate device context.
+        /// </summary>
+        /// <value>
+        /// The immediate device context.
+        /// </value>
+        DeviceContextProxy ImmediateDeviceContext { get; }
+        /// <summary>
         /// Gets the device2d.
         /// </summary>
         /// <value>

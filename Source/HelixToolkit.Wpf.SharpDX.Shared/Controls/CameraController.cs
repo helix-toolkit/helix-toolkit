@@ -548,6 +548,20 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             set; get;
         } = new Vector3();
+
+        /// <summary>
+        /// Gets or sets to allow rotate x direction and y direction globally. X, Y is screen space.
+        /// <para>X = 1: Allow left/right rotation. Y = 1: Allow up/down rotation</para>
+        /// <para>Default is (1, 1)</para>
+        /// </summary>
+        /// <value>
+        /// The allow rotate xy.
+        /// </value>
+        public Vector2 AllowRotateXY
+        {
+            set; get;
+        } = Vector2.One;
+
 #region TouchGesture
         public bool EnableTouchRotate { set; get; } = true;
         public bool EnablePinchZoom { set; get; } = true;

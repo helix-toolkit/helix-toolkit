@@ -1,24 +1,25 @@
 <?xml version="1.0"?>
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <id>HelixToolkit.Wpf</id>
+    <id>HelixToolkit.Core.Wpf</id>
     <version>$version$</version>
-    <title>Helix Toolkit for WPF</title>
+    <title>Helix Toolkit for .net core WPF</title>
     <authors>objo</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Provides custom controls and extensions for WPF 3D.</description>
-    <tags>wpf wpf3d 3D</tags>
+    <description>Provides custom controls and extensions for .net core WPF 3D.</description>
+    <tags>wpf wpf3d 3D netcore</tags>
     <dependencies>
-      <group targetFramework="net45">
+      <group targetFramework="netcoreapp3.0">
         <dependency id="HelixToolkit" version="[$version$]" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\HelixToolkit.Wpf.???" target="lib\net45" />
+    <file src="bin\Release\netcoreapp3.0\HelixToolkit.Core.Wpf.???" target="lib\netcoreapp3.0" />
+	<file src="bin\Release\netcoreapp3.0\HelixToolkit.Core.Wpf.deps.json" target="lib\netcoreapp3.0" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />

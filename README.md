@@ -5,16 +5,16 @@
 **Helix Toolkit is a collection of 3D components for .NET Framework.**
 
 [**HelixToolkit.WPF:**](/Source/HelixToolkit.Wpf) 
-Adds variety of functionalities/models on the top of internal WPF 3D model (Media3D namespace). 
+Adds variety of functionalities/models on the top of internal WPF 3D models (Media3D namespace). 
 
 [**HelixToolkit.SharpDX.WPF:**](/Source/HelixToolkit.Wpf.SharpDX) 
-3D Components and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for high performance usage.
+Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for high performance usage.
 
 [**HelixToolkit.UWP:**](/Source/HelixToolkit.UWP) 
-3D Components and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for Universal Windows App.
+Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for Universal Windows App.
 
 [**HelixToolkit.SharpDX.Core:**](/Source/HelixToolkit.SharpDX.Core) 
-3D Components and Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for netstandard and .NET Core.
+Custom 3D Engine and Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for netstandard and .NET Core.
 
 [**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.Wpf.SharpDX.Assimp) 
 [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
@@ -43,9 +43,9 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 ## Project Build
 
-**Visual Studio 2017. Windows 10 SDK (Min Ver.10.0.10586.0).**
+**Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.17763).**
 
-**Missing `.cso` error during the build?** Windows 10 SDK **Ver.10.0.10586.0** can be selected and installed using Visual Studio 2017 installer. If you already installed the higher SDK version, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the version installed on your machine.
+**Missing `.cso` error during the build?** Windows 10 SDK **Ver.10.0.17763** can be selected and installed using Visual Studio 2019 installer. If you already installed the higher SDK version, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the version installed on your machine.
 
 ## Notes
 
@@ -60,6 +60,20 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
 ## News
+#### DotNet Core 3.0 WPF support (2019-10-03)
+Two new packages are available in pre-release myget feed.
+- **HelixToolkit.Core.Wpf**
+- **HelixToolkit.SharpDX.Core.Wpf**
+
+#### 2019-08-24
+[v2.9.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.9.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.9.0)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.9.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.9.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.9.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.9.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.9.0)
+
 #### 2019-06-22
 [v2.8.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.8.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.8.0)
@@ -75,18 +89,6 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.7.0)
 - [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.7.0)
 - [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.7.0)
-
-#### 2019-02-16
-[v2.6.1](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.6.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.6.1)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.6.1)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.6.1)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.6.1)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.6.1)
-
-**Two new packages have been released on version 2.6.0.**
-- `SharpDX.Core` is the base implementation for all HelixToolkit.SharpDX versions(WPF.SharpDX and UWP). It is implemented based on `netstandard` and can be used on other platforms such as WinForms and DotNetCore.
-- `SharpDX.Assimp` ports [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) into HelixToolkit to support 3D model import/export for HelixToolkit.SharpDX versions. Currently import/export supports [SceneNode](https://github.com/helix-toolkit/helix-toolkit/wiki/Use-Element3D-or-SceneNode-under-WPF.SharpDX-or-UWP) only. For more details, please refer to [FileLoadDemo](/Source/Examples/WPF.SharpDX/FileLoadDemo) or [CoreTest](/Source/Examples/SharpDX.Core/CoreTest).
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 

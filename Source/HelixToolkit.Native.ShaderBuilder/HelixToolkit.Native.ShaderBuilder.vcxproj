@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{25673797-8566-4B65-838D-DE0BD335D6E6}</ProjectGuid>
     <RootNamespace>HelixToolkitNativeShaderBuilder</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,13 +41,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
@@ -70,17 +70,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -91,9 +91,9 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy /y /f /i $(SolutionDir)HelixToolkit.Native.ShaderBuilder\$(Platform)\$(Configuration)\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
-xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"</Command>
+      <Command>xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
+xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -104,9 +104,9 @@ xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(Solut
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <PostBuildEvent>
-      <Command>xcopy /y /f /i $(SolutionDir)HelixToolkit.Native.ShaderBuilder\$(Platform)\$(Configuration)\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
-xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"</Command>
+      <Command>xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
+xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,9 +123,9 @@ xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(Solut
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /f /i $(SolutionDir)HelixToolkit.Native.ShaderBuilder\$(Platform)\$(Configuration)\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
-xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"</Command>
+      <Command>xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
+xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,9 +142,9 @@ xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(Solut
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /f /i $(SolutionDir)HelixToolkit.Native.ShaderBuilder\$(Platform)\$(Configuration)\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
-xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"</Command>
+      <Command>xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
+xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

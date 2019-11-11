@@ -108,6 +108,8 @@ namespace BoneSkinDemo
 
         public Media3D.Transform3D ModelTransform { private set; get; }
 
+        public LineGeometry3D HitLineGeometry { get; } = new LineGeometry3D() { IsDynamic = true };
+
         public string[] Animations { set; get; }
 
         public GridPattern[] GridTypes { get; } = new GridPattern[] { GridPattern.Tile, GridPattern.Grid };
@@ -140,8 +142,14 @@ namespace BoneSkinDemo
                 NearPlaneDistance = 1,
                 FarPlaneDistance = 2000
             };
+            HitLineGeometry.Positions = new Vector3Collection(2);
+            HitLineGeometry.Positions.Add(Vector3.Zero);
+            HitLineGeometry.Positions.Add(Vector3.Zero);
+            HitLineGeometry.Indices = new IntCollection(2);
+            HitLineGeometry.Indices.Add(0);
+            HitLineGeometry.Indices.Add(1);
             LoadFile();
-            compositeHelper.Rendering += CompositeHelper_Rendering;
+            compositeHelper.Rendering += CompositeHelper_Rendering;           
         }
 
         private void LoadFile()
@@ -162,6 +170,7 @@ namespace BoneSkinDemo
                         m.IsThrowingShadow = true;
                         m.WireframeColor = new SharpDX.Color4(0, 0, 1, 1);
                         boneSkinNodes.Add(m);
+                        m.MouseDown += M_MouseDown;
                     }
                     else
                     {
@@ -170,6 +179,14 @@ namespace BoneSkinDemo
                     }
                 }
             }
+        }
+
+        private void M_MouseDown(object sender, SceneNodeMouseDownArgs e)
+        {
+            var result = e.HitResult;
+            HitLineGeometry.Positions[0] = result.PointHit - result.NormalAtHit * 0.5f;
+            HitLineGeometry.Positions[1] = result.PointHit + result.NormalAtHit * 0.5f;
+            HitLineGeometry.UpdateVertices();
         }
 
         private void CompositeHelper_Rendering(object sender, System.Windows.Media.RenderingEventArgs e)

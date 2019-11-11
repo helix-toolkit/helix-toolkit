@@ -138,5 +138,12 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context">The context.</param>
         void ResetSkinnedVertexBuffer(DeviceContextProxy context);
+        /// <summary>
+        /// Copies the skinned to array.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="array">The array.</param>
+        /// <returns></returns>
+        int CopySkinnedToArray(DeviceContextProxy context, global::SharpDX.Vector3[] array);
     }
 }
