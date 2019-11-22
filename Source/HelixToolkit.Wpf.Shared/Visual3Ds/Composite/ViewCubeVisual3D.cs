@@ -77,6 +77,12 @@ namespace HelixToolkit.Wpf
             "IsEnabled", typeof(bool), typeof(ViewCubeVisual3D), new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="IsTopBottomViewOrientedToFrontBack"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsTopBottomViewOrientedToFrontBackProperty =
+            DependencyProperty.Register("IsTopBottomViewOrientedToFrontBack", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, VisualModelChanged));
+
+        /// <summary>
         /// Identifies the <see cref="ModelUpDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ModelUpDirectionProperty =
@@ -345,6 +351,22 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        ///   Gets or sets a value indicating whether the top and bottom views are oriented to front and back.
+        /// </summary>
+        public bool IsTopBottomViewOrientedToFrontBack
+        {
+            get
+            {
+                return (bool)GetValue(IsTopBottomViewOrientedToFrontBackProperty);
+            }
+
+            set
+            {
+                SetValue(IsTopBottomViewOrientedToFrontBackProperty, value);
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets the viewport that is being controlled by the view cube.
         /// </summary>
         /// <value>The viewport.</value>
@@ -439,8 +461,17 @@ namespace HelixToolkit.Wpf
             AddCubeFace(CubeFaceModels[1], -vecFront, vecUp, GetCubefaceColor(1), this.BackText);
             AddCubeFace(CubeFaceModels[2], vecLeft, vecUp, GetCubefaceColor(2), this.LeftText);
             AddCubeFace(CubeFaceModels[3], -vecLeft, vecUp, GetCubefaceColor(3), this.RightText);
-            AddCubeFace(CubeFaceModels[4], vecUp, vecLeft, GetCubefaceColor(4), this.TopText);
-            AddCubeFace(CubeFaceModels[5], -vecUp, -vecLeft, GetCubefaceColor(5), this.BottomText);
+
+            if (IsTopBottomViewOrientedToFrontBack)
+            {
+                AddCubeFace(CubeFaceModels[4], vecUp, vecFront, GetCubefaceColor(4), this.TopText);
+                AddCubeFace(CubeFaceModels[5], -vecUp, -vecFront, GetCubefaceColor(5), this.BottomText);
+            }
+            else
+            {
+                AddCubeFace(CubeFaceModels[4], vecUp, vecLeft, GetCubefaceColor(4), this.TopText);
+                AddCubeFace(CubeFaceModels[5], -vecUp, -vecLeft, GetCubefaceColor(5), this.BottomText);
+            }
 
             //var circle = new PieSliceVisual3D();
             circle.BeginEdit();

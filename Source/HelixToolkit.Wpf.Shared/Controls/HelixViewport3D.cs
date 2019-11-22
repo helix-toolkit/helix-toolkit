@@ -370,6 +370,12 @@ namespace HelixToolkit.Wpf
             "IsMoveEnabled", typeof(bool), typeof(HelixViewport3D), new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="IsTopBottomViewOrientedToFrontBack"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsTopBottomViewOrientedToFrontBackProperty =
+            DependencyProperty.Register("IsTopBottomViewOrientedToFrontBack", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(false));
+
+        /// <summary>
         /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsViewCubeEdgeClicksEnabledProperty =
@@ -1902,7 +1908,23 @@ namespace HelixToolkit.Wpf
                 this.SetValue(IsMoveEnabledProperty, value);
             }
         }
-        
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether the top and bottom views are oriented to front and back.
+        /// </summary>
+        public bool IsTopBottomViewOrientedToFrontBack
+        {
+            get
+            {
+                return (bool)GetValue(IsTopBottomViewOrientedToFrontBackProperty);
+            }
+
+            set
+            {
+                SetValue(IsTopBottomViewOrientedToFrontBackProperty, value);
+            }
+        }
+
         /// <summary>
         /// Gets or sets the view cube edge clickable.
         /// </summary>
