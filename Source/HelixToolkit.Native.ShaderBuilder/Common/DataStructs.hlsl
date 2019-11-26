@@ -421,8 +421,5 @@ struct VolumePS_INPUT
 {
     float4 pos : SV_POSITION;
     float4 wp : POSITION0;
-    float4 mPos : TEXCOORD0;
-    noperspective
-    float2 tex : TEXCOORD1;
 };
 #endif

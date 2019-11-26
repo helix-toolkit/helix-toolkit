@@ -134,7 +134,7 @@ namespace HelixToolkit.UWP
                 get { return sampleDistance; }
             }
 
-            private int maxIterations = int.MaxValue;
+            private int maxIterations = 512;
             /// <summary>
             /// Gets or sets the iteration. Usually set to VolumeDepth.
             /// </summary>
