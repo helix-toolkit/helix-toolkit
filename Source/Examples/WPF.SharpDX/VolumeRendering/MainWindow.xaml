@@ -23,8 +23,11 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             CameraRotationMode="Trackball"
-            EffectsManager="{Binding EffectsManager}"
+            EffectsManager="{Binding EffectsManager}" 
             ShowCameraTarget="False">
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"/>
+            <hx:MeshGeometryModel3D Geometry="{Binding MeshModel}" Material="{Binding MeshMaterial}"/>
+            <hx:LineMaterialGeometryModel3D Geometry="{Binding AxisModel}" Material="{Binding AxisModelMaterial}"/>
             <hx:VolumeTextureModel3D Transform="{Binding Transform}" VolumeMaterial="{Binding VolumeMaterial}" />
         </hx:Viewport3DX>
         <StackPanel

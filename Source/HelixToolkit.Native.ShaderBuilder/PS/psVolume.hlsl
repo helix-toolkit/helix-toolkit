@@ -9,11 +9,10 @@ float4 main(VolumePS_INPUT input) : SV_Target
 {
     //calculate projective texture coordinates
     //used to project the front and back position textures onto the cube
-    float2 texC = input.tex.xy;
-    texC.x = 0.5f * texC.x + 0.5f;
-    texC.y = -0.5f * texC.y + 0.5f;
-    float3 front = input.mPos.xyz + float3(0.5, 0.5, 0.5);
-    float3 back = texVolumeBack.Sample(samplerVolume, texC).xyz;
+    const float3 off = float3(0.5, 0.5, 0.5);
+    float3 front = mul(input.wp, mWorldInv).xyz + off;
+    float2 texB = input.pos.xy / vViewport.xy;
+    float3 back = mul(float4(texVolumeBack.Sample(samplerVolume, texB).xyz, 1), mWorldInv).xyz + off;
  
     float3 dir = back - front;
     float dirLength = length(dir);
@@ -30,7 +29,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
     float3 pos = float3(front + stepV * iterationOffset);
 
     float lengthAccu = iterationOffset * stepSize;
-    dirLength -= 1e-4;
+    dirLength -= stepSize;
     [loop]
     for (uint i = iterationOffset; i < iteration; i++)
     {
