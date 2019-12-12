@@ -92,8 +92,8 @@
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
-xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
+xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
+xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -105,8 +105,8 @@ xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(Pro
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
-xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
+xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
+xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,8 +124,8 @@ xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(Pro
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
-xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
+xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
+xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,8 +143,8 @@ xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(Pro
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
-xcopy /y /q /i "$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
+xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.UWP\Resources"
+xcopy /y /f /i "$(ProjectDir)$(Platform)\$(Configuration)\*.cso" "$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

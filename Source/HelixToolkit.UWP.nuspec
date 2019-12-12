@@ -30,9 +30,9 @@
   </metadata>
   <files>
     <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP.???" target="lib\uap10.0" />
-    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP.??.xml" target="lib\uap10.0\HelixToolkit.UWP" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\HelixToolkit.UWP.??.xml" target="lib\uap10.0\HelixToolkit.UWP" />
     <file src="HelixToolkit.UWP\bin\Release\Resources\*.*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
-    <file src="HelixToolkit.UWP\bin\Release\Themes\*.*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\Themes\*.*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
