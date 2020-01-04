@@ -134,6 +134,16 @@ namespace HelixToolkit.Wpf
             return new System.Windows.Media.Media3D.Vector3D(vector.X, vector.Y, vector.Z);
         }
 #endif
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3D ToVector3D(Point3D vector)
+        {
+            return new Vector3D(vector.X, vector.Y, vector.Z);
+        }
 #if SHARPDX
 #if !NETFX_CORE
         /// <summary>
@@ -156,6 +166,7 @@ namespace HelixToolkit.Wpf
         {
             return new Vector3D((DoubleOrSingle)vector.X, (DoubleOrSingle)vector.Y, (DoubleOrSingle)vector.Z);
         }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.Media3D.Vector3DCollection ToVector3DCollection(SharpDX.Vector3Collection collection)
         {

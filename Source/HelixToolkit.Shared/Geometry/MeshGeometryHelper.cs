@@ -240,19 +240,19 @@ namespace HelixToolkit.Wpf
                 {
                     int index0 = mesh.TriangleIndices[i0 + j];
                     int index1 = mesh.TriangleIndices[i0 + (j + 1) % 3];
-                    var position0 = mesh.Positions[index0];
-                    var position1 = mesh.Positions[index1];
+                    var position0 = SharedFunctions.ToVector3D(mesh.Positions[index0]);
+                    var position1 = SharedFunctions.ToVector3D(mesh.Positions[index1]);
                     var edgeKey = new EdgeKey(position0, position1);
                     var reverseEdgeKey = new EdgeKey(position1, position0);
                     if (edgeNormals.TryGetValue(edgeKey, out var value) ||
                         edgeNormals.TryGetValue(reverseEdgeKey, out value))
                     {
-                        float rawDot = SharedFunctions.DotProduct(ref triangleNormal, ref value);
+                        var rawDot = SharedFunctions.DotProduct(ref triangleNormal, ref value);
 
                         // Acos returns NaN if rawDot > 1 or rawDot < -1
-                        float dot = Math.Max(-1, Math.Min(rawDot, 1));
+                        var dot = Math.Max(-1, Math.Min(rawDot, 1));
 
-                        double angle = 180 / Math.PI * Math.Acos(dot);
+                        var angle = 180 / Math.PI * Math.Acos(dot);
                         if (angle > minimumAngle)
                         {
                             edgeIndices.Add(index0);
@@ -260,7 +260,9 @@ namespace HelixToolkit.Wpf
                         }
                     }
                     else
+                    {
                         edgeNormals.Add(edgeKey, triangleNormal);
+                    }
                 }
             }
             return edgeIndices;
