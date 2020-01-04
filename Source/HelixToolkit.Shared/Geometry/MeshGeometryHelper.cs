@@ -230,10 +230,10 @@ namespace HelixToolkit.Wpf
                 var p0 = mesh.Positions[mesh.TriangleIndices[i0]];
                 var p1 = mesh.Positions[mesh.TriangleIndices[i0 + 1]];
                 var p2 = mesh.Positions[mesh.TriangleIndices[i0 + 2]];
-                var triangleNormal = Vector3D.Cross(p1 - p0, p2 - p0);
+                var triangleNormal = SharedFunctions.CrossProduct(p1 - p0, p2 - p0);
 
                 // Handle degenerated triangles.
-                if (triangleNormal.LengthSquared() < 0.001f) continue;
+                if (SharedFunctions.LengthSquared(ref triangleNormal) < 0.001f) continue;
 
                 triangleNormal.Normalize();
                 for (int j = 0; j < 3; j++)
@@ -247,7 +247,7 @@ namespace HelixToolkit.Wpf
                     if (edgeNormals.TryGetValue(edgeKey, out var value) ||
                         edgeNormals.TryGetValue(reverseEdgeKey, out value))
                     {
-                        float rawDot = Vector3D.Dot(triangleNormal, value);
+                        float rawDot = SharedFunctions.DotProduct(ref triangleNormal, ref value);
 
                         // Acos returns NaN if rawDot > 1 or rawDot < -1
                         float dot = Math.Max(-1, Math.Min(rawDot, 1));
