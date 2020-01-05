@@ -2008,8 +2008,8 @@ namespace HelixToolkit.UWP
                         },
                         Topology = PrimitiveTopology.TriangleList,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
-                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeFront
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeBack
                     },
                     new ShaderPassDescription(DefaultPassNames.Diffuse)
                     {
@@ -2020,8 +2020,8 @@ namespace HelixToolkit.UWP
                         },
                         Topology = PrimitiveTopology.TriangleList,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
-                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeFront
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeBack
                     },
                     new ShaderPassDescription(DefaultPassNames.Positions)
                     {

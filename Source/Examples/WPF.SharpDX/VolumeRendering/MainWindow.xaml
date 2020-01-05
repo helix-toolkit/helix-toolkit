@@ -23,7 +23,7 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             CameraRotationMode="Trackball"
-            EffectsManager="{Binding EffectsManager}" 
+            EffectsManager="{Binding EffectsManager}" EnableSwapChainRendering="True" EnableD2DRendering="False"
             ShowCameraTarget="False">
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"/>
             <hx:MeshGeometryModel3D Geometry="{Binding MeshModel}" Material="{Binding MeshMaterial}"/>
@@ -64,7 +64,7 @@
             <Slider
                 Margin="4,0"
                 Maximum="5"
-                Minimum="1"
+                Minimum="0.1"
                 Value="{Binding SampleDistance}" />
         </StackPanel>
         <Grid Grid.ColumnSpan="2" Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}">

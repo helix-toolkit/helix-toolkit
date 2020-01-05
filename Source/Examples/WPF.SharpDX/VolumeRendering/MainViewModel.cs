@@ -110,6 +110,7 @@ namespace VolumeRendering
             var builder = new MeshBuilder();
             //builder.AddBox(new Vector3(0, 0, 0), 2, 2, 0.001);
             builder.AddSphere(Vector3.Zero, 0.1);
+            builder.AddBox(Vector3.UnitX, 0.2, 0.2, 0.2);
             MeshModel = builder.ToMesh();
             MeshMaterial = PhongMaterials.Yellow;
 

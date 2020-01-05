@@ -1,4 +1,6 @@
-//Reference https://graphicsrunner.blogspot.com/search/label/Volume%20Rendering
+//Reference 
+// https://graphicsrunner.blogspot.com/search/label/Volume%20Rendering
+// https://shaderbits.com/blog/creating-volumetric-ray-marcher
 #ifndef PSVOLUME_HLSL
 #define PSVOLUME_HLSL
 #define VOLUME
@@ -7,16 +9,13 @@
 
 float4 main(VolumePS_INPUT input) : SV_Target
 {
-    //calculate projective texture coordinates
-    //used to project the front and back position textures onto the cube
-    const float3 off = float3(0.5, 0.5, 0.5);
-    float3 front = mul(input.wp, mWorldInv).xyz + off;
-    float2 texB = input.pos.xy / vViewport.xy;
-    float3 back = mul(float4(texVolumeBack.Sample(samplerVolume, texB).xyz, 1), mWorldInv).xyz + off;
- 
-    float3 dir = back - front;
-    float dirLength = length(dir);
-    dir = normalize(dir);
+    float3 localCamPos = mul(float4(vEyePos.xyz, 1), mWorldInv).xyz;
+    float3 localCamVec = normalize(mul(float4(input.wp.xyz - vEyePos, 0), mWorldInv).xyz);
+    float4 entry = get_box_entry_point(localCamPos, localCamVec, input);
+    float3 front = entry.xyz;
+    float3 dir = localCamVec;
+    float3 back = front + dir * entry.w;
+    float dirLength = entry.w;
  
     float4 dst = float4(0, 0, 0, 0);
     float4 src = 0;
