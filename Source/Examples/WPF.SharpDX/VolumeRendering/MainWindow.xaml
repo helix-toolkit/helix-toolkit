@@ -23,7 +23,7 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             CameraRotationMode="Trackball"
-            EffectsManager="{Binding EffectsManager}" EnableSwapChainRendering="True" EnableD2DRendering="False"
+            EffectsManager="{Binding EffectsManager}" 
             ShowCameraTarget="False">
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"/>
             <hx:MeshGeometryModel3D Geometry="{Binding MeshModel}" Material="{Binding MeshMaterial}"/>

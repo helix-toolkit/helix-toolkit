@@ -9,9 +9,24 @@
 
 float4 main(VolumePS_INPUT input) : SV_Target
 {
-    float3 localCamPos = mul(float4(vEyePos.xyz, 1), mWorldInv).xyz;
-    float3 localCamVec = normalize(mul(float4(input.wp.xyz - vEyePos, 0), mWorldInv).xyz);
-    float4 entry = get_box_entry_point(localCamPos, localCamVec, input);
+    float3 localCamPos;
+    float3 localCamVec;
+    if (IsPerspective)
+    {
+        localCamPos = vEyePos;
+        localCamVec = input.wp.xyz - vEyePos;
+    }
+    else
+    {
+        localCamVec = -getLookDir(mView);
+        float3 v = input.wp.xyz - vEyePos;
+        float k = dot(v, localCamVec);
+        float3 w = localCamVec * k;
+        localCamPos = vEyePos - w + v;
+    }
+    localCamPos = mul(float4(localCamPos, 1), mWorldInv).xyz;
+    localCamVec = normalize(mul(float4(localCamVec, 0), mWorldInv).xyz);
+    float4 entry = getBoxEntryPoint(localCamPos, localCamVec, input);
     float3 front = entry.xyz;
     float3 dir = localCamVec;
     float3 back = front + dir * entry.w;
@@ -27,7 +42,6 @@ float4 main(VolumePS_INPUT input) : SV_Target
     float3 pos = float3(front + stepV * iterationOffset);
 
     uint iteration = min(dirLength / stepSize, maxIterations);
-    float3 L = normalize(mul(float4(vEyePos - input.wp.xyz, 0), mWorldInv).xyz);
     float lengthAccu = iterationOffset * stepSize;
     float corr = clamp(actualSampleDist / baseSampleDist, 1, 4);
     dirLength -= stepSize;
@@ -52,7 +66,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
 		//distance of 1.0f). So we have to adjust the alpha accordingly.
             src.a = 1 - pow(abs(1 - src.a), corr);
 					  
-            float s = 1 - dot(normalize(value.xyz), L);
+            float s = 1 - dot(normalize(value.xyz), -dir);
 				
 		//diffuse shading + fake ambient lighting
             src.rgb = s * src.rgb + .1f * src.rgb;

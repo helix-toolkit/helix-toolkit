@@ -187,8 +187,12 @@ float RGBToFloat(float4 c)
     return v;
 }
 
+float3 getLookDir(float4x4 viewMatrix)
+{
+    return viewMatrix._m02_m12_m22;
+}
 #ifdef VOLUME
-float4 get_box_entry_point(float3 localCamPos, float3 localCamVec, VolumePS_INPUT input)
+float4 getBoxEntryPoint(float3 localCamPos, float3 localCamVec, VolumePS_INPUT input)
 {
     const float3 off = float3(0.5, 0.5, 0.5);
     float steps = 1 / stepSize * actualSampleDist;
