@@ -65,6 +65,8 @@ namespace HelixToolkit.UWP
                     () => WriteValue(VolumeParamsStruct.Color, material.Color));
                 AddPropertyBinding(nameof(IVolumeTextureMaterial.TransferMap),
                     () => UpdateGradientMap());
+                AddPropertyBinding(nameof(IVolumeTextureMaterial.EnablePlaneAlignment),
+                    () => WriteValue(VolumeParamsStruct.EnablePlaneAlignment, material.EnablePlaneAlignment));
             }
 
             private void UpdateStepSize()

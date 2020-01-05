@@ -195,7 +195,7 @@ float3 getLookDir(float4x4 viewMatrix)
 float4 getBoxEntryPoint(float3 localCamPos, float3 localCamVec, VolumePS_INPUT input)
 {
     const float3 off = float3(0.5, 0.5, 0.5);
-    float steps = 1 / stepSize * actualSampleDist;
+    float steps = floor(1 / stepSize * actualSampleDist);
     localCamPos += off;
     float3 invRayDir = 1 / localCamVec;
     float3 firstIntersections = (0 - localCamPos) * invRayDir;
@@ -206,8 +206,8 @@ float4 getBoxEntryPoint(float3 localCamPos, float3 localCamVec, VolumePS_INPUT i
     float t0 = max(closest.x, max(closest.y, closest.z));
     float t1 = min(furthest.x, min(furthest.y, furthest.z));
    
-    float planeOffset = 1 - frac((t0 - length(localCamPos - 0.5)) * maxIterations);
-    t0 += (planeOffset / maxIterations);
+    float planeOffset = 1 - frac((t0 - length(localCamPos) - 0.5) * steps);
+    t0 += (planeOffset / steps) * enablePlaneAlignment;
     t0 = max(0, t0);
     float thickness = max(0, t1 - t0);
     float3 entry = localCamPos + max(0, t0) * localCamVec;

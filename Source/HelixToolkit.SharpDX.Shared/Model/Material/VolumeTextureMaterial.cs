@@ -99,6 +99,8 @@ namespace HelixToolkit.UWP
             /// The transfer map.
             /// </value>
             Color4[] TransferMap { set; get; }
+
+            bool EnablePlaneAlignment { set; get; }
         }
 
         /// <summary>
@@ -194,6 +196,12 @@ namespace HelixToolkit.UWP
                 get { return transferMap; }
             }
 
+            private bool enablePlaneAlignment = true;
+            public bool EnablePlaneAlignment
+            {
+                set { Set(ref enablePlaneAlignment, value); }
+                get { return enablePlaneAlignment; }
+            }
             protected virtual string DefaultPassName { get; } = DefaultPassNames.Default;
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
