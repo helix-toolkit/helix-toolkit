@@ -571,6 +571,7 @@ namespace HelixToolkit.UWP
         public const string BaseSampleDistance = "baseSampleDist"; //float
         public const string ActualSampleDistance = "actualSampleDist"; //float
         public const string IterationOffset = "iterationOffset"; // int or uint
+        public const string EnablePlaneAlignment = "enablePlaneAlignment"; // bool
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4 + 4 + 4);
     }
 

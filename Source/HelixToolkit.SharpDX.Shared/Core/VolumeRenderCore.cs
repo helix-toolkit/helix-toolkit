@@ -173,7 +173,7 @@ namespace HelixToolkit.UWP
                         #endregion
                     }
 
-                    #region Render box front face and do actual volume sampling
+                    #region Render box back face again and do actual volume sampling
                     context.RenderHost.SetDefaultRenderTargets(false);
                     var pass = materialVariables.GetPass(RenderType.Opaque, context);
                     if (pass != volumePass)

@@ -56,44 +56,7 @@ namespace VolumeRendering
             }
             get { return isLoading; }
         }
-
-        private int iterationOffset;
-        public int IterationOffset
-        {
-            set
-            {
-                if(SetValue(ref iterationOffset, value) && volumeMaterial != null)
-                {
-                    (volumeMaterial as IVolumeTextureMaterial).IterationOffset = value;
-                }
-            }
-            get { return iterationOffset; }
-        }
-
-        private double isoValue;
-        public double IsoValue
-        {
-            set
-            {
-                if (SetValue(ref isoValue, value) && volumeMaterial != null)
-                {
-                    (volumeMaterial as IVolumeTextureMaterial).IsoValue = value;
-                }
-            }
-            get { return isoValue; }
-        }
-        private double sampleDistance = 1;
-        public double SampleDistance
-        {
-            set
-            {
-                if(SetValue(ref sampleDistance, value) && volumeMaterial != null)
-                {
-                    (volumeMaterial as IVolumeTextureMaterial).SampleDistance = value;
-                }
-            }
-            get { return sampleDistance; }
-        }
+        
         public ICommand LoadTeapotCommand { get; }
         public ICommand LoadSkullCommand { get; }
         public ICommand LoadCloudCommand { get; }
@@ -102,7 +65,7 @@ namespace VolumeRendering
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            Camera = new PerspectiveCamera() { Position = new Point3D(0, 0, -5), LookDirection = new Vector3D(0, 0, 5), UpDirection = new Vector3D(0, 1, 0) };
+            Camera = new OrthographicCamera() { Position = new Point3D(0, 0, -5), LookDirection = new Vector3D(0, 0, 5), UpDirection = new Vector3D(0, 1, 0) };
             LoadTeapotCommand = new RelayCommand((o) => { Load(0); });
             LoadSkullCommand = new RelayCommand((o) => { Load(1); });
             LoadCloudCommand = new RelayCommand((o) => { Load(2); });
@@ -110,6 +73,7 @@ namespace VolumeRendering
             var builder = new MeshBuilder();
             //builder.AddBox(new Vector3(0, 0, 0), 2, 2, 0.001);
             builder.AddSphere(Vector3.Zero, 0.1);
+            builder.AddBox(Vector3.UnitX, 0.2, 0.2, 0.2);
             MeshModel = builder.ToMesh();
             MeshMaterial = PhongMaterials.Yellow;
 

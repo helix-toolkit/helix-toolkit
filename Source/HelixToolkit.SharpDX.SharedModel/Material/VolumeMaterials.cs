@@ -93,7 +93,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         public static readonly DependencyProperty IterationOffsetProperty =
-            DependencyProperty.Register("IterationOffset", typeof(int), typeof(VolumeTextureMaterialBase), 
+            DependencyProperty.Register("IterationOffset", typeof(int), typeof(VolumeTextureMaterialBase),
                 new PropertyMetadata(0, (d, e) =>
                 {
                     ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).IterationOffset = (int)e.NewValue;
@@ -112,9 +112,9 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)GetValue(IsoValueProperty); }
             set { SetValue(IsoValueProperty, value); }
         }
-        
+
         public static readonly DependencyProperty IsoValueProperty =
-            DependencyProperty.Register("IsoValue", typeof(double), typeof(VolumeTextureMaterialBase), 
+            DependencyProperty.Register("IsoValue", typeof(double), typeof(VolumeTextureMaterialBase),
                 new PropertyMetadata(0.0, (d, e) =>
                 {
                     ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).IsoValue = (double)e.NewValue;
@@ -163,6 +163,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).TransferMap = (Color4[])e.NewValue;
                 }));
 
+
+
+        public bool EnablePlaneAlignment
+        {
+            get { return (bool)GetValue(EnablePlaneAlignmentProperty); }
+            set { SetValue(EnablePlaneAlignmentProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for EnablePlaneAlignment.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnablePlaneAlignmentProperty =
+            DependencyProperty.Register("EnablePlaneAlignment", typeof(bool), typeof(VolumeTextureMaterialBase), new PropertyMetadata(true, (d, e) =>
+            {
+                ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).EnablePlaneAlignment = (bool)e.NewValue;
+            }));
+
         public VolumeTextureMaterialBase() { }
 
         public VolumeTextureMaterialBase(IVolumeTextureMaterial core) :base(core as MaterialCore)
@@ -174,6 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
             TransferMap = core.TransferMap;
             IsoValue = core.IsoValue;
             IterationOffset = core.IterationOffset;
+            EnablePlaneAlignment = core.EnablePlaneAlignment;
         }
     }
 
@@ -223,7 +239,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Color = Color,
                 TransferMap = TransferMap,
                 IsoValue = IsoValue,
-                IterationOffset = IterationOffset
+                IterationOffset = IterationOffset,
+                EnablePlaneAlignment = EnablePlaneAlignment,
             };
         }
 
@@ -240,7 +257,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Color = Color,
                 TransferMap = TransferMap,
                 IsoValue = IsoValue,
-                IterationOffset = IterationOffset
+                IterationOffset = IterationOffset,
+                EnablePlaneAlignment = EnablePlaneAlignment,
             };
         }
 #endif
@@ -294,7 +312,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Color = Color,
                 TransferMap = TransferMap,
                 IsoValue = IsoValue,
-                IterationOffset = IterationOffset
+                IterationOffset = IterationOffset,
+                EnablePlaneAlignment = EnablePlaneAlignment,
             };
         }
 
@@ -311,7 +330,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Color = Color,
                 TransferMap = TransferMap,
                 IsoValue = IsoValue,
-                IterationOffset = IterationOffset
+                IterationOffset = IterationOffset,
+                EnablePlaneAlignment = EnablePlaneAlignment,
             };
         }
 #endif
@@ -366,7 +386,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Color = Color,
                 TransferMap = TransferMap,
                 IsoValue = IsoValue,
-                IterationOffset = IterationOffset
+                IterationOffset = IterationOffset,
+                EnablePlaneAlignment = EnablePlaneAlignment,
             };
         }
 
@@ -383,7 +404,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Color = Color,
                 TransferMap = TransferMap,
                 IsoValue = IsoValue,
-                IterationOffset = IterationOffset
+                IterationOffset = IterationOffset,
+                EnablePlaneAlignment = EnablePlaneAlignment,
             };
         }
 #endif
