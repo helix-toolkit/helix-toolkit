@@ -158,7 +158,7 @@ namespace HelixToolkit.Wpf
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             var ext = Path.GetExtension(source);

@@ -2252,17 +2252,17 @@ namespace HelixToolkit.Wpf
         {
             if (quadPositions == null)
             {
-                throw new ArgumentNullException("quadPositions");
+                throw new ArgumentNullException(nameof(quadPositions));
             }
 
             if (this.normals != null && quadNormals == null)
             {
-                throw new ArgumentNullException("quadNormals");
+                throw new ArgumentNullException(nameof(quadNormals));
             }
 
             if (this.textureCoordinates != null && quadTextureCoordinates == null)
             {
-                throw new ArgumentNullException("quadTextureCoordinates");
+                throw new ArgumentNullException(nameof(quadTextureCoordinates));
             }
 
             if (quadNormals != null && quadNormals.Count != quadPositions.Count)
@@ -2324,7 +2324,7 @@ namespace HelixToolkit.Wpf
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
             int index0 = this.Positions.Count;
@@ -2367,7 +2367,7 @@ namespace HelixToolkit.Wpf
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
             int rows = points.GetUpperBound(0) + 1;
@@ -2422,7 +2422,7 @@ namespace HelixToolkit.Wpf
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
             }
 
             int index0 = this.positions.Count;
@@ -2909,7 +2909,7 @@ namespace HelixToolkit.Wpf
         {
             if (this.textureCoordinates != null && textureValues == null)
             {
-                throw new ArgumentNullException("textureValues");
+                throw new ArgumentNullException(nameof(textureValues));
             }
 
             if (textureValues != null && textureValues.Count != section.Count)
@@ -3332,17 +3332,17 @@ namespace HelixToolkit.Wpf
         {
             if (this.positions == null)
             {
-                throw new ArgumentNullException("fanPositions");
+                throw new ArgumentNullException(nameof(fanPositions));
             }
 
             if (this.normals != null && fanNormals == null)
             {
-                throw new ArgumentNullException("fanNormals");
+                throw new ArgumentNullException(nameof(fanNormals));
             }
 
             if (this.textureCoordinates != null && fanTextureCoordinates == null)
             {
-                throw new ArgumentNullException("fanTextureCoordinates");
+                throw new ArgumentNullException(nameof(fanTextureCoordinates));
             }
 
             if (fanPositions.Count < 3)
@@ -3395,17 +3395,17 @@ namespace HelixToolkit.Wpf
         {
             if (trianglePositions == null)
             {
-                throw new ArgumentNullException("trianglePositions");
+                throw new ArgumentNullException(nameof(trianglePositions));
             }
 
             if (this.normals != null && triangleNormals == null)
             {
-                throw new ArgumentNullException("triangleNormals");
+                throw new ArgumentNullException(nameof(triangleNormals));
             }
 
             if (this.textureCoordinates != null && triangleTextureCoordinates == null)
             {
-                throw new ArgumentNullException("triangleTextureCoordinates");
+                throw new ArgumentNullException(nameof(triangleTextureCoordinates));
             }
 
             if (trianglePositions.Count % 3 != 0)
@@ -3471,17 +3471,17 @@ namespace HelixToolkit.Wpf
         {
             if (stripPositions == null)
             {
-                throw new ArgumentNullException("stripPositions");
+                throw new ArgumentNullException(nameof(stripPositions));
             }
 
             if (this.normals != null && stripNormals == null)
             {
-                throw new ArgumentNullException("stripNormals");
+                throw new ArgumentNullException(nameof(stripNormals));
             }
 
             if (this.textureCoordinates != null && stripTextureCoordinates == null)
             {
-                throw new ArgumentNullException("stripTextureCoordinates");
+                throw new ArgumentNullException(nameof(stripTextureCoordinates));
             }
 
             if (stripNormals != null && stripNormals.Count != stripPositions.Count)
@@ -3874,7 +3874,7 @@ namespace HelixToolkit.Wpf
         {
             if (mesh == null)
             {
-                throw new ArgumentNullException("mesh");
+                throw new ArgumentNullException(nameof(mesh));
             }
 
             this.Append(mesh.positions, mesh.triangleIndices, mesh.normals, mesh.textureCoordinates);
@@ -3891,7 +3891,7 @@ namespace HelixToolkit.Wpf
         {
             if (mesh == null)
             {
-                throw new ArgumentNullException("mesh");
+                throw new ArgumentNullException(nameof(mesh));
             }
 
             this.Append(mesh.Positions, mesh.TriangleIndices, this.normals != null ? mesh.Normals : null, this.textureCoordinates != null ? mesh.TextureCoordinates : null);
@@ -3919,7 +3919,7 @@ namespace HelixToolkit.Wpf
         {
             if (positionsToAppend == null)
             {
-                throw new ArgumentNullException("positionsToAppend");
+                throw new ArgumentNullException(nameof(positionsToAppend));
             }
 
             if (this.normals != null && normalsToAppend == null)

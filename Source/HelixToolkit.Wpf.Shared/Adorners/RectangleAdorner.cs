@@ -110,7 +110,7 @@ namespace HelixToolkit.Wpf
         {
             if (adornedElement == null)
             {
-                throw new ArgumentNullException("adornedElement");
+                throw new ArgumentNullException(nameof(adornedElement));
             }
 
             this.Rectangle = rectangle;

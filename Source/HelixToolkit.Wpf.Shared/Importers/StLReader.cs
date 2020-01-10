@@ -225,7 +225,7 @@ namespace HelixToolkit.Wpf
         {
             if (token == null)
             {
-                throw new ArgumentNullException("token");
+                throw new ArgumentNullException(nameof(token));
             }
 
             var line = reader.ReadLine();
