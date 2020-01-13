@@ -143,7 +143,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 parentWindow.Closed -= ParentWindow_Closed;
             }
-            if (DataContext == null && RenderHost.EffectsManager == null)
+            if (DataContext == null && RenderHost.EffectsManager == null && belongsToParentWindow)
             {
                 EndD3D();
             }
