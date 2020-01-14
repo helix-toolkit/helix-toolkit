@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     /// <seealso cref="System.Windows.Controls.Image" />
-    public class DPFSurfaceSwapChain : WinformHostExtend, IRenderCanvas
+    public class DPFSurfaceSwapChain : WinformHostExtend, IRenderCanvas, IDisposable
     {
         private readonly IRenderHost renderHost;
         /// <summary>
@@ -49,6 +49,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public IRenderHost RenderHost { get { return renderHost; } }
         private RenderControl surfaceD3D;
         private Window parentWindow;
+        private readonly bool belongsToParentWindow;
+
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
@@ -59,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public DPFSurfaceSwapChain(bool deferredRendering = false)
+        public DPFSurfaceSwapChain(bool deferredRendering = false, bool attachedToWindow = true)
         {
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -77,9 +79,11 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
+
+            belongsToParentWindow = attachedToWindow;
         }
 
-        public DPFSurfaceSwapChain(Func<IntPtr, IRenderHost> createRenderHost)
+        public DPFSurfaceSwapChain(Func<IntPtr, IRenderHost> createRenderHost, bool attachedToWindow = true)
         {
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -89,6 +93,8 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
+
+            belongsToParentWindow = attachedToWindow;
         }
 
         /// <summary>
@@ -100,12 +106,16 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-                parentWindow = FindVisualAncestor<Window>(this);
-                if (parentWindow != null)
+                if (belongsToParentWindow)
                 {
-                    parentWindow.Closed -= ParentWindow_Closed;
-                    parentWindow.Closed += ParentWindow_Closed;
+                    parentWindow = FindVisualAncestor<Window>(this);
+                    if (parentWindow != null)
+                    {
+                        parentWindow.Closed -= ParentWindow_Closed;
+                        parentWindow.Closed += ParentWindow_Closed;
+                    }
                 }
+
                 StartD3D();
             }
             catch (Exception ex)
@@ -129,11 +139,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            if (parentWindow != null)
+            if (belongsToParentWindow && parentWindow != null)
             {
                 parentWindow.Closed -= ParentWindow_Closed;
             }
-            if (DataContext == null && RenderHost.EffectsManager == null)
+            if (DataContext == null && RenderHost.EffectsManager == null && belongsToParentWindow)
             {
                 EndD3D();
             }
@@ -255,5 +265,44 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return null;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (!belongsToParentWindow)
+                        EndD3D();
+
+                    compositionTarget.Dispose();
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~DPFCanvas() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

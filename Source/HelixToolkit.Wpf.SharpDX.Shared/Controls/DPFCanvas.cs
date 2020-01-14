@@ -77,6 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IRenderHost RenderHost { private set; get; }
         private Window parentWindow;
+        private readonly bool belongsToParentWindow;
 
         /// <summary>
         /// Fired whenever an exception occurred on this object.
@@ -87,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public DPFCanvas(bool deferredRendering = false)
+        public DPFCanvas(bool deferredRendering = false, bool attachedToWindow = true)
         {
             if (deferredRendering)
             {
@@ -103,6 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
             (RenderHost as DX11ImageSourceRenderHost).OnImageSourceChanged += DPFCanvas_OnImageSourceChanged;
+            belongsToParentWindow = attachedToWindow;
         }
 
         private void DPFCanvas_OnImageSourceChanged(object sender, DX11ImageSourceArgs e)
@@ -119,12 +121,16 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-                parentWindow = FindVisualAncestor<Window>(this);
-                if (parentWindow != null)
+                if (belongsToParentWindow)
                 {
-                    parentWindow.Closed -= ParentWindow_Closed;
-                    parentWindow.Closed += ParentWindow_Closed;
+                    parentWindow = FindVisualAncestor<Window>(this);
+                    if (parentWindow != null)
+                    {
+                        parentWindow.Closed -= ParentWindow_Closed;
+                        parentWindow.Closed += ParentWindow_Closed;
+                    }
                 }
+
                 StartD3D();
             }
             catch (Exception ex)
@@ -154,11 +160,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            if(parentWindow != null)
+            if(belongsToParentWindow && parentWindow != null)
             {
                 parentWindow.Closed -= ParentWindow_Closed;
             }
-            if (DataContext == null && RenderHost.EffectsManager == null)
+            if (DataContext == null && RenderHost.EffectsManager == null && belongsToParentWindow)
             {
                 EndD3D();
             }
@@ -312,6 +318,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (disposing)
                 {
+                    if (!belongsToParentWindow)
+                        EndD3D();
+
                     compositionTarget.Dispose();
                     this.Source = null;
                     // TODO: dispose managed state (managed objects).

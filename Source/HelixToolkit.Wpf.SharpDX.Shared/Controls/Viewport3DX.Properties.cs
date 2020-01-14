@@ -1213,6 +1213,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// The belongs to parent window property
+        /// </summary>
+        public static readonly DependencyProperty BelongsToParentWindowProperty =
+            DependencyProperty.Register("BelongsToParentWindow", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+
+        /// <summary>
         /// Background Color
         /// </summary>
         public Color BackgroundColor
@@ -3076,6 +3082,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)GetValue(AllowLeftRightRotationProperty); }
             set { SetValue(AllowLeftRightRotationProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating if the life cycle of the viewport
+        /// depends on the first parent window found in the actual visual tree.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the viewport belongs to the first parent window; otherwise, <c>false</c>
+        /// </value>
+        public bool BelongsToParentWindow
+        {
+            get { return (bool)GetValue(BelongsToParentWindowProperty); }
+            set { SetValue(BelongsToParentWindowProperty, value); }
         }
     }
 }
