@@ -1856,7 +1856,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~DPFCanvas() {
+        // ~Viewport3DX() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
         // }
