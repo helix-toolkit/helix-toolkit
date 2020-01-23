@@ -119,16 +119,16 @@ namespace HelixToolkit.UWP
             /// Creates the view from texture model.
             /// </summary>
             /// <param name="texture">The stream.</param>
-            /// <param name="disableAutoGenMipMap">Disable auto mipmaps generation</param>
+            /// <param name="enableAutoGenMipMap">Enable auto mipmaps generation</param>
             /// <exception cref="ArgumentOutOfRangeException"/>
-            public void CreateView(TextureModel texture, bool disableAutoGenMipMap = false)
+            public void CreateView(TextureModel texture, bool enableAutoGenMipMap = true)
             {
                 this.DisposeAndClear();
                 if (texture != null && device != null)
                 {
                     if (texture.IsCompressed && texture.CompressedStream != null)
                     {
-                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, disableAutoGenMipMap));
+                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, !enableAutoGenMipMap));
                         textureView = Collect(new ShaderResourceView(device, resource));
                         TextureFormat = textureView.Description.Format;
                     }
@@ -142,16 +142,16 @@ namespace HelixToolkit.UWP
                         {
                             if (texture.Width == 0)
                             {
-                                CreateView(texture.NonCompressedData, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                                CreateView(texture.NonCompressedData, texture.UncompressedFormat, true, enableAutoGenMipMap);
                             }
                             else
                             {
-                                CreateView(texture.NonCompressedData, texture.Width, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                                CreateView(texture.NonCompressedData, texture.Width, texture.UncompressedFormat, true, enableAutoGenMipMap);
                             }
                         }
                         else
                         {                          
-                            CreateView(texture.NonCompressedData, texture.Width, texture.Height, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                            CreateView(texture.NonCompressedData, texture.Width, texture.Height, texture.UncompressedFormat, true, enableAutoGenMipMap);
                         }
                     }
                 }
