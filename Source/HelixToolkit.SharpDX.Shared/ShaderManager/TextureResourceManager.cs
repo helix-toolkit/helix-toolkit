@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP
                 else
                 {
                     var proxy = new ShaderResourceViewProxy(device);
-                    proxy.CreateView(textureModel, enableAutoGenMipMap);
+                    proxy.CreateView(textureModel, true, enableAutoGenMipMap);
                     proxy.Disposed += (s, e) =>
                     {
                         lock (targetDict)
