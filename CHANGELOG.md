@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Next Version]
 ### Added
 1. Add IsTopBottomViewOrientedToFrontBack property to view cube #1263. (WPF)
+2. Support color linear blending mode for Point Rendering. (WPF.SharpDX/UWP/Core)
 
 ### Improvement and Changes
 1. Improve volume rendering. Properly renders other mesh along with volume. (WPF.SharpDX/UWP/Core)
