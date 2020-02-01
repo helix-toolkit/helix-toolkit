@@ -404,6 +404,8 @@ namespace HelixToolkit.UWP
         public const string HasTextureStr = "bHasTexture"; //bool
         public const string TextureScaleStr = "pTextureScale";//float;
         public const string AlphaThresholdStr = "pAlphaThreshold"; // float; 
+        public const string EnableBlendingStr = "pEnableBlending"; //bool
+        public const string BlendingFactorStr = "pBlendingFactor"; //float
     }
 
     /// <summary>

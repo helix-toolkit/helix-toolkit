@@ -58,6 +58,8 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PointMaterialCore.FadingNearDistance), () => { WriteValue(PointLineMaterialStruct.FadeNearDistance, material.FadingNearDistance); });
                 AddPropertyBinding(nameof(PointMaterialCore.FadingFarDistance), () => { WriteValue(PointLineMaterialStruct.FadeFarDistance, material.FadingFarDistance); });
                 AddPropertyBinding(nameof(PointMaterialCore.FixedSize), () => { WriteValue(PointLineMaterialStruct.FixedSize, material.FixedSize); });
+                AddPropertyBinding(nameof(PointMaterialCore.EnableColorBlending), () => { WriteValue(PointLineMaterialStruct.EnableBlendingStr, material.EnableColorBlending); });
+                AddPropertyBinding(nameof(PointMaterialCore.BlendingFactor), () => { WriteValue(PointLineMaterialStruct.BlendingFactorStr, material.BlendingFactor); });
             }
 
             public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
