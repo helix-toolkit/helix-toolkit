@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 1. Fix dependency property on HitTestThickness on both line/point model3D. Ref #1257 (WPF.SharpDX/UWP/Core)
 2. Fix MeshGeometryHelper.FindSharpEdges() not working properly.
+3. Fix CreateView overloading wrong function. (WPF.SharpDX/UWP/Core)
 
 ## [2.10.0] - 2019-11-10
 ### Added
