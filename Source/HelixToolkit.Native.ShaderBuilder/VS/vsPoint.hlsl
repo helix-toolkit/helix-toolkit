@@ -3,6 +3,7 @@
 #define POINTLINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\CommonBuffers.hlsl"
+#include"..\Common\Common.hlsl"
 
 GSInputPS main(VSInputPS input)
 {
@@ -26,7 +27,9 @@ GSInputPS main(VSInputPS input)
     float3 vEye = vEyePos - output.wp.xyz;
     output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
 	output.p = mul(output.wp, mViewProjection);
-	output.c = input.c * pColor;
+    // Allow to quickly change blending mode and do linear blending
+    output.c = (1 - pEnableBlending) * input.c * pColor + pEnableBlending * (pBlendingFactor * input.c + (1 - pBlendingFactor) * pColor);
+    input.c * pColor;
 	return output;
 }
 

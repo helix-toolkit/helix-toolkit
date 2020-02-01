@@ -70,9 +70,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         /// <summary>
-        /// Fixed sized billboard. Default = true. 
-        /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
-        /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
+        /// Fixed sized. Default = true. 
+        /// <para>When FixedSize = true, the render size will be scale to normalized device coordinates(screen) size</para>
+        /// <para>When FixedSize = false, the render size will be actual size in 3D world space</para>
         /// </summary>
         public static readonly DependencyProperty FixedSizeProperty
             = DependencyProperty.Register("FixedSize", typeof(bool), typeof(PointGeometryModel3D),
@@ -80,6 +80,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     (d as PointGeometryModel3D).material.FixedSize = (bool)e.NewValue;
+                }));
+
+        // Using a DependencyProperty as the backing store for EnableColorBlending.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnableColorBlendingProperty =
+            DependencyProperty.Register("EnableColorBlending", typeof(bool), typeof(PointGeometryModel3D), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    (d as PointGeometryModel3D).material.EnableColorBlending = (bool)e.NewValue;
+                }));
+
+        // Using a DependencyProperty as the backing store for BlendingFactor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BlendingFactorProperty =
+            DependencyProperty.Register("BlendingFactor", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.0,
+                (d, e) =>
+                {
+                    (d as PointGeometryModel3D).material.BlendingFactor = (float)(double)e.NewValue;
                 }));
 
         public Media.Color Color
@@ -131,7 +147,33 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(FixedSizeProperty);
             }
         }
-#endregion
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable color blending].
+        /// <para>Once enabled, final color 
+        /// = <see cref="BlendingFactor"/> * <see cref="PointColor"/> + (1 - <see cref="BlendingFactor"/>) * Vertex Color.</para>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable color blending]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableColorBlending
+        {
+            get { return (bool)GetValue(EnableColorBlendingProperty); }
+            set { SetValue(EnableColorBlendingProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the blending factor.
+        /// <para>Used when <see cref="EnableColorBlending"/> = true.</para>
+        /// </summary>
+        /// <value>
+        /// The blending factor.
+        /// </value>
+        public double BlendingFactor
+        {
+            get { return (double)GetValue(BlendingFactorProperty); }
+            set { SetValue(BlendingFactorProperty, value); }
+        }
+        #endregion
 
         protected readonly PointMaterialCore material = new PointMaterialCore();
         /// <summary>

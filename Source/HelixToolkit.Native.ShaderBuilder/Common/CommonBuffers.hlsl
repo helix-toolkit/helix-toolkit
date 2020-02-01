@@ -150,7 +150,8 @@ cbuffer cbPointLineModel : register(b4)
     bool bHasTexture = false;
     float pTextureScale = 1;
     float pAlphaThreshold = 0;
-    float2 padding2;
+    bool pEnableBlending = 0;
+    float pBlendingFactor = 0;
 };
 #endif
 #if defined(VOLUME) // model for line, point and billboard
