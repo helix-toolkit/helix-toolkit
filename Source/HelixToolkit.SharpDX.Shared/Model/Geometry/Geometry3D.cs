@@ -199,13 +199,17 @@ namespace HelixToolkit.UWP
 
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
+        /// <para>This is useful if user want to reuse existing <see cref="Positions"/> list and update vertex value inside the list.</para>
+        /// <para>Note: For performance purpose, this will not cause bounding box update. 
+        /// User must manually call <see cref="UpdateBounds"/> to refresh geometry bounding box.</para>
         /// </summary>
         public void UpdateVertices()
         {
             RaisePropertyChanged(VertexBuffer);
         }
         /// <summary>
-        /// Call to manually update triangle buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
+        /// Call to manually update triangle buffer.
+        /// <para>This is useful if user want to reuse existing <see cref="Indices"/> object and update index value inside the list.</para>
         /// </summary>
         public void UpdateTriangles()
         {
@@ -213,7 +217,9 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// Call to manually update vertex color buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
+        /// Call to manually update vertex color buffer.
+        /// <para>This is useful if user want to reuse existing <see cref="Colors"/> object and update color value inside the list.</para>
+        /// <para>Make sure the <see cref="Colors"/> count equal to the <see cref="Positions"/> count</para>
         /// </summary>
         public void UpdateColors()
         {
