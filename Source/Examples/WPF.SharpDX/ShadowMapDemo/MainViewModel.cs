@@ -72,8 +72,22 @@ namespace ShadowMapDemo
             this.ShadowMapResolution = new Size(2048, 2048);
 
             // camera setup
-            this.Camera = new PerspectiveCamera { Position =new Point3D(0,1,1), LookDirection = new Vector3D(0,-1,-1), UpDirection = new Vector3D(0, 1, 0) };
-            Camera1 = new PerspectiveCamera { Position = new Point3D(0,5,0), LookDirection = new Vector3D(0,-1,0), UpDirection = new Vector3D(1, 0, 0) };
+            this.Camera = new PerspectiveCamera 
+            { 
+                Position =new Point3D(0,1,1), 
+                LookDirection = new Vector3D(0,-1,-1), 
+                UpDirection = new Vector3D(0, 1, 0) 
+            };
+
+            Camera1 = new PerspectiveCamera 
+            { 
+                Position = new Point3D(0,5,0), 
+                LookDirection = new Vector3D(0,-1,0), 
+                UpDirection = new Vector3D(1, 0, 0), 
+                FarPlaneDistance = 5000, 
+                NearPlaneDistance = 1,
+                FieldOfView = 45
+            };
 
             // scene model3d
             var b1 = new MeshBuilder();
