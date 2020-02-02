@@ -244,11 +244,11 @@
                             Margin="3"
                             Maximum="90"
                             Minimum="15"
-                            Value="{Binding OuterAngle, ElementName=spotLight}" />
+                            Value="{Binding Camera1.FieldOfView}" />
                         <TextBox
                             Width="35"
                             Margin="3"
-                            Text="{Binding OuterAngle, ElementName=spotLight}" />
+                            Text="{Binding Camera1.FieldOfView}" />
                     </StackPanel>
                     <StackPanel Margin="0" Orientation="Horizontal">
                         <TextBlock Margin="3">Inner Angle:</TextBlock>
@@ -268,13 +268,13 @@
                         <Slider
                             Width="70"
                             Margin="3"
-                            Maximum="500"
-                            Minimum="1"
-                            Value="{Binding Range, ElementName=spotLight}" />
+                            Maximum="5000"
+                            Minimum="100"
+                            Value="{Binding Camera1.FarPlaneDistance}" />
                         <TextBox
                             Width="35"
                             Margin="3"
-                            Text="{Binding Range, ElementName=spotLight}" />
+                            Text="{Binding Camera1.FarPlaneDistance}" />
                     </StackPanel>
                 </StackPanel>
             </Expander>
