@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf
         {
             if (format == null)
             {
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             }
 
             return matrix.ConvertToString(format, "\t", "\n", columnWidth, CultureInfo.InvariantCulture);

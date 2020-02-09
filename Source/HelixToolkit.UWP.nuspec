@@ -7,7 +7,7 @@
     <authors>objo, Lunci</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
+    <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom 3D controls for UWP and a scene graph based on SharpDX.</description>
     <tags>UWP SharpDX 3D</tags>
@@ -29,13 +29,14 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\HelixToolkit.UWP.???" target="lib\uap10.0" />
-    <file src="bin\Release\HelixToolkit.UWP.??.xml" target="lib\uap10.0\HelixToolkit.UWP" />
-    <file src="bin\Release\Resources\*.*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
-    <file src="bin\Release\Themes\*.*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
-    <file src="..\..\LICENSE" />
-    <file src="..\..\AUTHORS" />
-    <file src="..\..\CONTRIBUTORS" />
-    <file src="..\..\README.md" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP.???" target="lib\uap10.0" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\HelixToolkit.UWP.??.xml" target="lib\uap10.0\HelixToolkit.UWP" />
+    <file src="HelixToolkit.UWP\bin\Release\Resources\*.*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\Themes\*.*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
+    <file src="..\LICENSE" />
+    <file src="..\AUTHORS" />
+    <file src="..\CONTRIBUTORS" />
+    <file src="..\README.md" />
+	<file src="..\Images\helixtoolkit.png" target="" />
   </files>
 </package>

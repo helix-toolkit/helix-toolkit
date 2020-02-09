@@ -472,6 +472,54 @@ namespace HelixToolkit.UWP
                 StencilReadMask = 0,
                 StencilWriteMask = 0
             };
+
+            public readonly static DepthStencilStateDescription DSSVolumeBackFace = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = true,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthComparison = Comparison.Less,
+                IsStencilEnabled = true,
+                FrontFace = new DepthStencilOperationDescription()
+                {
+                    FailOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Zero,
+                    Comparison = Comparison.Always
+                },
+                BackFace = new DepthStencilOperationDescription()
+                {
+                    Comparison = Comparison.Always,
+                    FailOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Zero
+                },
+                StencilReadMask = 0x00,
+                StencilWriteMask = 0xFF
+            };
+
+            public readonly static DepthStencilStateDescription DSSVolumeFrontFace = new DepthStencilStateDescription()
+            {
+                IsDepthEnabled = true,
+                DepthWriteMask = DepthWriteMask.All,
+                DepthComparison = Comparison.Less,
+                IsStencilEnabled = true,
+                FrontFace = new DepthStencilOperationDescription()
+                {
+                    FailOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Keep,
+                    Comparison = Comparison.Equal
+                },
+                BackFace = new DepthStencilOperationDescription()
+                {
+                    Comparison = Comparison.Never,
+                    FailOperation = StencilOperation.Keep,
+                    DepthFailOperation = StencilOperation.Keep,
+                    PassOperation = StencilOperation.Zero
+                },
+                StencilReadMask = 0xFF,
+                StencilWriteMask = 0x00
+            };
         }
 
         /// <summary>

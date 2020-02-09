@@ -488,7 +488,7 @@ namespace HelixToolkit.Wpf
         {
             if (camera == null)
             {
-                throw new ArgumentNullException("camera");
+                throw new ArgumentNullException(nameof(camera));
             }
 
             var matrixCamera = camera as MatrixCamera;
@@ -541,7 +541,7 @@ namespace HelixToolkit.Wpf
         {
             if (camera == null)
             {
-                throw new ArgumentNullException("camera");
+                throw new ArgumentNullException(nameof(camera));
             }
 
             var perspectiveCamera = camera as PerspectiveCamera;
@@ -599,7 +599,7 @@ namespace HelixToolkit.Wpf
 
             if (camera == null)
             {
-                throw new ArgumentNullException("camera");
+                throw new ArgumentNullException(nameof(camera));
             }
 
             if (camera.Transform != null)

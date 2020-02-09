@@ -150,7 +150,8 @@ cbuffer cbPointLineModel : register(b4)
     bool bHasTexture = false;
     float pTextureScale = 1;
     float pAlphaThreshold = 0;
-    float2 padding2;
+    bool pEnableBlending = 0;
+    float pBlendingFactor = 0;
 };
 #endif
 #if defined(VOLUME) // model for line, point and billboard
@@ -158,16 +159,16 @@ cbuffer cbPointLineModel : register(b4)
 cbuffer cbVolumeModel : register(b4)
 {
     float4x4 mWorld;
+    float4x4 mWorldInv;
     float4 pColor;
     float stepSize;
     uint iterationOffset;
-    float padding1;
+    bool enablePlaneAlignment;
     uint maxIterations;
     bool bHasGradientMapX;
     float isoValue;
     float baseSampleDist = .5f;
     float actualSampleDist = .5f;
-    float4 scaleFactor;
 };
 #endif
 #if defined(PARTICLE) // model for line, point and billboard

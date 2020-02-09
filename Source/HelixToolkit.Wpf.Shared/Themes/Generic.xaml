@@ -242,6 +242,7 @@
                                     EnableEdgeClicks="{Binding IsViewCubeEdgeClicksEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                     FrontText="{Binding ViewCubeFrontText, RelativeSource={RelativeSource TemplatedParent}}"
                                     IsEnabled="{Binding IsRotationEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                    IsTopBottomViewOrientedToFrontBack="{Binding IsTopBottomViewOrientedToFrontBack, RelativeSource={RelativeSource TemplatedParent}}"
                                     LeftText="{Binding ViewCubeLeftText, RelativeSource={RelativeSource TemplatedParent}}"
                                     ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}"
                                     RightText="{Binding ViewCubeRightText, RelativeSource={RelativeSource TemplatedParent}}"

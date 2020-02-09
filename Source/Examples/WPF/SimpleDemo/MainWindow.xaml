@@ -216,6 +216,7 @@
                                             EnableEdgeClicks="{Binding IsViewCubeEdgeClicksEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                             FrontText="{Binding ViewCubeFrontText, RelativeSource={RelativeSource TemplatedParent}}"
                                             IsEnabled="{Binding IsRotationEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                            IsTopBottomViewOrientedToFrontBack="{Binding IsTopBottomViewOrientedToFrontBack, RelativeSource={RelativeSource TemplatedParent}}"
                                             LeftText="{Binding ViewCubeLeftText, RelativeSource={RelativeSource TemplatedParent}}"
                                             ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}"
                                             RightText="{Binding ViewCubeRightText, RelativeSource={RelativeSource TemplatedParent}}"
@@ -229,7 +230,7 @@
             </Style>
         </Grid.Resources>
         <!--  The HelixViewport3D supports camera manipulation, and can be used just like the Viewport3D  -->
-        <HelixToolkit:HelixViewport3D ShowFrameRate="True" ZoomExtentsWhenLoaded="True" ZoomAroundMouseDownPoint="True" RotateAroundMouseDownPoint="True">
+        <HelixToolkit:HelixViewport3D ShowFrameRate="True" ZoomExtentsWhenLoaded="True" ZoomAroundMouseDownPoint="True" RotateAroundMouseDownPoint="True" IsTopBottomViewOrientedToFrontBack="True" IsViewCubeEdgeClicksEnabled="True">
 
 
             <!--  Remember to add light to the scene  -->

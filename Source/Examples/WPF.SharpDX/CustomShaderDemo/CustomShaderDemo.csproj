@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -124,26 +124,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Shaders\Common.hlsl" />
-    <Content Include="Shaders\CommonBuffers.hlsl" />
-    <Content Include="Shaders\DataStructs.hlsl" />
-    <Content Include="Shaders\PerlinNoise3D.hlsl" />
-    <PixelShader Include="Shaders\psMeshNoiseBlinnPhong.hlsl">
-      <ShaderModel>4_0</ShaderModel>
-    </PixelShader>
-    <VertexShader Include="Shaders\vsMeshDataSampling.hlsl">
-      <ShaderModel>4_0</ShaderModel>
-    </VertexShader>
-    <PixelShader Include="Shaders\psMeshDataSampling.hlsl">
-      <ShaderModel>4_0</ShaderModel>
-    </PixelShader>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.HLSL.CSharpVB">
-      <Version>1.0.1</Version>
+    <PackageReference Include="JeremyAnsel.HLSL.Targets">
+      <Version>1.0.9</Version>
     </PackageReference>
     <PackageReference Include="PropertyTools.Wpf">
       <Version>3.0.0</Version>
@@ -160,6 +145,21 @@
     <PackageReference Include="SharpDX.Mathematics">
       <Version>4.2.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Shaders\Common.hlsl" />
+    <Content Include="Shaders\CommonBuffers.hlsl" />
+    <Content Include="Shaders\DataStructs.hlsl" />
+    <Content Include="Shaders\PerlinNoise3D.hlsl" />
+    <HLSLShader Include="Shaders\psMeshDataSampling.hlsl">
+        <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="Shaders\psMeshNoiseBlinnPhong.hlsl">
+        <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="Shaders\vsMeshDataSampling.hlsl">
+        <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -44,21 +44,21 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public ShaderResourceViewProxy Register(TextureModel textureStream)
         {
-            return Register(textureStream, false);
+            return Register(textureStream, true);
         }
         /// <summary>
         /// Registers the specified material unique identifier.
         /// </summary>
         /// <param name="textureModel">The texture model.</param>
-        /// <param name="disableAutoGenMipMap">Disable generate mipmaps automatically</param>
+        /// <param name="enableAutoGenMipMap">Enable generate mipmaps automatically</param>
         /// <returns></returns>
-        public ShaderResourceViewProxy Register(TextureModel textureModel, bool disableAutoGenMipMap)
+        public ShaderResourceViewProxy Register(TextureModel textureModel, bool enableAutoGenMipMap)
         {
             if (textureModel == null || textureModel.GetKey() == null)
             {
                 return null;
             }
-            var targetDict = disableAutoGenMipMap ? resourceDictionaryNoMipMaps : resourceDictionaryMipMaps;
+            var targetDict = enableAutoGenMipMap ? resourceDictionaryMipMaps : resourceDictionaryNoMipMaps;
             lock (targetDict)
             {
                 if (targetDict.TryGetValue(textureModel.GetKey(), out ShaderResourceViewProxy view))
@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP
                 else
                 {
                     var proxy = new ShaderResourceViewProxy(device);
-                    proxy.CreateView(textureModel, disableAutoGenMipMap);
+                    proxy.CreateView(textureModel, true, enableAutoGenMipMap);
                     proxy.Disposed += (s, e) =>
                     {
                         lock (targetDict)

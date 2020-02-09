@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The hit test thickness property
         /// </summary>
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointMaterialGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineMaterialGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             { ((d as Element3DCore).SceneNode as LineNode).HitTestThickness = (double)e.NewValue; }));
 
         /// <summary>

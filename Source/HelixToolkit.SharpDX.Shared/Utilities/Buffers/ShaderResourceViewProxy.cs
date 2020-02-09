@@ -119,17 +119,21 @@ namespace HelixToolkit.UWP
             /// Creates the view from texture model.
             /// </summary>
             /// <param name="texture">The stream.</param>
-            /// <param name="disableAutoGenMipMap">Disable auto mipmaps generation</param>
+            /// <param name="createSRV">Create ShaderResourceView</param>
+            /// <param name="enableAutoGenMipMap">Enable auto mipmaps generation</param>
             /// <exception cref="ArgumentOutOfRangeException"/>
-            public void CreateView(TextureModel texture, bool disableAutoGenMipMap = false)
+            public void CreateView(TextureModel texture, bool createSRV = true, bool enableAutoGenMipMap = true)
             {
                 this.DisposeAndClear();
                 if (texture != null && device != null)
                 {
                     if (texture.IsCompressed && texture.CompressedStream != null)
                     {
-                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, disableAutoGenMipMap));
-                        textureView = Collect(new ShaderResourceView(device, resource));
+                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, !enableAutoGenMipMap));
+                        if (createSRV)
+                        {
+                            textureView = Collect(new ShaderResourceView(device, resource));
+                        }
                         TextureFormat = textureView.Description.Format;
                     }
                     else if (texture.NonCompressedData != null && texture.NonCompressedData.Length > 0)
@@ -142,16 +146,16 @@ namespace HelixToolkit.UWP
                         {
                             if (texture.Width == 0)
                             {
-                                CreateView(texture.NonCompressedData, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                                CreateView(texture.NonCompressedData, texture.UncompressedFormat, createSRV, enableAutoGenMipMap);
                             }
                             else
                             {
-                                CreateView(texture.NonCompressedData, texture.Width, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                                CreateView(texture.NonCompressedData, texture.Width, texture.UncompressedFormat, createSRV, enableAutoGenMipMap);
                             }
                         }
                         else
                         {                          
-                            CreateView(texture.NonCompressedData, texture.Width, texture.Height, texture.UncompressedFormat, true, disableAutoGenMipMap);
+                            CreateView(texture.NonCompressedData, texture.Width, texture.Height, texture.UncompressedFormat, createSRV, enableAutoGenMipMap);
                         }
                     }
                 }
@@ -502,10 +506,10 @@ namespace HelixToolkit.UWP
             /// <param name="texture">The texture.</param>
             /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
             /// <returns></returns>
-            public static ShaderResourceViewProxy CreateView(Device device, System.IO.Stream texture, bool createSRV = true)
+            public static ShaderResourceViewProxy CreateView(Device device, System.IO.Stream texture, bool createSRV = true, bool generateMipMaps = true)
             {
                 var proxy = new ShaderResourceViewProxy(device);
-                proxy.CreateView(texture, createSRV);
+                proxy.CreateView(texture, createSRV, generateMipMaps);
                 return proxy;
             }
             /// <summary>

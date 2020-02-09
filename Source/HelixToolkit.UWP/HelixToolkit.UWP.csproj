@@ -11,8 +11,8 @@
     <AssemblyName>HelixToolkit.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -27,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,6 +41,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>CS1591;</NoWarn>
     <DebugSymbols>true</DebugSymbols>
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -127,13 +129,12 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="Resources\arial.dds">
+    <None Include="Resources\arial.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <PRIResource Include="Resources.resw" />
-    <Content Include="Resources\arial.fnt">
+    </None>
+    <None Include="Resources\arial.fnt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonDX\CompositionTargetEx.cs" />
@@ -240,294 +241,294 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\csParticleInsert.cso">
+    <None Include="Resources\csParticleInsert.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\csParticleUpdate.cso">
+    </None>
+    <None Include="Resources\csParticleUpdate.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\dsMeshTriTessellation.cso">
+    </None>
+    <None Include="Resources\dsMeshTriTessellation.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\gsBillboard.cso">
+    </None>
+    <None Include="Resources\gsBillboard.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\gsLine.cso">
+    </None>
+    <None Include="Resources\gsLine.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\gsParticle.cso">
+    </None>
+    <None Include="Resources\gsParticle.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\gsPoint.cso">
+    </None>
+    <None Include="Resources\gsPoint.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\hsMeshTriTessellation.cso">
+    </None>
+    <None Include="Resources\hsMeshTriTessellation.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psBillboardText.cso">
+    </None>
+    <None Include="Resources\psBillboardText.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psColor.cso">
+    </None>
+    <None Include="Resources\psColor.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psDepthStencilOnly.cso">
+    </None>
+    <None Include="Resources\psDepthStencilOnly.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psDiffuseMap.cso">
+    </None>
+    <None Include="Resources\psDiffuseMap.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectBloomBlurHorizontal.cso">
+    </None>
+    <None Include="Resources\psEffectBloomBlurHorizontal.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectBloomBlurVertical.cso">
+    </None>
+    <None Include="Resources\psEffectBloomBlurVertical.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectBloomCombine.cso">
+    </None>
+    <None Include="Resources\psEffectBloomCombine.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectBloomExtract.cso">
+    </None>
+    <None Include="Resources\psEffectBloomExtract.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectGaussianBlurHorizontal.cso">
+    </None>
+    <None Include="Resources\psEffectGaussianBlurHorizontal.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectGaussianBlurVertical.cso">
+    </None>
+    <None Include="Resources\psEffectGaussianBlurVertical.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectMeshBorderHighlight.cso">
+    </None>
+    <None Include="Resources\psEffectMeshBorderHighlight.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectMeshXRay.cso">
+    </None>
+    <None Include="Resources\psEffectMeshXRay.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectOutlineQuad.cso">
+    </None>
+    <None Include="Resources\psEffectOutlineQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectOutlineQuadStencil.cso">
+    </None>
+    <None Include="Resources\psEffectOutlineQuadStencil.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectOutlineQualFinal.cso">
+    </None>
+    <None Include="Resources\psEffectOutlineQualFinal.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psLine.cso">
+    </None>
+    <None Include="Resources\psLine.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psLineColor.cso">
+    </None>
+    <None Include="Resources\psLineColor.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshBlinnPhong.cso">
+    </None>
+    <None Include="Resources\psMeshBlinnPhong.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshClipPlaneBackface.cso">
+    </None>
+    <None Include="Resources\psMeshClipPlaneBackface.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshClipPlaneQuad.cso">
+    </None>
+    <None Include="Resources\psMeshClipPlaneQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshXRay.cso">
+    </None>
+    <None Include="Resources\psMeshXRay.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psNormals.cso">
+    </None>
+    <None Include="Resources\psNormals.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psParticle.cso">
+    </None>
+    <None Include="Resources\psParticle.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psPoint.cso">
+    </None>
+    <None Include="Resources\psPoint.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psPositions.cso">
+    </None>
+    <None Include="Resources\psPositions.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psScreenDup.cso">
+    </None>
+    <None Include="Resources\psScreenDup.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psShadow.cso">
+    </None>
+    <None Include="Resources\psShadow.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psSkybox.cso">
+    </None>
+    <None Include="Resources\psSkybox.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psViewCube.cso">
+    </None>
+    <None Include="Resources\psViewCube.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psWireframe.cso">
+    </None>
+    <None Include="Resources\psWireframe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsBillboard.cso">
+    </None>
+    <None Include="Resources\vsBillboard.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsBillboardInstancing.cso">
+    </None>
+    <None Include="Resources\vsBillboardInstancing.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsCubeMap.cso">
+    </None>
+    <None Include="Resources\vsCubeMap.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshClipPlane.cso">
+    </None>
+    <None Include="Resources\vsMeshClipPlane.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshClipPlaneQuad.cso">
+    </None>
+    <None Include="Resources\vsMeshClipPlaneQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshDefault.cso">
+    </None>
+    <None Include="Resources\vsMeshDefault.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshInstancing.cso">
+    </None>
+    <None Include="Resources\vsMeshInstancing.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshInstancingTessellation.cso">
+    </None>
+    <None Include="Resources\vsMeshInstancingTessellation.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshOutlinePass1.cso">
+    </None>
+    <None Include="Resources\vsMeshOutlinePass1.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshOutlineScreenQuad.cso">
+    </None>
+    <None Include="Resources\vsMeshOutlineScreenQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshShadow.cso">
+    </None>
+    <None Include="Resources\vsMeshShadow.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshTessellation.cso">
+    </None>
+    <None Include="Resources\vsMeshTessellation.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshWireframe.cso">
+    </None>
+    <None Include="Resources\vsMeshWireframe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsParticle.cso">
+    </None>
+    <None Include="Resources\vsParticle.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsPoint.cso">
+    </None>
+    <None Include="Resources\vsPoint.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsPointShadow.cso">
+    </None>
+    <None Include="Resources\vsPointShadow.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsScreenDup.cso">
+    </None>
+    <None Include="Resources\vsScreenDup.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsScreenDupCursor.cso">
+    </None>
+    <None Include="Resources\vsScreenDupCursor.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsSkybox.cso">
+    </None>
+    <None Include="Resources\vsSkybox.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="HelixToolkit.SharpDX.Shared.licenseheader" />
-    <Content Include="Resources\psBillboardTextOIT.cso">
+    <None Include="Resources\psBillboardTextOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshBlinnPhongOIT.cso">
+    </None>
+    <None Include="Resources\psMeshBlinnPhongOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshBlinnPhongOITQuad.cso">
+    </None>
+    <None Include="Resources\psMeshBlinnPhongOITQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psParticleOIT.cso">
+    </None>
+    <None Include="Resources\psParticleOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psFXAA.cso">
+    </None>
+    <None Include="Resources\psFXAA.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psWireframeOIT.cso">
+    </None>
+    <None Include="Resources\psWireframeOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psLUMA.cso">
+    </None>
+    <None Include="Resources\psLUMA.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectMeshXRayGrid.cso">
+    </None>
+    <None Include="Resources\psEffectMeshXRayGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\gsMeshNormalVector.cso">
+    </None>
+    <None Include="Resources\gsMeshNormalVector.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshColorStripe.cso">
+    </None>
+    <None Include="Resources\psMeshColorStripe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectMeshDiffuseXRayGrid.cso">
+    </None>
+    <None Include="Resources\psEffectMeshDiffuseXRayGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshDiffuseMapOIT.cso">
+    </None>
+    <None Include="Resources\psMeshDiffuseMapOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshBatched.cso">
+    </None>
+    <None Include="Resources\vsMeshBatched.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshBatchedShadow.cso">
+    </None>
+    <None Include="Resources\vsMeshBatchedShadow.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshBatchedWireframe.cso">
+    </None>
+    <None Include="Resources\vsMeshBatchedWireframe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\gsMeshSkinnedOut.cso">
+    </None>
+    <None Include="Resources\gsMeshSkinnedOut.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsBoneSkinningBasic.cso">
+    </None>
+    <None Include="Resources\vsBoneSkinningBasic.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psPlaneGrid.cso">
+    </None>
+    <None Include="Resources\psPlaneGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsPlaneGrid.cso">
+    </None>
+    <None Include="Resources\vsPlaneGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshPBR.cso">
+    </None>
+    <None Include="Resources\psMeshPBR.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psMeshPBROIT.cso">
+    </None>
+    <None Include="Resources\psMeshPBROIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsScreenQuad.cso">
+    </None>
+    <None Include="Resources\vsScreenQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psSprite.cso">
+    </None>
+    <None Include="Resources\psSprite.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsSprite.cso">
+    </None>
+    <None Include="Resources\vsSprite.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psVolume.cso">
+    </None>
+    <None Include="Resources\psVolume.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsVolume.cso">
+    </None>
+    <None Include="Resources\vsVolume.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psVolumeCube.cso">
+    </None>
+    <None Include="Resources\psVolumeCube.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psVolumeDiffuse.cso">
+    </None>
+    <None Include="Resources\psVolumeDiffuse.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshDepth.cso">
+    </None>
+    <None Include="Resources\vsMeshDepth.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psSSAO.cso">
+    </None>
+    <None Include="Resources\psSSAO.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psSSAOP1.cso">
+    </None>
+    <None Include="Resources\psSSAOP1.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshSSAO.cso">
+    </None>
+    <None Include="Resources\vsMeshSSAO.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsSSAO.cso">
+    </None>
+    <None Include="Resources\vsSSAO.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psSSAOBlur.cso">
+    </None>
+    <None Include="Resources\psSSAOBlur.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\vsMeshBatchedSSAO.cso">
+    </None>
+    <None Include="Resources\vsMeshBatchedSSAO.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\psEffectOutlineSmooth.cso">
+    </None>
+    <None Include="Resources\psEffectOutlineSmooth.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\gsLineArrowHead.cso">
+    </None>
+    <None Include="Resources\gsLineArrowHead.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\gsLineArrowHeadTail.cso">
+    </None>
+    <None Include="Resources\gsLineArrowHeadTail.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />

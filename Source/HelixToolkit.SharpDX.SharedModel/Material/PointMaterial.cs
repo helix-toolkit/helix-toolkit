@@ -77,6 +77,24 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as PointMaterial).Core as PointMaterialCore).FadingFarDistance = (float)(double)e.NewValue;
                 }));
+
+        // Using a DependencyProperty as the backing store for EnableColorBlending.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnableColorBlendingProperty =
+            DependencyProperty.Register("EnableColorBlending", typeof(bool), typeof(PointMaterial), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    ((d as PointMaterial).Core as PointMaterialCore).EnableColorBlending = (bool)e.NewValue;
+                }));
+
+        // Using a DependencyProperty as the backing store for BlendingFactor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BlendingFactorProperty =
+            DependencyProperty.Register("BlendingFactor", typeof(double), typeof(PointMaterial), new PropertyMetadata(0.0,
+                (d, e) =>
+                {
+                    ((d as PointMaterial).Core as PointMaterialCore).BlendingFactor = (float)(double)e.NewValue;
+                }));
+
+
         /// <summary>
         /// Gets or sets the point color.
         /// </summary>
@@ -154,7 +172,33 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)this.GetValue(FadingFarDistanceProperty); }
             set { this.SetValue(FadingFarDistanceProperty, value); }
         }
-#endregion
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable color blending].
+        /// <para>Once enabled, final color 
+        /// = <see cref="BlendingFactor"/> * <see cref="PointColor"/> + (1 - <see cref="BlendingFactor"/>) * Vertex Color.</para>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable color blending]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableColorBlending
+        {
+            get { return (bool)GetValue(EnableColorBlendingProperty); }
+            set { SetValue(EnableColorBlendingProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the blending factor.
+        /// <para>Used when <see cref="EnableColorBlending"/> = true.</para>
+        /// </summary>
+        /// <value>
+        /// The blending factor.
+        /// </value>
+        public double BlendingFactor
+        {
+            get { return (double)GetValue(BlendingFactorProperty); }
+            set { SetValue(BlendingFactorProperty, value); }
+        }
+        #endregion
 
         public PointMaterial() { }
 

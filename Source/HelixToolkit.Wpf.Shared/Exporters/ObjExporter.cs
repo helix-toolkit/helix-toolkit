@@ -150,12 +150,12 @@ namespace HelixToolkit.Wpf
         {
             if (m == null)
             {
-                throw new ArgumentNullException("m");
+                throw new ArgumentNullException(nameof(m));
             }
 
             if (t == null)
             {
-                throw new ArgumentNullException("t");
+                throw new ArgumentNullException(nameof(t));
             }
 
             // mapping from local indices (0-based) to the obj file indices (1-based)

@@ -186,4 +186,39 @@ float RGBToFloat(float4 c)
     uint v = (uint) c.r << 16 + (uint) c.g << 8 + (uint) c.b;
     return v;
 }
+
+float3 getLookDir(float4x4 viewMatrix)
+{
+    return viewMatrix._m02_m12_m22;
+}
+#ifdef VOLUME
+float4 getBoxEntryPoint(float3 localCamPos, float3 localCamVec, VolumePS_INPUT input)
+{
+    const float3 off = float3(0.5, 0.5, 0.5);
+    float steps = floor(1 / stepSize * actualSampleDist);
+    localCamPos += off;
+    float3 invRayDir = 1 / localCamVec;
+    float3 firstIntersections = (0 - localCamPos) * invRayDir;
+    float3 secondIntersections = (1 - localCamPos) * invRayDir;
+    float3 closest = min(firstIntersections, secondIntersections);
+    float3 furthest = max(firstIntersections, secondIntersections);
+    
+    float t0 = max(closest.x, max(closest.y, closest.z));
+    float t1 = min(furthest.x, min(furthest.y, furthest.z));
+   
+    float planeOffset = 1 - frac((t0 - length(localCamPos) - 0.5) * steps);
+    t0 += (planeOffset / steps) * enablePlaneAlignment;
+    t0 = max(0, t0);
+    float thickness = max(0, t1 - t0);
+    float3 entry = localCamPos + max(0, t0) * localCamVec;
+
+    // Determine actual depth. If opaque objects is inside volume, ray should end after reaching the opaque object surface.
+    float2 texB = input.pos.xy / vViewport.xy;
+    float3 front = mul(float4(texVolumeBack.Sample(samplerVolume, texB).xyz, 1), mWorldInv).xyz + off;
+    float3 v = entry - front;
+    float d = max(0, dot(normalize(v), -localCamVec));
+    thickness = d * min(length(v), thickness); 
+    return float4(entry, thickness);
+}
+#endif
 #endif

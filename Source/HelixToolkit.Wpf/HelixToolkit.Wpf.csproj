@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -114,14 +114,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ShaderEffects\AnaglyphEffect.fx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="ShaderEffects\AnaglyphEffect.fx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ShaderEffects\InterlacedEffect.fx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="ShaderEffects\InterlacedEffect.fx" />
   </ItemGroup>
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Wpf.Shared\HelixToolkit.Wpf.Shared.projitems" Label="Shared" />

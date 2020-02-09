@@ -23,8 +23,11 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             CameraRotationMode="Trackball"
-            EffectsManager="{Binding EffectsManager}"
+            EffectsManager="{Binding EffectsManager}" 
             ShowCameraTarget="False">
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"/>
+            <hx:MeshGeometryModel3D Geometry="{Binding MeshModel}" Material="{Binding MeshMaterial}"/>
+            <hx:LineMaterialGeometryModel3D Geometry="{Binding AxisModel}" Material="{Binding AxisModelMaterial}"/>
             <hx:VolumeTextureModel3D Transform="{Binding Transform}" VolumeMaterial="{Binding VolumeMaterial}" />
         </hx:Viewport3DX>
         <StackPanel
@@ -35,34 +38,38 @@
             <Button Margin="4" Command="{Binding LoadTeapotCommand}">Load Teapot</Button>
             <Button Margin="4" Command="{Binding LoadCloudCommand}">Load Noise</Button>
             <Button Margin="4" Command="{Binding LoadBeetleCommand}">Load Beetle</Button>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="4">IterationOffset:</TextBlock>
-                <TextBlock Text="{Binding IterationOffset}" />
+
+            <StackPanel Orientation="Vertical"  DataContext="{Binding VolumeMaterial}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="4">IterationOffset:</TextBlock>
+                    <TextBlock Text="{Binding IterationOffset}" />
+                </StackPanel>                
+                <Slider
+                    Margin="4,0"
+                    Maximum="255"
+                    Minimum="0"
+                    Value="{Binding IterationOffset}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="4">IsoValue:</TextBlock>
+                    <TextBlock Text="{Binding IsoValue}" />
+                </StackPanel>
+                <Slider
+                    Margin="4,0"
+                    Maximum="1"
+                    Minimum="0"
+                    Value="{Binding IsoValue}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="4">SampleDistance:</TextBlock>
+                    <TextBlock Text="{Binding SampleDistance}" />
+                </StackPanel>
+                <Slider
+                    Margin="4,0"
+                    Maximum="5"
+                    Minimum="0.1"
+                    Value="{Binding SampleDistance}" />
+                <CheckBox Margin="4,0" IsChecked="{Binding EnablePlaneAlignment}">Plane Alignment</CheckBox>                
             </StackPanel>
 
-            <Slider
-                Margin="4,0"
-                Maximum="255"
-                Minimum="0"
-                Value="{Binding IterationOffset}" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="4">IsoValue:</TextBlock>
-                <TextBlock Text="{Binding IsoValue}" />
-            </StackPanel>
-            <Slider
-                Margin="4,0"
-                Maximum="1"
-                Minimum="0"
-                Value="{Binding IsoValue}" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="4">SampleDistance:</TextBlock>
-                <TextBlock Text="{Binding SampleDistance}" />
-            </StackPanel>
-            <Slider
-                Margin="4,0"
-                Maximum="5"
-                Minimum="1"
-                Value="{Binding SampleDistance}" />
         </StackPanel>
         <Grid Grid.ColumnSpan="2" Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibilityConverter}}">
             <Rectangle

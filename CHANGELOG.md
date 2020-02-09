@@ -1,6 +1,22 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.11.0] - 2020-02-08
+### Added
+1. Add IsTopBottomViewOrientedToFrontBack property to view cube #1263. (WPF)
+2. Support color linear blending mode for Point Rendering. (WPF.SharpDX/UWP/Core)
+
+### Improvement and Changes
+1. Improve volume rendering. Properly renders other mesh along with volume. (WPF.SharpDX/UWP/Core)
+2. Properly render volume when camera is inside the volume cube. (WPF.SharpDX/UWP/Core)
+
+### Fixed
+1. Fix dependency property on HitTestThickness on both line/point model3D. Ref #1257 (WPF.SharpDX/UWP/Core)
+2. Fix MeshGeometryHelper.FindSharpEdges() not working properly. (MeshBuilder)
+3. Fix CreateView overloading wrong function. (WPF.SharpDX/UWP/Core)
+4. Fix GeometryBoundManager.GeometryValid is not updated when calling Geometry3D.UpdateVertices. (WPF.SharpDX/UWP/Core)
+5. Fix Assimp dll reference issue.  (WPF.SharpDX/UWP/Core)
+
 ## [2.10.0] - 2019-11-10
 ### Added
 1. Added HelixToolkit.Core.Wpf nuget package to support .net core 3.0 WPF.

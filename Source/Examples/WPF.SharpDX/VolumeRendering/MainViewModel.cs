@@ -39,6 +39,14 @@ namespace VolumeRendering
             get { return transform; }
         }
 
+        public Geometry3D MeshModel { get; }
+
+        public Material MeshMaterial { get; }
+
+        public LineGeometry3D AxisModel { get; }
+
+        public Material AxisModelMaterial { get; }
+
         private bool isLoading = false;
         public bool IsLoading
         {
@@ -48,44 +56,7 @@ namespace VolumeRendering
             }
             get { return isLoading; }
         }
-
-        private int iterationOffset;
-        public int IterationOffset
-        {
-            set
-            {
-                if(SetValue(ref iterationOffset, value) && volumeMaterial != null)
-                {
-                    (volumeMaterial as IVolumeTextureMaterial).IterationOffset = value;
-                }
-            }
-            get { return iterationOffset; }
-        }
-
-        private double isoValue;
-        public double IsoValue
-        {
-            set
-            {
-                if (SetValue(ref isoValue, value) && volumeMaterial != null)
-                {
-                    (volumeMaterial as IVolumeTextureMaterial).IsoValue = value;
-                }
-            }
-            get { return isoValue; }
-        }
-        private double sampleDistance = 1;
-        public double SampleDistance
-        {
-            set
-            {
-                if(SetValue(ref sampleDistance, value) && volumeMaterial != null)
-                {
-                    (volumeMaterial as IVolumeTextureMaterial).SampleDistance = value;
-                }
-            }
-            get { return sampleDistance; }
-        }
+        
         public ICommand LoadTeapotCommand { get; }
         public ICommand LoadSkullCommand { get; }
         public ICommand LoadCloudCommand { get; }
@@ -94,11 +65,31 @@ namespace VolumeRendering
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            Camera = new PerspectiveCamera() { Position = new Point3D(0, 0, -5), LookDirection = new Vector3D(0, 0, 5), UpDirection = new Vector3D(0, 1, 0) };
+            Camera = new OrthographicCamera() { Position = new Point3D(0, 0, -5), LookDirection = new Vector3D(0, 0, 5), UpDirection = new Vector3D(0, 1, 0) };
             LoadTeapotCommand = new RelayCommand((o) => { Load(0); });
             LoadSkullCommand = new RelayCommand((o) => { Load(1); });
             LoadCloudCommand = new RelayCommand((o) => { Load(2); });
             LoadBeetleCommand = new RelayCommand((o) => { Load(3); });
+            var builder = new MeshBuilder();
+            //builder.AddBox(new Vector3(0, 0, 0), 2, 2, 0.001);
+            builder.AddSphere(Vector3.Zero, 0.1);
+            builder.AddBox(Vector3.UnitX, 0.2, 0.2, 0.2);
+            MeshModel = builder.ToMesh();
+            MeshMaterial = PhongMaterials.Yellow;
+
+            var lineBuilder = new LineBuilder();
+            lineBuilder.AddLine(Vector3.Zero, Vector3.UnitX * 1.5f);
+            lineBuilder.AddLine(Vector3.Zero, Vector3.UnitY * 1.5f);
+            lineBuilder.AddLine(Vector3.Zero, Vector3.UnitZ * 1.5f);
+            AxisModel = lineBuilder.ToLineGeometry3D();
+            AxisModel.Colors = new Color4Collection(AxisModel.Positions.Count);
+            AxisModel.Colors.Add(Colors.Red.ToColor4());
+            AxisModel.Colors.Add(Colors.Red.ToColor4());
+            AxisModel.Colors.Add(Colors.Green.ToColor4());
+            AxisModel.Colors.Add(Colors.Green.ToColor4());
+            AxisModel.Colors.Add(Colors.Blue.ToColor4());
+            AxisModel.Colors.Add(Colors.Blue.ToColor4());
+            AxisModelMaterial = new LineArrowHeadMaterial() { Color = Colors.White, ArrowSize = 0.05 };
             //Load(0);
         }
 
@@ -138,9 +129,11 @@ namespace VolumeRendering
             m.Color = new Color4(1, 1, 1, 0.4f);
             m.TransferMap = transferMap;
             m.Freeze();
-            var transform = new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), 180));
-            transform.Freeze();
-            return new Tuple<Material, Media3D.Transform3D>(m, transform);
+            var scale = Matrix.Scaling(2, 2, 178 / 256f * 2);
+            var rotate = Matrix.RotationAxis(new Vector3(1, 0, 0), (float)Math.PI);
+            var t = new Media3D.MatrixTransform3D((scale * rotate).ToMatrix3D());
+            t.Freeze();
+            return new Tuple<Material, Media3D.Transform3D>(m, t);
         }
 
         private Tuple<Material, Media3D.Transform3D> LoadSkull()
@@ -150,9 +143,9 @@ namespace VolumeRendering
             m.Texture = ProcessData(data.VolumeTextures, data.Width, data.Height, data.Depth, out var transferMap);
             m.Color = new Color4(0.6f, 0.6f, 0.6f, 1f);
             m.TransferMap = transferMap;
-            var transform = new Media3D.MatrixTransform3D((Matrix.Scaling(2, 1, 1)
-                * Matrix.RotationAxis(Vector3.UnitX, (float)Math.PI / 2)).ToMatrix3D());
             m.Freeze();
+            var rotate = Matrix.RotationAxis(new Vector3(1, 0, 0), (float)Math.PI);
+            var transform = new Media3D.MatrixTransform3D(rotate.ToMatrix3D());
             transform.Freeze();
             return new Tuple<Material, Media3D.Transform3D>(m, transform);
         }

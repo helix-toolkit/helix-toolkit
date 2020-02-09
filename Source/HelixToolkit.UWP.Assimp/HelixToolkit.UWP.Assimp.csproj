@@ -11,8 +11,8 @@
     <AssemblyName>HelixToolkit.UWP.Assimp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -26,6 +26,7 @@
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP; SHARPDX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,6 +39,7 @@
     <DocumentationFile>bin\Release\HelixToolkit.UWP.Assimp.XML</DocumentationFile>
     <NoWarn>1591;</NoWarn>
     <DebugSymbols>true</DebugSymbols>
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>

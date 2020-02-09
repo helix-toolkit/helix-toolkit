@@ -65,22 +65,28 @@ namespace HelixToolkit.UWP
                     () => WriteValue(VolumeParamsStruct.Color, material.Color));
                 AddPropertyBinding(nameof(IVolumeTextureMaterial.TransferMap),
                     () => UpdateGradientMap());
+                AddPropertyBinding(nameof(IVolumeTextureMaterial.EnablePlaneAlignment),
+                    () => WriteValue(VolumeParamsStruct.EnablePlaneAlignment, material.EnablePlaneAlignment));
             }
 
             private void UpdateStepSize()
             {
-                if(texture != null && texture.Resource is Texture3D res)
+                if (texture != null && texture.Resource.Dimension == ResourceDimension.Texture3D)
                 {
-                    var desc = res.Description;
-                    var maxSize = Math.Max(desc.Width, Math.Max(desc.Height, desc.Depth));
-                    var steps = 1f / maxSize * (float)material.SampleDistance;
-                    var scale = Vector4.One / ((Vector4.One * maxSize) / new Vector4(desc.Width, desc.Height, desc.Depth, 1));
-                    scale.W = 1;               
-                    WriteValue(VolumeParamsStruct.StepSize, steps);
-                    WriteValue(VolumeParamsStruct.ActualSampleDistance, (float)material.SampleDistance);
-                    WriteValue(VolumeParamsStruct.BaseSampleDistance, 1.0f);
-                    WriteValue(VolumeParamsStruct.ScaleFactor, scale);
-                }            
+                    using (var res = texture.Resource.QueryInterface<Texture3D>())
+                    {
+                        var desc = res.Description;
+                        var maxSize = Math.Max(desc.Width, Math.Max(desc.Height, desc.Depth));
+                        var steps = 1f / maxSize * (float)material.SampleDistance;
+                        WriteValue(VolumeParamsStruct.StepSize, steps);
+                    }
+                }
+                else
+                {
+                    WriteValue(VolumeParamsStruct.StepSize, 1);
+                }
+                WriteValue(VolumeParamsStruct.ActualSampleDistance, (float)material.SampleDistance);
+                WriteValue(VolumeParamsStruct.BaseSampleDistance, 1.0f);
             }
 
             private void UpdateTexture(VolumeTextureMaterialCoreBase<T> material)

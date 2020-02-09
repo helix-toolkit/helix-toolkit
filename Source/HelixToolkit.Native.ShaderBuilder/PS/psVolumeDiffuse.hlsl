@@ -1,4 +1,6 @@
-//Reference https://graphicsrunner.blogspot.com/search/label/Volume%20Rendering
+//Reference 
+// https://graphicsrunner.blogspot.com/search/label/Volume%20Rendering
+// https://shaderbits.com/blog/creating-volumetric-ray-marcher
 #ifndef PSVOLUMEDIFFUSE_HLSL
 #define PSVOLUMEDIFFUSE_HLSL
 #define VOLUME
@@ -7,18 +9,29 @@
 
 float4 main(VolumePS_INPUT input) : SV_Target
 {
-    //calculate projective texture coordinates
-    //used to project the front and back position textures onto the cube
-    float2 texC = input.tex.xy;
-    texC.x = 0.5f * texC.x + 0.5f;
-    texC.y = -0.5f * texC.y + 0.5f;
-    float3 front = input.mPos.xyz + float3(0.5, 0.5, 0.5);
-    float3 back = texVolumeBack.Sample(samplerVolume, texC).xyz;
- 
-    float3 dir = back - front;
-    float dirLength = length(dir);
-    dir = normalize(dir);
- 
+    float3 localCamPos;
+    float3 localCamVec;
+    if (IsPerspective)
+    {
+        localCamPos = vEyePos;
+        localCamVec = input.wp.xyz - vEyePos;
+    }
+    else
+    {
+        localCamVec = -getLookDir(mView);
+        float3 v = input.wp.xyz - vEyePos;
+        float k = dot(v, localCamVec);
+        float3 w = localCamVec * k;
+        localCamPos = vEyePos - w + v;
+    }
+    localCamPos = mul(float4(localCamPos, 1), mWorldInv).xyz;
+    localCamVec = normalize(mul(float4(localCamVec, 0), mWorldInv).xyz);
+    float4 entry = getBoxEntryPoint(localCamPos, localCamVec, input);
+    float3 front = entry.xyz;
+    float3 dir = localCamVec;
+    float3 back = front + dir * entry.w;
+    float dirLength = entry.w;
+
     float4 dst = float4(0, 0, 0, 0);
     float4 src = 0;
  
@@ -29,11 +42,10 @@ float4 main(VolumePS_INPUT input) : SV_Target
     float3 pos = float3(front + stepV * iterationOffset);
 
     uint iteration = min(dirLength / stepSize, maxIterations);
-    float3 L = normalize(vEyePos - input.wp.xyz);
     float lengthAccu = iterationOffset * stepSize;
     float corr = clamp(actualSampleDist / baseSampleDist, 1, 4);
-    dirLength -= 1e-4;
-    //[loop]
+    dirLength -= stepSize;
+    [loop]
     for (uint i = iterationOffset; i < iteration; i++)
     {
         float4 color = pColor;
@@ -54,7 +66,7 @@ float4 main(VolumePS_INPUT input) : SV_Target
 		//distance of 1.0f). So we have to adjust the alpha accordingly.
             src.a = 1 - pow(abs(1 - src.a), corr);
 					  
-            float s = 1 - dot(normalize(value.xyz), L);
+            float s = 1 - dot(normalize(value.xyz), -dir);
 				
 		//diffuse shading + fake ambient lighting
             src.rgb = s * src.rgb + .1f * src.rgb;

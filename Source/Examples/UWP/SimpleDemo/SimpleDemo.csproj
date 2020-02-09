@@ -11,13 +11,15 @@
     <AssemblyName>SimpleDemoW10</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>SimpleDemoW10_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>SimpleDemo_TemporaryKey.pfx</PackageCertificateKeyFile>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
+    <PackageCertificateThumbprint>377FE010373BD0E913321C6BE42F5120D31981FA</PackageCertificateThumbprint>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -125,7 +127,7 @@
     <Content Include="..\..\..\..\Models\3ds\NITRO_ENGINE.3ds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="SimpleDemoW10_TemporaryKey.pfx" />
+    <None Include="SimpleDemo_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />

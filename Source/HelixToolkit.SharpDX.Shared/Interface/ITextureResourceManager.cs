@@ -26,8 +26,8 @@ namespace HelixToolkit.UWP
         /// Registers the specified texture stream.
         /// </summary>
         /// <param name="textureStream">The texture stream.</param>
-        /// <param name="disableAutoGenMipMap">if set to <c>true</c> [disable automatic gen mip map].</param>
+        /// <param name="enableAutoGenMipMap">if set to <c>false</c> [disable automatic gen mip map].</param>
         /// <returns></returns>
-        ShaderResourceViewProxy Register(TextureModel textureStream, bool disableAutoGenMipMap);
+        ShaderResourceViewProxy Register(TextureModel textureStream, bool enableAutoGenMipMap);
     }
 }

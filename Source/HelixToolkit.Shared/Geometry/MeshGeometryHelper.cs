@@ -197,6 +197,16 @@ namespace HelixToolkit.Wpf
             return edges;
         }
 
+        private struct EdgeKey
+        {
+            private readonly Vector3D position0;
+            private readonly Vector3D position1;
+            public EdgeKey(Vector3D position0, Vector3D position1)
+            {
+                this.position0 = position0;
+                this.position1 = position1;
+            }
+        }
         /// <summary>
         /// Finds all edges where the angle between adjacent triangle normal vectors.
         /// is larger than minimumAngle
@@ -213,46 +223,48 @@ namespace HelixToolkit.Wpf
         public static Int32Collection FindSharpEdges(this MeshGeometry3D mesh, double minimumAngle)
         {
             var edgeIndices = new Int32Collection();
-
-            // the keys of the dictionary are created from the triangle indices of the edge
-            var edgeNormals = new Dictionary<ulong, Vector3D>();
-
+            var edgeNormals = new Dictionary<EdgeKey, Vector3D>();
             for (int i = 0; i < mesh.TriangleIndices.Count / 3; i++)
             {
                 int i0 = i * 3;
                 var p0 = mesh.Positions[mesh.TriangleIndices[i0]];
                 var p1 = mesh.Positions[mesh.TriangleIndices[i0 + 1]];
                 var p2 = mesh.Positions[mesh.TriangleIndices[i0 + 2]];
-                var p10 = p1 - p0;
-                var p20 = p2 - p0;
-                var n = SharedFunctions.CrossProduct(ref p10, ref p20);
-                n.Normalize();
+                var triangleNormal = SharedFunctions.CrossProduct(p1 - p0, p2 - p0);
+
+                // Handle degenerated triangles.
+                if (SharedFunctions.LengthSquared(ref triangleNormal) < 0.001f) continue;
+
+                triangleNormal.Normalize();
                 for (int j = 0; j < 3; j++)
                 {
                     int index0 = mesh.TriangleIndices[i0 + j];
-                    int index1 = mesh.TriangleIndices[i0 + ((j + 1) % 3)];
-                    int minIndex = Math.Min(index0, index1);
-                    int maxIndex = Math.Max(index0, index1);
-                    ulong key = CreateKey((uint)minIndex, (uint)maxIndex);
-                    Vector3D value;
-                    if (edgeNormals.TryGetValue(key, out value))
+                    int index1 = mesh.TriangleIndices[i0 + (j + 1) % 3];
+                    var position0 = SharedFunctions.ToVector3D(mesh.Positions[index0]);
+                    var position1 = SharedFunctions.ToVector3D(mesh.Positions[index1]);
+                    var edgeKey = new EdgeKey(position0, position1);
+                    var reverseEdgeKey = new EdgeKey(position1, position0);
+                    if (edgeNormals.TryGetValue(edgeKey, out var value) ||
+                        edgeNormals.TryGetValue(reverseEdgeKey, out value))
                     {
-                        var n2 = value;
-                        n2.Normalize();
-                        var angle = 180 / (DoubleOrSingle)Math.PI * (DoubleOrSingle)Math.Acos(SharedFunctions.DotProduct(ref n, ref n2));
+                        var rawDot = SharedFunctions.DotProduct(ref triangleNormal, ref value);
+
+                        // Acos returns NaN if rawDot > 1 or rawDot < -1
+                        var dot = Math.Max(-1, Math.Min(rawDot, 1));
+
+                        var angle = 180 / Math.PI * Math.Acos(dot);
                         if (angle > minimumAngle)
                         {
-                            edgeIndices.Add(minIndex);
-                            edgeIndices.Add(maxIndex);
+                            edgeIndices.Add(index0);
+                            edgeIndices.Add(index1);
                         }
                     }
                     else
                     {
-                        edgeNormals.Add(key, n);
+                        edgeNormals.Add(edgeKey, triangleNormal);
                     }
                 }
             }
-
             return edgeIndices;
         }
 

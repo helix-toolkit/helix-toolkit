@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard1.1</TargetFramework>
         <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
         <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
         <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
