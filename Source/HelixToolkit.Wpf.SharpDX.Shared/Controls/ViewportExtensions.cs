@@ -426,11 +426,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public static BitmapSource RenderBitmap(
             this Viewport3DX view, int width, int height)
         {
-            var w = (int)view.Width;
-            var h = (int)view.Height;
-            ResizeAndArrange(view, width, height);
+            var w = view.RenderHost.ActualWidth;
+            var h = view.RenderHost.ActualHeight;
+            view.RenderHost.Resize(width, height);
             var rtb = RenderBitmap(view);
-            ResizeAndArrange(view, w, h);
+            view.RenderHost.Resize((int)w, (int)h);
             return rtb;
         }
 
@@ -453,7 +453,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (view.RenderHost == null || !view.RenderHost.IsRendering)
             {
                 return;
-            }            
+            }
             view.Measure(new Size(width, height));
             view.Arrange(new Rect(0, 0, width, height));
             view.RenderHost.Resize(width, height);
