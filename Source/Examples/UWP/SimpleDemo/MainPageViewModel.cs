@@ -203,7 +203,7 @@ namespace SimpleDemoW10
 
         private Stream LoadTexture(string file)
         {
-            var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "");
+            var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
             var bytecode = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\" + file);
             return new MemoryStream(bytecode);
         }
