@@ -126,6 +126,12 @@ namespace HelixToolkit.UWP
             {
                 return (Geometry as LineGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, (float)HitTestThickness);
             }
+
+            protected override bool PreHitTestOnBounds(ref Ray ray)
+            {
+                // HitTestThickness is not taken in account into the bounds computation so we can not use it for hit test.
+                return true;
+            }
         }
     }
 
