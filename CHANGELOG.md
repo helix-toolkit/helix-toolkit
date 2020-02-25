@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Next Release]
+### Added
+1. Support Vertex Color blending for Phong/PBR/Diffuse materials with new `VertexColorBlendingFactor` property. (WPF.SharpDX/UWP/Core)
+
+### Improvement and Changes
+
+### Fixed
+
 ## [2.11.0] - 2020-02-08
 ### Added
 1. Add IsTopBottomViewOrientedToFrontBack property to view cube #1263. (WPF)
