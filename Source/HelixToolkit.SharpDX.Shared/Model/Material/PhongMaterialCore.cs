@@ -503,6 +503,20 @@ namespace HelixToolkit.UWP
                 get { return enableFlatShading; }
             }
 
+            private float vertexColorBlendingFactor = 0f;
+            /// <summary>
+            /// Gets or sets the vert color blending factor.
+            /// Diffuse = (1- <see cref="VertexColorBlendingFactor"/>) * Diffuse + <see cref="VertexColorBlendingFactor"/> * Vertex Color
+            /// </summary>
+            /// <value>
+            /// The vert color blending factor.
+            /// </value>
+            public float VertexColorBlendingFactor
+            {
+                set { Set(ref vertexColorBlendingFactor, value); }
+                get { return vertexColorBlendingFactor; }
+            }
+
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
             {
                 return new PhongMaterialVariables(manager, technique, this);

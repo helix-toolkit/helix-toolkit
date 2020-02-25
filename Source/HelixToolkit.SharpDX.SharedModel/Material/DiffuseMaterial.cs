@@ -145,6 +145,25 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Material).Core as DiffuseMaterialCore).EnableFlatShading = (bool)e.NewValue;
             }));
+        /// <summary>
+        /// Gets or sets the vertex color blending factor.
+        /// Final Diffuse Color = (1 - VertexColorBlendingFactor) * Diffuse + VertexColorBlendingFactor * Vertex Color
+        /// </summary>
+        /// <value>
+        /// The vertex color blending factor.
+        /// </value>
+        public double VertexColorBlendingFactor
+        {
+            get { return (double)GetValue(VertexColorBlendingFactorProperty); }
+            set { SetValue(VertexColorBlendingFactorProperty, value); }
+        }
+
+        public static readonly DependencyProperty VertexColorBlendingFactorProperty =
+            DependencyProperty.Register("VertexColorBlendingFactor", typeof(double), typeof(DiffuseMaterial), new PropertyMetadata(0.0,
+            (d, e) =>
+            {
+                ((d as Material).Core as DiffuseMaterialCore).VertexColorBlendingFactor = (float)(double)e.NewValue;
+            }));
 
         public DiffuseMaterial() { }
 
@@ -156,6 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DiffuseMapSampler = core.DiffuseMapSampler;
             EnableUnLit = core.EnableUnLit;
             EnableFlatShading = core.EnableFlatShading;
+            VertexColorBlendingFactor = core.VertexColorBlendingFactor;
         }
 
         protected override MaterialCore OnCreateCore()
@@ -168,6 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMapSampler = DiffuseMapSampler,
                 EnableUnLit = EnableUnLit,
                 EnableFlatShading = EnableFlatShading,
+                VertexColorBlendingFactor = (float)VertexColorBlendingFactor,
             };
         }
 
@@ -182,6 +203,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Name = Name,
                 EnableUnLit = EnableUnLit,
                 EnableFlatShading = EnableFlatShading,
+                VertexColorBlendingFactor = VertexColorBlendingFactor,
             };
         }
 
