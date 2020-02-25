@@ -58,7 +58,7 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
 	// ---  interpolated per-vertex colors
     output.c = inputPatch[0].c * barycentricCoords.z + inputPatch[1].c * barycentricCoords.x + inputPatch[2].c * barycentricCoords.y;
     output.c2 = inputPatch[0].c2;
-    output.cDiffuse = (1 - vertColorBlending) * vMaterialDiffuse + vertColorBlending * output.c;
+    output.cDiffuse = vMaterialDiffuse;
 	// --- Classical vertex-shader transforms: 
 	// --- output position in the clip-space	
     output.p = float4(position, 1); //mul(float4(position, 1.0f), mWorld);

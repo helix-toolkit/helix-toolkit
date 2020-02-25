@@ -67,7 +67,7 @@ PSInput main(VSInstancingInput input)
 #if !defined(INSTANCINGPARAM)
 	//set texture coords
     output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
-    output.cDiffuse = (1 - vertColorBlending) * vMaterialDiffuse + vertColorBlending * input.c;
+    output.cDiffuse = vMaterialDiffuse ;
     output.c2 = vMaterialEmissive;
 #endif
 
@@ -75,7 +75,7 @@ PSInput main(VSInstancingInput input)
     if (!bHasInstanceParams)
     {
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
-        output.cDiffuse =  (1 - vertColorBlending) * vMaterialDiffuse + vertColorBlending * input.c;
+        output.cDiffuse = vMaterialDiffuse;
         if (!bRenderPBR)
         {            
             output.c2 = vMaterialEmissive;
@@ -89,7 +89,7 @@ PSInput main(VSInstancingInput input)
     {
 		//set texture coords and color
         output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy + input.tOffset;
-        output.cDiffuse = (1 - vertColorBlending) * input.diffuseC + vertColorBlending * input.c;
+        output.cDiffuse = input.diffuseC;
         if (!bRenderPBR)
         {
             output.c2 = input.emissiveC; 

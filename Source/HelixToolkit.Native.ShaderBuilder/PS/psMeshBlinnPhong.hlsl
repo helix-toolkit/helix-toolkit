@@ -149,7 +149,7 @@ float4 main(PSInput input) : SV_Target
 	    // SamplerState is defined in Common.fx.
         diffuse *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
-
+    diffuse = lerp(diffuse, input.c, vertColorBlending);
     float alpha = 1;
     if (bHasAlphaMap)
     {
