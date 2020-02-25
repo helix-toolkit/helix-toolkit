@@ -103,6 +103,8 @@ cbuffer cbMesh : register(b1)
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
     float4 uvTransformR1;
     float4 uvTransformR2;
+    float vertColorBlending;
+    float3 padding4;
 };
 #endif
 
