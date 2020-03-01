@@ -97,5 +97,19 @@ namespace HelixToolkit.UWP
                 return result.IsValid;
             }
         }
+
+        public override void UpdateBounds()
+        {
+            base.UpdateBounds();
+            if (Bound.Size.LengthSquared() < 1e-1f)
+            {
+                var off = new Vector3(0.5f);
+                Bound = new BoundingBox(Bound.Minimum - off, Bound.Maximum + off);
+            }
+            if (BoundingSphere.Radius < 1e-1f)
+            {
+                BoundingSphere = new BoundingSphere(BoundingSphere.Center, 0.5f);
+            }
+        }
     }
 }
