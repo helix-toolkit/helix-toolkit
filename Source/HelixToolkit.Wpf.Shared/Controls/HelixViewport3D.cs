@@ -3836,6 +3836,8 @@ namespace HelixToolkit.Wpf
         /// </param>
         private void OnControlLoaded(object sender, RoutedEventArgs e)
         {
+            this.OnItemsSourceChanged(this.ItemsSource, this.ItemsSource);
+
             if (!this.hasBeenLoadedBefore)
             {
                 if (this.DefaultCamera != null)
