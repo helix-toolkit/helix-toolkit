@@ -59,6 +59,15 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
+## Bug Report
+Please use the following template to report bugs.
+
+- Version: [Example: 2.11]
+- Package: [Example: Helixtoolkit.Wpf]
+- Issue: 
+- Reproduce Steps:
+- Sample Code:
+
 ## News
 
 #### 2020-02-08
