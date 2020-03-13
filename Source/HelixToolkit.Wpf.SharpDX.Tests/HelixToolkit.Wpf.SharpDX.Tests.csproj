@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="Controls\CanvasMock.cs" />
     <Compile Include="Controls\EffectsManagerTests.cs" />
+    <Compile Include="Elements3D\CrossSectionMeshGeometryModel3DTests.cs" />
     <Compile Include="Geometry\Polygon3DTests.cs" />
     <Compile Include="Elements3D\MeshGeometryModel3DTests.cs" />
     <Compile Include="Importers\ObjReaderTests.cs" />

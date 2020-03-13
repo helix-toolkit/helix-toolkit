@@ -75,6 +75,14 @@ namespace HelixToolkit.UWP
                 return this.Distance.CompareTo(other.Distance);
             }
         }
+
+        /// <summary>
+        /// Get a descirption of the HitTestResult
+        /// </summary>
+        public override string ToString()
+        {
+            return $"{nameof(HitTestResult)} {nameof(ModelHit)}: {ModelHit}, {nameof(Distance)}: {Distance}, {nameof(IsValid)}: {IsValid}, {nameof(PointHit)}: {PointHit}, {nameof(NormalAtHit)}: {NormalAtHit}";
+        }
     }
 
     /// <summary>

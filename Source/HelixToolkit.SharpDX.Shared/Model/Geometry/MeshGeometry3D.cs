@@ -192,6 +192,11 @@ namespace HelixToolkit.UWP
                 {
                     int index = 0;
                     float minDistance = float.MaxValue;
+#if !NETFX_CORE
+                    bool isCrossSectionMeshGeometryModel3D = originalSource is CrossSectionMeshGeometryModel3D;
+#else
+                    bool isCrossSectionMeshGeometryModel3D = false;
+#endif
                     foreach (var t in Triangles)
                     {
                         var v0 = t.P0;
@@ -199,7 +204,18 @@ namespace HelixToolkit.UWP
                         var v2 = t.P2;
                         if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out float d))
                         {
-                            if (d >= 0 && d < minDistance) // If d is NaN, the condition is false.
+                            // For CrossSectionMeshGeometryModel3D another hit than the closest may be the valid one, since the closest one might be removed by a crossing plane
+                            if (isHit && result.IsValid &&
+                                isCrossSectionMeshGeometryModel3D)
+                            {
+                                hits.Add(result);
+                                result = new HitTestResult
+                                {
+                                    Distance = double.MaxValue
+                                };
+                            }
+
+                            if (d >= 0 && (d < minDistance || isCrossSectionMeshGeometryModel3D)) // If d is NaN, the condition is false.
                             {
                                 minDistance = d;
                                 result.IsValid = true;
@@ -224,7 +240,7 @@ namespace HelixToolkit.UWP
                         index += 3;
                     }
                 }
-                if (isHit)
+                if (isHit && result.IsValid)
                 {
                     hits.Add(result);
                 }

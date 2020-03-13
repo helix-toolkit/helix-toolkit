@@ -18,6 +18,8 @@ namespace HelixToolkit.UWP
     namespace Model.Scene
     {
         using Core;
+        using System.Collections.Generic;
+
         /// <summary>
         /// 
         /// </summary>
@@ -237,6 +239,82 @@ namespace HelixToolkit.UWP
             protected override RenderCore OnCreateRenderCore()
             {
                 return new CrossSectionMeshRenderCore();
+            }
+
+            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+            {
+                int hitsBeforeCheck = hits?.Count ?? 0;
+                bool result = base.OnHitTest(context, totalModelMatrix, ref rayWS, ref hits);
+                if (result)
+                {
+                    if (EnablePlane1)
+                        result = CheckWithCrossingPlane(Plane1, hits, hitsBeforeCheck);
+                    if (result && EnablePlane2)
+                        result = CheckWithCrossingPlane(Plane2, hits, hitsBeforeCheck);
+                    if (result && EnablePlane3)
+                        result = CheckWithCrossingPlane(Plane3, hits, hitsBeforeCheck);
+                    if (result && EnablePlane4)
+                        result = CheckWithCrossingPlane(Plane4, hits, hitsBeforeCheck);
+                    if (result)
+                        RemoveAllButClosest(hits, hitsBeforeCheck);
+                }
+                return result;
+            }
+
+            private static bool CheckWithCrossingPlane(Plane plane, List<HitTestResult> hits, int hitsBeforeCheck)
+            {
+                // Loop backwards to remove at end of list when possible
+                for (int i = hits.Count-1; i >= hitsBeforeCheck; i--)
+                {
+                    var pointTimesNormal = (hits[i].PointHit * plane.Normal);
+                    float distanceToPlane = pointTimesNormal.X + pointTimesNormal.Y + pointTimesNormal.Z - plane.D;
+                    if (distanceToPlane < 0)
+                    {
+                        hits.RemoveAt(i);
+                    }
+                }
+                if (hits.Count == hitsBeforeCheck)
+                    return false;
+                return true;
+            }
+
+            /// <summary>
+            /// Removes all but the closes hit point, this is done here despite similar checks being done further up the call stack. 
+            /// This minimizes the risk of breaking callers assumptions of one hit per object
+            /// </summary>
+            /// <param name="hits">All hits so far</param>
+            /// <param name="hitsBeforeCheck">The number of hits before this object was processed</param>
+            private static void RemoveAllButClosest(List<HitTestResult> hits, int hitsBeforeCheck)
+            {
+                if(hits.Count - hitsBeforeCheck == 0)
+                {
+                    return;
+                }
+                double minDistance = double.MaxValue;
+                for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                {
+                    var hit = hits[i];
+                    if(minDistance > hit.Distance)
+                    {
+                        minDistance = hit.Distance;
+                    }
+                }
+                if(minDistance<double.MaxValue)
+                {
+                    bool foundMinDistance = false;
+                    // Loop backwards to remove at end of list when possible
+                    for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                    {
+                        if(hits[i].Distance > minDistance || (foundMinDistance && hits[i].Distance == minDistance))
+                        {
+                            hits.RemoveAt(i);
+                        }
+                        else
+                        {
+                            foundMinDistance = true;
+                        }
+                    }
+                }
             }
         }
     }
