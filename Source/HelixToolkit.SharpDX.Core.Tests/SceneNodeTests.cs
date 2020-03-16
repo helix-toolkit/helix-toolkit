@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SceneNodeTests.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
+//   Copyright (c) 2020 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,15 +19,14 @@ namespace HelixToolkit.SharpDX.Core.Tests
     class SceneNodeTests
     {
 
-        private SceneNode GetSceneNode()
+        private SceneNode GetNode()
         {
             var meshBuilder = new MeshBuilder();
             meshBuilder.AddBox(new Vector3(0f), 1, 1, 1);
-            var geometryModel3D = new MeshNode()
+            return new MeshNode()
             {
                 Geometry = meshBuilder.ToMesh(),
             };
-            return geometryModel3D;
         }
 
         [Test]
@@ -36,8 +35,8 @@ namespace HelixToolkit.SharpDX.Core.Tests
             var viewport = new ViewportCore(IntPtr.Zero);
             var ray = new Ray(new Vector3(2f, 0f, 0f), new Vector3(-1, 0, 0));
             var hits = new List<HitTestResult>();
-            var geometryModel3D = GetSceneNode();
-            geometryModel3D.HitTest(viewport.RenderContext, ray, ref hits);
+            var sceneNode = GetNode();
+            sceneNode.HitTest(viewport.RenderContext, ray, ref hits);
             Assert.AreEqual(1, hits.Count);
             Assert.AreEqual(new Vector3(0.5f, 0, 0), hits[0].PointHit);
         }

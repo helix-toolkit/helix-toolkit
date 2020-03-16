@@ -24,11 +24,10 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
         {
             var meshBuilder = new MeshBuilder();
             meshBuilder.AddBox(new Vector3(0f), 1, 1, 1);
-            var geometryModel3D = new CrossSectionMeshGeometryModel3D()
+            return new CrossSectionMeshGeometryModel3D()
             {
                 Geometry = meshBuilder.ToMesh(),
             };
-            return geometryModel3D;
         }
 
         [Test]

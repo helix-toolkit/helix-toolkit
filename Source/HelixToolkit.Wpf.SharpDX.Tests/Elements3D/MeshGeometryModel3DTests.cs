@@ -1,11 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MeshGeometryModel3DTests.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
+//   Copyright (c) 2020 Helix Toolkit contributors
 // </copyright>
-// <summary>
-//   Test for pull request #54.
-//   Fix IndexOutOfRange exception in CreateDefaultVertexArray.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -47,11 +43,10 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
         {
             var meshBuilder = new MeshBuilder();
             meshBuilder.AddBox(new Vector3(0f), 1, 1, 1);
-            var geometryModel3D = new MeshGeometryModel3D()
+            return new MeshGeometryModel3D()
             {
                 Geometry = meshBuilder.ToMesh(),
             };
-            return geometryModel3D;
         }
 
         [Test]

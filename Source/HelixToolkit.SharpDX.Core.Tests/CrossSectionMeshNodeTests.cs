@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CrossSectionMeshNodeTests.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
+//   Copyright (c) 2020 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,23 +21,22 @@ namespace HelixToolkit.SharpDX.Core.Tests
     class CrossSectionMeshNodeTests
     {
         private readonly ViewportCore viewport = new ViewportCore(IntPtr.Zero);
-        private CrossSectionMeshNode GetSceneNode()
+        private CrossSectionMeshNode GetNode()
         {
             var meshBuilder = new MeshBuilder();
             meshBuilder.AddBox(new Vector3(0f), 1, 1, 1);
-            var geometryModel3D = new CrossSectionMeshNode()
+            return new CrossSectionMeshNode()
             {
                 Geometry = meshBuilder.ToMesh(),
             };
-            return geometryModel3D;
         }
         [Test]
         public void HitTestShouldReturnOnePointOnFrontOfCubeWithNoCuttingPlanes()
         {
             var ray = new Ray(new Vector3(2f, 0f, 0f), new Vector3(-1, 0, 0));
             var hits = new List<HitTestResult>();
-            var geometryModel3D = GetSceneNode();
-            geometryModel3D.HitTest(viewport.RenderContext, ray, ref hits);
+            var node = GetNode();
+            node.HitTest(viewport.RenderContext, ray, ref hits);
             Assert.AreEqual(1, hits.Count);
             Assert.AreEqual(new Vector3(0.5f, 0, 0), hits[0].PointHit);
         }
@@ -46,11 +45,11 @@ namespace HelixToolkit.SharpDX.Core.Tests
         public void HitTestShouldReturnOnePointOnBackOfCubeWithCuttingPlaneInXZero(Action<CrossSectionMeshNode, Plane> setupPlane)
         {
             var plane = new Plane(new Vector3(0f), new Vector3(-1, 0, 0));
-            var geometryModel3D = GetSceneNode();
-            setupPlane(geometryModel3D, plane);
+            var node = GetNode();
+            setupPlane(node, plane);
             var ray = new Ray(new Vector3(2f, 0f, 0f), new Vector3(-1, 0, 0));
             var hits = new List<HitTestResult>();
-            geometryModel3D.HitTest(viewport.RenderContext, ray, ref hits);
+            node.HitTest(viewport.RenderContext, ray, ref hits);
             Assert.AreEqual(1, hits.Count);
             Assert.AreEqual(new Vector3(-0.5f, 0, 0), hits[0].PointHit);
         }
