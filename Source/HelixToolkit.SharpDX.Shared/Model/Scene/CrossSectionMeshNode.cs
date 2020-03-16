@@ -244,7 +244,11 @@ namespace HelixToolkit.UWP
             protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
             {
                 int hitsBeforeCheck = hits?.Count ?? 0;
-                bool result = base.OnHitTest(context, totalModelMatrix, ref rayWS, ref hits);
+                var meshGeometry3d = Geometry as MeshGeometry3D;
+                if (meshGeometry3d == null)
+                    return false;
+                meshGeometry3d.ReturnMultipleHitsOnHitTest = true;
+                bool result = meshGeometry3d.HitTest(context, totalModelMatrix, ref rayWS, ref hits, this.WrapperSource);
                 if (result)
                 {
                     if (EnablePlane1)

@@ -160,6 +160,12 @@ namespace HelixToolkit.UWP
             }
         }
 
+        /// <summary>
+        /// Callers should set this property to true before calling HitTest if the callers need multiple hits throughout the geometry.
+        /// This is useful when the geometry is cut by a plane.
+        /// </summary>
+        public bool ReturnMultipleHitsOnHitTest { get; set; }
+
         public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
         {
             if(Positions == null || Positions.Count == 0
@@ -192,11 +198,7 @@ namespace HelixToolkit.UWP
                 {
                     int index = 0;
                     float minDistance = float.MaxValue;
-#if !NETFX_CORE
-                    bool isCrossSectionMeshGeometryModel3D = originalSource is CrossSectionMeshGeometryModel3D;
-#else
-                    bool isCrossSectionMeshGeometryModel3D = false;
-#endif
+
                     foreach (var t in Triangles)
                     {
                         var v0 = t.P0;
@@ -206,7 +208,7 @@ namespace HelixToolkit.UWP
                         {
                             // For CrossSectionMeshGeometryModel3D another hit than the closest may be the valid one, since the closest one might be removed by a crossing plane
                             if (isHit && result.IsValid &&
-                                isCrossSectionMeshGeometryModel3D)
+                                ReturnMultipleHitsOnHitTest)
                             {
                                 hits.Add(result);
                                 result = new HitTestResult
@@ -215,7 +217,7 @@ namespace HelixToolkit.UWP
                                 };
                             }
 
-                            if (d >= 0 && (d < minDistance || isCrossSectionMeshGeometryModel3D)) // If d is NaN, the condition is false.
+                            if (d >= 0 && (d < minDistance || ReturnMultipleHitsOnHitTest)) // If d is NaN, the condition is false.
                             {
                                 minDistance = d;
                                 result.IsValid = true;
