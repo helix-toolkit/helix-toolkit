@@ -3,6 +3,7 @@ The MIT License(MIT)
 Copyright(c) 2020 Helix Toolkit contributors
 */
 
+using System;
 using SharpDX;
 
 #if !NETFX_CORE
@@ -247,8 +248,11 @@ namespace HelixToolkit.UWP
                 var meshGeometry3d = Geometry as MeshGeometry3D;
                 if (meshGeometry3d == null)
                     return false;
+                if(meshGeometry3d.ReturnMultipleHitsOnHitTest)
+                    throw new InvalidOperationException($"All hit tests should be called on the same thread, {nameof(Geometry)}.{nameof(meshGeometry3d.ReturnMultipleHitsOnHitTest)} would not be true if that was the case");
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = true;
                 bool result = meshGeometry3d.HitTest(context, totalModelMatrix, ref rayWS, ref hits, this.WrapperSource);
+                meshGeometry3d.ReturnMultipleHitsOnHitTest = false;
                 if (result)
                 {
                     if (EnablePlane1)
