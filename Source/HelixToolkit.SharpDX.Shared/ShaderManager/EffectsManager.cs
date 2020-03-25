@@ -281,7 +281,7 @@ namespace HelixToolkit.UWP
                 if (adapter.Description.VendorId == 0x1414 && adapter.Description.DeviceId == 0x8c)
                 {
                     DriverType = DriverType.Warp;
-                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
+                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
                 }
                 else
                 {
@@ -290,14 +290,15 @@ namespace HelixToolkit.UWP
                     device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.Debug);
 #else
                     device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
-#if DX11_1
-                    device1 = device.QueryInterface<global::SharpDX.Direct3D11.Device1>();
-#endif
 #endif
                     // DeviceCreationFlags.Debug should not be used in productive mode!
                     // See: http://sharpdx.org/forum/4-general/1774-how-to-debug-a-sharpdxexception
                     // See: http://stackoverflow.com/questions/19810462/launching-sharpdx-directx-app-with-devicecreationflags-debug
                 }
+
+#if DX11_1
+                device1 = device.QueryInterface<global::SharpDX.Direct3D11.Device1>();
+#endif
             }
 #else
             device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
