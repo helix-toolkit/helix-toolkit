@@ -56,11 +56,27 @@
                 EnablePlane2="{Binding EnablePlane2}"
                 FillMode="Solid"
                 Geometry="{Binding Model}"
-                IsHitTestVisible="False"
+                IsHitTestVisible="True"
                 Material="{Binding ModelMaterial}"
                 Plane1="{Binding Plane1}"
                 Plane2="{Binding Plane2}"
-                Transform="{Binding ModelTransform}" />
+                Transform="{Binding ModelTransform}" 
+                Mouse3DDown="geometry_Mouse3DDown" 
+                />
+            <hx:CrossSectionMeshGeometryModel3D
+                x:Name="crossModel2"
+                CrossSectionColor="GreenYellow"
+                CullMode="Back"
+                CuttingOperation="{Binding CuttingOperation}"
+                EnablePlane1="{Binding EnablePlane1}"
+                EnablePlane2="{Binding EnablePlane2}"
+                FillMode="Solid"
+                Geometry="{Binding BoxModel}"
+                IsHitTestVisible="True"
+                Material="{Binding ModelMaterial}"
+                Plane1="{Binding Plane1}"
+                Plane2="{Binding Plane2}"
+                Mouse3DDown="geometry_Mouse3DDown" />
             <local:CrossSectionPlaneManipulator3D
                 CornerScale="4"
                 CutPlane="{Binding Plane1, Mode=TwoWay}"
@@ -74,20 +90,7 @@
                 IsRendering="{Binding EnablePlane2}"
                 SizeScale="10" />
             <hx:AxisPlaneGridModel3D />
-            <!--<hx:MeshGeometryModel3D
-                CullMode="Back"
-                Geometry="{Binding Plane1Model}"
-                IsRendering="{Binding EnablePlane1}"
-                IsTransparent="True"
-                Material="{Binding PlaneMaterial}"
-                Transform="{Binding Plane1Transform}" />
-            <hx:MeshGeometryModel3D
-                CullMode="Back"
-                Geometry="{Binding Plane2Model}"
-                IsRendering="{Binding EnablePlane2}"
-                IsTransparent="True"
-                Material="{Binding PlaneMaterial}"
-                Transform="{Binding Plane2Transform}" />-->
+           
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"

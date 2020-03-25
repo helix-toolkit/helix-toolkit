@@ -31,5 +31,10 @@ namespace CrossSectionDemo
                 }
             };
         }
+
+        private void geometry_Mouse3DDown(object sender, HelixToolkit.Wpf.SharpDX.MouseDown3DEventArgs e)
+        {
+
+        }
     }
 }
