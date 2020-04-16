@@ -96,6 +96,11 @@ namespace HelixToolkit.UWP
 
         public static global::SharpDX.WIC.Bitmap CreateBitmapStream(IDevice2DResources deviceResources, int width, int height, Direct2DImageFormat imageType, Action<RenderTarget> drawingAction)
         {
+            if (width <= 0 || height <= 0)
+            {
+                return null;
+            }
+
             var bitmap = new global::SharpDX.WIC.Bitmap(deviceResources.WICImgFactory, width, height, global::SharpDX.WIC.PixelFormat.Format32bppBGR,
                 BitmapCreateCacheOption.CacheOnDemand);
             using (var target = new WicRenderTarget(deviceResources.Factory2D, bitmap,
@@ -120,6 +125,11 @@ namespace HelixToolkit.UWP
             IDevice2DResources deviceResources,
             Direct2DImageFormat imageType = Direct2DImageFormat.Bmp)
         {
+            if (bitmap == null)
+            {
+                return null;
+            }
+
             var systemStream = new MemoryStream();
 
             using (var stream = new WICStream(deviceResources.WICImgFactory, systemStream))
