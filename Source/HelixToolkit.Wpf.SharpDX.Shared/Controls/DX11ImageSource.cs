@@ -42,6 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly int adapterIndex;
         private Texture renderTarget;
+        private Surface surface;
 
         public DX11ImageSource(int adapterIndex = 0)
         {
@@ -55,6 +56,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.renderTarget != null)
             {
                 base.Lock();
+#if NET40
+                base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer);
+#else
+                // "enableSoftwareFallback = true" makes Remote Desktop possible.
+                // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
+                base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer, true);
+#endif
                 base.AddDirtyRect(new Int32Rect(0, 0, base.PixelWidth, base.PixelHeight));
                 base.Unlock();
             }
@@ -62,14 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public void SetRenderTargetDX11(Texture2D target)
         {
-            if (this.renderTarget != null)
-            {
-                Disposer.RemoveAndDispose(ref this.renderTarget);
-                base.Lock();
-                base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
-                base.Unlock();
-            }
-
+            EndD3D(false);
             if (target == null)
                 return;
 
@@ -86,23 +87,22 @@ namespace HelixToolkit.Wpf.SharpDX
                        
             try
             {
-                this.renderTarget = new Texture(device, target.Description.Width, target.Description.Height, 1, Usage.RenderTarget, format, Pool.Default, ref handle);            
-                using (Surface surface = this.renderTarget.GetSurfaceLevel(0))                
-                {
-                    base.Lock();
+                this.renderTarget = new Texture(device, target.Description.Width, target.Description.Height, 1, Usage.RenderTarget, format, Pool.Default, ref handle);
+                surface = this.renderTarget.GetSurfaceLevel(0);
+                base.Lock();
 #if NET40
-                    base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer);
+                base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer);
 #else
-                    // "enableSoftwareFallback = true" makes Remote Desktop possible.
-                    // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
-                    base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer, true);
+                // "enableSoftwareFallback = true" makes Remote Desktop possible.
+                // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
+                base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer, true);
 #endif
-                    base.Unlock();
-                }
+                base.AddDirtyRect(new Int32Rect(0, 0, base.PixelWidth, base.PixelHeight));
+                base.Unlock();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw ex;
             }
         }
 
@@ -122,11 +122,18 @@ namespace HelixToolkit.Wpf.SharpDX
             device = new DeviceEx(context, this.adapterIndex, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve, presentparams);
         }
 
-        private void EndD3D()
+        private void EndD3D(bool disposeDevices)
         {
-            Disposer.RemoveAndDispose(ref renderTarget);                
-            Disposer.RemoveAndDispose(ref device);
-            Disposer.RemoveAndDispose(ref context);               
+            base.Lock();
+            base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
+            base.Unlock();
+            Disposer.RemoveAndDispose(ref surface);
+            Disposer.RemoveAndDispose(ref renderTarget);
+            if (disposeDevices)
+            {
+                Disposer.RemoveAndDispose(ref device);
+                Disposer.RemoveAndDispose(ref context);
+            }           
         }
 
         private static IntPtr GetSharedHandle(Texture2D sharedTexture)
@@ -171,7 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (disposing)
                 {
-                    EndD3D();
+                    EndD3D(true);
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
