@@ -3,18 +3,16 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System.Linq;
-using System.Windows.Forms;
-using DemoCore;
-using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
-using MeshGeometry3D = HelixToolkit.Wpf.SharpDX.MeshGeometry3D;
-using PerspectiveCamera = HelixToolkit.Wpf.SharpDX.PerspectiveCamera;
-
-namespace ExampleBrowser.Workitems.BugReportBillboard
+namespace Workitem1349
 {
-    using Media3D = System.Windows.Media.Media3D;
+
+    using System.Linq;
+    using DemoCore;
+    using HelixToolkit.Wpf.SharpDX;
+    using SharpDX;
+    using MeshGeometry3D = HelixToolkit.Wpf.SharpDX.MeshGeometry3D;
+    using PerspectiveCamera = HelixToolkit.Wpf.SharpDX.PerspectiveCamera;
+
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Color = System.Windows.Media.Color;
@@ -38,8 +36,8 @@ namespace ExampleBrowser.Workitems.BugReportBillboard
         public MainViewModel()
         {
             // titles
-            this.Title = "Bug BillboardText3D";
-            this.SubTitle = "Please move the model to the left (pan with right mouse button while holding Shift key) and see how the BillboardText suddenly appears.";
+            this.Title = "Bug BillboardText3D not visible until origin comes in sight.";
+            this.SubTitle = "Please move or rotate the view and see how the BillboardText suddenly appears when the origin (right front edge of the grid) comes into view.";
 
             // camera setup
             this.Camera = new PerspectiveCamera { Position = new Point3D(4.4, 2.2, -4.4), LookDirection = new Vector3D(0, -4, 10), UpDirection = new Vector3D(0, 1, 0) };

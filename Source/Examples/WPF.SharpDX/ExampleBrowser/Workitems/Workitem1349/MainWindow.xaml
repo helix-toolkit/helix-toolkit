@@ -1,17 +1,17 @@
 ﻿<Window
-    x:Class="ExampleBrowser.Workitems.BugReportBillboard.MainWindow"
+    x:Class="Workitem1349.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:bugReportBillboard="clr-namespace:ExampleBrowser.Workitems.BugReportBillboard"
-    Title="SharpDX in WPF (BillboardText Bug)"
+    xmlns:local="clr-namespace:Workitem1349"
+    Title="SharpDX in WPF (BillboardText3D Bug, Issue 1349)"
     Width="800"
     Height="500"
     mc:Ignorable="d">
     <Window.DataContext>
-        <bugReportBillboard:MainViewModel />
+        <local:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
@@ -33,7 +33,7 @@
         </Menu>
 
                <hx:Viewport3DX Grid.Row="1"
-                               x:Name="view1"
+                               x:Name="View1"
                                Title="{Binding Title}"
                                Camera="{Binding Camera}"
                                CoordinateSystemLabelForeground="White"

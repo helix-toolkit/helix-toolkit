@@ -7,14 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-
-namespace ExampleBrowser.Workitems.BugReportBillboard
+namespace Workitem1349
 {
+    using System.Windows;
+    using ExampleBrowser;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    [Example("Bugfix Billboard Text", "Viewport3DX BillboardText")]
+    [Example("Issue 1349", "SharpDX: BillboardText3D is not shown until origin is moved into sight.")]
     public partial class MainWindow : Window
     {
         public MainWindow()
