@@ -72,7 +72,7 @@
                 <TextBlock
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{Binding FrameRate, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
+                    Text="{Binding FrameRate, ElementName=View1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
             </StatusBarItem>
             <Separator />
             <StatusBarItem>
@@ -88,7 +88,7 @@
             </StatusBarItem>
             <Separator />
             <StatusBarItem>
-                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}" />
+                <TextBlock Text="{Binding Items.Count, ElementName=View1, StringFormat=Children: \{0\}}" />
             </StatusBarItem>
         </StatusBar>
 

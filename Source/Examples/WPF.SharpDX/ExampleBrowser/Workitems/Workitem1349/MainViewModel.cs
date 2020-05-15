@@ -36,14 +36,14 @@ namespace Workitem1349
         public MainViewModel()
         {
             // titles
-            this.Title = "Bug BillboardText3D not visible until origin comes in sight.";
+            this.Title = "Bug? BillboardText3D not visible until origin comes in sight.";
             this.SubTitle = "Please move or rotate the view and see how the BillboardText suddenly appears when the origin (right front edge of the grid) comes into view.";
 
             // camera setup
             this.Camera = new PerspectiveCamera { Position = new Point3D(4.4, 2.2, -4.4), LookDirection = new Vector3D(0, -4, 10), UpDirection = new Vector3D(0, 1, 0) };
 
             EffectsManager = new DefaultEffectsManager();
-
+            
             // setup lighting            
             this.AmbientLightColor = Colors.Black;
             this.DirectionalLightColor = Colors.White;
@@ -63,8 +63,8 @@ namespace Workitem1349
             // Create Billboard Text
             float offset = 4.5f;
             float scale = 0.8f;
-            Text3D.TextInfo.Add(new TextInfo("Origin", new Vector3(0,0,0)) { Foreground = SharpDX.Color.Red, Scale = scale * 2 });
-            Text3D.TextInfo.Add(new TextInfo("1", new Vector3(1,0,0)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
+//            Text3D.TextInfo.Add(new TextInfo("Origin", new Vector3(0,0,0)) { Foreground = SharpDX.Color.Red, Scale = scale * 2 });
+//            Text3D.TextInfo.Add(new TextInfo("1", new Vector3(1,0,0)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
             Text3D.TextInfo.Add(new TextInfo("2", new Vector3(2,0,0)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
             Text3D.TextInfo.Add(new TextInfo("3", new Vector3(3,0,3)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
             Text3D.TextInfo.Add(new TextInfo("4", new Vector3(4,0,3)) { Foreground = SharpDX.Color.Blue, Scale = scale * 2 });
