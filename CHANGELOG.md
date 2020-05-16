@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 ### Improvement and Changes
 
 ### Fixed
+1. Fix billboardText not being call to initialize. (WPF.SharpDX/UWP/Core)
+2. Empty BillboardSingleText3D Causes Crash. (WPF.SharpDX/UWP/Core)
+3. Argument exception when using View.RenderTargetBitmap. (WPF.SharpDX/UWP/Core)
 
 ## [2.11.0] - 2020-02-08
 ### Added
