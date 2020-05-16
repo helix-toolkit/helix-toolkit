@@ -71,6 +71,10 @@ namespace HelixToolkit.UWP
                 {
                     return true;
                 }
+                if (Geometry is IBillboardText billboard && !billboard.IsInitialized)
+                {
+                    return true;
+                }
                 return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref BoundManager.BoundsSphereWithTransform);// viewFrustum.Intersects(ref sphere);
             }
 

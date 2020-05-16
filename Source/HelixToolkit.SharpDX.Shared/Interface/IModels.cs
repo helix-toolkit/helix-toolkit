@@ -64,6 +64,14 @@ namespace HelixToolkit.UWP
         /// The height.
         /// </value>
         float Height { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this billboard internal is initialized.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is initialized; otherwise, <c>false</c>.
+        /// </value>
+        bool IsInitialized { get; }
     }
 
     /// <summary>
