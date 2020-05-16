@@ -309,7 +309,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="JeremyAnsel.HLSL.Targets" Version="1.0.9" />
+        <PackageReference Include="JeremyAnsel.HLSL.Targets" Version="1.0.10" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
