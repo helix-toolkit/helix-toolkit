@@ -160,6 +160,12 @@ namespace HelixToolkit.UWP
             }
         }
 
+        /// <summary>
+        /// Callers should set this property to true before calling HitTest if the callers need multiple hits throughout the geometry.
+        /// This is useful when the geometry is cut by a plane.
+        /// </summary>
+        public bool ReturnMultipleHitsOnHitTest { get; set; }
+
         public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
         {
             if(Positions == null || Positions.Count == 0
@@ -192,6 +198,7 @@ namespace HelixToolkit.UWP
                 {
                     int index = 0;
                     float minDistance = float.MaxValue;
+
                     foreach (var t in Triangles)
                     {
                         var v0 = t.P0;
@@ -199,7 +206,18 @@ namespace HelixToolkit.UWP
                         var v2 = t.P2;
                         if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out float d))
                         {
-                            if (d >= 0 && d < minDistance) // If d is NaN, the condition is false.
+                            // For CrossSectionMeshGeometryModel3D another hit than the closest may be the valid one, since the closest one might be removed by a crossing plane
+                            if (isHit && result.IsValid &&
+                                ReturnMultipleHitsOnHitTest)
+                            {
+                                hits.Add(result);
+                                result = new HitTestResult
+                                {
+                                    Distance = double.MaxValue
+                                };
+                            }
+
+                            if (d >= 0 && (d < minDistance || ReturnMultipleHitsOnHitTest)) // If d is NaN, the condition is false.
                             {
                                 minDistance = d;
                                 result.IsValid = true;
@@ -224,7 +242,7 @@ namespace HelixToolkit.UWP
                         index += 3;
                     }
                 }
-                if (isHit)
+                if (isHit && result.IsValid)
                 {
                     hits.Add(result);
                 }

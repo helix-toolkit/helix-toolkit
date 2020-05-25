@@ -207,6 +207,7 @@ float4 main(PSInput input) : SV_Target
     {
         albedo *= texDiffuseMap.Sample(samplerSurface, input.t);
     }
+    albedo = lerp(albedo, input.c, vertColorBlending);
     if (bHasRMMap)
     {
         RMA.gb *= texRMMap.Sample(samplerSurface, input.t).gb;

@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP
                 }
     #else
     #if NETFX_CORE
-                var filePath = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, @"HelixToolkit.UWP" + @"\Resources\" + name + @".cso");
+                var filePath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + @"\Resources\" + name + @".cso";
                 if (!File.Exists(filePath))
                 {
                     throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");

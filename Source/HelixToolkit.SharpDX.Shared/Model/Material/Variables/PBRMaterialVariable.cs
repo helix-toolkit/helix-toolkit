@@ -140,6 +140,7 @@ namespace HelixToolkit.UWP
 
                 WriteValue(PhongPBRMaterialStruct.RenderPBR, true); // Make sure to set this flag
                 AddPropertyBinding(nameof(PBRMaterialCore.EnableFlatShading), () => { WriteValue(PhongPBRMaterialStruct.RenderFlat, material.EnableFlatShading); });
+                AddPropertyBinding(nameof(PBRMaterialCore.VertexColorBlendingFactor), () => { WriteValue(PhongPBRMaterialStruct.VertColorBlending, material.VertexColorBlendingFactor); });
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

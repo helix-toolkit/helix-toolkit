@@ -322,6 +322,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Material).Core as PBRMaterialCore).EnableFlatShading = (bool)e.NewValue;
             }));
+
+        public static readonly DependencyProperty VertexColorBlendingFactorProperty =
+            DependencyProperty.Register("VertexColorBlendingFactor", typeof(double), typeof(PBRMaterial), new PropertyMetadata(0.0,
+        (d, e) =>
+        {
+            ((d as Material).Core as PBRMaterialCore).VertexColorBlendingFactor = (float)(double)e.NewValue;
+        }));
         /// <summary>
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
@@ -667,6 +674,20 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(EnableFlatShadingProperty); }
             set { SetValue(EnableFlatShadingProperty, value); }
         }
+
+        /// <summary>
+        /// Gets or sets the vertex color blending factor.
+        /// Final Diffuse Color = (1 - VertexColorBlendingFactor) * Diffuse + VertexColorBlendingFactor * Vertex Color
+        /// </summary>
+        /// <value>
+        /// The vertex color blending factor.
+        /// </value>
+        public double VertexColorBlendingFactor
+        {
+            get { return (double)GetValue(VertexColorBlendingFactorProperty); }
+            set { SetValue(VertexColorBlendingFactorProperty, value); }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PBRMaterial"/> class.
         /// </summary>
@@ -715,6 +736,7 @@ namespace HelixToolkit.Wpf.SharpDX
             MaxTessellationDistance = core.MaxTessellationDistance;
             MinTessellationDistance = core.MinTessellationDistance;
             EnableFlatShading = core.EnableFlatShading;
+            VertexColorBlendingFactor = core.VertexColorBlendingFactor;
         }
 
         protected override MaterialCore OnCreateCore()
@@ -759,6 +781,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MaxTessellationDistance = (float)MaxTessellationDistance,
                 MinTessellationDistance = (float)MinTessellationDistance,
                 EnableFlatShading = EnableFlatShading,
+                VertexColorBlendingFactor = (float)VertexColorBlendingFactor,
             };
         }
 
@@ -810,6 +833,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MaxTessellationDistance = MaxTessellationDistance,
                 MinTessellationDistance = MinTessellationDistance,
                 EnableFlatShading = EnableFlatShading,
+                VertexColorBlendingFactor = VertexColorBlendingFactor,
             };
         }
     }

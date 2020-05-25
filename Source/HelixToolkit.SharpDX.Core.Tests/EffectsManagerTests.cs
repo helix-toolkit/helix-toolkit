@@ -1,13 +1,17 @@
-﻿using HelixToolkit.SharpDX.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EffectsManagerTests.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+using NUnit.Framework;
 
 namespace HelixToolkit.SharpDX.Core.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class EffectsManagerTests
     {
-        [TestMethod]
+        [Test]
         public void InitializationTest()
         {
             var effectsManager = new DefaultEffectsManager();

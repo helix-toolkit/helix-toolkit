@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using global::SharpDX.Direct3D11;
 using System.Diagnostics;
 #if DX11_1
@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !COREWPF
     using Render;
 #endif
-    
+
     namespace Controls
     {
         public sealed class DX11ImageSourceArgs : EventArgs
@@ -36,6 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             private DX11ImageSource surfaceD3D;
 
             private bool frontBufferChange = false;
+            private bool hasBackBuffer = false;
 
             public DX11ImageSourceRenderHost(Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
             {
@@ -49,14 +50,21 @@ namespace HelixToolkit.Wpf.SharpDX
 
             protected override void PostRender()
             {
+                if (!hasBackBuffer)
+                {
+                    Logger.Log(HelixToolkit.Logger.LogLevel.Warning, $"Back buffer is not set.");
+                    return;
+                }
                 surfaceD3D?.InvalidateD3DImage();
                 base.PostRender();
             }
 
             protected override void DisposeBuffers()
             {
+                Logger.Log(HelixToolkit.Logger.LogLevel.Information, $"Dispose buffers.");
                 if (surfaceD3D != null)
                 {
+                    hasBackBuffer = false;
                     surfaceD3D.SetRenderTargetDX11(null);
                     if (!frontBufferChange)
                     {
@@ -76,12 +84,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     surfaceD3D.IsFrontBufferAvailableChanged += SurfaceD3D_IsFrontBufferAvailableChanged;
                 }
                 surfaceD3D.SetRenderTargetDX11(e.Texture.Resource as Texture2D);
+                hasBackBuffer = e.Texture.Resource is Texture2D;
                 OnImageSourceChanged(this, new DX11ImageSourceArgs(surfaceD3D));
+                if (hasBackBuffer)
+                { 
+                    Logger.Log(HelixToolkit.Logger.LogLevel.Information, $"New back buffer is set.");
+                }
+                else
+                {
+                    Logger.Log(HelixToolkit.Logger.LogLevel.Information, $"Set back buffer failed.");
+                }
             }
 
             private void SurfaceD3D_IsFrontBufferAvailableChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
             {
-                if(EffectsManager == null)
+                if (EffectsManager == null)
                 {
                     return;
                 }
@@ -100,6 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             EndD3D();
                             if (surfaceD3D != null)
                             {
+                                hasBackBuffer = false;
                                 surfaceD3D.SetRenderTargetDX11(null);
                                 surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
                                 RemoveAndDispose(ref surfaceD3D);
@@ -109,13 +127,13 @@ namespace HelixToolkit.Wpf.SharpDX
                             EffectsManager.Reinitialize();
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Logger.Log(HelixToolkit.Logger.LogLevel.Error, ex.Message);
                     }
                 }
                 else
-                {               
+                {
                     frontBufferChange = true;
                     if (EffectsManager.Device.DeviceRemovedReason.Success)
                     {
@@ -123,6 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
+                        hasBackBuffer = false;
                         surfaceD3D?.SetRenderTargetDX11(null);
                         EndD3D();
                     }
@@ -134,6 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 OnImageSourceChanged = null;
                 if (surfaceD3D != null)
                 {
+                    hasBackBuffer = false;
                     surfaceD3D?.SetRenderTargetDX11(null);
                     surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
                     RemoveAndDispose(ref surfaceD3D);
@@ -142,6 +162,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
-
 }

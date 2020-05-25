@@ -126,6 +126,11 @@ namespace HelixToolkit.UWP
             {
                 return (Geometry as LineGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, (float)HitTestThickness);
             }
+
+            protected override bool PreHitTestOnBounds(ref Ray ray)
+            {
+                return BoundsSphereWithTransform.Intersects(ref ray);
+            }
         }
     }
 

@@ -67,7 +67,7 @@ PSInput main(VSInstancingInput input)
 #if !defined(INSTANCINGPARAM)
 	//set texture coords
     output.t = mul(float2x4(uvTransformR1, uvTransformR2), float4(input.t, 0, 1)).xy;
-    output.cDiffuse = vMaterialDiffuse;
+    output.cDiffuse = vMaterialDiffuse ;
     output.c2 = vMaterialEmissive;
 #endif
 

@@ -25,7 +25,7 @@
         public string Name { get; set; }
         public MainViewModel ViewModel { get { return this; } }
         public MeshGeometry3D Model { get; private set; }
-
+        public MeshGeometry3D BoxModel { get; private set; }
         public MeshGeometry3D FloorModel { private set; get; }
         public PhongMaterial FloorMaterial { private set; get; }
         public Transform3D ModelTransform { get; private set; }
@@ -121,6 +121,10 @@
 
             Plane1Transform = new TranslateTransform3D(new Vector3D(0, 15, 0));
             Plane2Transform = new TranslateTransform3D(new Vector3D(15, 0, 0));
+
+            var meshBuilder = new MeshBuilder();
+            meshBuilder.AddBox(new Vector3(5f), 40, 1, 2);
+            BoxModel = meshBuilder.ToMeshGeometry3D();
         }
 
         public List<Object3D> Load3ds(string path)

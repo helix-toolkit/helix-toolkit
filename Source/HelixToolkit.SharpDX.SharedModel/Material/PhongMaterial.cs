@@ -235,6 +235,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Material).Core as PhongMaterialCore).EnableAutoTangent = (bool)e.NewValue;
                 }));
+
+        // Using a DependencyProperty as the backing store for VertexColorBlendingFactor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty VertexColorBlendingFactorProperty =
+            DependencyProperty.Register("VertexColorBlendingFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(0.0,
+                (d, e)=> 
+                {
+                    ((d as Material).Core as PhongMaterialCore).VertexColorBlendingFactor = (float)(double)e.NewValue;
+                }));
+
+
         /// <summary>
         /// The enable tessellation property
         /// </summary>
@@ -600,6 +610,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (UVTransform)GetValue(UVTransformProperty); }
             set { SetValue(UVTransformProperty, value); }
         }
+        /// <summary>
+        /// Gets or sets the vertex color blending factor.
+        /// Final Diffuse Color = (1 - VertexColorBlendingFactor) * Diffuse + VertexColorBlendingFactor * Vertex Color
+        /// </summary>
+        /// <value>
+        /// The vertex color blending factor.
+        /// </value>
+        public double VertexColorBlendingFactor
+        {
+            get { return (double)GetValue(VertexColorBlendingFactorProperty); }
+            set { SetValue(VertexColorBlendingFactorProperty, value); }
+        }
 
         /// <summary>
         /// Constructs a Shading Material which correspnds with 
@@ -644,6 +666,7 @@ namespace HelixToolkit.Wpf.SharpDX
             EnableAutoTangent = core.EnableAutoTangent;
             UVTransform = core.UVTransform;
             EnableFlatShading = core.EnableFlatShading;
+            VertexColorBlendingFactor = core.VertexColorBlendingFactor;
         }
 
         public virtual PhongMaterial CloneMaterial()
@@ -682,6 +705,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform,
                 EnableFlatShading = EnableFlatShading,
+                VertexColorBlendingFactor = VertexColorBlendingFactor,
             };
         }
 
@@ -728,6 +752,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 EnableAutoTangent = EnableAutoTangent,
                 UVTransform = UVTransform,
                 EnableFlatShading = EnableFlatShading,
+                VertexColorBlendingFactor = (float)VertexColorBlendingFactor,
             };
         }
     }

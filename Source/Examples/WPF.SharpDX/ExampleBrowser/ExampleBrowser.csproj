@@ -101,6 +101,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Workitems\Workitem1349\MainViewModel.cs" />
+    <Compile Include="Workitems\Workitem1349\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workitems\Workitem10048\MainViewModel.cs" />
     <Compile Include="Workitems\Workitem10048\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -124,6 +128,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Workitems\Workitem1349\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Workitems\Workitem10048\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -252,6 +260,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Workitem10053_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Workitem1349_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

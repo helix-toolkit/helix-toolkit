@@ -59,7 +59,27 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
+## Bug Report
+Please use the following template to report bugs.
+
+- Version: [Example: 2.11]
+- Package: [Example: Helixtoolkit.Wpf]
+- Issue: 
+- Reproduce Steps:
+- Sample Code:
+
 ## News
+
+#### 2020-02-08
+[v2.11.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.11.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.11.0)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.11.0)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.11.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.11.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.11.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.11.0)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.11.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.11.0)
 
 #### 2019-11-10
 [v2.10.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.10.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
@@ -80,14 +100,6 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.9.0)
 - [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.9.0)
 - [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.9.0)
-
-#### 2019-06-22
-[v2.8.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.8.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.8.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.8.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.8.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.8.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.8.0)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 

@@ -141,6 +141,7 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(DiffuseMaterialCore.EnableUnLit), () => 
                 { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.EnableUnLit); });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.EnableFlatShading), () => { WriteValue(PhongPBRMaterialStruct.RenderFlat, material.EnableFlatShading); });
+                AddPropertyBinding(nameof(DiffuseMaterialCore.VertexColorBlendingFactor), () => { WriteValue(PhongPBRMaterialStruct.VertColorBlending, material.VertexColorBlendingFactor); });
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

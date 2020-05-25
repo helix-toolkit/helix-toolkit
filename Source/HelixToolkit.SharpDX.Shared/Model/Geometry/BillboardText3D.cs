@@ -115,7 +115,7 @@ namespace HelixToolkit.UWP
             var texImageStream = assembly.GetManifestResourceStream($"HelixToolkit.Wpf.SharpDX.Textures.{FontName}.dds");
             TextureStatic = MemoryStream.Synchronized(texImageStream);
 #else
-            var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "HelixToolkit.UWP");
+            var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
             var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\Resources\\{FontName}.fnt");
             bmpFont = new BitmapFont();
             var fileStream = new MemoryStream(sampleFile);
