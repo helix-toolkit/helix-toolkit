@@ -1,11 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Next Release]
+## [2.12.0] - 2020-05-25
 ### Added
 1. Support Vertex Color blending for Phong/PBR/Diffuse materials with new `VertexColorBlendingFactor` property. (WPF.SharpDX/UWP/Core)
-
-### Improvement and Changes
 
 ### Fixed
 1. Fix billboardText not being call to initialize. (WPF.SharpDX/UWP/Core)
