@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public sealed class ColorStripeMaterialVariables : MaterialVariable
+        public class ColorStripeMaterialVariables : MaterialVariable
         {
             private readonly ITextureResourceManager textureManager;
             private readonly IStatePoolManager statePoolManager;

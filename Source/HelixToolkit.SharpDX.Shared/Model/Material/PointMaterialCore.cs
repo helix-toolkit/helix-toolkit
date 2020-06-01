@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         using Core;
-        public sealed class PointMaterialCore : MaterialCore, IPointRenderParams
+        public class PointMaterialCore : MaterialCore, IPointRenderParams
         {
             private float width = 0.5f;
             /// <summary>

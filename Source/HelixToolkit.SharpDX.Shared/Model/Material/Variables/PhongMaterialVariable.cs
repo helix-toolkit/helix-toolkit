@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Default PhongMaterial Variables
         /// </summary>
-        public sealed class PhongMaterialVariables : MaterialVariable
+        public class PhongMaterialVariables : MaterialVariable
         {
             private const int NUMTEXTURES = 6;
 
