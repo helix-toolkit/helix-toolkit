@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -81,6 +81,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomMeshNode.cs" />
+    <Compile Include="Materials\CustomPointMaterial.cs" />
+    <Compile Include="Materials\CustomPointMaterialCore.cs" />
+    <Compile Include="Materials\CustomPointMaterialVariable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -151,14 +154,18 @@
     <Content Include="Shaders\CommonBuffers.hlsl" />
     <Content Include="Shaders\DataStructs.hlsl" />
     <Content Include="Shaders\PerlinNoise3D.hlsl" />
+    <Content Include="Shaders\psCustomPoint.hlsl" />
     <HLSLShader Include="Shaders\psMeshDataSampling.hlsl">
-        <ShaderProfile>ps_4_0</ShaderProfile>
+      <ShaderProfile>ps_4_0</ShaderProfile>
     </HLSLShader>
     <HLSLShader Include="Shaders\psMeshNoiseBlinnPhong.hlsl">
-        <ShaderProfile>ps_4_0</ShaderProfile>
+      <ShaderProfile>ps_4_0</ShaderProfile>
     </HLSLShader>
     <HLSLShader Include="Shaders\vsMeshDataSampling.hlsl">
-        <ShaderProfile>vs_4_0</ShaderProfile>
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="Shaders\psCustomPoint.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
     </HLSLShader>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

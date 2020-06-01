@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
         using Shaders;
         using Utilities;
 
-        public sealed class BillboardMaterialVariable : MaterialVariable
+        public class BillboardMaterialVariable : MaterialVariable
         {
             /// <summary>
             /// Set texture variable name insider shader for binding

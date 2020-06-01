@@ -83,6 +83,7 @@
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding SphereModel}"
                 Material="{Binding SphereMaterial}" />
+            <hx:PointMaterialGeometryModel3D Geometry="{Binding PointModel}" Material="{Binding CustomPointMaterial}" Transform="{Binding PointTransform}"/>
             <hx:ContinuousRender3D/>
         </hx:Viewport3DX>
 

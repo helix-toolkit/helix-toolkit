@@ -6,9 +6,11 @@
 
 namespace CustomShaderDemo
 {
+    using CustomShaderDemo.Materials;
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
+    using SharpDX.Direct2D1.Effects;
     using SharpDX.Direct3D11;
     using System;
     using System.Collections.Generic;
@@ -18,7 +20,8 @@ namespace CustomShaderDemo
     using Color = System.Windows.Media.Color;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     public class MainViewModel : BaseViewModel
     {
         public MeshGeometry3D Model { get; private set; }
@@ -27,6 +30,12 @@ namespace CustomShaderDemo
         public BillboardText3D AxisLabel { private set; get; }
         public ColorStripeMaterial ModelMaterial { get; private set; } = new ColorStripeMaterial();
         public PhongMaterial SphereMaterial { private set; get; } = PhongMaterials.Copper;
+
+        public PointGeometry3D PointModel { private set; get; }
+
+        public CustomPointMaterial CustomPointMaterial { get; }
+
+        public Transform3D PointTransform { get; } = new TranslateTransform3D(10, 0, 0);
 
         private Color startColor;
         /// <summary>
@@ -187,6 +196,12 @@ namespace CustomShaderDemo
 
             GenerateNoiseCommand = new RelayCommand((o) => { CreatePerlinNoise(); });
             CreatePerlinNoise();
+
+            PointModel = new PointGeometry3D()
+            {
+                Positions = SphereModel.Positions
+            };
+            CustomPointMaterial = new CustomPointMaterial() { Color = Colors.White };
         }
 
         public static IEnumerable<Color4> GetGradients(Color4 start, Color4 mid, Color4 end, int steps)
