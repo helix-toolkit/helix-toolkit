@@ -48,8 +48,14 @@ artifacts:
   - path: '*.snupkg'
     name: HelixToolkit-packages-symbols-$(GitVersion_SemVer)
     type: zip
-  - path: Source\dist-examples
-    name: HelixToolkit-Examples-$(GitVersion_SemVer)
+  - path: Source\dist-examples\WPF
+    name: HelixToolkit-Examples-WPF-$(GitVersion_SemVer)
+    type: zip
+  - path: Source\dist-examples\WPF.SharpDX
+    name: HelixToolkit-Examples-WPF-SharpDX-$(GitVersion_SemVer)
+    type: zip
+  - path: Source\dist-examples\SharpDX.Core
+    name: HelixToolkit-Examples-SharpDX-Core-$(GitVersion_SemVer)
     type: zip
     
 deploy:
