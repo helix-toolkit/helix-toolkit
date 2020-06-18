@@ -121,9 +121,9 @@ namespace HelixToolkit.SharpDX.Core.Model
             var io = ImGui.GetIO();
             unsafe
             {
-                io.Fonts.GetTexDataAsRGBA32(out var textureData, out var width, out var height);
+                io.Fonts.GetTexDataAsRGBA32(out IntPtr textureData, out var width, out var height);
                 var textureView = Collect(new ShaderResourceViewProxy(EffectsManager.Device));
-                textureView.CreateView((IntPtr)textureData, width, height, 
+                textureView.CreateView(textureData, width, height, 
                     Format.R8G8B8A8_UNorm);
                 io.Fonts.SetTexID(fontAtlasID);
                 io.Fonts.ClearTexData();

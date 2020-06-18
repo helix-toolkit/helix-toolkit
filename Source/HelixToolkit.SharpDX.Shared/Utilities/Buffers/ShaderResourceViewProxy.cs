@@ -505,6 +505,7 @@ namespace HelixToolkit.UWP
             /// <param name="device">The device.</param>
             /// <param name="texture">The texture.</param>
             /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+            /// <param name="generateMipMaps"></param>
             /// <returns></returns>
             public static ShaderResourceViewProxy CreateView(Device device, System.IO.Stream texture, bool createSRV = true, bool generateMipMaps = true)
             {

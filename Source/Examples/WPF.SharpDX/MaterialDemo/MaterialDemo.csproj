@@ -130,9 +130,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-      <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_COLOR.jpg">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+    <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_COLOR.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_DISP.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -142,18 +142,18 @@
     <Content Include="..\..\..\..\Images\Textures\Wood_Planks\Wood_Planks_RMA.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_COLOR.jpg">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_DISP.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_NORM.jpg">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_RMC.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+    <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_COLOR.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_DISP.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_NORM.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\Images\Textures\Engraved_Metal\Engraved_Metal_RMC.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\..\..\Images\EnvironmentMaps\Cubemap_Grandcanyon.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -208,7 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PropertyTools.Wpf">
-      <Version>2.0.1</Version>
+      <Version>3.0.0</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.Direct3D11">
       <Version>4.2.0</Version>
