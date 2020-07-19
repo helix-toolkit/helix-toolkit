@@ -140,7 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet">
-      <Version>4.1.0</Version>
+      <Version>5.0.0-beta1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
