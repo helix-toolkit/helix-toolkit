@@ -3,7 +3,7 @@
         <None Include="..\HelixToolkit.snk" />
     </ItemGroup>
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3; netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
       <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
       <PackageLicenseUrl></PackageLicenseUrl>
       <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
@@ -26,7 +26,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Release|AnyCPU'">
     <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETSTANDARD1_3</DefineConstants>
     <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
@@ -34,19 +33,33 @@
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
-    <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Debug|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETCORE2_1</DefineConstants>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <OutputPath>bin\Debug\</OutputPath>
-    </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Release|AnyCPU'">
-        <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETCORE2_1</DefineConstants>
-        <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <NoWarn>1701;1702;1705;CS1591</NoWarn>
-        <OutputPath>bin\Release\</OutputPath>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Debug|AnyCPU'">
+      <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETCORE2_1</DefineConstants>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Release|AnyCPU'">
+      <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETCORE2_1</DefineConstants>
+      <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <NoWarn>1701;1702;1705;CS1591</NoWarn>
+      <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp3.1|Debug|AnyCPU'">
+      <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETCORE3_1</DefineConstants>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp3.1|Release|AnyCPU'">
+      <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETCORE3_1</DefineConstants>
+      <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <NoWarn>1701;1702;1705;CS1591</NoWarn>
+      <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <ItemGroup>

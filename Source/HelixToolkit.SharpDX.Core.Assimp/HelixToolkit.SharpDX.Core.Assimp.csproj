@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3; netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
       <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
       <PackageLicenseUrl></PackageLicenseUrl>
       <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
@@ -24,24 +24,36 @@
     <OutputPath>bin\Release\</OutputPath>
     <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Debug|AnyCPU'">
     <DefineConstants>TRACE;NETFX_CORE;CORE;</DefineConstants>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
-    <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Release|AnyCPU'">
-        <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE2_1</DefineConstants>
-        <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
-        <OutputPath>bin\Release\</OutputPath>
-        <NoWarn>1701;1702;1591;</NoWarn>
-    </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Debug|AnyCPU'">
-        <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE2_1</DefineConstants>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DocumentationFile></DocumentationFile>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Release|AnyCPU'">
+      <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE2_1</DefineConstants>
+      <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
+      <OutputPath>bin\Release\</OutputPath>
+      <NoWarn>1701;1702;1591;</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Debug|AnyCPU'">
+      <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE2_1</DefineConstants>
+      <OutputPath>bin\Debug\</OutputPath>
+      <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp3.1|Release|AnyCPU'">
+      <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE3_1</DefineConstants>
+      <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
+      <OutputPath>bin\Release\</OutputPath>
+      <NoWarn>1701;1702;1591;</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp3.1|Debug|AnyCPU'">
+      <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE3_1</DefineConstants>
+      <OutputPath>bin\Debug\</OutputPath>
+      <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
