@@ -49,61 +49,61 @@ namespace LightsDemo
             public double Ambient
             {
                 get { return this.ambient; }
-                set { this.SetValue(ref this.ambient, value, () => this.Ambient); }
+                set { this.SetValue(ref this.ambient, value, nameof(this.Ambient)); }
             }
 
             public double Azimuth
             {
                 get { return this.azimuth; }
-                set { this.SetValue(ref this.azimuth, value, () => this.Azimuth); }
+                set { this.SetValue(ref this.azimuth, value, nameof(this.Azimuth)); }
             }
 
             public double Altitude
             {
                 get { return this.altitude; }
-                set { this.SetValue(ref this.altitude, value, () => this.Altitude); }
+                set { this.SetValue(ref this.altitude, value, nameof(this.Altitude)); }
             }
 
             public int Divisions
             {
                 get { return this.divisions; }
-                set { this.SetValue(ref this.divisions, value, () => this.Divisions); }
+                set { this.SetValue(ref this.divisions, value, nameof(this.Divisions)); }
             }
 
             public double Brightness
             {
                 get { return this.brightness; }
-                set { this.SetValue(ref this.brightness, value, () => this.Brightness); }
+                set { this.SetValue(ref this.brightness, value, nameof(this.Brightness)); }
             }
 
             public bool EnableHeadlight
             {
                 get { return this.enableHeadlight; }
-                set { this.SetValue(ref this.enableHeadlight, value, () => this.EnableHeadlight); }
+                set { this.SetValue(ref this.enableHeadlight, value, nameof(this.EnableHeadlight)); }
             }
 
             public double SpecularBrightness
             {
                 get { return this.specularBrightness; }
-                set { this.SetValue(ref this.specularBrightness, value, () => this.SpecularBrightness); RaisePropertyChanged(() => this.GreenMaterial); RaisePropertyChanged(() => this.BlueMaterial); }
+                set { this.SetValue(ref this.specularBrightness, value, nameof(this.SpecularBrightness)); RaisePropertyChanged(nameof(this.GreenMaterial)); RaisePropertyChanged(nameof(this.BlueMaterial)); }
             }
 
             public double SpecularPower
             {
                 get { return this.specularPower; }
-                set { this.SetValue(ref this.specularPower, value, () => this.SpecularPower); RaisePropertyChanged(() => this.GreenMaterial); RaisePropertyChanged(() => this.BlueMaterial); }
+                set { this.SetValue(ref this.specularPower, value, nameof(this.SpecularPower)); RaisePropertyChanged(nameof(this.GreenMaterial)); RaisePropertyChanged(nameof(this.BlueMaterial)); }
             }
 
             public double HeadlightLateralPosition
             {
                 get { return this.headlightLateralPosition; }
-                set { this.SetValue(ref this.headlightLateralPosition, value, () => this.HeadlightLateralPosition); RaisePropertyChanged(() => this.Headlight1); RaisePropertyChanged(() => this.Headlight2); }
+                set { this.SetValue(ref this.headlightLateralPosition, value, nameof(this.HeadlightLateralPosition)); RaisePropertyChanged(nameof(this.Headlight1)); RaisePropertyChanged(nameof(this.Headlight2)); }
             }
 
             public double HeadlightVerticalPosition
             {
                 get { return this.headlightVerticalPosition; }
-                set { this.SetValue(ref this.headlightVerticalPosition, value, () => this.HeadlightVerticalPosition); RaisePropertyChanged(() => this.Headlight1); RaisePropertyChanged(() => this.Headlight2); }
+                set { this.SetValue(ref this.headlightVerticalPosition, value, nameof(this.HeadlightVerticalPosition)); RaisePropertyChanged(nameof(this.Headlight1)); RaisePropertyChanged(nameof(this.Headlight2)); }
             }
 
             public Material GreenMaterial

@@ -92,7 +92,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.lifeTime, value, () => this.LifeTime);
+                this.SetValue(ref this.lifeTime, value, nameof(this.LifeTime));
             }
         }
 
@@ -110,7 +110,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.fadeOutTime, value, () => this.FadeOutTime);
+                this.SetValue(ref this.fadeOutTime, value, nameof(this.FadeOutTime));
             }
         }
 
@@ -128,7 +128,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.velocityDamping, value, () => this.VelocityDamping);
+                this.SetValue(ref this.velocityDamping, value, nameof(this.VelocityDamping));
             }
         }
 
@@ -146,7 +146,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.angularVelocity, value, () => this.AngularVelocity);
+                this.SetValue(ref this.angularVelocity, value, nameof(this.AngularVelocity));
             }
         }
 
@@ -164,7 +164,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.sizeRate, value, () => this.SizeRate);
+                this.SetValue(ref this.sizeRate, value, nameof(this.SizeRate));
             }
         }
 
@@ -181,7 +181,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.accelerationDirection, value, () => this.AccelerationDirection);
+                this.SetValue(ref this.accelerationDirection, value, nameof(this.AccelerationDirection));
             }
         }
 
@@ -199,7 +199,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.acceleration, value, () => this.Acceleration);
+                this.SetValue(ref this.acceleration, value, nameof(this.Acceleration));
             }
         }
 
@@ -217,7 +217,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.accelerationSpreading, value, () => this.AccelerationSpreading);
+                this.SetValue(ref this.accelerationSpreading, value, nameof(this.AccelerationSpreading));
             }
         }
 
@@ -236,7 +236,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.emitRate, value, () => this.EmitRate);
+                this.SetValue(ref this.emitRate, value, nameof(this.EmitRate));
             }
         }
 
@@ -252,7 +252,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.position, value, () => this.Position);
+                this.SetValue(ref this.position, value, nameof(this.Position));
             }
         }
 
@@ -271,7 +271,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.startRadius, value, () => this.StartRadius);
+                this.SetValue(ref this.startRadius, value, nameof(this.StartRadius));
             }
         }
 
@@ -289,7 +289,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.startSize, value, () => this.StartSize);
+                this.SetValue(ref this.startSize, value, nameof(this.StartSize));
             }
         }
 
@@ -305,7 +305,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.startDirection, value, () => this.StartDirection);
+                this.SetValue(ref this.startDirection, value, nameof(this.StartDirection));
             }
         }
 
@@ -323,7 +323,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.startSpreading, value, () => this.StartSpreading);
+                this.SetValue(ref this.startSpreading, value, nameof(StartSpreading));
             }
         }
 
@@ -341,7 +341,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.startVelocity, value, () => this.StartVelocity);
+                this.SetValue(ref this.startVelocity, value, nameof(this.StartVelocity));
             }
         }
 
@@ -358,7 +358,7 @@ namespace ParticleSystemDemo
 
             set
             {
-                this.SetValue(ref this.startVelocityRandomness, value, () => this.StartVelocityRandomness);
+                this.SetValue(ref this.startVelocityRandomness, value, nameof(this.StartVelocityRandomness));
             }
         }
     }
