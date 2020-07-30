@@ -27,13 +27,20 @@
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
       </group>
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
+        <dependency id="AssimpNet" version="4.1.0" />
+        <dependency id="SharpDX" version="4.2.0" />
+        <dependency id="SharpDX.Direct3D11" version="4.2.0" />
+        <dependency id="SharpDX.Mathematics" version="4.2.0" />
+      </group>
       <group targetFramework="netcoreapp2.1">
         <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
         <dependency id="AssimpNet" version="4.1.0" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
-      </group>	  
+      </group>
       <group targetFramework="netstandard1.3">
         <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
         <dependency id="AssimpNet" version="4.1.0" />
@@ -50,6 +57,8 @@
     <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netstandard1.3" />
     <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp2.1\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netcoreapp2.1" />
     <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp2.1\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netcoreapp2.1" />
+    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp3.1\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netcoreapp3.1" />
+    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp3.1\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netcoreapp3.1" />
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
