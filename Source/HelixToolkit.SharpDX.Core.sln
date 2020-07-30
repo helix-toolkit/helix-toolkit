@@ -27,7 +27,12 @@ Global
 		HelixToolkit.Wpf.SharpDX.Shared\HelixToolkit.Wpf.SharpDX.Shared.projitems*{1bd60704-10f4-45ef-ac5c-083350b3012b}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{56c44ddb-65df-44ba-86e3-de4be7a75c65}*SharedItemsImports = 5
+		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{56c44ddb-65df-44ba-86e3-de4be7a75c65}*SharedItemsImports = 5
+		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{621c7c6f-31e6-4fb9-98e0-393fdec72d4b}*SharedItemsImports = 5
+		HelixToolkit.Wpf.SharpDX.Shared\HelixToolkit.Wpf.SharpDX.Shared.projitems*{621c7c6f-31e6-4fb9-98e0-393fdec72d4b}*SharedItemsImports = 5
 		HelixToolkit.SharpDX.Assimp.Shared\HelixToolkit.SharpDX.Assimp.Shared.projitems*{c52e7a98-eb0e-4084-83ad-8ff5c6e1121d}*SharedItemsImports = 13
+		HelixToolkit.SharpDX.Assimp.Shared\HelixToolkit.SharpDX.Assimp.Shared.projitems*{d3a4bac2-eb58-4eb0-bd9d-cc76cb92b14d}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

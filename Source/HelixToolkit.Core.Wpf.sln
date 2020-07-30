@@ -7,13 +7,15 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.Wpf.Shared", "
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.Shared", "HelixToolkit.Shared\HelixToolkit.Shared.shproj", "{4EE18E80-7609-4FFF-BD4B-F02728EC0688}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Core.Wpf", "HelixToolkit.Core.Wpf\HelixToolkit.Core.Wpf.csproj", "{377C8ABC-42F0-4C1F-8BAF-A02DF8C6186A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.Core.Wpf", "HelixToolkit.Core.Wpf\HelixToolkit.Core.Wpf.csproj", "{377C8ABC-42F0-4C1F-8BAF-A02DF8C6186A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWpfDemo", "Examples\WPF\CoreWpfDemo\CoreWpfDemo.csproj", "{E1102903-9E99-4B64-A1A1-2ED6C9747FA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWpfDemo", "Examples\WPF\CoreWpfDemo\CoreWpfDemo.csproj", "{E1102903-9E99-4B64-A1A1-2ED6C9747FA9}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.Wpf.Shared\HelixToolkit.Wpf.Shared.projitems*{342788cd-c98c-4856-99f3-e38bceacb2b7}*SharedItemsImports = 13
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{377c8abc-42f0-4c1f-8baf-a02df8c6186a}*SharedItemsImports = 5
+		HelixToolkit.Wpf.Shared\HelixToolkit.Wpf.Shared.projitems*{377c8abc-42f0-4c1f-8baf-a02df8c6186a}*SharedItemsImports = 5
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
