@@ -12,14 +12,14 @@
     <description>Provides custom controls and extensions for .net core WPF 3D.</description>
     <tags>wpf wpf3d 3D netcore</tags>
     <dependencies>
-      <group targetFramework="netcoreapp3.0">
+      <group targetFramework="netcoreapp3.1">
         <dependency id="HelixToolkit" version="[$version$]" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="HelixToolkit.Core.Wpf\bin\Release\netcoreapp3.0\HelixToolkit.Core.Wpf.???" target="lib\netcoreapp3.0" />
-	<file src="HelixToolkit.Core.Wpf\bin\Release\netcoreapp3.0\HelixToolkit.Core.Wpf.deps.json" target="lib\netcoreapp3.0" />
+    <file src="HelixToolkit.Core.Wpf\bin\Release\netcoreapp3.1\HelixToolkit.Core.Wpf.???" target="lib\netcoreapp3.1" />
+	<file src="HelixToolkit.Core.Wpf\bin\Release\netcoreapp3.1\HelixToolkit.Core.Wpf.deps.json" target="lib\netcoreapp3.1" />
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />

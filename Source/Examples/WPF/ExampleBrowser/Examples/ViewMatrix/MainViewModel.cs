@@ -71,8 +71,8 @@ namespace ViewMatrixDemo
 
             set
             {
-                this.SetValue(ref this.projectionMatrix, value, () => this.ProjectionMatrix);
-                this.RaisePropertyChanged(() => this.ProjectionTransform);
+                this.SetValue(ref this.projectionMatrix, value, nameof(this.ProjectionMatrix));
+                this.RaisePropertyChanged(nameof(this.ProjectionTransform));
             }
         }
 
@@ -85,8 +85,8 @@ namespace ViewMatrixDemo
 
             set
             {
-                this.SetValue(ref this.viewMatrix, value, () => this.ViewMatrix);
-                this.RaisePropertyChanged(() => this.ViewTransform);
+                this.SetValue(ref this.viewMatrix, value, nameof(this.ViewMatrix));
+                this.RaisePropertyChanged(nameof(this.ViewTransform));
             }
         }
 
@@ -99,8 +99,8 @@ namespace ViewMatrixDemo
 
             set
             {
-                this.SetValue(ref this.viewportMatrix, value, () => this.ViewportMatrix);
-                this.RaisePropertyChanged(() => this.ViewportTransform);
+                this.SetValue(ref this.viewportMatrix, value, nameof(this.ViewportMatrix));
+                this.RaisePropertyChanged(nameof(this.ViewportTransform));
             }
         }
     }
