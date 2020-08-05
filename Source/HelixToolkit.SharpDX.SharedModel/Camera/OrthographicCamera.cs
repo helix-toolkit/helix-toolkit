@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public OrthographicCamera()
         {
             // default values for near-far must be different for ortho:
-            NearPlaneDistance = -10.0;
+            NearPlaneDistance = 0.001;
             FarPlaneDistance = 100.0;
         }
 
