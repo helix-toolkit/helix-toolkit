@@ -26,6 +26,22 @@ namespace HelixToolkit.UWP
     public class MeshGeometry3D : Geometry3D
     {
         /// <summary>
+        /// Used to scale up small triangle during hit test.
+        /// </summary>
+        public static float SmallTriangleHitTestScaling = 1e3f;
+        /// <summary>
+        /// Used to determine if the triangle is small.
+        /// Small triangle is defined as any edge length square is smaller than
+        /// <see cref="SmallTriangleEdgeLengthSquare"/>.
+        /// </summary>
+        public static float SmallTriangleEdgeLengthSquare = 1e-3f;
+        /// <summary>
+        /// Used to enable small triangle hit test. It uses <see cref="SmallTriangleEdgeLengthSquare"/>
+        /// to determine if triangle is too small. If it is too small, scale up the triangle before
+        /// hit test.
+        /// </summary>
+        public static bool EnableSmallTriangleHitTestScaling = true;
+        /// <summary>
         /// Does not raise property changed event
         /// </summary>
         [DataMember]
@@ -193,6 +209,7 @@ namespace HelixToolkit.UWP
                 var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInvert)));
 
                 var b = this.Bound;
+
                 //Do hit test in local space
                 if (rayModel.Intersects(ref b))
                 {
@@ -201,11 +218,26 @@ namespace HelixToolkit.UWP
 
                     foreach (var t in Triangles)
                     {
-                        var v0 = t.P0;
-                        var v1 = t.P1;
-                        var v2 = t.P2;
-                        if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out float d))
+                        // Used when geometry size is really small, causes hit test failure due to SharpDX.MathUtils.ZeroTolerance.
+                        float scaling = 1f;
+                        var rayScaled = rayModel;
+                        if (EnableSmallTriangleHitTestScaling)
                         {
+                            if ((t.P0 - t.P1).LengthSquared() < SmallTriangleEdgeLengthSquare
+                                || (t.P1 - t.P2).LengthSquared() < SmallTriangleEdgeLengthSquare
+                                || (t.P2 - t.P0).LengthSquared() < SmallTriangleEdgeLengthSquare)
+                            {
+                                scaling = SmallTriangleHitTestScaling;
+                                rayScaled = new Ray(rayModel.Position * scaling, rayModel.Direction);
+                            }
+                        }
+                        var v0 = t.P0 * scaling;
+                        var v1 = t.P1 * scaling;
+                        var v2 = t.P2 * scaling;
+
+                        if (Collision.RayIntersectsTriangle(ref rayScaled, ref v0, ref v1, ref v2, out float d))
+                        {
+                            d /= scaling;
                             // For CrossSectionMeshGeometryModel3D another hit than the closest may be the valid one, since the closest one might be removed by a crossing plane
                             if (isHit && result.IsValid &&
                                 ReturnMultipleHitsOnHitTest)
@@ -226,9 +258,9 @@ namespace HelixToolkit.UWP
                                 var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
                                 result.PointHit = pointWorld;
                                 result.Distance = (rayWS.Position - pointWorld).Length();
-                                var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                                var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                                var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
+                                var p0 = Vector3.TransformCoordinate(t.P0, modelMatrix);
+                                var p1 = Vector3.TransformCoordinate(t.P1, modelMatrix);
+                                var p2 = Vector3.TransformCoordinate(t.P2, modelMatrix);
                                 var n = Vector3.Cross(p1 - p0, p2 - p0);
                                 n.Normalize();
                                 // transform hit-info to world space now:
