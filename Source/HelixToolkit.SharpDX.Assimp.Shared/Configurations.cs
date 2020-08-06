@@ -104,9 +104,14 @@ namespace HelixToolkit.UWP
             public bool ForceCullMode = false;
 
             /// <summary>
-            ///     The ignore emissive color
+            /// Ignores emissive color during importing.
             /// </summary>
             public bool IgnoreEmissiveColor = false;
+
+            /// <summary>
+            /// Ignores the ambient color during importing.
+            /// </summary>
+            public bool IgnoreAmbientColor = false;
 
             /// <summary>
             ///     Force to use material type. Default is Auto

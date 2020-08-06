@@ -114,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet">
-      <Version>4.1.0</Version>
+      <Version>5.0.0-beta1</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.Direct3D11">
       <Version>4.2.0</Version>
@@ -127,18 +127,18 @@
     <None Include="..\..\..\..\Models\FBX\Solus The Knight\Solus_The_Knight.fbx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-      <None Include="..\..\..\..\Models\FBX\Solus The Knight\temp_normal_map.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_knight_color_map_1024.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_knight_metalness_map_1024.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_occlusion_map_1024.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+    <None Include="..\..\..\..\Models\FBX\Solus The Knight\temp_normal_map.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_knight_color_map_1024.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_knight_metalness_map_1024.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\Models\FBX\Solus The Knight\tex_occlusion_map_1024.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

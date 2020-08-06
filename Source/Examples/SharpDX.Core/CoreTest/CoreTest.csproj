@@ -106,7 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet">
-      <Version>4.1.0</Version>
+      <Version>5.0.0-beta1</Version>
     </PackageReference>
     <PackageReference Include="ImGui.NET">
       <Version>1.75.0</Version>
