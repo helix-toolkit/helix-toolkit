@@ -1537,15 +1537,24 @@ namespace HelixToolkit.Wpf.SharpDX
         private void SetDefaultGestures()
         {
             this.InputBindings.Clear();
-            // TODO:
-            // Runtime error: 'None+U' key and modifier combination is not supported for KeyGesture.
-            // But this works when defining in xaml...
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.TopView, Key.U, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.BottomView, Key.D, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.FrontView, Key.F, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.BackView, Key.B, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.LeftView, Key.L, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.RightView, Key.R, ModifierKeys.None));
+
+            // Set Default Key Gestures:
+            // this.InputBindings.Add(new KeyBinding(ViewportCommands.TopView, Key.U, ModifierKeys.None));
+            // will not work, because the KeyBinding constructor creates a KeyGesture implictly.
+            // The problem: Gestures with printable keys and the ModifierKeys "None" or "Shift" are not supported.
+            // "None + U" or "Shift + U" can not be used as gesture. So we have to create a KeyBinding
+            // without a gesture. For this we have to use the KeyBinding default constructor.
+            var kb = new []
+            {
+                new KeyBinding() {Command = ViewportCommands.TopView, Key = Key.U},
+                new KeyBinding() {Command = ViewportCommands.BottomView, Key=Key.D},
+                new KeyBinding() {Command = ViewportCommands.FrontView, Key=Key.F},
+                new KeyBinding() {Command = ViewportCommands.BackView, Key=Key.B},
+                new KeyBinding() {Command = ViewportCommands.LeftView, Key=Key.L},
+                new KeyBinding() {Command = ViewportCommands.RightView, Key=Key.R},
+            };
+            this.InputBindings.AddRange(kb);
+
             this.InputBindings.Add(new KeyBinding(ViewportCommands.ZoomExtents, Key.E, ModifierKeys.Control));
             this.InputBindings.Add(
                 new MouseBinding(
