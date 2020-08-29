@@ -85,11 +85,14 @@ namespace HelixToolkit.UWP
             /// <param name="modelMatrix">The model matrix.</param>
             /// <param name="rayWS">The ray ws.</param>
             /// <param name="rayModel">The ray model.</param>
+            /// <param name="returnMultiple"></param>
             /// <param name="hits">The hits.</param>
             /// <param name="isIntersect">if set to <c>true</c> [is intersect].</param>
             /// <param name="hitThickness">The hit thickness.</param>
             /// <returns></returns>
-            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model,
+                Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, bool returnMultiple,
+                ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
                 isIntersect = false;
                 if (!octant.IsBuilt)
@@ -195,11 +198,14 @@ namespace HelixToolkit.UWP
             /// <param name="modelMatrix">The model matrix.</param>
             /// <param name="rayWS">The ray ws.</param>
             /// <param name="rayModel">The ray model.</param>
+            /// <param name="returnMultiple"></param>
             /// <param name="hits">The hits.</param>
             /// <param name="isIntersect">if set to <c>true</c> [is intersect].</param>
             /// <param name="hitThickness">The hit thickness.</param>
             /// <returns></returns>
-            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, 
+                object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, bool returnMultiple,
+                ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
                 isIntersect = false;
                 if (!octant.IsBuilt)

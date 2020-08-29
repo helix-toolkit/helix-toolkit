@@ -406,37 +406,118 @@ namespace HelixToolkit.UWP
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = true;
                 bool result = meshGeometry3d.HitTest(context, totalModelMatrix, ref rayWS, ref hits, this.WrapperSource);
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = false;
+                var operation = CuttingOperation;
                 if (result)
                 {
-                    if (EnablePlane1)
-                        result = CheckWithCrossingPlane(Plane1, hits, hitsBeforeCheck);
-                    if (result && EnablePlane2)
-                        result = CheckWithCrossingPlane(Plane2, hits, hitsBeforeCheck);
-                    if (result && EnablePlane3)
-                        result = CheckWithCrossingPlane(Plane3, hits, hitsBeforeCheck);
-                    if (result && EnablePlane4)
-                        result = CheckWithCrossingPlane(Plane4, hits, hitsBeforeCheck);
+                    switch (operation)
+                    {
+                        case CuttingOperation.Intersect:
+                            // Remove any hit point behinds any of the clip plane.
+                            if (EnablePlane1)
+                                result = RemoveHitPointBehindCrossingPlane(Plane1, hits, hitsBeforeCheck);
+                            if (result && EnablePlane2)
+                                result = RemoveHitPointBehindCrossingPlane(Plane2, hits, hitsBeforeCheck);
+                            if (result && EnablePlane3)
+                                result = RemoveHitPointBehindCrossingPlane(Plane3, hits, hitsBeforeCheck);
+                            if (result && EnablePlane4)
+                                result = RemoveHitPointBehindCrossingPlane(Plane4, hits, hitsBeforeCheck);
+                            if (result && EnablePlane5)
+                                result = RemoveHitPointBehindCrossingPlane(Plane5, hits, hitsBeforeCheck);
+                            if (result && EnablePlane6)
+                                result = RemoveHitPointBehindCrossingPlane(Plane6, hits, hitsBeforeCheck);
+                            if (result && EnablePlane7)
+                                result = RemoveHitPointBehindCrossingPlane(Plane7, hits, hitsBeforeCheck);
+                            if (result && EnablePlane8)
+                                result = RemoveHitPointBehindCrossingPlane(Plane8, hits, hitsBeforeCheck);
+                            break;
+                        case CuttingOperation.Subtract:
+                            // Remove any hit point in front of all clip planes
+                            result = RemoveHitPointInFrontOfAllCrossingPlanes(hits, hitsBeforeCheck);
+                            break;
+                    }
                     if (result)
                         RemoveAllButClosest(hits, hitsBeforeCheck);
                 }
                 return result;
             }
 
-            private static bool CheckWithCrossingPlane(Plane plane, List<HitTestResult> hits, int hitsBeforeCheck)
+            private static bool RemoveHitPointBehindCrossingPlane(Plane plane, List<HitTestResult> hits, int hitsBeforeCheck)
             {
                 // Loop backwards to remove at end of list when possible
                 for (int i = hits.Count-1; i >= hitsBeforeCheck; i--)
                 {
-                    var pointTimesNormal = (hits[i].PointHit * plane.Normal);
-                    float distanceToPlane = pointTimesNormal.X + pointTimesNormal.Y + pointTimesNormal.Z - plane.D;
-                    if (distanceToPlane < 0)
+                    if (hits[i].PointHit.PointToPlanePosition(ref plane) == PlaneIntersectionType.Back)
                     {
                         hits.RemoveAt(i);
                     }
                 }
-                if (hits.Count == hitsBeforeCheck)
-                    return false;
-                return true;
+                return hits.Count > hitsBeforeCheck;
+            }
+
+            private bool RemoveHitPointInFrontOfAllCrossingPlanes(List<HitTestResult> hits, int hitsBeforeCheck)
+            {
+                for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                {
+                    Vector3 hitPoint = hits[i].PointHit;
+                    if (EnablePlane1)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane1) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane2)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane2) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane3)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane3) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane4)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane4) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane5)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane5) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane6)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane6) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane7)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane7) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane8)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane8) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    hits.RemoveAt(i);
+                }
+                return hits.Count > hitsBeforeCheck;
             }
 
             /// <summary>
@@ -455,12 +536,12 @@ namespace HelixToolkit.UWP
                 for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
                 {
                     var hit = hits[i];
-                    if(minDistance > hit.Distance)
+                    if (minDistance > hit.Distance)
                     {
                         minDistance = hit.Distance;
                     }
                 }
-                if(minDistance<double.MaxValue)
+                if(minDistance < double.MaxValue)
                 {
                     bool foundMinDistance = false;
                     // Loop backwards to remove at end of list when possible

@@ -515,6 +515,23 @@ namespace HelixToolkit.UWP
             return HitTest(context, model, geometry, modelMatrix, rayWS, ref hits, 0);
         }
         /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="geometry">The geometry.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="returnMultiple">Not used</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
+        public bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, 
+            bool returnMultiple, ref List<HitTestResult> hits)
+        {
+            return HitTest(context, model, geometry, modelMatrix, rayWS, ref hits, 0);
+        }
+
+        /// <summary>
         /// <see cref="IOctreeBasic.HitTest(RenderContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
         /// </summary>
         /// <param name="context"></param>
@@ -525,7 +542,27 @@ namespace HelixToolkit.UWP
         /// <param name="hits"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
+        public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS,
+            ref List<HitTestResult> hits, float hitThickness)
+        {
+            return HitTest(context, model, geometry, modelMatrix, rayWS, false, ref hits, hitThickness);
+        }
+
+        /// <summary>
+        /// <see cref="IOctreeBasic.HitTest(RenderContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="geometry"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="returnMultiple"></param>
+        /// <param name="hits"></param>
+        /// <param name="hitThickness"></param>
+        /// <returns></returns>
+        public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, 
+            bool returnMultiple,
+            ref List<HitTestResult> hits, float hitThickness)
         {
             if (hits == null)
             {
