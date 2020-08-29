@@ -136,6 +136,87 @@ namespace HelixToolkit.UWP
                     return (RenderCore as ICrossSectionRenderParams).PlaneEnabled.W;
                 }
             }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable plane5].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable plane5]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnablePlane5
+            {
+                set
+                {
+                    var v = (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled;
+                    v.X = value;
+                    (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled = v;
+                }
+                get
+                {
+                    return (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled.X;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable plane6].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable plane6]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnablePlane6
+            {
+                set
+                {
+                    var v = (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled;
+                    v.Y = value;
+                    (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled = v;
+                }
+                get
+                {
+                    return (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled.Y;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable plane7].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable plane7]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnablePlane7
+            {
+                set
+                {
+                    var v = (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled;
+                    v.Z = value;
+                    (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled = v;
+                }
+                get
+                {
+                    return (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled.Z;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable plane8].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable plane8]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnablePlane8
+            {
+                set
+                {
+                    var v = (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled;
+                    v.W = value;
+                    (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled = v;
+                }
+                get
+                {
+                    return (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled.W;
+                }
+            }
+
             /// <summary>
             /// Gets or sets the plane1.
             /// </summary>
@@ -202,6 +283,78 @@ namespace HelixToolkit.UWP
                 get
                 {
                     return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane4Params);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the plane5.
+            /// </summary>
+            /// <value>
+            /// The plane5.
+            /// </value>
+            public Plane Plane5
+            {
+                set
+                {
+                    (RenderCore as ICrossSectionRenderParams).Plane5Params = PlaneToVector(ref value);
+                }
+                get
+                {
+                    return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane5Params);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the plane6.
+            /// </summary>
+            /// <value>
+            /// The plane6.
+            /// </value>
+            public Plane Plane6
+            {
+                set
+                {
+                    (RenderCore as ICrossSectionRenderParams).Plane6Params = PlaneToVector(ref value);
+                }
+                get
+                {
+                    return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane6Params);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the plane7.
+            /// </summary>
+            /// <value>
+            /// The plane7.
+            /// </value>
+            public Plane Plane7
+            {
+                set
+                {
+                    (RenderCore as ICrossSectionRenderParams).Plane7Params = PlaneToVector(ref value);
+                }
+                get
+                {
+                    return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane7Params);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the plane8.
+            /// </summary>
+            /// <value>
+            /// The plane8.
+            /// </value>
+            public Plane Plane8
+            {
+                set
+                {
+                    (RenderCore as ICrossSectionRenderParams).Plane8Params = PlaneToVector(ref value);
+                }
+                get
+                {
+                    return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane8Params);
                 }
             }
 

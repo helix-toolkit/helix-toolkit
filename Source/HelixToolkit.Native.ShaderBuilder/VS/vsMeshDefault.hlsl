@@ -151,10 +151,34 @@ PSInput main(VSInstancingInput input)
         float3 p = output.wp.xyz - CrossPlane4Params.xyz * CrossPlane4Params.w;
         output.clipPlane.w = dot(CrossPlane4Params.xyz, p);
     }
+    if (EnableCrossPlane5To8.x)
+    {
+        float3 p = output.wp.xyz - CrossPlane5Params.xyz * CrossPlane5Params.w;
+        output.clipPlane5To8.x = dot(CrossPlane5Params.xyz, p);
+    }
+    if (EnableCrossPlane5To8.y)
+    {
+        float3 p = output.wp.xyz - CrossPlane6Params.xyz * CrossPlane6Params.w;
+        output.clipPlane5To8.y = dot(CrossPlane6Params.xyz, p);
+    }
+    if (EnableCrossPlane5To8.z)
+    {
+        float3 p = output.wp.xyz - CrossPlane7Params.xyz * CrossPlane7Params.w;
+        output.clipPlane5To8.z = dot(CrossPlane7Params.xyz, p);
+    }
+    if (EnableCrossPlane5To8.w)
+    {
+        float3 p = output.wp.xyz - CrossPlane8Params.xyz * CrossPlane8Params.w;
+        output.clipPlane5To8.w = dot(CrossPlane8Params.xyz, p);
+    }
     if (CuttingOperation == 1)
     {
-        output.clipPlane.x = -(whenle(-output.clipPlane.x, 0) * whenle(-output.clipPlane.y, 0) * whenle(-output.clipPlane.z, 0) * whenle(-output.clipPlane.w, 0));
+        output.clipPlane.x = -(whenle(-output.clipPlane.x, 0) * whenle(-output.clipPlane.y, 0) 
+                             * whenle(-output.clipPlane.z, 0) * whenle(-output.clipPlane.w, 0)
+                             * whenle(-output.clipPlane5To8.x, 0) * whenle(-output.clipPlane5To8.y, 0) 
+                             * whenle(-output.clipPlane5To8.z, 0) * whenle(-output.clipPlane5To8.w, 0));
         output.clipPlane.yzw = float3(0, 0, 0);
+        output.clipPlane5To8 = float4(0, 0, 0, 0);
     }
 #endif
 	return output;
