@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+### Improvement and Changes
+1. Improved small triangle hit test. Ref #1353 (WPF.SharpDX/UWP/Core)
+2. Supports up to 8 clipping planes(cross section). Ref #1396 (WPF.SharpDX/UWP/Core)
+3. Supports `Dot Net Core 3.1`. (Core)
+4. Upgrades `Assimp.net` to 5.0 beta.
+
+### Fixed
+1. Fixed hit test in `CrossSectionGeometryModel3D` when uses octree or set `CuttingOperation = Substract`. Ref #1396 (WPF.SharpDX/UWP/Core)
+2. Fixed keybinding issue in Viewport3DX. Ref #1390 (WPF.SharpDX)
+
 ## [2.12.0] - 2020-05-25
 ### Added
 1. Support Vertex Color blending for Phong/PBR/Diffuse materials with new `VertexColorBlendingFactor` property. (WPF.SharpDX/UWP/Core)
