@@ -180,7 +180,7 @@ namespace HelixToolkit.UWP
         /// Callers should set this property to true before calling HitTest if the callers need multiple hits throughout the geometry.
         /// This is useful when the geometry is cut by a plane.
         /// </summary>
-        public bool ReturnMultipleHitsOnHitTest { get; set; }
+        public bool ReturnMultipleHitsOnHitTest { get; set; } = false;
 
         public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
         {
@@ -192,7 +192,7 @@ namespace HelixToolkit.UWP
             bool isHit = false;
             if (Octree != null)
             {
-                isHit = Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ref hits);
+                isHit = Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ReturnMultipleHitsOnHitTest, ref hits);
             }
             else
             {
@@ -239,17 +239,12 @@ namespace HelixToolkit.UWP
                         {
                             d /= scaling;
                             // For CrossSectionMeshGeometryModel3D another hit than the closest may be the valid one, since the closest one might be removed by a crossing plane
-                            if (isHit && result.IsValid &&
-                                ReturnMultipleHitsOnHitTest)
+                            if (ReturnMultipleHitsOnHitTest)
                             {
-                                hits.Add(result);
-                                result = new HitTestResult
-                                {
-                                    Distance = double.MaxValue
-                                };
+                                minDistance = float.MaxValue;
                             }
 
-                            if (d >= 0 && (d < minDistance || ReturnMultipleHitsOnHitTest)) // If d is NaN, the condition is false.
+                            if (d >= 0 && d < minDistance) // If d is NaN, the condition is false.
                             {
                                 minDistance = d;
                                 result.IsValid = true;
@@ -269,12 +264,17 @@ namespace HelixToolkit.UWP
                                 result.Tag = index / 3;
                                 result.Geometry = this;
                                 isHit = true;
+                                if (ReturnMultipleHitsOnHitTest)
+                                {
+                                    hits.Add(result);
+                                    result = new HitTestResult();
+                                }
                             }
                         }
                         index += 3;
                     }
                 }
-                if (isHit && result.IsValid)
+                if (isHit && result.IsValid && !ReturnMultipleHitsOnHitTest)
                 {
                     hits.Add(result);
                 }

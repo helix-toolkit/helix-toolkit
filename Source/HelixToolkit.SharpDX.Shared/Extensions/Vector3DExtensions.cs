@@ -391,5 +391,36 @@ namespace HelixToolkit.UWP
         {
             return new Size2((int)s.Width, (int)s.Height);
         }
+
+        /// <summary>
+        /// Point to plane position. Front/Back/Intersecting.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="plane">The plane.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PlaneIntersectionType PointToPlanePosition(this Vector3 point, ref Plane plane)
+        {
+            var normal = plane.Normal * (plane.D >= 0 ? 1 : -1);
+            var v1 = new Vector4(normal, Math.Abs(plane.D));
+            var v2 = new Vector4(point, 1);
+            var ret = Vector4.Dot(v1, v2);
+            return ret > 0 ? PlaneIntersectionType.Front : ret == 0 ? PlaneIntersectionType.Intersecting : PlaneIntersectionType.Back;
+        }
+
+        /// <summary>
+        /// Point to plane position. Front/Back/Intersecting.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="plane">The plane.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PlaneIntersectionType PointToPlanePosition(this Vector3 point, Plane plane)
+        {
+            var v1 = new Vector4((plane.Normal * (plane.D > 0 ? 1 : -1)), Math.Abs(plane.D));
+            var v2 = new Vector4(point, 1);
+            var ret = Vector4.Dot(v1, v2);
+            return ret > 0 ? PlaneIntersectionType.Front : ret == 0 ? PlaneIntersectionType.Intersecting : PlaneIntersectionType.Back;
+        }
     }
 }

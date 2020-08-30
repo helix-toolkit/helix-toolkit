@@ -96,11 +96,14 @@ namespace HelixToolkit.UWP
             /// <param name="modelMatrix"></param>
             /// <param name="rayWS"></param>
             /// <param name="rayModel"></param>
+            /// <param name="returnMultiple"></param>
             /// <param name="hits"></param>
             /// <param name="isIntersect"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, 
+                Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, bool returnMultiple,
+                ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
                 isIntersect = false;
                 if (!octant.IsBuilt)
@@ -138,6 +141,10 @@ namespace HelixToolkit.UWP
                         Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);
                         var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
                         var dist = tv2.Length();
+                        if (returnMultiple)
+                        {
+                            lastDist = float.MaxValue;
+                        }
                         if (dist < lastDist && dist <= hitThickness)
                         {
                             lastDist = dist;
@@ -154,10 +161,15 @@ namespace HelixToolkit.UWP
                             result.LineHitPointScalar = tc;
                             result.Geometry = geometry;
                             isHit = true;
+                            if (returnMultiple)
+                            {
+                                hits.Add(result);
+                                result = new LineHitTestResult();
+                            }
                         }
                     }
 
-                    if (isHit)
+                    if (isHit && !returnMultiple)
                     {
                         isHit = false;
                         if (hits.Count > 0)

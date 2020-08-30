@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP
         void BuildTree();
 
         /// <summary>
-        ///
+        /// Hit test. Only returns closest hit test result
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -64,7 +64,18 @@ namespace HelixToolkit.UWP
         /// <param name="hits"></param>
         /// <returns></returns>
         bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
-
+        /// <summary>
+        /// Hits the test. Returns multiple hits if returnsMultiple = true/>
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="geometry">The geometry.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="returnsMultiple">if set to <c>true</c> [returns multiple].</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
+        bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, bool returnsMultiple, ref List<HitTestResult> hits);
         /// <summary>
         ///
         /// </summary>
@@ -77,6 +88,19 @@ namespace HelixToolkit.UWP
         /// <param name="hitThickness"></param>
         /// <returns></returns>
         bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness);
+        /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="geometry">The geometry.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="returnsMultiple">if set to <c>true</c> [returns multiple].</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="hitThickness">The hit thickness.</param>
+        /// <returns></returns>
+        bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, bool returnsMultiple, ref List<HitTestResult> hits, float hitThickness);
 
         /// <summary>
         ///

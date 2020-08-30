@@ -136,6 +136,87 @@ namespace HelixToolkit.UWP
                     return (RenderCore as ICrossSectionRenderParams).PlaneEnabled.W;
                 }
             }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable plane5].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable plane5]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnablePlane5
+            {
+                set
+                {
+                    var v = (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled;
+                    v.X = value;
+                    (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled = v;
+                }
+                get
+                {
+                    return (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled.X;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable plane6].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable plane6]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnablePlane6
+            {
+                set
+                {
+                    var v = (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled;
+                    v.Y = value;
+                    (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled = v;
+                }
+                get
+                {
+                    return (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled.Y;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable plane7].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable plane7]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnablePlane7
+            {
+                set
+                {
+                    var v = (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled;
+                    v.Z = value;
+                    (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled = v;
+                }
+                get
+                {
+                    return (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled.Z;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether [enable plane8].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [enable plane8]; otherwise, <c>false</c>.
+            /// </value>
+            public bool EnablePlane8
+            {
+                set
+                {
+                    var v = (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled;
+                    v.W = value;
+                    (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled = v;
+                }
+                get
+                {
+                    return (RenderCore as ICrossSectionRenderParams).Plane5To8Enabled.W;
+                }
+            }
+
             /// <summary>
             /// Gets or sets the plane1.
             /// </summary>
@@ -206,6 +287,78 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
+            /// Gets or sets the plane5.
+            /// </summary>
+            /// <value>
+            /// The plane5.
+            /// </value>
+            public Plane Plane5
+            {
+                set
+                {
+                    (RenderCore as ICrossSectionRenderParams).Plane5Params = PlaneToVector(ref value);
+                }
+                get
+                {
+                    return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane5Params);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the plane6.
+            /// </summary>
+            /// <value>
+            /// The plane6.
+            /// </value>
+            public Plane Plane6
+            {
+                set
+                {
+                    (RenderCore as ICrossSectionRenderParams).Plane6Params = PlaneToVector(ref value);
+                }
+                get
+                {
+                    return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane6Params);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the plane7.
+            /// </summary>
+            /// <value>
+            /// The plane7.
+            /// </value>
+            public Plane Plane7
+            {
+                set
+                {
+                    (RenderCore as ICrossSectionRenderParams).Plane7Params = PlaneToVector(ref value);
+                }
+                get
+                {
+                    return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane7Params);
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the plane8.
+            /// </summary>
+            /// <value>
+            /// The plane8.
+            /// </value>
+            public Plane Plane8
+            {
+                set
+                {
+                    (RenderCore as ICrossSectionRenderParams).Plane8Params = PlaneToVector(ref value);
+                }
+                get
+                {
+                    return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane8Params);
+                }
+            }
+
+            /// <summary>
             /// The PlaneToVector
             /// </summary>
             /// <param name="p">The <see cref="Plane"/></param>
@@ -253,37 +406,118 @@ namespace HelixToolkit.UWP
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = true;
                 bool result = meshGeometry3d.HitTest(context, totalModelMatrix, ref rayWS, ref hits, this.WrapperSource);
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = false;
+                var operation = CuttingOperation;
                 if (result)
                 {
-                    if (EnablePlane1)
-                        result = CheckWithCrossingPlane(Plane1, hits, hitsBeforeCheck);
-                    if (result && EnablePlane2)
-                        result = CheckWithCrossingPlane(Plane2, hits, hitsBeforeCheck);
-                    if (result && EnablePlane3)
-                        result = CheckWithCrossingPlane(Plane3, hits, hitsBeforeCheck);
-                    if (result && EnablePlane4)
-                        result = CheckWithCrossingPlane(Plane4, hits, hitsBeforeCheck);
+                    switch (operation)
+                    {
+                        case CuttingOperation.Intersect:
+                            // Remove any hit point behinds any of the clip plane.
+                            if (EnablePlane1)
+                                result = RemoveHitPointBehindCrossingPlane(Plane1, hits, hitsBeforeCheck);
+                            if (result && EnablePlane2)
+                                result = RemoveHitPointBehindCrossingPlane(Plane2, hits, hitsBeforeCheck);
+                            if (result && EnablePlane3)
+                                result = RemoveHitPointBehindCrossingPlane(Plane3, hits, hitsBeforeCheck);
+                            if (result && EnablePlane4)
+                                result = RemoveHitPointBehindCrossingPlane(Plane4, hits, hitsBeforeCheck);
+                            if (result && EnablePlane5)
+                                result = RemoveHitPointBehindCrossingPlane(Plane5, hits, hitsBeforeCheck);
+                            if (result && EnablePlane6)
+                                result = RemoveHitPointBehindCrossingPlane(Plane6, hits, hitsBeforeCheck);
+                            if (result && EnablePlane7)
+                                result = RemoveHitPointBehindCrossingPlane(Plane7, hits, hitsBeforeCheck);
+                            if (result && EnablePlane8)
+                                result = RemoveHitPointBehindCrossingPlane(Plane8, hits, hitsBeforeCheck);
+                            break;
+                        case CuttingOperation.Subtract:
+                            // Remove any hit point in front of all clip planes
+                            result = RemoveHitPointInFrontOfAllCrossingPlanes(hits, hitsBeforeCheck);
+                            break;
+                    }
                     if (result)
                         RemoveAllButClosest(hits, hitsBeforeCheck);
                 }
                 return result;
             }
 
-            private static bool CheckWithCrossingPlane(Plane plane, List<HitTestResult> hits, int hitsBeforeCheck)
+            private static bool RemoveHitPointBehindCrossingPlane(Plane plane, List<HitTestResult> hits, int hitsBeforeCheck)
             {
                 // Loop backwards to remove at end of list when possible
                 for (int i = hits.Count-1; i >= hitsBeforeCheck; i--)
                 {
-                    var pointTimesNormal = (hits[i].PointHit * plane.Normal);
-                    float distanceToPlane = pointTimesNormal.X + pointTimesNormal.Y + pointTimesNormal.Z - plane.D;
-                    if (distanceToPlane < 0)
+                    if (hits[i].PointHit.PointToPlanePosition(ref plane) == PlaneIntersectionType.Back)
                     {
                         hits.RemoveAt(i);
                     }
                 }
-                if (hits.Count == hitsBeforeCheck)
-                    return false;
-                return true;
+                return hits.Count > hitsBeforeCheck;
+            }
+
+            private bool RemoveHitPointInFrontOfAllCrossingPlanes(List<HitTestResult> hits, int hitsBeforeCheck)
+            {
+                for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                {
+                    Vector3 hitPoint = hits[i].PointHit;
+                    if (EnablePlane1)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane1) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane2)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane2) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane3)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane3) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane4)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane4) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane5)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane5) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane6)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane6) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane7)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane7) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    if (EnablePlane8)
+                    {
+                        if (hitPoint.PointToPlanePosition(Plane8) != PlaneIntersectionType.Front)
+                        {
+                            continue;
+                        }
+                    }
+                    hits.RemoveAt(i);
+                }
+                return hits.Count > hitsBeforeCheck;
             }
 
             /// <summary>
@@ -302,12 +536,12 @@ namespace HelixToolkit.UWP
                 for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
                 {
                     var hit = hits[i];
-                    if(minDistance > hit.Distance)
+                    if (minDistance > hit.Distance)
                     {
                         minDistance = hit.Distance;
                     }
                 }
-                if(minDistance<double.MaxValue)
+                if(minDistance < double.MaxValue)
                 {
                     bool foundMinDistance = false;
                     // Loop backwards to remove at end of list when possible

@@ -150,6 +150,7 @@ struct PSInputClip
     float4 c2 : COLOR1; //vMaterialEmissive + vMaterialAmbient * vLightAmbient
     float4 cDiffuse : COLOR2; //vMaterialDiffuse
     float4 clipPlane : SV_ClipDistance0;
+    float4 clipPlane5To8 : SV_ClipDistance1;
 };
 
 struct PSInputXRay

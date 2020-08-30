@@ -160,7 +160,13 @@ namespace HelixToolkit.UWP
             ///   <c>true</c> if [plane1/plane2/plane3/plane4 enabled]; otherwise, <c>false</c>.
             /// </value>
             Bool4 PlaneEnabled { set; get; }
-
+            /// <summary>
+            /// Gets or sets the plane5 to 8 enabled.
+            /// </summary>
+            /// <value>
+            /// The plane5 to8 enabled.
+            /// </value>
+            Bool4 Plane5To8Enabled { set; get; }
             /// <summary>
             /// Defines the plane (Normal + d)
             /// </summary>
@@ -186,6 +192,48 @@ namespace HelixToolkit.UWP
             /// The plane4 parameters.
             /// </value>
             Vector4 Plane4Params { set; get; }
+
+            /// <summary>
+            /// Gets or sets the plane5 parameters.(Normal + d)
+            /// </summary>
+            /// <value>
+            /// The plane5 parameters.
+            /// </value>
+            Vector4 Plane5Params
+            {
+                set; get;
+            }
+            /// <summary>
+            /// Gets or sets the plane6 parameters.(Normal + d)
+            /// </summary>
+            /// <value>
+            /// The plane6 parameters.
+            /// </value>
+            Vector4 Plane6Params
+            {
+                set; get;
+            }
+            /// <summary>
+            /// Gets or sets the plane7 parameters.(Normal + d)
+            /// </summary>
+            /// <value>
+            /// The plane7 parameters.
+            /// </value>
+            Vector4 Plane7Params
+            {
+                set; get;
+            }
+
+            /// <summary>
+            /// Gets or sets the plane8 parameters.(Normal + d)
+            /// </summary>
+            /// <value>
+            /// The plane8 parameters.
+            /// </value>
+            Vector4 Plane8Params
+            {
+                set; get;
+            }
         }
 
         /// <summary>
