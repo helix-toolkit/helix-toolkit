@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                Width = oldWidth + (newWidth - oldWidth) / (accumTime / aniTime);
+                Width = oldWidth + (newWidth - oldWidth) * (accumTime / aniTime);
                 return true;
             }
         }
