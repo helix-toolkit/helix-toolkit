@@ -257,12 +257,12 @@ namespace HelixToolkit.UWP
             /// Called when [create projection matrix].
             /// </summary>
             /// <param name="scale">The scale.</param>
-            protected virtual void OnCreateProjectionMatrix(float scale)
+            protected virtual void OnCreateProjectionMatrix()
             {
-                projectionMatrix = CreateProjectionMatrix(IsPerspective, IsRightHand, scale, Fov, 0.001f, 100f, CameraDistance, CameraDistance);
+                projectionMatrix = CreateProjectionMatrix(IsPerspective, IsRightHand, Fov, 0.001f, 100f, CameraDistance, CameraDistance);
             }
 
-            private static Matrix CreateProjectionMatrix(bool isPerspective, bool isRightHand, float scale, float fov, float near, float far, float w, float h)
+            private static Matrix CreateProjectionMatrix(bool isPerspective, bool isRightHand, float fov, float near, float far, float w, float h)
             {
                 if (isPerspective)
                 {
@@ -286,7 +286,7 @@ namespace HelixToolkit.UWP
                     ScreenRatio = ratio;
                     Width = width;
                     Height = height;
-                    OnCreateProjectionMatrix(SizeScale);
+                    OnCreateProjectionMatrix();
                 }
             }
 
@@ -334,7 +334,6 @@ namespace HelixToolkit.UWP
                     dsView.Dispose();
                 }
                 IsRightHand = !context.Camera.CreateLeftHandSystem;
-                float viewportSize = Size * SizeScale;
                 switch (mode)
                 {
                     case ScreenSpacedMode.RelativeScreenSpaced:
@@ -357,7 +356,7 @@ namespace HelixToolkit.UWP
             private void RenderRelativeScreenSpaced(RenderContext context, DeviceContextProxy deviceContext)
             {
                 IsRightHand = !context.Camera.CreateLeftHandSystem;
-                float viewportSize = Size * SizeScale;
+                float viewportSize = Size * SizeScale * context.DpiScale;
                 var globalTrans = context.GlobalTransform;
                 UpdateProjectionMatrix((float)context.ActualWidth, (float)context.ActualHeight);
                 globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
@@ -394,7 +393,7 @@ namespace HelixToolkit.UWP
                 // Create new projection matrix with proper near/far field.
                 float w = globalTrans.Viewport.X;
                 float h = globalTrans.Viewport.Y;
-                globalTrans.Projection = CreateProjectionMatrix(context.IsPerspective, IsRightHand, 1,
+                globalTrans.Projection = CreateProjectionMatrix(context.IsPerspective, IsRightHand, 
                     globalTrans.Frustum.X, 0.01f, 500 / SizeScale, w, h);
                 globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
                 globalTrans.EyePos = newPos;

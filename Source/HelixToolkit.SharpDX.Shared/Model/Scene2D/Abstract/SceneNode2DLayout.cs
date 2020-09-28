@@ -93,7 +93,7 @@ namespace HelixToolkit.UWP
                 }
                 get
                 {
-                    return width;
+                    return width * DpiScale;
                 }
             }
 
@@ -110,8 +110,21 @@ namespace HelixToolkit.UWP
                 }
                 get
                 {
-                    return height;
+                    return height * DpiScale;
                 }
+            }
+
+            private float dpiScale = 1;
+            public float DpiScale
+            {
+                set
+                {
+                    if (Set(ref dpiScale, value))
+                    {
+                        InvalidateAll();
+                    }
+                } 
+                get => dpiScale;
             }
 
             private float minimumWidth = 0;

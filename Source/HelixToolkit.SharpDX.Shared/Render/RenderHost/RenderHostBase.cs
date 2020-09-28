@@ -314,6 +314,20 @@ namespace HelixToolkit.UWP
                 }
                 get { return width; }
             }
+
+            private float dpiScale = 1;
+            public float DpiScale
+            {
+                set
+                {
+                    float oldDpiScale = dpiScale;
+                    if (Set(ref dpiScale, value))
+                    {
+                        Resize((int)(ActualWidth / oldDpiScale), (int)(ActualHeight / oldDpiScale));
+                    }
+                }
+                get => dpiScale;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether this instance is busy.
             /// </summary>
@@ -993,12 +1007,12 @@ namespace HelixToolkit.UWP
             /// <param name="height">The height.</param>
             public void Resize(int width, int height)
             {
-                if(MathUtil.NearEqual(ActualWidth, width) && MathUtil.NearEqual(ActualHeight, height))
+                if(MathUtil.NearEqual(ActualWidth, width * DpiScale) && MathUtil.NearEqual(ActualHeight, height * DpiScale))
                 {
                     return;
                 }
-                ActualWidth = width;
-                ActualHeight = height;
+                ActualWidth = width * DpiScale;
+                ActualHeight = height * DpiScale;
                 Log(LogLevel.Information, $"Width = {width}; Height = {height};");
                 if (IsInitialized)
                 {

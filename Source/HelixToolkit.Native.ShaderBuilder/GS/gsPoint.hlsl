@@ -8,8 +8,8 @@ void makeQuad(out float4 points[4], in float4 posA, in float w, in float h)
 {
     // Bring A and B in window space
     float2 Aw = projToWindow(posA);
-    float w2 = w * 0.5;
-    float h2 = h * 0.5;
+    float w2 = w * 0.5 * DpiScale;
+    float h2 = h * 0.5 * DpiScale;
 
     // Compute the corners of the ribbon in window space
     float2 A1w = float2(Aw.x + w2, Aw.y + h2);

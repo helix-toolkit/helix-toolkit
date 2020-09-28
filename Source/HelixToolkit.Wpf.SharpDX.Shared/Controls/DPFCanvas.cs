@@ -78,6 +78,33 @@ namespace HelixToolkit.Wpf.SharpDX
         public IRenderHost RenderHost { private set; get; }
         private Window parentWindow;
         private readonly bool belongsToParentWindow;
+        private double dpiScale = 1;
+        public double DpiScale
+        {
+            set
+            {
+                dpiScale = value;
+                if (RenderHost != null)
+                {
+                    RenderHost.DpiScale = (float)value;
+                }
+            }
+            get => dpiScale;
+        }
+
+        private bool enableDpiScale = true;
+        public bool EnableDpiScale
+        {
+            set
+            {
+                enableDpiScale = value;
+                if (RenderHost != null)
+                {
+                    RenderHost.DpiScale = value ? (float)DpiScale : 1;
+                }
+            }
+            get => enableDpiScale;
+        }
 
         /// <summary>
         /// Fired whenever an exception occurred on this object.
@@ -98,6 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 RenderHost = new DX11ImageSourceRenderHost();
             }
+            RenderHost.DpiScale = EnableDpiScale ? (float)DpiScale : 1;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;

@@ -29,7 +29,7 @@ cbuffer cbTransforms : register(b0)
     float OITPower;
     float OITSlope;
     int OITWeightMode;
-    int OITReserved;
+    float DpiScale;
 };
 
 #if defined(MESHSIMPLE)
