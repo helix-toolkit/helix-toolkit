@@ -323,7 +323,7 @@ namespace HelixToolkit.UWP
                     float oldDpiScale = dpiScale;
                     if (Set(ref dpiScale, value))
                     {
-                        Resize((int)(ActualWidth / oldDpiScale), (int)(ActualHeight / oldDpiScale));
+                        Resize((int)(ActualWidth / oldDpiScale), (int)(ActualHeight / oldDpiScale), true);
                     }
                 }
                 get => dpiScale;
@@ -1007,7 +1007,12 @@ namespace HelixToolkit.UWP
             /// <param name="height">The height.</param>
             public void Resize(int width, int height)
             {
-                if(MathUtil.NearEqual(ActualWidth, width * DpiScale) && MathUtil.NearEqual(ActualHeight, height * DpiScale))
+                Resize(width, height, false);
+            }
+
+            private void Resize(int width, int height, bool dpiChanged)
+            {
+                if (MathUtil.NearEqual(ActualWidth, width * DpiScale) && MathUtil.NearEqual(ActualHeight, height * DpiScale))
                 {
                     return;
                 }
@@ -1024,12 +1029,18 @@ namespace HelixToolkit.UWP
                         var overlay = Viewport.D2DRenderables.FirstOrDefault();
                         if (overlay != null)
                         {
+                            if (dpiChanged)
+                            {
+                                overlay.Detach();
+                                overlay.Attach(this);
+                            }
                             overlay.InvalidateAll();
                         }
                     }
-                    syncContext.Post((o) => { StartRendering(); }, null);                
+                    syncContext.Post((o) => { StartRendering(); }, null);
                 }
             }
+
             /// <summary>
             /// Sets the default render targets.
             /// </summary>

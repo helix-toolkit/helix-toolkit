@@ -93,7 +93,7 @@ namespace HelixToolkit.UWP
                 }
                 get
                 {
-                    return width * DpiScale;
+                    return width;
                 }
             }
 
@@ -110,21 +110,8 @@ namespace HelixToolkit.UWP
                 }
                 get
                 {
-                    return height * DpiScale;
+                    return height;
                 }
-            }
-
-            private float dpiScale = 1;
-            public float DpiScale
-            {
-                set
-                {
-                    if (Set(ref dpiScale, value))
-                    {
-                        InvalidateAll();
-                    }
-                } 
-                get => dpiScale;
             }
 
             private float minimumWidth = 0;
@@ -447,7 +434,7 @@ namespace HelixToolkit.UWP
                 }
                 previousMeasureSize = size;
                 var availableSize = size.ToVector2();
-                var availableSizeWithoutMargin = availableSize - MarginWidthHeight;
+                var availableSizeWithoutMargin = availableSize - MarginWidthHeight * DpiScale;
                 Vector2 maxSize = Vector2.Zero, minSize = Vector2.Zero;
                 CalculateMinMax(ref minSize, ref maxSize);
 
@@ -471,7 +458,7 @@ namespace HelixToolkit.UWP
                     clipped = true;
                 }
 
-                var clippedDesiredSize = desiredSize + MarginWidthHeight;
+                var clippedDesiredSize = desiredSize + MarginWidthHeight * DpiScale;
 
                 if (clippedDesiredSize.X > availableSize.X)
                 {
@@ -542,11 +529,11 @@ namespace HelixToolkit.UWP
                 {
                     if (UnclippedDesiredSize.X == -1 || UnclippedDesiredSize.Y == -1)
                     {
-                        desiredSize = arrangeSize - MarginWidthHeight;
+                        desiredSize = arrangeSize - MarginWidthHeight * DpiScale;
                     }
                     else
                     {
-                        desiredSize = UnclippedDesiredSize - MarginWidthHeight;
+                        desiredSize = UnclippedDesiredSize - MarginWidthHeight * DpiScale;
                     }
                 }
 
@@ -591,7 +578,7 @@ namespace HelixToolkit.UWP
                 }
 
                 var oldRenderSize = RenderSize;
-                var arrangeResultSize = ArrangeOverride(new RectangleF(Margin.Left, Margin.Top, arrangeSize.X - MarginWidthHeight.X, arrangeSize.Y - MarginWidthHeight.Y)).ToVector2();
+                var arrangeResultSize = ArrangeOverride(new RectangleF(Margin.Left * DpiScale, Margin.Top * DpiScale, arrangeSize.X - MarginWidthHeight.X * DpiScale, arrangeSize.Y - MarginWidthHeight.Y * DpiScale)).ToVector2();
 
                 bool arrangeSizeChanged = arrangeResultSize != oldRenderSize;
                 if (arrangeSizeChanged)
@@ -607,7 +594,7 @@ namespace HelixToolkit.UWP
                     ClipEnabled = clippedArrangeResultSize.X < arrangeResultSize.X || clippedArrangeResultSize.Y < arrangeResultSize.Y;
                 }
 
-                var clientSize = new Vector2(Math.Max(0, rectWidthHeight.X - MarginWidthHeight.X), Math.Max(0, rectWidthHeight.Y - MarginWidthHeight.Y));
+                var clientSize = new Vector2(Math.Max(0, rectWidthHeight.X - MarginWidthHeight.X * DpiScale), Math.Max(0, rectWidthHeight.Y - MarginWidthHeight.Y * DpiScale));
 
                 if (!ClipEnabled)
                 {
@@ -694,12 +681,14 @@ namespace HelixToolkit.UWP
                 width = (float.IsInfinity(dimensionLength) ? 0 : dimensionLength);
 
                 minSize.X = Math.Max(Math.Min(maxSize.X, width), minSize.X);
+                minSize *= DpiScale;
+                maxSize *= DpiScale;
             }
 
             private void UpdateLayoutInternal()
             {
-                LayoutBound = new RectangleF((float)Margin.Left, (float)Margin.Top, RenderSize.X, RenderSize.Y);
-                LayoutClipBound = new RectangleF(0, 0, RenderSize.X + MarginWidthHeight.X, RenderSize.Y + MarginWidthHeight.Y);
+                LayoutBound = new RectangleF((float)Margin.Left * DpiScale, (float)Margin.Top * DpiScale, RenderSize.X, RenderSize.Y);
+                LayoutClipBound = new RectangleF(0, 0, RenderSize.X + MarginWidthHeight.X * DpiScale, RenderSize.Y + MarginWidthHeight.Y * DpiScale);
                 LayoutTranslate = Matrix3x2.Translation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
             }
 

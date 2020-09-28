@@ -649,6 +649,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             renderCanvas = (IRenderCanvas)this.hostPresenter.Content;
+            renderCanvas.EnableDpiScale = EnableHighDpiRendering;
             this.renderHostInternal = renderCanvas.RenderHost;
             renderCanvas.ExceptionOccurred += this.HandleRenderException;
             if (this.renderHostInternal != null)

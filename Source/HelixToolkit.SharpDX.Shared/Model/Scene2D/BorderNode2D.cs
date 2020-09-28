@@ -205,6 +205,8 @@ namespace HelixToolkit.UWP
                 {
                     var margin = new Size2F((BorderThickness.Left / 2 + Padding.Left + BorderThickness.Right / 2 + Padding.Right),
                         (BorderThickness.Top / 2 + Padding.Top + BorderThickness.Bottom / 2 + Padding.Bottom));
+                    margin.Width *= DpiScale;
+                    margin.Height *= DpiScale;
                     var childAvail = new Size2F(Math.Max(0, availableSize.Width - margin.Width), Math.Max(0, availableSize.Height - margin.Height));
 
                     var size = base.MeasureOverride(childAvail);
@@ -216,29 +218,32 @@ namespace HelixToolkit.UWP
                     {
                         if (Width != float.PositiveInfinity)
                         {
-                            size.Width = Width;
+                            size.Width = Width * DpiScale;
                         }
                         if (Height != float.PositiveInfinity)
                         {
-                            size.Height = Height;
+                            size.Height = Height * DpiScale;
                         }
                         return size;
                     }
                 }
                 else
                 {
-                    return new Size2F((float)(BorderThickness.Left / 2 + Padding.Left + BorderThickness.Right / 2 + Padding.Right + MarginWidthHeight.X + Width == float.PositiveInfinity ? 0 : Width),
-                        (float)(BorderThickness.Top / 2 + Padding.Top + BorderThickness.Bottom / 2 + Padding.Bottom + MarginWidthHeight.Y + Height == float.PositiveInfinity ? 0 : Height));
+                    var size = new Size2F((float)(BorderThickness.Left / 2 + Padding.Left + BorderThickness.Right / 2 + Padding.Right + MarginWidthHeight.X + Width == float.PositiveInfinity ? 0 : Width),
+                        (float)(BorderThickness.Top / 2 + Padding.Top + BorderThickness.Bottom / 2 + Padding.Bottom + MarginWidthHeight.Y) + Height == float.PositiveInfinity ? 0 : Height);
+                    size.Width *= DpiScale;
+                    size.Height *= DpiScale;
+                    return size;
                 }
             }
 
             protected override RectangleF ArrangeOverride(RectangleF finalSize)
             {
                 var contentRect = new RectangleF(finalSize.Left, finalSize.Top, finalSize.Width, finalSize.Height);
-                contentRect.Left += (float)(BorderThickness.Left / 2 + Padding.Left);
-                contentRect.Right -= (float)(BorderThickness.Right / 2 + Padding.Right);
-                contentRect.Top += (float)(BorderThickness.Top / 2 + Padding.Top);
-                contentRect.Bottom -= (float)(BorderThickness.Bottom / 2 + Padding.Bottom);
+                contentRect.Left += (float)(BorderThickness.Left / 2 + Padding.Left) * DpiScale;
+                contentRect.Right -= (float)(BorderThickness.Right / 2 + Padding.Right) * DpiScale;
+                contentRect.Top += (float)(BorderThickness.Top / 2 + Padding.Top) * DpiScale;
+                contentRect.Bottom -= (float)(BorderThickness.Bottom / 2 + Padding.Bottom) * DpiScale;
                 base.ArrangeOverride(contentRect);
                 return finalSize;
             }

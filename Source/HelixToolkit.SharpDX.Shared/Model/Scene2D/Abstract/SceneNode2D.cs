@@ -285,6 +285,11 @@ namespace HelixToolkit.UWP
                 get { return RenderCore.IsMouseOver; }
             }
 
+            public float DpiScale
+            {
+                private set; get;
+            } = 1;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="SceneNode2D"/> class.
             /// </summary>
@@ -312,6 +317,7 @@ namespace HelixToolkit.UWP
                     return;
                 }
                 RenderHost = host;
+                DpiScale = host.DpiScale;
                 IsAttached = OnAttach(host);
                 if (IsAttached)
                 {
@@ -531,6 +537,11 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)
             {
+                if (Parent == null)
+                {
+                    mousePoint *= DpiScale;
+                }
+
                 if (CanHitTest())
                 {
                     return OnHitTest(ref mousePoint, out hitResult);
