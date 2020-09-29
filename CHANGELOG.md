@@ -8,12 +8,14 @@ All notable changes to this project will be documented in this file.
 3. Supports `Dot Net Core 3.1`. (Core)
 4. Upgrades `Assimp.net` to 5.0 beta.
 5. Implemented high DPI rendering under DPI scaling to improve rendering quality. #1404
+   
    To turn this feature off if encounter issues, set `Viewport3DX.EnableHighDpiRendering = false`. (WPF.SharpDX/UWP/Core)
 
 ### Fixed
 1. Fixed hit test in `CrossSectionGeometryModel3D` when uses octree or set `CuttingOperation = Substract`. Ref #1396 (WPF.SharpDX/UWP/Core)
 2. Fixed keybinding issue in Viewport3DX. Ref #1390 (WPF.SharpDX)
 3. Fixed UWP runtime error due to dp conflicts. #1365
+   
    In order to fix the issue, following breaking changes have to be made:  (UWP)
    * `Transform3D` renames to `HxTransform3D`. The `Transform3D` is a DP in UWP `UIElement`, which is not able to override.
    * Gesture bindings for UWP `Viewport3DX` have been moved into `Viewport3DX.ManipulationBindings` from `Viewport3DX.InputBindings`.
