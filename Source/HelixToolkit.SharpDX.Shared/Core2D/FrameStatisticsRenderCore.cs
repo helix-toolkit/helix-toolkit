@@ -88,7 +88,7 @@ namespace HelixToolkit.UWP
             protected override bool OnAttach(IRenderHost target)
             {
                 factory = Collect(new Factory(FactoryType.Isolated));
-                format = Collect(new TextFormat(factory, "Arial", 12));
+                format = Collect(new TextFormat(factory, "Arial", 12 * target.DpiScale));
                 previousStr = "";
                 this.statistics = target.RenderStatistics;
                 return base.OnAttach(target);

@@ -15,7 +15,7 @@ void makeLine(out float4 points[4], in float4 posA, in float4 posB, in float wid
     // Compute tangent and binormal of line AB in window space
     // Binormal is scaled by line width 
     float2 tangent = normalize(Bw.xy - Aw.xy);
-    float2 binormal = width * float2(tangent.y, -tangent.x);
+    float2 binormal = width * DpiScale * float2(tangent.y, -tangent.x);
     
     // Compute the corners of the ribbon in window space
     float2 A1w = Aw - binormal;

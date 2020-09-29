@@ -223,7 +223,7 @@ namespace HelixToolkit.UWP
             {
                 var p = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
                 var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
-                float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
+                float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.DpiScale;
 
                 float offx = (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
                 float offy = (float)(context.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
@@ -262,7 +262,7 @@ namespace HelixToolkit.UWP
                 {
                     var p = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
                     var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
-                    float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
+                    float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.DpiScale;
 
                     var abs = Vector3.TransformCoordinate(AbsolutePosition3D, context.ScreenViewProjectionMatrix);
                     float offx = (float)(abs.X - viewportSize / 2);

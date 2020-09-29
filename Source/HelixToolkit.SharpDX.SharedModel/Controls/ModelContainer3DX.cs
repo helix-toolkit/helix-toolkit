@@ -145,6 +145,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public new float ActualWidth { get => 0; }
         public new float ActualHeight { get => 0; }
 
+        public float DpiScale
+        {
+            set; get;
+        } = 1;
+
         /// <summary>
         /// Gets the current frame renderables for rendering.
         /// </summary>

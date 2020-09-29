@@ -19,6 +19,14 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
     class CanvasMock : IRenderCanvas
     {
         public IRenderHost RenderHost { private set; get; } = new DefaultRenderHost();
+        public double DpiScale
+        {
+            set; get;
+        }
+        public bool EnableDpiScale
+        {
+            set; get;
+        }
 
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
 

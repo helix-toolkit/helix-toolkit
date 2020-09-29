@@ -182,12 +182,12 @@ namespace HelixToolkit.UWP
                 {
                     context.DeviceContext.FillRoundedRectangle(roundRect, Background);
                 }
-
-                if (!borderThickness.IsZero && StrokeBrush != null && StrokeStyle != null)
+                var thickness = BorderThickness * context.DpiScale;
+                if (!thickness.IsZero && StrokeBrush != null && StrokeStyle != null)
                 {
-                    if(borderThickness.X == borderThickness.Y && borderThickness.X == borderThickness.Z && borderThickness.X == borderThickness.W)
+                    if(thickness.X == thickness.Y && thickness.X == thickness.Z && thickness.X == thickness.W)
                     {
-                        context.DeviceContext.DrawRoundedRectangle(roundRect, StrokeBrush, borderThickness.X, StrokeStyle);
+                        context.DeviceContext.DrawRoundedRectangle(roundRect, StrokeBrush, thickness.X, StrokeStyle);
                     }
                     else
                     {
@@ -199,7 +199,7 @@ namespace HelixToolkit.UWP
                             var bottomRight = LayoutBound.BottomRight - new Vector2(0, CornerRadius);
                             var bottomLeft = LayoutBound.BottomLeft + new Vector2(CornerRadius, 0);
 
-                            if (borderThickness.X > 0)
+                            if (thickness.X > 0)
                             {
                                 var figures = new List<Figure>();     
                                 var figure = new Figure(topLeft, false, false);
@@ -211,13 +211,13 @@ namespace HelixToolkit.UWP
                                 figure.AddSegment(new LineSegment(topRight));
                                 figures.Add(figure);
                                 borderRenderCore[0].Figures = figures;
-                                borderRenderCore[0].StrokeWidth = borderThickness.X;
+                                borderRenderCore[0].StrokeWidth = thickness.X;
                             }
                             else
                             {
                                 borderRenderCore[0].Figures = null;
                             }
-                            if(borderThickness.Y > 0)
+                            if(thickness.Y > 0)
                             {
                                 var figures = new List<Figure>();
                                 var figure = new Figure(topRight, false, false);
@@ -229,13 +229,13 @@ namespace HelixToolkit.UWP
                                 figure.AddSegment(new LineSegment(bottomRight));
                                 figures.Add(figure);
                                 borderRenderCore[1].Figures = figures;
-                                borderRenderCore[1].StrokeWidth = borderThickness.Y;
+                                borderRenderCore[1].StrokeWidth = thickness.Y;
                             }
                             else
                             {
                                 borderRenderCore[1].Figures = null;
                             }
-                            if (borderThickness.Z > 0)
+                            if (thickness.Z > 0)
                             {
                                 var figures = new List<Figure>();
                                 var figure = new Figure(bottomRight, false, false);
@@ -247,13 +247,13 @@ namespace HelixToolkit.UWP
                                 figure.AddSegment(new LineSegment(bottomLeft));
                                 figures.Add(figure);
                                 borderRenderCore[2].Figures = figures;
-                                borderRenderCore[2].StrokeWidth = borderThickness.Z;
+                                borderRenderCore[2].StrokeWidth = thickness.Z;
                             }
                             else
                             {
                                 borderRenderCore[2].Figures = null;
                             }
-                            if (borderThickness.W > 0)
+                            if (thickness.W > 0)
                             {
                                 var figures = new List<Figure>();
                                 var figure = new Figure(bottomLeft, false, false);
@@ -265,7 +265,7 @@ namespace HelixToolkit.UWP
                                 figure.AddSegment(new LineSegment(topLeft));
                                 figures.Add(figure);
                                 borderRenderCore[3].Figures = figures;
-                                borderRenderCore[3].StrokeWidth = borderThickness.W;
+                                borderRenderCore[3].StrokeWidth = thickness.W;
                             }
                             else
                             {

@@ -54,7 +54,7 @@
             </Button>
         </StackPanel>
         <hx:ModelContainer3DX x:Name="sharedModel" EffectsManager="{Binding EffectsManager}">
-            <hx:ItemsModel3D ItemsSource="{Binding OITVM.ModelGeometry}" Transform3D="{Binding OITVM.Transform}">
+            <hx:ItemsModel3D ItemsSource="{Binding OITVM.ModelGeometry}" HxTransform3D="{Binding OITVM.Transform}">
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D
@@ -88,11 +88,11 @@
             ShowCoordinateSystem="true"
             ShowFrameDetails="True"
             ShowFrameRate="True">
-            <hx:Viewport3DX.InputBindings>
+            <hx:Viewport3DX.ManipulationBindings>
                 <hx:ManipulationBinding Command="Rotate" Gesture="Pan" />
                 <hx:ManipulationBinding Command="Pan" Gesture="TwoFingerPan" />
                 <hx:ManipulationBinding Command="Zoom" Gesture="Pinch" />
-            </hx:Viewport3DX.InputBindings>
+            </hx:Viewport3DX.ManipulationBindings>
             <hx:ShadowMap3D />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="White" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
@@ -110,7 +110,7 @@
                     Color="White" />
                 <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" IsTransparent="True" />
             </hx:GroupModel3D>
-            <hx:GroupModel3D Transform3D="{Binding Transform}">
+            <hx:GroupModel3D HxTransform3D="{Binding Transform}">
                 <hx:GroupModel3D.OctreeManager>
                     <hx:GeometryModel3DOctreeManager />
                 </hx:GroupModel3D.OctreeManager>
@@ -119,21 +119,21 @@
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    Transform3D="{Binding Transform1}" />
+                    HxTransform3D="{Binding Transform1}" />
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    Transform3D="{Binding Transform2}" />
+                    HxTransform3D="{Binding Transform2}" />
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    Transform3D="{Binding Transform3}" />
+                    HxTransform3D="{Binding Transform3}" />
             </hx:GroupModel3D>
-            <hx:GroupModel3D Transform3D="{Binding Transform4}">
+            <hx:GroupModel3D HxTransform3D="{Binding Transform4}">
                 <hx:PointGeometryModel3D
                     Geometry="{Binding PointGeometry}"
                     IsThrowingShadow="True"
@@ -172,7 +172,7 @@
                 Geometry="{Binding OITVM.GridModel}"
                 IsHitTestVisible="False"
                 Thickness="0.5"
-                Transform3D="{Binding OITVM.GridTransform}"
+                HxTransform3D="{Binding OITVM.GridTransform}"
                 Color="#4F4E4E" />
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
@@ -195,11 +195,11 @@
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
             SharedModelContainer="{Binding ElementName=sharedModel}"
             ShowCoordinateSystem="true">
-            <hx:Viewport3DX.InputBindings>
+            <hx:Viewport3DX.ManipulationBindings>
                 <hx:ManipulationBinding Command="Rotate" Gesture="Pan" />
                 <hx:ManipulationBinding Command="Pan" Gesture="TwoFingerPan" />
                 <hx:ManipulationBinding Command="Zoom" Gesture="Pinch" />
-            </hx:Viewport3DX.InputBindings>
+            </hx:Viewport3DX.ManipulationBindings>
             <hx:DirectionalLight3D Direction="{Binding ElementName=viewport1, Path=Camera.LookDirection}" Color="White" />
             <!--<hx:AxisPlaneGridModel3D Offset="-20" AutoSpacing="False" PlaneColor="#003E3E3E" GridThickness="0.02"/>-->
             <hx:AxisPlaneGridModel3D

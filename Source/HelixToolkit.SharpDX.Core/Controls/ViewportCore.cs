@@ -36,6 +36,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
                     Viewport = this,
                 };
             }
+            RenderHost.DpiScale = (float)DpiScale;
             BackgroundColor = Color.Black;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;

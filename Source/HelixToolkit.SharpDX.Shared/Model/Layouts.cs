@@ -276,7 +276,7 @@ namespace HelixToolkit.UWP
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;
-        private int padding1;
+        public float DpiScale;
         public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 5);
     }
     /// <summary>

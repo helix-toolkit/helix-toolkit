@@ -58,6 +58,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly CompositionTargetEx compositionTarget = new CompositionTargetEx();
 
+        private bool enableDpiScale = true;
+        public bool EnableDpiScale
+        {
+            set
+            {
+                enableDpiScale = value;
+                if (renderHost != null)
+                {
+                    renderHost.DpiScale = value ? (float)DpiScale : 1;
+                }
+            }
+            get => enableDpiScale;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -65,6 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            DpiScaleChanged += DPFSurfaceSwapChain_DpiScaleChanged;
             surfaceD3D = new RenderControl(this);
             Child = surfaceD3D;
             if (deferredRendering)
@@ -76,11 +90,20 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 renderHost = new SwapChainRenderHost(surfaceD3D.Handle);
             }
+            RenderHost.DpiScale = EnableDpiScale ? (float)DpiScale : 1;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
 
             belongsToParentWindow = attachedToWindow;
+        }
+
+        private void DPFSurfaceSwapChain_DpiScaleChanged(object sender, double e)
+        {
+            if (RenderHost != null)
+            {
+                RenderHost.DpiScale = EnableDpiScale ? (float)e : 1;
+            }
         }
 
         public DPFSurfaceSwapChain(Func<IntPtr, IRenderHost> createRenderHost, bool attachedToWindow = true)
@@ -89,6 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Unloaded += OnUnloaded;
             surfaceD3D = new RenderControl();
             Child = surfaceD3D;
+            RenderHost.DpiScale = EnableDpiScale ? (float)DpiScale : 1;
             renderHost = createRenderHost(surfaceD3D.Handle);
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
