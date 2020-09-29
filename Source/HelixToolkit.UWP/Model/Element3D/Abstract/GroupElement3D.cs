@@ -50,6 +50,14 @@ namespace HelixToolkit.UWP
                 (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
+        // Using a DependencyProperty as the backing store for AlwaysHittable.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AlwaysHittableProperty =
+            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(GroupElement3D), new PropertyMetadata(false, (d, e) =>
+            {
+                (d as GroupElement3D).SceneNode.AlwaysHittable = (bool)e.NewValue;
+            }));
+
+
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
@@ -67,6 +75,24 @@ namespace HelixToolkit.UWP
             get
             {
                 return (IOctreeManagerWrapper)GetValue(OctreeManagerProperty);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [always hittable].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [always hittable]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AlwaysHittable
+        {
+            get
+            {
+                return (bool)GetValue(AlwaysHittableProperty);
+            }
+            set
+            {
+                SetValue(AlwaysHittableProperty, value);
             }
         }
 
@@ -122,7 +148,7 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new GroupNode();
+            return new GroupNode() { AlwaysHittable = AlwaysHittable };
         }
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
