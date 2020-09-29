@@ -197,7 +197,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// <value>
         /// The viewport rectangle.
         /// </value>
-        public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)RenderHost.ActualWidth, (int)RenderHost.ActualHeight); } }
+        public Rectangle ViewportRectangle { get { return new Rectangle(0, 0, (int)(RenderHost.ActualWidth / DpiScale), (int)(RenderHost.ActualHeight / DpiScale)); } }
         /// <summary>
         /// Gets the render context.
         /// </summary>
@@ -261,6 +261,23 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// The actual height.
         /// </value>
         public double ActualHeight { private set; get; }
+
+        private double dpiScale = 1;
+        public double DpiScale
+        {
+            set
+            {
+                dpiScale = value;
+                if (RenderHost != null)
+                {
+                    RenderHost.DpiScale = (float)value;
+                }
+            }
+            get
+            {
+                return dpiScale;
+            }
+        } 
 
         private Vector3 modelUpDirection = Vector3.UnitY;
         /// <summary>

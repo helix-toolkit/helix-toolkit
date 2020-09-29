@@ -35,6 +35,28 @@ namespace HelixToolkit.UWP
 
         private readonly CompositionTargetEx compositionTarget = new CompositionTargetEx();
 
+        private float dpiScale = 1;
+        public float DpiScale
+        {
+            set
+            {
+                dpiScale = value;
+                RenderHost.DpiScale = enableDpiScale ? value : 1;
+            }
+            get => dpiScale;
+        }
+
+        private bool enableDpiScale = true;
+        public bool EnableDpiScale
+        {
+            set
+            {
+                enableDpiScale = value;
+                RenderHost.DpiScale = value ? DpiScale : 1;
+            }
+            get => enableDpiScale;
+        }
+
         public SwapChainRenderHost(bool enableDeferredRendering)
         {   
             if (enableDeferredRendering)
@@ -75,8 +97,10 @@ namespace HelixToolkit.UWP
             // Obtain a reference to the native COM object of the SwapChainPanel.
             using (global::SharpDX.DXGI.ISwapChainPanelNative nativeObject = global::SharpDX.ComObject.As<global::SharpDX.DXGI.ISwapChainPanelNative>(this))
             {
+                var swapChain = (renderHost.RenderBuffer as DX11SwapChainCompositionRenderBufferProxy).SwapChain;
+                swapChain.MatrixTransform = new SharpDX.Mathematics.Interop.RawMatrix3x2(1 / DpiScale, 0, 0, 1 / DpiScale, 0, 0);
                 // Set its swap chain.
-                nativeObject.SwapChain = (renderHost.RenderBuffer as DX11SwapChainCompositionRenderBufferProxy).SwapChain;
+                nativeObject.SwapChain = swapChain;
             }
         }
 

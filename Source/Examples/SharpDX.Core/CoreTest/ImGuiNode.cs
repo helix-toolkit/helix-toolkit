@@ -89,7 +89,7 @@ namespace HelixToolkit.SharpDX.Core.Model
                 ImGui.Render();
             }
             var io = ImGui.GetIO();      
-            io.DisplaySize = new System.Numerics.Vector2((int)context.ActualWidth, (int)context.ActualHeight);
+            io.DisplaySize = new System.Numerics.Vector2((int)(context.ActualWidth * context.DpiScale), (int)(context.ActualHeight * context.DpiScale));
             if(previousTime == TimeSpan.Zero)
             {
                 previousTime = context.TimeStamp;
@@ -177,8 +177,8 @@ namespace HelixToolkit.SharpDX.Core.Model
           
             ProjectionMatrix = Matrix.OrthoOffCenterRH(
                 0f,
-                io.DisplaySize.X,
-                io.DisplaySize.Y,
+                io.DisplaySize.X / context.DpiScale,
+                io.DisplaySize.Y / context.DpiScale,
                 0.0f,
                 -1.0f,
                 1.0f);
@@ -200,6 +200,7 @@ namespace HelixToolkit.SharpDX.Core.Model
             unsafe
             {
                 var draw_data = ImGui.GetDrawData();
+                draw_data.ScaleClipRects(new System.Numerics.Vector2(context.DpiScale, context.DpiScale));
                 int idx_offset = 0;
                 int vtx_offset = 0;
                 for (int n = 0; n < draw_data.CmdListsCount; n++)

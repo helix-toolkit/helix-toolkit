@@ -34,13 +34,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var d = s as InstancingMeshGeometryModel3D;
 #if NETFX_CORE
-                if(e.OldValue != null)
+                d.AttachChild(null);
+                if(e.NewValue is Element3D elem)
                 {
-                    d.Items.Remove(e.OldValue);
-                }
-                if(e.NewValue != null)
-                {
-                    d.Items.Add(e.NewValue);
+                    d.AttachChild(elem);
                 }
 #else
                 if (e.OldValue != null)
@@ -110,9 +107,9 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if(OctreeManager != null && !Items.Contains(OctreeManager))
+            if(OctreeManager is Element3D elem)
             {
-                Items.Add(OctreeManager);
+                AttachChild(elem);
             }
         }
 #endif

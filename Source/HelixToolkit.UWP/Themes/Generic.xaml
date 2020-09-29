@@ -47,7 +47,7 @@
                                 SizeScale="{TemplateBinding CoordinateSystemSize}" />
                         </controls1:HelixItemsControl>
                         <controls1:HelixItemsControl x:Name="PART_ItemsContainer" IsHitTestVisible="False" />
-                        <ContentPresenter x:Name="PART_HostPresenter" IsHitTestVisible="False" />
+                        <ContentPresenter x:Name="PART_HostPresenter" IsHitTestVisible="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
                         <TextBox
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -62,16 +62,16 @@
         </Setter>
     </Style>
 
-    <!--<Style TargetType="controls:Element3D">
+    <Style TargetType="controls:Element3D">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Element3D">
-                    <controls1:HelixItemsControl x:Name="PART_ItemsContainer" IsHitTestVisible="False" />
+                    <ContentPresenter x:Name="PART_Container" IsHitTestVisible="False" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="controls:GroupModel3D">
+    <!--<Style TargetType="controls:GroupModel3D">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:GroupModel3D">
@@ -80,6 +80,7 @@
             </Setter.Value>
         </Setter>
     </Style>-->
+
     <local:PerspectiveCamera
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:local="using:HelixToolkit.UWP"

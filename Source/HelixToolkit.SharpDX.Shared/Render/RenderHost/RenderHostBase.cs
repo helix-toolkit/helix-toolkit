@@ -802,7 +802,7 @@ namespace HelixToolkit.UWP
                 else
                 {
                     EndD3D();
-                    StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
+                    StartD3D((int)Math.Floor(ActualWidth / DpiScale), (int)Math.Floor(ActualHeight / DpiScale));
                 }
             }
             /// <summary>
@@ -817,8 +817,8 @@ namespace HelixToolkit.UWP
                     StartRendering();
                     return;
                 }
-                ActualWidth = width;
-                ActualHeight = height;
+                ActualWidth = width * DpiScale;
+                ActualHeight = height * DpiScale;
                 isLoaded = true;
                 if (EffectsManager == null || EffectsManager.Device == null || EffectsManager.Device.IsDisposed)
                 {
@@ -871,7 +871,6 @@ namespace HelixToolkit.UWP
                 EndD3D();
                 EffectsManager?.DisposeAllResources();
                 EffectsManager?.Reinitialize();
-                //StartD3D(ActualWidth, ActualHeight);
             }
 
             /// <summary>

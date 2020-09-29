@@ -3144,7 +3144,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets a value indicating whether [enable high dpi rendering].
         /// Enable this option if you want to render high definition image with using high definition monitor and using dpi scaling in windows.
-        /// This option may impact rendering performance due to high resolution.
+        /// This option may impact rendering performance due to higher resolution.
         /// </summary>
         /// <value>
         ///   <c>true</c> if [enable high dpi rendering]; otherwise, <c>false</c>.

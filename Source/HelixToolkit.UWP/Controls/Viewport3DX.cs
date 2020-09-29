@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP
     using Model.Scene2D;
     using System.Runtime.CompilerServices;
     using Windows.ApplicationModel;
+    using Windows.Graphics.Display;
     using Windows.UI.Xaml.Input;
     using Visibility = Windows.UI.Xaml.Visibility;
     /// <summary>
@@ -85,6 +86,11 @@ namespace HelixToolkit.UWP
         /// Gets the observable collection of <see cref="InputBinding"/>.
         /// </summary>
         public InputBindingCollection InputBindings { get; } = new InputBindingCollection();
+
+        public ManipulationBindingCollection ManipulationBindings
+        {
+            get;
+        } = new ManipulationBindingCollection();
 
         /// <summary>
         /// Gets the renderables.
@@ -191,7 +197,18 @@ namespace HelixToolkit.UWP
                 {
                     renderHostInternal.IsRendering = (Visibility)s.GetValue(e) == Visibility.Visible;
                 }
-            });            
+            });
+
+            DisplayInformation.GetForCurrentView().DpiChanged += Viewport3DX_DpiChanged;
+        }
+
+        private void Viewport3DX_DpiChanged(DisplayInformation sender, object args)
+        {
+            var dpi = sender.RawPixelsPerViewPixel;
+            if (hostPresenter != null && hostPresenter.Content is SwapChainRenderHost host)
+            {
+                host.DpiScale = (float)dpi;
+            }
         }
 
         private void InitCameraController()
@@ -296,7 +313,11 @@ namespace HelixToolkit.UWP
             hostPresenter = GetTemplateChild(ViewportPartNames.PART_HostPresenter) as ContentPresenter;
             if (hostPresenter != null)
             {
-                hostPresenter.Content = new SwapChainRenderHost(EnableDeferredRendering);
+                var host = new SwapChainRenderHost(EnableDeferredRendering);
+                hostPresenter.Content = host;
+                var dpi = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+                host.DpiScale = (float)dpi;
+                host.EnableDpiScale = EnableHighDpiRendering;
                 renderHostInternal = (hostPresenter.Content as SwapChainRenderHost).RenderHost;
                 if (renderHostInternal != null)
                 {

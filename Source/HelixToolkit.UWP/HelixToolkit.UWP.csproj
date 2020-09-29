@@ -148,6 +148,7 @@
     <Compile Include="Controls\MouseHandlers\InputGesture.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationAction.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationBinding.cs" />
+    <Compile Include="Controls\MouseHandlers\ManipulationCollection.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationGesture.cs" />
     <Compile Include="Controls\MouseHandlers\MouseInputController.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />

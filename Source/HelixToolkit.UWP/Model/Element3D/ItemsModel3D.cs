@@ -9,13 +9,14 @@ namespace HelixToolkit.UWP
     using Model.Scene;
 
     using System.Collections.Specialized;
+    using Windows.UI.Xaml.Controls;
 
     public class ItemsModel3D : Element3D, IHitable
     {
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public new static readonly DependencyProperty ItemsSourceProperty =
+        public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsModel3D),
                 new PropertyMetadata(null,
                     (d, e) => {
@@ -30,22 +31,58 @@ namespace HelixToolkit.UWP
             typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as ItemsModel3D;
-                if (e.OldValue != null)
+                if (e.OldValue is Element3D elem_old)
                 {
-                    d.Items.Remove(e.OldValue);
+                    d.Items.Remove(elem_old);
                 }
 
-                if (e.NewValue != null)
+                if (e.NewValue is Element3D elem)
                 {
-                    d.Items.Add(e.NewValue);
+                    d.Items.Add(elem);
                 }
                 (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
+
+
+        public DataTemplate ItemTemplate
+        {
+            get
+            {
+                return (DataTemplate)GetValue(ItemTemplateProperty);
+            }
+            set
+            {
+                SetValue(ItemTemplateProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for ItemTemplate.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ItemTemplateProperty =
+            DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
+
+
+
+        public DataTemplateSelector ItemTemplateSelector
+        {
+            get
+            {
+                return (DataTemplateSelector )GetValue(ItemTemplateSelectorProperty);
+            }
+            set
+            {
+                SetValue(ItemTemplateSelectorProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for ItemTemplateSelector.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ItemTemplateSelectorProperty =
+            DependencyProperty.Register("ItemTemplateSelector", typeof(DataTemplateSelector ), typeof(ItemsModel3D), new PropertyMetadata(new DataTemplateSelector()));
+
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public new IEnumerable ItemsSource
+        public IEnumerable ItemsSource
         {
             get { return (IEnumerable)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
@@ -78,6 +115,9 @@ namespace HelixToolkit.UWP
             get;
         } = new ObservableElement3DCollection();
 
+        private readonly ItemsControl itemsControl = new ItemsControl();
+        public ItemCollection Items => itemsControl.Items;
+
         private readonly Dictionary<object, Element3D> elementDict = new Dictionary<object, Element3D>();
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupElement3D"/> class.
@@ -90,6 +130,7 @@ namespace HelixToolkit.UWP
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            AttachChild(itemsControl);
             Items.Clear();
             foreach (var item in Children)
             {
@@ -98,9 +139,9 @@ namespace HelixToolkit.UWP
                     Items.Add(item);
                 }
             }
-            if (OctreeManager != null)
+            if (OctreeManager is Element3D elem)
             {
-                Items.Add(OctreeManager);
+                Items.Add(elem);
             }
         }
 
@@ -121,13 +162,13 @@ namespace HelixToolkit.UWP
             }
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                Items.Clear();
+                Items?.Clear();
                 var node = SceneNode as GroupNode;
                 node.Clear();
                 AttachChildren(sender as IList);
-                if (OctreeManager != null)
+                if (OctreeManager is Element3D elem)
                 {
-                    Items.Add(OctreeManager);
+                    Items?.Add(elem);
                 }
             }
             else if (e.NewItems != null)
@@ -146,7 +187,7 @@ namespace HelixToolkit.UWP
             {
                 if (node.AddChildNode(c.SceneNode))
                 {
-                    Items.Add(c);
+                    Items?.Add(c);
                 }
             }
         }
@@ -161,7 +202,7 @@ namespace HelixToolkit.UWP
             {
                 if (node.RemoveChildNode(c.SceneNode))
                 {
-                    Items.Remove(c);
+                    Items?.Remove(c);
                 }
             }
         }
