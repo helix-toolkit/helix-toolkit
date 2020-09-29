@@ -256,7 +256,6 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Called when [create projection matrix].
             /// </summary>
-            /// <param name="scale">The scale.</param>
             protected virtual void OnCreateProjectionMatrix()
             {
                 projectionMatrix = CreateProjectionMatrix(IsPerspective, IsRightHand, Fov, 0.001f, 100f, CameraDistance, CameraDistance);
