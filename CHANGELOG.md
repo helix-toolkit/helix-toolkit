@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
    In order to fix the issue, following breaking changes have to be made:  (UWP)
    * `Transform3D` renames to `HxTransform3D`. The `Transform3D` is a DP in UWP `UIElement`, which is not able to override.
    * Gesture bindings for UWP `Viewport3DX` have been moved into `Viewport3DX.ManipulationBindings` from `Viewport3DX.InputBindings`.
+4. Fixed small error in the calculation of the animation. #1405  (WPF.SharpDX/UWP/Core)
 
 ## [2.12.0] - 2020-05-25
 ### Added
