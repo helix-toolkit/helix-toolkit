@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 ## Next Release
 ### Added
 1. Added `AlwaysHittable` property for scene nodes. Allow mesh to be hittable even it is not being rendered(Visable = false). Ref #1393 (WPF.SharpDX/UWP/Core)
-2. Implemented high DPI rendering under DPI scaling to improve rendering quality. #1404
+2. Implemented high DPI rendering under DPI scaling to improve rendering quality. #1404 (WPF.SharpDX/UWP/Core)
    
-   To turn this feature off if encounter issues, set `Viewport3DX.EnableHighDpiRendering = false`. (WPF.SharpDX/UWP/Core)
+   To turn this feature off if encounter issues, set `Viewport3DX.EnableHighDpiRendering = false`.
    
 ### Improvement and Changes
 1. Improved small triangle hit test. Ref #1353 (WPF.SharpDX/UWP/Core)
