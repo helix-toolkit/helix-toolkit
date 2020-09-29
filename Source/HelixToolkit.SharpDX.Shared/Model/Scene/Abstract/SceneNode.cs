@@ -235,14 +235,25 @@ namespace HelixToolkit.UWP
             /// </value>
             public int ItemsCount { get => Items.Count; }
 
+            private bool isHitTestVisible = true;
             /// <summary>
             /// Gets or sets a value indicating whether this instance is hit test visible.
             /// </summary>
             /// <value>
             ///   <c>true</c> if this instance is hit test visible; otherwise, <c>false</c>.
             /// </value>
-            public bool IsHitTestVisible { set; get; } = true;
+            public bool IsHitTestVisible { set => isHitTestVisible = value; get => isHitTestVisible | AlwaysHittable; }
 
+            /// <summary>
+            /// Gets or sets a value indicating whether [always hittable] even it is not rendered.
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [always hittable]; otherwise, <c>false</c>.
+            /// </value>
+            public bool AlwaysHittable
+            {
+                set; get;
+            } = false;
             /// <summary>
             /// Gets or sets the type of the render.
             /// </summary>
@@ -703,7 +714,7 @@ namespace HelixToolkit.UWP
             /// </returns>
             protected virtual bool CanHitTest(RenderContext context)
             {
-                return IsHitTestVisible && IsRenderable;
+                return AlwaysHittable || (IsHitTestVisible && IsRenderable);
             }
 
             /// <summary>

@@ -113,18 +113,25 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
 
-        // Using a DependencyProperty as the backing store for PostEffects.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// The post effects property
+        /// </summary>
         public static readonly DependencyProperty PostEffectsProperty =
             DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata("", (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as GeometryNode).PostEffects = e.NewValue as string;
             }));
 
-        public string PostEffects
-        {
-            get { return (string)GetValue(PostEffectsProperty); }
-            set { SetValue(PostEffectsProperty, value); }
-        }
+        /// <summary>
+        /// The always hittable property
+        /// </summary>
+        public static readonly DependencyProperty AlwaysHittableProperty =
+            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false, (d, e) => 
+            {
+                ((d as Element3DCore).SceneNode as GeometryNode).AlwaysHittable = (bool)e.NewValue;
+            }));
+
+
 
         /// <summary>
         /// Gets or sets the geometry.
@@ -309,7 +316,38 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(EnableViewFrustumCheckProperty);
             }
         }
-#endregion
+
+        public string PostEffects
+        {
+            get
+            {
+                return (string)GetValue(PostEffectsProperty);
+            }
+            set
+            {
+                SetValue(PostEffectsProperty, value);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [always hittable] even it is not rendering.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [always hittable]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AlwaysHittable
+        {
+            get
+            {
+                return (bool)GetValue(AlwaysHittableProperty);
+            }
+            set
+            {
+                SetValue(AlwaysHittableProperty, value);
+            }
+        }
+        #endregion
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
@@ -323,6 +361,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.IsScissorEnabled = this.IsScissorEnabled;
                 n.EnableViewFrustumCheck = this.EnableViewFrustumCheck;
                 n.PostEffects = this.PostEffects;
+                n.AlwaysHittable = this.AlwaysHittable;
             }
             base.AssignDefaultValuesToSceneNode(node);
         }

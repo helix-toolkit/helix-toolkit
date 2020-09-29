@@ -84,6 +84,17 @@ namespace HelixToolkit.UWP
         /// default is true
         /// </summary>
         bool IsHitTestVisible { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [always hittable].
+        /// Set to true if you want object to be hit tested even it is not rendering.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [always hittable]; otherwise, <c>false</c>.
+        /// </value>
+        bool AlwaysHittable
+        {
+            set; get;
+        }
     }
     /// <summary>
     /// 
