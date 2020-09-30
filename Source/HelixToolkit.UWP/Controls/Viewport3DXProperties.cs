@@ -2388,21 +2388,20 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if [enable high dpi rendering]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableHighDpiRendering
+        public bool EnableDpiScale
         {
             get
             {
-                return (bool)GetValue(EnableHighDpiRenderingProperty);
+                return (bool)GetValue(EnableDpiScaleProperty);
             }
             set
             {
-                SetValue(EnableHighDpiRenderingProperty, value);
+                SetValue(EnableDpiScaleProperty, value);
             }
         }
 
-        // Using a DependencyProperty as the backing store for EnableHighDpiRendering.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty EnableHighDpiRenderingProperty =
-            DependencyProperty.Register("EnableHighDpiRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e)=> 
+        public static readonly DependencyProperty EnableDpiScaleProperty =
+            DependencyProperty.Register("EnableDpiScale", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e)=> 
             {
                 var viewport = (d as Viewport3DX);
                 if (viewport.hostPresenter != null && viewport.hostPresenter.Content is SwapChainRenderHost host)

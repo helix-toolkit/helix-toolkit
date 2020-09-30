@@ -138,7 +138,7 @@
                 <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}" />
             </StatusBarItem>
             <StatusBarItem>
-                <CheckBox IsChecked="{Binding ElementName=view1, Path=EnableHighDpiRendering}">High DPI</CheckBox>
+                <CheckBox IsChecked="{Binding ElementName=view1, Path=EnableDpiScale}">Enable DPI Scale</CheckBox>
             </StatusBarItem>
         </StatusBar>
 

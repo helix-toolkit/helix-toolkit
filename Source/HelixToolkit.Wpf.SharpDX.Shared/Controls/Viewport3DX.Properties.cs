@@ -1232,10 +1232,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
-        /// The enable high dpi rendering property
+        /// The enable dpi scale property
         /// </summary>
-        public static readonly DependencyProperty EnableHighDpiRenderingProperty =
-            DependencyProperty.Register("EnableHighDpiRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+        public static readonly DependencyProperty EnableDpiScaleProperty =
+            DependencyProperty.Register("EnableDpiScale", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
                 if (viewport.hostPresenter != null && viewport.hostPresenter.Content is IRenderCanvas canvas)
@@ -3142,22 +3142,22 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable high dpi rendering].
+        /// Gets or sets a value indicating whether [enable dpi scale].
         /// Enable this option if you want to render high definition image with using high definition monitor and using dpi scaling in windows.
         /// This option may impact rendering performance due to higher resolution.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [enable high dpi rendering]; otherwise, <c>false</c>.
+        ///   <c>true</c> if [enable dpi scale]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableHighDpiRendering
+        public bool EnableDpiScale
         {
             get
             {
-                return (bool)GetValue(EnableHighDpiRenderingProperty);
+                return (bool)GetValue(EnableDpiScaleProperty);
             }
             set
             {
-                SetValue(EnableHighDpiRenderingProperty, value);
+                SetValue(EnableDpiScaleProperty, value);
             }
         }
     }

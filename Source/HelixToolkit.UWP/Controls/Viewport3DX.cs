@@ -317,7 +317,7 @@ namespace HelixToolkit.UWP
                 hostPresenter.Content = host;
                 var dpi = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
                 host.DpiScale = (float)dpi;
-                host.EnableDpiScale = EnableHighDpiRendering;
+                host.EnableDpiScale = EnableDpiScale;
                 renderHostInternal = (hostPresenter.Content as SwapChainRenderHost).RenderHost;
                 if (renderHostInternal != null)
                 {
