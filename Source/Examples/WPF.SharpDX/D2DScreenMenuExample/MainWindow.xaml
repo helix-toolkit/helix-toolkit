@@ -84,6 +84,6 @@
                 </hx2D:Panel2D>
             </hx:Viewport3DX.Content2D>
         </hx:Viewport3DX>
-        <CheckBox IsChecked="{Binding ElementName=view1, Path=EnableHighDpiRendering}" HorizontalAlignment="Left" VerticalAlignment="Top">High Dpi</CheckBox>
+        <CheckBox IsChecked="{Binding ElementName=view1, Path=EnableDpiScale}" HorizontalAlignment="Left" VerticalAlignment="Top">High Dpi</CheckBox>
     </Grid>
 </Window>
