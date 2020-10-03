@@ -2,20 +2,17 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using HelixToolkit.UWP.Model;
-using SharpDX;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using SharpDX;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Markup;
 using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
 {
+    using Model;
     /// <summary>
     /// 
     /// </summary>
@@ -61,8 +58,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         public Matrix HxTransform3D
         {
-            get { return (Matrix)this.GetValue(Transform3DProperty); }
-            set { this.SetValue(Transform3DProperty, value); }
+            get { return (Matrix)this.GetValue(HxTransform3DProperty); }
+            set { this.SetValue(HxTransform3DProperty, value); }
         }
 
         /// <summary>
