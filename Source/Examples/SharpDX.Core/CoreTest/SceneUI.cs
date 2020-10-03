@@ -57,6 +57,7 @@ namespace CoreTest
                     ImGui.Checkbox("Enable SSAO", ref options.EnableSSAO);
                     ImGui.Checkbox("Enable FXAA", ref options.EnableFXAA);
                     ImGui.Checkbox("Enable Frustum", ref options.EnableFrustum);
+                    ImGui.Checkbox("Enable DpiScale", ref options.EnableDpiScale);
                     if (ImGui.Checkbox("Show Wireframe", ref options.ShowWireframe))
                     {
                         options.ShowWireframeChanged = true;
