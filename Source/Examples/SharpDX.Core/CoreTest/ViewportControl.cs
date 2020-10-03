@@ -25,5 +25,6 @@ namespace CoreTest
         public IAnimationUpdater AnimationUpdater;
         public IViewport3DX Viewport;
         public bool ShowEnvironmentMap;
+        public bool EnableDpiScale;
     }
 }

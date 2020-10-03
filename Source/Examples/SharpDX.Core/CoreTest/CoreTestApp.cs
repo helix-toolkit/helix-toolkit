@@ -75,6 +75,7 @@ namespace CoreTest
         private CameraController cameraController;
         private Stack<IEnumerator<SceneNode>> stackCache = new Stack<IEnumerator<SceneNode>>();
         private IApplyPostEffect currentHighlight = null;
+        private double dpiScale = 1;
 
         private ViewportOptions options = new ViewportOptions()
         {
@@ -88,11 +89,12 @@ namespace CoreTest
             WalkAround = false,
             ShowRenderDetail = false,
             ShowEnvironmentMap = false,
+            EnableDpiScale = true
         };
 
         public CoreTestApp(Form window)
         {
-            var dpiScale = DpiHelper.GetWindowsScreenScalingFactor(false);
+            dpiScale = DpiHelper.GetWindowsScreenScalingFactor(false);
 
             viewport = new ViewportCore(window.Handle);
             viewport.DpiScale = dpiScale;
@@ -129,6 +131,7 @@ namespace CoreTest
             viewport.BackgroundColor = new Color4(options.BackgroundColor.X, options.BackgroundColor.Y, options.BackgroundColor.Z, 1);
             viewport.EnableSSAO = options.EnableSSAO;
             viewport.ShowRenderDetail = options.ShowRenderDetail;
+            viewport.DpiScale = options.EnableDpiScale ? dpiScale : 1;
             if (options.ShowWireframeChanged)
             {
                 options.ShowWireframeChanged = false;
