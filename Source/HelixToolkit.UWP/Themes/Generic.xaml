@@ -20,6 +20,14 @@
         <Setter Property="Template" Value="{StaticResource ResourceKey=Element3DTemplate}"/>
     </Style>
 
+    <Style TargetType="controls:ViewBoxModel3D">
+        <Setter Property="Template" Value="{StaticResource ResourceKey=Element3DTemplate}"/>
+    </Style>
+
+    <Style TargetType="controls:CoordinateSystemModel3D">
+        <Setter Property="Template" Value="{StaticResource ResourceKey=Element3DTemplate}"/>
+    </Style>
+
     <Style TargetType="controls:Viewport3DX">
         <Setter Property="Background" Value="White" />
         <Setter Property="Template">
