@@ -57,7 +57,7 @@ namespace ExampleBrowser.Examples.Torus
 
         // Using a DependencyProperty as the backing store for UCThetaDiv.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty UCThetaDivProperty =
-            DependencyProperty.Register("UCThetaDiv", typeof(int), typeof(UserControl_1419), new PropertyMetadata(3));
+            DependencyProperty.Register("UCThetaDiv", typeof(int), typeof(UserControl_1419), new PropertyMetadata(18));
 
 
         public int UCPhiDev
