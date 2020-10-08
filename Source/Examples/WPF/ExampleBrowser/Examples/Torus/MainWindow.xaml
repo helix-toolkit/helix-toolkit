@@ -1,9 +1,21 @@
 ﻿<Window x:Class="TorusDemo.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
-     Title="TubeDemo" Height="600" Width="800">
+    xmlns:ht="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" xmlns:torus="clr-namespace:ExampleBrowser.Examples.Torus"
+        Title="TubeDemo" Height="600" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <torus:UserControl_1419 Grid.Column="1" UCTubeDiameter="{Binding Value, ElementName=UCTubeDiameterSlider}">
+            
+        </torus:UserControl_1419>
+        <Label>Torus in MainWindow</Label>
         <ht:HelixViewport3D x:Name="viewPort" ZoomExtentsWhenLoaded="True">
             <ht:SunLight/>
             <ht:TorusVisual3D x:Name="torus1" TorusDiameter="{Binding Value, ElementName=torusDiameterSlider}" TubeDiameter="{Binding Value, ElementName=tubeDiameterSlider}"
@@ -13,11 +25,29 @@
             <ht:TorusVisual3D x:Name="torus3" TorusDiameter="{Binding Value, ElementName=torusDiameterSlider}" TubeDiameter="{Binding Value, ElementName=tubeDiameterSlider}"
                               ThetaDiv="{Binding Value, ElementName=thetaDivSlider}" PhiDiv="{Binding Value, ElementName=phiDivSlider}" Fill="Blue" />
         </ht:HelixViewport3D>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" >
-            <Slider x:Name="torusDiameterSlider" Value="3" Minimum="0.1" Maximum="10" Width="150" Margin="10"/>
-            <Slider x:Name="tubeDiameterSlider" Value="1" Minimum="0.1" Maximum="5" Width="150" Margin="10"/>
-            <Slider x:Name="thetaDivSlider" Value="36" Minimum="3" Maximum="256" Width="150" Margin="10"/>
-            <Slider x:Name="phiDivSlider" Value="24" Minimum="3" Maximum="256" Width="150" Margin="10"/>
+        
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="1"
+            Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" >
+            <StackPanel Margin="10">
+                <Label>Torus Diameter</Label>
+                <Slider x:Name="torusDiameterSlider" Value="3" Minimum="0.1" Maximum="10" Width="120" />
+            </StackPanel>
+            <StackPanel Margin="10">
+            <Label>Tube Diameter</Label>
+                <Slider x:Name="tubeDiameterSlider" Value="1" Minimum="0.1" Maximum="5" Width="120" />
+            </StackPanel>
+            <StackPanel Margin="10">
+            <Label>theta Div</Label>
+                <Slider x:Name="thetaDivSlider" Value="36" Minimum="3" Maximum="256" Width="120" />
+            </StackPanel>
+            <StackPanel Margin="10">
+            <Label>phi Div</Label>
+                <Slider x:Name="phiDivSlider" Value="24" Minimum="3" Maximum="256" Width="120" />
+            </StackPanel>
+            <StackPanel Margin="10">
+                <Label>UserControl TubeDiameter</Label>
+                <Slider x:Name="UCTubeDiameterSlider" Value="1" Minimum="0.1" Maximum="50" Width="120" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

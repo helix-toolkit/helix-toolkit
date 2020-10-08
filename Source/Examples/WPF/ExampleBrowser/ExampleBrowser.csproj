@@ -171,6 +171,9 @@
     <Compile Include="Examples\SolarSystemDemo\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\Torus\UserControl_1419.xaml.cs">
+      <DependentUpon>UserControl_1419.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\TriangularizationDemo\MainViewModel.cs" />
     <Compile Include="Examples\TriangularizationDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -323,6 +326,10 @@
     <Page Include="Examples\Torus\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Torus\UserControl_1419.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\TriangularizationDemo\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
