@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP
 
         public float ActualWidth { protected set; get; }
 
-        public float AcutalHeight { protected set; get; }
+        public float ActualHeight { protected set; get; }
 
         public float Scale { set; get; } = 1;
         /// <summary>
@@ -75,7 +75,7 @@ namespace HelixToolkit.UWP
         public virtual void UpdateTextInfo(float actualWidth, float actualHeight)
         {
             ActualWidth = actualWidth;
-            AcutalHeight = actualHeight;
+            ActualHeight = actualHeight;
             BoundSphere = new BoundingSphere(Origin, Math.Max(actualWidth, actualHeight) / 2);
         }
 
