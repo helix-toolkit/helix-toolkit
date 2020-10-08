@@ -39,29 +39,8 @@
                         Background="{TemplateBinding Background}"
                         ManipulationMode="All"
                         Style="{x:Null}">
-                        <controls1:HelixItemsControl>
-                            <controls:ViewBoxModel3D
-                                x:Name="PART_ViewCube"
-                                EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
-                                IsRendering="{TemplateBinding ShowViewCube}"
-                                ManipulationMode="None"
-                                RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
-                                RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
-                                SizeScale="{TemplateBinding ViewCubeSize}"
-                                UpDirection="{TemplateBinding ModelUpDirection}"
-                                ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
-                            <controls:CoordinateSystemModel3D
-                                x:Name="PART_CoordinateView"
-                                CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
-                                CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
-                                CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
-                                IsRendering="{TemplateBinding ShowCoordinateSystem}"
-                                LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
-                                ManipulationMode="None"
-                                RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
-                                RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
-                                SizeScale="{TemplateBinding CoordinateSystemSize}" />
-                        </controls1:HelixItemsControl>
+                        <controls1:HelixItemsControl x:Name="PART_CoordinateGroup"/>
+
                         <controls1:HelixItemsControl x:Name="PART_ItemsContainer" IsHitTestVisible="False" />
                         <ContentPresenter x:Name="PART_HostPresenter" IsHitTestVisible="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
                         <TextBox
