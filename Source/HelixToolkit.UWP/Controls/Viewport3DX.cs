@@ -20,6 +20,7 @@ namespace HelixToolkit.UWP
     using System.Runtime.CompilerServices;
     using Windows.ApplicationModel;
     using Windows.Graphics.Display;
+    using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Input;
     using Visibility = Windows.UI.Xaml.Visibility;
     /// <summary>
@@ -28,8 +29,7 @@ namespace HelixToolkit.UWP
     public static class ViewportPartNames
     {
         public const string PART_RenderTarget = "PART_RenderTarget";
-        public const string PART_ViewCube = "PART_ViewCube";
-        public const string PART_CoordinateView = "PART_CoordinateView";
+        public const string PART_CoordinateGroup = "PART_CoordinateGroup";
         public const string PART_HostPresenter = "PART_HostPresenter";
         public const string PART_ItemsContainer = "PART_ItemsContainer";
     }
@@ -39,8 +39,7 @@ namespace HelixToolkit.UWP
     /// </summary>
     [ContentProperty(Name = "Items")]
     [TemplatePart(Name = ViewportPartNames.PART_RenderTarget, Type =typeof(SwapChainRenderHost))]
-    [TemplatePart(Name = ViewportPartNames.PART_ViewCube, Type = typeof(ViewBoxModel3D))]
-    [TemplatePart(Name = ViewportPartNames.PART_CoordinateView, Type =typeof(CoordinateSystemModel3D))]
+    [TemplatePart(Name = ViewportPartNames.PART_CoordinateGroup, Type = typeof(ItemsControl))]
     [TemplatePart(Name = ViewportPartNames.PART_HostPresenter, Type =typeof(ContentPresenter))]
     [TemplatePart(Name = ViewportPartNames.PART_ItemsContainer, Type = typeof(ItemsControl))]
     public partial class Viewport3DX : Control, IViewport3DX
@@ -160,8 +159,8 @@ namespace HelixToolkit.UWP
         /// </value>
         protected IRenderHost renderHostInternal;
         private bool IsAttached = false;
-        private ViewBoxModel3D viewCube;
-        private CoordinateSystemModel3D coordinateSystem;
+        private readonly ViewBoxModel3D viewCube = new ViewBoxModel3D();
+        private readonly CoordinateSystemModel3D coordinateSystem = new CoordinateSystemModel3D();
         private readonly CameraController cameraController;
         internal CameraController CameraController { get { return cameraController; } }
         private ContentPresenter hostPresenter;
@@ -200,6 +199,42 @@ namespace HelixToolkit.UWP
             });
 
             DisplayInformation.GetForCurrentView().DpiChanged += Viewport3DX_DpiChanged;
+            SetupBindings();
+        }
+
+        private void SetupBindings()
+        {
+            var binding = new Binding() { Source = this, Path = new PropertyPath("ShowViewCube") };
+            BindingOperations.SetBinding(viewCube, ViewBoxModel3D.IsRenderingProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("ViewCubeHorizontalPosition") };
+            BindingOperations.SetBinding(viewCube, ViewBoxModel3D.RelativeScreenLocationXProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("ViewCubeVerticalPosition") };
+            BindingOperations.SetBinding(viewCube, ViewBoxModel3D.RelativeScreenLocationYProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("ViewCubeTexture") };
+            BindingOperations.SetBinding(viewCube, ViewBoxModel3D.ViewBoxTextureProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("ViewCubeSize") };
+            BindingOperations.SetBinding(viewCube, ViewBoxModel3D.SizeScaleProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("IsViewCubeEdgeClicksEnabled") };
+            BindingOperations.SetBinding(viewCube, ViewBoxModel3D.EnableEdgeClickProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("ModelUpDirection") };
+            BindingOperations.SetBinding(viewCube, ViewBoxModel3D.UpDirectionProperty, binding);
+
+            binding = new Binding() { Source = this, Path = new PropertyPath("ShowCoordinateSystem") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.IsRenderingProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemHorizontalPosition") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.RelativeScreenLocationXProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemVerticalPosition") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.RelativeScreenLocationYProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemLabelForeground") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.LabelColorProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemLabelX") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.CoordinateSystemLabelXProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemLabelY") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.CoordinateSystemLabelYProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemLabelZ") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.CoordinateSystemLabelZProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemSize") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.SizeScaleProperty, binding);
         }
 
         private void Viewport3DX_DpiChanged(DisplayInformation sender, object args)
@@ -382,23 +417,18 @@ namespace HelixToolkit.UWP
                     }
                 }
             }
-            if(viewCube == null)
+            var coordinateGroup = GetTemplateChild(ViewportPartNames.PART_CoordinateGroup) as ItemsControl;
+            if (coordinateGroup == null)
             {
-                viewCube = GetTemplateChild(ViewportPartNames.PART_ViewCube) as ViewBoxModel3D;
+                throw new HelixToolkitException("{0} is missing from the template.", ViewportPartNames.PART_CoordinateGroup);
             }
-
-            if (viewCube == null)
+            if (!coordinateGroup.Items.Contains(viewCube))
             {
-                throw new HelixToolkitException("{0} is missing from the template.", ViewportPartNames.PART_ViewCube);
+                coordinateGroup.Items.Add(viewCube);
             }
-
-            if (coordinateSystem == null)
+            if (!coordinateGroup.Items.Contains(coordinateSystem))
             {
-                coordinateSystem = GetTemplateChild(ViewportPartNames.PART_CoordinateView) as CoordinateSystemModel3D;
-            }
-            if (coordinateSystem == null)
-            {
-                throw new HelixToolkitException("{0} is missing from the template.", ViewportPartNames.PART_CoordinateView);
+                coordinateGroup.Items.Add(coordinateSystem);
             }
         }
 
