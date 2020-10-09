@@ -57,18 +57,18 @@ namespace ExampleBrowser.Examples.Torus
 
         // Using a DependencyProperty as the backing store for UCThetaDiv.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty UCThetaDivProperty =
-            DependencyProperty.Register("UCThetaDiv", typeof(int), typeof(UserControl_1419), new PropertyMetadata(18));
+            DependencyProperty.Register("UCThetaDiv", typeof(int), typeof(UserControl_1419), new PropertyMetadata(36));
 
 
-        public int UCPhiDev
+        public int UCPhiDiv
         {
-            get { return (int)GetValue(UCPhiDevProperty); }
-            set { SetValue(UCPhiDevProperty, value); }
+            get { return (int)GetValue(UCPhiDivProperty); }
+            set { SetValue(UCPhiDivProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for UCPhiDev.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty UCPhiDevProperty =
-            DependencyProperty.Register("UCPhiDev", typeof(int), typeof(UserControl_1419), new PropertyMetadata(36));
+        public static readonly DependencyProperty UCPhiDivProperty =
+            DependencyProperty.Register("UCPhiDiv", typeof(int), typeof(UserControl_1419), new PropertyMetadata(36));
 
 
 
