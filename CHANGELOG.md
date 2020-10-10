@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.13.0] - 2020-10-08
+## [2.13.0] - 2020-10-10
 ### Added
 1. Added `AlwaysHittable` property for scene nodes. Allow mesh to be hittable even it is not being rendered(Visable = false). Ref #1393 (WPF.SharpDX/UWP/Core)
 2. Implemented high DPI rendering under DPI scaling to improve rendering quality. #1404 (WPF.SharpDX/UWP/Core)
