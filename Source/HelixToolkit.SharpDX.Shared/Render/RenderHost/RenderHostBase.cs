@@ -314,6 +314,20 @@ namespace HelixToolkit.UWP
                 }
                 get { return width; }
             }
+
+            private float dpiScale = 1;
+            public float DpiScale
+            {
+                set
+                {
+                    float oldDpiScale = dpiScale;
+                    if (Set(ref dpiScale, value))
+                    {
+                        Resize((int)(ActualWidth / oldDpiScale), (int)(ActualHeight / oldDpiScale), true);
+                    }
+                }
+                get => dpiScale;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether this instance is busy.
             /// </summary>
@@ -788,7 +802,7 @@ namespace HelixToolkit.UWP
                 else
                 {
                     EndD3D();
-                    StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
+                    StartD3D((int)Math.Floor(ActualWidth / DpiScale), (int)Math.Floor(ActualHeight / DpiScale));
                 }
             }
             /// <summary>
@@ -803,8 +817,8 @@ namespace HelixToolkit.UWP
                     StartRendering();
                     return;
                 }
-                ActualWidth = width;
-                ActualHeight = height;
+                ActualWidth = width * DpiScale;
+                ActualHeight = height * DpiScale;
                 isLoaded = true;
                 if (EffectsManager == null || EffectsManager.Device == null || EffectsManager.Device.IsDisposed)
                 {
@@ -857,7 +871,6 @@ namespace HelixToolkit.UWP
                 EndD3D();
                 EffectsManager?.DisposeAllResources();
                 EffectsManager?.Reinitialize();
-                //StartD3D(ActualWidth, ActualHeight);
             }
 
             /// <summary>
@@ -993,12 +1006,17 @@ namespace HelixToolkit.UWP
             /// <param name="height">The height.</param>
             public void Resize(int width, int height)
             {
-                if(MathUtil.NearEqual(ActualWidth, width) && MathUtil.NearEqual(ActualHeight, height))
+                Resize(width, height, false);
+            }
+
+            private void Resize(int width, int height, bool dpiChanged)
+            {
+                if (MathUtil.NearEqual(ActualWidth, width * DpiScale) && MathUtil.NearEqual(ActualHeight, height * DpiScale))
                 {
                     return;
                 }
-                ActualWidth = width;
-                ActualHeight = height;
+                ActualWidth = width * DpiScale;
+                ActualHeight = height * DpiScale;
                 Log(LogLevel.Information, $"Width = {width}; Height = {height};");
                 if (IsInitialized)
                 {
@@ -1010,12 +1028,18 @@ namespace HelixToolkit.UWP
                         var overlay = Viewport.D2DRenderables.FirstOrDefault();
                         if (overlay != null)
                         {
+                            if (dpiChanged)
+                            {
+                                overlay.Detach();
+                                overlay.Attach(this);
+                            }
                             overlay.InvalidateAll();
                         }
                     }
-                    syncContext.Post((o) => { StartRendering(); }, null);                
+                    syncContext.Post((o) => { StartRendering(); }, null);
                 }
             }
+
             /// <summary>
             /// Sets the default render targets.
             /// </summary>

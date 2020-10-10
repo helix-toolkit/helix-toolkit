@@ -41,10 +41,10 @@ namespace HelixToolkit.UWP
             {
                 var phong = new PhongMaterialCore
                 {
-                    AmbientColor = material.ColorAmbient.ToSharpDXColor4(),
-                    DiffuseColor = material.ColorDiffuse.ToSharpDXColor4(),
-                    SpecularColor = material.ColorSpecular.ToSharpDXColor4(),
-                    EmissiveColor = material.HasColorEmissive ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
+                    AmbientColor = (material.HasColorAmbient && !configuration.IgnoreAmbientColor) ? material.ColorAmbient.ToSharpDXColor4() : Color.Black,
+                    DiffuseColor = material.HasColorDiffuse ? material.ColorDiffuse.ToSharpDXColor4() : Color.White,
+                    SpecularColor = material.HasColorSpecular ? material.ColorSpecular.ToSharpDXColor4() : Color.Black,
+                    EmissiveColor = (material.HasColorEmissive && !configuration.IgnoreEmissiveColor) ? material.ColorEmissive.ToSharpDXColor4() : Color.Black,
                     ReflectiveColor = material.HasColorReflective
                         ? material.ColorReflective.ToSharpDXColor4()
                         : Color.Black,

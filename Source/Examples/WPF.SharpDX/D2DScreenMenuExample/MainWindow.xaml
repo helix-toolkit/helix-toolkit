@@ -13,7 +13,7 @@
     Background="Black"
     mc:Ignorable="d">
     <Grid>
-        <hx:Viewport3DX
+        <hx:Viewport3DX Name="view1"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
             EnableSwapChainRendering="False">
@@ -84,5 +84,6 @@
                 </hx2D:Panel2D>
             </hx:Viewport3DX.Content2D>
         </hx:Viewport3DX>
+        <CheckBox IsChecked="{Binding ElementName=view1, Path=EnableDpiScale}" HorizontalAlignment="Left" VerticalAlignment="Top">High Dpi</CheckBox>
     </Grid>
 </Window>

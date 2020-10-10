@@ -2,9 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using HelixToolkit.UWP.Model;
-using SharpDX;
 using System;
+using SharpDX;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -13,11 +12,12 @@ using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
 {
+    using Model;
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="Element3DCore" />
-    [TemplatePart(Name = "PART_ItemsContainer", Type = typeof(ItemsControl))]
+    [TemplatePart(Name = "PART_Container", Type = typeof(ContentPresenter))]
     public abstract class Element3D : Element3DCore
     {
         #region Dependency Properties
@@ -46,8 +46,8 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public new static readonly DependencyProperty Transform3DProperty =
-            DependencyProperty.Register("Transform3D", typeof(Matrix), typeof(Element3D), new PropertyMetadata(Matrix.Identity,
+        public static readonly DependencyProperty HxTransform3DProperty =
+            DependencyProperty.Register("HxTransform3D", typeof(Matrix), typeof(Element3D), new PropertyMetadata(Matrix.Identity,
                 (d, e) =>
                 {
                     (d as Element3DCore).SceneNode.ModelMatrix = (Matrix)e.NewValue;
@@ -56,10 +56,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public new Matrix Transform3D
+        public Matrix HxTransform3D
         {
-            get { return (Matrix)this.GetValue(Transform3DProperty); }
-            set { this.SetValue(Transform3DProperty, value); }
+            get { return (Matrix)this.GetValue(HxTransform3DProperty); }
+            set { this.SetValue(HxTransform3DProperty, value); }
         }
 
         /// <summary>
@@ -82,9 +82,12 @@ namespace HelixToolkit.UWP
             {
                 (d as Element3D).SceneNode.RenderOrder = (ushort)Math.Max(0, Math.Min(ushort.MaxValue, (int)e.NewValue));
             }));
+
         #endregion
         private static readonly Size oneSize = new Size(1, 1);
 
+        private ContentPresenter presenter;
+        private FrameworkElement child;
         /// <summary>
         /// Initializes a new instance of the <see cref="Element3D"/> class.
         /// </summary>
@@ -101,6 +104,26 @@ namespace HelixToolkit.UWP
                 SceneNode.IsHitTestVisible = (bool)s.GetValue(e);
             });
             OnSceneNodeCreated += Element3D_OnSceneNodeCreated;
+        }
+
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            presenter = GetTemplateChild("PART_Container") as ContentPresenter;
+            if (presenter == null)
+            {
+                throw new Exception("Template must contain a ContentPresenter named as PART_Container.");
+            }
+            presenter.Content = child;
+        }
+
+        protected void AttachChild(FrameworkElement child)
+        {
+            this.child = child;
+            if (presenter != null)
+            {
+                presenter.Content = child;
+            }
         }
 
         private void Element3D_OnSceneNodeCreated(object sender, SceneNodeCreatedEventArgs e)

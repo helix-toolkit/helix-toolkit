@@ -110,7 +110,6 @@ namespace HelixToolkit.UWP
                 {
                     hits = new List<HitTestResult>();
                 }
-
                 foreach (var element in viewport.Renderables)
                 {
                     element.HitTest(viewport.RenderHost.RenderContext, ray, ref hits);
@@ -182,8 +181,8 @@ namespace HelixToolkit.UWP
                 var viewMatrix = camera.CreateViewMatrix();               
 
                 var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
-                float w = viewport.RenderHost.ActualWidth;
-                float h = viewport.RenderHost.ActualHeight;
+                float w = viewport.RenderHost.ActualWidth / viewport.RenderHost.DpiScale;
+                float h = viewport.RenderHost.ActualHeight / viewport.RenderHost.DpiScale;
                 var aspectRatio = w / h;
 
                 var projMatrix = camera.CreateProjectionMatrix(aspectRatio);

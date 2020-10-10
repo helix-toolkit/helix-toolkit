@@ -111,6 +111,8 @@ namespace HelixToolkit.UWP
                 if (ImageStream != null)
                 {
                     var imageSize = (RenderCore as ImageRenderCore2D).ImageSize;
+                    imageSize.Width *= DpiScale;
+                    imageSize.Height *= DpiScale;
                     if (Width == 0 && Height == 0)
                     {
                         return new Size2F(Math.Min(availableSize.Width, imageSize.Width), Math.Min(availableSize.Height, imageSize.Height));
@@ -124,17 +126,17 @@ namespace HelixToolkit.UWP
                         float aspectRatio = imageSize.Width / imageSize.Height;
                         if (Width == 0)
                         {
-                            var height = Math.Min(availableSize.Height, Height);
+                            var height = Math.Min(availableSize.Height, Height) * DpiScale;
                             return new Size2F(height / aspectRatio, height);
                         }
                         else
                         {
-                            var width = Math.Min(availableSize.Width, Width);
+                            var width = Math.Min(availableSize.Width, Width) * DpiScale;
                             return new Size2F(width, width * aspectRatio);
                         }
                     }
                 }
-                return new Size2F(Math.Max(0, Width), Math.Max(0, Height));
+                return new Size2F(Math.Max(0, Width * DpiScale), Math.Max(0, Height * DpiScale));
             }
 
             protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)

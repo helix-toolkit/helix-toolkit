@@ -23,7 +23,7 @@ namespace BuildingDemo
 
             set
             {
-                this.SetValue(ref this.selectedObject, value, () => this.SelectedObject);
+                this.SetValue(ref this.selectedObject, value, nameof(this.SelectedObject));
             }
         }
 

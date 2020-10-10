@@ -48,6 +48,11 @@ namespace HelixToolkit.UWP
                 set; get;
             } = true;
 
+            public IRenderHost RenderHost
+            {
+                private set; get;
+            } = null;
+
             private RectangleF rect = new RectangleF();
             /// <summary>
             /// Absolute layout rectangle cooridnate for renderable
@@ -155,6 +160,11 @@ namespace HelixToolkit.UWP
             {
                 if (IsAttached)
                 { return; }
+                if (host == null)
+                {
+                    return;
+                }
+                RenderHost = host;
                 IsAttached = OnAttach(host);
             }
             /// <summary>

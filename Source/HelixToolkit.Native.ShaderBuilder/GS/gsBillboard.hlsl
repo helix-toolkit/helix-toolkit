@@ -36,10 +36,10 @@ void main(point GSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     if (fixedSize)// if fixed sized billboard
     {
 		// Translate offset into normalized device coordinates.
-        ndcTranslated0.xy += windowToNdc(input[0].offTR);
-        ndcTranslated1.xy += windowToNdc(input[0].offBR);
-        ndcTranslated2.xy += windowToNdc(input[0].offTL);
-        ndcTranslated3.xy += windowToNdc(input[0].offBL);
+        ndcTranslated0.xy += windowToNdc(input[0].offTR * DpiScale);
+        ndcTranslated1.xy += windowToNdc(input[0].offBR * DpiScale);
+        ndcTranslated2.xy += windowToNdc(input[0].offTL * DpiScale);
+        ndcTranslated3.xy += windowToNdc(input[0].offBL * DpiScale);
     }
 
     float3 vEye = vEyePos - input[0].p.xyz;

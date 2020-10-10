@@ -145,11 +145,11 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    (RenderCore as ShapeRenderCore2DBase).StrokeWidth = value;
+                    (RenderCore as ShapeRenderCore2DBase).StrokeWidth = value * DpiScale;
                 }
                 get
                 {
-                    return (RenderCore as ShapeRenderCore2DBase).StrokeWidth;
+                    return (RenderCore as ShapeRenderCore2DBase).StrokeWidth / DpiScale;
                 }
             }
 

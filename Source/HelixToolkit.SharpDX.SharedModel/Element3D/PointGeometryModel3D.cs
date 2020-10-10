@@ -151,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets a value indicating whether [enable color blending].
         /// <para>Once enabled, final color 
-        /// = <see cref="BlendingFactor"/> * <see cref="PointColor"/> + (1 - <see cref="BlendingFactor"/>) * Vertex Color.</para>
+        /// = <see cref="BlendingFactor"/> * <see cref="Color"/> + (1 - <see cref="BlendingFactor"/>) * Vertex Color.</para>
         /// </summary>
         /// <value>
         ///   <c>true</c> if [enable color blending]; otherwise, <c>false</c>.

@@ -29,7 +29,7 @@ cbuffer cbTransforms : register(b0)
     float OITPower;
     float OITSlope;
     int OITWeightMode;
-    int OITReserved;
+    float DpiScale;
 };
 
 #if defined(MESHSIMPLE)
@@ -212,18 +212,18 @@ cbuffer cbShadow : register(b5)
 cbuffer cbClipping : register(b6)
 {
     bool4 EnableCrossPlane;
+    bool4 EnableCrossPlane5To8;
     float4 CrossSectionColors;
     int CuttingOperation;
     float3 paddingClipping;
-	// Format:
-	// M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
-	// M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
-	// M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin
-	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
     float4 CrossPlane1Params;
     float4 CrossPlane2Params;
     float4 CrossPlane3Params;
     float4 CrossPlane4Params;
+    float4 CrossPlane5Params;
+    float4 CrossPlane6Params;
+    float4 CrossPlane7Params;
+    float4 CrossPlane8Params;
 }
 #endif
 

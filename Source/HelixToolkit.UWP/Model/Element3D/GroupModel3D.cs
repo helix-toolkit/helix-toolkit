@@ -16,7 +16,6 @@ namespace HelixToolkit.UWP
     {
         public GroupModel3D()
         {
-            this.DefaultStyleKey = typeof(GroupModel3D);
         }
     }
 }

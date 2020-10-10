@@ -120,10 +120,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fody">
-      <Version>3.0.4</Version>
+      <Version>6.2.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="PropertyChanged.Fody">
-      <Version>2.5.7</Version>
+      <Version>3.2.8</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.Direct3D11">
       <Version>4.2.0</Version>
@@ -137,7 +139,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\..\Images\Textures\DotLine.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

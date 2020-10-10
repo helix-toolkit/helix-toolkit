@@ -193,6 +193,16 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("WireframeColor", typeof(Color), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(Colors.SkyBlue, (d, e) =>
             { ((d as Element3DCore).SceneNode as BatchedMeshNode).WireframeColor = ((Color)e.NewValue).ToColor4(); }));
 
+        /// <summary>
+        /// The always hittable property
+        /// </summary>
+        public static readonly DependencyProperty AlwaysHittableProperty =
+            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as BatchedMeshNode).AlwaysHittable = (bool)e.NewValue;
+            }));
+
+
         public string PostEffects
         {
             get { return (string)GetValue(PostEffectsProperty); }
@@ -444,7 +454,24 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(InvertNormalProperty);
             }
         }
-#endregion
+        /// <summary>
+        /// Gets or sets a value indicating whether [always hittable] even it is not rendering.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [always hittable]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AlwaysHittable
+        {
+            get
+            {
+                return (bool)GetValue(AlwaysHittableProperty);
+            }
+            set
+            {
+                SetValue(AlwaysHittableProperty, value);
+            }
+        }
+        #endregion
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
@@ -463,6 +490,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.WireframeColor = this.WireframeColor.ToColor4();
                 n.RenderWireframe = this.RenderWireframe;
                 n.CullMode = this.CullMode;
+                n.AlwaysHittable = this.AlwaysHittable;
             }
             base.AssignDefaultValuesToSceneNode(node);
         }

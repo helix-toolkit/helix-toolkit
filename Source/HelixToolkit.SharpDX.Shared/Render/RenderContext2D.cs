@@ -34,6 +34,13 @@ namespace HelixToolkit.UWP
         /// </value>
         public double ActualHeight { get { return renderHost.ActualHeight; } }
         /// <summary>
+        /// Gets the dpi scale.
+        /// </summary>
+        /// <value>
+        /// The dpi scale.
+        /// </value>
+        public float DpiScale => renderHost.DpiScale;
+        /// <summary>
         /// Gets or sets the device context.
         /// </summary>
         /// <value>

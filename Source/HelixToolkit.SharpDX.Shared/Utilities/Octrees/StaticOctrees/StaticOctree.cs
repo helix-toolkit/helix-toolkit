@@ -258,11 +258,6 @@ namespace HelixToolkit.UWP
                 = new ObjectPool<Stack<KeyValuePair<int, int>>>(()=> { return new Stack<KeyValuePair<int, int>>(); }, 10);
 
             /// <summary>
-            ///
-            /// </summary>
-            protected List<HitTestResult> modelHits = new List<HitTestResult>();
-
-            /// <summary>
             /// The minumum size for enclosing region is a 1x1x1 cube.
             /// </summary>
             public float MIN_SIZE { get { return Parameter.MinimumOctantSize; } }
@@ -541,7 +536,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
             {
-                return HitTest(context, model, geometry, modelMatrix, rayWS, ref hits, 0);
+                return HitTest(context, model, geometry, modelMatrix, rayWS, false, ref hits);
             }
 
             /// <summary>
@@ -552,10 +547,46 @@ namespace HelixToolkit.UWP
             /// <param name="geometry"></param>
             /// <param name="modelMatrix"></param>
             /// <param name="rayWS"></param>
+            /// <param name="returnMultiple"></param>
+            /// <param name="hits"></param>
+            /// <returns></returns>
+            public bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, 
+                bool returnMultiple, ref List<HitTestResult> hits)
+            {
+                return HitTest(context, model, geometry, modelMatrix, rayWS, returnMultiple, ref hits, 0);
+            }
+
+            /// <summary>
+            /// Hits the test.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="model">The model.</param>
+            /// <param name="geometry">The geometry.</param>
+            /// <param name="modelMatrix">The model matrix.</param>
+            /// <param name="rayWS">The ray ws.</param>
+            /// <param name="hits">The hits.</param>
+            /// <param name="hitThickness">The hit thickness.</param>
+            /// <returns></returns>
+            public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, 
+                Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
+            {
+                return HitTest(context, model, geometry, modelMatrix, rayWS, false, ref hits, hitThickness);
+            }
+
+            /// <summary>
+            ///
+            /// </summary>
+            /// <param name="context"></param>
+            /// <param name="model"></param>
+            /// <param name="geometry"></param>
+            /// <param name="modelMatrix"></param>
+            /// <param name="rayWS"></param>
+            /// <param name="returnMultiple"></param>
             /// <param name="hits"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
+            public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, 
+                Ray rayWS, bool returnMultiple, ref List<HitTestResult> hits, float hitThickness)
             {
                 if (hits == null)
                 {
@@ -565,7 +596,7 @@ namespace HelixToolkit.UWP
                 var hitStack = hitStackPool.GetObject();
                 hitStack.Clear();
                 bool isHit = false;
-                modelHits.Clear();
+                var modelHits = new List<HitTestResult>();
                 var modelInv = modelMatrix.Inverted();
                 if (modelInv == Matrix.Zero) { return false; }//Cannot be inverted
                 var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
@@ -584,7 +615,7 @@ namespace HelixToolkit.UWP
                             ref var octant = ref octants.array[parentOctant[curr]];
                             bool isIntersect = false;
                             bool nodeHit = HitTestCurrentNodeExcludeChild(ref octant,
-                                context, model, geometry, modelMatrix, ref rayWS, ref rayModel, ref modelHits, ref isIntersect, hitThickness);
+                                context, model, geometry, modelMatrix, ref rayWS, ref rayModel, returnMultiple, ref modelHits, ref isIntersect, hitThickness);
                             isHit |= nodeHit;
                             if (isIntersect && octant.HasChildren)
                             {
@@ -786,12 +817,14 @@ namespace HelixToolkit.UWP
             /// <param name="modelMatrix"></param>
             /// <param name="rayWS"></param>
             /// <param name="rayModel"></param>
+            /// <param name="returnMultiple">Return multiple hit results or only the closest one</param>
             /// <param name="hits"></param>
             /// <param name="isIntersect"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
             protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry,
                 Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
+                bool returnMultiple,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
             /// <summary>
             /// 

@@ -168,6 +168,16 @@ namespace HelixToolkit.UWP
         /// The actual width.
         /// </value>
         float ActualWidth { get; }
+        /// <summary>
+        /// Gets or sets the dpi scale.
+        /// </summary>
+        /// <value>
+        /// The dpi scale.
+        /// </value>
+        float DpiScale
+        {
+            set; get;
+        }
 
         /// <summary>
         /// Indicates if DPFCanvas busy on rendering.

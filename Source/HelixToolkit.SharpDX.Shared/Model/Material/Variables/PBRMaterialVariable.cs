@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Physics based rendering material
         /// </summary>
-        public sealed class PBRMaterialVariable : MaterialVariable
+        public class PBRMaterialVariable : MaterialVariable
         {
             private const int NUMTEXTURES = 7;
             private const int NUMSAMPLERS = 4;

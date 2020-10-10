@@ -1,6 +1,30 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.13.0] - 2020-10-10
+### Added
+1. Added `AlwaysHittable` property for scene nodes. Allow mesh to be hittable even it is not being rendered(Visable = false). Ref #1393 (WPF.SharpDX/UWP/Core)
+2. Implemented high DPI rendering under DPI scaling to improve rendering quality. #1404 (WPF.SharpDX/UWP/Core)
+   
+   To turn this feature off if encounter issues, set `Viewport3DX.EnableDpiScale = false`.
+   
+### Improvement and Changes
+1. Improved small triangle hit test. Ref #1353 (WPF.SharpDX/UWP/Core)
+2. Supports up to 8 clipping planes(cross section). Ref #1396 (WPF.SharpDX/UWP/Core)
+3. Supports `Dot Net Core 3.1`. (Core)
+4. Upgrades `Assimp.net` to 5.0 beta.
+
+### Fixed
+1. Fixed hit test in `CrossSectionGeometryModel3D` when uses octree or set `CuttingOperation = Substract`. Ref #1396 (WPF.SharpDX/UWP/Core)
+2. Fixed keybinding issue in Viewport3DX. Ref #1390 (WPF.SharpDX)
+3. Fixed UWP runtime error due to dependency property naming conflicts. #1365
+   
+   In order to fix the issue, following breaking changes have to be made:  (UWP)
+   * `Transform3D` renames to `HxTransform3D`. The `Transform3D` is a DP in UWP `UIElement`, which is not able to override.
+   * Gesture bindings for UWP `Viewport3DX` have been moved into `Viewport3DX.ManipulationBindings` from `Viewport3DX.InputBindings`.
+4. Fixed small error in the calculation of the animation. #1405  (WPF.SharpDX/UWP/Core)
+5. Fixed typo in `TextInfo`. #1415  (WPF.SharpDX/UWP/Core)
+
 ## [2.12.0] - 2020-05-25
 ### Added
 1. Support Vertex Color blending for Phong/PBR/Diffuse materials with new `VertexColorBlendingFactor` property. (WPF.SharpDX/UWP/Core)

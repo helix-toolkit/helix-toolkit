@@ -97,6 +97,8 @@ namespace HelixToolkit.UWP
             private int MaterialIndexForNoName = 0;
             private int MeshIndexForNoName = 0;
             private IList<Animations.Animation> animations;
+
+            public event EventHandler<Exception> AssimpExceptionOccurred;
             /// <summary>
             /// Exports to file.
             /// </summary>
@@ -159,6 +161,7 @@ namespace HelixToolkit.UWP
                 catch(Exception ex)
                 {
                     Log(LogLevel.Error, ex.Message);
+                    AssimpExceptionOccurred?.Invoke(this, ex);
                 }
                 finally
                 {
@@ -205,6 +208,7 @@ namespace HelixToolkit.UWP
                 catch (Exception ex)
                 {
                     Log(LogLevel.Error, ex.Message);
+                    AssimpExceptionOccurred?.Invoke(this, ex);
                 }
                 finally
                 {

@@ -628,24 +628,20 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 renderCanvas.ExceptionOccurred -= this.HandleRenderException;
             }
-
+            PresentationSource source = PresentationSource.FromVisual(this);
+            if (source != null)
+            {
+                DpiScale = Math.Max(DpiScale, Math.Max(source.CompositionTarget.TransformToDevice.M11, source.CompositionTarget.TransformToDevice.M22));
+            }
             if (EnableSwapChainRendering)
             {
-                double dpiXScale = 1;
-                double dpiYScale = 1;
-                PresentationSource source = PresentationSource.FromVisual(this);
-                if (source != null)
-                {
-                    dpiXScale = 1.0 / source.CompositionTarget.TransformToDevice.M11;
-                    dpiYScale = 1.0 / source.CompositionTarget.TransformToDevice.M22;
-                }
-                hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering, BelongsToParentWindow) { DPIXScale = dpiXScale, DPIYScale = dpiYScale };
+                hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering, BelongsToParentWindow) { DpiScale = DpiScale };
             }
             else
             {
-                hostPresenter.Content = new DPFCanvas(EnableDeferredRendering, BelongsToParentWindow);
+                hostPresenter.Content = new DPFCanvas(EnableDeferredRendering, BelongsToParentWindow) { DpiScale = DpiScale };
             }
-
+            
             if (this.renderHostInternal != null)
             {
                 this.renderHostInternal.Rendered -= this.RaiseRenderHostRendered;
@@ -653,6 +649,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             renderCanvas = (IRenderCanvas)this.hostPresenter.Content;
+            renderCanvas.EnableDpiScale = EnableDpiScale;
             this.renderHostInternal = renderCanvas.RenderHost;
             renderCanvas.ExceptionOccurred += this.HandleRenderException;
             if (this.renderHostInternal != null)
@@ -1537,15 +1534,24 @@ namespace HelixToolkit.Wpf.SharpDX
         private void SetDefaultGestures()
         {
             this.InputBindings.Clear();
-            // TODO:
-            // Runtime error: 'None+U' key and modifier combination is not supported for KeyGesture.
-            // But this works when defining in xaml...
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.TopView, Key.U, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.BottomView, Key.D, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.FrontView, Key.F, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.BackView, Key.B, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.LeftView, Key.L, ModifierKeys.None));
-            //this.InputBindings.Add(new KeyBinding(ViewportCommands.RightView, Key.R, ModifierKeys.None));
+
+            // Set Default Key Gestures:
+            // this.InputBindings.Add(new KeyBinding(ViewportCommands.TopView, Key.U, ModifierKeys.None));
+            // will not work, because the KeyBinding constructor creates a KeyGesture implictly.
+            // The problem: Gestures with printable keys and the ModifierKeys "None" or "Shift" are not supported.
+            // "None + U" or "Shift + U" can not be used as gesture. So we have to create a KeyBinding
+            // without a gesture. For this we have to use the KeyBinding default constructor.
+            var kb = new []
+            {
+                new KeyBinding() {Command = ViewportCommands.TopView, Key = Key.U},
+                new KeyBinding() {Command = ViewportCommands.BottomView, Key=Key.D},
+                new KeyBinding() {Command = ViewportCommands.FrontView, Key=Key.F},
+                new KeyBinding() {Command = ViewportCommands.BackView, Key=Key.B},
+                new KeyBinding() {Command = ViewportCommands.LeftView, Key=Key.L},
+                new KeyBinding() {Command = ViewportCommands.RightView, Key=Key.R},
+            };
+            this.InputBindings.AddRange(kb);
+
             this.InputBindings.Add(new KeyBinding(ViewportCommands.ZoomExtents, Key.E, ModifierKeys.Control));
             this.InputBindings.Add(
                 new MouseBinding(

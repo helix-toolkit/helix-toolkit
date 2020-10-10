@@ -206,7 +206,7 @@ namespace HelixToolkit.UWP
                 {
                     textLayoutDirty = true;
                     textFactory = Collect(new Factory(FactoryType.Isolated));
-                    textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
+                    textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize * host.DpiScale));
                     return true;
                 }
                 else
@@ -218,7 +218,7 @@ namespace HelixToolkit.UWP
             private void UpdateFontFormat()
             {
                 RemoveAndDispose(ref textFormat);
-                textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
+                textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize * RenderHost.DpiScale));
                 textLayoutDirty = true;
             }
 

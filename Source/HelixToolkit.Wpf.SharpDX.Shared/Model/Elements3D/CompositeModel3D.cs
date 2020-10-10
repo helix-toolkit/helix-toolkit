@@ -41,6 +41,31 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        // Using a DependencyProperty as the backing store for AlwasyHittable.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AlwasyHittableProperty =
+            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(CompositeModel3D), new PropertyMetadata(false, (d, e) =>
+            {
+                (d as CompositeModel3D).SceneNode.AlwaysHittable = (bool)e.NewValue;
+            }));
+        /// <summary>
+        /// Gets or sets a value indicating whether [always hittable].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [always hittable]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AlwaysHittable
+        {
+            get
+            {
+                return (bool)GetValue(AlwasyHittableProperty);
+            }
+            set
+            {
+                SetValue(AlwasyHittableProperty, value);
+            }
+        }
+
+
         /// <summary>
         ///     Gets the children.
         /// </summary>
@@ -150,7 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new GroupNode();
+            return new GroupNode() { AlwaysHittable = AlwaysHittable };
         }
     }
 }

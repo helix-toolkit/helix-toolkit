@@ -2378,5 +2378,38 @@ namespace HelixToolkit.UWP
                     viewport.renderHostInternal.RenderConfiguration.MinimumUpdateCount = (uint)Math.Max(0, (int)e.NewValue);
                 }
             }));
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable high dpi rendering].
+        /// Enable this option if you want to render high definition image with using high definition monitor and using dpi scaling in windows.
+        /// This option may impact rendering performance due to higher resolution.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable high dpi rendering]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableDpiScale
+        {
+            get
+            {
+                return (bool)GetValue(EnableDpiScaleProperty);
+            }
+            set
+            {
+                SetValue(EnableDpiScaleProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty EnableDpiScaleProperty =
+            DependencyProperty.Register("EnableDpiScale", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e)=> 
+            {
+                var viewport = (d as Viewport3DX);
+                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is SwapChainRenderHost host)
+                {
+                    host.EnableDpiScale = (bool)e.NewValue;
+                }
+            }));
+
+
     }
 }

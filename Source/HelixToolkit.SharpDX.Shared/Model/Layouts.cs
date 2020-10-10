@@ -276,7 +276,7 @@ namespace HelixToolkit.UWP
         public float OITWeightPower;
         public float OITWeightDepthSlope;
         public int OITWeightMode;
-        private int padding1;
+        public float DpiScale;
         public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 5);
     }
     /// <summary>
@@ -463,33 +463,21 @@ namespace HelixToolkit.UWP
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ClipPlaneStruct
     {
-        //public Bool4 EnableCrossPlane;
-        //public Vector4 CrossSectionColors;
-        //public int CuttingOperation;
-        //Vector3 padding;
-        // Format:
-        // M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
-        // M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
-        // M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin
-        // M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin        
-        /// <summary>
-        /// The cross plane parameters
-        /// Format:
-        /// <para>M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin</para>
-        /// <para>M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin</para>
-        /// <para>M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin</para>
-        /// <para>M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin</para>
-        /// </summary>
         //public Matrix CrossPlaneParams;
-        public const int SizeInBytes = 4 * (4 * 3 + 4 * 4);
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 8);
 
         public const string EnableCrossPlaneStr = "EnableCrossPlane";
+        public const string EnableCrossPlane5To8Str = "EnableCrossPlane5To8";
         public const string CrossSectionColorStr = "CrossSectionColors";
         public const string CuttingOperationStr = "CuttingOperation";
         public const string CrossPlane1ParamsStr = "CrossPlane1Params";
         public const string CrossPlane2ParamsStr = "CrossPlane2Params";
         public const string CrossPlane3ParamsStr = "CrossPlane3Params";
         public const string CrossPlane4ParamsStr = "CrossPlane4Params";
+        public const string CrossPlane5ParamsStr = "CrossPlane5Params";
+        public const string CrossPlane6ParamsStr = "CrossPlane6Params";
+        public const string CrossPlane7ParamsStr = "CrossPlane7Params";
+        public const string CrossPlane8ParamsStr = "CrossPlane8Params";
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

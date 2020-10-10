@@ -138,6 +138,8 @@ namespace HelixToolkit.UWP
             private int MaterialIndexForNoName = 0;
             private int MeshIndexForNoName = 0;
             private List<EmbeddedTexture> embeddedTextures;
+
+            public event EventHandler<Exception> AssimpExceptionOccurred;
             #region Public Methods
             /// <summary>
             ///     Loads the model specified file path.
@@ -233,6 +235,7 @@ namespace HelixToolkit.UWP
                 {
                     Log(LogLevel.Error, ex.Message);
                     ErrorCode = ErrorCode.Failed;
+                    AssimpExceptionOccurred?.Invoke(this, ex);
                     return ErrorCode;
                 }
                 finally
@@ -302,6 +305,7 @@ namespace HelixToolkit.UWP
                 {
                     Log(LogLevel.Error, ex.Message);
                     ErrorCode = ErrorCode.Failed;
+                    AssimpExceptionOccurred?.Invoke(this, ex);
                     return ErrorCode;
                 }
                 finally

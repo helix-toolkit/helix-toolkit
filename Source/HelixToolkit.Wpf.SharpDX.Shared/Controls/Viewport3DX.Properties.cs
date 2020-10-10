@@ -1219,6 +1219,32 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("BelongsToParentWindow", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
 
         /// <summary>
+        /// The dpi scale
+        /// </summary>
+        public static readonly DependencyProperty DpiScaleProperty =
+            DependencyProperty.Register("DpiScale", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is IRenderCanvas canvas)
+                {
+                    canvas.DpiScale = (double)e.NewValue;
+                }
+            }));
+
+        /// <summary>
+        /// The enable dpi scale property
+        /// </summary>
+        public static readonly DependencyProperty EnableDpiScaleProperty =
+            DependencyProperty.Register("EnableDpiScale", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is IRenderCanvas canvas)
+                {
+                    canvas.EnableDpiScale = (bool)e.NewValue;
+                }
+            }));
+
+        /// <summary>
         /// Background Color
         /// </summary>
         public Color BackgroundColor
@@ -3095,6 +3121,44 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)GetValue(BelongsToParentWindowProperty); }
             set { SetValue(BelongsToParentWindowProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the dpi scale. For example, if dpi scale is set to 200% in windows, this value must be set to 2.
+        /// </summary>
+        /// <value>
+        /// The dpi scale.
+        /// </value>
+        public double DpiScale
+        {
+            set
+            {
+                SetValue(DpiScaleProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(DpiScaleProperty);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable dpi scale].
+        /// Enable this option if you want to render high definition image with using high definition monitor and using dpi scaling in windows.
+        /// This option may impact rendering performance due to higher resolution.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable dpi scale]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableDpiScale
+        {
+            get
+            {
+                return (bool)GetValue(EnableDpiScaleProperty);
+            }
+            set
+            {
+                SetValue(EnableDpiScaleProperty, value);
+            }
         }
     }
 }

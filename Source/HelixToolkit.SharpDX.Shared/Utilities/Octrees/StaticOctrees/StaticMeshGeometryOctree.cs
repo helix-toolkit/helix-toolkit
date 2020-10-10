@@ -96,12 +96,14 @@ namespace HelixToolkit.UWP
             /// <param name="modelMatrix"></param>
             /// <param name="rayWS"></param>
             /// <param name="rayModel"></param>
+            /// <param name="returnMultiple"></param>
             /// <param name="hits"></param>
             /// <param name="isIntersect"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
             protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant,
-                RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits,
+                RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix,
+                ref Ray rayWS, ref Ray rayModel, bool returnMultiple, ref List<HitTestResult> hits,
                 ref bool isIntersect, float hitThickness)
             {
                 isIntersect = false;
@@ -131,10 +133,27 @@ namespace HelixToolkit.UWP
                         var v0 = Positions[t1];
                         var v1 = Positions[t2];
                         var v2 = Positions[t3];
-                        float d;
 
-                        if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out d))
+                        var scaling = 1f;
+                        var rayScaled = rayModel;
+                        if (MeshGeometry3D.EnableSmallTriangleHitTestScaling)
                         {
+                            if ((v0 - v1).LengthSquared() < MeshGeometry3D.SmallTriangleEdgeLengthSquare
+                                || (v1 - v2).LengthSquared() < MeshGeometry3D.SmallTriangleEdgeLengthSquare
+                                || (v2 - v0).LengthSquared() < MeshGeometry3D.SmallTriangleEdgeLengthSquare)
+                            {
+                                scaling = MeshGeometry3D.SmallTriangleHitTestScaling;
+                                rayScaled = new Ray(rayModel.Position * scaling, rayModel.Direction);
+                            }
+                        }
+
+                        if (Collision.RayIntersectsTriangle(ref rayScaled, ref v0, ref v1, ref v2, out float d))
+                        {
+                            d /= scaling;
+                            if (returnMultiple)
+                            {
+                                minDistance = float.MaxValue;
+                            }
                             if (d >= 0 && d < minDistance) // If d is NaN, the condition is false.
                             {
                                 minDistance = d;
@@ -145,9 +164,9 @@ namespace HelixToolkit.UWP
                                 result.PointHit = pointWorld;
                                 result.Distance = (rayWS.Position - pointWorld).Length();
 
-                                var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                                var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                                var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
+                                var p0 = Vector3.TransformCoordinate(Positions[t1], modelMatrix);
+                                var p1 = Vector3.TransformCoordinate(Positions[t2], modelMatrix);
+                                var p2 = Vector3.TransformCoordinate(Positions[t3], modelMatrix);
                                 var n = Vector3.Cross(p1 - p0, p2 - p0);
                                 n.Normalize();
                                 // transform hit-info to world space now:
@@ -156,11 +175,16 @@ namespace HelixToolkit.UWP
                                 result.Tag = idx;
                                 result.Geometry = geometry;
                                 isHit = true;
+                                if (returnMultiple)
+                                {
+                                    hits.Add(result);
+                                    result = new HitTestResult();
+                                }
                             }
                         }
                     }
 
-                    if (isHit)
+                    if (isHit && !returnMultiple)
                     {
                         isHit = false;
                         if (hits.Count > 0)

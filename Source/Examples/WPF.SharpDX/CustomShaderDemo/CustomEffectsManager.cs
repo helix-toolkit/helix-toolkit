@@ -55,6 +55,10 @@ namespace CustomShaderDemo
 
         public static ShaderDescription PSNoiseMesh = new ShaderDescription(nameof(PSNoiseMesh), ShaderStage.Pixel,
             new ShaderReflector(), ShaderHelper.LoadShaderCode(@"Shaders\psMeshNoiseBlinnPhong.cso"));
+
+
+        public static ShaderDescription PSCustomPoint = new ShaderDescription(nameof(PSCustomPoint), ShaderStage.Pixel,
+            new ShaderReflector(), ShaderHelper.LoadShaderCode(@"Shaders\psCustomPoint.cso"));
     }
 
     public class CustomEffectsManager : DefaultEffectsManager
@@ -112,8 +116,23 @@ namespace CustomShaderDemo
                     }
                 }
             };
+
             AddTechnique(dataSampling);
             AddTechnique(noiseMesh);
+
+            var points = GetTechnique(DefaultRenderTechniqueNames.Points);
+            points.AddPass(new ShaderPassDescription("CustomPointPass")
+            {
+                ShaderList = new[]
+                {
+                    DefaultVSShaderDescriptions.VSPoint,
+                    DefaultGSShaderDescriptions.GSPoint,
+                    CustomPSShaderDescription.PSCustomPoint
+                },
+                BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
+
+            });
         }
     }
 }

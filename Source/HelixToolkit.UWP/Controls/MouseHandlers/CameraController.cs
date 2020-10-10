@@ -1251,7 +1251,7 @@ namespace HelixToolkit.UWP
             this.rotateFingerCount = -1;
             this.allowCombinedManipulation = false;
 
-            foreach (var mb in this.Viewport.InputBindings.OfType<ManipulationBinding>())
+            foreach (var mb in this.Viewport.ManipulationBindings)
             {
                 this.allowCombinedManipulation = true;
                 if (mb.Command == ViewportCommands.Pan)

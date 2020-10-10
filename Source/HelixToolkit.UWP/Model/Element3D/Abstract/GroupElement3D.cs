@@ -11,7 +11,8 @@ using Windows.UI.Xaml.Markup;
 namespace HelixToolkit.UWP
 {
     using Model.Scene;
-    
+    using Windows.UI.Xaml.Controls;
+
     /// <summary>
     /// 
     /// </summary>
@@ -22,7 +23,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public new static readonly DependencyProperty ItemsSourceProperty =
+        public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
                 new PropertyMetadata(null,
                     (d, e) => {
@@ -37,22 +38,30 @@ namespace HelixToolkit.UWP
             typeof(GroupElement3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as GroupElement3D;
-                if (e.OldValue != null)
+                if (e.OldValue is Element3D elem_old)
                 {
-                    d.Items.Remove(e.OldValue);
+                    d.Items.Remove(elem_old);
                 }
 
-                if (e.NewValue != null)
+                if (e.NewValue is Element3D elem)
                 {
-                    d.Items.Add(e.NewValue);
+                    d.Items.Add(elem);
                 }
                 (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
+        // Using a DependencyProperty as the backing store for AlwaysHittable.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AlwaysHittableProperty =
+            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(GroupElement3D), new PropertyMetadata(false, (d, e) =>
+            {
+                (d as GroupElement3D).SceneNode.AlwaysHittable = (bool)e.NewValue;
+            }));
+
+
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public new IList<Element3D> ItemsSource
+        public IList<Element3D> ItemsSource
         {
             get { return (IList<Element3D>)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
@@ -66,6 +75,24 @@ namespace HelixToolkit.UWP
             get
             {
                 return (IOctreeManagerWrapper)GetValue(OctreeManagerProperty);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [always hittable].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [always hittable]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AlwaysHittable
+        {
+            get
+            {
+                return (bool)GetValue(AlwaysHittableProperty);
+            }
+            set
+            {
+                SetValue(AlwaysHittableProperty, value);
             }
         }
 
@@ -86,17 +113,21 @@ namespace HelixToolkit.UWP
             get;
         } = new ObservableElement3DCollection();
 
+        private readonly ItemsControl itemsControl = new ItemsControl();
+        public ItemCollection Items => itemsControl.Items;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupElement3D"/> class.
         /// </summary>
         public GroupElement3D()
         {
-            Children.CollectionChanged += Items_CollectionChanged;           
+            Children.CollectionChanged += Items_CollectionChanged;
         }
 
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            AttachChild(itemsControl);
             Items.Clear();
             foreach (var item in Children)
             {
@@ -105,9 +136,9 @@ namespace HelixToolkit.UWP
                     Items.Add(item);
                 }
             }
-            if(OctreeManager != null)
+            if(OctreeManager is Element3D elem)
             {
-                Items.Add(OctreeManager);
+                Items.Add(elem);
             }
         }
 
@@ -117,7 +148,7 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new GroupNode();
+            return new GroupNode() { AlwaysHittable = AlwaysHittable };
         }
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -133,14 +164,14 @@ namespace HelixToolkit.UWP
                         {
                             if (node.RemoveChildNode(item.SceneNode))
                             {
-                                Items.Remove(item);
+                                Items?.Remove(item);
                             }
                         }
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    Items.Clear();
-                    node.Clear();
+                    Items?.Clear();
+                    node?.Clear();
                     break;
             }
 
@@ -153,13 +184,13 @@ namespace HelixToolkit.UWP
                         {
                             if (node.AddChildNode(item.SceneNode))
                             {
-                                Items.Add(item);
+                                Items?.Add(item);
                             }
                         }
                     }
-                    if (OctreeManager != null)
+                    if (OctreeManager is Element3D elem)
                     {
-                        Items.Add(OctreeManager);
+                        Items?.Add(elem);
                     }
                     break;
                 case NotifyCollectionChangedAction.Add:
@@ -168,7 +199,7 @@ namespace HelixToolkit.UWP
                     {
                         if (node.AddChildNode(item.SceneNode))
                         {
-                            Items.Add(item);
+                            Items?.Add(item);
                         }
                     }
                     break;

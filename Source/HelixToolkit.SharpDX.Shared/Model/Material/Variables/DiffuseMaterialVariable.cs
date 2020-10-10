@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public sealed class DiffuseMaterialVariables : MaterialVariable
+        public class DiffuseMaterialVariables : MaterialVariable
         {
             private const int NUMTEXTURES = 1;
             private const int NUMSAMPLERS = 1;
