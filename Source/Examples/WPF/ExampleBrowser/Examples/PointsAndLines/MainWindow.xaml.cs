@@ -65,6 +65,8 @@ namespace PointsAndLinesDemo
 
         public bool ShowWireLines { get; set; }
 
+        public bool IsMirrored { get; set; }
+
         public Point3DCollection Points
         {
             get
@@ -179,21 +181,25 @@ namespace PointsAndLinesDemo
             if (this.linesVisual != null)
             {
                 this.linesVisual.Points = this.Points;
+                this.linesVisual.Transform = IsMirrored ? new ScaleTransform3D(-1, 1, 1) : new ScaleTransform3D(1, 1, 1);
             }
 
             if (this.pointsVisual != null)
             {
                 this.pointsVisual.Points = this.Points;
+                this.pointsVisual.Transform = IsMirrored ? new ScaleTransform3D(-1, 1, 1) : new ScaleTransform3D(1, 1, 1);
             }
 
             if (this.screenSpaceLines != null)
             {
                 this.screenSpaceLines.Points = this.Points;
+                this.screenSpaceLines.Transform = IsMirrored ? new ScaleTransform3D(-1, 1, 1) : new ScaleTransform3D(1, 1, 1);
             }
 
             if (this.wireLines != null)
             {
                 this.wireLines.Lines = this.Points;
+                this.wireLines.Transform = IsMirrored ? new ScaleTransform3D(-1, 1, 1) : new ScaleTransform3D(1, 1, 1);
             }
         }
 

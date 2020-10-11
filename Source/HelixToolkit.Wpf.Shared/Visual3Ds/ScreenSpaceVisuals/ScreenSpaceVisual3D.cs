@@ -293,6 +293,7 @@ namespace HelixToolkit.Wpf
             mg.Children.Add(new EmissiveMaterial(new SolidColorBrush(this.Color)));
             mg.Freeze();
             this.Model.Material = mg;
+            this.Model.BackMaterial = mg;
         }
 
         /// <summary>
