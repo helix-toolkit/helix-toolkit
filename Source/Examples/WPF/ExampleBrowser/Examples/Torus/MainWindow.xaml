@@ -45,19 +45,19 @@
             Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" >
             <StackPanel Margin="10">
                 <Label>Torus Diameter</Label>
-                <Slider x:Name="torusDiameterSlider" Value="3" Minimum="0.1" Maximum="10" Width="100" />
+                <Slider x:Name="torusDiameterSlider" Value="3" Minimum="0.0" Maximum="10" Width="100" />
             </StackPanel>
             <StackPanel Margin="10">
             <Label>Tube Diameter</Label>
-                <Slider x:Name="tubeDiameterSlider" Value="1" Minimum="0.1" Maximum="5" Width="100" />
+                <Slider x:Name="tubeDiameterSlider" Value="1" Minimum="0.0" Maximum="5" Width="100" />
             </StackPanel>
             <StackPanel Margin="10">
             <Label>theta Div</Label>
-                <Slider x:Name="thetaDivSlider" Value="36" Minimum="3" Maximum="256" Width="100" />
+                <Slider x:Name="thetaDivSlider" Value="36" Minimum="0" Maximum="256" Width="100" />
             </StackPanel>
             <StackPanel Margin="10">
             <Label>phi Div</Label>
-                <Slider x:Name="phiDivSlider" Value="24" Minimum="3" Maximum="256" Width="100" />
+                <Slider x:Name="phiDivSlider" Value="24" Minimum="0" Maximum="256" Width="100" />
             </StackPanel>
             <StackPanel Margin="10">
                 <Label>UserControl TubeDiameter</Label>
