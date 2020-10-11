@@ -3021,8 +3021,10 @@ namespace HelixToolkit.Wpf
                 this.AddSphere(new Point3D(), tubeDiameter, thetaDiv, phiDiv);
             }
             // If the second Diameter is zero, we can't build out torus
-            else if (tubeDiameter == 0.0)
-                throw new HelixToolkitException("Torus must have a Diameter bigger than 0");
+            else if (tubeDiameter <= 0.0)
+            {
+                // do nothing, because a torus with tube diameter 0 or below is not visible.
+            }               
             // Values result in a Torus
             else
             {
