@@ -146,7 +146,9 @@ namespace HelixToolkit.UWP
                                 rayScaled = new Ray(rayModel.Position * scaling, rayModel.Direction);
                             }
                         }
-
+                        v0 *= scaling;
+                        v1 *= scaling;
+                        v2 *= scaling;
                         if (Collision.RayIntersectsTriangle(ref rayScaled, ref v0, ref v1, ref v2, out float d))
                         {
                             d /= scaling;
