@@ -31,11 +31,14 @@ namespace ExampleBrowser.Examples.Torus
             set { SetValue(UCTorusDiameterProperty, value); }
         }
 
+        // reason for issue #1419:
+        // In the DependencyProperty registration the DefaultValue (PropertyMetaData) was not set to a useful value.
+        // So the default values 0.0 (double) or 0 (int) were used. But 0.0 and 0 are invalid values for the Torus properties.
+        // As a result of this an exception was thrown.
+
         // Using a DependencyProperty as the backing store for UCTorusDiameter.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty UCTorusDiameterProperty =
             DependencyProperty.Register("UCTorusDiameter", typeof(double), typeof(UserControl_1419), new PropertyMetadata(100.0));
-
-
 
         public double UCTubeDiameter
         {
@@ -46,8 +49,6 @@ namespace ExampleBrowser.Examples.Torus
         // Using a DependencyProperty as the backing store for UCTubeDiameter.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty UCTubeDiameterProperty =
             DependencyProperty.Register("UCTubeDiameter", typeof(double), typeof(UserControl_1419), new PropertyMetadata(10.0));
-
-
 
         public int UCThetaDiv
         {
