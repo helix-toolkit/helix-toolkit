@@ -25,7 +25,7 @@ Wpf Wrapper Components based on `HelixToolkit.SharpDX.Core` for .NET Core Wpf.
 [**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.Wpf.SharpDX.Assimp) 
 [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
 
-[**Examples:**](/develop/Source/Examples)
+[**Examples:**](/Source/Examples)
 Please download full source code to run examples. Or download [compiled version](https://ci.appveyor.com/project/objorke/helix-toolkit/branch/master/artifacts)
 
 [![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit.svg?style=popout)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
