@@ -16,6 +16,9 @@
                 <MenuItem Header="3DTools.ScreenSpaceLines3D" IsCheckable="True" IsChecked="{Binding ShowScreenSpaceLines3D}"/>
                 <MenuItem Header="Petzold.Media3D.Wirelines" IsCheckable="True" IsChecked="{Binding ShowWireLines}"/>
             </MenuItem>
+            <MenuItem Header="Transformations">
+                <MenuItem Header="mirror at YZ Plane (issue #1340)" IsCheckable="True" IsChecked="{Binding IsMirrored}" />
+            </MenuItem>
         </Menu>
         <DockPanel DockPanel.Dock="Bottom">
             <TextBlock DockPanel.Dock="Left" Text="{Binding NumberOfPoints, StringFormat='N = {0}'}" Width="80" Margin="2" TextAlignment="Center"/>
