@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.13.1] - 2020-10-17
+### Fixed
+1. Fixed small triangle hit test is not working correctly in octree. #1428 (WPF.SharpDX/UWP/Core)
+2. Fixed PointVisual3D and LinesVisual3D invisible on mirrored transformation. #1340 (WPF)
+
 ## [2.13.0] - 2020-10-10
 ### Added
 1. Added `AlwaysHittable` property for scene nodes. Allow mesh to be hittable even it is not being rendered(Visible = false). Ref #1393 (WPF.SharpDX/UWP/Core)
