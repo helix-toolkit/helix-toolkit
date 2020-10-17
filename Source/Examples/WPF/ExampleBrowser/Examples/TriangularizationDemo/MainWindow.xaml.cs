@@ -7,7 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ExampleBrowser.Examples.TriangularizationDemo
+using ExampleBrowser;
+
+namespace TriangularizationDemo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

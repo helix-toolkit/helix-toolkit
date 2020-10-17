@@ -191,6 +191,7 @@
     <Compile Include="Workitems\Workitem10046\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Images\TriangularizationDemo_small.png" />
     <Resource Include="Images\MvvmCameraDemo_small.png" />
     <Resource Include="Images\MvvmDemo_small.png" />
     <Resource Include="Images\MvvmManipulatorDemo_small.png" />
