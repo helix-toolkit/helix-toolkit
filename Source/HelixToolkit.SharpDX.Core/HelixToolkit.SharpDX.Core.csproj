@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
         <None Include="..\HelixToolkit.snk" />
+        <Compile Include="..\AssemblyInfo.cs">
+            <Link>Properties\AssemblyInfo.cs</Link>
+        </Compile>
     </ItemGroup>
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
@@ -19,6 +22,7 @@
     <RootNamespace>HelixToolkit.SharpDX.Core</RootNamespace>
     <DelaySign>false</DelaySign>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Debug|AnyCPU'">

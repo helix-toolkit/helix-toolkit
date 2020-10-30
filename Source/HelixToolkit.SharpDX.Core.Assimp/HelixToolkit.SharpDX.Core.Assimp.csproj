@@ -16,6 +16,7 @@
     <PackageTags>SharpDX; DirectX; 3D;</PackageTags>
     <DelaySign>false</DelaySign>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netstandard1.3|Release|AnyCPU'">
@@ -69,6 +70,9 @@
   </ItemGroup>
     <ItemGroup>
         <None Include="..\HelixToolkit.snk" />
+        <Compile Include="..\AssemblyInfo.cs">
+            <Link>Properties\AssemblyInfo.cs</Link>
+        </Compile>
     </ItemGroup>
   <Import Project="..\HelixToolkit.SharpDX.Assimp.Shared\HelixToolkit.SharpDX.Assimp.Shared.projitems" Label="Shared" />
 
