@@ -21,7 +21,8 @@ namespace FileLoadDemo
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
+            this.DataContext = new MainViewModel(this);
+            
             view.AddHandler(Element3D.MouseDown3DEvent, new RoutedEventHandler((s,e)=> 
             {
                 var arg = e as MouseDown3DEventArgs;
