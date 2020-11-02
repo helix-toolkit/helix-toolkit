@@ -15,6 +15,7 @@ namespace FileLoadDemo
     using HelixToolkit.Wpf.SharpDX.Model;
     using HelixToolkit.Wpf.SharpDX.Model.Scene;
     using Microsoft.Win32;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
@@ -91,6 +92,10 @@ namespace FileLoadDemo
 
         public ICommand ExportCommand { private set; get; }
 
+        public ICommand CopyAsBitmapCommand { private set; get; }
+
+        public ICommand CopyAsHiresBitmapCommand { private set; get; }      
+
         private bool isLoading = false;
         public bool IsLoading
         {
@@ -159,9 +164,12 @@ namespace FileLoadDemo
         private List<BoneSkinMeshNode> skeletonNodes = new List<BoneSkinMeshNode>();
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
 
+        private MainWindow mainWindow = null;
 
-        public MainViewModel()
+        public MainViewModel(MainWindow window)
         {
+            mainWindow = window;
+
             this.OpenFileCommand = new DelegateCommand(this.OpenFile);
             EffectsManager = new DefaultEffectsManager();
             Camera = new OrthographicCamera()
@@ -179,7 +187,44 @@ namespace FileLoadDemo
                 (Camera as OrthographicCamera).NearPlaneDistance = 0.1f;
             });
             ExportCommand = new DelegateCommand(() => { ExportFile(); });
+
+            CopyAsBitmapCommand = new DelegateCommand(() => { CopyAsBitmapToClipBoard(mainWindow.view); });
+            CopyAsHiresBitmapCommand = new DelegateCommand(() => { CopyAsHiResBitmapToClipBoard(mainWindow.view); });
+
             EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
+        }
+
+        private void CopyAsBitmapToClipBoard(Viewport3DX viewport)
+        {
+            var bitmap = ViewportExtensions.RenderBitmap(viewport);
+            try
+            {
+                Clipboard.Clear();
+                Clipboard.SetImage(bitmap);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void CopyAsHiResBitmapToClipBoard(Viewport3DX viewport)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var bitmap = ViewportExtensions.RenderBitmap(viewport,1920,1080);
+            try
+            {
+                Clipboard.Clear();
+                Clipboard.SetImage(bitmap);
+                stopwatch.Stop();
+                Debug.WriteLine($"creating bitmap needs {stopwatch.ElapsedMilliseconds} ms");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         private void OpenFile()
