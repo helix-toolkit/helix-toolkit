@@ -555,7 +555,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 double distv = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
                 double hfov = pcam.FieldOfView / viewport.ActualHeight * viewport.ActualWidth;
-                double disth = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
+                double disth = radius / Math.Tan(0.5 * hfov * Math.PI / 180);
 
                 double dist = Math.Max(distv, disth);
                 var dir = pcam.LookDirection;
