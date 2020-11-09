@@ -26,7 +26,10 @@
             CameraMode="Inspect"
             CameraRotationMode="Trackball"
             EffectsManager="{Binding EffectsManager}"
+            EnableSwapChainRendering="{Binding SwapChainRendering}"
             FXAALevel="Low">
+            <!-- EnableSwapChainRendering="{Binding SwapChainRendering}" is OK (no bug on rendering with different resolution) -->
+            <!-- EnableSwapChainRendering="true" fails! (only black screen on rendering with different resolution) -->
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -96,6 +99,7 @@
                 <CheckBox Margin="4" IsChecked="{Binding ElementName=view, Path=EnableSSAO}">Enable SSAO</CheckBox>
                 <CheckBox Margin="4" IsChecked="{Binding RenderEnvironmentMap}">Render EnvironmentMap</CheckBox>
                 <CheckBox Margin="4" IsChecked="{Binding RenderFlat}">Flat Shading</CheckBox>
+                <CheckBox Margin="4" IsChecked="{Binding SwapChainRendering}">Enable SwapChain rendering</CheckBox>
                 <Separator />
                 <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}">Enable Animation</CheckBox>
                 <TextBlock>Animations</TextBlock>
