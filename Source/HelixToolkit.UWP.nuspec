@@ -27,12 +27,18 @@
 		    <dependency id="System.Private.DataContractSerialization" version="4.3.0"/>
       </group>
     </dependencies>
+    <contentFiles>
+      <files include="any/any/HelixToolkit.UWP/Resources/*.*" buildAction="none" copyToOutput="true" flatten="false" />
+      <files include="any/any/HelixToolkit.UWP/Themes/*.*" buildAction="none" copyToOutput="true" flatten="false" />
+    </contentFiles>
   </metadata>
   <files>
     <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP.???" target="lib\uap10.0" />
     <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\HelixToolkit.UWP.??.xml" target="lib\uap10.0\HelixToolkit.UWP" />
-    <file src="HelixToolkit.UWP\bin\Release\Resources\*.*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
-    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\Themes\*.*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\Resources\*.*" target="content\HelixToolkit.UWP\Resources" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\Resources\*.*" target="contentFiles\any\any\HelixToolkit.UWP\Resources" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\Themes\*.*" target="content\HelixToolkit.UWP\Themes" />
+    <file src="HelixToolkit.UWP\bin\Release\HelixToolkit.UWP\Themes\*.*" target="contentFiles\any\any\HelixToolkit.UWP\Themes" />
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
