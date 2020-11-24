@@ -14,7 +14,7 @@
     <dependencies>
       <group targetFramework="net45">		
         <dependency id="HelixToolkit.Wpf.SharpDX" version="[$version$]" />
-        <dependency id="AssimpNet" version="4.1.0" />
+        <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
@@ -22,28 +22,28 @@
       <group targetFramework="UAP10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.1.7" exclude="Build,Analyzers" />
         <dependency id="HelixToolkit.UWP" version="[$version$]" />
-        <dependency id="AssimpNet" version="4.1.0" />
+        <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
       </group>
       <group targetFramework="netcoreapp3.1">
         <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
-        <dependency id="AssimpNet" version="4.1.0" />
+        <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
       </group>
       <group targetFramework="netcoreapp2.1">
         <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
-        <dependency id="AssimpNet" version="4.1.0" />
+        <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
       </group>
       <group targetFramework="netstandard1.3">
         <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
-        <dependency id="AssimpNet" version="4.1.0" />
+        <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
