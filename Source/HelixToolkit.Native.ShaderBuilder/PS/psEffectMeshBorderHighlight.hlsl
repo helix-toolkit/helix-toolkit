@@ -5,7 +5,7 @@ static const int SIZE = 4;
 static const float offset[SIZE] = { 0, 0.4, 1, 1.2 };
 static const float weight[SIZE] =
 {
-    0.35, 0.3, 0.2, 0.15
+    1, 0.8, 0.4, 0.2
 };
 static const float scale = 1;
 
