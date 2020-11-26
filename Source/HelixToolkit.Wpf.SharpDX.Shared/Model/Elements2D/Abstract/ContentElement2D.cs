@@ -44,10 +44,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         return e;
                     }
-                    else
+                    if (e != null)
                     {
                         return new TextModel2D() { Text = e.ToString() };
                     }
+                    return null;
                 }));
 
             [Bindable(true)]
