@@ -16,7 +16,8 @@
         <hx:Viewport3DX Name="view1"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
-            EnableSwapChainRendering="False">
+            EnableSwapChainRendering="True"
+            EnableDesignModeRendering="True">
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light1Direction}" Color="{Binding VM3D.Light1Color}" />
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light2Direction}" Color="{Binding VM3D.Light2Color}" />
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light3Direction}" Color="{Binding VM3D.Light3Color}" />
@@ -56,7 +57,7 @@
                             VerticalAlignment="Top"
                             Orientation="Vertical">
                             <hx2D:StackPanel2D VerticalAlignment="Center" Orientation="Horizontal">
-                                <hx2D:Button2D Margin="10" VerticalAlignment="Center" Width="60" Height="30">Button 3</hx2D:Button2D>
+                                <hx2D:Button2D Margin="10" VerticalAlignment="Center" Width="60" Height="30" Content2D="{Binding VM2D.Text}"></hx2D:Button2D>
                                 <hx2D:Button2D Margin="10" VerticalAlignment="Center" Width="60" Height="30">Button 4</hx2D:Button2D>
                             </hx2D:StackPanel2D>                        
                             <hx2D:Button2D Margin="10" HorizontalAlignment="Center">Button4</hx2D:Button2D>
