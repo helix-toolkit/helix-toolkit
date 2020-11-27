@@ -401,6 +401,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (view.RenderHost != null && view.RenderHost.IsRendering)
                     {
+                        if (view.EnableSwapChainRendering)
+                        {
+                            view.RenderHost.UpdateAndRender();
+                            // be sure to render the Scene before capture, otherwise the image is just black
+                        }
                         ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, memoryStream);
                         var bitmap = new BitmapImage();
                         bitmap.BeginInit();
