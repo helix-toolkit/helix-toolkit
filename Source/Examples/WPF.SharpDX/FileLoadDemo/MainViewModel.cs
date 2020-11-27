@@ -61,19 +61,6 @@ namespace FileLoadDemo
             }
         }
 
-        private bool swapchain = true;
-        public bool SwapChainRendering
-        {
-            get
-            {
-                return swapchain;
-            }
-            set
-            {
-                SetValue(ref swapchain, value);
-            }
-        }
-
         private bool renderEnvironmentMap = true;
         public bool RenderEnvironmentMap
         {
