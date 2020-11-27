@@ -13,11 +13,21 @@
     Background="Black"
     mc:Ignorable="d">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Background="AntiqueWhite">
+            <CheckBox IsChecked="{Binding ElementName=view1, Path=EnableDpiScale}" HorizontalAlignment="Left" VerticalAlignment="Center">High Dpi</CheckBox>
+            <Label Margin="25,0,0,0">Test Binding:</Label>
+            <TextBox x:Name="tb" Width="200" VerticalContentAlignment="Center">Btn 3</TextBox>
+        </StackPanel>
         <hx:Viewport3DX Name="view1"
-            Camera="{Binding Camera}"
-            EffectsManager="{Binding EffectsManager}"
-            EnableSwapChainRendering="True"
-            EnableDesignModeRendering="True">
+                        Grid.Row="1"
+                        Camera="{Binding Camera}"
+                        EffectsManager="{Binding EffectsManager}"
+                        EnableSwapChainRendering="True"
+                        EnableDesignModeRendering="False">
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light1Direction}" Color="{Binding VM3D.Light1Color}" />
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light2Direction}" Color="{Binding VM3D.Light2Color}" />
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light3Direction}" Color="{Binding VM3D.Light3Color}" />
@@ -57,7 +67,8 @@
                             VerticalAlignment="Top"
                             Orientation="Vertical">
                             <hx2D:StackPanel2D VerticalAlignment="Center" Orientation="Horizontal">
-                                <hx2D:Button2D Margin="10" VerticalAlignment="Center" Width="60" Height="30" Content2D="{Binding VM2D.Text}"></hx2D:Button2D>
+                                <hx2D:Button2D Margin="10" VerticalAlignment="Center" Width="60" Height="30" 
+                                               Content2D="{Binding ElementName=tb, Path=Text}"></hx2D:Button2D>
                                 <hx2D:Button2D Margin="10" VerticalAlignment="Center" Width="60" Height="30">Button 4</hx2D:Button2D>
                             </hx2D:StackPanel2D>                        
                             <hx2D:Button2D Margin="10" HorizontalAlignment="Center">Button4</hx2D:Button2D>
@@ -85,6 +96,5 @@
                 </hx2D:Panel2D>
             </hx:Viewport3DX.Content2D>
         </hx:Viewport3DX>
-        <CheckBox IsChecked="{Binding ElementName=view1, Path=EnableDpiScale}" HorizontalAlignment="Left" VerticalAlignment="Top">High Dpi</CheckBox>
     </Grid>
 </Window>
