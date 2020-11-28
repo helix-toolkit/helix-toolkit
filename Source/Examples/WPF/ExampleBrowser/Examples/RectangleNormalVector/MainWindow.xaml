@@ -1,8 +1,8 @@
 ﻿<Window x:Class="RectangleNormalVector.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
         xmlns:rnvr="clr-namespace:RectangleNormalVector"
-        xmlns:rectangleNormalVector="clr-namespace:RectangleNormalVector"
         Title="UpDirectionDemo" Height="480" Width="640">
     <DockPanel>
         <DockPanel.Resources>
