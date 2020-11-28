@@ -199,6 +199,7 @@ namespace HelixToolkit.Wpf
             Vector3D u = this.LengthDirection;
             Vector3D w = this.Normal;
             Vector3D v = Vector3D.CrossProduct(w, u);
+            if (v.IsZero()) { v = w.FindAnyPerpendicular(); }
             u = Vector3D.CrossProduct(v, w);
 
             u.Normalize();

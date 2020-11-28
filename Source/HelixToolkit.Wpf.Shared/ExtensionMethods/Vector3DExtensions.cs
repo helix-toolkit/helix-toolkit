@@ -50,6 +50,20 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
+        /// Determines whether the specified vector is zero in all coordinates (0.0, 0.0, 0.0)
+        /// </summary>
+        /// <param name="v"> The vector. </param>
+        /// <returns> 
+        /// <c>true</c> if the vector is zero in all elements, <c>false</c> if not.
+        /// </returns>
+        /// <remarks> This is equivalent to <c>v.Length == 0</c>.
+        /// </remarks>
+        public static bool IsZero(this Vector3D v)
+        {
+            return double.Epsilon > v.X && double.Epsilon > v.Y && double.Epsilon > v.Z;
+        }
+
+        /// <summary>
         /// Convert a <see cref="Vector3D"/> to a <see cref="Point3D"/>.
         /// </summary>
         /// <param name="n">
