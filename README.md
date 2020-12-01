@@ -43,7 +43,7 @@ Source repository   | http://github.com/helix-toolkit/helix-toolkit
 Latest build        | http://ci.appveyor.com/project/objorke/helix-toolkit
 Issue tracker       | http://github.com/helix-toolkit/helix-toolkit/issues
 NuGet packages      | http://www.nuget.org/packages?q=HelixToolkit
-MyGet feed          | https://www.myget.org/F/helix-toolkit
+Nightly build       | https://www.myget.org/F/helix-toolkit
 StackOverflow       | http://stackoverflow.com/questions/tagged/helix-3d-toolkit
 Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
