@@ -1023,7 +1023,7 @@ namespace HelixToolkit.UWP
                 if (IsInitialized)
                 {
                     StopRendering();
-                    var texture = renderBuffer.Resize((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
+                    var texture = renderBuffer.Resize((int)Math.Floor(ActualWidth / DpiScale), (int)Math.Floor(ActualHeight / DpiScale));
                     OnNewRenderTargetTexture?.Invoke(this, new Texture2DArgs(texture));
                     if (Viewport != null)
                     {

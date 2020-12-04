@@ -162,13 +162,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// The coordinate system horizontal position property. Relative to viewport center
-        /// <para>Default: -0.8</para>
+        /// <para>Default: -0.4</para>
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemHorizontalPositionProperty = DependencyProperty.Register(
                 "CoordinateSystemHorizontalPosition",
                 typeof(double),
                 typeof(Viewport3DX),
-                new PropertyMetadata(-0.8));
+                new PropertyMetadata(-0.4));
 
         /// <summary>
         /// The coordinate system label foreground property
@@ -206,13 +206,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// The coordinate system vertical position property. Relative to viewport center.
-        /// <para>Default: -0.8</para>
+        /// <para>Default: -0.4</para>
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemVerticalPositionProperty = DependencyProperty.Register(
                 "CoordinateSystemVerticalPosition",
                 typeof(double),
                 typeof(Viewport3DX),
-                new PropertyMetadata(-0.8));
+                new PropertyMetadata(-0.4));
 
         /// <summary>
         /// The coordinate system size property.
@@ -757,13 +757,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// The view cube horizontal position property. Relative to viewport center.
-        /// <para>Default: 0.8</para>
+        /// <para>Default: 0.4</para>
         /// </summary>
         public static readonly DependencyProperty ViewCubeHorizontalPositionProperty = DependencyProperty.Register(
                 "ViewCubeHorizontalPosition",
                 typeof(double),
                 typeof(Viewport3DX),
-                new PropertyMetadata(0.8));
+                new PropertyMetadata(0.4));
 
         /// <summary>
         /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
@@ -779,13 +779,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// The view cube vertical position property. Relative to viewport center.
-        /// <para>Default: -0.8</para>
+        /// <para>Default: -0.4</para>
         /// </summary>
         public static readonly DependencyProperty ViewCubeVerticalPositionProperty = DependencyProperty.Register(
                 "ViewCubeVerticalPosition",
                 typeof(double),
                 typeof(Viewport3DX),
-                new PropertyMetadata(-0.8));
+                new PropertyMetadata(-0.4));
 
         /// <summary>
         /// The view cube size property.
@@ -1377,7 +1377,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Gets or sets the horizontal position of the coordinate system viewport. Relative to the viewport center.
-        /// <para>Default: -0.8</para>
+        /// <para>Default: -0.4</para>
         /// </summary>
         /// <value>
         /// The horizontal position.
@@ -1473,7 +1473,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Gets or sets the vertical position of the coordinate system viewport. Relative to the viewport center
-        /// <para>Default: -0.8</para>
+        /// <para>Default: -0.4</para>
         /// </summary>
         /// <value>
         /// The vertical position.
@@ -2473,7 +2473,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Gets or sets the horizontal position of the view cube viewport. Relative to viewport center
-        /// <para>Default: 0.8</para>
+        /// <para>Default: 0.4</para>
         /// </summary>
         /// <value>
         /// The horizontal position.
@@ -2530,7 +2530,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Gets or sets the vertical position of view cube viewport. Relative to viewport center
-        /// <para>Default: -0.8</para>
+        /// <para>Default: -0.4</para>
         /// </summary>
         /// <value>
         /// The vertical position.
