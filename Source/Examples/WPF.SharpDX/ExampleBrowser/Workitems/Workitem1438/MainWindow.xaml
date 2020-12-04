@@ -1,0 +1,24 @@
+﻿<Window x:Class="Workitem1438.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Workitem1438"
+        mc:Ignorable="d"
+        Title="Issue 1438: SharpDX - Viewport3DX inside WPF ViewBox crash."
+        Height="450" Width="800">
+    <Grid>
+        <Viewbox>
+            <hx:Viewport3DX>
+                <hx:Viewport3DX.EffectsManager>
+                    <hx:DefaultEffectsManager />
+                </hx:Viewport3DX.EffectsManager>
+                <hx:Viewport3DX.Camera>
+                    <hx:PerspectiveCamera />
+                </hx:Viewport3DX.Camera>
+                <hx:AmbientLight3D />
+            </hx:Viewport3DX>
+        </Viewbox>
+    </Grid>
+</Window>

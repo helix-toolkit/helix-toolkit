@@ -221,7 +221,7 @@ namespace HelixToolkit.UWP
                             }
                             else if(isLoaded)
                             {
-                                StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
+                                StartD3D((int)Math.Floor(ActualWidth / DpiScale), (int)Math.Floor(ActualHeight / DpiScale));
                             }
                         }
                         else
@@ -1015,8 +1015,10 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
+
                 ActualWidth = width * DpiScale;
                 ActualHeight = height * DpiScale;
+
                 Log(LogLevel.Information, $"Width = {width}; Height = {height};");
                 if (IsInitialized)
                 {
@@ -1055,7 +1057,7 @@ namespace HelixToolkit.UWP
                 {
                     syncContext.Post((o) => 
                     {
-                        StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
+                        StartD3D((int)Math.Floor(ActualWidth / DpiScale), (int)Math.Floor(ActualHeight / DpiScale));
                     }, null);
                 }
             }
