@@ -7,10 +7,21 @@
         xmlns:local="clr-namespace:Workitem1438"
         mc:Ignorable="d"
         Title="Issue 1438: SharpDX - Viewport3DX inside WPF ViewBox crash."
-        Height="450" Width="800">
-    <Grid>
+        Height="450" Width="800"
+        WindowState="Maximized">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock>
+                <Run Text="Width =" />
+                <Run Text="{Binding ElementName=viewport, Path=ActualWidth, Mode=OneWay}" />
+                <Run Text="Height =" />
+                <Run Text="{Binding ElementName=viewport, Path=ActualHeight, Mode=OneWay}" />
+                <Run Text="DpiScale =" />
+                <Run Text="{Binding ElementName=viewport, Path=DpiScale, Mode=OneWay}" />
+            </TextBlock>
+        </StatusBar>
         <Viewbox>
-            <hx:Viewport3DX>
+            <hx:Viewport3DX x:Name="viewport">
                 <hx:Viewport3DX.EffectsManager>
                     <hx:DefaultEffectsManager />
                 </hx:Viewport3DX.EffectsManager>
@@ -20,5 +31,5 @@
                 <hx:AmbientLight3D />
             </hx:Viewport3DX>
         </Viewbox>
-    </Grid>
+    </DockPanel>
 </Window>
