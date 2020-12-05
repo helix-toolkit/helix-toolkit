@@ -240,7 +240,7 @@ namespace HelixToolkit.UWP
                     {
                         if(frameProcessor.ProcessCursor(ref pointer, deviceContext, out Vector4 rect))
                         {
-                            GetCursorVertexBound((int)context.ActualWidth, (int)context.ActualHeight, frameProcessor.TextureWidth, frameProcessor.TextureHeight, ref rect);
+                            GetCursorVertexBound((int)(context.ActualWidth / context.DpiScale), (int)(context.ActualHeight / context.DpiScale), frameProcessor.TextureWidth, frameProcessor.TextureHeight, ref rect);
                             invalidRender = true;
                             cursorValid = true;
                         }
@@ -252,9 +252,9 @@ namespace HelixToolkit.UWP
                         DefaultShaderPass.BindShader(deviceContext);
                         DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
                         DefaultShaderPass.PixelShader.BindSampler(deviceContext, samplerBindSlot, textureSampler);
-                        int left = (int)(context.ActualWidth * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
-                        int top = (int)(context.ActualHeight * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);
-                        deviceContext.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
+                        int left = (int)(context.ActualWidth / context.DpiScale * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
+                        int top = (int)(context.ActualHeight / context.DpiScale * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);
+                        deviceContext.SetScissorRectangle(left, top, (int)(context.ActualWidth / context.DpiScale) - left, (int)(context.ActualHeight / context.DpiScale) - top);
                         using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext, frameProcessor.SharedTexture))
                         {
                             deviceContext.SetShaderResource(PixelShader.Type, textureBindSlot, textureView);                       
@@ -282,7 +282,7 @@ namespace HelixToolkit.UWP
                 RaiseInvalidateRender();
             }
 
-    #region Draw Cursor
+#region Draw Cursor
 
 
 
@@ -299,7 +299,7 @@ namespace HelixToolkit.UWP
                 deviceContext.Draw(4, 0);
             }
 
-    #endregion
+#endregion
 
             private void OnUpdatePerModelStruct(RenderContext context)
             {
@@ -310,7 +310,7 @@ namespace HelixToolkit.UWP
                 int width = Math.Abs(info.OutputDesc.DesktopBounds.Right - info.OutputDesc.DesktopBounds.Left);
                 int height = Math.Abs(info.OutputDesc.DesktopBounds.Bottom - info.OutputDesc.DesktopBounds.Top);
                 var texBound = GetTextureBound(width, height);
-                var verBound = GetVertexBound((int)context.ActualWidth, (int)context.ActualHeight, width, height);
+                var verBound = GetVertexBound((int)(context.ActualWidth / context.DpiScale), (int)(context.ActualHeight / context.DpiScale), width, height);
                 modelStruct.TopLeft = new Vector4(verBound.X, verBound.Z, 0, 1);
                 modelStruct.TopRight = new Vector4(verBound.Y, verBound.Z, 0, 1);
                 modelStruct.BottomLeft = new Vector4(verBound.X, verBound.W, 0, 1);
@@ -574,9 +574,9 @@ namespace HelixToolkit.UWP
                                 new Texture2D(context, pointerTexDesc, new[] { new DataBox(ptr, rowPitch, slicePitch) })));
                         });
                         pointerResource.CreateView(pointerSRVDesc);
-    #if OUTPUTDETAIL
+#if OUTPUTDETAIL
                         Console.WriteLine("Create new cursor texture. Type = " + pointer.ShapeInfo.Type);
-    #endif
+#endif
                     }
                     else
                     {
@@ -584,9 +584,9 @@ namespace HelixToolkit.UWP
                             global::SharpDX.Direct3D11.MapFlags.None);
                         if (pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color)
                         {
-    #if OUTPUTDETAIL
+#if OUTPUTDETAIL
                             Console.WriteLine("Reuse existing cursor texture for Color.");
-    #endif
+#endif
                             unsafe
                             {
                                 int row = pointer.ShapeInfo.Height;
@@ -604,9 +604,9 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-    #if OUTPUTDETAIL
+#if OUTPUTDETAIL
                             Console.WriteLine("Reuse existing cursor texture for Mono and Mask.");
-    #endif
+#endif
                             unsafe // Call unmanaged code
                             {
                                 byte* target32 = (byte*)dataBox.DataPointer;
@@ -683,7 +683,7 @@ namespace HelixToolkit.UWP
                         new global::SharpDX.Direct3D11.ResourceRegion(left, top, 0, left + width, top + height, 1), copyBuffer, 0);
 
                     var dataBox = context.MapSubresource(copyBuffer, 0, global::SharpDX.Direct3D11.MapMode.Read, global::SharpDX.Direct3D11.MapFlags.None);
-    #region process
+#region process
                     unsafe // Call unmanaged code
                     {
                         fixed(byte* initBufferPtr = initBuffer)
@@ -755,7 +755,7 @@ namespace HelixToolkit.UWP
                             }
                         }
                     }
-    #endregion
+#endregion
                     context.UnmapSubresource(copyBuffer, 0);
                 }
             }
@@ -857,9 +857,9 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-    #if DEBUG
+#if DEBUG
                             throw new HelixToolkitException("Failed to acquire next frame.");
-    #endif
+#endif
                         }
                     }
                     else

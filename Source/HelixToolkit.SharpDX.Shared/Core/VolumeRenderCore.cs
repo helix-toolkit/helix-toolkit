@@ -142,7 +142,7 @@ namespace HelixToolkit.UWP
                     {
                         deviceContext.ClearDepthStencilView(depth, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1, 1);
                         deviceContext.ClearRenderTargetView(back, new Color4(0, 0, 0, 0));
-                        BindTarget(depth, back, deviceContext, (int)context.ActualWidth, (int)context.ActualHeight);
+                        BindTarget(depth, back, deviceContext, (int)(context.ActualWidth / context.DpiScale), (int)(context.ActualHeight / context.DpiScale));
                         #region Render box back face and set stencil buffer to 0
                         modelMatrices.Update(ref ModelMatrix);
                         if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelMatrices, Matrix.SizeInBytes * 2))

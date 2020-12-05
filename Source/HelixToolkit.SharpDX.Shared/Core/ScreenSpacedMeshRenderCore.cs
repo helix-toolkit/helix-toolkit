@@ -317,7 +317,7 @@ namespace HelixToolkit.UWP
             /// <param name="clearDepthBuffer">if set to <c>true</c> [clear depth buffer].</param>
             protected virtual void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
             {
-                if (context.ActualWidth < Size || context.ActualHeight < Size)
+                if (context.ActualWidth / context.DpiScale < Size || context.ActualHeight / context.DpiScale < Size)
                 {
                     return;
                 }
@@ -357,7 +357,7 @@ namespace HelixToolkit.UWP
                 IsRightHand = !context.Camera.CreateLeftHandSystem;
                 float viewportSize = Size * SizeScale * context.DpiScale;
                 var globalTrans = context.GlobalTransform;
-                UpdateProjectionMatrix((float)context.ActualWidth, (float)context.ActualHeight);
+                UpdateProjectionMatrix(context.ActualWidth / context.DpiScale, context.ActualHeight / context.DpiScale);
                 globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
                 globalTrans.Projection = projectionMatrix;
                 globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
@@ -398,8 +398,8 @@ namespace HelixToolkit.UWP
                 globalTrans.EyePos = newPos;
                 globalTransformCB.Upload(deviceContext, ref globalTrans);
                 GlobalTransform = globalTrans;
-                deviceContext.SetViewport(0, 0, context.ActualWidth, context.ActualHeight);
-                deviceContext.SetScissorRectangle(0, 0, (int)context.ActualWidth, (int)context.ActualHeight);
+                deviceContext.SetViewport(0, 0, context.ActualWidth / context.DpiScale, context.ActualHeight / context.DpiScale);
+                deviceContext.SetScissorRectangle(0, 0, (int)(context.ActualWidth / context.DpiScale), (int)(context.ActualHeight / context.DpiScale));
             }
 
             private void RenderAbsolutePositionOrtho(RenderContext context, DeviceContextProxy deviceContext)
@@ -407,7 +407,7 @@ namespace HelixToolkit.UWP
                 IsRightHand = !context.Camera.CreateLeftHandSystem;
                 float viewportSize = Size * SizeScale;
                 var globalTrans = context.GlobalTransform;
-                UpdateProjectionMatrix((float)context.ActualWidth, (float)context.ActualHeight);
+                UpdateProjectionMatrix(context.ActualWidth / context.DpiScale, context.ActualHeight / context.DpiScale);
                 globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
                 globalTrans.Projection = projectionMatrix;
                 globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;

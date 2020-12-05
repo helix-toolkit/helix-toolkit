@@ -80,7 +80,7 @@ namespace HelixToolkit.UWP
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
-                EnsureTextureResources((int)context.ActualWidth, (int)context.ActualHeight, deviceContext);
+                EnsureTextureResources((int)(context.ActualWidth / context.DpiScale), (int)(context.ActualHeight / context.DpiScale), deviceContext);
                 int texScale = (int)offScreenTextureSize;
                 using (var ds = context.GetOffScreenDS(offScreenTextureSize, DEPTHFORMAT))
                 {
@@ -88,8 +88,8 @@ namespace HelixToolkit.UWP
                     {
                         using (var rt1 = context.GetOffScreenRT(offScreenTextureSize, SSAOTARGETFORMAT))
                         {
-                            int w = (int)(context.ActualWidth / texScale);// Make sure to set correct viewport width/height by quality
-                            int h = (int)(context.ActualHeight / texScale);
+                            int w = (int)(context.ActualWidth / context.DpiScale / texScale);// Make sure to set correct viewport width/height by quality
+                            int h = (int)(context.ActualHeight / context.DpiScale / texScale);
                             deviceContext.SetRenderTarget(ds, rt0, w, h, true, new Color4(0, 0, 0, 1), true, DepthStencilClearFlags.Depth);
                             IRenderTechnique currTechnique = null;
                             ShaderPass ssaoPass1 = ShaderPass.NullPass;

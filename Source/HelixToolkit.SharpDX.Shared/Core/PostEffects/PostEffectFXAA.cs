@@ -99,8 +99,8 @@ namespace HelixToolkit.UWP
 
             private void OnUpdatePerModelStruct(RenderContext context)
             {
-                modelStruct.Color.Red = (float)(1 / context.ActualWidth);
-                modelStruct.Color.Green = (float)(1 / context.ActualHeight);
+                modelStruct.Color.Red = context.DpiScale / context.ActualWidth;
+                modelStruct.Color.Green = context.DpiScale / context.ActualHeight;
                 switch (FXAALevel)
                 {
                     case FXAALevel.Low:
