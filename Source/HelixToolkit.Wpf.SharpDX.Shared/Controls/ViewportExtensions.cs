@@ -401,6 +401,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (view.RenderHost != null && view.RenderHost.IsRendering)
                     {
+                        if (view.EnableSwapChainRendering)
+                        {
+                            view.RenderHost.UpdateAndRender();
+                            // be sure to render the Scene before capture, otherwise the image is just black
+                        }
                         ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, memoryStream);
                         var bitmap = new BitmapImage();
                         bitmap.BeginInit();
@@ -553,11 +558,11 @@ namespace HelixToolkit.Wpf.SharpDX
             var camera = viewport.Camera;
             if (camera is PerspectiveCamera pcam)
             {
-                double disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
-                double vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
-                double distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
+                double distv = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
+                double hfov = pcam.FieldOfView / viewport.ActualHeight * viewport.ActualWidth;
+                double disth = radius / Math.Tan(0.5 * hfov * Math.PI / 180);
 
-                double dist = Math.Max(disth, distv);
+                double dist = Math.Max(distv, disth);
                 var dir = pcam.LookDirection;
                 dir.Normalize();
                 pcam.LookAt(center, dir * dist, animationTime);

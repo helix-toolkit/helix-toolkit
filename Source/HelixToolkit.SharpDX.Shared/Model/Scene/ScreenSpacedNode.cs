@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP
                     get; private set;
                 }
 
-                public bool IsPerspective => RenderHost.RenderContext.IsPerspective;
+                public bool IsPerspective { set; get; }
 
                 public float ActualWidth
                 {
@@ -180,6 +180,20 @@ namespace HelixToolkit.UWP
                     return (RenderCore as IScreenSpacedRenderParams).AbsolutePosition3D;
                 }
             }
+            /// <summary>
+            /// Only being used when <see cref="Mode"/> is RelativeScreenSpaced
+            /// </summary>
+            public ScreenSpacedCameraType CameraType
+            {
+                set
+                {
+                    (RenderCore as IScreenSpacedRenderParams).CameraType = value;
+                }
+                get
+                {
+                    return (RenderCore as IScreenSpacedRenderParams).CameraType;
+                }
+            }
             #endregion
             /// <summary>
             /// Gets or sets a value indicating whether [need clear depth buffer].
@@ -252,16 +266,16 @@ namespace HelixToolkit.UWP
             }
 
             protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-            {
+            { 
                 Ray newRay = ray;
                 bool preHit = false;
                 switch (Mode)
                 {
                     case ScreenSpacedMode.RelativeScreenSpaced:
-                        preHit = CreateRelativeScreenModeRay(context, ref totalModelMatrix, ref ray, out newRay);
+                        preHit = CreateRelativeScreenModeRay(context, ref ray, out newRay);
                         break;
                     case ScreenSpacedMode.AbsolutePosition3D:
-                        preHit = CreateAbsoluteModeRay(context, ref totalModelMatrix, ref ray, out newRay);
+                        preHit = CreateAbsoluteModeRay(context, ref ray, out newRay);                       
                         break;
                 }
                 if (!preHit)
@@ -285,10 +299,11 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            private bool CreateRelativeScreenModeRay(IRenderMatrices context, ref Matrix totalModelMatrix, ref Ray ray, out Ray newRay)
+            private bool CreateRelativeScreenModeRay(IRenderMatrices context, ref Ray ray, out Ray newRay)
             {
                 var p = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
                 var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
+                screenSpacedContext.IsPerspective = screenSpaceCore.IsPerspective;
                 float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.DpiScale;
 
                 float offx = (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
@@ -316,28 +331,33 @@ namespace HelixToolkit.UWP
                 return true;
             }
 
-            private bool CreateAbsoluteModeRay(IRenderMatrices context, ref Matrix totalModelMatrix, ref Ray ray, out Ray newRay)
+            private bool CreateAbsoluteModeRay(IRenderMatrices context, ref Ray ray, out Ray newRay)
             {
                 var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
-                float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.DpiScale;
-                var viewMatrix = screenSpaceCore.GlobalTransform.View;
-                var projMatrix = screenSpaceCore.GlobalTransform.Projection;
-                bool succ;
+                screenSpacedContext.IsPerspective = screenSpaceCore.IsPerspective;
                 if (context.IsPerspective)
                 {
+                    
+                    
+                    var viewMatrix = screenSpaceCore.GlobalTransform.View;
+                    var projMatrix = screenSpaceCore.GlobalTransform.Projection;
+
                     var point2d = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
-                    newRay = RayExtensions.UnProject(new Vector2(point2d.X, point2d.Y), ref viewMatrix, ref projMatrix, 
+                    newRay = RayExtensions.UnProject(new Vector2(point2d.X, point2d.Y), ref viewMatrix, ref projMatrix,
                         screenSpaceCore.NearPlane,
-                        context.ActualWidth, context.ActualHeight, context.IsPerspective);
+                        context.ActualWidth, context.ActualHeight, screenSpaceCore.IsPerspective);
+                    screenSpacedContext.ActualWidth = context.ActualWidth / context.DpiScale;
+                    screenSpacedContext.ActualHeight = context.ActualHeight / context.DpiScale;
                     screenSpacedContext.ViewMatrix = viewMatrix;
                     screenSpacedContext.ProjectionMatrix = projMatrix;
-                    screenSpacedContext.ActualWidth = screenSpacedContext.ActualHeight = viewportSize / context.DpiScale;
                     screenSpacedContext.UpdateScreenViewProjectionMatrix();
-                    succ = true;
+                    return true;                
                 }
                 else
                 {
                     var p = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
+                    float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.DpiScale;
+
                     var abs = Vector3.TransformCoordinate(AbsolutePosition3D, context.ScreenViewProjectionMatrix);
                     float offx = (float)(abs.X - viewportSize / 2);
                     float offy = (float)(abs.Y - viewportSize / 2);
@@ -348,23 +368,20 @@ namespace HelixToolkit.UWP
                     if (px < 0 || py < 0 || px > viewportSize || py > viewportSize)
                     {
                         newRay = new Ray();
-                        succ = false;
+                        return false;
                     }
-                    else
-                    {
-                        newRay = RayExtensions.UnProject(new Vector2(px, py), ref viewMatrix, ref projMatrix,
-                            screenSpaceCore.NearPlane, viewportSize, viewportSize, screenSpaceCore.IsPerspective);
-                        succ = true;                    
-                    }
-                }
-                if (succ)
-                {
+
+                    var viewMatrix = screenSpaceCore.GlobalTransform.View;
+                    var projMatrix = screenSpaceCore.GlobalTransform.Projection;
+                    newRay = RayExtensions.UnProject(new Vector2(px, py), ref viewMatrix, ref projMatrix,
+                        screenSpaceCore.NearPlane, viewportSize, viewportSize, screenSpaceCore.IsPerspective);
+                    screenSpacedContext.ActualWidth = viewportSize / context.DpiScale;
+                    screenSpacedContext.ActualHeight = viewportSize / context.DpiScale;
                     screenSpacedContext.ViewMatrix = viewMatrix;
                     screenSpacedContext.ProjectionMatrix = projMatrix;
-                    screenSpacedContext.ActualWidth = screenSpacedContext.ActualHeight = viewportSize / context.DpiScale;
                     screenSpacedContext.UpdateScreenViewProjectionMatrix();
+                    return true;
                 }
-                return succ;
             }
         }
     }

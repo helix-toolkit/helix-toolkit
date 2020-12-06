@@ -13,7 +13,7 @@
     <tags>netstandard netcore SharpDX 3D</tags>
     <dependencies>
       <group targetFramework="netcoreapp3.1">
-        <dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />
+        <dependency id="Cyotek.Drawing.BitmapFont" version="2.0.0" />
         <dependency id="HelixToolkit" version="[$version$]" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.D3DCompiler" version="4.2.0" />
@@ -30,7 +30,7 @@
         <dependency id="System.Threading.Tasks.Parallel" version="4.3.0"/>		
       </group>
       <group targetFramework="netcoreapp2.1">
-        <dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />
+        <dependency id="Cyotek.Drawing.BitmapFont" version="2.0.0" />
         <dependency id="HelixToolkit" version="[$version$]" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.D3DCompiler" version="4.2.0" />
@@ -47,7 +47,7 @@
         <dependency id="System.Threading.Tasks.Parallel" version="4.3.0"/>		
       </group>
       <group targetFramework="netstandard1.3">
-        <dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />
+        <dependency id="Cyotek.Drawing.BitmapFont" version="2.0.0" />
         <dependency id="HelixToolkit" version="[$version$]" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.D3DCompiler" version="4.2.0" />

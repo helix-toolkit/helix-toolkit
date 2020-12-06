@@ -26,6 +26,7 @@
             CameraMode="Inspect"
             CameraRotationMode="Trackball"
             EffectsManager="{Binding EffectsManager}"
+            EnableSwapChainRendering="True"
             FXAALevel="Low">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -68,6 +69,10 @@
             <MenuItem Header="File">
                 <MenuItem Command="{Binding OpenFileCommand}" Header="Open File" />
                 <MenuItem Command="{Binding ExportCommand}" Header="Export" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Command="{Binding CopyAsBitmapCommand}" Header="Copy As Bitmap (Window Size)" />
+                <MenuItem Command="{Binding CopyAsHiresBitmapCommand}" Header="Copy as Hiresolution Bitmap (1920x1080)" />
             </MenuItem>
         </Menu>
 

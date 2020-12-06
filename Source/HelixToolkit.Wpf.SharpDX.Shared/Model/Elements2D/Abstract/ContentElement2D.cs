@@ -21,34 +21,31 @@ namespace HelixToolkit.Wpf.SharpDX
         [ContentProperty("Content2D")]
         public abstract class ContentElement2D : Element2D
         {
-            public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content2D", typeof(object), typeof(ContentElement2D), 
-                new PropertyMetadata(null, (d,e)=>
-                {
-                    var model = d as ContentElement2D;
-                    var node = model.SceneNode as ContentNode2D;
-                    if(e.OldValue is Element2D old)
+            public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content2D",
+                typeof(object), typeof(ContentElement2D), new PropertyMetadata(null,
+                    propertyChangedCallback: (d, e) =>
                     {
-                        model.RemoveLogicalChild(old);                    
-                        node.Content = null;
-                    }
-                    if(e.NewValue is Element2D newElement)
+                        if (!(d is ContentElement2D model)) return;
+                        if (!(model.SceneNode is ContentNode2D node)) return;
+                        if (e.OldValue is Element2D old)
+                        {
+                            model.RemoveLogicalChild(old);
+                            node.Content = null;
+                        }
+
+                        if (e.NewValue is Element2D newElement)
+                        {
+                            model.AddLogicalChild(newElement);
+                            node.Content = newElement;
+                            model.SetupBindings(newElement);
+                        }
+
+                        model.InvalidateMeasure();
+                    },
+                    coerceValueCallback: (d,e) =>
                     {
-                        model.AddLogicalChild(newElement);
-                        node.Content = newElement;
-                        model.SetupBindings(newElement);
-                    }
-                },
-                    (d, e)=>
-                {
-                    if(e is Element2D)
-                    {
-                        return e;
-                    }
-                    else
-                    {
-                        return new TextModel2D() { Text = e.ToString() };
-                    }
-                }));
+                        return e is Element2D ? e : new TextModel2D() {Text = e?.ToString()};
+                    }));
 
             [Bindable(true)]
             public object Content2D
@@ -59,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 get
                 {
-                    return (Element2D)GetValue(Content2DProperty);
+                    return GetValue(Content2DProperty);
                 }
             }
 
