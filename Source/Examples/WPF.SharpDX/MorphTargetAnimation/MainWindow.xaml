@@ -13,11 +13,11 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <hx:Viewport3DX DataContext="{Binding SelectedViewModel}" EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}">
+        <hx:Viewport3DX EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}">
             <hx:AmbientLight3D />
             <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
             <hx:ItemsModel3D ItemTemplate="{StaticResource Template1}" ItemsSource="{Binding Items}"/>
+            <hx:MeshGeometryModel3D Geometry="{Binding BaseCube}" Material="{Binding DefaultMateral}" />
         </hx:Viewport3DX>
-        <ListBox Grid.Column="1" Width="60" ItemsSource="{Binding ViewModels}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedViewModel}"/>
     </Grid>
 </Window>

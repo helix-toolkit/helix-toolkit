@@ -8,58 +8,27 @@ namespace MorphTargetAnimationDemo
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Windows.Media.Media3D;
+    using Media3D = System.Windows.Media.Media3D;
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
 
     public class MainViewModel : BaseViewModel
     {
-        public ObservableCollection<SelectionViewModel> ViewModels { get; } = new ObservableCollection<SelectionViewModel>();
-        private SelectionViewModel selectedViewModel = null;
-        public SelectionViewModel SelectedViewModel
-        {
-            set
-            {
-                SetValue(ref selectedViewModel, value);
-            }
-            get { return selectedViewModel; }
-        }
-
-        private PhongMaterialCollection materials = new PhongMaterialCollection();
+        public Geometry3D BaseCube { get; private set; }
+        public PhongMaterial DefaultMateral { get; private set; }
 
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
 
-            CreateViewModels();
-        }
+            //Setup cube
+            MeshBuilder mb = new MeshBuilder();
+            mb.AddCube();
+            BaseCube = mb.ToMesh();
 
-        private void CreateViewModels()
-        {
-            var vm = new SelectionViewModel(nameof(Sphere));
-            for(int i=0; i<10; ++i)
-            {
-                vm.Items.Add(new Sphere() { Transform = new TranslateTransform3D(0, i, 0), Material = materials[i] });
-            }
-            ViewModels.Add(vm);
-
-            vm = new SelectionViewModel(nameof(Cube));
-            for (int i = 0; i < 10; ++i)
-            {
-                vm.Items.Add(new Cube() { Transform = new TranslateTransform3D(i, i, 0), Material = materials[i] });
-            }
-            ViewModels.Add(vm);
-        }
-    }
-
-    public class SelectionViewModel
-    {
-        public string Name { private set; get; }
-        public ObservableCollection<Shape> Items { get; } = new ObservableCollection<Shape>();
-
-        public SelectionViewModel(string name)
-        {
-            Name = name;
+            //Setup cube's material
+            DefaultMateral = new PhongMaterial();
+            DefaultMateral.DiffuseColor = new SharpDX.Color4(1, 0, 0, 1);
         }
     }
 }
