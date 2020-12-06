@@ -115,6 +115,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPoolManagers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPostEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IViewport3DX.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCoreParams.cs" />

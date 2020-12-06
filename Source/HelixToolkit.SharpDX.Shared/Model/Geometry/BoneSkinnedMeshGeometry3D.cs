@@ -154,7 +154,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        public virtual bool HitTestWithSkinnedVertices(RenderContext context, Vector3[] skinnedVertices, Matrix modelMatrix,
+        public virtual bool HitTestWithSkinnedVertices(IRenderMatrices context, Vector3[] skinnedVertices, Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
         {
             if (skinnedVertices == null || skinnedVertices.Length == 0

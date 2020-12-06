@@ -223,6 +223,27 @@ namespace HelixToolkit.UWP
             public float Fov { get; } = (float)(45 * Math.PI / 180);
 
             /// <summary>
+            /// Gets the near plane.
+            /// </summary>
+            /// <value>
+            /// The near plane.
+            /// </value>
+            public float NearPlane
+            {
+                get;
+            } = 0.001f;
+            /// <summary>
+            /// Gets the far plane.
+            /// </summary>
+            /// <value>
+            /// The far plane.
+            /// </value>
+            public float FarPlane
+            {
+                get;
+            } = 200f;
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="ScreenSpacedMeshRenderCore"/> class.
             /// </summary>
             public ScreenSpacedMeshRenderCore() : base(RenderType.ScreenSpaced)
@@ -258,7 +279,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void OnCreateProjectionMatrix()
             {
-                projectionMatrix = CreateProjectionMatrix(IsPerspective, IsRightHand, Fov, 0.001f, 100f, CameraDistance, CameraDistance);
+                projectionMatrix = CreateProjectionMatrix(IsPerspective, IsRightHand, Fov, NearPlane, FarPlane, CameraDistance, CameraDistance);
             }
 
             private static Matrix CreateProjectionMatrix(bool isPerspective, bool isRightHand, float fov, float near, float far, float w, float h)

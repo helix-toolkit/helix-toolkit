@@ -299,12 +299,12 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            protected override bool CanHitTest(RenderContext context)
+            protected override bool CanHitTest(IRenderMatrices context)
             {
                 return context != null;
             }
 
-            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
             {
                 if (base.OnHitTest(context, totalModelMatrix, ref ray, ref hits))
                 {

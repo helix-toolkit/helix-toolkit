@@ -395,7 +395,7 @@ namespace HelixToolkit.UWP
                 return new CrossSectionMeshRenderCore();
             }
 
-            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
             {
                 int hitsBeforeCheck = hits?.Count ?? 0;
                 var meshGeometry3d = Geometry as MeshGeometry3D;

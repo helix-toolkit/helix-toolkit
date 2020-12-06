@@ -100,12 +100,12 @@ namespace HelixToolkit.SharpDX.Core.Model
             UpdatingImGuiUI?.Invoke(this, EventArgs.Empty);
         }
 
-        protected override bool CanHitTest(RenderContext context)
+        protected override bool CanHitTest(IRenderMatrices context)
         {
             return false;
         }
 
-        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

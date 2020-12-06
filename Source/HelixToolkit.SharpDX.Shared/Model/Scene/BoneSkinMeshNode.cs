@@ -183,7 +183,7 @@ namespace HelixToolkit.UWP
                 return skinnedVerticesCache;
             }
 
-            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
             {
                 if(BoneMatrices.Length > 0 && Geometry is BoneSkinnedMeshGeometry3D skGeometry)
                 {

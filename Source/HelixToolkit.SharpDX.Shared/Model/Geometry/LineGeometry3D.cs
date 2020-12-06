@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
             return Positions != null && Positions.Count > 0 && Indices != null && Indices.Count > 0;
         }
 
-        public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitTestThickness)
+        public virtual bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitTestThickness)
         {
             if (Positions == null || Positions.Count == 0
                 || Indices == null || Indices.Count == 0)

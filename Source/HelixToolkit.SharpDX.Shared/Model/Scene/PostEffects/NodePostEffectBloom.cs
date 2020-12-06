@@ -169,12 +169,12 @@ namespace HelixToolkit.UWP
                 return host.EffectsManager[DefaultRenderTechniqueNames.PostEffectBloom];
             }
 
-            public sealed override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+            public sealed override bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
             {
                 return false;
             }
 
-            protected sealed override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected sealed override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
             {
                 return false;
             }

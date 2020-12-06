@@ -117,7 +117,7 @@ namespace HelixToolkit.UWP
         /// <param name="originalSource">The original source.</param>
         /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
         /// <returns></returns>
-        public abstract bool HitTest(RenderContext context, Matrix modelMatrix,
+        public abstract bool HitTest(IRenderMatrices context, Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits,
             object originalSource, bool fixedSize);
 
@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP
         /// <param name="originalSource">The original source.</param>
         /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
         /// <returns></returns>
-        protected bool HitTestFixedSize(RenderContext context, ref Matrix modelMatrix,
+        protected bool HitTestFixedSize(IRenderMatrices context, ref Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits,
             object originalSource, int count)
         {
@@ -198,7 +198,7 @@ namespace HelixToolkit.UWP
         /// <param name="originalSource">The original source.</param>
         /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
         /// <returns></returns>
-        protected bool HitTestNonFixedSize(RenderContext context, ref Matrix modelMatrix,
+        protected bool HitTestNonFixedSize(IRenderMatrices context, ref Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits,
             object originalSource, int count)
         {
