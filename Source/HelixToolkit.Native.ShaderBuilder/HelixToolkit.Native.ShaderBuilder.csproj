@@ -2,7 +2,14 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\AssemblyInfo.cs">
+            <Link>Properties\AssemblyInfo.cs</Link>
+        </Compile>
+    </ItemGroup>
 
     <ItemGroup>
         <HLSLShader Include="CS\csParticleInsert.hlsl">
@@ -313,7 +320,7 @@
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="echo Copy *.cso to HelixToolkit.Wpf.SharpDX\Resources&#xD;&#xA;for /d %25%25D in (&quot;$(OutDir)*&quot;) do xcopy /y /f /i /q &quot;%25%25~fD\*.cso&quot; &quot;$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources&quot;&#xD;&#xA;echo Copy *.cso to HelixToolkit.UWP\Resources&#xD;&#xA;for /d %25%25D in (&quot;$(OutDir)*&quot;) do xcopy /y /f /i /q &quot;%25%25~fD\*.cso&quot; &quot;$(ProjectDir)..\HelixToolkit.UWP\Resources&quot;&#xD;&#xA;echo Copy *.cso to HelixToolkit.SharpDX.Core\Resources&#xD;&#xA;for /d %25%25D in (&quot;$(OutDir)*&quot;) do xcopy /y /f /i /q &quot;%25%25~fD\*.cso&quot; &quot;$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources&quot;&#xD;&#xA;" />
+        <Exec Command="echo Copy *.cso to HelixToolkit.Wpf.SharpDX\Resources&#xD;&#xA;for /d %25%25D in (&quot;$(OutDir)*&quot;) do xcopy /y /f /i /q &quot;%25%25~fD\*.cso&quot; &quot;$(ProjectDir)..\HelixToolkit.Wpf.SharpDX\Resources&quot;&#xD;&#xA;echo Copy *.cso to HelixToolkit.UWP\HelixToolkit.UWP\Resources&#xD;&#xA;for /d %25%25D in (&quot;$(OutDir)*&quot;) do xcopy /y /f /i /q &quot;%25%25~fD\*.cso&quot; &quot;$(ProjectDir)..\HelixToolkit.UWP\HelixToolkit.UWP\Resources&quot;&#xD;&#xA;echo Copy *.cso to HelixToolkit.SharpDX.Core\Resources&#xD;&#xA;for /d %25%25D in (&quot;$(OutDir)*&quot;) do xcopy /y /f /i /q &quot;%25%25~fD\*.cso&quot; &quot;$(ProjectDir)..\HelixToolkit.SharpDX.Core\Resources&quot;&#xD;&#xA;" />
     </Target>
 
 </Project>

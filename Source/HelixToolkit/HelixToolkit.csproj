@@ -13,6 +13,7 @@
         <PackageTags></PackageTags>
         <Authors>HelixToolkit Contributors</Authors>
         <Company>HelixToolkit</Company>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
       <DocumentationFile>bin\Release\netstandard1.1\HelixToolkit.xml</DocumentationFile>
@@ -22,5 +23,10 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Include="..\AssemblyInfo.cs">
+          <Link>Properties\AssemblyInfo.cs</Link>
+      </Compile>
     </ItemGroup>
 </Project>
