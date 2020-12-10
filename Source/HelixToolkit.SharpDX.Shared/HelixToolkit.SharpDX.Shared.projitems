@@ -57,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\Device2DProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshOutlineRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\MorphTargetUploaderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\OrderIndependantTransparentRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointLineRenderCore.cs" />

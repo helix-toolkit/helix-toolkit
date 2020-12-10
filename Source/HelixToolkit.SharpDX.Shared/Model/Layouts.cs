@@ -567,6 +567,14 @@ namespace HelixToolkit.UWP
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4 + 4 + 4);
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct MorphTargetVertex
+    {
+        public Vector3 deltaPosition;
+        public Vector3 deltaNormal;
+        public Vector3 deltaTangent;
+    }
+
     /// <summary>
     /// 2D UV Transform
     /// </summary>

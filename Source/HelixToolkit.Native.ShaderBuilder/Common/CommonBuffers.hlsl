@@ -332,6 +332,8 @@ Texture1D texColorStripe1DY : register(t13);
 
 StructuredBuffer<matrix> skinMatrices : register(t40);
 
+Buffer<float> morphTargetWeights : register(t60);
+
 Texture2D texSprite : register(t50);
 
 Texture3D texVolume : register(t0);

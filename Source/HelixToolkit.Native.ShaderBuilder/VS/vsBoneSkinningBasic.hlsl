@@ -52,6 +52,7 @@ VSSkinnedOutput main(VSSkinnedInput input)
 
     output.n = normalize(output.n);
     output.t1 = normalize(output.t1);
+	output.t1.x += morphTargetWeights[0]; //Currently need this so that the buffer is not optimized out, remove later
     output.t2 = normalize(output.t2);
     return output;
 }

@@ -20,7 +20,8 @@ namespace HelixToolkit.UWP
         using Shaders;
 
         public class BoneSkinRenderCore : MeshRenderCore
-        {       
+        {
+            //TODO: not doing this on mtweights unless we see its necessary (it might be)
             private bool matricsChanged = true;
             public Matrix[] BoneMatrices
             {
@@ -29,6 +30,12 @@ namespace HelixToolkit.UWP
                     internalBoneBuffer.BoneMatrices = value;
                 }
                 get { return internalBoneBuffer.BoneMatrices; }
+            }
+
+            public float[] MorphTargetWeights
+            {
+                get { return internalMTBuffer.MorphTargetWeights; }
+                set { internalMTBuffer.MorphTargetWeights = value; }
             }
 
             private BoneUploaderCore sharedBoneBuffer;
@@ -54,9 +61,11 @@ namespace HelixToolkit.UWP
             }
 
             private int boneSkinSBSlot;
+            private int mtWeightsBSlot;
             private ShaderPass preComputeBoneSkinPass;
             private IBoneSkinPreComputehBufferModel preComputeBoneBuffer;
             private readonly BoneUploaderCore internalBoneBuffer = new BoneUploaderCore();
+            private readonly MorphTargetUploaderCore internalMTBuffer = new MorphTargetUploaderCore();
 
             public BoneSkinRenderCore()
             {
@@ -71,7 +80,9 @@ namespace HelixToolkit.UWP
                     matricsChanged = true;
                     preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
                     boneSkinSBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.BoneSkinSB).Slot;
+                    mtWeightsBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.MTWeightsB).Slot;
                     internalBoneBuffer.Attach(technique);
+                    internalMTBuffer.Attach(technique);
                     return true;
                 }
                 else
@@ -97,9 +108,9 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                var buffer = sharedBoneBuffer ?? internalBoneBuffer;
+                var boneBuffer = sharedBoneBuffer ?? internalBoneBuffer;
 
-                if(buffer.BoneMatrices.Length == 0)
+                if(boneBuffer.BoneMatrices.Length == 0)
                 {
                     preComputeBoneBuffer.ResetSkinnedVertexBuffer(deviceContext);
                 }
@@ -107,9 +118,11 @@ namespace HelixToolkit.UWP
                 {
                     GeometryBuffer.UpdateBuffers(deviceContext, EffectTechnique.EffectsManager);
                     preComputeBoneBuffer.BindSkinnedVertexBufferToOutput(deviceContext);
-                    buffer.Update(context, deviceContext);
+                    boneBuffer.Update(context, deviceContext);
+                    internalMTBuffer.Update(context, deviceContext);
                     preComputeBoneSkinPass.BindShader(deviceContext);
-                    buffer.BindBuffer(deviceContext, boneSkinSBSlot);
+                    boneBuffer.BindBuffer(deviceContext, boneSkinSBSlot);
+                    internalMTBuffer.BindBuffers(deviceContext, mtWeightsBSlot);
                     deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
                     preComputeBoneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
                 }
@@ -120,6 +133,7 @@ namespace HelixToolkit.UWP
             {
                 preComputeBoneBuffer = null;
                 internalBoneBuffer.Detach();
+                internalMTBuffer.Detach();
                 base.OnDetach();
             }
 

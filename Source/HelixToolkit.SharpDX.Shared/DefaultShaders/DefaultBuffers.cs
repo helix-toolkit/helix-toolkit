@@ -64,6 +64,8 @@ namespace HelixToolkit.UWP
             //----------Bone Skin--------------
             public const string BoneSkinSB = "skinMatrices"; // Structured Buffer
 
+            public const string MTWeightsB = "morphTargetWeights"; //Buffer<float>
+
             public const string SpriteTB = "texSprite";
 
             public const string VolumeTB = "texVolume";

@@ -42,6 +42,19 @@ namespace HelixToolkit.UWP
                     return (RenderCore as BoneSkinRenderCore).BoneMatrices;
                 }
             }
+
+            public float[] MorphTargetWeights
+            {
+                get
+                {
+                    return (RenderCore as BoneSkinRenderCore).MorphTargetWeights;
+                }
+                set
+                {
+                    (RenderCore as BoneSkinRenderCore).MorphTargetWeights = value;
+                }
+            }
+
             /// <summary>
             /// Gets or sets the bones.
             /// </summary>
