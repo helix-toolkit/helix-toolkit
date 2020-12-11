@@ -62,6 +62,7 @@ namespace HelixToolkit.UWP
 
             private int boneSkinSBSlot;
             private int mtWeightsBSlot;
+            private int mtDeltasBSlot;
             private ShaderPass preComputeBoneSkinPass;
             private IBoneSkinPreComputehBufferModel preComputeBoneBuffer;
             private readonly BoneUploaderCore internalBoneBuffer = new BoneUploaderCore();
@@ -81,6 +82,7 @@ namespace HelixToolkit.UWP
                     preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
                     boneSkinSBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.BoneSkinSB).Slot;
                     mtWeightsBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.MTWeightsB).Slot;
+                    mtDeltasBSlot = preComputeBoneSkinPass.VertexShader.ShaderResourceViewMapping.GetMapping(DefaultBufferNames.MTDeltasB).Slot;
                     internalBoneBuffer.Attach(technique);
                     internalMTBuffer.Attach(technique);
                     return true;
@@ -122,7 +124,7 @@ namespace HelixToolkit.UWP
                     internalMTBuffer.Update(context, deviceContext);
                     preComputeBoneSkinPass.BindShader(deviceContext);
                     boneBuffer.BindBuffer(deviceContext, boneSkinSBSlot);
-                    internalMTBuffer.BindBuffers(deviceContext, mtWeightsBSlot);
+                    internalMTBuffer.BindBuffers(deviceContext, mtWeightsBSlot, mtDeltasBSlot);
                     deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
                     preComputeBoneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
                 }
@@ -141,6 +143,9 @@ namespace HelixToolkit.UWP
             {
                 return preComputeBoneBuffer.CopySkinnedToArray(context, array);
             }
+
+            public bool InitializeMorphTargets(MorphTargetVertex[] targets)
+                => internalMTBuffer.InitializeMorphTargets(targets);
         }
     }
 
