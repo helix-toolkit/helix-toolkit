@@ -280,7 +280,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     try
                     {
-                        RenderHost.Resize((int)ActualWidth, (int)ActualHeight);
+                        RenderHost.Resize((int)(ActualWidth / DpiScale), (int)(ActualHeight / DpiScale));
                     }
                     catch (Exception ex)
                     {

@@ -643,7 +643,7 @@ namespace HelixToolkit.UWP
             protected virtual bool CanRender()
             {
                 return IsInitialized && IsRendering && (UpdateRequested || updateCounter < RenderConfiguration.MinimumUpdateCount)
-                    && viewport != null && viewport.CameraCore != null && ActualWidth > 10 && ActualHeight > 10;
+                    && viewport != null && viewport.CameraCore != null && ActualWidth >= MinWidth && ActualHeight >= MinHeight;
             }
             /// <summary>
             /// Updates the and render.
@@ -1023,7 +1023,7 @@ namespace HelixToolkit.UWP
                 if (IsInitialized)
                 {
                     StopRendering();
-                    var texture = renderBuffer.Resize((int)Math.Floor(ActualWidth / DpiScale), (int)Math.Floor(ActualHeight / DpiScale));
+                    var texture = renderBuffer.Resize((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                     OnNewRenderTargetTexture?.Invoke(this, new Texture2DArgs(texture));
                     if (Viewport != null)
                     {
