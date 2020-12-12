@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP
         using Render;
         using Utilities;
         using Shaders;
+        using Components;
 
         class MorphTargetUploaderCore : RenderCore
         {
@@ -48,10 +49,16 @@ namespace HelixToolkit.UWP
 
             private ShaderResourceViewProxy mtDeltasSRV;
 
+            //TODO
+            private ConstantBufferComponent cbMorphTarget;
+
             public MorphTargetUploaderCore()
                 : base(RenderType.None)
             {
                 NeedUpdate = false;
+
+                var cbd = new ConstantBufferDescription(DefaultBufferNames.MorphTargetCB, 16);
+                cbMorphTarget = Collect(new ConstantBufferComponent(cbd));
             }
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
@@ -84,6 +91,7 @@ namespace HelixToolkit.UWP
             protected override bool OnAttach(IRenderTechnique technique)
             {
                 MTWeightsB = Collect(new StructuredBufferProxy(sizeof(float), false));
+                cbMorphTarget.Attach(technique);
                 return true;
             }
 
@@ -91,6 +99,7 @@ namespace HelixToolkit.UWP
             {
                 MTWeightsB = null;
                 MTDeltasB = null;
+                cbMorphTarget.Detach();
                 base.OnDetach();
             }
 
@@ -107,7 +116,7 @@ namespace HelixToolkit.UWP
                 base.OnDispose(disposeManagedResources);
             }
 
-            public bool InitializeMorphTargets(MorphTargetVertex[] targets)
+            public bool InitializeMorphTargets(MorphTargetVertex[] targets, int pitch)
             {
                 //The buffer is immutable, if it was already created, dont allow for recreation
                 if (MTDeltasB != null)
@@ -117,6 +126,10 @@ namespace HelixToolkit.UWP
                 MTDeltasB = new ImmutableBufferProxy(sizeof(float) * 3, BindFlags.ShaderResource);
                 setDeltas = true;
                 morphTargetsDeltas = targets;
+
+                //Set cbuffer data {int count, int pitch}
+                cbMorphTarget.WriteValue<int>(targets.Length / pitch, 0);
+                cbMorphTarget.WriteValue<int>(pitch, sizeof(int));
 
                 return true;
             }

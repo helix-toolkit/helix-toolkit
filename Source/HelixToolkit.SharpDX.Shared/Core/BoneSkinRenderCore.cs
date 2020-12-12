@@ -144,8 +144,8 @@ namespace HelixToolkit.UWP
                 return preComputeBoneBuffer.CopySkinnedToArray(context, array);
             }
 
-            public bool InitializeMorphTargets(MorphTargetVertex[] targets)
-                => internalMTBuffer.InitializeMorphTargets(targets);
+            public bool InitializeMorphTargets(MorphTargetVertex[] targets, int pitch)
+                => internalMTBuffer.InitializeMorphTargets(targets, pitch);
         }
     }
 

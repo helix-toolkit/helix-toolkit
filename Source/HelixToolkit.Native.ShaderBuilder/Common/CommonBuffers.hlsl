@@ -293,6 +293,12 @@ cbuffer cbSSAO : register(b1)
 }
 #endif
 
+cbuffer cbMorphTarget : register(b9)
+{
+	int mtCount; //Number of targets
+	int mtPitch; //Pitch between targets for deltas buffer
+}
+
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D<float3> texNormalMap : register(t1);
