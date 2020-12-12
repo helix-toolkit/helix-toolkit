@@ -4,31 +4,40 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Media3D = System.Windows.Media.Media3D;
+using DemoCore;
+using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Model.Scene;
+
 namespace MorphTargetAnimationDemo
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using Media3D = System.Windows.Media.Media3D;
-    using DemoCore;
-    using HelixToolkit.Wpf.SharpDX;
-
     public class MainViewModel : BaseViewModel
     {
-        public Geometry3D BaseCube { get; private set; }
-        public PhongMaterial DefaultMateral { get; private set; }
+        public SceneNodeGroupModel3D ModelGroup { get; private set; }
+
+        private BoneSkinMeshNode skinnedMeshNode;
 
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
+            ModelGroup = new SceneNodeGroupModel3D();
 
-            //Setup cube
+            //Setup cube mesh
             MeshBuilder mb = new MeshBuilder();
             mb.AddCube();
-            BaseCube = mb.ToMesh();
 
-            //Setup cube's material
-            DefaultMateral = new PhongMaterial();
-            DefaultMateral.DiffuseColor = new SharpDX.Color4(1, 0, 0, 1);
+            //Setup bone skinned geometry
+            BoneSkinnedMeshGeometry3D skinnedGeometry = new BoneSkinnedMeshGeometry3D(mb.ToMesh());
+
+            //Setup skinned mesh node
+            skinnedMeshNode = new BoneSkinMeshNode();
+            skinnedMeshNode.Geometry = skinnedGeometry;
+            skinnedMeshNode.Material = new PhongMaterial();
+
+            //Add skinned mesh node to model group
+            ModelGroup.AddNode(skinnedMeshNode);
         }
     }
 }

@@ -21,8 +21,8 @@ VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
     }
 
     //Fixup after morph targets
-    normalize(inputn);
-    normalize(inputt1);
+    normalize(inputn); //Could probably remove this
+    normalize(inputt1); //Could probably remove this
     inputt2 = cross(inputn, inputt1);
 
     [unroll]
@@ -64,6 +64,12 @@ VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
     //output.n += mul(b33, inputn) * input.boneWeights.w;
     //output.t1 += mul(b33, inputt1) * input.boneWeights.w;
     //output.t2 += mul(b33, inputt2) * input.boneWeights.w;
+
+    //For testing when skeleton/morph target data may be broken
+    //output.p = output.p * .0000001 + input.p;
+    //output.n = output.n * .0000001 + input.n;
+    //output.t1 = output.t1 * .0000001 + input.t1;
+    //output.t2 = output.t2 * .0000001 + input.t2;
 
     output.n = normalize(output.n);
     output.t1 = normalize(output.t1);
