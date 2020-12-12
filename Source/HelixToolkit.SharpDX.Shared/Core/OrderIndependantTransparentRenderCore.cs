@@ -77,7 +77,7 @@ namespace HelixToolkit.UWP
     #if MSAASEPARATE
                 hasMSAA = currSampleDesc.Count > 1 || currSampleDesc.Quality > 0;
     #endif
-                if (width != (int)(context.ActualWidth / context.DpiScale) || height != (int)(context.ActualHeight / context.DpiScale)
+                if (width != (int)context.ActualWidth || height != (int)context.ActualHeight
                     || sampleDesc.Count != currSampleDesc.Count || sampleDesc.Quality != currSampleDesc.Quality)
                 {
                     RemoveAndDispose(ref colorTarget);
@@ -86,8 +86,8 @@ namespace HelixToolkit.UWP
                     RemoveAndDispose(ref alphaTargetNoMSAA);
                     sampleDesc = currSampleDesc;
 
-                    width = (int)(context.ActualWidth / context.DpiScale);
-                    height = (int)(context.ActualHeight / context.DpiScale);
+                    width = (int)context.ActualWidth;
+                    height = (int)context.ActualHeight;
                     colorDesc.Width = alphaDesc.Width = width;
                     colorDesc.Height = alphaDesc.Height = height;
                     colorDesc.SampleDescription = alphaDesc.SampleDescription = sampleDesc;

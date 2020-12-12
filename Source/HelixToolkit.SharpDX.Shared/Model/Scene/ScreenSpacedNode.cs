@@ -225,10 +225,10 @@ namespace HelixToolkit.UWP
                 var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
                 float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.DpiScale;
 
-                float offx = (float)(context.ActualWidth / context.DpiScale / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
-                float offy = (float)(context.ActualHeight / context.DpiScale / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
-                offx = Math.Max(0, Math.Min(offx, (int)(context.ActualWidth / context.DpiScale - viewportSize)));
-                offy = Math.Max(0, Math.Min(offy, (int)(context.ActualHeight / context.DpiScale - viewportSize)));
+                float offx = context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2;
+                float offy = context.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2;
+                offx = Math.Max(0, Math.Min(offx, (int)(context.ActualWidth - viewportSize)));
+                offy = Math.Max(0, Math.Min(offy, (int)(context.ActualHeight - viewportSize)));
 
                 var px = p.X - offx;
                 var py = p.Y - offy;
@@ -255,7 +255,7 @@ namespace HelixToolkit.UWP
                     var viewMatrix = screenSpaceCore.GlobalTransform.View;
                     var projMatrix = screenSpaceCore.GlobalTransform.Projection;
                     newRay = RayExtensions.UnProject(new Vector2(point2d.X, point2d.Y), ref viewMatrix, ref projMatrix, screenSpaceCore.GlobalTransform.Frustum.Z,
-                        context.ActualWidth / context.DpiScale, context.ActualHeight / context.DpiScale, context.IsPerspective);
+                        context.ActualWidth, context.ActualHeight, context.IsPerspective);
                     return true;   
                 }
                 else

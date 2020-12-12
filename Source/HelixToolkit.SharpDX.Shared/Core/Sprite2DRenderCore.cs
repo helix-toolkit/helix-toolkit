@@ -68,8 +68,8 @@ namespace HelixToolkit.UWP
                 spritePass.BindStates(deviceContext, StateType.All);
                 spritePass.PixelShader.BindTexture(deviceContext, texSlot, TextureView);
                 spritePass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
-                deviceContext.SetViewport(0, 0, context.ActualWidth / context.DpiScale, context.ActualHeight / context.DpiScale);
-                deviceContext.SetScissorRectangle(0, 0, (int)(context.ActualWidth / context.DpiScale), (int)(context.ActualHeight / context.DpiScale));
+                deviceContext.SetViewport(0, 0, context.ActualWidth, context.ActualHeight);
+                deviceContext.SetScissorRectangle(0, 0, (int)context.ActualWidth, (int)context.ActualHeight);
                 deviceContext.DrawIndexed(Buffer.IndexBuffer.ElementCount, 0, 0);
                 RaiseInvalidateRender();
             }
