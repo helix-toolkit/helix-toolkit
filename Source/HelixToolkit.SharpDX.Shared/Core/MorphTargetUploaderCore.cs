@@ -49,7 +49,6 @@ namespace HelixToolkit.UWP
 
             private ShaderResourceViewProxy mtDeltasSRV;
 
-            //TODO
             private ConstantBufferComponent cbMorphTarget;
 
             public MorphTargetUploaderCore()
@@ -57,8 +56,13 @@ namespace HelixToolkit.UWP
             {
                 NeedUpdate = false;
 
+                //Setup cbuffer
                 var cbd = new ConstantBufferDescription(DefaultBufferNames.MorphTargetCB, 16);
                 cbMorphTarget = Collect(new ConstantBufferComponent(cbd));
+
+                //Set cbuffer default data {int count, int pitch}
+                cbMorphTarget.WriteValue<int>(0, 0);
+                cbMorphTarget.WriteValue<int>(0, sizeof(int));
             }
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)

@@ -2,13 +2,28 @@
 #define VSBONESKINNING_HLSL
 #include"..\Common\Common.hlsl"
 
-VSSkinnedOutput main(VSSkinnedInput input)
+VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
 {
     VSSkinnedOutput output = (VSSkinnedOutput) 0;
     float4 inputp = input.p;
     float3 inputn = input.n;
     float3 inputt1 = input.t1;
     float3 inputt2 = input.t2;
+
+	//Morph targets
+	for (int j = 0; j < mtCount; j++)
+	{
+		int offset = j * mtPitch + (vertexID * 3);
+
+		inputp.xyz += morphTargetDeltas[offset] * morphTargetWeights[j];
+		inputn += morphTargetDeltas[offset + 1] * morphTargetWeights[j];
+		inputt1 += morphTargetDeltas[offset + 2] * morphTargetWeights[j];
+	}
+
+	//Fixup after morph targets
+	normalize(inputn);
+	normalize(inputt1);
+	inputt2 = cross(inputn, inputt1);
 
     [unroll]
     for (int i = 0; i < 4; ++i)
@@ -52,8 +67,6 @@ VSSkinnedOutput main(VSSkinnedInput input)
 
     output.n = normalize(output.n);
     output.t1 = normalize(output.t1);
-	output.t1.x += morphTargetWeights[0]; //Currently need this so that the buffer is not optimized out, remove later
-	output.t1.x += morphTargetDeltas[0].x; //Currently need this so that the buffer is not optimized out, remove later
     output.t2 = normalize(output.t2);
     return output;
 }
