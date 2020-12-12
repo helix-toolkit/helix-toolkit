@@ -10,20 +10,20 @@ VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
     float3 inputt1 = input.t1;
     float3 inputt2 = input.t2;
 
-	//Morph targets
-	for (int j = 0; j < mtCount; j++)
-	{
-		int offset = j * mtPitch + (vertexID * 3);
+    //Morph targets
+    for (int j = 0; j < mtCount; j++)
+    {
+        int offset = j * mtPitch + (vertexID * 3);
 
-		inputp.xyz += morphTargetDeltas[offset] * morphTargetWeights[j];
-		inputn += morphTargetDeltas[offset + 1] * morphTargetWeights[j];
-		inputt1 += morphTargetDeltas[offset + 2] * morphTargetWeights[j];
-	}
+        inputp.xyz += morphTargetDeltas[offset] * morphTargetWeights[j];
+        inputn += morphTargetDeltas[offset + 1] * morphTargetWeights[j];
+        inputt1 += morphTargetDeltas[offset + 2] * morphTargetWeights[j];
+    }
 
-	//Fixup after morph targets
-	normalize(inputn);
-	normalize(inputt1);
-	inputt2 = cross(inputn, inputt1);
+    //Fixup after morph targets
+    normalize(inputn);
+    normalize(inputt1);
+    inputt2 = cross(inputn, inputt1);
 
     [unroll]
     for (int i = 0; i < 4; ++i)
