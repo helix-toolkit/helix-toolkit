@@ -166,7 +166,7 @@ namespace HelixToolkit.UWP
             /// <param name="rayWS">The ray ws.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
-            public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+            public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
             {
                 bool isHit = false;
                 if (CanHitTest(context) && PreHitTestOnBounds(ref rayWS))

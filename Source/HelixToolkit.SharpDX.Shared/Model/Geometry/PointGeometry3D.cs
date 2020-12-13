@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
             return Positions != null && Positions.Count > 0;
         }
 
-        public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitThickness)
+        public virtual bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitThickness)
         {
             if(Positions==null || Positions.Count == 0)
             { return false; }
@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP
                 {
                     var p0 = Vector3.TransformCoordinate(point, smvpm);
                     var pv = p0 - clickPoint;
-                    var dist = pv.Length();
+                    var dist = pv.Length() / context.DpiScale;
                     if (dist < lastDist && dist <= maxDist)
                     {
                         lastDist = dist;

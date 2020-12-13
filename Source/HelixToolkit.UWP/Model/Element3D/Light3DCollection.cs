@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        public override bool HitTest(RenderContext context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

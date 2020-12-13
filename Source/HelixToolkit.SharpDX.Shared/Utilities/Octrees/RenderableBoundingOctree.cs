@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP
                 : base(ref bound, objList, parent, paramter, queueCache)
             { }
 
-            public override bool HitTestCurrentNodeExcludeChild(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
+            public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
                 isIntersect = false;
@@ -276,7 +276,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+            public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
             {
                 throw new NotImplementedException();
             }
