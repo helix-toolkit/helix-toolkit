@@ -23,7 +23,7 @@ All notable changes to this project will be documented in this file.
 8. Fix billboard/line/point not able to do hit test inside screen space group. (WPF.SharpDX/UWP/Core)
 
 ### Breaking Change
-1. `RenderContext` has been changed to `IRenderMetrices` on hit test related function signature.
+1. `RenderContext` has been changed to `IRenderMetrices` on hit test related function signature. (WPF.SharpDX/UWP/Core)
 
 ## [2.13.1] - 2020-10-17
 ### Fixed
