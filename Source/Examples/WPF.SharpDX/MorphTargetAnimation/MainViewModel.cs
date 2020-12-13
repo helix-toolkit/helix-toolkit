@@ -11,6 +11,8 @@ using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX.Core;
+using HelixToolkit.Wpf.SharpDX.Animations;
+using SharpDX;
 
 namespace MorphTargetAnimationDemo
 {
@@ -44,16 +46,29 @@ namespace MorphTargetAnimationDemo
             MorphTargetVertex[] mtv = new MorphTargetVertex[mb.ToMesh().Positions.Count];
             for (int i = 0; i < mtv.Length; i++)
             {
-                mtv[i].deltaPosition = new SharpDX.Vector3(0, 0, 0);
-                mtv[i].deltaNormal = new SharpDX.Vector3(0, 0, 0);
-                mtv[i].deltaTangent = new SharpDX.Vector3(0, 0, 0);
+                mtv[i].deltaPosition = new Vector3(0, 0, 0);
+                mtv[i].deltaNormal = new Vector3(0, 0, 0);
+                mtv[i].deltaTangent = new Vector3(0, 0, 0);
             }
-            mtv[0].deltaPosition = new SharpDX.Vector3(5, 0, 0);
+            mtv[0].deltaPosition = new Vector3(5, 0, 0);
 
-            (skinnedMeshNode.RenderCore as BoneSkinRenderCore).MorphTargetWeights = new float[] { .5f };
+            (skinnedMeshNode.RenderCore as BoneSkinRenderCore).MorphTargetWeights = new float[] { 0 };
             (skinnedMeshNode.RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, 4 * 6);
 
-            //TODO: Need to make it utilize an identity skeleton with 1 bone matrix by default
+            //Setup identity skelleton, in the future make this a method TODO
+            skinnedMeshNode.BoneMatrices = new Matrix[] { Matrix.Identity };
+            skinnedMeshNode.Bones = new Bone[] { new Bone() { Name="Identity", BindPose=Matrix.Identity, InvBindPose=Matrix.Identity, BoneLocalTransform=Matrix.Identity } };
+
+            BoneSkinnedMeshGeometry3D geom = skinnedMeshNode.Geometry as BoneSkinnedMeshGeometry3D;
+            geom.VertexBoneIds = new BoneIds[geom.Positions.Count];
+            for (int i = 0; i < geom.VertexBoneIds.Count; i++)
+                geom.VertexBoneIds[i] = new BoneIds() { Bone1 = 0, Weights = new Vector4(1, 0, 0, 0) };
+        }
+
+        public void SliderChanged(float value)
+        {
+            skinnedMeshNode.MorphTargetWeights = new float[] { value };
+            skinnedMeshNode.InvalidateRender();
         }
     }
 }

@@ -13,10 +13,11 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <hx:Viewport3DX EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}">
+        <hx:Viewport3DX x:Name="Viewport" EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}" FrameRate="60" ShowFrameRate="True" >
             <hx:AmbientLight3D />
             <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
             <hx:Element3DPresenter Content="{Binding ModelGroup}" />
         </hx:Viewport3DX>
+        <Slider x:Name="BlendValue" HorizontalAlignment="Left" Margin="834,10,0,0" VerticalAlignment="Top" Width="108" ValueChanged="BlendValue_ValueChanged" Maximum="1" LargeChange="0.1"/>
     </Grid>
 </Window>

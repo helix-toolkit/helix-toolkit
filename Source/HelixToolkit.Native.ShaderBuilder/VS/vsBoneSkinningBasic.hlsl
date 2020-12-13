@@ -71,10 +71,6 @@ VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
     //output.t1 = output.t1 * .0000001 + input.t1;
     //output.t2 = output.t2 * .0000001 + input.t2;
 
-    //Morph target weights work
-    //Morph target deltas now working
-    //Morph target cbuffer works flawlessly
-
     output.n = normalize(output.n);
     output.t1 = normalize(output.t1);
     output.t2 = normalize(output.t2);
