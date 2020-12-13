@@ -159,7 +159,7 @@ namespace HelixToolkit.UWP
                 {
                     continue;
                 }
-                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen);
+                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, context.DpiScale);
                 if (quad.IsPointInQuad2D(ref screenPoint))
                 {
                     var v = c - rayWS.Position;
@@ -357,14 +357,14 @@ namespace HelixToolkit.UWP
         }
 
         private static Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
-            ref Matrix screenViewProjection)
+            ref Matrix screenViewProjection, float scale)
         {
             var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
             Vector2 p = new Vector2(vcenter.X, vcenter.Y);
-            var tl = p + TL;
-            var tr = p + TR;
-            var bl = p + BL;
-            var br = p + BR;
+            var tl = p + TL * scale;
+            var tr = p + TR * scale;
+            var bl = p + BL * scale;
+            var br = p + BR * scale;
             return new Quad2D(ref tl, ref tr, ref bl, ref br);
         }
         #endregion

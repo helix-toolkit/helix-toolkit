@@ -147,7 +147,7 @@ namespace HelixToolkit.UWP
                         var v0 = Positions[Objects[i]];
                         var p0 = Vector3.TransformCoordinate(v0, smvpm);
                         var pv = p0 - clickPoint;
-                        var d = pv.Length();
+                        var d = pv.Length() / context.DpiScale;
                         if (returnMultiple)
                         {
                             dist = hitThickness;

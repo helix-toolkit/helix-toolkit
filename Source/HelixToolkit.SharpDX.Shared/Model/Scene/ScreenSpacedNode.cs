@@ -326,7 +326,7 @@ namespace HelixToolkit.UWP
                     screenSpaceCore.NearPlane, viewportSize, viewportSize, screenSpaceCore.IsPerspective);
                 screenSpacedContext.ViewMatrix = viewMatrix;
                 screenSpacedContext.ProjectionMatrix = projMatrix;
-                screenSpacedContext.ActualWidth = screenSpacedContext.ActualHeight = viewportSize / context.DpiScale;
+                screenSpacedContext.ActualWidth = screenSpacedContext.ActualHeight = viewportSize;
                 screenSpacedContext.UpdateScreenViewProjectionMatrix();
                 return true;
             }
@@ -335,21 +335,18 @@ namespace HelixToolkit.UWP
             {
                 var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
                 screenSpacedContext.IsPerspective = screenSpaceCore.IsPerspective;
+                var viewMatrix = screenSpaceCore.GlobalTransform.View;
+                var projMatrix = screenSpaceCore.GlobalTransform.Projection;
+                screenSpacedContext.ViewMatrix = viewMatrix;
+                screenSpacedContext.ProjectionMatrix = projMatrix;
                 if (context.IsPerspective)
-                {
-                    
-                    
-                    var viewMatrix = screenSpaceCore.GlobalTransform.View;
-                    var projMatrix = screenSpaceCore.GlobalTransform.Projection;
-
+                {                   
                     var point2d = Vector3.TransformCoordinate(ray.Position, context.ScreenViewProjectionMatrix);
                     newRay = RayExtensions.UnProject(new Vector2(point2d.X, point2d.Y), ref viewMatrix, ref projMatrix,
                         screenSpaceCore.NearPlane,
                         context.ActualWidth, context.ActualHeight, screenSpaceCore.IsPerspective);
-                    screenSpacedContext.ActualWidth = context.ActualWidth / context.DpiScale;
-                    screenSpacedContext.ActualHeight = context.ActualHeight / context.DpiScale;
-                    screenSpacedContext.ViewMatrix = viewMatrix;
-                    screenSpacedContext.ProjectionMatrix = projMatrix;
+                    screenSpacedContext.ActualWidth = context.ActualWidth;
+                    screenSpacedContext.ActualHeight = context.ActualHeight;
                     screenSpacedContext.UpdateScreenViewProjectionMatrix();
                     return true;                
                 }
@@ -371,12 +368,10 @@ namespace HelixToolkit.UWP
                         return false;
                     }
 
-                    var viewMatrix = screenSpaceCore.GlobalTransform.View;
-                    var projMatrix = screenSpaceCore.GlobalTransform.Projection;
                     newRay = RayExtensions.UnProject(new Vector2(px, py), ref viewMatrix, ref projMatrix,
                         screenSpaceCore.NearPlane, viewportSize, viewportSize, screenSpaceCore.IsPerspective);
-                    screenSpacedContext.ActualWidth = viewportSize / context.DpiScale;
-                    screenSpacedContext.ActualHeight = viewportSize / context.DpiScale;
+                    screenSpacedContext.ActualWidth = viewportSize;
+                    screenSpacedContext.ActualHeight = viewportSize;
                     screenSpacedContext.ViewMatrix = viewMatrix;
                     screenSpacedContext.ProjectionMatrix = projMatrix;
                     screenSpacedContext.UpdateScreenViewProjectionMatrix();

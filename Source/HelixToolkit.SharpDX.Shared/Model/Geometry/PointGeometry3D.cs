@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP
                 {
                     var p0 = Vector3.TransformCoordinate(point, smvpm);
                     var pv = p0 - clickPoint;
-                    var dist = pv.Length();
+                    var dist = pv.Length() / context.DpiScale;
                     if (dist < lastDist && dist <= maxDist)
                     {
                         lastDist = dist;
