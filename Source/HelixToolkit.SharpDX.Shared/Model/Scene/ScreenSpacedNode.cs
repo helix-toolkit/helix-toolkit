@@ -209,13 +209,13 @@ namespace HelixToolkit.UWP
 
             public ScreenSpacedNode()
             {
-                this.ChildNodeAdded += ScreenSpacedNode_OnAddChildNode;
+                //this.ChildNodeAdded += ScreenSpacedNode_OnAddChildNode;
             }
 
-            private void ScreenSpacedNode_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
-            {
-                e.Node.RenderType = RenderType.ScreenSpaced;
-            }
+            //private void ScreenSpacedNode_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
+            //{
+            //    e.Node.RenderType = RenderType.ScreenSpaced;
+            //}
 
             /// <summary>
             /// Called when [create render core].
@@ -249,10 +249,10 @@ namespace HelixToolkit.UWP
                 screenSpaceCore.RelativeScreenLocationY = RelativeScreenLocationY;
                 screenSpaceCore.SizeScale = SizeScale;
                 screenSpacedContext = new ScreenSpacedContext(host);
-                for (int i = 0; i < ItemsInternal.Count; ++i)
-                {
-                    ItemsInternal[i].RenderType = RenderType.ScreenSpaced;
-                }
+                //for (int i = 0; i < ItemsInternal.Count; ++i)
+                //{
+                //    ItemsInternal[i].RenderType = RenderType.ScreenSpaced;
+                //}
                 return base.OnAttach(host);
             }
 

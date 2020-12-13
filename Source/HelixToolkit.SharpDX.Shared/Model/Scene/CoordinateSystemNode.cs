@@ -168,14 +168,11 @@ namespace HelixToolkit.UWP
             ///
             /// </summary>
             public CoordinateSystemNode()
-            {          
+            {
+                IsHitTestVisible = false;
+                CameraType = ScreenSpacedCameraType.Perspective;
                 arrowMeshModel.Material = new ColorMaterialCore();           
                 arrowMeshModel.CullMode = CullMode.Back;
-                arrowMeshModel.IsHitTestVisible = false;
-                arrowMeshModel.RenderType = RenderType.ScreenSpaced;
-
-                axisBillboard.IsHitTestVisible = false;
-                axisBillboard.RenderType = RenderType.ScreenSpaced;
                 axisBillboard.EnableViewFrustumCheck = false;
                 var axisLabel = new BillboardText3D();
                 axisLabel.TextInfo.Add(new TextInfo());
