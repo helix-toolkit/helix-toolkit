@@ -21,7 +21,9 @@ All notable changes to this project will be documented in this file.
 6. Fix data binding fails on button2D #1385 (WPF.SharpDX)
 7. Fix billboard/line/point hit test not working properly with Dpi scaling enabled. (WPF.SharpDX/UWP/Core)
 8. Fix billboard/line/point not able to do hit test inside screen space group. (WPF.SharpDX/UWP/Core)
-Note: This is a breaking change on hit test function parameter. `RenderContext` is changed to `IRenderMetrices`.
+
+### Breaking Change
+1. `RenderContext` has been changed to `IRenderMetrices` on hit test related function signature.
 
 ## [2.13.1] - 2020-10-17
 ### Fixed
