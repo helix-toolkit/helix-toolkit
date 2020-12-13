@@ -42,7 +42,11 @@ namespace HelixToolkit.UWP
             }
 
             private bool setDeltas = false;
-            private MorphTargetVertex[] morphTargetsDeltas = null;
+            private Vector4[] morphTargetsDeltas = null;
+
+            private bool setCBuffer = false;
+            private int mtCount;
+            private int mtPitch;
 
             public StructuredBufferProxy MTWeightsB { get; private set; }
             public ImmutableBufferProxy MTDeltasB { get; private set; }
@@ -57,12 +61,8 @@ namespace HelixToolkit.UWP
                 NeedUpdate = false;
 
                 //Setup cbuffer
-                var cbd = new ConstantBufferDescription(DefaultBufferNames.MorphTargetCB, 16);
+                var cbd = new ConstantBufferDescription(DefaultBufferNames.MorphTargetCB, 16); //maybe no slot issue
                 cbMorphTarget = Collect(new ConstantBufferComponent(cbd));
-
-                //Set cbuffer default data {int count, int pitch}
-                cbMorphTarget.WriteValue<int>(0, 0);
-                cbMorphTarget.WriteValue<int>(0, sizeof(int));
             }
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
@@ -81,14 +81,25 @@ namespace HelixToolkit.UWP
                 if (setDeltas)
                 {
                     int c = morphTargetsDeltas.Length;
-                    MTDeltasB.CreateBuffer(deviceContext, c);
-                    MTDeltasB.UploadDataToBuffer(deviceContext, morphTargetsDeltas, c * sizeof(float) * 9);
+                    MTDeltasB.UploadDataToBuffer(deviceContext, morphTargetsDeltas, c);
 
                     //Handle srv
                     mtDeltasSRV = Collect(new ShaderResourceViewProxy(MTDeltasB.Buffer.Device, MTDeltasB.Buffer));
                     mtDeltasSRV.CreateTextureView();
 
                     setDeltas = false;
+                }
+
+                if (setCBuffer)
+                {
+                    //Set Values
+                    cbMorphTarget.WriteValue<int>(mtCount, 0);
+                    cbMorphTarget.WriteValue<int>(mtPitch, sizeof(int));
+
+                    //Update/upload or whatever
+                    cbMorphTarget.Upload(deviceContext);
+
+                    setCBuffer = false;
                 }
             }
 
@@ -120,6 +131,7 @@ namespace HelixToolkit.UWP
                 base.OnDispose(disposeManagedResources);
             }
 
+            //TODO: if we are going to reallocate the memory anyways might as well make another struct as MorphTarget {MorphTargetVertex[]}
             public bool InitializeMorphTargets(MorphTargetVertex[] targets, int pitch)
             {
                 //The buffer is immutable, if it was already created, dont allow for recreation
@@ -127,13 +139,21 @@ namespace HelixToolkit.UWP
                     return false;
 
                 //Setup buffer and keep track of data to update
-                MTDeltasB = new ImmutableBufferProxy(sizeof(float) * 3, BindFlags.ShaderResource);
+                MTDeltasB = new ImmutableBufferProxy(sizeof(float) * 4, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
                 setDeltas = true;
-                morphTargetsDeltas = targets;
+
+                morphTargetsDeltas = new Vector4[targets.Length * 3];
+                for (int i = 0; i < targets.Length; i++)
+                {
+                    morphTargetsDeltas[i * 3] = targets[i].deltaPosition.ToVector4();
+                    morphTargetsDeltas[i * 3 + 1] = targets[i].deltaNormal.ToVector4();
+                    morphTargetsDeltas[i * 3 + 2] = targets[i].deltaTangent.ToVector4();
+                }
 
                 //Set cbuffer data {int count, int pitch}
-                cbMorphTarget.WriteValue<int>(targets.Length / pitch, 0);
-                cbMorphTarget.WriteValue<int>(pitch, sizeof(int));
+                setCBuffer = true;
+                mtCount = targets.Length / pitch;
+                mtPitch = pitch;
 
                 return true;
             }

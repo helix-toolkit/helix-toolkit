@@ -21,7 +21,6 @@ namespace HelixToolkit.UWP
 
         public class BoneSkinRenderCore : MeshRenderCore
         {
-            //TODO: not doing this on mtweights unless we see its necessary (it might be)
             private bool matricsChanged = true;
             public Matrix[] BoneMatrices
             {
@@ -106,13 +105,17 @@ namespace HelixToolkit.UWP
 
             protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if (preComputeBoneSkinPass.IsNULL || preComputeBoneBuffer == null || !preComputeBoneBuffer.CanPreCompute || !matricsChanged)
-                {
+                //Skip if not ready
+                if (preComputeBoneSkinPass.IsNULL || preComputeBoneBuffer == null || !preComputeBoneBuffer.CanPreCompute)
+                    //return; //TODO: Make this able to go through
+
+                //Skip if not necessary
+                if (!matricsChanged && MorphTargetWeights.Length == 0) //TODO: should base on mtw changes
                     return;
-                }
+
                 var boneBuffer = sharedBoneBuffer ?? internalBoneBuffer;
 
-                if(boneBuffer.BoneMatrices.Length == 0)
+                if(boneBuffer.BoneMatrices.Length == 0 && MorphTargetWeights.Length == 0) //TODO: make sure this is not entered when we have weights
                 {
                     preComputeBoneBuffer.ResetSkinnedVertexBuffer(deviceContext);
                 }

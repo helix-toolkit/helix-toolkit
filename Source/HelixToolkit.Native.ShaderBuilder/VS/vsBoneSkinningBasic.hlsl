@@ -13,11 +13,11 @@ VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
     //Morph targets
     for (int j = 0; j < mtCount; j++)
     {
-        int offset = j * mtPitch + (vertexID * 3);
+        int offset = j * mtPitch * 3 + (vertexID * 3);
 
-        inputp.xyz += morphTargetDeltas[offset] * morphTargetWeights[j];
-        inputn += morphTargetDeltas[offset + 1] * morphTargetWeights[j];
-        inputt1 += morphTargetDeltas[offset + 2] * morphTargetWeights[j];
+        inputp.xyz += morphTargetDeltas[offset].xyz * morphTargetWeights[j];
+        inputn += morphTargetDeltas[offset + 1].xyz * morphTargetWeights[j];
+        inputt1 += morphTargetDeltas[offset + 2].xyz * morphTargetWeights[j];
     }
 
     //Fixup after morph targets
@@ -70,6 +70,10 @@ VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
     //output.n = output.n * .0000001 + input.n;
     //output.t1 = output.t1 * .0000001 + input.t1;
     //output.t2 = output.t2 * .0000001 + input.t2;
+
+    //Morph target weights work
+    //Morph target deltas now working
+    //Morph target cbuffer works flawlessly
 
     output.n = normalize(output.n);
     output.t1 = normalize(output.t1);
