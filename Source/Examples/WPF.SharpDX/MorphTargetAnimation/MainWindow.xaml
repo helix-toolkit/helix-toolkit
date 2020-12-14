@@ -13,11 +13,14 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <hx:Viewport3DX x:Name="Viewport" EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}" FrameRate="60" ShowFrameRate="True" >
+        <hx:Viewport3DX x:Name="Viewport" EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}" ShowFrameRate="True" >
             <hx:AmbientLight3D />
             <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
             <hx:Element3DPresenter Content="{Binding ModelGroup}" />
         </hx:Viewport3DX>
-        <Slider x:Name="BlendValue" HorizontalAlignment="Left" Margin="834,10,0,0" VerticalAlignment="Top" Width="108" ValueChanged="BlendValue_ValueChanged" Maximum="1" LargeChange="0.1"/>
+        <Slider x:Name="BlendValue0" HorizontalAlignment="Left" Margin="834,10,0,0" VerticalAlignment="Top" Width="108" ValueChanged="BlendValue0_ValueChanged" Maximum="1" LargeChange="0.01"/>
+        <Slider x:Name="BlendValue1" HorizontalAlignment="Left" Margin="834,33,0,0" VerticalAlignment="Top" Width="108" ValueChanged="BlendValue1_ValueChanged" Maximum="1" LargeChange="0.01"/>
+        <Slider x:Name="BlendValue2" HorizontalAlignment="Left" Margin="834,56,0,0" VerticalAlignment="Top" Width="108" ValueChanged="BlendValue2_ValueChanged" Maximum="1" LargeChange="0.01"/>
+        <Slider x:Name="BlendValue3" HorizontalAlignment="Left" Margin="834,79,0,0" VerticalAlignment="Top" Width="108" ValueChanged="BlendValue3_ValueChanged" Maximum="1" LargeChange="0.01"/>
     </Grid>
 </Window>

@@ -131,7 +131,6 @@ namespace HelixToolkit.UWP
                 base.OnDispose(disposeManagedResources);
             }
 
-            //TODO: if we are going to reallocate the memory anyways might as well make another struct as MorphTarget {MorphTargetVertex[]}
             public bool InitializeMorphTargets(MorphTargetVertex[] targets, int pitch)
             {
                 //The buffer is immutable, if it was already created, dont allow for recreation

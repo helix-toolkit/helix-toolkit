@@ -29,9 +29,24 @@ namespace MorphTargetAnimationDemo
             };
         }
 
-        private void BlendValue_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void BlendValue0_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            (DataContext as MainViewModel).SliderChanged((float)e.NewValue);
+            (DataContext as MainViewModel).SliderChanged(0, (float)e.NewValue);
+        }
+
+        private void BlendValue1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            (DataContext as MainViewModel).SliderChanged(1, (float)e.NewValue);
+        }
+
+        private void BlendValue2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            (DataContext as MainViewModel).SliderChanged(2, (float)e.NewValue);
+        }
+
+        private void BlendValue3_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            (DataContext as MainViewModel).SliderChanged(3, (float)e.NewValue);
         }
     }
 }

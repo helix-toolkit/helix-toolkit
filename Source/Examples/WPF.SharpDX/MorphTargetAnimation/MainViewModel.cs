@@ -30,6 +30,7 @@ namespace MorphTargetAnimationDemo
             //Setup cube mesh
             MeshBuilder mb = new MeshBuilder();
             mb.AddCube();
+            mb.ComputeNormalsAndTangents(MeshFaces.Default, true);
 
             //Setup bone skinned geometry
             BoneSkinnedMeshGeometry3D skinnedGeometry = new BoneSkinnedMeshGeometry3D(mb.ToMesh());
@@ -42,32 +43,47 @@ namespace MorphTargetAnimationDemo
             //Add skinned mesh node to model group
             ModelGroup.AddNode(skinnedMeshNode);
 
-            //Create single morph target test
-            MorphTargetVertex[] mtv = new MorphTargetVertex[mb.ToMesh().Positions.Count];
+            //We dont have a skeleton for this cube, just use identity
+            skinnedMeshNode.SetupIdentitySkeleton();
+
+            //Create morph targets
+            System.Random r = new System.Random();
+            int pitch = mb.ToMesh().Positions.Count;
+            MorphTargetVertex[] mtv = new MorphTargetVertex[pitch * 4];
             for (int i = 0; i < mtv.Length; i++)
             {
                 mtv[i].deltaPosition = new Vector3(0, 0, 0);
                 mtv[i].deltaNormal = new Vector3(0, 0, 0);
                 mtv[i].deltaTangent = new Vector3(0, 0, 0);
+
+                if (i < pitch)
+                    mtv[i].deltaPosition = skinnedGeometry.Normals[i];
+                else if (i < pitch * 2)
+                    mtv[i].deltaPosition = skinnedGeometry.Tangents[i % pitch];
+                else if (i < pitch * 3)
+                {
+                    Vector3 p = skinnedGeometry.Positions[i % pitch] - new Vector3(.5f, .5f, .5f);
+                    Vector3 n = skinnedGeometry.Normals[i % pitch];
+                    mtv[i].deltaPosition = p - (Vector3.Dot(p, n) / n.LengthSquared() * n);
+                }
+                else if (i < pitch * 4)
+                {
+                    mtv[i].deltaPosition = new Vector3(r.NextFloat(0, 1), r.NextFloat(0, 1), r.NextFloat(0, 1));
+                }
             }
-            mtv[0].deltaPosition = new Vector3(5, 0, 0);
 
-            (skinnedMeshNode.RenderCore as BoneSkinRenderCore).MorphTargetWeights = new float[] { 0 };
-            (skinnedMeshNode.RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, 4 * 6);
-
-            //Setup identity skelleton, in the future make this a method TODO
-            skinnedMeshNode.BoneMatrices = new Matrix[] { Matrix.Identity };
-            skinnedMeshNode.Bones = new Bone[] { new Bone() { Name="Identity", BindPose=Matrix.Identity, InvBindPose=Matrix.Identity, BoneLocalTransform=Matrix.Identity } };
-
-            BoneSkinnedMeshGeometry3D geom = skinnedMeshNode.Geometry as BoneSkinnedMeshGeometry3D;
-            geom.VertexBoneIds = new BoneIds[geom.Positions.Count];
-            for (int i = 0; i < geom.VertexBoneIds.Count; i++)
-                geom.VertexBoneIds[i] = new BoneIds() { Bone1 = 0, Weights = new Vector4(1, 0, 0, 0) };
+            (skinnedMeshNode.RenderCore as BoneSkinRenderCore).MorphTargetWeights = new float[] { 0, 0, 0, 0 };
+            (skinnedMeshNode.RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, pitch);
         }
 
-        public void SliderChanged(float value)
+        public void SliderChanged(int id, float value)
         {
-            skinnedMeshNode.MorphTargetWeights = new float[] { value };
+            //Gotta update it like that to use the property setter. This is sloppy (TODO: improve interface)
+            float[] weights = new float[skinnedMeshNode.MorphTargetWeights.Length];
+            skinnedMeshNode.MorphTargetWeights.CopyTo(weights, 0);
+            weights[id] = value;
+            skinnedMeshNode.MorphTargetWeights = weights;
+
             skinnedMeshNode.InvalidateRender();
         }
     }

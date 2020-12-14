@@ -20,6 +20,8 @@ namespace HelixToolkit.UWP
     namespace Model.Scene
     {
         using Core;
+        using Animations;
+
         /// <summary>
         /// 
         /// </summary>
@@ -194,6 +196,17 @@ namespace HelixToolkit.UWP
             public Vector3[] TryGetSkinnedVerticesCache()
             {
                 return skinnedVerticesCache;
+            }
+
+            public void SetupIdentitySkeleton()
+            {
+                BoneMatrices = new Matrix[] { Matrix.Identity };
+                Bones = new Bone[] { new Bone() { Name = "Identity", BindPose = Matrix.Identity, InvBindPose = Matrix.Identity, BoneLocalTransform = Matrix.Identity } };
+
+                BoneSkinnedMeshGeometry3D geom = Geometry as BoneSkinnedMeshGeometry3D;
+                geom.VertexBoneIds = new BoneIds[geom.Positions.Count];
+                for (int i = 0; i < geom.VertexBoneIds.Count; i++)
+                    geom.VertexBoneIds[i] = new BoneIds() { Bone1 = 0, Weights = new Vector4(1, 0, 0, 0) };
             }
 
             protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)

@@ -31,10 +31,15 @@ namespace HelixToolkit.UWP
                 get { return internalBoneBuffer.BoneMatrices; }
             }
 
+            private bool mtChanged = false;
             public float[] MorphTargetWeights
             {
                 get { return internalMTBuffer.MorphTargetWeights; }
-                set { internalMTBuffer.MorphTargetWeights = value; }
+                set 
+                {
+                    internalMTBuffer.MorphTargetWeights = value;
+                    mtChanged = true;
+                }
             }
 
             private BoneUploaderCore sharedBoneBuffer;
@@ -107,15 +112,15 @@ namespace HelixToolkit.UWP
             {
                 //Skip if not ready
                 if (preComputeBoneSkinPass.IsNULL || preComputeBoneBuffer == null || !preComputeBoneBuffer.CanPreCompute)
-                    //return; //TODO: Make this able to go through
+                    return;
 
                 //Skip if not necessary
-                if (!matricsChanged && MorphTargetWeights.Length == 0) //TODO: should base on mtw changes
+                if (!matricsChanged && !mtChanged)
                     return;
 
                 var boneBuffer = sharedBoneBuffer ?? internalBoneBuffer;
 
-                if(boneBuffer.BoneMatrices.Length == 0 && MorphTargetWeights.Length == 0) //TODO: make sure this is not entered when we have weights
+                if(boneBuffer.BoneMatrices.Length == 0 && !mtChanged)
                 {
                     preComputeBoneBuffer.ResetSkinnedVertexBuffer(deviceContext);
                 }
