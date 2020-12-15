@@ -67,6 +67,7 @@ namespace HelixToolkit.UWP
 
             public const string MTWeightsB = "morphTargetWeights"; //Buffer<float>
             public const string MTDeltasB = "morphTargetDeltas"; //Buffer<float3>
+            public const string MTOffsetsB = "morphTargetOffsets"; //Buffer<int>
 
             public const string SpriteTB = "texSprite";
 

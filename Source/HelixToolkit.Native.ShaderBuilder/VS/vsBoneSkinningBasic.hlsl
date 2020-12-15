@@ -13,11 +13,12 @@ VSSkinnedOutput main(VSSkinnedInput input, uint vertexID : SV_VertexID)
     //Morph targets
     for (int j = 0; j < mtCount; j++)
     {
-        int offset = j * mtPitch * 3 + (vertexID * 3);
+		int o = morphTargetOffsets[j * mtPitch + vertexID];
+        //int offset = j * mtPitch * 3 + (vertexID * 3);
 
-        inputp.xyz += morphTargetDeltas[offset].xyz * morphTargetWeights[j];
-        inputn += morphTargetDeltas[offset + 1].xyz * morphTargetWeights[j];
-        inputt1 += morphTargetDeltas[offset + 2].xyz * morphTargetWeights[j];
+        inputp.xyz += morphTargetDeltas[o].xyz * morphTargetWeights[j];
+        inputn += morphTargetDeltas[o + 1].xyz * morphTargetWeights[j];
+        inputt1 += morphTargetDeltas[o + 2].xyz * morphTargetWeights[j];
     }
 
     //Fixup after morph targets

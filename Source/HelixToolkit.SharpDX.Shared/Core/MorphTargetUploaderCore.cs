@@ -44,14 +44,18 @@ namespace HelixToolkit.UWP
             private bool setDeltas = false;
             private Vector4[] morphTargetsDeltas = null;
 
+            private int[] morphTargetOffsets = null;
+
             private bool setCBuffer = false;
             private int mtCount;
             private int mtPitch;
 
             public StructuredBufferProxy MTWeightsB { get; private set; }
             public ImmutableBufferProxy MTDeltasB { get; private set; }
+            public ImmutableBufferProxy MTOffsetsB { get; private set; }
 
             private ShaderResourceViewProxy mtDeltasSRV;
+            private ShaderResourceViewProxy mtOffsetsSRV;
 
             private ConstantBufferComponent cbMorphTarget;
 
@@ -80,12 +84,22 @@ namespace HelixToolkit.UWP
 
                 if (setDeltas)
                 {
+                    //Setup deltas buffer
                     int c = morphTargetsDeltas.Length;
                     MTDeltasB.UploadDataToBuffer(deviceContext, morphTargetsDeltas, c);
 
-                    //Handle srv
+                    //Handle deltas srv
                     mtDeltasSRV = Collect(new ShaderResourceViewProxy(MTDeltasB.Buffer.Device, MTDeltasB.Buffer));
                     mtDeltasSRV.CreateTextureView();
+
+                    //Setup offsets buffer
+                    c = morphTargetOffsets.Length;
+                    MTOffsetsB.UploadDataToBuffer(deviceContext, morphTargetOffsets, c);
+
+                    //Handle offsets srv
+                    mtOffsetsSRV = Collect(new ShaderResourceViewProxy(MTOffsetsB.Buffer.Device, MTOffsetsB.Buffer));
+                    mtOffsetsSRV.CreateTextureView();
+
 
                     setDeltas = false;
                 }
@@ -114,14 +128,16 @@ namespace HelixToolkit.UWP
             {
                 MTWeightsB = null;
                 MTDeltasB = null;
+                MTOffsetsB = null;
                 cbMorphTarget.Detach();
                 base.OnDetach();
             }
 
-            public void BindBuffers(DeviceContextProxy devCtx, int weightsSlot, int deltasSlot)
+            public void BindBuffers(DeviceContextProxy devCtx, int weightsSlot, int deltasSlot, int offsetsSlot)
             {
                 devCtx.SetShaderResource(VertexShader.Type, weightsSlot, MTWeightsB);
                 devCtx.SetShaderResource(VertexShader.Type, deltasSlot, mtDeltasSRV);
+                devCtx.SetShaderResource(VertexShader.Type, offsetsSlot, mtOffsetsSRV);
             }
 
             protected override void OnDispose(bool disposeManagedResources)
@@ -139,15 +155,41 @@ namespace HelixToolkit.UWP
 
                 //Setup buffer and keep track of data to update
                 MTDeltasB = new ImmutableBufferProxy(sizeof(float) * 4, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
+                MTOffsetsB = new ImmutableBufferProxy(sizeof(int), BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
                 setDeltas = true;
 
-                morphTargetsDeltas = new Vector4[targets.Length * 3];
+                //Setup arrays for morph target data
+                FastList<Vector4> mtdList = new FastList<Vector4>(targets.Length * 3);
+                morphTargetOffsets = new int[targets.Length];
+
+                //First element is always 0 delta
+                mtdList.Add(Vector4.Zero);
+                mtdList.Add(Vector4.Zero);
+                mtdList.Add(Vector4.Zero);
+
+                //Subsequent elements should never need 0 delta vertex
+                Vector3 zv = Vector3.Zero;
+
+                int current = 1;
                 for (int i = 0; i < targets.Length; i++)
                 {
-                    morphTargetsDeltas[i * 3] = targets[i].deltaPosition.ToVector4();
-                    morphTargetsDeltas[i * 3 + 1] = targets[i].deltaNormal.ToVector4();
-                    morphTargetsDeltas[i * 3 + 2] = targets[i].deltaTangent.ToVector4();
+                    //Skip if 0 delta
+                    if (targets[i].deltaNormal == zv && targets[i].deltaPosition == zv && targets[i].deltaTangent == zv)
+                    {
+                        morphTargetOffsets[i] = 0;
+                    }
+                    else
+                    {
+                        morphTargetOffsets[i] = current * 3;
+
+                        mtdList.Add(targets[i].deltaPosition.ToVector4());
+                        mtdList.Add(targets[i].deltaNormal.ToVector4());
+                        mtdList.Add(targets[i].deltaTangent.ToVector4());
+
+                        current++;
+                    }
                 }
+                morphTargetsDeltas = mtdList.ToArray();
 
                 //Set cbuffer data {int count, int pitch}
                 setCBuffer = true;

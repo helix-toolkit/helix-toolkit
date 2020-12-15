@@ -340,6 +340,7 @@ StructuredBuffer<matrix> skinMatrices : register(t40);
 
 Buffer<float> morphTargetWeights : register(t60);
 Buffer<float4> morphTargetDeltas : register(t61);
+Buffer<int> morphTargetOffsets : register(t62);
 
 Texture2D texSprite : register(t50);
 
