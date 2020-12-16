@@ -198,6 +198,16 @@ namespace HelixToolkit.UWP
                 return skinnedVerticesCache;
             }
 
+            /// <summary>
+            /// Make sure to use SetWeight so that the mutation of elements can be seen
+            /// </summary>
+            /// <param name="i">index</param>
+            /// <param name="w">weight, typically 0-1</param>
+            public void SetWeight(int i, float w)
+            {
+                (RenderCore as BoneSkinRenderCore).SetWeight(i, w);
+            }
+
             public void SetupIdentitySkeleton()
             {
                 BoneMatrices = new Matrix[] { Matrix.Identity };

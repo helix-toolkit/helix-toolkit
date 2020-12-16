@@ -198,6 +198,13 @@ namespace HelixToolkit.UWP
 
                 return true;
             }
+
+            public void SetWeight(int i, float w)
+            {
+                weightUpdated = true;
+                WeightsChanged?.Invoke(this, EventArgs.Empty);
+                MorphTargetWeights[i] = w;
+            }
         }
 	}
 }

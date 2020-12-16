@@ -156,6 +156,12 @@ namespace HelixToolkit.UWP
 
             public bool InitializeMorphTargets(MorphTargetVertex[] targets, int pitch)
                 => internalMTBuffer.InitializeMorphTargets(targets, pitch);
+
+            public void SetWeight(int i, float w)
+            {
+                mtChanged = true;
+                internalMTBuffer.SetWeight(i, w);
+            }
         }
     }
 

@@ -78,12 +78,7 @@ namespace MorphTargetAnimationDemo
 
         public void SliderChanged(int id, float value)
         {
-            //Gotta update it like that to use the property setter. This is sloppy (TODO: improve interface)
-            float[] weights = new float[skinnedMeshNode.MorphTargetWeights.Length];
-            skinnedMeshNode.MorphTargetWeights.CopyTo(weights, 0);
-            weights[id] = value;
-            skinnedMeshNode.MorphTargetWeights = weights;
-
+            skinnedMeshNode.SetWeight(id, value);
             skinnedMeshNode.InvalidateRender();
         }
     }
