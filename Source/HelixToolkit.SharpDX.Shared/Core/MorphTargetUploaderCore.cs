@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP
             }
 
             private bool setDeltas = false;
-            private Vector4[] morphTargetsDeltas = null;
+            private Vector3[] morphTargetsDeltas = null;
 
             private int[] morphTargetOffsets = null;
 
@@ -154,18 +154,18 @@ namespace HelixToolkit.UWP
                     return false;
 
                 //Setup buffer and keep track of data to update
-                MTDeltasB = new ImmutableBufferProxy(sizeof(float) * 4, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
+                MTDeltasB = new ImmutableBufferProxy(sizeof(float) * 3, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
                 MTOffsetsB = new ImmutableBufferProxy(sizeof(int), BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
                 setDeltas = true;
 
                 //Setup arrays for morph target data
-                FastList<Vector4> mtdList = new FastList<Vector4>(targets.Length * 3);
+                FastList<Vector3> mtdList = new FastList<Vector3>(targets.Length * 3);
                 morphTargetOffsets = new int[targets.Length];
 
                 //First element is always 0 delta
-                mtdList.Add(Vector4.Zero);
-                mtdList.Add(Vector4.Zero);
-                mtdList.Add(Vector4.Zero);
+                mtdList.Add(Vector3.Zero);
+                mtdList.Add(Vector3.Zero);
+                mtdList.Add(Vector3.Zero);
 
                 //Subsequent elements should never need 0 delta vertex
                 Vector3 zv = Vector3.Zero;
@@ -182,9 +182,9 @@ namespace HelixToolkit.UWP
                     {
                         morphTargetOffsets[i] = current * 3;
 
-                        mtdList.Add(targets[i].deltaPosition.ToVector4());
-                        mtdList.Add(targets[i].deltaNormal.ToVector4());
-                        mtdList.Add(targets[i].deltaTangent.ToVector4());
+                        mtdList.Add(targets[i].deltaPosition);
+                        mtdList.Add(targets[i].deltaNormal);
+                        mtdList.Add(targets[i].deltaTangent);
 
                         current++;
                     }
