@@ -4,11 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Media3D = System.Windows.Media.Media3D;
 using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Controls;
 using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX.Core;
 using HelixToolkit.Wpf.SharpDX.Animations;
@@ -19,13 +22,19 @@ namespace MorphTargetAnimationDemo
     public class MainViewModel : BaseViewModel
     {
         public SceneNodeGroupModel3D ModelGroup { get; private set; }
+        public ObservableCollection<float> weights { get; set; }
 
         private BoneSkinMeshNode skinnedMeshNode;
+        private CompositionTargetEx compositeHelper = new CompositionTargetEx();
+        private Animation animation;
+        private MorphTargetKeyFrameUpdater mtUpdater;
 
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
             ModelGroup = new SceneNodeGroupModel3D();
+
+            compositeHelper.Rendering += Render;
 
             //Setup cube mesh
             MeshBuilder mb = new MeshBuilder();
@@ -74,11 +83,50 @@ namespace MorphTargetAnimationDemo
 
             (skinnedMeshNode.RenderCore as BoneSkinRenderCore).MorphTargetWeights = new float[] { 0, 0, 0, 0 };
             (skinnedMeshNode.RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, pitch);
+
+            //Setup animation
+            animation = new Animation(AnimationType.MorphTarget);
+            animation.StartTime = 0;
+            animation.EndTime = 15;
+            animation.morphTargetKeyframes = new List<MorphTargetKeyframe>
+            {
+                new MorphTargetKeyframe() { Weight=.0f, Time=5, Index=0 },
+                new MorphTargetKeyframe() { Weight=1.0f, Time=10, Index=0 },
+
+                new MorphTargetKeyframe() { Weight=.0f, Time=5, Index=1 },
+                new MorphTargetKeyframe() { Weight=1.0f, Time=6, Index=1 },
+                new MorphTargetKeyframe() { Weight=.0f, Time=7, Index=1 },
+                new MorphTargetKeyframe() { Weight=1.0f, Time=8, Index=1 },
+                new MorphTargetKeyframe() { Weight=.0f, Time=9, Index=1 },
+                new MorphTargetKeyframe() { Weight=1.0f, Time=10, Index=1 },
+
+                new MorphTargetKeyframe() { Weight=.5f, Time=10, Index=2 },
+
+                new MorphTargetKeyframe() { Weight=.0f, Time=5, Index=3 },
+                new MorphTargetKeyframe() { Weight=1.0f, Time=6, Index=3 },
+                new MorphTargetKeyframe() { Weight=.0f, Time=7, Index=3 },
+                new MorphTargetKeyframe() { Weight=1.0f, Time=8, Index=3 },
+                new MorphTargetKeyframe() { Weight=.0f, Time=9, Index=3 },
+                new MorphTargetKeyframe() { Weight=1.0f, Time=10, Index=3 },
+            };
+
+            mtUpdater = new MorphTargetKeyFrameUpdater(animation, skinnedMeshNode.MorphTargetWeights);
+
+            weights = new ObservableCollection<float>(skinnedMeshNode.MorphTargetWeights);
         }
 
-        public void SliderChanged(int id, float value)
+        private void Render(object sender, System.Windows.Media.RenderingEventArgs e)
         {
-            skinnedMeshNode.SetWeight(id, value);
+            //Animation
+            mtUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+
+            //Sloppy way to set weights to updated so that it will update buffer
+            skinnedMeshNode.SetWeight(0, skinnedMeshNode.MorphTargetWeights[0]);
+
+            //Update weights sliders
+            for (int i = 0; i < weights.Count; i++)
+                weights[i] = skinnedMeshNode.MorphTargetWeights[i];
+
             skinnedMeshNode.InvalidateRender();
         }
     }

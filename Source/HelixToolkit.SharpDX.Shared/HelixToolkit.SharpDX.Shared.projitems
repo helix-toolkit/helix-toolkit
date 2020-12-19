@@ -127,6 +127,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\AnimationModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\MorphTargetKeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMath.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMode.cs" />

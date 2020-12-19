@@ -48,10 +48,18 @@ namespace HelixToolkit.UWP
             }
         }
 
+        public struct MorphTargetKeyframe
+        {
+            public float Weight;
+            public float Time;
+            public int Index;
+        }
+
         public enum AnimationType
         {
             Keyframe,
-            Node
+            Node,
+            MorphTarget
         }
         /// <summary>
         /// 
@@ -107,6 +115,10 @@ namespace HelixToolkit.UWP
             /// The node animation collection.
             /// </value>
             public List<NodeAnimation> NodeAnimationCollection { set; get; }
+            /// <summary>
+            /// Gets or sets the morph target keyframes. 
+            /// </summary>
+            public List<MorphTargetKeyframe> morphTargetKeyframes { get; set; }
             /// <summary>
             /// Gets or sets the bone skin meshes.
             /// </summary>
