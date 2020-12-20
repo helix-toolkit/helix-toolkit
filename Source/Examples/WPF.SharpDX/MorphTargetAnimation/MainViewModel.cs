@@ -22,11 +22,14 @@ namespace MorphTargetAnimationDemo
     {
         public SceneNodeGroupModel3D ModelGroup { get; private set; }
         public ObservableCollection<float> weights { get; set; }
+        public string debugLabel { get; set; }
 
         private BoneSkinMeshNode skinnedMeshNode;
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
         private Animation animation;
         private MorphTargetKeyFrameUpdater mtUpdater;
+        private long sum = 0;
+        private long count = 0;
 
         public MainViewModel()
         {
@@ -85,8 +88,8 @@ namespace MorphTargetAnimationDemo
 
             //Setup animation
             animation = new Animation(AnimationType.MorphTarget);
-            animation.StartTime = 0;
-            animation.EndTime = 12;
+            animation.StartTime = 5;
+            animation.EndTime = 10;
             animation.morphTargetKeyframes = new List<MorphTargetKeyframe>
             {
                 new MorphTargetKeyframe() { Weight=.0f, Time=5, Index=0 },
@@ -101,13 +104,12 @@ namespace MorphTargetAnimationDemo
 
                 new MorphTargetKeyframe() { Weight=.5f, Time=10, Index=2 },
 
-                new MorphTargetKeyframe() { Weight=.0f, Time=5, Index=3 },
-                new MorphTargetKeyframe() { Weight=1.0f, Time=6, Index=3 },
-                new MorphTargetKeyframe() { Weight=.0f, Time=7, Index=3 },
-                new MorphTargetKeyframe() { Weight=1.0f, Time=8, Index=3 },
-                new MorphTargetKeyframe() { Weight=.0f, Time=9, Index=3 },
-                new MorphTargetKeyframe() { Weight=1.0f, Time=10, Index=3 },
+                //Index=3 is added in loop below for extensive perf testing
             };
+
+            //50k keyframes
+            for (float t = 5; t < 10; t += .0001f)
+                animation.morphTargetKeyframes.Add(new MorphTargetKeyframe() { Weight = (t % .25f) * 4, Time = t, Index = 3 });
 
             mtUpdater = new MorphTargetKeyFrameUpdater(animation, skinnedMeshNode.MorphTargetWeights);
             mtUpdater.RepeatMode = AnimationRepeatMode.Loop;
@@ -117,8 +119,13 @@ namespace MorphTargetAnimationDemo
 
         private void Render(object sender, System.Windows.Media.RenderingEventArgs e)
         {
-            //Animation
+            //Animation with perf testing
+            long t = Stopwatch.GetTimestamp();
             mtUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+            t = Stopwatch.GetTimestamp() - t;
+            sum += t;
+            count++;
+            debugLabel = (sum / count).ToString();
 
             //Sloppy way to set weights to updated so that it will update buffer
             skinnedMeshNode.SetWeight(0, skinnedMeshNode.MorphTargetWeights[0]);

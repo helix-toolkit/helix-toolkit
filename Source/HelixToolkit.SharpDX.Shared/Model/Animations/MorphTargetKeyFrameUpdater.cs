@@ -29,6 +29,7 @@ namespace HelixToolkit.UWP
 
             private List<MorphTargetKeyframe> kfs;
             private int[][] targetKeyframeIds;
+            private int[] prevKeyframes;
             private float timeOffset = 0;
 
             public MorphTargetKeyFrameUpdater(Animation animation, IList<float> weights)
@@ -51,13 +52,13 @@ namespace HelixToolkit.UWP
                     }
                     targetKeyframeIds[i] = ids.OrderBy(n => kfs[n].Time).ToArray();
                 }
+
+                //Used to cache previous keyframe id's per morph target
+                prevKeyframes = new int[weights.Count];
             }
 
             public void Update(long timeStamp, long frequency)
             {
-                //NOTE
-                //This does not take advantage of caching previous id's and time, do that later...
-
                 //Find time(t)
                 float globalTime = (float)timeStamp / frequency;
                 if (timeOffset == 0)
@@ -79,13 +80,20 @@ namespace HelixToolkit.UWP
                     if (targetKeyframeIds[i].Length == 0)
                         continue;
 
-                    //Locate keyframe where t is below it's set time
+                    //Locate keyframe where t is below it's set time. starting from recent kf and wrapping to search all
                     int id = -1;
-                    for (int j = 0; j < targetKeyframeIds[i].Length; j++)
+                    int len = targetKeyframeIds[i].Length;
+                    for (int j = 0; j < len; j++)
                     {
-                        if (kfs[targetKeyframeIds[i][j]].Time > t)
+                        int kfId = (j + prevKeyframes[i]) % len;
+                        if (kfs[targetKeyframeIds[i][kfId]].Time > t)
                         {
-                            id = j;
+                            //Ensure this is only the first kf larger than t
+                            if (kfId != 0 && kfs[targetKeyframeIds[i][kfId - 1]].Time > t)
+                                continue;
+
+                            prevKeyframes[i] = kfId;
+                            id = kfId;
                             break;
                         }
                     }
