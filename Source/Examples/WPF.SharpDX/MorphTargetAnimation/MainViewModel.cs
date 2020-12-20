@@ -6,7 +6,6 @@
 
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Media3D = System.Windows.Media.Media3D;
 using DemoCore;
@@ -87,7 +86,7 @@ namespace MorphTargetAnimationDemo
             //Setup animation
             animation = new Animation(AnimationType.MorphTarget);
             animation.StartTime = 0;
-            animation.EndTime = 15;
+            animation.EndTime = 12;
             animation.morphTargetKeyframes = new List<MorphTargetKeyframe>
             {
                 new MorphTargetKeyframe() { Weight=.0f, Time=5, Index=0 },
@@ -111,6 +110,7 @@ namespace MorphTargetAnimationDemo
             };
 
             mtUpdater = new MorphTargetKeyFrameUpdater(animation, skinnedMeshNode.MorphTargetWeights);
+            mtUpdater.RepeatMode = AnimationRepeatMode.Loop;
 
             weights = new ObservableCollection<float>(skinnedMeshNode.MorphTargetWeights);
         }

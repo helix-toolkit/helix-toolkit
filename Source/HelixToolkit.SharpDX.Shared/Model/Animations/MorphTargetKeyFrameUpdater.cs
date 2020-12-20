@@ -21,7 +21,6 @@ namespace HelixToolkit.UWP
     {
         public class MorphTargetKeyFrameUpdater : IAnimationUpdater
         {
-            //TODO: setup a more useful organization of weight keyframe data (List per id)
             public Animation animation { get; }
             public IList<float> weights { get; }
             public float startTime { get; }
@@ -30,6 +29,7 @@ namespace HelixToolkit.UWP
 
             private List<MorphTargetKeyframe> kfs;
             private int[][] targetKeyframeIds;
+            private float timeOffset = 0;
 
             public MorphTargetKeyFrameUpdater(Animation animation, IList<float> weights)
             {
@@ -57,14 +57,22 @@ namespace HelixToolkit.UWP
             {
                 //NOTE
                 //This does not take advantage of caching previous id's and time, do that later...
-                //This does not handle repeat modes
 
-                //Interpolate between each individual weight's keyframe pairs at current time(t)
-                float t = (float)timeStamp / frequency;
+                //Find time(t)
+                float globalTime = (float)timeStamp / frequency;
+                if (timeOffset == 0)
+                    timeOffset = globalTime;
+                float t = globalTime - timeOffset;
 
-                //ONLY FOR TESTING, make animation loop, assumes start time 0
-                t %= endTime;
+                //Handle repeat mode
+                if (RepeatMode == AnimationRepeatMode.Loop)
+                    t = t % (startTime - endTime) + startTime;
+                else if (RepeatMode == AnimationRepeatMode.PlayOnce && t > endTime)
+                    return;
+                else if (RepeatMode == AnimationRepeatMode.PlayOnceHold)
+                    t = Clamp(t, startTime, endTime);
 
+                //Interpolate between each individual weight's keyframe pairs at current time
                 for (int i = 0; i < targetKeyframeIds.Length; i++)
                 {
                     //Skip if no keyframes for weight id
@@ -99,10 +107,16 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            //TODO
             public void Reset()
             {
+                timeOffset = 0;
+            }
 
+            private float Clamp(float x, float a, float b)
+            {
+                if (x > a) return a;
+                if (x < b) return b;
+                return x;
             }
         }
     }

@@ -11,7 +11,6 @@ namespace MorphTargetAnimationDemo
 {
     using System;
     using System.Windows;
-    using System.Windows.Controls;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -31,13 +30,6 @@ namespace MorphTargetAnimationDemo
                     (DataContext as IDisposable).Dispose();
                 }
             };
-
-            System.Windows.Media.CompositionTarget.Rendering += OnRender;
-        }
-
-        private void OnRender(object sender, EventArgs e)
-        {
-            //Delete if we dont use this
         }
     }
 }
