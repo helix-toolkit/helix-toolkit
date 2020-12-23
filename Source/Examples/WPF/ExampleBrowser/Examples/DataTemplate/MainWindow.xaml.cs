@@ -55,6 +55,19 @@ namespace DataTemplateDemo
                                          Radius = 0.6
                                      }
                              };
+            this.FixedElementsPositonsBinding = new List<Element>
+                            {
+                                new Element
+                                     {
+                                         Positions = new Point3DCollection
+                                         {
+                                             new Point3D(-1, 1, 1.85),
+                                             new Point3D(-1, -1, 1.85),
+                                             new Point3D(1, -1, 1.85),
+                                             new Point3D(1, 1, 1.85)
+                                         }
+                                     },
+                            };
             this.DataContext = this;
             this.AddElementCommand = new DelegateCommand(() =>
             {
@@ -134,5 +147,11 @@ namespace DataTemplateDemo
         /// </summary>
         /// <value>The fixed elements.</value>
         public IList<Element> FixedElements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fixed elements.
+        /// </summary>
+        /// <value>The fixed elements.</value>
+        public IList<Element> FixedElementsPositonsBinding { get; set; }
     }
 }
