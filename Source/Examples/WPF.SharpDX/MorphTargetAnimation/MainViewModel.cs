@@ -14,6 +14,7 @@ using HelixToolkit.Wpf.SharpDX.Controls;
 using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX.Core;
 using HelixToolkit.Wpf.SharpDX.Animations;
+using HelixToolkit.Wpf.SharpDX.Assimp;
 using SharpDX;
 
 namespace MorphTargetAnimationDemo
@@ -38,78 +39,27 @@ namespace MorphTargetAnimationDemo
 
             compositeHelper.Rendering += Render;
 
-            //Setup cube mesh
-            MeshBuilder mb = new MeshBuilder();
-            mb.AddCube();
-            mb.ComputeNormalsAndTangents(MeshFaces.Default, true);
+            //Test importing
+            Importer importer = new Importer();
+            importer.Configuration.CreateSkeletonForBoneSkinningMesh = true;
+            importer.Configuration.GlobalScale = .1f;
+            HelixToolkitScene scn = importer.Load("../../MonkeyTwistMT.fbx");
 
-            //Setup bone skinned geometry
-            BoneSkinnedMeshGeometry3D skinnedGeometry = new BoneSkinnedMeshGeometry3D(mb.ToMesh());
-
-            //Setup skinned mesh node
-            skinnedMeshNode = new BoneSkinMeshNode();
-            skinnedMeshNode.Geometry = skinnedGeometry;
+            //Make it renderable
+            ///scene->root->suzzanne SceneNode->suzzanne BoneSkinMeshNode
+            skinnedMeshNode = scn.Root.Items[0].Items[0] as BoneSkinMeshNode;
             skinnedMeshNode.Material = new PhongMaterial();
-
-            //Add skinned mesh node to model group
-            ModelGroup.AddNode(skinnedMeshNode);
-
-            //We dont have a skeleton for this cube, just use identity
-            skinnedMeshNode.SetupIdentitySkeleton();
-
-            //Create morph targets
-            System.Random r = new System.Random();
-            int pitch = mb.ToMesh().Positions.Count;
-            MorphTargetVertex[] mtv = new MorphTargetVertex[pitch * 4];
-            for (int i = 0; i < mtv.Length; i++)
-            {
-                mtv[i].deltaPosition = new Vector3(0, 0, 0);
-                mtv[i].deltaNormal = new Vector3(0, 0, 0);
-                mtv[i].deltaTangent = new Vector3(0, 0, 0);
-
-                if (i < pitch)
-                    mtv[i].deltaPosition = skinnedGeometry.Normals[i];
-                else if (i < pitch * 2)
-                    mtv[i].deltaPosition = skinnedGeometry.Tangents[i % pitch];
-                else if (i < pitch * 3)
-                {
-                    Vector3 p = skinnedGeometry.Positions[i % pitch] - new Vector3(.5f, .5f, .5f);
-                    Vector3 n = skinnedGeometry.Normals[i % pitch];
-                    mtv[i].deltaPosition = p - (Vector3.Dot(p, n) / n.LengthSquared() * n);
-                }
-                else if (i < pitch * 4)
-                {
-                    mtv[i].deltaPosition = new Vector3(r.NextFloat(0, 1), r.NextFloat(0, 1), r.NextFloat(0, 1));
-                }
-            }
-
-            (skinnedMeshNode.RenderCore as BoneSkinRenderCore).MorphTargetWeights = new float[] { 0, 0, 0, 0 };
-            (skinnedMeshNode.RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, pitch);
+            ModelGroup.AddNode(scn.Root);
 
             //Setup animation
             animation = new Animation(AnimationType.MorphTarget);
-            animation.StartTime = 5;
-            animation.EndTime = 10;
+            animation.StartTime = 0;
+            animation.EndTime = 1;
             animation.morphTargetKeyframes = new List<MorphTargetKeyframe>
             {
-                new MorphTargetKeyframe() { Weight=.0f, Time=5, Index=0 },
-                new MorphTargetKeyframe() { Weight=1.0f, Time=10, Index=0 },
-
-                new MorphTargetKeyframe() { Weight=.0f, Time=5, Index=1 },
-                new MorphTargetKeyframe() { Weight=1.0f, Time=6, Index=1 },
-                new MorphTargetKeyframe() { Weight=.0f, Time=7, Index=1 },
-                new MorphTargetKeyframe() { Weight=1.0f, Time=8, Index=1 },
-                new MorphTargetKeyframe() { Weight=.0f, Time=9, Index=1 },
-                new MorphTargetKeyframe() { Weight=1.0f, Time=10, Index=1 },
-
-                new MorphTargetKeyframe() { Weight=.5f, Time=10, Index=2 },
-
-                //Index=3 is added in loop below for extensive perf testing
+                new MorphTargetKeyframe() { Weight=.0f, Time=0, Index=0 },
+                new MorphTargetKeyframe() { Weight=1.0f, Time=1, Index=0 },
             };
-
-            //50k keyframes
-            for (float t = 5; t < 10; t += .0001f)
-                animation.morphTargetKeyframes.Add(new MorphTargetKeyframe() { Weight = (t % .25f) * 4, Time = t, Index = 3 });
 
             mtUpdater = new MorphTargetKeyFrameUpdater(animation, skinnedMeshNode.MorphTargetWeights);
             mtUpdater.RepeatMode = AnimationRepeatMode.Loop;
@@ -125,7 +75,8 @@ namespace MorphTargetAnimationDemo
             t = Stopwatch.GetTimestamp() - t;
             sum += t;
             count++;
-            debugLabel = (sum / count).ToString();
+            //debugLabel = (sum / count).ToString();
+            debugLabel = t.ToString();
 
             //Sloppy way to set weights to updated so that it will update buffer
             skinnedMeshNode.SetWeight(0, skinnedMeshNode.MorphTargetWeights[0]);

@@ -219,6 +219,9 @@ namespace HelixToolkit.UWP
                     geom.VertexBoneIds[i] = new BoneIds() { Bone1 = 0, Weights = new Vector4(1, 0, 0, 0) };
             }
 
+            public bool InitializeMorphTargets(MorphTargetVertex[] mtv, int pitch)
+                => (RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, pitch);
+
             protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
             {
                 if(BoneMatrices.Length > 0 && Geometry is BoneSkinnedMeshGeometry3D skGeometry)
