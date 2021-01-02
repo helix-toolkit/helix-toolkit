@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP
             private List<MorphTargetKeyframe> kfs;
             private int[][] targetKeyframeIds;
             private int[] prevKeyframes;
-            private float timeOffset = 0;
+            private double timeOffset = 0;
 
             public MorphTargetKeyFrameUpdater(Animation animation, IList<float> weights)
             {
@@ -53,6 +53,17 @@ namespace HelixToolkit.UWP
                     targetKeyframeIds[i] = ids.OrderBy(n => kfs[n].Time).ToArray();
                 }
 
+                string str = "";
+                for (int i = 0; i < targetKeyframeIds.Length; i++)
+                {
+                    str += "\n\n\nWEIGHT ID = " + i;
+                    for (int j = 0; j < targetKeyframeIds[i].Length; j++)
+                    {
+                        MorphTargetKeyframe kf = kfs[targetKeyframeIds[i][j]];
+                        str += String.Format("\nt={0:0.000}\tw={1:0.000}", kf.Time, kf.Weight);
+                    }
+                }
+
                 //Used to cache previous keyframe id's per morph target
                 prevKeyframes = new int[weights.Count];
             }
@@ -60,10 +71,10 @@ namespace HelixToolkit.UWP
             public void Update(long timeStamp, long frequency)
             {
                 //Find time(t)
-                float globalTime = (float)timeStamp / frequency;
+                double globalTime = (double)timeStamp / frequency;
                 if (timeOffset == 0)
                     timeOffset = globalTime;
-                float t = globalTime - timeOffset;
+                float t = (float)(globalTime - timeOffset);
 
                 //Handle repeat mode
                 if (RepeatMode == AnimationRepeatMode.Loop)
@@ -110,9 +121,12 @@ namespace HelixToolkit.UWP
                         MorphTargetKeyframe b = kfs[targetKeyframeIds[i][id]];
 
                         float k = (t - a.Time) / (b.Time - a.Time);
-                        weights[i] = a.Weight + (b.Weight - a.Weight) * k;
+                        weights[i] = a.Weight + ((b.Weight - a.Weight) * k);
                     }
                 }
+
+                //Mark weights updated
+                (animation.RootNode as Model.Scene.BoneSkinMeshNode)?.WeightUpdated();
             }
 
             public void Reset()

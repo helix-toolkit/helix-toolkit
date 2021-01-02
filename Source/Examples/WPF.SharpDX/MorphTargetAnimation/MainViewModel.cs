@@ -25,12 +25,20 @@ namespace MorphTargetAnimationDemo
         public ObservableCollection<float> weights { get; set; }
         public string debugLabel { get; set; }
 
-        private BoneSkinMeshNode skinnedMeshNode;
+        private HelixToolkitScene scn;
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
         private Animation animation;
+        private List<IAnimationUpdater> animUpdaters;
         private MorphTargetKeyFrameUpdater mtUpdater;
         private long sum = 0;
         private long count = 0;
+        private List<IAnimationUpdater> animationUpdaters;
+
+        //TODO
+        //Issue with boneskin mesh node
+        //Since we force it to render as boneskin mesh whenever morph targets exist
+        //it will not render correctly if it has a skeleton since only an updater 
+        //currently handles updatiing skeleton data. we need to add a default state for that
 
         public MainViewModel()
         {
@@ -42,50 +50,56 @@ namespace MorphTargetAnimationDemo
             //Test importing
             Importer importer = new Importer();
             importer.Configuration.CreateSkeletonForBoneSkinningMesh = true;
-            importer.Configuration.GlobalScale = .1f;
-            HelixToolkitScene scn = importer.Load("../../MonkeyTwistMT.fbx");
+            importer.Configuration.SkeletonSizeScale = 0.04f;
+            importer.Configuration.GlobalScale = 0.1f;
+            scn = importer.Load("../../zophrac/source/Gunan_animated.fbx");
 
             //Make it renderable
-            ///scene->root->suzzanne SceneNode->suzzanne BoneSkinMeshNode
-            skinnedMeshNode = scn.Root.Items[0].Items[0] as BoneSkinMeshNode;
-            skinnedMeshNode.Material = new PhongMaterial();
             ModelGroup.AddNode(scn.Root);
 
-            //Setup animation
-            animation = new Animation(AnimationType.MorphTarget);
-            animation.StartTime = 0;
-            animation.EndTime = 1;
-            animation.morphTargetKeyframes = new List<MorphTargetKeyframe>
+            //Setup animation TODO: will not handle shit well at all, only in this case
+            animationUpdaters = new List<IAnimationUpdater>();
+            foreach (Animation anim in scn.Animations)
             {
-                new MorphTargetKeyframe() { Weight=.0f, Time=0, Index=0 },
-                new MorphTargetKeyframe() { Weight=1.0f, Time=1, Index=0 },
-            };
+                if (anim.AnimationType == AnimationType.MorphTarget)
+                {
+                    string str = "";
+                    for (int i = 0; i < (anim.RootNode as BoneSkinMeshNode).MorphTargetWeights.Length; i++)
+                    {
+                        str += "\n\n\nWEIGHT ID ======== " + i;
+                        foreach (MorphTargetKeyframe kf in anim.morphTargetKeyframes)
+                        {
+                            if (kf.Index == i)
+                                str += string.Format("\nt={0:0.000}\tw={1:0.000}", kf.Time, kf.Weight);
+                        }
+                    }
 
-            mtUpdater = new MorphTargetKeyFrameUpdater(animation, skinnedMeshNode.MorphTargetWeights);
-            mtUpdater.RepeatMode = AnimationRepeatMode.Loop;
-
-            weights = new ObservableCollection<float>(skinnedMeshNode.MorphTargetWeights);
+                    animationUpdaters.Add(new MorphTargetKeyFrameUpdater(anim, (anim.RootNode as BoneSkinMeshNode).MorphTargetWeights));
+                    animationUpdaters[animationUpdaters.Count - 1].RepeatMode = AnimationRepeatMode.Loop;
+                }
+                else if (anim.AnimationType == AnimationType.Node)
+                {
+                    animationUpdaters.Add(new NodeAnimationUpdater(anim));
+                    animationUpdaters[animationUpdaters.Count - 1].RepeatMode = AnimationRepeatMode.Loop;
+                }
+            }
         }
 
         private void Render(object sender, System.Windows.Media.RenderingEventArgs e)
         {
             //Animation with perf testing
             long t = Stopwatch.GetTimestamp();
-            mtUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+
+            foreach (IAnimationUpdater updater in animationUpdaters)
+                updater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+
             t = Stopwatch.GetTimestamp() - t;
             sum += t;
             count++;
             //debugLabel = (sum / count).ToString();
             debugLabel = t.ToString();
 
-            //Sloppy way to set weights to updated so that it will update buffer
-            skinnedMeshNode.SetWeight(0, skinnedMeshNode.MorphTargetWeights[0]);
-
-            //Update weights sliders
-            for (int i = 0; i < weights.Count; i++)
-                weights[i] = skinnedMeshNode.MorphTargetWeights[i];
-
-            skinnedMeshNode.InvalidateRender();
+            scn.Root.InvalidateRender();
         }
     }
 }

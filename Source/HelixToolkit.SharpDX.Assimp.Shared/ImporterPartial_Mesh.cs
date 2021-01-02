@@ -77,6 +77,8 @@ namespace HelixToolkit.UWP
                                 var mtv = new FastList<MorphTargetVertex>(attCount * mesh.AssimpMesh.VertexCount);
                                 foreach (var att in mesh.AssimpMesh.MeshAnimationAttachments)
                                 {
+                                    //NOTE: It seems some files may have invalid normal/tangent data for morph targets.
+                                    //May need to provide option in future to use 0 normal/tangent deltas or recalculate
                                     mtv.AddRange(new MorphTargetVertex[mesh.AssimpMesh.VertexCount].Select((x, i) => 
                                     new MorphTargetVertex() {
                                         deltaPosition = (att.Vertices[i] - mesh.AssimpMesh.Vertices[i]).ToSharpDXVector3(),

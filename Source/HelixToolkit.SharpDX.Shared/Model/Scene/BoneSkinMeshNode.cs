@@ -208,6 +208,14 @@ namespace HelixToolkit.UWP
                 (RenderCore as BoneSkinRenderCore).SetWeight(i, w);
             }
 
+            /// <summary>
+            /// Tells the render core to update it's morph target weight buffer
+            /// </summary>
+            public void WeightUpdated()
+            {
+                (RenderCore as BoneSkinRenderCore).SetWeight(0, MorphTargetWeights[0]);
+            }
+
             public void SetupIdentitySkeleton()
             {
                 BoneMatrices = new Matrix[] { Matrix.Identity };
@@ -217,6 +225,12 @@ namespace HelixToolkit.UWP
                 geom.VertexBoneIds = new BoneIds[geom.Positions.Count];
                 for (int i = 0; i < geom.VertexBoneIds.Count; i++)
                     geom.VertexBoneIds[i] = new BoneIds() { Bone1 = 0, Weights = new Vector4(1, 0, 0, 0) };
+            }
+
+            public void UpdateBoneMatrices()
+            {
+                BoneMatrices = new Matrix[Bones.Length];
+                BoneMatrices = BoneMatrices.Select((m, i) => Bones[i].Node.TotalModelMatrixInternal).ToArray();
             }
 
             public bool InitializeMorphTargets(MorphTargetVertex[] mtv, int pitch)

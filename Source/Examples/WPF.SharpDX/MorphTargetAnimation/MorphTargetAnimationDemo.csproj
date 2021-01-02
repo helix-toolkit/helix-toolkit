@@ -103,6 +103,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="zophrac\source\Gunan_animated.fbx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX.Assimp\HelixToolkit.Wpf.SharpDX.Assimp.csproj">
@@ -136,6 +137,17 @@
     <PackageReference Include="SharpDX.Mathematics">
       <Version>4.2.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="zophrac\README.txt" />
+    <Resource Include="zophrac\textures\eye_diff.png" />
+    <Resource Include="zophrac\textures\eye_glossy.png" />
+    <Resource Include="zophrac\textures\Eye_normal.png" />
+    <Resource Include="zophrac\textures\head_ao.png" />
+    <Resource Include="zophrac\textures\head_diffuse.png" />
+    <Resource Include="zophrac\textures\head_normal.png" />
+    <Resource Include="zophrac\textures\head_spec.png" />
+    <Resource Include="zophrac\textures\teeth_ao.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
