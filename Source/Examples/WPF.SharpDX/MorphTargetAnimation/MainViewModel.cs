@@ -27,18 +27,9 @@ namespace MorphTargetAnimationDemo
 
         private HelixToolkitScene scn;
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
-        private Animation animation;
-        private List<IAnimationUpdater> animUpdaters;
-        private MorphTargetKeyFrameUpdater mtUpdater;
         private long sum = 0;
         private long count = 0;
         private List<IAnimationUpdater> animationUpdaters;
-
-        //TODO
-        //Issue with boneskin mesh node
-        //Since we force it to render as boneskin mesh whenever morph targets exist
-        //it will not render correctly if it has a skeleton since only an updater 
-        //currently handles updatiing skeleton data. we need to add a default state for that
 
         public MainViewModel()
         {
@@ -57,7 +48,7 @@ namespace MorphTargetAnimationDemo
             //Make it renderable
             ModelGroup.AddNode(scn.Root);
 
-            //Setup animation TODO: will not handle shit well at all, only in this case
+            //Setup animation
             animationUpdaters = new List<IAnimationUpdater>();
             foreach (Animation anim in scn.Animations)
             {
