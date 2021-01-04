@@ -70,10 +70,9 @@ namespace MorphTargetAnimationDemo
             //Animation with perf testing
             long t = Stopwatch.GetTimestamp();
 
+            //Update animation. Ensures all animation times are in sync
             long ts = Stopwatch.GetTimestamp();
             long fq = Stopwatch.Frequency;
-
-            //TODO: Not all animations are completely sync
             foreach (IAnimationUpdater updater in animationUpdaters)
                 updater.Update(ts, fq);
 
