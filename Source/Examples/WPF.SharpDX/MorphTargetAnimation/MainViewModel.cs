@@ -41,7 +41,7 @@ namespace MorphTargetAnimationDemo
             //Test importing
             Importer importer = new Importer();
             importer.Configuration.CreateSkeletonForBoneSkinningMesh = true;
-            importer.Configuration.SkeletonSizeScale = 0.04f;
+            importer.Configuration.SkeletonSizeScale = 0.01f;
             importer.Configuration.GlobalScale = 0.1f;
             scn = importer.Load("../../zophrac/source/Gunan_animated.fbx");
 
@@ -54,17 +54,6 @@ namespace MorphTargetAnimationDemo
             {
                 if (anim.AnimationType == AnimationType.MorphTarget)
                 {
-                    string str = "";
-                    for (int i = 0; i < (anim.RootNode as BoneSkinMeshNode).MorphTargetWeights.Length; i++)
-                    {
-                        str += "\n\n\nWEIGHT ID ======== " + i;
-                        foreach (MorphTargetKeyframe kf in anim.morphTargetKeyframes)
-                        {
-                            if (kf.Index == i)
-                                str += string.Format("\nt={0:0.000}\tw={1:0.000}", kf.Time, kf.Weight);
-                        }
-                    }
-
                     animationUpdaters.Add(new MorphTargetKeyFrameUpdater(anim, (anim.RootNode as BoneSkinMeshNode).MorphTargetWeights));
                     animationUpdaters[animationUpdaters.Count - 1].RepeatMode = AnimationRepeatMode.Loop;
                 }
@@ -81,8 +70,12 @@ namespace MorphTargetAnimationDemo
             //Animation with perf testing
             long t = Stopwatch.GetTimestamp();
 
+            long ts = Stopwatch.GetTimestamp();
+            long fq = Stopwatch.Frequency;
+
+            //TODO: Not all animations are completely sync
             foreach (IAnimationUpdater updater in animationUpdaters)
-                updater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+                updater.Update(ts, fq);
 
             t = Stopwatch.GetTimestamp() - t;
             sum += t;

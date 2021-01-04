@@ -53,17 +53,6 @@ namespace HelixToolkit.UWP
                     targetKeyframeIds[i] = ids.OrderBy(n => kfs[n].Time).ToArray();
                 }
 
-                string str = "";
-                for (int i = 0; i < targetKeyframeIds.Length; i++)
-                {
-                    str += "\n\n\nWEIGHT ID = " + i;
-                    for (int j = 0; j < targetKeyframeIds[i].Length; j++)
-                    {
-                        MorphTargetKeyframe kf = kfs[targetKeyframeIds[i][j]];
-                        str += String.Format("\nt={0:0.000}\tw={1:0.000}", kf.Time, kf.Weight);
-                    }
-                }
-
                 //Used to cache previous keyframe id's per morph target
                 prevKeyframes = new int[weights.Count];
             }

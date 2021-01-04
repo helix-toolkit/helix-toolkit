@@ -162,8 +162,12 @@ namespace HelixToolkit.UWP
                         }
 
                         //Setup bone matrices initially if it's morphable (unable to render w/o bones)
-                        if (node is HxScene.BoneSkinMeshNode sn && sn.MorphTargetWeights.Length > 0)
+                        if (node is HxScene.BoneSkinMeshNode sn 
+                            && sn.MorphTargetWeights.Length > 0 
+                            && sn.BoneMatrices?.Length == 0)
+                        {
                             sn.UpdateBoneMatrices();
+                        }
                     }
                 }
 
@@ -187,7 +191,7 @@ namespace HelixToolkit.UWP
                             {
                                 lock (animationList)
                                 {
-                                    animationList.Add(hxMAni);
+                                    animationList.AddRange(hxMAni);
                                 }
                             }
                         });
@@ -199,7 +203,7 @@ namespace HelixToolkit.UWP
                             if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
                                 animationList.Add(hxAni);
                             if (LoadMorphAnimation(ani, dict, out var hxMAni) == ErrorCode.Succeed)
-                                animationList.Add(hxMAni);
+                                animationList.AddRange(hxMAni);
                         }
                     }
                     scene.Animations = animationList;
@@ -229,6 +233,7 @@ namespace HelixToolkit.UWP
                     var code = ErrorCode.None;
                     foreach (var key in ani.NodeAnimationChannels)
                     {
+                        System.Diagnostics.Debug.WriteLine(key.NodeName);
                         if (dict.TryGetValue(key.NodeName, out var node))
                         {
                             var nAni = new HxAnimations.NodeAnimation
@@ -260,7 +265,7 @@ namespace HelixToolkit.UWP
             }
 
             private ErrorCode LoadMorphAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict, 
-                out HxAnimations.Animation hxAni)
+                out List<HxAnimations.Animation> hxAnis)
             {
                 if (ani.TicksPerSecond == 0)
                 {
@@ -268,46 +273,46 @@ namespace HelixToolkit.UWP
                     ani.TicksPerSecond = configuration.TickesPerSecond;
                 }
 
+                hxAnis = new List<HxAnimations.Animation>();
                 if (ani.MeshMorphAnimationChannelCount > 0)
                 {
-                    hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.MorphTarget)
+                    foreach (MeshMorphAnimationChannel aniChannel in ani.MeshMorphAnimationChannels)
                     {
-                        StartTime = 0,
-                        EndTime = (float)(ani.DurationInTicks / ani.TicksPerSecond),
-                        Name = ani.Name,
-                        morphTargetKeyframes = new List<HxAnimations.MorphTargetKeyframe>()
-                    };
-
-                    //Upgrade to multiple channels will require node morph target anims or 
-                    //splitting animations to multiple (per channel)
-                    if (ani.MeshMorphAnimationChannelCount > 1)
-                        Log(HelixToolkit.Logger.LogLevel.Warning, "Only supporting one morph target channel per animation at the moment");
-
-                    //Reference node
-                    string nodeName = ani.MeshMorphAnimationChannels[0].Name.Replace("*0", "");
-                    if (dict.TryGetValue(nodeName, out var node))
-                        hxAni.RootNode = node.Items.Where(i => (i as HxScene.BoneSkinMeshNode).MorphTargetWeights?.Length > 0).FirstOrDefault();
-                    else
-                        return ErrorCode.Failed;
-
-                    //Add keyframes
-                    foreach (var key in ani.MeshMorphAnimationChannels[0].MeshMorphKeys)
-                    {
-                        for (int i = 0; i < key.Values.Count; i++)
+                        HxAnimations.Animation hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.MorphTarget)
                         {
-                            hxAni.morphTargetKeyframes.Add(new HxAnimations.MorphTargetKeyframe()
+                            StartTime = 0,
+                            EndTime = (float)(ani.DurationInTicks / ani.TicksPerSecond),
+                            Name = ani.Name,
+                            morphTargetKeyframes = new List<HxAnimations.MorphTargetKeyframe>()
+                        };
+
+                        //Reference node
+                        string nodeName = aniChannel.Name.Replace("*0", "");
+                        if (dict.TryGetValue(nodeName, out var node))
+                            hxAni.RootNode = node.Items.Where(i => (i as HxScene.BoneSkinMeshNode).MorphTargetWeights?.Length > 0).FirstOrDefault();
+                        else
+                            continue;
+
+                        //Add keyframes
+                        foreach (var key in aniChannel.MeshMorphKeys)
+                        {
+                            for (int i = 0; i < key.Values.Count; i++)
                             {
-                                Index = key.Values[i],
-                                Weight = (float)key.Weights[i],
-                                Time = (float)key.Time / (float)ani.TicksPerSecond
-                            });
+                                hxAni.morphTargetKeyframes.Add(new HxAnimations.MorphTargetKeyframe()
+                                {
+                                    Index = key.Values[i],
+                                    Weight = (float)key.Weights[i],
+                                    Time = (float)key.Time / (float)ani.TicksPerSecond
+                                });
+                            }
                         }
+
+                        hxAnis.Add(hxAni);
                     }
 
                     return ErrorCode.Succeed;
                 }
-                
-                hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.MorphTarget);
+
                 return ErrorCode.Failed;
             }
 
