@@ -286,7 +286,7 @@ namespace HelixToolkit.UWP
                             morphTargetKeyframes = new List<HxAnimations.MorphTargetKeyframe>()
                         };
 
-                        //Reference node
+                        //Reference node (removes "*0", i don't know why but its there sometimes)
                         string nodeName = aniChannel.Name.Replace("*0", "");
                         if (dict.TryGetValue(nodeName, out var node))
                             hxAni.RootNode = node.Items.Where(i => (i as HxScene.BoneSkinMeshNode).MorphTargetWeights?.Length > 0).FirstOrDefault();

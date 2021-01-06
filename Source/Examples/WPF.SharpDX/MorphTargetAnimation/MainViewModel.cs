@@ -22,13 +22,10 @@ namespace MorphTargetAnimationDemo
     public class MainViewModel : BaseViewModel
     {
         public SceneNodeGroupModel3D ModelGroup { get; private set; }
-        public ObservableCollection<float> weights { get; set; }
         public string debugLabel { get; set; }
 
         private HelixToolkitScene scn;
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
-        private long sum = 0;
-        private long count = 0;
         private List<IAnimationUpdater> animationUpdaters;
 
         public MainViewModel()
@@ -43,12 +40,12 @@ namespace MorphTargetAnimationDemo
             importer.Configuration.CreateSkeletonForBoneSkinningMesh = true;
             importer.Configuration.SkeletonSizeScale = 0.01f;
             importer.Configuration.GlobalScale = 0.1f;
-            scn = importer.Load("../../zophrac/source/Gunan_animated.fbx");
+            scn = importer.Load("../../zophrac/source/Gunan_animated__.fbx");
 
-            //Make it renderable
+            //Add to model group for rendering
             ModelGroup.AddNode(scn.Root);
 
-            //Setup animation
+            //Setup each animation, this will actively play all (not always desired)
             animationUpdaters = new List<IAnimationUpdater>();
             foreach (Animation anim in scn.Animations)
             {
@@ -77,9 +74,6 @@ namespace MorphTargetAnimationDemo
                 updater.Update(ts, fq);
 
             t = Stopwatch.GetTimestamp() - t;
-            sum += t;
-            count++;
-            //debugLabel = (sum / count).ToString();
             debugLabel = t.ToString();
 
             scn.Root.InvalidateRender();

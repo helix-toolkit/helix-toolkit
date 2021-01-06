@@ -14,19 +14,10 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <hx:Viewport3DX x:Name="Viewport" EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}" ShowFrameRate="True" >
-            <hx:AmbientLight3D />
+            <hx:AmbientLight3D Color="White" />
             <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
             <hx:Element3DPresenter Content="{Binding ModelGroup}" />
         </hx:Viewport3DX>
-        <StackPanel HorizontalAlignment="Left" Height="489" VerticalAlignment="Top" Width="111" Margin="10,10,0,0">
-            <ItemsControl x:Name="itemsControl" ItemsSource="{Binding Path=weights}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Slider Value="{Binding Path=.}" SmallChange="0.01" Maximum="1" Margin="0,0,0,10" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
         <Label x:Name="DebugLabel" Content="{Binding debugLabel}" HorizontalAlignment="Center" Margin="400,0,395,20" VerticalAlignment="Bottom" Height="38" Width="157"/>
     </Grid>
 </Window>
