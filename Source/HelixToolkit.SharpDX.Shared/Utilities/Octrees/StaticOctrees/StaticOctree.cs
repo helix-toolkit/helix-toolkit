@@ -534,7 +534,7 @@ namespace HelixToolkit.UWP
             /// <param name="rayWS"></param>
             /// <param name="hits"></param>
             /// <returns></returns>
-            public bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+            public bool HitTest(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
             {
                 return HitTest(context, model, geometry, modelMatrix, rayWS, false, ref hits);
             }
@@ -550,7 +550,7 @@ namespace HelixToolkit.UWP
             /// <param name="returnMultiple"></param>
             /// <param name="hits"></param>
             /// <returns></returns>
-            public bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, 
+            public bool HitTest(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, 
                 bool returnMultiple, ref List<HitTestResult> hits)
             {
                 return HitTest(context, model, geometry, modelMatrix, rayWS, returnMultiple, ref hits, 0);
@@ -567,7 +567,7 @@ namespace HelixToolkit.UWP
             /// <param name="hits">The hits.</param>
             /// <param name="hitThickness">The hit thickness.</param>
             /// <returns></returns>
-            public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, 
+            public virtual bool HitTest(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, 
                 Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
             {
                 return HitTest(context, model, geometry, modelMatrix, rayWS, false, ref hits, hitThickness);
@@ -585,7 +585,7 @@ namespace HelixToolkit.UWP
             /// <param name="hits"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, 
+            public virtual bool HitTest(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, 
                 Ray rayWS, bool returnMultiple, ref List<HitTestResult> hits, float hitThickness)
             {
                 if (hits == null)
@@ -670,7 +670,7 @@ namespace HelixToolkit.UWP
             /// <param name="sphere"></param>
             /// <param name="points"></param>
             /// <returns></returns>
-            public virtual bool FindNearestPointBySphere(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points)
+            public virtual bool FindNearestPointBySphere(IRenderMatrices context, ref BoundingSphere sphere, ref List<HitTestResult> points)
             {
                 if (points == null)
                 {
@@ -726,7 +726,7 @@ namespace HelixToolkit.UWP
             /// <param name="results"></param>
             /// <param name="heuristicSearchFactor"></param>
             /// <returns></returns>
-            public virtual bool FindNearestPointFromPoint(RenderContext context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
+            public virtual bool FindNearestPointFromPoint(IRenderMatrices context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
             {
                 if (results == null)
                 {
@@ -790,7 +790,7 @@ namespace HelixToolkit.UWP
             /// <param name="radius"></param>
             /// <param name="result"></param>
             /// <returns></returns>
-            public bool FindNearestPointByPointAndSearchRadius(RenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
+            public bool FindNearestPointByPointAndSearchRadius(IRenderMatrices context, ref Vector3 point, float radius, ref List<HitTestResult> result)
             {
                 var sphere = new global::SharpDX.BoundingSphere(point, radius);
                 return FindNearestPointBySphere(context, ref sphere, ref result);
@@ -804,7 +804,7 @@ namespace HelixToolkit.UWP
             /// <param name="points"></param>
             /// <param name="isIntersect"></param>
             /// <returns></returns>
-            protected abstract bool FindNearestPointBySphereExcludeChild(ref Octant octant, RenderContext context,
+            protected abstract bool FindNearestPointBySphereExcludeChild(ref Octant octant, IRenderMatrices context,
                 ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
 
             /// <summary>
@@ -822,7 +822,7 @@ namespace HelixToolkit.UWP
             /// <param name="isIntersect"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry,
+            protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, IRenderMatrices context, object model, Geometry3D geometry,
                 Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
                 bool returnMultiple,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);

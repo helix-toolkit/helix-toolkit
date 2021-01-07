@@ -162,7 +162,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// <param name="ray">The ray.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
-            public virtual bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+            public virtual bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
             {
                 return SceneNode.HitTest(context, ray, ref hits);
             }

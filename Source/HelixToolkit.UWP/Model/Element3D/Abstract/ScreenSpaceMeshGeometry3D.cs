@@ -77,6 +77,13 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as Element3DCore).SceneNode as ScreenSpacedNode).Mode = (ScreenSpacedMode)e.NewValue;
                 }));
 
+        // Using a DependencyProperty as the backing store for CameraType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CameraTypeProperty =
+            DependencyProperty.Register("CameraType", typeof(ScreenSpacedCameraType), typeof(ScreenSpacedElement3D), new PropertyMetadata(ScreenSpacedCameraType.Auto,
+                (d, e) =>
+                {
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).CameraType = (ScreenSpacedCameraType)e.NewValue;
+                }));
 
         /// <summary>
         /// The absolute position3 d property
@@ -146,6 +153,25 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (ScreenSpacedMode)GetValue(ModeProperty); }
             set { SetValue(ModeProperty, value); }
         }
+
+        /// <summary>
+        /// Only being used when <see cref="Mode"/> is RelativeScreenSpaced
+        /// </summary>
+        /// <value>
+        /// The type of the camera.
+        /// </value>
+        public ScreenSpacedCameraType CameraType
+        {
+            get
+            {
+                return (ScreenSpacedCameraType)GetValue(CameraTypeProperty);
+            }
+            set
+            {
+                SetValue(CameraTypeProperty, value);
+            }
+        }
+
         /// <summary>
         /// Gets or sets the absolute position in 3d. Use by <see cref="Mode"/> = <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
         /// </summary>

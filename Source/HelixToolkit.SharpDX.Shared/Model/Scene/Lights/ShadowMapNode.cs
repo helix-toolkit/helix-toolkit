@@ -229,7 +229,7 @@ namespace HelixToolkit.UWP
             /// <returns>
             ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
             /// </returns>
-            protected override bool CanHitTest(RenderContext context)
+            protected override bool CanHitTest(IRenderMatrices context)
             {
                 return false;
             }
@@ -243,7 +243,7 @@ namespace HelixToolkit.UWP
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
             /// <exception cref="System.NotImplementedException"></exception>
-            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
             {
                 return false;
             }

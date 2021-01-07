@@ -135,7 +135,7 @@ namespace HelixToolkit.UWP
             /// <param name="rayWS"></param>
             /// <param name="hits"></param>
             /// <returns></returns>
-            public virtual bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+            public virtual bool HitTest(IRenderMatrices context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
             {
                 return Octree.HitTest(context, model, null, modelMatrix, rayWS, ref hits);
             }
@@ -433,7 +433,7 @@ namespace HelixToolkit.UWP
                     RequestUpdateOctree = true;
                 }
             }
-            public override bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+            public override bool HitTest(IRenderMatrices context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
             {
                 if(Octree == null)
                 {

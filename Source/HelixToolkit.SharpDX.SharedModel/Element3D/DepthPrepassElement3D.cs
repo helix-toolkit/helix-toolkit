@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="ray">The ray.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        public override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

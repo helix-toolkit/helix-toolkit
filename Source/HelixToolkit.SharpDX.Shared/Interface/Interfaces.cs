@@ -77,7 +77,7 @@ namespace HelixToolkit.UWP
         /// <param name="ray"></param>
         /// <param name="hits"></param>
         /// <returns>Return all hitted details with distance from nearest to farest.</returns>
-        bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits);
+        bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits);
 
         /// <summary>
         /// Indicates, if this element should be hit-tested.        

@@ -117,7 +117,7 @@ namespace HelixToolkit.UWP
         /// <param name="originalSource">The original source.</param>
         /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
         /// <returns></returns>
-        public abstract bool HitTest(RenderContext context, Matrix modelMatrix,
+        public abstract bool HitTest(IRenderMatrices context, Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits,
             object originalSource, bool fixedSize);
 
@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP
         /// <param name="originalSource">The original source.</param>
         /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
         /// <returns></returns>
-        protected bool HitTestFixedSize(RenderContext context, ref Matrix modelMatrix,
+        protected bool HitTestFixedSize(IRenderMatrices context, ref Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits,
             object originalSource, int count)
         {
@@ -144,8 +144,11 @@ namespace HelixToolkit.UWP
             var visualToScreen = context.ScreenViewProjectionMatrix;
             var screenPoint3D = Vector3.TransformCoordinate(rayWS.Position, visualToScreen);
             var screenPoint = new Vector2(screenPoint3D.X, screenPoint3D.Y);
-            var scale3D = modelMatrix.ScaleVector;
-            var scale = new Vector2(scale3D.X, scale3D.Y);
+            if (screenPoint.X < 0 || screenPoint.Y < 0)
+            {
+                return false;
+            }
+            
             for (int i = 0; i < count; ++i)
             {
                 var vert = BillboardVertices[i];
@@ -156,7 +159,7 @@ namespace HelixToolkit.UWP
                 {
                     continue;
                 }
-                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, ref scale);
+                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, context.DpiScale);
                 if (quad.IsPointInQuad2D(ref screenPoint))
                 {
                     var v = c - rayWS.Position;
@@ -198,7 +201,7 @@ namespace HelixToolkit.UWP
         /// <param name="originalSource">The original source.</param>
         /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
         /// <returns></returns>
-        protected bool HitTestNonFixedSize(RenderContext context, ref Matrix modelMatrix,
+        protected bool HitTestNonFixedSize(IRenderMatrices context, ref Matrix modelMatrix,
             ref Ray rayWS, ref List<HitTestResult> hits,
             object originalSource, int count)
         {
@@ -209,8 +212,7 @@ namespace HelixToolkit.UWP
             };
             var viewMatrix = context.ViewMatrix;
             var viewMatrixInv = viewMatrix.PsudoInvert();
-            var scale3D = modelMatrix.ScaleVector;
-            var scale = new Vector2(scale3D.X, scale3D.Y);
+
             for (int i = 0; i < count; ++i)
             {
                 var vert = BillboardVertices[i];
@@ -221,7 +223,7 @@ namespace HelixToolkit.UWP
                 {
                     continue;
                 }
-                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv, ref scale);
+                var quad = GetHitTestQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref viewMatrix, ref viewMatrixInv);
                 if (Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.TR, ref quad.BR, out Vector3 hitPoint)
                     || Collision.RayIntersectsTriangle(ref rayWS, ref quad.TL, ref quad.BR, ref quad.BL, out hitPoint))
                 {
@@ -336,16 +338,16 @@ namespace HelixToolkit.UWP
         }
 
         private static Quad GetHitTestQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
-            ref Matrix viewMatrix, ref Matrix viewMatrixInv, ref Vector2 scale)
+            ref Matrix viewMatrix, ref Matrix viewMatrixInv)
         {
             var vcenter = Vector3.TransformCoordinate(center, viewMatrix);
             var vcX = vcenter.X;
             var vcY = vcenter.Y;
 
-            var bl = new Vector3(vcX + BL.X * scale.X, vcY + BL.Y * scale.X, vcenter.Z);
-            var br = new Vector3(vcX + BR.X * scale.X, vcY + BR.Y * scale.Y, vcenter.Z);
-            var tr = new Vector3(vcX + TR.X * scale.X, vcY + TR.Y * scale.Y, vcenter.Z);
-            var tl = new Vector3(vcX + TL.X * scale.X, vcY + TL.Y * scale.Y, vcenter.Z);
+            var bl = new Vector3(vcX + BL.X, vcY + BL.Y, vcenter.Z);
+            var br = new Vector3(vcX + BR.X, vcY + BR.Y, vcenter.Z);
+            var tr = new Vector3(vcX + TR.X, vcY + TR.Y, vcenter.Z);
+            var tl = new Vector3(vcX + TL.X, vcY + TL.Y, vcenter.Z);
 
             bl = Vector3.TransformCoordinate(bl, viewMatrixInv);
             br = Vector3.TransformCoordinate(br, viewMatrixInv);
@@ -355,7 +357,7 @@ namespace HelixToolkit.UWP
         }
 
         private static Quad2D GetScreenQuad(ref Vector3 center, ref Vector2 TL, ref Vector2 TR, ref Vector2 BL, ref Vector2 BR,
-            ref Matrix screenViewProjection, ref Vector2 scale)
+            ref Matrix screenViewProjection, float scale)
         {
             var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
             Vector2 p = new Vector2(vcenter.X, vcenter.Y);

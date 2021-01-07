@@ -1,6 +1,31 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+### Added
+1. Added `CameraType` property for screen space group. Allows to use orthographic camera for screen space group under `RelativeScreenSpaced` mode.
+
+### Improvement
+1. Make projects in new format (vs2017) also use the global AssemblyInfo.cs.
+2. Update NuGet version to v5.8.
+3. Update UWP min version to Win SDK 1903. (UWP)
+4. Update Cyotek.Drawing.BitmapFont to 2.0.0. (WPF.SharpDX/UWP/Core)
+5. Supports group model under screen space group. (WPF.SharpDX/UWP/Core)
+
+### Fixed
+1. ZoomExtents: confusion between horizontal and vertical fov. #1441 (WPF.SharpDX/UWP/Core)
+2. Render bitmap custom size. #1439  (WPF.SharpDX/UWP/Core)
+3. Fix UWP nuget package missing .cso shader files. (UWP)
+4. Fix AssimpNet version in nuget spec. (WPF.SharpDX/UWP/Core)
+5. Fix mesh outline post effect not visible under white background #1466  (WPF.SharpDX/UWP/Core)
+6. Fix data binding fails on button2D #1385 (WPF.SharpDX)
+7. Fix billboard/line/point hit test not working properly with Dpi scaling enabled. (WPF.SharpDX/UWP/Core)
+8. Fix billboard/line/point not able to do hit test inside screen space group. (WPF.SharpDX/UWP/Core)
+9. Fixes DataTemplate3D not supporting Binding-elements #1480 (Wpf)
+
+### Breaking Change
+1. `RenderContext` has been changed to `IRenderMetrices` on hit test related function signature. (WPF.SharpDX/UWP/Core)
+
 ## [2.13.1] - 2020-10-17
 ### Fixed
 1. Fixed small triangle hit test is not working correctly in octree. #1428 (WPF.SharpDX/UWP/Core)

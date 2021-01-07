@@ -676,7 +676,7 @@ namespace HelixToolkit.UWP
             /// <returns>
             ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
             /// </returns>
-            protected override bool CanHitTest(RenderContext context)
+            protected override bool CanHitTest(IRenderMatrices context)
             {
                 return base.CanHitTest(context) && Geometries != null && Geometries.Length > 0 && Materials != null && Materials.Length > 0;
             }
@@ -701,7 +701,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
             {
                 if(ray.Intersects(boundsWithTransform) && ray.Intersects(boundsSphereWithTransform))
                 {                

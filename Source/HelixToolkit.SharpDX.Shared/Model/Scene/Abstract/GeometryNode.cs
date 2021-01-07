@@ -546,7 +546,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+            public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
             {
                 if (CanHitTest(context) && PreHitTestOnBounds(ref rayWS))
                 {
@@ -585,7 +585,7 @@ namespace HelixToolkit.UWP
             /// <returns>
             ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
             /// </returns>
-            protected override bool CanHitTest(RenderContext context)
+            protected override bool CanHitTest(IRenderMatrices context)
             {
                 return base.CanHitTest(context) && GeometryValid;
             }

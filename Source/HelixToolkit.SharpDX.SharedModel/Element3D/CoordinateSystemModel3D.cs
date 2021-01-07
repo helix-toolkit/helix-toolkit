@@ -203,7 +203,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new CoordinateSystemNode();
         }
 
-        public override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

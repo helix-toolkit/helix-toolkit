@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
             return Positions != null && Positions.Count > 0 && Indices != null && Indices.Count > 0;
         }
 
-        public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitTestThickness)
+        public virtual bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitTestThickness)
         {
             if (Positions == null || Positions.Count == 0
                 || Indices == null || Indices.Count == 0)
@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP
                     Vector3.TransformCoordinate(ref sp, ref svpm, out var sp3);
                     Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);
                     var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
-                    var dist = tv2.Length();
+                    var dist = tv2.Length() / context.DpiScale;
                     if (dist < lastDist && dist <= hitTestThickness)
                     {
                         lastDist = dist;

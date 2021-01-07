@@ -24,13 +24,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="MiddleClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
-            <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}" />
-            <hx:MeshGeometryModel3D Geometry="{Binding RectGeometry}" Material="{Binding Material}" />
-            <!--<hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White">
-                <hx:LineGeometryModel3D.Transform>
-                    <TranslateTransform3D OffsetY="2" />
-                </hx:LineGeometryModel3D.Transform>
-            </hx:LineGeometryModel3D>-->
+
             <hx:ScreenSpacedGroup3D RelativeScreenLocationX="-0.5">
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding ViewCubeGeometry1}"
@@ -60,24 +54,25 @@
                     Material="{Binding ViewCubeMaterial4}"
                     Mouse3DDown="MeshGeometryModel3D_Mouse3DDown"
                     Transform="{Binding ViewCubeTransform3}" />
+                <hx:BillboardTextModel3D Geometry="{Binding CoordinateText}"/>
             </hx:ScreenSpacedGroup3D>
             <hx:ScreenSpacedGroup3D
                 AbsolutePosition3D="0,2,0"
                 Mode="AbsolutePosition3D"
                 SizeScale="4">
-                <!--<hx:MeshGeometryModel3D
+                <hx:MeshGeometryModel3D
                     Geometry="{Binding Geometry}"
                     Material="{Binding Material}"
-                    Mouse3DDown="MeshGeometryModel3D_Mouse3DDown" />-->
-                <hx:LineGeometryModel3D
-                    Geometry="{Binding Coordinate}"
-                    IsHitTestVisible="False"
-                    Color="White" />
-                <hx:BillboardTextModel3D Geometry="{Binding CoordinateText}" IsHitTestVisible="False" />
+                    Mouse3DDown="MeshGeometryModel3D_Mouse3DDown" />
+                <hx:GroupModel3D>
+                    <hx:LineGeometryModel3D
+                        Geometry="{Binding Coordinate}"
+                        Color="White" Mouse3DDown="LineGeometryModel3D_Mouse3DDown" />
+                    <hx:BillboardTextModel3D Geometry="{Binding CoordinateText}"/>
+                </hx:GroupModel3D>
             </hx:ScreenSpacedGroup3D>
             <hx:ScreenSpacedGroup3D
                 AbsolutePosition3D="0,0,-7"
-                IsHitTestVisible="False"
                 Mode="AbsolutePosition3D"
                 SizeScale="2">
                 <hx:ScreenSpacedGroup3D.Transform>
@@ -89,15 +84,23 @@
                         </RotateTransform3D>
                     </Transform3DGroup>
                 </hx:ScreenSpacedGroup3D.Transform>
-                <hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White" />
+                <hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White" Mouse3DDown="LineGeometryModel3D_Mouse3DDown" />
+                <hx:BillboardTextModel3D Geometry="{Binding CoordinateText}"/>
             </hx:ScreenSpacedGroup3D>
             <hx:ScreenSpacedGroup3D
                 AbsolutePosition3D="0,0,-1"
-                IsHitTestVisible="False"
                 Mode="AbsolutePosition3D"
                 SizeScale="2">
-                <hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White" />
+                <hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White" Mouse3DDown="LineGeometryModel3D_Mouse3DDown" />
+                <hx:BillboardTextModel3D Geometry="{Binding CoordinateText}"/>
             </hx:ScreenSpacedGroup3D>
+            <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}" />
+            <hx:MeshGeometryModel3D Geometry="{Binding RectGeometry}" Material="{Binding Material}" />
+            <!--<hx:LineGeometryModel3D Geometry="{Binding Coordinate}" Color="White">
+                <hx:LineGeometryModel3D.Transform>
+                    <TranslateTransform3D OffsetY="2" />
+                </hx:LineGeometryModel3D.Transform>
+            </hx:LineGeometryModel3D>-->
         </hx:Viewport3DX>
     </Grid>
 </Window>
