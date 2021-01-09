@@ -94,16 +94,11 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="MonkeyMT.fbx" />
-    <None Include="MonkeyMT.gltf" />
-    <None Include="MonkeyTwistMT.fbx" />
-    <None Include="MonkeyTwistMT.glb" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="zophrac\source\Gunan_animated.fbx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\HelixToolkit.Wpf.SharpDX.Assimp\HelixToolkit.Wpf.SharpDX.Assimp.csproj">
@@ -139,7 +134,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="zophrac\README.txt" />
+      <None Include="..\..\..\..\Models\FBX\zophrac\source\Gunan_animated.fbx">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

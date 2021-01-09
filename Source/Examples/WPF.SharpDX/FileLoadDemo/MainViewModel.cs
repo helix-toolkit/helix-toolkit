@@ -137,7 +137,19 @@ namespace FileLoadDemo
                     StopAnimation();
                     if (value != null)
                     {
-                        animationUpdater = new NodeAnimationUpdater(value);
+                        switch (value.AnimationType)
+                        {
+                            case AnimationType.Keyframe:
+                                animationUpdater = new NodeAnimationUpdater(value);
+                                break;
+                            case AnimationType.MorphTarget:
+                                animationUpdater = new MorphTargetKeyFrameUpdater(value, (value.RootNode as BoneSkinMeshNode).MorphTargetWeights);
+                                break;
+                            default:
+                                animationUpdater = new NodeAnimationUpdater(value);
+                                break;
+                        }
+                        animationUpdater.RepeatMode = AnimationRepeatMode.Loop;
                     }
                     else
                     {
@@ -159,7 +171,7 @@ namespace FileLoadDemo
 
         private SynchronizationContext context = SynchronizationContext.Current;
         private HelixToolkitScene scene;
-        private NodeAnimationUpdater animationUpdater;
+        private IAnimationUpdater animationUpdater;
         private List<BoneSkinMeshNode> boneSkinNodes = new List<BoneSkinMeshNode>();
         private List<BoneSkinMeshNode> skeletonNodes = new List<BoneSkinMeshNode>();
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();

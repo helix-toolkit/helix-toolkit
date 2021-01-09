@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Gets or sets the morph target keyframes. 
             /// </summary>
-            public List<MorphTargetKeyframe> morphTargetKeyframes { get; set; }
+            public List<MorphTargetKeyframe> MorphTargetKeyframes { get; set; }
             /// <summary>
             /// Gets or sets the bone skin meshes.
             /// </summary>

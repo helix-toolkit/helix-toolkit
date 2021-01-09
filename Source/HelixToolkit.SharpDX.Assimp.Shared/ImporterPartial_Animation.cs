@@ -283,7 +283,7 @@ namespace HelixToolkit.UWP
                             StartTime = 0,
                             EndTime = (float)(ani.DurationInTicks / ani.TicksPerSecond),
                             Name = ani.Name,
-                            morphTargetKeyframes = new List<HxAnimations.MorphTargetKeyframe>()
+                            MorphTargetKeyframes = new List<HxAnimations.MorphTargetKeyframe>()
                         };
 
                         //Reference node (removes "*0", i don't know why but its there sometimes)
@@ -298,7 +298,7 @@ namespace HelixToolkit.UWP
                         {
                             for (int i = 0; i < key.Values.Count; i++)
                             {
-                                hxAni.morphTargetKeyframes.Add(new HxAnimations.MorphTargetKeyframe()
+                                hxAni.MorphTargetKeyframes.Add(new HxAnimations.MorphTargetKeyframe()
                                 {
                                     Index = key.Values[i],
                                     Weight = (float)key.Weights[i],
