@@ -293,6 +293,12 @@ cbuffer cbSSAO : register(b1)
 }
 #endif
 
+cbuffer cbMorphTarget : register(b9)
+{
+	int mtCount; //Number of targets
+	int mtPitch; //Pitch between targets for deltas buffer
+}
+
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D<float3> texNormalMap : register(t1);
@@ -331,6 +337,10 @@ Texture1D texColorStripe1DX : register(t12);
 Texture1D texColorStripe1DY : register(t13);
 
 StructuredBuffer<matrix> skinMatrices : register(t40);
+
+Buffer<float> morphTargetWeights : register(t60);
+Buffer<float3> morphTargetDeltas : register(t61);
+Buffer<int> morphTargetOffsets : register(t62);
 
 Texture2D texSprite : register(t50);
 

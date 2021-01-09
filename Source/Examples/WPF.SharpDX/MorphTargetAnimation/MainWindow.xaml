@@ -1,0 +1,23 @@
+﻿<Window x:Class="MorphTargetAnimationDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        Title="Morph Target Animation Demo" Height="540" Width="960">
+    <Window.Resources>
+        <DataTemplate x:Key="Template1">
+            <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Transform="{Binding Transform}" Material="{Binding Material}"/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid x:Name="grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX x:Name="Viewport" EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}" ShowFrameRate="True" >
+            <hx:AmbientLight3D Color="White" />
+            <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
+            <hx:Element3DPresenter Content="{Binding ModelGroup}" />
+        </hx:Viewport3DX>
+        <Label x:Name="DebugLabel" Content="{Binding debugLabel}" HorizontalAlignment="Center" Margin="400,0,395,20" VerticalAlignment="Bottom" Height="38" Width="157"/>
+    </Grid>
+</Window>

@@ -160,6 +160,14 @@ namespace HelixToolkit.UWP
                             skeleton.Name = "HxSK_" + sk.Name;
                             group.AddChildNode(skeleton);
                         }
+
+                        //Setup bone matrices initially if it's morphable (unable to render w/o bones)
+                        if (node is HxScene.BoneSkinMeshNode sn 
+                            && sn.MorphTargetWeights.Length > 0 
+                            && sn.BoneMatrices?.Length == 0)
+                        {
+                            sn.UpdateBoneMatrices();
+                        }
                     }
                 }
 
@@ -170,15 +178,23 @@ namespace HelixToolkit.UWP
                     if (Configuration.EnableParallelProcessing)
                     {
                         Parallel.ForEach(scene.AssimpScene.Animations, ani =>
-                       {
-                           if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
-                           {
-                               lock (animationList)
-                               {
-                                   animationList.Add(hxAni);
-                               }
-                           }
-                       });
+                        {
+                            if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
+                            {
+                                lock (animationList)
+                                {
+                                    animationList.Add(hxAni);
+                                }
+                            }
+
+                            if (LoadMorphAnimation(ani, dict, out var hxMAni) == ErrorCode.Succeed)
+                            {
+                                lock (animationList)
+                                {
+                                    animationList.AddRange(hxMAni);
+                                }
+                            }
+                        });
                     }
                     else
                     {
@@ -186,6 +202,8 @@ namespace HelixToolkit.UWP
                         {
                             if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
                                 animationList.Add(hxAni);
+                            if (LoadMorphAnimation(ani, dict, out var hxMAni) == ErrorCode.Succeed)
+                                animationList.AddRange(hxMAni);
                         }
                     }
                     scene.Animations = animationList;
@@ -215,6 +233,7 @@ namespace HelixToolkit.UWP
                     var code = ErrorCode.None;
                     foreach (var key in ani.NodeAnimationChannels)
                     {
+                        System.Diagnostics.Debug.WriteLine(key.NodeName);
                         if (dict.TryGetValue(key.NodeName, out var node))
                         {
                             var nAni = new HxAnimations.NodeAnimation
@@ -240,6 +259,58 @@ namespace HelixToolkit.UWP
                         FindBoneSkinMeshes(hxAni);
                     }
                     return code;
+                }
+
+                return ErrorCode.Failed;
+            }
+
+            private ErrorCode LoadMorphAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict, 
+                out List<HxAnimations.Animation> hxAnis)
+            {
+                if (ani.TicksPerSecond == 0)
+                {
+                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Animation TicksPerSecond is 0. Set to {configuration.TickesPerSecond}");
+                    ani.TicksPerSecond = configuration.TickesPerSecond;
+                }
+
+                hxAnis = new List<HxAnimations.Animation>();
+                if (ani.MeshMorphAnimationChannelCount > 0)
+                {
+                    foreach (MeshMorphAnimationChannel aniChannel in ani.MeshMorphAnimationChannels)
+                    {
+                        HxAnimations.Animation hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.MorphTarget)
+                        {
+                            StartTime = 0,
+                            EndTime = (float)(ani.DurationInTicks / ani.TicksPerSecond),
+                            Name = ani.Name,
+                            morphTargetKeyframes = new List<HxAnimations.MorphTargetKeyframe>()
+                        };
+
+                        //Reference node (removes "*0", i don't know why but its there sometimes)
+                        string nodeName = aniChannel.Name.Replace("*0", "");
+                        if (dict.TryGetValue(nodeName, out var node))
+                            hxAni.RootNode = node.Items.Where(i => (i as HxScene.BoneSkinMeshNode).MorphTargetWeights?.Length > 0).FirstOrDefault();
+                        else
+                            continue;
+
+                        //Add keyframes
+                        foreach (var key in aniChannel.MeshMorphKeys)
+                        {
+                            for (int i = 0; i < key.Values.Count; i++)
+                            {
+                                hxAni.morphTargetKeyframes.Add(new HxAnimations.MorphTargetKeyframe()
+                                {
+                                    Index = key.Values[i],
+                                    Weight = (float)key.Weights[i],
+                                    Time = (float)key.Time / (float)ani.TicksPerSecond
+                                });
+                            }
+                        }
+
+                        hxAnis.Add(hxAni);
+                    }
+
+                    return ErrorCode.Succeed;
                 }
 
                 return ErrorCode.Failed;
