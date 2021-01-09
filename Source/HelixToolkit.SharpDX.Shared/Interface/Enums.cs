@@ -207,4 +207,9 @@ namespace HelixToolkit.UWP
         RelativeScreenSpaced,
         AbsolutePosition3D
     }
+
+    public enum ScreenSpacedCameraType
+    {
+        Auto, Perspective, Orthographic
+    }
 }

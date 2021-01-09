@@ -116,12 +116,12 @@ namespace HelixToolkit.UWP
             TextureStatic = MemoryStream.Synchronized(texImageStream);
 #else
             var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
-            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\Resources\\{FontName}.fnt");
+            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\HelixToolkit.UWP\\Resources\\{FontName}.fnt");
             bmpFont = new BitmapFont();
             var fileStream = new MemoryStream(sampleFile);
             bmpFont.Load(fileStream);
 
-            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\Resources\\{FontName}.dds");
+            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\HelixToolkit.UWP\\Resources\\{FontName}.dds");
             TextureStatic = new MemoryStream(texFile);         
 #endif
 #endif
@@ -217,7 +217,7 @@ namespace HelixToolkit.UWP
                         default:
                             Character data = BitmapFont[character];
                             int kerning = BitmapFont.GetKerning(previousCharacter, character);
-                            tempList.Add(DrawCharacter(data, new Vector3(x + data.Offset.X, y - data.Offset.Y, 0), w, h, kerning, textInfo));
+                            tempList.Add(DrawCharacter(data, new Vector3(x + data.XOffset, y - data.YOffset, 0), w, h, kerning, textInfo));
 
                             x += data.XAdvance + kerning;
                             break;
@@ -289,10 +289,10 @@ namespace HelixToolkit.UWP
 
         private BillboardVertex DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
         {
-            var cw = character.Bounds.Width;
-            var ch = character.Bounds.Height;
-            var cu = character.Bounds.Left;
-            var cv = character.Bounds.Top;
+            var cw = character.Width;
+            var ch = character.Height;
+            var cu = character.X;
+            var cv = character.Y;
             var tl = new Vector2(origin.X + kerning, origin.Y );
             var br = new Vector2(origin.X + cw + kerning, origin.Y - ch);
             var offTL = tl * info.Scale * textureScale;
@@ -316,7 +316,7 @@ namespace HelixToolkit.UWP
             };
         }
 
-        public override bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
+        public override bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
             object originalSource, bool fixedSize)
         {
             if (!IsInitialized || context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))

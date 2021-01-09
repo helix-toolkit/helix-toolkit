@@ -92,16 +92,18 @@ namespace HelixToolkit.UWP
                 {
     #if DEBUG
                     Debug.WriteLine("Get PerFrameRenderables");
-    #endif               
+#endif
+                    bool isInScreenSpacedGroup = false;
+                    int screenSpacedGroupDepth = int.MaxValue;
                     for (int i = 0; i < sceneCount;)
                     {
                         var renderable = perFrameFlattenedScene[i];
                         renderable.Value.Update(context);
                         var type = renderable.Value.RenderType;
+                        int depth = renderable.Key;
                         if (!renderable.Value.IsRenderable)
                         {
-                            //Skip scene graph depth larger than current node
-                            int depth = renderable.Key;
+                            //Skip scene graph depth larger than current node                         
                             ++i;
                             for (; i < sceneCount; ++i)
                             {
@@ -118,6 +120,14 @@ namespace HelixToolkit.UWP
                             needUpdateCores.Add(renderable.Value.RenderCore);
                         }
                         ++i;
+                        // Add node into screen spaced array if the node belongs to a screen spaced group.
+                        if (isInScreenSpacedGroup && depth > screenSpacedGroupDepth)
+                        {
+                            screenSpacedNodes.Add(renderable.Value);
+                            continue;
+                        }
+                        isInScreenSpacedGroup = false;
+                        screenSpacedGroupDepth = int.MaxValue;
                         switch (type)
                         {
                             case RenderType.Opaque:
@@ -140,6 +150,8 @@ namespace HelixToolkit.UWP
                                 break;
                             case RenderType.ScreenSpaced:
                                 screenSpacedNodes.Add(renderable.Value);
+                                isInScreenSpacedGroup = true;
+                                screenSpacedGroupDepth = renderable.Key;
                                 break;
                         }
                     }

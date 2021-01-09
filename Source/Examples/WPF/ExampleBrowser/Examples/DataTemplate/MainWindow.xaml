@@ -8,6 +8,14 @@
         <local:DataTemplate3D x:Key="Template1">
             <h:SphereVisual3D Center="{Binding Position}" Material="{Binding Material}" Radius="{Binding Radius}"/>
         </local:DataTemplate3D>
+        <local:DataTemplate3D x:Key="Template2">
+            <h:MeshGeometryVisual3D>
+                <h:MeshGeometryVisual3D.MeshGeometry>
+                    <MeshGeometry3D Positions="{Binding Positions}"></MeshGeometry3D>
+                    <!--<MeshGeometry3D Positions="-100,100,85 -100,-100,85 100,-100,85 100,100,85"/>-->
+                </h:MeshGeometryVisual3D.MeshGeometry>
+            </h:MeshGeometryVisual3D>
+        </local:DataTemplate3D>
 
         <local:DataTemplate3D x:Key="{x:Type local:CubeElement}">
             <h:CubeVisual3D Center="{Binding Position}" SideLength="0.6">
@@ -81,6 +89,7 @@
         <h:HelixViewport3D Grid.Row="1" ZoomExtentsWhenLoaded="True">
             <h:SunLight/>
             <local:ItemsVisual3D ItemTemplate="{StaticResource Template1}" ItemsSource="{Binding FixedElements}"/>
+            <local:ItemsVisual3D ItemTemplate="{StaticResource Template2}" ItemsSource="{Binding FixedElementsPositonsBinding}"/>
             <local:ItemsVisual3D ItemsSource="{Binding ObservableElements}" RefreshChildrenOnChange="{Binding IsChecked, ElementName=refreshOnChange, Mode=OneWay}" />
         </h:HelixViewport3D>
     </Grid>

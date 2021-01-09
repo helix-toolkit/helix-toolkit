@@ -101,7 +101,7 @@ namespace HelixToolkit.UWP
             /// <param name="isIntersect"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, 
+            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, IRenderMatrices context, object model, 
                 Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, bool returnMultiple,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
@@ -140,7 +140,7 @@ namespace HelixToolkit.UWP
                         Vector3.TransformCoordinate(ref sp, ref svpm, out var sp3);
                         Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);
                         var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
-                        var dist = tv2.Length();
+                        var dist = tv2.Length() / context.DpiScale;
                         if (returnMultiple)
                         {
                             lastDist = float.MaxValue;
@@ -199,7 +199,7 @@ namespace HelixToolkit.UWP
             /// <param name="result"></param>
             /// <param name="isIntersect"></param>
             /// <returns></returns>
-            protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, RenderContext context, ref BoundingSphere sphere,
+            protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, IRenderMatrices context, ref BoundingSphere sphere,
                 ref List<HitTestResult> result, ref bool isIntersect)
             {
                 bool isHit = false;

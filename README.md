@@ -25,8 +25,8 @@ Wpf Wrapper Components based on `HelixToolkit.SharpDX.Core` for .NET Core Wpf.
 [**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.Wpf.SharpDX.Assimp) 
 [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
 
-[**Examples:**](/develop/Source/Examples)
-Please download full source code to run examples. Or download [compiled version](https://ci.appveyor.com/project/objorke/helix-toolkit/branch/develop/artifacts)
+[**Examples:**](/Source/Examples)
+Please download full source code to run examples. Or download [compiled version](https://ci.appveyor.com/project/objorke/helix-toolkit/branch/master/artifacts)
 
 [![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit.svg?style=popout)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7?svg=true)](https://ci.appveyor.com/project/objorke/helix-toolkit)
@@ -43,7 +43,7 @@ Source repository   | http://github.com/helix-toolkit/helix-toolkit
 Latest build        | http://ci.appveyor.com/project/objorke/helix-toolkit
 Issue tracker       | http://github.com/helix-toolkit/helix-toolkit/issues
 NuGet packages      | http://www.nuget.org/packages?q=HelixToolkit
-MyGet feed          | https://www.myget.org/F/helix-toolkit
+Nightly build       | https://www.myget.org/F/helix-toolkit
 StackOverflow       | http://stackoverflow.com/questions/tagged/helix-3d-toolkit
 Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
@@ -77,16 +77,16 @@ Please use the following template to report bugs.
 ## News
 
 
-#### 2020-10-10
-[v2.13.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.13.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.13.0)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.13.0)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.13.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.13.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.13.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.13.0)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.13.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.13.0)
+#### 2020-10-17
+[v2.13.1](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.13.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.13.1)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.13.1)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.13.1)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.13.1)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.13.1)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.13.1)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.13.1)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.13.1)
 
 #### 2020-05-25
 [v2.12.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.12.0) releases are available on nuget. [Release Note](/CHANGELOG.md)

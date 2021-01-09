@@ -15,6 +15,7 @@ namespace FileLoadDemo
     using HelixToolkit.Wpf.SharpDX.Model;
     using HelixToolkit.Wpf.SharpDX.Model.Scene;
     using Microsoft.Win32;
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
@@ -49,7 +50,7 @@ namespace FileLoadDemo
         {
             set
             {
-                if(SetValue(ref renderFlat, value))
+                if (SetValue(ref renderFlat, value))
                 {
                     RenderFlatFunct(value);
                 }
@@ -65,11 +66,11 @@ namespace FileLoadDemo
         {
             set
             {
-                if(SetValue(ref renderEnvironmentMap, value) && scene!=null && scene.Root != null)
+                if (SetValue(ref renderEnvironmentMap, value) && scene != null && scene.Root != null)
                 {
-                    foreach(var node in scene.Root.Traverse())
+                    foreach (var node in scene.Root.Traverse())
                     {
-                        if(node is MaterialGeometryNode m && m.Material is PBRMaterialCore material)
+                        if (node is MaterialGeometryNode m && m.Material is PBRMaterialCore material)
                         {
                             material.RenderEnvironmentMap = value;
                         }
@@ -90,6 +91,10 @@ namespace FileLoadDemo
         }
 
         public ICommand ExportCommand { private set; get; }
+
+        public ICommand CopyAsBitmapCommand { private set; get; }
+
+        public ICommand CopyAsHiresBitmapCommand { private set; get; }
 
         private bool isLoading = false;
         public bool IsLoading
@@ -127,7 +132,7 @@ namespace FileLoadDemo
         {
             set
             {
-                if(SetValue(ref selectedAnimation, value))
+                if (SetValue(ref selectedAnimation, value))
                 {
                     StopAnimation();
                     if (value != null)
@@ -159,9 +164,12 @@ namespace FileLoadDemo
         private List<BoneSkinMeshNode> skeletonNodes = new List<BoneSkinMeshNode>();
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
 
+        private MainWindow mainWindow = null;
 
-        public MainViewModel()
+        public MainViewModel(MainWindow window)
         {
+            mainWindow = window;
+
             this.OpenFileCommand = new DelegateCommand(this.OpenFile);
             EffectsManager = new DefaultEffectsManager();
             Camera = new OrthographicCamera()
@@ -179,7 +187,44 @@ namespace FileLoadDemo
                 (Camera as OrthographicCamera).NearPlaneDistance = 0.1f;
             });
             ExportCommand = new DelegateCommand(() => { ExportFile(); });
+
+            CopyAsBitmapCommand = new DelegateCommand(() => { CopyAsBitmapToClipBoard(mainWindow.view); });
+            CopyAsHiresBitmapCommand = new DelegateCommand(() => { CopyAsHiResBitmapToClipBoard(mainWindow.view); });
+
             EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
+        }
+
+        private void CopyAsBitmapToClipBoard(Viewport3DX viewport)
+        {
+            var bitmap = ViewportExtensions.RenderBitmap(viewport);
+            try
+            {
+                Clipboard.Clear();
+                Clipboard.SetImage(bitmap);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void CopyAsHiResBitmapToClipBoard(Viewport3DX viewport)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var bitmap = ViewportExtensions.RenderBitmap(viewport, 1920, 1080);
+            try
+            {
+                Clipboard.Clear();
+                Clipboard.SetImage(bitmap);
+                stopwatch.Stop();
+                Debug.WriteLine($"creating bitmap needs {stopwatch.ElapsedMilliseconds} ms");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         private void OpenFile()
@@ -220,7 +265,7 @@ namespace FileLoadDemo
                                     {
                                         pbr.RenderEnvironmentMap = RenderEnvironmentMap;
                                     }
-                                    else if(m.Material is PhongMaterialCore phong)
+                                    else if (m.Material is PhongMaterialCore phong)
                                     {
                                         phong.RenderEnvironmentMap = RenderEnvironmentMap;
                                     }
@@ -228,18 +273,18 @@ namespace FileLoadDemo
                             }
                         }
                         GroupModel.AddNode(scene.Root);
-                        if(scene.HasAnimation)
+                        if (scene.HasAnimation)
                         {
-                            foreach(var ani in scene.Animations)
+                            foreach (var ani in scene.Animations)
                             {
                                 Animations.Add(ani);
                             }
                         }
-                        foreach(var n in scene.Root.Traverse())
+                        foreach (var n in scene.Root.Traverse())
                         {
                             n.Tag = new AttachedNodeViewModel(n);
                         }
-                    }                  
+                    }
                 }
                 else if (result.IsFaulted && result.Exception != null)
                 {
@@ -260,7 +305,7 @@ namespace FileLoadDemo
 
         private void CompositeHelper_Rendering(object sender, System.Windows.Media.RenderingEventArgs e)
         {
-            if(animationUpdater != null)
+            if (animationUpdater != null)
             {
                 animationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
             }
@@ -303,7 +348,8 @@ namespace FileLoadDemo
                 path = d.FileName;
                 return d.FilterIndex - 1;//This is tarting from 1. So must minus 1
             }
-            else {
+            else
+            {
                 path = "";
                 return -1;
             }
@@ -311,10 +357,10 @@ namespace FileLoadDemo
 
         private void ShowWireframeFunct(bool show)
         {
-            foreach(var node in GroupModel.GroupNode.Items.PreorderDFT((node) =>
-            {
-                return node.IsRenderable;
-            }))
+            foreach (var node in GroupModel.GroupNode.Items.PreorderDFT((node) =>
+             {
+                 return node.IsRenderable;
+             }))
             {
                 if (node is MeshNode m)
                 {

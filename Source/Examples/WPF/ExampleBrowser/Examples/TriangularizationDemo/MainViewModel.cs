@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace ExampleBrowser.Examples.TriangularizationDemo
+namespace TriangularizationDemo
 {
     /// <summary>
     /// Provides a ViewModel for the Main window.

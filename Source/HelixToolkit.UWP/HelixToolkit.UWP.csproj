@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -129,10 +129,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="Resources\arial.dds">
+    <None Include="HelixToolkit.UWP\Resources\arial.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\arial.fnt">
+    <None Include="HelixToolkit.UWP\Resources\arial.fnt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -203,7 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cyotek.Drawing.BitmapFont">
-      <Version>1.3.4</Version>
+      <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
@@ -242,292 +242,292 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\csParticleInsert.cso">
+    <None Include="HelixToolkit.UWP\Resources\csParticleInsert.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\csParticleUpdate.cso">
+    <None Include="HelixToolkit.UWP\Resources\csParticleUpdate.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\dsMeshTriTessellation.cso">
+    <None Include="HelixToolkit.UWP\Resources\dsMeshTriTessellation.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\gsBillboard.cso">
+    <None Include="HelixToolkit.UWP\Resources\gsBillboard.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\gsLine.cso">
+    <None Include="HelixToolkit.UWP\Resources\gsLine.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\gsParticle.cso">
+    <None Include="HelixToolkit.UWP\Resources\gsParticle.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\gsPoint.cso">
+    <None Include="HelixToolkit.UWP\Resources\gsPoint.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\hsMeshTriTessellation.cso">
+    <None Include="HelixToolkit.UWP\Resources\hsMeshTriTessellation.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psBillboardText.cso">
+    <None Include="HelixToolkit.UWP\Resources\psBillboardText.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psColor.cso">
+    <None Include="HelixToolkit.UWP\Resources\psColor.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psDepthStencilOnly.cso">
+    <None Include="HelixToolkit.UWP\Resources\psDepthStencilOnly.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psDiffuseMap.cso">
+    <None Include="HelixToolkit.UWP\Resources\psDiffuseMap.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectBloomBlurHorizontal.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectBloomBlurHorizontal.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectBloomBlurVertical.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectBloomBlurVertical.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectBloomCombine.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectBloomCombine.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectBloomExtract.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectBloomExtract.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectGaussianBlurHorizontal.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectGaussianBlurHorizontal.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectGaussianBlurVertical.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectGaussianBlurVertical.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectMeshBorderHighlight.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectMeshBorderHighlight.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectMeshXRay.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectMeshXRay.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectOutlineQuad.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectOutlineQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectOutlineQuadStencil.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectOutlineQuadStencil.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectOutlineQualFinal.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectOutlineQualFinal.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psLine.cso">
+    <None Include="HelixToolkit.UWP\Resources\psLine.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psLineColor.cso">
+    <None Include="HelixToolkit.UWP\Resources\psLineColor.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshBlinnPhong.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshBlinnPhong.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshClipPlaneBackface.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshClipPlaneBackface.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshClipPlaneQuad.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshClipPlaneQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshXRay.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshXRay.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psNormals.cso">
+    <None Include="HelixToolkit.UWP\Resources\psNormals.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psParticle.cso">
+    <None Include="HelixToolkit.UWP\Resources\psParticle.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psPoint.cso">
+    <None Include="HelixToolkit.UWP\Resources\psPoint.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psPositions.cso">
+    <None Include="HelixToolkit.UWP\Resources\psPositions.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psScreenDup.cso">
+    <None Include="HelixToolkit.UWP\Resources\psScreenDup.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psShadow.cso">
+    <None Include="HelixToolkit.UWP\Resources\psShadow.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psSkybox.cso">
+    <None Include="HelixToolkit.UWP\Resources\psSkybox.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psViewCube.cso">
+    <None Include="HelixToolkit.UWP\Resources\psViewCube.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psWireframe.cso">
+    <None Include="HelixToolkit.UWP\Resources\psWireframe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsBillboard.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsBillboard.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsBillboardInstancing.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsBillboardInstancing.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsCubeMap.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsCubeMap.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshClipPlane.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshClipPlane.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshClipPlaneQuad.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshClipPlaneQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshDefault.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshDefault.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshInstancing.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshInstancing.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshInstancingTessellation.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshInstancingTessellation.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshOutlinePass1.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshOutlinePass1.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshOutlineScreenQuad.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshOutlineScreenQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshShadow.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshShadow.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshTessellation.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshTessellation.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshWireframe.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshWireframe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsParticle.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsParticle.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsPoint.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsPoint.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsPointShadow.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsPointShadow.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsScreenDup.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsScreenDup.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsScreenDupCursor.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsScreenDupCursor.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsSkybox.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsSkybox.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="HelixToolkit.SharpDX.Shared.licenseheader" />
-    <None Include="Resources\psBillboardTextOIT.cso">
+    <None Include="HelixToolkit.UWP\Resources\psBillboardTextOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshBlinnPhongOIT.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshBlinnPhongOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshBlinnPhongOITQuad.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshBlinnPhongOITQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psParticleOIT.cso">
+    <None Include="HelixToolkit.UWP\Resources\psParticleOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psFXAA.cso">
+    <None Include="HelixToolkit.UWP\Resources\psFXAA.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psWireframeOIT.cso">
+    <None Include="HelixToolkit.UWP\Resources\psWireframeOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psLUMA.cso">
+    <None Include="HelixToolkit.UWP\Resources\psLUMA.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectMeshXRayGrid.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectMeshXRayGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\gsMeshNormalVector.cso">
+    <None Include="HelixToolkit.UWP\Resources\gsMeshNormalVector.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshColorStripe.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshColorStripe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectMeshDiffuseXRayGrid.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectMeshDiffuseXRayGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshDiffuseMapOIT.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshDiffuseMapOIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshBatched.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshBatched.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshBatchedShadow.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshBatchedShadow.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshBatchedWireframe.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshBatchedWireframe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\gsMeshSkinnedOut.cso">
+    <None Include="HelixToolkit.UWP\Resources\gsMeshSkinnedOut.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsBoneSkinningBasic.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsBoneSkinningBasic.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psPlaneGrid.cso">
+    <None Include="HelixToolkit.UWP\Resources\psPlaneGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsPlaneGrid.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsPlaneGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshPBR.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshPBR.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psMeshPBROIT.cso">
+    <None Include="HelixToolkit.UWP\Resources\psMeshPBROIT.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsScreenQuad.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsScreenQuad.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psSprite.cso">
+    <None Include="HelixToolkit.UWP\Resources\psSprite.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsSprite.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsSprite.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psVolume.cso">
+    <None Include="HelixToolkit.UWP\Resources\psVolume.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsVolume.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsVolume.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psVolumeCube.cso">
+    <None Include="HelixToolkit.UWP\Resources\psVolumeCube.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psVolumeDiffuse.cso">
+    <None Include="HelixToolkit.UWP\Resources\psVolumeDiffuse.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshDepth.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshDepth.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psSSAO.cso">
+    <None Include="HelixToolkit.UWP\Resources\psSSAO.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psSSAOP1.cso">
+    <None Include="HelixToolkit.UWP\Resources\psSSAOP1.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshSSAO.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshSSAO.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsSSAO.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsSSAO.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psSSAOBlur.cso">
+    <None Include="HelixToolkit.UWP\Resources\psSSAOBlur.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\vsMeshBatchedSSAO.cso">
+    <None Include="HelixToolkit.UWP\Resources\vsMeshBatchedSSAO.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\psEffectOutlineSmooth.cso">
+    <None Include="HelixToolkit.UWP\Resources\psEffectOutlineSmooth.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\gsLineArrowHead.cso">
+    <None Include="HelixToolkit.UWP\Resources\gsLineArrowHead.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\gsLineArrowHeadTail.cso">
+    <None Include="HelixToolkit.UWP\Resources\gsLineArrowHeadTail.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

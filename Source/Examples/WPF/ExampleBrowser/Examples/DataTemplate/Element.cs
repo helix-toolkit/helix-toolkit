@@ -27,6 +27,11 @@ namespace DataTemplateDemo
         public Point3D Position { get; set; }
 
         /// <summary>
+        /// Gets ors sets the postions collection.
+        /// </summary>
+        public Point3DCollection Positions { get; set; }
+
+        /// <summary>
         /// Gets or sets the radius.
         /// </summary>
         public double Radius { get; set; }

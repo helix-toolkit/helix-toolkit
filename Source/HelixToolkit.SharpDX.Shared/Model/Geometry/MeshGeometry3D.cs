@@ -182,7 +182,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public bool ReturnMultipleHitsOnHitTest { get; set; } = false;
 
-        public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
+        public virtual bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
         {
             if(Positions == null || Positions.Count == 0
                 || Indices == null || Indices.Count == 0)

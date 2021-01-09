@@ -72,8 +72,8 @@ namespace DataTemplateDemo
             if (listOfBindingPaths == null)
             {
                 // find and cache all bindings paths
-                listOfBindingPaths = FindBindingsInTree(contentXamlSerialized)
-                                        .Concat(FindMutiBindingsInTree(contentXamlSerialized))
+                listOfBindingPaths = FindInlineBindingsInTree(contentXamlSerialized)
+                                        .Concat(FindElementBindingsInTree(contentXamlSerialized))
                                         .ToArray();
             }
 
@@ -184,10 +184,11 @@ namespace DataTemplateDemo
         }
         /// <summary>
         /// Finds bound attributes in the xml document representing the object.
+        /// The bindings must be inlined as an attribute expression.
         /// </summary>
         /// <param name="xmlDoc">An <see cref="XmlDocument"/>.</param>
         /// <returns>A list of paths that have a data binding expression.</returns>
-        private IEnumerable<List<PathInfo>> FindBindingsInTree(XmlDocument xmlDoc)
+        private IEnumerable<List<PathInfo>> FindInlineBindingsInTree(XmlDocument xmlDoc)
         {
             foreach (var attr in xmlDoc.TraverseAllNodes().SelectMany(n => n.Attributes.Cast<XmlAttribute>()))
             {
@@ -210,15 +211,16 @@ namespace DataTemplateDemo
             }
         }
         /// <summary>
-        /// Finds bound attributes in the xml document representing the object.
+        /// Finds bound attributes and elements (nodes) in the xml document representing the object.
+        /// The bindings must be normal xml elements and not inlined as an attribute expression.
         /// </summary>
         /// <param name="xmlDoc">An <see cref="XmlDocument"/>.</param>
         /// <returns>A list of paths that have a data multi binding expression.</returns>
-        private IEnumerable<List<PathInfo>> FindMutiBindingsInTree(XmlDocument xmlDoc)
+        private IEnumerable<List<PathInfo>> FindElementBindingsInTree(XmlDocument xmlDoc)
         {
             foreach (var node in xmlDoc.TraverseAllNodes())
             {
-                if (node.Name.EndsWith("MultiBinding"))
+                if (node.Name.EndsWith("Binding"))
                 {
                     var nodes = new List<PathInfo>();
 

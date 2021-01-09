@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HelixToolkit.Wpf.SharpDX;
+using System.Diagnostics;
 
 namespace CustomViewCubeDemo
 {
@@ -48,6 +49,11 @@ namespace CustomViewCubeDemo
             lookDirection *= (float)distance;
             var newPosition = target.ToVector3() - lookDirection;
             view1.Camera.AnimateTo(newPosition.ToPoint3D(), lookDirection.ToVector3D(), upDirection.ToVector3D(), 500);
+        }
+
+        private void LineGeometryModel3D_Mouse3DDown(object sender, MouseDown3DEventArgs e)
+        {
+            Debug.WriteLine("Line hitted.");
         }
     }
 }

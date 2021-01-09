@@ -22,7 +22,7 @@ dotnet_csproj:
   informational_version: '{version}'
   
 before_build:
-  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v5.8.0/nuget.exe
   - nuget restore .\Source\HelixToolkit.AppVeyor.sln
   - gitversion /l console /output buildserver /updateAssemblyInfo
   
@@ -39,7 +39,7 @@ after_build:
   - nuget pack Source\HelixToolkit.SharpDX.Core.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - nuget pack Source\HelixToolkit.SharpDX.Core.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - nuget pack Source\HelixToolkit.SharpDX.Assimp.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - if "%APPVEYOR_REPO_NAME%" == "helix-toolkit/helix-toolkit" Source\build-dist-examples.cmd
+  - if "%APPVEYOR_REPO_NAME%" == "helix-toolkit/helix-toolkit" if not defined APPVEYOR_PULL_REQUEST_NUMBER Source\build-dist-examples.cmd
 
 artifacts:
   - path: '*.nupkg'

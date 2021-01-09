@@ -1833,6 +1833,20 @@ namespace HelixToolkit.Wpf.SharpDX
             return null;
         }
 
+        protected override Size MeasureOverride(Size constraint)
+        {
+            if (double.IsInfinity(constraint.Width) && double.IsInfinity(constraint.Height))
+            {
+                if ((_ = FindVisualAncestor<Viewbox>(this)) != null)
+                {
+                    MessageText = "Must specify Width and Height for Viewport3DX in a ViewBox";
+                    return base.MeasureOverride(new Size(600, 400));
+                }            
+            }
+
+            return base.MeasureOverride(constraint);
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
