@@ -38,7 +38,7 @@ namespace HelixToolkit.UWP
                 this.weights = weights;
                 startTime = animation.StartTime;
                 endTime = animation.EndTime;
-                kfs = animation.morphTargetKeyframes;
+                kfs = animation.MorphTargetKeyframes;
 
                 //Setup in groups of weight id and sort by time. This is somewhat slow, look into better solutions
                 targetKeyframeIds = new int[weights.Count][];

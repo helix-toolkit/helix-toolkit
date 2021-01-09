@@ -40,7 +40,7 @@ namespace MorphTargetAnimationDemo
             importer.Configuration.CreateSkeletonForBoneSkinningMesh = true;
             importer.Configuration.SkeletonSizeScale = 0.01f;
             importer.Configuration.GlobalScale = 0.1f;
-            scn = importer.Load("../../zophrac/source/Gunan_animated.fbx");
+            scn = importer.Load("Gunan_animated.fbx");
 
             //Add to model group for rendering
             ModelGroup.AddNode(scn.Root);
