@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.14.0] - 2021-01-09
 ### Added
 1. Added `CameraType` property for screen space group. Allows to use orthographic camera for screen space group under `RelativeScreenSpaced` mode.
 
