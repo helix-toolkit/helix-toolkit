@@ -98,12 +98,17 @@
                 <CheckBox Margin="4" IsChecked="{Binding RenderEnvironmentMap}">Render EnvironmentMap</CheckBox>
                 <CheckBox Margin="4" IsChecked="{Binding RenderFlat}">Flat Shading</CheckBox>
                 <Separator />
-                <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}">Enable Animation</CheckBox>
+                <CheckBox x:Name="aniCheckbox" Margin="4" IsChecked="{Binding EnableAnimation}">Enable Animation</CheckBox>
                 <TextBlock>Animations</TextBlock>
                 <ComboBox
-                    DisplayMemberPath="Name"
+                    DisplayMemberPath="Name" IsEnabled="{Binding ElementName=aniCheckbox, Path=IsChecked}"
                     ItemsSource="{Binding Animations}"
                     SelectedItem="{Binding SelectedAnimation}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="PlayBack Speed: "/>
+                    <TextBlock Text="{Binding Speed}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <Slider Value="{Binding Speed}" Minimum="0" Maximum="50" SmallChange="0.5"/>
                 <Separator />
                 <TextBlock>Scene Graph</TextBlock>
             </StackPanel>

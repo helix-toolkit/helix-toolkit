@@ -150,6 +150,7 @@ namespace FileLoadDemo
                                 break;
                         }
                         animationUpdater.RepeatMode = AnimationRepeatMode.Loop;
+                        animationUpdater.Speed = Speed;
                     }
                     else
                     {
@@ -165,6 +166,20 @@ namespace FileLoadDemo
             {
                 return selectedAnimation;
             }
+        }
+
+        private float speed = 1.0f;
+        public float Speed
+        {
+            set
+            {
+                if (SetValue(ref speed, value))
+                {
+                    if (animationUpdater != null)
+                        animationUpdater.Speed = value;
+                }
+            }
+            get => speed;
         }
 
         public TextureModel EnvironmentMap { get; }
