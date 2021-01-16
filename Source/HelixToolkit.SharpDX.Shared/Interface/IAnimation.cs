@@ -27,6 +27,10 @@ namespace HelixToolkit.UWP
         public interface IAnimationUpdater
         {
             /// <summary>
+            /// Playback speed. Default is 1x.
+            /// </summary>
+            float Speed { set; get; }
+            /// <summary>
             /// Gets or sets the repeat mode.
             /// </summary>
             /// <value>

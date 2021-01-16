@@ -27,6 +27,8 @@ namespace HelixToolkit.UWP
             public float endTime { get; }
             public AnimationRepeatMode RepeatMode { get; set; } = AnimationRepeatMode.PlayOnce;
 
+            public float Speed { set; get; } = 1.0f;
+
             private List<MorphTargetKeyframe> kfs;
             private int[][] targetKeyframeIds;
             private int[] prevKeyframes;
@@ -63,7 +65,7 @@ namespace HelixToolkit.UWP
                 double globalTime = (double)timeStamp / frequency;
                 if (timeOffset == 0)
                     timeOffset = globalTime;
-                float t = (float)(globalTime - timeOffset);
+                float t = (float)(globalTime - timeOffset) * Speed;
 
                 //Handle repeat mode
                 if (RepeatMode == AnimationRepeatMode.Loop)

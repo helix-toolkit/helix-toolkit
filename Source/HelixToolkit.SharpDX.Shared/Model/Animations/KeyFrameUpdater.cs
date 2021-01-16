@@ -39,6 +39,8 @@ namespace HelixToolkit.UWP
 
             public float EndTime { get; }
 
+            public float Speed { set; get; } = 1.0f;
+
             private readonly Keyframe?[] tempKeyframes;
 
             private readonly Matrix[] tempBones;
@@ -93,7 +95,7 @@ namespace HelixToolkit.UWP
                 {
                     currentTime = timeStamp;
                 }
-                var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency;
+                var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency * Speed;
                 var boneNode = Animation.BoneSkinMeshes[0];
                 if(timeElpased > Animation.EndTime)
                 {
@@ -208,6 +210,9 @@ namespace HelixToolkit.UWP
             }
 
             public Animation Animation { get; }
+
+            public float Speed { set; get; } = 1.0f;
+
             private long currentTime;
             private IndexTime[] keyframeIndices;
             private float accumulatedTime;
@@ -237,7 +242,7 @@ namespace HelixToolkit.UWP
                     return;
                 }
 
-                var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency;
+                var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency * Speed;
 
                 if (accumulatedTime >= Animation.EndTime)
                 {
@@ -315,6 +320,8 @@ namespace HelixToolkit.UWP
                     {
                         continue;
                     }
+                    if (i == 0)
+                    Console.WriteLine($"Index: ${idxTime.Index}");
                     ref var currFrame = ref frames[idxTime.Index];
                     if (count == 1)
                     {
