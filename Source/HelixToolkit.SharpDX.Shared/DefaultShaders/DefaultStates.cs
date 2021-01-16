@@ -31,6 +31,7 @@ namespace HelixToolkit.UWP
             public readonly static BlendStateDescription BSOITBlend = new BlendStateDescription() { IndependentBlendEnable = true };
             public readonly static BlendStateDescription BSMeshOITBlendQuad;
             public readonly static BlendStateDescription VolumeBlending;
+            public readonly static BlendStateDescription BSGlowBlending;
 
             static DefaultBlendStateDescriptions()
             {
@@ -140,6 +141,19 @@ namespace HelixToolkit.UWP
 
                     SourceAlphaBlend = BlendOption.InverseSourceAlpha,
                     DestinationAlphaBlend = BlendOption.Zero,
+                    IsBlendEnabled = true,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All
+                };
+
+                BSGlowBlending.RenderTarget[0] = new RenderTargetBlendDescription()
+                {             
+                    BlendOperation = BlendOperation.Add,
+                    SourceBlend = BlendOption.One,
+                    DestinationBlend = BlendOption.InverseSourceAlpha,
+
+                    SourceAlphaBlend = BlendOption.SourceAlpha,
+                    DestinationAlphaBlend = BlendOption.DestinationAlpha,
+                    AlphaBlendOperation = BlendOperation.Add,
                     IsBlendEnabled = true,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All
                 };

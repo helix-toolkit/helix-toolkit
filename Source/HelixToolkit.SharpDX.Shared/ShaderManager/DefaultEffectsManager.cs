@@ -1769,7 +1769,7 @@ namespace HelixToolkit.UWP
                             DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
                             DefaultPSShaderDescriptions.PSMeshOutlineQuadFinal
                         },
-                        BlendStateDescription = DefaultBlendStateDescriptions.AdditiveBlend,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSGlowBlending,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         RasterStateDescription = DefaultRasterDescriptions.RSOutline,
                         Topology = PrimitiveTopology.TriangleStrip
