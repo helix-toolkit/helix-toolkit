@@ -51,8 +51,6 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 **Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.17763).**
 
-**Missing `.cso` error during the build?** Windows 10 SDK **Ver.10.0.17763** can be selected and installed using Visual Studio 2019 installer. If you already installed the higher SDK version, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the version installed on your machine.
-
 ## Notes
 
 #### 1. Right-handed Cartesian coordinate system and row major matrix by default
