@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+### Added
+1. Support morphing target animation. (WPF.SharpDX/UWP/Core)
+2. Support animation playback speed. (WPF.SharpDX/UWP/Core)
+
+### Fixed
+1. Fix border highlights and outline blur Post Effect blending issues #1491. 
+(WPF.SharpDX/UWP/Core)
+
 ## [2.14.0] - 2021-01-09
 ### Added
 1. Added `CameraType` property for screen space group. Allows to use orthographic camera for screen space group under `RelativeScreenSpaced` mode.
