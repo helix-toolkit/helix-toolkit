@@ -178,6 +178,11 @@ namespace HelixToolkit.UWP
             /// </summary>
             public bool IsSourceMatrixColumnMajor = true;
 
+            /// <summary>
+            /// The build octree automatically during loading.
+            /// </summary>
+            public bool BuildOctree = true;
+
             public ITextureIO TextureLoader;
             /// <summary>
             /// Initializes a new instance of the <see cref="ImporterConfiguration"/> class.

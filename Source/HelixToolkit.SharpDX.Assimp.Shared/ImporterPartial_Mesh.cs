@@ -193,7 +193,10 @@ namespace HelixToolkit.UWP
                 }
 
                 hMesh.UpdateBounds();
-                hMesh.UpdateOctree();
+                if (configuration.BuildOctree)
+                {
+                    hMesh.UpdateOctree();
+                }
                 return hMesh;
             }
             /// <summary>

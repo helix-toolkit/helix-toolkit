@@ -165,6 +165,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWpfDemo", "Examples\WPF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.Native.ShaderBuilder", "HelixToolkit.Native.ShaderBuilder\HelixToolkit.Native.ShaderBuilder.csproj", "{1B767276-2943-49C0-B883-755081951F01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MorphTargetAnimationDemo", "Examples\WPF.SharpDX\MorphTargetAnimation\MorphTargetAnimationDemo.csproj", "{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
@@ -1441,6 +1443,26 @@ Global
 		{1B767276-2943-49C0-B883-755081951F01}.Release|x64.Build.0 = Release|Any CPU
 		{1B767276-2943-49C0-B883-755081951F01}.Release|x86.ActiveCfg = Release|Any CPU
 		{1B767276-2943-49C0-B883-755081951F01}.Release|x86.Build.0 = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|ARM.Build.0 = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|x64.Build.0 = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Debug|x86.Build.0 = Debug|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|ARM.Build.0 = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|ARM64.Build.0 = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|x64.ActiveCfg = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|x64.Build.0 = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|x86.ActiveCfg = Release|Any CPU
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1518,6 +1540,7 @@ Global
 		{856AF702-208F-4D92-9534-4D8C91F49A99} = {B025344D-2B79-4456-9668-F4950BCA498F}
 		{F9EAE3B1-1D31-418D-8F87-ED9D2EBF5EFB} = {9444ACDF-A920-4E01-9929-A450F6B1C266}
 		{1B767276-2943-49C0-B883-755081951F01} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
+		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F} = {8DB21D26-08EA-4A24-BDE8-FFE08F2C30EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDED8F31-C7C8-41E4-ACAC-293F326BAE9F}
