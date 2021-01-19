@@ -553,6 +553,10 @@ namespace HelixToolkit.UWP
 
         public void TrimExcess()
         {
+            if (Count == Capacity)
+            {
+                return;
+            }
             var curr = Items;
             Items = Count == 0 ? empty : new T[Count];
             if (Count > 0)
