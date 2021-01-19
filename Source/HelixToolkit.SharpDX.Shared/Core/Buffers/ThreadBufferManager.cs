@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP
             public static int MinimumAutoReleaseThresholdSeconds
             {
                 set; get;
-            } = 10;
+            } = 60;
 
             /// <summary>
             /// Gets or sets the size reduction multiplier.
@@ -97,10 +97,25 @@ namespace HelixToolkit.UWP
 
             public static T[] GetBuffer(int requestCount)
             {
-                var array = buffer != null && buffer.Length >= requestCount ? buffer : new T[requestCount];
+                var array = buffer;
+                if (array == null || array.Length < requestCount)
+                {
+                    float scale = 1;
+                    if (requestCount < MinimumElementCount)
+                    {
+                        scale = 2;
+                    }
+                    else if (requestCount < MaximumElementCount)
+                    {
+                        scale = 1.5f;
+                    }
+                    array = new T[(int)(requestCount * scale)];
+                    Debug.WriteLine($"Created new thread buffer. Type: {typeof(T)}; Size: {array.Length * StructSize / 1024} kB.");
+                }
+
                 if (requestCount > MaximumElementCount)
                 {
-                    Debug.WriteLine("Requested buffer size is larger than max retain size.");
+                    Debug.WriteLine($"Requested buffer size is larger than max retain size. Type: {typeof(T)};");
                     return array;
                 }
                 if (lastUsed == 0)
@@ -116,7 +131,7 @@ namespace HelixToolkit.UWP
                     long diff = Stopwatch.GetTimestamp() - lastUsed;
                     if (diff / Stopwatch.Frequency > ThreadBufferManagerConfig.MinimumAutoReleaseThresholdSeconds)
                     {
-                        Debug.WriteLine("Disposing thread buffer.");
+                        Debug.WriteLine($"Disposing thread buffer. Type: {typeof(T)};");
                         buffer = null;
                         lastUsed = 0;                       
                         return array;
