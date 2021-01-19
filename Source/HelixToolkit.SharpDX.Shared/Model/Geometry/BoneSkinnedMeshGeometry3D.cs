@@ -179,10 +179,24 @@ namespace HelixToolkit.UWP
             float minDistance = float.MaxValue;
             foreach (var t in skinnedTriangles(skinnedVertices))
             {
-                var v0 = t.P0;
-                var v1 = t.P1;
-                var v2 = t.P2;
-                if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out float d))
+                // Used when geometry size is really small, causes hit test failure due to SharpDX.MathUtils.ZeroTolerance.
+                float scaling = 1f;
+                var rayScaled = rayModel;
+                if (EnableSmallTriangleHitTestScaling)
+                {
+                    if ((t.P0 - t.P1).LengthSquared() < SmallTriangleEdgeLengthSquare
+                        || (t.P1 - t.P2).LengthSquared() < SmallTriangleEdgeLengthSquare
+                        || (t.P2 - t.P0).LengthSquared() < SmallTriangleEdgeLengthSquare)
+                    {
+                        scaling = SmallTriangleHitTestScaling;
+                        rayScaled = new Ray(rayModel.Position * scaling, rayModel.Direction);
+                    }
+                }
+                var v0 = t.P0 * scaling;
+                var v1 = t.P1 * scaling;
+                var v2 = t.P2 * scaling;
+
+                if (Collision.RayIntersectsTriangle(ref rayScaled, ref v0, ref v1, ref v2, out float d))
                 {
                     if (d >= 0 && d < minDistance) // If d is NaN, the condition is false.
                     {
@@ -203,6 +217,11 @@ namespace HelixToolkit.UWP
                         result.Tag = index / 3;
                         result.Geometry = this;
                         isHit = true;
+                        if (ReturnMultipleHitsOnHitTest)
+                        {
+                            hits.Add(result);
+                            result = new HitTestResult();
+                        }
                     }
                 }
                 index += 3;
