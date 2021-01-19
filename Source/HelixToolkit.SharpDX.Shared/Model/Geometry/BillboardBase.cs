@@ -136,6 +136,10 @@ namespace HelixToolkit.UWP
             ref Ray rayWS, ref List<HitTestResult> hits,
             object originalSource, int count)
         {
+            if (BillboardVertices == null || BillboardVertices.Count == 0)
+            {
+                return false;
+            }
             var h = false;
             var result = new BillboardHitResult
             {
@@ -191,6 +195,14 @@ namespace HelixToolkit.UWP
             result.TextInfoIndex = index;
             result.Type = Type;
         }
+
+        protected override void OnClearAllGeometryData()
+        {
+            base.OnClearAllGeometryData();
+            BillboardVertices?.Clear();
+            (BillboardVertices as FastList<BillboardVertex>)?.TrimExcess();
+        }
+
         /// <summary>
         /// Hits the size of the test non fixed.
         /// </summary>
@@ -205,6 +217,10 @@ namespace HelixToolkit.UWP
             ref Ray rayWS, ref List<HitTestResult> hits,
             object originalSource, int count)
         {
+            if (BillboardVertices == null || BillboardVertices.Count == 0)
+            {
+                return false;
+            }
             var h = false;
             var result = new BillboardHitResult
             {

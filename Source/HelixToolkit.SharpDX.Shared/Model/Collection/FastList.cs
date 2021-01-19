@@ -553,11 +553,13 @@ namespace HelixToolkit.UWP
 
         public void TrimExcess()
         {
-            var num = (int) (Items.Length*0.9);
-            if (_size < num)
+            var curr = Items;
+            Items = Count == 0 ? empty : new T[Count];
+            if (Count > 0)
             {
-                Capacity = _size;
+                Array.Copy(curr, 0, Items, 0, Count);
             }
+            Capacity = Count;
         }
 
         public bool TrueForAll(Predicate<T> match)

@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\MeshBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\PointBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\SpriteBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\ThreadBufferManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\CoreComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\ConstantBufferComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\CrossSectionMeshRenderCore.cs" />
@@ -116,7 +117,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPoolManagers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPostEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
-	<Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IViewport3DX.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCoreParams.cs" />

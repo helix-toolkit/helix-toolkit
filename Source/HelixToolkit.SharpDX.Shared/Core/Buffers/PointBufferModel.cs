@@ -77,8 +77,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class DefaultPointGeometryBufferModel : PointGeometryBufferModel<PointsVertex>
         {
-            [ThreadStatic]
-            private static PointsVertex[] vertexArrayBuffer;
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultPointGeometryBufferModel"/> class.
             /// </summary>
@@ -127,9 +125,9 @@ namespace HelixToolkit.UWP
             {
                 var positions = geometry.Positions;
                 var vertexCount = geometry.Positions.Count;
-                var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
+                var array = ThreadBufferManager<PointsVertex>.GetBuffer(vertexCount);
                 var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-                vertexArrayBuffer = array;
+
                 for (var i = 0; i < vertexCount; i++)
                 {
                     colors.MoveNext();

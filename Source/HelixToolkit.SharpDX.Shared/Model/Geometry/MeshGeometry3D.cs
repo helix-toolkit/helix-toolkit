@@ -289,6 +289,19 @@ namespace HelixToolkit.UWP
         {
             RaisePropertyChanged(nameof(TextureCoordinates));
         }
+
+        protected override void OnClearAllGeometryData()
+        {
+            base.OnClearAllGeometryData();
+            Normals?.Clear();
+            Normals?.TrimExcess();
+            TextureCoordinates?.Clear();
+            TextureCoordinates?.TrimExcess();
+            Tangents?.Clear();
+            Tangents?.TrimExcess();
+            BiTangents?.Clear();
+            BiTangents?.TrimExcess();
+        }
     }
 
 

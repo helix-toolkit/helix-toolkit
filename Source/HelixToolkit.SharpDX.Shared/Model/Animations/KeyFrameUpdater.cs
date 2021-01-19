@@ -320,8 +320,6 @@ namespace HelixToolkit.UWP
                     {
                         continue;
                     }
-                    if (i == 0)
-                    Console.WriteLine($"Index: ${idxTime.Index}");
                     ref var currFrame = ref frames[idxTime.Index];
                     if (count == 1)
                     {

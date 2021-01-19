@@ -82,6 +82,7 @@ namespace HelixToolkit.UWP
                 {
                     var mesh = OnTesselatingAsync(token);
                     mesh.Normals = mesh.CalculateNormals();
+                    mesh.SetAsTransient();
                     mesh?.UpdateOctree();
                     mesh?.UpdateBounds();
                     return mesh;
