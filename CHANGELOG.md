@@ -5,8 +5,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Support morphing target animation. (WPF.SharpDX/UWP/Core)
 2. Support animation playback speed. (WPF.SharpDX/UWP/Core)
-3. Allow geometry data clean up after loading into GPU. (WPF.SharpDX/UWP/Core) 
-(Restrictions: View only, no hit test support, geometry must not be shared with multiple models.)
+3. Support releasing geometry data after loading into GPU. Call `Geometry3D.SetAsTransient()` to enable this feature. (WPF.SharpDX/UWP/Core) 
+(Restrictions: View only; no hit test support; geometry must not be shared with multiple models; Must enable before attaching geometry3D onto a Model3D/Node, or before the Model3D/node being attached to a viewport.)
 
 ### Improvement
 1. Improved thread buffer management. (WPF.SharpDX/UWP/Core)
