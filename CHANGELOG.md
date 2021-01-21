@@ -5,10 +5,15 @@ All notable changes to this project will be documented in this file.
 ### Added
 1. Support morphing target animation. (WPF.SharpDX/UWP/Core)
 2. Support animation playback speed. (WPF.SharpDX/UWP/Core)
+3. Allow geometry data clean up after loading into GPU. (WPF.SharpDX/UWP/Core) 
+(Restrictions: View only, no hit test support, geometry must not be shared with multiple models.)
+
+### Improvement
+1. Improved thread buffer management. (WPF.SharpDX/UWP/Core)
 
 ### Fixed
-1. Fix border highlights and outline blur Post Effect blending issues #1491. 
-(WPF.SharpDX/UWP/Core)
+1. Fix border highlights and outline blur Post Effect blending issues #1491. (WPF.SharpDX/UWP/Core)
+2. Fix environment map is still being used on object after disabling it. (WPF.SharpDX/UWP/Core)
 
 ## [2.14.0] - 2021-01-09
 ### Added
