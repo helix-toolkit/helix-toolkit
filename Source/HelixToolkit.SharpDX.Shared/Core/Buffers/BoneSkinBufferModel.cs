@@ -288,9 +288,10 @@ namespace HelixToolkit.UWP
                                 array[i] = *(global::SharpDX.Vector3*)p;
                                 p += skinnedVertexStagingBuffer.StructureSize;
                             }
-                        }
-                        return size;
+                        }                        
                     }
+                    context.UnmapSubresource(skinnedVertexStagingBuffer.Buffer, 0);
+                    return size;
                 }
                 return 0;
             }
