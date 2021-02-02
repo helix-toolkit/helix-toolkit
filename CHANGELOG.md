@@ -10,10 +10,13 @@ All notable changes to this project will be documented in this file.
 
 ### Improvement
 1. Improved thread buffer management. (WPF.SharpDX/UWP/Core)
+2. Change return type for SceneNodeGroupModel3D `AddNode` `RemoveNode`. #1443 (WPF.SharpDX/UWP/Core)
 
 ### Fixed
 1. Fix border highlights and outline blur Post Effect blending issues #1491. (WPF.SharpDX/UWP/Core)
 2. Fix environment map is still being used on object after disabling it. (WPF.SharpDX/UWP/Core)
+3. Fix UWP assimp nuget spec is missing files. #1505 (UWP)
+4. Fix UnmapSubresource is not called after MapSubresource during hit test for bone skinning mesh. #1499 (WPF.SharpDX/UWP/Core)
 
 ## [2.14.0] - 2021-01-09
 ### Added
