@@ -46,20 +46,7 @@ namespace MorphTargetAnimationDemo
             ModelGroup.AddNode(scn.Root);
 
             //Setup each animation, this will actively play all (not always desired)
-            animationUpdaters = new List<IAnimationUpdater>();
-            foreach (Animation anim in scn.Animations)
-            {
-                if (anim.AnimationType == AnimationType.MorphTarget)
-                {
-                    animationUpdaters.Add(new MorphTargetKeyFrameUpdater(anim, (anim.RootNode as BoneSkinMeshNode).MorphTargetWeights));
-                    animationUpdaters[animationUpdaters.Count - 1].RepeatMode = AnimationRepeatMode.Loop;
-                }
-                else if (anim.AnimationType == AnimationType.Node)
-                {
-                    animationUpdaters.Add(new NodeAnimationUpdater(anim));
-                    animationUpdaters[animationUpdaters.Count - 1].RepeatMode = AnimationRepeatMode.Loop;
-                }
-            }
+            animationUpdaters = new List<IAnimationUpdater>(scn.Animations.CreateAnimationUpdaters().Values);
         }
 
         private void Render(object sender, System.Windows.Media.RenderingEventArgs e)
@@ -75,8 +62,6 @@ namespace MorphTargetAnimationDemo
 
             t = Stopwatch.GetTimestamp() - t;
             debugLabel = t.ToString();
-
-            scn.Root.InvalidateRender();
         }
     }
 }

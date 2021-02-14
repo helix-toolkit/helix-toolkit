@@ -21,6 +21,10 @@ namespace HelixToolkit.UWP
     {
         public class MorphTargetKeyFrameUpdater : IAnimationUpdater
         {
+            public string Name
+            {
+                set; get;
+            } = "";
             public Animation animation { get; }
             public IList<float> weights { get; }
             public float startTime { get; }
@@ -37,6 +41,7 @@ namespace HelixToolkit.UWP
             public MorphTargetKeyFrameUpdater(Animation animation, IList<float> weights)
             {
                 this.animation = animation;
+                Name = animation.Name;
                 this.weights = weights;
                 startTime = animation.StartTime;
                 endTime = animation.EndTime;

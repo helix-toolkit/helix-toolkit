@@ -123,12 +123,12 @@ namespace FileLoadDemo
             get { return enableAnimation; }
         }
 
-        public ObservableCollection<Animation> Animations { get; } = new ObservableCollection<Animation>();
+        public ObservableCollection<IAnimationUpdater> Animations { get; } = new ObservableCollection<IAnimationUpdater>();
 
         public SceneNodeGroupModel3D GroupModel { get; } = new SceneNodeGroupModel3D();
 
-        private Animation selectedAnimation = null;
-        public Animation SelectedAnimation
+        private IAnimationUpdater selectedAnimation = null;
+        public IAnimationUpdater SelectedAnimation
         {
             set
             {
@@ -137,18 +137,8 @@ namespace FileLoadDemo
                     StopAnimation();
                     if (value != null)
                     {
-                        switch (value.AnimationType)
-                        {
-                            case AnimationType.Keyframe:
-                                animationUpdater = new NodeAnimationUpdater(value);
-                                break;
-                            case AnimationType.MorphTarget:
-                                animationUpdater = new MorphTargetKeyFrameUpdater(value, (value.RootNode as BoneSkinMeshNode).MorphTargetWeights);
-                                break;
-                            default:
-                                animationUpdater = new NodeAnimationUpdater(value);
-                                break;
-                        }
+                        animationUpdater = value;
+                        animationUpdater.Reset();
                         animationUpdater.RepeatMode = AnimationRepeatMode.Loop;
                         animationUpdater.Speed = Speed;
                     }
@@ -302,7 +292,8 @@ namespace FileLoadDemo
                         GroupModel.AddNode(scene.Root);
                         if (scene.HasAnimation)
                         {
-                            foreach (var ani in scene.Animations)
+                            var dict = scene.Animations.CreateAnimationUpdaters();
+                            foreach (var ani in dict.Values)
                             {
                                 Animations.Add(ani);
                             }
