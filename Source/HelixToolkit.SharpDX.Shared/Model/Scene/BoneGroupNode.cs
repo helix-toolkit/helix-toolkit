@@ -39,6 +39,11 @@ namespace HelixToolkit.UWP
             /// The bones.
             /// </value>
             public Animations.Bone[] Bones { set; get; }
+
+            public float[] MorphTargetWeights
+            {
+                set; get;
+            }
             /// <summary>
             /// Always return false for bone groups
             /// </summary>

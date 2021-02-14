@@ -187,7 +187,7 @@ namespace HelixToolkit.UWP
                                 }
                             }
 
-                            if (LoadMorphAnimation(ani, dict, out var hxMAni) == ErrorCode.Succeed)
+                            if (LoadMorphAnimation(ani, dict, hasBoneSkinnedMesh, out var hxMAni) == ErrorCode.Succeed)
                             {
                                 lock (animationList)
                                 {
@@ -202,7 +202,7 @@ namespace HelixToolkit.UWP
                         {
                             if (LoadAnimation(ani, dict, hasBoneSkinnedMesh, out var hxAni) == ErrorCode.Succeed)
                                 animationList.Add(hxAni);
-                            if (LoadMorphAnimation(ani, dict, out var hxMAni) == ErrorCode.Succeed)
+                            if (LoadMorphAnimation(ani, dict, hasBoneSkinnedMesh, out var hxMAni) == ErrorCode.Succeed)
                                 animationList.AddRange(hxMAni);
                         }
                     }
@@ -264,7 +264,7 @@ namespace HelixToolkit.UWP
                 return ErrorCode.Failed;
             }
 
-            private ErrorCode LoadMorphAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict, 
+            private ErrorCode LoadMorphAnimation(Animation ani, Dictionary<string, HxScene.SceneNode> dict, bool searchBoneSkinMeshNode,
                 out List<HxAnimations.Animation> hxAnis)
             {
                 if (ani.TicksPerSecond == 0)
@@ -306,7 +306,10 @@ namespace HelixToolkit.UWP
                                 });
                             }
                         }
-
+                        if (searchBoneSkinMeshNode)
+                        {
+                            FindBoneSkinMeshes(hxAni);
+                        }
                         hxAnis.Add(hxAni);
                     }
 
@@ -318,11 +321,11 @@ namespace HelixToolkit.UWP
 
             private void FindBoneSkinMeshes(HxAnimations.Animation animation)
             {
-                if(animation.NodeAnimationCollection != null && animation.NodeAnimationCollection.Count > 0)
+                if (animation.NodeAnimationCollection != null && animation.NodeAnimationCollection.Count > 0)
                 {
                     // Search all the bone skinned meshes from the common animation node root
                     var node = animation.NodeAnimationCollection[0].Node;
-                    while(node != null && !node.IsAnimationNodeRoot)
+                    while (node != null && !node.IsAnimationNodeRoot)
                     {
                         node = node.Parent;
                     }
@@ -331,19 +334,27 @@ namespace HelixToolkit.UWP
                     {
                         return;
                     }
-                    
-                    if(node.Parent != null)
-                    node = node.Parent;
+
+                    if (node.Parent != null)
+                        node = node.Parent;
                     animation.BoneSkinMeshes = new List<Animations.IBoneMatricesNode>();
                     animation.RootNode = node;
                     foreach (var n in SceneNodes[0].Items.PreorderDFT((m) => { return true; }))
                     {
-                        if(n is Animations.IBoneMatricesNode boneNode)
+                        if (n is Animations.IBoneMatricesNode boneNode)
                         {
                             animation.BoneSkinMeshes.Add(boneNode);
                         }
                     }
-                }              
+                }
+                else if (animation.MorphTargetKeyframes != null && animation.MorphTargetKeyframes.Count > 0)
+                {
+                    animation.BoneSkinMeshes = new List<HxAnimations.IBoneMatricesNode>();
+                    if (animation.RootNode is HxAnimations.IBoneMatricesNode bnode)
+                    {
+                        animation.BoneSkinMeshes.Add(bnode);
+                    }
+                }
             }
         }
     }

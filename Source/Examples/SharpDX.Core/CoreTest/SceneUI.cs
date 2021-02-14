@@ -23,6 +23,7 @@ namespace CoreTest
         public static string SomeTextFromOutside = "";
 
         public static HelixToolkitScene scene;
+        public static IList<IAnimationUpdater> animationUpdaters;
 
         private static bool[] animationSelection;
         private static string[] animationNames;
@@ -102,7 +103,7 @@ namespace CoreTest
 
             if (!loading && scene != null && scene.Animations != null)
             {
-                DrawAnimations(scene.Animations, rootNode, ref options);
+                DrawAnimations(ref options);
             }
 
             if (!loading && !string.IsNullOrEmpty(exception))
@@ -164,8 +165,9 @@ namespace CoreTest
                         scene = x.Result;
                         if(scene.Animations != null && scene.Animations.Count > 0)
                         {
-                            animationSelection = new bool[scene.Animations.Count];
-                            animationNames = scene.Animations.Select((ani) => ani.Name).ToArray();
+                            animationUpdaters = scene.Animations.CreateAnimationUpdaters().Values.ToArray();
+                            animationSelection = new bool[animationUpdaters.Count];
+                            animationNames = animationUpdaters.Select((ani) => ani.Name).ToArray();
                             currentSelectedAnimation = -1;
                         }
                     }
@@ -212,42 +214,19 @@ namespace CoreTest
             }
         }
 
-        private static void DrawAnimations(IList<Animation> animations, SceneNode root, ref ViewportOptions options)
+        private static void DrawAnimations(ref ViewportOptions options)
         {
-            if (animations.Count > 0)
+            if (animationNames.Length > 0)
             {
-                ImGui.Text($"Animations: {animations.Count}");
-                if(ImGui.Combo(" ", ref currentSelectedAnimation, animationNames, animations.Count))
+                ImGui.Text($"Animations: {animationNames.Length}");
+                if(ImGui.Combo(" ", ref currentSelectedAnimation, animationNames, animationNames.Length))
                 {
-                    if(currentSelectedAnimation>=0 && currentSelectedAnimation < animationNames.Length)
-                    {                        
-                        options.AnimationUpdater = null;
-                        switch (scene.Animations[currentSelectedAnimation].AnimationType)
-                        {
-                            case AnimationType.Node:
-                                options.AnimationUpdater = new NodeAnimationUpdater(scene.Animations[currentSelectedAnimation]);
-                                break;
-                            case AnimationType.Keyframe:
-                                var keyframeNode = root.Traverse().Where(x => x is BoneSkinMeshNode).FirstOrDefault();
-                                if (keyframeNode is BoneSkinMeshNode skinNode)
-                                {
-                                    options.AnimationUpdater = new KeyFrameUpdater(scene.Animations[currentSelectedAnimation], skinNode.Bones);
-                                }                                   
-                                break;
-                            case AnimationType.MorphTarget:
-                                var boneSkinNode = root.Traverse().Where(x => x is BoneSkinMeshNode).FirstOrDefault();
-                                if (boneSkinNode is BoneSkinMeshNode morphNode)
-                                {
-                                    options.AnimationUpdater = new MorphTargetKeyFrameUpdater(scene.Animations[currentSelectedAnimation],
-                                        morphNode.MorphTargetWeights);                                
-                                }
-                                break;
-                        }
-                        if (options.AnimationUpdater != null)
-                        {
-                            options.AnimationUpdater.RepeatMode = AnimationRepeatMode.Loop;
-                            options.PlayAnimation = true;
-                        }
+                    if(currentSelectedAnimation >= 0 && currentSelectedAnimation < animationNames.Length)
+                    {
+                        options.AnimationUpdater = animationUpdaters[currentSelectedAnimation];
+                        options.AnimationUpdater.Reset();
+                        options.AnimationUpdater.RepeatMode = AnimationRepeatMode.Loop;
+                        options.PlayAnimation = true;
                     }
                     else
                     {
