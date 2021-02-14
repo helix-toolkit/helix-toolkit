@@ -265,6 +265,48 @@ namespace HelixToolkit.UWP
             return h;
         }
 
+        protected static void GetQuadOffset(float width, float height,
+            BillboardHorizontalAlignment horizontalAlignment, BillboardVerticalAlignment verticalAlignment,
+            out Vector2 topLeft, out Vector2 bottomRight)
+        {
+            float top = 0;
+            float bottom = 0;
+            float left = 0;
+            float right = 0;
+            switch (horizontalAlignment)
+            {
+                case BillboardHorizontalAlignment.Center:
+                    left = -width / 2;
+                    right = width / 2;
+                    break;
+                case BillboardHorizontalAlignment.Left:
+                    left = -width;
+                    right = 0;
+                    break;
+                case BillboardHorizontalAlignment.Right:
+                    left = 0;
+                    right = width;
+                    break;
+            }
+            switch (verticalAlignment)
+            {
+                case BillboardVerticalAlignment.Center:
+                    top = height / 2;
+                    bottom = -height / 2;
+                    break;
+                case BillboardVerticalAlignment.Top:
+                    top = height;
+                    bottom = 0;
+                    break;
+                case BillboardVerticalAlignment.Bottom:
+                    top = 0;
+                    bottom = -height;
+                    break;
+            }
+            topLeft = new Vector2(left, top);
+            bottomRight = new Vector2(right, bottom);
+        }
+
         private struct Quad
         {
             public Vector3 TL;
@@ -377,10 +419,10 @@ namespace HelixToolkit.UWP
         {
             var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
             Vector2 p = new Vector2(vcenter.X, vcenter.Y);
-            var tl = p + TL * scale;
-            var tr = p + TR * scale;
-            var bl = p + BL * scale;
-            var br = p + BR * scale;
+            var tl = p + new Vector2(TL.X, -TL.Y) * scale;
+            var tr = p + new Vector2(TR.X, -TR.Y) * scale;
+            var bl = p + new Vector2(BL.X, -BL.Y) * scale;
+            var br = p + new Vector2(BR.X, -BR.Y) * scale;
             return new Quad2D(ref tl, ref tr, ref bl, ref br);
         }
         #endregion

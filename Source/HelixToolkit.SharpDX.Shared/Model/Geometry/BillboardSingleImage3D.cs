@@ -91,6 +91,60 @@ namespace HelixToolkit.UWP
             }
             get { return angle; }
         }
+
+        private BillboardHorizontalAlignment horizontalAlignment = BillboardHorizontalAlignment.Center;
+        /// <summary>
+        /// Sets or gets the horizontal alignment. Default = <see cref="BillboardHorizontalAlignment.Center"/>
+        /// <para>
+        /// For example, when sets horizontal and vertical alignment to top/left,
+        /// billboard's bottom/right point will be anchored at the billboard origin.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The horizontal alignment.
+        /// </value>
+        public BillboardHorizontalAlignment HorizontalAlignment
+        {
+            set
+            {
+                if (horizontalAlignment != value)
+                {
+                    horizontalAlignment = value;
+                    IsInitialized = false;
+                }
+            }
+            get
+            {
+                return horizontalAlignment;
+            }
+        }
+
+        private BillboardVerticalAlignment verticalAlignment = BillboardVerticalAlignment.Center;
+        /// <summary>
+        /// Sets or gets the vertical alignment. Default = <see cref="BillboardVerticalAlignment.Center"/>
+        /// <para>
+        /// For example, when sets horizontal and vertical alignment to top/left,
+        /// billboard's bottom/right point will be anchored at the billboard origin.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The vertical alignment.
+        /// </value>
+        public BillboardVerticalAlignment VerticalAlignment
+        {
+            set
+            {
+                if (verticalAlignment != value)
+                {
+                    verticalAlignment = value;
+                    IsInitialized = false;
+                }
+            }
+            get
+            {
+                return verticalAlignment;
+            }
+        }
 #if !NETFX_CORE        
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
@@ -156,11 +210,7 @@ namespace HelixToolkit.UWP
         /// <param name="deviceResources">The device resources.</param>
         protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
-            var w = Width;
-            var h = Height;
-            // CCW from bottom left 
-            var tl = new Vector2(-w / 2, h / 2);
-            var br = new Vector2(w / 2, -h / 2);
+            GetQuadOffset(Width, Height, HorizontalAlignment, VerticalAlignment, out var tl, out var br);
 
             var uv_tl = new Vector2(0, 0);
             var uv_br = new Vector2(1, 1);

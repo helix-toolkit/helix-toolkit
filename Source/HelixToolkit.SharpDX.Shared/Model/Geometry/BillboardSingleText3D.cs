@@ -221,6 +221,60 @@ namespace HelixToolkit.UWP
             }
         }
 
+        private BillboardHorizontalAlignment horizontalAlignment = BillboardHorizontalAlignment.Center;
+        /// <summary>
+        /// Sets or gets the horizontal alignment. Default = <see cref="BillboardHorizontalAlignment.Center"/>
+        /// <para>
+        /// For example, when sets horizontal and vertical alignment to top/left,
+        /// billboard's bottom/right point will be anchored at the billboard origin.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The horizontal alignment.
+        /// </value>
+        public BillboardHorizontalAlignment HorizontalAlignment
+        {
+            set
+            {
+                if (horizontalAlignment != value)
+                {
+                    horizontalAlignment = value;
+                    IsInitialized = false;
+                }
+            }
+            get
+            {
+                return horizontalAlignment;
+            }
+        }
+
+        private BillboardVerticalAlignment verticalAlignment = BillboardVerticalAlignment.Center;
+        /// <summary>
+        /// Sets or gets the vertical alignment. Default = <see cref="BillboardVerticalAlignment.Center"/>
+        /// <para>
+        /// For example, when sets horizontal and vertical alignment to top/left,
+        /// billboard's bottom/right point will be anchored at the billboard origin.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The vertical alignment.
+        /// </value>
+        public BillboardVerticalAlignment VerticalAlignment
+        {
+            set
+            {
+                if (verticalAlignment != value)
+                {
+                    verticalAlignment = value;
+                    IsInitialized = false;
+                }
+            }
+            get
+            {
+                return verticalAlignment;
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleText3D"/> class.
         /// </summary>
@@ -309,9 +363,7 @@ namespace HelixToolkit.UWP
 
         private void DrawCharacter(string text, Vector3 origin, float w, float h, TextInfo info)
         {
-            // CCW from bottom left 
-            var tl = new Vector2(-w / 2, h / 2);
-            var br = new Vector2(w / 2, -h / 2);
+            GetQuadOffset(w, h, HorizontalAlignment, VerticalAlignment, out var tl, out var br);
 
             var uv_tl = new Vector2(0, 0);
             var uv_br = new Vector2(1, 1);

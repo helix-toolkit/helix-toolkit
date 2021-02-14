@@ -33,11 +33,12 @@ namespace HelixToolkit.UWP
 
     public class TextInfoExt : TextInfo
     {
-        public string FontFamily = "Arial";
-        public FontWeight FontWeight = FontWeight.Normal;
-        public FontStyle FontStyle = FontStyle.Normal;
+        public string FontFamily { get; set; } = "Arial";
+        public FontWeight FontWeight { get; set; } = FontWeight.Normal;
+        public FontStyle FontStyle { get; set; } = FontStyle.Normal;
         public Vector4 Padding = Vector4.Zero;
-        public int Size = 12;
+        public int Size { get; set; } = 12;
+
     }
 
     public class TextInfo
@@ -61,6 +62,36 @@ namespace HelixToolkit.UWP
         /// The angle in radians.
         /// </value>
         public float Angle { set; get; } = 0;
+
+        /// <summary>
+        /// Sets or gets the horizontal alignment. Default = <see cref="BillboardHorizontalAlignment.Center"/>
+        /// <para>
+        /// For example, when sets horizontal and vertical alignment to top/left,
+        /// billboard's bottom/right point will be anchored at the billboard origin.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The horizontal alignment.
+        /// </value>
+        public BillboardHorizontalAlignment HorizontalAlignment
+        {
+            set; get;
+        } = BillboardHorizontalAlignment.Center;
+
+        /// <summary>
+        /// Sets or gets the vertical alignment. Default = <see cref="BillboardVerticalAlignment.Center"/>
+        /// <para>
+        /// For example, when sets horizontal and vertical alignment to top/left,
+        /// billboard's bottom/right point will be anchored at the billboard origin.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The vertical alignment.
+        /// </value>
+        public BillboardVerticalAlignment VerticalAlignment
+        {
+            set; get;
+        } = BillboardVerticalAlignment.Center;
 
         public TextInfo()
         {
@@ -230,30 +261,32 @@ namespace HelixToolkit.UWP
                     }
                 }
                 var transform = textInfo.Angle != 0 ? Matrix3x2.Rotation(textInfo.Angle) : Matrix3x2.Identity;
-                var halfW = rect.Width / 2;
-                var halfH = rect.Height / 2;
-                //Add backbround vertex first. This also used for hit test
+                GetQuadOffset(rect.Width, rect.Height, textInfo.HorizontalAlignment, textInfo.VerticalAlignment, out var tl, out var br);
+                var tr = new Vector2(br.X, tl.Y);
+                var bl = new Vector2(tl.X, br.Y);
+                //Add backbround vertex first. This is also used for hit test
                 BillboardVertices.Add(new BillboardVertex()
                 {
                     Position = textInfo.Origin.ToVector4(),
                     Background = textInfo.Background,
                     TexTL = Vector2.Zero,
                     TexBR = Vector2.Zero,
-                    OffTL = Matrix3x2.TransformPoint(transform, new Vector2(-halfW, halfH)),
-                    OffBR = Matrix3x2.TransformPoint(transform, new Vector2(halfW, -halfH)),
-                    OffTR = Matrix3x2.TransformPoint(transform, new Vector2(-halfW, -halfH)),
-                    OffBL = Matrix3x2.TransformPoint(transform, new Vector2(halfW, halfH)),
+                    OffTL = Matrix3x2.TransformPoint(transform, tl),
+                    OffBR = Matrix3x2.TransformPoint(transform, br),
+                    OffTR = Matrix3x2.TransformPoint(transform, tr),
+                    OffBL = Matrix3x2.TransformPoint(transform, bl),
                 });
 
                 textInfo.UpdateTextInfo(rect.Width, rect.Height);
-
+                                var halfW = rect.Width / 2;
+                var halfH = rect.Height / 2;
                 for(int k = tempPrevCount; k < tempList.Count; ++k)
                 {
                     var v = tempList[k];
-                    v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + new Vector2(-halfW, halfH));
-                    v.OffBR = Matrix3x2.TransformPoint(transform, v.OffBR + new Vector2(-halfW, halfH));
-                    v.OffTR = Matrix3x2.TransformPoint(transform, v.OffTR + new Vector2(-halfW, halfH));
-                    v.OffBL = Matrix3x2.TransformPoint(transform, v.OffBL + new Vector2(-halfW, halfH));
+                    v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + tl);
+                    v.OffBR = Matrix3x2.TransformPoint(transform, v.OffBR + tl);
+                    v.OffTR = Matrix3x2.TransformPoint(transform, v.OffTR + tl);
+                    v.OffBL = Matrix3x2.TransformPoint(transform, v.OffBL + tl);
                     tempList[k] = v;
                 }
                 Width += rect.Width;
