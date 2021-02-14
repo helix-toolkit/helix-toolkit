@@ -82,9 +82,7 @@ namespace HelixToolkit.UWP
 
         private void DrawImageVertex(ImageInfo info)
         {
-            // CCW from bottom left 
-            var tl = new Vector2(-info.Width / 2, info.Height / 2);
-            var br = new Vector2(info.Width / 2, -info.Height / 2);
+            GetQuadOffset(info.Width, info.Height, info.HorizontalAlignment, info.VerticalAlignment, out var tl, out var br);
 
             var transform = info.Angle != 0 ? Matrix3x2.Rotation(info.Angle) : Matrix3x2.Identity;
             var offTL = tl * info.Scale;
@@ -151,13 +149,44 @@ namespace HelixToolkit.UWP
 
     public class ImageInfo
     {
-        public Vector2 UV_TopLeft;
-        public Vector2 UV_BottomRight;
-        public Vector3 Position;
-        public float Width = 1;
-        public float Height = 1;
-        public float Angle = 0;
-        public float Scale = 1;
+        public Vector2 UV_TopLeft { set; get; }
+        public Vector2 UV_BottomRight { set; get; }
+        public Vector3 Position { set; get; }
+        public float Width { set; get; } = 1;
+        public float Height { set; get; } = 1;
+        public float Angle { set; get; } = 0;
+        public float Scale { set; get; } = 1;
+
+        /// <summary>
+        /// Sets or gets the horizontal alignment. Default = <see cref="BillboardHorizontalAlignment.Center"/>
+        /// <para>
+        /// For example, when sets horizontal and vertical alignment to top/left,
+        /// billboard's bottom/right point will be anchored at the billboard origin.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The horizontal alignment.
+        /// </value>
+        public BillboardHorizontalAlignment HorizontalAlignment
+        {
+            set; get;
+        } = BillboardHorizontalAlignment.Center;
+
+        /// <summary>
+        /// Sets or gets the vertical alignment. Default = <see cref="BillboardVerticalAlignment.Center"/>
+        /// <para>
+        /// For example, when sets horizontal and vertical alignment to top/left,
+        /// billboard's bottom/right point will be anchored at the billboard origin.
+        /// </para>
+        /// </summary>
+        /// <value>
+        /// The vertical alignment.
+        /// </value>
+        public BillboardVerticalAlignment VerticalAlignment
+        {
+            set; get;
+        } = BillboardVerticalAlignment.Center;
+
         public virtual void UpdateImage()
         {
             BoundSphere = new BoundingSphere(Position, Math.Max(Width * Scale, Height * Scale) / 2);

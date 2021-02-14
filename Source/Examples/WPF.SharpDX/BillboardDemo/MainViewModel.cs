@@ -18,31 +18,61 @@ namespace BillboardDemo
 {
     public class MainViewModel : DemoCore.BaseViewModel
     {
-        public Geometry3D SphereModel { get; }
-        public PhongMaterial EarthMaterial { get; }
-        public BillboardImage3D FlagsBillboard { get; }
+        public Geometry3D SphereModel
+        {
+            get;
+        }
+        public PhongMaterial EarthMaterial
+        {
+            get;
+        }
+        public BillboardImage3D FlagsBillboard
+        {
+            get;
+        }
         public BillboardSingleText3D SelectedFlagBillboard
         {
             get;
         } = new BillboardSingleText3D()
-            {
-                FontColor = Color.Blue,
-                FontWeight = FontWeights.Bold,
-                BackgroundColor = new Color4(0.8f, 0.8f, 0.8f, 0.8f),
-                Padding = new Thickness(2),
-                IsDynamic = true // Mark dynamic because it will change frequently
-            };
-        public BillboardText3D LandmarkBillboards { get; }
+        {
+            FontColor = Color.Blue,
+            FontWeight = FontWeights.Bold,
+            BackgroundColor = new Color4(0.8f, 0.8f, 0.8f, 0.8f),
+            Padding = new Thickness(2),
+            IsDynamic = true // Mark dynamic because it will change frequently
+        };
+        public BillboardText3D LandmarkBillboards
+        {
+            get;
+        }
             = new BillboardText3D() { IsDynamic = true };// Mark dynamic because it will change frequently
-        public BillboardText3D LandmarkBillboards2 { get; }
-        public BillboardImage3D BatchedText { private set; get; }
-        public Stream BackgroundTexture { private set; get; }
-        public Flag[] Flags { get => FlagsCollection.Flags; }
+        public BillboardText3D LandmarkBillboards2
+        {
+            get;
+        }
+        public BillboardImage3D BatchedText
+        {
+            private set; get;
+        }
+        public Stream BackgroundTexture
+        {
+            private set; get;
+        }
+        public Flag[] Flags
+        {
+            get => FlagsCollection.Flags;
+        }
         private bool fixedSize = true;
         public bool FixedSize
         {
-            set { SetValue(ref fixedSize, value); }
-            get { return fixedSize; }
+            set
+            {
+                SetValue(ref fixedSize, value);
+            }
+            get
+            {
+                return fixedSize;
+            }
         }
         private Flag selectedFlag;
         public Flag SelectedFlag
@@ -52,7 +82,10 @@ namespace BillboardDemo
                 SetValue(ref selectedFlag, value);
                 UpdateSelectedFlagBillboard(value);
             }
-            get { return selectedFlag; }
+            get
+            {
+                return selectedFlag;
+            }
         }
 
         private Color4 prevLocColor, prevLocColor2;
@@ -117,40 +150,98 @@ namespace BillboardDemo
             float offset = 4.5f;
             float scale = 0.8f;
             LandmarkBillboards.TextInfo.Add(new TextInfo("Arctic", Vector3.UnitZ * offset)
-            { Foreground = Color.Red, Scale = scale * 2 });
+            {
+                Foreground = Color.Red,
+                Scale = scale * 2,
+                VerticalAlignment = BillboardVerticalAlignment.Top
+            });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Antarctica", Vector3.UnitZ * -offset)
-            { Foreground = Color.Blue, Scale = scale * 2 });
+            {
+                Foreground = Color.Blue,
+                Scale = scale * 2,
+                VerticalAlignment = BillboardVerticalAlignment.Bottom
+            });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Equator",
                 new Vector3(0, offset, 0))
-            { Foreground = Color.White, Scale = scale });
+            {
+                Foreground = Color.White,
+                Scale = scale
+            });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Equator",
                 new Vector3((float)Math.Cos(Math.PI / 6) * offset, -(float)Math.Sin(Math.PI / 6) * offset, 0))
-            { Foreground = Color.White, Scale = scale });
+            {
+                Foreground = Color.White,
+                Scale = scale
+            });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Equator",
                 new Vector3(-(float)Math.Cos(Math.PI / 6) * offset, -(float)Math.Sin(Math.PI / 6) * offset, 0))
-            { Foreground = Color.White, Scale = scale });
+            {
+                Foreground = Color.White,
+                Scale = scale
+            });
 
             LandmarkBillboards.TextInfo.Add(new TextInfo("Pacific", new Vector3(3.922917f, 0.2635128f, 2.084114f))
-            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            {
+                Foreground = Color.White,
+                Background = Color.Green,
+                Scale = scale * 1.4f
+            });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Indian", new Vector3(-0.8591346f, -4.321474f, -0.2010482f))
-            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            {
+                Foreground = Color.White,
+                Background = Color.Green,
+                Scale = scale * 1.4f
+            });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Atlantic", new Vector3(-2.595731f, 1.984212f, 3.021353f))
-            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            {
+                Foreground = Color.White,
+                Background = Color.Green,
+                Scale = scale * 1.4f
+            });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Southern", new Vector3(0.08587439f, -2.127402f, -3.936893f))
-            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            {
+                Foreground = Color.White,
+                Background = Color.Green,
+                Scale = scale * 1.4f
+            });
             LandmarkBillboards.TextInfo.Add(new TextInfo("Arctic Ocean", new Vector3(-0.7553688f, -0.6352348f, 4.379822f))
-            { Foreground = Color.White, Background = Color.Green, Scale = scale * 1.4f });
+            {
+                Foreground = Color.White,
+                Background = Color.Green,
+                Scale = scale * 1.4f,
+                VerticalAlignment = BillboardVerticalAlignment.Top
+            });
 
             LandmarkBillboards2.TextInfo.Add(new TextInfo("Asia", new Vector3(-0.8280244f, -3.665166f, 2.356252f))
-            { Foreground = Color.Red, Background = Color.DarkGray, Scale = 1});
+            {
+                Foreground = Color.Red,
+                Background = Color.DarkGray,
+                Scale = 1
+            });
             LandmarkBillboards2.TextInfo.Add(new TextInfo("Europe", new Vector3(-2.531648f, -1.158762f, 3.501563f))
-            { Foreground = Color.Blue, Background = Color.DarkGray, Scale = 1 });
+            {
+                Foreground = Color.Blue,
+                Background = Color.DarkGray,
+                Scale = 1
+            });
             LandmarkBillboards2.TextInfo.Add(new TextInfo("North America", new Vector3(0.1436681f, 3.24761f, 3.080247f))
-            { Foreground = Color.Red, Background = Color.DarkGray, Scale = 1 });
+            {
+                Foreground = Color.Red,
+                Background = Color.DarkGray,
+                Scale = 1
+            });
             LandmarkBillboards2.TextInfo.Add(new TextInfo("South America", new Vector3(-1.96404f, 3.929909f, -0.6905473f))
-            { Foreground = Color.Orchid, Background = Color.DarkGray, Scale = 1 });
+            {
+                Foreground = Color.Orchid,
+                Background = Color.DarkGray,
+                Scale = 1
+            });
             LandmarkBillboards2.TextInfo.Add(new TextInfo("Oceania", new Vector3(2.306917f, -3.398433f, -1.661219f))
-            { Foreground = Color.Green, Background = Color.DarkGray, Scale = 1 });
+            {
+                Foreground = Color.Green,
+                Background = Color.DarkGray,
+                Scale = 1
+            });
         }
 
         private void AddBatchedText()
@@ -166,7 +257,7 @@ namespace BillboardDemo
                     FontFamily = "Segoe UI",
                     Padding = new Vector4(4),
                     Origin = new Vector3(-10, 0, -4),
-                    Size = 18
+                    Size = 18, HorizontalAlignment = BillboardHorizontalAlignment.Left
                 },
                 new TextInfoExt()
                 {
@@ -177,7 +268,7 @@ namespace BillboardDemo
                     Origin = new Vector3(-10, 0, -2),
                     Padding = new Vector4(4,2,4,2),
                     FontFamily = "Microsoft YaHei",
-                    Size = 16
+                    Size = 16, HorizontalAlignment = BillboardHorizontalAlignment.Right
                 },
                 new TextInfoExt()
                 {
@@ -224,7 +315,7 @@ namespace BillboardDemo
                     Text = "한국어",
                     Foreground = Color.LightSalmon,
                     Background = Color.DarkSlateBlue,
-                    
+
                     Origin = new Vector3(-14, 0, -2),
                     Padding = new Vector4(4,2,4,2),
                     Size = 16
@@ -261,7 +352,7 @@ namespace BillboardDemo
                     Size = 24
                 }
             };
-            BatchedText = texts.ToBillboardImage3D(EffectsManager);           
+            BatchedText = texts.ToBillboardImage3D(EffectsManager);
         }
 
         private void UpdateSelectedFlagBillboard(Flag flag)
@@ -278,7 +369,7 @@ namespace BillboardDemo
 
         public void OnMouseUpHandler(object sender, MouseUp3DEventArgs e)
         {
-            
+
             if (e.HitTestResult != null && e.HitTestResult.ModelHit is BillboardTextModel3D model
                 && e.HitTestResult is BillboardHitResult res)
             {
@@ -295,7 +386,7 @@ namespace BillboardDemo
                     highlightedLoc.Foreground = Color.Black;
                     LandmarkBillboards.Invalidate();
                 }
-                else if(model.Geometry == LandmarkBillboards2)
+                else if (model.Geometry == LandmarkBillboards2)
                 {
                     RestoreLocColor2();
                     BackupLocColor2(LandmarkBillboards2.TextInfo[res.TextInfoIndex]);
