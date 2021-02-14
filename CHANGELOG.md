@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 2. Support animation playback speed. (WPF.SharpDX/UWP/Core)
 3. Support releasing geometry data after loading into GPU. Call `Geometry3D.SetAsTransient()` to enable this feature. (WPF.SharpDX/UWP/Core) 
 (Restrictions: View only; no hit test support; geometry must not be shared with multiple models; Must enable before attaching geometry3D onto a Model3D/Node, or before the Model3D/node being attached to a viewport.)
+4. Support billboard alignment relative to the origin. (WPF.SharpDX/UWP/Core)
+5. Support animation updater group. (WPF.SharpDX/UWP/Core)
+6. Adds extension helper method to create animation updaters from animation list. (WPF.SharpDX/UWP/Core)
 
 ### Improvement
 1. Improved thread buffer management. (WPF.SharpDX/UWP/Core)
