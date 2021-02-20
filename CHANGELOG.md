@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.15.0] - 2021-02-20
 ### Added
 1. Supports morph target animation. (WPF.SharpDX/UWP/Core)
 2. Supports animation playback speed. (WPF.SharpDX/UWP/Core)
