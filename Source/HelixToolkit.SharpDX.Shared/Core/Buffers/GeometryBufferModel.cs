@@ -245,7 +245,7 @@ namespace HelixToolkit.UWP
                                     updateVBinding = true;  
                                 }
                             }      
-                        }  
+                        }
                         if (updateVBinding)
                         {
                             VertexBufferBindings = OnCreateVertexBufferBinding();
@@ -267,6 +267,10 @@ namespace HelixToolkit.UWP
                         IndexChanged = false;                    
                         IndexBufferUpdated?.Invoke(this, EventArgs.Empty);
                     }               
+                }
+                if (bufferUpdated && Geometry != null && Geometry.IsTransient)
+                {
+                    Geometry.ClearAllGeometryData();
                 }
                 return bufferUpdated;
             }

@@ -34,6 +34,7 @@ namespace HelixToolkit.UWP
             public const string VolumeModelCB = "cbVolumeModel";
             public const string SSAOCB = "cbSSAO";
             public const string ScreenDuplicationCB = "cbScreenClone";
+            public const string MorphTargetCB = "cbMorphTarget";
             //-----------Materials--------------------
             public const string DiffuseMapTB = "texDiffuseMap";
             public const string AlphaMapTB = "texAlphaMap";
@@ -63,6 +64,10 @@ namespace HelixToolkit.UWP
             public const string OITAlphaTB = "texOITAlpha";
             //----------Bone Skin--------------
             public const string BoneSkinSB = "skinMatrices"; // Structured Buffer
+
+            public const string MTWeightsB = "morphTargetWeights"; //Buffer<float>
+            public const string MTDeltasB = "morphTargetDeltas"; //Buffer<float3>
+            public const string MTOffsetsB = "morphTargetOffsets"; //Buffer<int>
 
             public const string SpriteTB = "texSprite";
 

@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\MeshBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\PointBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\SpriteBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\ThreadBufferManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\CoreComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Components\ConstantBufferComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\CrossSectionMeshRenderCore.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\Device2DProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshOutlineRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\MorphTargetUploaderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\OrderIndependantTransparentRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointLineRenderCore.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultStates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultVertexShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\UWPShaderReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\AnimationExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BitmapExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingFrustumExtensions.cs" />
@@ -125,8 +128,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\AnimationGroupUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\AnimationModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\MorphTargetKeyFrameUpdater.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\NodeAnimationUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMath.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMode.cs" />

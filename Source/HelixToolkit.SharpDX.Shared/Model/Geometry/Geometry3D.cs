@@ -159,14 +159,35 @@ namespace HelixToolkit.UWP
         /// <para>Example: If the vertex count increments from 0 to around 3000 during vertex array streaming, 
         /// pre-define a size of 3000 for this geometry allows the dynamic buffer to be reused and avoid recreating dynamic buffer 3000 times.</para>
         /// </summary>
-        public int PreDefinedVertexCount = 0;
+        public int PreDefinedVertexCount { set; get; } = 0;
         /// <summary>
         /// The pre defined index count. Used when <see cref="IsDynamic"/> = true.
         ///  <para>The pre define index count allows user to initialize a dynamic buffer with a minimum pre-define size.</para>
         /// <para>Example: If the index count increments from 0 to around 3000 during index array streaming, 
         /// pre-define a size of 3000 for this geometry allows the dynamic buffer to be reused and avoid recreating dynamic buffer 3000 times.</para>
         /// </summary>
-        public int PreDefinedIndexCount = 0;
+        public int PreDefinedIndexCount { set; get; } = 0;
+        /// <summary>
+        /// Gets a value indicating whether the geometry data are transient. Call <see cref="SetAsTransient"/> to set this flag to true.
+        /// <para>
+        /// When this is true, geometry3D data will be cleared once being loaded into GPU.
+        /// </para>
+        /// <para>
+        /// This geometry3D can only be used by one Model3D in one Viewport.
+        /// Must not be shared.
+        /// Hit test is disabled as well.
+        /// </para>
+        /// <para>
+        /// Useful when loading a large geometry for view only and free up memory after geometry data being uploaded to GPU.
+        /// </para>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is transient; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsTransient
+        {
+            private set; get;
+        } = false;
         /// <summary>
         /// The disable update bound, only used in <see cref="AssignTo(Geometry3D)"/>
         /// </summary>
@@ -180,12 +201,17 @@ namespace HelixToolkit.UWP
         /// The octree parameter.
         /// </value>
         public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Geometry3D"/> class.
+        /// </summary>
         public Geometry3D()
         {
             OctreeParameter.PropertyChanged += OctreeParameter_PropertyChanged;
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Geometry3D"/> class.
+        /// </summary>
+        /// <param name="isDynamic">if set to <c>true</c> [is dynamic].</param>
         public Geometry3D(bool isDynamic) 
             : this()
         {
@@ -231,7 +257,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public void UpdateOctree(bool force = false)
         {
-            if (CanCreateOctree())
+            if (!IsTransient && CanCreateOctree())
             {
                 if (OctreeDirty || force)
                 {
@@ -361,6 +387,45 @@ namespace HelixToolkit.UWP
         public struct Point
         {
             public Vector3 P0;
+        }
+
+        /// <summary>
+        /// Sets this geometry as transient.
+        /// <para>
+        /// Once this is called, this geometry will be marked as <see cref="IsTransient"/> = true.
+        /// </para>
+        /// <para>
+        /// This function must be called before geometry is attached to a model for rendering. 
+        /// Or before the model is attached to a viewport for rendering.
+        /// </para>
+        /// <para>
+        /// A transient geometry is being used to save memory. All geometry data will be cleared once being uploaded into GPU.
+        /// Should not be shared with multiple models.
+        /// </para>
+        /// A transient geometry does not support hit test.
+        /// </summary>
+        public void SetAsTransient()
+        {
+            IsTransient = true;
+            ClearOctree();
+        }
+        /// <summary>
+        /// Clears all geometry data.
+        /// </summary>
+        public void ClearAllGeometryData()
+        {
+            Positions?.Clear();
+            Positions?.TrimExcess();
+            Indices?.Clear();
+            Indices?.TrimExcess();
+            Colors?.Clear();
+            Colors?.TrimExcess();
+            OnClearAllGeometryData();
+        }
+
+        protected virtual void OnClearAllGeometryData()
+        {
+        
         }
     }
 }

@@ -48,19 +48,54 @@ namespace HelixToolkit.UWP
                         var fillMode = material.Key.HasWireFrame && material.Key.IsWireFrameEnabled
                             ? FillMode.Wireframe
                             : FillMode.Solid;
+
                         //Determine if has bones
-                        var mnode = mesh.AssimpMesh.HasBones ? 
-                            new HxScene.BoneSkinMeshNode()
-                            {
-                                Bones = mesh.AssimpMesh.Bones.Select(x => new HxAnimations.Bone()
+                        HxScene.MeshNode mnode;
+                        if (mesh.AssimpMesh.HasBones || mesh.AssimpMesh.HasMeshAnimationAttachments)
+                        {
+                            var mn = new HxScene.BoneSkinMeshNode();
+
+                            //Bones
+                            if (mesh.AssimpMesh.HasBones)
+                                mn.Bones = mesh.AssimpMesh.Bones.Select(x => new HxAnimations.Bone()
                                 {
                                     Name = x.Name,
                                     BindPose = x.OffsetMatrix.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor).Inverted(),
                                     BoneLocalTransform = Matrix.Identity,
                                     InvBindPose = x.OffsetMatrix.ToSharpDXMatrix(configuration.IsSourceMatrixColumnMajor),//Documented at https://github.com/assimp/assimp/pull/1803
-                                }).ToArray()
+                                }).ToArray();
+                            else
+                            {
+                                mn.Geometry = mesh.Mesh;
+                                mn.SetupIdentitySkeleton();
                             }
-                            : new HxScene.MeshNode();
+
+                            //Morph targets
+                            if (mesh.AssimpMesh.HasMeshAnimationAttachments)
+                            {
+                                int attCount = mesh.AssimpMesh.MeshAnimationAttachmentCount;
+                                var mtv = new FastList<MorphTargetVertex>(attCount * mesh.AssimpMesh.VertexCount);
+                                foreach (var att in mesh.AssimpMesh.MeshAnimationAttachments)
+                                {
+                                    //NOTE: It seems some files may have invalid normal/tangent data for morph targets.
+                                    //May need to provide option in future to use 0 normal/tangent deltas or recalculate
+                                    mtv.AddRange(new MorphTargetVertex[mesh.AssimpMesh.VertexCount].Select((x, i) => 
+                                    new MorphTargetVertex() {
+                                        deltaPosition = (att.Vertices[i] - mesh.AssimpMesh.Vertices[i]).ToSharpDXVector3(),
+                                        deltaNormal = att.HasNormals ? (att.Normals[i] - mesh.AssimpMesh.Normals[i]).ToSharpDXVector3() : Vector3.Zero,
+                                        deltaTangent = att.HasTangentBasis ? (att.Tangents[i] - mesh.AssimpMesh.Tangents[i]).ToSharpDXVector3() : Vector3.Zero
+                                    }));
+                                }
+
+                                mn.MorphTargetWeights = new float[attCount];
+                                mn.InitializeMorphTargets(mtv.ToArray(), mesh.AssimpMesh.VertexCount);
+                            }
+
+                            mnode = mn;
+                        }
+                        else
+                            mnode = new HxScene.MeshNode();
+
                         mnode.Name = string.IsNullOrEmpty(mesh.AssimpMesh.Name) ? $"{nameof(HxScene.MeshNode)}_{Interlocked.Increment(ref MeshIndexForNoName)}" : mesh.AssimpMesh.Name;
                         mnode.Geometry = mesh.Mesh;
                         mnode.Material = material.Value;
@@ -158,7 +193,10 @@ namespace HelixToolkit.UWP
                 }
 
                 hMesh.UpdateBounds();
-                hMesh.UpdateOctree();
+                if (configuration.BuildOctree)
+                {
+                    hMesh.UpdateOctree();
+                }
                 return hMesh;
             }
             /// <summary>
@@ -250,7 +288,7 @@ namespace HelixToolkit.UWP
                 switch (mesh.PrimitiveType)
                 {
                     case PrimitiveType.Triangle:
-                        if (mesh.HasBones)
+                        if (mesh.HasBones || mesh.HasMeshAnimationAttachments)
                         {
                             return new MeshInfo(PrimitiveType.Triangle, mesh, OnCreateHelixMeshWithBones(mesh),
                                 mesh.MaterialIndex);

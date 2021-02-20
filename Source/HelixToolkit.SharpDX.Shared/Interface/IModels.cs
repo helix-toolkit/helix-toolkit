@@ -83,6 +83,24 @@ namespace HelixToolkit.UWP
         SingleText = 1, MultipleText = 2, Image = 4
     }
     /// <summary>
+    /// Shows billboard horizontally relative to the origin.
+    /// </summary>
+    public enum BillboardHorizontalAlignment
+    {
+        Center,
+        Left,
+        Right
+    }
+    /// <summary>
+    /// Shows billboard vertically relative to the origin.
+    /// </summary>
+    public enum BillboardVerticalAlignment
+    {
+        Center,
+        Top,
+        Bottom
+    }
+    /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>

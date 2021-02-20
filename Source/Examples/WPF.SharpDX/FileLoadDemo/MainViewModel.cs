@@ -123,12 +123,12 @@ namespace FileLoadDemo
             get { return enableAnimation; }
         }
 
-        public ObservableCollection<Animation> Animations { get; } = new ObservableCollection<Animation>();
+        public ObservableCollection<IAnimationUpdater> Animations { get; } = new ObservableCollection<IAnimationUpdater>();
 
         public SceneNodeGroupModel3D GroupModel { get; } = new SceneNodeGroupModel3D();
 
-        private Animation selectedAnimation = null;
-        public Animation SelectedAnimation
+        private IAnimationUpdater selectedAnimation = null;
+        public IAnimationUpdater SelectedAnimation
         {
             set
             {
@@ -137,7 +137,10 @@ namespace FileLoadDemo
                     StopAnimation();
                     if (value != null)
                     {
-                        animationUpdater = new NodeAnimationUpdater(value);
+                        animationUpdater = value;
+                        animationUpdater.Reset();
+                        animationUpdater.RepeatMode = AnimationRepeatMode.Loop;
+                        animationUpdater.Speed = Speed;
                     }
                     else
                     {
@@ -155,11 +158,25 @@ namespace FileLoadDemo
             }
         }
 
+        private float speed = 1.0f;
+        public float Speed
+        {
+            set
+            {
+                if (SetValue(ref speed, value))
+                {
+                    if (animationUpdater != null)
+                        animationUpdater.Speed = value;
+                }
+            }
+            get => speed;
+        }
+
         public TextureModel EnvironmentMap { get; }
 
         private SynchronizationContext context = SynchronizationContext.Current;
         private HelixToolkitScene scene;
-        private NodeAnimationUpdater animationUpdater;
+        private IAnimationUpdater animationUpdater;
         private List<BoneSkinMeshNode> boneSkinNodes = new List<BoneSkinMeshNode>();
         private List<BoneSkinMeshNode> skeletonNodes = new List<BoneSkinMeshNode>();
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
@@ -275,7 +292,8 @@ namespace FileLoadDemo
                         GroupModel.AddNode(scene.Root);
                         if (scene.HasAnimation)
                         {
-                            foreach (var ani in scene.Animations)
+                            var dict = scene.Animations.CreateAnimationUpdaters();
+                            foreach (var ani in dict.Values)
                             {
                                 Animations.Add(ani);
                             }

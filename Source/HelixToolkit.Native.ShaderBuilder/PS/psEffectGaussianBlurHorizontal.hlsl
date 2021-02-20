@@ -9,7 +9,7 @@ static const float offset[KSize] =
 };
 static const float weight[KSize] =
 {
-    0.2270270270, 0.1945945946, 0.1216216216, 0.0540540541, 0.0162162162
+    0.20236, 0.179044, 0.124009, 0.067234, 0.028532
 };
 
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
@@ -25,5 +25,4 @@ float4 main(MeshOutlinePS_INPUT input) : SV_Target
         color += c * weight[i];
     }
     return saturate(color);
-
 }

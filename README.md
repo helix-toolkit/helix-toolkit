@@ -51,8 +51,6 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 **Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.17763).**
 
-**Missing `.cso` error during the build?** Windows 10 SDK **Ver.10.0.17763** can be selected and installed using Visual Studio 2019 installer. If you already installed the higher SDK version, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the version installed on your machine.
-
 ## Notes
 
 #### 1. Right-handed Cartesian coordinate system and row major matrix by default
@@ -76,6 +74,16 @@ Please use the following template to report bugs.
 
 ## News
 
+#### 2021-01-09
+[v2.14.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.14.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.14.0)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.14.0)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.14.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.14.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.14.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.14.0)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.14.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.14.0)
 
 #### 2020-10-17
 [v2.13.1](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.13.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
@@ -99,17 +107,4 @@ Please use the following template to report bugs.
 - [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.12.0)
 - [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.12.0)
 
-#### 2020-02-08
-[v2.11.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.11.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.11.0)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.11.0)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.11.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.11.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.11.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.11.0)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.11.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.11.0)
-
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
-
-##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](/CHANGELOG.md)

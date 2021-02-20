@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf
             var pc = new PointCollection();
             var circle = MeshBuilder.GetCircle(this.ThetaDiv);
 
-            // If Diameters is set, create a unit circle
+            // If Diameters is not set, create a unit circle
             // otherwise, create a circle with the specified diameter
             double r = this.Diameters != null ? 1 : this.Diameter / 2;
             for (int j = 0; j < this.ThetaDiv; j++)

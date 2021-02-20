@@ -119,8 +119,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class DefaultMeshGeometryBufferModel : MeshGeometryBufferModel<DefaultVertex>
         {
-            [ThreadStatic]
-            private static DefaultVertex[] vertexArrayBuffer = null;
             private static readonly Vector2[] emptyTextureArray = new Vector2[0];
             private static readonly Vector4[] emptyColorArray = new Vector4[0];
 
@@ -234,8 +232,7 @@ namespace HelixToolkit.UWP
                 var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
                 var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
 
-                var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
-                vertexArrayBuffer = array;
+                var array = ThreadBufferManager<DefaultVertex>.GetBuffer(vertexCount);
                 for (var i = 0; i < vertexCount; i++)
                 {
                     positions.MoveNext();

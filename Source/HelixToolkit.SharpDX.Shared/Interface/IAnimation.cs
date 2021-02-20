@@ -27,6 +27,17 @@ namespace HelixToolkit.UWP
         public interface IAnimationUpdater
         {
             /// <summary>
+            /// Gets or sets the name.
+            /// </summary>
+            /// <value>
+            /// The name.
+            /// </value>
+            string Name { set; get; }
+            /// <summary>
+            /// Playback speed. Default is 1x.
+            /// </summary>
+            float Speed { set; get; }
+            /// <summary>
             /// Gets or sets the repeat mode.
             /// </summary>
             /// <value>
@@ -75,6 +86,16 @@ namespace HelixToolkit.UWP
             /// The bones.
             /// </value>
             Bone[] Bones { set; get; }
+            /// <summary>
+            /// Gets or sets the morph target weights.
+            /// </summary>
+            /// <value>
+            /// The morph target weights.
+            /// </value>
+            float[] MorphTargetWeights
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets a value indicating whether this instance is renderable.
             /// </summary>

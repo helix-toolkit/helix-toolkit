@@ -20,6 +20,8 @@ namespace HelixToolkit.UWP
     namespace Model.Scene
     {
         using Core;
+        using Animations;
+
         /// <summary>
         /// 
         /// </summary>
@@ -42,6 +44,19 @@ namespace HelixToolkit.UWP
                     return (RenderCore as BoneSkinRenderCore).BoneMatrices;
                 }
             }
+
+            public float[] MorphTargetWeights
+            {
+                get
+                {
+                    return (RenderCore as BoneSkinRenderCore).MorphTargetWeights;
+                }
+                set
+                {
+                    (RenderCore as BoneSkinRenderCore).MorphTargetWeights = value;
+                }
+            }
+
             /// <summary>
             /// Gets or sets the bones.
             /// </summary>
@@ -182,6 +197,45 @@ namespace HelixToolkit.UWP
             {
                 return skinnedVerticesCache;
             }
+
+            /// <summary>
+            /// Make sure to use SetWeight so that the mutation of elements can be seen
+            /// </summary>
+            /// <param name="i">index</param>
+            /// <param name="w">weight, typically 0-1</param>
+            public void SetWeight(int i, float w)
+            {
+                (RenderCore as BoneSkinRenderCore).SetWeight(i, w);
+            }
+
+            /// <summary>
+            /// Tells the render core to update it's morph target weight buffer
+            /// </summary>
+            public void WeightUpdated()
+            {
+                (RenderCore as BoneSkinRenderCore).SetWeight(0, MorphTargetWeights[0]);
+                InvalidateRender();
+            }
+
+            public void SetupIdentitySkeleton()
+            {
+                BoneMatrices = new Matrix[] { Matrix.Identity };
+                Bones = new Bone[] { new Bone() { Name = "Identity", BindPose = Matrix.Identity, InvBindPose = Matrix.Identity, BoneLocalTransform = Matrix.Identity } };
+
+                BoneSkinnedMeshGeometry3D geom = Geometry as BoneSkinnedMeshGeometry3D;
+                geom.VertexBoneIds = new BoneIds[geom.Positions.Count];
+                for (int i = 0; i < geom.VertexBoneIds.Count; i++)
+                    geom.VertexBoneIds[i] = new BoneIds() { Bone1 = 0, Weights = new Vector4(1, 0, 0, 0) };
+            }
+
+            public void UpdateBoneMatrices()
+            {
+                BoneMatrices = new Matrix[Bones.Length];
+                BoneMatrices = BoneMatrices.Select((m, i) => Bones[i].Node.TotalModelMatrixInternal).ToArray();
+            }
+
+            public bool InitializeMorphTargets(MorphTargetVertex[] mtv, int pitch)
+                => (RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, pitch);
 
             protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
             {

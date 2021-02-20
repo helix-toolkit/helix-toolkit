@@ -53,6 +53,9 @@
   <files>
     <file src="HelixToolkit.Wpf.SharpDX.Assimp\bin\Release\HelixToolkit.Wpf.SharpDX.Assimp.???" target="lib\net45" />
     <file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP.Assimp.???" target="lib\uap10.0" />
+	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\*" target="lib\uap10.0\HelixToolkit.UWP" />
+	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\Resources\*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
+	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\Themes\*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
     <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netstandard1.3" />
     <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netstandard1.3" />
     <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp2.1\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netcoreapp2.1" />

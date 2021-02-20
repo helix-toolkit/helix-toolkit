@@ -39,13 +39,13 @@ namespace HelixToolkit.UWP
                 var metrices = layout.Metrics;
                 if (!predefinedSize)
                 {
-                    width = (float)Math.Ceiling(metrices.WidthIncludingTrailingWhitespace + padding.X + padding.W);
-                    height = (float)Math.Ceiling(metrices.Height + padding.Y + padding.Z);
+                    width = (float)Math.Ceiling(metrices.WidthIncludingTrailingWhitespace + padding.X + padding.Z);
+                    height = (float)Math.Ceiling(metrices.Height + padding.Y + padding.W);
                 }
                 else
                 {
                     var scale = width / height;
-                    width = (float)Math.Ceiling(metrices.WidthIncludingTrailingWhitespace + padding.X + padding.W);
+                    width = (float)Math.Ceiling(metrices.WidthIncludingTrailingWhitespace + padding.X + padding.Z);
                     height = width / scale;
                 }
 
@@ -291,7 +291,8 @@ namespace HelixToolkit.UWP
                                  Height = rect.Height,
                                  Position = x.Origin,
                                  UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageHeight),
-                                 UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageHeight)
+                                 UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageHeight),
+                                 HorizontalAlignment = x.HorizontalAlignment, VerticalAlignment = x.VerticalAlignment
                              };
                          }))
                         {

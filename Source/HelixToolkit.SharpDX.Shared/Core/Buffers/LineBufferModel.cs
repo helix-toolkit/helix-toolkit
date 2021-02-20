@@ -92,8 +92,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class DefaultLineGeometryBufferModel : LineGeometryBufferModel<LinesVertex>
         {
-            [ThreadStatic]
-            private static LinesVertex[] vertexArrayBuffer = null;
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultLineGeometryBufferModel"/> class.
             /// </summary>
@@ -159,10 +157,8 @@ namespace HelixToolkit.UWP
             {
                 var positions = geometry.Positions;
                 var vertexCount = geometry.Positions.Count;
-                var array =  vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
+                var array = ThreadBufferManager<LinesVertex>.GetBuffer(vertexCount);
                 var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-
-                vertexArrayBuffer = array;
 
                 for (var i = 0; i < vertexCount; i++)
                 {
