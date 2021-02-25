@@ -1,6 +1,7 @@
 ﻿using SharpDX;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using Point = Windows.Foundation.Point;
 using Point3D = SharpDX.Vector3;
 using Vector3D = SharpDX.Vector3;
@@ -544,7 +545,10 @@ namespace HelixToolkit.UWP
         /// Implemented as a list since we want to remove items at the bottom of the stack.
         /// </remarks>
         private readonly SimpleRingBuffer<CameraSetting> cameraHistory = new SimpleRingBuffer<CameraSetting>(100);
-
+        /// <summary>
+        /// Records series of mouse down cursor changes. And play back during mouse up.
+        /// </summary>
+        internal Stack<CoreCursor> CursorHistory { get; } = new Stack<CoreCursor>();
         /// <summary>
         /// Decides if combined manipulation is allowed.
         /// </summary>

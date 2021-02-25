@@ -170,11 +170,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// Gets or sets the old cursor.
-        /// </summary>
-        private Cursor OldCursor { get; set; }
-
         protected List<HitTestResult> hits = new List<HitTestResult>();
 
         /// <summary>
@@ -348,7 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.Started(Mouse.GetPosition(this.Viewport));
 
-            this.OldCursor = this.Viewport.Cursor;
+            Controller.CursorHistory.Push(this.Viewport.Cursor);
             this.Viewport.Cursor = this.GetCursor();
         }
 
@@ -380,7 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Viewport.MouseMove -= this.OnMouseMove;
             this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.ReleaseMouseCapture();
-            this.Viewport.Cursor = this.OldCursor;
+            this.Viewport.Cursor = Controller.CursorHistory.Count > 0 ? Controller.CursorHistory.Pop() : null;
             this.Completed(Mouse.GetPosition(this.Viewport));
         }
 
