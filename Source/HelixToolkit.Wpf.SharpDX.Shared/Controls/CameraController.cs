@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections.Generic;
 
 using Vector3 = global::SharpDX.Vector3;
 using Vector2 = global::SharpDX.Vector2;
@@ -170,6 +171,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private static readonly Point PointZero = new Point(0, 0);
         private static readonly Vector2 VectorZero = new Vector2();
         private static readonly Vector3 Vector3DZero = new Vector3();
+
+        /// <summary>
+        /// Records series of mouse down cursor changes. And play back during mouse up.
+        /// </summary>
+        internal Stack<Cursor> CursorHistory { get; } = new Stack<Cursor>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CameraController" /> class.
