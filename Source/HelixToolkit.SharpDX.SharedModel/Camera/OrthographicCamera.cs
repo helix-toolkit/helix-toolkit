@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private double oldWidth;
-        private double newWidth;
+        private double targetWidth;
         private double accumTime;
         private double aniTime;
 
@@ -76,13 +76,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (animationTime == 0)
             {
+                UpdateCameraPositionByWidth(newWidth);
                 Width = newWidth;
-                animationTime = 0;
             }
             else
             {
                 oldWidth = Width;
-                this.newWidth = newWidth;
+                this.targetWidth = newWidth;
                 accumTime = 1;
                 aniTime = animationTime;
                 OnUpdateAnimation(0);
@@ -99,15 +99,42 @@ namespace HelixToolkit.Wpf.SharpDX
             accumTime += ellapsed;
             if(accumTime > aniTime)
             {
-                Width = newWidth;
+                UpdateCameraPositionByWidth(targetWidth);
+                Width = targetWidth;
                 aniTime = 0;
                 return res;
             }
             else
             {
-                Width = oldWidth + (newWidth - oldWidth) * (accumTime / aniTime);
+                var newWidth = oldWidth + (targetWidth - oldWidth) * (accumTime / aniTime);
+                UpdateCameraPositionByWidth(newWidth);
+                Width = newWidth;
                 return true;
             }
+        }
+
+        private void UpdateCameraPositionByWidth(double newWidth)
+        {
+            var ratio = newWidth / Width;
+#if !NETFX_CORE
+            var dir = LookDirection.ToVector3();
+            var target = Target.ToVector3();
+#else
+            var dir = LookDirection;
+            var target = Target;
+#endif
+            var dist = dir.Length();
+            var newDist = dist * ratio;
+            dir.Normalize();
+            var position = (target - dir * (float)newDist);
+            var lookDir = dir * (float)newDist;
+#if !NETFX_CORE
+            Position = position.ToPoint3D();
+            LookDirection = lookDir.ToVector3D();
+#else
+            Position = position;
+            LookDirection = lookDir;
+#endif
         }
 
 #if !NETFX_CORE

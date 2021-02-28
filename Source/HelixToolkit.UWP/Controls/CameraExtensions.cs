@@ -179,7 +179,7 @@ namespace HelixToolkit.UWP
                 return;
             }
 
-            if(viewport.UnProject(new Vector2((float)zoomRectangle.Top, (float)zoomRectangle.Left), out var topLeftRay)
+            if (viewport.UnProject(new Vector2((float)zoomRectangle.Top, (float)zoomRectangle.Left), out var topLeftRay)
                 && viewport.UnProject(new Vector2((float)zoomRectangle.Top, (float)zoomRectangle.Right), out var topRightRay)
                 && viewport.UnProject(
                     new Vector2(
@@ -214,7 +214,7 @@ namespace HelixToolkit.UWP
                     orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
                     var oldTarget = pcam.Position + pcam.LookDirection;
                     var distance = pcam.LookDirection.Length();
-                    if(centerRay.PlaneIntersection(oldTarget, w, out var newTarget))
+                    if (centerRay.PlaneIntersection(oldTarget, w, out var newTarget))
                     {
                         orthographicCamera.LookDirection = w * distance;
                         orthographicCamera.Position = newTarget - orthographicCamera.LookDirection;
@@ -413,7 +413,7 @@ namespace HelixToolkit.UWP
             }
 
             var diagonal = bounds.Maximum - bounds.Minimum;
-            var center = (bounds.Maximum + bounds.Minimum)/2 + (diagonal * 0.5f);
+            var center = (bounds.Maximum + bounds.Minimum) / 2 + (diagonal * 0.5f);
             var radius = diagonal.Length() * 0.5f;
             ZoomExtents(projectionCamera, viewport, center, radius, animationTime);
         }
@@ -458,15 +458,9 @@ namespace HelixToolkit.UWP
             }
             else if (camera is OrthographicCamera orth)
             {
-                LookAt(projectionCamera, center, projectionCamera.LookDirection, animationTime);
-                double newWidth = radius * 2;
-
-                if (viewport.ActualWidth > viewport.ActualHeight)
-                {
-                    newWidth = radius * 2 * viewport.ActualWidth / viewport.ActualHeight;
-                }
-
-                AnimateWidth(orth, newWidth, animationTime);
+                orth.LookAt(center, 0);
+                var newWidth = radius * 2;
+                orth.AnimateWidth(newWidth, animationTime);
             }
         }
 
@@ -484,14 +478,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public static void AnimateWidth(this OrthographicCamera camera, double newWidth, double animationTime)
         {
-            if (animationTime > 0)
-            {
-                camera.AnimateWidth(newWidth, animationTime);
-            }
-            else
-            {
-                camera.Width = newWidth;
-            }
+            camera.AnimateWidth(newWidth, animationTime);
         }
     }
 }
