@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
     using System;
     using Windows.UI.Xaml.Input;
     using System.Collections.Generic;
-
+    using XamlWin = Windows.UI.Xaml.Window;
     /// <summary>
     /// An abstract base class for the mouse gesture handlers.
     /// </summary>
@@ -159,11 +159,6 @@ namespace HelixToolkit.UWP
                 return this.Controller.ZoomSensitivity;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the old cursor.
-        /// </summary>
-        private CoreCursor OldCursor { get; set; }
 
         private List<HitTestResult> hits = new List<HitTestResult>();
         /// <summary>
@@ -347,8 +342,8 @@ namespace HelixToolkit.UWP
         {
             this.Started(e.GetCurrentPoint(this.Controller.Viewport).Position);
 
-            this.OldCursor = Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor;
-            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new CoreCursor(this.GetCursor(), OldCursor.Id);
+            this.Controller.CursorHistory.Push(XamlWin.Current.CoreWindow.PointerCursor);
+            XamlWin.Current.CoreWindow.PointerCursor = new CoreCursor(this.GetCursor(), XamlWin.Current.CoreWindow.PointerCursor.Id);
         }
 
         /// <summary>
@@ -379,7 +374,7 @@ namespace HelixToolkit.UWP
             this.Controller.Viewport.PointerMoved -= this.OnMouseMove;
             this.Controller.Viewport.PointerReleased -= this.OnMouseUp;
             this.Controller.Viewport.ReleasePointerCapture(e.Pointer);
-            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = this.OldCursor;
+            XamlWin.Current.CoreWindow.PointerCursor = Controller.CursorHistory.Pop();
             this.Completed(e.GetCurrentPoint(this.Controller.Viewport).Position);
         }
 
