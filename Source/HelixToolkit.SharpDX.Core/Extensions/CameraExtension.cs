@@ -274,7 +274,7 @@ namespace HelixToolkit.SharpDX.Core
             this CameraCore camera, ViewportCore viewport, BoundingBox bounds, float animationTime = 0)
         {
             var diagonal = bounds.Maximum - bounds.Minimum;
-            var center = bounds.Center + (diagonal * 0.5f);
+            var center = bounds.Center;
             float radius = diagonal.Length() * 0.5f;
             ZoomExtents(camera, viewport, center, radius, animationTime);
         }
@@ -314,16 +314,8 @@ namespace HelixToolkit.SharpDX.Core
             }
             else if (camera is OrthographicCameraCore orth)
             {
-                var dir = camera.LookDirection;
-                dir.Normalize();
-                LookAt(camera, center, dir, animationTime);
-                float newWidth = radius * 2;
-
-                if (viewport.ViewportRectangle.Width > viewport.ViewportRectangle.Height)
-                {
-                    newWidth = radius * 2 * viewport.ViewportRectangle.Width / viewport.ViewportRectangle.Height;
-                }
-
+                orth.LookAt(center, 0);
+                var newWidth = radius * 2;
                 orth.AnimateWidth(newWidth, animationTime);
             }
         }

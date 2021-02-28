@@ -593,14 +593,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else if (camera is IOrthographicCameraModel orth)
             {
-                LookAt(camera, center, camera.LookDirection, animationTime);
-                double newWidth = radius * 2;
-
-                if (viewport.ActualWidth > viewport.ActualHeight)
-                {
-                    newWidth = radius * 2 * viewport.ActualWidth / viewport.ActualHeight;
-                }
-
+                orth.LookAt(center, 0);
+                var newWidth = radius * 2;
                 orth.AnimateWidth(newWidth, animationTime);
             }
         }

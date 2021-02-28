@@ -305,7 +305,7 @@ namespace HelixToolkit.UWP
 
     #if CORE
             private float oldWidth;
-            private float newWidth;
+            private float targetWidth;
             private float accumTime;
             private float aniTime;
 
@@ -313,13 +313,13 @@ namespace HelixToolkit.UWP
             {
                 if (animationTime == 0)
                 {
+                    UpdateCameraPositionByWidth(newWidth);
                     Width = newWidth;
-                    animationTime = 0;
                 }
                 else
                 {
                     oldWidth = Width;
-                    this.newWidth = newWidth;
+                    this.targetWidth = newWidth;
                     accumTime = 1;
                     aniTime = animationTime;
                     OnUpdateAnimation(0);
@@ -336,17 +336,34 @@ namespace HelixToolkit.UWP
                 accumTime += ellapsed;
                 if (accumTime > aniTime)
                 {
-                    Width = newWidth;
+                    UpdateCameraPositionByWidth(targetWidth);
+                    Width = targetWidth;
                     aniTime = 0;
                     return res;
                 }
                 else
                 {
-                    Width = oldWidth + (newWidth - oldWidth) * (accumTime / aniTime);
+                    var newWidth = oldWidth + (targetWidth - oldWidth) * (accumTime / aniTime);
+                    UpdateCameraPositionByWidth(newWidth);
+                    Width = newWidth;
                     return true;
                 }
             }
-    #endif
+
+            private void UpdateCameraPositionByWidth(double newWidth)
+            {
+                var ratio = newWidth / Width;
+                var dir = LookDirection;
+                var target = Target;
+                var dist = dir.Length();
+                var newDist = dist * ratio;
+                dir.Normalize();
+                var position = (target - dir * (float)newDist);
+                var lookDir = dir * (float)newDist;
+                Position = position;
+                LookDirection = lookDir;
+            }
+#endif
         }
 
         public class PerspectiveCameraCore : ProjectionCameraCore
