@@ -682,6 +682,7 @@ namespace HelixToolkit.UWP
         private static readonly Point PointZero = new Point(0, 0);
         private static readonly Vector2 VectorZero = new Vector2();
         private static readonly Vector3D Vector3DZero = new Vector3D();
+        internal List<MouseGestureHandler> MouseHandlers { get; } = new List<MouseGestureHandler>();
         public Viewport3DX Viewport { private set; get; }
 
         public CameraController(Viewport3DX viewport)
@@ -693,6 +694,12 @@ namespace HelixToolkit.UWP
             this.zoomHandler = new ZoomHandler(this);
             this.panHandler = new PanHandler(this);
             this.changeFieldOfViewHandler = new ZoomHandler(this, true);
+            MouseHandlers.Add(changeLookAtHandler);
+            MouseHandlers.Add(rotateHandler);
+            MouseHandlers.Add(zoomRectangleHandler);
+            MouseHandlers.Add(zoomHandler);
+            MouseHandlers.Add(panHandler);
+            MouseHandlers.Add(changeFieldOfViewHandler);
             this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.CameraProperty, (d, e) => { ActualCamera = d.GetValue(e) as ProjectionCamera; });
             this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.DefaultCameraProperty, (d, e) => { DefaultCamera = d.GetValue(e) as ProjectionCamera; });
             this.Viewport.SizeChanged += (s, e) =>
@@ -1307,6 +1314,13 @@ namespace HelixToolkit.UWP
             if(e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
             {
                 Viewport.ReleasePointerCapture(e.Pointer);
+                foreach(var handler in MouseHandlers)
+                {
+                    if (handler.IsActive)
+                    {
+
+                    }
+                }
             }
         }
 
