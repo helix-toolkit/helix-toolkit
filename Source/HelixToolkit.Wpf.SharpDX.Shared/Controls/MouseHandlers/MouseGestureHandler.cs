@@ -170,6 +170,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public bool IsActive { private set; get; } = false;
+
         protected List<HitTestResult> hits = new List<HitTestResult>();
 
         /// <summary>
@@ -186,6 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.OnInertiaStarting(elapsed);
             }
             startTick = Stopwatch.GetTimestamp();
+            IsActive = false;
         }
 
         /// <summary>
@@ -240,6 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Inv = Camera.CreateLeftHandSystem ? -1 : 1;
             Controller.StopAnimations();
             Controller.PushCameraSetting();
+            IsActive = true;
         }
 
         /// <summary>
@@ -377,6 +381,20 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Viewport.ReleaseMouseCapture();
             this.Viewport.Cursor = Controller.CursorHistory.Count > 0 ? Controller.CursorHistory.Pop() : null;
             this.Completed(Mouse.GetPosition(this.Viewport));
+            CheckCursorHistory();
+        }
+
+        private void CheckCursorHistory()
+        {
+            foreach(var handler in Controller.MouseHandlers)
+            {
+                if (handler.IsActive)
+                {
+                    return;
+                }
+            }
+            Controller.CursorHistory.Clear();
+            this.Viewport.Cursor = null;
         }
 
         /// <summary>

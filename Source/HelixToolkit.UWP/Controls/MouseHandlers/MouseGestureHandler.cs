@@ -161,6 +161,8 @@ namespace HelixToolkit.UWP
         }
 
         private List<HitTestResult> hits = new List<HitTestResult>();
+
+        public bool IsActive { private set; get; } = false;
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
@@ -175,6 +177,7 @@ namespace HelixToolkit.UWP
                 this.OnInertiaStarting(elapsed);
             }
             startTick = Stopwatch.GetTimestamp();
+            IsActive = false;
         }
 
         /// <summary>
@@ -229,6 +232,7 @@ namespace HelixToolkit.UWP
             inv = Camera.CreateLeftHandSystem ? -1 : 1;
             Controller.StopAnimations();
             Controller.PushCameraSetting();
+            IsActive = true;
         }
 
         /// <summary>
@@ -376,6 +380,20 @@ namespace HelixToolkit.UWP
             this.Controller.Viewport.ReleasePointerCapture(e.Pointer);
             XamlWin.Current.CoreWindow.PointerCursor = Controller.CursorHistory.Pop();
             this.Completed(e.GetCurrentPoint(this.Controller.Viewport).Position);
+            CheckCursorHistory();
+        }
+
+        private void CheckCursorHistory()
+        {
+            foreach (var handler in Controller.MouseHandlers)
+            {
+                if (handler.IsActive)
+                {
+                    return;
+                }
+            }
+            Controller.CursorHistory.Clear();
+            XamlWin.Current.CoreWindow.PointerCursor = null;
         }
 
         /// <summary>
