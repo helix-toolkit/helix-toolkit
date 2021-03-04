@@ -168,6 +168,16 @@ namespace HelixToolkit.Wpf.SharpDX
             return (sharedTexture.Description.OptionFlags & ResourceOptionFlags.Shared) != 0;
         }
 
+        public bool IsDeviceStateOk()
+        {
+            if (device != null)
+            {
+                var state = device.CheckDeviceState(IntPtr.Zero);
+                return state == DeviceState.Ok;
+            }
+            return false;
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 

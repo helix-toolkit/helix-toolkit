@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     frontBufferChange = false;
                     try
                     {
-                        if (EffectsManager.Device.DeviceRemovedReason.Success)
+                        if (EffectsManager.Device.DeviceRemovedReason.Success && surfaceD3D != null && surfaceD3D.IsDeviceStateOk())
                         {
                             StartRendering();
                         }
