@@ -34,7 +34,7 @@ namespace HelixToolkit.UWP
                 if (node is HxScene.MaterialGeometryNode geo)
                 {
                     material = geo.Material;
-                    return true;
+                    return material != null;
                 }
                 else
                 {
