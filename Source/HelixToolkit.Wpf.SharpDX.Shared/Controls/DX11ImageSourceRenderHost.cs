@@ -77,17 +77,31 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private void DX11ImageSourceRenderer_OnNewBufferCreated(object sender, Texture2DArgs e)
             {
-                if (surfaceD3D == null)
+                try
                 {
-                    Debug.WriteLine("Create new D3DImageSource");
-                    surfaceD3D = Collect(new DX11ImageSource(EffectsManager.AdapterIndex));
-                    surfaceD3D.IsFrontBufferAvailableChanged += SurfaceD3D_IsFrontBufferAvailableChanged;
+                    if (surfaceD3D == null)
+                    {
+                        Debug.WriteLine("Create new D3DImageSource");
+                        surfaceD3D = Collect(new DX11ImageSource(EffectsManager.AdapterIndex));
+                        surfaceD3D.IsFrontBufferAvailableChanged += SurfaceD3D_IsFrontBufferAvailableChanged;
+                    }
+                    surfaceD3D.SetRenderTargetDX11(e.Texture.Resource as Texture2D);
                 }
-                surfaceD3D.SetRenderTargetDX11(e.Texture.Resource as Texture2D);
+                catch(Exception ex)
+                {
+                    Logger.Log(HelixToolkit.Logger.LogLevel.Error, $"Failed to create surfaceD3D. Ex: {ex.Message}");
+                    hasBackBuffer = false;
+                    surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
+                    RemoveAndDispose(ref surfaceD3D);
+                    hasBackBuffer = false;
+                    EndD3D();
+                    ReinitializeEffectsManager();
+                    return;
+                }
                 hasBackBuffer = e.Texture.Resource is Texture2D;
                 OnImageSourceChanged(this, new DX11ImageSourceArgs(surfaceD3D));
                 if (hasBackBuffer)
-                { 
+                {
                     Logger.Log(HelixToolkit.Logger.LogLevel.Information, $"New back buffer is set.");
                 }
                 else
@@ -103,28 +117,27 @@ namespace HelixToolkit.Wpf.SharpDX
                     return;
                 }
                 Logger.Log(HelixToolkit.Logger.LogLevel.Warning, $"SurfaceD3D front buffer changed. Value = {(bool)e.NewValue}");
+                if (surfaceD3D != null)
+                {
+                    hasBackBuffer = false;
+                    surfaceD3D.SetRenderTargetDX11(null);
+                    surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
+                    RemoveAndDispose(ref surfaceD3D);
+                }
                 if ((bool)e.NewValue)
                 {
                     frontBufferChange = false;
                     try
                     {
-                        if (EffectsManager.Device.DeviceRemovedReason.Success && surfaceD3D != null && surfaceD3D.IsDeviceStateOk())
+
+                        if (EffectsManager.Device.DeviceRemovedReason == global::SharpDX.Result.Ok)
                         {
-                            StartRendering();
+                            Restart(true);
                         }
                         else
                         {
                             EndD3D();
-                            if (surfaceD3D != null)
-                            {
-                                hasBackBuffer = false;
-                                surfaceD3D.SetRenderTargetDX11(null);
-                                surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
-                                RemoveAndDispose(ref surfaceD3D);
-                            }
-
-                            EffectsManager.DisposeAllResources();
-                            EffectsManager.Reinitialize();
+                            ReinitializeEffectsManager();
                         }
                     }
                     catch (Exception ex)
@@ -135,14 +148,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                 {
                     frontBufferChange = true;
-                    if (EffectsManager.Device.DeviceRemovedReason.Success)
-                    {
-                        //StopRendering();
-                    }
-                    else
+                    if (EffectsManager.Device.DeviceRemovedReason != global::SharpDX.Result.Ok)
                     {
                         hasBackBuffer = false;
-                        surfaceD3D?.SetRenderTargetDX11(null);
                         EndD3D();
                     }
                 }

@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void SetRenderTargetDX11(Texture2D target)
         {
             EndD3D(false);
-            if (target == null)
+            if (target == null || target.IsDisposed)
                 return;
 
             if (!IsShareable(target))
