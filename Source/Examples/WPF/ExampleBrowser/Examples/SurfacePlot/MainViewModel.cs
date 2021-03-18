@@ -139,7 +139,7 @@ namespace SurfacePlotDemo
         public double[,] FindGradientY(Point3D[,] data)
         {
             int n = data.GetUpperBound(0) + 1;
-            int m = data.GetUpperBound(0) + 1;
+            int m = data.GetUpperBound(1) + 1;
             var K = new double[n, m];
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < m; j++)
