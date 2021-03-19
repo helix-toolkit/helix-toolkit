@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+### Fixed
+1. Fixed viewport crash during display configuration change #1533. (WPF.SharpDX)
+
 ## [2.15.0] - 2021-02-20
 ### Added
 1. Supports morph target animation. (WPF.SharpDX/UWP/Core)
