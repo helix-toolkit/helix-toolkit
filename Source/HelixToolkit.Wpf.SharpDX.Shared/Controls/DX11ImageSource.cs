@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void SetRenderTargetDX11(Texture2D target)
         {
             EndD3D(false);
-            if (target == null)
+            if (target == null || target.IsDisposed)
                 return;
 
             if (!IsShareable(target))
@@ -166,6 +166,16 @@ namespace HelixToolkit.Wpf.SharpDX
         private static bool IsShareable(Texture2D sharedTexture)
         {
             return (sharedTexture.Description.OptionFlags & ResourceOptionFlags.Shared) != 0;
+        }
+
+        public bool IsDeviceStateOk()
+        {
+            if (device != null)
+            {
+                var state = device.CheckDeviceState(IntPtr.Zero);
+                return state == DeviceState.Ok;
+            }
+            return false;
         }
 
         #region IDisposable Support
