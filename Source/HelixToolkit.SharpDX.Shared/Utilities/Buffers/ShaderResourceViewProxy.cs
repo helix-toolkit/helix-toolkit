@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class ShaderResourceViewProxy : ReferenceCountDisposeObject
         {
+            public Guid Guid { internal set; get; } = Guid.NewGuid();
             public static ShaderResourceViewProxy Empty { get; } = new ShaderResourceViewProxy();
             /// <summary>
             /// Gets the texture view.
@@ -129,6 +130,10 @@ namespace HelixToolkit.UWP
                 {
                     if (texture.IsCompressed && texture.CompressedStream != null)
                     {
+                        if (!texture.CompressedStream.CanRead)
+                        {
+                            return;
+                        }
                         resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, !enableAutoGenMipMap));
                         if (createSRV)
                         {

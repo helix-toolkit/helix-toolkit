@@ -6,6 +6,7 @@ using SharpDX;
 using SharpDX.DXGI;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -25,6 +26,7 @@ namespace HelixToolkit.UWP
     [System.ComponentModel.TypeConverter(typeof(StreamToTextureModelConverter))]
     public sealed class TextureModel
     {
+        public Guid Guid { get; } = Guid.NewGuid();
         /// <summary>
         /// The compressed stream
         /// </summary>
@@ -86,6 +88,8 @@ namespace HelixToolkit.UWP
             Height = height;
         }
 
+        private static readonly ConditionalWeakTable<object, WeakReference<TextureModel>> textureDict
+            = new ConditionalWeakTable<object, WeakReference<TextureModel>>();
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="CompressedStream"/> to <see cref="TextureModel"/>.
@@ -96,7 +100,27 @@ namespace HelixToolkit.UWP
         /// </returns>
         public static implicit operator TextureModel(Stream stream)
         {
-            return new TextureModel(stream);
+            if (stream == null)
+            {
+                return null;
+            }
+            lock (textureDict)
+            {
+                if(textureDict.TryGetValue(stream, out var tex))
+                {
+                    if (tex.TryGetTarget(out var target))
+                    { 
+                        return target;
+                    }
+                    else
+                    {
+                        textureDict.Remove(stream);
+                    }
+                }            
+                var newTexModel = new TextureModel(stream);
+                textureDict.Add(stream, new WeakReference<TextureModel>(newTexModel));
+                return newTexModel;
+            }
         }
         /// <summary>
         /// Performs an explicit conversion from <see cref="TextureModel"/> to <see cref="Stream"/>.
@@ -108,21 +132,6 @@ namespace HelixToolkit.UWP
         public static explicit operator Stream(TextureModel model)
         {
             return model?.CompressedStream;
-        }
-        /// <summary>
-        /// Gets the key.
-        /// </summary>
-        /// <returns></returns>
-        internal object GetKey()
-        {
-            if (IsCompressed)
-            {
-                return CompressedStream;
-            }
-            else
-            {
-                return NonCompressedData;
-            }
         }
     }
 }

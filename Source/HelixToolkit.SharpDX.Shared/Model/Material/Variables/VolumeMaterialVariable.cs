@@ -91,8 +91,9 @@ namespace HelixToolkit.UWP
 
             private void UpdateTexture(VolumeTextureMaterialCoreBase<T> material)
             {
+                var newTexture = Collect(OnCreateTexture(material, EffectsManager));
                 RemoveAndDispose(ref texture);
-                texture = Collect(OnCreateTexture(material, EffectsManager));
+                texture = newTexture;
                 if(texture != null)
                 {
                     UpdateStepSize();

@@ -54,14 +54,14 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public ShaderResourceViewProxy Register(TextureModel textureModel, bool enableAutoGenMipMap)
         {
-            if (textureModel == null || textureModel.GetKey() == null)
+            if (textureModel == null)
             {
                 return null;
             }
             var targetDict = enableAutoGenMipMap ? resourceDictionaryMipMaps : resourceDictionaryNoMipMaps;
             lock (targetDict)
             {
-                if (targetDict.TryGetValue(textureModel.GetKey(), out ShaderResourceViewProxy view))
+                if (targetDict.TryGetValue(textureModel.Guid, out ShaderResourceViewProxy view))
                 {
                     view.IncRef();
                     return view;
@@ -70,14 +70,15 @@ namespace HelixToolkit.UWP
                 {
                     var proxy = new ShaderResourceViewProxy(device);
                     proxy.CreateView(textureModel, true, enableAutoGenMipMap);
+                    proxy.Guid = textureModel.Guid;
                     proxy.Disposed += (s, e) =>
                     {
                         lock (targetDict)
                         {
-                            targetDict.Remove(textureModel.GetKey());
+                            targetDict.Remove(textureModel.Guid);
                         }
                     };
-                    targetDict.Add(textureModel.GetKey(), proxy);
+                    targetDict.Add(textureModel.Guid, proxy);                    
                     return proxy;
                 }
             }
