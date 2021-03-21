@@ -27,11 +27,7 @@ namespace HelixToolkit.UWP
     [System.ComponentModel.TypeConverter(typeof(StreamToTextureModelConverter))]
     public sealed class TextureModel
     {
-        private static ITextureModelRepository texRepo = new TextureModelRepository();
-        public static void SetRepository(ITextureModelRepository repository)
-        {
-            texRepo = repository;
-        }
+        public static ITextureModelRepository TextureModelRepository { set; get; } = new TextureModelRepository();
 
         public Guid Guid { get; } = Guid.NewGuid();
 
@@ -51,9 +47,9 @@ namespace HelixToolkit.UWP
                 {
                     return compressedStream;
                 }
-                if (!String.IsNullOrEmpty(FilePath))
+                if (!String.IsNullOrEmpty(FilePath) && TextureModelRepository != null)
                 {
-                    var texStream = texRepo.Load(FilePath);
+                    var texStream = TextureModelRepository.Load(FilePath);
                     compressedStream = texStream.Stream;
                     CanAutoCloseStream = texStream.AutoCloseAfterLoading;
                     return compressedStream;
@@ -151,7 +147,8 @@ namespace HelixToolkit.UWP
         /// </returns>
         public static implicit operator TextureModel(Stream stream)
         {
-            return texRepo.Create(stream);
+            return TextureModelRepository != null ?
+                TextureModelRepository.Create(stream) : new TextureModel(stream);
         }
         /// <summary>
         /// Performs an explicit conversion from <see cref="TextureModel"/> to <see cref="Stream"/>.
