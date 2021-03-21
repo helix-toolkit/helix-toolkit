@@ -84,16 +84,18 @@ namespace HelixToolkit.UWP
                     WriteValue(PointLineMaterialStruct.HasTextureStr, textureResource != null ? 1 : 0);
                 });
                 AddPropertyBinding(nameof(LineMaterialCore.SamplerDescription), () => {
+                    var newSampler = EffectsManager.StateManager.Register(material.SamplerDescription);
                     RemoveAndDispose(ref textureSampler);
-                    textureSampler = Collect(EffectsManager.StateManager.Register(material.SamplerDescription));
+                    textureSampler = Collect(newSampler);
                 });
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void CreateTextureView(TextureModel texture)
             {
+                var newRes = texture == null ? null : textureManager.Register(texture);
                 RemoveAndDispose(ref textureResource);
-                textureResource = texture == null ? null : Collect(textureManager.Register(texture));
+                textureResource = Collect(newRes);
             }
 
             public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

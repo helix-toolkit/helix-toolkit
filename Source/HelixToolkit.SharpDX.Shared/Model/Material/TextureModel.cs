@@ -6,6 +6,7 @@ using SharpDX;
 using SharpDX.DXGI;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -17,6 +18,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    using Utilities;
     /// <summary>
     /// Texture model, used to support both compressed texture and uncompressed texture.
     /// <para>For compress textures, only provide their memory stream.</para>
@@ -25,19 +27,61 @@ namespace HelixToolkit.UWP
     [System.ComponentModel.TypeConverter(typeof(StreamToTextureModelConverter))]
     public sealed class TextureModel
     {
+        public static ITextureModelRepository TextureModelRepository { set; get; } = new TextureModelRepository();
+
+        public Guid Guid { get; } = Guid.NewGuid();
+
+        private Stream compressedStream = null;
         /// <summary>
         /// The compressed stream
         /// </summary>
-        public readonly Stream CompressedStream;
+        public Stream CompressedStream
+        {
+            private set
+            {
+                compressedStream = value;
+            }
+            get
+            {
+                if (compressedStream != null && compressedStream.CanRead)
+                {
+                    return compressedStream;
+                }
+                if (!String.IsNullOrEmpty(FilePath) && TextureModelRepository != null)
+                {
+                    var texStream = TextureModelRepository.Load(FilePath);
+                    compressedStream = texStream.Stream;
+                    CanAutoCloseStream = texStream.AutoCloseAfterLoading;
+                    return compressedStream;
+                }
+                return null;
+            }
+        }
         /// <summary>
         /// Indicate whether this texture is compressed. Use <see cref="CompressedStream"/> if is compressed, otherwise use <see cref="NonCompressedData"/>
         /// </summary>
         public readonly bool IsCompressed = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether this stream can be closed after loading texture into the buffer.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this stream can be closed; otherwise, <c>false</c>.
+        /// </value>
+        public bool CanAutoCloseStream
+        {
+            set; get;
+        } = false;
+
+        /// <summary>
         /// The uncompressed data
         /// </summary>
         public Color4[] NonCompressedData;
+
+        public string FilePath
+        {
+            get;
+        } = String.Empty;
 
         /// <summary>
         /// The uncompressed format
@@ -57,6 +101,14 @@ namespace HelixToolkit.UWP
         public TextureModel()
         {
 
+        }
+
+        public TextureModel(string filePath)
+        {
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                FilePath = filePath;
+            }
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureModel"/> class.
@@ -86,7 +138,6 @@ namespace HelixToolkit.UWP
             Height = height;
         }
 
-
         /// <summary>
         /// Performs an implicit conversion from <see cref="CompressedStream"/> to <see cref="TextureModel"/>.
         /// </summary>
@@ -96,7 +147,8 @@ namespace HelixToolkit.UWP
         /// </returns>
         public static implicit operator TextureModel(Stream stream)
         {
-            return new TextureModel(stream);
+            return TextureModelRepository != null ?
+                TextureModelRepository.Create(stream) : new TextureModel(stream);
         }
         /// <summary>
         /// Performs an explicit conversion from <see cref="TextureModel"/> to <see cref="Stream"/>.
@@ -108,21 +160,6 @@ namespace HelixToolkit.UWP
         public static explicit operator Stream(TextureModel model)
         {
             return model?.CompressedStream;
-        }
-        /// <summary>
-        /// Gets the key.
-        /// </summary>
-        /// <returns></returns>
-        internal object GetKey()
-        {
-            if (IsCompressed)
-            {
-                return CompressedStream;
-            }
-            else
-            {
-                return NonCompressedData;
-            }
         }
     }
 }

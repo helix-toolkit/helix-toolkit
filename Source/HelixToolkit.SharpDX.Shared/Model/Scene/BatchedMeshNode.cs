@@ -521,10 +521,12 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void AttachMaterial()
             {
+                var newVar = material != null && RenderCore is IMaterialRenderParams ?
+                    EffectsManager.MaterialVariableManager.Register(material, EffectTechnique) : null;
                 RemoveAndDispose(ref materialVariable);
-                if (material != null && RenderCore is IMaterialRenderParams core)
+                if (RenderCore is IMaterialRenderParams core)
                 {
-                    core.MaterialVariables = materialVariable = Collect(EffectsManager.MaterialVariableManager.Register(material, EffectTechnique));
+                    core.MaterialVariables = materialVariable = Collect(newVar);
                 }            
                 if(Materials == null && Material is PhongMaterialCore p)
                 {

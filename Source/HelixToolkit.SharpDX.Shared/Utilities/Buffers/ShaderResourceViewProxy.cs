@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    using System.Diagnostics;
     using Model;
     namespace Utilities
     {
@@ -21,6 +22,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class ShaderResourceViewProxy : ReferenceCountDisposeObject
         {
+            public Guid Guid { internal set; get; } = Guid.NewGuid();
             public static ShaderResourceViewProxy Empty { get; } = new ShaderResourceViewProxy();
             /// <summary>
             /// Gets the texture view.
@@ -127,14 +129,25 @@ namespace HelixToolkit.UWP
                 this.DisposeAndClear();
                 if (texture != null && device != null)
                 {
-                    if (texture.IsCompressed && texture.CompressedStream != null)
+                    if (texture.IsCompressed)
                     {
-                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, !enableAutoGenMipMap));
+                        var stream = texture.CompressedStream;
+                        if (stream == null || !stream.CanRead)
+                        {
+                            Debug.WriteLine("Stream is null or unreadable.");
+                            return;
+                        }
+                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, !enableAutoGenMipMap));
                         if (createSRV)
                         {
                             textureView = Collect(new ShaderResourceView(device, resource));
                         }
                         TextureFormat = textureView.Description.Format;
+                        if (texture.CanAutoCloseStream)
+                        {
+                            Debug.WriteLine($"Auto closing stream for {texture.Guid}");
+                            stream.Dispose();
+                        }
                     }
                     else if (texture.NonCompressedData != null && texture.NonCompressedData.Length > 0)
                     {

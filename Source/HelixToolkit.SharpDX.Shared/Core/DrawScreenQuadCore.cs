@@ -106,17 +106,17 @@ namespace HelixToolkit.UWP
 
             private void UpdateTexture(TextureModel texture)
             {
+                var newTexture = texture == null ? 
+                    null : EffectTechnique.EffectsManager.MaterialTextureManager.Register(texture);
                 RemoveAndDispose(ref textureProxy);
-                if (texture != null)
-                {
-                    textureProxy = Collect(EffectTechnique.EffectsManager.MaterialTextureManager.Register(texture));
-                }
+                textureProxy = Collect(newTexture);
             }
 
             private void UpdateSampler()
-            {
+            {              
+                var newSampler = EffectTechnique.EffectsManager.StateManager.Register(samplerDescription);
                 RemoveAndDispose(ref sampler);
-                sampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(samplerDescription));
+                sampler = Collect(newSampler);
             }
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)

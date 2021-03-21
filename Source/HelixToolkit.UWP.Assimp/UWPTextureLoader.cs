@@ -6,7 +6,7 @@ using Windows.Storage;
 
 namespace HelixToolkit.UWP.Assimp
 {
-    public class UWPTextureLoader : DefaultTextureLoader
+    public class UWPTextureLoader : DefaultTexturePathResolver
     {
         protected override bool FileExists(string path)
         {
@@ -17,22 +17,6 @@ namespace HelixToolkit.UWP.Assimp
             }
             catch (Exception) { }
             return false;
-        }
-
-        protected override Stream LoadFileToStream(string path)
-        {
-            var folder = StorageFile.GetFileFromPathAsync(path).AsTask().GetAwaiter().GetResult();
-            if(folder != null)
-            {
-                var m = new MemoryStream();
-                var result = folder.OpenStreamForReadAsync().GetAwaiter().GetResult();
-                result.CopyTo(m);
-                return m;
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }

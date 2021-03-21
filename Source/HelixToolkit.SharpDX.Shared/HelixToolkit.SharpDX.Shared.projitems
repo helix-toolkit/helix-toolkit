@@ -119,6 +119,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPostEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\ITextureModelRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IViewport3DX.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCoreParams.cs" />
@@ -387,6 +388,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ShaderResourceViewProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ScreenCapture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureModelRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TreeTraverser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\UAVBufferViewProxy.cs" />

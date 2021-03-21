@@ -135,13 +135,14 @@ namespace HelixToolkit.UWP
             {
                 if (base.CreateRasterState(description, force))
                 {
-                    RemoveAndDispose(ref rasterStateWireframe);
                     var wireframeDesc = description;
                     wireframeDesc.FillMode = FillMode.Wireframe;
                     wireframeDesc.DepthBias = -100;
                     wireframeDesc.SlopeScaledDepthBias = -2f;
                     wireframeDesc.DepthBiasClamp = -0.00008f;
-                    rasterStateWireframe = Collect(EffectTechnique.EffectsManager.StateManager.Register(wireframeDesc));
+                    var newState = EffectTechnique.EffectsManager.StateManager.Register(wireframeDesc);
+                    RemoveAndDispose(ref rasterStateWireframe);
+                    rasterStateWireframe = Collect(newState);
                     return true;
                 }
                 else

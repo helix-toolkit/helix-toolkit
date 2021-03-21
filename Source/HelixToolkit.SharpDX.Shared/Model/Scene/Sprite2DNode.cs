@@ -30,11 +30,9 @@ namespace HelixToolkit.UWP
                 {
                     if (SetAffectsRender(ref texture, value) && IsAttached)
                     {
+                        var newView = value == null ? null : EffectTechnique.EffectsManager.MaterialTextureManager.Register(value, true);
                         RemoveAndDispose(ref textureView);
-                        if (value != null)
-                        {
-                            TextureView = EffectTechnique.EffectsManager.MaterialTextureManager.Register(value, true);
-                        }
+                        TextureView = Collect(newView);
                     }
                 }
                 get { return texture; }
