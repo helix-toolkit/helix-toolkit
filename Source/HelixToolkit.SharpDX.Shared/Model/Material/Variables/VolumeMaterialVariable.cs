@@ -50,8 +50,9 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.VolumeTexture), () => { UpdateTexture(material); });
                 AddPropertyBinding(nameof(IVolumeTextureMaterial.Sampler), () => 
                 {
+                    var newSampler = EffectsManager.StateManager.Register(material.Sampler);
                     RemoveAndDispose(ref sampler);
-                    sampler = Collect(EffectsManager.StateManager.Register(material.Sampler));
+                    sampler = Collect(newSampler);
                 });
                 AddPropertyBinding(nameof(IVolumeTextureMaterial.SampleDistance),
                     () => UpdateStepSize());

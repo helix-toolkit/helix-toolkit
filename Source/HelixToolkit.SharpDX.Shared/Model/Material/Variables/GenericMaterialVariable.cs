@@ -159,9 +159,10 @@ namespace HelixToolkit.UWP
             {
                 if (resourceIdxDict.TryGetValue(name, out var idx))
                 {
+                    var newSampler = EffectsManager.StateManager.Register(sampler);
                     var exist = samplerResources[idx].Value;
                     RemoveAndDispose(ref exist);
-                    var res = Collect(EffectsManager.StateManager.Register(sampler));
+                    var res = Collect(newSampler);
                     samplerResources[idx] = new KeyValuePair<int, SamplerStateProxy>(samplerResources[idx].Key, res);
                     return true;
                 }

@@ -166,8 +166,9 @@ namespace HelixToolkit.UWP
                 {
                     if(Set(ref samplerDescription, value) && IsAttached)
                     {
+                        var newSampler = EffectTechnique.EffectsManager.StateManager.Register(value);
                         RemoveAndDispose(ref textureSampler);
-                        textureSampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(value));
+                        textureSampler = Collect(newSampler);
                     }
                 }
                 get
@@ -719,15 +720,17 @@ namespace HelixToolkit.UWP
             }
 
             private void OnTextureChanged()
-            {
+            {              
+                var newView = EffectTechnique.EffectsManager.MaterialTextureManager.Register(ParticleTexture);
                 RemoveAndDispose(ref textureView);
-                textureView = Collect(this.EffectTechnique.EffectsManager.MaterialTextureManager.Register(ParticleTexture));
+                textureView = Collect(newView);
             }
 
             private void OnBlendStateChanged()
             {
+                var newState = EffectTechnique.EffectsManager.StateManager.Register(blendDesc);
                 RemoveAndDispose(ref blendState);
-                blendState = Collect(EffectTechnique.EffectsManager.StateManager.Register(blendDesc));
+                blendState = Collect(newState);
             }
 
 

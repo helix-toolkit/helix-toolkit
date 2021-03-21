@@ -246,14 +246,16 @@ namespace HelixToolkit.UWP
                 });
                 AddPropertyBinding(nameof(PhongMaterialCore.DiffuseMapSampler), () =>
                 {
+                    var newSampler = statePoolManager.Register(material.DiffuseMapSampler);
                     RemoveAndDispose(ref surfaceSampler);
-                    surfaceSampler = Collect(statePoolManager.Register(material.DiffuseMapSampler));
+                    surfaceSampler = Collect(newSampler);
                 });
 
                 AddPropertyBinding(nameof(PhongMaterialCore.DisplacementMapSampler), () =>
                 {
+                    var newDisplaceSampler = statePoolManager.Register(material.DisplacementMapSampler);
                     RemoveAndDispose(ref displacementSampler);
-                    displacementSampler = Collect(statePoolManager.Register(material.DisplacementMapSampler));
+                    displacementSampler = Collect(newDisplaceSampler);
                 });
                 AddPropertyBinding(nameof(PhongMaterialCore.EmissiveMap), () =>
                 {

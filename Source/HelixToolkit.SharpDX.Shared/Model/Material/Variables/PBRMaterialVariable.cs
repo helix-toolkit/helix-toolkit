@@ -146,9 +146,9 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void CreateTextureView(TextureModel texture, int index)
             {
-                var newTexture = texture == null ? null : Collect(textureManager.Register(texture));
+                var newTexture = texture == null ? null : textureManager.Register(texture);
                 RemoveAndDispose(ref TextureResources[index]);
-                TextureResources[index] = newTexture;
+                TextureResources[index] = Collect(newTexture);
                 if (TextureResources[index] != null)
                 {
                     textureIndex |= 1u << index;
@@ -183,26 +183,28 @@ namespace HelixToolkit.UWP
 
             private void CreateSamplers()
             {
+                var newSurfaceSampler = statePoolManager.Register(material.SurfaceMapSampler);
+                var newIBLSampler = statePoolManager.Register(material.IBLSampler);
+                var newDisplaceSampler = statePoolManager.Register(material.DisplacementMapSampler);
+                var newShadowSampler = statePoolManager.Register(DefaultSamplers.ShadowSampler);
                 RemoveAndDispose(ref SamplerResources[SurfaceSamplerIdx]);
                 RemoveAndDispose(ref SamplerResources[IBLSamplerIdx]);
                 RemoveAndDispose(ref SamplerResources[DisplaceSamplerIdx]);
                 RemoveAndDispose(ref SamplerResources[ShadowSamplerIdx]);
                 if (material != null)
                 {
-                    SamplerResources[SurfaceSamplerIdx] = Collect(statePoolManager.Register(material.SurfaceMapSampler));
-                    SamplerResources[IBLSamplerIdx] = Collect(statePoolManager.Register(material.IBLSampler));
-                    SamplerResources[DisplaceSamplerIdx] = Collect(statePoolManager.Register(material.DisplacementMapSampler));
-                    SamplerResources[ShadowSamplerIdx] = Collect(statePoolManager.Register(DefaultSamplers.ShadowSampler));
+                    SamplerResources[SurfaceSamplerIdx] = Collect(newSurfaceSampler);
+                    SamplerResources[IBLSamplerIdx] = Collect(newIBLSampler);
+                    SamplerResources[DisplaceSamplerIdx] = Collect(newDisplaceSampler);
+                    SamplerResources[ShadowSamplerIdx] = Collect(newShadowSampler);
                 }
             }
 
             private void CreateSampler(SamplerStateDescription desc, int index)
             {
+                var newRes = statePoolManager.Register(desc);
                 RemoveAndDispose(ref SamplerResources[index]);
-                if (material != null)
-                {
-                    SamplerResources[index] = Collect(statePoolManager.Register(desc));
-                }
+                SamplerResources[index] = Collect(newRes);
             }
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)

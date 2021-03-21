@@ -469,10 +469,11 @@ namespace HelixToolkit.UWP
             }
 
             private void CreateGeometryBuffer()
-            {
+            {                
+                var newBuffer = OnCreateBufferModel(this.GUID, geometry);
                 RemoveAndDispose(ref bufferModelInternal);
-                bufferModelInternal = Collect(OnCreateBufferModel(this.GUID, geometry));
-                if(RenderCore is IGeometryRenderCore core)
+                bufferModelInternal = Collect(newBuffer);
+                if (RenderCore is IGeometryRenderCore core)
                 {
                     core.GeometryBuffer = bufferModelInternal;
                 }

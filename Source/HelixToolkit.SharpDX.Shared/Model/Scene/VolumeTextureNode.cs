@@ -76,10 +76,12 @@ namespace HelixToolkit.UWP
 
             protected virtual void AttachMaterial()
             {
+                var newVar = material != null && RenderCore is VolumeRenderCore ?
+                    EffectsManager.MaterialVariableManager.Register(material, EffectTechnique) : null;
                 RemoveAndDispose(ref materialVariable);
-                if (material != null && RenderCore is VolumeRenderCore core)
+                if (RenderCore is VolumeRenderCore core)
                 {
-                    materialVariable = core.MaterialVariables = Collect(EffectsManager.MaterialVariableManager.Register(material, EffectTechnique));
+                    materialVariable = core.MaterialVariables = Collect(newVar);
                 }
             }
 

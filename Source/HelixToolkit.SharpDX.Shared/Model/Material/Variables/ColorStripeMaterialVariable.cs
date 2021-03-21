@@ -98,8 +98,9 @@ namespace HelixToolkit.UWP
                 });
                 AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeSampler), () => 
                 {
+                    var newSampler = statePoolManager.Register(material.ColorStripeSampler);
                     RemoveAndDispose(ref sampler);
-                    sampler = Collect(statePoolManager.Register(material.ColorStripeSampler));
+                    sampler = Collect(newSampler);
                 });
                 AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeXEnabled), () =>
                 {
@@ -149,10 +150,11 @@ namespace HelixToolkit.UWP
 
             private void CreateSamplers()
             {
+                var newSampler = statePoolManager.Register(material.ColorStripeSampler);
                 RemoveAndDispose(ref sampler);
                 if (material != null)
                 {
-                    sampler = Collect(statePoolManager.Register(material.ColorStripeSampler));
+                    sampler = Collect(newSampler);
                 }
             }
 
