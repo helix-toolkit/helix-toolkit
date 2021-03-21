@@ -262,10 +262,10 @@ namespace HelixToolkit.UWP
             /// <param name="fileStream">The file stream.</param>
             /// <param name="filePath">The filePath. Used to load texture.</param>
             /// <param name="formatHint">The format hint.</param>
-            /// <param name="textureLoader">The texture loader</param>
+            /// <param name="texturePathResolver">The custom texture path resolver</param>
             /// <param name="scene">The scene.</param>
             /// <returns></returns>
-            public ErrorCode Load(Stream fileStream, string filePath, string formatHint, out HelixToolkitScene scene, ITextureIO textureLoader = null)
+            public ErrorCode Load(Stream fileStream, string filePath, string formatHint, out HelixToolkitScene scene, ITexturePathResolver texturePathResolver = null)
             {
                 path = filePath;
                 ErrorCode = ErrorCode.None;
@@ -280,7 +280,7 @@ namespace HelixToolkit.UWP
                 {
                     importer = new AssimpContext();
                 }
-                configuration.TextureLoader = textureLoader;
+                configuration.TexturePathResolver = texturePathResolver;
                 Clear();
                 scene = null;
                 try
@@ -320,13 +320,13 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="assimpScene">The assimp scene.</param>
             /// <param name="filePath">The filePath of the model. It is used for texture loading</param>
-            /// <param name="textureLoader">Custom Texture Loader</param>
+            /// <param name="texturePathResolver">Custom texture path resolver</param>
             /// <param name="scene">The scene.</param>
             /// <returns></returns>
-            public ErrorCode Load(Scene assimpScene, string filePath, out HelixToolkitScene scene, ITextureIO textureLoader = null)
+            public ErrorCode Load(Scene assimpScene, string filePath, out HelixToolkitScene scene, ITexturePathResolver texturePathResolver = null)
             {
                 path = filePath;
-                Configuration.TextureLoader = textureLoader;
+                Configuration.TexturePathResolver = texturePathResolver;
                 return BuildScene(assimpScene, out scene);
             }
             #endregion

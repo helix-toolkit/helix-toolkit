@@ -17,8 +17,15 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// Custom Texture loading IO interface.
     /// </summary>
-    public interface ITextureIO
+    public interface ITexturePathResolver
     {
-        TextureModel Load(string modelPath, string texturePath, ILogger logger);
+        /// <summary>
+        /// Resolves the texture path.
+        /// </summary>
+        /// <param name="modelPath">The model path.</param>
+        /// <param name="texturePath">The texture path.</param>
+        /// <param name="logger">The logger.</param>
+        /// <returns>Absolute file path for the texture</returns>
+        string Resolve(string modelPath, string texturePath, ILogger logger);
     }
 }

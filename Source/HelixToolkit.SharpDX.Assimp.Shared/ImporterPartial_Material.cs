@@ -410,7 +410,8 @@ namespace HelixToolkit.UWP
                             Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Format not supported = {ext}.");
                             return null;
                         }
-                        return configuration?.TextureLoader?.Load(path, texturePath, Logger);
+                        var actualPath = configuration?.TexturePathResolver?.Resolve(path, texturePath, Logger);
+                        return new TextureModel(actualPath);
                     }
                 }
                 catch (Exception ex)

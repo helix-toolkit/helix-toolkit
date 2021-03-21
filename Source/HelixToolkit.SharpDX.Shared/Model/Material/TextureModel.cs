@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    using Utilities;
     /// <summary>
     /// Texture model, used to support both compressed texture and uncompressed texture.
     /// <para>For compress textures, only provide their memory stream.</para>
@@ -26,20 +27,67 @@ namespace HelixToolkit.UWP
     [System.ComponentModel.TypeConverter(typeof(StreamToTextureModelConverter))]
     public sealed class TextureModel
     {
+        private static ITextureModelRepository texRepo = new TextureModelRepository();
+        public static void SetRepository(ITextureModelRepository repository)
+        {
+            texRepo = repository;
+        }
+
         public Guid Guid { get; } = Guid.NewGuid();
+
+        private Stream compressedStream = null;
         /// <summary>
         /// The compressed stream
         /// </summary>
-        public readonly Stream CompressedStream;
+        public Stream CompressedStream
+        {
+            private set
+            {
+                compressedStream = value;
+            }
+            get
+            {
+                if (compressedStream != null && compressedStream.CanRead)
+                {
+                    return compressedStream;
+                }
+                if (!String.IsNullOrEmpty(FilePath))
+                {
+                    compressedStream = texRepo.Load(FilePath);
+                    if (compressedStream != null)
+                    {
+                        CanAutoCloseStream = true;
+                    }
+                    return compressedStream;
+                }
+                return null;
+            }
+        }
         /// <summary>
         /// Indicate whether this texture is compressed. Use <see cref="CompressedStream"/> if is compressed, otherwise use <see cref="NonCompressedData"/>
         /// </summary>
         public readonly bool IsCompressed = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether this stream can be closed after loading texture into the buffer.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this stream can be closed; otherwise, <c>false</c>.
+        /// </value>
+        public bool CanAutoCloseStream
+        {
+            set; get;
+        } = false;
+
+        /// <summary>
         /// The uncompressed data
         /// </summary>
         public Color4[] NonCompressedData;
+
+        public string FilePath
+        {
+            get;
+        } = String.Empty;
 
         /// <summary>
         /// The uncompressed format
@@ -59,6 +107,14 @@ namespace HelixToolkit.UWP
         public TextureModel()
         {
 
+        }
+
+        public TextureModel(string filePath)
+        {
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                FilePath = filePath;
+            }
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureModel"/> class.
@@ -88,9 +144,6 @@ namespace HelixToolkit.UWP
             Height = height;
         }
 
-        private static readonly ConditionalWeakTable<object, WeakReference<TextureModel>> textureDict
-            = new ConditionalWeakTable<object, WeakReference<TextureModel>>();
-
         /// <summary>
         /// Performs an implicit conversion from <see cref="CompressedStream"/> to <see cref="TextureModel"/>.
         /// </summary>
@@ -100,27 +153,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         public static implicit operator TextureModel(Stream stream)
         {
-            if (stream == null)
-            {
-                return null;
-            }
-            lock (textureDict)
-            {
-                if(textureDict.TryGetValue(stream, out var tex))
-                {
-                    if (tex.TryGetTarget(out var target))
-                    { 
-                        return target;
-                    }
-                    else
-                    {
-                        textureDict.Remove(stream);
-                    }
-                }            
-                var newTexModel = new TextureModel(stream);
-                textureDict.Add(stream, new WeakReference<TextureModel>(newTexModel));
-                return newTexModel;
-            }
+            return texRepo.Create(stream);
         }
         /// <summary>
         /// Performs an explicit conversion from <see cref="TextureModel"/> to <see cref="Stream"/>.

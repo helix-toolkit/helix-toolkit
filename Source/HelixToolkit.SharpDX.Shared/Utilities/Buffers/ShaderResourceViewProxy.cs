@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    using System.Diagnostics;
     using Model;
     namespace Utilities
     {
@@ -128,18 +129,24 @@ namespace HelixToolkit.UWP
                 this.DisposeAndClear();
                 if (texture != null && device != null)
                 {
-                    if (texture.IsCompressed && texture.CompressedStream != null)
+                    if (texture.IsCompressed)
                     {
-                        if (!texture.CompressedStream.CanRead)
+                        var stream = texture.CompressedStream;
+                        if (!stream.CanRead)
                         {
                             return;
                         }
-                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, texture.CompressedStream, !enableAutoGenMipMap));
+                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, !enableAutoGenMipMap));
                         if (createSRV)
                         {
                             textureView = Collect(new ShaderResourceView(device, resource));
                         }
                         TextureFormat = textureView.Description.Format;
+                        if (texture.CanAutoCloseStream)
+                        {
+                            Debug.WriteLine($"Auto closing stream for {texture.Guid}");
+                            stream.Dispose();
+                        }
                     }
                     else if (texture.NonCompressedData != null && texture.NonCompressedData.Length > 0)
                     {

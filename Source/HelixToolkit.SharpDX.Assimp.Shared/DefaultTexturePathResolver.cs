@@ -13,13 +13,13 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    public class DefaultTextureLoader : ITextureIO
+    public class DefaultTexturePathResolver : ITexturePathResolver
     {
         private const string ToUpperDictString = @"..\";
 
         public ILogger Logger { private set; get; }
 
-        public TextureModel Load(string modelPath, string texturePath, ILogger logger)
+        public string Resolve(string modelPath, string texturePath, ILogger logger)
         {
             Logger = logger;
             return OnLoadTexture(modelPath, texturePath);
@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP
         /// <param name="modelPath">The model path</param>
         /// <param name="texturePath">The path.</param>
         /// <returns></returns>
-        protected virtual TextureModel OnLoadTexture(string modelPath, string texturePath)
+        protected virtual string OnLoadTexture(string modelPath, string texturePath)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace HelixToolkit.UWP
                     Log(LogLevel.Warning, $"Load Texture Failed. Texture Path = {texturePath}.");
                     return null;
                 }
-                return LoadFileToStream(p);
+                return p;
             }
             catch (Exception ex)
             {
@@ -98,18 +98,6 @@ namespace HelixToolkit.UWP
         protected virtual bool FileExists(string path)
         {
             return File.Exists(path);
-        }
-
-
-        protected virtual Stream LoadFileToStream(string path)
-        {
-            if (!File.Exists(path)) return null;
-            using (var v = File.OpenRead(path))
-            {
-                var m = new MemoryStream();
-                v.CopyTo(m);
-                return m;
-            }
         }
 
         /// <summary>
