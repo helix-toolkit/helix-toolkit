@@ -53,11 +53,9 @@ namespace HelixToolkit.UWP
                 }
                 if (!String.IsNullOrEmpty(FilePath))
                 {
-                    compressedStream = texRepo.Load(FilePath);
-                    if (compressedStream != null)
-                    {
-                        CanAutoCloseStream = true;
-                    }
+                    var texStream = texRepo.Load(FilePath);
+                    compressedStream = texStream.Stream;
+                    CanAutoCloseStream = texStream.AutoCloseAfterLoading;
                     return compressedStream;
                 }
                 return null;

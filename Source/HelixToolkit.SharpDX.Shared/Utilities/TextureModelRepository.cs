@@ -43,10 +43,10 @@ namespace HelixToolkit.UWP
                 TextureFileLoader = loader;
             }
 
-            public Stream Load(string texturePath)
+            public TextureFileStream Load(string texturePath)
             {
                 Debug.WriteLine($"Loading texture from {texturePath}.");
-                return TextureFileLoader?.Load(texturePath);
+                return TextureFileLoader != null ? TextureFileLoader.Load(texturePath) : new TextureFileStream();
             }
 
             public TextureModel Create(Stream stream)
@@ -76,14 +76,14 @@ namespace HelixToolkit.UWP
 
         public class DefaultTextureFileLoader : ITextureFileLoader
         {
-            public Stream Load(string texturePath)
+            public TextureFileStream Load(string texturePath)
             {
                 try
                 {
                     if (!FileExists(texturePath))
                     {
                         Debug.WriteLine($"Load Texture Failed. Texture Path = {texturePath}.");
-                        return null;
+                        return new TextureFileStream();
                     }
                     return LoadFileToStream(texturePath);
                 }
@@ -91,7 +91,7 @@ namespace HelixToolkit.UWP
                 {
                     Debug.WriteLine($"Load Texture Exception. Texture Path = {texturePath}. Exception: {ex.Message}");
                 }
-                return null;
+                return new TextureFileStream();
             }
 
             protected virtual bool FileExists(string path)
@@ -99,9 +99,9 @@ namespace HelixToolkit.UWP
                 return File.Exists(path);
             }
 
-            protected virtual Stream LoadFileToStream(string path)
+            protected virtual TextureFileStream LoadFileToStream(string path)
             {
-                return File.OpenRead(path);
+                return new TextureFileStream() { Stream = File.OpenRead(path), AutoCloseAfterLoading = true };
             }
         }
 #if WINDOWS_UWP
@@ -118,19 +118,17 @@ namespace HelixToolkit.UWP
                 return false;
             }
 
-            protected override Stream LoadFileToStream(string path)
+            protected override TextureFileStream LoadFileToStream(string path)
             {
                 var folder = Windows.Storage.StorageFile.GetFileFromPathAsync(path).AsTask().GetAwaiter().GetResult();
                 if (folder != null)
                 {
-                    var m = new MemoryStream();
                     var result = folder.OpenStreamForReadAsync().GetAwaiter().GetResult();
-                    result.CopyTo(m);
-                    return m;
+                    return new TextureFileStream() { Stream = result, AutoCloseAfterLoading = true };
                 }
                 else
                 {
-                    return null;
+                    return new TextureFileStream();
                 }
             }
         }
