@@ -347,7 +347,8 @@ namespace HelixToolkit.UWP
             this.Started(e.GetCurrentPoint(this.Controller.Viewport).Position);
 
             this.Controller.CursorHistory.Push(XamlWin.Current.CoreWindow.PointerCursor);
-            XamlWin.Current.CoreWindow.PointerCursor = new CoreCursor(this.GetCursor(), XamlWin.Current.CoreWindow.PointerCursor.Id);
+            var id = XamlWin.Current.CoreWindow.PointerCursor != null ? XamlWin.Current.CoreWindow.PointerCursor.Id : 0;
+            XamlWin.Current.CoreWindow.PointerCursor = new CoreCursor(this.GetCursor(), id);
         }
 
         /// <summary>
@@ -378,13 +379,18 @@ namespace HelixToolkit.UWP
             this.Controller.Viewport.PointerMoved -= this.OnMouseMove;
             this.Controller.Viewport.PointerReleased -= this.OnMouseUp;
             this.Controller.Viewport.ReleasePointerCapture(e.Pointer);
-            XamlWin.Current.CoreWindow.PointerCursor = Controller.CursorHistory.Pop();
+            XamlWin.Current.CoreWindow.PointerCursor = Controller.CursorHistory.Count > 0 ?
+                Controller.CursorHistory.Pop() : new CoreCursor(CoreCursorType.Arrow, 0);
             this.Completed(e.GetCurrentPoint(this.Controller.Viewport).Position);
             CheckCursorHistory();
         }
 
         private void CheckCursorHistory()
         {
+            if (Controller.CursorHistory.Count == 0)
+            {
+                return;
+            }
             foreach (var handler in Controller.MouseHandlers)
             {
                 if (handler.IsActive)
@@ -392,8 +398,12 @@ namespace HelixToolkit.UWP
                     return;
                 }
             }
-            Controller.CursorHistory.Clear();
-            XamlWin.Current.CoreWindow.PointerCursor = null;
+            CoreCursor cur = null;
+            while (Controller.CursorHistory.Count > 0)
+            {
+                cur = Controller.CursorHistory.Pop();
+            }
+            XamlWin.Current.CoreWindow.PointerCursor = cur;
         }
 
         /// <summary>

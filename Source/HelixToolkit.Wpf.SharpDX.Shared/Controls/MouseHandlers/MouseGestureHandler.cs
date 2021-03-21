@@ -379,13 +379,17 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Viewport.MouseMove -= this.OnMouseMove;
             this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.ReleaseMouseCapture();
-            this.Viewport.Cursor = Controller.CursorHistory.Count > 0 ? Controller.CursorHistory.Pop() : null;
+            this.Viewport.Cursor = Controller.CursorHistory.Count > 0 ? Controller.CursorHistory.Pop() : Cursors.Arrow;
             this.Completed(Mouse.GetPosition(this.Viewport));
             CheckCursorHistory();
         }
 
         private void CheckCursorHistory()
         {
+            if (Controller.CursorHistory.Count == 0)
+            {
+                return;
+            }
             foreach(var handler in Controller.MouseHandlers)
             {
                 if (handler.IsActive)
@@ -393,8 +397,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     return;
                 }
             }
-            Controller.CursorHistory.Clear();
-            this.Viewport.Cursor = null;
+            Cursor cur = null;
+            while (Controller.CursorHistory.Count > 0)
+            {
+                cur = Controller.CursorHistory.Pop();
+            }
+            this.Viewport.Cursor = cur;
         }
 
         /// <summary>
