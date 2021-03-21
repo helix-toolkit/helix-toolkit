@@ -132,8 +132,9 @@ namespace HelixToolkit.UWP
                     if (texture.IsCompressed)
                     {
                         var stream = texture.CompressedStream;
-                        if (!stream.CanRead)
+                        if (stream == null || !stream.CanRead)
                         {
+                            Debug.WriteLine("Stream is null or unreadable.");
                             return;
                         }
                         resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, !enableAutoGenMipMap));

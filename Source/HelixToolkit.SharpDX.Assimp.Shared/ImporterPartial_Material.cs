@@ -388,7 +388,20 @@ namespace HelixToolkit.UWP
 
                 var texture = OnLoadTexture(texturePath);
                 if (texture != null)
-                    textureDict.TryAdd(texturePath, texture);
+                {
+                    if (!string.IsNullOrEmpty(texture.FilePath))
+                    {                    
+                        // If texture is a separate file, uses file path as key and recheck whether exists
+                        if (!textureDict.TryAdd(texture.FilePath, texture))
+                        {
+                            texture = textureDict[texture.FilePath];
+                        }
+                    }
+                    else
+                    {
+                        textureDict.TryAdd(texturePath, texture);
+                    }
+                }
                 return texture;
             }
 
@@ -411,6 +424,10 @@ namespace HelixToolkit.UWP
                             return null;
                         }
                         var actualPath = configuration?.TexturePathResolver?.Resolve(path, texturePath, Logger);
+                        if (string.IsNullOrEmpty(actualPath))
+                        {
+                            return null;
+                        }
                         return new TextureModel(actualPath);
                     }
                 }
