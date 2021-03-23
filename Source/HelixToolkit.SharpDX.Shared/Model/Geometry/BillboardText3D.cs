@@ -204,6 +204,13 @@ namespace HelixToolkit.UWP
             BitmapFont = bitmapFont;
         }
 
+        public BillboardText3D(BitmapFont bitmapFont, TextureModel fontTexture)
+        {
+            textInfo.CollectionChanged += CollectionChanged;
+            Texture = fontTexture;
+            BitmapFont = bitmapFont;
+        }
+
         protected override void OnAssignTo(Geometry3D target)
         {
             base.OnAssignTo(target);

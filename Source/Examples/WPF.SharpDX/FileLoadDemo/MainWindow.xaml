@@ -112,7 +112,7 @@
                 <Separator />
                 <TextBlock>Scene Graph</TextBlock>
             </StackPanel>
-            <ScrollViewer Grid.Row="1">
+            <!--<ScrollViewer Grid.Row="1">
                 <TreeView ItemsSource="{Binding GroupModel.GroupNode.Items}">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
@@ -139,7 +139,7 @@
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>
-            </ScrollViewer>
+            </ScrollViewer>-->
 
         </Grid>
     </Grid>

@@ -153,7 +153,7 @@ namespace VolumeRendering
         private Tuple<Material, Media3D.Transform3D> LoadNoise()
         {
             var m = new VolumeTextureDDS3DMaterial();
-            m.Texture = LoadFileToMemory("NoiseVolume.dds");
+            m.Texture = TextureModel.Create("NoiseVolume.dds");
             m.Color = new Color4(1, 1, 1, 0.01f);
             m.Freeze();
             var transform = new Media3D.ScaleTransform3D(1, 1, 1);

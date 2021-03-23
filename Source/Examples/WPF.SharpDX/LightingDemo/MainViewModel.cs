@@ -107,7 +107,7 @@ namespace LightingDemo
             {
                 if(SetValue(ref selectedDiffuseTexture, value))
                 {
-                    ModelMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(value, System.UriKind.RelativeOrAbsolute).ToString());
+                    ModelMaterial.DiffuseMap = TextureModel.Create(new System.Uri(value, System.UriKind.RelativeOrAbsolute).ToString());
                     FloorMaterial.DiffuseMap = ModelMaterial.DiffuseMap;
                 }
             }
@@ -124,7 +124,7 @@ namespace LightingDemo
             {
                 if (SetValue(ref selectedNormalTexture, value))
                 {
-                    ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(value, System.UriKind.RelativeOrAbsolute).ToString());
+                    ModelMaterial.NormalMap = TextureModel.Create(new System.Uri(value, System.UriKind.RelativeOrAbsolute).ToString());
                     FloorMaterial.NormalMap = ModelMaterial.NormalMap;
                 }
             }
@@ -264,7 +264,7 @@ namespace LightingDemo
             this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.ModelMaterial = PhongMaterials.Chrome;
 
-            this.ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(SelectedNormalTexture, System.UriKind.RelativeOrAbsolute).ToString());
+            this.ModelMaterial.NormalMap = TextureModel.Create(new System.Uri(SelectedNormalTexture, System.UriKind.RelativeOrAbsolute).ToString());
 
             // ----------------------------------------------
             // floor model3d
@@ -281,7 +281,7 @@ namespace LightingDemo
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
-                DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
+                DiffuseMap = TextureModel.Create(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = ModelMaterial.NormalMap,
                 RenderShadowMap = true
             };

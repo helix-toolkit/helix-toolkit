@@ -226,12 +226,7 @@ namespace CoreTest
             imGui.UpdatingImGuiUI += ImGui_UpdatingImGuiUI;
             groupEffects.AddChildNode(new NodePostEffectBorderHighlight() { EffectName = "highlightEffect", Color = Color.Yellow });
             viewport.Items.AddChildNode(groupEffects);
-            var environmentTexture = new MemoryStream();
-            using (var fs = File.Open("Cubemap_Grandcanyon.dds", FileMode.Open))
-            {
-                fs.CopyTo(environmentTexture);
-            }
-            environmentMap = new EnvironmentMapNode() { Texture = environmentTexture };
+            environmentMap = new EnvironmentMapNode() { Texture = TextureModel.Create("Cubemap_Grandcanyon.dds") };
             viewport.Items.AddChildNode(environmentMap);
             viewport.NodeHitOnMouseDown += Viewport_NodeHitOnMouseDown;
         }
@@ -257,17 +252,8 @@ namespace CoreTest
 
         private void InitializeMaterials()
         {
-            var diffuse = new MemoryStream();
-            using (var fs = File.Open("TextureCheckerboard2.jpg", FileMode.Open))
-            {
-                fs.CopyTo(diffuse);
-            }
-
-            var normal = new MemoryStream();
-            using (var fs = File.Open("TextureCheckerboard2_dot3.jpg", FileMode.Open))
-            {
-                fs.CopyTo(normal);
-            }
+            var diffuse = TextureModel.Create("TextureCheckerboard2.jpg");
+            var normal = TextureModel.Create("TextureCheckerboard2_dot3.jpg");
             materials.Add("red", new DiffuseMaterialCore() { DiffuseColor = Color.Red, DiffuseMap = diffuse });
             materials.Add("green", new DiffuseMaterialCore() { DiffuseColor = Color.Green, DiffuseMap = diffuse });
             materials.Add("blue", new DiffuseMaterialCore() { DiffuseColor = Color.Blue, DiffuseMap = diffuse });

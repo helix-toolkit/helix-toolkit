@@ -2,7 +2,8 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Threading;
-
+using System.Diagnostics;
+using System.IO;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -13,7 +14,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using System.Diagnostics;
+    using System.Runtime.InteropServices;
     using Model;
     namespace Utilities
     {
@@ -117,6 +118,96 @@ namespace HelixToolkit.UWP
                 textureView = Collect(view);
                 TextureFormat = view.Description.Format;
             }
+
+            private bool HandleTextureContent(TextureInfo content, bool createSRV, bool enableAutoGenMipMap)
+            {
+                if (content == TextureInfo.Null)
+                {
+                    return false;
+                }
+                if (content.IsCompressed)
+                {
+                    var stream = content.Texture;
+                    if (stream == null || !stream.CanRead)
+                    {
+                        Debug.WriteLine("Stream is null or unreadable.");
+                        return false;
+                    }
+                    resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, !enableAutoGenMipMap));
+                    if (createSRV)
+                    {
+                        textureView = Collect(new ShaderResourceView(device, resource));
+                    }
+                    TextureFormat = textureView.Description.Format;
+                }
+                else
+                {
+                    var handle = new GCHandle();
+                    var pixelPtr = IntPtr.Zero;
+                    try
+                    {
+                        switch (content.DataType)
+                        {
+                            case TextureDataType.ByteArray:
+                                handle = GCHandle.Alloc(content.TextureRaw, GCHandleType.Pinned);
+                                pixelPtr = handle.AddrOfPinnedObject();
+                                break;
+                            case TextureDataType.Color4:
+                                handle = GCHandle.Alloc(content.Color4Array, GCHandleType.Pinned);
+                                pixelPtr = handle.AddrOfPinnedObject();
+                                break;
+                            case TextureDataType.Stream:
+                                if (content.Texture == null || !content.Texture.CanRead)
+                                {
+                                    Debug.WriteLine("Data is null or unreadable.");
+                                    return false;
+                                }
+                                var temp = new byte[content.Texture.Length];
+                                using (var pixelStream = new MemoryStream(temp))
+                                {
+                                    lock (content.Texture)
+                                    {
+                                        content.Texture.Position = 0;
+                                        content.Texture.CopyTo(pixelStream);
+                                    }
+                                }
+                                handle = GCHandle.Alloc(temp, GCHandleType.Pinned);
+                                pixelPtr = handle.AddrOfPinnedObject();
+                                break;
+                            case TextureDataType.RawPointer:
+                                pixelPtr = content.RawPointer;
+                                break;
+                        }
+                        if (pixelPtr != IntPtr.Zero)
+                        {
+                            switch (content.Dimension)
+                            {
+                                case 1:
+                                    CreateView(pixelPtr, content.Width, content.PixelFormat, createSRV, enableAutoGenMipMap);
+                                    break;
+                                case 2:
+                                    CreateView(pixelPtr, content.Width, content.Height, content.PixelFormat, createSRV, enableAutoGenMipMap);
+                                    break;
+                                case 3:
+                                    CreateView(pixelPtr, content.Width, content.Height, content.Depth, content.PixelFormat, createSRV, enableAutoGenMipMap);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
+                    finally
+                    {
+                        handle.Free();
+                    }
+                }
+                return true;
+            }
+
             /// <summary>
             /// Creates the view from texture model.
             /// </summary>
@@ -127,50 +218,11 @@ namespace HelixToolkit.UWP
             public void CreateView(TextureModel texture, bool createSRV = true, bool enableAutoGenMipMap = true)
             {
                 this.DisposeAndClear();
-                if (texture != null && device != null)
+                if (texture != null && device != null && texture.TextureInfoLoader != null)
                 {
-                    if (texture.IsCompressed)
-                    {
-                        var stream = texture.CompressedStream;
-                        if (stream == null || !stream.CanRead)
-                        {
-                            Debug.WriteLine("Stream is null or unreadable.");
-                            return;
-                        }
-                        resource = Collect(TextureLoader.FromMemoryAsShaderResource(device, stream, !enableAutoGenMipMap));
-                        if (createSRV)
-                        {
-                            textureView = Collect(new ShaderResourceView(device, resource));
-                        }
-                        TextureFormat = textureView.Description.Format;
-                        if (texture.CanAutoCloseStream)
-                        {
-                            Debug.WriteLine($"Auto closing stream for {texture.Guid}");
-                            stream.Dispose();
-                        }
-                    }
-                    else if (texture.NonCompressedData != null && texture.NonCompressedData.Length > 0)
-                    {
-                        if (texture.Width * texture.Height > texture.NonCompressedData.Length)
-                        {
-                            throw new ArgumentOutOfRangeException($"Texture width * height = {texture.Width * texture.Height} is larger than texture data length {texture.NonCompressedData.Length}.");
-                        }
-                        else if (texture.Height <= 1)
-                        {
-                            if (texture.Width == 0)
-                            {
-                                CreateView(texture.NonCompressedData, texture.UncompressedFormat, createSRV, enableAutoGenMipMap);
-                            }
-                            else
-                            {
-                                CreateView(texture.NonCompressedData, texture.Width, texture.UncompressedFormat, createSRV, enableAutoGenMipMap);
-                            }
-                        }
-                        else
-                        {                          
-                            CreateView(texture.NonCompressedData, texture.Width, texture.Height, texture.UncompressedFormat, createSRV, enableAutoGenMipMap);
-                        }
-                    }
+                    var content = texture.TextureInfoLoader.Load(texture.Guid);
+                    bool succ = HandleTextureContent(content, createSRV, content.GenerateMipMaps && enableAutoGenMipMap);
+                    texture.TextureInfoLoader.Complete(texture.Guid, content, succ);
                 }
             }
             /// <summary>
@@ -278,6 +330,52 @@ namespace HelixToolkit.UWP
                 if (texture.Description.MipLevels == 1 && generateMipMaps)
                 {
                     if(TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
+                    {
+                        resource = Collect(mipmapTexture);
+                        RemoveAndDispose(ref texture);
+                    }
+                    else
+                    {
+                        resource = texture;
+                    }
+                }
+                else
+                {
+                    resource = texture;
+                }
+                if (createSRV)
+                {
+                    textureView = Collect(new ShaderResourceView(device, resource));
+                }
+            }
+
+            /// <summary>
+            /// Creates the shader resource view from data ptr.
+            /// </summary>
+            /// <param name="dataPtr">The data PTR.</param>
+            /// <param name="width">The width.</param>
+            /// <param name="format">The format.</param>
+            /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+            /// <param name="generateMipMaps"></param>
+            public unsafe void CreateView(IntPtr dataPtr, int width,
+                global::SharpDX.DXGI.Format format, bool createSRV = true, bool generateMipMaps = true)
+            {
+                this.DisposeAndClear();
+                var ptr = (IntPtr)dataPtr;
+
+
+                global::SharpDX.Toolkit.Graphics.Image
+                    .ComputePitch(format, width, 1,
+                    out var rowPitch, out var slicePitch, out _, out _);
+
+                var databox = new DataBox(ptr, rowPitch, slicePitch);
+
+                var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, width, format,
+                    new[] { databox }));
+                TextureFormat = format;
+                if (texture.Description.MipLevels == 1 && generateMipMaps)
+                {
+                    if (TextureLoader.GenerateMipMaps(device, texture, out var mipmapTexture))
                     {
                         resource = Collect(mipmapTexture);
                         RemoveAndDispose(ref texture);

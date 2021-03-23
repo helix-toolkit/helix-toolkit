@@ -219,7 +219,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Default Volume Texture Material. Supports 3D DDS memory stream as <see cref="VolumeTextureMaterialCoreBase{T}.VolumeTexture"/>
         /// </summary>
-        public sealed class VolumeTextureDDS3DMaterialCore : VolumeTextureMaterialCoreBase<Stream>
+        public sealed class VolumeTextureDDS3DMaterialCore : VolumeTextureMaterialCoreBase<TextureModel>
         {
             protected override ShaderResourceViewProxy OnCreateTexture(IEffectsManager manager)
             {

@@ -32,7 +32,7 @@ namespace EnvironmentMapDemo
         public PhongMaterial ModelMaterial1 { get; set; }
         public PhongMaterial ModelMaterial2 { get; set; }
         public PhongMaterial ModelMaterial3 { get; set; }
-        public Stream SkyboxTexture { private set; get; }
+        public TextureModel SkyboxTexture { private set; get; }
 
         public MainViewModel()
         {
@@ -61,7 +61,7 @@ namespace EnvironmentMapDemo
 
             EffectsManager = new DefaultEffectsManager();
 
-            SkyboxTexture = LoadFileToMemory("Cubemap_Grandcanyon.dds");
+            SkyboxTexture = TextureModel.Create("Cubemap_Grandcanyon.dds");
             int t = 5;
             for (int i = 0; i < 10; ++i)
             {

@@ -50,7 +50,7 @@ namespace InstancingDemo
         public Vector3D DirectionalLightDirection { get; private set; }
         public Color DirectionalLightColor { get; private set; }
         public Color AmbientLightColor { get; private set; }
-        public Stream Texture { private set; get; }
+        public TextureModel Texture { private set; get; }
         public bool EnableAnimation { set; get; }
 
         private DispatcherTimer timer = new DispatcherTimer();
@@ -89,11 +89,11 @@ namespace InstancingDemo
 
             // model material
             ModelMaterial = PhongMaterials.White;
-            ModelMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
-            ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+            ModelMaterial.DiffuseMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+            ModelMaterial.NormalMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
-            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap.CompressedStream, 20, 20);
-            Texture = LoadFileToMemory("Cubemap_Grandcanyon.dds");
+            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
+            Texture = TextureModel.Create("Cubemap_Grandcanyon.dds");
             CreateModels();
             timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Tick += Timer_Tick;

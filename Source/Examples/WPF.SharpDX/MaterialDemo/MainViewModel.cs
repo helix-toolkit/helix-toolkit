@@ -54,7 +54,7 @@ namespace MaterialDemo
 
         public ColorStripeMaterial ColorStripeMaterial { get; } = new ColorStripeMaterial();
 
-        public Stream EnvironmentMap { private set; get; }
+        public TextureModel EnvironmentMap { private set; get; }
 
         public Transform3D Transform1 { get; } = new Media3D.TranslateTransform3D(-30, 0, 0);
         public Transform3D Transform2 { get; } = new Media3D.TranslateTransform3D(-15, 0, 0);
@@ -86,7 +86,7 @@ namespace MaterialDemo
 
             LoadObj(@"shaderBall\shaderBall.obj");
 
-            EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
+            EnvironmentMap = TextureModel.Create("Cubemap_Grandcanyon.dds");
 
             ColorStripeMaterial.ColorStripeX = GetGradients(new Color4(1, 0, 0, 1), new Color4(0, 1, 0, 1), new Color4(0, 0, 1, 1), 48).ToList();
             ColorStripeMaterial.ColorStripeY = GetGradients(new Color4(1, 1, 0, 1), new Color4(0, 1, 1, 1), new Color4(1, 0, 1, 1), 48).ToList();

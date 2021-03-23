@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    using System.Diagnostics;
     using Utilities;
     /// <summary>
     /// Use for texture resource sharing between models. It uses texture stream as key for each texture.
@@ -63,11 +64,13 @@ namespace HelixToolkit.UWP
             {
                 if (targetDict.TryGetValue(textureModel.Guid, out ShaderResourceViewProxy view))
                 {
+                    Debug.WriteLine("Re-using existing texture resource");
                     view.IncRef();
                     return view;
                 }
                 else
                 {
+                    Debug.WriteLine("Creating new texture resource");
                     var proxy = new ShaderResourceViewProxy(device);
                     proxy.CreateView(textureModel, true, enableAutoGenMipMap);
                     proxy.Guid = textureModel.Guid;

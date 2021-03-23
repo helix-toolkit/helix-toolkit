@@ -66,6 +66,12 @@ namespace HelixToolkit.UWP
             imageInfos.CollectionChanged += CollectionChanged;
         }
 
+        public BillboardImage3D(TextureModel texture)
+        {
+            Texture = texture;
+            imageInfos.CollectionChanged += CollectionChanged;
+        }
+
         private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsInitialized = false;
