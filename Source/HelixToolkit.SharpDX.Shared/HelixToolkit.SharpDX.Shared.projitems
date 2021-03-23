@@ -387,6 +387,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\StateProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ShaderResourceViewProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ScreenCapture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureFileLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureModelRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />

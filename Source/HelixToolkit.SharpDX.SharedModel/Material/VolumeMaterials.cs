@@ -204,18 +204,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The texture.
         /// </value>
-        public Stream Texture
+        public TextureModel Texture
         {
-            get { return (Stream)GetValue(TextureProperty); }
+            get { return (TextureModel)GetValue(TextureProperty); }
             set { SetValue(TextureProperty, value); }
         }
 
 
         public static readonly DependencyProperty TextureProperty =
-            DependencyProperty.Register("Texture", typeof(Stream), typeof(VolumeTextureDDS3DMaterial),
+            DependencyProperty.Register("Texture", typeof(TextureModel), typeof(VolumeTextureDDS3DMaterial),
                 new PropertyMetadata(null, (d,e)=> 
                 {
-                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).VolumeTexture = (Stream)e.NewValue;
+                    ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).VolumeTexture = (TextureModel)e.NewValue;
                 }));
 
         public VolumeTextureDDS3DMaterial()

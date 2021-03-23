@@ -127,8 +127,8 @@ namespace LineShadingDemo
             this.Material3 = PhongMaterials.Glass;
             this.LineMaterial = new LineArrowHeadMaterial() { ArrowSize = 0.04, Color = Colors.White, TextureScale = 0.4 };
             this.GridMaterial = new LineMaterial() { Color = Colors.Red, TextureScale = 0.4};
-            var dash = LoadFileToMemory("Dash.png");
-            var dotLine = LoadFileToMemory("DotLine.png");
+            var dash = TextureModel.Create("Dash.png");
+            var dotLine = TextureModel.Create("DotLine.png");
             GridMaterial.Texture = dotLine;
             LineMaterial.Texture = dash;
         }

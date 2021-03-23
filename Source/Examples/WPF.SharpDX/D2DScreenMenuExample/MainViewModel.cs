@@ -62,20 +62,10 @@ namespace D2DScreenMenuExample
             builder.AddBox(new Vector3(0, 2.5f, 0), 5, 5, 5);
             builder.AddBox(new Vector3(0, 0, 0), 10, 0.1, 10);
             Model = builder.ToMeshGeometry3D();
-            var diffuseMap = LoadFileToMemory(new System.Uri(Texture, System.UriKind.RelativeOrAbsolute).ToString());
-            var normalMap = LoadFileToMemory(new System.Uri(NormalTexture, System.UriKind.RelativeOrAbsolute).ToString());
+            var diffuseMap = TextureModel.Create(new System.Uri(Texture, System.UriKind.RelativeOrAbsolute).ToString());
+            var normalMap = TextureModel.Create(new System.Uri(NormalTexture, System.UriKind.RelativeOrAbsolute).ToString());
             ModelMaterial.DiffuseMap = diffuseMap;
             ModelMaterial.NormalMap = normalMap;
-        }
-
-        public static MemoryStream LoadFileToMemory(string filePath)
-        {
-            using (var file = new FileStream(filePath, FileMode.Open))
-            {
-                var memory = new MemoryStream();
-                file.CopyTo(memory);
-                return memory;
-            }
         }
     }
 

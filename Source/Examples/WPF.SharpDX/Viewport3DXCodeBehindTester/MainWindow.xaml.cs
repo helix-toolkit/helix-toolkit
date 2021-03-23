@@ -87,7 +87,7 @@ namespace Viewport3DXCodeBehindTester
 
         private void buttonEnvironment_Click(object sender, RoutedEventArgs e)
         {
-            var texture = BaseViewModel.LoadFileToMemory("Cubemap_Grandcanyon.dds");
+            var texture = TextureModel.Create("Cubemap_Grandcanyon.dds");
             var environment = new EnvironmentMap3D() { Texture = texture };
             viewport.Items.Add(environment);
             viewmodel.EnableEnvironmentButtons = false;

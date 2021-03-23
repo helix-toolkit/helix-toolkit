@@ -127,8 +127,8 @@ namespace TessellationDemo
                 DiffuseColor = Colors.Red.ToColor4(), // Colors.LightGray,
                 SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
-                DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
-                NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
+                DiffuseMap = TextureModel.Create(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
+                NormalMap = TextureModel.Create(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
                 EnableTessellation = true, RenderShadowMap = true
             };
             FloorMaterial.RenderShadowMap = true;

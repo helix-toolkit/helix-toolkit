@@ -201,11 +201,10 @@ namespace SimpleDemoW10
                     * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * -0.5f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time) * Matrix.Translation(-5, -5, 5);
         }
 
-        private Stream LoadTexture(string file)
+        private TextureModel LoadTexture(string file)
         {
             var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
-            var bytecode = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\" + file);
-            return new MemoryStream(bytecode);
+            return TextureModel.Create(packageFolder + @"\" + file);
         }
 
         public class Logger : ILogger

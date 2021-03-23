@@ -113,10 +113,10 @@ namespace BillboardDemo
             EarthMaterial = PhongMaterials.White;
             EarthMaterial.SpecularShininess = 10;
             EarthMaterial.SpecularColor = new Color4(0.3f, 0.3f, 0.3f, 1);
-            EarthMaterial.DiffuseMap = LoadFileToMemory("earthmap.jpg");
-            EarthMaterial.SpecularColorMap = LoadFileToMemory("earthspec.jpg");
-            EarthMaterial.DisplacementMap = LoadFileToMemory("earthbump.jpg");
-            EarthMaterial.NormalMap = LoadFileToMemory("earthNormal.jpg");
+            EarthMaterial.DiffuseMap = TextureModel.Create("earthmap.jpg");
+            EarthMaterial.SpecularColorMap = TextureModel.Create("earthspec.jpg");
+            EarthMaterial.DisplacementMap = TextureModel.Create("earthbump.jpg");
+            EarthMaterial.NormalMap = TextureModel.Create("earthNormal.jpg");
             EarthMaterial.DisplacementMapScaleMask = new Vector4(0.2f, 0.2f, 0.2f, 0);
             EarthMaterial.EnableTessellation = true;
             EarthMaterial.MaxDistanceTessellationFactor = 1;
@@ -132,7 +132,7 @@ namespace BillboardDemo
                     new SharpDX.Direct2D1.GradientStop(){ Color = Color.Black, Position = 1f }
                 });
 
-            FlagsBillboard = new BillboardImage3D(LoadFileToMemory("Flags.jpg"));
+            FlagsBillboard = new BillboardImage3D(TextureModel.Create("Flags.jpg"));
             foreach (var info in FlagsCollection.Flags.Where(x => x.Position != Vector3.Zero))
             {
                 FlagsBillboard.ImageInfos.Add(info);
@@ -140,7 +140,7 @@ namespace BillboardDemo
 
             var segoeFont = new BitmapFont();
             segoeFont.Load(@"Fonts\SegoeScript.fnt");
-            LandmarkBillboards2 = new BillboardText3D(segoeFont, LoadFileToMemory(@"Fonts\SegoeScript.dds"));
+            LandmarkBillboards2 = new BillboardText3D(segoeFont, TextureModel.Create(@"Fonts\SegoeScript.dds"));
             AddLocations();
             AddBatchedText();
         }

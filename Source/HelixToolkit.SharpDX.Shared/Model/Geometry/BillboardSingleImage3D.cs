@@ -169,7 +169,6 @@ namespace HelixToolkit.UWP
                 Width = image.Description.Width;
                 Height = image.Description.Height;
             }
-            Texture.CompressedStream.Position = 0;
         }
 
         /// <summary>
@@ -183,7 +182,6 @@ namespace HelixToolkit.UWP
             this.Texture = texture;
             Width = width;
             Height = height;
-            Texture.CompressedStream.Position = 0;
         }
 
         /// <summary>

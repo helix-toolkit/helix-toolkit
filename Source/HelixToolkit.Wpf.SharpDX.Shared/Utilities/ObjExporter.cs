@@ -343,10 +343,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     var textureFilename = matName + ".png";
                     var texturePath = Path.Combine(this.directory, textureFilename);
-
-                    // create .png bitmap file for the brush
-                    RenderBrush(texturePath, pm.DiffuseMap.CompressedStream);
-                    this.mwriter.WriteLine(string.Format("map_Ka {0}", textureFilename));
+                    var texture = pm.DiffuseMap.TextureInfoLoader.Load(pm.DiffuseMap.Guid);
+                    if (texture != null && texture.Texture != null && texture.Texture.CanRead)
+                    {
+                        // create .png bitmap file for the brush
+                        RenderBrush(texturePath, texture.Texture);
+                        this.mwriter.WriteLine(string.Format("map_Ka {0}", textureFilename));
+                        pm.DiffuseMap.TextureInfoLoader.Complete(pm.DiffuseMap.Guid, texture, true);
+                    }
+                    else
+                    {
+                        pm.DiffuseMap.TextureInfoLoader.Complete(pm.DiffuseMap.Guid, texture, false);
+                    }
                 }
             }
 

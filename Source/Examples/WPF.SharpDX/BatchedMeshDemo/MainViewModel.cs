@@ -88,7 +88,7 @@ namespace BatchedMeshDemo
             var builder = new MeshBuilder(true);
             builder.AddBox(new Vector3(0, -65, 0), 600, 1, 600);
             FloorModel = builder.ToMesh();
-            (MainMaterial as PhongMaterial).NormalMap = LoadFileToMemory("TextureNoise1_dot3.jpg");
+            (MainMaterial as PhongMaterial).NormalMap = new TextureModel("TextureNoise1_dot3.jpg");
             (MainMaterial as PhongMaterial).RenderShadowMap = true;
             (FloorMaterial as PhongMaterial).RenderShadowMap = true;
         }

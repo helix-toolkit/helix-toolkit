@@ -110,8 +110,8 @@ namespace XRayDemo
             b2.AddBox(new Vector3(0, 25, -70), 150, 50, 20);
             this.Floor = b2.ToMeshGeometry3D();
             this.FloorMaterial = PhongMaterials.Bisque;
-            this.FloorMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
-            this.FloorMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+            this.FloorMaterial.DiffuseMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+            this.FloorMaterial.NormalMap = TextureModel.Create(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
             var caritems = Load3ds("leone.3DBuilder.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             var scale = new Vector3(1f);
