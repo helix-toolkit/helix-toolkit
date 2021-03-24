@@ -278,7 +278,7 @@ namespace FileLoadDemo
                             {
                                 if (node is MaterialGeometryNode m)
                                 {
-                                    m.Geometry.SetAsTransient();
+                                    //m.Geometry.SetAsTransient();
                                     if (m.Material is PBRMaterialCore pbr)
                                     {
                                         pbr.RenderEnvironmentMap = RenderEnvironmentMap;
