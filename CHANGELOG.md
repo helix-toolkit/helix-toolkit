@@ -2,8 +2,17 @@
 All notable changes to this project will be documented in this file.
 
 ## Next Release
+
+### Improvement
+1. Avoid duplicated GPU resources getting destoried and re-created.  (WPF.SharpDX/UWP/Core) 
+2. Improves texture loading. Re-implemented `TextureModel` and provides `ITextureInfoLoader` interface to allow user defined texture repository.
+3. Auto caching `Stream` and `TextureModel` pair to avoid duplicated texture resources.
+4. `TextureModel` changes to be `Guid` based. `TextureModel` with same `Guid` will be treated as same texture.
+
 ### Fixed
 1. Fixed viewport crash during display configuration change #1531. (WPF.SharpDX)
+2. Fix cursor is wrong after pressing multiple mouse button simultaneously (WPF.SharpDX/UWP) 
+3. Bugfix export without material (Assimp)
 
 ## [2.15.0] - 2021-02-20
 ### Added
