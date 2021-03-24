@@ -26,8 +26,8 @@ namespace HelixToolkit.UWP
     public sealed class TextureResourceManager : IDisposable, ITextureResourceManager
     {
         public int Count { get { return resourceDictionaryMipMaps.Count + resourceDictionaryNoMipMaps.Count; } }
-        private readonly Dictionary<object, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<object, ShaderResourceViewProxy>();
-        private readonly Dictionary<object, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<object, ShaderResourceViewProxy>();
+        private readonly Dictionary<Guid, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<Guid, ShaderResourceViewProxy>();
+        private readonly Dictionary<Guid, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<Guid, ShaderResourceViewProxy>();
         private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureResourceManager"/> class.
@@ -78,7 +78,7 @@ namespace HelixToolkit.UWP
                     {
                         lock (targetDict)
                         {
-                            targetDict.Remove(textureModel.Guid);
+                            targetDict.Remove(proxy.Guid);
                         }
                     };
                     targetDict.Add(textureModel.Guid, proxy);                    
