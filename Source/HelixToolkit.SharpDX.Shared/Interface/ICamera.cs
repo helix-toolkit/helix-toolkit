@@ -61,5 +61,13 @@ namespace HelixToolkit.UWP
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>A <see cref="Matrix" />.</returns>
         Matrix CreateProjectionMatrix(float aspectRatio);
+        /// <summary>
+        /// Creates the projection matrix.
+        /// </summary>
+        /// <param name="aspectRatio">The aspect ratio.</param>
+        /// <param name="nearPlane">The near plane.</param>
+        /// <param name="farPlane">The far plane.</param>
+        /// <returns></returns>
+        Matrix CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane);
     }
 }
