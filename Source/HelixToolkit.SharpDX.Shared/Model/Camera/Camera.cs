@@ -77,6 +77,8 @@ namespace HelixToolkit.UWP
 
             public abstract Matrix CreateProjectionMatrix(float aspectRatio);
 
+            public abstract Matrix CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane);
+
             public abstract Matrix CreateViewMatrix();
 
             public override string ToString()
@@ -204,7 +206,10 @@ namespace HelixToolkit.UWP
             public Matrix ProjectionMatrix { set; get; }
             public Matrix ViewMatrix { set; get; }
             public override Matrix CreateProjectionMatrix(float aspectRatio) { return ProjectionMatrix; }
-
+            public override Matrix CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane)
+            {
+                return ProjectionMatrix;
+            }
             public override Matrix CreateViewMatrix() { return ViewMatrix; }
 
             public override string ToString()
@@ -285,18 +290,16 @@ namespace HelixToolkit.UWP
 
             public override Matrix CreateProjectionMatrix(float aspectRatio)
             {
-                return this.CreateLeftHandSystem ? Matrix.OrthoLH(
-                        this.Width,
-                        (float)(this.Width / aspectRatio),
-                        this.NearPlaneDistance,
-                        Math.Min(1e15f, this.FarPlaneDistance))
-                        : Matrix.OrthoRH(
-                        this.Width,
-                        (float)(this.Width / aspectRatio),
-                        this.NearPlaneDistance,
-                        Math.Min(1e15f, this.FarPlaneDistance));
-
+                return CreateProjectionMatrix(aspectRatio, NearPlaneDistance, FarPlaneDistance);
             }
+
+            public override Matrix CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane)
+            {
+                return this.CreateLeftHandSystem ? 
+                    Matrix.OrthoLH(this.Width, (float)(this.Width / aspectRatio), nearPlane, Math.Min(1e15f, farPlane))
+                    : Matrix.OrthoRH(this.Width, (float)(this.Width / aspectRatio),  nearPlane, Math.Min(1e15f, farPlane));
+            }
+
 
             public override string ToString()
             {
@@ -375,20 +378,20 @@ namespace HelixToolkit.UWP
 
             public override Matrix CreateProjectionMatrix(float aspectRatio)
             {
+                return CreateProjectionMatrix(aspectRatio, NearPlaneDistance, FarPlaneDistance);
+            }
+
+            public override Matrix CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane)
+            {
                 var fov = this.FieldOfView * Math.PI / 180;
                 Matrix projM;
                 if (this.CreateLeftHandSystem)
                 {
-                    projM = Matrix.PerspectiveFovLH(
-                        (float)fov,
-                        aspectRatio,
-                        NearPlaneDistance,
-                        FarPlaneDistance);
+                    projM = Matrix.PerspectiveFovLH((float)fov, aspectRatio, nearPlane, farPlane);
                 }
                 else
                 {
-                    projM = Matrix.PerspectiveFovRH(
-                        (float)fov, (float)aspectRatio, NearPlaneDistance, FarPlaneDistance);
+                    projM = Matrix.PerspectiveFovRH((float)fov, (float)aspectRatio, nearPlane, farPlane);
                 }
                 if (float.IsNaN(projM.M33) || float.IsNaN(projM.M43))
                 {

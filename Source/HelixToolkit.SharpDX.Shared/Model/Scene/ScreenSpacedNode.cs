@@ -194,6 +194,40 @@ namespace HelixToolkit.UWP
                     return (RenderCore as IScreenSpacedRenderParams).CameraType;
                 }
             }
+            /// <summary>
+            /// Gets or sets the far plane for screen spaced camera
+            /// </summary>
+            /// <value>
+            /// The far plane.
+            /// </value>
+            public float FarPlane
+            {
+                set
+                {
+                    (RenderCore as IScreenSpacedRenderParams).FarPlane = (float)value;
+                }
+                get
+                {
+                    return (RenderCore as IScreenSpacedRenderParams).FarPlane;
+                }
+            }
+            /// <summary>
+            /// Gets or sets the near plane for screen spaced camera
+            /// </summary>
+            /// <value>
+            /// The near plane.
+            /// </value>
+            public float NearPlane
+            {
+                set
+                {
+                    (RenderCore as IScreenSpacedRenderParams).NearPlane = (float)value;
+                }
+                get
+                {
+                    return (RenderCore as IScreenSpacedRenderParams).NearPlane;
+                }
+            }
             #endregion
             /// <summary>
             /// Gets or sets a value indicating whether [need clear depth buffer].
@@ -206,16 +240,6 @@ namespace HelixToolkit.UWP
             private List<HitTestResult> screenSpaceHits = new List<HitTestResult>();
 
             private ScreenSpacedContext screenSpacedContext;
-
-            public ScreenSpacedNode()
-            {
-                //this.ChildNodeAdded += ScreenSpacedNode_OnAddChildNode;
-            }
-
-            //private void ScreenSpacedNode_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
-            //{
-            //    e.Node.RenderType = RenderType.ScreenSpaced;
-            //}
 
             /// <summary>
             /// Called when [create render core].
