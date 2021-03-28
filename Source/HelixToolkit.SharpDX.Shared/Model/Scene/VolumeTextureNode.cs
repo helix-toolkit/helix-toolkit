@@ -106,7 +106,7 @@ namespace HelixToolkit.UWP
                 return host.EffectsManager[DefaultRenderTechniqueNames.Volume3D];
             }
 
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 return false;
             }

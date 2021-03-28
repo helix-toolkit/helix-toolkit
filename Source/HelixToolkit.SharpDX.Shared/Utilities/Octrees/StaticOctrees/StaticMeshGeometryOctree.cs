@@ -94,7 +94,6 @@ namespace HelixToolkit.UWP
             /// <param name="model"></param>
             /// <param name="geometry"></param>
             /// <param name="modelMatrix"></param>
-            /// <param name="rayWS"></param>
             /// <param name="rayModel"></param>
             /// <param name="returnMultiple"></param>
             /// <param name="hits"></param>
@@ -102,8 +101,8 @@ namespace HelixToolkit.UWP
             /// <param name="hitThickness"></param>
             /// <returns></returns>
             protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant,
-                IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix,
-                ref Ray rayWS, ref Ray rayModel, bool returnMultiple, ref List<HitTestResult> hits,
+                HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
+                ref Ray rayModel, bool returnMultiple, ref List<HitTestResult> hits,
                 ref bool isIntersect, float hitThickness)
             {
                 isIntersect = false;
@@ -124,6 +123,7 @@ namespace HelixToolkit.UWP
                     var result = new HitTestResult();
                     result.Distance = double.MaxValue;
                     float minDistance = float.MaxValue;
+                    var rayWS = context.RayWS;
                     for (int i = octant.Start; i < octant.End; ++i)
                     {
                         var idx = Objects[i].Key * 3;
@@ -217,7 +217,7 @@ namespace HelixToolkit.UWP
             /// <param name="result"></param>
             /// <param name="isIntersect"></param>
             /// <returns></returns>
-            protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, IRenderMatrices context,
+            protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, HitTestContext context,
                 ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
             {
                 bool isHit = false;

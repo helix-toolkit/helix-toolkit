@@ -154,8 +154,8 @@ namespace HelixToolkit.UWP
             }
         }
 
-        public virtual bool HitTestWithSkinnedVertices(IRenderMatrices context, Vector3[] skinnedVertices, Matrix modelMatrix,
-            ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
+        public virtual bool HitTestWithSkinnedVertices(HitTestContext context, Vector3[] skinnedVertices, Matrix modelMatrix,
+            ref List<HitTestResult> hits, object originalSource)
         {
             if (skinnedVertices == null || skinnedVertices.Length == 0
                 || Indices == null || Indices.Count == 0)
@@ -172,6 +172,7 @@ namespace HelixToolkit.UWP
             {
                 return false;
             }
+            var rayWS = context.RayWS;
             //transform ray into model coordinates
             var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInvert)));
 

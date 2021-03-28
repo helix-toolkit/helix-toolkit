@@ -94,15 +94,14 @@ namespace HelixToolkit.UWP
             /// <param name="model"></param>
             /// <param name="geometry"></param>
             /// <param name="modelMatrix"></param>
-            /// <param name="rayWS"></param>
             /// <param name="rayModel"></param>
             /// <param name="returnMultiple"></param>
             /// <param name="hits"></param>
             /// <param name="isIntersect"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, IRenderMatrices context, object model, 
-                Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, bool returnMultiple,
+            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, HitTestContext context, object model, 
+                Geometry3D geometry, Matrix modelMatrix, ref Ray rayModel, bool returnMultiple,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
                 isIntersect = false;
@@ -125,6 +124,7 @@ namespace HelixToolkit.UWP
                     }
                     var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
                     result.Distance = double.MaxValue;
+                    var rayWS = context.RayWS;
                     for (int i = octant.Start; i < octant.End; ++i)
                     {
                         var idx = Objects[i].Key * 2;
@@ -136,11 +136,11 @@ namespace HelixToolkit.UWP
                         var t0 = Vector3.TransformCoordinate(v0, modelMatrix);
                         var t1 = Vector3.TransformCoordinate(v1, modelMatrix);
                         var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc);
-                        var svpm = context.ScreenViewProjectionMatrix;
+                        var svpm = context.RenderMatrices.ScreenViewProjectionMatrix;
                         Vector3.TransformCoordinate(ref sp, ref svpm, out var sp3);
                         Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);
                         var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
-                        var dist = tv2.Length() / context.DpiScale;
+                        var dist = tv2.Length() / context.RenderMatrices.DpiScale;
                         if (returnMultiple)
                         {
                             lastDist = float.MaxValue;
@@ -199,7 +199,7 @@ namespace HelixToolkit.UWP
             /// <param name="result"></param>
             /// <param name="isIntersect"></param>
             /// <returns></returns>
-            protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, IRenderMatrices context, ref BoundingSphere sphere,
+            protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, HitTestContext context, ref BoundingSphere sphere,
                 ref List<HitTestResult> result, ref bool isIntersect)
             {
                 bool isHit = false;

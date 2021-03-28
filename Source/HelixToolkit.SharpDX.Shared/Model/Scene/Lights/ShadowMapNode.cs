@@ -222,28 +222,12 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            /// <summary>
-            /// Determines whether this instance [can hit test] the specified context.
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <returns>
-            ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-            /// </returns>
-            protected override bool CanHitTest(IRenderMatrices context)
+            protected override bool CanHitTest(HitTestContext context)
             {
                 return false;
             }
 
-            /// <summary>
-            /// Called when [hit test].
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="totalModelMatrix">The total model matrix.</param>
-            /// <param name="ray">The ray.</param>
-            /// <param name="hits">The hits.</param>
-            /// <returns></returns>
-            /// <exception cref="System.NotImplementedException"></exception>
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 return false;
             }

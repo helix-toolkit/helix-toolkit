@@ -150,12 +150,12 @@ namespace HelixToolkit.UWP
                     && spriteCount != 0 && indexCount != 0 && textureView != null;
             }
 
-            protected override bool CanHitTest(IRenderMatrices context)
+            protected override bool CanHitTest(HitTestContext context)
             {
                 return false;
             }
 
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 return false;
             }

@@ -36,6 +36,16 @@ namespace HelixToolkit.UWP
         {
             get;
         }
+        /// <summary>
+        /// Gets the inversed view matrix.
+        /// </summary>
+        /// <value>
+        /// The inversed view matrix.
+        /// </value>
+        Matrix ViewMatrixInv
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the projection matrix.

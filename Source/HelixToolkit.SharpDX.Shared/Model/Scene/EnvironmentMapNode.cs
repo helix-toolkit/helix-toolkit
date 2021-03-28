@@ -84,12 +84,12 @@ namespace HelixToolkit.UWP
                 return host.EffectsManager[DefaultRenderTechniqueNames.Skybox];
             }
 
-            public sealed override bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+            public sealed override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)
             {
                 return false;
             }
 
-            protected sealed override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected sealed override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 return false;
             }

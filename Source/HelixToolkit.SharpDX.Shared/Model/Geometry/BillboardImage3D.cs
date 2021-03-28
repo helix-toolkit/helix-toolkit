@@ -109,16 +109,17 @@ namespace HelixToolkit.UWP
             });
         }
 
-        public override bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits,
+        public override bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits,
             object originalSource, bool fixedSize)
         {
+            var rayWS = context.RayWS;
             if (!IsInitialized || context == null || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
                 return false;
             }
 
-            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, imageInfos.Count)
-                : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, imageInfos.Count);
+            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref hits, originalSource, imageInfos.Count)
+                : HitTestNonFixedSize(context, ref modelMatrix, ref hits, originalSource, imageInfos.Count);
         }
 
         protected override void OnAssignTo(Geometry3D target)

@@ -36,7 +36,8 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
             var ray = new Ray(new Vector3(2f, 0f, 0f), new Vector3(-1, 0, 0));
             var hits = new List<HitTestResult>();
             var geometryModel3D = GetGeometryModel3D();
-            geometryModel3D.HitTest(viewport.RenderContext, ray, ref hits);
+            var hitContext = new HitTestContext(viewport.RenderContext, ref ray);
+            geometryModel3D.HitTest(hitContext, ref hits);
             Assert.AreEqual(1,hits.Count);
             Assert.AreEqual(new Vector3(0.5f,0,0), hits[0].PointHit);
         }
@@ -49,7 +50,8 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
             setupPlane(geometryModel3D, plane);
             var ray = new Ray(new Vector3(2f, 0f, 0f), new Vector3(-1, 0, 0));
             var hits = new List<HitTestResult>();
-            geometryModel3D.HitTest(viewport.RenderContext, ray, ref hits);
+            var hitContext = new HitTestContext(viewport.RenderContext, ref ray);
+            geometryModel3D.HitTest(hitContext, ref hits);
             Assert.AreEqual(1, hits.Count);
             Assert.AreEqual(new Vector3(-0.5f, 0, 0), hits[0].PointHit);
         }

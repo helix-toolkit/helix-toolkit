@@ -95,19 +95,15 @@ namespace HelixToolkit.UWP
                 return !(EffectsManager.GeometryBufferManager.Register<BoneSkinnedMeshBufferModel>(modelGuid, geometry) is IBoneSkinMeshBufferModel buffer) ? 
                     EmptyGeometryBufferModel.Empty : new BoneSkinPreComputeBufferModel(buffer, buffer.VertexStructSize.FirstOrDefault()) as IAttachableBufferModel;
             }
-            /// <summary>
-            /// Views the frustum test.
-            /// </summary>
-            /// <param name="viewFrustum">The view frustum.</param>
-            /// <returns></returns>
+
             public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
             {
                 return BoneMatrices.Length == 0 ? base.TestViewFrustum(ref viewFrustum) : true;
             }
 
-            protected override bool PreHitTestOnBounds(ref Ray ray)
+            protected override bool PreHitTestOnBounds(HitTestContext context)
             {
-                return BoneMatrices.Length == 0 ? base.PreHitTestOnBounds(ref ray) : true;
+                return BoneMatrices.Length == 0 ? base.PreHitTestOnBounds(context) : true;
             }
             /// <summary>
             /// Creates the skeleton node.
@@ -237,7 +233,7 @@ namespace HelixToolkit.UWP
             public bool InitializeMorphTargets(MorphTargetVertex[] mtv, int pitch)
                 => (RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, pitch);
 
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 if(BoneMatrices.Length > 0 && Geometry is BoneSkinnedMeshGeometry3D skGeometry)
                 {
@@ -247,14 +243,14 @@ namespace HelixToolkit.UWP
                         {
                             skinnedVerticesCache = new Vector3[skGeometry.Positions.Count];
                         }
-                        if (skCore.CopySkinnedToArray(context.RenderHost.ImmediateDeviceContext, skinnedVerticesCache) > 0)
+                        if (skCore.CopySkinnedToArray(context.RenderMatrices.RenderHost.ImmediateDeviceContext, skinnedVerticesCache) > 0)
                         {
                             return skGeometry.HitTestWithSkinnedVertices(context, skinnedVerticesCache,
-                                totalModelMatrix, ref rayWS, ref hits, WrapperSource);
+                                totalModelMatrix, ref hits, WrapperSource);
                         }
                     }
                 }
-                return base.OnHitTest(context, totalModelMatrix, ref rayWS, ref hits);
+                return base.OnHitTest(context, totalModelMatrix, ref hits);
             }
         }
     }

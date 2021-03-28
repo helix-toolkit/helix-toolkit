@@ -54,8 +54,17 @@ namespace HelixToolkit.UWP
         public Matrix ViewMatrix
         {
             set; get;
-        }
-
+        } = Matrix.Identity;
+        /// <summary>
+        /// Gets or sets the inversed view matrix.
+        /// </summary>
+        /// <value>
+        /// The inversed view matrix.
+        /// </value>
+        public Matrix ViewMatrixInv
+        {
+            set; get;
+        } = Matrix.Identity;
         /// <summary>
         /// Gets or sets the projection matrix.
         /// </summary>
@@ -65,7 +74,7 @@ namespace HelixToolkit.UWP
         public Matrix ProjectionMatrix
         {
             set; get;
-        }
+        } = Matrix.Identity;
 
         /// <summary>
         /// Gets the viewport matrix.
@@ -138,6 +147,7 @@ namespace HelixToolkit.UWP
             {
                 this.camera = value;
                 ViewMatrix = this.camera.CreateViewMatrix();
+                ViewMatrixInv = ViewMatrix.PsudoInvert();
                 var aspectRatio = this.ActualWidth / this.ActualHeight;
                 ProjectionMatrix = this.camera.CreateProjectionMatrix((float)aspectRatio);
                 if (this.camera is ProjectionCameraCore c)

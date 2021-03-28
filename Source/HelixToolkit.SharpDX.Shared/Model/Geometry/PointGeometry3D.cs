@@ -43,21 +43,20 @@ namespace HelixToolkit.UWP
             return Positions != null && Positions.Count > 0;
         }
 
-        public virtual bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitThickness)
+        public virtual bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits, object originalSource, float hitThickness)
         {
             if(Positions==null || Positions.Count == 0)
             { return false; }
             if (Octree != null)
             {
-                return Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ref hits, hitThickness);
+                return Octree.HitTest(context, originalSource, this, modelMatrix, ref hits, hitThickness);
             }
             else
             {
-                var svpm = context.ScreenViewProjectionMatrix;
+                var svpm = context.RenderMatrices.ScreenViewProjectionMatrix;
                 var smvpm = modelMatrix * svpm;
 
-                var clickPoint3 = rayWS.Position + rayWS.Direction;
-                Vector3.TransformCoordinate(ref clickPoint3, ref svpm, out var clickPoint);
+                var clickPoint = context.HitPointSP.ToVector3() * context.RenderMatrices.DpiScale;
 
                 var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
                 var maxDist = hitThickness;
@@ -68,13 +67,13 @@ namespace HelixToolkit.UWP
                 {
                     var p0 = Vector3.TransformCoordinate(point, smvpm);
                     var pv = p0 - clickPoint;
-                    var dist = pv.Length() / context.DpiScale;
+                    var dist = pv.Length() / context.RenderMatrices.DpiScale;
                     if (dist < lastDist && dist <= maxDist)
                     {
                         lastDist = dist;
                         var lp0 = point;
                         Vector3.TransformCoordinate(ref lp0, ref modelMatrix, out var pvv);
-                        result.Distance = (rayWS.Position - pvv).Length();
+                        result.Distance = (context.RayWS.Position - pvv).Length();
                         result.PointHit = pvv;
                         result.ModelHit = originalSource;
                         result.IsValid = true;
@@ -99,12 +98,12 @@ namespace HelixToolkit.UWP
             base.UpdateBounds();
             if(Bound.Size.LengthSquared() < 1e-1f)
             {
-                var off = new Vector3(0.5f);
+                var off = new Vector3(1f);
                 Bound = new BoundingBox(Bound.Minimum - off, Bound.Maximum + off);
             }
             if(BoundingSphere.Radius < 1e-1f)
             {
-                BoundingSphere = new BoundingSphere(BoundingSphere.Center, 0.5f);
+                BoundingSphere = new BoundingSphere(BoundingSphere.Center, 1f);
             }
         }
     }

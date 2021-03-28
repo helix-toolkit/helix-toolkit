@@ -279,14 +279,8 @@ namespace HelixToolkit.UWP
                 }
                 mesh.Colors = colors;
             }
-            /// <summary>
-            /// Determines whether this instance [can hit test] the specified context.
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <returns>
-            ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-            /// </returns>
-            protected override bool CanHitTest(IRenderMatrices context)
+
+            protected override bool CanHitTest(HitTestContext context)
             {
                 return false;
             }

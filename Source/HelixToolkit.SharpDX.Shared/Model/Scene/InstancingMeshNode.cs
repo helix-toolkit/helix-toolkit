@@ -159,22 +159,16 @@ namespace HelixToolkit.UWP
                     octreeManager?.Clear();
                 }
             }
-            /// <summary>
-            /// Hits the test.
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="rayWS">The ray ws.</param>
-            /// <param name="hits">The hits.</param>
-            /// <returns></returns>
-            public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+
+            public override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)
             {
                 bool isHit = false;
-                if (CanHitTest(context) && PreHitTestOnBounds(ref rayWS))
+                if (CanHitTest(context) && PreHitTestOnBounds(context))
                 {
                     if (octreeManager != null && octreeManager.Octree != null)
                     {
                         var boundHits = new List<HitTestResult>();
-                        isHit = octreeManager.Octree.HitTest(context, this.WrapperSource, Geometry, TotalModelMatrixInternal, rayWS, ref boundHits);
+                        isHit = octreeManager.Octree.HitTest(context, this.WrapperSource, Geometry, TotalModelMatrixInternal, ref boundHits);
                         if (isHit)
                         {
                             isHit = false;
@@ -183,7 +177,7 @@ namespace HelixToolkit.UWP
                             {
                                 int instanceIdx = (int)hit.Tag;
                                 instanceMatrix = InstanceBuffer.Elements[instanceIdx];
-                                var h = base.OnHitTest(context, TotalModelMatrixInternal * instanceMatrix, ref rayWS, ref hits);
+                                var h = base.OnHitTest(context, TotalModelMatrixInternal * instanceMatrix, ref hits);
                                 isHit |= h;
                                 if (h && hits.Count > 0)
                                 {
@@ -205,7 +199,7 @@ namespace HelixToolkit.UWP
                     }
                     else
                     {
-                        isHit = base.HitTest(context, rayWS, ref hits);
+                        isHit = base.HitTest(context, ref hits);
                     }
                 }
                 return isHit;

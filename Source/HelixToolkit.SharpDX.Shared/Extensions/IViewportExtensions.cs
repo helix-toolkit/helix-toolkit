@@ -48,13 +48,14 @@ namespace HelixToolkit.UWP
             hits?.Clear();
             if(UnProject(viewport, pos, out var ray))
             {
+                var hitContext = new HitTestContext(viewport.RenderHost.RenderContext, ref ray, ref pos);
                 foreach (var element in viewport.RenderHost.PerFrameOpaqueNodesInFrustum)
                 {
-                    element.HitTest(viewport.RenderHost.RenderContext, ray, ref hits);
+                    element.HitTest(hitContext, ref hits);
                 }
                 foreach (var element in viewport.RenderHost.PerFrameTransparentNodesInFrustum)
                 {
-                    element.HitTest(viewport.RenderHost.RenderContext, ray, ref hits);
+                    element.HitTest(hitContext, ref hits);
                 }
                 hits.Sort();
                 return hits.Count > 0;
@@ -100,7 +101,7 @@ namespace HelixToolkit.UWP
         public static bool FindHits(this IViewport3DX viewport, Vector2 position, ref List<HitTestResult> hits)
         {
             hits?.Clear();
-            if (viewport.CameraCore is ProjectionCameraCore && viewport.RenderHost != null)
+            if (viewport.RenderHost != null)
             {
                 if(!viewport.UnProject(position, out var ray))
                 {
@@ -110,9 +111,10 @@ namespace HelixToolkit.UWP
                 {
                     hits = new List<HitTestResult>();
                 }
+                var hitContext = new HitTestContext(viewport.RenderHost.RenderContext, ref ray, ref position);
                 foreach (var element in viewport.Renderables)
                 {
-                    element.HitTest(viewport.RenderHost.RenderContext, ray, ref hits);
+                    element.HitTest(hitContext, ref hits);
                 }
                 hits.Sort();
 
@@ -151,16 +153,13 @@ namespace HelixToolkit.UWP
             point = new Vector3();
             normal = new Vector3();
             model = null;
-            if (viewport.CameraCore is ProjectionCameraCore)
+            var hits = new List<HitTestResult>();
+            if(viewport.FindHitsInFrustum(position, ref hits) && hits.Count > 0)
             {
-                var hits = new List<HitTestResult>();
-                if(viewport.FindHitsInFrustum(position, ref hits) && hits.Count > 0)
-                {
-                    point = hits[0].PointHit;
-                    normal = hits[0].NormalAtHit;
-                    model = hits[0].ModelHit;
-                    return true;
-                }
+                point = hits[0].PointHit;
+                normal = hits[0].NormalAtHit;
+                model = hits[0].ModelHit;
+                return true;
             }
             return false;
         }
@@ -173,42 +172,9 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static bool UnProject(this IViewport3DX viewport, Vector2 point2d, out Ray ray)//, out Vector3 pointNear, out Vector3 pointFar)
         {
-            if (viewport.RenderHost != null && viewport.CameraCore is ProjectionCameraCore camera)
+            if (viewport.RenderHost != null)
             {
-                var px = point2d.X;
-                var py = point2d.Y;
-
-                var viewMatrix = camera.CreateViewMatrix();               
-
-                var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
-                float w = viewport.RenderHost.ActualWidth / viewport.RenderHost.DpiScale;
-                float h = viewport.RenderHost.ActualHeight / viewport.RenderHost.DpiScale;
-                var aspectRatio = w / h;
-
-                var projMatrix = camera.CreateProjectionMatrix(aspectRatio);
-                
-                Vector3 v = new Vector3
-                {
-                    X = (2 * px / w - 1) / projMatrix.M11,
-                    Y = -(2 * py / h - 1) / projMatrix.M22,
-                    Z = 1 / projMatrix.M33
-                };
-                Vector3.TransformCoordinate(ref v, ref matrix, out Vector3 zf);
-                Vector3 zn;
-                if (camera is PerspectiveCameraCore)
-                {
-                    zn = camera.Position;
-                }
-                else
-                {
-                    v.Z = 0;
-                    Vector3.TransformCoordinate(ref v, ref matrix, out zn);
-                }
-                Vector3 r = zf - zn;
-                r.Normalize();
-
-                ray = new Ray(zn + r * camera.NearPlaneDistance, r);
-                return true;
+                return viewport.RenderHost.RenderContext.UnProject(point2d, out ray);
             }
             else
             {
@@ -308,10 +274,11 @@ namespace HelixToolkit.UWP
         /// <returns>The point.</returns>
         public static Vector2 Project(this IViewport3DX viewport, Vector3 point)
         {
-            var matrix = GetScreenViewProjectionMatrix(viewport);
-            var pointTransformed = Vector3.TransformCoordinate(point, matrix);
-            var pt = new Vector2((int)pointTransformed.X, (int)pointTransformed.Y);
-            return pt;
+            if (viewport.RenderHost == null)
+            {
+                return Vector2.Zero;
+            }
+            return viewport.RenderHost.RenderContext.Project(point);
         }
 
         /// <summary>

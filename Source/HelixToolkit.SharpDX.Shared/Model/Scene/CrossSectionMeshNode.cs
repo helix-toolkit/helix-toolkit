@@ -395,7 +395,7 @@ namespace HelixToolkit.UWP
                 return new CrossSectionMeshRenderCore();
             }
 
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 int hitsBeforeCheck = hits?.Count ?? 0;
                 var meshGeometry3d = Geometry as MeshGeometry3D;
@@ -404,7 +404,7 @@ namespace HelixToolkit.UWP
                 if(meshGeometry3d.ReturnMultipleHitsOnHitTest)
                     throw new InvalidOperationException($"All hit tests should be called on the same thread, {nameof(Geometry)}.{nameof(meshGeometry3d.ReturnMultipleHitsOnHitTest)} would not be true if that was the case");
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = true;
-                bool result = meshGeometry3d.HitTest(context, totalModelMatrix, ref rayWS, ref hits, this.WrapperSource);
+                bool result = meshGeometry3d.HitTest(context, totalModelMatrix, ref hits, this.WrapperSource);
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = false;
                 var operation = CuttingOperation;
                 if (result)

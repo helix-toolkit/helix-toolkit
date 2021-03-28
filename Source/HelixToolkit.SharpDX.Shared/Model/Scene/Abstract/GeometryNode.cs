@@ -487,11 +487,6 @@ namespace HelixToolkit.UWP
                 base.OnAttached();
             }
 
-            private void BufferModel_InvalidateRenderer(object sender, bool e)
-            {
-                this.InvalidateRender();
-            }
-
             /// <summary>
             /// Used to override Detach
             /// </summary>
@@ -538,18 +533,19 @@ namespace HelixToolkit.UWP
             /// Pre hit test on <see cref="BoundsWithTransform"/> and <see cref="BoundsSphereWithTransform"/>. 
             /// If return false, <see cref="SceneNode.OnHitTest"/> will not be called.
             /// </summary>
-            /// <param name="ray">The ray.</param>
+            /// <param name="context"></param>
             /// <returns></returns>
-            protected virtual bool PreHitTestOnBounds(ref Ray ray)
+            protected virtual bool PreHitTestOnBounds(HitTestContext context)
             {
+                var ray = context.RayWS;
                 return BoundsSphereWithTransform.Intersects(ref ray) && BoundsWithTransform.Intersects(ref ray);
             }
             /// <summary>
             ///
             /// </summary>
-            public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+            public override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)
             {
-                if (CanHitTest(context) && PreHitTestOnBounds(ref rayWS))
+                if (CanHitTest(context) && PreHitTestOnBounds(context))
                 {
                     if (this.InstanceBuffer.HasElements)
                     {
@@ -557,7 +553,7 @@ namespace HelixToolkit.UWP
                         int idx = 0;
                         foreach (var modelMatrix in InstanceBuffer.Elements)
                         {
-                            if (OnHitTest(context, modelMatrix * TotalModelMatrixInternal, ref rayWS, ref hits))
+                            if (OnHitTest(context, modelMatrix * TotalModelMatrixInternal, ref hits))
                             {
                                 hit = true;
                                 var lastHit = hits[hits.Count - 1];
@@ -570,7 +566,7 @@ namespace HelixToolkit.UWP
                     }
                     else
                     {
-                        return OnHitTest(context, TotalModelMatrixInternal, ref rayWS, ref hits);
+                        return OnHitTest(context, TotalModelMatrixInternal, ref hits);
                     }
                 }
                 else
@@ -582,11 +578,11 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Determines whether this instance [can hit test] the specified context.
             /// </summary>
-            /// <param name="context">The context.</param>
+            /// <param name="context">The hit context.</param>
             /// <returns>
             ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
             /// </returns>
-            protected override bool CanHitTest(IRenderMatrices context)
+            protected override bool CanHitTest(HitTestContext context)
             {
                 return base.CanHitTest(context) && GeometryValid;
             }
