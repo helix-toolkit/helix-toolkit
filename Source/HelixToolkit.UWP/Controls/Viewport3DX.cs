@@ -577,10 +577,13 @@ namespace HelixToolkit.UWP
             {
                 return false;
             }
-
-            var ray = this.UnProject(p);
+            var vp = p.ToVector2();
+            if (!this.UnProject(vp, out var ray))
+            {
+                return false;
+            }
             var hits = new List<HitTestResult>();
-            if (viewCube.HitTest(RenderContext, ray, ref hits))
+            if (viewCube.HitTest(new HitTestContext(RenderContext, ref ray, ref vp), ref hits))
             {
                 var normal = hits[0].NormalAtHit;
                 if (Vector3.Cross(normal, ModelUpDirection).LengthSquared() < 1e-5)

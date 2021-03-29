@@ -188,7 +188,8 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         private bool ViewCubeHitTest(ref Ray ray, ref Vector2 position)
         {
-            if (ViewCube.HitTest(RenderContext, ray, ref hits))
+            var hitContext = new HitTestContext(RenderContext, ray, position);
+            if (ViewCube.HitTest(hitContext, ref hits))
             {
                 ViewCube.RaiseMouseDownEvent(this, position, hits[0]);
                 var normal = hits[0].NormalAtHit;

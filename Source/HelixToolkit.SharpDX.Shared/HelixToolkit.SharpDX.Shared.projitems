@@ -94,6 +94,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Color4Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataStreamExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\IRenderMetricesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IViewportExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PointerSizeHelpers.cs" />
@@ -350,6 +351,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ElementsBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\FastList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\FrameStatistics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\ArevaloRectanglePacker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\ImagePacker.cs" />

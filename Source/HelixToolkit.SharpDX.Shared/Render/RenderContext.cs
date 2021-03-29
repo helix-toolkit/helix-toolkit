@@ -41,6 +41,16 @@ namespace HelixToolkit.UWP
         /// The bounding frustum.
         /// </value>
         public BoundingFrustum BoundingFrustum;
+        /// <summary>
+        /// Gets the camera parameters.
+        /// </summary>
+        /// <value>
+        /// The camera parameters.
+        /// </value>
+        public FrustumCameraParams CameraParams
+        {
+            private set; get;
+        }
 
         private CameraCore camera;
 
@@ -54,8 +64,17 @@ namespace HelixToolkit.UWP
         public Matrix ViewMatrix
         {
             set; get;
-        }
-
+        } = Matrix.Identity;
+        /// <summary>
+        /// Gets or sets the inversed view matrix.
+        /// </summary>
+        /// <value>
+        /// The inversed view matrix.
+        /// </value>
+        public Matrix ViewMatrixInv
+        {
+            set; get;
+        } = Matrix.Identity;
         /// <summary>
         /// Gets or sets the projection matrix.
         /// </summary>
@@ -65,7 +84,7 @@ namespace HelixToolkit.UWP
         public Matrix ProjectionMatrix
         {
             set; get;
-        }
+        } = Matrix.Identity;
 
         /// <summary>
         /// Gets the viewport matrix.
@@ -133,31 +152,28 @@ namespace HelixToolkit.UWP
         /// </value>
         public CameraCore Camera
         {
-            get { return this.camera; }
+            get
+            {
+                return this.camera;
+            }
             set
             {
-                this.camera = value;
-                ViewMatrix = this.camera.CreateViewMatrix();
-                var aspectRatio = this.ActualWidth / this.ActualHeight;
-                ProjectionMatrix = this.camera.CreateProjectionMatrix((float)aspectRatio);
-                if (this.camera is ProjectionCameraCore c)
+                if (this.camera == value)
                 {
-                    // viewport: W,H,1/W,1/H
-                    globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 1f/(float)ActualWidth, 1f/(float)ActualHeight);
-                    var ar = globalTransform.Viewport.X / globalTransform.Viewport.Y;
-
-                    var fov = ((c is PerspectiveCameraCore pc) ? pc.FieldOfView : 90f) * Math.PI / 180;
-
-                    var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
-                    var zf = c.FarPlaneDistance + 0.0;
-                    // frustum: FOV,AR,N,F
-                    globalTransform.Frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
-                    if (EnableBoundingFrustum)
-                        BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
-                    globalTransform.EyePos = this.camera.Position;
+                    needsUpdate = true;
+                    Update();
+                    return;
                 }
-                IsPerspective = this.camera is PerspectiveCameraCore;
-                globalTransform.IsPerspective = IsPerspective;
+                if (this.camera != null)
+                {
+                    this.camera.PropertyChanged -= Camera_PropertyChanged;
+                }
+                this.camera = value;
+                if (this.camera != null)
+                {
+                    this.camera.PropertyChanged += Camera_PropertyChanged;
+                }
+                Update();
             }
         }
 
@@ -362,6 +378,8 @@ namespace HelixToolkit.UWP
         ///   <c>true</c> if this instance is shadow map enabled; otherwise, <c>false</c>.
         /// </value>
         public bool IsShadowMapEnabled => RenderHost.IsShadowMapEnabled;
+
+        private volatile bool needsUpdate = true;
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
@@ -376,6 +394,33 @@ namespace HelixToolkit.UWP
             OITWeightPower = 3;
             OITWeightDepthSlope = 1;
             OITWeightMode = OITWeightMode.Linear2;
+        }
+
+        private void Camera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            needsUpdate = true;
+        }
+
+        public void Update()
+        {
+            if (camera == null || !needsUpdate)
+            {
+                return;
+            }
+            needsUpdate = false;
+            ViewMatrix = this.camera.CreateViewMatrix();
+            ViewMatrixInv = ViewMatrix.PsudoInvert();
+            var aspectRatio = this.ActualWidth / this.ActualHeight;
+            ProjectionMatrix = this.camera.CreateProjectionMatrix((float)aspectRatio);
+            // viewport: W,H,1/W,1/H
+            globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 1f / (float)ActualWidth, 1f / (float)ActualHeight);
+            CameraParams = this.camera.CreateCameraParams(aspectRatio);
+            BoundingFrustum = BoundingFrustum.FromCamera(CameraParams);
+            // frustum: FOV,AR,N,F
+            globalTransform.Frustum = new Vector4(CameraParams.FOV, CameraParams.AspectRatio, CameraParams.ZNear, CameraParams.ZFar);
+            globalTransform.EyePos = CameraParams.Position;
+            IsPerspective = CameraParams.FOV < (Math.PI / 2 - 1e-4);
+            globalTransform.IsPerspective = IsPerspective;
         }
 
         /// <summary>

@@ -23,14 +23,14 @@ namespace Workitem10048
     {
         private Color? initialColor = null;
 
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)
         {
             if (initialColor == null)
             {
                 initialColor = this.Color;
             }
 
-            var result = base.HitTest(context, rayWS, ref hits); // this.HitTest2D(rayWS, ref hits);
+            var result = base.HitTest(context, ref hits); // this.HitTest2D(rayWS, ref hits);
             var pressedMouseButtons = Viewport3DX.GetPressedMouseButtons();
 
             if (pressedMouseButtons == 0 || pressedMouseButtons.HasFlag(MouseButtons.Left))

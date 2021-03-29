@@ -382,10 +382,10 @@ namespace CrossSectionDemo
                 this.edgeHandle = manipulator.edgeHandle;
                 this.cornerHandle = manipulator.cornerHandle;
             }
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 //Set hit distance to 0 so event manipulator is inside the model, hit test still works
-                if (base.OnHitTest(context, totalModelMatrix, ref ray, ref hits))
+                if (base.OnHitTest(context, totalModelMatrix, ref hits))
                 {
                     if (hits.Count > 0)
                     {

@@ -105,31 +105,21 @@ namespace HelixToolkit.UWP
                     return false;
                 }
             }
-            /// <summary>
-            /// Called when [check geometry].
-            /// </summary>
-            /// <param name="geometry">The geometry.</param>
-            /// <returns></returns>
+
             protected override bool OnCheckGeometry(Geometry3D geometry)
             {
                 return base.OnCheckGeometry(geometry) && geometry is LineGeometry3D;
             }
-            /// <summary>
-            /// Called when [hit test].
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="totalModelMatrix">The total model matrix.</param>
-            /// <param name="ray">The ray.</param>
-            /// <param name="hits">The hits.</param>
-            /// <returns></returns>
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                return (Geometry as LineGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, (float)HitTestThickness);
+                return (Geometry as LineGeometry3D).HitTest(context, totalModelMatrix, ref hits, this.WrapperSource, (float)HitTestThickness);
             }
 
-            protected override bool PreHitTestOnBounds(ref Ray ray)
+            protected override bool PreHitTestOnBounds(HitTestContext context)
             {
-                return BoundsSphereWithTransform.Intersects(ref ray);
+                var rayWS = context.RayWS;
+                return BoundsSphereWithTransform.Intersects(ref rayWS);
             }
         }
     }

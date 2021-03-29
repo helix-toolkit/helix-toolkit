@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
             return Positions != null && Positions.Count > 0 && Indices != null && Indices.Count > 0;
         }
 
-        public virtual bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitTestThickness)
+        public virtual bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits, object originalSource, float hitTestThickness)
         {
             if (Positions == null || Positions.Count == 0
                 || Indices == null || Indices.Count == 0)
@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP
 
             if(Octree != null) 
             {
-                return Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ref hits, hitTestThickness);
+                return Octree.HitTest(context, originalSource, this, modelMatrix, ref hits, hitTestThickness);
             }
             else
             {
@@ -64,18 +64,18 @@ namespace HelixToolkit.UWP
                 {
                     var t0 = Vector3.TransformCoordinate(line.P0, modelMatrix);
                     var t1 = Vector3.TransformCoordinate(line.P1, modelMatrix);
-                    var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc);
-                    var svpm = context.ScreenViewProjectionMatrix;
+                    var rayToLineDistance = LineBuilder.GetRayToLineDistance(context.RayWS, t0, t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc);
+                    var svpm = context.RenderMatrices.ScreenViewProjectionMatrix;
                     Vector3.TransformCoordinate(ref sp, ref svpm, out var sp3);
                     Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);
                     var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
-                    var dist = tv2.Length() / context.DpiScale;
+                    var dist = tv2.Length() / context.RenderMatrices.DpiScale;
                     if (dist < lastDist && dist <= hitTestThickness)
                     {
                         lastDist = dist;
                         result.PointHit = sp;
                         result.NormalAtHit = sp - tp; // not normalized to get length
-                        result.Distance = (rayWS.Position - sp).Length();
+                        result.Distance = (context.RayWS.Position - sp).Length();
                         result.RayToLineDistance = rayToLineDistance;
                         result.ModelHit = originalSource;
                         result.IsValid = true;

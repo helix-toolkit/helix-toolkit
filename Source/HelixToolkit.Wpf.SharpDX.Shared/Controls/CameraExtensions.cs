@@ -221,14 +221,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     string.Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", orthographicCamera.Width));
             }
 
-            if (camera is MatrixCamera matrixCamera)
-            {
-                sb.AppendLine("ProjectionMatrix:");
-                sb.AppendLine(matrixCamera.ProjectionMatrix.ToString(CultureInfo.InvariantCulture));
-                sb.AppendLine("ViewMatrix:");
-                sb.AppendLine(matrixCamera.ViewMatrix.ToString(CultureInfo.InvariantCulture));
-            }
-
             return sb.ToString().Trim();
         }
 

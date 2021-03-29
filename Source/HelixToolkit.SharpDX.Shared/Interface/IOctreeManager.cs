@@ -91,9 +91,8 @@ namespace HelixToolkit.UWP
         /// <param name="context"></param>
         /// <param name="model"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        bool HitTest(IRenderMatrices context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
+        bool HitTest(HitTestContext context, object model, Matrix modelMatrix, ref List<HitTestResult> hits);
     }
 }

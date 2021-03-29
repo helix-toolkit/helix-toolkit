@@ -690,14 +690,13 @@ namespace HelixToolkit.UWP
             /// Hits the test.
             /// </summary>
             /// <param name="context">The context.</param>
-            /// <param name="ray">The ray.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
-            public virtual bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+            public virtual bool HitTest(HitTestContext context, ref List<HitTestResult> hits)
             {
                 if (CanHitTest(context))
                 {
-                    return OnHitTest(context, TotalModelMatrixInternal, ref ray, ref hits);
+                    return OnHitTest(context, TotalModelMatrixInternal, ref hits);
                 }
                 else
                 {
@@ -712,7 +711,7 @@ namespace HelixToolkit.UWP
             /// <returns>
             ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
             /// </returns>
-            protected virtual bool CanHitTest(IRenderMatrices context)
+            protected virtual bool CanHitTest(HitTestContext context)
             {
                 return AlwaysHittable || (IsHitTestVisible && IsRenderable);
             }
@@ -725,7 +724,7 @@ namespace HelixToolkit.UWP
             /// <param name="ray">The ray.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
-            protected abstract bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
+            protected abstract bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits);
 
             #endregion Hit Test
 
@@ -1049,7 +1048,7 @@ namespace HelixToolkit.UWP
         {
             public static readonly NullSceneNode NullNode = new NullSceneNode();
 
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 return false;
             }

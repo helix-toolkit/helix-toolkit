@@ -36,7 +36,7 @@ namespace HelixToolkit.SharpDX.Core.Tests
             var ray = new Ray(new Vector3(2f, 0f, 0f), new Vector3(-1, 0, 0));
             var hits = new List<HitTestResult>();
             var sceneNode = GetNode();
-            sceneNode.HitTest(viewport.RenderContext, ray, ref hits);
+            sceneNode.HitTest(new HitTestContext(viewport.RenderContext, ref ray), ref hits);
             Assert.AreEqual(1, hits.Count);
             Assert.AreEqual(new Vector3(0.5f, 0, 0), hits[0].PointHit);
         }

@@ -67,11 +67,6 @@
         xmlns:local="using:HelixToolkit.UWP"
         x:Key="orthographicCamera" />
 
-    <local:MatrixCamera
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:local="using:HelixToolkit.UWP"
-        x:Key="matrixCamera" />
-
     <local:PhongMaterial
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:local="using:HelixToolkit.UWP"

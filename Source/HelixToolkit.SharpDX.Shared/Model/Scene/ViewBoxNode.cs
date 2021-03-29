@@ -297,14 +297,14 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            protected override bool CanHitTest(IRenderMatrices context)
+            protected override bool CanHitTest(HitTestContext context)
             {
                 return context != null;
             }
 
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                if (base.OnHitTest(context, totalModelMatrix, ref ray, ref hits))
+                if (base.OnHitTest(context, totalModelMatrix, ref hits))
                 {
                     Debug.WriteLine("View box hit.");
                     var hit = hits[0];
@@ -314,7 +314,7 @@ namespace HelixToolkit.UWP
                     {
                         normal = -hit.NormalAtHit * inv;
                         //Fix the normal if returned normal is reversed
-                        if(Vector3.Dot(normal, context.Camera.LookDirection) < 0)
+                        if(Vector3.Dot(normal, context.RenderMatrices.CameraParams.LookAtDir) < 0)
                         {
                             normal *= -1;
                         }

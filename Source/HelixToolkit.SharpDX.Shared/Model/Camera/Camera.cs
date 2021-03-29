@@ -81,6 +81,8 @@ namespace HelixToolkit.UWP
 
             public abstract Matrix CreateViewMatrix();
 
+            public abstract FrustumCameraParams CreateCameraParams(float aspectRatio);
+            public abstract FrustumCameraParams CreateCameraParams(float aspectRatio, float nearPlane, float farPlane);
             public override string ToString()
             {
                 var target = Position + LookDirection;
@@ -201,23 +203,6 @@ namespace HelixToolkit.UWP
     #endif
         }
 
-        public class MatrixCameraCore : CameraCore
-        {
-            public Matrix ProjectionMatrix { set; get; }
-            public Matrix ViewMatrix { set; get; }
-            public override Matrix CreateProjectionMatrix(float aspectRatio) { return ProjectionMatrix; }
-            public override Matrix CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane)
-            {
-                return ProjectionMatrix;
-            }
-            public override Matrix CreateViewMatrix() { return ViewMatrix; }
-
-            public override string ToString()
-            {
-                return $"ProjMatrix: {ProjectionMatrix.ToString()} \nViewMatrix: {ViewMatrix.ToString()}";
-            }
-        }
-
         public abstract class ProjectionCameraCore : CameraCore
         {
             private float farPlane = 100;
@@ -286,6 +271,25 @@ namespace HelixToolkit.UWP
                 {
                     return width;
                 }
+            }
+
+            public override FrustumCameraParams CreateCameraParams(float aspectRatio)
+            {
+                return CreateCameraParams(aspectRatio, NearPlaneDistance, FarPlaneDistance);
+            }
+
+            public override FrustumCameraParams CreateCameraParams(float aspectRatio, float nearPlane, float farPlane)
+            {
+                return new FrustumCameraParams()
+                {
+                    AspectRatio = aspectRatio,
+                    FOV = (float)Math.PI / 2,
+                    LookAtDir = LookDirection,
+                    UpDir = UpDirection,
+                    Position = Position,
+                    ZNear = nearPlane,
+                    ZFar = farPlane
+                };
             }
 
             public override Matrix CreateProjectionMatrix(float aspectRatio)
@@ -400,6 +404,23 @@ namespace HelixToolkit.UWP
                 return projM;
             }
 
+            public override FrustumCameraParams CreateCameraParams(float aspectRatio)
+            {
+                return CreateCameraParams(aspectRatio, NearPlaneDistance, FarPlaneDistance);
+            }
+            public override FrustumCameraParams CreateCameraParams(float aspectRatio, float nearPlane, float farPlane)
+            {
+                return new FrustumCameraParams()
+                {
+                    AspectRatio = aspectRatio,
+                    FOV = FieldOfView / 180f * (float)(Math.PI),
+                    LookAtDir = LookDirection,
+                    UpDir = UpDirection,
+                    Position = Position,
+                    ZNear = nearPlane,
+                    ZFar = farPlane
+                };
+            }
             public override string ToString()
             {
                 return base.ToString() + "\n" + string.Format(CultureInfo.InvariantCulture, "FieldOfView:\t{0:0.#}°", FieldOfView);
