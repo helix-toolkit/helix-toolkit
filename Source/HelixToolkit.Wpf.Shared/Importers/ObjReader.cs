@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Xml;
+
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -167,6 +169,25 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the texture coordinates.
         /// </summary>
         private IList<Point> TextureCoordinates { get; set; }
+
+        /// <summary>
+        /// Reads the model and any associated materials from streams
+        /// </summary>
+        /// <param name="objStream">A model stream from the obj file</param>
+        /// <param name="mtlStreams">Array of Material streams referenced in the obj file</param>
+        /// <returns></returns>
+        public Model3DGroup Read(Stream objStream, Stream[] mtlStreams)
+        {
+            foreach (var mtlStream in mtlStreams)
+            {
+                using (var mtlStreamReader = new StreamReader(mtlStream))
+                {
+                    ReadMaterial(mtlStreamReader);
+                }
+            }
+
+            return Read(objStream);
+        }
 
         /// <summary>
         /// Reads the model from the specified path.
@@ -752,129 +773,138 @@ namespace HelixToolkit.Wpf
 
             using (var materialReader = new StreamReader(path))
             {
-                MaterialDefinition currentMaterial = null;
+                ReadMaterial(materialReader);
+            }
+        }
 
-                while (!materialReader.EndOfStream)
+        /// <summary>
+        /// Loads the material library from a streamreader
+        /// </summary>
+        /// <param name="materialReader"></param>
+        private void ReadMaterial(StreamReader materialReader)
+        {
+            MaterialDefinition currentMaterial = null;
+
+            while (!materialReader.EndOfStream)
+            {
+                var line = materialReader.ReadLine();
+                if (line == null)
                 {
-                    var line = materialReader.ReadLine();
-                    if (line == null)
-                    {
+                    break;
+                }
+
+                line = line.Trim();
+
+                if (line.StartsWith("#") || line.Length == 0)
+                {
+                    continue;
+                }
+
+                string keyword, value;
+                SplitLine(line, out keyword, out value);
+
+                switch (keyword.ToLower())
+                {
+                    case "newmtl":
+                        if (value != null)
+                        {
+                            if (this.Materials.ContainsKey(value))
+                            {
+                                currentMaterial = null;
+                            }
+                            else
+                            {
+                                currentMaterial = new MaterialDefinition(value);
+                                this.Materials.Add(value, currentMaterial);
+                            }
+                        }
+
                         break;
-                    }
+                    case "ka":
+                        if (currentMaterial != null && value != null)
+                        {
+                            currentMaterial.Ambient = ColorParse(value);
+                        }
 
-                    line = line.Trim();
+                        break;
+                    case "kd":
+                        if (currentMaterial != null && value != null)
+                        {
+                            currentMaterial.Diffuse = ColorParse(value);
+                        }
 
-                    if (line.StartsWith("#") || line.Length == 0)
-                    {
-                        continue;
-                    }
+                        break;
+                    case "ks":
+                        if (currentMaterial != null && value != null)
+                        {
+                            currentMaterial.Specular = ColorParse(value);
+                        }
 
-                    string keyword, value;
-                    SplitLine(line, out keyword, out value);
+                        break;
+                    case "ns":
+                        if (currentMaterial != null && value != null)
+                        {
+                            currentMaterial.SpecularCoefficient = DoubleParse(value);
+                        }
 
-                    switch (keyword.ToLower())
-                    {
-                        case "newmtl":
-                            if (value != null)
-                            {
-                                if (this.Materials.ContainsKey(value))
-                                {
-                                    currentMaterial = null;
-                                }
-                                else
-                                {
-                                    currentMaterial = new MaterialDefinition(value);
-                                    this.Materials.Add(value, currentMaterial);
-                                }
-                            }
+                        break;
+                    case "d":
+                        if (currentMaterial != null && value != null)
+                        {
+                            currentMaterial.Dissolved = DoubleParse(value);
+                        }
 
-                            break;
-                        case "ka":
-                            if (currentMaterial != null && value != null)
-                            {
-                                currentMaterial.Ambient = ColorParse(value);
-                            }
+                        break;
+                    case "tr":
+                        if (!this.SkipTransparencyValues && currentMaterial != null && value != null)
+                        {
+                            currentMaterial.Dissolved = DoubleParse(value);
+                        }
 
-                            break;
-                        case "kd":
-                            if (currentMaterial != null && value != null)
-                            {
-                                currentMaterial.Diffuse = ColorParse(value);
-                            }
+                        break;
+                    case "illum":
+                        if (currentMaterial != null && value != null)
+                        {
+                            currentMaterial.Illumination = int.Parse(value);
+                        }
 
-                            break;
-                        case "ks":
-                            if (currentMaterial != null && value != null)
-                            {
-                                currentMaterial.Specular = ColorParse(value);
-                            }
+                        break;
+                    case "map_ka":
+                        if (currentMaterial != null)
+                        {
+                            currentMaterial.AmbientMap = value;
+                        }
 
-                            break;
-                        case "ns":
-                            if (currentMaterial != null && value != null)
-                            {
-                                currentMaterial.SpecularCoefficient = DoubleParse(value);
-                            }
+                        break;
+                    case "map_kd":
+                        if (currentMaterial != null)
+                        {
+                            currentMaterial.DiffuseMap = value;
+                        }
 
-                            break;
-                        case "d":
-                            if (currentMaterial != null && value != null)
-                            {
-                                currentMaterial.Dissolved = DoubleParse(value);
-                            }
+                        break;
+                    case "map_ks":
+                        if (currentMaterial != null)
+                        {
+                            currentMaterial.SpecularMap = value;
+                        }
 
-                            break;
-                        case "tr":
-                            if (!this.SkipTransparencyValues && currentMaterial != null && value != null)
-                            {
-                                currentMaterial.Dissolved = DoubleParse(value);
-                            }
+                        break;
+                    case "map_d":
+                        if (currentMaterial != null)
+                        {
+                            currentMaterial.AlphaMap = value;
+                        }
 
-                            break;
-                        case "illum":
-                            if (currentMaterial != null && value != null)
-                            {
-                                currentMaterial.Illumination = int.Parse(value);
-                            }
+                        break;
+                    case "map_bump":
+                    case "bump":
+                        if (currentMaterial != null)
+                        {
+                            currentMaterial.BumpMap = value;
+                        }
 
-                            break;
-                        case "map_ka":
-                            if (currentMaterial != null)
-                            {
-                                currentMaterial.AmbientMap = value;
-                            }
-
-                            break;
-                        case "map_kd":
-                            if (currentMaterial != null)
-                            {
-                                currentMaterial.DiffuseMap = value;
-                            }
-
-                            break;
-                        case "map_ks":
-                            if (currentMaterial != null)
-                            {
-                                currentMaterial.SpecularMap = value;
-                            }
-
-                            break;
-                        case "map_d":
-                            if (currentMaterial != null)
-                            {
-                                currentMaterial.AlphaMap = value;
-                            }
-
-                            break;
-                        case "map_bump":
-                        case "bump":
-                            if (currentMaterial != null)
-                            {
-                                currentMaterial.BumpMap = value;
-                            }
-
-                            break;
-                    }
+                        break;
                 }
             }
         }
@@ -1180,8 +1210,8 @@ namespace HelixToolkit.Wpf
                 {
                     path = path.Substring(1);
                 }
-    
-                return Path.GetFullPath(Path.Combine(basePath, path));
+
+                return !string.IsNullOrWhiteSpace(basePath) ? Path.GetFullPath(Path.Combine(basePath, path)) : "";
             }
         }
     }
