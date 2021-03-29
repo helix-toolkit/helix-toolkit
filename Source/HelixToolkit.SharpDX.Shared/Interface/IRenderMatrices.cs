@@ -129,14 +129,18 @@ namespace HelixToolkit.UWP
             get;
         }
         /// <summary>
-        /// Gets the main camera.
+        /// Gets the bounding frustum.
         /// </summary>
         /// <value>
-        /// The camera.
+        /// The bounding frustum.
         /// </value>
-        CameraCore Camera
+        FrustumCameraParams CameraParams
         {
             get;
         }
+        /// <summary>
+        /// Updates all the internal metrices.
+        /// </summary>
+        void Update();
     }
 }

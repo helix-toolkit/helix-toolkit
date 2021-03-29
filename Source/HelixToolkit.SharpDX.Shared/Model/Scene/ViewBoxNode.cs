@@ -314,7 +314,7 @@ namespace HelixToolkit.UWP
                     {
                         normal = -hit.NormalAtHit * inv;
                         //Fix the normal if returned normal is reversed
-                        if(Vector3.Dot(normal, context.RenderMatrices.Camera.LookDirection) < 0)
+                        if(Vector3.Dot(normal, context.RenderMatrices.CameraParams.LookAtDir) < 0)
                         {
                             normal *= -1;
                         }

@@ -82,6 +82,16 @@ namespace HelixToolkit.UWP
 
                 public float DpiScale => RenderHost.DpiScale;
 
+                public float NearPlane
+                {
+                    set; get;
+                }
+
+                public float FarPlane
+                {
+                    set; get;
+                }
+
                 public IRenderHost RenderHost
                 {
                     get;
@@ -89,14 +99,20 @@ namespace HelixToolkit.UWP
 
                 public CameraCore Camera => RenderHost.RenderContext.Camera;
 
+                public FrustumCameraParams CameraParams
+                {
+                    private set; get;
+                }
+
+                public void Update()
+                {
+                    ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
+                    CameraParams = Camera.CreateCameraParams(ActualWidth / ActualHeight, NearPlane, FarPlane);
+                }
+
                 public ScreenSpacedContext(IRenderHost host)
                 {
                     RenderHost = host;
-                }
-
-                public void UpdateScreenViewProjectionMatrix()
-                {
-                    ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                 }
             }
             #region Properties
@@ -298,6 +314,8 @@ namespace HelixToolkit.UWP
                 var newRay = new Ray();
                 var hitSP = context.HitPointSP;
                 bool preHit = false;
+                screenSpacedContext.NearPlane = NearPlane;
+                screenSpacedContext.FarPlane = FarPlane;
                 switch (Mode)
                 {
                     case ScreenSpacedMode.RelativeScreenSpaced:
@@ -311,6 +329,7 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
+                screenSpacedContext.Update();
                 screenSpaceHits.Clear();
                 var spHitContext = new HitTestContext(screenSpacedContext, newRay, hitSP);
                 if (base.OnHitTest(spHitContext, totalModelMatrix, ref screenSpaceHits))
@@ -358,8 +377,7 @@ namespace HelixToolkit.UWP
                 screenSpacedContext.ViewMatrix = viewMatrix;
                 screenSpacedContext.ViewMatrixInv = viewMatrix.PsudoInvert();
                 screenSpacedContext.ProjectionMatrix = projMatrix;
-                screenSpacedContext.ActualWidth = screenSpacedContext.ActualHeight = viewportSize;
-                screenSpacedContext.UpdateScreenViewProjectionMatrix();
+                screenSpacedContext.ActualWidth = screenSpacedContext.ActualHeight = viewportSize;                
                 return true;
             }
 
@@ -380,7 +398,6 @@ namespace HelixToolkit.UWP
                         context.RenderMatrices.ActualWidth, context.RenderMatrices.ActualHeight, screenSpaceCore.IsPerspective);
                     screenSpacedContext.ActualWidth = context.RenderMatrices.ActualWidth;
                     screenSpacedContext.ActualHeight = context.RenderMatrices.ActualHeight;
-                    screenSpacedContext.UpdateScreenViewProjectionMatrix();
                     return true;                
                 }
                 else
@@ -409,7 +426,6 @@ namespace HelixToolkit.UWP
                     screenSpacedContext.ViewMatrix = viewMatrix;
                     screenSpacedContext.ViewMatrixInv = viewMatrix.PsudoInvert();
                     screenSpacedContext.ProjectionMatrix = projMatrix;
-                    screenSpacedContext.UpdateScreenViewProjectionMatrix();
                     return true;
                 }
             }

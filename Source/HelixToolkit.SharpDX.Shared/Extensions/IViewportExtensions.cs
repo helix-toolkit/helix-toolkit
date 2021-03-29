@@ -170,7 +170,7 @@ namespace HelixToolkit.UWP
         /// <param name="point2d">The point2d.</param>
         /// <param name="ray">The ray.</param>
         /// <returns></returns>
-        public static bool UnProject(this IViewport3DX viewport, Vector2 point2d, out Ray ray)//, out Vector3 pointNear, out Vector3 pointFar)
+        public static bool UnProject(this IViewport3DX viewport, Vector2 point2d, out Ray ray)
         {
             if (viewport.RenderHost != null)
             {

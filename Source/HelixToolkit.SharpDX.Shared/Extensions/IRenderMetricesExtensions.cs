@@ -25,9 +25,10 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static bool UnProject(this IRenderMatrices renderMatrices, Vector2 point2d, out Ray ray)//, out Vector3 pointNear, out Vector3 pointFar)
         {
+            renderMatrices.Update();
             var px = point2d.X;
             var py = point2d.Y;
-
+            
             var viewInv = renderMatrices.ViewMatrixInv;
             var projMatrix = renderMatrices.ProjectionMatrix;
 
@@ -53,19 +54,13 @@ namespace HelixToolkit.UWP
             }
             Vector3 r = zf - zn;
             r.Normalize();
-            if (renderMatrices.Camera is ProjectionCameraCore camera)
-            {                
-                ray = new Ray(zn + r * camera.NearPlaneDistance, r);
-            }
-            else
-            {
-                ray = new Ray(zn, r);
-            }
+            ray = new Ray(zn + r * renderMatrices.CameraParams.ZNear, r);
             return true;
         }
 
         public static Vector2 Project(this IRenderMatrices renderMatrices, Vector3 point)
         {
+            renderMatrices.Update();
             var matrix = renderMatrices.ScreenViewProjectionMatrix;
             var pointTransformed = Vector3.TransformCoordinate(point, matrix);
             var pt = new Vector2(pointTransformed.X, pointTransformed.Y) / renderMatrices.DpiScale;

@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP
     public sealed class HitTestContext
     {
         /// <summary>
-        /// Gets or sets the render matrices.
+        /// Gets or sets the render matrices. This is only needed for line/point hit test.
         /// </summary>
         /// <value>
         /// The render matrices.
