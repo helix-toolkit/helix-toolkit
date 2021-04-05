@@ -70,8 +70,8 @@ namespace HelixToolkit.UWP
                 if(position == value) { return; }
                 position = value;
                 ClearOctree();
-                UpdateBounds();
                 RaisePropertyChanged();
+                UpdateBounds();             
             }
         }
 
