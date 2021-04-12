@@ -32,10 +32,22 @@ namespace LineShadingDemo
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
         public double LineThickness { get; set; }
+        public double LineThicknessMaximum => FixedSize ? 10 : 0.05;
+        public double LineThicknessTickFrequency => FixedSize ? 1 : 0.005;
         public double LineSmoothness { get; set; }
         public bool LinesEnabled { get; set; }
         public bool GridEnabled { get; set; }
-                
+
+        public bool FixedSize
+        {
+            get => fixedSize;
+            set
+            {
+                fixedSize = value;
+                LineThickness = FixedSize ? 2 : 0.005;
+            }
+        }
+
         public PhongMaterial Material1 { get; private set; }
         public PhongMaterial Material2 { get; private set; }
         public PhongMaterial Material3 { get; private set; }        
@@ -54,6 +66,8 @@ namespace LineShadingDemo
         public Color AmbientLightColor { get; private set; }
 
         private bool enableArrowHeadTail = false;
+        bool fixedSize = true;
+
         public bool EnableArrowHeadTail
         {
             set

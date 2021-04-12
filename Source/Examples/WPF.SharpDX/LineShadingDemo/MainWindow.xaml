@@ -13,14 +13,9 @@
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <!--<RowDefinition Height="Auto"/>-->
-        </Grid.RowDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
-            Grid.Row="1"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
@@ -61,6 +56,7 @@
 
             <hx:LineGeometryModel3D
                 x:Name="lines1"
+                FixedSize="{Binding FixedSize}"
                 Geometry="{Binding Lines}"
                 IsRendering="{Binding LinesEnabled}"
                 Smoothness="{Binding LineSmoothness}"
@@ -69,6 +65,7 @@
                 Color="Blue" />
             <hx:LineGeometryModel3D
                 x:Name="lines2"
+                FixedSize="{Binding FixedSize}"
                 Geometry="{Binding Lines}"
                 IsRendering="{Binding LinesEnabled}"
                 Smoothness="{Binding LineSmoothness}"
@@ -77,6 +74,7 @@
                 Color="Yellow" />
             <hx:LineGeometryModel3D
                 x:Name="lines3"
+                FixedSize="{Binding FixedSize}"
                 Geometry="{Binding Lines}"
                 IsRendering="{Binding LinesEnabled}"
                 Smoothness="{Binding LineSmoothness}"
@@ -95,7 +93,7 @@
                 Material="{Binding LineMaterial}"
                 Transform="{Binding Model4Transform}" />
         </hx:Viewport3DX>
-        <StackPanel Grid.Row="1">
+        <StackPanel>
             <Expander
                 x:Name="linesPanel"
                 Width="200"
@@ -115,24 +113,33 @@
                     <CheckBox Margin="3" IsChecked="{Binding LinesEnabled}">
                         Enable Lines
                     </CheckBox>
-                    <CheckBox Margin="3" IsChecked="{Binding ElementName=grid, Path=FixedSize}">FixedSize</CheckBox>
-                    <TextBlock Grid.Row="2" Margin="3">Line Thickness</TextBlock>
-                    <Slider
-                        Margin="3"
-                        Maximum="10"
-                        Minimum="0"
-                        Value="{Binding LineThickness}" />
-                    <TextBlock Grid.Row="4" Margin="3">Line Smoothness</TextBlock>
-                    <Slider
-                        Margin="3"
-                        Maximum="20"
-                        Minimum="0"
-                        Value="{Binding LineSmoothness}" />
+                    <CheckBox Margin="3" IsChecked="{Binding FixedSize}">Fixed Size</CheckBox>
+                    <TextBlock Margin="3">Line Thickness</TextBlock>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Right" Margin="5,0,5,0" VerticalAlignment="Center"
+                                   Text="{Binding ElementName=lineThicknessSlider, Path=Value}"/>
+                        <Slider x:Name="lineThicknessSlider"
+                            Margin="3" IsSnapToTickEnabled="True"
+                            TickFrequency="{Binding LineThicknessTickFrequency}"
+                            Maximum="{Binding LineThicknessMaximum}"
+                            Minimum="0"
+                            Value="{Binding LineThickness}" />
+                    </DockPanel>
+                    <TextBlock Margin="3">Line Smoothness</TextBlock>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Right" Margin="5,0,5,0" VerticalAlignment="Center"
+                                   Text="{Binding ElementName=lineSmoothnessSlider, Path=Value}"/>
+                        <Slider x:Name="lineSmoothnessSlider"
+                            Margin="3" IsSnapToTickEnabled="True"
+                            Maximum="20"
+                            Minimum="0"
+                            Value="{Binding LineSmoothness}" />
+                    </DockPanel>
                     <CheckBox IsChecked="{Binding EnableArrowHeadTail}">Arrow Head and Tail</CheckBox>
                 </StackPanel>
             </Expander>
         </StackPanel>
-        <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
+        <StatusBar VerticalAlignment="Bottom">
             <StatusBar.Background>
                 <SolidColorBrush Opacity="0.5" Color="WhiteSmoke" />
             </StatusBar.Background>
