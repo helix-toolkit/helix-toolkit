@@ -526,7 +526,7 @@ namespace HelixToolkit.UWP
                 {
                     return true;
                 }
-                return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref BoundManager.BoundsWithTransform, ref BoundManager.BoundsSphereWithTransform);
+                return BoundingFrustumExtensions.IsInOrIntersectFrustum(ref viewFrustum, ref BoundManager.BoundsWithTransform, ref BoundManager.BoundsSphereWithTransform);
             }
 
             /// <summary>
