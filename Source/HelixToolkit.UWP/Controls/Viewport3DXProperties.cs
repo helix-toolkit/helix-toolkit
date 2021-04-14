@@ -260,6 +260,24 @@ namespace HelixToolkit.UWP
                 "CoordinateSystemLabelZ", typeof(string), typeof(Viewport3DX), new PropertyMetadata("Z"));
 
         /// <summary>
+        /// The coordinate system color X property
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemAxisXColorProperty = DependencyProperty.Register(
+                "CoordinateSystemAxisXColor", typeof(Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Red));
+
+        /// <summary>
+        /// The coordinate system Color Y property
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemAxisYColorProperty = DependencyProperty.Register(
+                "CoordinateSystemAxisYColor", typeof(Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Green));
+
+        /// <summary>
+        /// The coordinate system Color Z property
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemAxisZColorProperty = DependencyProperty.Register(
+                "CoordinateSystemAxisZColor", typeof(Color), typeof(Viewport3DX), new PropertyMetadata(Colors.Blue));
+
+        /// <summary>
         /// The coordinate system vertical position property. Relative to viewport center.
         /// <para>Default: -0.8</para>
         /// </summary>
@@ -368,6 +386,63 @@ namespace HelixToolkit.UWP
             set
             {
                 this.SetValue(CoordinateSystemLabelZProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the coordinate system color X.
+        /// </summary>
+        /// <value>
+        /// The coordinate system color X.
+        /// </value>
+        public Color CoordinateSystemAxisXColor
+        {
+            get
+            {
+                return (Color)this.GetValue(CoordinateSystemAxisXColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(CoordinateSystemAxisXColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the coordinate system color Y.
+        /// </summary>
+        /// <value>
+        /// The coordinate system color T.
+        /// </value>
+        public Color CoordinateSystemAxisYColor
+        {
+            get
+            {
+                return (Color)this.GetValue(CoordinateSystemAxisYColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(CoordinateSystemAxisYColorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the coordinate system color Z.
+        /// </summary>
+        /// <value>
+        /// The coordinate system color Z.
+        /// </value>
+        public Color CoordinateSystemAxisZColor
+        {
+            get
+            {
+                return (Color)this.GetValue(CoordinateSystemAxisZColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(CoordinateSystemAxisZColorProperty, value);
             }
         }
 
