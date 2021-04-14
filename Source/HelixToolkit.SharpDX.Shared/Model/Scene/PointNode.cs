@@ -133,6 +133,18 @@ namespace HelixToolkit.UWP
                 return base.OnCheckGeometry(geometry) && geometry is PointGeometry3D;
             }
 
+            protected override bool PreHitTestOnBounds(HitTestContext context)
+            {
+                var center = BoundsSphereWithTransform.Center;
+                var centerSp = context.RenderMatrices.Project(center);
+                if (centerSp.X >= 0 && centerSp.Y >= 0 
+                    && (centerSp - context.HitPointSP).Length() <= hitTestThickness)
+                {
+                    return true;
+                }
+                return base.PreHitTestOnBounds(context);
+            }
+
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref hits, this.WrapperSource, (float)HitTestThickness);
