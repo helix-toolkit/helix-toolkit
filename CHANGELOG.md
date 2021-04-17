@@ -2,17 +2,25 @@
 All notable changes to this project will be documented in this file.
 
 ## Next Release
+### Added
+1. Adds coordinate system axis color dependency properties for Viewport3DX. (WPF.SharpDX/UWP)
+1. Support for loading .obj and .mtl from stream. (WPF)
 
 ### Improvement
 1. Avoid duplicated GPU resources getting destoried and re-created.  (WPF.SharpDX/UWP/Core) 
-2. Improves texture loading. Re-implemented `TextureModel` and provides `ITextureInfoLoader` interface to allow user defined texture repository.
-3. Auto caching `Stream` and `TextureModel` pair to avoid duplicated texture resources.
-4. `TextureModel` changes to be `Guid` based. `TextureModel` with same `Guid` will be treated as same texture.
+1. Improves texture loading. Re-implemented `TextureModel` and provides `ITextureInfoLoader` interface to allow user defined texture repository.(WPF.SharpDX/UWP/Core) 
+1. Auto caching `Stream` and `TextureModel` pair to avoid duplicated texture resources.(WPF.SharpDX/UWP/Core) 
+1. `TextureModel` changes to be `Guid` based. `TextureModel` with same `Guid` will be treated as same texture.(WPF.SharpDX/UWP/Core) 
+1. Aggregate hit test function parameters into single hit test context. (WPF.SharpDX/UWP/Core) 
+1. Move FXAA to the end of rendering, so FXAA applies onto screen spaced object. (WPF.SharpDX/UWP/Core)
+1. Add preliminary hit check with hit thickness for PointNode. (WPF.SharpDX/UWP/Core)
 
 ### Fixed
 1. Fixed viewport crash during display configuration change #1531. (WPF.SharpDX)
-2. Fix cursor is wrong after pressing multiple mouse button simultaneously (WPF.SharpDX/UWP) 
-3. Bugfix export without material (Assimp)
+1. Fixed cursor is wrong after pressing multiple mouse button simultaneously (WPF.SharpDX/UWP) 
+1. Bugfix export without material (Assimp)
+1. Fixed bounding box is not updated properly. #1555 (WPF.SharpDX/UWP/Core) 
+1. Fixed Frustum test bug. (WPF.SharpDX/UWP/Core) 
 
 ## [2.15.0] - 2021-02-20
 ### Added
