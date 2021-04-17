@@ -78,7 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty OrthoWidthProperty =
             DependencyProperty.Register("OrthoWidth", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(100.0, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ShadowMapNode).Distance = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as ShadowMapNode).OrthoWidth = (float)(double)e.NewValue;
             }));
 
 
