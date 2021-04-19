@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 1. Bugfix export without material (Assimp)
 1. Fixed bounding box is not updated properly. #1555 (WPF.SharpDX/UWP/Core) 
 1. Fixed Frustum test bug. (WPF.SharpDX/UWP/Core) 
+1. Fix shadow map OrthoWidth dependency property is setting to wrong property in scene node.(WPF.SharpDX/UWP)
 
 ## [2.15.0] - 2021-02-20
 ### Added
