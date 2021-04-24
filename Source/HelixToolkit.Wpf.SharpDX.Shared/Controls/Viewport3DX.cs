@@ -1700,7 +1700,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var ray = this.UnProject(p.ToVector2());
             var hits = new List<HitTestResult>();
-            if(viewCube.HitTest(RenderContext, ray, ref hits))
+            var hitContext = new HitTestContext(RenderContext, ray, p.ToVector2());
+            if(viewCube.HitTest(hitContext, ref hits))
             {
                 viewCube.RaiseEvent(new MouseDown3DEventArgs(viewCube, this.currentHit, p, this, originalInputEventArgs));
                 var normal = hits[0].NormalAtHit;              

@@ -247,12 +247,12 @@ namespace HelixToolkit.UWP
             /// <param name="ray">The ray.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 bool hit = false;
                 foreach (var c in this.ItemsInternal)
                 {
-                    if (c.HitTest(context, ray, ref hits))
+                    if (c.HitTest(context, ref hits))
                     {
                         hit = true;
                     }

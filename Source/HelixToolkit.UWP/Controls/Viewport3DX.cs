@@ -233,6 +233,12 @@ namespace HelixToolkit.UWP
             BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.CoordinateSystemLabelYProperty, binding);
             binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemLabelZ") };
             BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.CoordinateSystemLabelZProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemAxisXColor") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.AxisXColorProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemAxisYColor") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.AxisYColorProperty, binding);
+            binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemAxisZColor") };
+            BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.AxisZColorProperty, binding);
             binding = new Binding() { Source = this, Path = new PropertyPath("CoordinateSystemSize") };
             BindingOperations.SetBinding(coordinateSystem, CoordinateSystemModel3D.SizeScaleProperty, binding);
         }
@@ -577,10 +583,13 @@ namespace HelixToolkit.UWP
             {
                 return false;
             }
-
-            var ray = this.UnProject(p);
+            var vp = p.ToVector2();
+            if (!this.UnProject(vp, out var ray))
+            {
+                return false;
+            }
             var hits = new List<HitTestResult>();
-            if (viewCube.HitTest(RenderContext, ray, ref hits))
+            if (viewCube.HitTest(new HitTestContext(RenderContext, ref ray, ref vp), ref hits))
             {
                 var normal = hits[0].NormalAtHit;
                 if (Vector3.Cross(normal, ModelUpDirection).LengthSquared() < 1e-5)

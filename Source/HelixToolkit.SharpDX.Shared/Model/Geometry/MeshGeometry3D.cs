@@ -182,7 +182,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public bool ReturnMultipleHitsOnHitTest { get; set; } = false;
 
-        public virtual bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
+        public virtual bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits, object originalSource)
         {
             if(Positions == null || Positions.Count == 0
                 || Indices == null || Indices.Count == 0)
@@ -192,7 +192,7 @@ namespace HelixToolkit.UWP
             bool isHit = false;
             if (Octree != null)
             {
-                isHit = Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ReturnMultipleHitsOnHitTest, ref hits);
+                isHit = Octree.HitTest(context, originalSource, this, modelMatrix, ReturnMultipleHitsOnHitTest, ref hits);
             }
             else
             {
@@ -206,7 +206,7 @@ namespace HelixToolkit.UWP
                     return false;
                 }
                 //transform ray into model coordinates
-                var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInvert)));
+                var rayModel = new Ray(Vector3.TransformCoordinate(context.RayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(context.RayWS.Direction, modelInvert)));
 
                 var b = this.Bound;
 
@@ -252,7 +252,7 @@ namespace HelixToolkit.UWP
                                 // transform hit-info to world space now:
                                 var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
                                 result.PointHit = pointWorld;
-                                result.Distance = (rayWS.Position - pointWorld).Length();
+                                result.Distance = (context.RayWS.Position - pointWorld).Length();
                                 var p0 = Vector3.TransformCoordinate(t.P0, modelMatrix);
                                 var p1 = Vector3.TransformCoordinate(t.P1, modelMatrix);
                                 var p2 = Vector3.TransformCoordinate(t.P2, modelMatrix);

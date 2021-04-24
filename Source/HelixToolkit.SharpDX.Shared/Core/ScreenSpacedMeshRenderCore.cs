@@ -96,6 +96,26 @@ namespace HelixToolkit.UWP
             /// The absolute position.
             /// </value>
             Vector3 AbsolutePosition3D { set; get; }
+            /// <summary>
+            /// Gets or sets the far plane for screen spaced camera rendering.
+            /// </summary>
+            /// <value>
+            /// The far plane.
+            /// </value>
+            float FarPlane
+            {
+                set; get;
+            }
+            /// <summary>
+            /// Gets or sets the near plane for screen spaced camera rendering.
+            /// </summary>
+            /// <value>
+            /// The near plane.
+            /// </value>
+            float NearPlane
+            {
+                set; get;
+            }
         }
         /// <summary>
         /// Used to change view matrix and projection matrix to screen spaced coordinate system.
@@ -238,8 +258,8 @@ namespace HelixToolkit.UWP
             /// </value>
             public float NearPlane
             {
-                get;
-            } = 0.001f;
+                set; get;
+            } = 1e-2f;
             /// <summary>
             /// Gets the far plane.
             /// </summary>
@@ -248,8 +268,8 @@ namespace HelixToolkit.UWP
             /// </value>
             public float FarPlane
             {
-                get;
-            } = 200f;
+                set; get;
+            } = 1e3f;
 
             public bool IsPerspective
             {
@@ -312,7 +332,7 @@ namespace HelixToolkit.UWP
                     case ScreenSpacedMode.AbsolutePosition3D:
                         if (IsPerspective)
                         {
-                            projectionMatrix = context.ProjectionMatrix;
+                            projectionMatrix = context.Camera.CreateProjectionMatrix(context.ActualWidth / context.ActualHeight, NearPlane, FarPlane);
                         }
                         else
                         {

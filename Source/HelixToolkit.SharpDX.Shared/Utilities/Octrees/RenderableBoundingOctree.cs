@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP
                 : base(ref bound, objList, parent, paramter, queueCache)
             { }
 
-            public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
+            public override bool HitTestCurrentNodeExcludeChild(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayModel,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
                 isIntersect = false;
@@ -61,12 +61,13 @@ namespace HelixToolkit.UWP
                 //var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
                 var bound = Bound;
                 var tempHits = new List<HitTestResult>();
+                var rayWS = context.RayWS;
                 if (rayWS.Intersects(ref bound))
                 {
                     isIntersect = true;
                     foreach (var r in this.Objects)
                     {
-                        isHit |= r.HitTest(context, rayWS, ref tempHits);
+                        isHit |= r.HitTest(context, ref tempHits);
                         hits.AddRange(tempHits);
                         tempHits.Clear();
                     }
@@ -276,7 +277,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+            public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
             {
                 throw new NotImplementedException();
             }

@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
     using System;
     using Windows.UI.Xaml.Input;
     using System.Collections.Generic;
-
+    using XamlWin = Windows.UI.Xaml.Window;
     /// <summary>
     /// An abstract base class for the mouse gesture handlers.
     /// </summary>
@@ -160,12 +160,9 @@ namespace HelixToolkit.UWP
             }
         }
 
-        /// <summary>
-        /// Gets or sets the old cursor.
-        /// </summary>
-        private CoreCursor OldCursor { get; set; }
-
         private List<HitTestResult> hits = new List<HitTestResult>();
+
+        public bool IsActive { private set; get; } = false;
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
@@ -180,6 +177,7 @@ namespace HelixToolkit.UWP
                 this.OnInertiaStarting(elapsed);
             }
             startTick = Stopwatch.GetTimestamp();
+            IsActive = false;
         }
 
         /// <summary>
@@ -234,6 +232,7 @@ namespace HelixToolkit.UWP
             inv = Camera.CreateLeftHandSystem ? -1 : 1;
             Controller.StopAnimations();
             Controller.PushCameraSetting();
+            IsActive = true;
         }
 
         /// <summary>
@@ -347,8 +346,9 @@ namespace HelixToolkit.UWP
         {
             this.Started(e.GetCurrentPoint(this.Controller.Viewport).Position);
 
-            this.OldCursor = Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor;
-            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new CoreCursor(this.GetCursor(), OldCursor.Id);
+            this.Controller.CursorHistory.Push(XamlWin.Current.CoreWindow.PointerCursor);
+            var id = XamlWin.Current.CoreWindow.PointerCursor != null ? XamlWin.Current.CoreWindow.PointerCursor.Id : 0;
+            XamlWin.Current.CoreWindow.PointerCursor = new CoreCursor(this.GetCursor(), id);
         }
 
         /// <summary>
@@ -379,8 +379,31 @@ namespace HelixToolkit.UWP
             this.Controller.Viewport.PointerMoved -= this.OnMouseMove;
             this.Controller.Viewport.PointerReleased -= this.OnMouseUp;
             this.Controller.Viewport.ReleasePointerCapture(e.Pointer);
-            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = this.OldCursor;
+            XamlWin.Current.CoreWindow.PointerCursor = Controller.CursorHistory.Count > 0 ?
+                Controller.CursorHistory.Pop() : new CoreCursor(CoreCursorType.Arrow, 0);
             this.Completed(e.GetCurrentPoint(this.Controller.Viewport).Position);
+            CheckCursorHistory();
+        }
+
+        private void CheckCursorHistory()
+        {
+            if (Controller.CursorHistory.Count == 0)
+            {
+                return;
+            }
+            foreach (var handler in Controller.MouseHandlers)
+            {
+                if (handler.IsActive)
+                {
+                    return;
+                }
+            }
+            CoreCursor cur = null;
+            while (Controller.CursorHistory.Count > 0)
+            {
+                cur = Controller.CursorHistory.Pop();
+            }
+            XamlWin.Current.CoreWindow.PointerCursor = cur;
         }
 
         /// <summary>

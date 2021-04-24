@@ -221,14 +221,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     string.Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", orthographicCamera.Width));
             }
 
-            if (camera is MatrixCamera matrixCamera)
-            {
-                sb.AppendLine("ProjectionMatrix:");
-                sb.AppendLine(matrixCamera.ProjectionMatrix.ToString(CultureInfo.InvariantCulture));
-                sb.AppendLine("ViewMatrix:");
-                sb.AppendLine(matrixCamera.ViewMatrix.ToString(CultureInfo.InvariantCulture));
-            }
-
             return sb.ToString().Trim();
         }
 
@@ -593,14 +585,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else if (camera is IOrthographicCameraModel orth)
             {
-                LookAt(camera, center, camera.LookDirection, animationTime);
-                double newWidth = radius * 2;
-
-                if (viewport.ActualWidth > viewport.ActualHeight)
-                {
-                    newWidth = radius * 2 * viewport.ActualWidth / viewport.ActualHeight;
-                }
-
+                orth.LookAt(center, 0);
+                var newWidth = radius * 2;
                 orth.AnimateWidth(newWidth, animationTime);
             }
         }

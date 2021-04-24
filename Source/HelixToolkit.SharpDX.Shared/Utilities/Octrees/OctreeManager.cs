@@ -132,12 +132,11 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="model"></param>
             /// <param name="modelMatrix"></param>
-            /// <param name="rayWS"></param>
             /// <param name="hits"></param>
             /// <returns></returns>
-            public virtual bool HitTest(IRenderMatrices context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+            public virtual bool HitTest(HitTestContext context, object model, Matrix modelMatrix, ref List<HitTestResult> hits)
             {
-                return Octree.HitTest(context, model, null, modelMatrix, rayWS, ref hits);
+                return Octree.HitTest(context, model, null, modelMatrix, ref hits);
             }
         }
 
@@ -433,16 +432,16 @@ namespace HelixToolkit.UWP
                     RequestUpdateOctree = true;
                 }
             }
-            public override bool HitTest(IRenderMatrices context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+            public override bool HitTest(HitTestContext context, object model, Matrix modelMatrix, ref List<HitTestResult> hits)
             {
                 if(Octree == null)
                 {
                     return false;
                 }
-                var hit = Octree.HitTest(context, model, null, modelMatrix, rayWS, ref hits);
+                var hit = Octree.HitTest(context, model, null, modelMatrix, ref hits);
                 foreach(var item in NonBoundableItems)
                 {
-                    hit |= item.HitTest(context, rayWS, ref hits);
+                    hit |= item.HitTest(context, ref hits);
                 }
                 return hit;
             }

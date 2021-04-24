@@ -25,7 +25,7 @@ namespace MaterialDemo
         private const int Row = 5;
         private const int Col = 5;
         private const int Size = 5 * 5;
-        public Stream EnvironmentMap { set; get; }
+        public TextureModel EnvironmentMap { set; get; }
         public ObservableElement3DCollection Models { get; } = new ObservableElement3DCollection();
         private List<PBRMaterial> materials = new List<PBRMaterial>();
         public Geometry3D Model { get; }
@@ -89,7 +89,7 @@ namespace MaterialDemo
             var builder = new MeshBuilder();
             builder.AddSphere(Vector3.Zero, 2);
             SphereModel = builder.ToMesh();
-            var normalMap = LoadFileToMemory(new System.Uri("TextureNoise1_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString());
+            var normalMap = TextureModel.Create(new System.Uri("TextureNoise1_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString());
             for (int i = -Row; i < Row; ++i)
             {
 
@@ -123,10 +123,10 @@ namespace MaterialDemo
             {
                 AlbedoColor = albedoColor.ToColor4(),
                 RenderEnvironmentMap = true,
-                AlbedoMap = LoadFileToMemory("Engraved_Metal_COLOR.jpg"),
-                NormalMap = LoadFileToMemory("Engraved_Metal_NORM.jpg"),
-                DisplacementMap = LoadFileToMemory("Engraved_Metal_DISP.png"),
-                RoughnessMetallicMap = LoadFileToMemory("Engraved_Metal_RMC.png"),
+                AlbedoMap = TextureModel.Create("Engraved_Metal_COLOR.jpg"),
+                NormalMap = TextureModel.Create("Engraved_Metal_NORM.jpg"),
+                DisplacementMap = TextureModel.Create("Engraved_Metal_DISP.png"),
+                RoughnessMetallicMap = TextureModel.Create("Engraved_Metal_RMC.png"),
                 DisplacementMapScaleMask = new Vector4(0.1f, 0.1f, 0.1f, 0),
                 EnableAutoTangent =true, EnableTessellation = true, MaxDistanceTessellationFactor = 2, MinDistanceTessellationFactor = 4
             };
@@ -142,11 +142,11 @@ namespace MaterialDemo
             FloorModel = floorGeo;
             FloorMaterial = new PBRMaterial()
             {
-                AlbedoMap = LoadFileToMemory("Wood_Planks_COLOR.jpg"),
-                NormalMap = LoadFileToMemory("Wood_Planks_NORM.jpg"),
-                DisplacementMap = LoadFileToMemory("Wood_Planks_DISP.png"),
-                RoughnessMetallicMap = LoadFileToMemory("Wood_Planks_RMA.png"),
-                AmbientOcculsionMap = LoadFileToMemory("Wood_Planks_RMA.png"),
+                AlbedoMap = TextureModel.Create("Wood_Planks_COLOR.jpg"),
+                NormalMap = TextureModel.Create("Wood_Planks_NORM.jpg"),
+                DisplacementMap = TextureModel.Create("Wood_Planks_DISP.png"),
+                RoughnessMetallicMap = TextureModel.Create("Wood_Planks_RMA.png"),
+                AmbientOcculsionMap = TextureModel.Create("Wood_Planks_RMA.png"),
                 DisplacementMapScaleMask = new Vector4(1f, 1f, 1f, 0),
                 RoughnessFactor = 0.8,
                 MetallicFactor = 0.2,                

@@ -204,6 +204,13 @@ namespace HelixToolkit.UWP
             BitmapFont = bitmapFont;
         }
 
+        public BillboardText3D(BitmapFont bitmapFont, TextureModel fontTexture)
+        {
+            textInfo.CollectionChanged += CollectionChanged;
+            Texture = fontTexture;
+            BitmapFont = bitmapFont;
+        }
+
         protected override void OnAssignTo(Geometry3D target)
         {
             base.OnAssignTo(target);
@@ -349,16 +356,18 @@ namespace HelixToolkit.UWP
             };
         }
 
-        public override bool HitTest(IRenderMatrices context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
+        public override bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits, 
             object originalSource, bool fixedSize)
         {
-            if (!IsInitialized || context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
+            var rayWS = context.RayWS;
+            if (!IsInitialized || context == null || Width == 0 || Height == 0
+                || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
                 return false;
             }
 
-            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, textInfo.Count)
-                : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, textInfo.Count);
+            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref hits, originalSource, textInfo.Count)
+                : HitTestNonFixedSize(context, ref modelMatrix, ref hits, originalSource, textInfo.Count);
         }
 
         protected override void AssignResultAdditional(BillboardHitResult result, int index)

@@ -36,6 +36,16 @@ namespace HelixToolkit.UWP
         {
             get;
         }
+        /// <summary>
+        /// Gets the inversed view matrix.
+        /// </summary>
+        /// <value>
+        /// The inversed view matrix.
+        /// </value>
+        Matrix ViewMatrixInv
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the projection matrix.
@@ -119,14 +129,18 @@ namespace HelixToolkit.UWP
             get;
         }
         /// <summary>
-        /// Gets the main camera.
+        /// Gets the bounding frustum.
         /// </summary>
         /// <value>
-        /// The camera.
+        /// The bounding frustum.
         /// </value>
-        CameraCore Camera
+        FrustumCameraParams CameraParams
         {
             get;
         }
+        /// <summary>
+        /// Updates all the internal metrices.
+        /// </summary>
+        void Update();
     }
 }

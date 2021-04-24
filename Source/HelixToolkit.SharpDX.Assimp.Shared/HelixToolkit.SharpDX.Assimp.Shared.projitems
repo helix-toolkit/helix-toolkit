@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Configurations.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DefaultTextureLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DefaultTexturePathResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Animation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExporterPartial_Element3D.cs" />

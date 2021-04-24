@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
 using SharpDX;
 using System.IO;
 #if !NETFX_CORE
@@ -218,7 +219,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Default Volume Texture Material. Supports 3D DDS memory stream as <see cref="VolumeTextureMaterialCoreBase{T}.VolumeTexture"/>
         /// </summary>
-        public sealed class VolumeTextureDDS3DMaterialCore : VolumeTextureMaterialCoreBase<Stream>
+        public sealed class VolumeTextureDDS3DMaterialCore : VolumeTextureMaterialCoreBase<TextureModel>
         {
             protected override ShaderResourceViewProxy OnCreateTexture(IEffectsManager manager)
             {

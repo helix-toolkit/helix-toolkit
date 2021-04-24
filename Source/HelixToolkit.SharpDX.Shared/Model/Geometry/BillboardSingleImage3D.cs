@@ -169,7 +169,6 @@ namespace HelixToolkit.UWP
                 Width = image.Description.Width;
                 Height = image.Description.Height;
             }
-            Texture.CompressedStream.Position = 0;
         }
 
         /// <summary>
@@ -183,7 +182,6 @@ namespace HelixToolkit.UWP
             this.Texture = texture;
             Width = width;
             Height = height;
-            Texture.CompressedStream.Position = 0;
         }
 
         /// <summary>
@@ -231,27 +229,18 @@ namespace HelixToolkit.UWP
             });
         }
 
-        /// <summary>
-        /// Hits the test.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="modelMatrix">The model matrix.</param>
-        /// <param name="rayWS">The ray ws.</param>
-        /// <param name="hits">The hits.</param>
-        /// <param name="originalSource">The original source.</param>
-        /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
-        /// <returns></returns>
-        public override bool HitTest(IRenderMatrices context, Matrix modelMatrix,
-            ref Ray rayWS, ref List<HitTestResult> hits,
+        public override bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits,
             object originalSource, bool fixedSize)
         {
-            if (!IsInitialized || context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
+            var rayWS = context.RayWS;
+            if (!IsInitialized || context == null || Width == 0 || Height == 0 
+                || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
                 return false;
             }
 
-            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, BillboardVertices.Count)
-                : HitTestNonFixedSize(context, ref modelMatrix, ref rayWS, ref hits, originalSource, BillboardVertices.Count);
+            return fixedSize ? HitTestFixedSize(context, ref modelMatrix, ref hits, originalSource, BillboardVertices.Count)
+                : HitTestNonFixedSize(context, ref modelMatrix, ref hits, originalSource, BillboardVertices.Count);
         }
     }
 }

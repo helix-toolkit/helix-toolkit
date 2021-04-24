@@ -135,8 +135,9 @@ namespace HelixToolkit.UWP
                 });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseMapSampler), () =>
                 {
+                    var newSampler = statePoolManager.Register(material.DiffuseMapSampler);
                     RemoveAndDispose(ref SamplerResource);
-                    SamplerResource = Collect(statePoolManager.Register(material.DiffuseMapSampler));
+                    SamplerResource = Collect(newSampler);
                 });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.EnableUnLit), () => 
                 { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.EnableUnLit); });
@@ -147,8 +148,9 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void CreateTextureView(TextureModel texture, int index)
             {
+                var newTexture = texture == null ? null : textureManager.Register(texture);
                 RemoveAndDispose(ref TextureResource);
-                TextureResource = texture == null ? null : Collect(textureManager.Register(texture));
+                TextureResource = Collect(newTexture);
                 if (TextureResource != null)
                 {
                     textureIndex |= 1u << index;
@@ -174,11 +176,9 @@ namespace HelixToolkit.UWP
 
             private void CreateSamplers()
             {
+                var newSampler = material == null ? null : statePoolManager.Register(material.DiffuseMapSampler);
                 RemoveAndDispose(ref SamplerResource);
-                if (material != null)
-                {
-                    SamplerResource = Collect(statePoolManager.Register(material.DiffuseMapSampler));
-                }
+                SamplerResource = Collect(newSampler);
             }
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)

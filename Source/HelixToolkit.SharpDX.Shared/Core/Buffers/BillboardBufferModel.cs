@@ -91,12 +91,11 @@ namespace HelixToolkit.UWP
                         buffer.UploadDataToBuffer(context, billboardGeometry.BillboardVertices, billboardGeometry.BillboardVertices.Count, 0, geometry.PreDefinedVertexCount);
                         if(texture != billboardGeometry.Texture)
                         {
-                            RemoveAndDispose(ref textureView);
                             texture = billboardGeometry.Texture;
-                            if (texture != null)
-                            {
-                                textureView = Collect(deviceResources.MaterialTextureManager.Register(texture));
-                            }
+                            var newView = texture == null ? 
+                                null : deviceResources.MaterialTextureManager.Register(texture);                           
+                            RemoveAndDispose(ref textureView);
+                            textureView = Collect(newView);
                         }
                     }
                     else

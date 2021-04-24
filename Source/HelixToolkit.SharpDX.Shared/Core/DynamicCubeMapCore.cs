@@ -181,8 +181,9 @@ namespace HelixToolkit.UWP
                 {
                     if (SetAffectsRender(ref samplerDescription, value) && IsAttached)
                     {
+                        var newSampler = EffectTechnique.EffectsManager.StateManager.Register(value);
                         RemoveAndDispose(ref textureSampler);
-                        textureSampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(value));
+                        textureSampler = Collect(newSampler);
                     }
                 }
                 get

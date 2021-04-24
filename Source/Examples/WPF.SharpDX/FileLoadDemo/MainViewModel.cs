@@ -208,7 +208,7 @@ namespace FileLoadDemo
             CopyAsBitmapCommand = new DelegateCommand(() => { CopyAsBitmapToClipBoard(mainWindow.view); });
             CopyAsHiresBitmapCommand = new DelegateCommand(() => { CopyAsHiResBitmapToClipBoard(mainWindow.view); });
 
-            EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
+            EnvironmentMap = TextureModel.Create("Cubemap_Grandcanyon.dds");
         }
 
         private void CopyAsBitmapToClipBoard(Viewport3DX viewport)
@@ -278,6 +278,7 @@ namespace FileLoadDemo
                             {
                                 if (node is MaterialGeometryNode m)
                                 {
+                                    //m.Geometry.SetAsTransient();
                                     if (m.Material is PBRMaterialCore pbr)
                                     {
                                         pbr.RenderEnvironmentMap = RenderEnvironmentMap;

@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections.Generic;
 
 using Vector3 = global::SharpDX.Vector3;
 using Vector2 = global::SharpDX.Vector2;
@@ -171,6 +172,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private static readonly Vector2 VectorZero = new Vector2();
         private static readonly Vector3 Vector3DZero = new Vector3();
 
+        /// <summary>
+        /// Records series of mouse down cursor changes. And play back during mouse up.
+        /// </summary>
+        internal Stack<Cursor> CursorHistory { get; } = new Stack<Cursor>();
+        internal List<MouseGestureHandler> MouseHandlers { get; } = new List<MouseGestureHandler>();
         /// <summary>
         /// Initializes a new instance of the <see cref="CameraController" /> class.
         /// </summary>
@@ -567,7 +573,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool EnablePinchZoom { set; get; } = true;
         public bool EnableThreeFingerPan { set; get; } = true;
         public bool PinchZoomAtCenter { set; get; } = false;
-#endregion
+        #endregion
 
         /// <summary>
         /// Adds the specified move force.
@@ -1272,6 +1278,12 @@ namespace HelixToolkit.Wpf.SharpDX
             this.panHandler = new PanHandler(this);
             this.changeFieldOfViewHandler = new ZoomHandler(this, true);
             this.setTargetHandler = new RotateHandler(this, true);
+            MouseHandlers.Add(changeLookAtHandler);
+            MouseHandlers.Add(rotateHandler);
+            MouseHandlers.Add(zoomRectangleHandler);
+            MouseHandlers.Add(zoomHandler);
+            MouseHandlers.Add(panHandler);
+            MouseHandlers.Add(changeFieldOfViewHandler);
         }
 
         /// <summary>

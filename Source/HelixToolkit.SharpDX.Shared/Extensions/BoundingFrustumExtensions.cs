@@ -63,19 +63,29 @@ namespace HelixToolkit.UWP
         /// <param name="sphere">The sphere.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Intersects(ref BoundingFrustum frustum, ref BoundingBox box, ref BoundingSphere sphere)
+        public static bool IsInOrIntersectFrustum(ref BoundingFrustum frustum, ref BoundingBox box, ref BoundingSphere sphere)
         {
             for (int i = 0; i < 6; i++)
             {
-                var plane = frustum.GetPlane(i);         
-                if (plane.Intersects(ref sphere) == PlaneIntersectionType.Back)
+                var plane = frustum.GetPlane(i);
+                var sphereRet = plane.Intersects(ref sphere);
+                if (sphereRet == PlaneIntersectionType.Back)
                 {
                     return false;
                 }
+                else if (sphereRet == PlaneIntersectionType.Intersecting)
+                {
+                    return true;
+                }
                 GetBoxToPlanePVertexNVertex(ref box, ref plane.Normal, out Vector3 p, out Vector3 n);
-                if (Collision.PlaneIntersectsPoint(ref plane, ref p) == PlaneIntersectionType.Back)
+                var boxRet = Collision.PlaneIntersectsPoint(ref plane, ref p);
+                if (boxRet == PlaneIntersectionType.Back)
                 {
                     return false;
+                }
+                else if (boxRet == PlaneIntersectionType.Intersecting)
+                {
+                    return true;
                 }
             }
             return true;

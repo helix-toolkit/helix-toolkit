@@ -112,13 +112,11 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="modelMatrix">The model matrix.</param>
-        /// <param name="rayWS">The ray ws.</param>
         /// <param name="hits">The hits.</param>
         /// <param name="originalSource">The original source.</param>
         /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
         /// <returns></returns>
-        public abstract bool HitTest(IRenderMatrices context, Matrix modelMatrix,
-            ref Ray rayWS, ref List<HitTestResult> hits,
+        public abstract bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits,
             object originalSource, bool fixedSize);
 
 
@@ -127,13 +125,11 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="modelMatrix">The model matrix.</param>
-        /// <param name="rayWS">The ray ws.</param>
         /// <param name="hits">The hits.</param>
         /// <param name="originalSource">The original source.</param>
         /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
         /// <returns></returns>
-        protected bool HitTestFixedSize(IRenderMatrices context, ref Matrix modelMatrix,
-            ref Ray rayWS, ref List<HitTestResult> hits,
+        protected bool HitTestFixedSize(HitTestContext context, ref Matrix modelMatrix, ref List<HitTestResult> hits,
             object originalSource, int count)
         {
             if (BillboardVertices == null || BillboardVertices.Count == 0)
@@ -145,9 +141,8 @@ namespace HelixToolkit.UWP
             {
                 Distance = double.MaxValue
             };
-            var visualToScreen = context.ScreenViewProjectionMatrix;
-            var screenPoint3D = Vector3.TransformCoordinate(rayWS.Position, visualToScreen);
-            var screenPoint = new Vector2(screenPoint3D.X, screenPoint3D.Y);
+            var visualToScreen = context.RenderMatrices.ScreenViewProjectionMatrix;
+            var screenPoint = context.HitPointSP * context.RenderMatrices.DpiScale;
             if (screenPoint.X < 0 || screenPoint.Y < 0)
             {
                 return false;
@@ -158,16 +153,16 @@ namespace HelixToolkit.UWP
                 var vert = BillboardVertices[i];
                 var pos = vert.Position.ToVector3();
                 var c = Vector3.TransformCoordinate(pos, modelMatrix);
-                var dir = c - rayWS.Position;
-                if (Vector3.Dot(dir, rayWS.Direction) < 0)
+                var dir = c - context.RayWS.Position;
+                if (Vector3.Dot(dir, context.RayWS.Direction) < 0)
                 {
                     continue;
                 }
-                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, context.DpiScale);
+                var quad = GetScreenQuad(ref c, ref vert.OffTL, ref vert.OffTR, ref vert.OffBL, ref vert.OffBR, ref visualToScreen, context.RenderMatrices.DpiScale);
                 if (quad.IsPointInQuad2D(ref screenPoint))
                 {
-                    var v = c - rayWS.Position;
-                    var dist = Vector3.Dot(rayWS.Direction, v);
+                    var v = c - context.RayWS.Position;
+                    var dist = Vector3.Dot(context.RayWS.Direction, v);
                     if (dist > result.Distance)
                     {
                         continue;
@@ -176,7 +171,7 @@ namespace HelixToolkit.UWP
 
                     result.ModelHit = originalSource;
                     result.IsValid = true;
-                    result.PointHit = rayWS.Position + rayWS.Direction * dist;
+                    result.PointHit = context.RayWS.Position + context.RayWS.Direction * dist;
                     result.Distance = dist;
                     result.Geometry = this;
                     AssignResultAdditional(result, i);
@@ -208,13 +203,11 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="modelMatrix">The model matrix.</param>
-        /// <param name="rayWS">The ray ws.</param>
         /// <param name="hits">The hits.</param>
         /// <param name="originalSource">The original source.</param>
         /// <param name="count">The count of vertices in <see cref="BillboardBase.BillboardVertices"/>.</param>
         /// <returns></returns>
-        protected bool HitTestNonFixedSize(IRenderMatrices context, ref Matrix modelMatrix,
-            ref Ray rayWS, ref List<HitTestResult> hits,
+        protected bool HitTestNonFixedSize(HitTestContext context, ref Matrix modelMatrix, ref List<HitTestResult> hits,
             object originalSource, int count)
         {
             if (BillboardVertices == null || BillboardVertices.Count == 0)
@@ -226,9 +219,9 @@ namespace HelixToolkit.UWP
             {
                 Distance = double.MaxValue
             };
-            var viewMatrix = context.ViewMatrix;
+            var viewMatrix = context.RenderMatrices.ViewMatrix;
             var viewMatrixInv = viewMatrix.PsudoInvert();
-
+            var rayWS = context.RayWS;
             for (int i = 0; i < count; ++i)
             {
                 var vert = BillboardVertices[i];

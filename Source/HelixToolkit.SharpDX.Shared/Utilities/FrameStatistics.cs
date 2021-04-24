@@ -93,10 +93,10 @@ namespace HelixToolkit.UWP
             /// The update frequency.
             /// </value>
             public uint UpdateFrequency { set; get; } = 30;
-
+            private double total = 0;
             private double movingAverage = 0;
             private uint counter = 0;
-            private const int RingBufferSize = 60;
+            private const int RingBufferSize = 120;
             private readonly SimpleRingBuffer<double> ringBuffer = new SimpleRingBuffer<double>(RingBufferSize);
             /// <summary>
             /// Pushes the specified latency by milliseconds.
@@ -111,11 +111,12 @@ namespace HelixToolkit.UWP
                 }
                 if (ringBuffer.IsFull())
                 {
-                    movingAverage -= (ringBuffer.First - movingAverage) / ringBuffer.Count;
+                    total -= ringBuffer.First;
                     ringBuffer.RemoveFirst();
                 }
                 ringBuffer.Add(latency);
-                movingAverage += (latency - movingAverage) / ringBuffer.Count; // moving average        
+                total += latency;
+                movingAverage = total / ringBuffer.Count; // moving average        
                 movingAverage = Math.Min(1000, Math.Max(0, movingAverage));
                 counter = (++counter) % UpdateFrequency;
                 if (counter == 0)
@@ -129,6 +130,7 @@ namespace HelixToolkit.UWP
                 AverageValue = 0;
                 movingAverage = 0;
                 counter = 0;
+                total = 0;
                 ringBuffer.Clear();
             }
         }

@@ -10,7 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Camera\Camera.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Camera\MatrixCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Camera\OrthographicCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Camera\PerspectiveCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Camera\ProjectionCamera.cs" />

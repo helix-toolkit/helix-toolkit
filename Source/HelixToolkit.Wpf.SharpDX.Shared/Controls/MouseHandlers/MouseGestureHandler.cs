@@ -170,10 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// Gets or sets the old cursor.
-        /// </summary>
-        private Cursor OldCursor { get; set; }
+        public bool IsActive { private set; get; } = false;
 
         protected List<HitTestResult> hits = new List<HitTestResult>();
 
@@ -191,6 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.OnInertiaStarting(elapsed);
             }
             startTick = Stopwatch.GetTimestamp();
+            IsActive = false;
         }
 
         /// <summary>
@@ -245,6 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Inv = Camera.CreateLeftHandSystem ? -1 : 1;
             Controller.StopAnimations();
             Controller.PushCameraSetting();
+            IsActive = true;
         }
 
         /// <summary>
@@ -348,7 +347,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.Started(Mouse.GetPosition(this.Viewport));
 
-            this.OldCursor = this.Viewport.Cursor;
+            Controller.CursorHistory.Push(this.Viewport.Cursor);
             this.Viewport.Cursor = this.GetCursor();
         }
 
@@ -380,8 +379,30 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Viewport.MouseMove -= this.OnMouseMove;
             this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.ReleaseMouseCapture();
-            this.Viewport.Cursor = this.OldCursor;
+            this.Viewport.Cursor = Controller.CursorHistory.Count > 0 ? Controller.CursorHistory.Pop() : Cursors.Arrow;
             this.Completed(Mouse.GetPosition(this.Viewport));
+            CheckCursorHistory();
+        }
+
+        private void CheckCursorHistory()
+        {
+            if (Controller.CursorHistory.Count == 0)
+            {
+                return;
+            }
+            foreach(var handler in Controller.MouseHandlers)
+            {
+                if (handler.IsActive)
+                {
+                    return;
+                }
+            }
+            Cursor cur = null;
+            while (Controller.CursorHistory.Count > 0)
+            {
+                cur = Controller.CursorHistory.Pop();
+            }
+            this.Viewport.Cursor = cur;
         }
 
         /// <summary>

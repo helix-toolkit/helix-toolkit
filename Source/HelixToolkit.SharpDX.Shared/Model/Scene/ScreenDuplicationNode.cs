@@ -112,28 +112,12 @@ namespace HelixToolkit.UWP
                 return new ScreenCloneRenderCore();
             }
 
-            /// <summary>
-            /// Override this function to set render technique during Attach Host.
-            /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-            /// </summary>
-            /// <param name="host"></param>
-            /// <returns>
-            /// Return RenderTechnique
-            /// </returns>
             protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
             {
                 return host.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication];
             }
 
-            /// <summary>
-            /// Called when [hit test].
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="totalModelMatrix">The total model matrix.</param>
-            /// <param name="ray">The ray.</param>
-            /// <param name="hits">The hits.</param>
-            /// <returns></returns>
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 return false;
             }

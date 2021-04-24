@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool HitTest(IRenderMatrices context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)
         {
             return false;
         }

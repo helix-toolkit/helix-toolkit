@@ -521,10 +521,12 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void AttachMaterial()
             {
+                var newVar = material != null && RenderCore is IMaterialRenderParams ?
+                    EffectsManager.MaterialVariableManager.Register(material, EffectTechnique) : null;
                 RemoveAndDispose(ref materialVariable);
-                if (material != null && RenderCore is IMaterialRenderParams core)
+                if (RenderCore is IMaterialRenderParams core)
                 {
-                    core.MaterialVariables = materialVariable = Collect(EffectsManager.MaterialVariableManager.Register(material, EffectTechnique));
+                    core.MaterialVariables = materialVariable = Collect(newVar);
                 }            
                 if(Materials == null && Material is PhongMaterialCore p)
                 {
@@ -666,7 +668,7 @@ namespace HelixToolkit.UWP
                 {
                     return true;
                 }
-                return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref boundsWithTransform, ref boundsSphereWithTransform);
+                return BoundingFrustumExtensions.IsInOrIntersectFrustum(ref viewFrustum, ref boundsWithTransform, ref boundsSphereWithTransform);
             }
 
             /// <summary>
@@ -676,7 +678,7 @@ namespace HelixToolkit.UWP
             /// <returns>
             ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
             /// </returns>
-            protected override bool CanHitTest(IRenderMatrices context)
+            protected override bool CanHitTest(HitTestContext context)
             {
                 return base.CanHitTest(context) && Geometries != null && Geometries.Length > 0 && Materials != null && Materials.Length > 0;
             }
@@ -701,13 +703,14 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                if(ray.Intersects(boundsWithTransform) && ray.Intersects(boundsSphereWithTransform))
+                var rayWS = context.RayWS;
+                if(rayWS.Intersects(boundsWithTransform) && rayWS.Intersects(boundsSphereWithTransform))
                 {                
                     if(BatchedGeometryOctree != null && BatchedGeometryOctree.TreeBuilt)
                     {
-                        return BatchedGeometryOctree.HitTest(context, WrapperSource, null, totalModelMatrix, ray, ref hits);
+                        return BatchedGeometryOctree.HitTest(context, WrapperSource, null, totalModelMatrix, ref hits);
                     }
                     else
                     {
@@ -716,7 +719,7 @@ namespace HelixToolkit.UWP
                         {
                             if(geo.Geometry is MeshGeometry3D mesh)
                             {
-                                isHit |= mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref ray, ref hits, WrapperSource);
+                                isHit |= mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref hits, WrapperSource);
                             }
                         }
                         return isHit;

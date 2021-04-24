@@ -281,9 +281,8 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
-                #region Create states
-                RemoveAndDispose(ref backfaceRasterState);
-                this.backfaceRasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(new RasterizerStateDescription()
+                #region Create states              
+                var newRasterState = EffectTechnique.EffectsManager.StateManager.Register(new RasterizerStateDescription()
                 {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.Front,
@@ -294,7 +293,9 @@ namespace HelixToolkit.UWP
                     IsFrontCounterClockwise = description.IsFrontCounterClockwise,
                     IsMultisampleEnabled = false,
                     IsScissorEnabled = false
-                }));
+                });
+                RemoveAndDispose(ref backfaceRasterState);
+                backfaceRasterState = Collect(newRasterState);
                 #endregion
                 return true;
             }

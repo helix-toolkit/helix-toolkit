@@ -256,13 +256,6 @@ namespace HelixToolkit.UWP
                 {
                     renderables[i].Render(context, ImmediateContext);
                 }
-
-                if (context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0
-                  && context.RenderHost.RenderConfiguration.FXAALevel != FXAALevel.None)
-                {
-                    postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
-                    postFXAACore.Render(context, ImmediateContext);
-                }
             }
             /// <summary>
             /// Renders to ping pong buffer.
@@ -316,6 +309,12 @@ namespace HelixToolkit.UWP
             /// <param name="parameter">The parameter.</param>
             public virtual void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter)
             {
+                if (context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0
+                    && context.RenderHost.RenderConfiguration.FXAALevel != FXAALevel.None)
+                {
+                    postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
+                    postFXAACore.Render(context, ImmediateContext);
+                }
                 ImmediateContext.Flush();
                 var buffer = context.RenderHost.RenderBuffer;
                 if (parameter.IsMSAATexture)

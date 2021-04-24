@@ -183,16 +183,16 @@ namespace HelixToolkit.UWP
             /// </summary>
             public bool BuildOctree = true;
 
-            public ITextureIO TextureLoader;
+            public ITexturePathResolver TexturePathResolver;
             /// <summary>
             /// Initializes a new instance of the <see cref="ImporterConfiguration"/> class.
             /// </summary>
             public ImporterConfiguration()
             {
 #if WINDOWS_UWP
-                TextureLoader = new UWPTextureLoader();
+                TexturePathResolver = new UWPTextureLoader();
 #else
-                TextureLoader = new DefaultTextureLoader();
+                TexturePathResolver = new DefaultTexturePathResolver();
 #endif
             }
         }

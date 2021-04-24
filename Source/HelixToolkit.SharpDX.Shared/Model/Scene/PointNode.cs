@@ -128,27 +128,26 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            /// <summary>
-            /// Called when [check geometry].
-            /// </summary>
-            /// <param name="geometry">The geometry.</param>
-            /// <returns></returns>
             protected override bool OnCheckGeometry(Geometry3D geometry)
             {
                 return base.OnCheckGeometry(geometry) && geometry is PointGeometry3D;
             }
 
-            /// <summary>
-            /// Called when [hit test].
-            /// </summary>
-            /// <param name="context">The context.</param>
-            /// <param name="totalModelMatrix">The total model matrix.</param>
-            /// <param name="ray">The ray.</param>
-            /// <param name="hits">The hits.</param>
-            /// <returns></returns>
-            protected override bool OnHitTest(IRenderMatrices context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            protected override bool PreHitTestOnBounds(HitTestContext context)
             {
-                return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, (float)HitTestThickness);
+                var center = BoundsSphereWithTransform.Center;
+                var centerSp = context.RenderMatrices.Project(center);
+                if (centerSp.X >= 0 && centerSp.Y >= 0 
+                    && (centerSp - context.HitPointSP).Length() <= hitTestThickness)
+                {
+                    return true;
+                }
+                return base.PreHitTestOnBounds(context);
+            }
+
+            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
+            {
+                return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref hits, this.WrapperSource, (float)HitTestThickness);
             }
         }
     }

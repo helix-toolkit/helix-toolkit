@@ -52,7 +52,7 @@ namespace HelixToolkit.UWP
             private MeshInfo OnCreateMeshInfo(HxScene.GeometryNode geoNode)
             {
                 MeshInfo info = null;
-                if (geoNode is HxScene.MaterialGeometryNode materialNode)
+                if (geoNode is HxScene.MaterialGeometryNode materialNode && materialNode.Material != null)
                 {
                     var key = GetMaterialGeoKey(geoNode, out var materialIndex, out var geoIndex);
                     if (!meshInfos.TryGetValue(key, out var existing))

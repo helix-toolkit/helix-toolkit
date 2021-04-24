@@ -528,8 +528,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
-            ZoomExtents(viewport, new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D()), animationTime);
+            viewport.Camera.ZoomExtents(viewport, new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D()), animationTime);
         }
 
         /// <summary>
@@ -540,10 +539,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">The animation time.</param>
         public static void ZoomExtents(this Viewport3DX viewport, Rect3D bounds, double animationTime = 0)
         {
-            var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
-            var center = bounds.Location + (diagonal * 0.5);
-            double radius = diagonal.Length * 0.5;
-            ZoomExtents(viewport, center, radius, animationTime);
+            viewport.Camera.ZoomExtents(viewport, bounds, animationTime);
         }
 
         /// <summary>
@@ -555,30 +551,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">The animation time.</param>
         public static void ZoomExtents(this Viewport3DX viewport, Point3D center, double radius, double animationTime = 0)
         {
-            var camera = viewport.Camera;
-            if (camera is PerspectiveCamera pcam)
-            {
-                double distv = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
-                double hfov = pcam.FieldOfView / viewport.ActualHeight * viewport.ActualWidth;
-                double disth = radius / Math.Tan(0.5 * hfov * Math.PI / 180);
-
-                double dist = Math.Max(distv, disth);
-                var dir = pcam.LookDirection;
-                dir.Normalize();
-                pcam.LookAt(center, dir * dist, animationTime);
-            }
-            else if (camera is OrthographicCamera ocam)
-            {
-                ocam.LookAt(center, ocam.LookDirection, animationTime);
-                double newWidth = radius * 2;
-
-                if (viewport.ActualWidth > viewport.ActualHeight)
-                {
-                    newWidth = radius * 2 * viewport.ActualWidth / viewport.ActualHeight;
-                }
-
-                ocam.AnimateWidth(newWidth, animationTime);
-            }
+            viewport.Camera.ZoomExtents(viewport, center, radius, animationTime);
         }
 
         /// <summary>

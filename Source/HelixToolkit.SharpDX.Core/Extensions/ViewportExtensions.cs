@@ -57,5 +57,45 @@ namespace HelixToolkit.SharpDX.Core
         {
             viewport.CameraCore.ZoomToRectangle(viewport, rectangle);
         }
+
+        /// <summary>
+        /// Zooms to the extents of the specified viewport.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="animationTime">The animation time.</param>
+        public static void ZoomExtents(this ViewportCore viewport, float animationTime = 0)
+        {
+            var bounds = viewport.FindBounds();
+            var diagonal = bounds.Maximum - bounds.Minimum;
+
+            if (diagonal.LengthSquared() == 0)
+            {
+                return;
+            }
+            viewport.CameraCore.ZoomExtents(viewport, bounds, animationTime);
+        }
+
+        /// <summary>
+        /// Zooms to the extents of the specified bounding box.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="bounds">The bounding rectangle.</param>
+        /// <param name="animationTime">The animation time.</param>
+        public static void ZoomExtents(this ViewportCore viewport, BoundingBox bounds, float animationTime = 0)
+        {
+            viewport.CameraCore.ZoomExtents(viewport, bounds, animationTime);
+        }
+
+        /// <summary>
+        /// Zooms to the extents of the specified bounding sphere.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="center">The center of the sphere.</param>
+        /// <param name="radius">The radius of the sphere.</param>
+        /// <param name="animationTime">The animation time.</param>
+        public static void ZoomExtents(this ViewportCore viewport, Vector3 center, float radius, float animationTime = 0)
+        {
+            viewport.CameraCore.ZoomExtents(viewport, center, radius, animationTime);
+        }
     }
 }

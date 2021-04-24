@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    using System.Diagnostics;
     using Utilities;
     /// <summary>
     /// Use for texture resource sharing between models. It uses texture stream as key for each texture.
@@ -25,8 +26,8 @@ namespace HelixToolkit.UWP
     public sealed class TextureResourceManager : IDisposable, ITextureResourceManager
     {
         public int Count { get { return resourceDictionaryMipMaps.Count + resourceDictionaryNoMipMaps.Count; } }
-        private readonly Dictionary<object, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<object, ShaderResourceViewProxy>();
-        private readonly Dictionary<object, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<object, ShaderResourceViewProxy>();
+        private readonly Dictionary<Guid, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<Guid, ShaderResourceViewProxy>();
+        private readonly Dictionary<Guid, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<Guid, ShaderResourceViewProxy>();
         private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureResourceManager"/> class.
@@ -54,30 +55,33 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public ShaderResourceViewProxy Register(TextureModel textureModel, bool enableAutoGenMipMap)
         {
-            if (textureModel == null || textureModel.GetKey() == null)
+            if (textureModel == null)
             {
                 return null;
             }
             var targetDict = enableAutoGenMipMap ? resourceDictionaryMipMaps : resourceDictionaryNoMipMaps;
             lock (targetDict)
             {
-                if (targetDict.TryGetValue(textureModel.GetKey(), out ShaderResourceViewProxy view))
+                if (targetDict.TryGetValue(textureModel.Guid, out ShaderResourceViewProxy view))
                 {
+                    Debug.WriteLine("Re-using existing texture resource");
                     view.IncRef();
                     return view;
                 }
                 else
                 {
+                    Debug.WriteLine("Creating new texture resource");
                     var proxy = new ShaderResourceViewProxy(device);
                     proxy.CreateView(textureModel, true, enableAutoGenMipMap);
+                    proxy.Guid = textureModel.Guid;
                     proxy.Disposed += (s, e) =>
                     {
                         lock (targetDict)
                         {
-                            targetDict.Remove(textureModel.GetKey());
+                            targetDict.Remove(proxy.Guid);
                         }
                     };
-                    targetDict.Add(textureModel.GetKey(), proxy);
+                    targetDict.Add(textureModel.Guid, proxy);                    
                     return proxy;
                 }
             }

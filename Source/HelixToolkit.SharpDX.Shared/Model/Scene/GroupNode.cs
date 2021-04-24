@@ -107,12 +107,12 @@ namespace HelixToolkit.UWP
             /// <param name="ray">The ray.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
-            protected override bool OnHitTest(IRenderMatrices context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+            protected override bool OnHitTest(HitTestContext context, global::SharpDX.Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 bool isHit = false;
                 if (octreeManager != null)
                 {
-                    isHit = octreeManager.HitTest(context, this.WrapperSource, totalModelMatrix, ray, ref hits);
+                    isHit = octreeManager.HitTest(context, this.WrapperSource, totalModelMatrix, ref hits);
     #if DEBUG
                     if (isHit)
                     {
@@ -122,7 +122,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    isHit = base.OnHitTest(context, totalModelMatrix, ref ray, ref hits);
+                    isHit = base.OnHitTest(context, totalModelMatrix, ref hits);
                 }
                 return isHit;
             }

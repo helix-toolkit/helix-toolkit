@@ -501,18 +501,17 @@ namespace HelixToolkit.UWP
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(IRenderMatrices, object, Geometry3D, Matrix, Ray, ref List{HitTestResult})"/>
+        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public bool HitTest(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        public bool HitTest(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref List<HitTestResult> hits)
         {
-            return HitTest(context, model, geometry, modelMatrix, rayWS, ref hits, 0);
+            return HitTest(context, model, geometry, modelMatrix, ref hits, 0);
         }
         /// <summary>
         /// Hits the test.
@@ -521,46 +520,43 @@ namespace HelixToolkit.UWP
         /// <param name="model">The model.</param>
         /// <param name="geometry">The geometry.</param>
         /// <param name="modelMatrix">The model matrix.</param>
-        /// <param name="rayWS">The ray ws.</param>
         /// <param name="returnMultiple">Not used</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        public bool HitTest(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, 
+        public bool HitTest(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
             bool returnMultiple, ref List<HitTestResult> hits)
         {
-            return HitTest(context, model, geometry, modelMatrix, rayWS, ref hits, 0);
+            return HitTest(context, model, geometry, modelMatrix, ref hits, 0);
         }
 
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(IRenderMatrices, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public virtual bool HitTest(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS,
+        public virtual bool HitTest(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
             ref List<HitTestResult> hits, float hitThickness)
         {
-            return HitTest(context, model, geometry, modelMatrix, rayWS, false, ref hits, hitThickness);
+            return HitTest(context, model, geometry, modelMatrix, false, ref hits, hitThickness);
         }
 
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(IRenderMatrices, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="returnMultiple"></param>
         /// <param name="hits"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public virtual bool HitTest(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, 
+        public virtual bool HitTest(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
             bool returnMultiple,
             ref List<HitTestResult> hits, float hitThickness)
         {
@@ -574,6 +570,7 @@ namespace HelixToolkit.UWP
             modelHits.Clear();
             var modelInv = modelMatrix.Inverted();
             if (modelInv == Matrix.Zero) { return false; }//Cannot be inverted
+            var rayWS = context.RayWS;
             var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
             var treeArray = SelfArray;
             int i = -1;
@@ -584,7 +581,8 @@ namespace HelixToolkit.UWP
                     var node = treeArray[i];
                     if (node == null) { continue; }
                     bool isIntersect = false;
-                    bool nodeHit = node.HitTestCurrentNodeExcludeChild(context, model, geometry, modelMatrix, ref rayWS, ref rayModel, ref modelHits, ref isIntersect, hitThickness);
+                    bool nodeHit = node.HitTestCurrentNodeExcludeChild(context, model, geometry, modelMatrix, 
+                        ref rayModel, ref modelHits, ref isIntersect, hitThickness);
                     isHit |= nodeHit;
                     if (isIntersect && node.HasChildren)
                     {
@@ -635,7 +633,7 @@ namespace HelixToolkit.UWP
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public abstract bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
+        public abstract bool HitTestCurrentNodeExcludeChild(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
 
         /// <summary>
@@ -645,7 +643,7 @@ namespace HelixToolkit.UWP
         /// <param name="sphere"></param>
         /// <param name="points"></param>
         /// <returns></returns>
-        public virtual bool FindNearestPointBySphere(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points)
+        public virtual bool FindNearestPointBySphere(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points)
         {
             if (points == null)
             {
@@ -687,7 +685,7 @@ namespace HelixToolkit.UWP
         /// <param name="results"></param>
         /// <param name="heuristicSearchFactor"></param>
         /// <returns></returns>
-        public virtual bool FindNearestPointFromPoint(IRenderMatrices context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
+        public virtual bool FindNearestPointFromPoint(HitTestContext context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
         {
             if (results == null)
             {
@@ -738,7 +736,8 @@ namespace HelixToolkit.UWP
         /// <param name="points"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public abstract bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
+        public abstract bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere,
+            ref List<HitTestResult> points, ref bool isIntersect);
         /// <summary>
         /// <see cref="DynamicOctreeBase{T}.Add(T)"/>
         /// </summary>
@@ -1265,7 +1264,7 @@ namespace HelixToolkit.UWP
         /// <param name="radius"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public bool FindNearestPointByPointAndSearchRadius(IRenderMatrices context, ref Vector3 point, float radius, ref List<HitTestResult> result)
+        public bool FindNearestPointByPointAndSearchRadius(HitTestContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
         {
             var sphere = new global::SharpDX.BoundingSphere(point, radius);
             return FindNearestPointBySphere(context, ref sphere, ref result);
@@ -1522,7 +1521,7 @@ namespace HelixToolkit.UWP
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS,
+        public override bool HitTestCurrentNodeExcludeChild(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
             ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
@@ -1540,8 +1539,11 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
-                var result = new HitTestResult();
-                result.Distance = double.MaxValue;
+                var result = new HitTestResult
+                {
+                    Distance = double.MaxValue
+                };
+                var rayWS = context.RayWS;
                 for (int i = 0; i < Objects.Count; ++i)
                 {
                     var idx = Objects[i].Key * 3;
@@ -1601,14 +1603,15 @@ namespace HelixToolkit.UWP
             return isHit;
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderMatrices, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, 
+            ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
             var containment = Bound.Contains(ref sphere);
@@ -1784,19 +1787,18 @@ namespace HelixToolkit.UWP
             return new LineGeometryOctree(Positions, Indices, ref region, objList, parent, parent.Parameter, this.stack);
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderMatrices, object, Geometry3D, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(HitTestContext, object, Geometry3D, Matrix, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS,
+        public override bool HitTestCurrentNodeExcludeChild(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
             ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
@@ -1820,6 +1822,7 @@ namespace HelixToolkit.UWP
                 }
                 var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
                 result.Distance = double.MaxValue;
+                var rayWS = context.RayWS;
                 for (int i = 0; i < Objects.Count; ++i)
                 {
                     var idx = Objects[i].Key * 2;
@@ -1833,7 +1836,7 @@ namespace HelixToolkit.UWP
                     Vector3 sp, tp;
                     float sc, tc;
                     var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
-                    var svpm = context.ScreenViewProjectionMatrix;
+                    var svpm = context.RenderMatrices.ScreenViewProjectionMatrix;
                     Vector4 sp4;
                     Vector4 tp4;
                     Vector3.Transform(ref sp, ref svpm, out sp4);
@@ -1883,14 +1886,16 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderMatrices, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref global::SharpDX.BoundingSphere,
+        /// ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, 
+            ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
             var containment = Bound.Contains(ref sphere);
@@ -2040,15 +2045,14 @@ namespace HelixToolkit.UWP
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
         /// <param name="context"></param>
         /// <param name="rayModel"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix,
-            ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+        public override bool HitTestCurrentNodeExcludeChild(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
+            ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
             if (!this.treeBuilt || context == null)
@@ -2068,9 +2072,10 @@ namespace HelixToolkit.UWP
                 }
                 var result = new HitTestResult();
                 result.Distance = double.MaxValue;
-                var svpm = context.ScreenViewProjectionMatrix;
+                var svpm = context.RenderMatrices.ScreenViewProjectionMatrix;
                 var smvpm = modelMatrix * svpm;
-                var clickPoint3 = rayWS.Position + rayWS.Direction;
+                var clickPoint3 = context.HitPointSP.ToVector3() * context.RenderMatrices.DpiScale;
+                var rayWS = context.RayWS;
                 var pos3 = rayWS.Position;
                 Vector3.TransformCoordinate(ref clickPoint3, ref svpm, out var clickPoint);
                 Vector3.TransformCoordinate(ref pos3, ref svpm, out pos3);
@@ -2138,14 +2143,15 @@ namespace HelixToolkit.UWP
             return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderMatrices, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, 
+            ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
             var containment = Bound.Contains(ref sphere);
@@ -2246,19 +2252,20 @@ namespace HelixToolkit.UWP
             InstanceMatrix = instanceMatrix;
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderMatrices, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(HitTestContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="points"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, 
+            ref List<HitTestResult> points, ref bool isIntersect)
         {
             return false;
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderMatrices, object, Geometry3D, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(HitTestContext, object, Geometry3D, Matrix, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -2270,8 +2277,8 @@ namespace HelixToolkit.UWP
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
-            ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+        public override bool HitTestCurrentNodeExcludeChild(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
+            ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
             if (!this.treeBuilt)
@@ -2280,6 +2287,7 @@ namespace HelixToolkit.UWP
             }
             bool isHit = false;
             var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var rayWS = context.RayWS;
             if (rayWS.Intersects(ref bound))
             {
                 isIntersect = true;

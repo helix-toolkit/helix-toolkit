@@ -123,15 +123,17 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
             {
-                RemoveAndDispose(ref rasterState);
-                RemoveAndDispose(ref invertCullModeState);
-                rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
+                var newRasterState = EffectTechnique.EffectsManager.StateManager.Register(description);
                 var invCull = description;
                 if(description.CullMode != CullMode.None)
                 {
                     invCull.CullMode = description.CullMode == CullMode.Back ? CullMode.Front : CullMode.Back;
                 }
-                invertCullModeState = Collect(EffectTechnique.EffectsManager.StateManager.Register(invCull));
+                var newInvertCullModeState = EffectTechnique.EffectsManager.StateManager.Register(invCull);
+                RemoveAndDispose(ref rasterState);
+                RemoveAndDispose(ref invertCullModeState);
+                rasterState = Collect(newRasterState);
+                invertCullModeState = Collect(newInvertCullModeState);
                 return true;
             }
             /// <summary>

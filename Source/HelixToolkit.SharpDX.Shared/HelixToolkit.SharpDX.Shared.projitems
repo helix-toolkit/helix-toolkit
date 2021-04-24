@@ -94,6 +94,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Color4Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataStreamExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\IRenderMetricesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IViewportExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PointerSizeHelpers.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPostEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderMatrices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\ITextureModelRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IViewport3DX.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCoreParams.cs" />
@@ -349,6 +351,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ElementsBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\FastList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\FrameStatistics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\ArevaloRectanglePacker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImagePacker\ImagePacker.cs" />
@@ -386,7 +389,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\StateProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ShaderResourceViewProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ScreenCapture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureFileLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureModelRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TreeTraverser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\UAVBufferViewProxy.cs" />
