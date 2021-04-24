@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 1. Improves texture loading. Re-implemented `TextureModel` and provides `ITextureInfoLoader` interface to allow user defined texture repository.(WPF.SharpDX/UWP/Core) 
 1. Auto caching `Stream` and `TextureModel` pair to avoid duplicated texture resources.(WPF.SharpDX/UWP/Core) 
 1. `TextureModel` changes to be `Guid` based. `TextureModel` with same `Guid` will be treated as same texture.(WPF.SharpDX/UWP/Core) 
-1. *Breaking Change:* Aggregate hit test function parameters into single hit test context. (WPF.SharpDX/UWP/Core) 
+1. Aggregate hit test function parameters into single hit test context. (WPF.SharpDX/UWP/Core) 
 1. Move FXAA to the end of rendering, so FXAA applies onto screen spaced object. (WPF.SharpDX/UWP/Core)
 1. Add preliminary hit check with hit thickness for PointNode. (WPF.SharpDX/UWP/Core)
 
@@ -22,6 +22,9 @@ All notable changes to this project will be documented in this file.
 1. Fixed bounding box is not updated properly. #1555 (WPF.SharpDX/UWP/Core) 
 1. Fixed Frustum test bug. (WPF.SharpDX/UWP/Core) 
 1. Fixed shadow map OrthoWidth dependency property is setting to wrong property in scene node.(WPF.SharpDX/UWP)
+
+### Breaking Change
+1. Hit test function signature has been changed.
 
 ## [2.15.0] - 2021-02-20
 ### Added
