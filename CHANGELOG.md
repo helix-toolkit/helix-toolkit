@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.16.0] - 2021-04-24
+## [2.16.1] - 2021-05-02
 ### Fixed
 1. Fix RenderContext.BoundingFrustum for non-perspective cameras.  (WPF.SharpDX/UWP/Core) 
 1. Handle too many SurfaceD3D_IsFrontBufferAvailableChanged.  (WPF.SharpDX/UWP/Core) 
