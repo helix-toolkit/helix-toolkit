@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [2.16.0] - 2021-04-24
+### Fixed
+1. Fix RenderContext.BoundingFrustum for non-perspective cameras.  (WPF.SharpDX/UWP/Core) 
+1. Handle too many SurfaceD3D_IsFrontBufferAvailableChanged.  (WPF.SharpDX/UWP/Core) 
+
+## [2.16.0] - 2021-04-24
 ### Added
 1. Adds coordinate system axis color dependency properties for Viewport3DX. (WPF.SharpDX/UWP)
 1. Support for loading .obj and .mtl from stream. (WPF)
