@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class ShadowMap3D : Element3D
     {
-        
+
         /// <summary>
         /// The resolution property
         /// </summary>
@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The bias property
         /// </summary>
         public static readonly DependencyProperty BiasProperty =
-                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.0015, (d, e)=>
+                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.0015, (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as ShadowMapNode).Bias = (float)(double)e.NewValue;
                 }));
@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The intensity property
         /// </summary>
         public static readonly DependencyProperty IntensityProperty =
-                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.5, (d, e)=>
+                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.5, (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as ShadowMapNode).Intensity = (float)(double)e.NewValue;
                 }));
@@ -100,6 +100,21 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Element3DCore).SceneNode as ShadowMapNode).NearField = (float)(double)e.NewValue;
             }));
+
+        public static readonly DependencyProperty AutoCoverCompleteSceneProperty =
+            DependencyProperty.Register("AutoCoverCompleteScene", typeof(bool), typeof(ShadowMap3D), new PropertyMetadata(false, (d, e) => {
+
+            }));
+
+
+
+
+        // Using a DependencyProperty as the backing store for IsSceneDynamic.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsSceneDynamicProperty =
+            DependencyProperty.Register("IsSceneDynamic", typeof(bool), typeof(ShadowMap3D), new PropertyMetadata(false, (d, e) => {
+            
+            }));
+
 
 
         /// <summary>
@@ -186,6 +201,45 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(LightCameraProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether shadow map should automatically cover complete scene. Only effective with directional light.
+        /// <para>Limitation: Currently unable to properly cover BoneSkinned model animation.</para>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [automaticcally cover complete scene]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AutoCoverCompleteScene
+        {
+            get
+            {
+                return (bool)GetValue(AutoCoverCompleteSceneProperty);
+            }
+            set
+            {
+                SetValue(AutoCoverCompleteSceneProperty, value);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the scene is dynamic. Only effective if <see cref="AutoCoverCompleteScene"/> is true.
+        /// <para>Setting to true will force shadow map to update the shadow camera for each frame. May impact the performance.</para>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if scene is dynamic; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsSceneDynamic
+        {
+            get
+            {
+                return (bool)GetValue(IsSceneDynamicProperty);
+            }
+            set
+            {
+                SetValue(IsSceneDynamicProperty, value);
+            }
+        }
+
         protected override SceneNode OnCreateSceneNode()
         {
             return new ShadowMapNode();
@@ -206,6 +260,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.OrthoWidth = (float)OrthoWidth;
                 n.FarField = (float)FarFieldDistance;
                 n.NearField = (float)NearFieldDistance;
+                n.AutoCoverCompleteScene = AutoCoverCompleteScene;
+                n.IsSceneDynamic = IsSceneDynamic;
             }
             base.AssignDefaultValuesToSceneNode(core);
         }

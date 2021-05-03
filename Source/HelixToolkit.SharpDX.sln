@@ -135,12 +135,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.Native.ShaderB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MorphTargetAnimationDemo", "Examples\WPF.SharpDX\MorphTargetAnimation\MorphTargetAnimationDemo.csproj", "{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.SharpDX.Core.Wpf", "HelixToolkit.SharpDX.Core.Wpf\HelixToolkit.SharpDX.Core.Wpf.csproj", "{3442C8B8-68B2-44CA-B61F-386851C484DC}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
 		HelixToolkit.Wpf.SharpDX.Shared\HelixToolkit.Wpf.SharpDX.Shared.projitems*{1bd60704-10f4-45ef-ac5c-083350b3012b}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Assimp.Shared\HelixToolkit.SharpDX.Assimp.Shared.projitems*{24b939fb-0696-472f-90a5-84cc393ead0c}*SharedItemsImports = 5
+		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{3442c8b8-68b2-44ca-b61f-386851c484dc}*SharedItemsImports = 5
+		HelixToolkit.Wpf.SharpDX.Shared\HelixToolkit.Wpf.SharpDX.Shared.projitems*{3442c8b8-68b2-44ca-b61f-386851c484dc}*SharedItemsImports = 5
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{363664d9-5f18-45c7-b937-2dcee6f93261}*SharedItemsImports = 5
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{363664d9-5f18-45c7-b937-2dcee6f93261}*SharedItemsImports = 5
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
@@ -1238,6 +1242,26 @@ Global
 		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|x64.Build.0 = Release|Any CPU
 		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|x86.ActiveCfg = Release|Any CPU
 		{1D2B4988-A4CC-4C87-BE4F-7E1210E2F21F}.Release|x86.Build.0 = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|x64.Build.0 = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|ARM.Build.0 = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|ARM64.Build.0 = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|x64.ActiveCfg = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|x64.Build.0 = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{3442C8B8-68B2-44CA-B61F-386851C484DC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
