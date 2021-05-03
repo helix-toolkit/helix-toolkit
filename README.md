@@ -100,7 +100,7 @@ Please use the following template to report bugs.
 - [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.16.1)
 
 #### 2021-04-24
-[v2.16.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.16.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+[v2.16.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/V2.16.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.16.0)
 - [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.16.0)
 - [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.16.0)
