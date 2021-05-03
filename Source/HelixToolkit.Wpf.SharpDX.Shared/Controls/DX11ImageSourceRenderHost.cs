@@ -110,13 +110,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 
+            private bool lastSurfaceD3DIsFrontBufferAvailable;
             private void SurfaceD3D_IsFrontBufferAvailableChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
             {
-                if (EffectsManager == null)
+                bool newValue = (bool)(e.NewValue);
+                if (EffectsManager == null ||newValue==lastSurfaceD3DIsFrontBufferAvailable)
                 {
                     return;
                 }
-                Logger.Log(HelixToolkit.Logger.LogLevel.Warning, $"SurfaceD3D front buffer changed. Value = {(bool)e.NewValue}");
+               
+                Logger.Log(HelixToolkit.Logger.LogLevel.Warning, $"SurfaceD3D front buffer changed. Value = {newValue}, last value {lastSurfaceD3DIsFrontBufferAvailable}");
                 if (surfaceD3D != null)
                 {
                     hasBackBuffer = false;
@@ -124,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
                     RemoveAndDispose(ref surfaceD3D);
                 }
-                if ((bool)e.NewValue)
+                if (newValue)
                 {
                     frontBufferChange = false;
                     try
@@ -154,6 +157,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         EndD3D();
                     }
                 }
+
+                lastSurfaceD3DIsFrontBufferAvailable = newValue;
             }
 
             protected override void OnDispose(bool disposeManagedResources)
