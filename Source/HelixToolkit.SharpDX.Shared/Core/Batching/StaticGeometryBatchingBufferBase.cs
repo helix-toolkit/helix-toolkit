@@ -209,11 +209,12 @@ namespace HelixToolkit.UWP
             /// <param name="deviceResources">The device resources.</param>
             /// <returns></returns>
             public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
-            {        
-                if (!Commit(context) && vertexBufferBindings.Length > 0)
+            {
+                Commit(context);
+                if (vertexBufferBindings.Length > 0)
                 {
                     context.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
-                    ++vertexBufferStartSlot;
+                    vertexBufferStartSlot += vertexBufferBindings.Length;
                 }
                 else
                 {
