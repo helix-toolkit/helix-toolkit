@@ -172,7 +172,8 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static bool UnProject(this IViewport3DX viewport, Vector2 point2d, out Ray ray)
         {
-            if (viewport.RenderHost != null)
+            var renderContext = viewport.RenderHost?.RenderContext;
+            if (renderContext != null)
             {
                 return viewport.RenderHost.RenderContext.UnProject(point2d, out ray);
             }
