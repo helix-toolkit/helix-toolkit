@@ -157,8 +157,10 @@ namespace PointsAndLinesDemo
 
             if (!this.ShowScreenSpaceLines3D && this.screenSpaceLines != null)
             {
-                View1.Children.Remove(this.screenSpaceLines);
-                this.screenSpaceLines = null;
+                /* Please close and reopen the Window to remove screenSpaceLines. */
+                //this.screenSpaceLines.IsRendering = false; // property IsRendering does not exist
+                //View1.Children.Remove(this.screenSpaceLines);
+                //this.screenSpaceLines = null;
             }
 
             if (this.ShowWireLines && this.wireLines == null)

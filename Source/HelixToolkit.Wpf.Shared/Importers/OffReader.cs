@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf
     /// </remarks>
     public class OffReader : ModelReader
     {
-        private static readonly char[] Delimiters = new char[] { ' ' };
+        private static readonly char[] Delimiters = new char[] { ' ', '\t' };
         /// <summary>
         /// Initializes a new instance of the <see cref="OffReader" /> class.
         /// </summary>
