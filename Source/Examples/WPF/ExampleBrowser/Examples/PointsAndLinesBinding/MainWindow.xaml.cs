@@ -120,12 +120,12 @@ namespace PointsAndLinesBinding
         {
             if (!this.ShowLinesVisual3D)
             {
-                this.LinePoints.Clear();
+                this.LinePoints = new Point3DCollection();
             }
 
             if (!this.ShowPointsVisual3D)
             {
-                this.Points.Clear();
+                this.Points = new Point3DCollection();
             }
 
             if (this.ShowLinesVisual3D || this.ShowPointsVisual3D)

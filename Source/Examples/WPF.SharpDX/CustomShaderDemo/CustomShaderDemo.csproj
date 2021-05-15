@@ -154,7 +154,6 @@
     <Content Include="Shaders\CommonBuffers.hlsl" />
     <Content Include="Shaders\DataStructs.hlsl" />
     <Content Include="Shaders\PerlinNoise3D.hlsl" />
-    <Content Include="Shaders\psCustomPoint.hlsl" />
     <HLSLShader Include="Shaders\psMeshDataSampling.hlsl">
       <ShaderProfile>ps_4_0</ShaderProfile>
     </HLSLShader>

@@ -9,9 +9,6 @@
     <Import_RootNamespace>HelixToolkit.Wpf.SharpDX.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Model\Camera\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\CompositionTargetEX.cs" />
