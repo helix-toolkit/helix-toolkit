@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+### Added
+1. Adds `TopMostGroupNode` and `TopMostGroup3D` to support top most rendering. (***Limitations:*** Top most meshes are rendered at same level as screen spaced items, which are not supported by post effects and render ordering.) (WPF.SharpDX/UWP/Core)
+1. Add supprot for shadow map to automatically cover complete scene. (***Limitations:*** May not be able to properly cover the scene if contains boneskinned animation.) (WPF.SharpDX/UWP/Core) 
+
+### Fixed
+1. Added null check in IRenderMetricesExtensions.UnProject().(WPF.SharpDX/UWP/Core)
+1. Fix BatchedMeshGeometryModel3D blinking when BatchedGeometries update.(WPF.SharpDX/UWP/Core)
+1. Small problem in PointAndLinesBinding example, SetPoints() method.(WPF)
+1. Fixed glitches in various examples and project build.(WPF, WPF.SharpDX)
+
 ## [2.16.1] - 2021-05-02
 ### Fixed
 1. Fix RenderContext.BoundingFrustum for non-perspective cameras.  (WPF.SharpDX/UWP/Core) 
