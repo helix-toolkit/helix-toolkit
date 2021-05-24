@@ -561,6 +561,8 @@ namespace HelixToolkit.UWP
             private readonly Func<IDevice3DResources, IRenderer> createRendererFunction;
 
             public event EventHandler<BoolArgs> FrustumEnabledChanged;
+
+            public event EventHandler SceneGraphUpdated;
     #endregion
 
     #region Private variables
@@ -1093,6 +1095,11 @@ namespace HelixToolkit.UWP
                         EffectsManager?.Reinitialize();
                     }
                 }, null);
+            }
+
+            protected void TriggerSceneGraphUpdated()
+            {
+                SceneGraphUpdated?.Invoke(this, EventArgs.Empty);
             }
             /// <summary>
             /// Releases unmanaged and - optionally - managed resources.

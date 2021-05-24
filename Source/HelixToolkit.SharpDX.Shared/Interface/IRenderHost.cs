@@ -355,7 +355,10 @@ namespace HelixToolkit.UWP
         /// The render buffer.
         /// </value>
         DX11RenderBufferProxyBase RenderBuffer { get; }
-
+        /// <summary>
+        /// Occurs when [scene graph updated].
+        /// </summary>
+        event EventHandler SceneGraphUpdated;
         /// <summary>
         /// Clears the render target.
         /// </summary>

@@ -41,6 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\AxisPlaneGridModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointMaterialGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\TopMostGroup3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectBloom.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />

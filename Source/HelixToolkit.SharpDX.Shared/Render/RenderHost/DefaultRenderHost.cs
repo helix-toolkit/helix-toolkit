@@ -220,7 +220,10 @@ namespace HelixToolkit.UWP
                 base.PreRender(invalidateSceneGraph, invalidatePerFrameRenderables);
 
                 SeparateRenderables(RenderContext, invalidateSceneGraph, invalidatePerFrameRenderables);
-
+                if (invalidateSceneGraph)
+                {
+                    TriggerSceneGraphUpdated();
+                }
                 asyncTask = Task.Factory.StartNew(() =>
                 {
                     renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
