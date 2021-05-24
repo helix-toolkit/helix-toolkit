@@ -65,19 +65,22 @@
                 CullMode="Back"
                 Geometry="{Binding SphereModel}"
                 Material="{Binding EarthMaterial}" />
-            <hx:BillboardTextModel3D FixedSize="False" Geometry="{Binding FlagsBillboard}" />
-            <hx:BillboardTextModel3D
-                FixedSize="False"
-                Geometry="{Binding SelectedFlagBillboard}"
-                IsHitTestVisible="False" />
-            <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards}" />
-            <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards2}" />
-            <hx:BillboardTextModel3D
-                FixedSize="True"
-                Geometry="{Binding BatchedText}"
-                IsHitTestVisible="False" />
+            <hx:TopMostGroup3D x:Name="topMostGroup" EnableTopMost="False">
+                <hx:BillboardTextModel3D FixedSize="False" Geometry="{Binding FlagsBillboard}" />
+                <hx:BillboardTextModel3D
+                    FixedSize="False"
+                    Geometry="{Binding SelectedFlagBillboard}"
+                    IsHitTestVisible="False" />
+                <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards}" />
+                <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding LandmarkBillboards2}" />
+                <hx:BillboardTextModel3D
+                    FixedSize="True"
+                    Geometry="{Binding BatchedText}"
+                    IsHitTestVisible="False" />
+            </hx:TopMostGroup3D>
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
+            <CheckBox IsChecked="{Binding ElementName=topMostGroup, Path=EnableTopMost}">Billboard Top most</CheckBox>
             <TextBlock Margin="2" Foreground="Blue">Drag Flag onto Earth</TextBlock>
             <Separator />
             <ListBox

@@ -48,6 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\DynamicCubeMapCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\EmptyRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\AxisPlaneGridCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\TopMostMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingBillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\DirectionalLightCore.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ContinuousRenderNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\DynamicCodeSurface3DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\AxisPlaneGridNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\TopMostGroupNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenQuadNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Sprite2DNode.cs" />
