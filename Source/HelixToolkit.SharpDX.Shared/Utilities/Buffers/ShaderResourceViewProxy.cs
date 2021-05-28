@@ -202,7 +202,8 @@ namespace HelixToolkit.UWP
                     }
                     finally
                     {
-                        handle.Free();
+                        if (handle.IsAllocated)
+                            handle.Free();
                     }
                 }
                 return true;
