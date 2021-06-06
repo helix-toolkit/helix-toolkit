@@ -34,7 +34,7 @@ namespace HelixToolkit.UWP
         public event EventHandler<BoolArgs> Disposed;
 
 
-        private readonly HashSet<IDisposable> disposables = new HashSet<IDisposable>();
+        private readonly Dictionary<IDisposable, int> disposables = new Dictionary<IDisposable, int>();
 
         /// <summary>
         /// Gets the number of elements to dispose.
@@ -56,7 +56,11 @@ namespace HelixToolkit.UWP
             var arr = disposables.ToArray();
             foreach(var valueToDispose in arr)
             {
-                valueToDispose.Dispose();
+                /// Must dispose N times to properly decrement reference counter inside <see cref="ReferenceCountDisposeObject"/> type objects.
+                for (int i = 0; i < valueToDispose.Value; ++i)
+                {
+                    valueToDispose.Key.Dispose();
+                }
             }
             disposables.Clear();
         }
@@ -73,18 +77,32 @@ namespace HelixToolkit.UWP
 
         /// <summary>
         /// Adds a <see cref="IDisposable"/> object or a <see cref="IntPtr"/> allocated using <see cref="global::SharpDX.Utilities.AllocateMemory"/> to the list of the objects to dispose.
+        /// <para><see cref="ReferenceCountDisposeObject"/> type object can be collected multiple times, but make sure its reference counter has been incremented accordingly before collecting.</para>
         /// </summary>
         /// <param name="toDispose">To dispose.</param>
+        /// <exception cref="InvalidOperationException">Throws when object is not a <see cref="ReferenceCountDisposeObject"/> and being collected more than once.</exception>
         /// <exception cref="ArgumentException">If toDispose argument is not IDisposable or a valid memory pointer allocated by <see cref="global::SharpDX.Utilities.AllocateMemory"/></exception>
         public T Collect<T>(T toDispose)
         {
             if(toDispose == null)
             { return default(T); }
-            else if(toDispose is IDisposable disposible)
+            else if(toDispose is IDisposable disposable)
             {
-                if (!Equals(toDispose, default(T)) && !disposables.Contains(disposible))
+                if (!Equals(toDispose, default(T)))
                 {
-                    disposables.Add(disposible);
+                    bool hasObj = disposables.TryGetValue(disposable, out var count);
+                    if (!hasObj) // If object is not in collections, simply adds it.
+                    {
+                        disposables.Add(disposable, 1);
+                    }
+                    else if (toDispose is ReferenceCountDisposeObject) // Increment the counter, so object will be disposed N times during DisposeAndClear.
+                    {
+                        disposables[disposable] = ++count;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Object has already been added to disposable collection.");
+                    }
                 }
                 return toDispose;
             }
@@ -98,13 +116,11 @@ namespace HelixToolkit.UWP
         /// Dispose a disposable object and set the reference to null. Removes this object from this instance..
         /// </summary>
         /// <param name="objectToDispose">Object to dispose.</param>
-        public void RemoveAndDispose<T>(ref T objectToDispose)
+        public void RemoveAndDispose<T>(ref T objectToDispose) where T : IDisposable
         {
-            if (objectToDispose != null && objectToDispose is IDisposable disposible)
+            if (Remove(objectToDispose) >= 0)
             {
-                Remove(disposible);
-                // Dispose the component
-                disposible.Dispose();
+                (objectToDispose as IDisposable).Dispose();
                 objectToDispose = default(T);
             }
         }
@@ -114,15 +130,25 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="toDisposeArg">To dispose.</param>
-        public void Remove<T>(T toDisposeArg)
+        private int Remove<T>(T toDisposeArg) where T : IDisposable
         {
-            if (toDisposeArg is IDisposable disposible)
+            if (toDisposeArg is IDisposable disposable && disposables.TryGetValue(disposable, out int count))
             {
-                disposables.Remove(disposible);
+                --count;
+                if (count == 0) // Removes it only counter becomes 0.
+                {
+                    disposables.Remove(disposable);
+                }
+                else
+                {
+                    disposables[disposable] = count;
+                }
+                return count;
             }
+            return -1;
         }
 
-        #region IDisposible
+        #region Idisposable
 
         ///// <summary>
         ///// Releases unmanaged resources and performs other cleanup operations before the
@@ -207,7 +233,7 @@ namespace HelixToolkit.UWP
         public event EventHandler<BoolArgs> Disposed;
 
 
-        private readonly HashSet<IDisposable> disposables = new HashSet<IDisposable>();
+        private readonly Dictionary<IDisposable, int> disposables = new Dictionary<IDisposable, int>();
 
         /// <summary>
         /// Gets the number of elements to dispose.
@@ -229,7 +255,10 @@ namespace HelixToolkit.UWP
             var arr = disposables.ToArray();
             foreach (var valueToDispose in arr)
             {
-                valueToDispose.Dispose();
+                for (int i = 0; i < valueToDispose.Value; ++i)
+                {
+                    valueToDispose.Key.Dispose();
+                }
             }
             disposables.Clear();
         }
@@ -246,18 +275,32 @@ namespace HelixToolkit.UWP
 
         /// <summary>
         /// Adds a <see cref="IDisposable"/> object or a <see cref="IntPtr"/> allocated using <see cref="global::SharpDX.Utilities.AllocateMemory"/> to the list of the objects to dispose.
+        /// <para><see cref="ReferenceCountDisposeObject"/> type object can be collected multiple times, but make sure its reference counter has been incremented accordingly before collecting.</para>
         /// </summary>
         /// <param name="toDispose">To dispose.</param>
+        /// <exception cref="InvalidOperationException">Throws when object is not a <see cref="ReferenceCountDisposeObject"/> and being collected more than once.</exception>
         /// <exception cref="ArgumentException">If toDispose argument is not IDisposable or a valid memory pointer allocated by <see cref="global::SharpDX.Utilities.AllocateMemory"/></exception>
         public T Collect<T>(T toDispose)
         {
             if (toDispose == null)
             { return default(T); }
-            else if (toDispose is IDisposable disposible)
+            else if (toDispose is IDisposable disposable)
             {
-                if (!Equals(toDispose, default(T)) && !disposables.Contains(disposible))
+                if (!Equals(toDispose, default(T)))
                 {
-                    disposables.Add(disposible);
+                    bool hasObj = disposables.TryGetValue(disposable, out var count);
+                    if (!hasObj)
+                    {
+                        disposables.Add(disposable, 1);
+                    }
+                    else if (toDispose is ReferenceCountDisposeObject)
+                    {
+                        disposables[disposable] = ++count;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Object has already been added to disposable collection.");
+                    }
                 }
                 return toDispose;
             }
@@ -271,13 +314,11 @@ namespace HelixToolkit.UWP
         /// Dispose a disposable object and set the reference to null. Removes this object from this instance..
         /// </summary>
         /// <param name="objectToDispose">Object to dispose.</param>
-        public void RemoveAndDispose<T>(ref T objectToDispose)
+        public void RemoveAndDispose<T>(ref T objectToDispose) where T : IDisposable
         {
-            if (objectToDispose != null && objectToDispose is IDisposable disposible)
+            if (Remove(objectToDispose) >= 0)
             {
-                Remove(disposible);
-                // Dispose the component
-                disposible.Dispose();
+                (objectToDispose as IDisposable).Dispose();
                 objectToDispose = default(T);
             }
         }
@@ -287,15 +328,26 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="toDisposeArg">To dispose.</param>
-        public void Remove<T>(T toDisposeArg)
+        /// <returns></returns>
+        private int Remove<T>(T toDisposeArg) where T : IDisposable
         {
-            if (toDisposeArg is IDisposable disposible)
+            if (toDisposeArg is IDisposable disposable && disposables.TryGetValue(disposable, out int value))
             {
-                disposables.Remove(disposible);
+                --value;
+                if (value == 0)
+                {
+                    disposables.Remove(disposable);
+                }
+                else
+                {
+                    disposables[disposable] = value;
+                }
+                return value;
             }
+            return -1;
         }
 
-        #region IDisposible
+        #region Idisposable
 
         ///// <summary>
         ///// Releases unmanaged resources and performs other cleanup operations before the

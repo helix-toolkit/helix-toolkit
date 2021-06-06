@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -14,13 +15,13 @@ namespace HelixToolkit.UWP
 #endif
 {
     namespace ShaderManager
-    {
+    {      
         using Shaders;
         using Utilities;
         /// <summary>
         /// 
         /// </summary>
-        public interface IShaderPoolManager
+        public interface IShaderPoolManager : IDisposable
         {
             int Count { get; }
             /// <summary>
@@ -39,7 +40,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public interface IStatePoolManager
+        public interface IStatePoolManager : IDisposable
         {
             /// <summary>
             /// Gets the blend state pool.

@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
-
+using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -71,7 +71,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public interface IRenderer
+        public interface IRenderer : IDisposable
         {
             /// <summary>
             /// Default ImmediateContext. Same as Device.ImmediateContext.

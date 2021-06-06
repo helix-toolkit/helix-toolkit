@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP
     using System.IO;
     using Utilities;
     using Model;
-    public interface ITextureResourceManager
+    public interface ITextureResourceManager : IDisposable
     {
         int Count { get; }
         /// <summary>

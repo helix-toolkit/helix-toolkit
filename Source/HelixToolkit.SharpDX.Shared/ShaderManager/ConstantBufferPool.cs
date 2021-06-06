@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Pool to store and share constant buffers. Do not dispose constant buffer object externally.
         /// </summary>
-        public interface IConstantBufferPool
+        public interface IConstantBufferPool : IDisposable
         {
             /// <summary>
             /// Gets the count.
