@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    public interface IMaterialVariablePool
+    public interface IMaterialVariablePool : IDisposable
     {
         int Count { get; }
         MaterialVariable Register(IMaterial material, IRenderTechnique technique);
