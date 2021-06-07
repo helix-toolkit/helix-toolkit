@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 1. Fix BatchedMeshGeometryModel3D blinking when BatchedGeometries update.(WPF.SharpDX/UWP/Core)
 1. Small problem in PointAndLinesBinding example, SetPoints() method.(WPF)
 1. Fixed glitches in various examples and project build.(WPF, WPF.SharpDX)
+1. Fix memory leak if same reference counted object gets collected multiple times.(WPF.SharpDX/UWP/Core)
 
 ## [2.16.1] - 2021-05-02
 ### Fixed
