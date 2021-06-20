@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <typeparam name="StateType">The type of the tate type.</typeparam>
-        public abstract class StateProxy<StateType> : IDisposable where StateType : ComObject
+        public abstract class StateProxy<StateType> : ReferenceCountDisposeObject where StateType : ComObject
         {
             /// <summary>
             /// Gets the state.
@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP
 
             public StateProxy(StateType state)
             {
-                this.state = state;
+                this.state = Collect(state);
             }
 
             /// <summary>
@@ -46,48 +46,6 @@ namespace HelixToolkit.UWP
             {
                 return proxy.State;
             }
-
-            #region IDisposable Support
-            /// <summary>
-            /// Occurs when this instance is fully disposed.
-            /// </summary>
-            public event EventHandler<BoolArgs> Disposed;
-            private int refCounter = 1;
-
-            internal int IncRef()
-            {
-                return Interlocked.Increment(ref refCounter);
-            }
-            /// <summary>
-            /// Forces the dispose.
-            /// </summary>
-            internal void ForceDispose()
-            {
-                Interlocked.Exchange(ref refCounter, 1);
-                Dispose();
-            }
-            private bool disposedValue = false; // To detect redundant calls
-
-            protected virtual void Dispose(bool disposing)
-            {
-                if (Interlocked.Decrement(ref refCounter) == 0 && !disposedValue)
-                {
-                    if (disposing)
-                    {
-                        state?.Dispose();
-                    }
-
-                    disposedValue = true;
-                    Disposed?.Invoke(this, BoolArgs.TrueArgs);
-                }
-            }
-
-            // This code added to correctly implement the disposable pattern.
-            public void Dispose()
-            {
-                Dispose(true);
-            }
-            #endregion
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using SharpDX.Direct3D11;
+using System;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 #endif
@@ -24,7 +25,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public interface IDeviceContextPool
+        public interface IDeviceContextPool : IDisposable
         {
             /// <summary>
             /// Gets this instance.

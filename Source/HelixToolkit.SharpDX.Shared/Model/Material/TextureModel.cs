@@ -34,6 +34,7 @@ namespace HelixToolkit.UWP
         internal sealed class NullLoader : ITextureInfoLoader
         {
             public static readonly NullLoader Null = new NullLoader();
+
             public void Complete(Guid id, TextureInfo info, bool succeeded)
             {
 
@@ -44,15 +45,18 @@ namespace HelixToolkit.UWP
                 return TextureInfo.Null;
             }
         }
+
         private sealed class StreamLoader : ITextureInfoLoader
         {
             private readonly TextureInfo info;
             private readonly bool autoClose;
+
             public StreamLoader(Stream stream, bool autoClose)
             {
                 info = new TextureInfo(stream);
                 this.autoClose = autoClose;
             }
+
             public void Complete(Guid id, TextureInfo info, bool succeeded)
             {
                 if (autoClose)
@@ -70,13 +74,82 @@ namespace HelixToolkit.UWP
         private sealed class Color4ArrayLoader : ITextureInfoLoader
         {
             private readonly TextureInfo info;
+
+            public Color4ArrayLoader(Color4[] data, int width)
+            {
+                info = new TextureInfo(data, width);
+            }
+
             public Color4ArrayLoader(Color4[] data, int width, int height)
             {
                 info = new TextureInfo(data, width, height);
             }
 
+            public Color4ArrayLoader(Color4[] data, int width, int height, int depth)
+            {
+                info = new TextureInfo(data, width, height, depth);
+            }
+
             public void Complete(Guid id, TextureInfo info, bool succeeded)
             {               
+            }
+
+            public TextureInfo Load(Guid id)
+            {
+                return info;
+            }
+        }
+
+        private sealed class ByteArrayLoader : ITextureInfoLoader
+        {
+            private readonly TextureInfo info;
+
+            public ByteArrayLoader(byte[] data, Format pixelFormat, int width)
+            {
+                info = new TextureInfo(data, pixelFormat, width);
+            }
+
+            public ByteArrayLoader(byte[] data, Format pixelFormat, int width, int height)
+            {
+                info = new TextureInfo(data, pixelFormat, width, height);
+            }
+
+            public ByteArrayLoader(byte[] data, Format pixelFormat, int width, int height, int depth)
+            {
+                info = new TextureInfo(data, pixelFormat, width, height, depth);
+            }
+
+            public void Complete(Guid id, TextureInfo info, bool succeeded)
+            {
+            }
+
+            public TextureInfo Load(Guid id)
+            {
+                return info;
+            }
+        }
+
+        private sealed class RawDataLoader : ITextureInfoLoader
+        {
+            private readonly TextureInfo info;
+
+            public RawDataLoader(IntPtr data, Format pixelFormat, int width)
+            {
+                info = new TextureInfo(data, pixelFormat, width);
+            }
+
+            public RawDataLoader(IntPtr data, Format pixelFormat, int width, int height)
+            {
+                info = new TextureInfo(data, pixelFormat, width, height);
+            }
+
+            public RawDataLoader(IntPtr data, Format pixelFormat, int width, int height, int depth)
+            {
+                info = new TextureInfo(data, pixelFormat, width, height, depth);
+            }
+
+            public void Complete(Guid id, TextureInfo info, bool succeeded)
+            {
             }
 
             public TextureInfo Load(Guid id)
@@ -154,6 +227,17 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="colorArray">The color array.</param>
         /// <param name="width">The width.</param>
+        /// <exception cref="ArgumentException">Width = {width} does not equal to the Color Array Length {colorArray.Length}</exception>
+        public TextureModel(Color4[] colorArray, int width)
+            : this(Guid.NewGuid(), new Color4ArrayLoader(colorArray, width))
+        {
+
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="colorArray">The color array.</param>
+        /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <exception cref="ArgumentException">Width * Height = {width * height} does not equal to the Color Array Length {colorArray.Length}</exception>
         public TextureModel(Color4[] colorArray, int width, int height)
@@ -161,7 +245,101 @@ namespace HelixToolkit.UWP
         {
 
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="colorArray">The color array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <exception cref="ArgumentException">Width * Height * Depth = {width * height * depth} does not equal to the Color Array Length {colorArray.Length}</exception>
+        public TextureModel(Color4[] colorArray, int width, int height, int depth)
+            : this(Guid.NewGuid(), new Color4ArrayLoader(colorArray, width, height, depth))
+        {
 
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="data">The image data.</param>
+        /// <param name="pixelFormat">The image pixel format.</param>
+        /// <param name="width">The width.</param>
+        /// <exception cref="ArgumentException">Width = {width} does not correspond to the Data Array Length {data.Length}</exception>
+        public TextureModel(byte[] data, Format pixelFormat, int width)
+            : this(Guid.NewGuid(), new ByteArrayLoader(data, pixelFormat, width))
+        {
+
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="data">The image data.</param>
+        /// <param name="pixelFormat">The image pixel format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <exception cref="ArgumentException">Width * Height = {width * height} does not correspond to the Data Array Length {data.Length}</exception>
+        public TextureModel(byte[] data, Format pixelFormat, int width, int height)
+            : this(Guid.NewGuid(), new ByteArrayLoader(data, pixelFormat, width, height))
+        {
+
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="data">The image data.</param>
+        /// <param name="pixelFormat">The image pixel format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <exception cref="ArgumentException">Width * Height * Depth = {width * height * depth} does not correspond to the Data Array Length {data.Length}</exception>
+        public TextureModel(byte[] data, Format pixelFormat, int width, int height, int depth)
+            : this(Guid.NewGuid(), new ByteArrayLoader(data, pixelFormat, width, height, depth))
+        {
+
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="textureFile">The texture file.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="data">The image data.</param>
+        /// <param name="pixelFormat">The image pixel format.</param>
+        /// <param name="width">The width.</param>
+        /// <exception cref="ArgumentException">Width = {width} does not correspond to the Data Length</exception>
+        public TextureModel(IntPtr data, Format pixelFormat, int width)
+            : this(Guid.NewGuid(), new RawDataLoader(data, pixelFormat, width))
+        {
+
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="data">The image data.</param>
+        /// <param name="pixelFormat">The image pixel format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <exception cref="ArgumentException">Width * Height = {width * height} does not correspond to the Data Length</exception>
+        public TextureModel(IntPtr data, Format pixelFormat, int width, int height)
+            : this(Guid.NewGuid(), new RawDataLoader(data, pixelFormat, width, height))
+        {
+
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureModel"/> class.
+        /// </summary>
+        /// <param name="data">The image data.</param>
+        /// <param name="pixelFormat">The image pixel format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="depth">The depth.</param>
+        /// <exception cref="ArgumentException">Width * Height * Depth = {width * height * depth} does not correspond to the Data Length</exception>
+        public TextureModel(IntPtr data, Format pixelFormat, int width, int height, int depth)
+            : this(Guid.NewGuid(), new RawDataLoader(data, pixelFormat, width, height, depth))
+        {
+
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureModel"/> class.
         /// </summary>

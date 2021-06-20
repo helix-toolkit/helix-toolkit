@@ -9,6 +9,7 @@
 
 namespace RubikDemo
 {
+    using System.Text;
     using System.Windows;
     using System.Windows.Input;
 
@@ -56,6 +57,27 @@ namespace RubikDemo
             {
                 cube1.Size--;
                 e.Handled = true;
+            }
+
+            if (e.Key == Key.H)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Keys:");
+                sb.AppendLine("h/H = show info text");
+                sb.AppendLine("l/L = rotate Left");
+                sb.AppendLine("r/R = rotate Right");
+                sb.AppendLine("u/U = rotate Up");
+                sb.AppendLine("d/D = rotate Down");
+                sb.AppendLine("b/B = rotate Back");
+                sb.AppendLine("f/F = rotate Front");
+                sb.AppendLine("Backspace/Escape = undo");
+                sb.AppendLine("Space = do random move");
+                sb.AppendLine("Numpad +/- = change size");
+
+                info.Text = sb.ToString();
+
+                e.Handled = true;
+                return;
             }
 
             cube1.Rotate(e.Key);

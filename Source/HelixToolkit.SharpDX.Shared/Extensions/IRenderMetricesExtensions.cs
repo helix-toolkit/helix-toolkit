@@ -25,6 +25,12 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static bool UnProject(this IRenderMatrices renderMatrices, Vector2 point2d, out Ray ray)//, out Vector3 pointNear, out Vector3 pointFar)
         {
+            if (renderMatrices == null)
+            {
+                ray = new Ray();
+                return false;
+            }
+
             renderMatrices.Update();
             var px = point2d.X;
             var py = point2d.Y;
