@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.17.0] - 2021-06-20
 ### Added
 1. Adds `TopMostGroupNode` and `TopMostGroup3D` to support top most rendering. Ref: #1572 (***Limitations:*** Top most meshes are rendered at same level as screen spaced items, which are not supported by post effects and render ordering.) (WPF.SharpDX/UWP/Core)
 1. Add supprot for shadow map to automatically cover complete scene. (***Limitations:*** May not be able to properly cover the scene if contains boneskinned animation.) (WPF.SharpDX/UWP/Core) 
