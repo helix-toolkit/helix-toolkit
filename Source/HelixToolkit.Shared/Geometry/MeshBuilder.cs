@@ -3943,31 +3943,20 @@ namespace HelixToolkit.Wpf
             }
 
             int index0 = this.positions.Count;
-            foreach (var p in positionsToAppend)
-            {
-                this.positions.Add(p);
-            }
+            this.positions.AddRange(positionsToAppend);
 
             if (this.normals != null && normalsToAppend != null)
             {
-                foreach (var n in normalsToAppend)
-                {
-                    this.normals.Add(n);
-                }
+                this.normals.AddRange(normalsToAppend);                
             }
 
             if (this.textureCoordinates != null && textureCoordinatesToAppend != null)
             {
-                foreach (var t in textureCoordinatesToAppend)
-                {
-                    this.textureCoordinates.Add(t);
-                }
+                this.textureCoordinates.AddRange(textureCoordinatesToAppend);             
             }
 
-            foreach (int i in triangleIndicesToAppend)
-            {
-                this.triangleIndices.Add(index0 + i);
-            }
+            this.triangleIndices.AddRange(triangleIndicesToAppend);
+            System.Threading.Tasks.Parallel.For(index0,index0+ triangleIndicesToAppend.Count-1,i=> { this.triangleIndices[i] += index0; } );
         }
         /// <summary>
         /// Chamfers the specified corner (experimental code).
