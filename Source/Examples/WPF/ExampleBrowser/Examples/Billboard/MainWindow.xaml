@@ -28,9 +28,9 @@
             <ht:RectangleVisual3D Width="0.5" Length="5" Origin="-4.5,50,0.01" LengthDirection="0,1,0" Normal="0,0,1" Material="{ht:Material White}"/>
 
             <!-- Signs, not looking good, but shows how the billboards work -->
-            <ht:BillboardVisual3D Position="6,10,3" Width="40" Height="40" Material="{ht:ImageMaterial Examples/Billboard/roadsign.png, IsEmissive=true}"/>
-            <ht:BillboardVisual3D Position="6,30,3" Width="40" Height="40" Material="{ht:ImageMaterial Examples/Billboard/roadsign.png, IsEmissive=true}"/>
-            <ht:BillboardVisual3D Position="6,50,3" Width="40" Height="40" Material="{ht:ImageMaterial Examples/Billboard/roadsign.png, IsEmissive=true}"/>
+            <ht:BillboardVisual3D Position="6,10,3" Width="40" Height="40" Material="{ht:ImageMaterial 'pack://application:,,,/Examples/Billboard/roadsign.png', IsEmissive=true}"/>
+            <ht:BillboardVisual3D Position="6,30,3" Width="40" Height="40" Material="{ht:ImageMaterial 'pack://application:,,,/Examples/Billboard/roadsign.png', IsEmissive=true}"/>
+            <ht:BillboardVisual3D Position="6,50,3" Width="40" Height="40" Material="{ht:ImageMaterial 'pack://application:,,,/Examples/Billboard/roadsign.png', IsEmissive=true}"/>
  
             <!-- Sign poles -->
             <ht:TruncatedConeVisual3D Origin="6,10,0" Height="3" BaseRadius="0.1" TopRadius="0.1" Material="{ht:Material LightGray}"/>
