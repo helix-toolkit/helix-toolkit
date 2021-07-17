@@ -206,6 +206,35 @@ namespace HelixToolkit.UWP
 
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
+                var normal = Vector3.Zero;
+                switch (UpAxis)
+                {
+                    case Axis.X:
+                        normal = Vector3.UnitX;
+                        break;
+                    case Axis.Y:
+                        normal = Vector3.UnitY;
+                        break;
+                    case Axis.Z:
+                        normal = Vector3.UnitZ;
+                        break;
+                }
+                var plane = new Plane(normal, -Offset);
+                var ray = context.RayWS;
+                if (Collision.RayIntersectsPlane(ref ray, ref plane, out Vector3 point))
+                {
+                    var hitTestResult = new HitTestResult
+                    {
+                        IsValid = true,
+                        NormalAtHit = normal,
+                        Distance = (context.RayWS.Position - point).Length(),
+                        PointHit = point,
+                        ModelHit = WrapperSource
+                    };
+                    hits.Add(hitTestResult);
+                    return true;
+                }
+
                 return false;
             }
         }
