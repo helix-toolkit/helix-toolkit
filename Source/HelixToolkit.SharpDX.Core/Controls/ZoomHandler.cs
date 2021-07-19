@@ -133,7 +133,15 @@ namespace HelixToolkit.SharpDX.Core.Controls
             }
             else if (Camera is OrthographicCameraCore)
             {
-                ZoomByChangingCameraWidth(delta, zoomAround);
+                switch (this.CameraMode)
+                {
+                    case CameraMode.WalkAround:
+                        Camera.Position -= Camera.LookDirection * (float)delta;
+                        break;
+                    default:
+                        this.ZoomByChangingCameraWidth(delta, zoomAround);
+                        break;
+                }
             }
         }
 
@@ -183,20 +191,13 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 }
             }
 
-            switch (CameraMode)
+            if (ChangeCameraDistance(ref delta, zoomAround))
             {
-                case CameraMode.WalkAround:
-                case CameraMode.Inspect:
-                case CameraMode.FixedPosition:
-                    if (ChangeCameraDistance(ref delta, zoomAround))
-                    {
-                        // Modify the camera width
-                        if (Camera is OrthographicCameraCore ocamera)
-                        {
-                            ocamera.Width *= (float)Math.Pow(2.5f, delta);
-                        }
-                    }
-                    break;
+                // Modify the camera width
+                if (Camera is OrthographicCameraCore ocamera)
+                {
+                    ocamera.Width *= (float)Math.Pow(2.5f, delta);
+                }
             }
         }
 
