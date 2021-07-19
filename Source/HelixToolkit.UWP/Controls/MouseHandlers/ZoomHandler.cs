@@ -163,7 +163,15 @@ namespace HelixToolkit.UWP
             }
             else if (this.Camera is OrthographicCamera)
             {
-                this.ZoomByChangingCameraWidth(delta, zoomAround);
+                switch (this.CameraMode)
+                {
+                    case CameraMode.WalkAround:
+                        this.Camera.Position -= this.Camera.CameraInternal.LookDirection * (float)delta;
+                        break;
+                    default:
+                        this.ZoomByChangingCameraWidth(delta, zoomAround);
+                        break;
+                }
             }
         }
 
@@ -216,20 +224,13 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            switch (this.CameraMode)
+            if(ChangeCameraDistance(ref delta, zoomAround))
             {
-                case CameraMode.WalkAround:
-                case CameraMode.Inspect:
-                case CameraMode.FixedPosition:
-                    if(ChangeCameraDistance(ref delta, zoomAround))
-                    {
-                        // Modify the camera width
-                        if (this.Camera is OrthographicCamera ocamera)
-                        {
-                            ocamera.Width *= Math.Pow(2.5, delta);
-                        }
-                    }
-                    break;
+                // Modify the camera width
+                if (this.Camera is OrthographicCamera ocamera)
+                {
+                    ocamera.Width *= Math.Pow(2.5, delta);
+                }
             }
         }
 
