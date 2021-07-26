@@ -32,9 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ZoomHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ZoomRectangleHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\RectangleAdorner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\RenderControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RenderControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\RenderTechniqueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\RenderUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ScreenDuplicationViewport3DX.cs" />
