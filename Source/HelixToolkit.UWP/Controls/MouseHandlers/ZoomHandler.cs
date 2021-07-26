@@ -289,10 +289,7 @@ namespace HelixToolkit.UWP
             var f = Math.Pow(2.5, delta);
             var newRelativePosition = relativePosition * (float)f;
             var newRelativeTarget = relativeTarget * (float)f;
-            if (Controller.ZoomAroundMouseDownPoint && relativeTarget.LengthSquared() > 1e-3)
-            {
-                newRelativeTarget = CalcNewRelativeTargetOrthogonalToLookDirection(newRelativeTarget, relativeTarget);
-            }
+
             var newTarget = zoomAround - newRelativeTarget;
             var newPosition = zoomAround - newRelativePosition;
 
@@ -331,29 +328,6 @@ namespace HelixToolkit.UWP
             this.Camera.LookDirection = newLookDirection;
             this.Camera.Position = newPosition;
             return true;
-        }
-
-        /// <summary>
-        /// changes in lookdirection set the rotation point to wrong position
-        /// Ref: https://github.com/helix-toolkit/helix-toolkit/issues/1068
-        /// </summary>
-        /// <param name="newRelativeTarget"></param>
-        /// <param name="relativeTarget"></param>
-        /// <returns></returns>
-        private Vector3 CalcNewRelativeTargetOrthogonalToLookDirection(Vector3 newRelativeTarget, Vector3 relativeTarget)
-        {
-            var relativeTargetDiff = newRelativeTarget - relativeTarget;
-            var lookDir = Camera.LookDirection;
-
-            var crossProduct = Vector3.Cross(lookDir, relativeTargetDiff);
-            var orthogonalRelativeTargetDiff = Vector3.Cross(crossProduct, lookDir).Normalized();
-
-            // correct length
-            var angle = orthogonalRelativeTargetDiff.AngleBetween(relativeTargetDiff);
-            orthogonalRelativeTargetDiff *= (float)(Math.Cos(angle) * relativeTargetDiff.Length());
-            newRelativeTarget = relativeTarget + orthogonalRelativeTargetDiff;
-
-            return newRelativeTarget;
         }
     }
 }
