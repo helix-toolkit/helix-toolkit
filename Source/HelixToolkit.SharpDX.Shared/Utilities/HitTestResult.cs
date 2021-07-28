@@ -76,10 +76,10 @@ namespace HelixToolkit.UWP
             }
         }
         /// <summary>
-        /// Shadows copy all the properties from another result.
+        /// Shallow copy all the properties from another result.
         /// </summary>
         /// <param name="result">The result.</param>
-        public void ShadowCopy(HitTestResult result)
+        public void ShallowCopy(HitTestResult result)
         {
             Distance = result.Distance;
             ModelHit = result.ModelHit;
@@ -148,7 +148,7 @@ namespace HelixToolkit.UWP
         {
             MeshConfigIndex = idx;
             Config = config;
-            ShadowCopy(result);
+            ShallowCopy(result);
         }
     }
 
