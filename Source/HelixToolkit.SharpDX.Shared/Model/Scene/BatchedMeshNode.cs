@@ -715,11 +715,23 @@ namespace HelixToolkit.UWP
                     else
                     {
                         bool isHit = false;
-                        foreach(var geo in Geometries)
+                        for(int i = 0; i < Geometries.Length; ++i)
                         {
+                            int currCount = hits.Count;
+                            ref var geo = ref Geometries[i];
                             if(geo.Geometry is MeshGeometry3D mesh)
                             {
-                                isHit |= mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref hits, WrapperSource);
+                                var hit = mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref hits, WrapperSource);
+                                if (isHit && currCount < hits.Count)
+                                {
+                                    int newCount = hits.Count;
+                                    for (int j = currCount; j < newCount; ++j)
+                                    {
+                                        hits.Add(new BatchedMeshHitTestResult(i, ref geo, hits[j]));
+                                    }
+                                    hits.RemoveRange(currCount, newCount - currCount);
+                                }
+                                isHit |= hit;
                             }
                         }
                         return isHit;
