@@ -75,6 +75,20 @@ namespace HelixToolkit.UWP
                 return this.Distance.CompareTo(other.Distance);
             }
         }
+        /// <summary>
+        /// Shallow copy all the properties from another result.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        public void ShallowCopy(HitTestResult result)
+        {
+            Distance = result.Distance;
+            ModelHit = result.ModelHit;
+            NormalAtHit = result.NormalAtHit;
+            IsValid = result.IsValid;
+            Tag = result.Tag;
+            Geometry = result.Geometry;
+            TriangleIndices = result.TriangleIndices;
+        }
 
         /// <summary>
         /// Get a descirption of the HitTestResult
@@ -93,7 +107,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets or sets the index of the line segment that was hit.
         /// </summary>
-        public int LineIndex { get; set; }
+        public int LineIndex { get; set; } = -1;
 
         /// <summary>
         /// Gets or sets the shortest distance between the hit test ray and the line that was hit.
@@ -113,9 +127,29 @@ namespace HelixToolkit.UWP
 
     public class BillboardHitResult : HitTestResult
     {
-        public int TextInfoIndex { set; get; } = 0;
+        public int TextInfoIndex { set; get; } = -1;
         public TextInfo TextInfo { set; get; } = null;
         public BillboardType Type { set; get; }
+    }
+
+    public class BatchedMeshHitTestResult : HitTestResult
+    {
+        public int MeshConfigIndex
+        {
+            get;
+        } = -1;
+
+        public BatchedMeshGeometryConfig Config
+        {
+            get;
+        }
+
+        public BatchedMeshHitTestResult(int idx, ref BatchedMeshGeometryConfig config, HitTestResult result)
+        {
+            MeshConfigIndex = idx;
+            Config = config;
+            ShallowCopy(result);
+        }
     }
 
     /// <summary>
