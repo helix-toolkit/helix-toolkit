@@ -719,10 +719,10 @@ namespace HelixToolkit.UWP
                         {
                             int currCount = hits.Count;
                             ref var geo = ref Geometries[i];
-                            if(geo.Geometry is MeshGeometry3D mesh)
+                            if (geo.Geometry is MeshGeometry3D mesh)
                             {
-                                var hit = mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref hits, WrapperSource);
-                                if (isHit && currCount < hits.Count)
+                                var hasHit = mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref hits, WrapperSource);
+                                if (hasHit && currCount < hits.Count)
                                 {
                                     int newCount = hits.Count;
                                     for (int j = currCount; j < newCount; ++j)
@@ -731,7 +731,7 @@ namespace HelixToolkit.UWP
                                     }
                                     hits.RemoveRange(currCount, newCount - currCount);
                                 }
-                                isHit |= hit;
+                                isHit |= hasHit;
                             }
                         }
                         return isHit;
