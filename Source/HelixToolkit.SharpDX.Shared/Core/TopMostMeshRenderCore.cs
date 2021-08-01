@@ -44,6 +44,8 @@ namespace HelixToolkit.UWP
                 dsView.Dispose();
                 var globalTrans = context.GlobalTransform;
                 globalTransformCB.Upload(deviceContext, ref globalTrans);
+                deviceContext.SetViewport(0, 0, context.ActualWidth, context.ActualHeight);
+                deviceContext.SetScissorRectangle(0, 0, (int)context.ActualWidth, (int)context.ActualHeight);
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
