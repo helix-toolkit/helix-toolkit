@@ -74,13 +74,13 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="x" Margin="5,0,4,0"/>
                     <TextBox Grid.Row="0" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorPosition.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
+                         Text="{Binding Path=CursorPosition.Value.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="y" Margin="5,0,4,0" />
                     <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorPosition.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
+                         Text="{Binding Path=CursorPosition.Value.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="z" Margin="5,0,4,0" />
                     <TextBox Grid.Row="2" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorPosition.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
+                         Text="{Binding Path=CursorPosition.Value.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=0.0}" />
                     <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Cursor" Background="Beige"/>
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Position" Background="Beige"/>
                 </Grid>
@@ -100,13 +100,13 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="x" Margin="5,0,4,0"/>
                     <TextBox Grid.Row="0" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnElementPosition.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
+                         Text="{Binding Path=CursorOnElementPosition.Value.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="y" Margin="5,0,4,0" />
                     <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnElementPosition.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
+                         Text="{Binding Path=CursorOnElementPosition.Value.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="z" Margin="5,0,4,0" />
                     <TextBox Grid.Row="2" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnElementPosition.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
+                         Text="{Binding Path=CursorOnElementPosition.Value.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
                     <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="OnElement" Background="BlanchedAlmond"/>
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Position" Background="BlanchedAlmond"/>
                 </Grid>
@@ -126,13 +126,13 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="x" Margin="5,0,4,0"/>
                     <TextBox Grid.Row="0" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnConstructionPlanePosition.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
+                         Text="{Binding Path=CursorOnConstructionPlanePosition.Value.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="y" Margin="5,0,4,0" />
                     <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnConstructionPlanePosition.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
+                         Text="{Binding Path=CursorOnConstructionPlanePosition.Value.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="z" Margin="5,0,4,0" />
                     <TextBox Grid.Row="2" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnConstructionPlanePosition.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
+                         Text="{Binding Path=CursorOnConstructionPlanePosition.Value.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
                     <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="OnConstructionPlane" Background="Bisque"/>
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Position" Background="Bisque"/>
                 </Grid>
