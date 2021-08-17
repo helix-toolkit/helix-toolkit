@@ -1624,7 +1624,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
         /// </value>
-        [Obsolete("EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
+        [Obsolete("EnableCurrentPosition is now obsolete, please use EnableCursorPosition instead", false)]
         public bool EnableCurrentPosition
         {
             get

@@ -18,31 +18,7 @@
             <Separator/>
             <CheckBox x:Name="cbGrid" Content="Show Grid" Margin="5" IsChecked="True"/>
             <TextBlock  Margin="5" TextWrapping="Wrap"
-                        Text="The blue grid is an element like the sphere. ZoomIn to see the behaviour of 'OnElement Position' when you cross the lines of the Grid." />
-            <Separator/>
-            <CheckBox x:Name="cbConstructionPlane" Content="Show ConstructionPlane" Margin="5"/>
-            <TextBlock  Margin="5" TextWrapping="Wrap"
-                        Text="The construction plane is a virtual plane, which can be set independently from the camera view." />
-            <Grid x:Name="ConstructionPlaneData" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,0,0,0" Background="GhostWhite" Opacity="1" IsHitTestVisible="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition MinWidth="80"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Text="ConstructionPlane" Background="Azure"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Text="Position:" />
-                <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Text="Normal:" />
-
-                <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=ConstructionPlane.Position, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---, UpdateSourceTrigger=PropertyChanged}" />
-
-                <TextBox Grid.Row="2" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=ConstructionPlane.Normal, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---, UpdateSourceTrigger=PropertyChanged}" />
-            </Grid>
+                        Text="The blue grid is an element like the sphere or a box. ZoomIn to see the behaviour of 'OnElement Position' when you cross the lines of the Grid." />
             <Separator/>
             <CheckBox x:Name="cbZoomPoint" Content="Zoom to Mouse Point" Margin="5" IsChecked="{Binding Path=ZoomAroundMouseDownPoint, ElementName=view1}"/>
 
@@ -96,48 +72,40 @@
                     <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
                     <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
                     <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                    <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
+                    <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
                 </hx:Viewport3DX.InputBindings>
                 <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
                 <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding DirectionalLightColor}" />
                 <hx:MeshGeometryModel3D
-                    x:Name="model1"
+                    x:Name="model1red"
                     Geometry="{Binding Model}"
                     Material="{Binding RedMaterial}"
                     Transform="{Binding Model1Transform}" />
                 <hx:MeshGeometryModel3D
-                    x:Name="model2"
+                    x:Name="model2green"
                     Geometry="{Binding Model}"
                     Material="{Binding GreenMaterial}"
                     Transform="{Binding Model2Transform}" />
                 <hx:MeshGeometryModel3D
-                    x:Name="model3"
+                    x:Name="model3blue"
                     Geometry="{Binding Model}"
                     Material="{Binding BlueMaterial}"
                     Transform="{Binding Model3Transform}" />
                 <hx:LineGeometryModel3D
                     x:Name="lines"
                     Geometry="{Binding Lines}"
-                    Thickness="1.5"
+                    Thickness="0.5"
                     Transform="{Binding Model1Transform}"
-                    Color="Black" />
+                    Color="Gray" />
                 <hx:LineGeometryModel3D x:Name="grid" 
                                         Geometry="{Binding Grid}"
                                         Transform="{Binding GridTransform}"
-                                        Color="{Binding GridColor}"
+                                        Smoothness="2"
+                                        Thickness="1.0"
+                                        Color="Blue"
                                         Visibility="{Binding IsChecked,
                                                      ElementName=cbGrid,
                                                      Converter={StaticResource BoolToVisibility}}"/>
-
-                <hx:LineGeometryModel3D x:Name="constructionGrid" 
-                                        Geometry="{Binding ConstructionGrid}"
-                                        Transform="{Binding ConstructionGridTransform}"
-                                        Color="{Binding ConstructionGridColor}"
-                                        Visibility="{Binding IsChecked,
-                                                     ElementName=cbConstructionPlane,
-                                                     Converter={StaticResource BoolToVisibility}}"/>
-
-
             </hx:Viewport3DX>
            
             <StackPanel Orientation="Horizontal">
@@ -192,32 +160,6 @@
                          Text="{Binding Path=CursorOnElementPosition.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
                     <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="OnElement" Background="BlanchedAlmond"/>
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Position" Background="BlanchedAlmond"/>
-                </Grid>
-
-                <Grid x:Name="CursorOnConstructionPlanePositionBlock" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,0,0,0" Background="WhiteSmoke" Opacity="1" IsHitTestVisible="True">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition MinWidth="50"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="x" Margin="5,0,4,0"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnConstructionPlanePosition.X, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="y" Margin="5,0,4,0" />
-                    <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnConstructionPlanePosition.Y, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="z" Margin="5,0,4,0" />
-                    <TextBox Grid.Row="2" Grid.Column="1" BorderThickness="0" TextAlignment="Right" Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
-                         Text="{Binding Path=CursorOnConstructionPlanePosition.Z, ElementName=view1, StringFormat={}{0:f1}, FallbackValue=---}" />
-                    <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="OnConstructionPlane" Background="Bisque"/>
-                    <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Text="Position" Background="Bisque"/>
                 </Grid>
 
                 <Grid x:Name="Old_CurrentPositionBlock" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="40,0,0,0" Background="LightGray" Opacity="1" IsHitTestVisible="True">
