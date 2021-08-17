@@ -249,6 +249,33 @@ namespace HelixToolkit.Wpf.SharpDX
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
+        /// Identifies the <see cref="CursorPosition"/> dependency property.
+        /// </summary>
+        /// <remarks>
+        /// The return value equals ConstructionPlanePosition or CursorModelSnapPosition if CursorSnapToModels is not null.
+        /// </remarks>
+        public static readonly DependencyProperty CursorPositionProperty =
+            DependencyProperty.Register(
+                "CursorPosition",
+                typeof(Point3D?),
+                typeof(Viewport3DX),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
+        /// Identifies the <see cref="CursorOnElementPosition"/> dependency property.
+        /// </summary>
+        /// <remarks>
+        /// This property returns the position of the nearest model.
+        /// </remarks>
+        public static readonly DependencyProperty CursorOnElementPositionProperty =
+            DependencyProperty.Register(
+                "CursorOnElementPosition",
+                typeof(Point3D?),
+                typeof(Viewport3DX),
+                new FrameworkPropertyMetadata(
+                    null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
         /// The default camera property.
         /// </summary>
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
@@ -263,6 +290,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty EnableCurrentPositionProperty = DependencyProperty.Register(
                 "EnableCurrentPosition", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Identifies the <see cref="EnableCursorPosition"/> dependency property.
+        /// It enables (true) or disables (false) the calculation of the cursor position in the 3D Viewport
+        /// </summary>
+        public static readonly DependencyProperty EnableCursorPositionProperty =
+            DependencyProperty.Register(
+                "EnableCursorPosition", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false));
 
         /// <summary>
         /// The EffectsManager property.
@@ -1584,6 +1619,26 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition"/> property is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
+        /// </value>
+        [Obsolete("EnableCurrentPosition is now obsolete, please use CalculateCursorPosition instead", false)]
+        public bool EnableCurrentPosition
+        {
+            get
+            {
+                return (bool)this.GetValue(EnableCurrentPositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(EnableCurrentPositionProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the current position.
         /// </summary>
         /// <value>
@@ -1592,6 +1647,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// The <see cref="EnableCurrentPosition"/> property must be set to true to enable updating of this property.
         /// </remarks>
+        [Obsolete("CurrentPosition is now obsolete, please use CursorPosition instead", false)]
         public Point3D CurrentPosition
         {
             get
@@ -1602,6 +1658,69 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(CurrentPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether calculation of the <see cref="CursorPosition" /> properties is enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
+        /// </value>
+        public bool EnableCursorPosition
+        {
+            get
+            {
+                return (bool)this.GetValue(EnableCursorPositionProperty);
+            }
+
+            set
+            {
+                this.SetValue(EnableCursorPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the current cursor position.
+        /// </summary>
+        /// <value>
+        /// The current cursor position.
+        /// </value>
+        /// <remarks>
+        /// The <see cref="EnableCursorPosition" /> property must be set to true to enable updating of this property.
+        /// </remarks>
+        public Point3D? CursorPosition
+        {
+            get
+            {
+                return (Point3D?)this.GetValue(CursorPositionProperty);
+            }
+
+            private set
+            {
+                this.SetValue(CursorPositionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the current cursor position on the nearest model. If the model is not hit, the position is <c>null</c>.
+        /// </summary>
+        /// <value>
+        /// The position of the model intersection.
+        /// </value>
+        /// <remarks>
+        /// The <see cref="EnableCursorPosition" /> property must be set to <c>true</c> to enable updating of this property.
+        /// </remarks>
+        public Point3D? CursorOnElementPosition
+        {
+            get
+            {
+                return (Point3D?)this.GetValue(CursorOnElementPositionProperty);
+            }
+
+            private set
+            {
+                this.SetValue(CursorOnElementPositionProperty, value);
             }
         }
 
@@ -1639,25 +1758,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
             set { SetValue(EffectsManagerProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether calculation of the <see cref="CurrentPosition"/> property is enabled.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if calculation is enabled; otherwise, <c>false</c> .
-        /// </value>
-        public bool EnableCurrentPosition
-        {
-            get
-            {
-                return (bool)this.GetValue(EnableCurrentPositionProperty);
-            }
-
-            set
-            {
-                this.SetValue(EnableCurrentPositionProperty, value);
-            }
         }
 
         /// <summary>

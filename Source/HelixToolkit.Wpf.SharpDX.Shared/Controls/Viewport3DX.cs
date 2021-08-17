@@ -1065,6 +1065,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="pt">The current mouse hit point.</param>
         private void UpdateCurrentPosition(Point pt)
         {
+            if (this.EnableCursorPosition)
+            {
+                this.CursorOnElementPosition = this.FindNearestPoint(pt);
+                this.CursorPosition = this.UnProjectOnPlane(pt);
+            }
+
             if (this.EnableCurrentPosition)
             {
                 var pos = this.FindNearestPoint(pt);
