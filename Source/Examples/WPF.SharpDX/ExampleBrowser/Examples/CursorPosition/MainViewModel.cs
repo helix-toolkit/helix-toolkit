@@ -58,12 +58,12 @@ namespace CursorPosition
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid();
             this.GridColor = SharpDX.Color.Black;
-            this.GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
+            this.GridTransform = new Media3D.TranslateTransform3D(0, 0, 0);
 
             // construction grid
             this.ConstructionGrid = LineBuilder.GenerateGrid();
             this.ConstructionGridColor = SharpDX.Color.Green;
-            this.ConstructionGridTransform = new Media3D.TranslateTransform3D(0, 0, 0);
+            this.ConstructionGridTransform = new Media3D.TranslateTransform3D(-5, -2, -2);
 
             // scene model3d
             var b1 = new MeshBuilder();            

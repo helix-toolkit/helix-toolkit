@@ -120,7 +120,7 @@ namespace ManipulatorDemo
                 Target = null;
                 CenterOffset = m.Geometry.Bound.Center; // Must update this before updating target
                 Target = e.HitTestResult.ModelHit as Element3D;
-                
+
             }
         }
 

@@ -13,7 +13,6 @@
     <DockPanel>
 
         <StackPanel DockPanel.Dock="Right" Margin="10" MaxWidth="170">
-            <CheckBox Content="Calculate Cursor Position" IsChecked="{Binding Path=CalculateCursorPosition, ElementName=view1}" Margin="5"/>
             <TextBlock  Margin="5" TextWrapping="Wrap"
                         Text="Move mouse over the elements and check the position fields to see the differences between the position calculations." />
             <Separator/>
@@ -77,6 +76,8 @@
         <Grid>
             <hx:Viewport3DX
                 x:Name="view1"
+                EnableCursorPosition="True"
+                EnableCurrentPosition="True"
                 Title="{Binding Title}"
                 Camera="{Binding Camera}"
                 CoordinateSystemLabelForeground="White"
