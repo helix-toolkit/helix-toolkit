@@ -22,6 +22,8 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
+            RotateAroundMouseDownPoint="True"
+            ZoomAroundMouseDownPoint="True"
             IsShadowMappingEnabled="True"
             ShowFrameDetails="True"
             ShowViewCube="True">
