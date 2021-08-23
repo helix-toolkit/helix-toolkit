@@ -83,6 +83,7 @@ namespace HelixToolkit.UWP
         {
             Distance = result.Distance;
             ModelHit = result.ModelHit;
+            PointHit = result.PointHit;
             NormalAtHit = result.NormalAtHit;
             IsValid = result.IsValid;
             Tag = result.Tag;
