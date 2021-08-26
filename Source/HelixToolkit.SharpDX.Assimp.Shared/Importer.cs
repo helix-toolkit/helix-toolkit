@@ -137,8 +137,8 @@ namespace HelixToolkit.UWP
 
             private int MaterialIndexForNoName = 0;
             private int MeshIndexForNoName = 0;
-            private List<EmbeddedTexture> embeddedTextures;
-            private Dictionary<string, EmbeddedTexture> embeddedTextureDict;
+            private List<EmbeddedTexture> embeddedTextures = null;
+            private Dictionary<string, EmbeddedTexture> embeddedTextureDict = null;
 
             public event EventHandler<Exception> AssimpExceptionOccurred;
             #region Public Methods
@@ -432,8 +432,8 @@ namespace HelixToolkit.UWP
                             {
                                 s.Materials[i] = OnCreateHelixMaterial(scene.Materials[i]);
                             }
-                            embeddedTextures.Clear();
-                            embeddedTextureDict.Clear();
+                            embeddedTextures = null;
+                            embeddedTextureDict = null;
                         }
                     });
                 return s;
