@@ -417,6 +417,10 @@ namespace HelixToolkit.UWP
                     {                       
                         return OnLoadEmbeddedTexture(embeddedTextures[idx]);
                     }
+                    else if(embeddedTextureDict.TryGetValue(texturePath, out var embeddedTex))
+                    {
+                        return OnLoadEmbeddedTexture(embeddedTex);
+                    }
                     else
                     {
                         var ext = Path.GetExtension(texturePath);
