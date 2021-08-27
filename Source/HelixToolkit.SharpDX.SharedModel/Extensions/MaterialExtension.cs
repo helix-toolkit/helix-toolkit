@@ -6,7 +6,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #elif WINUI
 namespace HelixToolkit.WinUI
 #else
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #endif
 {
     using Model;
@@ -161,7 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 #elif WINUI
 namespace HelixToolkit.WinUI.Model
 #else
-namespace TT.HelixToolkit.UWP.Model
+namespace HelixToolkit.UWP.Model
 #endif
 {
     public partial class PhongMaterialCore

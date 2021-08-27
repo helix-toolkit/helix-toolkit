@@ -7,7 +7,7 @@ using global::SharpDX;
 using  Windows.UI.Xaml;
 using Windows.Foundation;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Microsoft.UI.Xaml;
 using Windows.Foundation;

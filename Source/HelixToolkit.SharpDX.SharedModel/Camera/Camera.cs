@@ -10,7 +10,7 @@ using  Windows.UI.Xaml;
 using Vector3D = SharpDX.Vector3;
 using Point3D = SharpDX.Vector3;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #elif WINUI_NET5_0
 using Microsoft.UI.Xaml;
 using Vector3D = SharpDX.Vector3;

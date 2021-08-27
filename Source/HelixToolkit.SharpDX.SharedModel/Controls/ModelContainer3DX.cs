@@ -16,7 +16,7 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 using  Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;

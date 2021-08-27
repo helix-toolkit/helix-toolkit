@@ -5,7 +5,7 @@ using System.Collections.Generic;
 #if NETFX_CORE
 using  Windows.UI.Xaml;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Microsoft.UI.Xaml;
 

@@ -20,7 +20,7 @@ namespace HelixToolkit.SharpDX.Core
 #elif WINUI
 namespace HelixToolkit.WinUI
 #else
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #endif
 #endif
 {

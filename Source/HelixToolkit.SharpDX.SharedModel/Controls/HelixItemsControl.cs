@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using  Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #elif WINUI_NET5_0
 using Windows.Foundation;
 using Microsoft.UI.Xaml.Controls;

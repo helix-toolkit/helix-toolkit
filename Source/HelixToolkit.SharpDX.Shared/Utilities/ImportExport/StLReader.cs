@@ -29,7 +29,7 @@ namespace HelixToolkit.WinUI
 #else
 using  Vector3D = SharpDX.Vector3;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #endif
 #endif
 {

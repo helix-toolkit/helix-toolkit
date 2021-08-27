@@ -11,7 +11,7 @@ using  Media = Windows.UI;
 using Windows.UI.Xaml;
 using MediaColors = Windows.UI.Colors;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Media = Windows.UI;
 using Microsoft.UI.Xaml;

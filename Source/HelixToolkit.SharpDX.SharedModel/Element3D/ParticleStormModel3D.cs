@@ -20,7 +20,7 @@ using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
 using MediaColors = Windows.UI.Colors;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;

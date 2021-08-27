@@ -6,7 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using  HelixToolkit.UWP.Model.Scene;
 using Windows.UI.Xaml;
 
-namespace TT.HelixToolkit.UWP
+namespace HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using HelixToolkit.WinUI.Model.Scene;
 using Microsoft.UI.Xaml;
