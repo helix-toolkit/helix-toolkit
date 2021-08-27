@@ -5,8 +5,10 @@ using System.Runtime.CompilerServices;
 #if NETFX_CORE
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
 #endif
 #else
 namespace HelixToolkit.Wpf.SharpDX
@@ -112,7 +114,7 @@ namespace HelixToolkit.Wpf
             return (DoubleOrSingle)Math.Sqrt(LengthSquared(ref vector));
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         /// <summary>
         /// 
         /// </summary>
@@ -145,7 +147,7 @@ namespace HelixToolkit.Wpf
             return new Vector3D(vector.X, vector.Y, vector.Z);
         }
 #if SHARPDX
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         /// <summary>
         /// 
         /// </summary>

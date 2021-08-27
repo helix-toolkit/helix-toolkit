@@ -7,9 +7,15 @@ using SharpDX;
 using System.Collections.Generic;
 
 #if NETFX_CORE
+using  Media = Windows.UI;
+using Windows.UI.Xaml;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Media = Windows.UI;
 using Windows.UI.Xaml;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;

@@ -7,10 +7,17 @@ using System.Collections.Generic;
 using System.Linq;
 
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Windows.UI.Colors;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Colors = System.Windows.Media.Colors;

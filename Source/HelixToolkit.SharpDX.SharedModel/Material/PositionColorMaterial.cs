@@ -1,6 +1,11 @@
 ﻿#if NETFX_CORE
+using  Windows.UI.Xaml;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.ComponentModel;
 using System.Windows;
@@ -24,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public PositionColorMaterial() { }
 
         public PositionColorMaterial(PositionMaterialCore core) : base(core) { }
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         protected override Freezable CreateInstanceCore()
         {
             return new PositionColorMaterial()

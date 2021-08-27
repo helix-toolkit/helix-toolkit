@@ -4,9 +4,15 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using global::SharpDX;
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+using Media = Windows.UI;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
 using Media = Windows.UI;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;

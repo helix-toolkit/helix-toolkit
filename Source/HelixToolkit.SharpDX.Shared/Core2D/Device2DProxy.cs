@@ -7,13 +7,15 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using DeviceContext2D = global::SharpDX.Direct2D1.DeviceContext;
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
 #endif
 #endif
 {

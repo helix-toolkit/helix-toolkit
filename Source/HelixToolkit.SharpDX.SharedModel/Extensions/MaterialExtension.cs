@@ -1,10 +1,12 @@
-﻿#if !NETFX_CORE
+﻿#if !NETFX_CORE && !NET5_0
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model;
 #endif
 namespace HelixToolkit.Wpf.SharpDX
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
 #endif
 {
     using Model;
@@ -154,10 +156,12 @@ namespace HelixToolkit.UWP
 }
 
 #if !COREWPF
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
 namespace HelixToolkit.Wpf.SharpDX.Model
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP.Model
+namespace TT.HelixToolkit.UWP.Model
 #endif
 {
     public partial class PhongMaterialCore

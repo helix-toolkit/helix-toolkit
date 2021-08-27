@@ -6,10 +6,17 @@ using SharpDX;
 using System.Diagnostics;
 
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+using Vector3D = SharpDX.Vector3;
+using Point3D = SharpDX.Vector3;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
 using Vector3D = SharpDX.Vector3;
 using Point3D = SharpDX.Vector3;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using System.Windows.Media.Media3D;
@@ -42,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Specifies what portion of the 3D scene is rendered by the Viewport3DX element.
     /// </summary>
     public abstract class Camera :
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         System.Windows.Media.Animation.Animatable, ICameraModel
 #else
         DependencyObject, ICameraModel

@@ -5,10 +5,17 @@ Copyright (c) 2018 Helix Toolkit contributors
 using global::SharpDX;
 using global::SharpDX.Direct3D11;
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Windows.UI.Colors;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Color = System.Windows.Media.Color;

@@ -14,13 +14,15 @@ using System.Diagnostics;
 using System.Windows.Media.Imaging;
 #endif
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
 #endif
 #endif
 {
@@ -145,7 +147,7 @@ namespace HelixToolkit.UWP
                 return verticalAlignment;
             }
         }
-#if !NETFX_CORE        
+#if !NETFX_CORE && !NET5_0        
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
         /// </summary>

@@ -7,8 +7,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -43,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 DiffuseColor
@@ -207,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         protected override Freezable CreateInstanceCore()
         {
             return CloneMaterial();

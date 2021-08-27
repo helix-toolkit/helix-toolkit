@@ -7,12 +7,21 @@ using System;
 using System.Collections.Generic;
 
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+using System.ServiceModel.Dispatcher;
+using FrameworkContentElement = Windows.UI.Xaml.FrameworkElement;    
+using Windows.Foundation;
+using Windows.UI.Core;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
 using System.ServiceModel.Dispatcher;
 using FrameworkContentElement = Windows.UI.Xaml.FrameworkElement;    
 using Windows.Foundation;
 using Windows.UI.Core;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using System.Windows.Threading;
@@ -202,7 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     manager = OnCreateManager();
                     manager.OnOctreeCreated += (s, e) =>
                     {
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
                         if (octreeOpt != null && octreeOpt.Status == DispatcherOperationStatus.Pending)
                         {
                             octreeOpt.Abort();

@@ -14,13 +14,15 @@ using System.IO.Compression;
 using System.Linq;
 using global::SharpDX;
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
 #endif
 #endif
 {

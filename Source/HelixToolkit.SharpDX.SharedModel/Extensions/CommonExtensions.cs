@@ -17,8 +17,10 @@ using System.Windows;
 #endif
 using System.Linq;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Extensions
+#if NETFX_CORE
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
+namespace HelixToolkit.WinUI.Extensions
 #else
 namespace HelixToolkit.Wpf.SharpDX.Extensions
 #endif
@@ -287,7 +289,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                     return D2D.LineJoin.Bevel;
             }
         }
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         public static D2D.DashStyle ToD2DDashStyle(this Media.DashStyle style)
         {
             if(style == Media.DashStyles.Dash)

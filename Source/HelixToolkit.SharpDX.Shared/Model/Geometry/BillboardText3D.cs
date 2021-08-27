@@ -18,13 +18,15 @@ using Media = System.Windows.Media;
 #endif
 #endif
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
 #endif
 #endif
 {
@@ -113,7 +115,7 @@ namespace HelixToolkit.UWP
         public BoundingSphere BoundSphere { get; private set; }
     }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
     [Serializable]
 #endif
     public class BillboardText3D : BillboardBase
@@ -133,7 +135,7 @@ namespace HelixToolkit.UWP
             Stream font = assembly.GetManifestResourceStream($"HelixToolkit.SharpDX.Core.Resources.{FontName}.dds");
             TextureStatic = font;
 #else
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
             var assembly = Assembly.GetExecutingAssembly();
 
             //Read the texture description           

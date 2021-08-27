@@ -5,9 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 #if NETFX_CORE
+using  Windows.Foundation;
+using Windows.UI.Xaml.Controls;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using System.Windows.Controls;

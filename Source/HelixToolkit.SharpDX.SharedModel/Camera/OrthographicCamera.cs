@@ -3,8 +3,13 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -116,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UpdateCameraPositionByWidth(double newWidth)
         {
             var ratio = newWidth / Width;
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
             var dir = LookDirection.ToVector3();
             var target = Target.ToVector3();
 #else
@@ -128,7 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX
             dir.Normalize();
             var position = (target - dir * (float)newDist);
             var lookDir = dir * (float)newDist;
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
             Position = position.ToPoint3D();
             LookDirection = lookDir.ToVector3D();
 #else
@@ -137,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         protected override Freezable CreateInstanceCore()
         {
             return new OrthographicCamera();

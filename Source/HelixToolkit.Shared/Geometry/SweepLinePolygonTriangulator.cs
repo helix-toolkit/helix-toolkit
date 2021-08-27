@@ -10,8 +10,10 @@
 #if NETFX_CORE
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
 #endif
 #else
 namespace HelixToolkit.Wpf.SharpDX

@@ -10,9 +10,15 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF

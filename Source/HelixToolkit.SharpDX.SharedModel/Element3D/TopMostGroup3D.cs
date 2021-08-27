@@ -3,8 +3,13 @@ The MIT License (MIT)
 Copyright (c) 2021 Helix Toolkit contributors
 */
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene;

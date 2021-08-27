@@ -1,7 +1,8 @@
 MATCH: 
 #if\s+(.+)\snamespace HelixToolkit\.UWP
 REPLACE:
-#if $1namespace TT.HelixToolkit.UWP
+#if $1
+namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0
 namespace HelixToolkit.WinUI
 

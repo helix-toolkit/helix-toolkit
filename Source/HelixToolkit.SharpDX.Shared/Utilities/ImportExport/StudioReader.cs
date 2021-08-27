@@ -6,15 +6,17 @@ using System.Text;
 using SharpDX;
 using System.Diagnostics;
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
 using System.Windows.Media.Imaging;
 using MediaColor = System.Windows.Media.Color;
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
 #endif
 #endif
 {
@@ -752,7 +754,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         /// <summary>
         /// Creates FallBack Bitmapsource http://stackoverflow.com/questions/10637064/create-bitmapimage-and-apply-to-it-a-specific-color
         /// </summary>

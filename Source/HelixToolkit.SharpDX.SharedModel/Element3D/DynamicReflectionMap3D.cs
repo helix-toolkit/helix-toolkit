@@ -4,8 +4,13 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF

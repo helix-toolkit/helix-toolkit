@@ -10,8 +10,13 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
-namespace HelixToolkit.UWP.Core2D
+
+namespace HelixToolkit.WinUI.Core2D
 #else
 using System.Windows;
 #if COREWPF
@@ -154,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             SceneNode.InvalidateRender();
         }
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         public void InvalidateMeasure()
         {
             SceneNode.InvalidateMeasure();

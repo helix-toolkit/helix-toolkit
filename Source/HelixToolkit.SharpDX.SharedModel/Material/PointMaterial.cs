@@ -3,12 +3,21 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 #if NETFX_CORE
+using  Windows.Foundation;
+using Windows.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Windows.UI.Colors;
+using Media = Windows.UI;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
 using Media = Windows.UI;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Color = System.Windows.Media.Color;
@@ -229,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         protected override Freezable CreateInstanceCore()
         {
             return new PointMaterial()

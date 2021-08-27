@@ -14,11 +14,19 @@ using SharpDX.Direct3D11;
 using System.Collections.Generic;
 
 #if NETFX_CORE
+using  Windows.UI.Xaml;
+using Media = Windows.UI;
+using Windows.Foundation;
+using Vector3D = SharpDX.Vector3;
+
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
 using Windows.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
-namespace HelixToolkit.UWP
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;

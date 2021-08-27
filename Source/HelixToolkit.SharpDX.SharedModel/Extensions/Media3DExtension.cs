@@ -9,14 +9,16 @@ using global::SharpDX;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
-namespace HelixToolkit.UWP
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     public static class Media3DExtension
     {
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D ToVector3D(this Vector3 vector)
         {
@@ -32,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new Matrix3x2((float)m.M11, (float)m.M12, (float)m.M21, (float)m.M22, (float)m.OffsetX, (float)m.OffsetY);
         }
 #endif
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D ToVector3D(this Transform3D trafo)
         {
@@ -55,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 #endif
-#if !NETFX_CORE
+#if !NETFX_CORE && !NET5_0
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D ToMatrix3D(this Matrix m)
         {
