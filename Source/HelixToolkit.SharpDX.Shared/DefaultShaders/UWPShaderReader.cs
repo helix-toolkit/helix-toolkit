@@ -43,7 +43,7 @@ namespace TT.HelixToolkit.UWP
                     return memory.ToArray();
                 }
     #else
-    #if NETFX_CORE
+    #if NETFX_CORE || WINUI_NET5_0
                 var filePath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + $"\\HelixToolkit.UWP\\Resources\\{name}.cso";
                 if (!File.Exists(filePath))
                 {

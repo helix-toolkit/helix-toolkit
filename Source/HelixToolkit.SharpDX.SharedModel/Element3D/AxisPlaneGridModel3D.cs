@@ -5,7 +5,7 @@ using  Windows.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
-
+using MediaColors = Windows.UI.Colors;
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0 
@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
+using MediaColors = Microsoft.UI.Colors;
 
 
 namespace HelixToolkit.WinUI
@@ -21,6 +22,8 @@ using System.Windows;
 using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
+using MediaColors = System.Windows.Media.Colors;
+
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;

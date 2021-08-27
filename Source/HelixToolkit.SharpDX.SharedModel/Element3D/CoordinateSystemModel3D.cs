@@ -9,16 +9,19 @@ using System.Collections.Generic;
 #if NETFX_CORE
 using  Media = Windows.UI;
 using Windows.UI.Xaml;
+using MediaColors = Windows.UI.Colors;
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Media = Windows.UI;
 using Microsoft.UI.Xaml;
+using MediaColors = Microsoft.UI.Colors;
 
 namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+using MediaColors = System.Windows.Media.Colors;
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;

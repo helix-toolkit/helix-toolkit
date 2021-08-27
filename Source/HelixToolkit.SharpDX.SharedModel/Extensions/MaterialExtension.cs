@@ -159,7 +159,7 @@ namespace TT.HelixToolkit.UWP
 #if !NETFX_CORE && !NET5_0
 namespace HelixToolkit.Wpf.SharpDX.Model
 #elif WINUI
-namespace HelixToolkit.WinUI
+namespace HelixToolkit.WinUI.Model
 #else
 namespace TT.HelixToolkit.UWP.Model
 #endif

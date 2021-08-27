@@ -7,16 +7,22 @@ using SharpDX.Direct3D11;
 #if NETFX_CORE
 using  Windows.UI.Xaml;
 using Media = Windows.UI;
+using MediaColors = Windows.UI.Colors;
+
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
+using MediaColors = Microsoft.UI.Colors;
+
 
 namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+using MediaColors = System.Windows.Media.Colors;
+
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model;
@@ -36,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color property
         /// </summary>
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineMaterial), new PropertyMetadata(Media.Colors.Black, (d, e) =>
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineMaterial), new PropertyMetadata(MediaColors.Black, (d, e) =>
             {
                 ((d as LineMaterial).Core as LineMaterialCore).LineColor = ((Media.Color)e.NewValue).ToColor4();
             }));

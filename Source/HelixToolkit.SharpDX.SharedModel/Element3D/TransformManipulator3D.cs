@@ -13,17 +13,23 @@ using System.Diagnostics;
 #if NETFX_CORE
 using  Windows.UI.Xaml;
 using Media = Windows.UI;
+using MediaColors = Windows.UI.Colors;
+
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
+using MediaColors = Microsoft.UI.Colors;
+
 
 namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media3D = System.Windows.Media.Media3D;
 using Media = System.Windows.Media;
+using MediaColors = System.Windows.Media.Colors;
+
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
@@ -315,7 +321,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 EffectName = "ManipulatorXRayGrid",
                 DimmingFactor = 0.5, BlendingFactor = 0.8,
-                GridDensity = 4, GridColor = Media.Colors.Gray
+                GridDensity = 4, GridColor = MediaColors.Gray
             };
             (xrayEffect.SceneNode as NodePostEffectXRayGrid).XRayDrawingPassName = DefaultPassNames.EffectMeshDiffuseXRayGridP3;
             Children.Add(xrayEffect);

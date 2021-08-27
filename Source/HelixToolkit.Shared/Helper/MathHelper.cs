@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 #if SHARPDX
 using Vector2 = SharpDX.Vector2;
 using DoubleOrSingle = System.Single;
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
 #if CORE
 namespace HelixToolkit.SharpDX.Core
 #elif WINUI

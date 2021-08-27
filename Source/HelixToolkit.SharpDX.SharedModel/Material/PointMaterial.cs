@@ -8,6 +8,8 @@ using Windows.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
 using Media = Windows.UI;
+using MediaColors = Windows.UI.Colors;
+
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0 
@@ -16,6 +18,8 @@ using Microsoft.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Microsoft.UI.Colors;
 using Media = Windows.UI;
+using MediaColors = Microsoft.UI.Colors;
+
 
 namespace HelixToolkit.WinUI
 #else
@@ -23,6 +27,8 @@ using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
+using MediaColors = System.Windows.Media.Colors;
+
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model;

@@ -26,7 +26,7 @@ namespace TT.HelixToolkit.UWP
     using Material = Model.MaterialCore;
     using PhongMaterial = Model.PhongMaterialCore;
 #endif
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
     using FileFormatException = Exception;
 #endif
     using Model;
@@ -741,7 +741,7 @@ namespace TT.HelixToolkit.UWP
                 }
                 else
                 {
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
                     return null;
 #else
                     return BitMapSoureFromFallBack(fallBackColor);

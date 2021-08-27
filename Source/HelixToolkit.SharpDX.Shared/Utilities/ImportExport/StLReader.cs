@@ -35,7 +35,7 @@ namespace TT.HelixToolkit.UWP
 {
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;    
     using Point3D = global::SharpDX.Vector3;
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
     using FileFormatException = Exception;
 #endif
     using Model;

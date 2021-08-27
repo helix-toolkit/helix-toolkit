@@ -6,16 +6,20 @@ using global::SharpDX;
 #if NETFX_CORE
 using  Windows.UI.Xaml;
 using Media = Windows.UI;
+using MediaColors = Windows.UI.Colors;
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
+using MediaColors = Microsoft.UI.Colors;
 
 namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+using MediaColors = System.Windows.Media.Colors;
+
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model;
 using HelixToolkit.SharpDX.Core.Model.Scene;
@@ -38,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color property
         /// </summary>
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineGeometryModel3D), new PropertyMetadata(Media.Colors.Black, (d, e) =>
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineGeometryModel3D), new PropertyMetadata(MediaColors.Black, (d, e) =>
             {
                 (d as LineGeometryModel3D).material.LineColor = ((Media.Color)e.NewValue).ToColor4();
             }));

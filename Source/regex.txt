@@ -25,6 +25,11 @@ namespace TT.HelixToolkit.UWP
 using$1
 namespace HelixToolkit.WinUI
 
+MATCH:
+if\s+WINUI_NET5_0([^#]*?)(?=Windows.UI.Xaml)Windows.UI.Xaml
+REPLACE:
+
+
 ATTENZIONE !!!
 MATCH: 
 #if !NETFX_CORE

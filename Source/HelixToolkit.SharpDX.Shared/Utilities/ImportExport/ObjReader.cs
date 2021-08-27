@@ -26,7 +26,7 @@ namespace TT.HelixToolkit.UWP
 #endif
 #endif
 {
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
     using FileFormatException = Exception;
 #endif
 #if CORE
