@@ -11,6 +11,13 @@ using Media = Windows.UI.Xaml.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.Foundation;
+#elif WINUI_NET5_0
+using Windows.UI.Text;
+using Microsoft.UI.Text;
+using Media = Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using Windows.Foundation;
 #else
 using Media = System.Windows.Media;
 using System.Windows;
@@ -30,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
     {
         public static global::SharpDX.DirectWrite.FontWeight ToDXFontWeight(this FontWeight fontWeight)
         {
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
             var w = fontWeight.Weight;
             if (w == FontWeights.Black.Weight)
             {
@@ -150,7 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
 
         public static global::SharpDX.DirectWrite.FontStyle ToDXFontStyle(this FontStyle style)
         {
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
             if (style == FontStyle.Italic)
             {
                 return global::SharpDX.DirectWrite.FontStyle.Italic;
@@ -234,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                     )
                     );
             }
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
 #else
             else if(brush is Media.RadialGradientBrush radial)
             {
