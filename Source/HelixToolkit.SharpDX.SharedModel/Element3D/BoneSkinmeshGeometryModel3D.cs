@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using  Windows.UI.Xaml;
 
 namespace TT.HelixToolkit.UWP
-#elif WINUI_NET5_0
-using Windows.UI.Xaml;
+#elif WINUI_NET5_0 
+using Microsoft.UI.Xaml;
 
 namespace HelixToolkit.WinUI
 #else

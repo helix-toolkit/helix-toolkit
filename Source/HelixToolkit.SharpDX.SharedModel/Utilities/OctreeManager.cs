@@ -14,10 +14,10 @@ using Windows.Foundation;
 using Windows.UI.Core;
 
 namespace TT.HelixToolkit.UWP
-#elif WINUI_NET5_0
-using Windows.UI.Xaml;
-using System.ServiceModel.Dispatcher;
-using FrameworkContentElement = Windows.UI.Xaml.FrameworkElement;    
+#elif WINUI_NET5_0 
+using Microsoft.UI.Xaml;
+// using System.ServiceModel.Dispatcher;
+using FrameworkContentElement = Microsoft.UI.Xaml.FrameworkElement;    
 using Windows.Foundation;
 using Windows.UI.Core;
 
@@ -188,7 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (int)GetValue(MinObjectSizeToSplitProperty);
             }
         }
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
         private IAsyncAction octreeOpt;
 #else
         private DispatcherOperation octreeOpt;

@@ -8,8 +8,8 @@ using  Windows.UI.Xaml;
 using Media = Windows.UI;
 
 namespace TT.HelixToolkit.UWP
-#elif WINUI_NET5_0
-using Windows.UI.Xaml;
+#elif WINUI_NET5_0 
+using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 
 namespace HelixToolkit.WinUI

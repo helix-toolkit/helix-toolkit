@@ -6,9 +6,9 @@ using Colors = Windows.UI.Colors;
 using Media = Windows.UI;
 
 namespace TT.HelixToolkit.UWP
-#elif WINUI_NET5_0
+#elif WINUI_NET5_0 
 using Windows.Foundation;
-using Windows.UI.Xaml;
+using Microsoft.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
 using Media = Windows.UI;

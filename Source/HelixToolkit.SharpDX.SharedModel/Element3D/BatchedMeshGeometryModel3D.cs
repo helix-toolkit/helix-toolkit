@@ -12,8 +12,8 @@ using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
 
 namespace TT.HelixToolkit.UWP
-#elif WINUI_NET5_0
-using Windows.UI.Xaml;
+#elif WINUI_NET5_0 
+using Microsoft.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
 

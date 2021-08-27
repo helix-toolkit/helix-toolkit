@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 #if !CORE
 using System;
 using D2D = SharpDX.Direct2D1;
-#if NETFX_CORE
+#if NETFX_CORE 
 using Windows.UI.Text;
 using Media = Windows.UI.Xaml.Media;
 using Windows.UI.Xaml;
@@ -17,7 +17,8 @@ using System.Windows;
 #endif
 using System.Linq;
 
-#if NETFX_CORE
+#if NETFX_CORE
+
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0
 namespace HelixToolkit.WinUI.Extensions
