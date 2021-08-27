@@ -22,14 +22,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #if CORE
 using Vector3D = SharpDX.Vector3;
 namespace HelixToolkit.SharpDX.Core
-#else
-using  Vector3D = SharpDX.Vector3;
-
-namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0
 using Vector3D = SharpDX.Vector3;
 
 namespace HelixToolkit.WinUI
+#else
+using  Vector3D = SharpDX.Vector3;
+
+namespace TT.HelixToolkit.UWP
 #endif
 #endif
 {

@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Controls;
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 
 namespace HelixToolkit.WinUI
 #else
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// External Wrapper core to be used for different platform
         /// </summary>
-#if NETFX_CORE
+#if NETFX_CORE || NET5_0
         public abstract class Element3DCore : Control, IDisposable
 #else
         public abstract class Element3DCore : FrameworkContentElement, IDisposable

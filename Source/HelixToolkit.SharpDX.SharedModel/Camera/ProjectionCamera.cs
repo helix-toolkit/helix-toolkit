@@ -12,7 +12,7 @@ using Point3D = SharpDX.Vector3;
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0
-using Windows.UI.Xaml;
+using Microsoft.UI.Xaml;
 using Vector3D = SharpDX.Vector3;
 using Point3D = SharpDX.Vector3;
 
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty LookDirectionProperty = DependencyProperty.Register(
             "LookDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 0, -5), (d, e) =>
             {
-#if NETFX_CORE
+#if NETFX_CORE|| WINUI_NET5_0
                 ((d as Camera).CameraInternal as ProjectionCameraCore).LookDirection = (Vector3D)e.NewValue;
 #else
                 ((d as Camera).CameraInternal as ProjectionCameraCore).LookDirection = ((Vector3D)e.NewValue).ToVector3();
@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(ProjectionCamera),
             new PropertyMetadata(new Point3D(0, 0, +5), (d, e) =>
             {
-#if NETFX_CORE
+#if NETFX_CORE|| WINUI_NET5_0
                 ((d as Camera).CameraInternal as ProjectionCameraCore).Position = (Point3D)e.NewValue;
 #else
                 ((d as Camera).CameraInternal as ProjectionCameraCore).Position = ((Point3D)e.NewValue).ToVector3();
@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
             "UpDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 1, 0), (d, e) =>
             {
-#if NETFX_CORE
+#if NETFX_CORE|| WINUI_NET5_0
                 ((d as Camera).CameraInternal as ProjectionCameraCore).UpDirection = (Vector3D)e.NewValue;
 #else
                 ((d as Camera).CameraInternal as ProjectionCameraCore).UpDirection = ((Vector3D)e.NewValue).ToVector3();

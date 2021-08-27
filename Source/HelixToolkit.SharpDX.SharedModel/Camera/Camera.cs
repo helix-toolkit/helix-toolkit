@@ -12,7 +12,7 @@ using Point3D = SharpDX.Vector3;
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0
-using Windows.UI.Xaml;
+using Microsoft.UI.Xaml;
 using Vector3D = SharpDX.Vector3;
 using Point3D = SharpDX.Vector3;
 
@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected virtual void OnCoreCreated(CameraCore core)
         {
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
             core.LookDirection = this.LookDirection;
             core.Position = this.Position;
             core.UpDirection = this.UpDirection;
@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-#if NETFX_CORE
+#if NETFX_CORE|| WINUI_NET5_0
                 targetPosition = newPosition;
                 targetLookDirection = newDirection;
                 targetUpDirection = newUpDirection;
@@ -210,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX
             accumTime += ellapsed;
             if (accumTime > aniTime)
             {
-#if NETFX_CORE
+#if NETFX_CORE|| WINUI_NET5_0
                 Position = targetPosition;
                 LookDirection = targetLookDirection;
                 UpDirection = targetUpDirection;
@@ -228,7 +228,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var nextPos = Vector3.Lerp(oldPosition, targetPosition, l);
                 var nextLook = Vector3.Lerp(oldLookDir, targetLookDirection, l);
                 var nextUp = Vector3.Lerp(oldUpDir, targetUpDirection, l);
-#if NETFX_CORE
+#if NETFX_CORE|| WINUI_NET5_0
                 Position = nextPos;
                 LookDirection = nextLook;
                 UpDirection = nextUp;

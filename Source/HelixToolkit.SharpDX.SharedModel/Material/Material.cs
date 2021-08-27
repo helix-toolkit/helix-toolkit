@@ -9,7 +9,7 @@ using  Windows.UI.Xaml;
 
 namespace TT.HelixToolkit.UWP
 #elif WINUI_NET5_0
-using Windows.UI.Xaml;
+using Microsoft.UI.Xaml;
 
 namespace HelixToolkit.WinUI
 #else
@@ -24,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
 
     [DataContract]
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
     public abstract class Material : DependencyObject
 #else
     public abstract class Material : Freezable
