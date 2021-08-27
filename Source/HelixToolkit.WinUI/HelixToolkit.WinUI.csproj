@@ -1,0 +1,238 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows10.0.19041</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>HelixToolkit.WinUI</RootNamespace>
+    <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
+    <UseWinUI>true</UseWinUI>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>SHARPDX;DX11;DX11_1;MSAA</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="CommonDX\SwapChainComposition2RenderHost.cs" />
+    <Compile Remove="CommonDX\_ISwapChainPanelNative.cs" />
+    <Compile Remove="CommonDX\_SwapChainRenderHost.cs" />
+    <Compile Remove="Model\Element3D.cs" />
+    <Compile Remove="Model\ExampleCube3D.cs" />
+    <Compile Remove="Model\GeometryModel3D.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="HelixToolkit.WinUI\Resources\csParticleInsert.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\csParticleUpdate.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\dsMeshTriTessellation.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\gsBillboard.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\gsLine.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\gsLineArrowHead.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\gsLineArrowHeadTail.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\gsMeshNormalVector.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\gsMeshSkinnedOut.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\gsParticle.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\gsPoint.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\hsMeshTriTessellation.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psBillboardText.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psBillboardTextOIT.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psColor.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psDepthStencilOnly.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psDiffuseMap.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectBloomBlurHorizontal.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectBloomBlurVertical.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectBloomCombine.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectBloomExtract.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectGaussianBlurHorizontal.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectGaussianBlurVertical.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectMeshBorderHighlight.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectMeshDiffuseXRayGrid.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectMeshXRay.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectMeshXRayGrid.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectOutlineQuad.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectOutlineQuadStencil.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectOutlineQualFinal.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psEffectOutlineSmooth.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psFXAA.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psLine.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psLineColor.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psLuma.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshBlinnPhong.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshBlinnPhongOIT.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshBlinnPhongOITQuad.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshClipPlaneBackface.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshClipPlaneQuad.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshColorStripe.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshDiffuseMapOIT.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshPBR.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshPBROIT.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psMeshXRay.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psNormals.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psParticle.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psParticleOIT.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psPlaneGrid.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psPoint.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psPositions.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psScreenDup.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psShadow.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psSkybox.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psSprite.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psSSAO.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psSSAOBlur.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psSSAOP1.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psViewCube.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psVolume.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psVolumeCube.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psVolumeDiffuse.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psWireframe.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\psWireframeOIT.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsBillboard.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsBillboardInstancing.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsBoneSkinningBasic.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsCubeMap.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshBatched.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshBatchedShadow.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshBatchedSSAO.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshBatchedWireframe.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshClipPlane.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshClipPlaneQuad.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshDefault.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshDepth.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshInstancing.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshInstancingTessellation.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshOutlinePass1.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshOutlineScreenQuad.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshShadow.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshSSAO.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshTessellation.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsMeshWireframe.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsParticle.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsPlaneGrid.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsPoint.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsPointShadow.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsScreenDup.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsScreenDupCursor.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsScreenQuad.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsSkybox.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsSprite.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsSSAO.cso" />
+    <None Remove="HelixToolkit.WinUI\Resources\vsVolume.cso" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\csParticleInsert.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\csParticleUpdate.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\dsMeshTriTessellation.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\gsBillboard.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\gsLine.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\gsLineArrowHead.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\gsLineArrowHeadTail.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\gsMeshNormalVector.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\gsMeshSkinnedOut.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\gsParticle.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\gsPoint.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\hsMeshTriTessellation.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psBillboardText.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psBillboardTextOIT.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psColor.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psDepthStencilOnly.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psDiffuseMap.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectBloomBlurHorizontal.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectBloomBlurVertical.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectBloomCombine.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectBloomExtract.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectGaussianBlurHorizontal.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectGaussianBlurVertical.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectMeshBorderHighlight.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectMeshDiffuseXRayGrid.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectMeshXRay.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectMeshXRayGrid.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectOutlineQuad.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectOutlineQuadStencil.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectOutlineQualFinal.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psEffectOutlineSmooth.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psFXAA.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psLine.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psLineColor.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psLuma.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshBlinnPhong.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshBlinnPhongOIT.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshBlinnPhongOITQuad.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshClipPlaneBackface.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshClipPlaneQuad.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshColorStripe.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshDiffuseMapOIT.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshPBR.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshPBROIT.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psMeshXRay.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psNormals.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psParticle.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psParticleOIT.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psPlaneGrid.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psPoint.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psPositions.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psScreenDup.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psShadow.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psSkybox.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psSprite.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psSSAO.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psSSAOBlur.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psSSAOP1.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psViewCube.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psVolume.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psVolumeCube.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psVolumeDiffuse.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psWireframe.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\psWireframeOIT.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsBillboard.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsBillboardInstancing.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsBoneSkinningBasic.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsCubeMap.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshBatched.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshBatchedShadow.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshBatchedSSAO.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshBatchedWireframe.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshClipPlane.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshClipPlaneQuad.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshDefault.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshDepth.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshInstancing.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshInstancingTessellation.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshOutlinePass1.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshOutlineScreenQuad.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshShadow.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshSSAO.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshTessellation.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsMeshWireframe.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsParticle.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsPlaneGrid.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsPoint.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsPointShadow.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsScreenDup.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsScreenDupCursor.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsScreenQuad.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsSkybox.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsSprite.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsSSAO.cso" />
+    <EmbeddedResource Include="HelixToolkit.WinUI\Resources\vsVolume.cso" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="2.0.0" />
+      <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.0" />
+      <PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.0" />
+      <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0" />
+      <PackageReference Include="SharpDX" Version="4.2.0" />
+      <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+      <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
+      <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+      <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
+      <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems" Label="Shared" />
+</Project>

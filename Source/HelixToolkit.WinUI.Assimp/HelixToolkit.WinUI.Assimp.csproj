@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows10.0.19041</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>HelixToolkit.WinUI.Assimp</RootNamespace>
+    <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
+    <UseWinUI>true</UseWinUI>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DX11;DX11_1;MSAA;SHARPDX</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <PackageReference Include="AssimpNet" Version="4.1.0" />
+      <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.0" />
+      <PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.0" />
+      <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0" />
+      <PackageReference Include="SharpDX" Version="4.2.0" />
+      <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit.WinUI\HelixToolkit.WinUI.csproj" />
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\HelixToolkit.SharpDX.Assimp.Shared\HelixToolkit.SharpDX.Assimp.Shared.projitems" Label="Shared" />
+</Project>
