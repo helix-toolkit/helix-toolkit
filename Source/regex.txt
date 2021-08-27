@@ -1,0 +1,43 @@
+MATCH: 
+#if\s+(.+)\snamespace HelixToolkit\.UWP
+REPLACE:
+#if $1namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
+namespace HelixToolkit.WinUI
+
+
+MATCH:
+#else\s+namespace HelixToolkit\.UWP
+REPLACE
+#elif WINUI
+namespace HelixToolkit.WinUI
+#else
+namespace TT.HelixToolkit.UWP
+
+
+MATCH:
+using([^#]*?)(?=namespace)namespace HelixToolkit\.UWP
+REPLACE:
+using $1
+namespace TT.HelixToolkit.UWP
+#elif WINUI_NET5_0
+using$1
+namespace HelixToolkit.WinUI
+
+ATTENZIONE !!!
+MATCH: 
+#if !NETFX_CORE
+REPLACE:
+#if !NETFX_CORE && !NET5_0
+
+MATCH: 
+#if SHARPDX\s+#if NETFX_CORE
+REPLACE:
+#if SHARPDX
+#if NETFX_CORE || NET5_0
+
+NO NO
+MATCH: 
+#if NETFX_CORE
+REPLACE:
+#if NETFX_CORE || NET5_0
