@@ -149,6 +149,15 @@ namespace TT.HelixToolkit.UWP
             //Read the texture          
             var texImageStream = assembly.GetManifestResourceStream($"HelixToolkit.Wpf.SharpDX.Textures.{FontName}.dds");
             TextureStatic = MemoryStream.Synchronized(texImageStream);
+#elif WINUI_NET5_0
+            var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
+            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\HelixToolkit.WinUI\\Resources\\{FontName}.fnt");
+            bmpFont = new BitmapFont();
+            var fileStream = new MemoryStream(sampleFile);
+            bmpFont.Load(fileStream);
+
+            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\HelixToolkit.WinUI\\Resources\\{FontName}.dds");
+            TextureStatic = new MemoryStream(texFile);
 #else
             var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
             var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\HelixToolkit.UWP\\Resources\\{FontName}.fnt");

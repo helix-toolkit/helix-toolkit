@@ -43,7 +43,7 @@ namespace TT.HelixToolkit.UWP
                     return memory.ToArray();
                 }
     #else
-    #if NETFX_CORE || WINUI_NET5_0
+    #if NETFX_CORE
                 var filePath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + $"\\HelixToolkit.UWP\\Resources\\{name}.cso";
                 if (!File.Exists(filePath))
                 {
@@ -55,15 +55,27 @@ namespace TT.HelixToolkit.UWP
                     throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
                 }
                 return byteCode;
-    #else
+#elif WINUI_NET5_0
+                var filePath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + $"\\HelixToolkit.WinUI\\Resources\\{name}.cso";
+                if (!File.Exists(filePath))
+                {
+                    throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
+                }
+                var byteCode = global::SharpDX.IO.NativeFile.ReadAllBytes(filePath);
+                if(byteCode == null)
+                {
+                    throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
+                }
+                return byteCode;
+#else
                 var byteCode = Properties.Resources.ResourceManager.GetObject(name) as byte[];
                 if(byteCode == null)
                 {
                     throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
                 }
                 return byteCode;
-    #endif
-    #endif
+#endif
+#endif
             }
         }
         /// <summary>
