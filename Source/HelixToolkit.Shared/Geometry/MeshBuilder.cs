@@ -1966,7 +1966,8 @@ namespace HelixToolkit.Wpf
         /// <param name="origin">The origin.</param>
         public void AddPolygon(IList<Point> points, Vector3D axisX, Vector3D axisY, Point3D origin)
         {
-            var indices = Wpf.SharpDX.SweepLinePolygonTriangulator.Triangulate(points);
+            // var indices = Wpf.SharpDX.SweepLinePolygonTriangulator.Triangulate(points);
+            var indices = SweepLinePolygonTriangulator.Triangulate(points);
             if (indices != null)
             {
                 var index0 = this.positions.Count;
@@ -2027,7 +2028,8 @@ namespace HelixToolkit.Wpf
         public void AddPolygonByCuttingEars(IList<int> vertexIndices)
         {
             var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
-            var poly3D = new Wpf.SharpDX.Polygon3D(points);
+             // var poly3D = new Wpf.SharpDX.Polygon3D(points);
+            var poly3D = new Polygon3D(points);
             // Transform the polygon to 2D
             var poly2D = poly3D.Flatten();
 
@@ -2048,7 +2050,8 @@ namespace HelixToolkit.Wpf
         public void AddPolygonByTriangulation(IList<int> vertexIndices)
         {
             var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
-            var poly3D = new Wpf.SharpDX.Polygon3D(points);
+            // var poly3D = new Wpf.SharpDX.Polygon3D(points);
+            var poly3D = new Polygon3D(points);
             // Transform the polygon to 2D
             var poly2D = poly3D.Flatten();
 
