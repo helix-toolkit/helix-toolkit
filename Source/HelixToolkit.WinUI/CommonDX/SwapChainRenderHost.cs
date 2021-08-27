@@ -18,7 +18,6 @@ namespace HelixToolkit.WinUI
     using Windows.UI.Popups;
     using WinRT;
 
-    // HOW TO DO
     // https://github.com/RolandKoenig/SeeingSharp2/blob/dae33fd85f38a781a348155aa1ee07ce1f170152/SeeingSharp.WinUI/Multimedia/Views/SeeingSharpPanelPainter.cs
     public class SwapChainRenderHost : SwapChainPanel
     {       
@@ -39,8 +38,6 @@ namespace HelixToolkit.WinUI
         private readonly CompositionTargetEx compositionTarget = new CompositionTargetEx();
 
         private ISwapChainPanelNative panelNativeDesktop = null;
-        private Button _dummyButtonForFocus;
-        private bool _hasFocus;
 
 
         private float dpiScale = 1;
@@ -197,15 +194,6 @@ namespace HelixToolkit.WinUI
             e.Handled = true;
         }
 
-        private void OnDummyButtonForFocus_LostFocus(object sender, RoutedEventArgs e)
-        {
-            _hasFocus = false;
-        }
-
-        private void OnDummyButtonForFocus_GotFocus(object sender, RoutedEventArgs e)
-        {
-            _hasFocus = true;
-        }
 
 
         private void OnSwapChainPanel_PointerReleased(object sender, PointerRoutedEventArgs e)

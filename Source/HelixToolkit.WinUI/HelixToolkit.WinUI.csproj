@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="CommonDX\SwapChainComposition2RenderHost.cs" />
+    <Compile Remove="CommonDX\SwapChainSurfaceRenderHost.cs" />
     <Compile Remove="CommonDX\_ISwapChainPanelNative.cs" />
     <Compile Remove="CommonDX\_SwapChainRenderHost.cs" />
     <Compile Remove="Model\Element3D.cs" />
