@@ -10,7 +10,7 @@ namespace TT.HelixToolkit.UWP
 using Windows.Foundation;
 using Microsoft.UI.Xaml;
 using Color = Windows.UI.Color;
-using Colors = Windows.UI.Colors;
+using Colors = Microsoft.UI.Colors;
 using Media = Windows.UI;
 
 namespace HelixToolkit.WinUI

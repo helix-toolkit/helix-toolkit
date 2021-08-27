@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Defines the CrossSectionColorProperty
         /// </summary>
         public static DependencyProperty CrossSectionColorProperty = DependencyProperty.Register("CrossSectionColor", typeof(Media.Color), typeof(CrossSectionMeshGeometryModel3D),
-           new PropertyMetadata(Media.Colors.Firebrick,
+           new PropertyMetadata(MediaColors.Firebrick,
            (d, e) =>
            {
                ((d as Element3DCore).SceneNode as CrossSectionMeshNode).CrossSectionColor = ((Media.Color)e.NewValue).ToColor4();

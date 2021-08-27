@@ -1,4 +1,4 @@
-﻿#if NETFX_CORE
+﻿#if NETFX_CORE || WINUI_NET5_0
 using Media = Windows.UI;
 #else
 using Media = System.Windows.Media;
@@ -181,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 #endif
 
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ToVector2(this Windows.Foundation.Point p)
         {

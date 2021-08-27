@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 #if SHARPDX
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
 #if CORE
 namespace HelixToolkit.SharpDX.Core
 #elif WINUI

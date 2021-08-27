@@ -8,7 +8,7 @@ using System.IO;
 using SharpDX.Toolkit.Graphics;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
 
 #else
 using System.Windows.Media.Imaging;

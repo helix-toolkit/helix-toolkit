@@ -70,7 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (int)GetValue(ParticleCountProperty);
             }
         }
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
         public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Vector3), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultEmitterLocation,
             (d, e) =>
@@ -415,7 +415,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
         public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Vector3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultAcceleration,
             (d, e) =>
@@ -466,7 +466,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty BlendColorProperty = DependencyProperty.Register("BlendColor", typeof(Media.Color), typeof(ParticleStormModel3D),
-            new PropertyMetadata(Media.Colors.White,
+            new PropertyMetadata(MediaColors.White,
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as ParticleStormNode).BlendColor = ((Media.Color)e.NewValue).ToColor4();
@@ -643,7 +643,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The blend factor property
         /// </summary>
         public static readonly DependencyProperty BlendFactorProperty =
-            DependencyProperty.Register("BlendFactor", typeof(Media.Color), typeof(ParticleStormModel3D), new PropertyMetadata(Media.Colors.White, (d,e)=>
+            DependencyProperty.Register("BlendFactor", typeof(Media.Color), typeof(ParticleStormModel3D), new PropertyMetadata(MediaColors.White, (d,e)=>
             {
                 ((d as Element3DCore).SceneNode as ParticleStormNode).BlendFactor = ((Media.Color)e.NewValue).ToColor4();
             }));
@@ -739,7 +739,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.DestAlphaBlend = DestAlphaBlend;
                 c.SampleMask = SampleMask;
                 c.BlendColor = BlendColor.ToColor4();
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
                 c.EmitterLocation = EmitterLocation;
                 c.ConsumerLocation = ConsumerLocation;
                 c.InitAcceleration = Acceleration;

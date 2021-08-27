@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(IOctreeManagerWrapper), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as InstancingMeshGeometryModel3D;
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
                 d.AttachChild(null);
                 if(e.NewValue is Element3D elem)
                 {

@@ -165,7 +165,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty PlaneColorProperty =
             DependencyProperty.Register("PlaneColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D), 
-                new PropertyMetadata(Media.Colors.Gray,
+                new PropertyMetadata(MediaColors.Gray,
                 (d, e) =>
                 {
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).PlaneColor = ((Media.Color)e.NewValue).ToColor4();
@@ -188,7 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty GridColorProperty =
             DependencyProperty.Register("GridColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D), 
-                new PropertyMetadata(Media.Colors.DarkGray,
+                new PropertyMetadata(MediaColors.DarkGray,
                 (d, e) =>
                 {
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).GridColor = ((Media.Color)e.NewValue).ToColor4();

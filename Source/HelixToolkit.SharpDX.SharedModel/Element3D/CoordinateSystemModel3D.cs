@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisXColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisXColorProperty = DependencyProperty.Register("AxisXColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new PropertyMetadata(Media.Colors.Red,
+            new PropertyMetadata(MediaColors.Red,
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisXColor = ((Media.Color)e.NewValue).ToColor4();
@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisYColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisYColorProperty = DependencyProperty.Register("AxisYColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new PropertyMetadata(Media.Colors.Green,
+            new PropertyMetadata(MediaColors.Green,
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisYColor = ((Media.Color)e.NewValue).ToColor4();
@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisZColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisZColorProperty = DependencyProperty.Register("AxisZColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new PropertyMetadata(Media.Colors.Blue,
+            new PropertyMetadata(MediaColors.Blue,
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisZColor = ((Media.Color)e.NewValue).ToColor4();
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty LabelColorProperty = DependencyProperty.Register("LabelColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new PropertyMetadata(Media.Colors.Gray,
+            new PropertyMetadata(MediaColors.Gray,
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelColor = ((Media.Color)e.NewValue).ToColor4();

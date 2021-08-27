@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
 #else
 using System.Windows.Media.Imaging;
 #endif

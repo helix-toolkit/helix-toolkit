@@ -13,6 +13,8 @@ using System.Reflection;
 #else
 #if NETFX_CORE
 using Media = Windows.UI.Xaml.Media;
+#elif WINUI_NET5_0
+using Media = Microsoft.UI.Xaml.Media;
 #else
 using Media = System.Windows.Media;
 #endif

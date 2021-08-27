@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     /// <summary>
     /// External Wrapper core to be used for different platform
     /// </summary>
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
     public abstract partial class Element2DCore : FrameworkElement, IDisposable
 #else
     public abstract partial class Element2DCore : FrameworkContentElement, IDisposable
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void SceneNode_OnDetached(object sender, EventArgs e)
         {
-#if NETFX_CORE
+#if NETFX_CORE || WINUI_NET5_0
             if(Dispatcher != null)
             {
                 if (Dispatcher.HasThreadAccess)
