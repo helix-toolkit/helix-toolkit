@@ -26,7 +26,7 @@ using System.Linq;
 
 #if NETFX_CORE
 
-namespace HelixToolkit.UWP
+namespace HelixToolkit.UWP.Extensions
 #elif WINUI_NET5_0
 namespace HelixToolkit.WinUI.Extensions
 #else
