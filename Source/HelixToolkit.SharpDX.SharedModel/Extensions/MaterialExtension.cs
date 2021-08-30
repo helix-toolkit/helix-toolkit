@@ -3,7 +3,7 @@
 using HelixToolkit.SharpDX.Core.Model;
 #endif
 namespace HelixToolkit.Wpf.SharpDX
-#elif WINUI
+#elif WINUI_NET5_0
 namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP
 #if !COREWPF
 #if !NETFX_CORE && !NET5_0
 namespace HelixToolkit.Wpf.SharpDX.Model
-#elif WINUI
+#elif WINUI_NET5_0
 namespace HelixToolkit.WinUI.Model
 #else
 namespace HelixToolkit.UWP.Model

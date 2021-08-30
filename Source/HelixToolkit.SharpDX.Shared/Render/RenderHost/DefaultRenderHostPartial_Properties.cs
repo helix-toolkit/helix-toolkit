@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
+#elif WINUI_NET5_0
 namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP

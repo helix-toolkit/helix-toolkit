@@ -173,7 +173,6 @@ namespace HelixToolkit.WinUI
         private HitTestResult currentHit;
         private List<HitTestResult> hits = new List<HitTestResult>();
         private bool enableMouseButtonHitTest = true;
-        private Button dummyButton;
 
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
