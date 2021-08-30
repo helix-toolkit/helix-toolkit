@@ -6,7 +6,7 @@ using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #endif
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE

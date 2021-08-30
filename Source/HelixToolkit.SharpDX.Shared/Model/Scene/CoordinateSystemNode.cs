@@ -7,7 +7,7 @@ using global::SharpDX.Direct3D11;
 using SharpDX;
 using System.Linq;
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE

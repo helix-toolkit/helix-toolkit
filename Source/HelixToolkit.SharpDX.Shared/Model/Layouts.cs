@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE

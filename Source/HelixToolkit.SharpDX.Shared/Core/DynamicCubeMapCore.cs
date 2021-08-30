@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE

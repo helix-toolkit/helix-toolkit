@@ -114,7 +114,7 @@ namespace HelixToolkit.Wpf
             return (DoubleOrSingle)Math.Sqrt(LengthSquared(ref vector));
         }
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         /// <summary>
         /// 
         /// </summary>
@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf
             return new Vector3D(vector.X, vector.Y, vector.Z);
         }
 #if SHARPDX
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         /// <summary>
         /// 
         /// </summary>

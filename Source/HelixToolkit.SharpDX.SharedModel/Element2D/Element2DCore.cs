@@ -159,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             SceneNode.InvalidateRender();
         }
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         public void InvalidateMeasure()
         {
             SceneNode.InvalidateMeasure();

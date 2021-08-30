@@ -6,7 +6,7 @@ using System;
 using global::SharpDX;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP
     using Model;
 
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
     [Serializable]
 #endif
     [DataContract]
@@ -77,7 +77,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         [NonSerialized]
 #endif
         private BoundingBox bound;
@@ -97,7 +97,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         [NonSerialized]
 #endif
         private BoundingSphere boundingSphere;

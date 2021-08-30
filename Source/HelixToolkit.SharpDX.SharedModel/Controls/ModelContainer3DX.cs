@@ -327,7 +327,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color of the clear.
         /// </value>
         /// <exception cref="NotImplementedException"></exception>
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 ClearColor
@@ -531,7 +531,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public ModelContainer3DX()
         {
             this.IsHitTestVisible = false;
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
             Visibility = System.Windows.Visibility.Collapsed;
 #endif
         }

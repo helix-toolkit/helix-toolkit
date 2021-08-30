@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using SharpDX;
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 using System.Windows.Threading;
 namespace HelixToolkit.Wpf.SharpDX
 #else

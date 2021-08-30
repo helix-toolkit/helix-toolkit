@@ -9,7 +9,7 @@ using System;
 using System.Runtime.CompilerServices;
 using SDX11 = SharpDX.Direct3D11;
 using System.Collections.Generic;
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE

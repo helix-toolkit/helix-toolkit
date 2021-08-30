@@ -6,7 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using global::SharpDX.Direct2D1;
 using global::SharpDX.DirectWrite;
 using SharpDX;
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE

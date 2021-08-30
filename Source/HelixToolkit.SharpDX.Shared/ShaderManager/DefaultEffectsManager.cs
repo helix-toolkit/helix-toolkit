@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using global::SharpDX;
 using global::SharpDX.Direct3D;
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
@@ -2085,7 +2085,7 @@ namespace HelixToolkit.UWP
                 }
             };
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
             var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
             {
                 InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
@@ -2141,7 +2141,7 @@ namespace HelixToolkit.UWP
             yield return sprite2D;
             yield return volume3D;
             yield return ssao;
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
             yield return renderScreenDup;
 #endif
         }

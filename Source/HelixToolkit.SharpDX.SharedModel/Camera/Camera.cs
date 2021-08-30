@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Specifies what portion of the 3D scene is rendered by the Viewport3DX element.
     /// </summary>
     public abstract class Camera :
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         System.Windows.Media.Animation.Animatable, ICameraModel
 #else
         DependencyObject, ICameraModel

@@ -11,7 +11,7 @@ using global::SharpDX;
 using Vector3D = global::SharpDX.Vector3;
 using Vector3 = global::SharpDX.Vector3;
 using Point3D = global::SharpDX.Vector3;    
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE

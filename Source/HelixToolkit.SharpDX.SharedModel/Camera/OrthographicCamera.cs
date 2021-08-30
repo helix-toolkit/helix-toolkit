@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UpdateCameraPositionByWidth(double newWidth)
         {
             var ratio = newWidth / Width;
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
             var dir = LookDirection.ToVector3();
             var target = Target.ToVector3();
 #else
@@ -133,7 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX
             dir.Normalize();
             var position = (target - dir * (float)newDist);
             var lookDir = dir * (float)newDist;
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
             Position = position.ToPoint3D();
             LookDirection = lookDir.ToVector3D();
 #else
@@ -142,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         }
 
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         protected override Freezable CreateInstanceCore()
         {
             return new OrthographicCamera();

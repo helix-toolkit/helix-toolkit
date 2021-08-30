@@ -6,7 +6,7 @@ using System;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D;
 using System.Collections.Generic;
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE

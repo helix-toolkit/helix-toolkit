@@ -297,7 +297,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                     return D2D.LineJoin.Bevel;
             }
         }
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
         public static D2D.DashStyle ToD2DDashStyle(this Media.DashStyle style)
         {
             if(style == Media.DashStyles.Dash)

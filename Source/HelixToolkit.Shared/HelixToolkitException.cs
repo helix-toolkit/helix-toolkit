@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Represents errors that occurs in the Helix 3D Toolkit.
     /// </summary>
-#if !NETFX_CORE && !NET5_0
+#if !NETFX_CORE && !WINUI_NET5_0
     [Serializable]
 #endif
     public class HelixToolkitException : Exception

@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// External Wrapper core to be used for different platform
         /// </summary>
-#if NETFX_CORE || NET5_0
+#if NETFX_CORE || WINUI_NET5_0
         public abstract class Element3DCore : Control, IDisposable
 #else
         public abstract class Element3DCore : FrameworkContentElement, IDisposable
