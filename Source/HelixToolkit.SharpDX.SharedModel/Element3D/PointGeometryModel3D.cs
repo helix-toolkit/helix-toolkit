@@ -8,7 +8,6 @@ using Windows.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
 using Media = Windows.UI;
-using MediaColors = Windows.UI.Colors;
 
 namespace HelixToolkit.UWP
 #elif WINUI_NET5_0 
@@ -17,7 +16,6 @@ using Microsoft.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Microsoft.UI.Colors;
 using Media = Windows.UI;
-using MediaColors = Microsoft.UI.Colors;
 
 namespace HelixToolkit.WinUI
 #else
@@ -25,7 +23,6 @@ using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
-using MediaColors = System.Windows.Media.Colors;
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model;
@@ -47,10 +44,15 @@ namespace HelixToolkit.Wpf.SharpDX
 #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
-                new PropertyMetadata(MediaColors.Black, (d, e) =>
+#if WINUI_NET5_0
+                new PropertyMetadata(Microsoft.UI.Colors.Black, (d, e) =>
+#else
+                new PropertyMetadata(Media.Colors.Black, (d, e) =>
+#endif
                 {
                     (d as PointGeometryModel3D).material.PointColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
+
 
         public static readonly DependencyProperty SizeProperty =
             DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new PropertyMetadata(new Size(1.0, 1.0),
@@ -185,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)GetValue(BlendingFactorProperty); }
             set { SetValue(BlendingFactorProperty, value); }
         }
-        #endregion
+#endregion
 
         protected readonly PointMaterialCore material = new PointMaterialCore();
         /// <summary>

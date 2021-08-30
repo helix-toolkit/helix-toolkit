@@ -18,7 +18,6 @@ using  Windows.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
-using MediaColors = Windows.UI.Colors;
 
 namespace HelixToolkit.UWP
 #elif WINUI_NET5_0 
@@ -26,7 +25,7 @@ using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
-using MediaColors = Microsoft.UI.Colors;
+// using MediaColors = Microsoft.UI.Colors;
 
 namespace HelixToolkit.WinUI
 #else
@@ -34,7 +33,6 @@ using System.Windows;
 using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
-using MediaColors = System.Windows.Media.Colors;
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
@@ -469,7 +467,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty BlendColorProperty = DependencyProperty.Register("BlendColor", typeof(Media.Color), typeof(ParticleStormModel3D),
-            new PropertyMetadata(MediaColors.White,
+#if WINUI_NET5_0
+                new PropertyMetadata(Microsoft.UI.Colors.White,
+#else
+                new PropertyMetadata(Media.Colors.White,
+#endif
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as ParticleStormNode).BlendColor = ((Media.Color)e.NewValue).ToColor4();
@@ -646,10 +648,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The blend factor property
         /// </summary>
         public static readonly DependencyProperty BlendFactorProperty =
-            DependencyProperty.Register("BlendFactor", typeof(Media.Color), typeof(ParticleStormModel3D), new PropertyMetadata(MediaColors.White, (d,e)=>
-            {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).BlendFactor = ((Media.Color)e.NewValue).ToColor4();
-            }));
+            DependencyProperty.Register("BlendFactor", typeof(Media.Color), typeof(ParticleStormModel3D),
+#if WINUI_NET5_0
+                new PropertyMetadata(Microsoft.UI.Colors.White, (d, e) =>
+#else
+                new PropertyMetadata(Media.Colors.White, (d, e) =>
+#endif
+                {
+                    ((d as Element3DCore).SceneNode as ParticleStormNode).BlendFactor = ((Media.Color)e.NewValue).ToColor4();
+                }));
 
 
         /// <summary>
