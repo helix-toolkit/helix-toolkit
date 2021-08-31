@@ -137,8 +137,8 @@ namespace HelixToolkit.UWP
 
             private int MaterialIndexForNoName = 0;
             private int MeshIndexForNoName = 0;
-            private List<EmbeddedTexture> embeddedTextures = null;
-            private Dictionary<string, EmbeddedTexture> embeddedTextureDict = null;
+            private readonly List<EmbeddedTexture> embeddedTextures = new List<EmbeddedTexture>();
+            private readonly Dictionary<string, EmbeddedTexture> embeddedTextureDict = new Dictionary<string, EmbeddedTexture>();
 
             public event EventHandler<Exception> AssimpExceptionOccurred;
             #region Public Methods
@@ -426,14 +426,29 @@ namespace HelixToolkit.UWP
                     {
                         if (scene.HasMaterials)
                         {
-                            embeddedTextures = scene.HasTextures ? scene.Textures : new List<EmbeddedTexture>();
-                            embeddedTextureDict = embeddedTextures.ToDictionary(x => x.Filename);
+                            embeddedTextures.Clear();
+                            embeddedTextureDict.Clear();
+                            if (scene.HasTextures)
+                            {
+                                embeddedTextures.AddRange(scene.Textures);
+                                for (int i = 0; i < embeddedTextures.Count; ++i)
+                                {
+                                    var key = embeddedTextures[i].Filename;
+                                    if (string.IsNullOrEmpty(key))
+                                    {
+                                        key = "*" + i.ToString();
+                                    }
+                                    if (!embeddedTextureDict.ContainsKey(key))
+                                    { embeddedTextureDict.Add(key, embeddedTextures[i]); }
+                                }
+                            }
+
                             for (var i = 0; i < scene.MaterialCount; ++i)
                             {
                                 s.Materials[i] = OnCreateHelixMaterial(scene.Materials[i]);
                             }
-                            embeddedTextures = null;
-                            embeddedTextureDict = null;
+                            embeddedTextures.Clear();
+                            embeddedTextureDict.Clear();
                         }
                     });
                 return s;
