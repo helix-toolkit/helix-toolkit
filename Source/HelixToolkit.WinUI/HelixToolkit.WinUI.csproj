@@ -7,7 +7,7 @@
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>SHARPDX;DX11;DX11_1;MSAA;WINUI_NET5_0</DefineConstants>
+    <DefineConstants>SHARPDX;DX11;DX11_1;MSAA;WINUI</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
