@@ -7,7 +7,7 @@ using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
@@ -166,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty PlaneColorProperty =
             DependencyProperty.Register("PlaneColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.Gray,
 #else
                 new PropertyMetadata(Media.Colors.Gray,
@@ -193,7 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty GridColorProperty =
             DependencyProperty.Register("GridColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.DarkGray,
 #else
                 new PropertyMetadata(Media.Colors.DarkGray,

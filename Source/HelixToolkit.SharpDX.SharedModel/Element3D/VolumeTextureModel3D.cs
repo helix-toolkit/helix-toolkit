@@ -7,7 +7,7 @@ using  HelixToolkit.UWP.Model.Scene;
 using Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using HelixToolkit.WinUI.Model.Scene;
 using Microsoft.UI.Xaml;
 

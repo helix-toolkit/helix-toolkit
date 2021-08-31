@@ -10,10 +10,11 @@ using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Microsoft.UI.Colors;
+using System.Runtime.Versioning;
 
 namespace HelixToolkit.WinUI
 #else
@@ -36,6 +37,9 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
+    #if WINUI
+    [SupportedOSPlatform("windows")]
+    #endif
     public class ScreenQuadModel3D : Element3D
     {
         public TextureModel Texture

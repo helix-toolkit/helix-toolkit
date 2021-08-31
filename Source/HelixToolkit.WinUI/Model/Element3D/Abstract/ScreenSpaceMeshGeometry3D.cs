@@ -6,7 +6,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if WINUI_NET5_0
+#if WINUI
 using Microsoft.UI.Xaml;
 using Point3D = SharpDX.Vector3;
 namespace HelixToolkit.WinUI
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty AbsolutePosition3DProperty =
             DependencyProperty.Register("AbsolutePosition3D", typeof(Point3D), typeof(ScreenSpacedElement3D), new PropertyMetadata(new Point3D(), (d, e) =>
             {
-#if WINUI_NET5_0
+#if WINUI
                 ((d as Element3DCore).SceneNode as ScreenSpacedNode).AbsolutePosition3D = (Point3D)e.NewValue;
 #else
                 ((d as Element3DCore).SceneNode as ScreenSpacedNode).AbsolutePosition3D = ((Point3D)e.NewValue).ToVector3();
@@ -238,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
                 n.SizeScale = (float)this.SizeScale;
                 n.Mode = Mode;
-#if WINUI_NET5_0
+#if WINUI
                 n.AbsolutePosition3D = AbsolutePosition3D;
 #else
                 n.AbsolutePosition3D = AbsolutePosition3D.ToVector3();

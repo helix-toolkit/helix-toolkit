@@ -7,7 +7,7 @@ using  Windows.UI.Xaml;
 using Media = Windows.UI;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 

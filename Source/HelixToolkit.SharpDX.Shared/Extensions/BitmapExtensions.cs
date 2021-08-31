@@ -12,12 +12,12 @@ using SharpDX.Mathematics.Interop;
 using SharpDX.WIC;
 using System.Linq;
 
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI_NET5_0
+#elif WINUI
 namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP

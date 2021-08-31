@@ -4,7 +4,7 @@
 using  Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 
 namespace HelixToolkit.WinUI
@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(IOctreeManagerWrapper), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as InstancingMeshGeometryModel3D;
-#if NETFX_CORE || WINUI_NET5_0
+#if NETFX_CORE || WINUI
                 d.AttachChild(null);
                 if(e.NewValue is Element3D elem)
                 {

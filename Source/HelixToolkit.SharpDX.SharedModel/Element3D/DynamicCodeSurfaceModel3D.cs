@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
 using System.CodeDom.Compiler;
 #if NETFX_CORE
 using  Windows.UI.Xaml;
 using Media = Windows.UI;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 

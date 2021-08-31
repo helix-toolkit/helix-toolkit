@@ -8,7 +8,7 @@ using  Windows.UI.Xaml;
 using Media = Windows.UI;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 
@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Defines the CrossSectionColorProperty
         /// </summary>
         public static DependencyProperty CrossSectionColorProperty = DependencyProperty.Register("CrossSectionColor", typeof(Media.Color), typeof(CrossSectionMeshGeometryModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.Firebrick,
 #else
                 new PropertyMetadata(Media.Colors.Firebrick,

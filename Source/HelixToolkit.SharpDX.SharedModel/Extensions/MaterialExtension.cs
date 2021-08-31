@@ -1,9 +1,9 @@
-﻿#if !NETFX_CORE && !WINUI_NET5_0
+﻿#if !NETFX_CORE && !WINUI
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model;
 #endif
 namespace HelixToolkit.Wpf.SharpDX
-#elif WINUI_NET5_0
+#elif WINUI
 namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
@@ -156,9 +156,9 @@ namespace HelixToolkit.UWP
 }
 
 #if !COREWPF
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
 namespace HelixToolkit.Wpf.SharpDX.Model
-#elif WINUI_NET5_0
+#elif WINUI
 namespace HelixToolkit.WinUI.Model
 #else
 namespace HelixToolkit.UWP.Model

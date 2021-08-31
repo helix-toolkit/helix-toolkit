@@ -8,7 +8,7 @@ using  Windows.UI.Xaml;
 using Windows.Foundation;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Windows.Foundation;
 

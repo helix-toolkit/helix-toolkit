@@ -16,7 +16,7 @@ using Media = Windows.UI;
 
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 // using MediaColors = Microsoft.UI.Colors;
@@ -142,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
 
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [TypeConverter(typeof(Vector3Converter))]
 #endif
         public Vector3 CenterOffset
@@ -210,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX
             translationX = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             translationY = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             translationZ = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
             translationY.Transform = new Media3D.MatrixTransform3D(rotationYMatrix.ToMatrix3D());
             translationZ.Transform = new Media3D.MatrixTransform3D(rotationZMatrix.ToMatrix3D());
             translationX.Mouse3DDown += Translation_Mouse3DDown;
@@ -246,7 +246,7 @@ namespace HelixToolkit.Wpf.SharpDX
             rotationX = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             rotationY = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             rotationZ = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
             rotationY.Transform = new Media3D.MatrixTransform3D(rotationYMatrix.ToMatrix3D());
             rotationZ.Transform = new Media3D.MatrixTransform3D(rotationZMatrix.ToMatrix3D());
             rotationX.Mouse3DDown += Rotation_Mouse3DDown;
@@ -282,7 +282,7 @@ namespace HelixToolkit.Wpf.SharpDX
             scaleX = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             scaleY = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             scaleZ = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
             scaleY.Transform = new Media3D.MatrixTransform3D(rotationYMatrix.ToMatrix3D());
             scaleZ.Transform = new Media3D.MatrixTransform3D(rotationZMatrix.ToMatrix3D());
             scaleX.Mouse3DDown += Scaling_Mouse3DDown;
@@ -320,7 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 EffectName = "ManipulatorXRayGrid",
                 DimmingFactor = 0.5, BlendingFactor = 0.8,
                 GridDensity = 4,
-#if WINUI_NET5_0
+#if WINUI
                 GridColor = Microsoft.UI.Colors.Gray
 #else
                 GridColor = Media.Colors.Gray
@@ -660,7 +660,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             targetMatrix = Matrix.Translation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.Translation(centerOffset) * Matrix.Translation(translationVector);
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
             target.Transform = new Media3D.MatrixTransform3D(targetMatrix.ToMatrix3D());
 #else
             target.HxTransform3D = targetMatrix;
@@ -671,7 +671,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var m = Matrix.Translation(centerOffset + translationVector);
             m.M11 = m.M22 = m.M33 = (float)sizeScale;
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
             ctrlGroup.Transform = new Media3D.MatrixTransform3D(m.ToMatrix3D());
 #else
             ctrlGroup.HxTransform3D = m;

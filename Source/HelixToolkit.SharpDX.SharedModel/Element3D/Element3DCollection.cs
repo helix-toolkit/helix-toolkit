@@ -9,7 +9,7 @@
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0
+#elif WINUI
 namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.Wpf.SharpDX

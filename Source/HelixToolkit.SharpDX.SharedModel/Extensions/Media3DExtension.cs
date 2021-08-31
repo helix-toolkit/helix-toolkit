@@ -1,4 +1,4 @@
-﻿#if NETFX_CORE || WINUI_NET5_0
+﻿#if NETFX_CORE || WINUI
 using Media = Windows.UI;
 #else
 using Media = System.Windows.Media;
@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0
+#elif WINUI
 namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.Wpf.SharpDX
@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public static class Media3DExtension
     {
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D ToVector3D(this Vector3 vector)
         {
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new Matrix3x2((float)m.M11, (float)m.M12, (float)m.M21, (float)m.M22, (float)m.OffsetX, (float)m.OffsetY);
         }
 #endif
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D ToVector3D(this Transform3D trafo)
         {
@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 #endif
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D ToMatrix3D(this Matrix m)
         {
@@ -181,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 #endif
 
-#if NETFX_CORE || WINUI_NET5_0
+#if NETFX_CORE || WINUI
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ToVector2(this Windows.Foundation.Point p)
         {

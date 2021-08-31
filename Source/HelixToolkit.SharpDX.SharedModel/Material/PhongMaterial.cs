@@ -8,7 +8,7 @@ using System.ComponentModel;
 using  Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 
 namespace HelixToolkit.WinUI
@@ -313,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets a color that represents how the material reflects System.Windows.Media.Media3D.AmbientLight.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 AmbientColor
@@ -326,7 +326,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 DiffuseColor
@@ -339,7 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the emissive color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 EmissiveColor
@@ -351,7 +351,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// A fake parameter for reflectivity of the environment map
         /// </summary>
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 ReflectiveColor
@@ -364,7 +364,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the specular color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 SpecularColor
@@ -448,7 +448,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DisplacementMapSamplerProperty, value); }
         }
 
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         [TypeConverter(typeof(Vector4Converter))]
 #endif
         public Vector4 DisplacementMapScaleMask
@@ -714,7 +714,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         protected override Freezable CreateInstanceCore()
         {
             return CloneMaterial();

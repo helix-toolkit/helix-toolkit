@@ -2,7 +2,7 @@
 using  Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 
 namespace HelixToolkit.WinUI
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return NormalVectorMaterialCore.Core;
         }
 
-#if !NETFX_CORE && !WINUI_NET5_0
+#if !NETFX_CORE && !WINUI
         protected override Freezable CreateInstanceCore()
         {
             return new NormalVectorMaterial()

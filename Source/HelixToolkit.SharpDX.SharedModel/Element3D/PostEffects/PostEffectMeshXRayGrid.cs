@@ -6,7 +6,7 @@ using Colors = Windows.UI.Colors;
 using Media = Windows.UI;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Windows.Foundation;
 using Microsoft.UI.Xaml;
 using Color = Windows.UI.Color;

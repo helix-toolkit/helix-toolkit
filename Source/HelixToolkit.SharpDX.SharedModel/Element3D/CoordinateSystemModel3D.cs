@@ -11,7 +11,7 @@ using  Media = Windows.UI;
 using Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Media = Windows.UI;
 using Microsoft.UI.Xaml;
 // using MediaColors = Microsoft.UI.Colors;
@@ -40,7 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisXColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisXColorProperty = DependencyProperty.Register("AxisXColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.Red,
 #else
                 new PropertyMetadata(Media.Colors.Red,
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisYColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisYColorProperty = DependencyProperty.Register("AxisYColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.Green,
 #else
                 new PropertyMetadata(Media.Colors.Green,
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisZColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisZColorProperty = DependencyProperty.Register("AxisZColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.Blue,
 #else
                 new PropertyMetadata(Media.Colors.Blue,
@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty LabelColorProperty = DependencyProperty.Register("LabelColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.Gray,
 #else
                 new PropertyMetadata(Media.Colors.Gray,

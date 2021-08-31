@@ -20,7 +20,7 @@ using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (int)GetValue(ParticleCountProperty);
             }
         }
-#if NETFX_CORE || WINUI_NET5_0
+#if NETFX_CORE || WINUI
         public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Vector3), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultEmitterLocation,
             (d, e) =>
@@ -416,7 +416,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-#if NETFX_CORE || WINUI_NET5_0
+#if NETFX_CORE || WINUI
         public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Vector3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultAcceleration,
             (d, e) =>
@@ -467,7 +467,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty BlendColorProperty = DependencyProperty.Register("BlendColor", typeof(Media.Color), typeof(ParticleStormModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.White,
 #else
                 new PropertyMetadata(Media.Colors.White,
@@ -649,7 +649,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty BlendFactorProperty =
             DependencyProperty.Register("BlendFactor", typeof(Media.Color), typeof(ParticleStormModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.White, (d, e) =>
 #else
                 new PropertyMetadata(Media.Colors.White, (d, e) =>
@@ -749,7 +749,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.DestAlphaBlend = DestAlphaBlend;
                 c.SampleMask = SampleMask;
                 c.BlendColor = BlendColor.ToColor4();
-#if NETFX_CORE || WINUI_NET5_0
+#if NETFX_CORE || WINUI
                 c.EmitterLocation = EmitterLocation;
                 c.ConsumerLocation = ConsumerLocation;
                 c.InitAcceleration = Acceleration;

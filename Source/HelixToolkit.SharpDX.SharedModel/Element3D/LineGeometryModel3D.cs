@@ -8,7 +8,7 @@ using  Windows.UI.Xaml;
 using Media = Windows.UI;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 using Media = Windows.UI;
 // using MediaColors = Microsoft.UI.Colors;
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineGeometryModel3D),
-#if WINUI_NET5_0
+#if WINUI
                 new PropertyMetadata(Microsoft.UI.Colors.Black, (d, e) =>
 #else
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>

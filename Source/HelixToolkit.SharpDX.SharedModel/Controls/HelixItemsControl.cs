@@ -9,7 +9,7 @@ using  Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0
+#elif WINUI
 using Windows.Foundation;
 using Microsoft.UI.Xaml.Controls;
 
@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
 #if NETFX_CORE
                 ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.None;
-#elif WINUI_NET5_0
+#elif WINUI
                 ManipulationMode = Microsoft.UI.Xaml.Input.ManipulationModes.None;
 #else
                 Focusable = false;

@@ -3,7 +3,7 @@
 using  Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
-#elif WINUI_NET5_0 
+#elif WINUI 
 using Microsoft.UI.Xaml;
 
 namespace HelixToolkit.WinUI
