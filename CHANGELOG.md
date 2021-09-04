@@ -1,10 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.18.0] - 2021-09-04
 ### Added
 1. Add hit test support for AxisPlaneGridNode.(WPF.SharpDX/UWP/Core)
 1. Add walkaround camera mode support for Orthographic camera. (WPF.SharpDX/UWP/Core)
+1. Cursor position and Cursor On Element position added to viewport3DX (WPF.SharpDX)
 
 ### Improvement
 1. Adds Batched Mesh hit test result to include more batched mesh specific properties. (WPF.SharpDX/UWP/Core)
@@ -12,6 +13,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 1. Fix zooming flips by enabling ZoomAroundMouseDownPoint in UWP.(UWP/Core)
 1. Fix topmost group is not rendered correctly if screenspaced group is being rendered before it.(WPF.SharpDX/UWP/Core)
+1. Fix duplicate key exception while importing glb file with embedded texture. (WPF.SharpDX/UWP/Core)
+1. Fix embedded texture is not loaded from FBX. (WPF.SharpDX/UWP/Core)
+1. Missing property in HitTest.ShallowCopy.  (WPF.SharpDX/UWP/Core)
 
 ## [2.17.0] - 2021-06-20
 ### Added
