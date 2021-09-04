@@ -223,10 +223,21 @@ namespace HelixToolkit.UWP
                         var b = Objects[i].Value.Transform(modelMatrix);
                         if (b.Intersects(ref rayWS))
                         {
-                            var geo = Geometries[Objects[i].Key];
+                            ref var geo = ref Geometries[Objects[i].Key];
                             if(geo.Geometry is MeshGeometry3D mesh)
                             {
-                                isHit |= mesh.HitTest(context, geo.ModelTransform * modelMatrix, ref hits, model);
+                                var currCount = hits.Count;
+                                var hasHit = mesh.HitTest(context, geo.ModelTransform * modelMatrix, ref hits, model);
+                                if (hasHit)
+                                {
+                                    int newCount = hits.Count;
+                                    for (int j = currCount; j < newCount; ++j)
+                                    {
+                                        hits.Add(new BatchedMeshHitTestResult(Objects[i].Key, ref geo, hits[j]));
+                                    }
+                                    hits.RemoveRange(currCount, newCount - currCount);
+                                }
+                                isHit |= hasHit;
                             }
                         }
                     }

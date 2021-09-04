@@ -101,6 +101,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Examples\CursorPosition\MainViewModel.cs" />
+    <Compile Include="Examples\CursorPosition\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workitems\Workitem1349\MainViewModel.cs" />
     <Compile Include="Workitems\Workitem1349\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -118,6 +122,10 @@
     <Compile Include="Workitems\Workitem10053\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Examples\CursorPosition\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -184,9 +192,6 @@
     <Compile Include="Workitems\Workitem10045\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Examples\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Workitem10043_small.png" />
@@ -263,6 +268,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Workitem1349_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CursorPosition_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

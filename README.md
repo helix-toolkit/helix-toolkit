@@ -28,7 +28,7 @@ Wpf Wrapper Components based on `HelixToolkit.SharpDX.Core` for .NET Core Wpf.
 [**Examples:**](/Source/Examples)
 Please download full source code to run examples. Or download [compiled version](https://ci.appveyor.com/project/objorke/helix-toolkit/branch/master/artifacts)
 
-[![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit.svg?style=popout)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
+[![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7?svg=true)](https://ci.appveyor.com/project/objorke/helix-toolkit)
 [![Release](https://img.shields.io/github/release/helix-toolkit/helix-toolkit.svg?style=popout)](https://www.nuget.org/packages?q=Helix-Toolkit)
 [![Chat](https://img.shields.io/gitter/room/helix-toolkit/helix-toolkit.svg)](https://gitter.im/helix-toolkit/helix-toolkit)
@@ -88,6 +88,17 @@ Please use the following template to report bugs.
 
 ## News
 
+#### 2021-06-20
+[v2.17.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.17.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.17.0)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.17.0)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.17.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.17.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.17.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.17.0)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.17.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.17.0)
+
 #### 2021-05-02
 [v2.16.1](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.16.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.16.1)
@@ -98,17 +109,6 @@ Please use the following template to report bugs.
 - [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.16.1)
 - [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.16.1)
 - [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.16.1)
-
-#### 2021-04-24
-[v2.16.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/V2.16.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.16.0)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.16.0)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.16.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.16.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.16.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.16.0)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.16.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.16.0)
 
 #### 2021-02-20
 [v2.15.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.15.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
