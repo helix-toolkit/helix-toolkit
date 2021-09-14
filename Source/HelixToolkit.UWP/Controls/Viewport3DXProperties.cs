@@ -90,11 +90,13 @@ namespace HelixToolkit.UWP
                 var m = d as Viewport3DX;
                 if (e.OldValue != null)
                 {
+                    m.CameraController.ActualCamera = null;
                     (e.OldValue as Camera).CameraInternal.PropertyChanged -= m.CameraInternal_PropertyChanged;
                 }
-                if (e.NewValue != null)
+                if (e.NewValue is ProjectionCamera cam)
                 {
-                    (e.NewValue as Camera).CameraInternal.PropertyChanged += m.CameraInternal_PropertyChanged;
+                    m.CameraController.ActualCamera = cam;
+                    cam.CameraInternal.PropertyChanged += m.CameraInternal_PropertyChanged;
                 }
             }));
 
@@ -114,7 +116,14 @@ namespace HelixToolkit.UWP
         /// The default camera property.
         /// </summary>
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
-            "DefaultCamera", typeof(ProjectionCamera), typeof(Viewport3DX), new PropertyMetadata(null));
+            "DefaultCamera", typeof(ProjectionCamera), typeof(Viewport3DX), new PropertyMetadata(null, (d, e) => {
+                var m = d as Viewport3DX;
+                m.CameraController.DefaultCamera = null;
+                if (e.NewValue is ProjectionCamera cam)
+                {
+                    m.CameraController.DefaultCamera = cam;
+                }
+            }));
 
         /// <summary>
         /// Gets or sets the default camera.

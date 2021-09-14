@@ -88,22 +88,39 @@ namespace HelixToolkit.UWP
 
         private ContentPresenter presenter;
         private FrameworkElement child;
+        private long visibilityToken;
+        private long isHitTestVisibleToken;
         /// <summary>
         /// Initializes a new instance of the <see cref="Element3D"/> class.
         /// </summary>
         public Element3D()
         {
             this.DefaultStyleKey = typeof(Element3D);
-            RegisterPropertyChangedCallback(VisibilityProperty, (s, e) =>
+
+            OnSceneNodeCreated += Element3D_OnSceneNodeCreated;
+            Loaded += Element3D_Loaded;
+            Unloaded += Element3D_Unloaded;
+        }
+
+        private void Element3D_Unloaded(object sender, RoutedEventArgs e)
+        {
+            UnregisterPropertyChangedCallback(VisibilityProperty, visibilityToken);
+            UnregisterPropertyChangedCallback(IsHitTestVisibleProperty, isHitTestVisibleToken);
+        }
+
+        private void Element3D_Loaded(object sender, RoutedEventArgs e)
+        {
+            SceneNode.Visible = Visibility == Visibility.Visible && IsRendering;
+            SceneNode.IsHitTestVisible = IsHitTestVisible;
+            visibilityToken = RegisterPropertyChangedCallback(VisibilityProperty, (s, arg) =>
             {
-                SceneNode.Visible = (Visibility)s.GetValue(e) == Visibility.Visible && IsRendering;
+                SceneNode.Visible = (Visibility)s.GetValue(arg) == Visibility.Visible && IsRendering;
             });
 
-            RegisterPropertyChangedCallback(IsHitTestVisibleProperty, (s, e) =>
+            isHitTestVisibleToken = RegisterPropertyChangedCallback(IsHitTestVisibleProperty, (s, arg) =>
             {
-                SceneNode.IsHitTestVisible = (bool)s.GetValue(e);
+                SceneNode.IsHitTestVisible = (bool)s.GetValue(arg);
             });
-            OnSceneNodeCreated += Element3D_OnSceneNodeCreated;
         }
 
         protected override void OnApplyTemplate()
@@ -123,6 +140,15 @@ namespace HelixToolkit.UWP
             if (presenter != null)
             {
                 presenter.Content = child;
+            }
+        }
+
+        protected void DetachChild(FrameworkElement child)
+        {
+            this.child = null;
+            if (presenter != null)
+            {
+                presenter.Content = null;
             }
         }
 

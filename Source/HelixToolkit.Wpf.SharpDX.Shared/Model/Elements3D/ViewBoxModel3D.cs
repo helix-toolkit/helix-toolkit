@@ -8,6 +8,7 @@ using Media3D = System.Windows.Media.Media3D;
 
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core;
 #endif
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -52,13 +53,13 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D),
+        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(TextureModel), typeof(ViewBoxModel3D),
             new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ViewBoxNode).ViewBoxTexture = (Stream)e.NewValue;
+                ((d as Element3DCore).SceneNode as ViewBoxNode).ViewBoxTexture = (TextureModel)e.NewValue;
             }));
 
-        public Stream ViewBoxTexture
+        public TextureModel ViewBoxTexture
         {
             set
             {
@@ -66,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Stream)GetValue(ViewBoxTextureProperty);
+                return (TextureModel)GetValue(ViewBoxTextureProperty);
             }
         }
 

@@ -50,13 +50,13 @@ namespace HelixToolkit.UWP
         }
 
 
-        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D),
+        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(TextureModel), typeof(ViewBoxModel3D),
             new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ViewBoxNode).ViewBoxTexture = (Stream)e.NewValue;
+                ((d as Element3DCore).SceneNode as ViewBoxNode).ViewBoxTexture = (TextureModel)e.NewValue;
             }));
 
-        public Stream ViewBoxTexture
+        public TextureModel ViewBoxTexture
         {
             set
             {
@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP
             }
             get
             {
-                return (Stream)GetValue(ViewBoxTextureProperty);
+                return (TextureModel)GetValue(ViewBoxTextureProperty);
             }
         }
 
