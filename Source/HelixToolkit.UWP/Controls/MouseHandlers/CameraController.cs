@@ -14,7 +14,7 @@ namespace HelixToolkit.UWP
     using Windows.UI.Core;
     using Windows.UI.Xaml.Input;
 
-    public class CameraController
+    public class CameraController : IDisposable
     {
         private InputController inputController;
         public InputController InputController
@@ -84,7 +84,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public ProjectionCamera ActualCamera
         {
-            private set;get;
+            set; get;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace HelixToolkit.UWP
         /// <value> The default camera. </value>
         public ProjectionCamera DefaultCamera
         {
-            private set;get;
+            set; get;
         }
 
         /// <summary>
@@ -700,8 +700,6 @@ namespace HelixToolkit.UWP
             MouseHandlers.Add(zoomHandler);
             MouseHandlers.Add(panHandler);
             MouseHandlers.Add(changeFieldOfViewHandler);
-            this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.CameraProperty, (d, e) => { ActualCamera = d.GetValue(e) as ProjectionCamera; });
-            this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.DefaultCameraProperty, (d, e) => { DefaultCamera = d.GetValue(e) as ProjectionCamera; });
             this.Viewport.SizeChanged += (s, e) =>
             {
                 Width = (int)e.NewSize.Width;
@@ -710,6 +708,7 @@ namespace HelixToolkit.UWP
             Width = (int)Viewport.Width;
             Height = (int)Viewport.Height;
         }
+
         #region Input Events
         private void InputController_OnBackView(object sender, EventArgs e)
         {
@@ -1126,6 +1125,8 @@ namespace HelixToolkit.UWP
         }
 
         private float prevScale = 1;
+        private bool disposedValue;
+
         /// <summary>
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
@@ -1637,6 +1638,26 @@ namespace HelixToolkit.UWP
                 this.StopAnimations();
                 this.ResetCamera();
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
         }
     }
 }

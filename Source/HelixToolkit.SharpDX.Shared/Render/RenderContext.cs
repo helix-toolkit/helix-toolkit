@@ -600,5 +600,11 @@ namespace HelixToolkit.UWP
         {
             return RenderHost.RenderBuffer.FullResPPBuffer.CurrentRTV;
         }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            Camera = null;
+            base.OnDispose(disposeManagedResources);
+        }
     }
 }

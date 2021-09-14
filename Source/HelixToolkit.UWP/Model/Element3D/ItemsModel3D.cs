@@ -136,6 +136,8 @@ namespace HelixToolkit.UWP
         } = new ObservableElement3DCollection();
 
         private readonly ItemsControl itemsControl = new ItemsControl();
+        private IEnumerable itemsSource = null;
+
         public ItemCollection Items => itemsControl.Items;
 
         private readonly Dictionary<object, Element3D> elementDict = new Dictionary<object, Element3D>();
@@ -145,6 +147,35 @@ namespace HelixToolkit.UWP
         public ItemsModel3D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
+            Loaded += ItemsModel3D_Loaded;
+            Unloaded += ItemsModel3D_Unloaded;
+        }
+
+        private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (ItemsSource != itemsSource)
+            {
+                Clear();
+                AddItems(ItemsSource);
+            }
+        }
+
+        private void ItemsModel3D_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Items.Clear();
+            foreach(var item in elementDict.Values)
+            {
+                Children.Remove(item);
+            }
+            elementDict.Clear();
+            DetachChild(itemsControl);
+            var node = SceneNode as GroupNode;
+            node.Clear();
+            if (ItemsSource is INotifyCollectionChanged n)
+            {
+                n.CollectionChanged -= ItemsModel3D_CollectionChanged;
+            }
+            itemsSource = null;
         }
 
         protected override void OnApplyTemplate()
@@ -233,7 +264,7 @@ namespace HelixToolkit.UWP
             {
                 o.CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
-
+            itemsSource = null;
             foreach (Element3D item in Children)
             {
                 item.DataContext = null;
@@ -251,7 +282,7 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-
+            itemsSource = ItemsSource;
             AddItems(ItemsSource);
 
             if (Children.Count > 0)

@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    public interface IViewport3DX
+    public interface IViewport3DX : IDisposable
     {
         /// <summary>
         /// Attaches the specified host.

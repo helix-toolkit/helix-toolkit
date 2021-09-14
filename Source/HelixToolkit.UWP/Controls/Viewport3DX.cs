@@ -171,6 +171,8 @@ namespace HelixToolkit.UWP
         private HitTestResult currentHit;
         private List<HitTestResult> hits = new List<HitTestResult>();
         private bool enableMouseButtonHitTest = true;
+        private bool disposedValue;
+        private long visibilityCallbackToken;
         /// <summary>
         /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
         /// Use this event carefully. Unsubscrible this event when not used. Otherwise may cause performance issue.
@@ -190,15 +192,6 @@ namespace HelixToolkit.UWP
             InitCameraController();
             Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
             InputController = new InputController();
-            RegisterPropertyChangedCallback(VisibilityProperty, (s, e) => 
-            {
-                if(renderHostInternal != null)
-                {
-                    renderHostInternal.IsRendering = (Visibility)s.GetValue(e) == Visibility.Visible;
-                }
-            });
-
-            DisplayInformation.GetForCurrentView().DpiChanged += Viewport3DX_DpiChanged;
             SetupBindings();
         }
 
@@ -464,11 +457,23 @@ namespace HelixToolkit.UWP
 
         private void Viewport3DXLoaded(object sender, RoutedEventArgs e)
         {
+            DisplayInformation.GetForCurrentView().DpiChanged += Viewport3DX_DpiChanged;
+            InitCameraController();
+            if (renderHostInternal != null)
+            { renderHostInternal.IsRendering = Visibility == Visibility.Visible; }
+            visibilityCallbackToken = RegisterPropertyChangedCallback(VisibilityProperty, (s, arg) =>
+            {
+                if (renderHostInternal != null)
+                {
+                    renderHostInternal.IsRendering = (Visibility)s.GetValue(arg) == Visibility.Visible;
+                }
+            });
         }
 
         private void Viewport3DX_Unloaded(object sender, RoutedEventArgs e)
         {
-
+            DisplayInformation.GetForCurrentView().DpiChanged -= Viewport3DX_DpiChanged;
+            UnregisterPropertyChangedCallback(VisibilityProperty, visibilityCallbackToken);
         }
         /// <summary>
         /// Attaches the elements to the specified host.
@@ -879,6 +884,28 @@ namespace HelixToolkit.UWP
         private void RaiseRenderHostRendered(object sender, EventArgs e)
         {
             this.OnRendered?.Invoke(sender, e);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    EffectsManager = null;
+                    Camera = null;
+                    Items.Clear();
+                    RenderHost.Dispose();
+                    CameraController.Dispose();
+                    DisplayInformation.GetForCurrentView().DpiChanged -= Viewport3DX_DpiChanged;
+                }
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
         }
     }
 }
