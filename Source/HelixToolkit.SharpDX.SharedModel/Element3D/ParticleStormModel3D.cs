@@ -14,20 +14,11 @@ using SharpDX.Direct3D11;
 using System.Collections.Generic;
 
 #if NETFX_CORE
-using  Windows.UI.Xaml;
+using Windows.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
-
 namespace HelixToolkit.UWP
-#elif WINUI 
-using Microsoft.UI.Xaml;
-using Media = Windows.UI;
-using Windows.Foundation;
-using Vector3D = SharpDX.Vector3;
-// using MediaColors = Microsoft.UI.Colors;
-
-namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;
@@ -71,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (int)GetValue(ParticleCountProperty);
             }
         }
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
         public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Vector3), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultEmitterLocation,
             (d, e) =>
@@ -416,7 +407,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
         public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Vector3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultAcceleration,
             (d, e) =>
@@ -467,11 +458,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty BlendColorProperty = DependencyProperty.Register("BlendColor", typeof(Media.Color), typeof(ParticleStormModel3D),
-#if WINUI
-                new PropertyMetadata(Microsoft.UI.Colors.White,
-#else
-                new PropertyMetadata(Media.Colors.White,
-#endif
+            new PropertyMetadata(Media.Colors.White,
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as ParticleStormNode).BlendColor = ((Media.Color)e.NewValue).ToColor4();
@@ -648,15 +635,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The blend factor property
         /// </summary>
         public static readonly DependencyProperty BlendFactorProperty =
-            DependencyProperty.Register("BlendFactor", typeof(Media.Color), typeof(ParticleStormModel3D),
-#if WINUI
-                new PropertyMetadata(Microsoft.UI.Colors.White, (d, e) =>
-#else
-                new PropertyMetadata(Media.Colors.White, (d, e) =>
-#endif
-                {
-                    ((d as Element3DCore).SceneNode as ParticleStormNode).BlendFactor = ((Media.Color)e.NewValue).ToColor4();
-                }));
+            DependencyProperty.Register("BlendFactor", typeof(Media.Color), typeof(ParticleStormModel3D), new PropertyMetadata(Media.Colors.White, (d,e)=>
+            {
+                ((d as Element3DCore).SceneNode as ParticleStormNode).BlendFactor = ((Media.Color)e.NewValue).ToColor4();
+            }));
 
 
         /// <summary>
@@ -749,7 +731,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.DestAlphaBlend = DestAlphaBlend;
                 c.SampleMask = SampleMask;
                 c.BlendColor = BlendColor.ToColor4();
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
                 c.EmitterLocation = EmitterLocation;
                 c.ConsumerLocation = ConsumerLocation;
                 c.InitAcceleration = Acceleration;

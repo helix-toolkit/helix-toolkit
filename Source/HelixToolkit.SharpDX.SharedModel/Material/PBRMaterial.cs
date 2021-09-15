@@ -5,13 +5,8 @@ using System.Runtime.Serialization;
 using System.ComponentModel;
 
 #if NETFX_CORE
-using  Windows.UI.Xaml;
-
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
-#elif WINUI 
-using Microsoft.UI.Xaml;
-
-namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -338,7 +333,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the diffuse color for the material.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb147175(v=vs.85).aspx
         /// </summary>
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 AlbedoColor
@@ -493,7 +488,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DisplacementMapSamplerProperty, value); }
         }
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
         [TypeConverter(typeof(Vector4Converter))]
 #endif
         public Vector4 DisplacementMapScaleMask
@@ -790,7 +785,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
             return CloneMaterial();

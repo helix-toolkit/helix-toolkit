@@ -14,19 +14,17 @@ using System.IO.Compression;
 using System.Linq;
 using global::SharpDX;
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
 #endif
 {
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
     using FileFormatException = Exception;
 #endif
 #if CORE
@@ -419,7 +417,7 @@ namespace HelixToolkit.UWP
         private static Color ColorParse(string values)
         {
             var fields = Split(values);
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
             return new Color((float)fields[0], (float)fields[1], (float)fields[2], 1);
 #else
             return System.Windows.Media.Color.FromRgb((byte)(fields[0] * 255), (byte)(fields[1] * 255), (byte)(fields[2] * 255)).ToColor4();

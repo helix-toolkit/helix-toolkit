@@ -14,24 +14,17 @@ using Thickness = HelixToolkit.SharpDX.Core.Model.Scene2D.Thickness;
     using Windows.UI.Xaml;
     using Media = Windows.UI.Xaml.Media;
     using Windows.UI.Text;
-#elif WINUI
-    using Microsoft.UI.Xaml;
-    using Media = Microsoft.UI.Xaml.Media;
-    using Windows.UI.Text;
-    using Microsoft.UI.Text;
 #else
-using System.Windows;
+    using System.Windows;
     using Media = System.Windows.Media;
 #endif
 #endif
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -180,7 +173,7 @@ namespace HelixToolkit.UWP
                 return mFontWeight;
             }
         }
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
         private FontStyle mFontStyle = FontStyle.Normal;
 #else
         private FontStyle mFontStyle = FontStyles.Normal;

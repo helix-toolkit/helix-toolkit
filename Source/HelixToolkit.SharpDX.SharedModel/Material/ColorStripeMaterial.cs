@@ -4,13 +4,8 @@ using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel;
 #if NETFX_CORE
-using  Windows.UI.Xaml;
-
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
-#elif WINUI 
-using Microsoft.UI.Xaml;
-
-namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -45,7 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets the diffuse color for the material.
         /// </summary>
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 DiffuseColor
@@ -175,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
             return new ColorStripeMaterial()

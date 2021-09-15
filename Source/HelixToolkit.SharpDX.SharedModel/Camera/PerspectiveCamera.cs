@@ -3,13 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 #if NETFX_CORE
-using  Windows.UI.Xaml;
-
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
-#elif WINUI 
-using Microsoft.UI.Xaml;
-
-namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -65,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
             (core as PerspectiveCameraCore).NearPlaneDistance = (float)this.NearPlaneDistance;
         }
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
             return new PerspectiveCamera();

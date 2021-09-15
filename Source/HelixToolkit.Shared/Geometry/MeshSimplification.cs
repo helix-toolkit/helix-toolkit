@@ -9,11 +9,9 @@
 /////////////////////////////////////////////
 
 #if SHARPDX
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif

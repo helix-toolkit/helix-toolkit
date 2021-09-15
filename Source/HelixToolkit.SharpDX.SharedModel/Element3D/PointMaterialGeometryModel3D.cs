@@ -7,13 +7,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 #if NETFX_CORE
-using  Windows.UI.Xaml;
-
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
-#elif WINUI 
-using Microsoft.UI.Xaml;
-
-namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF

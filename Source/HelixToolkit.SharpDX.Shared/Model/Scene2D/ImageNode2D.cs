@@ -10,13 +10,11 @@ using System;
 using System.IO;
 using Bitmap = SharpDX.Direct2D1.Bitmap;
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif

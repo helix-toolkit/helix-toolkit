@@ -13,7 +13,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using SharpDX;
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
@@ -22,20 +22,15 @@ namespace HelixToolkit.Wpf.SharpDX
 #if CORE
 using Vector3D = SharpDX.Vector3;
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-using Vector3D = SharpDX.Vector3;
-
-namespace HelixToolkit.WinUI
 #else
-using  Vector3D = SharpDX.Vector3;
-
+using Vector3D = SharpDX.Vector3;
 namespace HelixToolkit.UWP
 #endif
 #endif
 {
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;    
     using Point3D = global::SharpDX.Vector3;
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
     using FileFormatException = Exception;
 #endif
     using Model;
@@ -194,7 +189,7 @@ namespace HelixToolkit.UWP
             double x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
             double y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
             double z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
             return new Vector3D(x, y, z);
 #else
             return new Vector3D((float)x, (float)y, (float)z);
@@ -420,7 +415,7 @@ namespace HelixToolkit.UWP
                 red = attrib[2].Equals('1') ? red + 8 : red;
                 red = attrib[1].Equals('1') ? red + 16 : red;
                 int r = red * 8;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
                 var currentColor = Color.FromRgb(Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
 #else
                 var currentColor = new Color(r/255f, g/255f, b/255f);

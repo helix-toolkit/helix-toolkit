@@ -6,13 +6,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif

@@ -4,20 +4,12 @@
 
 
 #if NETFX_CORE
-using  Windows.UI.Xaml;
+using Windows.UI.Xaml;
 using Media = Windows.UI;
-
 namespace HelixToolkit.UWP
-#elif WINUI 
-using Microsoft.UI.Xaml;
-using Media = Windows.UI;
-
-namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;
-// using MediaColors = System.Windows.Media.Colors;
-
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
@@ -64,11 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Defines the CrossSectionColorProperty
         /// </summary>
         public static DependencyProperty CrossSectionColorProperty = DependencyProperty.Register("CrossSectionColor", typeof(Media.Color), typeof(CrossSectionMeshGeometryModel3D),
-#if WINUI
-                new PropertyMetadata(Microsoft.UI.Colors.Firebrick,
-#else
-                new PropertyMetadata(Media.Colors.Firebrick,
-#endif          
+           new PropertyMetadata(Media.Colors.Firebrick,
            (d, e) =>
            {
                ((d as Element3DCore).SceneNode as CrossSectionMeshNode).CrossSectionColor = ((Media.Color)e.NewValue).ToColor4();

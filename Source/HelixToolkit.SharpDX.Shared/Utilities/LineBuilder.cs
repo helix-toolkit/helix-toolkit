@@ -11,13 +11,11 @@ using global::SharpDX;
 using Vector3D = global::SharpDX.Vector3;
 using Vector3 = global::SharpDX.Vector3;
 using Point3D = global::SharpDX.Vector3;    
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif

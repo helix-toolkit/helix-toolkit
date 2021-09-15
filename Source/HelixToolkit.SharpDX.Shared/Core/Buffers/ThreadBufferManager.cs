@@ -5,13 +5,11 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -75,7 +73,7 @@ namespace HelixToolkit.UWP
 
         public static class ThreadBufferManager<T> where T : struct
         {
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
             public static readonly int StructSize = Marshal.SizeOf(typeof(T));
 #else
             public static readonly int StructSize = Marshal.SizeOf<T>();
