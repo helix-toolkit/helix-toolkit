@@ -1,5 +1,8 @@
 ﻿#if NETFX_CORE
 namespace HelixToolkit.UWP
+#elif WINUI
+using HelixToolkit.SharpDX.Core;
+namespace HelixToolkit.WinUI
 #else
 #if COREWPF
 using HelixToolkit.SharpDX.Core;

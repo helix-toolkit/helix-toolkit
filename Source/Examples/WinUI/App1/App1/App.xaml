@@ -1,0 +1,17 @@
+﻿<Application
+    x:Class="App1.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <!-- <ResourceDictionary Source="pack://application:,,,/HelixToolkit.WinUI;component/Themes/Generic.xaml"/>-->
+                <ResourceDictionary Source="ms-appx:///HelixToolkit.WinUI/Themes/Generic.xaml" />
+                <!-- Other merged dictionaries here -->
+            </ResourceDictionary.MergedDictionaries>
+            <!-- Other app resources here -->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

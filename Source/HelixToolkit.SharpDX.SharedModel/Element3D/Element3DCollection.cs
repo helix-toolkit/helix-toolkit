@@ -6,19 +6,19 @@
 //   Provides a collection of Element3D.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#if NETFX_CORE
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+#if NETFX_CORE
 namespace HelixToolkit.UWP
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Elements2D;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.ComponentModel;
-    using System.Linq;
-
 
     /// <summary>
     /// Provides an observable collection of Element3D.

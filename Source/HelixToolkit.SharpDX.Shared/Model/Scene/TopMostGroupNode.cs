@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class TopMostGroupNode : GroupNode
         {
-            private bool enableTopMost = false;
+            private bool enableTopMost = true;
             public bool EnableTopMost
             {
                 set

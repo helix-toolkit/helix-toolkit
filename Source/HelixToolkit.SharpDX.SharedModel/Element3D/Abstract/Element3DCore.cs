@@ -10,9 +10,16 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -24,13 +31,13 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     namespace Model
     {
-#if !COREWPF
+#if !COREWPF && !WINUI
         using Scene;
 #endif
         /// <summary>
         /// External Wrapper core to be used for different platform
         /// </summary>
-#if NETFX_CORE
+#if NETFX_CORE || WINUI
         public abstract class Element3DCore : Control, IDisposable
 #else
         public abstract class Element3DCore : FrameworkContentElement, IDisposable

@@ -4,9 +4,16 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using global::SharpDX;
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
 using Windows.Foundation;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using Windows.Foundation;
+using HelixToolkit.SharpDX.Core.Cameras;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -17,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Cameras;
     using Model.Scene;
 #endif
