@@ -5,18 +5,11 @@ Copyright (c) 2018 Helix Toolkit contributors
 #if !CORE
 using System;
 using D2D = SharpDX.Direct2D1;
-#if NETFX_CORE 
+#if NETFX_CORE
 using Windows.UI.Text;
 using Media = Windows.UI.Xaml.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
-using Windows.Foundation;
-#elif WINUI
-using Windows.UI.Text;
-using Microsoft.UI.Text;
-using Media = Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media;
 using Windows.Foundation;
 #else
 using Media = System.Windows.Media;
@@ -25,10 +18,7 @@ using System.Windows;
 using System.Linq;
 
 #if NETFX_CORE
-
 namespace HelixToolkit.UWP.Extensions
-#elif WINUI
-namespace HelixToolkit.WinUI.Extensions
 #else
 namespace HelixToolkit.Wpf.SharpDX.Extensions
 #endif
@@ -37,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
     {
         public static global::SharpDX.DirectWrite.FontWeight ToDXFontWeight(this FontWeight fontWeight)
         {
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
             var w = fontWeight.Weight;
             if (w == FontWeights.Black.Weight)
             {
@@ -157,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
 
         public static global::SharpDX.DirectWrite.FontStyle ToDXFontStyle(this FontStyle style)
         {
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
             if (style == FontStyle.Italic)
             {
                 return global::SharpDX.DirectWrite.FontStyle.Italic;
@@ -241,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                     )
                     );
             }
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
 #else
             else if(brush is Media.RadialGradientBrush radial)
             {
@@ -297,7 +287,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                     return D2D.LineJoin.Bevel;
             }
         }
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
         public static D2D.DashStyle ToD2DDashStyle(this Media.DashStyle style)
         {
             if(style == Media.DashStyles.Dash)

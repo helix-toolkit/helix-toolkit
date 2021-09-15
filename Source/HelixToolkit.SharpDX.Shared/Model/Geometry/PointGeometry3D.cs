@@ -5,20 +5,18 @@ Copyright (c) 2018 Helix Toolkit contributors
 using global::SharpDX;
 using System;
 using System.Collections.Generic;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
 #endif
 {
     using Utilities;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
     [Serializable]
 #endif
     public class PointGeometry3D : Geometry3D

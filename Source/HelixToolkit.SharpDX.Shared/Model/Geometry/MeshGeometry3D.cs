@@ -7,13 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using global::SharpDX;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -21,7 +19,7 @@ namespace HelixToolkit.UWP
 {
     using Core;
     using Utilities;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
     [Serializable]
 #endif
     [DataContract]

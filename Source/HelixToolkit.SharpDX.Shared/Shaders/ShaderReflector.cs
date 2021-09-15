@@ -6,13 +6,11 @@ using System;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D;
 using System.Collections.Generic;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif

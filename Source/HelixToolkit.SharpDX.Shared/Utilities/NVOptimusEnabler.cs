@@ -1,12 +1,10 @@
 using System;
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -14,7 +12,7 @@ namespace HelixToolkit.UWP
 {
     namespace Utilities
     {
-    #if !NETFX_CORE && !WINUI
+    #if !NETFX_CORE
         /// <summary>
         /// Enable dedicated graphics card for rendering. https://stackoverflow.com/questions/17270429/forcing-hardware-accelerated-rendering
         /// </summary>

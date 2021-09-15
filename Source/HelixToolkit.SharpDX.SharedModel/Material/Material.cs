@@ -5,13 +5,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System.Runtime.Serialization;
 
 #if NETFX_CORE
-using  Windows.UI.Xaml;
-
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
-#elif WINUI
-using Microsoft.UI.Xaml;
-
-namespace HelixToolkit.WinUI
 #else
 using System.ComponentModel;
 using System.Windows;
@@ -24,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
 
     [DataContract]
-#if NETFX_CORE || WINUI
+#if NETFX_CORE
     public abstract class Material : DependencyObject
 #else
     public abstract class Material : Freezable

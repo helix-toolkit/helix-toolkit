@@ -1,11 +1,6 @@
 ﻿#if NETFX_CORE
-using  Windows.UI.Xaml;
-
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
-#elif WINUI 
-using Microsoft.UI.Xaml;
-
-namespace HelixToolkit.WinUI
 #else
 using System.ComponentModel;
 using System.Windows;
@@ -41,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return NormalVectorMaterialCore.Core;
         }
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
         protected override Freezable CreateInstanceCore()
         {
             return new NormalVectorMaterial()

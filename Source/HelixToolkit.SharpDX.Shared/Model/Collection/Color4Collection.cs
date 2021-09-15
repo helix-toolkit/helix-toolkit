@@ -9,13 +9,11 @@ using System.Globalization;
 using System.Text;
 using global::SharpDX;
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -23,7 +21,7 @@ namespace HelixToolkit.UWP
 {
     using Utilities;
 
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
     [Serializable]
     [TypeConverter(typeof(Color4CollectionConverter))]
 #endif

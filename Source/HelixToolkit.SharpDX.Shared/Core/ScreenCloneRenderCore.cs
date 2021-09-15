@@ -17,13 +17,11 @@ using ResourceOptionFlags = SharpDX.Direct3D11.ResourceOptionFlags;
 using ShaderResourceViewDescription = SharpDX.Direct3D11.ShaderResourceViewDescription;
 
 #if !WINDOWS_UWP
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
-#elif WINUI
-namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -885,7 +883,7 @@ namespace HelixToolkit.UWP
                         }
                         info.Duplication.GetFrameMoveRects(metaDataSize, moveBuffer, out int moveRectSize);
                         data.MoveRectangles = moveBuffer;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
                         data.MoveCount = moveRectSize / Marshal.SizeOf(typeof(OutputDuplicateMoveRectangle));
 #else
                         data.MoveCount = moveRectSize / Marshal.SizeOf<OutputDuplicateMoveRectangle>();
@@ -896,7 +894,7 @@ namespace HelixToolkit.UWP
                         }
                         info.Duplication.GetFrameDirtyRects(metaDataSize, dirtyBuffer, out int dirtyRectSize);
                         data.DirtyRectangles = dirtyBuffer;
-#if !NETFX_CORE && !WINUI
+#if !NETFX_CORE
                         data.DirtyCount = dirtyRectSize / Marshal.SizeOf(typeof(RawRectangle));
 #else
                         data.DirtyCount = dirtyRectSize / Marshal.SizeOf<RawRectangle>();
