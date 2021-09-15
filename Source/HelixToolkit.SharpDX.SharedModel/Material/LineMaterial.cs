@@ -5,12 +5,22 @@ Copyright (c) 2018 Helix Toolkit contributors
 using global::SharpDX;
 using SharpDX.Direct3D11;
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
 using Media = Windows.UI;
+
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using Media = Windows.UI;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model;
+using HelixToolkit.SharpDX.Core.Shaders;
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;
+
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model;
@@ -19,7 +29,7 @@ using HelixToolkit.SharpDX.Core.Shaders;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model;
     using Shaders;
 #endif
@@ -30,10 +40,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color property
         /// </summary>
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineMaterial), new PropertyMetadata(Media.Colors.Black, (d, e) =>
-            {
-                ((d as LineMaterial).Core as LineMaterialCore).LineColor = ((Media.Color)e.NewValue).ToColor4();
-            }));
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineMaterial),
+#if WINUI
+                new PropertyMetadata(Microsoft.UI.Colors.Black, (d, e) =>
+#else
+                new PropertyMetadata(Media.Colors.Black, (d, e) =>
+#endif   
+                {
+                   ((d as LineMaterial).Core as LineMaterialCore).LineColor = ((Media.Color)e.NewValue).ToColor4();
+                }));
         /// <summary>
         /// The thickness property
         /// </summary>
@@ -252,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         protected override Freezable CreateInstanceCore()
         {
             return new LineMaterial()

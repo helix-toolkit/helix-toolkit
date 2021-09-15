@@ -140,48 +140,6 @@
     <Compile Include="CommonDX\CompositionTargetEx.cs" />
     <Compile Include="CommonDX\SwapChainCompositionRenderHost.cs" />
     <Compile Include="CommonDX\SwapChainRenderHost.cs" />
-    <Compile Include="Controls\CameraExtensions.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraController.cs" />
-    <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
-    <Compile Include="Controls\MouseHandlers\InputBinding.cs" />
-    <Compile Include="Controls\MouseHandlers\InputBindingCollection.cs" />
-    <Compile Include="Controls\MouseHandlers\InputGesture.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationAction.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationBinding.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationCollection.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationGesture.cs" />
-    <Compile Include="Controls\MouseHandlers\MouseInputController.cs" />
-    <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
-    <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\PanHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\RotateHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\ViewportCommand.cs" />
-    <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
-    <Compile Include="Controls\Viewport3DX.cs" />
-    <Compile Include="Controls\Viewport3DXProperties.cs" />
-    <Compile Include="Controls\ViewportCommands.cs" />
-    <Compile Include="Controls\ViewportExtensions.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
-    <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
-    <Compile Include="Model\Element2D\Element2D.cs" />
-    <Compile Include="Model\Element3D\Abstract\Element3D.cs" />
-    <Compile Include="Model\Element3D\Abstract\GroupElement3D.cs" />
-    <Compile Include="Model\Element3D\Abstract\ScreenSpaceMeshGeometry3D.cs" />
-    <Compile Include="Model\Element3D\Element3DPresenter.cs" />
-    <Compile Include="Model\Element3D\GroupModel3D.cs" />
-    <Compile Include="Model\Element3D\ItemsModel3D.cs" />
-    <Compile Include="Model\Element3D\Light3DCollection.cs" />
-    <Compile Include="Model\Element3D\SortingGroupModel3D.cs" />
-    <Compile Include="Model\Element3D\ViewBoxModel3D.cs" />
-    <Compile Include="Model\Lights\AmbientLight3D.cs" />
-    <Compile Include="Model\Lights\DirectionalLight3D.cs" />
-    <Compile Include="Model\Lights\Light3D.cs" />
-    <Compile Include="Model\Lights\PointLight3D.cs" />
-    <Compile Include="Model\Lights\SpotLight3D.cs" />
-    <Compile Include="Model\Material\PhongMaterialFactory.cs" />
-    <Compile Include="Model\Scene\SceneNode.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
@@ -535,6 +493,7 @@
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems" Label="Shared" />
+  <Import Project="..\HelixToolkit.UWP.Shared\HelixToolkit.UWP.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

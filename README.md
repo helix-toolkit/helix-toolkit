@@ -22,6 +22,10 @@ Custom 3D Engine and Scene Graphs based on [SharpDX](https://github.com/sharpdx/
 [**HelixToolkit.SharpDX.Core.Wpf:**](/Source/HelixToolkit.SharpDX.Core.Wpf) 
 Wpf Wrapper Components based on `HelixToolkit.SharpDX.Core` for .NET Core Wpf.
 
+[**HelixToolkit.WinUI:**](/Source/HelixToolkit.WinUI) 
+Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https://github.com/sharpdx/SharpDX)(DirectX 11) for WinUI 3 (Project Reunion - experimental).
+
+
 [**HelixToolkit.SharpDX.Assimp:**](/Source/HelixToolkit.Wpf.SharpDX.Assimp) 
 [Assimp.Net](https://bitbucket.org/Starnick/assimpnet/src/master/) 3D model importer/expoter support for HelixToolkit.SharpDX Components.
 

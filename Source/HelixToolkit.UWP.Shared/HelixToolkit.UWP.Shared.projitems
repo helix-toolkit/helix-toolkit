@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>abd27897-4ee8-415b-9d8d-ffe7836f9b97</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>HelixToolkit.UWP.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\CameraExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\CameraController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\CameraSetting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\InputBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\InputBindingCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\InputGesture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ManipulationGesture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\MouseGestureHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\MouseInputController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\PanHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\RotateHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ViewportCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ZoomHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MouseHandlers\ZoomRectangleHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Viewport3DX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Viewport3DXProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ViewportCommands.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ViewportExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NotNullToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Abstract\Element3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Abstract\GroupElement3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Abstract\ScreenSpaceMeshGeometry3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GroupModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\ItemsModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Light3DCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\SortingGroupModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\ViewBoxModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\AmbientLight3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\DirectionalLight3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\Light3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\PointLight3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\SpotLight3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\SceneNode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)HelixToolkit.SharpDX.Shared.licenseheader" />
+  </ItemGroup>
+</Project>

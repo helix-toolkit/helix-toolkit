@@ -7,9 +7,17 @@ using SharpDX;
 using System.Collections.Generic;
 
 #if NETFX_CORE
-using Media = Windows.UI;
+using  Media = Windows.UI;
 using Windows.UI.Xaml;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Media = Windows.UI;
+using Microsoft.UI.Xaml;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;
@@ -21,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model.Scene;
 #endif
     /// <summary>
@@ -33,7 +41,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisXColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisXColorProperty = DependencyProperty.Register("AxisXColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new PropertyMetadata(Media.Colors.Red,
+#if WINUI
+                new PropertyMetadata(Microsoft.UI.Colors.Red,
+#else
+                new PropertyMetadata(Media.Colors.Red,
+#endif          
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisXColor = ((Media.Color)e.NewValue).ToColor4();
@@ -42,16 +54,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisYColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisYColorProperty = DependencyProperty.Register("AxisYColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new PropertyMetadata(Media.Colors.Green,
+#if WINUI
+                new PropertyMetadata(Microsoft.UI.Colors.Green,
+#else
+                new PropertyMetadata(Media.Colors.Green,
+#endif          
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisYColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisXColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// <see cref="AxisZColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisZColorProperty = DependencyProperty.Register("AxisZColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new PropertyMetadata(Media.Colors.Blue,
+#if WINUI
+                new PropertyMetadata(Microsoft.UI.Colors.Blue,
+#else
+                new PropertyMetadata(Media.Colors.Blue,
+#endif          
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisZColor = ((Media.Color)e.NewValue).ToColor4();
@@ -60,7 +80,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty LabelColorProperty = DependencyProperty.Register("LabelColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new PropertyMetadata(Media.Colors.Gray,
+#if WINUI
+                new PropertyMetadata(Microsoft.UI.Colors.Gray,
+#else
+                new PropertyMetadata(Media.Colors.Gray,
+#endif          
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelColor = ((Media.Color)e.NewValue).ToColor4();

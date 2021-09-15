@@ -4,8 +4,12 @@
 
 using System.Collections.Generic;
 using SharpDX;
-#if NETFX_CORE
+#if NETFX_CORE
 namespace HelixToolkit.UWP
+#elif WINUI
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.WinUI
 #else
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
@@ -14,7 +18,7 @@ using HelixToolkit.SharpDX.Core.Model.Scene;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model.Scene;
 #endif
     /// <summary>

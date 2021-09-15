@@ -3,9 +3,15 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 #if NETFX_CORE
-using HelixToolkit.UWP.Model.Scene;
+using  HelixToolkit.UWP.Model.Scene;
 using Windows.UI.Xaml;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using Microsoft.UI.Xaml;
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -14,7 +20,7 @@ using HelixToolkit.SharpDX.Core.Model.Scene;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model.Scene;
 #endif
     public class VolumeTextureModel3D : Element3D

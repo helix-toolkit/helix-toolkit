@@ -356,7 +356,7 @@ namespace HelixToolkit.UWP
             return FindBoundsInternal(viewport);
         }
 
-        internal static BoundingBox FindBoundsInternal(this IViewport3DX viewport)
+        public static BoundingBox FindBoundsInternal(this IViewport3DX viewport)
         {
             var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var firstModel = viewport.Renderables.PreorderDFT((r) =>
