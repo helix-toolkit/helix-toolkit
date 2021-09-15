@@ -8,17 +8,19 @@ using System.IO;
 using SharpDX.Toolkit.Graphics;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if NETFX_CORE
+#if NETFX_CORE || WINUI
 
 #else
 using System.Windows.Media.Imaging;
 #endif
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -145,7 +147,7 @@ namespace HelixToolkit.UWP
                 return verticalAlignment;
             }
         }
-#if !NETFX_CORE        
+#if !NETFX_CORE && !WINUI        
         /// <summary>
         /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
         /// </summary>

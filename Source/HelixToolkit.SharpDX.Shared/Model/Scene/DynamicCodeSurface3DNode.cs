@@ -6,15 +6,17 @@ Copyright(c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Reflection;
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 #endif
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -49,7 +51,7 @@ namespace HelixToolkit.UWP
             }
             }";
         }
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
     /// <summary>
     /// 
     /// </summary>

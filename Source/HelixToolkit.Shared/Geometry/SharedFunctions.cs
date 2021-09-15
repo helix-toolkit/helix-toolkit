@@ -2,9 +2,11 @@
 using System;
 using System.Runtime.CompilerServices;
 #if SHARPDX
-#if NETFX_CORE
+#if NETFX_CORE || WINUI
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -112,7 +114,7 @@ namespace HelixToolkit.Wpf
             return (DoubleOrSingle)Math.Sqrt(LengthSquared(ref vector));
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// 
         /// </summary>
@@ -145,7 +147,7 @@ namespace HelixToolkit.Wpf
             return new Vector3D(vector.X, vector.Y, vector.Z);
         }
 #if SHARPDX
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// 
         /// </summary>

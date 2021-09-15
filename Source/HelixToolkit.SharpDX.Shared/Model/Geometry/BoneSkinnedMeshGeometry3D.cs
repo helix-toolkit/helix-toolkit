@@ -8,11 +8,13 @@ using System.Linq;
 using System.Runtime.Serialization;
 using global::SharpDX;
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -20,7 +22,7 @@ namespace HelixToolkit.UWP
 {
     using Utilities;
     using Core;
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
     [Serializable]
 #endif
     public class BoneSkinnedMeshGeometry3D : MeshGeometry3D

@@ -3,11 +3,13 @@ The MIT License (MIT)
 Copyright (c) 2021 Helix Toolkit contributors
 */
 using SharpDX.Direct3D11;
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif

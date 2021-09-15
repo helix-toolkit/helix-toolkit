@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -33,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(IOctreeManagerWrapper), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as InstancingMeshGeometryModel3D;
-#if NETFX_CORE
+#if NETFX_CORE || WINUI
                 d.AttachChild(null);
                 if(e.NewValue is Element3D elem)
                 {

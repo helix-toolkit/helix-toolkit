@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -53,15 +55,27 @@ namespace HelixToolkit.UWP
                     throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
                 }
                 return byteCode;
-    #else
+#elif WINUI
+                var filePath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + $"\\HelixToolkit.WinUI\\Resources\\{name}.cso";
+                if (!File.Exists(filePath))
+                {
+                    throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
+                }
+                var byteCode = global::SharpDX.IO.NativeFile.ReadAllBytes(filePath);
+                if(byteCode == null)
+                {
+                    throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
+                }
+                return byteCode;
+#else
                 var byteCode = Properties.Resources.ResourceManager.GetObject(name) as byte[];
                 if(byteCode == null)
                 {
                     throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
                 }
                 return byteCode;
-    #endif
-    #endif
+#endif
+#endif
             }
         }
         /// <summary>

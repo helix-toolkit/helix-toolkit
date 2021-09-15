@@ -6,8 +6,13 @@ using System.IO;
 using SharpDX;
 using SharpDX.Direct3D11;
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+
+namespace HelixToolkit.WinUI
 #else
 using System.ComponentModel;
 using System.Windows;
@@ -244,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         protected override Freezable CreateInstanceCore()
         {
             return new VolumeTextureDDS3DMaterial()
@@ -317,7 +322,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         protected override Freezable CreateInstanceCore()
         {
             return new VolumeTextureRawDataMaterial()
@@ -391,7 +396,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         protected override Freezable CreateInstanceCore()
         {
             return new VolumeTextureDiffuseMaterial()

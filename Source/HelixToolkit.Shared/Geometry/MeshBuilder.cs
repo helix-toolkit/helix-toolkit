@@ -7,9 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
-#if NETFX_CORE
+#if NETFX_CORE || WINUI
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -38,7 +40,7 @@ namespace HelixToolkit.Wpf
 #else
 #endif
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
     using Rect3D = System.Windows.Media.Media3D.Rect3D;
 #endif
     using Point = global::SharpDX.Vector2;
@@ -209,7 +211,7 @@ namespace HelixToolkit.Wpf
         /// The closed circle cache.
         /// </summary>
         private static readonly ThreadLocal<Dictionary<int, IList<Point>>> ClosedCircleCache = new ThreadLocal<Dictionary<int, IList<Point>>>(() => new Dictionary<int, IList<Point>>());
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// The unit sphere cache.
         /// </summary>
@@ -449,7 +451,7 @@ namespace HelixToolkit.Wpf
             return circleSegment;
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// Gets a unit sphere from the cache.
         /// </summary>
@@ -663,7 +665,7 @@ namespace HelixToolkit.Wpf
             }
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// Calculate the Tangents for a MeshGeometry3D.
         /// </summary>
@@ -754,7 +756,7 @@ namespace HelixToolkit.Wpf
             this.AddRevolvedGeometry(pc, null, point1, dir, thetaDiv);
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// Adds the edges of a bounding box as cylinders.
         /// </summary>
@@ -814,7 +816,7 @@ namespace HelixToolkit.Wpf
             this.AddBox(center, xlength, ylength, zlength, BoxFaces.All);
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// Adds a box aligned with the X, Y and Z axes.
         /// </summary>
@@ -1964,6 +1966,7 @@ namespace HelixToolkit.Wpf
         /// <param name="origin">The origin.</param>
         public void AddPolygon(IList<Point> points, Vector3D axisX, Vector3D axisY, Point3D origin)
         {
+            // var indices = Wpf.SharpDX.SweepLinePolygonTriangulator.Triangulate(points);
             var indices = SweepLinePolygonTriangulator.Triangulate(points);
             if (indices != null)
             {
@@ -2025,12 +2028,13 @@ namespace HelixToolkit.Wpf
         public void AddPolygonByCuttingEars(IList<int> vertexIndices)
         {
             var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
+             // var poly3D = new Wpf.SharpDX.Polygon3D(points);
             var poly3D = new Polygon3D(points);
             // Transform the polygon to 2D
             var poly2D = poly3D.Flatten();
 
             // Triangulate
-            var triangulatedIndices = CuttingEarsTriangulator.Triangulate(poly2D.Points);
+            var triangulatedIndices = Wpf.CuttingEarsTriangulator.Triangulate(poly2D.Points);
             if (triangulatedIndices != null)
             {
                 foreach (var i in triangulatedIndices)
@@ -2046,6 +2050,7 @@ namespace HelixToolkit.Wpf
         public void AddPolygonByTriangulation(IList<int> vertexIndices)
         {
             var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
+            // var poly3D = new Wpf.SharpDX.Polygon3D(points);
             var poly3D = new Polygon3D(points);
             // Transform the polygon to 2D
             var poly2D = poly3D.Flatten();
@@ -2865,7 +2870,7 @@ namespace HelixToolkit.Wpf
             this.AddEllipsoid(center, radius, radius, radius, thetaDiv, phiDiv);
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// Adds a sphere (by subdividing a regular icosahedron).
         /// </summary>
@@ -3880,7 +3885,7 @@ namespace HelixToolkit.Wpf
             this.Append(mesh.positions, mesh.triangleIndices, mesh.normals, mesh.textureCoordinates);
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// Appends the specified mesh.
         /// </summary>
@@ -4094,7 +4099,7 @@ namespace HelixToolkit.Wpf
             this.NoSharedVertices();
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         /// <summary>
         /// Checks the performance limits.
         /// </summary>

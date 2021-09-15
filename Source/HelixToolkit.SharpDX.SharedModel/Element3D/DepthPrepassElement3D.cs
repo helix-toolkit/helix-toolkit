@@ -4,8 +4,10 @@
 
 using System.Collections.Generic;
 using SharpDX;
-#if NETFX_CORE
+#if NETFX_CORE
 namespace HelixToolkit.UWP
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 #if COREWPF
 using HelixToolkit.SharpDX.Core;

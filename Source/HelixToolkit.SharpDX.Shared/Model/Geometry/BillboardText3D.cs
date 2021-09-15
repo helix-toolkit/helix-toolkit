@@ -13,16 +13,20 @@ using System.Reflection;
 #else
 #if NETFX_CORE
 using Media = Windows.UI.Xaml.Media;
+#elif WINUI
+using Media = Microsoft.UI.Xaml.Media;
 #else
 using Media = System.Windows.Media;
 #endif
 #endif
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
 namespace HelixToolkit.Wpf.SharpDX
 #else
 #if CORE
 namespace HelixToolkit.SharpDX.Core
+#elif WINUI
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
@@ -113,7 +117,7 @@ namespace HelixToolkit.UWP
         public BoundingSphere BoundSphere { get; private set; }
     }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
     [Serializable]
 #endif
     public class BillboardText3D : BillboardBase
@@ -133,7 +137,7 @@ namespace HelixToolkit.UWP
             Stream font = assembly.GetManifestResourceStream($"HelixToolkit.SharpDX.Core.Resources.{FontName}.dds");
             TextureStatic = font;
 #else
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
             var assembly = Assembly.GetExecutingAssembly();
 
             //Read the texture description           
@@ -145,6 +149,15 @@ namespace HelixToolkit.UWP
             //Read the texture          
             var texImageStream = assembly.GetManifestResourceStream($"HelixToolkit.Wpf.SharpDX.Textures.{FontName}.dds");
             TextureStatic = MemoryStream.Synchronized(texImageStream);
+#elif WINUI
+            var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
+            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\HelixToolkit.WinUI\\Resources\\{FontName}.fnt");
+            bmpFont = new BitmapFont();
+            var fileStream = new MemoryStream(sampleFile);
+            bmpFont.Load(fileStream);
+
+            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\HelixToolkit.WinUI\\Resources\\{FontName}.dds");
+            TextureStatic = new MemoryStream(texFile);
 #else
             var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
             var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\HelixToolkit.UWP\\Resources\\{FontName}.fnt");

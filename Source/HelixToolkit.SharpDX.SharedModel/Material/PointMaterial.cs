@@ -3,17 +3,30 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 #if NETFX_CORE
-using Windows.Foundation;
+using  Windows.Foundation;
 using Windows.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
 using Media = Windows.UI;
+
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Windows.Foundation;
+using Microsoft.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Microsoft.UI.Colors;
+using Media = Windows.UI;
+// using MediaColors = Microsoft.UI.Colors;
+
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using Media = System.Windows.Media;
+
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model;
@@ -29,7 +42,11 @@ namespace HelixToolkit.Wpf.SharpDX
 #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointMaterial),
+#if WINUI
+                new PropertyMetadata(Microsoft.UI.Colors.Black, (d, e) =>
+#else
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>
+#endif 
                 {
                     ((d as PointMaterial).Core as PointMaterialCore).PointColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
@@ -229,7 +246,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         protected override Freezable CreateInstanceCore()
         {
             return new PointMaterial()
