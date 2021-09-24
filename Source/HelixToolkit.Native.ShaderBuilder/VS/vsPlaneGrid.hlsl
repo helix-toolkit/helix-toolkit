@@ -41,7 +41,7 @@ PSPlaneGridInput main(uint vI : SV_VERTEXID)
     output.p = mul(v, mViewProjection);    
     if (bHasShadowMap)
     {
-        output.sp = mul(v, vLightViewProjection);
+        output.sp = mul(v, mul(vLightView, vLightProjection));
     }
     return output;
 }

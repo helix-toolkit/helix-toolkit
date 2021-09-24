@@ -170,13 +170,24 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            public Matrix LightViewProjectMatrix
+            public Matrix LightView
             {
                 set
                 {
-                    SetAffectsRender(ref modelStruct.LightViewProjection, value);
+                    SetAffectsRender(ref modelStruct.LightView, value);
                 }
-                get { return modelStruct.LightViewProjection; }
+                get { return modelStruct.LightView; }
+            }
+            /// <summary>
+            /// 
+            /// </summary>
+            public Matrix LightProjection
+            {
+                set
+                {
+                    SetAffectsRender(ref modelStruct.LightProjection, value);
+                }
+                get { return modelStruct.LightProjection; }
             }
             /// <summary>
             /// Set to true if found the light source, otherwise false.
@@ -219,7 +230,7 @@ namespace HelixToolkit.UWP
 
                 deviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
                 var orgFrustum = context.BoundingFrustum;
-                var frustum = new BoundingFrustum(LightViewProjectMatrix);
+                var frustum = new BoundingFrustum(LightView * LightProjection);
                 context.BoundingFrustum = frustum;
     #if !TEST
                 deviceContext.SetViewport(0, 0, Width, Height);
