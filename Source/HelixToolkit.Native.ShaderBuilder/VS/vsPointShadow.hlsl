@@ -23,7 +23,7 @@ GSInputPS main(VSInputPS input)
     output.wp = mul(mWorld, input.p);
 
 	//set position into clip space	
-    output.p = mul(output.wp, vLightViewProjection);
+    output.p = mul(output.wp, mul(vLightView, vLightProjection));
     return output;
 }
 

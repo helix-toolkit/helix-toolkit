@@ -364,7 +364,8 @@ namespace HelixToolkit.UWP
                 else
                 {
                     shadowCore.FoundLightSource = true;
-                    shadowCore.LightViewProjectMatrix = camera.CreateViewMatrix() * camera.CreateProjectionMatrix(shadowCore.Width / shadowCore.Height);
+                    shadowCore.LightView = camera.CreateViewMatrix();
+                    shadowCore.LightProjection = camera.CreateProjectionMatrix(shadowCore.Width / shadowCore.Height);
                 }
             }
 

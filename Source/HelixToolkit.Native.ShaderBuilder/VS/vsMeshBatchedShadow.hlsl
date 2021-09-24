@@ -24,7 +24,7 @@ PSShadow main(VSInputBatched input)
    // }
 
 	//set position into world space	
-    output.p = mul(output.p, mul(mWorld, vLightViewProjection));
+    output.p = mul(output.p, mul(mWorld, mul(vLightView, vLightProjection)));
     return output;
 }
 #endif
