@@ -32,14 +32,14 @@ namespace HelixToolkit.UWP
         public class ViewBoxNode : ScreenSpacedNode
         {
             #region Properties
-            private Stream viewboxTexture;
+            private TextureModel viewboxTexture;
             /// <summary>
             /// Gets or sets the view box texture.
             /// </summary>
             /// <value>
             /// The view box texture.
             /// </value>
-            public Stream ViewBoxTexture
+            public TextureModel ViewBoxTexture
             {
                 set
                 {
@@ -193,9 +193,9 @@ namespace HelixToolkit.UWP
                     var material = (ViewBoxMeshModel.Material as ViewCubeMaterialCore);
                     if (material.DiffuseMap == null)
                     {
-                        material.DiffuseMap = ViewBoxTexture ?? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
+                        material.DiffuseMap = ViewBoxTexture ?? new TextureModel(BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
                             "F", "B", "L", "R", "U", "D", Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
-                            Color.White, Color.White, Color.White, Color.White, Color.White, Color.White);
+                            Color.White, Color.White, Color.White, Color.White, Color.White, Color.White), true);
                     }
                     return true;
                 }
@@ -214,7 +214,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            private void UpdateTexture(Stream texture)
+            private void UpdateTexture(TextureModel texture)
             {
                 if(ViewBoxMeshModel.Material is ViewCubeMaterialCore material)
                     material.DiffuseMap = texture;

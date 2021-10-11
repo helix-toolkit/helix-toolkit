@@ -5,9 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 #if NETFX_CORE
-using Windows.Foundation;
+using  Windows.Foundation;
 using Windows.UI.Xaml.Controls;
+
 namespace HelixToolkit.UWP
+#elif WINUI
+using Windows.Foundation;
+using Microsoft.UI.Xaml.Controls;
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using System.Windows.Controls;
@@ -20,12 +26,14 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public HelixItemsControl()
             {
-    #if NETFX_CORE
+#if NETFX_CORE
                 ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.None;
-    #else
+#elif WINUI
+                ManipulationMode = Microsoft.UI.Xaml.Input.ManipulationModes.None;
+#else
                 Focusable = false;
                 Visibility = Visibility.Collapsed;
-    #endif
+#endif
                 IsHitTestVisible = false;
                 this.DefaultStyleKey = typeof(HelixItemsControl);
             }

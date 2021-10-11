@@ -1,14 +1,17 @@
-﻿#if !NETFX_CORE
+﻿using System;
+#if !NETFX_CORE && !WINUI
 #if COREWPF
 using HelixToolkit.SharpDX.Core.Model;
 #endif
 namespace HelixToolkit.Wpf.SharpDX
+#elif WINUI
+using HelixToolkit.SharpDX.Core.Model;
+namespace HelixToolkit.WinUI
 #else
 namespace HelixToolkit.UWP
 #endif
 {
-    using Model;
-    using System;
+    using Model; 
 
     public static class MaterialExtension
     {
@@ -153,7 +156,7 @@ namespace HelixToolkit.UWP
     }
 }
 
-#if !COREWPF
+#if !COREWPF && !WINUI
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else

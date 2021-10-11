@@ -162,6 +162,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private IRenderHost renderHostInternal;
 
         private bool IsAttached = false;
+        private bool disposedValue;
 
         public static bool IsInDesignMode
         {
@@ -313,6 +314,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 Logger.Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy", nameof(ScreenCloneRenderHost));
                 return new DX11SwapChainRenderBufferProxy(surface, EffectsManager, false);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    EffectsManager = null;
+                    RenderHost?.Dispose();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
         }
     }
 }

@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.19.0] - 2021-10-11
+### Fixed
+1. Fix shadow is showing on the back of the object #1649 (WPF.SharpDX/UWP/Core)
+1. Fix UWP memory leak due to event handlers are not being released properly. #1185 (UWP)
+
 ## [2.18.0] - 2021-09-04
 ### Added
 1. Add hit test support for AxisPlaneGridNode.(WPF.SharpDX/UWP/Core)

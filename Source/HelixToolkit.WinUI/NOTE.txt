@@ -1,0 +1,12 @@
+﻿https://stackoverflow.com/questions/48991029/directx-access-denied-when-creating-swap-chain-for-corewindow
+
+https://github.com/yoshiask/ProjectEstrada/blob/921cbfe0065b181aa268ddbe5c8a269e780a4ccd/ProjectEstrada/ProjectEstrada/MainWindow.xaml.cs
+
+
+FILE OPEN
+https://gist.github.com/wbokkers/cc8bcc7bc5a646b82a4d41b337330c69
+https://github.com/microsoft/microsoft-ui-xaml/issues/3295
+
+
+
+https://social.msdn.microsoft.com/Forums/en-US/54e4820d-d782-45d9-a2b1-4e3a13340788/set-focus-on-swapchainpanel-control?forum=winappswithcsharp

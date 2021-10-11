@@ -1870,8 +1870,10 @@ namespace HelixToolkit.Wpf.SharpDX
                             hostPresenter.Content = null;
                             d.Dispose();
                         }
+                        Camera = null;
+                        EffectsManager = null;
+                        Items.Clear();
                     }
-
                     // TODO: dispose managed state (managed objects).
                 }
 

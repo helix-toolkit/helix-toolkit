@@ -7,12 +7,22 @@ using System;
 using System.Collections.Generic;
 
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
 using System.ServiceModel.Dispatcher;
 using FrameworkContentElement = Windows.UI.Xaml.FrameworkElement;    
 using Windows.Foundation;
 using Windows.UI.Core;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+// using System.ServiceModel.Dispatcher;
+using FrameworkContentElement = Microsoft.UI.Xaml.FrameworkElement;    
+using Windows.Foundation;
+using Windows.UI.Core;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Utilities;
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using System.Windows.Threading;
@@ -23,7 +33,7 @@ using HelixToolkit.SharpDX.Core.Utilities;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Utilities;
 #endif
     /// <summary>
@@ -179,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (int)GetValue(MinObjectSizeToSplitProperty);
             }
         }
-#if NETFX_CORE
+#if NETFX_CORE || WINUI
         private IAsyncAction octreeOpt;
 #else
         private DispatcherOperation octreeOpt;
@@ -202,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     manager = OnCreateManager();
                     manager.OnOctreeCreated += (s, e) =>
                     {
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
                         if (octreeOpt != null && octreeOpt.Status == DispatcherOperationStatus.Pending)
                         {
                             octreeOpt.Abort();

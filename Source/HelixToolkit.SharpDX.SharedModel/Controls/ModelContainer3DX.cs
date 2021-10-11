@@ -13,9 +13,18 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #endif
 
 #if NETFX_CORE
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using  Windows.UI.Xaml;
+using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core.Core2D;
+using HelixToolkit.SharpDX.Core.Utilities;
+using HelixToolkit.SharpDX.Core.Render;
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using System.Windows.Controls;
@@ -26,17 +35,17 @@ using HelixToolkit.SharpDX.Core.Core2D;
 using HelixToolkit.SharpDX.Core.Utilities;
 using HelixToolkit.SharpDX.Core.Render;
 #endif
+using HelixToolkit.Wpf.SharpDX.Utilities;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
 
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Render;
     using Core2D;
     using Model.Scene;
 #endif
     using Controls;
-    using Utilities;
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
@@ -321,7 +330,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color of the clear.
         /// </value>
         /// <exception cref="NotImplementedException"></exception>
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         [TypeConverter(typeof(Color4Converter))]
 #endif
         public Color4 ClearColor
@@ -525,7 +534,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public ModelContainer3DX()
         {
             this.IsHitTestVisible = false;
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
             Visibility = System.Windows.Visibility.Collapsed;
 #endif
         }

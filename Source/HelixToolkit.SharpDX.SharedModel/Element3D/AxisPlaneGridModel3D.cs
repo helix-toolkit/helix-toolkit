@@ -1,17 +1,27 @@
 ﻿using SharpDX;
 
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
 using Vector3D = SharpDX.Vector3;
 
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using Media = Windows.UI;
+using Windows.Foundation;
+using Vector3D = SharpDX.Vector3;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
+
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Model.Scene;
@@ -19,7 +29,7 @@ using HelixToolkit.SharpDX.Core.Model.Scene;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model.Scene;
 #endif
     /// <summary>
@@ -155,8 +165,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The plane color property
         /// </summary>
         public static readonly DependencyProperty PlaneColorProperty =
-            DependencyProperty.Register("PlaneColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D), 
+            DependencyProperty.Register("PlaneColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D),
+#if WINUI
+                new PropertyMetadata(Microsoft.UI.Colors.Gray,
+#else
                 new PropertyMetadata(Media.Colors.Gray,
+#endif     
                 (d, e) =>
                 {
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).PlaneColor = ((Media.Color)e.NewValue).ToColor4();
@@ -178,8 +192,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The grid color property
         /// </summary>
         public static readonly DependencyProperty GridColorProperty =
-            DependencyProperty.Register("GridColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D), 
+            DependencyProperty.Register("GridColor", typeof(Media.Color), typeof(AxisPlaneGridModel3D),
+#if WINUI
+                new PropertyMetadata(Microsoft.UI.Colors.DarkGray,
+#else
                 new PropertyMetadata(Media.Colors.DarkGray,
+#endif       
                 (d, e) =>
                 {
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).GridColor = ((Media.Color)e.NewValue).ToColor4();

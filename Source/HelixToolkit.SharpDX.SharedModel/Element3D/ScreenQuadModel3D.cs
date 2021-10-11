@@ -5,10 +5,20 @@ Copyright (c) 2018 Helix Toolkit contributors
 using global::SharpDX.Direct3D11;
 using System;
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
 using Color = Windows.UI.Color;
 using Colors = Windows.UI.Colors;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Microsoft.UI.Colors;
+using System.Runtime.Versioning;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core.Shaders;
+using HelixToolkit.SharpDX.Core;
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 using Color = System.Windows.Media.Color;
@@ -21,7 +31,7 @@ using HelixToolkit.SharpDX.Core;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model.Scene;
     using Shaders;
 #endif
@@ -29,6 +39,9 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
+    #if WINUI
+    [SupportedOSPlatform("windows")]
+    #endif
     public class ScreenQuadModel3D : Element3D
     {
         public TextureModel Texture

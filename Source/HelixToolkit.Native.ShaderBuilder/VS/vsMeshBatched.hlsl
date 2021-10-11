@@ -59,7 +59,7 @@ PSInput main(VSInputBatched input)
 	//set position into light-clip space
     if (bHasShadowMap)
     {
-        output.sp = mul(output.wp, vLightViewProjection);
+        output.sp = mul(output.wp, mul(vLightView, vLightProjection));
     }
 
 	//set color

@@ -4,8 +4,15 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX.Direct3D11;
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using HelixToolkit.SharpDX.Core.Model;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+using HelixToolkit.SharpDX.Core.Shaders;
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -17,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model.Scene;
     using Shaders;
 #endif

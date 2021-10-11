@@ -341,7 +341,11 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            Matrix LightViewProjectMatrix { set; get; }
+            Matrix LightView { set; get; }
+            /// <summary>
+            /// 
+            /// </summary>
+            Matrix LightProjection { set; get; }
             /// <summary>
             /// Update shadow map every N frames
             /// </summary>

@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "HelixToolkit.WinUI": {
+      "commandName": "Project"
+    }
+  }
+}

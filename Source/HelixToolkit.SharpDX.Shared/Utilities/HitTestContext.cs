@@ -4,14 +4,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using System;
-#if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
+#if NETFX_CORE
 #if CORE
 namespace HelixToolkit.SharpDX.Core
 #else
 namespace HelixToolkit.UWP
 #endif
+#else
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     public sealed class HitTestContext

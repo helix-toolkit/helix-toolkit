@@ -10,8 +10,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 #if NETFX_CORE
-using Windows.UI.Xaml;
-namespace HelixToolkit.UWP.Core2D
+using  Windows.UI.Xaml;
+
+namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene2D;
+namespace HelixToolkit.WinUI.Core2D
 #else
 using System.Windows;
 #if COREWPF
@@ -21,13 +27,13 @@ using HelixToolkit.SharpDX.Core.Model.Scene2D;
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model.Scene2D;
 #endif
     /// <summary>
     /// External Wrapper core to be used for different platform
     /// </summary>
-#if NETFX_CORE
+#if NETFX_CORE || WINUI
     public abstract partial class Element2DCore : FrameworkElement, IDisposable
 #else
     public abstract partial class Element2DCore : FrameworkContentElement, IDisposable
@@ -86,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void SceneNode_OnDetached(object sender, EventArgs e)
         {
-#if NETFX_CORE
+#if NETFX_CORE || WINUI
             if(Dispatcher != null)
             {
                 if (Dispatcher.HasThreadAccess)
@@ -154,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             SceneNode.InvalidateRender();
         }
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINUI
         public void InvalidateMeasure()
         {
             SceneNode.InvalidateMeasure();

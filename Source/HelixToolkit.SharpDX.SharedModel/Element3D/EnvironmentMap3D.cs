@@ -1,7 +1,13 @@
 ﻿
 #if NETFX_CORE
-using Windows.UI.Xaml;
+using  Windows.UI.Xaml;
+
 namespace HelixToolkit.UWP
+#elif WINUI 
+using Microsoft.UI.Xaml;
+using HelixToolkit.SharpDX.Core;
+using HelixToolkit.SharpDX.Core.Model.Scene;
+namespace HelixToolkit.WinUI
 #else
 using System.Windows;
 #if COREWPF
@@ -12,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-#if !COREWPF
+#if !COREWPF && !WINUI
     using Model.Scene;
 #endif
     /// <summary>

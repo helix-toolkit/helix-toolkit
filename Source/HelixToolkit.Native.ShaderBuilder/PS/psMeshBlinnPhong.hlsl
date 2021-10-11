@@ -177,7 +177,13 @@ float4 main(PSInput input) : SV_Target
     if (bHasShadowMap)
     {
         if (bRenderShadowMap)
-            s = shadowStrength(input.sp);
+        {
+            float d = dot(getLookDir(vLightView), N);
+            if (d > 0)
+            {
+                s = shadowStrength(input.sp);                
+            }
+        }
     }
     color.rgb *= s;
     float4 emissive = input.c2;

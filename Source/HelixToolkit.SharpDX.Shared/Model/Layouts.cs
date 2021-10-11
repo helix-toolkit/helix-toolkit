@@ -235,8 +235,9 @@ namespace HelixToolkit.UWP
         public int HasShadowMap;
         float paddingShadow0;
         public Vector4 ShadowMapInfo;
-        public Matrix LightViewProjection;
-        public const int SizeInBytes = 4 * (4 * 2 + 4*4);
+        public Matrix LightView;
+        public Matrix LightProjection;
+        public const int SizeInBytes = 4 * (4 * 2 + 4 * 4 * 2);
     }
     /// <summary>
     /// 
