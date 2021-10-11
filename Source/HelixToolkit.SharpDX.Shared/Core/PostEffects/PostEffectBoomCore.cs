@@ -149,7 +149,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Initializes a new instance of the <see cref="PostEffectMeshOutlineBlurCore"/> class.
             /// </summary>
-            public PostEffectBloomCore() : base(RenderType.PostProc)
+            public PostEffectBloomCore() : base(RenderType.GlobalEffect)
             {
                 modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
                 ThresholdColor = new Color4(0.8f, 0.8f, 0.8f, 0f);
@@ -185,18 +185,18 @@ namespace HelixToolkit.UWP
                 #region Do Bloom Pass
                 modelCB.Upload(deviceContext, ref modelStruct);
                 //Extract bloom samples
-                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.NextRTV, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.NextRTV);
                 
                 screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
                 screenQuadPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                 screenQuadPass.BindShader(deviceContext);
                 screenQuadPass.BindStates(deviceContext, StateType.All);
                 deviceContext.Draw(4, 0);
-
+                var viewport = context.Viewport;
                 // Down sampling
                 for(int i = 0; i < numberOfBlurPass; ++i)
                 {
-                    blurCore.Run(context, deviceContext, buffer.FullResPPBuffer.NextRTV, buffer.TargetWidth, buffer.TargetHeight, 
+                    blurCore.Run(context, deviceContext, buffer.FullResPPBuffer.NextRTV, ref viewport,
                         PostEffectBlurCore.BlurDepth.Two, ref modelStruct);
                 }
                 

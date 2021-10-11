@@ -11,6 +11,9 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Diagnostics;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -26,7 +29,6 @@ namespace HelixToolkit.UWP
     using Shaders;
     using Utilities;
     using Render;
-    using System.Diagnostics;
 
     /// <summary>
     /// The render-context is currently generated per frame
@@ -54,7 +56,10 @@ namespace HelixToolkit.UWP
 
         private CameraCore camera;
 
-        public bool IsPerspective { get; private set; }
+        public bool IsPerspective 
+        {
+            get => globalTransform.IsPerspective;
+        }
         /// <summary>
         /// Gets the view matrix.
         /// </summary>
@@ -63,8 +68,8 @@ namespace HelixToolkit.UWP
         /// </value>
         public Matrix ViewMatrix
         {
-            set; get;
-        } = Matrix.Identity;
+            get => globalTransform.View;
+        }
         /// <summary>
         /// Gets or sets the inversed view matrix.
         /// </summary>
@@ -73,8 +78,8 @@ namespace HelixToolkit.UWP
         /// </value>
         public Matrix ViewMatrixInv
         {
-            set; get;
-        } = Matrix.Identity;
+            get => globalTransform.View.PsudoInvert();
+        }
         /// <summary>
         /// Gets or sets the projection matrix.
         /// </summary>
@@ -83,8 +88,8 @@ namespace HelixToolkit.UWP
         /// </value>
         public Matrix ProjectionMatrix
         {
-            set; get;
-        } = Matrix.Identity;
+            get => globalTransform.Projection;
+        }
 
         /// <summary>
         /// Gets the viewport matrix.
@@ -96,10 +101,10 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return new Matrix((float)(ActualWidth / 2), 0, 0, 0,
-                    0, -(float)(ActualHeight / 2), 0, 0,
+                return new Matrix((float)(globalTransform.Viewport.X / 2), 0, 0, 0,
+                    0, -(float)(globalTransform.Viewport.Y / 2), 0, 0,
                     0, 0, 1, 0,
-                    (float)((ActualWidth - 1) / 2), (float)((ActualHeight - 1) / 2), 0, 1);
+                    (float)((globalTransform.Viewport.X - 1) / 2), (float)((globalTransform.Viewport.Y - 1) / 2), 0, 1);
             }
         }
 
@@ -143,6 +148,13 @@ namespace HelixToolkit.UWP
         public float DpiScale
         {
             get => RenderHost.DpiScale;
+        }
+        /// <summary>
+        /// Current viewport setting
+        /// </summary>
+        public ViewportF Viewport
+        {
+            private set; get;
         }
         /// <summary>
         /// Gets or sets the camera.
@@ -380,6 +392,8 @@ namespace HelixToolkit.UWP
         public bool IsShadowMapEnabled => RenderHost.IsShadowMapEnabled;
 
         private volatile bool needsUpdate = true;
+
+        private readonly Stack<GlobalTransformStruct> transformHistory = new Stack<GlobalTransformStruct>();
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
@@ -395,7 +409,7 @@ namespace HelixToolkit.UWP
             OITWeightDepthSlope = 1;
             OITWeightMode = OITWeightMode.Linear2;
         }
-
+         
         private void Camera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             needsUpdate = true;
@@ -408,19 +422,41 @@ namespace HelixToolkit.UWP
                 return;
             }
             needsUpdate = false;
-            ViewMatrix = this.camera.CreateViewMatrix();
-            ViewMatrixInv = ViewMatrix.PsudoInvert();
+            globalTransform.View = this.camera.CreateViewMatrix();
             var aspectRatio = this.ActualWidth / this.ActualHeight;
-            ProjectionMatrix = this.camera.CreateProjectionMatrix((float)aspectRatio);
+            globalTransform.Projection = this.camera.CreateProjectionMatrix((float)aspectRatio);
+            globalTransform.ViewProjection = ViewMatrix * ProjectionMatrix;
             // viewport: W,H,1/W,1/H
-            globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 1f / (float)ActualWidth, 1f / (float)ActualHeight);
+            globalTransform.Viewport = globalTransform.Resolution
+                = new Vector4((float)ActualWidth, (float)ActualHeight, 1f / (float)ActualWidth, 1f / (float)ActualHeight);
             CameraParams = this.camera.CreateCameraParams(aspectRatio);
-            BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
+            BoundingFrustum = new BoundingFrustum(globalTransform.ViewProjection);
             // frustum: FOV,AR,N,F
             globalTransform.Frustum = new Vector4(CameraParams.FOV, CameraParams.AspectRatio, CameraParams.ZNear, CameraParams.ZFar);
             globalTransform.EyePos = CameraParams.Position;
-            IsPerspective = !BoundingFrustum.IsOrthographic;
-            globalTransform.IsPerspective = IsPerspective;
+            globalTransform.IsPerspective = !BoundingFrustum.IsOrthographic;
+            globalTransform.TimeStamp = (float)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
+            globalTransform.DpiScale = DpiScale;
+            Viewport = new Viewport(0, 0, (int)ActualWidth, (int)ActualHeight);
+        }
+
+        public void Set(ref GlobalTransformStruct transforms, ViewportF viewport)
+        {
+            Set(ref transforms, ref viewport);
+        }
+
+
+        public void Set(ref GlobalTransformStruct transforms, ref ViewportF viewport)
+        {
+            globalTransform = transforms;
+            Viewport = viewport;
+            needsUpdate = true;
+        }
+
+        public void RestoreGlobalTransform()
+        {
+            needsUpdate = true;
+            Update();
         }
 
         /// <summary>
@@ -447,15 +483,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights, DeviceContextProxy deviceContext)
-        {           
+        {
             if (updateGlobalTransform)
             {
                 ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
-                globalTransform.View = ViewMatrix;
-                globalTransform.Projection = ProjectionMatrix;
-                globalTransform.ViewProjection = ViewMatrix * ProjectionMatrix;
-                globalTransform.TimeStamp = (float)Stopwatch.GetTimestamp()/Stopwatch.Frequency;
-                globalTransform.DpiScale = DpiScale;
                 cbuffer.UploadDataToBuffer(deviceContext, ref globalTransform);
             }
             if (updateLights)

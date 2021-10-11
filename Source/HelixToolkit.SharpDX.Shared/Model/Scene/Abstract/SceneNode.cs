@@ -312,6 +312,14 @@ namespace HelixToolkit.UWP
                     return false;
                 }
             }
+            /// <summary>
+            /// Set this to true if this node updates global variable.
+            /// <para>Currently only used by screenspaced node and topmost node</para>
+            /// </summary>
+            public bool AffectsGlobalVariable
+            {
+                protected set; get;
+            } = false;
             #region Handling Transforms
 
             /// <summary>

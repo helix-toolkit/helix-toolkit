@@ -63,13 +63,17 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected readonly FastList<SceneNode> preProcNodes = new FastList<SceneNode>();
             /// <summary>
-            /// The pending render nodes
+            /// The post effect nodes
             /// </summary>
-            protected readonly FastList<SceneNode> postProcNodes = new FastList<SceneNode>();
+            protected readonly FastList<SceneNode> postEffectNodes = new FastList<SceneNode>();
             /// <summary>
-            /// The render nodes for post render
+            /// The global effect nodes
             /// </summary>
-            protected readonly FastList<SceneNode> nodesForPostRender = new FastList<SceneNode>();
+            protected readonly FastList<SceneNode> globalEffectNodes = new FastList<SceneNode>();
+            /// <summary>
+            /// The nodes have post effect
+            /// </summary>
+            protected readonly FastList<SceneNode> nodesWithPostEffect = new FastList<SceneNode>();
             /// <summary>
             /// The pending render nodes
             /// </summary>
@@ -83,7 +87,6 @@ namespace HelixToolkit.UWP
             /// The need update cores
             /// </summary>
             private readonly FastList<RenderCore> needUpdateCores = new FastList<RenderCore>();
-
             /// <summary>
             /// Gets the current frame flattened scene graph. KeyValuePair.Key is the depth of the node.
             /// </summary>
@@ -144,7 +147,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public sealed override FastList<SceneNode> PerFrameNodesWithPostEffect
             {
-                get { return nodesForPostRender; }
+                get { return nodesWithPostEffect; }
             }
 
             public const int FrustumPartitionSize = 500;

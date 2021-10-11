@@ -398,6 +398,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TreeTraverser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\UAVBufferViewProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TypeConverters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\UnsafeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\VolumeDataHelper.cs" />
   </ItemGroup>
   <ItemGroup>

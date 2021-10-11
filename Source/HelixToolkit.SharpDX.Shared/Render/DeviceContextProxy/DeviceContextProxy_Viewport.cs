@@ -44,7 +44,16 @@ namespace HelixToolkit.UWP
             {
                 deviceContext.Rasterizer.SetScissorRectangle(left, top, right, bottom);
             }
-
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="viewport"></param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetScissorRectangle(ref ViewportF viewport)
+            {
+                SetScissorRectangle((int)viewport.X, (int)viewport.Y,
+                                    (int)(viewport.X + viewport.Width), (int)(viewport.Y + viewport.Height));
+            }
             /// <summary>
             /// Binds a set of scissor rectangles to the rasterizer stage.
             /// </summary>
@@ -86,7 +95,15 @@ namespace HelixToolkit.UWP
             {
                 deviceContext.Rasterizer.SetViewport(x, y, width, height, minZ, maxZ);
             }
-
+            /// <summary>
+            /// Binds a single viewport to the rasterizer stage.
+            /// </summary>
+            /// <param name="viewport"></param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void SetViewport(Viewport viewport)
+            {
+                deviceContext.Rasterizer.SetViewport(viewport);
+            }
             /// <summary>
             /// Binds a single viewport to the rasterizer stage.
             /// </summary>
@@ -118,7 +135,6 @@ namespace HelixToolkit.UWP
             {
                 deviceContext.Rasterizer.SetViewport(viewport);
             }
-
             #endregion Viewport and Scissors
         }
     }

@@ -235,7 +235,7 @@ namespace HelixToolkit.UWP
     #if !TEST
                 deviceContext.SetViewport(0, 0, Width, Height);
 
-                deviceContext.SetDepthStencilOnly(viewResource.DepthStencilView);
+                deviceContext.SetDepthStencil(viewResource.DepthStencilView);
                 modelStruct.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
                 modelCB.Upload(deviceContext, ref modelStruct);
                 for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)

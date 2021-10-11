@@ -79,7 +79,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="dsv">The DSV.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetDepthStencilOnly(DepthStencilView dsv)
+            public void SetDepthStencil(DepthStencilView dsv)
             {
                 deviceContext.OutputMerger.SetRenderTargets(dsv, ZeroRenderTargetArray);
             }
@@ -88,7 +88,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="rtv">The RTV.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetRenderTargetOnly(RenderTargetView rtv)
+            public void SetRenderTarget(RenderTargetView rtv)
             {
                 deviceContext.OutputMerger.SetRenderTargets(null, rtv);
             }
@@ -106,9 +106,8 @@ namespace HelixToolkit.UWP
             /// <param name="depth"></param>
             /// <param name="stencil"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetRenderTarget(DepthStencilView dsv, RenderTargetView rtv, int width, int height, 
-                bool clearRTV, Color4 color,
-                bool clearDSV, 
+            public void SetRenderTarget(DepthStencilView dsv, RenderTargetView rtv, 
+                bool clearRTV, Color4 color, bool clearDSV, 
                 DepthStencilClearFlags flags = DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil,
                 float depth = 1, byte stencil = 0)
             {
@@ -121,57 +120,21 @@ namespace HelixToolkit.UWP
                     ClearDepthStencilView(dsv, flags, depth, stencil);
                 }
                 SetRenderTarget(dsv, rtv);
-                SetViewport(0, 0, width, height);
-                SetScissorRectangle(0, 0, width, height);
             }
             /// <summary>
             /// Sets the render target. This sets depth stencil buffer to null
             /// </summary>
             /// <param name="rtv">The RTV.</param>
-            /// <param name="width">The width.</param>
-            /// <param name="height">The height.</param>
             /// <param name="clearRTV">if set to <c>true</c> [clear RTV].</param>
             /// <param name="color">The color.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetRenderTarget(RenderTargetView rtv, int width, int height,
-                bool clearRTV, Color4 color)
+            public void SetRenderTarget(RenderTargetView rtv, bool clearRTV, Color4 color)
             {
                 if (clearRTV && rtv != null)
                 {
                     ClearRenderTargetView(rtv, color);
                 }
                 SetRenderTarget(null, rtv);
-                SetViewport(0, 0, width, height);
-                SetScissorRectangle(0, 0, width, height);
-            }
-
-            /// <summary>
-            /// Sets the render target but no clear.
-            /// </summary>
-            /// <param name="dsv">The DSV.</param>
-            /// <param name="rtv">The RTV.</param>
-            /// <param name="width">The width.</param>
-            /// <param name="height">The height.</param>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetRenderTarget(DepthStencilView dsv, RenderTargetView rtv, int width, int height)
-            {
-                SetRenderTarget(dsv, rtv);
-                SetViewport(0, 0, width, height);
-                SetScissorRectangle(0, 0, width, height);
-            }
-
-            /// <summary>
-            /// Sets the render target no clear. This sets depth stencil buffer to null
-            /// </summary>
-            /// <param name="rtv">The RTV.</param>
-            /// <param name="width">The width.</param>
-            /// <param name="height">The height.</param>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetRenderTarget(RenderTargetView rtv, int width, int height)
-            {
-                SetRenderTarget(null, rtv);
-                SetViewport(0, 0, width, height);
-                SetScissorRectangle(0, 0, width, height);
             }
             #endregion Set targets
 

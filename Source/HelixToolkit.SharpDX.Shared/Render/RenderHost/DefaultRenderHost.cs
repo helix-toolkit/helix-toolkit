@@ -145,8 +145,11 @@ namespace HelixToolkit.UWP
                             case RenderType.PreProc:
                                 preProcNodes.Add(renderable.Value);
                                 break;
-                            case RenderType.PostProc:
-                                postProcNodes.Add(renderable.Value);
+                            case RenderType.PostEffect:
+                                postEffectNodes.Add(renderable.Value);
+                                break;
+                            case RenderType.GlobalEffect:
+                                globalEffectNodes.Add(renderable.Value);
                                 break;
                             case RenderType.ScreenSpaced:
                                 screenSpacedNodes.Add(renderable.Value);
@@ -167,11 +170,11 @@ namespace HelixToolkit.UWP
                             opaqueNodes[i].UpdateRenderOrderKey();
                         }
                         opaqueNodes.Sort();
-                        for (int i = 0; i < postProcNodes.Count; ++i)
+                        for (int i = 0; i < postEffectNodes.Count; ++i)
                         {
-                            postProcNodes[i].UpdateRenderOrderKey();
+                            postEffectNodes[i].UpdateRenderOrderKey();
                         }
-                        postProcNodes.Sort();
+                        postEffectNodes.Sort();
                         for (int i = 0; i < particleNodes.Count; ++i)
                         {
                             particleNodes[i].UpdateRenderOrderKey();
@@ -262,7 +265,7 @@ namespace HelixToolkit.UWP
             private void CollectPostEffectNodes()
             {
                 //Get RenderCores with post effect specified.
-                if (postProcNodes.Count > 0)
+                if (postEffectNodes.Count > 0)
                 {
                     if (opaqueNodesInFrustum.Count + transparentNodesInFrustum.Count > 50)
                     {
@@ -272,14 +275,14 @@ namespace HelixToolkit.UWP
                             {
                                 if (opaqueNodesInFrustum[i].HasAnyPostEffect)
                                 {
-                                    nodesForPostRender.Add(opaqueNodesInFrustum[i]);
+                                    nodesWithPostEffect.Add(opaqueNodesInFrustum[i]);
                                 }
                             }
                             for (int i = 0; i < transparentNodesInFrustum.Count; ++i)
                             {
                                 if (transparentNodesInFrustum[i].HasAnyPostEffect)
                                 {
-                                    nodesForPostRender.Add(transparentNodesInFrustum[i]);
+                                    nodesWithPostEffect.Add(transparentNodesInFrustum[i]);
                                 }
                             }
                         });
@@ -290,14 +293,14 @@ namespace HelixToolkit.UWP
                         {
                             if (opaqueNodesInFrustum[i].HasAnyPostEffect)
                             {
-                                nodesForPostRender.Add(opaqueNodesInFrustum[i]);
+                                nodesWithPostEffect.Add(opaqueNodesInFrustum[i]);
                             }
                         }
                         for (int i = 0; i < transparentNodesInFrustum.Count; ++i)
                         {
                             if (transparentNodesInFrustum[i].HasAnyPostEffect)
                             {
-                                nodesForPostRender.Add(transparentNodesInFrustum[i]);
+                                nodesWithPostEffect.Add(transparentNodesInFrustum[i]);
                             }
                         }
                     }
@@ -334,18 +337,55 @@ namespace HelixToolkit.UWP
 
                 getPostEffectCoreTask?.Wait();
                 getPostEffectCoreTask = null;
-                if (RenderConfiguration.FXAALevel != FXAALevel.None || postProcNodes.Count > 0)
+                if (RenderConfiguration.FXAALevel != FXAALevel.None
+                    || postEffectNodes.Count > 0 || globalEffectNodes.Count > 0)
                 {
                     renderer.RenderToPingPongBuffer(RenderContext, ref renderParameter);
                     renderParameter.IsMSAATexture = false;
-                    renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
                     renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
-                    renderParameter.RenderTargetView = new global::SharpDX.Direct3D11.RenderTargetView[] { RenderBuffer.FullResPPBuffer.CurrentRTV };
+                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;
                 }
-
-                renderer.RenderScreenSpaced(RenderContext, screenSpacedNodes, ref renderParameter);
+                if (postEffectNodes.Count > 0)
+                {
+                    renderer.RenderPostProc(RenderContext, postEffectNodes, ref renderParameter);
+                    renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
+                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;
+                }
+                if (globalEffectNodes.Count > 0)
+                {
+                    renderer.RenderPostProc(RenderContext, globalEffectNodes, ref renderParameter);
+                    renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
+                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;
+                }
+                if (screenSpacedNodes.Count > 0)
+                {
+                    int start = 0;
+                    while (start < screenSpacedNodes.Count)
+                    {
+                        if (screenSpacedNodes[start].AffectsGlobalVariable)
+                        {
+                            nodesWithPostEffect.Clear();
+                            int i = start + 1;
+                            for (; i < screenSpacedNodes.Count; ++i)
+                            {
+                                if (screenSpacedNodes[i].AffectsGlobalVariable)
+                                {
+                                    break;
+                                }
+                                if (screenSpacedNodes[i].HasAnyPostEffect)
+                                {
+                                    nodesWithPostEffect.Add(screenSpacedNodes[i]);
+                                }
+                            }
+                            renderer.RenderScreenSpaced(RenderContext, screenSpacedNodes, start, i - start, ref renderParameter);
+                            renderer.RenderPostProc(RenderContext, postEffectNodes, ref renderParameter);
+                            RenderContext.RestoreGlobalTransform();
+                            start = i;
+                        }
+                    }                       
+                }
                 renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
-                numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
+                numRendered += preProcNodes.Count + postEffectNodes.Count + screenSpacedNodes.Count;
                 if (ShowRenderDetail != RenderDetail.None)
                 {
                     getTriangleCountTask?.Wait();
@@ -410,7 +450,7 @@ namespace HelixToolkit.UWP
                 bool fastClear = !clearFrameRenderables;
                 viewportRenderables.Clear(fastClear);
                 needUpdateCores.Clear(fastClear);
-                nodesForPostRender.Clear(fastClear);
+                nodesWithPostEffect.Clear(fastClear);
                 opaqueNodesInFrustum.Clear(fastClear);
                 transparentNodesInFrustum.Clear(fastClear);
                 if (clearFrameRenderables)
@@ -423,7 +463,8 @@ namespace HelixToolkit.UWP
                     transparentNodes.Clear(fastClear);
                     particleNodes.Clear(fastClear);
                     lightNodes.Clear(fastClear);
-                    postProcNodes.Clear(fastClear);
+                    postEffectNodes.Clear(fastClear);
+                    globalEffectNodes.Clear(fastClear);
                     preProcNodes.Clear(fastClear);
                     screenSpacedNodes.Clear(fastClear);
                 }

@@ -257,6 +257,40 @@ namespace HelixToolkit.UWP
                     renderables[i].Render(context, ImmediateContext);
                 }
             }
+
+            /// <summary>
+            /// Renders the screenspaced node's post proc.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="screenSpacedWithPostEffects"></param>
+            /// <param name="nodesWithPostEffects"></param>
+            /// <param name="postProcNodes"></param>
+            /// <param name="parameter">The parameter.</param>
+            public virtual void RenderScreenSpacedPostProc(RenderContext context, 
+                FastList<SceneNode> screenSpacedWithPostEffects,
+                FastList<SceneNode> nodesWithPostEffects,
+                FastList<SceneNode> postProcNodes, ref RenderParameter parameter)
+            {
+                int i = 0;
+                while (i < screenSpacedWithPostEffects.Count)
+                {
+                    if (screenSpacedWithPostEffects[i].AffectsGlobalVariable)
+                    {
+                        context.RestoreGlobalTransform();
+                        screenSpacedWithPostEffects[i].Render(context, ImmediateContext);
+                        nodesWithPostEffects.Clear();
+                        while (++i < screenSpacedWithPostEffects.Count 
+                            && !screenSpacedWithPostEffects[i].AffectsGlobalVariable)
+                        {
+                            nodesWithPostEffects.Add(screenSpacedWithPostEffects[i]);
+                        }
+                        RenderPostProc(context, postProcNodes, ref parameter);
+                        continue;
+                    }
+                    ++i;
+                }
+            }
+
             /// <summary>
             /// Renders to ping pong buffer.
             /// </summary>
@@ -281,22 +315,21 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
-            public virtual void RenderScreenSpaced(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
+            public virtual void RenderScreenSpaced(RenderContext context, FastList<SceneNode> renderables, int start, int count,
+                ref RenderParameter parameter)
             {
-                int count = renderables.Count;
                 if(count > 0)
                 {
+                    bool hasMSAA = context.RenderHost.RenderBuffer.ColorBufferSampleDesc.Count == 1;
                     var buffer = context.RenderHost.RenderBuffer;
-                    bool useDefault = parameter.RenderTargetView[0] == buffer.ColorBuffer.RenderTargetView;
-
-                    var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt);
+                    var depthStencilBuffer = hasMSAA ? buffer.DepthStencilBuffer : context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt);
                     ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
 
-                    for (int i = 0; i < count; ++i)
+                    for (int i = start; i < start + count; ++i)
                     {
                         renderables[i].Render(context, ImmediateContext);
                     }
-                    if (!useDefault)
+                    if (!hasMSAA)
                     {
                         depthStencilBuffer.Dispose();
                     }

@@ -124,8 +124,6 @@ namespace HelixToolkit.UWP
         public class ScreenSpacedMeshRenderCore : RenderCore, IScreenSpacedRenderParams
         {
             public event EventHandler<BoolArgs> OnCoordinateSystemChanged;
-
-            private readonly ConstantBufferComponent globalTransformCB;
             private Matrix projectionMatrix;
             public GlobalTransformStruct GlobalTransform { private set; get; }
             public float ScreenRatio { private set; get; } = 1f;
@@ -283,7 +281,6 @@ namespace HelixToolkit.UWP
             /// </summary>
             public ScreenSpacedMeshRenderCore() : base(RenderType.ScreenSpaced)
             {
-                globalTransformCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes)));
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
@@ -443,8 +440,7 @@ namespace HelixToolkit.UWP
                 globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
                 globalTrans.Projection = projectionMatrix;
                 globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
-                globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 1f / viewportSize, 1f / viewportSize);
-                globalTransformCB.Upload(deviceContext, ref globalTrans);
+                globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 1 / viewportSize, 1 / viewportSize);
                 GlobalTransform = globalTrans;
                 int offX = 0;
                 int offY = 0;
@@ -452,7 +448,10 @@ namespace HelixToolkit.UWP
                 offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
                 offX = Math.Max(0, Math.Min(offX, (int)(Width - viewportSize)));
                 offY = Math.Max(0, Math.Min(offY, (int)(Height - viewportSize)));
-                deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
+                var viewport = new ViewportF(offX, offY, viewportSize, viewportSize);
+                context.Set(ref globalTrans, ref viewport);
+                context.UpdatePerFrameData(true, false, deviceContext);
+                deviceContext.SetViewport(ref viewport);
                 deviceContext.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
             }
 
@@ -471,16 +470,16 @@ namespace HelixToolkit.UWP
                 viewInv.M43 = newPos.Z;
                 globalTrans.View = viewInv.PsudoInvert();
                 globalTrans.EyePos = newPos;                
-                float w = context.ActualWidth;
-                float h = context.ActualHeight;
-                globalTrans.Viewport = new Vector4(w, h, 1f / w, 1f / h);
                 // Create new projection matrix with proper near/far field.
                 globalTrans.Projection = projectionMatrix;
-                globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;               
-                globalTransformCB.Upload(deviceContext, ref globalTrans);
+                globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
                 GlobalTransform = globalTrans;
-                deviceContext.SetViewport(0, 0, w, h);
-                deviceContext.SetScissorRectangle(0, 0, (int)w, (int)h);
+                var viewport = new ViewportF(0, 0, context.ActualWidth, context.ActualHeight);
+                context.Set(ref globalTrans, ref viewport);
+                context.UpdatePerFrameData(true, false, deviceContext);
+                
+                deviceContext.SetViewport(ref viewport);
+                deviceContext.SetScissorRectangle(0, 0, (int)context.ActualWidth, (int)context.ActualHeight);
             }
 
             private void RenderAbsolutePositionOrtho(RenderContext context, DeviceContextProxy deviceContext)
@@ -492,15 +491,16 @@ namespace HelixToolkit.UWP
                 globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
                 globalTrans.Projection = projectionMatrix;
                 globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
-                globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 1f / viewportSize, 1f / viewportSize);
-                globalTransformCB.Upload(deviceContext, ref globalTrans);
                 GlobalTransform = globalTrans;
                 var svp = context.ScreenViewProjectionMatrix;
                 var pos = absolutePosition;
                 Vector3.TransformCoordinate(ref pos, ref svp, out Vector3 screenPoint);
                 float offX = (screenPoint.X - viewportSize / 2);
                 float offY = (screenPoint.Y - viewportSize / 2);
-                deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
+                var viewport = new ViewportF(offX, offY, viewportSize, viewportSize);
+                context.Set(ref globalTrans, ref viewport);
+                context.UpdatePerFrameData(true, false, deviceContext);
+                deviceContext.SetViewport(ref viewport);
                 deviceContext.SetScissorRectangle((int)Math.Round(offX), (int)Math.Round(offY), (int)(viewportSize + offX), (int)(viewportSize + offY));
             }
         }

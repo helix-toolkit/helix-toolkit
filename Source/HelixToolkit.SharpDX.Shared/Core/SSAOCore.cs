@@ -90,7 +90,7 @@ namespace HelixToolkit.UWP
                         {
                             int w = (int)(context.ActualWidth / texScale);// Make sure to set correct viewport width/height by quality
                             int h = (int)(context.ActualHeight / texScale);
-                            deviceContext.SetRenderTarget(ds, rt0, w, h, true, new Color4(0, 0, 0, 1), true, DepthStencilClearFlags.Depth);
+                            deviceContext.SetRenderTarget(ds, rt0, true, new Color4(0, 0, 0, 1), true, DepthStencilClearFlags.Depth);
                             IRenderTechnique currTechnique = null;
                             ShaderPass ssaoPass1 = ShaderPass.NullPass;
                             var frustum = context.BoundingFrustum;
@@ -119,7 +119,7 @@ namespace HelixToolkit.UWP
                                 stream.WriteRange(kernels);
                                 stream.Write(ssaoParam);
                             });
-                            deviceContext.SetRenderTargetOnly(rt1);
+                            deviceContext.SetRenderTarget(rt1);
                             ssaoPass.BindShader(deviceContext);
                             ssaoPass.BindStates(deviceContext, StateType.All);
                             ssaoPass.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt0);
@@ -131,7 +131,7 @@ namespace HelixToolkit.UWP
 
                             ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, null);
 
-                            deviceContext.SetRenderTarget(ssaoView, width, height);
+                            deviceContext.SetRenderTarget(ssaoView);
                             ssaoBlur.BindShader(deviceContext);
                             ssaoBlur.BindStates(deviceContext, StateType.All);
                             ssaoBlur.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt1);
