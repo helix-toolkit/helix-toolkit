@@ -29,7 +29,7 @@
             EnableSwapChainRendering="True"
             FXAALevel="Low"
             ModelUpDirection="0,0,1"
-            ShowCoordinateSystem="True"
+            ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">
@@ -82,6 +82,41 @@
                 Geometry="{Binding LineModel}"
                 PostEffects="xrayLine"
                 Color="White" />
+            <hx:ScreenSpacedGroup3D Mode="RelativeScreenSpaced">
+                <hx:MeshGeometryModel3D
+                    CullMode="Back"
+                    Geometry="{Binding MeshModel1}"
+                    Material="{Binding Material1}"
+                    PostEffects="xrayGrid;glow[color:#85FA00];"
+                    Transform="{Binding Model1Transform}" />
+
+                <hx:MeshGeometryModel3D
+                    CullMode="Back"
+                    Geometry="{Binding MeshModel1}"
+                    Material="{Binding Material3}"
+                    PostEffects="glow[color:#FA8000]; border[color:#004CFF]" />
+
+                <hx:MeshGeometryModel3D
+                    CullMode="Back"
+                    Geometry="{Binding MeshModel2}"
+                    Material="{Binding Material2}"
+                    PostEffects="border; glow[color:#0000FF]; xrayGrid[color:#D22FDCDC]"
+                    Transform="{Binding Model2Transform}" />
+                <hx:MeshGeometryModel3D
+                    CullMode="Back"
+                    Geometry="{Binding MeshModel3}"
+                    Material="{Binding Material2}"
+                    PostEffects="xrayGrid"
+                    Transform="{Binding Model1Transform}" />
+                <hx:MeshGeometryModel3D
+                    CullMode="Back"
+                    Geometry="{Binding FloorModel}"
+                    Material="{Binding FloorMaterial}" />
+                <hx:LineGeometryModel3D
+                    Geometry="{Binding LineModel}"
+                    PostEffects="xrayLine"
+                    Color="White" />
+            </hx:ScreenSpacedGroup3D>
             <hx:PostEffectMeshXRayGrid
                 x:Name="xrayGrid"
                 EffectName="xrayGrid"

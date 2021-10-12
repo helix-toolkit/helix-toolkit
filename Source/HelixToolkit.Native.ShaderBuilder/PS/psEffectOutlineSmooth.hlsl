@@ -19,8 +19,8 @@ float4 main(MeshOutlinePS_INPUT input) : SV_Target
     [unroll]
     for (int i = 1; i < KSize; ++i)
     {
-        float offX = offset[i] * vViewport.z;
-        float offY = offset[i] * vViewport.w;
+        float offX = offset[i] * vResolution.z;
+        float offY = offset[i] * vResolution.w;
         float4 c = texDiffuseMap.Sample(samplerSurface, input.Tex + float2(offX, offY));
         c += texDiffuseMap.Sample(samplerSurface, input.Tex + float2(-offX, offY));
         c += texDiffuseMap.Sample(samplerSurface, input.Tex + float2(offX, -offY));

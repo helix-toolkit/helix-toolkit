@@ -190,7 +190,7 @@ float4 main(PSInput input) : SV_Target
     float4 ambient = vLightAmbient * vMaterialAmbient;
     if (SSAOEnabled)
     {
-        float2 quadTex = input.p.xy * vViewport.zw;
+        float2 quadTex = input.p.xy * vResolution.zw;
         ambient.rgb *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
     if (bHasEmissiveMap)

@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP
 
             private sealed class InvalidRendererCore : RenderCore
             {
-                public InvalidRendererCore() : base(RenderType.PostProc) { }
+                public InvalidRendererCore() : base(RenderType.GlobalEffect) { }
 
                 public override void Render(RenderContext context, DeviceContextProxy deviceContext)
                 {

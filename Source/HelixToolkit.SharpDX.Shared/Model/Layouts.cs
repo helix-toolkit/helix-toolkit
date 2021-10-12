@@ -266,6 +266,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public Vector4 Viewport;
         /// <summary>
+        /// Render target resolution [w, h, 1/w, 1/h]
+        /// </summary>
+        public Vector4 Resolution;
+        /// <summary>
         /// The eye position
         /// </summary>
         public Vector3 EyePos;
@@ -278,7 +282,7 @@ namespace HelixToolkit.UWP
         public float OITWeightDepthSlope;
         public int OITWeightMode;
         public float DpiScale;
-        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 5);
+        public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 6);
     }
     /// <summary>
     /// Used for simple mesh rendering without materials. Such as ShadowPass

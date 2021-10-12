@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP
     /// </summary>
     public enum RenderType
     {
-        None, Light, PreProc, Opaque, Particle, Transparent, PostProc, ScreenSpaced
+        None, Light, PreProc, Opaque, Particle, Transparent, PostEffect, GlobalEffect, ScreenSpaced
     }
     /// <summary>
     /// 

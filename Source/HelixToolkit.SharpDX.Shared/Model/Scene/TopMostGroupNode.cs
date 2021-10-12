@@ -39,6 +39,12 @@ namespace HelixToolkit.UWP
                 }
                 get => enableTopMost;
             }
+
+            public TopMostGroupNode()
+            {
+                AffectsGlobalVariable = true;
+            }
+
             protected override RenderCore OnCreateRenderCore()
             {
                 var core = new TopMostMeshRenderCore();

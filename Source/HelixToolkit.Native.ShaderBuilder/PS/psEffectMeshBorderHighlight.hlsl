@@ -5,8 +5,8 @@
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
     float4 color = texDiffuseMap.Sample(samplerSurface, input.Tex);
-    float x = vViewport.z * Param._m00 * viewportScale;
-    float y = vViewport.w * Param._m01 * viewportScale;
+    float x = vResolution.z * Param._m00 * viewportScale;
+    float y = vResolution.w * Param._m01 * viewportScale;
 
     float off = 0.7;
     float offX = off * x;

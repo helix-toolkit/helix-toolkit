@@ -261,6 +261,11 @@ namespace HelixToolkit.UWP
             private List<HitTestResult> screenSpaceHits = new List<HitTestResult>();
 
             private ScreenSpacedContext screenSpacedContext;
+
+            public ScreenSpacedNode()
+            {
+                AffectsGlobalVariable = true;
+            }
             /// <summary>
             /// Called when [create render core].
             /// </summary>

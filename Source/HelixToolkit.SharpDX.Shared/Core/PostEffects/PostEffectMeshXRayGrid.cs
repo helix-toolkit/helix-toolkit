@@ -135,7 +135,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Initializes a new instance of the <see cref="PostEffectMeshXRayGridCore"/> class.
             /// </summary>
-            public PostEffectMeshXRayGridCore() : base(RenderType.PostProc)
+            public PostEffectMeshXRayGridCore() : base(RenderType.PostEffect)
             {
                 modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
                 Color = global::SharpDX.Color.Blue;
@@ -169,7 +169,10 @@ namespace HelixToolkit.UWP
                 var buffer = context.RenderHost.RenderBuffer;
                 bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
                 var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
-                deviceContext.SetRenderTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV);
+                var viewport = context.Viewport;
+                deviceContext.SetViewport(ref viewport);
+                deviceContext.SetScissorRectangle(ref viewport);
                 if (hasMSAA)
                 {
                     //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.

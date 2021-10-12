@@ -218,7 +218,7 @@ float4 main(PSInput input) : SV_Target
     }
     else if (SSAOEnabled)
     {
-        float2 quadTex = input.p.xy * vViewport.zw;
+        float2 quadTex = input.p.xy * vResolution.zw;
         RMA.r *= texSSAOMap.SampleLevel(samplerSurface, quadTex, 0).r;
     }
     color = LightSurface(input.wp, V, N, albedo.rgb, RMA.g, RMA.b, RMA.r, ConstantReflectance, ClearCoat, ClearCoatRoughness);
