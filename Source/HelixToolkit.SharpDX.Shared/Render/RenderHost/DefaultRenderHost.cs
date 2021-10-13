@@ -382,6 +382,10 @@ namespace HelixToolkit.UWP
                             RenderContext.RestoreGlobalTransform();
                             start = i;
                         }
+                        else
+                        {
+                            ++start;
+                        }
                     }                       
                 }
                 renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
