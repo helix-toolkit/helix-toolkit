@@ -82,6 +82,7 @@ namespace HelixToolkit.UWP
             {
                 EnsureTextureResources((int)context.ActualWidth, (int)context.ActualHeight, deviceContext);
                 int texScale = (int)offScreenTextureSize;
+                var viewport = context.Viewport;
                 using (var ds = context.GetOffScreenDS(offScreenTextureSize, DEPTHFORMAT))
                 {
                     using (var rt0 = context.GetOffScreenRT(offScreenTextureSize, RENDERTARGETFORMAT))
@@ -91,6 +92,8 @@ namespace HelixToolkit.UWP
                             int w = (int)(context.ActualWidth / texScale);// Make sure to set correct viewport width/height by quality
                             int h = (int)(context.ActualHeight / texScale);
                             deviceContext.SetRenderTarget(ds, rt0, true, new Color4(0, 0, 0, 1), true, DepthStencilClearFlags.Depth);
+                            deviceContext.SetViewport(0, 0, w, h);
+                            deviceContext.SetScissorRectangle(0, 0, w, h);
                             IRenderTechnique currTechnique = null;
                             ShaderPass ssaoPass1 = ShaderPass.NullPass;
                             var frustum = context.BoundingFrustum;
@@ -132,6 +135,8 @@ namespace HelixToolkit.UWP
                             ssaoPass.PixelShader.BindTexture(deviceContext, depthSlot, null);
 
                             deviceContext.SetRenderTarget(ssaoView);
+                            deviceContext.SetViewport(ref viewport);
+                            deviceContext.SetScissorRectangle(ref viewport);
                             ssaoBlur.BindShader(deviceContext);
                             ssaoBlur.BindStates(deviceContext, StateType.All);
                             ssaoBlur.PixelShader.BindTexture(deviceContext, ssaoTexSlot, rt1);
