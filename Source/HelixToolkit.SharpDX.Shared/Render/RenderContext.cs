@@ -438,6 +438,7 @@ namespace HelixToolkit.UWP
             globalTransform.TimeStamp = (float)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
             globalTransform.DpiScale = DpiScale;
             Viewport = new Viewport(0, 0, (int)ActualWidth, (int)ActualHeight);
+            ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
         }
 
         public void Set(ref GlobalTransformStruct transforms, ViewportF viewport)
@@ -450,6 +451,7 @@ namespace HelixToolkit.UWP
         {
             globalTransform = transforms;
             Viewport = viewport;
+            ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
             needsUpdate = true;
         }
 
@@ -486,7 +488,6 @@ namespace HelixToolkit.UWP
         {
             if (updateGlobalTransform)
             {
-                ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                 cbuffer.UploadDataToBuffer(deviceContext, ref globalTransform);
             }
             if (updateLights)
