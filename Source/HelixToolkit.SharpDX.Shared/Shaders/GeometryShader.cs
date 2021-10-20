@@ -36,6 +36,7 @@ namespace HelixToolkit.UWP
             public GeometryShader(Device device, string name, byte[] byteCode) : base(name, ShaderStage.Geometry)
             {
                 shader = new global::SharpDX.Direct3D11.GeometryShader(device, byteCode);
+                shader.DebugName = name;
             }
 
             /// <summary>
@@ -52,6 +53,7 @@ namespace HelixToolkit.UWP
                 : base(name, ShaderStage.Geometry)
             {
                 shader = new global::SharpDX.Direct3D11.GeometryShader(device, byteCode, streamOutputElements, bufferStrides, rasterizedStream);
+                shader.DebugName = name;
             }
 
             private GeometryShader(string name)

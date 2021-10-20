@@ -86,6 +86,15 @@ namespace HelixToolkit.UWP
                 Name = name;
                 IsNULL = isNull;
             }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                ConstantBufferMapping.Dispose();
+                ShaderResourceViewMapping.Dispose();
+                UnorderedAccessViewMapping.Dispose();
+                SamplerMapping.Dispose();
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
 }

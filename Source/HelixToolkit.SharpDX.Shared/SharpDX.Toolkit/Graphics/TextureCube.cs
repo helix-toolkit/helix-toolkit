@@ -24,11 +24,6 @@ namespace SharpDX.Toolkit.Graphics
             Initialize(Resource);
         }
 
-        internal override TextureView GetRenderTargetView(ViewType viewType, int arrayOrDepthSlice, int mipMapSlice)
-        {
-            throw new System.NotSupportedException();
-        }
-
         /// <summary>
         /// Makes a copy of this texture.
         /// </summary>

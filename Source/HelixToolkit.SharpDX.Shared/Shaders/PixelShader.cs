@@ -39,6 +39,7 @@ namespace HelixToolkit.UWP
                 : base(name, ShaderStage.Pixel)
             {
                 shader = new global::SharpDX.Direct3D11.PixelShader(device, byteCode);
+                shader.DebugName = name;
             }
 
             private PixelShader(string name)

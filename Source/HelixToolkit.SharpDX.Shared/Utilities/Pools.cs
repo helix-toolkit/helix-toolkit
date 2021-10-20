@@ -162,7 +162,10 @@ namespace HelixToolkit.UWP
                 foreach (var item in items)
                 {
                     item.Dispose();
-                    Debug.Assert(item.IsDisposed);
+                    if (!item.IsDisposed)
+                    {
+                        Debug.Assert(false);                    
+                    }
                 }
             }
 

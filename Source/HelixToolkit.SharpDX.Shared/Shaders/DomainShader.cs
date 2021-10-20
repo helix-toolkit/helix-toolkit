@@ -26,10 +26,7 @@ namespace HelixToolkit.UWP
         public sealed class DomainShader : ShaderBase
         {
             private global::SharpDX.Direct3D11.DomainShader shader;
-            internal global::SharpDX.Direct3D11.DomainShader Shader
-            {
-                private set; get;
-            }
+            internal global::SharpDX.Direct3D11.DomainShader Shader => shader;
             public static readonly DomainShader NullDomainShader = new DomainShader("NULL");
             public static readonly DomainShaderType Type;
             /// <summary>
@@ -41,7 +38,8 @@ namespace HelixToolkit.UWP
             public DomainShader(Device device, string name, byte[] byteCode)
                 : base(name, ShaderStage.Domain)
             {
-                Shader = new global::SharpDX.Direct3D11.DomainShader(device, byteCode);
+                shader = new global::SharpDX.Direct3D11.DomainShader(device, byteCode);
+                shader.DebugName = name;
             }
 
             private DomainShader(string name)

@@ -110,7 +110,10 @@ namespace HelixToolkit.UWP
                 public void Update()
                 {
                     ScreenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
-                    CameraParams = Camera.CreateCameraParams(ActualWidth / ActualHeight, NearPlane, FarPlane);
+                    if (Camera != null)
+                    {
+                        CameraParams = Camera.CreateCameraParams(ActualWidth / ActualHeight, NearPlane, FarPlane);                    
+                    }
                 }
 
                 public ScreenSpacedContext(IRenderHost host)

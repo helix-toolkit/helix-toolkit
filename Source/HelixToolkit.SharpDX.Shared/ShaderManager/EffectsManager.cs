@@ -2,7 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if DEBUG
 //#define DEBUGMEMORY
+#endif
 using System;
 using System.Collections.Generic;
 using global::SharpDX.Direct3D;
@@ -681,24 +683,9 @@ namespace HelixToolkit.UWP
         [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "False positive.")]
         protected override void OnDispose(bool disposeManagedResources)
         {
-            DisposingResources?.Invoke(this, EventArgs.Empty);
-            foreach (var technique in techniqueDict.Values.ToArray())
-            {
-                if (technique.IsValueCreated)
-                {
-                    var t = technique.Value;
-                    RemoveAndDispose(ref t);
-                }
-            }
-            techniqueDict.Clear();
-            RemoveAndDispose(ref shaderPoolManager);
-            base.OnDispose(disposeManagedResources);
+            DisposeResources();
             Initialized = false;
-            global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
-#if DX11_1
-            Disposer.RemoveAndDispose(ref device1);
-#endif
-            Disposer.RemoveAndDispose(ref device);
+            base.OnDispose(disposeManagedResources);
 #if DEBUGMEMORY
             ReportResources();
 #endif
@@ -716,19 +703,18 @@ namespace HelixToolkit.UWP
                 }
             }
             techniqueDict.Clear();
+            RemoveAndDispose(ref geometryBufferManager);
+            RemoveAndDispose(ref materialTextureManager);
+            RemoveAndDispose(ref materialVariableManager);
+            RemoveAndDispose(ref directWriteFactory);
+            RemoveAndDispose(ref shaderPoolManager);
+            RemoveAndDispose(ref constantBufferPool);
+            RemoveAndDispose(ref statePoolManager);
+            RemoveAndDispose(ref deviceContextPool);
             RemoveAndDispose(ref deviceContext2D);
             RemoveAndDispose(ref device2D);
             RemoveAndDispose(ref factory2D);
             RemoveAndDispose(ref wicImgFactory);
-            RemoveAndDispose(ref directWriteFactory);
-            RemoveAndDispose(ref shaderPoolManager);
-            RemoveAndDispose(ref constantBufferPool);
-            RemoveAndDispose(ref shaderPoolManager);
-            RemoveAndDispose(ref statePoolManager);
-            RemoveAndDispose(ref geometryBufferManager);
-            RemoveAndDispose(ref materialTextureManager);
-            RemoveAndDispose(ref materialVariableManager);
-            RemoveAndDispose(ref deviceContextPool);
             Initialized = false;
             global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
 #if DX11_1

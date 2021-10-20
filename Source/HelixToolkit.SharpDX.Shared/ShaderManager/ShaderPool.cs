@@ -110,7 +110,7 @@ namespace HelixToolkit.UWP
         public class ShaderPoolManager : DisposeObject, IShaderPoolManager
         {
             private readonly ShaderPool[] shaderPools = new ShaderPool[Constants.NumShaderStages];
-            private readonly LayoutPool layoutPool;
+            private LayoutPool layoutPool;
             /// <summary>
             /// Initializes a new instance of the <see cref="ShaderPoolManager"/> class.
             /// </summary>
@@ -165,6 +165,7 @@ namespace HelixToolkit.UWP
                 {
                     RemoveAndDispose(ref shaderPools[i]);
                 }
+                RemoveAndDispose(ref layoutPool);
                 base.OnDispose(disposeManagedResources);
             }
         }

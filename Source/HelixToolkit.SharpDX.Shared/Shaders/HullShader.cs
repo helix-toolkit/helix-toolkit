@@ -39,6 +39,7 @@ namespace HelixToolkit.UWP
                 : base(name, ShaderStage.Hull)
             {
                 shader = new global::SharpDX.Direct3D11.HullShader(device, byteCode);
+                shader.DebugName = name;
             }
 
             private HullShader(string name)

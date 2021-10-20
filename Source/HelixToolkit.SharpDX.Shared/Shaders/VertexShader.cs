@@ -39,6 +39,7 @@ namespace HelixToolkit.UWP
                 : base(name, ShaderStage.Vertex)
             {
                 shader = new global::SharpDX.Direct3D11.VertexShader(device, byteCode);
+                shader.DebugName = name;
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="VertexShader"/> class.
