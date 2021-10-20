@@ -19,11 +19,18 @@ namespace HelixToolkit.UWP
             private Func<T> _objectGenerator;
             private readonly int MaxCapacity;
 
-            public int Count { get { return _objects.Count; } }
-
-            public ObjectPool(Func<T> objectGenerator, int maxCapacity = int.MaxValue/2)
+            public int Count
             {
-                if (objectGenerator == null) throw new ArgumentNullException("objectGenerator");
+                get
+                {
+                    return _objects.Count;
+                }
+            }
+
+            public ObjectPool(Func<T> objectGenerator, int maxCapacity = int.MaxValue / 2)
+            {
+                if (objectGenerator == null)
+                    throw new ArgumentNullException("objectGenerator");
                 _objects = new ConcurrentBag<T>();
                 _objectGenerator = objectGenerator;
                 MaxCapacity = maxCapacity;
@@ -32,17 +39,16 @@ namespace HelixToolkit.UWP
             public T GetObject()
             {
                 T item;
-                if (_objects.TryTake(out item)) return item;
+                if (_objects.TryTake(out item))
+                    return item;
                 return _objectGenerator();
             }
 
             public void PutObject(T item)
             {
-                if(Count < MaxCapacity)
+                if (Count < MaxCapacity)
                     _objects.Add(item);
             }
         }
     }
-
-
 }

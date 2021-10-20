@@ -48,12 +48,15 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref center, value))
+                if (Set(ref center, value))
                 {
                     IsInitialized = false;
                 }
             }
-            get { return center; }
+            get
+            {
+                return center;
+            }
         }
 
         private Color4 maskColor = Color.Transparent;
@@ -65,12 +68,15 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref maskColor, value))
+                if (Set(ref maskColor, value))
                 {
                     IsInitialized = false;
                 }
             }
-            get { return maskColor; }
+            get
+            {
+                return maskColor;
+            }
         }
 
         private float angle = 0;
@@ -84,12 +90,15 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref angle, value))
+                if (Set(ref angle, value))
                 {
                     IsInitialized = false;
                 }
             }
-            get { return angle; }
+            get
+            {
+                return angle;
+            }
         }
 
         private BillboardHorizontalAlignment horizontalAlignment = BillboardHorizontalAlignment.Center;
@@ -164,7 +173,7 @@ namespace HelixToolkit.UWP
         public BillboardSingleImage3D(Stream imageStream)
         {
             this.Texture = imageStream;
-            using (Image image = Image.Load(imageStream))
+            using (var image = Image.Load(imageStream))
             {
                 Width = image.Description.Width;
                 Height = image.Description.Height;
@@ -196,7 +205,7 @@ namespace HelixToolkit.UWP
         protected override void OnAssignTo(Geometry3D target)
         {
             base.OnAssignTo(target);
-            if(target is BillboardSingleImage3D billboard)
+            if (target is BillboardSingleImage3D billboard)
             {
                 billboard.Center = Center;
                 billboard.MaskColor = MaskColor;
@@ -233,7 +242,7 @@ namespace HelixToolkit.UWP
             object originalSource, bool fixedSize)
         {
             var rayWS = context.RayWS;
-            if (!IsInitialized || context == null || Width == 0 || Height == 0 
+            if (!IsInitialized || context == null || Width == 0 || Height == 0
                 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
                 return false;

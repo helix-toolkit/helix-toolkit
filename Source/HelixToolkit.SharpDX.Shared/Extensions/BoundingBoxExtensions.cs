@@ -33,8 +33,8 @@ namespace HelixToolkit.UWP
             {
                 return new BoundingBox();
             }
-            Vector3 min = new Vector3(float.MaxValue);
-            Vector3 max = new Vector3(float.MinValue);
+            var min = new Vector3(float.MaxValue);
+            var max = new Vector3(float.MinValue);
 
             foreach (var p in points)
             {

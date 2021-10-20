@@ -16,7 +16,7 @@ using MeshGeometry3D = HelixToolkit.SharpDX.Core.MeshGeometry3D;
 #endif
 namespace HelixToolkit.Wpf.SharpDX
 {
-    
+
 #if !COREWPF
     using Model;
     using Model.Scene;
@@ -35,17 +35,26 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets a value indicating whether to export normals.
         /// </summary>
-        public bool ExportNormals { get; set; }
+        public bool ExportNormals
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use "d" for transparency (default is "Tr").
         /// </summary>
-        public bool UseDissolveForTransparency { get; set; }
+        public bool UseDissolveForTransparency
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to switch Y and Z coordinates.
         /// </summary>
-        public bool SwitchYZ { get; set; }
+        public bool SwitchYZ
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The directory.
@@ -124,7 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var fullPath = Path.GetFullPath(outputFileName);
             var mtlPath = Path.ChangeExtension(outputFileName, ".mtl");
-            string mtlFilename = Path.GetFileName(mtlPath);
+            var mtlFilename = Path.GetFileName(mtlPath);
             this.directory = Path.GetDirectoryName(fullPath);
 
             this.writer = new StreamWriter(outputFileName);
@@ -159,9 +168,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected override void ExportModel(MeshNode model, Transform3D transform)
         {
-            if(model.GeometryValid && model.Material != null)
+            if (model.GeometryValid && model.Material != null)
             {
-                if(transform == null)
+                if (transform == null)
                 {
                     transform = Transform3D.Identity;
                 }
@@ -170,12 +179,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (this.exportedMaterials.ContainsKey(model.Material))
                 {
-                    string matName = this.exportedMaterials[model.Material];
+                    var matName = this.exportedMaterials[model.Material];
                     this.writer.WriteLine(string.Format("usemtl {0}", matName));
                 }
                 else
                 {
-                    string matName = string.Format("mat{0}", this.matNo++);
+                    var matName = string.Format("mat{0}", this.matNo++);
                     this.writer.WriteLine(string.Format("usemtl {0}", matName));
                     this.ExportMaterial(matName, model.Material);
                     this.exportedMaterials.Add(model.Material, matName);
@@ -185,7 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (model.HasInstances)
                 {
                     var m = transform.ToMatrix();
-                    for(int i=0; i<model.Instances.Count; ++i)
+                    for (var i = 0; i < model.Instances.Count; ++i)
                     {
                         this.ExportMesh(mesh, model.Instances[i] * m);
                     }
@@ -223,7 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var textureIndexMap = new Dictionary<int, int>();
             var normalIndexMap = new Dictionary<int, int>();
 
-            int index = 0;
+            var index = 0;
             if (m.Positions != null)
             {
                 foreach (var v in m.Positions)
@@ -269,8 +278,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Func<int, string> formatIndices = i0 =>
             {
-                bool hasTextureIndex = textureIndexMap.ContainsKey(i0);
-                bool hasNormalIndex = normalIndexMap.ContainsKey(i0);
+                var hasTextureIndex = textureIndexMap.ContainsKey(i0);
+                var hasNormalIndex = normalIndexMap.ContainsKey(i0);
                 if (hasTextureIndex && hasNormalIndex)
                 {
                     return string.Format("{0}/{1}/{2}", vertexIndexMap[i0], textureIndexMap[i0], normalIndexMap[i0]);
@@ -291,11 +300,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (m.Indices != null)
             {
-                for (int i = 0; i < m.Indices.Count; i += 3)
+                for (var i = 0; i < m.Indices.Count; i += 3)
                 {
-                    int i0 = m.Indices[i];
-                    int i1 = m.Indices[i + 1];
-                    int i2 = m.Indices[i + 2];
+                    var i0 = m.Indices[i];
+                    var i1 = m.Indices[i + 1];
+                    var i2 = m.Indices[i + 2];
 
                     this.writer.WriteLine("f {0} {1} {2}", formatIndices(i0), formatIndices(i1), formatIndices(i2));
                 }
@@ -363,7 +372,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // color includes an ambient constant term and a diffuse shading term for
             // each light source.  The formula is
             // color = KaIa + Kd { SUM j=1..ls, (N * Lj)Ij }
-            int illum = 1; // Lambertian
+            var illum = 1; // Lambertian
 
             if (pm != null)
             {

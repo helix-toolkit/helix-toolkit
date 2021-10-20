@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Shaders;
 #endif
-    
+
 
 
     public class DiffuseMaterial : Material
@@ -55,8 +55,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Color4 DiffuseColor
         {
-            get { return (Color4)this.GetValue(DiffuseColorProperty); }
-            set { this.SetValue(DiffuseColorProperty, value); }
+            get
+            {
+                return (Color4)this.GetValue(DiffuseColorProperty);
+            }
+            set
+            {
+                this.SetValue(DiffuseColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -74,8 +80,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public TextureModel DiffuseMap
         {
-            get { return (TextureModel)this.GetValue(DiffuseMapProperty); }
-            set { this.SetValue(DiffuseMapProperty, value); }
+            get
+            {
+                return (TextureModel)this.GetValue(DiffuseMapProperty);
+            }
+            set
+            {
+                this.SetValue(DiffuseMapProperty, value);
+            }
         }
 
         /// <summary>
@@ -89,8 +101,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public SamplerStateDescription DiffuseMapSampler
         {
-            get { return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty); }
-            set { this.SetValue(DiffuseMapSamplerProperty, value); }
+            get
+            {
+                return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty);
+            }
+            set
+            {
+                this.SetValue(DiffuseMapSamplerProperty, value);
+            }
         }
         /// <summary>
         /// The uv transform property
@@ -108,8 +126,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public UVTransform UVTransform
         {
-            get { return (UVTransform)GetValue(UVTransformProperty); }
-            set { SetValue(UVTransformProperty, value); }
+            get
+            {
+                return (UVTransform)GetValue(UVTransformProperty);
+            }
+            set
+            {
+                SetValue(UVTransformProperty, value);
+            }
         }
 
 
@@ -121,8 +145,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableUnLit
         {
-            get { return (bool)GetValue(EnableUnLitProperty); }
-            set { SetValue(EnableUnLitProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableUnLitProperty);
+            }
+            set
+            {
+                SetValue(EnableUnLitProperty, value);
+            }
         }
 
         /// <summary>
@@ -130,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty EnableUnLitProperty =
             DependencyProperty.Register("EnableUnLit", typeof(bool), typeof(DiffuseMaterial), new PropertyMetadata(false,
-                (d,e)=> 
+                (d, e) =>
                 {
                     ((d as Material).Core as DiffuseMaterialCore).EnableUnLit = (bool)e.NewValue;
                 }));
@@ -143,8 +173,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableFlatShading
         {
-            get { return (bool)GetValue(EnableFlatShadingProperty); }
-            set { SetValue(EnableFlatShadingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableFlatShadingProperty);
+            }
+            set
+            {
+                SetValue(EnableFlatShadingProperty, value);
+            }
         }
 
         public static readonly DependencyProperty EnableFlatShadingProperty =
@@ -161,8 +197,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double VertexColorBlendingFactor
         {
-            get { return (double)GetValue(VertexColorBlendingFactorProperty); }
-            set { SetValue(VertexColorBlendingFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(VertexColorBlendingFactorProperty);
+            }
+            set
+            {
+                SetValue(VertexColorBlendingFactorProperty, value);
+            }
         }
 
         public static readonly DependencyProperty VertexColorBlendingFactorProperty =
@@ -172,7 +214,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 ((d as Material).Core as DiffuseMaterialCore).VertexColorBlendingFactor = (float)(double)e.NewValue;
             }));
 
-        public DiffuseMaterial() { }
+        public DiffuseMaterial()
+        {
+        }
 
         public DiffuseMaterial(DiffuseMaterialCore core) : base(core)
         {
@@ -267,7 +311,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public static class DiffuseMaterials
     {
-        public static DiffuseMaterialCollection Materials { get; private set; }
+        public static DiffuseMaterialCollection Materials
+        {
+            get; private set;
+        }
 
         public static DiffuseMaterial GetMaterial(string materialName)
         {
@@ -292,7 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///</summary>
         public static Color FromScRgb(float a, float r, float g, float b)
         {
-            Color c1 = new Color();
+            var c1 = new Color();
             if (a < 0.0f)
             {
                 a = 0.0f;

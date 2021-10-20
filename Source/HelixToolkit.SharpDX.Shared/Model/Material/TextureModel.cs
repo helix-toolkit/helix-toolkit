@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP
                 if (autoClose)
                 {
                     info.Texture?.Dispose();
-                }   
+                }
             }
 
             public TextureInfo Load(Guid id)
@@ -91,7 +91,7 @@ namespace HelixToolkit.UWP
             }
 
             public void Complete(Guid id, TextureInfo info, bool succeeded)
-            {               
+            {
             }
 
             public TextureInfo Load(Guid id)
@@ -176,7 +176,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The unique identifier.
         /// </value>
-        public Guid Guid { get; }
+        public Guid Guid
+        {
+            get;
+        }
         /// <summary>
         /// Gets the tag.
         /// </summary>
@@ -220,7 +223,7 @@ namespace HelixToolkit.UWP
         public TextureModel(Stream stream, bool autoCloseStream = false)
             : this(Guid.NewGuid(), new StreamLoader(stream, autoCloseStream))
         {
-            
+
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureModel"/> class.
@@ -347,7 +350,7 @@ namespace HelixToolkit.UWP
         public TextureModel(string textureFile)
             : this(Guid.NewGuid(), new TextureFileLoader(textureFile))
         {
-        
+
         }
         /// <summary>
         /// Creates texture model from specified stream.
@@ -670,7 +673,7 @@ namespace HelixToolkit.UWP
         /// <param name="generateMipMaps">if set to <c>true</c> [generate mip maps].</param>
         /// <exception cref="ArgumentNullException">Texture cannot be null.</exception>
         /// <exception cref="ArgumentException">Height cannot be zero.</exception>
-        public TextureInfo(Color4[] texture, int width, bool generateMipMaps = true) 
+        public TextureInfo(Color4[] texture, int width, bool generateMipMaps = true)
             : this(texture, generateMipMaps)
         {
             Width = width == 0 ? throw new ArgumentException("Height cannot be zero.") : width;

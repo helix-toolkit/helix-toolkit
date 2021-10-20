@@ -25,7 +25,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public bool IsTransparent
             {
-                get { return isTransparent; }
+                get
+                {
+                    return isTransparent;
+                }
                 set
                 {
                     if (Set(ref isTransparent, value))
@@ -44,7 +47,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public MaterialCore Material
             {
-                get { return material; }
+                get
+                {
+                    return material;
+                }
                 set
                 {
                     if (Set(ref material, value))
@@ -69,9 +75,9 @@ namespace HelixToolkit.UWP
             protected virtual void AttachMaterial()
             {
                 var newVar = material != null && RenderCore is IMaterialRenderParams ?
-                    EffectsManager.MaterialVariableManager.Register(material, EffectTechnique) : null;                 
+                    EffectsManager.MaterialVariableManager.Register(material, EffectTechnique) : null;
                 RemoveAndDispose(ref materialVariable);
-                materialVariable = Collect(newVar);
+                materialVariable = newVar;
                 if (RenderCore is IMaterialRenderParams core)
                 {
                     core.MaterialVariables = newVar;
@@ -103,7 +109,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnDetach()
             {
-                materialVariable = null;
+                RemoveAndDispose(ref materialVariable);
                 if (RenderCore is IMaterialRenderParams core)
                 {
                     core.MaterialVariables = null;
@@ -112,5 +118,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

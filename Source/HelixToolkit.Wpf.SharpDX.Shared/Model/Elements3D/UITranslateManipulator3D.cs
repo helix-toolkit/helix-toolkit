@@ -48,8 +48,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The diameter. </value>
         public double Diameter
         {
-            get { return (double)this.GetValue(DiameterProperty); }
-            set { this.SetValue(DiameterProperty, value); }
+            get
+            {
+                return (double)this.GetValue(DiameterProperty);
+            }
+            set
+            {
+                this.SetValue(DiameterProperty, value);
+            }
         }
 
         /// <summary>
@@ -59,8 +65,14 @@ namespace HelixToolkit.Wpf.SharpDX
         [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Direction
         {
-            get { return (Vector3)this.GetValue(DirectionProperty); }
-            set { this.SetValue(DirectionProperty, value); }
+            get
+            {
+                return (Vector3)this.GetValue(DirectionProperty);
+            }
+            set
+            {
+                this.SetValue(DirectionProperty, value);
+            }
         }
 
         /// <summary>
@@ -69,8 +81,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The length. </value>
         public double Length
         {
-            get { return (double)this.GetValue(LengthProperty); }
-            set { this.SetValue(LengthProperty, value); }
+            get
+            {
+                return (double)this.GetValue(LengthProperty);
+            }
+            set
+            {
+                this.SetValue(LengthProperty, value);
+            }
         }
 
         /// <summary>
@@ -86,14 +104,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Called when geometry has been changed.
         /// </summary>
         protected override void OnModelChanged()
-        {            
+        {
             var mb = new MeshBuilder();
             var p0 = this.Offset;// new Vector3(0, 0, 0);
             var d = this.Direction;
             d.Normalize();
             var p1 = p0 + (d * (float)this.Length);
             mb.AddArrow(p0, p1, this.Diameter, 2, 64);
-            this.Geometry = mb.ToMeshGeometry3D();            
+            this.Geometry = mb.ToMeshGeometry3D();
         }
 
         /// <summary>
@@ -110,9 +128,10 @@ namespace HelixToolkit.Wpf.SharpDX
             // up direction
             var upWS = Vector3.Cross(normalWS, directionWS);
             // the direction plane
-            normalWS = Vector3.Cross(upWS, directionWS); normalWS.Normalize();
+            normalWS = Vector3.Cross(upWS, directionWS);
+            normalWS.Normalize();
             // find new hit on the camera-direction plane
-            if(viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normalWS, out var newHit))
+            if (viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normalWS, out var newHit))
             {
                 // project point on ray
                 // a: vec to project on
@@ -128,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var deltaTranslateTrafo = new TranslateTransform3D(delta.ToVector3D());
 
                 if (this.TargetTransform != null)
-                {                    
+                {
                     this.TargetTransform = new MatrixTransform3D(this.TargetTransform.AppendTransform(deltaTranslateTrafo).Value);
                 }
                 else
@@ -144,7 +163,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
 
                 this.lastHitPosWS = newHit;
-            }         
+            }
         }
     }
 }

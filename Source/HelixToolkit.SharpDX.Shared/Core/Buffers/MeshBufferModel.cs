@@ -125,7 +125,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultMeshGeometryBufferModel"/> class.
             /// </summary>
-            public DefaultMeshGeometryBufferModel() 
+            public DefaultMeshGeometryBufferModel()
                 : base(PrimitiveTopology.TriangleList,
                       new[]
                       {
@@ -133,14 +133,15 @@ namespace HelixToolkit.UWP
                           new ImmutableBufferProxy(Vector2.SizeInBytes, BindFlags.VertexBuffer),
                           new ImmutableBufferProxy(Vector4.SizeInBytes, BindFlags.VertexBuffer)
                       } as IElementsBufferProxy[])
-            { }
+            {
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultMeshGeometryBufferModel"/> class.
             /// </summary>
             /// <param name="buffers">The buffers.</param>
             /// <param name="isDynamic"></param>
-            public DefaultMeshGeometryBufferModel(IElementsBufferProxy[] buffers, bool isDynamic) 
+            public DefaultMeshGeometryBufferModel(IElementsBufferProxy[] buffers, bool isDynamic)
                 : base(PrimitiveTopology.TriangleList, buffers, isDynamic)
             {
             }
@@ -159,7 +160,7 @@ namespace HelixToolkit.UWP
                     case 0:
                         return base.IsVertexBufferChanged(propertyName, bufferIndex);
                     case 1:
-                        return propertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates));                  
+                        return propertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates));
                     case 2:
                         return propertyName.Equals(nameof(MeshGeometry3D.Colors));
                     default:
@@ -176,7 +177,7 @@ namespace HelixToolkit.UWP
             /// <param name="deviceResources">The device resources.</param>
             protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
             {
-                if(geometry is MeshGeometry3D mesh)
+                if (geometry is MeshGeometry3D mesh)
                 {
                     switch (bufferIndex)
                     {
@@ -195,7 +196,7 @@ namespace HelixToolkit.UWP
                             }
                             break;
                         case 1:
-                            if(mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0)
+                            if (mesh.TextureCoordinates != null && mesh.TextureCoordinates.Count > 0)
                             {
                                 buffer.UploadDataToBuffer(context, mesh.TextureCoordinates, mesh.TextureCoordinates.Count, 0, geometry.PreDefinedVertexCount);
                             }
@@ -267,8 +268,8 @@ namespace HelixToolkit.UWP
                           new DynamicBufferProxy(Vector2.SizeInBytes, BindFlags.VertexBuffer),
                           new DynamicBufferProxy(Vector4.SizeInBytes, BindFlags.VertexBuffer)
                       } as IElementsBufferProxy[], true)
-            { }
+            {
+            }
         }
     }
-
 }

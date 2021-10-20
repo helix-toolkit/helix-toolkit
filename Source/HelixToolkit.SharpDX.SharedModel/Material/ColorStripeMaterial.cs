@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Shaders;
 #endif
-    
+
 
     /// <summary>
     /// 
@@ -52,8 +52,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Color4 DiffuseColor
         {
-            get { return (Color4)this.GetValue(DiffuseColorProperty); }
-            set { this.SetValue(DiffuseColorProperty, value); }
+            get
+            {
+                return (Color4)this.GetValue(DiffuseColorProperty);
+            }
+            set
+            {
+                this.SetValue(DiffuseColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -73,8 +79,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IList<Color4> ColorStripeX
         {
-            get { return (IList<Color4>)GetValue(ColorStripeXProperty); }
-            set { SetValue(ColorStripeXProperty, value); }
+            get
+            {
+                return (IList<Color4>)GetValue(ColorStripeXProperty);
+            }
+            set
+            {
+                SetValue(ColorStripeXProperty, value);
+            }
         }
 
         /// <summary>
@@ -94,8 +106,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IList<Color4> ColorStripeY
         {
-            get { return (IList<Color4>)GetValue(ColorStripeYProperty); }
-            set { SetValue(ColorStripeYProperty, value); }
+            get
+            {
+                return (IList<Color4>)GetValue(ColorStripeYProperty);
+            }
+            set
+            {
+                SetValue(ColorStripeYProperty, value);
+            }
         }
         /// <summary>
         /// 
@@ -113,8 +131,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool ColorStripeXEnabled
         {
-            get { return (bool)GetValue(ColorStripeXEnabledProperty); }
-            set { SetValue(ColorStripeXEnabledProperty, value); }
+            get
+            {
+                return (bool)GetValue(ColorStripeXEnabledProperty);
+            }
+            set
+            {
+                SetValue(ColorStripeXEnabledProperty, value);
+            }
         }
 
         /// <summary>
@@ -132,8 +156,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool ColorStripeYEnabled
         {
-            get { return (bool)GetValue(ColorStripeYEnabledProperty); }
-            set { SetValue(ColorStripeYEnabledProperty, value); }
+            get
+            {
+                return (bool)GetValue(ColorStripeYEnabledProperty);
+            }
+            set
+            {
+                SetValue(ColorStripeYEnabledProperty, value);
+            }
         }
 
         /// <summary>
@@ -148,11 +178,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public SamplerStateDescription ColorStripeSampler
         {
-            get { return (SamplerStateDescription)this.GetValue(ColorStripeSamplerProperty); }
-            set { this.SetValue(ColorStripeSamplerProperty, value); }
+            get
+            {
+                return (SamplerStateDescription)this.GetValue(ColorStripeSamplerProperty);
+            }
+            set
+            {
+                this.SetValue(ColorStripeSamplerProperty, value);
+            }
         }
 
-        public ColorStripeMaterial() { }
+        public ColorStripeMaterial()
+        {
+        }
 
         public ColorStripeMaterial(ColorStripeMaterialCore core) : base(core)
         {

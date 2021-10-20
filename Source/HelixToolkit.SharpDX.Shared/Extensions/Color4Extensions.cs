@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP
             //MethodAttributes attrs = MethodAttributes.Public | MethodAttributes.Static;
             var fields = enumType.GetFields();
 
-            for (int i = 0; i < fields.Length; i++)
+            for (var i = 0; i < fields.Length; i++)
             {
                 var field = fields[i];
                 if (field.FieldType == typeof(Color))
@@ -60,24 +60,24 @@ namespace HelixToolkit.UWP
         /// <exception cref="ArgumentException"></exception>
         public static Color4 ToColor4(this string color, CultureInfo culture = null)
         {
-            string text = color.Trim();
-            if(text.Length == 0)
+            var text = color.Trim();
+            if (text.Length == 0)
             {
                 return Color.Transparent;
             }
             else
             {
-                object obj = GetNamedColor(text);
-                if(obj == null)
+                var obj = GetNamedColor(text);
+                if (obj == null)
                 {
-                    if(culture == null)
+                    if (culture == null)
                     {
                         culture = CultureInfo.CurrentCulture;
                     }
-                    char sep = culture.TextInfo.ListSeparator[0];
-                    bool tryMappingToKnownColor = true;
+                    var sep = culture.TextInfo.ListSeparator[0];
+                    var tryMappingToKnownColor = true;
 
-                    TypeConverter intConverter = TypeDescriptor.GetConverter(typeof(int));
+                    var intConverter = TypeDescriptor.GetConverter(typeof(int));
 
                     // If the value is a 6 digit hex number only, then
                     // we want to treat the Alpha as 255, not 0
@@ -89,7 +89,7 @@ namespace HelixToolkit.UWP
                         if (text.Length >= 2 && (text[0] == '\'' || text[0] == '"') && text[0] == text[text.Length - 1])
                         {
                             // In quotes means a named value
-                            string colorName = text.Substring(1, text.Length - 2);
+                            var colorName = text.Substring(1, text.Length - 2);
                             obj = GetNamedColor(colorName);
                             tryMappingToKnownColor = false;
                         }
@@ -106,9 +106,9 @@ namespace HelixToolkit.UWP
                     //
                     if (obj == null)
                     {
-                        string[] tokens = text.Split(new char[] { sep });
-                        int[] values = new int[tokens.Length];
-                        for (int i = 0; i < values.Length; i++)
+                        var tokens = text.Split(new char[] { sep });
+                        var values = new int[tokens.Length];
+                        for (var i = 0; i < values.Length; i++)
                         {
                             values[i] = unchecked((int)intConverter.ConvertFromString(tokens[i]));
                         }
@@ -144,7 +144,7 @@ namespace HelixToolkit.UWP
                         // If it does, then substitute it.  We can only do this for "Colors"
                         // because system colors morph with user settings.
                         //
-                        int targetARGB = ((Color)obj).ToArgb();
+                        var targetARGB = ((Color)obj).ToArgb();
 
                         foreach (Color c in Colors.Values)
                         {
@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP
                     throw new ArgumentException($"Invalid Color string {text}");
                 }
                 return (Color)obj;
-            }          
+            }
         }
 
 
@@ -227,15 +227,15 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Encode2FloatToFloat(float a, float b)
         {
-            uint aScaled = (uint)a * 0xFFFF;
-            uint bScaled = (uint)b * 0xFFFF;
-            uint abPacked = (aScaled << 16) | (bScaled & 0xFFFF);
+            var aScaled = (uint)a * 0xFFFF;
+            var bScaled = (uint)b * 0xFFFF;
+            var abPacked = (aScaled << 16) | (bScaled & 0xFFFF);
             return abPacked;
         }
 
         internal static object GetNamedColor(string name)
         {
-            Colors.TryGetValue(name, out object color);
+            Colors.TryGetValue(name, out var color);
             return color;
         }
 

@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Used to hold shared variables for Lights per scene
         /// </summary>
-        public sealed class Light3DSceneShared : IDisposable
+        public sealed class Light3DSceneShared : DisposeObject
         {
             public readonly LightsBufferModel LightModels = new LightsBufferModel();
 
@@ -43,42 +43,11 @@ namespace HelixToolkit.UWP
                 LightModels.UploadToBuffer(buffer, context);
             }
 
-            #region IDisposable Support
-            private bool disposedValue = false; // To detect redundant calls
-
-            void Dispose(bool disposing)
+            protected override void OnDispose(bool disposeManagedResources)
             {
-                if (!disposedValue)
-                {
-                    if (disposing)
-                    {
-                        buffer = null;
-                        // TODO: dispose managed state (managed objects).
-                    }
-
-                    // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                    // TODO: set large fields to null.
-
-                    disposedValue = true;
-                }
+                RemoveAndDispose(ref buffer);
+                base.OnDispose(disposeManagedResources);
             }
-
-            // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-            // ~Light3DSceneShared() {
-            //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            //   Dispose(false);
-            // }
-
-            // This code added to correctly implement the disposable pattern.
-            public void Dispose()
-            {
-                // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-                Dispose(true);
-                // TODO: uncomment the following line if the finalizer is overridden above.
-                // GC.SuppressFinalize(this);
-            }
-            #endregion
         }
     }
-
 }

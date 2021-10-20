@@ -21,9 +21,18 @@ namespace HelixToolkit.UWP
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
     public struct ModelInfo
     {
-        public MeshFaces Faces { get; set; }
-        public bool Normals { get; set; }
-        public bool Tangents { get; set; }
+        public MeshFaces Faces
+        {
+            get; set;
+        }
+        public bool Normals
+        {
+            get; set;
+        }
+        public bool Tangents
+        {
+            get; set;
+        }
     }
 
     /// <summary>

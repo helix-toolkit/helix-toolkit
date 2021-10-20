@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref figures, value))
+                    if (SetAffectsRender(ref figures, value))
                     {
                         isGeometryChanged = true;
                     }
@@ -67,12 +67,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref fillMode, value))
+                    if (SetAffectsRender(ref fillMode, value))
                     {
                         isGeometryChanged = true;
                     }
                 }
-                get { return fillMode; }
+                get
+                {
+                    return fillMode;
+                }
             }
             /// <summary>
             /// Called when [attach].
@@ -93,17 +96,17 @@ namespace HelixToolkit.UWP
             protected override void OnRender(RenderContext2D context)
             {
                 if (isGeometryChanged)
-                {               
+                {
                     RemoveAndDispose(ref geometry);
-                    if(Figures == null || Figures.Count == 0)
+                    if (Figures == null || Figures.Count == 0)
                     {
                         return;
                     }
-                    geometry = Collect(new D2D.PathGeometry1(context.DeviceResources.Factory2D));
+                    geometry = new D2D.PathGeometry1(context.DeviceResources.Factory2D);
                     using (var sink = geometry.Open())
                     {
                         sink.SetFillMode(FillMode);
-                        foreach(var figure in Figures)
+                        foreach (var figure in Figures)
                         {
                             figure.Create(sink);
                         }
@@ -115,12 +118,17 @@ namespace HelixToolkit.UWP
                 {
                     context.DeviceContext.DrawGeometry(geometry, StrokeBrush, StrokeWidth, StrokeStyle);
                 }
-                if(FillBrush != null)
+                if (FillBrush != null)
                 {
                     context.DeviceContext.FillGeometry(geometry, FillBrush);
                 }
             }
+
+            protected override void OnDetach()
+            {
+                RemoveAndDispose(ref geometry);
+                base.OnDetach();
+            }
         }
     }
-
 }

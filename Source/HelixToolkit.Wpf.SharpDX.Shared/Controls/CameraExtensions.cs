@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static void ChangeDirection(this Camera camera, Vector3D newLookDir, Vector3D newUpDirection, double animationTime)
         {
             var target = camera.Position + camera.LookDirection;
-            double length = camera.LookDirection.Length;
+            var length = camera.LookDirection.Length;
             newLookDir.Normalize();
             LookAt(camera, target, newLookDir * length, newUpDirection, animationTime);
         }
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (source is IOrthographicCameraModel osrc)
                 {
-                    double dist = projectionSource.LookDirection.Length;
+                    var dist = projectionSource.LookDirection.Length;
                     fov = Math.Atan2(osrc.Width / 2, dist) * (180 / Math.PI);
                 }
 
@@ -106,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 double width = 100;
                 if (source is IPerspectiveCameraModel psrc)
                 {
-                    double dist = projectionSource.LookDirection.Length;
+                    var dist = projectionSource.LookDirection.Length;
                     width = Math.Tan(psrc.FieldOfView / 180 * Math.PI) * 2 * dist;
                 }
 
@@ -150,8 +150,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var axis2 = Vector3D.CrossProduct(axis1, projectionCamera.LookDirection);
             axis1.Normalize();
             axis2.Normalize();
-            double l = projectionCamera.LookDirection.Length;
-            double f = l * 0.001;
+            var l = projectionCamera.LookDirection.Length;
+            var f = l * 0.001;
             var move = (-axis1 * f * dx) + (axis2 * f * dy);
 
             // this should be dependent on distance to target?
@@ -414,7 +414,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Vector3D newUpDirection,
             double animationTime)
         {
-            Point3D newPosition = target - newLookDirection;
+            var newPosition = target - newLookDirection;
             camera.AnimateTo(newPosition, newLookDirection, newUpDirection, animationTime);
         }
 
@@ -546,7 +546,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
             var center = bounds.Location + (diagonal * 0.5);
-            double radius = diagonal.Length * 0.5;
+            var radius = diagonal.Length * 0.5;
             ZoomExtents(camera, viewport, center, radius, animationTime);
         }
 
@@ -574,11 +574,11 @@ namespace HelixToolkit.Wpf.SharpDX
             // var target = Camera.Position + Camera.LookDirection;
             if (camera is IPerspectiveCameraModel pcam)
             {
-                double disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
-                double vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
-                double distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
+                var disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
+                var vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
+                var distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
 
-                double dist = Math.Max(disth, distv);
+                var dist = Math.Max(disth, distv);
                 var dir = camera.LookDirection;
                 dir.Normalize();
                 LookAt(camera, center, dir * dist, animationTime);
@@ -605,7 +605,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public static void ZoomToRectangle(this Camera camera, Viewport3DX viewport, Rect zoomRectangle)
         {
-            if(viewport.UnProject(zoomRectangle.TopLeft.ToVector2(), out var topLeftRay)
+            if (viewport.UnProject(zoomRectangle.TopLeft.ToVector2(), out var topLeftRay)
                 && viewport.UnProject(zoomRectangle.TopRight.ToVector2(), out var topRightRay)
                 && viewport.UnProject(new global::SharpDX.Vector2(
                         (float)(zoomRectangle.Left + zoomRectangle.Right) * 0.5f,

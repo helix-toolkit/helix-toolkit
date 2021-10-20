@@ -27,12 +27,18 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// The <see cref="Exception"/> to be relayed.
             /// </summary>
-            public Exception Exception { get; private set; }
+            public Exception Exception
+            {
+                get; private set;
+            }
 
             /// <summary>
             ///  Gets or sets a value indicating whether the <see cref="Exception"/> is handled.
             /// </summary>
-            public bool Handled { get; set; }
+            public bool Handled
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="RelayExceptionEventArgs"/> class.
@@ -45,7 +51,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-    
-
-
 }

@@ -37,7 +37,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool FrontCCW
             {
-                get { return frontCCW; }
+                get
+                {
+                    return frontCCW;
+                }
                 set
                 {
                     if (Set(ref frontCCW, value))
@@ -56,7 +59,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public CullMode CullMode
             {
-                get { return cullMode; }
+                get
+                {
+                    return cullMode;
+                }
                 set
                 {
                     if (Set(ref cullMode, value))
@@ -73,7 +79,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool InvertNormal
             {
-                get { return (RenderCore as IInvertNormal).InvertNormal; }
+                get
+                {
+                    return (RenderCore as IInvertNormal).InvertNormal;
+                }
                 set
                 {
                     (RenderCore as IInvertNormal).InvertNormal = value;
@@ -105,8 +114,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool RenderWireframe
             {
-                get { return (RenderCore as IMeshRenderParams).RenderWireframe; }
-                set { (RenderCore as IMeshRenderParams).RenderWireframe = value; }
+                get
+                {
+                    return (RenderCore as IMeshRenderParams).RenderWireframe;
+                }
+                set
+                {
+                    (RenderCore as IMeshRenderParams).RenderWireframe = value;
+                }
             }
 
             /// <summary>
@@ -180,5 +195,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

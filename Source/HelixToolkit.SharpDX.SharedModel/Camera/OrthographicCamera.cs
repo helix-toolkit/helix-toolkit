@@ -22,7 +22,10 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public interface IOrthographicCameraModel : IProjectionCameraModel
     {
-        double Width { set; get; }
+        double Width
+        {
+            set; get;
+        }
         void AnimateWidth(double newWidth, double animationTime);
     }
     /// <summary>
@@ -47,8 +50,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double Width
         {
-            get { return (double)this.GetValue(WidthProperty); }
-            set { this.SetValue(WidthProperty, value); }
+            get
+            {
+                return (double)this.GetValue(WidthProperty);
+            }
+            set
+            {
+                this.SetValue(WidthProperty, value);
+            }
         }
 
         private double oldWidth;
@@ -95,13 +104,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnUpdateAnimation(float ellapsed)
         {
-            bool res = base.OnUpdateAnimation(ellapsed);
+            var res = base.OnUpdateAnimation(ellapsed);
             if (aniTime == 0)
             {
                 return res;
             }
             accumTime += ellapsed;
-            if(accumTime > aniTime)
+            if (accumTime > aniTime)
             {
                 UpdateCameraPositionByWidth(targetWidth);
                 Width = targetWidth;

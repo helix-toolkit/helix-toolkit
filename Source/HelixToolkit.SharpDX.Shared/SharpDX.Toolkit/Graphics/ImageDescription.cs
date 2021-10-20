@@ -98,7 +98,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if(obj is ImageDescription o)
+            if (obj is ImageDescription o)
             {
                 return Equals(o);
             }
@@ -118,7 +118,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             unchecked
             {
-                int hashCode = Dimension.GetHashCode();
+                var hashCode = Dimension.GetHashCode();
                 hashCode = (hashCode * 397) ^ Width;
                 hashCode = (hashCode * 397) ^ Height;
                 hashCode = (hashCode * 397) ^ Depth;

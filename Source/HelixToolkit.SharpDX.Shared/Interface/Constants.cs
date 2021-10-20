@@ -26,12 +26,24 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// Used for static function overloading
     /// </summary>
-    public struct VertexShaderType { }
-    public struct HullShaderType { }
-    public struct DomainShaderType { }
-    public struct GeometryShaderType { }
-    public struct PixelShaderType { }
-    public struct ComputeShaderType { }
+    public struct VertexShaderType
+    {
+    }
+    public struct HullShaderType
+    {
+    }
+    public struct DomainShaderType
+    {
+    }
+    public struct GeometryShaderType
+    {
+    }
+    public struct PixelShaderType
+    {
+    }
+    public struct ComputeShaderType
+    {
+    }
     /// <summary>
     /// 
     /// </summary>

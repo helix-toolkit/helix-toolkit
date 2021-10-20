@@ -17,23 +17,35 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public interface ITraversable
     {
-        IList<ITraversable> Items { get; }
+        IList<ITraversable> Items
+        {
+            get;
+        }
     }
-    
+
     public interface IVisible
     {
-        Visibility Visibility { get; set; }
+        Visibility Visibility
+        {
+            get; set;
+        }
     }
 
     public interface ITransformable : ITransform
     {
-        Transform3D Transform { get; set; }               
+        Transform3D Transform
+        {
+            get; set;
+        }
     }
 
     public interface ISelectable
     {
 
-        bool IsSelected { get; set; }
+        bool IsSelected
+        {
+            get; set;
+        }
     }
 
     public interface IMouse3D

@@ -25,34 +25,55 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        TechniqueDescription Description { get; }
+        TechniqueDescription Description
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        bool IsNull { get; }
+        bool IsNull
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        string Name { get; }
+        string Name
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
 #if DX11_1
         Device1 Device { get; }
 #else
-        Device Device { get; }
+        Device Device
+        {
+            get;
+        }
 #endif
         /// <summary>
         /// Input layout for all passes
         /// </summary>
-        InputLayout Layout { get; }
+        InputLayoutProxy Layout
+        {
+            get;
+        }
 
         /// <summary>
         /// All shader pass names
         /// </summary>
-        IEnumerable<string> ShaderPassNames { get; }
+        IEnumerable<string> ShaderPassNames
+        {
+            get;
+        }
 
-        IConstantBufferPool ConstantBufferPool { get; }
+        IConstantBufferPool ConstantBufferPool
+        {
+            get;
+        }
         /// <summary>
         /// Get pass by name
         /// </summary>
@@ -66,7 +87,10 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         ShaderPass GetPass(int index);
 
-        IEffectsManager EffectsManager { get; }
+        IEffectsManager EffectsManager
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>

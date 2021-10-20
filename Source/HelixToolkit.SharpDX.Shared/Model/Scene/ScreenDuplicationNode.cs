@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class ScreenDuplicationNode : SceneNode
         {
-        #region Properties
+            #region Properties
             /// <summary>
             /// Gets or sets the capture rectangle.
             /// </summary>
@@ -123,6 +123,5 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }
 #endif

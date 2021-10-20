@@ -75,7 +75,7 @@ namespace HelixToolkit.UWP
 
             protected override KeyValuePair<int, Bitmap>[] GetArray(IEnumerable<Bitmap> items)
             {
-                return items.Select((x,i)=>new KeyValuePair<int, Bitmap>(i, x)).ToArray();
+                return items.Select((x, i) => new KeyValuePair<int, Bitmap>(i, x)).ToArray();
             }
 
             protected override Size2F GetSize(Bitmap value)
@@ -84,5 +84,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

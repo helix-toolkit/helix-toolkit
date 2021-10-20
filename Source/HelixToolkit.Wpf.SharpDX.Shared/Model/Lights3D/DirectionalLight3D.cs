@@ -19,7 +19,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public static readonly DependencyProperty DirectionProperty =
             DependencyProperty.Register("Direction", typeof(Vector3D), typeof(Light3D), new PropertyMetadata(new Vector3D(),
-                (d, e) => {
+                (d, e) =>
+                {
                     ((d as Element3DCore).SceneNode as DirectionalLightNode).Direction = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
@@ -30,8 +31,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Vector3D Direction
         {
-            get { return (Vector3D)this.GetValue(DirectionProperty); }
-            set { this.SetValue(DirectionProperty, value); }
+            get
+            {
+                return (Vector3D)this.GetValue(DirectionProperty);
+            }
+            set
+            {
+                this.SetValue(DirectionProperty, value);
+            }
         }
 
         protected override SceneNode OnCreateSceneNode()

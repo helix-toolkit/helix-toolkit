@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="Element3D" />
     public class PostEffectMeshXRay : Element3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// The effect name property
         /// </summary>
@@ -55,8 +55,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public string EffectName
         {
-            get { return (string)GetValue(EffectNameProperty); }
-            set { SetValue(EffectNameProperty, value); }
+            get
+            {
+                return (string)GetValue(EffectNameProperty);
+            }
+            set
+            {
+                SetValue(EffectNameProperty, value);
+            }
         }
 
 
@@ -92,7 +98,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The outline fading factor property
         /// </summary>
         public static DependencyProperty OutlineFadingFactorProperty = DependencyProperty.Register("OutlineFadingFactor", typeof(double), typeof(PostEffectMeshXRay),
-            new PropertyMetadata(1.5, (d, e) => {
+            new PropertyMetadata(1.5, (d, e) =>
+            {
                 ((d as Element3DCore).SceneNode as NodePostEffectXRay).OutlineFadingFactor = (float)(double)e.NewValue;
             }));
 
@@ -118,7 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
         /// </summary>
         public static readonly DependencyProperty EnableDoublePassProperty =
-            DependencyProperty.Register("EnableDoublePass", typeof(bool), typeof(PostEffectMeshXRay), new PropertyMetadata(false, (d,e)=>
+            DependencyProperty.Register("EnableDoublePass", typeof(bool), typeof(PostEffectMeshXRay), new PropertyMetadata(false, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as NodePostEffectXRay).EnableDoublePass = (bool)e.NewValue;
             }));
@@ -129,10 +136,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool EnableDoublePass
         {
-            get { return (bool)GetValue(EnableDoublePassProperty); }
-            set { SetValue(EnableDoublePassProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableDoublePassProperty);
+            }
+            set
+            {
+                SetValue(EnableDoublePassProperty, value);
+            }
         }
-#endregion
+        #endregion
 
         protected override SceneNode OnCreateSceneNode()
         {
@@ -146,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            if(core is NodePostEffectXRay c)
+            if (core is NodePostEffectXRay c)
             {
                 c.EffectName = EffectName;
                 c.Color = OutlineColor.ToColor4();

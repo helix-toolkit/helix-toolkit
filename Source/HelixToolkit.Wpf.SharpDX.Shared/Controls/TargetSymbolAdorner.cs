@@ -40,7 +40,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the position.
         /// </summary>
         /// <value>The position.</value>
-        public Point Position { get; set; }
+        public Point Position
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Called when rendering.
@@ -60,12 +63,12 @@ namespace HelixToolkit.Wpf.SharpDX
             double t2 = 2; // thickness of light pen (circle, arcs, segments)
             double d = 0; // distance from light circle to segments
             double l = 10; // length of segments
-            double r = 20.0; // radius of light circle
+            var r = 20.0; // radius of light circle
 
             var r1 = r - (t1 + t2) / 2;
-            double r2 = r + l;
-            double r3 = r + t2 / 2 + d;
-            double r4 = (r + r2) / 2;
+            var r2 = r + l;
+            var r3 = r + t2 / 2 + d;
+            var r4 = (r + r2) / 2;
 
             var darkPen = new Pen(darkBrush, t1);
             var lightPen = new Pen(lightBrush, t2);

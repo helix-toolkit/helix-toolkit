@@ -77,9 +77,9 @@ namespace HelixToolkit.UWP
         public static void CreateNodeBasedBoneMatrices(IList<Animations.Bone> bones, ref Matrix rootInvTransform, ref Matrix[] matrices)
         {
             var m = matrices ?? new Matrix[bones.Count];
-            for(int i = 0; i <bones.Count; ++i)
+            for (var i = 0; i < bones.Count; ++i)
             {
-                if(bones[i].Node != null)
+                if (bones[i].Node != null)
                 {
                     m[i] = bones[i].InvBindPose * bones[i].Node.TotalModelMatrixInternal * rootInvTransform;
                 }
@@ -101,15 +101,15 @@ namespace HelixToolkit.UWP
             var positions = new Vector3Collection(bones.Count * singleBone.Positions.Count);
             var tris = new IntCollection(bones.Count * singleBone.Indices.Count);
 
-            int offset = 0;
+            var offset = 0;
 
-            for (int i = 0; i < bones.Count; ++i)
+            for (var i = 0; i < bones.Count; ++i)
             {
                 if (bones[i].ParentIndex >= 0)
                 {
-                    int currPos = positions.Count;
+                    var currPos = positions.Count;
                     tris.AddRange(singleBone.Indices.Select(x => x + offset));
-                    int j = 0;
+                    var j = 0;
                     for (; j < singleBone.Positions.Count - 6; j += 3)
                     {
                         positions.Add(Vector3.TransformCoordinate(singleBone.Positions[j], bones[bones[i].ParentIndex].BindPose));
@@ -129,11 +129,11 @@ namespace HelixToolkit.UWP
             }
 
             builder = new MeshBuilder(true, false);
-            for (int i=0; i < bones.Count; ++i)
+            for (var i = 0; i < bones.Count; ++i)
             {
-                int currPos = builder.Positions.Count;
+                var currPos = builder.Positions.Count;
                 builder.AddSphere(Vector3.Zero, scale / 2, 12, 12);
-                for (int j = currPos; j < builder.Positions.Count; ++j)
+                for (var j = currPos; j < builder.Positions.Count; ++j)
                 {
                     builder.Positions[j] = Vector3.TransformCoordinate(builder.Positions[j], bones[i].BindPose);
                     boneIds.Add(new BoneIds() { Bone1 = i, Weights = new Vector4(1, 0, 0, 0) });
@@ -148,7 +148,7 @@ namespace HelixToolkit.UWP
 
         private IEnumerable<Triangle> skinnedTriangles(Vector3[] skinnedVertices)
         {
-            for (int i = 0; i < Indices.Count; i += 3)
+            for (var i = 0; i < Indices.Count; i += 3)
             {
                 yield return new Triangle() { P0 = skinnedVertices[Indices[i]], P1 = skinnedVertices[Indices[i + 1]], P2 = skinnedVertices[Indices[i + 2]], };
             }
@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP
             {
                 return false;
             }
-            bool isHit = false;
+            var isHit = false;
             var result = new HitTestResult
             {
                 Distance = double.MaxValue
@@ -176,12 +176,12 @@ namespace HelixToolkit.UWP
             //transform ray into model coordinates
             var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInvert)));
 
-            int index = 0;
-            float minDistance = float.MaxValue;
+            var index = 0;
+            var minDistance = float.MaxValue;
             foreach (var t in skinnedTriangles(skinnedVertices))
             {
                 // Used when geometry size is really small, causes hit test failure due to SharpDX.MathUtils.ZeroTolerance.
-                float scaling = 1f;
+                var scaling = 1f;
                 var rayScaled = rayModel;
                 if (EnableSmallTriangleHitTestScaling)
                 {

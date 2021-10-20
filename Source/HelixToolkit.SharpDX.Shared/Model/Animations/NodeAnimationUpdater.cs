@@ -135,10 +135,10 @@ namespace HelixToolkit.UWP
             private void UpdateNodes(float timeElapsed)
             {
                 accumulatedTime += timeElapsed;
-                for (int i = 0; i < NodeCollection.Count; ++i)
+                for (var i = 0; i < NodeCollection.Count; ++i)
                 {
                     var n = NodeCollection[i];
-                    int count = n.KeyFrames.Count; // Make sure to use this count
+                    var count = n.KeyFrames.Count; // Make sure to use this count
                     var frames = n.KeyFrames.Items;
                     ref var idxTime = ref keyframeIndices[i];
                     while (idxTime.Index < count - 1 && accumulatedTime > frames[idxTime.Index + 1].Time)//check if should move to next time frame
@@ -159,9 +159,9 @@ namespace HelixToolkit.UWP
                     else
                     {
                         ref var nextFrame = ref frames[idxTime.Index + 1];
-                        float diff = accumulatedTime - currFrame.Time;
-                        float length = nextFrame.Time - currFrame.Time;
-                        float amount = diff / length;
+                        var diff = accumulatedTime - currFrame.Time;
+                        var length = nextFrame.Time - currFrame.Time;
+                        var amount = diff / length;
                         var transform = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
                                     Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount)) *
                                     Matrix.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
@@ -186,10 +186,10 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                for (int i = 0; i < NodeCollection.Count; ++i)
+                for (var i = 0; i < NodeCollection.Count; ++i)
                 {
                     var n = NodeCollection[i];
-                    int count = n.KeyFrames.Count; // Make sure to use this count
+                    var count = n.KeyFrames.Count; // Make sure to use this count
                     if (count == 0)
                     {
                         //n.Node.ModelMatrix = Matrix.Identity;

@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="Element3D" />
     public class PostEffectBloom : Element3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -46,8 +46,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public string EffectName
         {
-            get { return (string)GetValue(EffectNameProperty); }
-            set { SetValue(EffectNameProperty, value); }
+            get
+            {
+                return (string)GetValue(EffectNameProperty);
+            }
+            set
+            {
+                SetValue(EffectNameProperty, value);
+            }
         }
 
         /// <summary>
@@ -68,15 +74,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Color ThresholdColor
         {
-            get { return (Color)GetValue(ThresholdColorProperty); }
-            set { SetValue(ThresholdColorProperty, value); }
+            get
+            {
+                return (Color)GetValue(ThresholdColorProperty);
+            }
+            set
+            {
+                SetValue(ThresholdColorProperty, value);
+            }
         }
 
         /// <summary>
         /// The threshold color property
         /// </summary>
         public static readonly DependencyProperty ThresholdColorProperty =
-            DependencyProperty.Register("ThresholdColor", typeof(Color), typeof(PostEffectBloom), new PropertyMetadata(Color.FromArgb(0, 200, 200, 200), 
+            DependencyProperty.Register("ThresholdColor", typeof(Color), typeof(PostEffectBloom), new PropertyMetadata(Color.FromArgb(0, 200, 200, 200),
                 (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as NodePostEffectBloom).ThresholdColor = ((Color)e.NewValue).ToColor4();
@@ -90,8 +102,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int NumberOfBlurPass
         {
-            get { return (int)GetValue(NumberOfBlurPassProperty); }
-            set { SetValue(NumberOfBlurPassProperty, value); }
+            get
+            {
+                return (int)GetValue(NumberOfBlurPassProperty);
+            }
+            set
+            {
+                SetValue(NumberOfBlurPassProperty, value);
+            }
         }
 
         /// <summary>
@@ -111,15 +129,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double BloomExtractIntensity
         {
-            get { return (double)GetValue(BloomExtractIntensityProperty); }
-            set { SetValue(BloomExtractIntensityProperty, value); }
+            get
+            {
+                return (double)GetValue(BloomExtractIntensityProperty);
+            }
+            set
+            {
+                SetValue(BloomExtractIntensityProperty, value);
+            }
         }
 
         /// <summary>
         /// The bloom extract intensity property
         /// </summary>
         public static readonly DependencyProperty BloomExtractIntensityProperty =
-            DependencyProperty.Register("BloomExtractIntensity", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(1.0, (d,e)=> 
+            DependencyProperty.Register("BloomExtractIntensity", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(1.0, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as NodePostEffectBloom).BloomExtractIntensity = (float)(double)e.NewValue;
             }));
@@ -132,8 +156,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double BloomPassIntensity
         {
-            get { return (double)GetValue(BloomPassIntensityProperty); }
-            set { SetValue(BloomPassIntensityProperty, value); }
+            get
+            {
+                return (double)GetValue(BloomPassIntensityProperty);
+            }
+            set
+            {
+                SetValue(BloomPassIntensityProperty, value);
+            }
         }
 
         /// <summary>
@@ -153,8 +183,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double BloomCombineIntensity
         {
-            get { return (double)GetValue(BloomCombineIntensityProperty); }
-            set { SetValue(BloomCombineIntensityProperty, value); }
+            get
+            {
+                return (double)GetValue(BloomCombineIntensityProperty);
+            }
+            set
+            {
+                SetValue(BloomCombineIntensityProperty, value);
+            }
         }
 
         /// <summary>
@@ -174,8 +210,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double BloomCombineSaturation
         {
-            get { return (double)GetValue(BloomCombineSaturationProperty); }
-            set { SetValue(BloomCombineSaturationProperty, value); }
+            get
+            {
+                return (double)GetValue(BloomCombineSaturationProperty);
+            }
+            set
+            {
+                SetValue(BloomCombineSaturationProperty, value);
+            }
         }
 
         /// <summary>
@@ -186,7 +228,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Element3DCore).SceneNode as NodePostEffectBloom).BloomCombineSaturation = (float)(double)e.NewValue;
             }));
-#endregion
+        #endregion
 
         protected override SceneNode OnCreateSceneNode()
         {
@@ -199,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
             base.AssignDefaultValuesToSceneNode(node);
-            if(node is NodePostEffectBloom c)
+            if (node is NodePostEffectBloom c)
             {
                 c.EffectName = EffectName;
                 c.BloomCombineIntensity = (float)BloomCombineIntensity;

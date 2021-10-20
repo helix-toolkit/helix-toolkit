@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
         static TransformManipulator3D()
         {
             var bd = new MeshBuilder();
-            float arrowLength = 1.5f;
+            var arrowLength = 1.5f;
             bd.AddArrow(Vector3.UnitX * arrowLength, new Vector3(1.2f * arrowLength, 0, 0), 0.08, 4, 12);
             bd.AddCylinder(Vector3.Zero, Vector3.UnitX * arrowLength, 0.04, 12);
             TranslationXGeometry = bd.ToMesh();
@@ -74,11 +74,17 @@ namespace HelixToolkit.Wpf.SharpDX
             ScalingGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
             ScalingGeometry.UpdateOctree();
         }
-#region Dependency Properties
+        #region Dependency Properties
         public Element3D Target
         {
-            get { return (Element3D)GetValue(TargetProperty); }
-            set { SetValue(TargetProperty, value); }
+            get
+            {
+                return (Element3D)GetValue(TargetProperty);
+            }
+            set
+            {
+                SetValue(TargetProperty, value);
+            }
         }
 
 
@@ -92,12 +98,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool EnableScaling
         {
-            get { return (bool)GetValue(EnableScalingProperty); }
-            set { SetValue(EnableScalingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableScalingProperty);
+            }
+            set
+            {
+                SetValue(EnableScalingProperty, value);
+            }
         }
 
         public static readonly DependencyProperty EnableScalingProperty =
-            DependencyProperty.Register("EnableScaling", typeof(bool), typeof(TransformManipulator3D), new PropertyMetadata(true, (d, e)=> 
+            DependencyProperty.Register("EnableScaling", typeof(bool), typeof(TransformManipulator3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as TransformManipulator3D).scaleGroup.IsRendering = (bool)e.NewValue;
             }));
@@ -105,8 +117,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool EnableTranslation
         {
-            get { return (bool)GetValue(EnableTranslationProperty); }
-            set { SetValue(EnableTranslationProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableTranslationProperty);
+            }
+            set
+            {
+                SetValue(EnableTranslationProperty, value);
+            }
         }
 
         public static readonly DependencyProperty EnableTranslationProperty =
@@ -117,8 +135,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool EnableRotation
         {
-            get { return (bool)GetValue(EnableRotationProperty); }
-            set { SetValue(EnableRotationProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableRotationProperty);
+            }
+            set
+            {
+                SetValue(EnableRotationProperty, value);
+            }
         }
 
         public static readonly DependencyProperty EnableRotationProperty =
@@ -130,8 +154,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool EnableXRayGrid
         {
-            get { return (bool)GetValue(EnableXRayGridProperty); }
-            set { SetValue(EnableXRayGridProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableXRayGridProperty);
+            }
+            set
+            {
+                SetValue(EnableXRayGridProperty, value);
+            }
         }
 
         public static readonly DependencyProperty EnableXRayGridProperty =
@@ -146,12 +176,18 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Vector3 CenterOffset
         {
-            get { return (Vector3)GetValue(CenterOffsetProperty); }
-            set { SetValue(CenterOffsetProperty, value); }
+            get
+            {
+                return (Vector3)GetValue(CenterOffsetProperty);
+            }
+            set
+            {
+                SetValue(CenterOffsetProperty, value);
+            }
         }
 
         public static readonly DependencyProperty CenterOffsetProperty =
-            DependencyProperty.Register("CenterOffset", typeof(Vector3), typeof(TransformManipulator3D), new PropertyMetadata(Vector3.Zero, (d,e)=> 
+            DependencyProperty.Register("CenterOffset", typeof(Vector3), typeof(TransformManipulator3D), new PropertyMetadata(Vector3.Zero, (d, e) =>
             {
                 (d as TransformManipulator3D).centerOffset = (Vector3)e.NewValue;
                 (d as TransformManipulator3D).OnUpdateSelfTransform();
@@ -159,18 +195,24 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public double SizeScale
         {
-            get { return (double)GetValue(SizeScaleProperty); }
-            set { SetValue(SizeScaleProperty, value); }
+            get
+            {
+                return (double)GetValue(SizeScaleProperty);
+            }
+            set
+            {
+                SetValue(SizeScaleProperty, value);
+            }
         }
 
         public static readonly DependencyProperty SizeScaleProperty =
-            DependencyProperty.Register("SizeScale", typeof(double), typeof(TransformManipulator3D), new PropertyMetadata(1.0, (d,e) =>
+            DependencyProperty.Register("SizeScale", typeof(double), typeof(TransformManipulator3D), new PropertyMetadata(1.0, (d, e) =>
             {
                 (d as TransformManipulator3D).sizeScale = (double)e.NewValue;
             }));
 
-#endregion
-#region Variables
+        #endregion
+        #region Variables
         private readonly MeshGeometryModel3D translationX, translationY, translationZ;
         private readonly MeshGeometryModel3D rotationX, rotationY, rotationZ;
         private readonly MeshGeometryModel3D scaleX, scaleY, scaleZ;
@@ -192,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool isCaptured = false;
         private double sizeScale = 1;
         private Color4 currentColor;
-#endregion
+        #endregion
         private enum ManipulationType
         {
             None, TranslationX, TranslationY, TranslationZ, RotationX, RotationY, RotationZ, ScaleX, ScaleY, ScaleZ
@@ -205,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var rotationYMatrix = Matrix.RotationZ((float)Math.PI / 2);
             var rotationZMatrix = Matrix.RotationY(-(float)Math.PI / 2);
             ctrlGroup = new GroupModel3D();
-#region Translation Models
+            #region Translation Models
             translationX = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             translationY = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             translationZ = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -240,8 +282,8 @@ namespace HelixToolkit.Wpf.SharpDX
             translationGroup.Children.Add(translationY);
             translationGroup.Children.Add(translationZ);
             ctrlGroup.Children.Add(translationGroup);
-#endregion
-#region Rotation Models
+            #endregion
+            #region Rotation Models
             rotationX = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             rotationY = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             rotationZ = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -276,8 +318,8 @@ namespace HelixToolkit.Wpf.SharpDX
             rotationGroup.Children.Add(rotationY);
             rotationGroup.Children.Add(rotationZ);
             ctrlGroup.Children.Add(rotationGroup);
-#endregion
-#region Scaling Models
+            #endregion
+            #region Scaling Models
             scaleX = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             scaleY = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             scaleZ = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Blue, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -312,12 +354,13 @@ namespace HelixToolkit.Wpf.SharpDX
             scaleGroup.Children.Add(scaleY);
             scaleGroup.Children.Add(scaleZ);
             ctrlGroup.Children.Add(scaleGroup);
-#endregion
+            #endregion
             Children.Add(ctrlGroup);
             xrayEffect = new PostEffectMeshXRayGrid()
             {
                 EffectName = "ManipulatorXRayGrid",
-                DimmingFactor = 0.5, BlendingFactor = 0.8,
+                DimmingFactor = 0.5,
+                BlendingFactor = 0.8,
                 GridDensity = 4,
 #if WINUI
                 GridColor = Microsoft.UI.Colors.Gray
@@ -349,7 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-#region Handle Translation
+        #region Handle Translation
         private void Translation_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
             if (target == null || !CanBeginTransform(e))
@@ -385,7 +428,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             var up = Vector3.Cross(cameraNormal, direction);
             normal = Vector3.Cross(up, direction);
-            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
+            if (currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
                 currentHit = hit;
                 isCaptured = true;
@@ -398,7 +441,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
+            if (currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
                 var moveDir = hit - currentHit;
                 currentHit = hit;
@@ -415,12 +458,12 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                 }
                 OnUpdateSelfTransform();
-                OnUpdateTargetMatrix();              
+                OnUpdateTargetMatrix();
             }
         }
-#endregion
+        #endregion
 
-#region Handle Rotation
+        #region Handle Rotation
         private void Rotation_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
             if (target == null || !CanBeginTransform(e))
@@ -456,10 +499,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             //var up = Vector3.Cross(cameraNormal, direction);
             //normal = Vector3.Cross(up, direction);
-            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
+            if (currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
                 currentHit = hit;
-                isCaptured = true;            
+                isCaptured = true;
             }
         }
 
@@ -469,7 +512,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
+            if (currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
                 var position = this.translationVector + centerOffset;
                 var v = Vector3.Normalize(currentHit - position);
@@ -505,11 +548,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 OnUpdateTargetMatrix();
             }
-
         }
-#endregion
+        #endregion
 
-#region Handle Scaling
+        #region Handle Scaling
         private void Scaling_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
             if (target == null || !CanBeginTransform(e))
@@ -545,7 +587,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPosWS = e.HitTestResult.PointHit;
             var up = Vector3.Cross(cameraNormal, direction);
             normal = Vector3.Cross(up, direction);
-            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
+            if (currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
                 currentHit = hit;
                 isCaptured = true;
@@ -558,7 +600,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            if(currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
+            if (currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal, out var hit))
             {
                 var moveDir = hit - currentHit;
                 currentHit = hit;
@@ -591,7 +633,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 OnUpdateTargetMatrix();
             }
         }
-#endregion
+        #endregion
 
         private void Manipulation_Mouse3DUp(object sender, MouseUp3DEventArgs e)
         {
@@ -623,7 +665,7 @@ namespace HelixToolkit.Wpf.SharpDX
             //}
             this.target = target;
             if (target == null)
-            {                
+            {
                 ResetTransforms();
             }
             else
@@ -636,7 +678,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void SceneNode_OnTransformChanged(object sender, TransformArgs e)
         {
             var m = e.Transform;
-            m.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);
+            m.Decompose(out var scale, out var rotation, out var translation);
             scaleMatrix = Matrix.Scaling(scale);
             rotationMatrix = Matrix.RotationQuaternion(rotation);
             if (centerOffset != Vector3.Zero)
@@ -711,13 +753,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (hits.Count > 0)
                     {
-                        HitTestResult res = new HitTestResult() { Distance = float.MaxValue };
+                        var res = new HitTestResult() { Distance = float.MaxValue };
                         foreach (var hit in hits)
                         {
                             if (models.Contains(hit.ModelHit))
                             {
                                 if (hit.Distance < res.Distance)
-                                { res = hit; }
+                                {
+                                    res = hit;
+                                }
                             }
                         }
                         res.Distance = 0;

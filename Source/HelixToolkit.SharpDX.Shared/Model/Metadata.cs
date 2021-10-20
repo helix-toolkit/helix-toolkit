@@ -90,16 +90,22 @@ namespace HelixToolkit.UWP
                 /// <value>
                 /// The type of the data.
                 /// </value>
-                public MetaDataType DataType { get; }
+                public MetaDataType DataType
+                {
+                    get;
+                }
                 /// <summary>
                 /// Gets the data.
                 /// </summary>
                 /// <value>
                 /// The data.
                 /// </value>
-                public object Data { get; }
+                public object Data
+                {
+                    get;
+                }
 
-                public T? DataAs<T>() where T : struct
+                public T? DataAs<T>() where T : unmanaged
                 {
                     Type dataTypeType = null;
                     switch (DataType)
@@ -135,7 +141,7 @@ namespace HelixToolkit.UWP
 
                 public override bool Equals(object obj)
                 {
-                    if(obj is Entry e)
+                    if (obj is Entry e)
                     {
                         return e.Equals(this);
                     }
@@ -151,7 +157,7 @@ namespace HelixToolkit.UWP
                 {
                     unchecked
                     {
-                        int hash = 17;
+                        var hash = 17;
                         hash = (hash * 31) + Data.GetHashCode();
                         hash = (hash * 31) + ((Data == null) ? 0 : Data.GetHashCode());
 

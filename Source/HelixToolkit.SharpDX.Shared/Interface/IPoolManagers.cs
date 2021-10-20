@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     namespace ShaderManager
-    {      
+    {
         using Shaders;
         using Utilities;
         /// <summary>
@@ -23,7 +23,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         public interface IShaderPoolManager : IDisposable
         {
-            int Count { get; }
             /// <summary>
             /// Registers the shader. Shader object live time is managed by ShaderPoolManager. Shader should not be disposed manually.
             /// </summary>
@@ -35,7 +34,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="description">The description.</param>
             /// <returns></returns>
-            InputLayout RegisterInputLayout(InputLayoutDescription description);
+            InputLayoutProxy RegisterInputLayout(InputLayoutDescription description);
         }
         /// <summary>
         /// 
@@ -48,21 +47,30 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The blend state pool.
             /// </value>
-            BlendStatePool BlendStatePool { get; }
+            BlendStatePool BlendStatePool
+            {
+                get;
+            }
             /// <summary>
             /// Gets the raster state pool.
             /// </summary>
             /// <value>
             /// The raster state pool.
             /// </value>
-            RasterStatePool RasterStatePool { get; }
+            RasterStatePool RasterStatePool
+            {
+                get;
+            }
             /// <summary>
             /// Gets the depth stencil state pool.
             /// </summary>
             /// <value>
             /// The depth stencil state pool.
             /// </value>
-            DepthStencilStatePool DepthStencilStatePool { get; }
+            DepthStencilStatePool DepthStencilStatePool
+            {
+                get;
+            }
 
             /// <summary>
             /// Gets the sampler state pool.
@@ -70,7 +78,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The sampler state pool.
             /// </value>
-            SamplerStatePool SamplerStatePool { get; }
+            SamplerStatePool SamplerStatePool
+            {
+                get;
+            }
             /// <summary>
             /// Registers the specified desc. This function increments state proxy internal reference counter. Must be disposed if not used.
             /// </summary>
@@ -98,5 +109,4 @@ namespace HelixToolkit.UWP
             SamplerStateProxy Register(SamplerStateDescription desc);
         }
     }
-
 }

@@ -11,7 +11,7 @@ namespace HelixToolkit.WinUI
 namespace HelixToolkit.UWP
 #endif
 {
-    using Model; 
+    using Model;
 
     public static class MaterialExtension
     {
@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP
                 MaxDistanceTessellationFactor = core.MaxDistanceTessellationFactor,
                 MaxTessellationDistance = core.MaxTessellationDistance,
                 MinDistanceTessellationFactor = core.MinDistanceTessellationFactor,
-                MinTessellationDistance = core.MinTessellationDistance,                
+                MinTessellationDistance = core.MinTessellationDistance,
             };
         }
 
@@ -100,11 +100,11 @@ namespace HelixToolkit.UWP
 
         public static Material ConvertToMaterial(this MaterialCore core)
         {
-            if(core is PhongMaterialCore p)
+            if (core is PhongMaterialCore p)
             {
                 return p.ConvertToPhongMaterial();
             }
-            else if(core is PBRMaterialCore pbr)
+            else if (core is PBRMaterialCore pbr)
             {
                 return pbr.ConvertToPBRMaterial();
             }

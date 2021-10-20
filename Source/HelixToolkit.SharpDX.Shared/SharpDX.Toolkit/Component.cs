@@ -16,7 +16,10 @@ namespace SharpDX.Toolkit
         /// Gets or sets the disposables.
         /// </summary>
         /// <value>The disposables.</value>
-        protected DisposeCollector DisposeCollector { get; set; }
+        protected DisposeCollector DisposeCollector
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Component"/> class.
@@ -39,7 +42,10 @@ namespace SharpDX.Toolkit
         /// <value>
         /// 	<c>true</c> if this instance is attached to a collector; otherwise, <c>false</c>.
         /// </value>
-        internal bool IsAttached { get; set; }
+        internal bool IsAttached
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets a value indicating whether this instance is disposed.
@@ -47,12 +53,18 @@ namespace SharpDX.Toolkit
         /// <value>
         /// 	<c>true</c> if this instance is disposed; otherwise, <c>false</c>.
         /// </value>
-        protected internal bool IsDisposed { get; private set; }
+        protected internal bool IsDisposed
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        protected internal bool IsDisposing { get; private set; }
+        protected internal bool IsDisposing
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Occurs when when Dispose is called.
@@ -70,7 +82,7 @@ namespace SharpDX.Toolkit
                 IsDisposing = true;
 
                 // Call the disposing event.
-                Disposing?.Invoke(this, EventArgs.Empty);             
+                Disposing?.Invoke(this, EventArgs.Empty);
                 Dispose(true);
                 IsDisposed = true;
                 //GC.SuppressFinalize(this);

@@ -95,5 +95,4 @@ namespace HelixToolkit.UWP
             public const string NoiseSampler = "samplerNoise";
         }
     }
-
 }

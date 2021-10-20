@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
             {
-                var buffer = geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicBillboardBufferModel>(modelGuid, geometry) 
+                var buffer = geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicBillboardBufferModel>(modelGuid, geometry)
                     : EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);
                 if (geometry is IBillboardText b && Material is IBillboardRenderParams m)
                 {
@@ -135,5 +135,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -85,14 +85,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (Element3D c in Children)
+            foreach (var c in Children)
             {
                 if (c.Parent == this)
                 {
                     this.RemoveLogicalChild(c);
                 }
             }
-            foreach (Element3D c in Children)
+            foreach (var c in Children)
             {
                 if (c.Parent == null)
                 {
@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Reset:
-                    foreach (Element3D item in Children)
+                    foreach (var item in Children)
                     {
                         if (item.Parent == null)
                         {

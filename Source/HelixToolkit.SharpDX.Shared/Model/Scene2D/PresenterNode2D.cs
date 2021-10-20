@@ -34,9 +34,9 @@ namespace HelixToolkit.UWP
                             content.Parent = null;
                             ItemsInternal.Clear();
                         }
-                        content = value;                     
+                        content = value;
                         if (content != null)
-                        {                            
+                        {
                             content.Parent = this;
                             if (IsAttached)
                             {
@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP
             public PresenterNode2D()
             {
                 ItemsInternal = new System.Collections.ObjectModel.ObservableCollection<SceneNode2D>();
-                Items = new System.Collections.ObjectModel.ReadOnlyObservableCollection<SceneNode2D>(ItemsInternal);                
+                Items = new System.Collections.ObjectModel.ReadOnlyObservableCollection<SceneNode2D>(ItemsInternal);
             }
 
             protected override bool OnAttach(IRenderHost host)
@@ -127,5 +127,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

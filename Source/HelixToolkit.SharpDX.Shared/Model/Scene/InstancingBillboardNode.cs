@@ -35,8 +35,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public IList<BillboardInstanceParameter> InstanceParamArray
             {
-                set { instanceParamBuffer.Elements = value; }
-                get { return instanceParamBuffer.Elements; }
+                set
+                {
+                    instanceParamBuffer.Elements = value;
+                }
+                get
+                {
+                    return instanceParamBuffer.Elements;
+                }
             }
 
             /// <summary>
@@ -94,5 +100,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

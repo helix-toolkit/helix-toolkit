@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
     namespace Model.Scene
     {
         using Core;
-        using Render;     
+        using Render;
 
         /// <summary>
         ///
@@ -36,7 +36,13 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public Guid GUID { get { return RenderCore.GUID; } }
+            public Guid GUID
+            {
+                get
+                {
+                    return RenderCore.GUID;
+                }
+            }
             private string name = "Node";
             /// <summary>
             /// Gets or sets the name.
@@ -48,7 +54,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref name, value))
+                    if (Set(ref name, value))
                     {
                         NameChanged?.Invoke(this, new StringArgs(value));
                     }
@@ -66,7 +72,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The total model matrix.
             /// </value>
-            public Matrix TotalModelMatrix { get => TotalModelMatrixInternal; }
+            public Matrix TotalModelMatrix
+            {
+                get => TotalModelMatrixInternal;
+            }
             /// <summary>
             /// Gets or sets the order key.
             /// </summary>
@@ -90,14 +99,17 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref renderOrder, value))
+                    if (Set(ref renderOrder, value))
                     {
                         InvalidatePerFrameRenderables();
                     }
                 }
-                get { return renderOrder; }
+                get
+                {
+                    return renderOrder;
+                }
             }
-                
+
 
             /// <summary>
             /// Gets or sets a value indicating whether [need matrix update].
@@ -124,7 +136,10 @@ namespace HelixToolkit.UWP
                         NeedMatrixUpdate = true;
                     }
                 }
-                get { return modelMatrix; }
+                get
+                {
+                    return modelMatrix;
+                }
             }
 
             private SceneNode parent = NullSceneNode.NullNode;
@@ -138,7 +153,7 @@ namespace HelixToolkit.UWP
             {
                 internal set
                 {
-                    if(Set(ref parent, value))
+                    if (Set(ref parent, value))
                     {
                         NeedMatrixUpdate = true;
                         if (value == null)
@@ -147,7 +162,10 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                get { return parent; }
+                get
+                {
+                    return parent;
+                }
             }
 
             private bool visible = true;
@@ -166,7 +184,10 @@ namespace HelixToolkit.UWP
                         VisibleChanged?.Invoke(this, value ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
                     }
                 }
-                get { return visible; }
+                get
+                {
+                    return visible;
+                }
             }
 
             private bool isRenderable = true;
@@ -180,12 +201,15 @@ namespace HelixToolkit.UWP
             {
                 private set
                 {
-                    if(Set(ref isRenderable, value))
+                    if (Set(ref isRenderable, value))
                     {
                         InvalidatePerFrameRenderables();
                     }
                 }
-                get { return isRenderable; }
+                get
+                {
+                    return isRenderable;
+                }
             }
 
             /// <summary>
@@ -199,7 +223,10 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public IRenderHost RenderHost { get; private set; }
+            public IRenderHost RenderHost
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// Gets the effects manager.
@@ -207,7 +234,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The effects manager.
             /// </value>
-            protected IEffectsManager EffectsManager { get { return RenderHost.EffectsManager; } }
+            protected IEffectsManager EffectsManager
+            {
+                get
+                {
+                    return RenderHost.EffectsManager;
+                }
+            }
 
             /// <summary>
             /// Gets the items.
@@ -233,7 +266,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items count.
             /// </value>
-            public int ItemsCount { get => Items.Count; }
+            public int ItemsCount
+            {
+                get => Items.Count;
+            }
 
             private bool isHitTestVisible = true;
             /// <summary>
@@ -242,7 +278,10 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance is hit test visible; otherwise, <c>false</c>.
             /// </value>
-            public bool IsHitTestVisible { set => isHitTestVisible = value; get => isHitTestVisible | AlwaysHittable; }
+            public bool IsHitTestVisible
+            {
+                set => isHitTestVisible = value; get => isHitTestVisible | AlwaysHittable;
+            }
 
             /// <summary>
             /// Gets or sets a value indicating whether [always hittable] even it is not rendered.
@@ -283,7 +322,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The effects technique.
             /// </value>
-            public IRenderTechnique EffectTechnique { get { return renderTechnique; } }
+            public IRenderTechnique EffectTechnique
+            {
+                get
+                {
+                    return renderTechnique;
+                }
+            }
 
             /// <summary>
             /// Gets or sets a value indicating whether this node is animation node.
@@ -342,7 +387,10 @@ namespace HelixToolkit.UWP
             private Lazy<RenderCore> renderCore;
             public RenderCore RenderCore
             {
-                get { return renderCore.Value; }
+                get
+                {
+                    return renderCore.Value;
+                }
             }
 
             /// <summary>
@@ -375,13 +423,18 @@ namespace HelixToolkit.UWP
             /// Called when [create render core].
             /// </summary>
             /// <returns></returns>
-            protected virtual RenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
+            protected virtual RenderCore OnCreateRenderCore()
+            {
+                return new EmptyRenderCore();
+            }
 
             /// <summary>
             /// Assigns the default values to core.
             /// </summary>
             /// <param name="core">The core.</param>
-            protected virtual void AssignDefaultValuesToCore(RenderCore core) { }
+            protected virtual void AssignDefaultValuesToCore(RenderCore core)
+            {
+            }
 
             private void RenderCore_OnInvalidateRenderer(object sender, EventArgs e)
             {
@@ -396,7 +449,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The hit test source.
             /// </value>
-            public object WrapperSource { set; get; }
+            public object WrapperSource
+            {
+                set; get;
+            }
 
             private object tag = null;
             /// <summary>
@@ -416,7 +472,10 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance is in frustum; otherwise, <c>false</c>.
             /// </value>
-            public bool IsInFrustum { internal set; get; }
+            public bool IsInFrustum
+            {
+                internal set; get;
+            }
             #endregion Properties
 
             #region Events            
@@ -517,7 +576,9 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Called when [attached] and <see cref="IsAttached"/> = true.
             /// </summary>
-            protected virtual void OnAttached() { }
+            protected virtual void OnAttached()
+            {
+            }
 
             /// <summary>
             /// Detaches the element from the host. Override <see cref="OnDetach"/>
@@ -530,9 +591,8 @@ namespace HelixToolkit.UWP
                     InvalidateSceneGraph();
                     RenderCore.Detach();
                     OnDetach();
-                    DisposeAndClear();
                     renderTechnique = null;
-                    Detached?.Invoke(this, EventArgs.Empty);              
+                    Detached?.Invoke(this, EventArgs.Empty);
                 }
             }
 
@@ -596,13 +656,13 @@ namespace HelixToolkit.UWP
                 if (NeedMatrixUpdate)
                 {
                     TotalModelMatrixInternal = modelMatrix * parent.TotalModelMatrixInternal;
-                    for (int i = 0; i < ItemsInternal.Count; ++i)
+                    for (var i = 0; i < ItemsInternal.Count; ++i)
                     {
                         ItemsInternal[i].NeedMatrixUpdate = true;
                     }
                     NeedMatrixUpdate = false;
                     OnTransformChanged(ref TotalModelMatrixInternal);
-                    TransformChanged?.Invoke(this, new TransformArgs(ref TotalModelMatrixInternal));               
+                    TransformChanged?.Invoke(this, new TransformArgs(ref TotalModelMatrixInternal));
                 }
             }
             /// <summary>
@@ -621,7 +681,9 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public virtual void UpdateNotRender(RenderContext context) { }
+            public virtual void UpdateNotRender(RenderContext context)
+            {
+            }
 
             #region Rendering
 
@@ -754,7 +816,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The original bounds.
             /// </value>
-            public virtual BoundingBox OriginalBounds { get { return MaxBound; } }
+            public virtual BoundingBox OriginalBounds
+            {
+                get
+                {
+                    return MaxBound;
+                }
+            }
 
             /// <summary>
             /// <see cref="IBoundable.OriginalBoundsSphere"/>
@@ -762,7 +830,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The original bounds sphere.
             /// </value>
-            public virtual BoundingSphere OriginalBoundsSphere { get { return MaxBoundSphere; } }
+            public virtual BoundingSphere OriginalBoundsSphere
+            {
+                get
+                {
+                    return MaxBoundSphere;
+                }
+            }
 
             /// <summary>
             /// <see cref="IBoundable.Bounds"/>
@@ -772,7 +846,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public virtual BoundingBox Bounds
             {
-                get { return MaxBound; }
+                get
+                {
+                    return MaxBound;
+                }
             }
 
             /// <summary>
@@ -783,7 +860,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public virtual BoundingBox BoundsWithTransform
             {
-                get { return MaxBound; }
+                get
+                {
+                    return MaxBound;
+                }
             }
 
             /// <summary>
@@ -794,7 +874,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public virtual BoundingSphere BoundsSphere
             {
-                get { return MaxBoundSphere; }
+                get
+                {
+                    return MaxBoundSphere;
+                }
             }
 
             /// <summary>
@@ -805,7 +888,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public virtual BoundingSphere BoundsSphereWithTransform
             {
-                get { return MaxBoundSphere; }
+                get
+                {
+                    return MaxBoundSphere;
+                }
             }
 
             /// <summary>
@@ -891,7 +977,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public IEnumerable<string> PostEffectNames
             {
-                get { return postEffectNames.Keys; }
+                get
+                {
+                    return postEffectNames.Keys;
+                }
             }
             /// <summary>
             /// Gets a value indicating whether this instance has any post effect.
@@ -899,7 +988,13 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
             /// </value>
-            public bool HasAnyPostEffect { get { return postEffectNames.Count > 0; } }
+            public bool HasAnyPostEffect
+            {
+                get
+                {
+                    return postEffectNames.Count > 0;
+                }
+            }
             /// <summary>
             /// Adds the post effect.
             /// </summary>
@@ -981,7 +1076,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool RemoveSelf()
             {
-                if(parent != null && parent is GroupNodeBase group)
+                if (parent != null && parent is GroupNodeBase group)
                 {
                     return group.RemoveChildNode(this);
                 }
@@ -993,7 +1088,10 @@ namespace HelixToolkit.UWP
 
             public int CompareTo(SceneNode other)
             {
-                if(other == null) { return 1; }
+                if (other == null)
+                {
+                    return 1;
+                }
                 return RenderOrderKey.CompareTo(other.RenderOrderKey);
             }
 
@@ -1065,11 +1163,26 @@ namespace HelixToolkit.UWP
         #region Mouse Events Args
         public class SceneNodeMouseDownArgs : EventArgs
         {
-            public HitTestResult HitResult { get; }
-            public SceneNode Source { get; }
-            public IViewport3DX Viewport { get; }
-            public Vector2 Position { get; }
-            public object OriginalInputEventArgs { get; }
+            public HitTestResult HitResult
+            {
+                get;
+            }
+            public SceneNode Source
+            {
+                get;
+            }
+            public IViewport3DX Viewport
+            {
+                get;
+            }
+            public Vector2 Position
+            {
+                get;
+            }
+            public object OriginalInputEventArgs
+            {
+                get;
+            }
             public SceneNodeMouseDownArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit, object originalInputEventArgs = null)
             {
                 Viewport = viewport;
@@ -1082,11 +1195,26 @@ namespace HelixToolkit.UWP
 
         public class SceneNodeMouseMoveArgs : EventArgs
         {
-            public HitTestResult HitResult { get; }
-            public SceneNode Source { get; }
-            public IViewport3DX Viewport { get; }
-            public Vector2 Position { get; }
-            public object OriginalInputEventArgs { get; }
+            public HitTestResult HitResult
+            {
+                get;
+            }
+            public SceneNode Source
+            {
+                get;
+            }
+            public IViewport3DX Viewport
+            {
+                get;
+            }
+            public Vector2 Position
+            {
+                get;
+            }
+            public object OriginalInputEventArgs
+            {
+                get;
+            }
             public SceneNodeMouseMoveArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit, object originalInputEventArgs = null)
             {
                 Viewport = viewport;
@@ -1099,11 +1227,26 @@ namespace HelixToolkit.UWP
 
         public class SceneNodeMouseUpArgs : EventArgs
         {
-            public HitTestResult HitResult { get; }
-            public SceneNode Source { get; }
-            public IViewport3DX Viewport { get; }
-            public Vector2 Position { get; }
-            public object OriginalInputEventArgs { get; }
+            public HitTestResult HitResult
+            {
+                get;
+            }
+            public SceneNode Source
+            {
+                get;
+            }
+            public IViewport3DX Viewport
+            {
+                get;
+            }
+            public Vector2 Position
+            {
+                get;
+            }
+            public object OriginalInputEventArgs
+            {
+                get;
+            }
             public SceneNodeMouseUpArgs(IViewport3DX viewport, Vector2 pos, SceneNode node, HitTestResult hit, object originalInputEventArgs = null)
             {
                 Viewport = viewport;

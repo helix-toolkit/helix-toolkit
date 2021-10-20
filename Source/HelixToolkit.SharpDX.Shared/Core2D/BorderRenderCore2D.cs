@@ -42,13 +42,15 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = background;
-                    if(SetAffectsRender(ref background, value))
+                    if (SetAffectsRender(ref background, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                     }
                 }
-                get { return background; }
+                get
+                {
+                    return background;
+                }
             }
 
             private D2D.Brush strokeBrush;
@@ -63,13 +65,12 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = strokeBrush;
-                    if(SetAffectsRender(ref strokeBrush, value))
+                    if (SetAffectsRender(ref strokeBrush, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
-                        foreach(var core in borderRenderCore)
+                        foreach (var core in borderRenderCore)
                         {
-                            core.StrokeBrush = value;
+                            core.StrokeBrush = value.QueryInterface<D2D.Brush>();
                         }
                     }
                 }
@@ -88,8 +89,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector4 BorderThickness
             {
-                set { SetAffectsRender(ref borderThickness, value); }
-                get { return borderThickness; }
+                set
+                {
+                    SetAffectsRender(ref borderThickness, value);
+                }
+                get
+                {
+                    return borderThickness;
+                }
             }
 
             private D2D.StrokeStyle strokeStyle;
@@ -104,13 +111,12 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = strokeStyle;
-                    if(SetAffectsRender(ref strokeStyle, value))
+                    if (SetAffectsRender(ref strokeStyle, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                         foreach (var core in borderRenderCore)
                         {
-                            core.StrokeStyle = value;
+                            core.StrokeStyle = value.QueryInterface<D2D.StrokeStyle>();
                         }
                     }
                 }
@@ -131,12 +137,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref cornerRadius, value))
+                    if (SetAffectsRender(ref cornerRadius, value))
                     {
                         isBorderGeometryChanged = true;
                     }
                 }
-                get { return cornerRadius; }
+                get
+                {
+                    return cornerRadius;
+                }
             }
 
             protected override bool OnAttach(IRenderHost host)
@@ -144,7 +153,7 @@ namespace HelixToolkit.UWP
                 if (base.OnAttach(host))
                 {
                     isBorderGeometryChanged = true;
-                    foreach(var core in borderRenderCore)
+                    foreach (var core in borderRenderCore)
                     {
                         core.Attach(host);
                     }
@@ -162,6 +171,9 @@ namespace HelixToolkit.UWP
                 {
                     core.Detach();
                 }
+                RemoveAndDispose(ref background);
+                RemoveAndDispose(ref strokeBrush);
+                RemoveAndDispose(ref strokeStyle);
                 base.OnDetach();
             }
 
@@ -185,7 +197,7 @@ namespace HelixToolkit.UWP
                 var thickness = BorderThickness * context.DpiScale;
                 if (!thickness.IsZero && StrokeBrush != null && StrokeStyle != null)
                 {
-                    if(thickness.X == thickness.Y && thickness.X == thickness.Z && thickness.X == thickness.W)
+                    if (thickness.X == thickness.Y && thickness.X == thickness.Z && thickness.X == thickness.W)
                     {
                         context.DeviceContext.DrawRoundedRectangle(roundRect, StrokeBrush, thickness.X, StrokeStyle);
                     }
@@ -193,7 +205,7 @@ namespace HelixToolkit.UWP
                     {
                         if (isBorderGeometryChanged)
                         {
-                    
+
                             var topLeft = LayoutBound.TopLeft + new Vector2(0, CornerRadius);
                             var topRight = LayoutBound.TopRight - new Vector2(CornerRadius, 0);
                             var bottomRight = LayoutBound.BottomRight - new Vector2(0, CornerRadius);
@@ -201,11 +213,11 @@ namespace HelixToolkit.UWP
 
                             if (thickness.X > 0)
                             {
-                                var figures = new List<Figure>();     
+                                var figures = new List<Figure>();
                                 var figure = new Figure(topLeft, false, false);
                                 if (CornerRadius > 0)
                                 {
-                                    figure.AddSegment(new ArcSegment(LayoutBound.TopLeft + new Vector2(CornerRadius, 0), new Size2F(CornerRadius, CornerRadius), 0, 
+                                    figure.AddSegment(new ArcSegment(LayoutBound.TopLeft + new Vector2(CornerRadius, 0), new Size2F(CornerRadius, CornerRadius), 0,
                                         D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
                                 }
                                 figure.AddSegment(new LineSegment(topRight));
@@ -217,13 +229,13 @@ namespace HelixToolkit.UWP
                             {
                                 borderRenderCore[0].Figures = null;
                             }
-                            if(thickness.Y > 0)
+                            if (thickness.Y > 0)
                             {
                                 var figures = new List<Figure>();
                                 var figure = new Figure(topRight, false, false);
-                                if(CornerRadius > 0)
+                                if (CornerRadius > 0)
                                 {
-                                    figure.AddSegment(new ArcSegment(LayoutBound.TopRight + new Vector2(0, CornerRadius) , new Size2F(CornerRadius, CornerRadius), 0,
+                                    figure.AddSegment(new ArcSegment(LayoutBound.TopRight + new Vector2(0, CornerRadius), new Size2F(CornerRadius, CornerRadius), 0,
                                         D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
                                 }
                                 figure.AddSegment(new LineSegment(bottomRight));
@@ -273,7 +285,7 @@ namespace HelixToolkit.UWP
                             }
                             isBorderGeometryChanged = false;
                         }
-                        foreach(var core in borderRenderCore)
+                        foreach (var core in borderRenderCore)
                         {
                             core.Transform = this.Transform;
                             core.LocalTransform = this.LocalTransform;
@@ -284,5 +296,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

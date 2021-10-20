@@ -80,15 +80,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableEdgeClick
         {
-            get { return (bool)GetValue(EnableEdgeClickProperty); }
-            set { SetValue(EnableEdgeClickProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableEdgeClickProperty);
+            }
+            set
+            {
+                SetValue(EnableEdgeClickProperty, value);
+            }
         }
 
         /// <summary>
         /// The enable edge click property
         /// </summary>
         public static readonly DependencyProperty EnableEdgeClickProperty =
-            DependencyProperty.Register("EnableEdgeClick", typeof(bool), typeof(ViewBoxModel3D), new PropertyMetadata(false, (d,e)=> 
+            DependencyProperty.Register("EnableEdgeClick", typeof(bool), typeof(ViewBoxModel3D), new PropertyMetadata(false, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as ViewBoxNode).EnableEdgeClick = (bool)e.NewValue;
             }));

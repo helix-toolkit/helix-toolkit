@@ -46,7 +46,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render host.
         /// </value>
-        public IRenderHost RenderHost { get { return renderHost; } }
+        public IRenderHost RenderHost
+        {
+            get
+            {
+                return renderHost;
+            }
+        }
         private RenderControl surfaceD3D;
         private Window parentWindow;
         private readonly bool belongsToParentWindow;
@@ -303,7 +309,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (!belongsToParentWindow)
                         EndD3D();
 
-                    compositionTarget.Dispose();                    
+                    compositionTarget.Dispose();
                     // TODO: dispose managed state (managed objects).
                 }
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

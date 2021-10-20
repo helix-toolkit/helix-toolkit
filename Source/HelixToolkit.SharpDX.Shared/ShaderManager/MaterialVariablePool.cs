@@ -14,7 +14,10 @@ namespace HelixToolkit.UWP
     using Model;
     public sealed class MaterialVariablePool : IDisposable, IMaterialVariablePool
     {
-        public int Count { get => count; }
+        public int Count
+        {
+            get => count;
+        }
         private int count = 0;
         private ushort IDMAX = 0;
         private readonly DoubleKeyDictionary<Guid, Guid, MaterialVariable> dictionary = new DoubleKeyDictionary<Guid, Guid, MaterialVariable>();
@@ -35,7 +38,7 @@ namespace HelixToolkit.UWP
             var techGuid = technique.GUID;
             lock (dictionary)
             {
-                if(dictionary.TryGetValue(guid, techGuid, out MaterialVariable value))
+                if (dictionary.TryGetValue(guid, techGuid, out var value))
                 {
                     value.IncRef();
                     return value;
@@ -44,7 +47,7 @@ namespace HelixToolkit.UWP
                 {
                     var v = material.CreateMaterialVariables(effectsManager, technique);
                     v.Initialize();
-                    v.Disposed += (s, e) => 
+                    v.Disposed += (s, e) =>
                     {
                         lock (dictionary)
                         {
@@ -57,7 +60,7 @@ namespace HelixToolkit.UWP
                     if (IDMAX - (ushort)Count > 1000)
                     {
                         IDMAX = 0;
-                        foreach(var m in dictionary)
+                        foreach (var m in dictionary)
                         {
                             m.Value.ID = ++IDMAX;
                         }

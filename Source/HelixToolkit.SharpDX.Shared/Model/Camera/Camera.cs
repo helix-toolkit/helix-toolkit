@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP
     namespace Cameras
     {
         using Model;
-        
+
         public abstract class CameraCore : ObservableObject, ICamera
         {
             private Vector3 position;
@@ -28,7 +28,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref position, value);
                 }
-                get { return position; }
+                get
+                {
+                    return position;
+                }
             }
 
             private Vector3 lookDirection;
@@ -38,7 +41,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref lookDirection, value);
                 }
-                get { return lookDirection; }
+                get
+                {
+                    return lookDirection;
+                }
             }
 
             private Vector3 upDirection;
@@ -48,12 +54,18 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref upDirection, value);
                 }
-                get { return upDirection; }
+                get
+                {
+                    return upDirection;
+                }
             }
 
             public Vector3 Target
             {
-                get { return position + lookDirection; }
+                get
+                {
+                    return position + lookDirection;
+                }
             }
 
             private bool createLeftHandSystem = false;
@@ -112,7 +124,7 @@ namespace HelixToolkit.UWP
                             target.Z);
             }
 
-    #if CORE
+#if CORE
             private Vector3 targetPosition;
             private Vector3 targetLookDirection;
             private Vector3 targetUpDirection;
@@ -200,7 +212,7 @@ namespace HelixToolkit.UWP
             {
                 aniTime = 0;
             }
-    #endif
+#endif
         }
 
         public abstract class ProjectionCameraCore : CameraCore
@@ -299,9 +311,9 @@ namespace HelixToolkit.UWP
 
             public override Matrix CreateProjectionMatrix(float aspectRatio, float nearPlane, float farPlane)
             {
-                return this.CreateLeftHandSystem ? 
+                return this.CreateLeftHandSystem ?
                     Matrix.OrthoLH(this.Width, (float)(this.Width / aspectRatio), nearPlane, Math.Min(1e15f, farPlane))
-                    : Matrix.OrthoRH(this.Width, (float)(this.Width / aspectRatio),  nearPlane, Math.Min(1e15f, farPlane));
+                    : Matrix.OrthoRH(this.Width, (float)(this.Width / aspectRatio), nearPlane, Math.Min(1e15f, farPlane));
             }
 
 
@@ -310,7 +322,7 @@ namespace HelixToolkit.UWP
                 return base.ToString() + "\n" + string.Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", Width);
             }
 
-    #if CORE
+#if CORE
             private float oldWidth;
             private float targetWidth;
             private float accumTime;
@@ -427,5 +439,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -20,30 +20,43 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public double CornerRadius
             {
-                get { return (double)GetValue(CornerRadiusProperty); }
-                set { SetValue(CornerRadiusProperty, value); }
+                get
+                {
+                    return (double)GetValue(CornerRadiusProperty);
+                }
+                set
+                {
+                    SetValue(CornerRadiusProperty, value);
+                }
             }
 
             public static readonly DependencyProperty CornerRadiusProperty =
                 DependencyProperty.Register("CornerRadius", typeof(double), typeof(Border2D), new PropertyMetadata(0.0,
-                    (d,e)=> {
+                    (d, e) =>
+                    {
                         ((d as Element2DCore).SceneNode as BorderNode2D).CornerRadius = (float)(double)e.NewValue;
                     }));
 
             public Thickness Padding
             {
-                get { return (Thickness)GetValue(PaddingProperty); }
-                set { SetValue(PaddingProperty, value); }
+                get
+                {
+                    return (Thickness)GetValue(PaddingProperty);
+                }
+                set
+                {
+                    SetValue(PaddingProperty, value);
+                }
             }
 
             public static readonly DependencyProperty PaddingProperty =
-                DependencyProperty.Register("Padding", typeof(Thickness), typeof(Border2D), new PropertyMetadata(new Thickness(0,0,0,0), 
-                    (d, e) => 
+                DependencyProperty.Register("Padding", typeof(Thickness), typeof(Border2D), new PropertyMetadata(new Thickness(0, 0, 0, 0),
+                    (d, e) =>
                     {
                         ((d as Element2DCore).SceneNode as BorderNode2D).Padding = ((Thickness)e.NewValue).ToD2DThickness();
                     }));
 
-#region Stroke properties
+            #region Stroke properties
             public static DependencyProperty BorderBrushProperty
                 = DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(Border2D), new PropertyMetadata(new SolidColorBrush(Colors.Black),
                     (d, e) =>
@@ -198,11 +211,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             public static DependencyProperty BorderThicknessProperty
-                = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border2D), 
-                    new PropertyMetadata(new Thickness(0,0,0,0), (d, e) =>
-                    {
-                        ((d as Element2DCore).SceneNode as BorderNode2D).BorderThickness = ((Thickness)e.NewValue).ToD2DThickness();
-                    }));
+                = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border2D),
+                    new PropertyMetadata(new Thickness(0, 0, 0, 0), (d, e) =>
+                       {
+                           ((d as Element2DCore).SceneNode as BorderNode2D).BorderThickness = ((Thickness)e.NewValue).ToD2DThickness();
+                       }));
 
             public Thickness BorderThickness
             {
@@ -215,7 +228,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     return (Thickness)GetValue(BorderThicknessProperty);
                 }
             }
-#endregion
+            #endregion
 
             private bool strokeChanged = true;
 
@@ -227,7 +240,7 @@ namespace HelixToolkit.Wpf.SharpDX
             protected override void OnAttached()
             {
                 strokeChanged = true;
-                base.OnAttached();          
+                base.OnAttached();
             }
 
             protected override void OnUpdate(RenderContext2D context)
@@ -257,5 +270,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

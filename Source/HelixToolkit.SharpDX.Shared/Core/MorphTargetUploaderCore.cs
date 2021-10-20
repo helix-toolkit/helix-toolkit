@@ -30,7 +30,10 @@ namespace HelixToolkit.UWP
             private float[] morphTargetWeights = new float[0];
             public float[] MorphTargetWeights
             {
-                get { return morphTargetWeights; }
+                get
+                {
+                    return morphTargetWeights;
+                }
                 set
                 {
                     if (SetAffectsRender(ref morphTargetWeights, value))
@@ -49,10 +52,12 @@ namespace HelixToolkit.UWP
             private bool setCBuffer = false;
             private int mtCount;
             private int mtPitch;
-
-            public StructuredBufferProxy MTWeightsB { get; private set; }
-            public ImmutableBufferProxy MTDeltasB { get; private set; }
-            public ImmutableBufferProxy MTOffsetsB { get; private set; }
+            private StructuredBufferProxy mtWeightsB;
+            private ImmutableBufferProxy mtDeltasB;
+            private ImmutableBufferProxy mtOffsetsB;
+            public StructuredBufferProxy MTWeightsB => mtWeightsB;
+            public ImmutableBufferProxy MTDeltasB => mtDeltasB;
+            public ImmutableBufferProxy MTOffsetsB => mtOffsetsB;
 
             private ShaderResourceViewProxy mtDeltasSRV;
             private ShaderResourceViewProxy mtOffsetsSRV;
@@ -66,12 +71,12 @@ namespace HelixToolkit.UWP
 
                 //Setup cbuffer
                 var cbd = new ConstantBufferDescription(DefaultBufferNames.MorphTargetCB, 16); //maybe no slot issue
-                cbMorphTarget = Collect(new ConstantBufferComponent(cbd));
+                cbMorphTarget = AddComponent(new ConstantBufferComponent(cbd));
             }
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
-                
+
             }
 
             protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
@@ -85,19 +90,19 @@ namespace HelixToolkit.UWP
                 if (setDeltas)
                 {
                     //Setup deltas buffer
-                    int c = morphTargetsDeltas.Length;
+                    var c = morphTargetsDeltas.Length;
                     MTDeltasB.UploadDataToBuffer(deviceContext, morphTargetsDeltas, c);
-
+                    RemoveAndDispose(ref mtDeltasSRV);
                     //Handle deltas srv
-                    mtDeltasSRV = Collect(new ShaderResourceViewProxy(MTDeltasB.Buffer.Device, MTDeltasB.Buffer));
+                    mtDeltasSRV = new ShaderResourceViewProxy(MTDeltasB.Buffer.Device, MTDeltasB.Buffer);
                     mtDeltasSRV.CreateTextureView();
 
                     //Setup offsets buffer
                     c = morphTargetOffsets.Length;
                     MTOffsetsB.UploadDataToBuffer(deviceContext, morphTargetOffsets, c);
-
+                    RemoveAndDispose(ref mtOffsetsSRV);
                     //Handle offsets srv
-                    mtOffsetsSRV = Collect(new ShaderResourceViewProxy(MTOffsetsB.Buffer.Device, MTOffsetsB.Buffer));
+                    mtOffsetsSRV = new ShaderResourceViewProxy(MTOffsetsB.Buffer.Device, MTOffsetsB.Buffer);
                     mtOffsetsSRV.CreateTextureView();
 
 
@@ -119,18 +124,15 @@ namespace HelixToolkit.UWP
 
             protected override bool OnAttach(IRenderTechnique technique)
             {
-                MTWeightsB = Collect(new StructuredBufferProxy(sizeof(float), false));
-                cbMorphTarget.Attach(technique);
+                mtWeightsB = new StructuredBufferProxy(sizeof(float), false);
                 return true;
             }
 
             protected override void OnDetach()
             {
-                MTWeightsB = null;
-                MTDeltasB = null;
-                MTOffsetsB = null;
-                cbMorphTarget.Detach();
-                base.OnDetach();
+                RemoveAndDispose(ref mtWeightsB);
+                RemoveAndDispose(ref mtDeltasB);
+                RemoveAndDispose(ref mtOffsetsB);
             }
 
             public void BindBuffers(DeviceContextProxy devCtx, int weightsSlot, int deltasSlot, int offsetsSlot)
@@ -154,12 +156,12 @@ namespace HelixToolkit.UWP
                     return false;
 
                 //Setup buffer and keep track of data to update
-                MTDeltasB = new ImmutableBufferProxy(sizeof(float) * 3, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
-                MTOffsetsB = new ImmutableBufferProxy(sizeof(int), BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
+                mtDeltasB = new ImmutableBufferProxy(sizeof(float) * 3, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
+                mtOffsetsB = new ImmutableBufferProxy(sizeof(int), BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
                 setDeltas = true;
 
                 //Setup arrays for morph target data
-                FastList<Vector3> mtdList = new FastList<Vector3>(targets.Length * 3);
+                var mtdList = new FastList<Vector3>(targets.Length * 3);
                 morphTargetOffsets = new int[targets.Length];
 
                 //First element is always 0 delta
@@ -168,10 +170,10 @@ namespace HelixToolkit.UWP
                 mtdList.Add(Vector3.Zero);
 
                 //Subsequent elements should never need 0 delta vertex
-                Vector3 zv = Vector3.Zero;
+                var zv = Vector3.Zero;
 
-                int current = 1;
-                for (int i = 0; i < targets.Length; i++)
+                var current = 1;
+                for (var i = 0; i < targets.Length; i++)
                 {
                     //Skip if 0 delta
                     if (targets[i].deltaNormal == zv && targets[i].deltaPosition == zv && targets[i].deltaTangent == zv)
@@ -206,5 +208,5 @@ namespace HelixToolkit.UWP
                 MorphTargetWeights[i] = w;
             }
         }
-	}
+    }
 }

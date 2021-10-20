@@ -132,7 +132,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <remarks>
         /// The first dimension of mipMapTextures describes the number of array (Texture1D Array), second dimension is the mipmap, the third is the texture data for a particular mipmap.
         /// </remarks>
-        public unsafe static Texture1D New<T>(Device device, int width, PixelFormat format, T[] textureData, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable) where T : struct
+        public unsafe static Texture1D New<T>(Device device, int width, PixelFormat format, T[] textureData, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable) where T : unmanaged
         {
             Texture1D texture = null;
             Utilities.Pin(textureData, ptr =>
@@ -155,7 +155,8 @@ namespace SharpDX.Toolkit.Graphics
         /// <unmanaged-short>ID3D11Device::CreateTexture1D</unmanaged-short>
         public static Texture1D New(Device device, Image image, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null)
+                throw new ArgumentNullException("image");
             if (image.Description.Dimension != TextureDimension.Texture1D)
                 throw new ArgumentException("Invalid image. Must be 1D", "image");
 

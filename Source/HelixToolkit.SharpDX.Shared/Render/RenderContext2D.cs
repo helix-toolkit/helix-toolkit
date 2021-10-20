@@ -1,7 +1,7 @@
 ﻿using SharpDX.Direct2D1;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using global::SharpDX;  
+using global::SharpDX;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -25,14 +25,26 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The actual width.
         /// </value>
-        public double ActualWidth { get { return renderHost.ActualWidth; } }
+        public double ActualWidth
+        {
+            get
+            {
+                return renderHost.ActualWidth;
+            }
+        }
         /// <summary>
         /// Gets the actual height.
         /// </summary>
         /// <value>
         /// The actual height.
         /// </value>
-        public double ActualHeight { get { return renderHost.ActualHeight; } }
+        public double ActualHeight
+        {
+            get
+            {
+                return renderHost.ActualHeight;
+            }
+        }
         /// <summary>
         /// Gets the dpi scale.
         /// </summary>
@@ -46,14 +58,20 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The device context.
         /// </value>
-        public DeviceContext DeviceContext { private set; get; }
+        public DeviceContext DeviceContext
+        {
+            private set; get;
+        }
         /// <summary>
         /// Gets the device resources.
         /// </summary>
         /// <value>
         /// The device resources.
         /// </value>
-        public IDevice2DResources DeviceResources { private set; get; }
+        public IDevice2DResources DeviceResources
+        {
+            private set; get;
+        }
         /// <summary>
         /// Gets or sets the last bitmap transform.
         /// </summary>
@@ -116,7 +134,7 @@ namespace HelixToolkit.UWP
         {
             if (targetStack.Count > 0)
             {
-                DeviceContext.EndDraw();                
+                DeviceContext.EndDraw();
             }
             targetStack.Push(target);
             DeviceContext.Target = targetStack.Peek();

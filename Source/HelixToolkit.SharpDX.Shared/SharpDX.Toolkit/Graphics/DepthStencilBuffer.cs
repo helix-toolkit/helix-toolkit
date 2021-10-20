@@ -92,7 +92,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns></returns>
         protected bool InitializeViewsDelayed()
         {
-            bool hasReadOnlyView = false;
+            var hasReadOnlyView = false;
 
             // Perform default initialization
             base.InitializeViews();
@@ -100,7 +100,7 @@ namespace SharpDX.Toolkit.Graphics
             if ((Description.BindFlags & BindFlags.DepthStencil) == 0)
                 return hasReadOnlyView;
 
-            int viewCount = GetViewCount();
+            var viewCount = GetViewCount();
             depthStencilViews = new TextureView[viewCount];
             GetDepthStencilView(ViewType.Full, 0, 0, false);
 

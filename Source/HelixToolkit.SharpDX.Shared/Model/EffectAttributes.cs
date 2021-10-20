@@ -31,7 +31,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public interface IEffectAttributes
         {
-            string EffectName { get; }
+            string EffectName
+            {
+                get;
+            }
             void AddAttribute(string attName, object parameter);
             void RemoveAttribute(string attName);
             object GetAttribute(string attName);
@@ -43,7 +46,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class EffectAttributes : IEffectAttributes
         {
-            public string EffectName { private set; get; }
+            public string EffectName
+            {
+                private set; get;
+            }
             private readonly Dictionary<string, object> attributes = new Dictionary<string, object>();
             /// <summary>
             /// Initializes a new instance of the <see cref="EffectAttributes"/> class.
@@ -61,7 +67,9 @@ namespace HelixToolkit.UWP
             public void AddAttribute(string attName, object parameter)
             {
                 if (attributes.ContainsKey(attName))
-                { return; }
+                {
+                    return;
+                }
                 attributes.Add(attName, parameter);
             }
             /// <summary>
@@ -79,11 +87,14 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public object GetAttribute(string attName)
             {
-                if(attributes.TryGetValue(attName, out var obj))
+                if (attributes.TryGetValue(attName, out var obj))
                 {
                     return obj;
                 }
-                else { return null; }
+                else
+                {
+                    return null;
+                }
             }
             /// <summary>
             /// Tries the get attribute.
@@ -147,19 +158,19 @@ namespace HelixToolkit.UWP
             {
                 var effects = attString.Split(EffectSeparator, StringSplitOptions.RemoveEmptyEntries);
                 IList<EffectAttributes> attributes = new List<EffectAttributes>();
-                foreach(var effect in effects)
+                foreach (var effect in effects)
                 {
                     var nameAttTokens = effect.Split(NameAttributeSeparator, StringSplitOptions.RemoveEmptyEntries);
                     if (nameAttTokens.Length > 0)
                     {
                         var att = new EffectAttributes(nameAttTokens[0]);
-                        for(int i = 1; i < nameAttTokens.Length; ++i)
+                        for (var i = 1; i < nameAttTokens.Length; ++i)
                         {
                             var attTokens = nameAttTokens[i].Split(AttributeSeparator, StringSplitOptions.RemoveEmptyEntries);
-                            foreach(var attToken in attTokens)
+                            foreach (var attToken in attTokens)
                             {
                                 var token = attToken.Split(AttributeNameValueSeparator, StringSplitOptions.RemoveEmptyEntries);
-                                if(token.Length == 2)
+                                if (token.Length == 2)
                                 {
                                     att.AddAttribute(token[0].ToLower(), token[1]);
                                 }
@@ -172,5 +183,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

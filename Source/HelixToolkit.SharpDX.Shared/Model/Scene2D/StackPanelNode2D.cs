@@ -110,5 +110,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

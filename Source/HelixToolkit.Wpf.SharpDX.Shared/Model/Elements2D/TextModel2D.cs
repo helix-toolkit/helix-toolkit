@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Core2D;
     using Utilities;
     using Extensions;
-    
+
     namespace Elements2D
     {
         [ContentProperty("Text")]
@@ -25,9 +25,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public static readonly string DefaultFont = "Arial";
 
-            public static readonly DependencyProperty TextProperty 
-                = DependencyProperty.Register("Text", typeof(string), typeof(TextModel2D), 
-                    new PropertyMetadata("Text", (d,e)=>
+            public static readonly DependencyProperty TextProperty
+                = DependencyProperty.Register("Text", typeof(string), typeof(TextModel2D),
+                    new PropertyMetadata("Text", (d, e) =>
                     {
                         ((d as Element2DCore).SceneNode as TextNode2D).Text = e.NewValue == null ? "" : (string)e.NewValue;
                     }));
@@ -151,15 +151,21 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public TextAlignment TextAlignment
             {
-                get { return (TextAlignment)GetValue(TextAlignmentProperty); }
-                set { SetValue(TextAlignmentProperty, value); }
+                get
+                {
+                    return (TextAlignment)GetValue(TextAlignmentProperty);
+                }
+                set
+                {
+                    SetValue(TextAlignmentProperty, value);
+                }
             }
 
             /// <summary>
             /// The text alignment property
             /// </summary>
             public static readonly DependencyProperty TextAlignmentProperty =
-                DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextModel2D), new PropertyMetadata(TextAlignment.Left, (d,e)=> 
+                DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextModel2D), new PropertyMetadata(TextAlignment.Left, (d, e) =>
                 {
                     ((d as Element2DCore).SceneNode as TextNode2D).TextAlignment = ((TextAlignment)e.NewValue).ToD2DTextAlignment();
                 }));
@@ -172,8 +178,14 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public FlowDirection FlowDirection
             {
-                get { return (FlowDirection)GetValue(FlowDirectionProperty); }
-                set { SetValue(FlowDirectionProperty, value); }
+                get
+                {
+                    return (FlowDirection)GetValue(FlowDirectionProperty);
+                }
+                set
+                {
+                    SetValue(FlowDirectionProperty, value);
+                }
             }
 
             /// <summary>
@@ -194,14 +206,20 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public string FontFamily
             {
-                get { return (string)GetValue(FontFamilyProperty); }
-                set { SetValue(FontFamilyProperty, value); }
+                get
+                {
+                    return (string)GetValue(FontFamilyProperty);
+                }
+                set
+                {
+                    SetValue(FontFamilyProperty, value);
+                }
             }
             /// <summary>
             /// The font family property
             /// </summary>
             public static readonly DependencyProperty FontFamilyProperty =
-                DependencyProperty.Register("FontFamily", typeof(string), typeof(TextModel2D), new PropertyMetadata(DefaultFont, (d,e)=>
+                DependencyProperty.Register("FontFamily", typeof(string), typeof(TextModel2D), new PropertyMetadata(DefaultFont, (d, e) =>
                 {
                     ((d as Element2DCore).SceneNode as TextNode2D).FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
                 }));
@@ -249,5 +267,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

@@ -151,8 +151,8 @@ namespace SharpDX.Toolkit.Graphics
         [Flags]
         public enum CubemapFlags
         {
-            CubeMap   = 0x00000200, // DDSCAPS2_CUBEMAP
-            Volume    = 0x00200000, // DDSCAPS2_VOLUME
+            CubeMap = 0x00000200, // DDSCAPS2_CUBEMAP
+            Volume = 0x00200000, // DDSCAPS2_VOLUME
             PositiveX = 0x00000600, // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEX
             NegativeX = 0x00000a00, // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_NEGATIVEX
             PositiveY = 0x00001200, // DDSCAPS2_CUBEMAP | DDSCAPS2_CUBEMAP_POSITIVEY

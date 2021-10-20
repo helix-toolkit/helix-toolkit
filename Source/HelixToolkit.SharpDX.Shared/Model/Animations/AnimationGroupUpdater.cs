@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP
                 Name = name;
             }
 
-            public AnimationGroupUpdater(IEnumerable<IAnimationUpdater> updaters, string name = "") 
+            public AnimationGroupUpdater(IEnumerable<IAnimationUpdater> updaters, string name = "")
                 : this(name)
             {
                 children.AddRange(updaters);

@@ -66,11 +66,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IEffectsManager EffectsManager
         {
-            get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
-            set { SetValue(EffectsManagerProperty, value); }
+            get
+            {
+                return (IEffectsManager)GetValue(EffectsManagerProperty);
+            }
+            set
+            {
+                SetValue(EffectsManagerProperty, value);
+            }
         }
 
-        public IRenderTechnique RenderTechnique { set; get; }
+        public IRenderTechnique RenderTechnique
+        {
+            set; get;
+        }
 
         private static readonly LogWrapper NullLogger = new LogWrapper(new NullLogger());
         /// <summary>
@@ -79,7 +88,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The logger.
         /// </value>
-        public LogWrapper Logger { get { return CurrentRenderHost != null ? CurrentRenderHost.Logger : NullLogger; } }
+        public LogWrapper Logger
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.Logger : NullLogger;
+            }
+        }
 
         private readonly HashSet<IViewport3DX> viewports = new HashSet<IViewport3DX>();
         private readonly HashSet<IRenderHost> attachedRenderHosts = new HashSet<IRenderHost>();
@@ -151,10 +166,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public DeviceContextProxy ImmediateDeviceContext { get => currentRenderHost?.ImmediateDeviceContext; }
+        public DeviceContextProxy ImmediateDeviceContext
+        {
+            get => currentRenderHost?.ImmediateDeviceContext;
+        }
 
-        public new float ActualWidth { get => 0; }
-        public new float ActualHeight { get => 0; }
+        public new float ActualWidth
+        {
+            get => 0;
+        }
+        public new float ActualHeight
+        {
+            get => 0;
+        }
 
         public float DpiScale
         {
@@ -167,62 +191,110 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameFlattenedScene : Constants.EmptyRenderablePair; } }
+        public FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.PerFrameFlattenedScene : Constants.EmptyRenderablePair;
+            }
+        }
         /// <summary>
         /// Gets the current frame Lights for rendering.
         /// </summary>
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public IEnumerable<LightNode> PerFrameLights { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameLights : Enumerable.Empty<LightNode>(); } }
+        public IEnumerable<LightNode> PerFrameLights
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.PerFrameLights : Enumerable.Empty<LightNode>();
+            }
+        }
         /// <summary>
         /// Gets the per frame post effect cores.
         /// </summary>
         /// <value>
         /// The per frame post effect cores.
         /// </value>
-        public FastList<SceneNode> PerFrameNodesWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameNodesWithPostEffect : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameNodesWithPostEffect
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.PerFrameNodesWithPostEffect : Constants.EmptyRenderable;
+            }
+        }
         /// <summary>
         /// Gets the per frame general render cores.
         /// </summary>
         /// <value>
         /// The per frame general render cores.
         /// </value>
-        public FastList<SceneNode> PerFrameOpaqueNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodes : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameOpaqueNodes
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodes : Constants.EmptyRenderable;
+            }
+        }
         /// <summary>
         /// Gets the per frame opaque nodes in frustum.
         /// </summary>
         /// <value>
         /// The per frame opaque nodes in frustum.
         /// </value>
-        public FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodesInFrustum : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameOpaqueNodesInFrustum
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodesInFrustum : Constants.EmptyRenderable;
+            }
+        }
         /// <summary>
         /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>
         /// </summary>
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        public FastList<SceneNode> PerFrameTransparentNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameTransparentNodes
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable;
+            }
+        }
         /// <summary>
         /// Gets the per frame transparent nodes in frustum.
         /// </summary>
         /// <value>
         /// The per frame transparent nodes in frustum.
         /// </value>
-        public FastList<SceneNode> PerFrameTransparentNodesInFrustum { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodesInFrustum : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameTransparentNodesInFrustum
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodesInFrustum : Constants.EmptyRenderable;
+            }
+        }
         /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle" />
         /// </summary>
         /// <value>
         /// The per frame particle nodes.
         /// </value>
-        public FastList<SceneNode> PerFrameParticleNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameParticleNodes : Constants.EmptyRenderable; } }
+        public FastList<SceneNode> PerFrameParticleNodes
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.PerFrameParticleNodes : Constants.EmptyRenderable;
+            }
+        }
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>
         private void EffectsManagerPropertyChanged()
         {
-            foreach(var viewport in viewports)
+            foreach (var viewport in viewports)
             {
                 viewport.EffectsManager = this.EffectsManager;
             }
@@ -250,7 +322,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateRender()
         {
-            foreach(var v in attachedRenderHosts)
+            foreach (var v in attachedRenderHosts)
             {
                 v.InvalidateRender();
             }
@@ -290,7 +362,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                foreach(Element3D item in Items)
+                foreach (Element3D item in Items)
                 {
                     yield return item.SceneNode;
                 }
@@ -370,12 +442,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public MSAALevel MSAA
         {
-            set;get;
+            set; get;
         }
 
         public FeatureLevel FeatureLevel
         {
-            get { return currentRenderHost != null ? currentRenderHost.FeatureLevel : FeatureLevel.Level_11_0; }
+            get
+            {
+                return currentRenderHost != null ? currentRenderHost.FeatureLevel : FeatureLevel.Level_11_0;
+            }
         }
         /// <summary>
         /// Gets or sets the viewport.
@@ -385,7 +460,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IViewport3DX Viewport
         {
-            set;get;
+            set; get;
         }
         /// <summary>
         /// Gets the render context.
@@ -419,7 +494,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableRenderFrustum
         {
-            set;get;
+            set; get;
         }
         /// <summary>
         /// Gets or sets the maximum FPS.
@@ -429,7 +504,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public uint MaxFPS
         {
-            set;get;
+            set; get;
         }
         /// <summary>
         /// Gets a value indicating whether this instance is deferred lighting.
@@ -452,7 +527,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IModelContainer SharedModelContainer
         {
-            set { } get { return this; }
+            set
+            {
+            }
+            get
+            {
+                return this;
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [enable sharing model mode].
@@ -462,8 +543,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableSharingModelMode
         {
-            set { }
-            get { return true; }
+            set
+            {
+            }
+            get
+            {
+                return true;
+            }
         }
         /// <summary>
         /// Gets the color buffer view.
@@ -510,7 +596,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render statistics.
         /// </value>
-        public IRenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
+        public IRenderStatistics RenderStatistics
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null;
+            }
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [show statistics].
         /// </summary>
@@ -519,7 +611,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public RenderDetail ShowRenderDetail
         {
-            set;get;
+            set; get;
         }
         /// <summary>
         /// Gets or sets the render configuration.
@@ -527,9 +619,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render configuration.
         /// </value>
-        public DX11RenderHostConfiguration RenderConfiguration { set; get; }
+        public DX11RenderHostConfiguration RenderConfiguration
+        {
+            set; get;
+        }
 
-        public DX11RenderBufferProxyBase RenderBuffer { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderBuffer : null; } }
+        public DX11RenderBufferProxyBase RenderBuffer
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.RenderBuffer : null;
+            }
+        }
 
         public ModelContainer3DX()
         {
@@ -575,7 +676,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 else if (d3dCounter < 0)
                 {
                     throw new IndexOutOfRangeException("D3DCounter is negative.");
-                } 
+                }
             }
         }
 
@@ -593,7 +694,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="height">The height.</param>
         public void StartD3D(int width, int height)
         {
-            
+
         }
         /// <summary>
         /// Ends the d3 d.
@@ -617,7 +718,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void UpdateAndRender()
         {
-            
+
         }
         /// <summary>
         /// Resizes
@@ -626,7 +727,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="height">The height.</param>
         public void Resize(int width, int height)
         {
-            
+
         }
 
         /// <summary>
@@ -637,9 +738,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
         public void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer)
         {
-             CurrentRenderHost?.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
+            CurrentRenderHost?.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
         }
-#region IDisposable Support
+        #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -676,6 +777,6 @@ namespace HelixToolkit.Wpf.SharpDX
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-#endregion
+        #endregion
     }
 }

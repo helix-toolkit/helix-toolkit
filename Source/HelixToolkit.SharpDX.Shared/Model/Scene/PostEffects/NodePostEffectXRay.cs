@@ -91,7 +91,7 @@ namespace HelixToolkit.UWP
                 {
                     return (RenderCore as IPostEffectMeshXRay).EnableDoublePass;
                 }
-            } 
+            }
             #endregion
 
             /// <summary>
@@ -114,5 +114,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

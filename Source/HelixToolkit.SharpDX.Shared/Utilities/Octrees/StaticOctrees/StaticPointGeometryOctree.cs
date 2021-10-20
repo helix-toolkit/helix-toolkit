@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP
         {
             private static readonly Vector3 BoundOffset = new Vector3(0.001f);
             protected readonly IList<Vector3> Positions;
-      
+
             /// <summary>
             /// 
             /// </summary>
@@ -80,7 +80,7 @@ namespace HelixToolkit.UWP
             protected override int[] GetObjects()
             {
                 var objects = new int[Positions.Count];
-                for (int i = 0; i < Positions.Count; ++i)
+                for (var i = 0; i < Positions.Count; ++i)
                 {
                     objects[i] = i;
                 }
@@ -110,7 +110,7 @@ namespace HelixToolkit.UWP
             /// <param name="isIntersect"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, HitTestContext context, object model, 
+            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, HitTestContext context, object model,
                 Geometry3D geometry, Matrix modelMatrix, ref Ray rayModel, bool returnMultiple,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
@@ -140,7 +140,7 @@ namespace HelixToolkit.UWP
                     isIntersect = true;
                     var dist = hitThickness;
                     var rayWS = context.RayWS;
-                    for (int i = octant.Start; i < octant.End; ++i)
+                    for (var i = octant.Start; i < octant.End; ++i)
                     {
                         var v0 = Positions[Objects[i]];
                         var p0 = Vector3.TransformCoordinate(v0, smvpm);
@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP
                         {
                             dist = hitThickness;
                         }
-                        if (d < dist) // If d is NaN, the condition is false.
+                        if (d <= dist) // If d is NaN, the condition is false.
                         {
                             dist = d;
                             result.IsValid = true;
@@ -202,13 +202,13 @@ namespace HelixToolkit.UWP
             protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, HitTestContext context,
                 ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
             {
-                bool isHit = false;
+                var isHit = false;
                 var resultTemp = new HitTestResult();
                 resultTemp.Distance = float.MaxValue;
                 if (!BoxDisjointSphere(octant.Bound, ref sphere))
                 {
                     isIntersect = true;
-                    for (int i = octant.Start; i < octant.End; ++i)
+                    for (var i = octant.Start; i < octant.End; ++i)
                     {
                         var p = Positions[Objects[i]];
                         if (sphere.Contains(ref p) != ContainmentType.Disjoint)
@@ -250,5 +250,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

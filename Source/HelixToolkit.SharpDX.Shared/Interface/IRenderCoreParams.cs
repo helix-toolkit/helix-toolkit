@@ -32,21 +32,30 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The instance buffer.
             /// </value>
-            IElementsBufferModel InstanceBuffer { set; get; }
+            IElementsBufferModel InstanceBuffer
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the geometry buffer.
             /// </summary>
             /// <value>
             /// The geometry buffer.
             /// </value>
-            IAttachableBufferModel GeometryBuffer { set; get; }
+            IAttachableBufferModel GeometryBuffer
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the raster description.
             /// </summary>
             /// <value>
             /// The raster description.
             /// </value>
-            RasterizerStateDescription RasterDescription { set; get; }
+            RasterizerStateDescription RasterDescription
+            {
+                set; get;
+            }
         }
 
         /// <summary>
@@ -60,7 +69,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The material variable.
             /// </value>
-            MaterialVariable MaterialVariables { set; get; }
+            MaterialVariable MaterialVariables
+            {
+                set; get;
+            }
         }
 
         /// <summary>
@@ -68,22 +80,49 @@ namespace HelixToolkit.UWP
         /// </summary>
         public interface IMeshRenderParams : IInvertNormal, IMaterialRenderParams
         {
-            bool RenderWireframe { set; get; }
-            Color4 WireframeColor { set; get; }
+            bool RenderWireframe
+            {
+                set; get;
+            }
+            Color4 WireframeColor
+            {
+                set; get;
+            }
         }
-    
+
         /// <summary>
         /// 
         /// </summary>
         public interface IDynamicReflector
         {
-            bool IsDynamicScene { set; get; }
-            bool EnableReflector { set; get; }
-            Vector3 Center { set; get; }
-            int FaceSize { set; get; }
-            float NearField { set; get; }
-            float FarField { set; get; }
-            bool IsLeftHanded { set; get; }
+            bool IsDynamicScene
+            {
+                set; get;
+            }
+            bool EnableReflector
+            {
+                set; get;
+            }
+            Vector3 Center
+            {
+                set; get;
+            }
+            int FaceSize
+            {
+                set; get;
+            }
+            float NearField
+            {
+                set; get;
+            }
+            float FarField
+            {
+                set; get;
+            }
+            bool IsLeftHanded
+            {
+                set; get;
+            }
             void BindCubeMap(DeviceContextProxy deviceContext);
             void UnBindCubeMap(DeviceContextProxy deviceContext);
         }
@@ -93,7 +132,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public interface IDynamicReflectable
         {
-            IDynamicReflector DynamicReflector { set; get; }
+            IDynamicReflector DynamicReflector
+            {
+                set; get;
+            }
         }
 
         /// <summary>
@@ -107,7 +149,10 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if [invert normal]; otherwise, <c>false</c>.
             /// </value>
-            bool InvertNormal { set; get; }
+            bool InvertNormal
+            {
+                set; get;
+            }
         }
         /// <summary>
         /// 
@@ -120,21 +165,30 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The type.
             /// </value>
-            BillboardType Type { set; get; }
+            BillboardType Type
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether [fixed size].
             /// </summary>
             /// <value>
             ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
             /// </value>
-            bool FixedSize { set; get; }
+            bool FixedSize
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the sampler description.
             /// </summary>
             /// <value>
             /// The sampler description.
             /// </value>
-            SamplerStateDescription SamplerDescription { set; get; }
+            SamplerStateDescription SamplerDescription
+            {
+                set; get;
+            }
         }
 
         /// <summary>
@@ -145,53 +199,77 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Cutting operation, intersects or substract
             /// </summary>
-            CuttingOperation CuttingOperation { set; get; }
+            CuttingOperation CuttingOperation
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the color of the section.
             /// </summary>
             /// <value>
             /// The color of the section.
             /// </value>
-            Color4 SectionColor { set; get; }
+            Color4 SectionColor
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether [plane1/plane2/plane3/plane4 enabled].
             /// </summary>
             /// <value>
             ///   <c>true</c> if [plane1/plane2/plane3/plane4 enabled]; otherwise, <c>false</c>.
             /// </value>
-            Bool4 PlaneEnabled { set; get; }
+            Bool4 PlaneEnabled
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the plane5 to 8 enabled.
             /// </summary>
             /// <value>
             /// The plane5 to8 enabled.
             /// </value>
-            Bool4 Plane5To8Enabled { set; get; }
+            Bool4 Plane5To8Enabled
+            {
+                set; get;
+            }
             /// <summary>
             /// Defines the plane (Normal + d)
             /// </summary>
-            Vector4 Plane1Params { set; get; }
+            Vector4 Plane1Params
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the plane2 parameters.(Normal + d)
             /// </summary>
             /// <value>
             /// The plane2 parameters.
             /// </value>
-            Vector4 Plane2Params { set; get; }
+            Vector4 Plane2Params
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the plane3 parameters.(Normal + d)
             /// </summary>
             /// <value>
             /// The plane3 parameters.
             /// </value>
-            Vector4 Plane3Params { set; get; }
+            Vector4 Plane3Params
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the plane4 parameters.(Normal + d)
             /// </summary>
             /// <value>
             /// The plane4 parameters.
             /// </value>
-            Vector4 Plane4Params { set; get; }
+            Vector4 Plane4Params
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Gets or sets the plane5 parameters.(Normal + d)
@@ -247,26 +325,41 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The color.
             /// </value>
-            Color4 Color { set; get; }
+            Color4 Color
+            {
+                set; get;
+            }
             /// <summary>
             /// Enable outline
             /// </summary>
-            bool OutlineEnabled { set; get; }
+            bool OutlineEnabled
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Draw original mesh
             /// </summary>
-            bool DrawMesh { set; get; }
+            bool DrawMesh
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Draw outline order
             /// </summary>
-            bool DrawOutlineBeforeMesh { set; get; }
+            bool DrawOutlineBeforeMesh
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Outline fading
             /// </summary>
-            float OutlineFadingFactor { set; get; }
+            float OutlineFadingFactor
+            {
+                set; get;
+            }
         }
 
         /// <summary>
@@ -299,23 +392,38 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            Color4 PointColor { set; get; }
+            Color4 PointColor
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float Width { set; get; }
+            float Width
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float Height { set; get; }
+            float Height
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            PointFigure Figure { set; get; }
+            PointFigure Figure
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float FigureRatio { set; get; }
+            float FigureRatio
+            {
+                set; get;
+            }
         }
         /// <summary>
         /// 
@@ -325,31 +433,52 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            int Width { set; get; }
+            int Width
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            int Height { set; get; }
+            int Height
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float Bias { set; get; }
+            float Bias
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float Intensity { set; get; }
+            float Intensity
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            Matrix LightView { set; get; }
+            Matrix LightView
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            Matrix LightProjection { set; get; }
+            Matrix LightProjection
+            {
+                set; get;
+            }
             /// <summary>
             /// Update shadow map every N frames
             /// </summary>
-            int UpdateFrequency { set; get; }
+            int UpdateFrequency
+            {
+                set; get;
+            }
         }
         /// <summary>
         /// 
@@ -362,7 +491,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The cube texture.
             /// </value>
-            TextureModel CubeTexture { set; get; }
+            TextureModel CubeTexture
+            {
+                set; get;
+            }
         }
         /// <summary>
         /// 
@@ -375,7 +507,10 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance is throwing shadow; otherwise, <c>false</c>.
             /// </value>
-            bool IsThrowingShadow { get; set; }
+            bool IsThrowingShadow
+            {
+                get; set;
+            }
         }
         /// <summary>
         /// 
@@ -385,17 +520,25 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            float Thickness { set; get; }
+            float Thickness
+            {
+                set; get;
+            }
 
             /// <summary>
             /// 
             /// </summary>
-            float Smoothness { set; get; }
+            float Smoothness
+            {
+                set; get;
+            }
             /// <summary>
             /// Final Line Color = LineColor * PerVertexLineColor
             /// </summary>
-            Color4 LineColor { set; get; }
+            Color4 LineColor
+            {
+                set; get;
+            }
         }
     }
-
 }

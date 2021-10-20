@@ -44,5 +44,4 @@ namespace HelixToolkit.UWP
             public abstract MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique);
         }
     }
-
 }

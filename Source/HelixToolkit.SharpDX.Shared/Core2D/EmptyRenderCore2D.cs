@@ -26,9 +26,8 @@ namespace HelixToolkit.UWP
             /// <param name="matrices">The matrices.</param>
             protected override void OnRender(RenderContext2D matrices)
             {
-            
+
             }
         }
     }
-
 }

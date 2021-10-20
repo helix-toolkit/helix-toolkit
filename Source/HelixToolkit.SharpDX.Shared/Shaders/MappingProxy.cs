@@ -30,11 +30,23 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            public KeyValuePair<int, MappingType>[] Mappings { get { return mappingCollection.MappingArray; } }
+            public KeyValuePair<int, MappingType>[] Mappings
+            {
+                get
+                {
+                    return mappingCollection.MappingArray;
+                }
+            }
             /// <summary>
             /// 
             /// </summary>
-            public int Count { get { return mappingCollection.Count; } }
+            public int Count
+            {
+                get
+                {
+                    return mappingCollection.Count;
+                }
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -96,7 +108,7 @@ namespace HelixToolkit.UWP
             public MappingType GetMapping(string name)
             {
                 MappingType item;
-                if(mappingCollection.TryGetItem(name, out item))
+                if (mappingCollection.TryGetItem(name, out item))
                 {
                     return item;
                 }
@@ -124,5 +136,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

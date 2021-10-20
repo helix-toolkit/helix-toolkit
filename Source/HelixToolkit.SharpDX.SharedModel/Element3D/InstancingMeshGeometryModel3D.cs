@@ -24,13 +24,15 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
     {
-#region DependencyProperties
+        #region DependencyProperties
         /// <summary>
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
         /// </summary>
         public static readonly DependencyProperty InstanceIdentifiersProperty = DependencyProperty.Register("InstanceIdentifiers", typeof(IList<System.Guid>),
-            typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (d,e)=>
-            { ((d as Element3DCore).SceneNode as InstancingMeshNode).InstanceIdentifiers = e.NewValue as IList<System.Guid>; }));
+            typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as InstancingMeshNode).InstanceIdentifiers = e.NewValue as IList<System.Guid>;
+            }));
 
         /// <summary>
         /// Add octree manager to use octree hit test.
@@ -63,9 +65,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance parameter. 
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
-            DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), 
+            DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D),
                 new PropertyMetadata(null, (d, e) =>
-                { ((d as Element3DCore).SceneNode as InstancingMeshNode).InstanceParamArray = e.NewValue as IList<InstanceParameter>; }));
+                {
+                    ((d as Element3DCore).SceneNode as InstancingMeshNode).InstanceParamArray = e.NewValue as IList<InstanceParameter>;
+                }));
 
         /// <summary>
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
@@ -99,11 +103,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IList<InstanceParameter> InstanceParamArray
         {
-            get { return (IList<InstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
-            set { this.SetValue(InstanceAdvArrayProperty, value); }
+            get
+            {
+                return (IList<InstanceParameter>)this.GetValue(InstanceAdvArrayProperty);
+            }
+            set
+            {
+                this.SetValue(InstanceAdvArrayProperty, value);
+            }
         }
 
-#endregion
+        #endregion
 
         protected override SceneNode OnCreateSceneNode()
         {

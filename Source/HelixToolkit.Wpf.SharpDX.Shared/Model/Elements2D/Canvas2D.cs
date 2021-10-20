@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public class Canvas2D : Panel2D
         {
-#region Attached Properties        
+            #region Attached Properties        
             /// <summary>
             /// The left property
             /// </summary>
@@ -116,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return (double)element.GetValue(BottomProperty);
             }
-#endregion
+            #endregion
 
             protected override SceneNode2D OnCreateSceneNode()
             {
@@ -189,5 +189,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

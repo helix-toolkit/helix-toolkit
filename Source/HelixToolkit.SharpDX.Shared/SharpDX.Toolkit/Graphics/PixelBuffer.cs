@@ -60,13 +60,25 @@ namespace SharpDX.Toolkit.Graphics
         /// Gets the width.
         /// </summary>
         /// <value>The width.</value>
-        public int Width { get { return width; } }
+        public int Width
+        {
+            get
+            {
+                return width;
+            }
+        }
 
         /// <summary>
         /// Gets the height.
         /// </summary>
         /// <value>The height.</value>
-        public int Height { get { return height; } }
+        public int Height
+        {
+            get
+            {
+                return height;
+            }
+        }
 
         /// <summary>
         /// Gets the format (this value can be changed)
@@ -92,25 +104,49 @@ namespace SharpDX.Toolkit.Graphics
         /// Gets the pixel size in bytes.
         /// </summary>
         /// <value>The pixel size in bytes.</value>
-        public int PixelSize { get { return this.pixelSize; } }
+        public int PixelSize
+        {
+            get
+            {
+                return this.pixelSize;
+            }
+        }
 
         /// <summary>
         /// Gets the row stride in number of bytes.
         /// </summary>
         /// <value>The row stride in number of bytes.</value>
-        public int RowStride { get { return this.rowStride; } }
+        public int RowStride
+        {
+            get
+            {
+                return this.rowStride;
+            }
+        }
 
         /// <summary>
         /// Gets the total size in bytes of this pixel buffer.
         /// </summary>
         /// <value>The size in bytes of the pixel buffer.</value>
-        public int BufferStride { get { return this.bufferStride; } }
+        public int BufferStride
+        {
+            get
+            {
+                return this.bufferStride;
+            }
+        }
 
         /// <summary>
         /// Gets the pointer to the pixel buffer.
         /// </summary>
         /// <value>The pointer to the pixel buffer.</value>
-        public IntPtr DataPointer { get { return this.dataPointer; } }
+        public IntPtr DataPointer
+        {
+            get
+            {
+                return this.dataPointer;
+            }
+        }
 
         /// <summary>
         /// Copies this pixel buffer to a destination pixel buffer.
@@ -142,7 +178,7 @@ namespace SharpDX.Toolkit.Graphics
                 var rowStride = Math.Min(RowStride, pixelBuffer.RowStride);
 
                 // Copy per scanline
-                for(int i = 0; i < Height; i++)
+                for (var i = 0; i < Height; i++)
                 {
                     Utilities.CopyMemory(new IntPtr(dstPointer), new IntPtr(srcPointer), rowStride);
                     srcPointer += this.RowStride;
@@ -161,7 +197,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <remarks>
         /// Caution, this method doesn't check bounding.
         /// </remarks>
-        public unsafe T GetPixel<T>(int x, int y) where T : struct
+        public unsafe T GetPixel<T>(int x, int y) where T : unmanaged
         {
             return Utilities.Read<T>(new IntPtr(((byte*)this.DataPointer + RowStride * y + x * PixelSize)));
         }
@@ -176,7 +212,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <remarks>
         /// Caution, this method doesn't check bounding.
         /// </remarks>
-        public unsafe void SetPixel<T>(int x, int y, T value) where T : struct
+        public unsafe void SetPixel<T>(int x, int y, T value) where T : unmanaged
         {
             Utilities.Write(new IntPtr((byte*)this.DataPointer + RowStride * y + x * PixelSize), ref value);
         }
@@ -192,7 +228,7 @@ namespace SharpDX.Toolkit.Graphics
         /// This method is working on a row basis. The <paramref name="yOffset"/> is specifying the first row to get 
         /// the pixels from.
         /// </remarks>
-        public T[] GetPixels<T>(int yOffset = 0) where T : struct
+        public T[] GetPixels<T>(int yOffset = 0) where T : unmanaged
         {
             var sizeOfOutputPixel = Utilities.SizeOf<T>();
             var totalSize = Width * Height * pixelSize;
@@ -216,7 +252,7 @@ namespace SharpDX.Toolkit.Graphics
         /// This method is working on a row basis. The <paramref name="yOffset"/> is specifying the first row to get 
         /// the pixels from.
         /// </remarks>
-        public void GetPixels<T>(T[] pixels, int yOffset = 0) where T : struct
+        public void GetPixels<T>(T[] pixels, int yOffset = 0) where T : unmanaged
         {
             GetPixels(pixels, yOffset, 0, pixels.Length);
         }
@@ -234,7 +270,7 @@ namespace SharpDX.Toolkit.Graphics
         /// This method is working on a row basis. The <paramref name="yOffset"/> is specifying the first row to get 
         /// the pixels from.
         /// </remarks>
-        public unsafe void GetPixels<T>(T[] pixels, int yOffset, int pixelIndex, int pixelCount) where T : struct
+        public unsafe void GetPixels<T>(T[] pixels, int yOffset, int pixelIndex, int pixelCount) where T : unmanaged
         {
             var pixelPointer = (byte*)this.DataPointer + yOffset * rowStride;
             if (isStrictRowStride)
@@ -246,7 +282,7 @@ namespace SharpDX.Toolkit.Graphics
                 var sizeOfOutputPixel = Utilities.SizeOf<T>() * pixelCount;
                 var sizePerWidth = sizeOfOutputPixel / Width;
                 var remainingPixels = sizeOfOutputPixel % Width;
-                for(int i = 0; i < sizePerWidth; i++)
+                for (var i = 0; i < sizePerWidth; i++)
                 {
                     Utilities.Read(new IntPtr(pixelPointer), pixels, pixelIndex, Width);
                     pixelPointer += rowStride;
@@ -270,7 +306,7 @@ namespace SharpDX.Toolkit.Graphics
         /// This method is working on a row basis. The <paramref name="yOffset"/> is specifying the first row to get 
         /// the pixels from.
         /// </remarks>
-        public void SetPixels<T>(T[] sourcePixels, int yOffset = 0) where T : struct
+        public void SetPixels<T>(T[] sourcePixels, int yOffset = 0) where T : unmanaged
         {
             SetPixels(sourcePixels, yOffset, 0, sourcePixels.Length);
         }
@@ -288,7 +324,7 @@ namespace SharpDX.Toolkit.Graphics
         /// This method is working on a row basis. The <paramref name="yOffset"/> is specifying the first row to get 
         /// the pixels from.
         /// </remarks>
-        public unsafe void SetPixels<T>(T[] sourcePixels, int yOffset, int pixelIndex, int pixelCount) where T : struct
+        public unsafe void SetPixels<T>(T[] sourcePixels, int yOffset, int pixelIndex, int pixelCount) where T : unmanaged
         {
             var pixelPointer = (byte*)this.DataPointer + yOffset * rowStride;
             if (isStrictRowStride)
@@ -300,7 +336,7 @@ namespace SharpDX.Toolkit.Graphics
                 var sizeOfOutputPixel = Utilities.SizeOf<T>() * pixelCount;
                 var sizePerWidth = sizeOfOutputPixel / Width;
                 var remainingPixels = sizeOfOutputPixel % Width;
-                for (int i = 0; i < sizePerWidth; i++)
+                for (var i = 0; i < sizePerWidth; i++)
                 {
                     Utilities.Write(new IntPtr(pixelPointer), sourcePixels, pixelIndex, Width);
                     pixelPointer += rowStride;

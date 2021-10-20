@@ -26,12 +26,18 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public double ArrowSize
         {
-            get { return (double)GetValue(ArrowSizeProperty); }
-            set { SetValue(ArrowSizeProperty, value); }
+            get
+            {
+                return (double)GetValue(ArrowSizeProperty);
+            }
+            set
+            {
+                SetValue(ArrowSizeProperty, value);
+            }
         }
 
         public static readonly DependencyProperty ArrowSizeProperty =
-            DependencyProperty.Register("ArrowSize", typeof(double), typeof(LineArrowHeadMaterial), new PropertyMetadata(0.1, (d, e)=>
+            DependencyProperty.Register("ArrowSize", typeof(double), typeof(LineArrowHeadMaterial), new PropertyMetadata(0.1, (d, e) =>
             {
                 ((d as LineMaterial).Core as LineArrowHeadMaterialCore).ArrowSize = (float)(double)e.NewValue;
             }));
@@ -51,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Texture = Texture,
                 TextureScale = (float)TextureScale,
                 SamplerDescription = SamplerDescription,
-                ArrowSize = (float)ArrowSize,               
+                ArrowSize = (float)ArrowSize,
                 FixedSize = FixedSize
             };
         }

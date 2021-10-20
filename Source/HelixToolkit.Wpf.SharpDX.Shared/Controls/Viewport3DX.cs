@@ -120,12 +120,18 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             private set
             {
-                if (mouseOverModel2D == value) { return; }
+                if (mouseOverModel2D == value)
+                {
+                    return;
+                }
                 mouseOverModel2D?.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseLeave2DEvent, mouseOverModel2D, this));
                 mouseOverModel2D = value;
                 mouseOverModel2D?.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseEnter2DEvent, mouseOverModel2D, this));
             }
-            get { return mouseOverModel2D; }
+            get
+            {
+                return mouseOverModel2D;
+            }
         }
 
         /// <summary>
@@ -164,7 +170,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Get current render context
         /// </summary>
-        public RenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
+        public RenderContext RenderContext
+        {
+            get
+            {
+                return this.renderHostInternal?.RenderContext;
+            }
+        }
 
         public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
         /// <summary>
@@ -177,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (Element3D item in Items)
+                    foreach (var item in Items)
                     {
                         yield return item.SceneNode;
                     }
@@ -200,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (Element3D item in Items)
+                    foreach (var item in Items)
                     {
                         yield return item.SceneNode;
                     }
@@ -219,11 +231,29 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public CameraCore CameraCore { get { return CameraController.ActualCamera; } }
+        public CameraCore CameraCore
+        {
+            get
+            {
+                return CameraController.ActualCamera;
+            }
+        }
 
-        public IRenderHost RenderHost { get { return this.renderHostInternal; } }
+        public IRenderHost RenderHost
+        {
+            get
+            {
+                return this.renderHostInternal;
+            }
+        }
 
-        public global::SharpDX.Rectangle ViewportRectangle { get { return new global::SharpDX.Rectangle(0, 0, (int)ActualWidth, (int)ActualHeight); } }
+        public global::SharpDX.Rectangle ViewportRectangle
+        {
+            get
+            {
+                return new global::SharpDX.Rectangle(0, 0, (int)ActualWidth, (int)ActualHeight);
+            }
+        }
 
         private Window parentWindow;
 
@@ -258,7 +288,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.orthographicCamera.Reset();
 
             this.Camera = this.Orthographic ? this.orthographicCamera : this.perspectiveCamera;
-         
+
             InitCameraController();
             this.CommandBindings.Add(new CommandBinding(ViewportCommands.ZoomExtents, this.ZoomExtentsHandler));
             this.CommandBindings.Add(new CommandBinding(ViewportCommands.SetTarget, this.cameraController.setTargetHandler.Execute));
@@ -288,12 +318,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     renderHostInternal.IsRendering = (bool)e.NewValue;
                 }
-            };            
+            };
         }
 
         private void InitCameraController()
         {
-#region Assign Defaults
+            #region Assign Defaults
             this.cameraController.ActualCamera = this.Camera;
             this.cameraController.DefaultCamera = this.DefaultCamera;
             this.cameraController.CameraMode = this.CameraMode;
@@ -332,17 +362,17 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController.ZoomDistanceLimitNear = this.ZoomDistanceLimitNear;
             this.cameraController.FixedRotationPoint = this.FixedRotationPoint.ToVector3();
             this.cameraController.FixedRotationPointEnabled = this.FixedRotationPointEnabled;
-#endregion
+            #endregion
         }
 
         private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
             {
-                foreach(var item in e.OldItems)
+                foreach (var item in e.OldItems)
                 {
                     partItemsControl?.Items.Remove(item);
-                    if(item is Element3D element)
+                    if (item is Element3D element)
                     {
                         element.SceneNode.Detach();
                     }
@@ -350,10 +380,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (e.NewItems != null)
             {
-                foreach(var item in e.NewItems)
+                foreach (var item in e.NewItems)
                 {
                     partItemsControl?.Items.Add(item);
-                    if(this.IsAttached && item is Element3D element)
+                    if (this.IsAttached && item is Element3D element)
                     {
                         element.SceneNode.Attach(renderHostInternal);
                     }
@@ -502,7 +532,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
-            if (myAdornerLayer == null) { return; }
+            if (myAdornerLayer == null)
+            {
+                return;
+            }
             if (this.targetAdorner != null)
             {
                 myAdornerLayer.Remove(this.targetAdorner);
@@ -524,7 +557,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
-            if (myAdornerLayer == null) { return; }
+            if (myAdornerLayer == null)
+            {
+                return;
+            }
             if (this.rectangleAdorner != null)
             {
                 myAdornerLayer.Remove(this.rectangleAdorner);
@@ -620,7 +656,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnApplyTemplate();
             if (IsInDesignMode && !EnableDesignModeRendering)
-            { return; }
+            {
+                return;
+            }
             Disposer.RemoveAndDispose(ref renderHostInternal);
             hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 
@@ -628,7 +666,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 renderCanvas.ExceptionOccurred -= this.HandleRenderException;
             }
-            PresentationSource source = PresentationSource.FromVisual(this);
+            var source = PresentationSource.FromVisual(this);
             if (source != null)
             {
                 DpiScale = Math.Max(DpiScale, Math.Max(source.CompositionTarget.TransformToDevice.M11, source.CompositionTarget.TransformToDevice.M22));
@@ -641,7 +679,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 hostPresenter.Content = new DPFCanvas(EnableDeferredRendering, BelongsToParentWindow) { DpiScale = DpiScale };
             }
-            
+
             if (this.renderHostInternal != null)
             {
                 this.renderHostInternal.Rendered -= this.RaiseRenderHostRendered;
@@ -728,15 +766,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartViewCube);
             }
-            if(this.frameStatisticModel == null)
+            if (this.frameStatisticModel == null)
             {
                 this.frameStatisticModel = this.Template.FindName(PartFrameStatisticView, this) as FrameStatisticsModel2D;
             }
-            if(this.frameStatisticModel == null)
+            if (this.frameStatisticModel == null)
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartFrameStatisticView);
             }
-            if(this.partItemsControl == null)
+            if (this.partItemsControl == null)
             {
                 this.partItemsControl = this.Template.FindName(PartItems, this) as ItemsControl;
             }
@@ -763,11 +801,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 Overlay2D.Children.Add(element);
             }
-            if(viewCube != null)
+            if (viewCube != null)
             {
                 Overlay2D.Children.Add(viewCube.MoverCanvas);
             }
-            if(coordinateView != null)
+            if (coordinateView != null)
             {
                 Overlay2D.Children.Add(coordinateView.MoverCanvas);
             }
@@ -840,7 +878,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
-            if (myAdornerLayer == null) { return; }
+            if (myAdornerLayer == null)
+            {
+                return;
+            }
             this.targetAdorner = new TargetSymbolAdorner(visual, position);
             myAdornerLayer.Add(this.targetAdorner);
         }
@@ -863,7 +904,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var myAdornerLayer = AdornerLayer.GetAdornerLayer(visual);
-            if (myAdornerLayer == null) { return; }
+            if (myAdornerLayer == null)
+            {
+                return;
+            }
             this.rectangleAdorner = new RectangleAdorner(
                 visual, rect, Colors.LightGray, Colors.Black, 3, 1, 10, DashStyles.Solid);
             myAdornerLayer.Add(this.rectangleAdorner);
@@ -932,7 +976,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     e.Attach(host);
                 }
                 SharedModelContainerInternal?.Attach(host);
-                foreach(var e in this.D2DRenderables)
+                foreach (var e in this.D2DRenderables)
                 {
                     e.Attach(host);
                 }
@@ -953,7 +997,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     e.Detach();
                 }
                 SharedModelContainerInternal?.Detach(this.renderHostInternal);
-                foreach(var e in this.D2DRenderables)
+                foreach (var e in this.D2DRenderables)
                 {
                     e.Detach();
                 }
@@ -969,7 +1013,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static MouseButtons GetPressedMouseButtons()
         {
-            int flags = 0;
+            var flags = 0;
             flags |= (int)Mouse.LeftButton << 20;
             flags |= (int)Mouse.RightButton << 21;
             flags |= (int)Mouse.MiddleButton << 22;
@@ -980,12 +1024,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <inheritdoc/>
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
-        {            
+        {
             base.OnPreviewMouseDown(e);
             if (this.touchDownDevice == null)
             {
                 this.Focus();
-                this.MouseDownHitTest(e.GetPosition(this), e);                
+                this.MouseDownHitTest(e.GetPosition(this), e);
             }
         }
 
@@ -1034,7 +1078,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var pt = e.Location;
                 this.MouseMoveHitTest(pt);
-                this.UpdateCurrentPosition(pt);               
+                this.UpdateCurrentPosition(pt);
             }
         }
         /// <inheritdoc/>
@@ -1353,10 +1397,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.ZoomExtentsWhenLoaded)
             {
-                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ContextIdle, new Action(() => 
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ContextIdle, new Action(() =>
                 {
                     this.ZoomExtents();
-                }));              
+                }));
             }
             if (EnableSwapChainRendering)
             {
@@ -1372,7 +1416,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 hostPresenter.Content = null;
                 d.Dispose();
-            }            
+            }
         }
 
         /// <summary>
@@ -1547,7 +1591,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // The problem: Gestures with printable keys and the ModifierKeys "None" or "Shift" are not supported.
             // "None + U" or "Shift + U" can not be used as gesture. So we have to create a KeyBinding
             // without a gesture. For this we have to use the KeyBinding default constructor.
-            var kb = new []
+            var kb = new[]
             {
                 new KeyBinding() {Command = ViewportCommands.TopView, Key = Key.U},
                 new KeyBinding() {Command = ViewportCommands.BottomView, Key=Key.D},
@@ -1622,7 +1666,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void ViewCubeClicked(Vector3D lookDirection, Vector3D upDirection)
         {
             var target = cameraController.ActualCamera.Position + cameraController.ActualCamera.LookDirection;
-            double distance = cameraController.ActualCamera.LookDirection.Length;
+            var distance = cameraController.ActualCamera.LookDirection.Length;
             lookDirection *= distance;
             var newPosition = target - lookDirection;
             cameraController.ActualCamera.AnimateTo(newPosition, lookDirection, upDirection, 500);
@@ -1654,7 +1698,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (Overlay2D.HitTest(pt.ToVector2(), out currentHit2D))
             {
-                if(currentHit2D.ModelHit is Element2D e)
+                if (currentHit2D.ModelHit is Element2D e)
                 {
                     e.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseDown2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
                     originalInputEventArgs.Handled = true;
@@ -1670,7 +1714,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            
+
             if (this.FindHits(pt.ToVector2(), ref hits))
             {
                 // We can't capture Touch because that would disable the CameraController which uses Manipulation,
@@ -1683,11 +1727,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
                 if (this.currentHit != null)
                 {
-                    if(currentHit.ModelHit is Element3D ele)
+                    if (currentHit.ModelHit is Element3D ele)
                     {
                         ele.RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
-                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    else if (currentHit.ModelHit is SceneNode sceneNode)
                     {
                         sceneNode.RaiseMouseDownEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
                         RaiseEvent(new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
@@ -1707,10 +1751,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var ray = this.UnProject(p.ToVector2());
             var hits = new List<HitTestResult>();
             var hitContext = new HitTestContext(RenderContext, ray, p.ToVector2());
-            if(viewCube.HitTest(hitContext, ref hits))
+            if (viewCube.HitTest(hitContext, ref hits))
             {
                 viewCube.RaiseEvent(new MouseDown3DEventArgs(viewCube, this.currentHit, p, this, originalInputEventArgs));
-                var normal = hits[0].NormalAtHit;              
+                var normal = hits[0].NormalAtHit;
                 if (Vector3.Cross(normal, ModelUpDirection.ToVector3()).LengthSquared() < 1e-5)
                 {
                     var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);
@@ -1737,9 +1781,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (Overlay2D.HitTest(pt.ToVector2(), out HitTest2DResult hit2D))
+            if (Overlay2D.HitTest(pt.ToVector2(), out var hit2D))
             {
-                if(hit2D.ModelHit is Element2D e)
+                if (hit2D.ModelHit is Element2D e)
                 {
                     MouseOverModel2D = e;
                     e.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseMove2DEvent, hit2D.ModelHit, hit2D, pt, this, originalInputEventArgs));
@@ -1759,7 +1803,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         ele.RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
-                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    else if (currentHit.ModelHit is SceneNode sceneNode)
                     {
                         sceneNode.RaiseMouseMoveEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
                         RaiseEvent(new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
@@ -1781,7 +1825,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The original input event (which mouse button pressed?)
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
-        {            
+        {
             if (currentHit2D != null)
             {
                 if (currentHit2D.ModelHit is Element2D element)
@@ -1793,12 +1837,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (enableMouseButtonHitTest)
             {
                 if (this.currentHit != null)
-                {               
-                    if(currentHit.ModelHit is Element3D ele)
+                {
+                    if (currentHit.ModelHit is Element3D ele)
                     {
                         ele.RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
                     }
-                    else if(currentHit.ModelHit is SceneNode sceneNode)
+                    else if (currentHit.ModelHit is SceneNode sceneNode)
                     {
                         sceneNode.RaiseMouseUpEvent(this, pt.ToVector2(), currentHit, originalInputEventArgs);
                         RaiseEvent(new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this, originalInputEventArgs));
@@ -1848,7 +1892,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     MessageText = "Must specify Width and Height for Viewport3DX in a ViewBox";
                     return base.MeasureOverride(new Size(600, 400));
-                }            
+                }
             }
 
             return base.MeasureOverride(constraint);

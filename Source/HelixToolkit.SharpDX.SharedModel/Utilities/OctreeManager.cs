@@ -52,8 +52,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty EnableOctreeOutputProperty
             = DependencyProperty.Register("EnableOctreeOutput", typeof(bool), typeof(OctreeManagerBaseWrapper),
-                new PropertyMetadata(false, 
-                    (d,e)=> { (d as OctreeManagerBaseWrapper).enableOctreeOutput = (bool)e.NewValue; }));
+                new PropertyMetadata(false,
+                    (d, e) => { (d as OctreeManagerBaseWrapper).enableOctreeOutput = (bool)e.NewValue; }));
         /// <summary>
         /// The minimum size property
         /// </summary>
@@ -207,7 +207,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                if(manager == null)
+                if (manager == null)
                 {
                     manager = OnCreateManager();
                     manager.OnOctreeCreated += (s, e) =>

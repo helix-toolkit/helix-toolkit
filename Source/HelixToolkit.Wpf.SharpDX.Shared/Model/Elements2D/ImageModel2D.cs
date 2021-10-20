@@ -26,8 +26,14 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public Stream ImageStream
             {
-                get { return (Stream)GetValue(ImageStreamProperty); }
-                set { SetValue(ImageStreamProperty, value); }
+                get
+                {
+                    return (Stream)GetValue(ImageStreamProperty);
+                }
+                set
+                {
+                    SetValue(ImageStreamProperty, value);
+                }
             }
 
             /// <summary>
@@ -35,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </summary>
             public static readonly DependencyProperty ImageStreamProperty =
                 DependencyProperty.Register("ImageStream", typeof(Stream), typeof(ImageModel2D), new PropertyMetadata(null,
-                    (d,e)=> 
+                    (d, e) =>
                     {
                         ((d as Element2DCore).SceneNode as ImageNode2D).ImageStream = e.NewValue as Stream;
                     }));
@@ -49,15 +55,21 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public double Opacity
             {
-                get { return (double)GetValue(OpacityProperty); }
-                set { SetValue(OpacityProperty, value); }
+                get
+                {
+                    return (double)GetValue(OpacityProperty);
+                }
+                set
+                {
+                    SetValue(OpacityProperty, value);
+                }
             }
 
             /// <summary>
             /// The opacity property
             /// </summary>
             public static readonly DependencyProperty OpacityProperty =
-                DependencyProperty.Register("Opacity", typeof(double), typeof(ImageModel2D), new PropertyMetadata(1.0, (d,e)=> 
+                DependencyProperty.Register("Opacity", typeof(double), typeof(ImageModel2D), new PropertyMetadata(1.0, (d, e) =>
                 {
                     ((d as Element2DCore).SceneNode as ImageNode2D).Opacity = (float)(double)e.NewValue;
                 }));
@@ -69,5 +81,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

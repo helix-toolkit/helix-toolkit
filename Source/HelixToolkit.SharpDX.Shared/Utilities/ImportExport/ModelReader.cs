@@ -34,14 +34,14 @@ namespace HelixToolkit.UWP
         protected ModelReader()
         {
             this.DefaultMaterial = new PhongMaterialCore
-                {
-                    Name = "Gold",
-                    AmbientColor = new Color4(0.24725f, 0.1995f, 0.0745f, 1.0f),
-                    DiffuseColor = new Color4(0.75164f, 0.60648f, 0.22648f, 1.0f),
-                    SpecularColor = new Color4(0.628281f, 0.555802f, 0.366065f, 1.0f),
-                    EmissiveColor = new Color4(0.0f, 0.0f, 0.0f, 0.0f),
-                    SpecularShininess = 51.2f,
-                };
+            {
+                Name = "Gold",
+                AmbientColor = new Color4(0.24725f, 0.1995f, 0.0745f, 1.0f),
+                DiffuseColor = new Color4(0.75164f, 0.60648f, 0.22648f, 1.0f),
+                SpecularColor = new Color4(0.628281f, 0.555802f, 0.366065f, 1.0f),
+                EmissiveColor = new Color4(0.0f, 0.0f, 0.0f, 0.0f),
+                SpecularShininess = 51.2f,
+            };
         }
         /// <summary>
         /// Gets or sets the default material.
@@ -49,13 +49,19 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The default material.
         /// </value>
-        public MaterialCore DefaultMaterial { get; set; }
+        public MaterialCore DefaultMaterial
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the directory.
         /// </summary>
         /// <value>The directory.</value>
-        public string Directory { get; set; }
+        public string Directory
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the texture path.

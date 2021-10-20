@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP
             /// <param name="description"></param>
             /// <param name="data"></param>
             /// <returns></returns>
-            Buffer Register<T>(System.Guid guid, BufferDescription description, IList<T> data) where T : struct;
+            Buffer Register<T>(System.Guid guid, BufferDescription description, IList<T> data) where T : unmanaged;
         }
         ///// <summary>
         ///// 
@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP
         //    /// <param name="description"></param>
         //    /// <param name="data"></param>
         //    /// <returns></returns>
-        //    public Buffer Register<T>(System.Guid guid, BufferDescription description, IList<T> data) where T : struct
+        //    public Buffer Register<T>(System.Guid guid, BufferDescription description, IList<T> data) where T : unmanaged
         //    {
         //        Buffer value;
         //        if (pool.TryGetValue(guid, description, out value))
@@ -89,6 +89,4 @@ namespace HelixToolkit.UWP
         //    }
         //}
     }
-
-
 }

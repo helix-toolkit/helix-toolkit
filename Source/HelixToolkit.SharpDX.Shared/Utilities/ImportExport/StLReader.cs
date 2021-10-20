@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using Mesh3DGroup = System.Collections.Generic.List<Object3D>;    
+    using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
     using Point3D = global::SharpDX.Vector3;
 #if NETFX_CORE
     using FileFormatException = Exception;
@@ -77,19 +77,28 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The header.
         /// </value>
-        public string Header { get; private set; }
+        public string Header
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets the materials.
         /// </summary>
         /// <value> The materials. </value>
-        public IList<MaterialCore> Materials { get; private set; }
+        public IList<MaterialCore> Materials
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets the meshes.
         /// </summary>
         /// <value> The meshes. </value>
-        public IList<MeshBuilder> Meshes { get; private set; }
+        public IList<MeshBuilder> Meshes
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Reads the model from the specified stream.
@@ -124,8 +133,8 @@ namespace HelixToolkit.UWP
         /// <returns>The model.</returns>
         public Mesh3DGroup ToModel3D()
         {
-            Mesh3DGroup modelGroup = new Mesh3DGroup();
-            int i = 0;
+            var modelGroup = new Mesh3DGroup();
+            var i = 0;
             foreach (var mesh in this.Meshes)
             {
                 var gm = new Object3D
@@ -154,7 +163,7 @@ namespace HelixToolkit.UWP
         private static void ParseLine(string line, out string id, out string values)
         {
             line = line.Trim();
-            int idx = line.IndexOf(' ');
+            var idx = line.IndexOf(' ');
             if (idx == -1)
             {
                 id = line.ToLowerInvariant();
@@ -186,9 +195,9 @@ namespace HelixToolkit.UWP
                 throw new FileFormatException("Unexpected line.");
             }
 
-            double x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-            double y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
-            double z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+            var x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+            var y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+            var z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
 #if !NETFX_CORE
             return new Vector3D(x, y, z);
 #else
@@ -292,9 +301,9 @@ namespace HelixToolkit.UWP
                 return false;
             }
 
-            float x = float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-            float y = float.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
-            float z = float.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+            var x = float.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+            var y = float.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+            var z = float.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
 
             point = new Point3D(x, y, z);
             return true;
@@ -367,27 +376,27 @@ namespace HelixToolkit.UWP
         /// </param>
         private void ReadTriangle(BinaryReader reader)
         {
-            float ni = ReadFloat(reader);
-            float nj = ReadFloat(reader);
-            float nk = ReadFloat(reader);
+            var ni = ReadFloat(reader);
+            var nj = ReadFloat(reader);
+            var nk = ReadFloat(reader);
 
 #pragma warning disable 168
             var n = new Vector3D(ni, nj, nk);
 #pragma warning restore 168
 
-            float x1 = ReadFloat(reader);
-            float y1 = ReadFloat(reader);
-            float z1 = ReadFloat(reader);
+            var x1 = ReadFloat(reader);
+            var y1 = ReadFloat(reader);
+            var z1 = ReadFloat(reader);
             var v1 = new Point3D(x1, y1, z1);
 
-            float x2 = ReadFloat(reader);
-            float y2 = ReadFloat(reader);
-            float z2 = ReadFloat(reader);
+            var x2 = ReadFloat(reader);
+            var y2 = ReadFloat(reader);
+            var z2 = ReadFloat(reader);
             var v2 = new Point3D(x2, y2, z2);
 
-            float x3 = ReadFloat(reader);
-            float y3 = ReadFloat(reader);
-            float z3 = ReadFloat(reader);
+            var x3 = ReadFloat(reader);
+            var y3 = ReadFloat(reader);
+            var z3 = ReadFloat(reader);
             var v3 = new Point3D(x3, y3, z3);
 
             var attrib = Convert.ToString(ReadUInt16(reader), 2).PadLeft(16, '0').ToCharArray();
@@ -395,26 +404,26 @@ namespace HelixToolkit.UWP
 
             if (hasColor)
             {
-                int blue = attrib[15].Equals('1') ? 1 : 0;
+                var blue = attrib[15].Equals('1') ? 1 : 0;
                 blue = attrib[14].Equals('1') ? blue + 2 : blue;
                 blue = attrib[13].Equals('1') ? blue + 4 : blue;
                 blue = attrib[12].Equals('1') ? blue + 8 : blue;
                 blue = attrib[11].Equals('1') ? blue + 16 : blue;
-                int b = blue * 8;
+                var b = blue * 8;
 
-                int green = attrib[10].Equals('1') ? 1 : 0;
+                var green = attrib[10].Equals('1') ? 1 : 0;
                 green = attrib[9].Equals('1') ? green + 2 : green;
                 green = attrib[8].Equals('1') ? green + 4 : green;
                 green = attrib[7].Equals('1') ? green + 8 : green;
                 green = attrib[6].Equals('1') ? green + 16 : green;
-                int g = green * 8;
+                var g = green * 8;
 
-                int red = attrib[5].Equals('1') ? 1 : 0;
+                var red = attrib[5].Equals('1') ? 1 : 0;
                 red = attrib[4].Equals('1') ? red + 2 : red;
                 red = attrib[3].Equals('1') ? red + 4 : red;
                 red = attrib[2].Equals('1') ? red + 8 : red;
                 red = attrib[1].Equals('1') ? red + 16 : red;
-                int r = red * 8;
+                var r = red * 8;
 #if !NETFX_CORE
                 var currentColor = Color.FromRgb(Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
 #else
@@ -508,15 +517,15 @@ namespace HelixToolkit.UWP
         /// </returns>
         private bool TryReadBinary(Stream stream)
         {
-            long length = stream.Length;
+            var length = stream.Length;
             if (length < 84)
             {
                 throw new FileFormatException("Incomplete file");
             }
 
             var reader = new BinaryReader(stream);
-            this.Header = System.Text.Encoding.ASCII.GetString(reader.ReadBytes(80)).Trim(); 
-            uint numberTriangles = ReadUInt32(reader);
+            this.Header = System.Text.Encoding.ASCII.GetString(reader.ReadBytes(80)).Trim();
+            var numberTriangles = ReadUInt32(reader);
 
             if (length - 84 != numberTriangles * 50)
             {
@@ -527,7 +536,7 @@ namespace HelixToolkit.UWP
             this.Meshes.Add(new MeshBuilder(true, true));
             this.Materials.Add(this.DefaultMaterial);
 
-            for (int i = 0; i < numberTriangles; i++)
+            for (var i = 0; i < numberTriangles; i++)
             {
                 this.ReadTriangle(reader);
             }

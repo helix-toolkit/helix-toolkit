@@ -26,7 +26,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref direction, value);
                 }
-                get { return direction; }
+                get
+                {
+                    return direction;
+                }
             }
 
             public DirectionalLightCore()
@@ -41,5 +44,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

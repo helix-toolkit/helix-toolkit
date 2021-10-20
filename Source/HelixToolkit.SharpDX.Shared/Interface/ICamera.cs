@@ -25,7 +25,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The position.
         /// </value>
-        Vector3 Position { get; set; }
+        Vector3 Position
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the look direction.
@@ -33,7 +36,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The look direction.
         /// </value>
-        Vector3 LookDirection { get; set; }
+        Vector3 LookDirection
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets up direction.
@@ -41,14 +47,20 @@ namespace HelixToolkit.UWP
         /// <value>
         /// Up direction.
         /// </value>
-        Vector3 UpDirection { get; set; }
+        Vector3 UpDirection
+        {
+            get; set;
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [create left hand system].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [create left hand system]; otherwise, <c>false</c>.
         /// </value>
-        bool CreateLeftHandSystem { set; get; }
+        bool CreateLeftHandSystem
+        {
+            set; get;
+        }
         /// <summary>
         /// Creates the view matrix.
         /// </summary>

@@ -44,7 +44,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <unmanaged>HRESULT ID3D11Device::CreateTexture2D([In] const D3D11_TEXTURE2D_DESC* pDesc,[In, Buffer, Optional] const D3D11_SUBRESOURCE_DATA* pInitialData,[Out, Fast] ID3D11Texture2D** ppTexture2D)</unmanaged>	
         /// <unmanaged-short>ID3D11Device::CreateTexture2D</unmanaged-short>	
         protected internal Texture2DBase(Direct3D11.Device device, Texture2DDescription description2D, DataBox[] dataBoxes)
-            : base(device ,description2D)
+            : base(device, description2D)
         {
             Resource = new Direct3D11.Texture2D(device, description2D, dataBoxes);
         }
@@ -69,7 +69,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns></returns>
         public override Texture ToStaging()
         {
-            return new Texture2D(this.GraphicsDevice, this.Description.ToStagingDescription());            
+            return new Texture2D(this.GraphicsDevice, this.Description.ToStagingDescription());
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace SharpDX.Toolkit.Graphics
             if ((this.Description.BindFlags & BindFlags.UnorderedAccess) == 0)
                 return null;
 
-            int arrayCount = 1;
+            var arrayCount = 1;
 
             // Use Full although we are binding to a single array/mimap slice, just to get the correct index
             var uavIndex = GetViewIndex(ViewType.Full, arrayOrDepthSlice, mipIndex);
@@ -166,7 +166,8 @@ namespace SharpDX.Toolkit.Graphics
                 // Creates the unordered access view
                 if (uav == null)
                 {
-                    var uavDescription = new UnorderedAccessViewDescription() {
+                    var uavDescription = new UnorderedAccessViewDescription()
+                    {
                         Format = this.Description.Format,
                         Dimension = this.Description.ArraySize > 1 ? UnorderedAccessViewDimension.Texture2DArray : UnorderedAccessViewDimension.Texture2D
                     };
@@ -212,7 +213,7 @@ namespace SharpDX.Toolkit.Graphics
 
                 // Pre initialize by default the view on the first array/mipmap
                 var viewFormat = GetDefaultViewFormat();
-                if(!FormatHelper.IsTypeless(viewFormat))
+                if (!FormatHelper.IsTypeless(viewFormat))
                 {
                     // Only valid for non-typeless viewformat
                     defaultShaderResourceView = GetShaderResourceView(viewFormat, ViewType.Full, 0, 0);
@@ -247,18 +248,18 @@ namespace SharpDX.Toolkit.Graphics
                 usage = ResourceUsage.Default;
 
             var desc = new Texture2DDescription()
-                           {
-                               Width = width,
-                               Height = height,
-                               ArraySize = arraySize,
-                               SampleDescription = new DXGI.SampleDescription(1, 0),
-                               BindFlags = GetBindFlagsFromTextureFlags(textureFlags),
-                               Format = format,
-                               MipLevels = CalculateMipMapCount(mipCount, width, height),
-                               Usage = usage,
-                               CpuAccessFlags = GetCpuAccessFlagsFromUsage(usage),
-                               OptionFlags = ResourceOptionFlags.None
-                           };
+            {
+                Width = width,
+                Height = height,
+                ArraySize = arraySize,
+                SampleDescription = new DXGI.SampleDescription(1, 0),
+                BindFlags = GetBindFlagsFromTextureFlags(textureFlags),
+                Format = format,
+                MipLevels = CalculateMipMapCount(mipCount, width, height),
+                Usage = usage,
+                CpuAccessFlags = GetCpuAccessFlagsFromUsage(usage),
+                OptionFlags = ResourceOptionFlags.None
+            };
 
 
             // If the texture is a RenderTarget + ShaderResource + MipLevels > 1, then allow for GenerateMipMaps method

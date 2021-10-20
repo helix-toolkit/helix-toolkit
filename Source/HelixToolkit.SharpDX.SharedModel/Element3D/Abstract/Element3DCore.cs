@@ -45,7 +45,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public sealed class SceneNodeCreatedEventArgs : EventArgs
             {
-                public SceneNode Node { private set; get; }
+                public SceneNode Node
+                {
+                    private set; get;
+                }
                 public SceneNodeCreatedEventArgs(SceneNode node)
                 {
                     Node = node;
@@ -56,7 +59,10 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </summary>
             public Guid GUID
             {
-                get { return SceneNode.GUID; }
+                get
+                {
+                    return SceneNode.GUID;
+                }
             }
 
             /// <summary>
@@ -73,12 +79,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public bool Visible
             {
-                get { return SceneNode.Visible; }
+                get
+                {
+                    return SceneNode.Visible;
+                }
             }
 
             public bool IsAttached
             {
-                get { return SceneNode.IsAttached; }
+                get
+                {
+                    return SceneNode.IsAttached;
+                }
             }
 
             #region Scene Node
@@ -110,7 +122,9 @@ namespace HelixToolkit.Wpf.SharpDX
             /// <returns></returns>
             protected abstract SceneNode OnCreateSceneNode();
 
-            protected virtual void AssignDefaultValuesToSceneNode(SceneNode node) { }
+            protected virtual void AssignDefaultValuesToSceneNode(SceneNode node)
+            {
+            }
             #endregion
             #region Events        
             /// <summary>
@@ -127,7 +141,10 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public BoundingBox Bounds
             {
-                get { return SceneNode.Bounds; }
+                get
+                {
+                    return SceneNode.Bounds;
+                }
             }
             /// <summary>
             /// Gets the bounds with transform.
@@ -137,7 +154,10 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public BoundingBox BoundsWithTransform
             {
-                get { return SceneNode.BoundsWithTransform; }
+                get
+                {
+                    return SceneNode.BoundsWithTransform;
+                }
             }
             /// <summary>
             /// Gets the bounds sphere.
@@ -147,7 +167,10 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public BoundingSphere BoundsSphere
             {
-                get { return SceneNode.BoundsSphere; }
+                get
+                {
+                    return SceneNode.BoundsSphere;
+                }
             }
             /// <summary>
             /// Gets the bounds sphere with transform.
@@ -157,7 +180,10 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public BoundingSphere BoundsSphereWithTransform
             {
-                get { return SceneNode.BoundsSphereWithTransform; }
+                get
+                {
+                    return SceneNode.BoundsSphereWithTransform;
+                }
             }
             #endregion
 
@@ -228,6 +254,5 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }
 #endif

@@ -90,7 +90,7 @@ namespace HelixToolkit.UWP
         public Vector2 OffTR;
         public Vector2 OffBL;
         public Vector2 OffBR;
-        public const int SizeInBytes = 4 * (4  * 3 + 2 * 6);
+        public const int SizeInBytes = 4 * (4 * 3 + 2 * 6);
     }
     /// <summary>
     /// 
@@ -256,11 +256,11 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The view projection matrix
         /// </summary>
-        public Matrix ViewProjection;   
+        public Matrix ViewProjection;
         /// <summary>
         /// The frustum [fov,asepct-ratio,near,far]  
         /// </summary>
-        public Vector4 Frustum;  
+        public Vector4 Frustum;
         /// <summary>
         /// The viewport [w,h,1/w,1/h]      
         /// </summary>
@@ -332,7 +332,7 @@ namespace HelixToolkit.UWP
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PhongPBRMaterialStruct
     {
-        public const int SizeInBytes = 4 * ( 4 + 4 * 5 + 4 + 4 + 4 + 4 * 3 + 4) + ModelStruct.SizeInBytes;
+        public const int SizeInBytes = 4 * (4 + 4 * 5 + 4 + 4 + 4 + 4 * 3 + 4) + ModelStruct.SizeInBytes;
 
         public const string MinTessDistanceStr = "minTessDistance"; //float
         public const string MaxTessDistanceStr = "maxTessDistance";//float
@@ -532,17 +532,17 @@ namespace HelixToolkit.UWP
         public Vector4 BottomRight;
         public Vector4 TopLeft;
         public Vector4 TopRight;
-        
+
         public Vector2 TexTopLeft;
         Vector2 pad2;
         public Vector2 TexTopRight;
-        Vector2 pad3;        
-        public Vector2 TexBottomLeft;       
+        Vector2 pad3;
+        public Vector2 TexBottomLeft;
         Vector2 pad0;
         public Vector2 TexBottomRight;
         Vector2 pad1;
 
-        public const int SizeInBytes = 4 * ( 4 * 4 + 4 * 8 );
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 8);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -603,7 +603,10 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if this instance has uv transform; otherwise, <c>false</c>.
         /// </value>
-        public bool HasUVTransform { get => Rotation != 0 || Scaling.X != 1 || Scaling.Y != 1 || Translation.X != 0 || Translation.Y != 0; }
+        public bool HasUVTransform
+        {
+            get => Rotation != 0 || Scaling.X != 1 || Scaling.Y != 1 || Translation.X != 0 || Translation.Y != 0;
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="UVTransform"/> struct.
         /// </summary>
@@ -659,9 +662,9 @@ namespace HelixToolkit.UWP
         /// </returns>
         public static implicit operator Matrix(UVTransform uvTransform)
         {
-            float cos = (float)Math.Cos(uvTransform.Rotation);
-            float sine = (float)Math.Sin(uvTransform.Rotation);
-            return new Matrix(cos * uvTransform.Scaling.X, sine, 0, 0, 
+            var cos = (float)Math.Cos(uvTransform.Rotation);
+            var sine = (float)Math.Sin(uvTransform.Rotation);
+            return new Matrix(cos * uvTransform.Scaling.X, sine, 0, 0,
                 -sine, cos * uvTransform.Scaling.Y, 0, 0,
                 0, 0, 1, 0, uvTransform.Translation.X, uvTransform.Translation.Y, 0, 1);
         }
@@ -690,7 +693,7 @@ namespace HelixToolkit.UWP
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ScreenDuplicationModelStruct
-    {        
+    {
         public Vector4 TopRight;
         public Vector4 TopLeft;
         public Vector4 BottomRight;

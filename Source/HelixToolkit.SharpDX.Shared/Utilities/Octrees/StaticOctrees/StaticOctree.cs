@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
         /// Base class for array based static octree.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public abstract class StaticOctree<T> : IOctreeBasic where T : struct
+        public abstract class StaticOctree<T> : IOctreeBasic where T : unmanaged
         {
             public const int OctantSize = 8;
             /// <summary>
@@ -39,14 +39,44 @@ namespace HelixToolkit.UWP
                 public readonly BoundingBox Bound;
                 private int c0, c1, c2, c3, c4, c5, c6, c7;
                 public readonly int Parent;
-                public readonly int Index;        
-                public int Start { set; get; }
-                public int End { set; get; }
-                public bool IsBuilt { set; get; }
-                public byte ActiveNode { private set; get; }
-                public bool HasChildren { get { return ActiveNode != 0; } }
-                public bool IsEmpty { get { return Count == 0; } }
-                public int Count { get { return End - Start; } }
+                public readonly int Index;
+                public int Start
+                {
+                    set; get;
+                }
+                public int End
+                {
+                    set; get;
+                }
+                public bool IsBuilt
+                {
+                    set; get;
+                }
+                public byte ActiveNode
+                {
+                    private set; get;
+                }
+                public bool HasChildren
+                {
+                    get
+                    {
+                        return ActiveNode != 0;
+                    }
+                }
+                public bool IsEmpty
+                {
+                    get
+                    {
+                        return Count == 0;
+                    }
+                }
+                public int Count
+                {
+                    get
+                    {
+                        return End - Start;
+                    }
+                }
                 /// <summary>
                 /// Initializes a new instance of the <see cref="Octant"/> struct.
                 /// </summary>
@@ -88,14 +118,22 @@ namespace HelixToolkit.UWP
                 {
                     switch (index)
                     {
-                        case 0: return c0;
-                        case 1: return c1;
-                        case 2: return c2;
-                        case 3: return c3;
-                        case 4: return c4;
-                        case 5: return c5;
-                        case 6: return c6;
-                        case 7: return c7;
+                        case 0:
+                            return c0;
+                        case 1:
+                            return c1;
+                        case 2:
+                            return c2;
+                        case 3:
+                            return c3;
+                        case 4:
+                            return c4;
+                        case 5:
+                            return c5;
+                        case 6:
+                            return c6;
+                        case 7:
+                            return c7;
                         default:
                             return -1;
                     }
@@ -110,14 +148,30 @@ namespace HelixToolkit.UWP
                 {
                     switch (index)
                     {
-                        case 0: c0 = value; break;
-                        case 1: c1 = value; break;
-                        case 2: c2 = value; break;
-                        case 3: c3 = value; break;
-                        case 4: c4 = value; break;
-                        case 5: c5 = value; break;
-                        case 6: c6 = value; break;
-                        case 7: c7 = value; break;
+                        case 0:
+                            c0 = value;
+                            break;
+                        case 1:
+                            c1 = value;
+                            break;
+                        case 2:
+                            c2 = value;
+                            break;
+                        case 3:
+                            c3 = value;
+                            break;
+                        case 4:
+                            c4 = value;
+                            break;
+                        case 5:
+                            c5 = value;
+                            break;
+                        case 6:
+                            c6 = value;
+                            break;
+                        case 7:
+                            c7 = value;
+                            break;
                     }
                     if (value >= 0)
                     {
@@ -134,8 +188,14 @@ namespace HelixToolkit.UWP
                 /// <returns></returns>
                 public int this[int index]
                 {
-                    get { return GetChildIndex(index); }
-                    set { SetChildIndex(index, value); }
+                    get
+                    {
+                        return GetChildIndex(index);
+                    }
+                    set
+                    {
+                        SetChildIndex(index, value);
+                    }
                 }
                 /// <summary>
                 /// Determines whether [has child at index] [the specified index].
@@ -156,7 +216,10 @@ namespace HelixToolkit.UWP
             protected sealed class OctantArray
             {
                 internal Octant[] array = new Octant[128];
-                public int Count { private set; get; }
+                public int Count
+                {
+                    private set; get;
+                }
                 /// <summary>
                 /// Initializes a new instance of the <see cref="OctantArray"/> class.
                 /// </summary>
@@ -187,7 +250,7 @@ namespace HelixToolkit.UWP
                     if (array.Length < Count + OctantSize)
                     {
                         var newSize = array.Length * 2;
-                        if(newSize > int.MaxValue / 4) //Size is too big
+                        if (newSize > int.MaxValue / 4) //Size is too big
                         {
                             return false;
                         }
@@ -232,8 +295,14 @@ namespace HelixToolkit.UWP
                 /// <returns></returns>
                 public Octant this[int index]
                 {
-                    get { return array[index]; }
-                    set { array[index] = value; }
+                    get
+                    {
+                        return array[index];
+                    }
+                    set
+                    {
+                        array[index] = value;
+                    }
                 }
             }
 
@@ -248,26 +317,50 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Internal octant array size.
             /// </summary>
-            public int OctantArraySize { get { return octants != null ? octants.Count : 0; } }
+            public int OctantArraySize
+            {
+                get
+                {
+                    return octants != null ? octants.Count : 0;
+                }
+            }
             /// <summary>
             ///
             /// </summary>
-            public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
+            public IList<BoundingBox> HitPathBoundingBoxes
+            {
+                get
+                {
+                    return hitPathBoundingBoxes.AsReadOnly();
+                }
+            }
 
-            private static readonly ObjectPool<Stack<KeyValuePair<int, int>>> hitStackPool 
-                = new ObjectPool<Stack<KeyValuePair<int, int>>>(()=> { return new Stack<KeyValuePair<int, int>>(); }, 10);
+            private static readonly ObjectPool<Stack<KeyValuePair<int, int>>> hitStackPool
+                = new ObjectPool<Stack<KeyValuePair<int, int>>>(() => { return new Stack<KeyValuePair<int, int>>(); }, 10);
 
             /// <summary>
             /// The minumum size for enclosing region is a 1x1x1 cube.
             /// </summary>
-            public float MIN_SIZE { get { return Parameter.MinimumOctantSize; } }
+            public float MIN_SIZE
+            {
+                get
+                {
+                    return Parameter.MinimumOctantSize;
+                }
+            }
 
-            public OctreeBuildParameter Parameter { private set; get; }
+            public OctreeBuildParameter Parameter
+            {
+                private set; get;
+            }
 
             /// <summary>
             ///
             /// </summary>
-            protected T[] Objects { private set; get; }
+            protected T[] Objects
+            {
+                private set; get;
+            }
 
             /// <summary>
             ///
@@ -277,7 +370,10 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public BoundingBox Bound { private set; get; }
+            public BoundingBox Bound
+            {
+                private set; get;
+            }
 
             /// <summary>
             ///
@@ -297,19 +393,19 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-    #if DEBUG
+#if DEBUG
                 var tick = Stopwatch.GetTimestamp();
-    #endif
+#endif
                 Objects = GetObjects();
                 octants = new OctantArray(GetMaxBound(), Objects.Length);
                 TreeTraversal(new Stack<KeyValuePair<int, int>>(), (index) => { BuildSubTree(index); }, null);
                 octants.Compact();
                 TreeBuilt = true;
                 Bound = octants[0].Bound;
-    #if DEBUG
+#if DEBUG
                 tick = Stopwatch.GetTimestamp() - tick;
                 Console.WriteLine($"Build static tree time ={(double)tick / Stopwatch.Frequency * 1000}; Total = {octants.Count}");
-    #endif
+#endif
             }
 
             protected abstract T[] GetObjects();
@@ -326,7 +422,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool CheckDimension(ref BoundingBox bound)
             {
-                Vector3 dimensions = bound.Maximum - bound.Minimum;
+                var dimensions = bound.Maximum - bound.Minimum;
 
                 if (dimensions == Vector3.Zero)
                 {
@@ -361,23 +457,23 @@ namespace HelixToolkit.UWP
                     var octantBounds = CreateOctants(ref b, Parameter.MinimumOctantSize);
                     if (octantBounds.Length == OctantSize)
                     {
-                        int start = octant.Start;
-                        Octant childOctant = new Octant();
-                        for (int childOctantIdx = 0; childOctantIdx < OctantSize; ++childOctantIdx)
+                        var start = octant.Start;
+                        var childOctant = new Octant();
+                        for (var childOctantIdx = 0; childOctantIdx < OctantSize; ++childOctantIdx)
                         {
-                            int count = 0;
-                            int end = octant.End;
-                            bool hasChildOctant = false;
-                            int childIdx = -1;
+                            var count = 0;
+                            var end = octant.End;
+                            var hasChildOctant = false;
+                            var childIdx = -1;
 
-                            for (int i = end - 1; i >= start; --i)
+                            for (var i = end - 1; i >= start; --i)
                             {
                                 var obj = Objects[i];
                                 if (IsContains(ref octantBounds[childOctantIdx], GetBoundingBoxFromItem(ref obj), ref obj))
                                 {
                                     if (!hasChildOctant)//Add New Child Octant if not having one.
                                     {
-                                        if(!octants.Add(index, childOctantIdx, octantBounds[childOctantIdx], ref octant))
+                                        if (!octants.Add(index, childOctantIdx, octantBounds[childOctantIdx], ref octant))
                                         {
                                             Debug.WriteLine("Add child failed.");
                                             break;
@@ -388,7 +484,7 @@ namespace HelixToolkit.UWP
                                     }
                                     ++count;
                                     childOctant.End = end;
-                                    int s = end - count;
+                                    var s = end - count;
                                     childOctant.Start = s;
                                     var o = Objects[i];
                                     Objects[i] = Objects[s]; //swap objects. Move object into parent octant start/end range
@@ -428,7 +524,7 @@ namespace HelixToolkit.UWP
                     return new BoundingBox();
                 }
                 var b = GetBoundingBoxFromItem(ref Objects[octant.Start]);
-                for (int i = octant.Start + 1; i < octant.End; ++i)
+                for (var i = octant.Start + 1; i < octant.End; ++i)
                 {
                     var bound = GetBoundingBoxFromItem(ref Objects[i]);
                     BoundingBox.Merge(ref b, ref bound, out b);
@@ -445,13 +541,13 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static BoundingBox[] CreateOctants(ref BoundingBox box, float minSize)
             {
-                Vector3 dimensions = box.Maximum - box.Minimum;
+                var dimensions = box.Maximum - box.Minimum;
                 if (dimensions == Vector3.Zero || (dimensions.X < minSize || dimensions.Y < minSize || dimensions.Z < minSize))
                 {
                     return new BoundingBox[0];
                 }
-                Vector3 half = dimensions / 2.0f;
-                Vector3 center = box.Minimum + half;
+                var half = dimensions / 2.0f;
+                var center = box.Minimum + half;
                 var minimum = box.Minimum;
                 var maximum = box.Maximum;
                 //Create subdivided regions for each octant
@@ -489,8 +585,8 @@ namespace HelixToolkit.UWP
             public void TreeTraversal(Stack<KeyValuePair<int, int>> stack, Action<int> process,
                 Func<int, bool> canVisitChildren = null)
             {
-                int parent = -1;
-                int curr = -1;
+                var parent = -1;
+                var curr = -1;
                 var dummy = new Octant(-1, -1);
                 dummy[0] = 0;
                 var parentOctant = dummy;
@@ -512,7 +608,10 @@ namespace HelixToolkit.UWP
                             }
                         }
                     }
-                    if (stack.Count == 0) { break; }
+                    if (stack.Count == 0)
+                    {
+                        break;
+                    }
                     var prev = stack.Pop();
                     parent = prev.Key;
                     curr = prev.Value;
@@ -564,7 +663,7 @@ namespace HelixToolkit.UWP
             /// <param name="hits">The hits.</param>
             /// <param name="hitThickness">The hit thickness.</param>
             /// <returns></returns>
-            public virtual bool HitTest(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix, 
+            public virtual bool HitTest(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
                 ref List<HitTestResult> hits, float hitThickness)
             {
                 return HitTest(context, model, geometry, modelMatrix, false, ref hits, hitThickness);
@@ -581,7 +680,7 @@ namespace HelixToolkit.UWP
             /// <param name="hits"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            public virtual bool HitTest(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix, 
+            public virtual bool HitTest(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix,
                 bool returnMultiple, ref List<HitTestResult> hits, float hitThickness)
             {
                 if (hits == null)
@@ -591,15 +690,18 @@ namespace HelixToolkit.UWP
                 hitPathBoundingBoxes.Clear();
                 var hitStack = hitStackPool.GetObject();
                 hitStack.Clear();
-                bool isHit = false;
+                var isHit = false;
                 var modelHits = new List<HitTestResult>();
                 var modelInv = modelMatrix.Inverted();
-                if (modelInv == Matrix.Zero) { return false; }//Cannot be inverted
+                if (modelInv == Matrix.Zero)
+                {
+                    return false;
+                }//Cannot be inverted
                 var rayWS = context.RayWS;
                 var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
 
-                int parent = -1;
-                int curr = -1;
+                var parent = -1;
+                var curr = -1;
                 var dummy = new Octant(-1, -1);
                 dummy[0] = 0;
                 var parentOctant = dummy;
@@ -610,8 +712,8 @@ namespace HelixToolkit.UWP
                         if (parentOctant.HasChildAtIndex(curr))
                         {
                             ref var octant = ref octants.array[parentOctant[curr]];
-                            bool isIntersect = false;
-                            bool nodeHit = HitTestCurrentNodeExcludeChild(ref octant,
+                            var isIntersect = false;
+                            var nodeHit = HitTestCurrentNodeExcludeChild(ref octant,
                                 context, model, geometry, modelMatrix, ref rayModel, returnMultiple, ref modelHits, ref isIntersect, hitThickness);
                             isHit |= nodeHit;
                             if (isIntersect && octant.HasChildren)
@@ -631,13 +733,18 @@ namespace HelixToolkit.UWP
                                     {
                                         n = octants[n.Parent];
                                     }
-                                    else { break; }
+                                    else
+                                    {
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
                     if (hitStack.Count == 0)
-                    { break; }
+                    {
+                        break;
+                    }
                     var prev = hitStack.Pop();
                     parent = prev.Key;
                     curr = prev.Value;
@@ -675,10 +782,10 @@ namespace HelixToolkit.UWP
                 }
                 var hitStack = hitStackPool.GetObject();
                 hitStack.Clear();
-                bool isHit = false;
+                var isHit = false;
 
-                int parent = -1;
-                int curr = -1;
+                var parent = -1;
+                var curr = -1;
                 var dummy = new Octant(-1, -1);
                 dummy[0] = 0;
                 var parentOctant = dummy;
@@ -689,8 +796,8 @@ namespace HelixToolkit.UWP
                         if (parentOctant.HasChildAtIndex(curr))
                         {
                             ref var octant = ref octants.array[parentOctant[curr]];
-                            bool isIntersect = false;
-                            bool nodeHit = FindNearestPointBySphereExcludeChild(ref octant, context, ref sphere, ref points, ref isIntersect);
+                            var isIntersect = false;
+                            var nodeHit = FindNearestPointBySphereExcludeChild(ref octant, context, ref sphere, ref points, ref isIntersect);
                             isHit |= nodeHit;
                             if (octant.HasChildren && isIntersect)
                             {
@@ -701,7 +808,10 @@ namespace HelixToolkit.UWP
                             }
                         }
                     }
-                    if (hitStack.Count == 0) { break; }
+                    if (hitStack.Count == 0)
+                    {
+                        break;
+                    }
                     var prev = hitStack.Pop();
                     parent = prev.Key;
                     curr = prev.Value;
@@ -732,11 +842,11 @@ namespace HelixToolkit.UWP
                 var hitStack = hitStackPool.GetObject();
                 hitStack.Clear();
                 var sphere = new BoundingSphere(point, float.MaxValue);
-                bool isHit = false;
+                var isHit = false;
                 heuristicSearchFactor = Math.Min(1.0f, Math.Max(0.1f, heuristicSearchFactor));
 
-                int parent = -1;
-                int curr = -1;
+                var parent = -1;
+                var curr = -1;
                 var dummy = new Octant(-1, -1);
                 dummy[0] = 0;
                 var parentOctant = dummy;
@@ -747,8 +857,8 @@ namespace HelixToolkit.UWP
                         if (parentOctant.HasChildAtIndex(curr))
                         {
                             ref var octant = ref octants.array[parentOctant[curr]];
-                            bool isIntersect = false;
-                            bool nodeHit = FindNearestPointBySphereExcludeChild(ref octant, context, ref sphere, ref results, ref isIntersect);
+                            var isIntersect = false;
+                            var nodeHit = FindNearestPointBySphereExcludeChild(ref octant, context, ref sphere, ref results, ref isIntersect);
                             isHit |= nodeHit;
                             if (isIntersect)
                             {
@@ -766,7 +876,10 @@ namespace HelixToolkit.UWP
                             }
                         }
                     }
-                    if (hitStack.Count == 0) { break; }
+                    if (hitStack.Count == 0)
+                    {
+                        break;
+                    }
                     var prev = hitStack.Pop();
                     parent = prev.Key;
                     curr = prev.Value;
@@ -827,10 +940,10 @@ namespace HelixToolkit.UWP
             public LineGeometry3D CreateOctreeLineModel()
             {
                 var builder = new LineBuilder();
-                for (int i = 0; i < octants.Count; ++i)
+                for (var i = 0; i < octants.Count; ++i)
                 {
                     var box = octants.array[i].Bound;
-                    Vector3[] verts = new Vector3[8];
+                    var verts = new Vector3[8];
                     verts[0] = box.Minimum;
                     verts[1] = new Vector3(box.Minimum.X, box.Minimum.Y, box.Maximum.Z); //Z
                     verts[2] = new Vector3(box.Minimum.X, box.Maximum.Y, box.Minimum.Z); //Y
@@ -869,13 +982,12 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected static bool BoxDisjointSphere(BoundingBox box, ref BoundingSphere sphere)
             {
-                Vector3.Clamp(ref sphere.Center, ref box.Minimum, ref box.Maximum, out Vector3 vector);
-                float distance = Vector3.DistanceSquared(sphere.Center, vector);
+                Vector3.Clamp(ref sphere.Center, ref box.Minimum, ref box.Maximum, out var vector);
+                var distance = Vector3.DistanceSquared(sphere.Center, vector);
 
                 return distance > sphere.Radius * sphere.Radius;
             }
             #endregion
         }
     }
-
 }

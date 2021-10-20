@@ -28,14 +28,20 @@ namespace HelixToolkit.UWP
                 {
                     internalBoneBuffer.BoneMatrices = value;
                 }
-                get { return internalBoneBuffer.BoneMatrices; }
+                get
+                {
+                    return internalBoneBuffer.BoneMatrices;
+                }
             }
 
             private bool mtChanged = false;
             public float[] MorphTargetWeights
             {
-                get { return internalMTBuffer.MorphTargetWeights; }
-                set 
+                get
+                {
+                    return internalMTBuffer.MorphTargetWeights;
+                }
+                set
                 {
                     internalMTBuffer.MorphTargetWeights = value;
                     mtChanged = true;
@@ -48,7 +54,7 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = sharedBoneBuffer;
-                    if(Set(ref sharedBoneBuffer, value))
+                    if (Set(ref sharedBoneBuffer, value))
                     {
                         if (old != null)
                         {
@@ -61,7 +67,10 @@ namespace HelixToolkit.UWP
                         matricsChanged = true;
                     }
                 }
-                get { return sharedBoneBuffer; }
+                get
+                {
+                    return sharedBoneBuffer;
+                }
             }
 
             private int boneSkinSBSlot;
@@ -81,7 +90,7 @@ namespace HelixToolkit.UWP
 
             protected override bool OnAttach(IRenderTechnique technique)
             {
-                if(base.OnAttach(technique))
+                if (base.OnAttach(technique))
                 {
                     matricsChanged = true;
                     preComputeBoneSkinPass = technique[DefaultPassNames.PreComputeMeshBoneSkinned];
@@ -122,7 +131,7 @@ namespace HelixToolkit.UWP
 
                 var boneBuffer = sharedBoneBuffer ?? internalBoneBuffer;
 
-                if(boneBuffer.BoneMatrices.Length == 0 && !mtChanged)
+                if (boneBuffer.BoneMatrices.Length == 0 && !mtChanged)
                 {
                     preComputeBoneBuffer.ResetSkinnedVertexBuffer(deviceContext);
                 }
@@ -138,7 +147,7 @@ namespace HelixToolkit.UWP
                     deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
                     preComputeBoneBuffer.UnBindSkinnedVertexBufferToOutput(deviceContext);
                 }
-                matricsChanged = false;         
+                matricsChanged = false;
             }
 
             protected override void OnDetach()
@@ -164,5 +173,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

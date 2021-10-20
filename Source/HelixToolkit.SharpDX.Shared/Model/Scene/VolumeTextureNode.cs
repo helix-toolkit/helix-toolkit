@@ -29,7 +29,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public MaterialCore Material
             {
-                get { return material; }
+                get
+                {
+                    return material;
+                }
                 set
                 {
                     if (Set(ref material, value))
@@ -65,12 +68,15 @@ namespace HelixToolkit.UWP
                     AttachMaterial();
                     return true;
                 }
-                else { return false; }
+                else
+                {
+                    return false;
+                }
             }
 
             protected override void OnDetach()
             {
-                materialVariable = null;
+                RemoveAndDispose(ref materialVariable);
                 base.OnDetach();
             }
 
@@ -81,7 +87,7 @@ namespace HelixToolkit.UWP
                 RemoveAndDispose(ref materialVariable);
                 if (RenderCore is VolumeRenderCore core)
                 {
-                    materialVariable = core.MaterialVariables = Collect(newVar);
+                    materialVariable = core.MaterialVariables = newVar;
                 }
             }
 
@@ -112,5 +118,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

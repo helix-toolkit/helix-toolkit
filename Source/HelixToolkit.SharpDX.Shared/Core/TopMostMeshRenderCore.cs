@@ -21,19 +21,19 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Clears the depth buffer and reset global transform.
         /// </summary>
-        public class TopMostMeshRenderCore: RenderCore
+        public class TopMostMeshRenderCore : RenderCore
         {
             public TopMostMeshRenderCore() : base(RenderType.ScreenSpaced)
             {
             }
-            
+
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 if (RenderType != RenderType.ScreenSpaced)
                 {
                     return;
                 }
-                deviceContext.GetDepthStencilView(out DepthStencilView dsView);
+                deviceContext.GetDepthStencilView(out var dsView);
                 if (dsView == null)
                 {
                     return;
@@ -51,6 +51,10 @@ namespace HelixToolkit.UWP
             protected override bool OnAttach(IRenderTechnique technique)
             {
                 return true;
+            }
+
+            protected override void OnDetach()
+            {
             }
         }
     }

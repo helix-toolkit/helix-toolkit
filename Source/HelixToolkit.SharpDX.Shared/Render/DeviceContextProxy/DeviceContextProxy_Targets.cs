@@ -106,8 +106,8 @@ namespace HelixToolkit.UWP
             /// <param name="depth"></param>
             /// <param name="stencil"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetRenderTarget(DepthStencilView dsv, RenderTargetView rtv, 
-                bool clearRTV, Color4 color, bool clearDSV, 
+            public void SetRenderTarget(DepthStencilView dsv, RenderTargetView rtv,
+                bool clearRTV, Color4 color, bool clearDSV,
                 DepthStencilClearFlags flags = DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil,
                 float depth = 1, byte stencil = 0)
             {
@@ -115,7 +115,7 @@ namespace HelixToolkit.UWP
                 {
                     ClearRenderTargetView(rtv, color);
                 }
-                if(clearDSV && dsv != null)
+                if (clearDSV && dsv != null)
                 {
                     ClearDepthStencilView(dsv, flags, depth, stencil);
                 }
@@ -300,5 +300,4 @@ namespace HelixToolkit.UWP
             #endregion Clear Targets
         }
     }
-
 }

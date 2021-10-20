@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP
                             CreateGeometryBuffer();
                         }
                         OnGeometryChanged(value, old);
-                        InvalidateRender();                   
+                        InvalidateRender();
                     }
                 }
                 get
@@ -74,7 +74,10 @@ namespace HelixToolkit.UWP
                         InstancesChanged();
                     }
                 }
-                get { return instances; }
+                get
+                {
+                    return instances;
+                }
             }
 
             /// <summary>
@@ -83,7 +86,13 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance has instances; otherwise, <c>false</c>.
             /// </value>
-            public bool HasInstances { get { return InstanceBuffer.HasElements; } }
+            public bool HasInstances
+            {
+                get
+                {
+                    return InstanceBuffer.HasElements;
+                }
+            }
 
             /// <summary>
             /// Gets the instance buffer.
@@ -96,7 +105,9 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Instanceses the changed.
             /// </summary>
-            protected virtual void InstancesChanged() { }
+            protected virtual void InstancesChanged()
+            {
+            }
 
             /// <summary>
             /// The reuse vertex array buffer
@@ -120,7 +131,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The buffer model internal.
             /// </value>
-            protected IAttachableBufferModel BufferModelInternal { get { return bufferModelInternal; } }
+            protected IAttachableBufferModel BufferModelInternal
+            {
+                get
+                {
+                    return bufferModelInternal;
+                }
+            }
             private IAttachableBufferModel bufferModelInternal;
 
             /// <summary>
@@ -129,7 +146,13 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if [geometry valid]; otherwise, <c>false</c>.
             /// </value>
-            public bool GeometryValid { get { return BoundManager.GeometryValid; } }
+            public bool GeometryValid
+            {
+                get
+                {
+                    return BoundManager.GeometryValid;
+                }
+            }
 
             /// <summary>
             /// Gets or sets the bound manager.
@@ -146,7 +169,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public sealed override BoundingBox OriginalBounds
             {
-                get { return BoundManager.OriginalBounds; }
+                get
+                {
+                    return BoundManager.OriginalBounds;
+                }
             }
             /// <summary>
             /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry3D.BoundingSphere"/> 
@@ -156,7 +182,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public sealed override BoundingSphere OriginalBoundsSphere
             {
-                get { return BoundManager.OriginalBoundsSphere; }
+                get
+                {
+                    return BoundManager.OriginalBoundsSphere;
+                }
             }
 
             /// <summary>
@@ -167,7 +196,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public sealed override BoundingBox Bounds
             {
-                get { return BoundManager.Bounds; }
+                get
+                {
+                    return BoundManager.Bounds;
+                }
             }
 
             /// <summary>
@@ -178,7 +210,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public sealed override BoundingBox BoundsWithTransform
             {
-                get { return BoundManager.BoundsWithTransform; }
+                get
+                {
+                    return BoundManager.BoundsWithTransform;
+                }
             }
 
 
@@ -190,7 +225,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public override BoundingSphere BoundsSphere
             {
-                get { return BoundManager.BoundsSphere; }
+                get
+                {
+                    return BoundManager.BoundsSphere;
+                }
             }
 
             /// <summary>
@@ -201,7 +239,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public override BoundingSphere BoundsSphereWithTransform
             {
-                get { return BoundManager.BoundsSphereWithTransform; }
+                get
+                {
+                    return BoundManager.BoundsSphereWithTransform;
+                }
             }
 
             #region Rasterizer parameters
@@ -222,7 +263,10 @@ namespace HelixToolkit.UWP
                         OnRasterStateChanged();
                     }
                 }
-                get { return depthBias; }
+                get
+                {
+                    return depthBias;
+                }
             }
 
             private float slopScaledDepthBias = 0;
@@ -234,7 +278,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public float SlopeScaledDepthBias
             {
-                get { return slopScaledDepthBias; }
+                get
+                {
+                    return slopScaledDepthBias;
+                }
                 set
                 {
                     if (Set(ref slopScaledDepthBias, value))
@@ -253,7 +300,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsMSAAEnabled
             {
-                get { return isMSAAEnabled = true; }
+                get
+                {
+                    return isMSAAEnabled = true;
+                }
                 set
                 {
                     if (Set(ref isMSAAEnabled, value))
@@ -272,7 +322,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsScissorEnabled
             {
-                get { return isScissorEnabled; }
+                get
+                {
+                    return isScissorEnabled;
+                }
                 set
                 {
                     if (Set(ref isScissorEnabled, value))
@@ -291,7 +344,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public FillMode FillMode
             {
-                get { return fillMode; }
+                get
+                {
+                    return fillMode;
+                }
                 set
                 {
                     if (Set(ref fillMode, value))
@@ -310,7 +366,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsDepthClipEnabled
             {
-                get { return isDepthClipEnabled; }
+                get
+                {
+                    return isDepthClipEnabled;
+                }
                 set
                 {
                     if (Set(ref isDepthClipEnabled, value))
@@ -330,8 +389,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableViewFrustumCheck
             {
-                set { enableViewFrustumCheck = value; }
-                get { return enableViewFrustumCheck && HasBound; }
+                set
+                {
+                    enableViewFrustumCheck = value;
+                }
+                get
+                {
+                    return enableViewFrustumCheck && HasBound;
+                }
             }
 
             private string postEffects;
@@ -343,7 +408,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public string PostEffects
             {
-                get { return postEffects; }
+                get
+                {
+                    return postEffects;
+                }
                 set
                 {
                     if (Set(ref postEffects, value))
@@ -469,10 +537,10 @@ namespace HelixToolkit.UWP
             }
 
             private void CreateGeometryBuffer()
-            {                
+            {
                 var newBuffer = OnCreateBufferModel(this.GUID, geometry);
                 RemoveAndDispose(ref bufferModelInternal);
-                bufferModelInternal = Collect(newBuffer);
+                bufferModelInternal = newBuffer;
                 if (RenderCore is IGeometryRenderCore core)
                 {
                     core.GeometryBuffer = bufferModelInternal;
@@ -492,7 +560,11 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected override void OnDetach()
             {
-                bufferModelInternal = null;
+                if (RenderCore is IGeometryRenderCore core)
+                {
+                    core.GeometryBuffer = null;
+                }
+                RemoveAndDispose(ref bufferModelInternal);
                 InstanceBuffer.DisposeAndClear();
                 BoundManager.DisposeAndClear();
                 base.OnDetach();
@@ -549,8 +621,8 @@ namespace HelixToolkit.UWP
                 {
                     if (this.InstanceBuffer.HasElements)
                     {
-                        bool hit = false;
-                        int idx = 0;
+                        var hit = false;
+                        var idx = 0;
                         foreach (var modelMatrix in InstanceBuffer.Elements)
                         {
                             if (OnHitTest(context, modelMatrix * TotalModelMatrixInternal, ref hits))
@@ -607,5 +679,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

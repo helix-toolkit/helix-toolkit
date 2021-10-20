@@ -36,7 +36,10 @@ namespace HelixToolkit.UWP
                 {
                     (RenderCore as PostEffectMeshOutlineBlurCore).DrawMode = value;
                 }
-                get { return (RenderCore as PostEffectMeshOutlineBlurCore).DrawMode; }
+                get
+                {
+                    return (RenderCore as PostEffectMeshOutlineBlurCore).DrawMode;
+                }
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="NodePostEffectBorderHighlight"/> class.
@@ -69,5 +72,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

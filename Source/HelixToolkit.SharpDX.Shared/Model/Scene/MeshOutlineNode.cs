@@ -89,7 +89,7 @@ namespace HelixToolkit.UWP
                 {
                     return (RenderCore as IMeshOutlineParams).OutlineFadingFactor;
                 }
-            } 
+            }
             #endregion
             /// <summary>
             /// Called when [create render core].
@@ -101,5 +101,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

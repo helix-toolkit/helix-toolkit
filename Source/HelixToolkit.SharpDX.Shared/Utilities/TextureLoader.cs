@@ -44,7 +44,7 @@ namespace HelixToolkit.UWP
             {
                 using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, fileName))
                 {
-                    if(texture == null)
+                    if (texture == null)
                     {
                         return null;
                     }
@@ -71,7 +71,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public static ShaderResourceView FromMemoryAsShaderResourceView(Device device, byte[] memory, bool disableAutoGenMipMap = false)
             {
-                using(var memStream = new MemoryStream(memory))
+                using (var memStream = new MemoryStream(memory))
                 {
                     return FromMemoryAsShaderResourceView(device, memStream, disableAutoGenMipMap);
                 }
@@ -88,13 +88,13 @@ namespace HelixToolkit.UWP
             {
                 using (var texture = global::SharpDX.Toolkit.Graphics.Texture.Load(device, memory))
                 {
-                    if(texture == null)
+                    if (texture == null)
                     {
                         return null;
                     }
                     if (!disableAutoGenMipMap && texture.Description.MipLevels == 1)// Check if it already has mipmaps or not, if loaded DDS file, it may already has precompiled mipmaps, don't need to generate again
                     {
-                        if(GenerateMipMaps(device, texture, out var textureMipmap))
+                        if (GenerateMipMaps(device, texture, out var textureMipmap))
                         {
                             using (textureMipmap)
                             {
@@ -187,8 +187,8 @@ namespace HelixToolkit.UWP
                         textMip = texture.Resource.QueryInterface<Resource>();//Format not support, return the original texture.
                         return false;
                 }
-                int sliceCount = 1;
-                int mipLevels = 0;
+                var sliceCount = 1;
+                var mipLevels = 0;
                 switch (texture.Description.Dimension)
                 {
                     case global::SharpDX.Toolkit.Graphics.TextureDimension.Texture1D:
@@ -264,10 +264,10 @@ namespace HelixToolkit.UWP
 
                 using (var shaderRes = new ShaderResourceView(device, textMip))
                 {
-                    for(int i = 0; i < sliceCount; ++i)
+                    for (var i = 0; i < sliceCount; ++i)
                     {
-                        int idx = texture.GetSubResourceIndex(i, 0);
-                        int targetIdx = GetSubResourceIndex(i, mipLevels, 0);
+                        var idx = texture.GetSubResourceIndex(i, 0);
+                        var targetIdx = GetSubResourceIndex(i, mipLevels, 0);
                         device.ImmediateContext.CopySubresourceRegion(texture, idx, null, textMip, targetIdx);
                     }
                     device.ImmediateContext.GenerateMips(shaderRes);
@@ -281,5 +281,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -31,7 +31,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             get
             {
-                if(FormatHelper.IsTypeless(texture.Format))
+                if (FormatHelper.IsTypeless(texture.Format))
                 {
                     throw new InvalidOperationException(string.Format("Cannot create a SRV on a TypeLess texture format [{0}]", texture.Format));
                 }

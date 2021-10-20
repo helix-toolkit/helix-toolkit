@@ -79,29 +79,29 @@ namespace HelixToolkit.Wpf
         public static Vector3DCollection CalculateNormals(IList<Point3D> positions, IList<int> triangleIndices)
         {
             var normals = new Vector3DCollection(positions.Count);
-            for (int i = 0; i < positions.Count; i++)
+            for (var i = 0; i < positions.Count; i++)
             {
                 normals.Add(new Vector3D());
             }
 
-            for (int i = 0; i < triangleIndices.Count; i += 3)
+            for (var i = 0; i < triangleIndices.Count; i += 3)
             {
-                int index0 = triangleIndices[i];
-                int index1 = triangleIndices[i + 1];
-                int index2 = triangleIndices[i + 2];
+                var index0 = triangleIndices[i];
+                var index1 = triangleIndices[i + 1];
+                var index2 = triangleIndices[i + 2];
                 var p0 = positions[index0];
                 var p1 = positions[index1];
                 var p2 = positions[index2];
-                Vector3D u = p1 - p0;
-                Vector3D v = p2 - p0;
-                Vector3D w = SharedFunctions.CrossProduct(ref u, ref v);
+                var u = p1 - p0;
+                var v = p2 - p0;
+                var w = SharedFunctions.CrossProduct(ref u, ref v);
                 w.Normalize();
                 normals[index0] += w;
                 normals[index1] += w;
                 normals[index2] += w;
             }
 
-            for (int i = 0; i < normals.Count; i++)
+            for (var i = 0; i < normals.Count; i++)
             {
                 var n = normals[i];
                 n.Normalize();
@@ -124,16 +124,16 @@ namespace HelixToolkit.Wpf
         {
             var dict = new Dictionary<ulong, int>();
 
-            for (int i = 0; i < mesh.TriangleIndices.Count / 3; i++)
+            for (var i = 0; i < mesh.TriangleIndices.Count / 3; i++)
             {
-                int i0 = i * 3;
-                for (int j = 0; j < 3; j++)
+                var i0 = i * 3;
+                for (var j = 0; j < 3; j++)
                 {
-                    int index0 = mesh.TriangleIndices[i0 + j];
-                    int index1 = mesh.TriangleIndices[i0 + ((j + 1) % 3)];
-                    int minIndex = Math.Min(index0, index1);
-                    int maxIndex = Math.Max(index1, index0);
-                    ulong key = CreateKey((uint)minIndex, (uint)maxIndex);
+                    var index0 = mesh.TriangleIndices[i0 + j];
+                    var index1 = mesh.TriangleIndices[i0 + ((j + 1) % 3)];
+                    var minIndex = Math.Min(index0, index1);
+                    var maxIndex = Math.Max(index1, index0);
+                    var key = CreateKey((uint)minIndex, (uint)maxIndex);
                     if (dict.ContainsKey(key))
                     {
                         dict[key] = dict[key] + 1;
@@ -175,16 +175,16 @@ namespace HelixToolkit.Wpf
             var edges = new Int32Collection();
             var dict = new HashSet<ulong>();
 
-            for (int i = 0; i < mesh.TriangleIndices.Count / 3; i++)
+            for (var i = 0; i < mesh.TriangleIndices.Count / 3; i++)
             {
-                int i0 = i * 3;
-                for (int j = 0; j < 3; j++)
+                var i0 = i * 3;
+                for (var j = 0; j < 3; j++)
                 {
-                    int index0 = mesh.TriangleIndices[i0 + j];
-                    int index1 = mesh.TriangleIndices[i0 + ((j + 1) % 3)];
-                    int minIndex = Math.Min(index0, index1);
-                    int maxIndex = Math.Max(index1, index0);
-                    ulong key = CreateKey((uint)minIndex, (uint)maxIndex);
+                    var index0 = mesh.TriangleIndices[i0 + j];
+                    var index1 = mesh.TriangleIndices[i0 + ((j + 1) % 3)];
+                    var minIndex = Math.Min(index0, index1);
+                    var maxIndex = Math.Max(index1, index0);
+                    var key = CreateKey((uint)minIndex, (uint)maxIndex);
                     if (!dict.Contains(key))
                     {
                         edges.Add(minIndex);
@@ -224,22 +224,23 @@ namespace HelixToolkit.Wpf
         {
             var edgeIndices = new Int32Collection();
             var edgeNormals = new Dictionary<EdgeKey, Vector3D>();
-            for (int i = 0; i < mesh.TriangleIndices.Count / 3; i++)
+            for (var i = 0; i < mesh.TriangleIndices.Count / 3; i++)
             {
-                int i0 = i * 3;
+                var i0 = i * 3;
                 var p0 = mesh.Positions[mesh.TriangleIndices[i0]];
                 var p1 = mesh.Positions[mesh.TriangleIndices[i0 + 1]];
                 var p2 = mesh.Positions[mesh.TriangleIndices[i0 + 2]];
                 var triangleNormal = SharedFunctions.CrossProduct(p1 - p0, p2 - p0);
 
                 // Handle degenerated triangles.
-                if (SharedFunctions.LengthSquared(ref triangleNormal) < 0.001f) continue;
+                if (SharedFunctions.LengthSquared(ref triangleNormal) < 0.001f)
+                    continue;
 
                 triangleNormal.Normalize();
-                for (int j = 0; j < 3; j++)
+                for (var j = 0; j < 3; j++)
                 {
-                    int index0 = mesh.TriangleIndices[i0 + j];
-                    int index1 = mesh.TriangleIndices[i0 + (j + 1) % 3];
+                    var index0 = mesh.TriangleIndices[i0 + j];
+                    var index1 = mesh.TriangleIndices[i0 + (j + 1) % 3];
                     var position0 = SharedFunctions.ToVector3D(mesh.Positions[index0]);
                     var position1 = SharedFunctions.ToVector3D(mesh.Positions[index1]);
                     var edgeKey = new EdgeKey(position0, position1);
@@ -293,14 +294,14 @@ namespace HelixToolkit.Wpf
                 tc = new PointCollection();
             }
 
-            for (int i = 0; i < input.TriangleIndices.Count; i += 3)
+            for (var i = 0; i < input.TriangleIndices.Count; i += 3)
             {
-                int i0 = i;
-                int i1 = i + 1;
-                int i2 = i + 2;
-                int index0 = input.TriangleIndices[i0];
-                int index1 = input.TriangleIndices[i1];
-                int index2 = input.TriangleIndices[i2];
+                var i0 = i;
+                var i1 = i + 1;
+                var i2 = i + 2;
+                var index0 = input.TriangleIndices[i0];
+                var index1 = input.TriangleIndices[i1];
+                var index2 = input.TriangleIndices[i2];
                 var p0 = input.Positions[index0];
                 var p1 = input.Positions[index1];
                 var p2 = input.Positions[index2];
@@ -348,9 +349,9 @@ namespace HelixToolkit.Wpf
         {
             // Find common positions
             var dict = new Dictionary<int, int>(); // map position index to first occurence of same position
-            for (int i = 0; i < mesh.Positions.Count; i++)
+            for (var i = 0; i < mesh.Positions.Count; i++)
             {
-                for (int j = i + 1; j < mesh.Positions.Count; j++)
+                for (var j = i + 1; j < mesh.Positions.Count; j++)
                 {
                     if (dict.ContainsKey(j))
                     {
@@ -370,7 +371,7 @@ namespace HelixToolkit.Wpf
 
             // create new positions array
             var newIndex = new Dictionary<int, int>(); // map old index to new index
-            for (int i = 0; i < mesh.Positions.Count; i++)
+            for (var i = 0; i < mesh.Positions.Count; i++)
             {
                 if (!dict.ContainsKey(i))
                 {
@@ -380,7 +381,7 @@ namespace HelixToolkit.Wpf
             }
 
             // Update triangle indices
-            foreach (int index in mesh.TriangleIndices)
+            foreach (var index in mesh.TriangleIndices)
             {
                 int j;
                 ti.Add(dict.TryGetValue(index, out j) ? newIndex[j] : newIndex[index]);
@@ -417,9 +418,9 @@ namespace HelixToolkit.Wpf
                 sb.AppendLine("TriangleIndices not complete");
             }
 
-            for (int i = 0; i < mesh.TriangleIndices.Count; i++)
+            for (var i = 0; i < mesh.TriangleIndices.Count; i++)
             {
-                int index = mesh.TriangleIndices[i];
+                var index = mesh.TriangleIndices[i];
                 if (index < 0 || index >= mesh.Positions.Count)
                 {
                     sb.AppendFormat("Wrong index {0} in triangle {1} vertex {2}", index, i / 3, i % 3);
@@ -529,7 +530,7 @@ namespace HelixToolkit.Wpf
         {
             var segments = new List<Point3D>();
             var contourHelper = new ContourHelper(plane, normal, mesh);
-            for (int i = 0; i < mesh.TriangleIndices.Count; i += 3)
+            for (var i = 0; i < mesh.TriangleIndices.Count; i += 3)
             {
                 Point3D[] positions;
                 Vector3D[] normals;
@@ -568,9 +569,9 @@ namespace HelixToolkit.Wpf
             // This is a simple, slow, naïve method - should be improved:
             // http://stackoverflow.com/questions/1436091/joining-unordered-line-segments
             var curve = new List<Point3D>();
-            int curveCount = 0;
+            var curveCount = 0;
 
-            int segmentCount = segments.Count;
+            var segmentCount = segments.Count;
             int segment1 = -1, segment2 = -1;
             while (segmentCount > 0)
             {
@@ -694,8 +695,8 @@ namespace HelixToolkit.Wpf
         private static int FindConnectedSegment(IList<Point3D> segments, Point3D point, DoubleOrSingle eps)
         {
             var best = eps;
-            int result = -1;
-            for (int i = 0; i < segments.Count; i++)
+            var result = -1;
+            for (var i = 0; i < segments.Count; i++)
             {
                 var v = point - segments[i];
                 var ls0 = SharedFunctions.LengthSquared(ref v);
@@ -743,19 +744,19 @@ namespace HelixToolkit.Wpf
             trianglesOut = null;
             textureOut = null;
             normalOut = null;
-            List<List<int>> tracking = new List<List<int>>(vertices.Count);
+            var tracking = new List<List<int>>(vertices.Count);
             Debug.WriteLine(string.Format("NumVert:{0}; NumTriangle:{1};", vertices.Count, triangles.Count));
-            for (int i = 0; i < vertices.Count; ++i)
+            for (var i = 0; i < vertices.Count; ++i)
             {
                 tracking.Add(new List<int>());
             }
-            for (int i = 0; i < triangles.Count; ++i)
+            for (var i = 0; i < triangles.Count; ++i)
             {
                 tracking[triangles[i]].Add(i);
             }
 
-            List<int> vertToRemove = new List<int>(vertices.Count);
-            for (int i = 0; i < vertices.Count; ++i)
+            var vertToRemove = new List<int>(vertices.Count);
+            for (var i = 0; i < vertices.Count; ++i)
             {
                 if (tracking[i].Count == 0)
                 {
@@ -776,8 +777,8 @@ namespace HelixToolkit.Wpf
             {
                 return;
             }
-            int counter = 0;
-            for (int i = 0; i < vertices.Count; ++i)
+            var counter = 0;
+            for (var i = 0; i < vertices.Count; ++i)
             {
                 if (counter == vertToRemove.Count || i < vertToRemove[counter])
                 {
@@ -811,7 +812,7 @@ namespace HelixToolkit.Wpf
         public static void RemoveOutOfRangeTriangles(this IList<int> triangles, int numVerts)
         {
             var removeOutOfRangeTriangles = new List<int>();
-            for (int i = 0; i < triangles.Count; i += 3)
+            for (var i = 0; i < triangles.Count; i += 3)
             {
                 if (triangles[i] >= numVerts || triangles[i + 1] >= numVerts || triangles[i + 2] >= numVerts)
                 {

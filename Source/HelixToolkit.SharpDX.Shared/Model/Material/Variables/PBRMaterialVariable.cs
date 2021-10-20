@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     namespace Model
-    {       
+    {
         using Render;
         using ShaderManager;
         using Shaders;
@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP
         {
             private const int NUMTEXTURES = 7;
             private const int NUMSAMPLERS = 4;
-            private const int AlbedoMapIdx = 0, NormalMapIdx = 1, RMMapIdx = 2, EmissiveMapIdx = 3, 
+            private const int AlbedoMapIdx = 0, NormalMapIdx = 1, RMMapIdx = 2, EmissiveMapIdx = 3,
                 IrradianceMapIdx = 4, DisplaceMapIdx = 5, AOMapIdx = 6;
             private const int SurfaceSamplerIdx = 0, IBLSamplerIdx = 1, ShadowSamplerIdx = 2, DisplaceSamplerIdx = 3;
             private readonly ITextureResourceManager textureManager;
@@ -50,14 +50,38 @@ namespace HelixToolkit.UWP
 
             private readonly PBRMaterialCore material;
 
-            public ShaderPass MaterialPass { private set; get; }
-            public ShaderPass MaterialOITPass { private set; get; }
-            public ShaderPass TessMaterialPass { private set; get; }
-            public ShaderPass TessMaterialOITPass { private set; get; }
-            public ShaderPass ShadowPass { get; }
-            public ShaderPass WireframePass { get; } 
-            public ShaderPass WireframeOITPass { get; }
-            public ShaderPass DepthPass { get; }
+            public ShaderPass MaterialPass
+            {
+                private set; get;
+            }
+            public ShaderPass MaterialOITPass
+            {
+                private set; get;
+            }
+            public ShaderPass TessMaterialPass
+            {
+                private set; get;
+            }
+            public ShaderPass TessMaterialOITPass
+            {
+                private set; get;
+            }
+            public ShaderPass ShadowPass
+            {
+                get;
+            }
+            public ShaderPass WireframePass
+            {
+                get;
+            }
+            public ShaderPass WireframeOITPass
+            {
+                get;
+            }
+            public ShaderPass DepthPass
+            {
+                get;
+            }
 
             private ShaderPass currentMaterialPass;
             private ShaderPass currentMaterialOITPass;
@@ -115,7 +139,7 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PBRMaterialCore.MinTessellationDistance), () => { WriteValue(PhongPBRMaterialStruct.MinTessDistanceStr, material.MinTessellationDistance); });
                 AddPropertyBinding(nameof(PBRMaterialCore.MaxDistanceTessellationFactor), () => { WriteValue(PhongPBRMaterialStruct.MaxDistTessFactorStr, material.MaxDistanceTessellationFactor); });
                 AddPropertyBinding(nameof(PBRMaterialCore.MinDistanceTessellationFactor), () => { WriteValue(PhongPBRMaterialStruct.MinDistTessFactorStr, material.MinDistanceTessellationFactor); });
-                AddPropertyBinding(nameof(PBRMaterialCore.UVTransform), () => 
+                AddPropertyBinding(nameof(PBRMaterialCore.UVTransform), () =>
                 {
                     Matrix m = material.UVTransform;
                     WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
@@ -148,7 +172,7 @@ namespace HelixToolkit.UWP
             {
                 var newTexture = texture == null ? null : textureManager.Register(texture);
                 RemoveAndDispose(ref TextureResources[index]);
-                TextureResources[index] = Collect(newTexture);
+                TextureResources[index] = newTexture;
                 if (TextureResources[index] != null)
                 {
                     textureIndex |= 1u << index;
@@ -173,7 +197,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    for (int i = 0; i < NUMTEXTURES; ++i)
+                    for (var i = 0; i < NUMTEXTURES; ++i)
                     {
                         RemoveAndDispose(ref TextureResources[i]);
                     }
@@ -193,10 +217,10 @@ namespace HelixToolkit.UWP
                 RemoveAndDispose(ref SamplerResources[ShadowSamplerIdx]);
                 if (material != null)
                 {
-                    SamplerResources[SurfaceSamplerIdx] = Collect(newSurfaceSampler);
-                    SamplerResources[IBLSamplerIdx] = Collect(newIBLSampler);
-                    SamplerResources[DisplaceSamplerIdx] = Collect(newDisplaceSampler);
-                    SamplerResources[ShadowSamplerIdx] = Collect(newShadowSampler);
+                    SamplerResources[SurfaceSamplerIdx] = newSurfaceSampler;
+                    SamplerResources[IBLSamplerIdx] = newIBLSampler;
+                    SamplerResources[DisplaceSamplerIdx] = newDisplaceSampler;
+                    SamplerResources[ShadowSamplerIdx] = newShadowSampler;
                 }
             }
 
@@ -204,7 +228,7 @@ namespace HelixToolkit.UWP
             {
                 var newRes = statePoolManager.Register(desc);
                 RemoveAndDispose(ref SamplerResources[index]);
-                SamplerResources[index] = Collect(newRes);
+                SamplerResources[index] = newRes;
             }
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
@@ -234,7 +258,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                int idx = shader.ShaderStageIndex;
+                var idx = shader.ShaderStageIndex;
                 shader.BindTexture(context, texDisplaceSlot, TextureResources[DisplaceMapIdx]);
                 shader.BindSampler(context, samplerDisplaceSlot, SamplerResources[DisplaceSamplerIdx]);
             }
@@ -245,7 +269,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                int idx = shader.ShaderStageIndex;
+                var idx = shader.ShaderStageIndex;
                 shader.BindTexture(context, texDisplaceSlot, TextureResources[DisplaceMapIdx]);
                 shader.BindSampler(context, samplerDisplaceSlot, SamplerResources[DisplaceSamplerIdx]);
             }
@@ -262,7 +286,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                int idx = shader.ShaderStageIndex;
+                var idx = shader.ShaderStageIndex;
                 shader.BindTexture(deviceContext, texDiffuseSlot, TextureResources[AlbedoMapIdx]);
                 shader.BindTexture(deviceContext, texNormalSlot, TextureResources[NormalMapIdx]);
                 shader.BindTexture(deviceContext, texRMSlot, TextureResources[RMMapIdx]);
@@ -324,7 +348,19 @@ namespace HelixToolkit.UWP
             {
                 return renderType == RenderType.Transparent && context.IsOITPass ? WireframeOITPass : WireframePass;
             }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                for (var i = 0; i < SamplerResources.Length; ++i)
+                {
+                    RemoveAndDispose(ref SamplerResources[i]);
+                }
+                for (var i = 0; i < TextureResources.Length; ++i)
+                {
+                    RemoveAndDispose(ref TextureResources[i]);
+                }
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
-
 }

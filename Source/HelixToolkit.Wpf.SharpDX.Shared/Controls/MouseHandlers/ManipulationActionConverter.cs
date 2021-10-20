@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 manipulationActionToken = manipulationActionToken.Trim();
                 var result = ManipulationAction.None;
-                if (manipulationActionToken != string.Empty && 
+                if (manipulationActionToken != string.Empty &&
                     !Enum.TryParse(manipulationActionToken, true, out result))
                 {
                     throw this.GetConvertFromException(value);
@@ -53,7 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
+            if (destinationType == null)
+                throw new ArgumentNullException(nameof(destinationType));
             if (destinationType == typeof(string) && value is ManipulationAction manipulationAction)
             {
                 return manipulationAction.ToString();
@@ -69,13 +70,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             switch (manipulationAction)
             {
-                    case ManipulationAction.Pan:
-                        return 1;
-                    case ManipulationAction.Pinch:
-                    case ManipulationAction.TwoFingerPan:
-                        return 2;
-                    case ManipulationAction.ThreeFingerPan:
-                        return 3;
+                case ManipulationAction.Pan:
+                    return 1;
+                case ManipulationAction.Pinch:
+                case ManipulationAction.TwoFingerPan:
+                    return 2;
+                case ManipulationAction.ThreeFingerPan:
+                    return 3;
             }
 
             return 0;

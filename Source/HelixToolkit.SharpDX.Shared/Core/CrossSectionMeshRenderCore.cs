@@ -46,12 +46,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref cuttingOperation, value))
+                    if (SetAffectsRender(ref cuttingOperation, value))
                     {
                         clipParamCB.WriteValueByName(ClipPlaneStruct.CuttingOperationStr, (int)value);
                     }
                 }
-                get { return cuttingOperation; }
+                get
+                {
+                    return cuttingOperation;
+                }
             }
 
             private Color4 sectionColor = Color.Green;
@@ -62,12 +65,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref sectionColor, value))
+                    if (SetAffectsRender(ref sectionColor, value))
                     {
                         clipParamCB.WriteValueByName(ClipPlaneStruct.CrossSectionColorStr, value);
                     }
                 }
-                get { return sectionColor; }
+                get
+                {
+                    return sectionColor;
+                }
             }
 
             private Bool4 planeEnabled;
@@ -75,12 +81,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref planeEnabled, value))
+                    if (SetAffectsRender(ref planeEnabled, value))
                     {
                         clipParamCB.WriteValueByName(ClipPlaneStruct.EnableCrossPlaneStr, value);
                     }
                 }
-                get { return planeEnabled; }
+                get
+                {
+                    return planeEnabled;
+                }
             }
 
             private Bool4 plane5To8Enabled;
@@ -107,7 +116,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref plane1Params, value))
+                    if (SetAffectsRender(ref plane1Params, value))
                     {
                         clipParamCB.WriteValueByName(ClipPlaneStruct.CrossPlane1ParamsStr, value);
                     }
@@ -266,18 +275,21 @@ namespace HelixToolkit.UWP
                     drawScreenQuadPass = technique[DefaultPassNames.ScreenQuad];
                     return true;
                 }
-                else { return false; }
+                else
+                {
+                    return false;
+                }
             }
 
             protected override void OnDetach()
             {
-                backfaceRasterState = null;          
+                RemoveAndDispose(ref backfaceRasterState);
                 base.OnDetach();
             }
 
             protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
             {
-                if(!base.CreateRasterState(description, force))
+                if (!base.CreateRasterState(description, force))
                 {
                     return false;
                 }
@@ -295,7 +307,7 @@ namespace HelixToolkit.UWP
                     IsScissorEnabled = false
                 });
                 RemoveAndDispose(ref backfaceRasterState);
-                backfaceRasterState = Collect(newRasterState);
+                backfaceRasterState = newRasterState;
                 #endregion
                 return true;
             }
@@ -344,5 +356,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

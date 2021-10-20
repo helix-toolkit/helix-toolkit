@@ -336,11 +336,10 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int ResetDrawCalls()
             {
-                int total = NumberOfDrawCalls;
+                var total = NumberOfDrawCalls;
                 NumberOfDrawCalls = 0;
                 return total;
             }
         }
     }
-
 }

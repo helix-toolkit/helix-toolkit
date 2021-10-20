@@ -48,7 +48,10 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                get { return autoSpacing; }
+                get
+                {
+                    return autoSpacing;
+                }
             }
 
             private float autoSpacingChangeRate = 5;
@@ -61,8 +64,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float AutoSpacingRate
             {
-                set { SetAffectsRender(ref autoSpacingChangeRate, value); }
-                get { return autoSpacingChangeRate; }
+                set
+                {
+                    SetAffectsRender(ref autoSpacingChangeRate, value);
+                }
+                get
+                {
+                    return autoSpacingChangeRate;
+                }
             }
             /// <summary>
             /// Gets the acutal spacing.
@@ -72,7 +81,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public float AcutalSpacing
             {
-                get { return modelStruct.GridSpacing; }
+                get
+                {
+                    return modelStruct.GridSpacing;
+                }
             }
 
             private float gridSpacing;
@@ -86,7 +98,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref gridSpacing, value))
+                    if (SetAffectsRender(ref gridSpacing, value))
                     {
                         modelStruct.GridSpacing = value;
                     }
@@ -125,7 +137,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.FadingFactor, value);
                 }
-                get { return modelStruct.FadingFactor; }
+                get
+                {
+                    return modelStruct.FadingFactor;
+                }
             }
             /// <summary>
             /// Gets or sets the color of the plane.
@@ -139,7 +154,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.PlaneColor, value);
                 }
-                get { return modelStruct.PlaneColor.ToColor4(); }
+                get
+                {
+                    return modelStruct.PlaneColor.ToColor4();
+                }
             }
             /// <summary>
             /// Gets or sets the color of the grid.
@@ -149,8 +167,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 GridColor
             {
-                set { SetAffectsRender(ref modelStruct.GridColor, value); }
-                get { return modelStruct.GridColor.ToColor4(); }
+                set
+                {
+                    SetAffectsRender(ref modelStruct.GridColor, value);
+                }
+                get
+                {
+                    return modelStruct.GridColor.ToColor4();
+                }
             }
             /// <summary>
             /// Gets or sets a value indicating whether [render shadow map].
@@ -160,8 +184,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool RenderShadowMap
             {
-                set { SetAffectsRender(ref modelStruct.HasShadowMap, value); }
-                get { return modelStruct.HasShadowMap; }
+                set
+                {
+                    SetAffectsRender(ref modelStruct.HasShadowMap, value);
+                }
+                get
+                {
+                    return modelStruct.HasShadowMap;
+                }
             }
 
             private Axis upAxis = Axis.Y;
@@ -192,7 +222,10 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                get { return upAxis; }
+                get
+                {
+                    return upAxis;
+                }
             }
 
             /// <summary>
@@ -203,8 +236,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float Offset
             {
-                set { SetAffectsRender(ref modelStruct.PlaneD, value); }
-                get { return modelStruct.PlaneD; }
+                set
+                {
+                    SetAffectsRender(ref modelStruct.PlaneD, value);
+                }
+                get
+                {
+                    return modelStruct.PlaneD;
+                }
             }
 
             private GridPattern gridType = GridPattern.Tile;
@@ -216,13 +255,17 @@ namespace HelixToolkit.UWP
             /// </value>
             public GridPattern GridPattern
             {
-                set {
+                set
+                {
                     if (SetAffectsRender(ref gridType, value))
                     {
                         modelStruct.Type = (int)value;
                     }
                 }
-                get { return gridType; }
+                get
+                {
+                    return gridType;
+                }
             }
 
             private readonly ConstantBufferComponent modelCB;
@@ -249,7 +292,7 @@ namespace HelixToolkit.UWP
                 DefaultShaderPass = technique[DefaultPassNames.Default];
                 samplerSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.ShadowMapSampler);
                 shadowMapSlot = DefaultShaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.ShadowMapTB);
-                shadowSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.ShadowSampler));
+                shadowSampler = technique.EffectsManager.StateManager.Register(DefaultSamplers.ShadowSampler);
                 return true;
             }
 
@@ -259,7 +302,7 @@ namespace HelixToolkit.UWP
                 modelCB.Upload(deviceContext, ref modelStruct);
                 DefaultShaderPass.BindShader(deviceContext);
                 DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
-                if(RenderShadowMap && context.SharedResource.ShadowView != null)
+                if (RenderShadowMap && context.SharedResource.ShadowView != null)
                 {
                     DefaultShaderPass.PixelShader.BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
                     DefaultShaderPass.PixelShader.BindSampler(deviceContext, samplerSlot, shadowSampler);
@@ -271,7 +314,7 @@ namespace HelixToolkit.UWP
             {
                 modelStruct.World = ModelMatrix;
                 if (autoSpacing)
-                {                
+                {
                     //Disable auto spacing if view angle larger than 60 degree of plane normal
                     var lookDir = Vector3.Normalize(context.Camera.LookDirection);
                     var angle = Math.Acos(Math.Abs(Vector3.Dot(upDirection, lookDir)));
@@ -284,10 +327,10 @@ namespace HelixToolkit.UWP
                     if (r.Intersects(ref plane, out float l))
                     {
                         l /= autoSpacingChangeRate;
-                        int n = 1;
+                        var n = 1;
                         while (n < 1e6)
                         {
-                            if(n > l)
+                            if (n > l)
                             {
                                 n /= 10;
                                 break;
@@ -298,7 +341,11 @@ namespace HelixToolkit.UWP
                     }
                 }
             }
+
+            protected override void OnDetach()
+            {
+                RemoveAndDispose(ref shadowSampler);
+            }
         }
     }
-
 }

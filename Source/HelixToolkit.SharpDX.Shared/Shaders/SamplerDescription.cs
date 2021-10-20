@@ -25,7 +25,10 @@ namespace HelixToolkit.UWP
             /// The name.
             /// </value>
             [DataMember]
-            public string Name { set; get; }
+            public string Name
+            {
+                set; get;
+            }
             /// <summary>
             /// The shader type
             /// </summary>
@@ -38,9 +41,14 @@ namespace HelixToolkit.UWP
             /// The slot.
             /// </value>
             [DataMember]
-            public int Slot { set; get; }
+            public int Slot
+            {
+                set; get;
+            }
 
-            public SamplerMapping() { }
+            public SamplerMapping()
+            {
+            }
 
             public SamplerMapping(int slot, string name, ShaderStage type)
             {
@@ -55,5 +63,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

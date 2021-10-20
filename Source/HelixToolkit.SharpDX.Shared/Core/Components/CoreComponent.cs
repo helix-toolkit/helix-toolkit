@@ -22,25 +22,32 @@ namespace HelixToolkit.UWP
         {
             public event EventHandler InvalidateRender;
             public bool IsAttached { private set; get; } = false;
-            public IRenderTechnique Technique { private set; get; }
+            public IRenderTechnique Technique
+            {
+                private set; get;
+            }
 
             public void Attach(IRenderTechnique technique)
             {
-                if (!IsAttached)
+                if (IsAttached)
                 {
-                    IsAttached = true;
-                    Technique = technique;
-                    OnAttach(technique);
+                    return;
                 }
+                IsAttached = true;
+                Technique = technique;
+                OnAttach(technique);
             }
 
             protected abstract void OnAttach(IRenderTechnique technique);
 
             public void Detach()
             {
-                IsAttached = false;
+                if (!IsAttached)
+                {
+                    return;
+                }
                 OnDetach();
-                DisposeAndClear();
+                IsAttached = false;
             }
 
             protected abstract void OnDetach();
@@ -69,7 +76,12 @@ namespace HelixToolkit.UWP
             {
                 InvalidateRender?.Invoke(this, EventArgs.Empty);
             }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                Detach();
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
-
 }

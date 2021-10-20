@@ -92,7 +92,8 @@ namespace SharpDX.Toolkit.Graphics
                 if (!shaderResourceViews.TryGetValue(textureViewKey, out srv))
                 {
                     // Create the view
-                    var srvDescription = new ShaderResourceViewDescription {
+                    var srvDescription = new ShaderResourceViewDescription
+                    {
                         Format = viewFormat,
                         Dimension = ShaderResourceViewDimension.Texture3D,
                         Texture3D = {
@@ -114,7 +115,7 @@ namespace SharpDX.Toolkit.Graphics
             if ((this.Description.BindFlags & BindFlags.UnorderedAccess) == 0)
                 return null;
 
-            int sliceCount = 1;
+            var sliceCount = 1;
 
             // Use Full although we are binding to a single array/mimap slice, just to get the correct index
             var uavIndex = GetViewIndex(ViewType.Full, zSlice, mipIndex);
@@ -126,7 +127,8 @@ namespace SharpDX.Toolkit.Graphics
                 // Creates the unordered access view
                 if (uav == null)
                 {
-                    var uavDescription = new UnorderedAccessViewDescription() {
+                    var uavDescription = new UnorderedAccessViewDescription()
+                    {
                         Format = this.Description.Format,
                         Dimension = UnorderedAccessViewDimension.Texture3D,
                         Texture3D = {
@@ -189,19 +191,19 @@ namespace SharpDX.Toolkit.Graphics
         {
             if ((textureFlags & TextureFlags.UnorderedAccess) != 0)
                 usage = ResourceUsage.Default;
-            
+
             var desc = new Texture3DDescription()
-                           {
-                               Width = width,
-                               Height = height,
-                               Depth = depth,
-                               BindFlags = GetBindFlagsFromTextureFlags(textureFlags),
-                               Format = format,
-                               MipLevels = CalculateMipMapCount(mipCount, width, height, depth),
-                               Usage = usage,
-                               CpuAccessFlags = GetCpuAccessFlagsFromUsage(usage),
-                               OptionFlags = ResourceOptionFlags.None
-                           };
+            {
+                Width = width,
+                Height = height,
+                Depth = depth,
+                BindFlags = GetBindFlagsFromTextureFlags(textureFlags),
+                Format = format,
+                MipLevels = CalculateMipMapCount(mipCount, width, height, depth),
+                Usage = usage,
+                CpuAccessFlags = GetCpuAccessFlagsFromUsage(usage),
+                OptionFlags = ResourceOptionFlags.None
+            };
 
             // If the texture is a RenderTarget + ShaderResource + MipLevels > 1, then allow for GenerateMipMaps method
             if ((desc.BindFlags & BindFlags.RenderTarget) != 0 && (desc.BindFlags & BindFlags.ShaderResource) != 0 && desc.MipLevels > 1)

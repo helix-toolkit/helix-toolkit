@@ -204,17 +204,17 @@ namespace CoreTest
                 groupBox.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
 
-            //for(int i=0; i< NumItems; ++i)
-            //{
-            //    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-            //    groupPoints.AddChildNode(new PointNode() { Geometry = points, ModelMatrix = transform, Material = new PointMaterialCore() { PointColor = Color.Red } });
-            //}
+            for (int i = 0; i < NumItems; ++i)
+            {
+                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                groupPoints.AddChildNode(new PointNode() { Geometry = points, ModelMatrix = transform, Material = new PointMaterialCore() { PointColor = Color.Red } });
+            }
 
-            //for (int i = 0; i < NumItems; ++i)
-            //{
-            //    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-            //    groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } });
-            //}
+            for (int i = 0; i < NumItems; ++i)
+            {
+                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } });
+            }
 
             groupModel.AddChildNode(groupSphere);
             groupSphere.AddChildNode(groupBox);
@@ -261,6 +261,9 @@ namespace CoreTest
             materials.Add("Orange", new PhongMaterialCore() { DiffuseColor = Color.Orange, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal });
             materials.Add("PaleGreen", new PhongMaterialCore() { DiffuseColor = Color.PaleGreen, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal });
             materials.Add("normal", new NormalMaterialCore());
+            materials.Add("pbrBeige", new PBRMaterialCore() { AlbedoColor = Color.Beige, MetallicFactor = 0.8f, RoughnessFactor = 0.6f });
+            materials.Add("pbrBisque", new PBRMaterialCore() { AlbedoColor = Color.Bisque, MetallicFactor = 0.4f, RoughnessFactor = 0.9f });
+            materials.Add("pbrChartreuse", new PBRMaterialCore() { AlbedoColor = Color.Chartreuse, MetallicFactor = 0.2f, RoughnessFactor = 0.2f });
         }
 
         private void Viewport_OnErrorOccurred(object sender, Exception e)

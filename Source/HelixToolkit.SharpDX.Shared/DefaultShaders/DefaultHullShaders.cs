@@ -34,5 +34,4 @@ namespace HelixToolkit.UWP
                 DefaultHullShaders.HSMeshTessellation);
         }
     }
-
 }

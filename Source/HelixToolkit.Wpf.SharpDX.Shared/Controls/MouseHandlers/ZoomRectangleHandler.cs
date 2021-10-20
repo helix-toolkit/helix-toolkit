@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.Delta(e);
 
-            double ar = this.Viewport.ActualHeight / this.Viewport.ActualWidth;
+            var ar = this.Viewport.ActualHeight / this.Viewport.ActualWidth;
             var delta = this.MouseDownPoint - e;
 
             if (Math.Abs(delta.Y / delta.X) < ar)

@@ -50,121 +50,120 @@ namespace HelixToolkit.UWP
             }";
         }
 #if !NETFX_CORE
-    /// <summary>
-    /// 
-    /// </summary>
-    public class DynamicCodeSurface3DNode : ParametricSurface3DNode
-    {
-        public event EventHandler OnCompileError;
-        private float parameterW = 1f;
-        public float ParameterW
-        {
-            set
-            {
-                if (Set(ref parameterW, value))
-                {
-                    UpdateSource();
-                }
-            }
-            get => parameterW;
-        }
-
-        private string source;
         /// <summary>
-        /// Gets or sets the source code
+        /// 
         /// </summary>
-        /// <value>
-        /// The source.
-        /// </value>
-        public string Source
+        public class DynamicCodeSurface3DNode : ParametricSurface3DNode
         {
-            set
+            public event EventHandler OnCompileError;
+            private float parameterW = 1f;
+            public float ParameterW
             {
-                if (Set(ref source, value))
+                set
                 {
-                    UpdateSource();
+                    if (Set(ref parameterW, value))
+                    {
+                        UpdateSource();
+                    }
+                }
+                get => parameterW;
+            }
+
+            private string source;
+            /// <summary>
+            /// Gets or sets the source code
+            /// </summary>
+            /// <value>
+            /// The source.
+            /// </value>
+            public string Source
+            {
+                set
+                {
+                    if (Set(ref source, value))
+                    {
+                        UpdateSource();
+                    }
+                }
+                get => source;
+            }
+
+            private CompilerErrorCollection errors;
+            public CompilerErrorCollection Errors
+            {
+                private set
+                {
+                    if (Set(ref errors, value))
+                    {
+                        OnCompileError?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+                get => errors;
+            }
+
+            // Type and instance of the dynamic code
+            private Type _codeType;
+            private object _codeInstance;
+            private string sourceCode;
+
+            private void UpdateSource()
+            {
+                sourceCode = Source;
+                _codeType = null;
+                _codeInstance = null;
+                if (string.IsNullOrEmpty(sourceCode))
+                    return;
+
+                var provider = new CSharpCodeProvider();
+                var options = new CompilerParameters { GenerateInMemory = true };
+                var qn = typeof(Vector3).Assembly.Location;
+                options.ReferencedAssemblies.Add("System.dll");
+                options.ReferencedAssemblies.Add(qn);
+                var src = GetTemplate().Replace("#code#", sourceCode);
+                var compilerResults = provider.CompileAssemblyFromSource(options, src);
+                if (!compilerResults.Errors.HasErrors)
+                {
+                    Errors = null;
+                    var assembly = compilerResults.CompiledAssembly;
+                    _codeInstance = assembly.CreateInstance("MyNamespace.MyEvaluator");
+                    _codeType = _codeInstance.GetType();
+                    TessellateAsync();
+                }
+                else
+                {
+                    // correct line numbers
+                    Errors = compilerResults.Errors;
+                    for (var i = 0; i < Errors.Count; i++)
+                        Errors[i].Line -= 17;
                 }
             }
-            get => source;
-        }
 
-        private CompilerErrorCollection errors;
-        public CompilerErrorCollection Errors
-        {
-            private set
+            protected virtual string GetTemplate()
             {
-                if(Set(ref errors, value))
+                return DynamicCodeSurfaceTemplate.template;
+            }
+
+            protected override Vector3 Evaluate(double u, double v, out Vector2 texCoord)
+            {
+                if (_codeType == null)
                 {
-                    OnCompileError?.Invoke(this, EventArgs.Empty);
+                    texCoord = new Point();
+                    return Vector3.Zero;
                 }
-            }
-            get => errors;
-        }
 
-        // Type and instance of the dynamic code
-        private Type _codeType;
-        private object _codeInstance;
-        private string sourceCode;
+                var parameters = new object[3];
+                parameters[0] = u;
+                parameters[1] = v;
+                parameters[2] = ParameterW;
+                var result = _codeType.InvokeMember("Evaluate", BindingFlags.InvokeMethod, null, _codeInstance, parameters);
+                var p = (Tuple<double, double, double, double>)result;
 
-        private void UpdateSource()
-        {
-            sourceCode = Source;
-            _codeType = null;
-            _codeInstance = null;
-            if (string.IsNullOrEmpty(sourceCode))
-                return;
-
-            var provider = new CSharpCodeProvider();
-            var options = new CompilerParameters { GenerateInMemory = true };
-            string qn = typeof(Vector3).Assembly.Location;
-            options.ReferencedAssemblies.Add("System.dll");
-            options.ReferencedAssemblies.Add(qn);
-            string src = GetTemplate().Replace("#code#", sourceCode);
-            CompilerResults compilerResults = provider.CompileAssemblyFromSource(options, src);
-            if (!compilerResults.Errors.HasErrors)
-            {
-                Errors = null;
-                var assembly = compilerResults.CompiledAssembly;
-                _codeInstance = assembly.CreateInstance("MyNamespace.MyEvaluator");
-                _codeType = _codeInstance.GetType();
-                TessellateAsync();
-            }
-            else
-            {
-                // correct line numbers
-                Errors = compilerResults.Errors;
-                for (int i = 0; i < Errors.Count; i++)
-                    Errors[i].Line -= 17;
+                // todo: why doesn't this work??
+                //            texCoord = new Point(p.W, 0); // (double)parameters[2], 0);
+                texCoord = new Vector2((float)u, (float)v);
+                return new Vector3((float)p.Item1, (float)p.Item2, (float)p.Item3);
             }
         }
-
-        protected virtual string GetTemplate()
-        {
-            return DynamicCodeSurfaceTemplate.template;
-        }
-
-        protected override Vector3 Evaluate(double u, double v, out Vector2 texCoord)
-        {
-            if (_codeType == null)
-            {
-                texCoord = new Point();
-                return Vector3.Zero;
-            }
-
-            object[] parameters = new object[3];
-            parameters[0] = u;
-            parameters[1] = v;
-            parameters[2] = ParameterW;
-            object result = _codeType.InvokeMember("Evaluate", BindingFlags.InvokeMethod, null, _codeInstance, parameters);
-            var p = (Tuple<double, double, double, double>)result;
-
-            // todo: why doesn't this work??
-            //            texCoord = new Point(p.W, 0); // (double)parameters[2], 0);
-            texCoord = new Vector2((float)u, (float)v);
-            return new Vector3((float)p.Item1, (float)p.Item2, (float)p.Item3);
-        }
-    }
 #endif
     }
-
 }

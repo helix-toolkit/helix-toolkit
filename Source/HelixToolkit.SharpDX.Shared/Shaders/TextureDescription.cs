@@ -28,13 +28,24 @@ namespace HelixToolkit.UWP
         public sealed class TextureDescription
         {
             [DataMember]
-            public string Name { set; get; }
+            public string Name
+            {
+                set; get;
+            }
             [DataMember]
-            public ShaderStage ShaderType { set; get; }
+            public ShaderStage ShaderType
+            {
+                set; get;
+            }
             [DataMember]
-            public TextureType Type { set; get; }
+            public TextureType Type
+            {
+                set; get;
+            }
 
-            public TextureDescription() { }
+            public TextureDescription()
+            {
+            }
 
             public TextureDescription(string name, ShaderStage shaderType, TextureType type)
             {
@@ -57,12 +68,18 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         [DataContract]
-        public sealed class TextureMapping 
+        public sealed class TextureMapping
         {
             [DataMember]
-            public int Slot { set; get; }
+            public int Slot
+            {
+                set; get;
+            }
             [DataMember]
-            public TextureDescription Description { set; get; }
+            public TextureDescription Description
+            {
+                set; get;
+            }
 
             public TextureMapping(int slot, TextureDescription description)
             {
@@ -76,5 +93,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

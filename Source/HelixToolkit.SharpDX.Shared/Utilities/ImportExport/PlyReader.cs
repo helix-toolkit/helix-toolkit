@@ -160,7 +160,7 @@ namespace HelixToolkit.UWP
             }
 
             var mesh = mb.ToMesh();
-            if(mesh.Normals == null || mesh.Normals.Count == 0)
+            if (mesh.Normals == null || mesh.Normals.Count == 0)
             {
                 mesh.Normals = mesh.CalculateNormals();
             }
@@ -195,12 +195,12 @@ namespace HelixToolkit.UWP
             //Get the model format from the header in order for the correct strategy to be used
             using (var textReader = new StreamReader(s))
             {
-                int linCount = 0;
+                var linCount = 0;
                 //!textReader.EndOfStream
                 while (!textReader.EndOfStream)
                 {
-                    string lineTxt = textReader.ReadLine();
-                    string[] initarr = lineTxt.Split(' ');
+                    var lineTxt = textReader.ReadLine();
+                    var initarr = lineTxt.Split(' ');
                     if (initarr[0] == "format")
                     {
                         if (initarr[1] == "ascii")
@@ -218,9 +218,11 @@ namespace HelixToolkit.UWP
                         {
                             modelFormat = PlyFormatTypes.binary_little_endian;
                         }
-
                     }
-                    else { continue; }
+                    else
+                    {
+                        continue;
+                    }
                     linCount += 1;
                 }
             }
@@ -232,7 +234,7 @@ namespace HelixToolkit.UWP
                     {
                         if (plymodelURI.Length > 6)
                         {
-                            using (FileStream fs = new FileStream(plymodelURI, FileMode.Open, FileAccess.Read))
+                            using (var fs = new FileStream(plymodelURI, FileMode.Open, FileAccess.Read))
                             {
                                 Load_ascii(fs);
                             }
@@ -246,7 +248,7 @@ namespace HelixToolkit.UWP
                     {
                         if (plymodelURI.Length > 6)
                         {
-                            using (FileStream fs = new FileStream(plymodelURI, FileMode.Open, FileAccess.Read))
+                            using (var fs = new FileStream(plymodelURI, FileMode.Open, FileAccess.Read))
                             {
                                 Load_binaryBE(fs);
                             }
@@ -272,7 +274,7 @@ namespace HelixToolkit.UWP
         {
             InitializeProperties();
             plymodelURI = filepath;
-            using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+            using (var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
             {
                 Load(fs);
             }
@@ -286,35 +288,56 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets or sets the vertices of this ply model.
         /// </summary>
-        public IList<Vector3> Vertices { get; private set; }
+        public IList<Vector3> Vertices
+        {
+            get; private set;
+        }
 
-        public IList<int[]> Faces { get; private set; }
+        public IList<int[]> Faces
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets or sets the normal vectors of this ply model.
         /// </summary>
-        public IList<Vector3> Normals { get; private set; }
+        public IList<Vector3> Normals
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets or sets the texture coordinates of the ply model.
         /// </summary>
         /// <remarks>S,T->X,Y</remarks>
-        public IList<Vector2> TextureCoordinates { get; private set; }
+        public IList<Vector2> TextureCoordinates
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets or sets the number of vertices.
         /// </summary>
-        public int VerticesNumber { get; private set; }
+        public int VerticesNumber
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets or sets the number of faces.
         /// </summary>
-        public int FacesNumber { get; private set; }
+        public int FacesNumber
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Contains information about the Ply file received.
         /// </summary>
-        public Dictionary<string, double> ObjectInformation { get; private set; }
+        public Dictionary<string, double> ObjectInformation
+        {
+            get; private set;
+        }
 
         #endregion
 
@@ -429,12 +452,18 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// The point from which the current element starts to get picked.
             /// </summary>
-            public int StartRange { get; set; }
+            public int StartRange
+            {
+                get; set;
+            }
 
             /// <summary>
             /// The point at which the current element stops to get picked.
             /// </summary>
-            public int EndRange { get; set; }
+            public int EndRange
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Specifies whether or not the vertex element has a normal.
@@ -452,7 +481,10 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Stores the number of the specified element in the current Ply model.
             /// </summary>
-            public int ElementCount { get; private set; }
+            public int ElementCount
+            {
+                get; private set;
+            }
 
             #endregion
 
@@ -467,9 +499,11 @@ namespace HelixToolkit.UWP
                 {
                     return true;
                 }
-                else { return false; }
+                else
+                {
+                    return false;
+                }
             }
-
         }
 
         #endregion
@@ -482,7 +516,10 @@ namespace HelixToolkit.UWP
             {
                 return true;
             }
-            else { return false; }
+            else
+            {
+                return false;
+            }
         }
 
         private void InitializeProperties()
@@ -521,7 +558,7 @@ namespace HelixToolkit.UWP
                 {
 
                     var curline = reader.ReadLine();
-                    string[] strarr = curline.Split(' ');
+                    var strarr = curline.Split(' ');
                     if (curline == null)
                     {
                         //reader.Close();
@@ -571,7 +608,7 @@ namespace HelixToolkit.UWP
 
                         else
                         {
-                            int miscElementNumber = int.Parse(strarr[2]);
+                            var miscElementNumber = int.Parse(strarr[2]);
 
                             elements_range.Add(strarr[1], new PLYElement(elementLines_Count, elementLines_Count + miscElementNumber));
                             elementLines_Count += int.Parse(strarr[2]);
@@ -588,7 +625,7 @@ namespace HelixToolkit.UWP
                         {
                             case PlyElements.vertex:
                                 {
-                                    int propInd = elements_range["vertex"].PropertyIndex;
+                                    var propInd = elements_range["vertex"].PropertyIndex;
                                     elements_range["vertex"].Property_with_Index.Add(strarr[2], propInd);
                                     //Increase the property index if there's an element which has/hasn't been supported.
                                     elements_range["vertex"].PropertyIndex += 1;
@@ -638,10 +675,10 @@ namespace HelixToolkit.UWP
                             if (elements_range["vertex"].ContainsNumber(elementLine_Current) == true)
                             {
                                 //Get vertices
-                                int x_Indx = elements_range["vertex"].Property_with_Index["x"];
-                                int y_Indx = elements_range["vertex"].Property_with_Index["y"];
-                                int z_Indx = elements_range["vertex"].Property_with_Index["z"];
-                                Vector3 pt = new Vector3()
+                                var x_Indx = elements_range["vertex"].Property_with_Index["x"];
+                                var y_Indx = elements_range["vertex"].Property_with_Index["y"];
+                                var z_Indx = elements_range["vertex"].Property_with_Index["z"];
+                                var pt = new Vector3()
                                 {
                                     X = float.Parse(strarr[x_Indx]),
                                     Y = float.Parse(strarr[y_Indx]),
@@ -651,11 +688,11 @@ namespace HelixToolkit.UWP
 
                                 if (elements_range["vertex"].ContainsNormals == true)
                                 {
-                                    int nx_Indx = elements_range["vertex"].Property_with_Index["nx"];
-                                    int ny_Indx = elements_range["vertex"].Property_with_Index["ny"];
-                                    int nz_Indx = elements_range["vertex"].Property_with_Index["nz"];
+                                    var nx_Indx = elements_range["vertex"].Property_with_Index["nx"];
+                                    var ny_Indx = elements_range["vertex"].Property_with_Index["ny"];
+                                    var nz_Indx = elements_range["vertex"].Property_with_Index["nz"];
 
-                                    Vector3 vect3d = new Vector3
+                                    var vect3d = new Vector3
                                     {
                                         X = float.Parse(strarr[nx_Indx]),
                                         Y = float.Parse(strarr[ny_Indx]),
@@ -666,19 +703,17 @@ namespace HelixToolkit.UWP
 
                                 if (elements_range["vertex"].ContainsTextureCoordinates == true)
                                 {
-                                    int s_Indx = elements_range["vertex"].Property_with_Index["s"];
-                                    int t_Indx = elements_range["vertex"].Property_with_Index["t"];
+                                    var s_Indx = elements_range["vertex"].Property_with_Index["s"];
+                                    var t_Indx = elements_range["vertex"].Property_with_Index["t"];
 
-                                    Vector2 texpt = new Vector2
+                                    var texpt = new Vector2
                                     {
                                         X = float.Parse(strarr[s_Indx]),
                                         Y = float.Parse(strarr[t_Indx]),
                                     };
                                     TextureCoordinates.Add(texpt);
                                 }
-
                             }
-
                         }
 
                         if (elements_range.ContainsKey("face"))
@@ -687,14 +722,13 @@ namespace HelixToolkit.UWP
                             if (elements_range["face"].ContainsNumber(elementLine_Current) == true)
                             {
 
-                                List<int> facepos = new List<int>();
-                                for (int i = 1; i <= int.Parse(strarr[0]); i++)
+                                var facepos = new List<int>();
+                                for (var i = 1; i <= int.Parse(strarr[0]); i++)
                                 {
                                     facepos.Add(int.Parse(strarr[i]));
                                 }
                                 Faces.Add(facepos.ToArray());
                             }
-
                         }
 
                         else
@@ -705,14 +739,12 @@ namespace HelixToolkit.UWP
                         //the line contains element data.
                     }
 
-                    else { continue; }
-
-
+                    else
+                    {
+                        continue;
+                    }
                 }
-
-
             }
-
         }
 
         /// <summary>
@@ -726,7 +758,7 @@ namespace HelixToolkit.UWP
                 while (reader.ReadString() != null)
                 {
                     var curline = reader.ReadString();
-                    string[] strarr = curline.Split(' ');
+                    var strarr = curline.Split(' ');
                     //comment Line
                     if (strarr[0] == "comment")
                     {
@@ -767,7 +799,7 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-                            int miscElementNumber = int.Parse(strarr[2]);
+                            var miscElementNumber = int.Parse(strarr[2]);
 
                             elements_range.Add(strarr[1], new PLYElement(elementLines_Count, elementLines_Count + miscElementNumber));
                             elementLines_Count += int.Parse(strarr[2]);
@@ -789,7 +821,7 @@ namespace HelixToolkit.UWP
                                         elements_range["vertex"].ContainsNormals = true;
                                     }
 
-                                    int propInd = elements_range["vertex"].PropertyIndex;
+                                    var propInd = elements_range["vertex"].PropertyIndex;
                                     elements_range["vertex"].Property_with_Index.Add(strarr[2], propInd);
                                     //Increase the property index if there's an element which has/hasn't been supported.
                                     elements_range["vertex"].PropertyIndex += 1;
@@ -821,10 +853,10 @@ namespace HelixToolkit.UWP
                     if (elements_range["vertex"].ContainsNumber(elementLine_Current))
                     {
                         //Get vertices
-                        int x_Indx = elements_range["vertex"].Property_with_Index["x"];
-                        int y_Indx = elements_range["vertex"].Property_with_Index["y"];
-                        int z_Indx = elements_range["vertex"].Property_with_Index["z"];
-                        Vector3 pt = new Vector3()
+                        var x_Indx = elements_range["vertex"].Property_with_Index["x"];
+                        var y_Indx = elements_range["vertex"].Property_with_Index["y"];
+                        var z_Indx = elements_range["vertex"].Property_with_Index["z"];
+                        var pt = new Vector3()
                         {
                             X = float.Parse(strarr[x_Indx]),
                             Y = float.Parse(strarr[y_Indx]),
@@ -834,11 +866,11 @@ namespace HelixToolkit.UWP
 
                         if (elements_range["vertex"].ContainsNormals == true)
                         {
-                            int nx_Indx = elements_range["vertex"].Property_with_Index["nx"];
-                            int ny_Indx = elements_range["vertex"].Property_with_Index["ny"];
-                            int nz_Indx = elements_range["vertex"].Property_with_Index["nz"];
+                            var nx_Indx = elements_range["vertex"].Property_with_Index["nx"];
+                            var ny_Indx = elements_range["vertex"].Property_with_Index["ny"];
+                            var nz_Indx = elements_range["vertex"].Property_with_Index["nz"];
 
-                            Vector3 vect3 = new Vector3
+                            var vect3 = new Vector3
                             {
                                 X = float.Parse(strarr[nx_Indx]),
                                 Y = float.Parse(strarr[ny_Indx]),
@@ -853,8 +885,8 @@ namespace HelixToolkit.UWP
                     }
                     if (elements_range["face"].ContainsNumber(elementLine_Current))
                     {
-                        List<int> facepos = new List<int>();
-                        for (int i = 1; i <= int.Parse(strarr[0]); i++)
+                        var facepos = new List<int>();
+                        for (var i = 1; i <= int.Parse(strarr[0]); i++)
                         {
                             facepos.Add(int.Parse(strarr[i]));
                         }
@@ -865,7 +897,7 @@ namespace HelixToolkit.UWP
                     elementLine_Current++;
                 }
             }
-            BinaryReader br = new BinaryReader(s);
+            var br = new BinaryReader(s);
             br.ReadString();
 
         }

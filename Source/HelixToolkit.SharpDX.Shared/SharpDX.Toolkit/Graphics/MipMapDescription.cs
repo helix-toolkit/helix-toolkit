@@ -111,7 +111,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             unchecked
             {
-                int hashCode = this.Width;
+                var hashCode = this.Width;
                 hashCode = (hashCode * 397) ^ this.Height;
                 hashCode = (hashCode * 397) ^ this.WidthPacked;
                 hashCode = (hashCode * 397) ^ this.HeightPacked;

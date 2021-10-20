@@ -123,7 +123,7 @@ namespace HelixToolkit.UWP
                     }
                     else
                     {
-                        float aspectRatio = imageSize.Width / imageSize.Height;
+                        var aspectRatio = imageSize.Width / imageSize.Height;
                         if (Width == 0)
                         {
                             var height = Math.Min(availableSize.Height, Height) * DpiScale;
@@ -154,5 +154,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

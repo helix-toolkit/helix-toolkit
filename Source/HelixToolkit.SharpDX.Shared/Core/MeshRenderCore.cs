@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP
         using Render;
         using Utilities;
         using Model;
-    
+
 
         public class MeshRenderCore : GeometryRenderCore, IMeshRenderParams, IDynamicReflectable
         {
@@ -32,7 +32,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The raster state wireframe.
             /// </value>
-            protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
+            protected RasterizerStateProxy RasterStateWireframe
+            {
+                get
+                {
+                    return rasterStateWireframe;
+                }
+            }
             private RasterizerStateProxy rasterStateWireframe = null;
 
             #endregion
@@ -83,7 +89,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.WireframeColor, value);
                 }
-                get { return modelStruct.WireframeColor; }
+                get
+                {
+                    return modelStruct.WireframeColor;
+                }
             }
 
 
@@ -142,7 +151,7 @@ namespace HelixToolkit.UWP
                     wireframeDesc.DepthBiasClamp = -0.00008f;
                     var newState = EffectTechnique.EffectsManager.StateManager.Register(wireframeDesc);
                     RemoveAndDispose(ref rasterStateWireframe);
-                    rasterStateWireframe = Collect(newState);
+                    rasterStateWireframe = newState;
                     return true;
                 }
                 else
@@ -153,7 +162,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnDetach()
             {
-                rasterStateWireframe = null;
+                RemoveAndDispose(ref rasterStateWireframe);
                 base.OnDetach();
             }
 
@@ -171,11 +180,13 @@ namespace HelixToolkit.UWP
 
             protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
             {
-                ShaderPass pass = MaterialVariables.GetPass(RenderType, context);
+                var pass = MaterialVariables.GetPass(RenderType, context);
                 if (pass.IsNULL)
-                { return; }
+                {
+                    return;
+                }
                 OnUpdatePerModelStruct(context);
-                if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, ModelStruct.SizeInBytes))
+                if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct))
                 {
                     return;
                 }
@@ -206,7 +217,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, ModelStruct.SizeInBytes))
+                if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct))
                 {
                     return;
                 }
@@ -217,13 +228,15 @@ namespace HelixToolkit.UWP
             {
                 var pass = materialVariables.GetShadowPass(RenderType, context);
                 if (pass.IsNULL)
-                { return; }
+                {
+                    return;
+                }
                 var v = new SimpleMeshStruct()
                 {
                     World = ModelMatrix,
                     HasInstances = InstanceBuffer.HasElements ? 1 : 0
                 };
-                if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
+                if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v))
                 {
                     return;
                 }
@@ -236,13 +249,15 @@ namespace HelixToolkit.UWP
             {
                 var pass = customPass ?? materialVariables.GetDepthPass(RenderType, context);
                 if (pass.IsNULL)
-                { return; }
+                {
+                    return;
+                }
                 var v = new SimpleMeshStruct()
                 {
                     World = ModelMatrix,
                     HasInstances = InstanceBuffer.HasElements ? 1 : 0
                 };
-                if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
+                if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v))
                 {
                     return;
                 }
@@ -252,5 +267,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

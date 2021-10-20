@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         using Render;
-        using Shaders;   
+        using Shaders;
         using Utilities;
         public class VolumeMaterialVariable<T> : MaterialVariable
         {
@@ -29,11 +29,11 @@ namespace HelixToolkit.UWP
             private ShaderResourceViewProxy texture;
             private ShaderResourceViewProxy transferMap;
             private SamplerStateProxy sampler;
-       
+
 
             public Func<VolumeTextureMaterialCoreBase<T>, IEffectsManager, ShaderResourceViewProxy> OnCreateTexture;
 
-            public VolumeMaterialVariable(IEffectsManager manager, IRenderTechnique technique, VolumeTextureMaterialCoreBase<T> material, 
+            public VolumeMaterialVariable(IEffectsManager manager, IRenderTechnique technique, VolumeTextureMaterialCoreBase<T> material,
                 string volumePassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultVolumeConstantBufferDesc, material)
             {
@@ -48,11 +48,11 @@ namespace HelixToolkit.UWP
             {
                 base.OnInitialPropertyBindings();
                 AddPropertyBinding(nameof(VolumeTextureMaterialCoreBase<T>.VolumeTexture), () => { UpdateTexture(material); });
-                AddPropertyBinding(nameof(IVolumeTextureMaterial.Sampler), () => 
+                AddPropertyBinding(nameof(IVolumeTextureMaterial.Sampler), () =>
                 {
                     var newSampler = EffectsManager.StateManager.Register(material.Sampler);
                     RemoveAndDispose(ref sampler);
-                    sampler = Collect(newSampler);
+                    sampler = newSampler;
                 });
                 AddPropertyBinding(nameof(IVolumeTextureMaterial.SampleDistance),
                     () => UpdateStepSize());
@@ -92,10 +92,10 @@ namespace HelixToolkit.UWP
 
             private void UpdateTexture(VolumeTextureMaterialCoreBase<T> material)
             {
-                var newTexture = Collect(OnCreateTexture(material, EffectsManager));
+                var newTexture = OnCreateTexture(material, EffectsManager);
                 RemoveAndDispose(ref texture);
                 texture = newTexture;
-                if(texture != null)
+                if (texture != null)
                 {
                     UpdateStepSize();
                 }
@@ -104,16 +104,16 @@ namespace HelixToolkit.UWP
             public void UpdateGradientMap()
             {
                 RemoveAndDispose(ref transferMap);
-                if(material.TransferMap != null)
+                if (material.TransferMap != null)
                 {
-                    transferMap = Collect(ShaderResourceViewProxy.CreateViewFromColorArray(EffectsManager.Device, material.TransferMap));
+                    transferMap = ShaderResourceViewProxy.CreateViewFromColorArray(EffectsManager.Device, material.TransferMap);
                 }
                 WriteValue(VolumeParamsStruct.HasGradientMapX, material.TransferMap != null);
             }
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
             {
-                if(texture != null)
+                if (texture != null)
                 {
                     shaderPass.PixelShader.BindTexture(deviceContext, texSlot, texture);
                     shaderPass.PixelShader.BindTexture(deviceContext, gradientSlot, transferMap);
@@ -150,7 +150,14 @@ namespace HelixToolkit.UWP
             {
                 return ShaderPass.NullPass;
             }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref texture);
+                RemoveAndDispose(ref transferMap);
+                RemoveAndDispose(ref sampler);
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
-
 }

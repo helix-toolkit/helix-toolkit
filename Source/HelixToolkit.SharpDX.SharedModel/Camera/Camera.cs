@@ -32,11 +32,26 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface ICameraModel
     {
-        bool CreateLeftHandSystem { set; get; }
-        Point3D Position { set; get; }
-        Vector3D LookDirection { set; get; }
-        Vector3D UpDirection { set; get; }
-        CameraCore CameraInternal { get; }
+        bool CreateLeftHandSystem
+        {
+            set; get;
+        }
+        Point3D Position
+        {
+            set; get;
+        }
+        Vector3D LookDirection
+        {
+            set; get;
+        }
+        Vector3D UpDirection
+        {
+            set; get;
+        }
+        CameraCore CameraInternal
+        {
+            get;
+        }
         void AnimateTo(
             Point3D newPosition,
             Vector3D newDirection,
@@ -61,7 +76,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The position.
         /// </value>
-        public abstract Point3D Position { get; set; }
+        public abstract Point3D Position
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the look direction.
@@ -69,7 +87,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The look direction.
         /// </value>
-        public abstract Vector3D LookDirection { get; set; }
+        public abstract Vector3D LookDirection
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets up direction.
@@ -77,14 +98,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// Up direction.
         /// </value>
-        public abstract Vector3D UpDirection { get; set; }
+        public abstract Vector3D UpDirection
+        {
+            get; set;
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [create left hand system].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [create left hand system]; otherwise, <c>false</c>.
         /// </value>
-        public abstract bool CreateLeftHandSystem { set; get; }
+        public abstract bool CreateLeftHandSystem
+        {
+            set; get;
+        }
 
         private CameraCore core;
         /// <summary>
@@ -110,14 +137,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Creates the view matrix.
         /// </summary>
         /// <returns>A <see cref="Matrix" />.</returns>
-        public Matrix CreateViewMatrix() { return CameraInternal.CreateViewMatrix(); }
+        public Matrix CreateViewMatrix()
+        {
+            return CameraInternal.CreateViewMatrix();
+        }
 
         /// <summary>
         /// Creates the projection matrix.
         /// </summary>
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>A <see cref="Matrix" />.</returns>
-        public Matrix CreateProjectionMatrix(double aspectRatio) { return CameraInternal.CreateProjectionMatrix((float)aspectRatio); }
+        public Matrix CreateProjectionMatrix(double aspectRatio)
+        {
+            return CameraInternal.CreateProjectionMatrix((float)aspectRatio);
+        }
 
         private Vector3 targetPosition;
         private Vector3 targetLookDirection;

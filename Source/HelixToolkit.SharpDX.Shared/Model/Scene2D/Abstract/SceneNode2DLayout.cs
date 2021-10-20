@@ -78,7 +78,10 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            protected Vector2 MarginWidthHeight { private set; get; }
+            protected Vector2 MarginWidthHeight
+            {
+                private set; get;
+            }
 
             private float width = float.PositiveInfinity;
 
@@ -227,7 +230,10 @@ namespace HelixToolkit.UWP
                         InvalidateTransform();
                     }
                 }
-                get { return layoutOffset; }
+                get
+                {
+                    return layoutOffset;
+                }
             }
 
             private Vector2 renderSize = Vector2.Zero;
@@ -240,7 +246,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector2 RenderSize
             {
-                get { return renderSize; }
+                get
+                {
+                    return renderSize;
+                }
                 private set
                 {
                     if (Set(ref renderSize, value))
@@ -261,7 +270,10 @@ namespace HelixToolkit.UWP
                         InvalidateRender();
                     }
                 }
-                get { return renderTransformOrigin; }
+                get
+                {
+                    return renderTransformOrigin;
+                }
             }
 
             /// <summary>
@@ -270,7 +282,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The size of the desired.
             /// </value>
-            public Vector2 DesiredSize { get; private set; }
+            public Vector2 DesiredSize
+            {
+                get; private set;
+            }
 
             /// <summary>
             /// Gets the size of the unclipped desired size after measure.
@@ -280,7 +295,13 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector2 UnclippedDesiredSize { get; private set; } = new Vector2(-1, -1);
 
-            private Vector2 Size { get { return new Vector2(width, height); } }
+            private Vector2 Size
+            {
+                get
+                {
+                    return new Vector2(width, height);
+                }
+            }
 
             public bool ClipEnabled { private set; get; } = false;
 
@@ -298,7 +319,10 @@ namespace HelixToolkit.UWP
                 {
                     RenderCore.LayoutClippingBound = value;
                 }
-                get { return RenderCore.LayoutClippingBound; }
+                get
+                {
+                    return RenderCore.LayoutClippingBound;
+                }
             }
 
             /// <summary>
@@ -310,7 +334,10 @@ namespace HelixToolkit.UWP
                 {
                     RenderCore.LayoutBound = value;
                 }
-                get { return RenderCore.LayoutBound; }
+                get
+                {
+                    return RenderCore.LayoutBound;
+                }
             }
 
             private Size2F? previousMeasureSize;
@@ -380,7 +407,9 @@ namespace HelixToolkit.UWP
                 TraverseUp(this, (e) =>
                 {
                     if (e.IsTransformDirty)
-                    { return false; }
+                    {
+                        return false;
+                    }
                     e.IsTransformDirty = true;
                     return true;
                 });
@@ -421,7 +450,9 @@ namespace HelixToolkit.UWP
                 while (ancestor != null)
                 {
                     if (!action(ancestor))
-                    { break; }
+                    {
+                        break;
+                    }
                     ancestor = ancestor.Parent as SceneNode2D;
                 }
             }
@@ -445,7 +476,7 @@ namespace HelixToolkit.UWP
 
                 var unclippedDesiredSize = desiredSize;
 
-                bool clipped = false;
+                var clipped = false;
                 if (desiredSize.X > maxSize.X)
                 {
                     desiredSize.X = maxSize.X;
@@ -483,7 +514,7 @@ namespace HelixToolkit.UWP
                 if (DesiredSize != clippedDesiredSize)
                 {
                     DesiredSize = clippedDesiredSize;
-                    for (int i = 0; i < ItemsInternal.Count; ++i)
+                    for (var i = 0; i < ItemsInternal.Count; ++i)
                     {
                         ItemsInternal[i].InvalidateMeasure();
                     }
@@ -504,7 +535,7 @@ namespace HelixToolkit.UWP
                 {
                     Measure(previousMeasureSize ?? rect.Size);
                 }
-                bool ancestorDirty = false;
+                var ancestorDirty = false;
                 TraverseUp(this, (parent) =>
                 {
                     if (parent.IsArrangeDirty)
@@ -512,7 +543,10 @@ namespace HelixToolkit.UWP
                         ancestorDirty = true;
                         return false;
                     }
-                    else { return true; }
+                    else
+                    {
+                        return true;
+                    }
                 });
 
                 var rectWidthHeight = new Vector2(rect.Width, rect.Height);
@@ -563,14 +597,14 @@ namespace HelixToolkit.UWP
 
                 CalculateMinMax(ref minSize, ref maxSize);
 
-                float calcedMaxWidth = Math.Max(desiredSize.X, maxSize.X);
+                var calcedMaxWidth = Math.Max(desiredSize.X, maxSize.X);
                 if (calcedMaxWidth < arrangeSize.X)
                 {
                     ClipEnabled = true;
                     arrangeSize.X = calcedMaxWidth;
                 }
 
-                float calcedMaxHeight = Math.Max(desiredSize.Y, maxSize.Y);
+                var calcedMaxHeight = Math.Max(desiredSize.Y, maxSize.Y);
                 if (calcedMaxHeight < arrangeSize.Y)
                 {
                     ClipEnabled = true;
@@ -580,7 +614,7 @@ namespace HelixToolkit.UWP
                 var oldRenderSize = RenderSize;
                 var arrangeResultSize = ArrangeOverride(new RectangleF(Margin.Left * DpiScale, Margin.Top * DpiScale, arrangeSize.X - MarginWidthHeight.X * DpiScale, arrangeSize.Y - MarginWidthHeight.Y * DpiScale)).ToVector2();
 
-                bool arrangeSizeChanged = arrangeResultSize != oldRenderSize;
+                var arrangeSizeChanged = arrangeResultSize != oldRenderSize;
                 if (arrangeSizeChanged)
                 {
                     InvalidateAll();
@@ -661,7 +695,7 @@ namespace HelixToolkit.UWP
 
                 var dimensionLength = Height;
 
-                float height = dimensionLength;
+                var height = dimensionLength;
 
                 maxSize.Y = Math.Max(Math.Min(height, maxSize.Y), minSize.Y);
 
@@ -674,7 +708,7 @@ namespace HelixToolkit.UWP
 
                 dimensionLength = Width;
 
-                float width = dimensionLength;
+                var width = dimensionLength;
 
                 maxSize.X = Math.Max(Math.Min(width, maxSize.X), minSize.X);
 
@@ -694,7 +728,7 @@ namespace HelixToolkit.UWP
 
             protected virtual RectangleF ArrangeOverride(RectangleF finalSize)
             {
-                for (int i = 0; i < ItemsInternal.Count; ++i)
+                for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
                     ItemsInternal[i].Arrange(finalSize);
                 }
@@ -703,7 +737,7 @@ namespace HelixToolkit.UWP
 
             protected virtual Size2F MeasureOverride(Size2F availableSize)
             {
-                for (int i = 0; i < ItemsInternal.Count; ++i)
+                for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
                     ItemsInternal[i].Measure(availableSize);
                 }
@@ -713,6 +747,4 @@ namespace HelixToolkit.UWP
             #endregion layout management
         }
     }
-
-
 }

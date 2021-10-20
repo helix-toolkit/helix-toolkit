@@ -27,14 +27,32 @@ namespace HelixToolkit.UWP
 
         public interface IPostEffectBloom : IPostEffect
         {
-            Color4 ThresholdColor { set; get; }
-            float BloomExtractIntensity { set; get; }
-            float BloomPassIntensity { set; get; }
+            Color4 ThresholdColor
+            {
+                set; get;
+            }
+            float BloomExtractIntensity
+            {
+                set; get;
+            }
+            float BloomPassIntensity
+            {
+                set; get;
+            }
 
-            float BloomCombineSaturation { set; get; }
+            float BloomCombineSaturation
+            {
+                set; get;
+            }
 
-            float BloomCombineIntensity { set; get; }
-            int NumberOfBlurPass { set; get; }
+            float BloomCombineIntensity
+            {
+                set; get;
+            }
+            int NumberOfBlurPass
+            {
+                set; get;
+            }
         }
         /// <summary>
         /// Outline blur effect
@@ -52,7 +70,7 @@ namespace HelixToolkit.UWP
 
             private ShaderPass blurPassHorizontal;
 
-            private ShaderPass screenOutlinePass;         
+            private ShaderPass screenOutlinePass;
 
             private int textureSlot;
 
@@ -74,8 +92,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string EffectName
             {
-                set { SetAffectsCanRenderFlag(ref effectName, value); }
-                get { return effectName; }
+                set
+                {
+                    SetAffectsCanRenderFlag(ref effectName, value);
+                }
+                get
+                {
+                    return effectName;
+                }
             }
 
             /// <summary>
@@ -90,7 +114,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.Color, value);
                 }
-                get { return modelStruct.Color; }
+                get
+                {
+                    return modelStruct.Color;
+                }
             }
 
             public float BloomExtractIntensity
@@ -99,7 +126,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.Param.M11, value);
                 }
-                get { return modelStruct.Param.M11; }
+                get
+                {
+                    return modelStruct.Param.M11;
+                }
             }
 
             public float BloomPassIntensity
@@ -108,7 +138,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.Param.M12, value);
                 }
-                get { return modelStruct.Param.M12; }
+                get
+                {
+                    return modelStruct.Param.M12;
+                }
             }
 
             public float BloomCombineSaturation
@@ -117,7 +150,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.Param.M13, value);
                 }
-                get { return modelStruct.Param.M13; }
+                get
+                {
+                    return modelStruct.Param.M13;
+                }
             }
 
             public float BloomCombineIntensity
@@ -126,7 +162,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.Param.M14, value);
                 }
-                get { return modelStruct.Param.M14; }
+                get
+                {
+                    return modelStruct.Param.M14;
+                }
             }
 
             private int numberOfBlurPass = 1;
@@ -142,7 +181,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref numberOfBlurPass, value);
                 }
-                get { return numberOfBlurPass; }
+                get
+                {
+                    return numberOfBlurPass;
+                }
             }
             #endregion
 
@@ -168,9 +210,9 @@ namespace HelixToolkit.UWP
                 screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
                 textureSlot = screenOutlinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
-                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
-                blurCore = Collect(new PostEffectBlurCore(blurPassVertical, blurPassHorizontal, textureSlot, samplerSlot, 
-                    DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager));
+                sampler = technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1);
+                blurCore = new PostEffectBlurCore(blurPassVertical, blurPassHorizontal, textureSlot, samplerSlot,
+                    DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager);
                 return true;
             }
 
@@ -186,7 +228,7 @@ namespace HelixToolkit.UWP
                 modelCB.Upload(deviceContext, ref modelStruct);
                 //Extract bloom samples
                 deviceContext.SetRenderTarget(buffer.FullResPPBuffer.NextRTV);
-                
+
                 screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
                 screenQuadPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                 screenQuadPass.BindShader(deviceContext);
@@ -194,12 +236,12 @@ namespace HelixToolkit.UWP
                 deviceContext.Draw(4, 0);
                 var viewport = context.Viewport;
                 // Down sampling
-                for(int i = 0; i < numberOfBlurPass; ++i)
+                for (var i = 0; i < numberOfBlurPass; ++i)
                 {
                     blurCore.Run(context, deviceContext, buffer.FullResPPBuffer.NextRTV, ref viewport,
                         PostEffectBlurCore.BlurDepth.Two, ref modelStruct);
                 }
-                
+
                 #endregion
 
                 #region Draw outline onto original target
@@ -214,8 +256,8 @@ namespace HelixToolkit.UWP
 
             protected override void OnDetach()
             {
-                sampler = null;
-                base.OnDetach();
+                RemoveAndDispose(ref sampler);
+                RemoveAndDispose(ref blurCore);
             }
 
             private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
@@ -230,5 +272,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

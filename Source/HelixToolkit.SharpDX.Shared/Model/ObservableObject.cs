@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP
             public event PropertyChangedEventHandler PropertyChanged;
             protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
             {
-                if(!DisablePropertyChangedEvent)
+                if (!DisablePropertyChangedEvent)
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
 
@@ -66,10 +66,11 @@ namespace HelixToolkit.UWP
 
                 backingField = value;
                 if (raisePropertyChanged)
-                { this.RaisePropertyChanged(propertyName); }
+                {
+                    this.RaisePropertyChanged(propertyName);
+                }
                 return true;
             }
         }
     }
-
 }

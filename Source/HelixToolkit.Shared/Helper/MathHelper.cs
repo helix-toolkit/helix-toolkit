@@ -71,14 +71,12 @@ namespace HelixToolkit.Wpf
                 amplitude /= 2;
             }
             //Normalize
-            for(int i=0; i< data.Length; ++i)
+            for (var i = 0; i < data.Length; ++i)
             {
                 data[i] = (data[i] - min) / (max - min);
             }
             result = data;
         }
-
-
     }
     /// <summary>
     /// implements improved Perlin noise in 2D. 
@@ -139,7 +137,6 @@ namespace HelixToolkit.Wpf
 
                 grad[i] = gradient;
             }
-
         }
 
         private static DoubleOrSingle Drop(DoubleOrSingle t)
@@ -181,6 +178,5 @@ namespace HelixToolkit.Wpf
 
             return Math.Max(Math.Min(total, 1f), -1f);
         }
-
     }
 }

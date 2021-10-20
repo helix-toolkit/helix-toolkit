@@ -74,16 +74,16 @@ namespace SharpDX.Toolkit.Graphics
                 {
                     // Create the render target view
                     var rtvDescription = new RenderTargetViewDescription()
-                                             {
-                                                 Format = this.Description.Format,
-                                                 Dimension = RenderTargetViewDimension.Texture3D,
-                                                 Texture3D =
+                    {
+                        Format = this.Description.Format,
+                        Dimension = RenderTargetViewDimension.Texture3D,
+                        Texture3D =
                                                  {
                                                      DepthSliceCount = arrayCount,
                                                      FirstDepthSlice = arrayOrDepthSlice,
                                                      MipSlice = mipIndex,
                                                  }
-                                             };
+                    };
 
                     rtv = new TextureView(this, new RenderTargetView(GraphicsDevice, Resource, rtvDescription));
                     this.renderTargetViews[rtvIndex] = ToDispose(rtv);
@@ -148,7 +148,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <msdn-id>ff476521</msdn-id>
         ///   <unmanaged>HRESULT ID3D11Device::CreateTexture3D([In] const D3D11_TEXTURE3D_DESC* pDesc,[In, Buffer, Optional] const D3D11_SUBRESOURCE_DATA* pInitialData,[Out, Fast] ID3D11Texture3D** ppTexture3D)</unmanaged>
         ///   <unmanaged-short>ID3D11Device::CreateTexture3D</unmanaged-short>
-        public static RenderTarget3D New(Device device, int width, int height, int depth,  PixelFormat format, TextureFlags flags = TextureFlags.RenderTarget | TextureFlags.ShaderResource, int arraySize = 1)
+        public static RenderTarget3D New(Device device, int width, int height, int depth, PixelFormat format, TextureFlags flags = TextureFlags.RenderTarget | TextureFlags.ShaderResource, int arraySize = 1)
         {
             return New(device, width, height, depth, false, format, flags | TextureFlags.RenderTarget, arraySize);
         }
@@ -183,7 +183,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="textureFlags"></param>
         /// <param name="mipCount"></param>
         /// <returns></returns>
-        protected static Texture3DDescription NewRenderTargetDescription(int width, int height, int depth, PixelFormat format, TextureFlags textureFlags,int mipCount)
+        protected static Texture3DDescription NewRenderTargetDescription(int width, int height, int depth, PixelFormat format, TextureFlags textureFlags, int mipCount)
         {
             var desc = Texture3DBase.NewDescription(width, height, depth, format, textureFlags, mipCount, ResourceUsage.Default);
             return desc;

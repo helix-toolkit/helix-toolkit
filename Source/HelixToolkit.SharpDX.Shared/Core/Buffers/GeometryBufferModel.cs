@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// General Geometry Buffer Model.
         /// </summary>
-        public abstract class GeometryBufferModel : ReferenceCountDisposeObject, IGUID, IGeometryBufferModel
+        public abstract class GeometryBufferModel : DisposeObject, IGUID, IGeometryBufferModel
         {
             public event EventHandler VertexBufferUpdated;
             public event EventHandler IndexBufferUpdated;
@@ -51,13 +51,15 @@ namespace HelixToolkit.UWP
             ///   <c>true</c> if [index changed]; otherwise, <c>false</c>.
             /// </value>
             protected volatile bool IndexChanged = true;
+            private static readonly IElementsBufferProxy[] emptyBuffers = new IElementsBufferProxy[0];
+            private IElementsBufferProxy[] vertexBuffers = emptyBuffers;
             /// <summary>
             /// Gets or sets the vertex buffer.
             /// </summary>
             /// <value>
             /// The vertex buffer.
             /// </value>
-            public IElementsBufferProxy[] VertexBuffer { private set; get; } = new IElementsBufferProxy[0];
+            public IElementsBufferProxy[] VertexBuffer => vertexBuffers;
             private static readonly VertexBufferBinding[] emptyBinding = new VertexBufferBinding[0];
             protected VertexBufferBinding[] VertexBufferBindings { private set; get; } = emptyBinding;
             /// <summary>
@@ -66,21 +68,32 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The size of the vertex structure.
             /// </value>
-            public IEnumerable<int> VertexStructSize { get { return VertexBuffer.Select(x=> x != null ? x.StructureSize : 0); } }
+            public IEnumerable<int> VertexStructSize
+            {
+                get
+                {
+                    return VertexBuffer.Select(x => x != null ? x.StructureSize : 0);
+                }
+            }
+
+            private IElementsBufferProxy indexBuffer;
             /// <summary>
             /// Gets or sets the index buffer.
             /// </summary>
             /// <value>
             /// The index buffer.
             /// </value>
-            public IElementsBufferProxy IndexBuffer { private set; get; }
+            public IElementsBufferProxy IndexBuffer => indexBuffer;
             /// <summary>
             /// Gets or sets the topology.
             /// </summary>
             /// <value>
             /// The topology.
             /// </value>
-            public PrimitiveTopology Topology { set; get; }
+            public PrimitiveTopology Topology
+            {
+                set; get;
+            }
 
             private Geometry3D geometry = null;
             /// <summary>
@@ -94,7 +107,9 @@ namespace HelixToolkit.UWP
                 set
                 {
                     if (geometry == value)
-                    { return; }
+                    {
+                        return;
+                    }
                     if (geometry != null)
                     {
                         geometry.PropertyChanged -= Geometry_PropertyChanged;
@@ -104,7 +119,7 @@ namespace HelixToolkit.UWP
                     {
                         geometry.PropertyChanged += Geometry_PropertyChanged;
                     }
-                    for(int i = 0; i < VertexBuffer.Length; ++i)
+                    for (var i = 0; i < VertexBuffer.Length; ++i)
                     {
                         VertexChanged |= 1u << i;
                     }
@@ -117,7 +132,10 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public IEffectsManager EffectsManager { set; get; }
+            public IEffectsManager EffectsManager
+            {
+                set; get;
+            }
 
             #region Constructors        
             /// <summary>
@@ -129,10 +147,9 @@ namespace HelixToolkit.UWP
             protected GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
             {
                 Topology = topology;
-                VertexBuffer = new IElementsBufferProxy[] { Collect(vertexBuffer) };
+                this.vertexBuffers = vertexBuffer != null ? new IElementsBufferProxy[] { vertexBuffer } : emptyBuffers;
                 VertexChanged = 1u;
-                if (indexBuffer != null)
-                { IndexBuffer = Collect(indexBuffer); }
+                this.indexBuffer = indexBuffer;
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="GeometryBufferModel"/> class.
@@ -143,22 +160,23 @@ namespace HelixToolkit.UWP
             protected GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy[] vertexBuffer, IElementsBufferProxy indexBuffer)
             {
                 Topology = topology;
-                for(int i = 0; i < vertexBuffer.Length; ++i)
+                if (vertexBuffer != null)
                 {
-                    Collect(vertexBuffer[i]);
-                    VertexChanged |= 1u << i;
+                    for (var i = 0; i < vertexBuffer.Length; ++i)
+                    {
+                        VertexChanged |= 1u << i;
+                    }
+                    this.vertexBuffers = vertexBuffer;
                 }
-                VertexBuffer = vertexBuffer;
-                if (indexBuffer != null)
-                { IndexBuffer = Collect(indexBuffer); }
+                this.indexBuffer = indexBuffer;
             }
             #endregion
 
 
             private void Geometry_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
             {
-                bool vertChanged = false;
-                for(int i = 0; i < VertexBuffer.Length; ++i)
+                var vertChanged = false;
+                for (var i = 0; i < VertexBuffer.Length; ++i)
                 {
                     if (IsVertexBufferChanged(e.PropertyName, i))
                     {
@@ -189,7 +207,7 @@ namespace HelixToolkit.UWP
             /// <returns>
             ///   <c>true</c> if [is vertex buffer changed] [the specified property name]; otherwise, <c>false</c>.
             /// </returns>
-            protected virtual bool IsVertexBufferChanged(string propertyName,  int vertexBufferIndex)
+            protected virtual bool IsVertexBufferChanged(string propertyName, int vertexBufferIndex)
             {
                 return propertyName.Equals(Geometry3D.VertexBuffer) || propertyName.Equals(nameof(Geometry3D.Positions));
             }
@@ -225,26 +243,26 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public virtual bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
             {
-                bool bufferUpdated = false;
-                if(VertexChanged != 0)
+                var bufferUpdated = false;
+                if (VertexChanged != 0)
                 {
                     lock (VertexBuffer)
                     {
-                        bool updateVBinding = false;
+                        var updateVBinding = false;
                         if (VertexChanged != 0)
                         {
-                            for(int i = 0; i < VertexBuffer.Length && VertexChanged != 0; ++i)
+                            for (var i = 0; i < VertexBuffer.Length && VertexChanged != 0; ++i)
                             {
-                                if((VertexChanged & (1u << i)) != 0)
+                                if ((VertexChanged & (1u << i)) != 0)
                                 {
-                                    if(VertexBuffer[i] != null)
+                                    if (VertexBuffer[i] != null)
                                     {
                                         OnCreateVertexBuffer(context, VertexBuffer[i], i, Geometry, deviceResources);
                                     }
                                     VertexChanged &= ~(1u << i);
-                                    updateVBinding = true;  
+                                    updateVBinding = true;
                                 }
-                            }      
+                            }
                         }
                         if (updateVBinding)
                         {
@@ -264,9 +282,9 @@ namespace HelixToolkit.UWP
                             OnCreateIndexBuffer(context, IndexBuffer, Geometry, deviceResources);
                             bufferUpdated = true;
                         }
-                        IndexChanged = false;                    
+                        IndexChanged = false;
                         IndexBufferUpdated?.Invoke(this, EventArgs.Empty);
-                    }               
+                    }
                 }
                 if (bufferUpdated && Geometry != null && Geometry.IsTransient)
                 {
@@ -340,10 +358,16 @@ namespace HelixToolkit.UWP
                     geometry.PropertyChanged -= Geometry_PropertyChanged;
                 }
                 geometry = null;
+                for (var i = 0; i < vertexBuffers.Length; ++i)
+                {
+                    RemoveAndDispose(vertexBuffers[i]);
+                }
+                vertexBuffers = emptyBuffers;
+                RemoveAndDispose(indexBuffer);
+                indexBuffer = null;
                 VertexBufferBindings = emptyBinding;
                 base.OnDispose(disposeManagedResources);
             }
         }
     }
-
 }

@@ -150,7 +150,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets or sets the directory
         /// </summary>
-        public string Directory { get; set; }
+        public string Directory
+        {
+            get; set;
+        }
         /// <summary>
         /// Gets or sets the texture path.
         /// </summary>
@@ -179,13 +182,13 @@ namespace HelixToolkit.UWP
         {
             using (var reader = new BinaryReader(s))
             {
-                long length = reader.BaseStream.Length;
+                var length = reader.BaseStream.Length;
                 var headerId = this.ReadChunkId(reader);
                 if (headerId != ChunkID.MAIN3DS)
                 {
                     throw new FileFormatException("Unknown file");
                 }
-                int headerSize = this.ReadChunkSize(reader);
+                var headerSize = this.ReadChunkSize(reader);
                 //if (headerSize != length)
                 //{
                 //    throw new FileFormatException("Incomplete file (file length does not match header)");
@@ -193,7 +196,7 @@ namespace HelixToolkit.UWP
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
                 {
                     var id = this.ReadChunkId(reader);
-                    int size = this.ReadChunkSize(reader);
+                    var size = this.ReadChunkSize(reader);
                     switch (id)
                     {
                         case ChunkID.EDIT_MATERIAL:
@@ -217,7 +220,6 @@ namespace HelixToolkit.UWP
                             break;
                     }
                 }
-
             }
             return obGroup;
         }
@@ -256,7 +258,7 @@ namespace HelixToolkit.UWP
         /// <param name="chunkSize"></param>
         private void ReadMaterial(BinaryReader reader, int chunkSize)
         {
-            int total = 6;
+            var total = 6;
             string name = null;
             var luminance = Color.Transparent; //SharpDX.Color not System.Windows.Media.Color
             var diffuse = Color.Transparent;
@@ -267,10 +269,10 @@ namespace HelixToolkit.UWP
             float specularPower = 100;//check if we can find this somewhere instead of just setting it to 100 
             while (total < chunkSize)
             {
-                ChunkID id = this.ReadChunkId(reader);
-                int size = this.ReadChunkSize(reader);
+                var id = this.ReadChunkId(reader);
+                var size = this.ReadChunkSize(reader);
                 total += size;
-                
+
                 switch (id)
                 {
                     case ChunkID.MAT_NAME01:
@@ -280,7 +282,7 @@ namespace HelixToolkit.UWP
                         // skip the first 6 bytes
                         this.ReadData(reader, 6);
                         // read the percent value as 16Bit Uint
-                        byte[] data = this.ReadData(reader, 2);
+                        var data = this.ReadData(reader, 2);
                         opacity = (100 - BitConverter.ToUInt16(data, 0)) / 100.0;
                         break;
                     case ChunkID.MAT_LUMINANCE:
@@ -308,7 +310,7 @@ namespace HelixToolkit.UWP
                         break;
                 }
             }
-            
+
             var image = ReadBitmapSoure(texture, diffuse);
 
             if (Math.Abs(opacity) > 0.001)
@@ -322,7 +324,7 @@ namespace HelixToolkit.UWP
                 AmbientColor = luminance, //not really sure about this, lib3ds uses 0xA010 as AmbientColor
                 SpecularColor = specular,
                 SpecularShininess = specularPower,
-                
+
 
 
 
@@ -335,7 +337,6 @@ namespace HelixToolkit.UWP
             {
                 materials[name] = material;
             }
-
         }
 
         /// <summary>
@@ -345,13 +346,13 @@ namespace HelixToolkit.UWP
         /// <param name="chunkSize"></param>
         private void ReadObject(BinaryReader reader, int chunkSize)
         {
-            int total = 6;
-            string objectName = this.ReadString(reader);
+            var total = 6;
+            var objectName = this.ReadString(reader);
             total += objectName.Length + 1;
             while (total < chunkSize)
             {
                 var id = this.ReadChunkId(reader);
-                int size = this.ReadChunkSize(reader);
+                var size = this.ReadChunkSize(reader);
                 total += size;
                 switch (id)
                 {
@@ -377,8 +378,8 @@ namespace HelixToolkit.UWP
         /// </param>
         private void ReadTriangularMesh(BinaryReader reader, int chunkSize)
         {
-            MeshBuilder builder = new MeshBuilder();
-            int bytesRead = 6;
+            var builder = new MeshBuilder();
+            var bytesRead = 6;
             Vector3Collection positions = null;
             IntCollection faces = null;
             Vector2Collection textureCoordinates = null;
@@ -388,11 +389,11 @@ namespace HelixToolkit.UWP
             //Matrix matrix = Matrix.Identity;
             Vector3Collection tangents = null;
             Vector3Collection bitangents = null;
-            List<Matrix> transforms = new List<Matrix>();
+            var transforms = new List<Matrix>();
             while (bytesRead < chunkSize)
             {
-                ChunkID id = this.ReadChunkId(reader);
-                int size = this.ReadChunkSize(reader);
+                var id = this.ReadChunkId(reader);
+                var size = this.ReadChunkSize(reader);
                 bytesRead += size;
                 switch (id)
                 {
@@ -478,7 +479,7 @@ namespace HelixToolkit.UWP
                 }
             }
             MeshBuilder.ComputeTangents(positions, normals, textureCoordinates, triangleIndices, out tangents, out bitangents);
-            MeshGeometry3D mesh = new MeshGeometry3D()
+            var mesh = new MeshGeometry3D()
             {
                 Positions = positions,
                 Normals = normals,
@@ -488,7 +489,7 @@ namespace HelixToolkit.UWP
                 BiTangents = bitangents
 
             };
-            Object3D ob3d = new Object3D();
+            var ob3d = new Object3D();
             ob3d.Geometry = mesh;
             ob3d.Material = material;
             ob3d.Transform = transforms;
@@ -507,7 +508,7 @@ namespace HelixToolkit.UWP
             normals = new Vector3Collection(positions.Count);
             normals.AddRange(Enumerable.Repeat(Vector3.Zero, positions.Count));
 
-            for (int t = 0; t < triangleIndices.Count; t += 3)
+            for (var t = 0; t < triangleIndices.Count; t += 3)
             {
                 var i1 = triangleIndices[t];
                 var i2 = triangleIndices[t + 1];
@@ -530,7 +531,7 @@ namespace HelixToolkit.UWP
                 normals[i3] += (a * n);
             }
 
-            for (int i = 0; i < normals.Count; i++)
+            for (var i = 0; i < normals.Count; i++)
             {
                 var n = normals[i];
                 n.Normalize();
@@ -541,7 +542,7 @@ namespace HelixToolkit.UWP
         private static IntCollection ConvertFaceIndices(List<int> subFaces, IList<int> faces)
         {
             var triangleIndices = new IntCollection(subFaces.Count * 3);// new List<int>(subFaces.Count * 3);
-            foreach (int f in subFaces)
+            foreach (var f in subFaces)
             {
                 triangleIndices.Add(faces[f * 3]);
                 triangleIndices.Add(faces[(f * 3) + 1]);
@@ -555,11 +556,11 @@ namespace HelixToolkit.UWP
         {
             int size = reader.ReadUInt16();
             var pts = new Vector2Collection();
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
-                float x = reader.ReadSingle();
-                float y = reader.ReadSingle();
-                pts.Add(new Vector2(x,1- y));
+                var x = reader.ReadSingle();
+                var y = reader.ReadSingle();
+                pts.Add(new Vector2(x, 1 - y));
             }
             return pts;
         }
@@ -578,21 +579,21 @@ namespace HelixToolkit.UWP
         /// </returns>
         private List<FaceSet> ReadFaceSets(BinaryReader reader, int chunkSize)
         {
-            int total = 6;
+            var total = 6;
             var list = new List<FaceSet>();
             while (total < chunkSize)
             {
                 var id = this.ReadChunkId(reader);
-                int size = this.ReadChunkSize(reader);
+                var size = this.ReadChunkSize(reader);
                 total += size;
                 switch (id)
                 {
                     case ChunkID.TRI_FACEMAT:
                         {
-                            string name = this.ReadString(reader);
+                            var name = this.ReadString(reader);
                             int n = reader.ReadUInt16();
                             var c = new List<int>();
-                            for (int i = 0; i < n; i++)
+                            for (var i = 0; i < n; i++)
                             {
                                 c.Add(reader.ReadUInt16());
                             }
@@ -623,7 +624,7 @@ namespace HelixToolkit.UWP
         {
             int size = reader.ReadUInt16();
             var faces = new IntCollection();
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 faces.Add(reader.ReadUInt16());
                 faces.Add(reader.ReadUInt16());
@@ -692,11 +693,11 @@ namespace HelixToolkit.UWP
         {
             int size = reader.ReadUInt16();
             var pts = new Vector3Collection();
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
-                float x = reader.ReadSingle();
-                float y = reader.ReadSingle();
-                float z = reader.ReadSingle();
+                var x = reader.ReadSingle();
+                var y = reader.ReadSingle();
+                var z = reader.ReadSingle();
                 pts.Add(new Vector3(x, y, z));
             }
             return pts;
@@ -716,7 +717,7 @@ namespace HelixToolkit.UWP
             }
             try
             {
-                string ext = Path.GetExtension(texture);
+                var ext = Path.GetExtension(texture);
                 if (ext != null)
                 {
                     ext = ext.ToLower();
@@ -727,7 +728,7 @@ namespace HelixToolkit.UWP
                     texture = Path.ChangeExtension(texture, ".png");
                 }
                 var actualTexturePath = this.TexturePath ?? string.Empty;
-                string path = Path.GetFullPath(Path.Combine(actualTexturePath, texture));
+                var path = Path.GetFullPath(Path.Combine(actualTexturePath, texture));
                 if (File.Exists(path))
                 {
                     var stream = new MemoryStream();
@@ -761,15 +762,15 @@ namespace HelixToolkit.UWP
         private static Stream BitMapSoureFromFallBack(Color fallBackColor)
         {
             //List<MediaColor> colors = new List<System.Windows.Media.Color>() { MediaColor.FromArgb(fallBackColor.A, fallBackColor.R, fallBackColor.G, fallBackColor.B) };
-            MediaColor color = MediaColor.FromArgb(fallBackColor.A, fallBackColor.R, fallBackColor.G, fallBackColor.G);
-            List<MediaColor> colors = new List<System.Windows.Media.Color>();
+            var color = MediaColor.FromArgb(fallBackColor.A, fallBackColor.R, fallBackColor.G, fallBackColor.G);
+            var colors = new List<System.Windows.Media.Color>();
             colors.Add(color);
-            BitmapPalette palette = new BitmapPalette(colors);
-            int width = 128;
-            int height = 128;
-            int stride = width / 8;
-            byte[] pixels = new byte[height * stride];
-            BitmapSource bitmap = BitmapSource.Create(10, 10, 96, 96, System.Windows.Media.PixelFormats.Indexed1, palette, pixels, stride);
+            var palette = new BitmapPalette(colors);
+            var width = 128;
+            var height = 128;
+            var stride = width / 8;
+            var pixels = new byte[height * stride];
+            var bitmap = BitmapSource.Create(10, 10, 96, 96, System.Windows.Media.PixelFormats.Indexed1, palette, pixels, stride);
             return bitmap.ToMemoryStream();
         }
 #endif
@@ -788,15 +789,15 @@ namespace HelixToolkit.UWP
         private string ReadMatMap(BinaryReader reader, int size)
         {
             var id = this.ReadChunkId(reader);
-            int siz = this.ReadChunkSize(reader);
-            ushort f1 = reader.ReadUInt16();
-            ushort f2 = reader.ReadUInt16();
-            ushort f3 = reader.ReadUInt16();
-            ushort f4 = reader.ReadUInt16();
+            var siz = this.ReadChunkSize(reader);
+            var f1 = reader.ReadUInt16();
+            var f2 = reader.ReadUInt16();
+            var f3 = reader.ReadUInt16();
+            var f4 = reader.ReadUInt16();
             size -= 14;
-            string cname = this.ReadString(reader);
+            var cname = this.ReadString(reader);
             size -= cname.Length + 1;
-            byte[] morebytes = this.ReadData(reader, size);
+            var morebytes = this.ReadData(reader, size);
             return cname;
         }
 
@@ -812,23 +813,23 @@ namespace HelixToolkit.UWP
         private Color ReadColor(BinaryReader reader)
         {
             var type = this.ReadChunkId(reader);
-            int csize = this.ReadChunkSize(reader);
+            var csize = this.ReadChunkSize(reader);
             switch (type)
             {
                 case ChunkID.COL_RGB:
                     {
-                        float r = reader.ReadSingle();
-                        float g = reader.ReadSingle();
-                        float b = reader.ReadSingle();
+                        var r = reader.ReadSingle();
+                        var g = reader.ReadSingle();
+                        var b = reader.ReadSingle();
 
                         return new Color(r, g, b, 1);  // .FromScRgb(1, r, g, b);
                     }
 
                 case ChunkID.COL_TRU:
                     {
-                        byte r = reader.ReadByte();
-                        byte g = reader.ReadByte();
-                        byte b = reader.ReadByte();
+                        var r = reader.ReadByte();
+                        var g = reader.ReadByte();
+                        var b = reader.ReadByte();
                         return new Color(r, g, b);
                     }
 
@@ -911,13 +912,18 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Gets or sets Faces.
             /// </summary>
-            public List<int> Faces { get; set; }
+            public List<int> Faces
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the name of the material.
             /// </summary>
-            public string Name { get; set; }
+            public string Name
+            {
+                get; set;
+            }
         }
-
     }
 }

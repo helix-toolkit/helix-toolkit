@@ -35,35 +35,50 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The factory2 d.
         /// </value>
-        global::SharpDX.Direct2D1.Factory1 Factory2D { get; }
+        global::SharpDX.Direct2D1.Factory1 Factory2D
+        {
+            get;
+        }
         /// <summary>
         /// Gets the device2d.
         /// </summary>
         /// <value>
         /// The device2d.
         /// </value>
-        global::SharpDX.Direct2D1.Device Device2D { get; }
+        global::SharpDX.Direct2D1.Device Device2D
+        {
+            get;
+        }
         /// <summary>
         /// Gets the device context2d.
         /// </summary>
         /// <value>
         /// The device context2d.
         /// </value>
-        global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get; }
+        global::SharpDX.Direct2D1.DeviceContext DeviceContext2D
+        {
+            get;
+        }
         /// <summary>
         /// Gets the wic img factory.
         /// </summary>
         /// <value>
         /// The wic img factory.
         /// </value>
-        global::SharpDX.WIC.ImagingFactory WICImgFactory { get; }
+        global::SharpDX.WIC.ImagingFactory WICImgFactory
+        {
+            get;
+        }
         /// <summary>
         /// Gets the direct write factory.
         /// </summary>
         /// <value>
         /// The direct write factory.
         /// </value>
-        global::SharpDX.DirectWrite.Factory DirectWriteFactory { get; }
+        global::SharpDX.DirectWrite.Factory DirectWriteFactory
+        {
+            get;
+        }
     }
     /// <summary>
     /// 
@@ -73,51 +88,78 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        int AdapterIndex { get; }
+        int AdapterIndex
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        Device Device { get; }        
+        Device Device
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        DriverType DriverType { get; }
+        DriverType DriverType
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        IStatePoolManager StateManager { get; }
+        IStatePoolManager StateManager
+        {
+            get;
+        }
         /// <summary>
         /// Gets the geometry buffer manager.
         /// </summary>
         /// <value>
         /// The geometry buffer manager.
         /// </value>
-        IGeometryBufferManager GeometryBufferManager { get; }
+        IGeometryBufferManager GeometryBufferManager
+        {
+            get;
+        }
         /// <summary>
         /// Gets the material texture manager.
         /// </summary>
         /// <value>
         /// The material texture manager.
         /// </value>
-        ITextureResourceManager MaterialTextureManager { get; }
+        ITextureResourceManager MaterialTextureManager
+        {
+            get;
+        }
         /// <summary>
         /// Gets the material variable manager.
         /// </summary>
         /// <value>
         /// The material variable manager.
         /// </value>
-        IMaterialVariablePool MaterialVariableManager { get; }
+        IMaterialVariablePool MaterialVariableManager
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        IConstantBufferPool ConstantBufferPool { get; }
+        IConstantBufferPool ConstantBufferPool
+        {
+            get;
+        }
         /// <summary>
         /// Gets the device context pool.
         /// </summary>
         /// <value>
         /// The device context pool.
         /// </value>
-        IDeviceContextPool DeviceContextPool { get; }
+        IDeviceContextPool DeviceContextPool
+        {
+            get;
+        }
     }
 
     /// <summary>
@@ -142,15 +184,24 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        LogWrapper Logger { get; }
+        LogWrapper Logger
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        IShaderPoolManager ShaderManager { get; }
+        IShaderPoolManager ShaderManager
+        {
+            get;
+        }
         /// <summary>
         /// Get list of existing technique names
         /// </summary>
-        IEnumerable<string> RenderTechniques { get; }
+        IEnumerable<string> RenderTechniques
+        {
+            get;
+        }
 
         /// <summary>
         /// 

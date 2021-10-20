@@ -83,24 +83,24 @@ namespace HelixToolkit.UWP
                 {
                     viewportRenderables.AddRange(Viewport.Renderables);
                     renderer.UpdateSceneGraph(RenderContext, viewportRenderables, perFrameFlattenedScene);
-    #if DEBUG
+#if DEBUG
                     Debug.WriteLine("Flatten Scene Graph");
-    #endif
+#endif
                 }
-                int sceneCount = perFrameFlattenedScene.Count;
+                var sceneCount = perFrameFlattenedScene.Count;
                 if (invalidatePerFrameRenderables)
                 {
-    #if DEBUG
+#if DEBUG
                     Debug.WriteLine("Get PerFrameRenderables");
 #endif
-                    bool isInScreenSpacedGroup = false;
-                    int screenSpacedGroupDepth = int.MaxValue;
-                    for (int i = 0; i < sceneCount;)
+                    var isInScreenSpacedGroup = false;
+                    var screenSpacedGroupDepth = int.MaxValue;
+                    for (var i = 0; i < sceneCount;)
                     {
                         var renderable = perFrameFlattenedScene[i];
                         renderable.Value.Update(context);
                         var type = renderable.Value.RenderType;
-                        int depth = renderable.Key;
+                        var depth = renderable.Key;
                         if (!renderable.Value.IsRenderable)
                         {
                             //Skip scene graph depth larger than current node                         
@@ -160,22 +160,22 @@ namespace HelixToolkit.UWP
                     }
                     if (RenderConfiguration.EnableRenderOrder)
                     {
-                        for (int i = 0; i < preProcNodes.Count; ++i)
+                        for (var i = 0; i < preProcNodes.Count; ++i)
                         {
                             preProcNodes[i].UpdateRenderOrderKey();
                         }
                         preProcNodes.Sort();
-                        for (int i = 0; i < opaqueNodes.Count; ++i)
+                        for (var i = 0; i < opaqueNodes.Count; ++i)
                         {
                             opaqueNodes[i].UpdateRenderOrderKey();
                         }
                         opaqueNodes.Sort();
-                        for (int i = 0; i < postEffectNodes.Count; ++i)
+                        for (var i = 0; i < postEffectNodes.Count; ++i)
                         {
                             postEffectNodes[i].UpdateRenderOrderKey();
                         }
                         postEffectNodes.Sort();
-                        for (int i = 0; i < particleNodes.Count; ++i)
+                        for (var i = 0; i < particleNodes.Count; ++i)
                         {
                             particleNodes[i].UpdateRenderOrderKey();
                         }
@@ -187,14 +187,14 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    for (int i = 0; i < sceneCount;)
+                    for (var i = 0; i < sceneCount;)
                     {
                         var renderable = perFrameFlattenedScene[i];
                         renderable.Value.Update(context);
                         if (!renderable.Value.IsRenderable)
                         {
                             //Skip scene graph depth larger than current node
-                            int depth = renderable.Key;
+                            var depth = renderable.Key;
                             ++i;
                             for (; i < sceneCount; ++i)
                             {
@@ -240,7 +240,7 @@ namespace HelixToolkit.UWP
                 {
                     getTriangleCountTask = Task.Factory.StartNew(() =>
                     {
-                        int count = 0;
+                        var count = 0;
                         foreach (var core in opaqueNodesInFrustum.Select(x => x.RenderCore))
                         {
                             if (core is IGeometryRenderCore c)
@@ -271,14 +271,14 @@ namespace HelixToolkit.UWP
                     {
                         getPostEffectCoreTask = Task.Run(() =>
                         {
-                            for (int i = 0; i < opaqueNodesInFrustum.Count; ++i)
+                            for (var i = 0; i < opaqueNodesInFrustum.Count; ++i)
                             {
                                 if (opaqueNodesInFrustum[i].HasAnyPostEffect)
                                 {
                                     nodesWithPostEffect.Add(opaqueNodesInFrustum[i]);
                                 }
                             }
-                            for (int i = 0; i < transparentNodesInFrustum.Count; ++i)
+                            for (var i = 0; i < transparentNodesInFrustum.Count; ++i)
                             {
                                 if (transparentNodesInFrustum[i].HasAnyPostEffect)
                                 {
@@ -289,14 +289,14 @@ namespace HelixToolkit.UWP
                     }
                     else
                     {
-                        for (int i = 0; i < opaqueNodesInFrustum.Count; ++i)
+                        for (var i = 0; i < opaqueNodesInFrustum.Count; ++i)
                         {
                             if (opaqueNodesInFrustum[i].HasAnyPostEffect)
                             {
                                 nodesWithPostEffect.Add(opaqueNodesInFrustum[i]);
                             }
                         }
-                        for (int i = 0; i < transparentNodesInFrustum.Count; ++i)
+                        for (var i = 0; i < transparentNodesInFrustum.Count; ++i)
                         {
                             if (transparentNodesInFrustum[i].HasAnyPostEffect)
                             {
@@ -326,7 +326,7 @@ namespace HelixToolkit.UWP
                 };
                 renderer.SetRenderTargets(ref renderParameter);
                 renderer.UpdateGlobalVariables(RenderContext, lightNodes, ref renderParameter);
-                for (int i = 0; i < needUpdateCores.Count; ++i)
+                for (var i = 0; i < needUpdateCores.Count; ++i)
                 {
                     needUpdateCores[i].Update(RenderContext, renderer.ImmediateContext);
                 }
@@ -359,13 +359,13 @@ namespace HelixToolkit.UWP
                 }
                 if (screenSpacedNodes.Count > 0)
                 {
-                    int start = 0;
+                    var start = 0;
                     while (start < screenSpacedNodes.Count)
                     {
                         if (screenSpacedNodes[start].AffectsGlobalVariable)
                         {
                             nodesWithPostEffect.Clear();
-                            int i = start + 1;
+                            var i = start + 1;
                             for (; i < screenSpacedNodes.Count; ++i)
                             {
                                 if (screenSpacedNodes[i].AffectsGlobalVariable)
@@ -417,7 +417,7 @@ namespace HelixToolkit.UWP
             {
                 viewportRenderable2D.Clear();
                 var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
-                bool renderD2D = false;
+                var renderD2D = false;
                 if (d2dRoot != null && d2dRoot.ItemsInternal.Count > 0 && RenderConfiguration.RenderD2D)
                 {
                     renderD2D = true;
@@ -431,7 +431,7 @@ namespace HelixToolkit.UWP
                 viewportRenderable2D.AddRange(Viewport.D2DRenderables);
                 renderer.UpdateSceneGraph2D(RenderContext2D, viewportRenderable2D);
 
-                for (int i = 0; i < viewportRenderable2D.Count; ++i)
+                for (var i = 0; i < viewportRenderable2D.Count; ++i)
                 {
                     viewportRenderable2D[i].Render(RenderContext2D);
                 }
@@ -439,7 +439,7 @@ namespace HelixToolkit.UWP
                 RenderContext2D.PushRenderTarget(D2DTarget.D2DTarget, false);
                 if (renderD2D || ShowRenderDetail != RenderDetail.None)
                 {
-                    for (int i = 0; i < viewportRenderable2D.Count; ++i)
+                    for (var i = 0; i < viewportRenderable2D.Count; ++i)
                     {
                         viewportRenderable2D[i].RenderBitmapCache(RenderContext2D);
                     }
@@ -451,7 +451,7 @@ namespace HelixToolkit.UWP
             private void Clear(bool clearFrameRenderables, bool clearPerFrameRenderables)
             {
                 numRendered = 0;
-                bool fastClear = !clearFrameRenderables;
+                var fastClear = !clearFrameRenderables;
                 viewportRenderables.Clear(fastClear);
                 needUpdateCores.Clear(fastClear);
                 nodesWithPostEffect.Clear(fastClear);
@@ -516,7 +516,7 @@ namespace HelixToolkit.UWP
             private void FrustumTestDefault()
             {
                 var frustum = renderContext.BoundingFrustum;
-                for (int i = 0; i < opaqueNodes.Count; ++i)
+                for (var i = 0; i < opaqueNodes.Count; ++i)
                 {
                     opaqueNodes.Items[i].IsInFrustum = opaqueNodes.Items[i].TestViewFrustum(ref frustum);
                     if (opaqueNodes.Items[i].IsInFrustum)
@@ -524,7 +524,7 @@ namespace HelixToolkit.UWP
                         opaqueNodesInFrustum.Add(opaqueNodes.Items[i]);
                     }
                 }
-                for (int i = 0; i < transparentNodes.Count; ++i)
+                for (var i = 0; i < transparentNodes.Count; ++i)
                 {
                     transparentNodes.Items[i].IsInFrustum = transparentNodes.Items[i].TestViewFrustum(ref frustum);
                     if (transparentNodes.Items[i].IsInFrustum)
@@ -541,12 +541,12 @@ namespace HelixToolkit.UWP
                 {
                     Parallel.ForEach(opaquePartitioner, (range) =>
                     {
-                        for (int i = range.Item1; i < range.Item2; ++i)
+                        for (var i = range.Item1; i < range.Item2; ++i)
                         {
                             opaqueNodes.Items[i].IsInFrustum = opaqueNodes.Items[i].TestViewFrustum(ref frustum);
                         }
                     });
-                    for (int i = 0; i < opaqueNodes.Count; ++i)
+                    for (var i = 0; i < opaqueNodes.Count; ++i)
                     {
                         if (opaqueNodes.Items[i].IsInFrustum)
                         {
@@ -558,22 +558,21 @@ namespace HelixToolkit.UWP
                 {
                     Parallel.ForEach(transparentPartitioner, (range) =>
                     {
-                        for (int i = range.Item1; i < range.Item2; ++i)
+                        for (var i = range.Item1; i < range.Item2; ++i)
                         {
                             transparentNodes.Items[i].IsInFrustum = transparentNodes.Items[i].TestViewFrustum(ref frustum);
                         }
                     });
-                    for (int i = 0; i < transparentNodes.Count; ++i)
+                    for (var i = 0; i < transparentNodes.Count; ++i)
                     {
                         if (transparentNodes.Items[i].IsInFrustum)
                         {
                             transparentNodesInFrustum.Add(transparentNodes.Items[i]);
                         }
                     }
-                }        
+                }
             }
             #endregion
         }
     }
-
 }

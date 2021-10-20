@@ -282,7 +282,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DefaultEffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\GeometryBufferManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\Pools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Pools.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\RenderTechniqueNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ShaderPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\EffectsManager.cs" />
@@ -293,6 +293,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\GeometryShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\HullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\InputLayoutDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\InputLayoutProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\MappingProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\PixelShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\SamplerDescription.cs" />
@@ -345,6 +346,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\AtomicHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\BoolEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BitmapProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ConstantBufferProxy.cs" />

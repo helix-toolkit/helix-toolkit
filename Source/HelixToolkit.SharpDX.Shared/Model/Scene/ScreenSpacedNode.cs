@@ -68,7 +68,10 @@ namespace HelixToolkit.UWP
                     get; private set;
                 }
 
-                public bool IsPerspective { set; get; }
+                public bool IsPerspective
+                {
+                    set; get;
+                }
 
                 public float ActualWidth
                 {
@@ -318,7 +321,7 @@ namespace HelixToolkit.UWP
             {
                 var newRay = new Ray();
                 var hitSP = context.HitPointSP;
-                bool preHit = false;
+                var preHit = false;
                 screenSpacedContext.NearPlane = NearPlane;
                 screenSpacedContext.FarPlane = FarPlane;
                 switch (Mode)
@@ -327,7 +330,7 @@ namespace HelixToolkit.UWP
                         preHit = CreateRelativeScreenModeRay(context, out newRay, out hitSP);
                         break;
                     case ScreenSpacedMode.AbsolutePosition3D:
-                        preHit = CreateAbsoluteModeRay(context, out newRay, out hitSP);                       
+                        preHit = CreateAbsoluteModeRay(context, out newRay, out hitSP);
                         break;
                 }
                 if (!preHit)
@@ -358,10 +361,10 @@ namespace HelixToolkit.UWP
                 var p = context.HitPointSP * context.RenderMatrices.DpiScale; //Vector3.TransformCoordinate(context.RayWS.Position, context.RenderMatrices.ScreenViewProjectionMatrix);
                 var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
                 screenSpacedContext.IsPerspective = screenSpaceCore.IsPerspective;
-                float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.RenderMatrices.DpiScale;
+                var viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.RenderMatrices.DpiScale;
 
-                float offx = (float)(context.RenderMatrices.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
-                float offy = (float)(context.RenderMatrices.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
+                var offx = (float)(context.RenderMatrices.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
+                var offy = (float)(context.RenderMatrices.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
                 offx = Math.Max(0, Math.Min(offx, (int)(context.RenderMatrices.ActualWidth - viewportSize)));
                 offy = Math.Max(0, Math.Min(offy, (int)(context.RenderMatrices.ActualHeight - viewportSize)));
 
@@ -382,7 +385,7 @@ namespace HelixToolkit.UWP
                 screenSpacedContext.ViewMatrix = viewMatrix;
                 screenSpacedContext.ViewMatrixInv = viewMatrix.PsudoInvert();
                 screenSpacedContext.ProjectionMatrix = projMatrix;
-                screenSpacedContext.ActualWidth = screenSpacedContext.ActualHeight = viewportSize;                
+                screenSpacedContext.ActualWidth = screenSpacedContext.ActualHeight = viewportSize;
                 return true;
             }
 
@@ -403,16 +406,16 @@ namespace HelixToolkit.UWP
                         context.RenderMatrices.ActualWidth, context.RenderMatrices.ActualHeight, screenSpaceCore.IsPerspective);
                     screenSpacedContext.ActualWidth = context.RenderMatrices.ActualWidth;
                     screenSpacedContext.ActualHeight = context.RenderMatrices.ActualHeight;
-                    return true;                
+                    return true;
                 }
                 else
                 {
                     var p = context.HitPointSP * context.RenderMatrices.DpiScale;
-                    float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.RenderMatrices.DpiScale;
+                    var viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale * context.RenderMatrices.DpiScale;
 
                     var abs = Vector3.TransformCoordinate(AbsolutePosition3D, context.RenderMatrices.ScreenViewProjectionMatrix);
-                    float offx = (float)(abs.X - viewportSize / 2);
-                    float offy = (float)(abs.Y - viewportSize / 2);
+                    var offx = (float)(abs.X - viewportSize / 2);
+                    var offy = (float)(abs.Y - viewportSize / 2);
 
                     var px = p.X - offx;
                     var py = p.Y - offy;
@@ -436,5 +439,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

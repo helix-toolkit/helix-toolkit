@@ -41,7 +41,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     {
         public sealed class SceneNode2DCreatedEventArgs : EventArgs
         {
-            public SceneNode2D Node { private set; get; }
+            public SceneNode2D Node
+            {
+                private set; get;
+            }
             public SceneNode2DCreatedEventArgs(SceneNode2D node)
             {
                 Node = node;
@@ -53,12 +56,24 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <value>
         /// The unique identifier.
         /// </value>
-        public Guid GUID { get { return SceneNode.GUID; } }
+        public Guid GUID
+        {
+            get
+            {
+                return SceneNode.GUID;
+            }
+        }
 
 
-        public bool IsAttached { get { return SceneNode.IsAttached; } }
+        public bool IsAttached
+        {
+            get
+            {
+                return SceneNode.IsAttached;
+            }
+        }
 
-#region Scene Node
+        #region Scene Node
         private readonly object sceneNodeLock = new object();
         private SceneNode2D sceneNode;
         public SceneNode2D SceneNode
@@ -102,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
 
 #else
-            if(this.Dispatcher != null && this.Dispatcher.Thread.IsAlive)
+            if (this.Dispatcher != null && this.Dispatcher.Thread.IsAlive)
             {
                 if (this.Dispatcher.CheckAccess())
                 {
@@ -142,14 +157,16 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <returns></returns>
         protected abstract SceneNode2D OnCreateSceneNode();
 
-        protected virtual void AssignDefaultValuesToSceneNode(SceneNode2D node) { }
-#endregion
-#region Events        
+        protected virtual void AssignDefaultValuesToSceneNode(SceneNode2D node)
+        {
+        }
+        #endregion
+        #region Events        
         /// <summary>
         /// Occurs when [on scene node created]. Make sure to hook up this event at the top of constructor of class, otherwise may miss the event.
         /// </summary>
         public event EventHandler<SceneNode2DCreatedEventArgs> OnSceneNodeCreated;
-#endregion
+        #endregion
 
         public virtual bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)
         {
@@ -188,7 +205,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             return e.SceneNode;
         }
 
-#region IDisposable Support
+        #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls        
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -227,7 +244,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-#endregion
+        #endregion
     }
 }
 #endif

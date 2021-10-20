@@ -37,7 +37,10 @@ namespace HelixToolkit.UWP
                 {
                     (RenderCore as AxisPlaneGridCore).AutoSpacing = value;
                 }
-                get { return (RenderCore as AxisPlaneGridCore).AutoSpacing; }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).AutoSpacing;
+                }
             }
             /// <summary>
             /// Gets or sets the automatic spacing rate.
@@ -47,8 +50,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float AutoSpacingRate
             {
-                set { (RenderCore as AxisPlaneGridCore).AutoSpacingRate = value; }
-                get { return (RenderCore as AxisPlaneGridCore).AutoSpacingRate; }
+                set
+                {
+                    (RenderCore as AxisPlaneGridCore).AutoSpacingRate = value;
+                }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).AutoSpacingRate;
+                }
             }
 
             /// <summary>
@@ -59,7 +68,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public float AcutalSpacing
             {
-                get { return (RenderCore as AxisPlaneGridCore).AcutalSpacing; }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).AcutalSpacing;
+                }
             }
 
             /// <summary>
@@ -110,7 +122,10 @@ namespace HelixToolkit.UWP
                 {
                     (RenderCore as AxisPlaneGridCore).FadingFactor = value;
                 }
-                get { return (RenderCore as AxisPlaneGridCore).FadingFactor; }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).FadingFactor;
+                }
             }
 
             /// <summary>
@@ -125,7 +140,10 @@ namespace HelixToolkit.UWP
                 {
                     (RenderCore as AxisPlaneGridCore).PlaneColor = value;
                 }
-                get { return (RenderCore as AxisPlaneGridCore).PlaneColor; }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).PlaneColor;
+                }
             }
 
             /// <summary>
@@ -136,8 +154,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 GridColor
             {
-                set { (RenderCore as AxisPlaneGridCore).GridColor = value; }
-                get { return (RenderCore as AxisPlaneGridCore).GridColor; }
+                set
+                {
+                    (RenderCore as AxisPlaneGridCore).GridColor = value;
+                }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).GridColor;
+                }
             }
 
             /// <summary>
@@ -148,8 +172,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool RenderShadowMap
             {
-                set { (RenderCore as AxisPlaneGridCore).RenderShadowMap = value; }
-                get { return (RenderCore as AxisPlaneGridCore).RenderShadowMap; }
+                set
+                {
+                    (RenderCore as AxisPlaneGridCore).RenderShadowMap = value;
+                }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).RenderShadowMap;
+                }
             }
 
             /// <summary>
@@ -160,8 +190,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Axis UpAxis
             {
-                set { (RenderCore as AxisPlaneGridCore).UpAxis = value; }
-                get { return (RenderCore as AxisPlaneGridCore).UpAxis; }
+                set
+                {
+                    (RenderCore as AxisPlaneGridCore).UpAxis = value;
+                }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).UpAxis;
+                }
             }
 
             /// <summary>
@@ -172,8 +208,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float Offset
             {
-                set { (RenderCore as AxisPlaneGridCore).Offset = value; }
-                get { return (RenderCore as AxisPlaneGridCore).Offset; }
+                set
+                {
+                    (RenderCore as AxisPlaneGridCore).Offset = value;
+                }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).Offset;
+                }
             }
             /// <summary>
             /// Gets or sets the type of the grid.
@@ -183,8 +225,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public GridPattern GridPattern
             {
-                set { (RenderCore as AxisPlaneGridCore).GridPattern = value; }
-                get { return (RenderCore as AxisPlaneGridCore).GridPattern; }
+                set
+                {
+                    (RenderCore as AxisPlaneGridCore).GridPattern = value;
+                }
+                get
+                {
+                    return (RenderCore as AxisPlaneGridCore).GridPattern;
+                }
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="AxisPlaneGridNode"/> class.
@@ -239,5 +287,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

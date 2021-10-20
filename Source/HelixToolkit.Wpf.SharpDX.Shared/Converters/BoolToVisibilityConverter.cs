@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                if(value is bool v)
+                if (value is bool v)
                 {
                     return v ? Visibility.Visible : Visibility.Collapsed;
                 }
@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                if(value is Visibility v)
+                if (value is Visibility v)
                 {
                     return v == Visibility.Visible ? true : false;
                 }
@@ -34,5 +34,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }
