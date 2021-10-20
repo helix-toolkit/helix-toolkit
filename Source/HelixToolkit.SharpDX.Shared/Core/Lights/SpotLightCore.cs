@@ -38,7 +38,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref direction, value);
                 }
-                get { return direction; }
+                get
+                {
+                    return direction;
+                }
             }
 
             private float fallOff = 1;
@@ -50,8 +53,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float FallOff
             {
-                set { SetAffectsRender(ref fallOff, value); }
-                get { return fallOff; }
+                set
+                {
+                    SetAffectsRender(ref fallOff, value);
+                }
+                get
+                {
+                    return fallOff;
+                }
             }
 
             private float innerAngle = 5;
@@ -63,8 +72,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float InnerAngle
             {
-                set { SetAffectsRender(ref innerAngle, value); }
-                get { return innerAngle; }
+                set
+                {
+                    SetAffectsRender(ref innerAngle, value);
+                }
+                get
+                {
+                    return innerAngle;
+                }
             }
 
             private float outerAngle = 45;
@@ -76,8 +91,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float OuterAngle
             {
-                set { SetAffectsRender(ref outerAngle, value); }
-                get { return outerAngle; }
+                set
+                {
+                    SetAffectsRender(ref outerAngle, value);
+                }
+                get
+                {
+                    return outerAngle;
+                }
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="SpotLightCore"/> class.
@@ -99,5 +120,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

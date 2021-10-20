@@ -161,7 +161,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             conversionFlags = ConversionFlags.None;
 
-            int index = 0;
+            var index = 0;
             for (index = 0; index < LegacyMaps.Length; ++index)
             {
                 var entry = LegacyMaps[index];
@@ -227,14 +227,14 @@ namespace SharpDX.Toolkit.Graphics
             if (headerPtr == IntPtr.Zero)
                 throw new ArgumentException("Pointer to DDS header cannot be null", "headerPtr");
 
-            if (size < (Utilities.SizeOf<DDS.Header>() + sizeof (uint)))
+            if (size < (Utilities.SizeOf<DDS.Header>() + sizeof(uint)))
                 return false;
 
             // DDS files always start with the same magic number ("DDS ")
-            if (*(uint*) (headerPtr) != DDS.MagicHeader)
+            if (*(uint*)(headerPtr) != DDS.MagicHeader)
                 return false;
 
-            var header = *(DDS.Header*) ((byte*) headerPtr + sizeof (int));
+            var header = *(DDS.Header*)((byte*)headerPtr + sizeof(int));
 
             // Verify header to validate DDS file
             if (header.Size != Utilities.SizeOf<DDS.Header>() || header.PixelFormat.Size != Utilities.SizeOf<DDS.PixelFormat>())
@@ -249,10 +249,10 @@ namespace SharpDX.Toolkit.Graphics
             if ((header.PixelFormat.Flags & DDS.PixelFormatFlags.FourCC) != 0 && (new FourCC('D', 'X', '1', '0') == header.PixelFormat.FourCC))
             {
                 // Buffer must be big enough for both headers and magic value
-                if (size < (Utilities.SizeOf<DDS.Header>() + sizeof (uint) + Utilities.SizeOf<DDS.HeaderDXT10>()))
+                if (size < (Utilities.SizeOf<DDS.Header>() + sizeof(uint) + Utilities.SizeOf<DDS.HeaderDXT10>()))
                     return false;
 
-                var headerDX10 = *(DDS.HeaderDXT10*) ((byte*) headerPtr + sizeof (int) + Utilities.SizeOf<DDS.Header>());
+                var headerDX10 = *(DDS.HeaderDXT10*)((byte*)headerPtr + sizeof(int) + Utilities.SizeOf<DDS.Header>());
                 convFlags |= ConversionFlags.DX10;
 
                 description.ArraySize = headerDX10.ArraySize;
@@ -352,7 +352,7 @@ namespace SharpDX.Toolkit.Graphics
             // Special flag for handling BGR DXGI 1.1 formats
             if ((flags & DDSFlags.ForceRgb) != 0)
             {
-                switch ((DXGI.Format) description.Format)
+                switch ((DXGI.Format)description.Format)
                 {
                     case Format.B8G8R8A8_UNorm:
                         description.Format = Format.R8G8B8A8_UNorm;
@@ -393,7 +393,7 @@ namespace SharpDX.Toolkit.Graphics
             // Special flag for handling 16bpp formats
             if ((flags & DDSFlags.No16Bpp) != 0)
             {
-                switch ((DXGI.Format) description.Format)
+                switch ((DXGI.Format)description.Format)
                 {
                     case Format.B5G6R5_UNorm:
                     case Format.B5G5R5A1_UNorm:
@@ -421,7 +421,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <exception cref="ArgumentException">If the argument headerPtr is null</exception>
         /// <exception cref="InvalidOperationException">If the DDS header contains invalid data.</exception>
         /// <returns>True if the decoding is successful, false if this is not a DDS header.</returns>
-        private unsafe static void EncodeDDSHeader( ImageDescription description, DDSFlags flags,  IntPtr pDestination, int maxsize, out int required )
+        private unsafe static void EncodeDDSHeader(ImageDescription description, DDSFlags flags, IntPtr pDestination, int maxsize, out int required)
         {
             if (description.ArraySize > 1)
             {
@@ -542,7 +542,7 @@ namespace SharpDX.Toolkit.Graphics
                 }
             }
 
-            required = sizeof (int) + Utilities.SizeOf<DDS.Header>();
+            required = sizeof(int) + Utilities.SizeOf<DDS.Header>();
 
             if (ddpf.Size == 0)
                 required += Utilities.SizeOf<DDS.HeaderDXT10>();
@@ -555,7 +555,7 @@ namespace SharpDX.Toolkit.Graphics
 
             *(uint*)(pDestination) = DDS.MagicHeader;
 
-            var header = (DDS.Header*)((byte*)(pDestination) + sizeof (int));
+            var header = (DDS.Header*)((byte*)(pDestination) + sizeof(int));
 
             Utilities.ClearMemory((IntPtr)header, 0, Utilities.SizeOf<DDS.Header>());
             header->Size = Utilities.SizeOf<DDS.Header>();
@@ -623,7 +623,7 @@ namespace SharpDX.Toolkit.Graphics
 
                 var ext = (DDS.HeaderDXT10*)((byte*)(header) + Utilities.SizeOf<DDS.Header>());
 
-                Utilities.ClearMemory((IntPtr) ext, 0, Utilities.SizeOf<DDS.HeaderDXT10>());
+                Utilities.ClearMemory((IntPtr)ext, 0, Utilities.SizeOf<DDS.HeaderDXT10>());
 
                 ext->DXGIFormat = description.Format;
                 switch (description.Dimension)
@@ -704,9 +704,9 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="pal8"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        static unsafe bool LegacyExpandScanline( IntPtr pDestination, int outSize, DXGI.Format outFormat, 
+        static unsafe bool LegacyExpandScanline(IntPtr pDestination, int outSize, DXGI.Format outFormat,
                                             IntPtr pSource, int inSize, TEXP_LEGACY_FORMAT inFormat,
-                                            int* pal8, ScanlineFlags flags )
+                                            int* pal8, ScanlineFlags flags)
         {
             switch (inFormat)
             {
@@ -716,17 +716,17 @@ namespace SharpDX.Toolkit.Graphics
 
                     // D3DFMT_R8G8B8 -> Format.R8G8B8A8_UNorm
                     {
-                        var sPtr = (byte*) (pSource);
-                        var dPtr = (int*) (pDestination);
+                        var sPtr = (byte*)(pSource);
+                        var dPtr = (int*)(pDestination);
 
                         for (int ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); icount += 3, ocount += 4)
                         {
                             // 24bpp Direct3D 9 files are actually BGR, so need to swizzle as well
-                            int t1 = (*(sPtr) << 16);
-                            int t2 = (*(sPtr + 1) << 8);
+                            var t1 = (*(sPtr) << 16);
+                            var t2 = (*(sPtr + 1) << 8);
                             int t3 = *(sPtr + 2);
 
-                            *(dPtr++) = (int) (t1 | t2 | t3 | 0xff000000);
+                            *(dPtr++) = (int)(t1 | t2 | t3 | 0xff000000);
                             sPtr += 3;
                         }
                     }
@@ -738,18 +738,18 @@ namespace SharpDX.Toolkit.Graphics
                         case Format.R8G8B8A8_UNorm:
                             // D3DFMT_R3G3B2 -> Format.R8G8B8A8_UNorm
                             {
-                                var sPtr = (byte*) (pSource);
-                                var dPtr = (int*) (pDestination);
+                                var sPtr = (byte*)(pSource);
+                                var dPtr = (int*)(pDestination);
 
                                 for (int ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); ++icount, ocount += 4)
                                 {
-                                    byte t = *(sPtr++);
+                                    var t = *(sPtr++);
 
-                                    int t1 = (t & 0xe0) | ((t & 0xe0) >> 3) | ((t & 0xc0) >> 6);
-                                    int t2 = ((t & 0x1c) << 11) | ((t & 0x1c) << 8) | ((t & 0x18) << 5);
-                                    int t3 = ((t & 0x03) << 22) | ((t & 0x03) << 20) | ((t & 0x03) << 18) | ((t & 0x03) << 16);
+                                    var t1 = (t & 0xe0) | ((t & 0xe0) >> 3) | ((t & 0xc0) >> 6);
+                                    var t2 = ((t & 0x1c) << 11) | ((t & 0x1c) << 8) | ((t & 0x18) << 5);
+                                    var t3 = ((t & 0x03) << 22) | ((t & 0x03) << 20) | ((t & 0x03) << 18) | ((t & 0x03) << 16);
 
-                                    *(dPtr++) = (int) (t1 | t2 | t3 | 0xff000000);
+                                    *(dPtr++) = (int)(t1 | t2 | t3 | 0xff000000);
                                 }
                             }
                             return true;
@@ -757,18 +757,18 @@ namespace SharpDX.Toolkit.Graphics
                         case Format.B5G6R5_UNorm:
                             // D3DFMT_R3G3B2 -> Format.B5G6R5_UNorm
                             {
-                                var sPtr = (byte*) (pSource);
-                                var dPtr = (short*) (pDestination);
+                                var sPtr = (byte*)(pSource);
+                                var dPtr = (short*)(pDestination);
 
                                 for (int ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); ++icount, ocount += 2)
                                 {
-                                    byte t = *(sPtr++);
+                                    var t = *(sPtr++);
 
-                                    var t1 = (ushort) (((t & 0xe0) << 8) | ((t & 0xc0) << 5));
-                                    var t2 = (ushort) (((t & 0x1c) << 6) | ((t & 0x1c) << 3));
-                                    var t3 = (ushort) (((t & 0x03) << 3) | ((t & 0x03) << 1) | ((t & 0x02) >> 1));
+                                    var t1 = (ushort)(((t & 0xe0) << 8) | ((t & 0xc0) << 5));
+                                    var t2 = (ushort)(((t & 0x1c) << 6) | ((t & 0x1c) << 3));
+                                    var t3 = (ushort)(((t & 0x03) << 3) | ((t & 0x03) << 1) | ((t & 0x02) >> 1));
 
-                                    *(dPtr++) = (short) (t1 | t2 | t3);
+                                    *(dPtr++) = (short)(t1 | t2 | t3);
                                 }
                             }
                             return true;
@@ -781,19 +781,19 @@ namespace SharpDX.Toolkit.Graphics
 
                     // D3DFMT_A8R3G3B2 -> Format.R8G8B8A8_UNorm
                     {
-                        var sPtr = (short*) (pSource);
-                        var dPtr = (int*) (pDestination);
+                        var sPtr = (short*)(pSource);
+                        var dPtr = (int*)(pDestination);
 
                         for (int ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); icount += 2, ocount += 4)
                         {
-                            short t = *(sPtr++);
+                            var t = *(sPtr++);
 
-                            uint t1 = (uint)((t & 0x00e0) | ((t & 0x00e0) >> 3) | ((t & 0x00c0) >> 6));
-                            uint t2 = (uint)(((t & 0x001c) << 11) | ((t & 0x001c) << 8) | ((t & 0x0018) << 5));
-                            uint t3 = (uint)(((t & 0x0003) << 22) | ((t & 0x0003) << 20) | ((t & 0x0003) << 18) | ((t & 0x0003) << 16));
-                            uint ta = ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (uint) ((t & 0xff00) << 16));
+                            var t1 = (uint)((t & 0x00e0) | ((t & 0x00e0) >> 3) | ((t & 0x00c0) >> 6));
+                            var t2 = (uint)(((t & 0x001c) << 11) | ((t & 0x001c) << 8) | ((t & 0x0018) << 5));
+                            var t3 = (uint)(((t & 0x0003) << 22) | ((t & 0x0003) << 20) | ((t & 0x0003) << 18) | ((t & 0x0003) << 16));
+                            var ta = ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (uint)((t & 0xff00) << 16));
 
-                            *(dPtr++) = (int) (t1 | t2 | t3 | ta);
+                            *(dPtr++) = (int)(t1 | t2 | t3 | ta);
                         }
                     }
                     return true;
@@ -804,12 +804,12 @@ namespace SharpDX.Toolkit.Graphics
 
                     // D3DFMT_P8 -> Format.R8G8B8A8_UNorm
                     {
-                        byte* sPtr = (byte*) (pSource);
-                        int* dPtr = (int*) (pDestination);
+                        var sPtr = (byte*)(pSource);
+                        var dPtr = (int*)(pDestination);
 
                         for (int ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); ++icount, ocount += 4)
                         {
-                            byte t = *(sPtr++);
+                            var t = *(sPtr++);
 
                             *(dPtr++) = pal8[t];
                         }
@@ -822,17 +822,17 @@ namespace SharpDX.Toolkit.Graphics
 
                     // D3DFMT_A8P8 -> Format.R8G8B8A8_UNorm
                     {
-                        short* sPtr = (short*) (pSource);
-                        int* dPtr = (int*) (pDestination);
+                        var sPtr = (short*)(pSource);
+                        var dPtr = (int*)(pDestination);
 
                         for (int ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); icount += 2, ocount += 4)
                         {
-                            short t = *(sPtr++);
+                            var t = *(sPtr++);
 
-                            uint t1 = (uint)pal8[t & 0xff];
-                            uint ta = ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (uint) ((t & 0xff00) << 16));
+                            var t1 = (uint)pal8[t & 0xff];
+                            var ta = ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (uint)((t & 0xff00) << 16));
 
-                            *(dPtr++) = (int) (t1 | ta);
+                            *(dPtr++) = (int)(t1 | ta);
                         }
                     }
                     return true;
@@ -859,22 +859,22 @@ namespace SharpDX.Toolkit.Graphics
                     }
                     return true;
 #endif
-                            // DXGI_1_2_FORMATS
+                        // DXGI_1_2_FORMATS
 
                         case Format.R8G8B8A8_UNorm:
                             // D3DFMT_A4L4 -> Format.R8G8B8A8_UNorm
                             {
-                                byte* sPtr = (byte*) (pSource);
-                                int* dPtr = (int*) (pDestination);
+                                var sPtr = (byte*)(pSource);
+                                var dPtr = (int*)(pDestination);
 
                                 for (int ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); ++icount, ocount += 4)
                                 {
-                                    byte t = *(sPtr++);
+                                    var t = *(sPtr++);
 
-                                    uint t1 = (uint)(((t & 0x0f) << 4) | (t & 0x0f));
-                                    uint ta = ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (uint) (((t & 0xf0) << 24) | ((t & 0xf0) << 20)));
+                                    var t1 = (uint)(((t & 0x0f) << 4) | (t & 0x0f));
+                                    var ta = ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (uint)(((t & 0xf0) << 24) | ((t & 0xf0) << 20)));
 
-                                    *(dPtr++) = (int) (t1 | (t1 << 8) | (t1 << 16) | ta);
+                                    *(dPtr++) = (int)(t1 | (t1 << 8) | (t1 << 16) | ta);
                                 }
                             }
                             return true;
@@ -888,19 +888,19 @@ namespace SharpDX.Toolkit.Graphics
 
                     // D3DFMT_A4R4G4B4 -> Format.R8G8B8A8_UNorm
                     {
-                        short* sPtr = (short*) (pSource);
-                        int* dPtr = (int*) (pDestination);
+                        var sPtr = (short*)(pSource);
+                        var dPtr = (int*)(pDestination);
 
                         for (int ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); icount += 2, ocount += 4)
                         {
-                            short t = *(sPtr++);
+                            var t = *(sPtr++);
 
-                            uint t1 = (uint)(((t & 0x0f00) >> 4) | ((t & 0x0f00) >> 8));
-                            uint t2 = (uint)(((t & 0x00f0) << 8) | ((t & 0x00f0) << 4));
-                            uint t3 = (uint)(((t & 0x000f) << 20) | ((t & 0x000f) << 16));
-                            uint ta = ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (uint) (((t & 0xf000) << 16) | ((t & 0xf000) << 12)));
+                            var t1 = (uint)(((t & 0x0f00) >> 4) | ((t & 0x0f00) >> 8));
+                            var t2 = (uint)(((t & 0x00f0) << 8) | ((t & 0x00f0) << 4));
+                            var t3 = (uint)(((t & 0x000f) << 20) | ((t & 0x000f) << 16));
+                            var ta = ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (uint)(((t & 0xf000) << 16) | ((t & 0xf000) << 12)));
 
-                            *(dPtr++) = (int) (t1 | t2 | t3 | ta);
+                            *(dPtr++) = (int)(t1 | t2 | t3 | ta);
                         }
                     }
                     return true;
@@ -927,15 +927,15 @@ namespace SharpDX.Toolkit.Graphics
             if (!DecodeDDSHeader(pSource, size, flags, out mdata, out convFlags))
                 return null;
 
-            int offset = sizeof (uint) + Utilities.SizeOf<DDS.Header>();
+            var offset = sizeof(uint) + Utilities.SizeOf<DDS.Header>();
             if ((convFlags & ConversionFlags.DX10) != 0)
                 offset += Utilities.SizeOf<DDS.HeaderDXT10>();
 
-            var pal8 = (int*) 0;
+            var pal8 = (int*)0;
             if ((convFlags & ConversionFlags.Pal8) != 0)
             {
-                pal8 = (int*) ((byte*) (pSource) + offset);
-                offset += (256 * sizeof (uint));
+                pal8 = (int*)((byte*)(pSource) + offset);
+                offset += (256 * sizeof(uint));
             }
 
             if (size < offset)
@@ -985,24 +985,24 @@ namespace SharpDX.Toolkit.Graphics
             var images = image.PixelBuffer;
             var imagesDst = imageDst.PixelBuffer;
 
-            ScanlineFlags tflags = (convFlags & ConversionFlags.NoAlpha) != 0 ? ScanlineFlags.SetAlpha : ScanlineFlags.None;
+            var tflags = (convFlags & ConversionFlags.NoAlpha) != 0 ? ScanlineFlags.SetAlpha : ScanlineFlags.None;
             if ((convFlags & ConversionFlags.Swizzle) != 0)
                 tflags |= ScanlineFlags.Legacy;
 
-            int index = 0;
+            var index = 0;
 
-            int checkSize = size;
+            var checkSize = size;
 
-            for (int arrayIndex = 0; arrayIndex < metadata.ArraySize; arrayIndex++)
+            for (var arrayIndex = 0; arrayIndex < metadata.ArraySize; arrayIndex++)
             {
-                int d = metadata.Depth;
+                var d = metadata.Depth;
                 // Else we need to go through each mips/depth slice to convert all scanlines.
-                for (int level = 0; level < metadata.MipLevels; ++level)
+                for (var level = 0; level < metadata.MipLevels; ++level)
                 {
-                    for (int slice = 0; slice < d; ++slice, ++index)
+                    for (var slice = 0; slice < d; ++slice, ++index)
                     {
-                        IntPtr pSrc = images[index].DataPointer;
-                        IntPtr pDest = imagesDst[index].DataPointer;
+                        var pSrc = images[index].DataPointer;
+                        var pDest = imagesDst[index].DataPointer;
                         checkSize -= images[index].BufferStride;
                         if (checkSize < 0)
                             throw new InvalidOperationException("Unexpected end of buffer");
@@ -1013,10 +1013,10 @@ namespace SharpDX.Toolkit.Graphics
                         }
                         else
                         {
-                            int spitch = images[index].RowStride;
-                            int dpitch = imagesDst[index].RowStride;
+                            var spitch = images[index].RowStride;
+                            var dpitch = imagesDst[index].RowStride;
 
-                            for (int h = 0; h < images[index].Height; ++h)
+                            for (var h = 0; h < images[index].Height; ++h)
                             {
                                 if ((convFlags & ConversionFlags.Expand) != 0)
                                 {
@@ -1044,8 +1044,8 @@ namespace SharpDX.Toolkit.Graphics
                                         CopyScanline(pDest, dpitch, pSrc, spitch, metadata.Format, tflags);
                                 }
 
-                                pSrc = (IntPtr) ((byte*) pSrc + spitch);
-                                pDest = (IntPtr) ((byte*) pDest + dpitch);
+                                pSrc = (IntPtr)((byte*)pSrc + spitch);
+                                pDest = (IntPtr)((byte*)pDest + dpitch);
                             }
                         }
                     }
@@ -1075,16 +1075,16 @@ namespace SharpDX.Toolkit.Graphics
         public unsafe static void SaveToDDSStream(PixelBuffer[] pixelBuffers, int count, ImageDescription metadata, DDSFlags flags, System.IO.Stream stream)
         {
             // Determine memory required
-            int totalSize = 0;
-            int headerSize = 0;
+            var totalSize = 0;
+            var headerSize = 0;
             EncodeDDSHeader(metadata, flags, IntPtr.Zero, 0, out totalSize);
             headerSize = totalSize;
 
-            int maxSlice = 0;
+            var maxSlice = 0;
 
-            for (int i = 0; i < pixelBuffers.Length; ++i)
+            for (var i = 0; i < pixelBuffers.Length; ++i)
             {
-                int slice = pixelBuffers[i].BufferStride;
+                var slice = pixelBuffers[i].BufferStride;
                 totalSize += slice;
                 if (slice > maxSlice)
                     maxSlice = slice;
@@ -1102,19 +1102,19 @@ namespace SharpDX.Toolkit.Graphics
                 stream.Write(buffer, 0, headerSize);
             }
 
-            int remaining = totalSize - headerSize;
+            var remaining = totalSize - headerSize;
             Debug.Assert(remaining > 0);
 
-            int index = 0;
-            for (int item = 0; item < metadata.ArraySize; ++item)
+            var index = 0;
+            for (var item = 0; item < metadata.ArraySize; ++item)
             {
-                int d = metadata.Depth;
+                var d = metadata.Depth;
 
-                for (int level = 0; level < metadata.MipLevels; ++level)
+                for (var level = 0; level < metadata.MipLevels; ++level)
                 {
-                    for (int slice = 0; slice < d; ++slice)
+                    for (var slice = 0; slice < d; ++slice)
                     {
-                        int pixsize = pixelBuffers[index].BufferStride;
+                        var pixsize = pixelBuffers[index].BufferStride;
                         Utilities.Read(pixelBuffers[index].DataPointer, buffer, 0, pixsize);
                         stream.Write(buffer, 0, pixsize);
                         ++index;
@@ -1150,16 +1150,16 @@ namespace SharpDX.Toolkit.Graphics
                 case DXGI.Format.B5G6R5_UNorm:
                     // DXGI.Format.B5G6R5_UNorm -> DXGI.Format.R8G8B8A8_UNorm
                     {
-                        var sPtr = (ushort*) (pSource);
-                        var dPtr = (uint*) (pDestination);
+                        var sPtr = (ushort*)(pSource);
+                        var dPtr = (uint*)(pDestination);
 
                         for (uint ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); icount += 2, ocount += 4)
                         {
-                            ushort t = *(sPtr++);
+                            var t = *(sPtr++);
 
-                            uint t1 = (uint) (((t & 0xf800) >> 8) | ((t & 0xe000) >> 13));
-                            uint t2 = (uint) (((t & 0x07e0) << 5) | ((t & 0x0600) >> 5));
-                            uint t3 = (uint) (((t & 0x001f) << 19) | ((t & 0x001c) << 14));
+                            var t1 = (uint)(((t & 0xf800) >> 8) | ((t & 0xe000) >> 13));
+                            var t2 = (uint)(((t & 0x07e0) << 5) | ((t & 0x0600) >> 5));
+                            var t3 = (uint)(((t & 0x001f) << 19) | ((t & 0x001c) << 14));
 
                             *(dPtr++) = t1 | t2 | t3 | 0xff000000;
                         }
@@ -1169,17 +1169,17 @@ namespace SharpDX.Toolkit.Graphics
                 case DXGI.Format.B5G5R5A1_UNorm:
                     // DXGI.Format.B5G5R5A1_UNorm -> DXGI.Format.R8G8B8A8_UNorm
                     {
-                        var sPtr = (ushort*) (pSource);
-                        var dPtr = (uint*) (pDestination);
+                        var sPtr = (ushort*)(pSource);
+                        var dPtr = (uint*)(pDestination);
 
                         for (uint ocount = 0, icount = 0; ((icount < inSize) && (ocount < outSize)); icount += 2, ocount += 4)
                         {
-                            ushort t = *(sPtr++);
+                            var t = *(sPtr++);
 
-                            uint t1 = (uint) (((t & 0x7c00) >> 7) | ((t & 0x7000) >> 12));
-                            uint t2 = (uint) (((t & 0x03e0) << 6) | ((t & 0x0380) << 1));
-                            uint t3 = (uint) (((t & 0x001f) << 19) | ((t & 0x001c) << 14));
-                            uint ta = (uint) ((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (((t & 0x8000) != 0 ? 0xff000000 : 0)));
+                            var t1 = (uint)(((t & 0x7c00) >> 7) | ((t & 0x7000) >> 12));
+                            var t2 = (uint)(((t & 0x03e0) << 6) | ((t & 0x0380) << 1));
+                            var t3 = (uint)(((t & 0x001f) << 19) | ((t & 0x001c) << 14));
+                            var ta = (uint)((flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (((t & 0x8000) != 0 ? 0xff000000 : 0)));
 
                             *(dPtr++) = t1 | t2 | t3 | ta;
                         }
@@ -1207,7 +1207,7 @@ namespace SharpDX.Toolkit.Graphics
                     }
                     break;
 #endif
-// DXGI_1_2_FORMATS
+                    // DXGI_1_2_FORMATS
             }
         }
 
@@ -1247,7 +1247,7 @@ namespace SharpDX.Toolkit.Graphics
                             if (pDestination == pSource)
                             {
                                 var dPtr = (uint*)(pDestination);
-                                for (int count = 0; count < outSize; count += 16)
+                                for (var count = 0; count < outSize; count += 16)
                                 {
                                     dPtr += 3;
                                     *(dPtr++) = alpha;
@@ -1257,8 +1257,8 @@ namespace SharpDX.Toolkit.Graphics
                             {
                                 var sPtr = (uint*)(pSource);
                                 var dPtr = (uint*)(pDestination);
-                                int size = Math.Min(outSize, inSize);
-                                for (int count = 0; count < size; count += 16)
+                                var size = Math.Min(outSize, inSize);
+                                for (var count = 0; count < size; count += 16)
                                 {
                                     *(dPtr++) = *(sPtr++);
                                     *(dPtr++) = *(sPtr++);
@@ -1289,7 +1289,7 @@ namespace SharpDX.Toolkit.Graphics
                             if (pDestination == pSource)
                             {
                                 var dPtr = (ushort*)(pDestination);
-                                for (int count = 0; count < outSize; count += 8)
+                                for (var count = 0; count < outSize; count += 8)
                                 {
                                     dPtr += 3;
                                     *(dPtr++) = alpha;
@@ -1299,8 +1299,8 @@ namespace SharpDX.Toolkit.Graphics
                             {
                                 var sPtr = (ushort*)(pSource);
                                 var dPtr = (ushort*)(pDestination);
-                                int size = Math.Min(outSize, inSize);
-                                for (int count = 0; count < size; count += 8)
+                                var size = Math.Min(outSize, inSize);
+                                for (var count = 0; count < size; count += 8)
                                 {
                                     *(dPtr++) = *(sPtr++);
                                     *(dPtr++) = *(sPtr++);
@@ -1321,7 +1321,7 @@ namespace SharpDX.Toolkit.Graphics
                             if (pDestination == pSource)
                             {
                                 var dPtr = (uint*)(pDestination);
-                                for (int count = 0; count < outSize; count += 4)
+                                for (var count = 0; count < outSize; count += 4)
                                 {
                                     *dPtr |= 0xC0000000;
                                     ++dPtr;
@@ -1331,8 +1331,8 @@ namespace SharpDX.Toolkit.Graphics
                             {
                                 var sPtr = (uint*)(pSource);
                                 var dPtr = (uint*)(pDestination);
-                                int size = Math.Min(outSize, inSize);
-                                for (int count = 0; count < size; count += 4)
+                                var size = Math.Min(outSize, inSize);
+                                for (var count = 0; count < size; count += 4)
                                 {
                                     *(dPtr++) = *(sPtr++) | 0xC0000000;
                                 }
@@ -1351,14 +1351,14 @@ namespace SharpDX.Toolkit.Graphics
                     case Format.B8G8R8A8_Typeless:
                     case Format.B8G8R8A8_UNorm_SRgb:
                         {
-                            uint alpha = (format == Format.R8G8B8A8_SNorm || format == Format.R8G8B8A8_SInt) ? 0x7f000000 : 0xff000000;
+                            var alpha = (format == Format.R8G8B8A8_SNorm || format == Format.R8G8B8A8_SInt) ? 0x7f000000 : 0xff000000;
 
                             if (pDestination == pSource)
                             {
                                 var dPtr = (uint*)(pDestination);
-                                for (int count = 0; count < outSize; count += 4)
+                                for (var count = 0; count < outSize; count += 4)
                                 {
-                                    uint t = *dPtr & 0xFFFFFF;
+                                    var t = *dPtr & 0xFFFFFF;
                                     t |= alpha;
                                     *(dPtr++) = t;
                                 }
@@ -1367,10 +1367,10 @@ namespace SharpDX.Toolkit.Graphics
                             {
                                 var sPtr = (uint*)(pSource);
                                 var dPtr = (uint*)(pDestination);
-                                int size = Math.Min(outSize, inSize);
-                                for (int count = 0; count < size; count += 4)
+                                var size = Math.Min(outSize, inSize);
+                                for (var count = 0; count < size; count += 4)
                                 {
-                                    uint t = *(sPtr++) & 0xFFFFFF;
+                                    var t = *(sPtr++) & 0xFFFFFF;
                                     t |= alpha;
                                     *(dPtr++) = t;
                                 }
@@ -1384,7 +1384,7 @@ namespace SharpDX.Toolkit.Graphics
                             if (pDestination == pSource)
                             {
                                 var dPtr = (ushort*)(pDestination);
-                                for (int count = 0; count < outSize; count += 2)
+                                for (var count = 0; count < outSize; count += 2)
                                 {
                                     *(dPtr++) |= 0x8000;
                                 }
@@ -1393,8 +1393,8 @@ namespace SharpDX.Toolkit.Graphics
                             {
                                 var sPtr = (ushort*)(pSource);
                                 var dPtr = (ushort*)(pDestination);
-                                int size = Math.Min(outSize, inSize);
-                                for (int count = 0; count < size; count += 2)
+                                var size = Math.Min(outSize, inSize);
+                                for (var count = 0; count < size; count += 2)
                                 {
                                     *(dPtr++) = (ushort)(*(sPtr++) | 0x8000);
                                 }
@@ -1432,7 +1432,7 @@ namespace SharpDX.Toolkit.Graphics
                         }
                         return;
 #endif
-                    // DXGI_1_2_FORMATS
+                        // DXGI_1_2_FORMATS
                 }
             }
 
@@ -1470,14 +1470,14 @@ namespace SharpDX.Toolkit.Graphics
                         if (pDestination == pSource)
                         {
                             var dPtr = (uint*)(pDestination);
-                            for (int count = 0; count < outSize; count += 4)
+                            for (var count = 0; count < outSize; count += 4)
                             {
-                                uint t = *dPtr;
+                                var t = *dPtr;
 
-                                uint t1 = (t & 0x3ff00000) >> 20;
-                                uint t2 = (t & 0x000003ff) << 20;
-                                uint t3 = (t & 0x000ffc00);
-                                uint ta = (flags & ScanlineFlags.SetAlpha) != 0 ? 0xC0000000 : (t & 0xC0000000);
+                                var t1 = (t & 0x3ff00000) >> 20;
+                                var t2 = (t & 0x000003ff) << 20;
+                                var t3 = (t & 0x000ffc00);
+                                var ta = (flags & ScanlineFlags.SetAlpha) != 0 ? 0xC0000000 : (t & 0xC0000000);
 
                                 *(dPtr++) = t1 | t2 | t3 | ta;
                             }
@@ -1486,15 +1486,15 @@ namespace SharpDX.Toolkit.Graphics
                         {
                             var sPtr = (uint*)(pSource);
                             var dPtr = (uint*)(pDestination);
-                            int size = Math.Min(outSize, inSize);
-                            for (int count = 0; count < size; count += 4)
+                            var size = Math.Min(outSize, inSize);
+                            for (var count = 0; count < size; count += 4)
                             {
-                                uint t = *(sPtr++);
+                                var t = *(sPtr++);
 
-                                uint t1 = (t & 0x3ff00000) >> 20;
-                                uint t2 = (t & 0x000003ff) << 20;
-                                uint t3 = (t & 0x000ffc00);
-                                uint ta = (flags & ScanlineFlags.SetAlpha) != 0 ? 0xC0000000 : (t & 0xC0000000);
+                                var t1 = (t & 0x3ff00000) >> 20;
+                                var t2 = (t & 0x000003ff) << 20;
+                                var t3 = (t & 0x000ffc00);
+                                var ta = (flags & ScanlineFlags.SetAlpha) != 0 ? 0xC0000000 : (t & 0xC0000000);
 
                                 *(dPtr++) = t1 | t2 | t3 | ta;
                             }
@@ -1517,14 +1517,14 @@ namespace SharpDX.Toolkit.Graphics
                     if (pDestination == pSource)
                     {
                         var dPtr = (uint*)(pDestination);
-                        for (int count = 0; count < outSize; count += 4)
+                        for (var count = 0; count < outSize; count += 4)
                         {
-                            uint t = *dPtr;
+                            var t = *dPtr;
 
-                            uint t1 = (t & 0x00ff0000) >> 16;
-                            uint t2 = (t & 0x000000ff) << 16;
-                            uint t3 = (t & 0x0000ff00);
-                            uint ta = (flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (t & 0xFF000000);
+                            var t1 = (t & 0x00ff0000) >> 16;
+                            var t2 = (t & 0x000000ff) << 16;
+                            var t3 = (t & 0x0000ff00);
+                            var ta = (flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (t & 0xFF000000);
 
                             *(dPtr++) = t1 | t2 | t3 | ta;
                         }
@@ -1533,15 +1533,15 @@ namespace SharpDX.Toolkit.Graphics
                     {
                         var sPtr = (uint*)(pSource);
                         var dPtr = (uint*)(pDestination);
-                        int size = Math.Min(outSize, inSize);
-                        for (int count = 0; count < size; count += 4)
+                        var size = Math.Min(outSize, inSize);
+                        for (var count = 0; count < size; count += 4)
                         {
-                            uint t = *(sPtr++);
+                            var t = *(sPtr++);
 
-                            uint t1 = (t & 0x00ff0000) >> 16;
-                            uint t2 = (t & 0x000000ff) << 16;
-                            uint t3 = (t & 0x0000ff00);
-                            uint ta = (flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (t & 0xFF000000);
+                            var t1 = (t & 0x00ff0000) >> 16;
+                            var t2 = (t & 0x000000ff) << 16;
+                            var t3 = (t & 0x0000ff00);
+                            var ta = (flags & ScanlineFlags.SetAlpha) != 0 ? 0xff000000 : (t & 0xFF000000);
 
                             *(dPtr++) = t1 | t2 | t3 | ta;
                         }
@@ -1555,6 +1555,5 @@ namespace SharpDX.Toolkit.Graphics
 
             Utilities.CopyMemory(pDestination, pSource, Math.Min(outSize, inSize));
         }
- 
     }
 }

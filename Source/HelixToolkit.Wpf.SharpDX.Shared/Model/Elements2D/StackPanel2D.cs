@@ -29,16 +29,22 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public Orientation Orientation
             {
-                get { return (Orientation)GetValue(OrientationProperty); }
-                set { SetValue(OrientationProperty, value); }
+                get
+                {
+                    return (Orientation)GetValue(OrientationProperty);
+                }
+                set
+                {
+                    SetValue(OrientationProperty, value);
+                }
             }
 
             /// <summary>
             /// The orientation property
             /// </summary>
             public static readonly DependencyProperty OrientationProperty =
-                DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel2D), new PropertyMetadata(Orientation.Horizontal, 
-                    (d, e) => 
+                DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel2D), new PropertyMetadata(Orientation.Horizontal,
+                    (d, e) =>
                     {
                         ((d as Element2D).SceneNode as StackPanelNode2D).Orientation = ((Orientation)e.NewValue).ToD2DOrientation();
                     }));
@@ -50,5 +56,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

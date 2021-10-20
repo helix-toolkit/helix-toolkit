@@ -45,12 +45,24 @@ namespace HelixToolkit.UWP
             /// The color buffer
             /// </summary>
             private ShaderResourceViewProxy colorBuffer;
-            public ShaderResourceViewProxy ColorBuffer { get { return colorBuffer; } }
+            public ShaderResourceViewProxy ColorBuffer
+            {
+                get
+                {
+                    return colorBuffer;
+                }
+            }
             /// <summary>
             /// The back buffer
             /// </summary>
             private ShaderResourceViewProxy backBuffer;
-            public ShaderResourceViewProxy BackBuffer { get { return backBuffer; } }
+            public ShaderResourceViewProxy BackBuffer
+            {
+                get
+                {
+                    return backBuffer;
+                }
+            }
             /// <summary>
             /// The depth stencil buffer
             /// </summary>
@@ -58,7 +70,13 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// The depth stencil buffer
             /// </summary>
-            public ShaderResourceViewProxy DepthStencilBuffer { get { return depthStencilBuffer; } }
+            public ShaderResourceViewProxy DepthStencilBuffer
+            {
+                get
+                {
+                    return depthStencilBuffer;
+                }
+            }
             /// <summary>
             /// The D2D controls
             /// </summary>
@@ -71,7 +89,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public D2DTargetProxy D2DTarget
             {
-                get { return d2dTarget; }
+                get
+                {
+                    return d2dTarget;
+                }
             }
             /// <summary>
             /// Gets or sets the width of the target.
@@ -79,42 +100,91 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The width of the target.
             /// </value>
-            public int TargetWidth { private set; get; }
+            public int TargetWidth
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets or sets the height of the target.
             /// </summary>
             /// <value>
             /// The height of the target.
             /// </value>
-            public int TargetHeight { private set; get; }
+            public int TargetHeight
+            {
+                private set; get;
+            }
+            private IDeviceContextPool deviceContextPool;
             /// <summary>
             /// Gets the device context pool.
             /// </summary>
             /// <value>
             /// The device context pool.
             /// </value>
-            public IDeviceContextPool DeviceContextPool { get; private set; }
+            public IDeviceContextPool DeviceContextPool => deviceContextPool;
             #region Offscreen Texture Pools
             private PingPongColorBuffers fullResPPBuffer;
-            public PingPongColorBuffers FullResPPBuffer { get { return fullResPPBuffer; } }
+            public PingPongColorBuffers FullResPPBuffer
+            {
+                get
+                {
+                    return fullResPPBuffer;
+                }
+            }
 
             private TexturePool fullResDepthStencilPool;
-            public TexturePool FullResDepthStencilPool { get { return fullResDepthStencilPool; } }
+            public TexturePool FullResDepthStencilPool
+            {
+                get
+                {
+                    return fullResDepthStencilPool;
+                }
+            }
 
             private TexturePool fullResRenderTargetPool;
-            public TexturePool FullResRenderTargetPool { get { return fullResRenderTargetPool; } }
+            public TexturePool FullResRenderTargetPool
+            {
+                get
+                {
+                    return fullResRenderTargetPool;
+                }
+            }
 
             private TexturePool halfResDepthStencilPool;
-            public TexturePool HalfResDepthStencilPool { get { return halfResDepthStencilPool; } }
+            public TexturePool HalfResDepthStencilPool
+            {
+                get
+                {
+                    return halfResDepthStencilPool;
+                }
+            }
 
             private TexturePool halfResRenderTargetPool;
-            public TexturePool HalfResRenderTargetPool { get { return halfResRenderTargetPool; } }
+            public TexturePool HalfResRenderTargetPool
+            {
+                get
+                {
+                    return halfResRenderTargetPool;
+                }
+            }
 
             private TexturePool quarterResDepthStencilPool;
-            public TexturePool QuarterResDepthStencilPool { get { return quarterResDepthStencilPool; } }
+            public TexturePool QuarterResDepthStencilPool
+            {
+                get
+                {
+                    return quarterResDepthStencilPool;
+                }
+            }
 
             private TexturePool quarterResRenderTargetPool;
-            public TexturePool QuarterResRenderTargetPool { get { return quarterResRenderTargetPool; } }
+            public TexturePool QuarterResRenderTargetPool
+            {
+                get
+                {
+                    return quarterResRenderTargetPool;
+                }
+            }
             #endregion
             /// <summary>
             /// Gets or sets a value indicating whether this is initialized.
@@ -130,7 +200,7 @@ namespace HelixToolkit.UWP
             /// The format.
             /// </value>
             public Format Format { set; get; } = Format.B8G8R8A8_UNorm;
-    #if MSAA
+#if MSAA
             /// <summary>
             /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
             /// </summary>
@@ -138,7 +208,7 @@ namespace HelixToolkit.UWP
             {
                 private set; get;
             } = MSAALevel.Disable;
-    #endif        
+#endif
             /// <summary>
             /// The vertical synchronize internal. Only valid under swapchain rendering mode. Default = 0
             /// <para>0: disable; 1: Sync with frame; More detail: <see cref="SwapChain.Present(int, PresentFlags)"/></para>
@@ -149,7 +219,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public Device Device
             {
-                get { return DeviceResources.Device; }
+                get
+                {
+                    return DeviceResources.Device;
+                }
             }
             /// <summary>
             /// Gets the device2 d.
@@ -157,21 +230,36 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The device2 d.
             /// </value>
-            public global::SharpDX.Direct2D1.Device Device2D { get { return DeviceResources.Device2D; } }
+            public global::SharpDX.Direct2D1.Device Device2D
+            {
+                get
+                {
+                    return DeviceResources.Device2D;
+                }
+            }
             /// <summary>
             /// Gets the device context2 d.
             /// </summary>
             /// <value>
             /// The device context2 d.
             /// </value>
-            public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return DeviceResources.DeviceContext2D; } }
+            public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D
+            {
+                get
+                {
+                    return DeviceResources.DeviceContext2D;
+                }
+            }
             /// <summary>
             /// Gets or sets the device resources.
             /// </summary>
             /// <value>
             /// The device resources.
             /// </value>
-            protected IDeviceResources DeviceResources { private set; get; }
+            protected IDeviceResources DeviceResources
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether [use depth stencil buffer].
             /// </summary>
@@ -186,7 +274,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The sample description.
             /// </value>
-            public SampleDescription ColorBufferSampleDesc { private set; get; }
+            public SampleDescription ColorBufferSampleDesc
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DX11RenderBufferProxyBase"/> class.
@@ -196,15 +287,15 @@ namespace HelixToolkit.UWP
             public DX11RenderBufferProxyBase(IDeviceResources deviceResource, bool useDepthStencilBuffer = true)
             {
                 this.DeviceResources = deviceResource;
-                DeviceContextPool = Collect(new DeviceContextPool(Device));
+                deviceContextPool = new DeviceContextPool(Device);
                 this.UseDepthStencilBuffer = useDepthStencilBuffer;
             }
 
             private ShaderResourceViewProxy CreateRenderTarget(int width, int height, MSAALevel msaa)
             {
-    #if MSAA
+#if MSAA
                 MSAA = msaa;
-    #endif
+#endif
                 TargetWidth = width;
                 TargetHeight = height;
                 DisposeBuffers();
@@ -222,8 +313,8 @@ namespace HelixToolkit.UWP
 
             private void InitializeTexturePools(int width, int height)
             {
-                fullResPPBuffer = Collect(new PingPongColorBuffers(Format, width, height, this.DeviceResources));
-                fullResDepthStencilPool = Collect(new TexturePool(this.DeviceResources, new Texture2DDescription()
+                fullResPPBuffer = new PingPongColorBuffers(Format, width, height, this.DeviceResources);
+                fullResDepthStencilPool = new TexturePool(this.DeviceResources, new Texture2DDescription()
                 {
                     Width = width,
                     Height = height,
@@ -234,9 +325,9 @@ namespace HelixToolkit.UWP
                     MipLevels = 1,
                     OptionFlags = ResourceOptionFlags.None,
                     SampleDescription = new SampleDescription(1, 0)
-                }));
+                });
 
-                fullResRenderTargetPool = Collect(new TexturePool(this.DeviceResources, new Texture2DDescription()
+                fullResRenderTargetPool = new TexturePool(this.DeviceResources, new Texture2DDescription()
                 {
                     Width = width,
                     Height = height,
@@ -247,9 +338,9 @@ namespace HelixToolkit.UWP
                     MipLevels = 1,
                     OptionFlags = ResourceOptionFlags.None,
                     SampleDescription = new SampleDescription(1, 0)
-                }));
+                });
 
-                halfResDepthStencilPool = Collect(new TexturePool(this.DeviceResources, new Texture2DDescription()
+                halfResDepthStencilPool = new TexturePool(this.DeviceResources, new Texture2DDescription()
                 {
                     Width = Math.Max(2, width / 2),
                     Height = Math.Max(2, height / 2),
@@ -260,9 +351,9 @@ namespace HelixToolkit.UWP
                     MipLevels = 1,
                     OptionFlags = ResourceOptionFlags.None,
                     SampleDescription = new SampleDescription(1, 0)
-                }));
+                });
 
-                halfResRenderTargetPool = Collect(new TexturePool(this.DeviceResources, new Texture2DDescription()
+                halfResRenderTargetPool = new TexturePool(this.DeviceResources, new Texture2DDescription()
                 {
                     Width = Math.Max(2, width / 2),
                     Height = Math.Max(2, height / 2),
@@ -273,9 +364,9 @@ namespace HelixToolkit.UWP
                     MipLevels = 1,
                     OptionFlags = ResourceOptionFlags.None,
                     SampleDescription = new SampleDescription(1, 0)
-                }));
+                });
 
-                quarterResDepthStencilPool = Collect(new TexturePool(this.DeviceResources, new Texture2DDescription()
+                quarterResDepthStencilPool = new TexturePool(this.DeviceResources, new Texture2DDescription()
                 {
                     Width = Math.Max(2, width / 4),
                     Height = Math.Max(2, height / 4),
@@ -286,9 +377,9 @@ namespace HelixToolkit.UWP
                     MipLevels = 1,
                     OptionFlags = ResourceOptionFlags.None,
                     SampleDescription = new SampleDescription(1, 0)
-                }));
+                });
 
-                quarterResRenderTargetPool = Collect(new TexturePool(this.DeviceResources, new Texture2DDescription()
+                quarterResRenderTargetPool = new TexturePool(this.DeviceResources, new Texture2DDescription()
                 {
                     Width = Math.Max(2, width / 4),
                     Height = Math.Max(2, height / 4),
@@ -299,7 +390,7 @@ namespace HelixToolkit.UWP
                     MipLevels = 1,
                     OptionFlags = ResourceOptionFlags.None,
                     SampleDescription = new SampleDescription(1, 0)
-                }));
+                });
             }
 
             private void DisposeTexturePools()
@@ -330,9 +421,9 @@ namespace HelixToolkit.UWP
 
             protected virtual SampleDescription GetMSAASampleDescription()
             {
-                int sampleCount = 1;
-                int sampleQuality = 0;
-    #if MSAA
+                var sampleCount = 1;
+                var sampleQuality = 0;
+#if MSAA
                 if (MSAA != MSAALevel.Disable)
                 {
                     do
@@ -351,7 +442,7 @@ namespace HelixToolkit.UWP
                         }
                     } while (sampleCount < 32);
                 }
-    #endif
+#endif
                 return new SampleDescription(sampleCount, sampleQuality);
             }
             /// <summary>
@@ -383,7 +474,7 @@ namespace HelixToolkit.UWP
                     ArraySize = 1
                 };
 
-                colorBuffer = Collect(new ShaderResourceViewProxy(Device, colordesc));
+                colorBuffer = new ShaderResourceViewProxy(Device, colordesc);
                 colorBuffer.CreateRenderTargetView();
                 colorBuffer.CreateTextureView();
                 if (createDepthStencilBuffer)
@@ -401,10 +492,13 @@ namespace HelixToolkit.UWP
                         CpuAccessFlags = CpuAccessFlags.None,
                         ArraySize = 1,
                     };
-                    depthStencilBuffer = Collect(new ShaderResourceViewProxy(Device, depthdesc));
+                    depthStencilBuffer = new ShaderResourceViewProxy(Device, depthdesc);
                     depthStencilBuffer.CreateDepthStencilView();
                 }
-                else { depthStencilBuffer = null; }
+                else
+                {
+                    depthStencilBuffer = null;
+                }
             }
 
             /// <summary>
@@ -463,11 +557,11 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public ShaderResourceViewProxy Initialize(int width, int height, MSAALevel msaa)
             {
-    #if MSAA
+#if MSAA
                 return CreateRenderTarget(width, height, msaa);
-    #else
+#else
                 return CreateRenderTarget(width, height, MSAALevel.Disable);
-    #endif
+#endif
             }
             /// <summary>
             /// Resize render target and depthbuffer resolution
@@ -477,11 +571,11 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public virtual ShaderResourceViewProxy Resize(int width, int height)
             {
-    #if MSAA
+#if MSAA
                 return CreateRenderTarget(width, height, MSAA);
-    #else
+#else
                 return CreateRenderTarget(width, height, MSAALevel.Disable);
-    #endif
+#endif
             }
             /// <summary>
             /// Begins the draw.
@@ -516,6 +610,9 @@ namespace HelixToolkit.UWP
             {
                 OnNewBufferCreated = null;
                 DeviceLost = null;
+                DisposeBuffers();
+                DisposeTexturePools();
+                RemoveAndDispose(ref deviceContextPool);
                 Initialized = false;
                 base.OnDispose(disposeManagedResources);
             }
@@ -531,5 +628,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

@@ -17,9 +17,9 @@ namespace HelixToolkit.UWP
 {
     namespace Core
     {
-        using Components;   
+        using Components;
         using Render;
-        using Shaders;   
+        using Shaders;
         using Utilities;
 
         public class DrawScreenQuadCore : RenderCore
@@ -29,14 +29,17 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref passName, value) && IsAttached)
+                    if (SetAffectsRender(ref passName, value) && IsAttached)
                     {
                         pass = EffectTechnique[value];
                         textureSlot = pass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                         samplerSlot = pass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
                     }
                 }
-                get { return passName; }
+                get
+                {
+                    return passName;
+                }
             }
 
             public ScreenQuadModelStruct ModelStruct;
@@ -52,7 +55,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref texture, value) && IsAttached)
+                    if (SetAffectsRender(ref texture, value) && IsAttached)
                     {
                         UpdateTexture(value);
                     }
@@ -78,7 +81,10 @@ namespace HelixToolkit.UWP
 
                     }
                 }
-                get { return samplerDescription; }
+                get
+                {
+                    return samplerDescription;
+                }
             }
 
             private ShaderPass pass;
@@ -106,17 +112,17 @@ namespace HelixToolkit.UWP
 
             private void UpdateTexture(TextureModel texture)
             {
-                var newTexture = texture == null ? 
+                var newTexture = texture == null ?
                     null : EffectTechnique.EffectsManager.MaterialTextureManager.Register(texture);
                 RemoveAndDispose(ref textureProxy);
-                textureProxy = Collect(newTexture);
+                textureProxy = newTexture;
             }
 
             private void UpdateSampler()
-            {              
+            {
                 var newSampler = EffectTechnique.EffectsManager.StateManager.Register(samplerDescription);
                 RemoveAndDispose(ref sampler);
-                sampler = Collect(newSampler);
+                sampler = newSampler;
             }
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
@@ -146,11 +152,9 @@ namespace HelixToolkit.UWP
 
             protected override void OnDetach()
             {
-                textureProxy = null;
-                sampler = null;
-                base.OnDetach();
+                RemoveAndDispose(ref textureProxy);
+                RemoveAndDispose(ref sampler);
             }
         }
     }
-
 }

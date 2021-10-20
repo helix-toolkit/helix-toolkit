@@ -24,18 +24,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Element3D Content
         {
-            get { return (Element3D)GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
+            get
+            {
+                return (Element3D)GetValue(ContentProperty);
+            }
+            set
+            {
+                SetValue(ContentProperty, value);
+            }
         }
 
         /// <summary>
         /// The content property
         /// </summary>
         public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(Element3D), typeof(Element3DPresenter), new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("Content", typeof(Element3D), typeof(Element3DPresenter), new PropertyMetadata(null, (d, e) =>
             {
-                var model = d as Element3DPresenter;               
-                if(e.OldValue != null)
+                var model = d as Element3DPresenter;
+                if (e.OldValue != null)
                 {
                     model.RemoveLogicalChild(e.OldValue);
                     if (e.OldValue is Element3D ele)
@@ -43,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         (model.SceneNode as GroupNode).RemoveChildNode(ele.SceneNode);
                     }
                 }
-                if(e.NewValue != null)
+                if (e.NewValue != null)
                 {
                     model.AddLogicalChild(e.NewValue);
                     if (e.NewValue is Element3D ele)

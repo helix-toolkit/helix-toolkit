@@ -45,15 +45,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public string EffectName
         {
-            get { return (string)GetValue(EffectNameProperty); }
-            set { SetValue(EffectNameProperty, value); }
+            get
+            {
+                return (string)GetValue(EffectNameProperty);
+            }
+            set
+            {
+                SetValue(EffectNameProperty, value);
+            }
         }
 
         /// <summary>
         /// The effect name property
         /// </summary>
         public static readonly DependencyProperty EffectNameProperty =
-            DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectMeshOutlineBlur), 
+            DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectMeshOutlineBlur),
                 new PropertyMetadata(DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).EffectName = (string)e.NewValue;
@@ -68,8 +74,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Color Color
         {
-            get { return (Color)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
+            get
+            {
+                return (Color)GetValue(ColorProperty);
+            }
+            set
+            {
+                SetValue(ColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -90,8 +102,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double ScaleX
         {
-            get { return (double)GetValue(ScaleXProperty); }
-            set { SetValue(ScaleXProperty, value); }
+            get
+            {
+                return (double)GetValue(ScaleXProperty);
+            }
+            set
+            {
+                SetValue(ScaleXProperty, value);
+            }
         }
 
         /// <summary>
@@ -110,8 +128,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double ScaleY
         {
-            get { return (double)GetValue(ScaleYProperty); }
-            set { SetValue(ScaleYProperty, value); }
+            get
+            {
+                return (double)GetValue(ScaleYProperty);
+            }
+            set
+            {
+                SetValue(ScaleYProperty, value);
+            }
         }
 
         /// <summary>
@@ -131,15 +155,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int NumberOfBlurPass
         {
-            get { return (int)GetValue(NumberOfBlurPassProperty); }
-            set { SetValue(NumberOfBlurPassProperty, value); }
+            get
+            {
+                return (int)GetValue(NumberOfBlurPassProperty);
+            }
+            set
+            {
+                SetValue(NumberOfBlurPassProperty, value);
+            }
         }
 
         /// <summary>
         /// The number of blur pass property
         /// </summary>
         public static readonly DependencyProperty NumberOfBlurPassProperty =
-            DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1, (d,e)=> 
+            DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).NumberOfBlurPass = (int)e.NewValue;
             }));
@@ -152,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            if(core is NodePostEffectMeshOutlineBlur c)
+            if (core is NodePostEffectMeshOutlineBlur c)
             {
                 c.EffectName = EffectName;
                 c.Color = Color.ToColor4();
@@ -161,6 +191,5 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.NumberOfBlurPass = (int)NumberOfBlurPass;
             }
         }
-
     }
 }

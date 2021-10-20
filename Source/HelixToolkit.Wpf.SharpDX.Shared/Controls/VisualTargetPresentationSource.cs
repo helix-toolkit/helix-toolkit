@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             set
             {
-                Visual oldRoot = _visualTarget.RootVisual;
+                var oldRoot = _visualTarget.RootVisual;
 
 
                 // Set the root visual of the VisualTarget.  This visual will
@@ -54,16 +54,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Hook the SizeChanged event on framework elements for all
                 // future changed to the layout size of our root, and manually
                 // trigger a size change.
-                FrameworkElement rootFE = value as FrameworkElement;
+                var rootFE = value as FrameworkElement;
                 if (rootFE != null)
                 {
                     rootFE.SizeChanged += new SizeChangedEventHandler(root_SizeChanged);
                     rootFE.DataContext = _dataContext;
-                    
+
                     // HACK!
                     if (_propertyName != null)
                     {
-                        Binding myBinding = new Binding(_propertyName);
+                        var myBinding = new Binding(_propertyName);
                         myBinding.Source = _dataContext;
                         rootFE.SetBinding(TextBlock.TextProperty, myBinding);
                     }
@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RootChanged(oldRoot, value);
 
                 // Kickoff layout...
-                UIElement rootElement = value as UIElement;
+                var rootElement = value as UIElement;
                 if (rootElement != null)
                 {
                     rootElement.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
@@ -86,7 +86,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public object DataContext
         {
-            get {return _dataContext;}
+            get
+            {
+                return _dataContext;
+            }
             set
             {
                 _dataContext = value;
@@ -101,7 +104,10 @@ namespace HelixToolkit.Wpf.SharpDX
         // HACK!
         public string PropertyName
         {
-            get { return _propertyName; }
+            get
+            {
+                return _propertyName;
+            }
             set
             {
                 _propertyName = value;
@@ -114,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         throw new InvalidOperationException("What?");
                     }
 
-                    Binding myBinding = new Binding(_propertyName);
+                    var myBinding = new Binding(_propertyName);
                     myBinding.Source = _dataContext;
                     rootElement.SetBinding(TextBlock.TextProperty, myBinding);
                 }
@@ -139,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            SizeChangedEventHandler handler = SizeChanged;
+            var handler = SizeChanged;
             if (handler != null)
             {
                 handler(this, e);

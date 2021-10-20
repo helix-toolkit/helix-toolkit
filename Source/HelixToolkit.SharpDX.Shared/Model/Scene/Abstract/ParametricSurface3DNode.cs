@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref meshSizeV, value))
+                    if (Set(ref meshSizeV, value))
                     {
                         TessellateAsync();
                     }
@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP
 
             protected override bool OnAttach(IRenderHost host)
             {
-                cancelToken = Collect(new CancellationTokenSource());
+                cancelToken = new CancellationTokenSource();
                 return base.OnAttach(host);
             }
 
@@ -75,18 +75,18 @@ namespace HelixToolkit.UWP
             {
                 cancelToken.Cancel(true);
                 RemoveAndDispose(ref cancelToken);
-                cancelToken = Collect(new CancellationTokenSource());
+                cancelToken = new CancellationTokenSource();
                 IsTessellating = true;
                 var token = cancelToken.Token;
-                tesselationTask = Task.Run(() => 
+                tesselationTask = Task.Run(() =>
                 {
                     var mesh = OnTesselatingAsync(token);
                     mesh.Normals = mesh.CalculateNormals();
                     mesh?.UpdateOctree();
                     mesh?.UpdateBounds();
                     return mesh;
-                }, 
-                token).ContinueWith(result => 
+                },
+                token).ContinueWith(result =>
                 {
                     IsTessellating = false;
                     if (result.IsCompleted)
@@ -105,8 +105,8 @@ namespace HelixToolkit.UWP
                     Indices = new IntCollection()
                 };
 
-                int n = this.MeshSizeU;
-                int m = this.MeshSizeV;
+                var n = this.MeshSizeU;
+                var m = this.MeshSizeV;
                 var p = new Vector3[m * n];
                 var tc = new Vector2[m * n];
 
@@ -114,23 +114,23 @@ namespace HelixToolkit.UWP
 
                 // todo: parallel execution...
                 // Parallel.For(0, n, (i) =>
-                for (int i = 0; i < n && !token.IsCancellationRequested; i++)
+                for (var i = 0; i < n && !token.IsCancellationRequested; i++)
                 {
-                    double u = 1.0 * i / (n - 1);
+                    var u = 1.0 * i / (n - 1);
 
-                    for (int j = 0; j < m; j++)
+                    for (var j = 0; j < m; j++)
                     {
-                        double v = 1.0 * j / (m - 1);
-                        int ij = (i * m) + j;
+                        var v = 1.0 * j / (m - 1);
+                        var ij = (i * m) + j;
                         p[ij] = this.Evaluate(u, v, out tc[ij]);
                     }
                 }
 
                 // );
-                int idx = 0;
-                for (int i = 0; i < n && !token.IsCancellationRequested; i++)
+                var idx = 0;
+                for (var i = 0; i < n && !token.IsCancellationRequested; i++)
                 {
-                    for (int j = 0; j < m; j++)
+                    for (var j = 0; j < m; j++)
                     {
                         mesh.Positions.Add(p[idx]);
                         mesh.TextureCoordinates.Add(tc[idx]);
@@ -138,14 +138,14 @@ namespace HelixToolkit.UWP
                     }
                 }
 
-                for (int i = 0; i + 1 < n && !token.IsCancellationRequested; i++)
+                for (var i = 0; i + 1 < n && !token.IsCancellationRequested; i++)
                 {
-                    for (int j = 0; j + 1 < m; j++)
+                    for (var j = 0; j + 1 < m; j++)
                     {
-                        int x0 = i * m;
-                        int x1 = (i + 1) * m;
-                        int y0 = j;
-                        int y1 = j + 1;
+                        var x0 = i * m;
+                        var x1 = (i + 1) * m;
+                        var y0 = j;
+                        var y1 = j + 1;
                         AddTriangle(mesh, x0 + y0, x1 + y0, x0 + y1);
                         AddTriangle(mesh, x1 + y0, x1 + y1, x0 + y1);
                     }
@@ -225,5 +225,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

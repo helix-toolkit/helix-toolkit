@@ -21,7 +21,9 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public sealed class NormalMaterial : Material
     {
-        public NormalMaterial() { }
+        public NormalMaterial()
+        {
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="NormalMaterial"/> class.
         /// </summary>

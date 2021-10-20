@@ -25,7 +25,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class ComputeShader : ShaderBase
         {
-            internal global::SharpDX.Direct3D11.ComputeShader Shader { private set; get; }
+            private global::SharpDX.Direct3D11.ComputeShader shader;
+            internal global::SharpDX.Direct3D11.ComputeShader Shader => shader;
             public static readonly ComputeShader NullComputeShader = new ComputeShader("NULL");
             public static readonly ComputeShaderType Type;
             /// <summary>
@@ -35,13 +36,13 @@ namespace HelixToolkit.UWP
             /// <param name="name"></param>
             /// <param name="byteCode"></param>
             public ComputeShader(Device device, string name, byte[] byteCode)
-                :base(name, ShaderStage.Compute)
+                : base(name, ShaderStage.Compute)
             {
-                Shader = Collect(new global::SharpDX.Direct3D11.ComputeShader(device, byteCode));
+                shader = new global::SharpDX.Direct3D11.ComputeShader(device, byteCode);
             }
 
             private ComputeShader(string name)
-                :base(name, ShaderStage.Compute, true)
+                : base(name, ShaderStage.Compute, true)
             {
 
             }
@@ -65,7 +66,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void BindTexture(DeviceContextProxy context, string name, ShaderResourceViewProxy texture)
             {
-                int slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
+                var slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
                 context.SetShaderResource(Type, slot, texture);
             }
             /// <summary>
@@ -112,7 +113,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void BindSampler(DeviceContextProxy context, string name, SamplerStateProxy sampler)
             {
-                int slot = this.SamplerMapping.TryGetBindSlot(name);
+                var slot = this.SamplerMapping.TryGetBindSlot(name);
                 context.SetSampler(Type, slot, sampler);
             }
 
@@ -149,7 +150,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void BindUAV(DeviceContextProxy context, string name, UAVBufferViewProxy uav)
             {
-                int slot = this.UnorderedAccessViewMapping.TryGetBindSlot(name);
+                var slot = this.UnorderedAccessViewMapping.TryGetBindSlot(name);
                 context.SetUnorderedAccessView(Type, slot, uav);
             }
             /// <summary>
@@ -166,6 +167,12 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref shader);
+                base.OnDispose(disposeManagedResources);
+            }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static implicit operator ComputeShaderType(ComputeShader s)
             {
@@ -173,5 +180,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

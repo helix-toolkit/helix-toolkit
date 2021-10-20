@@ -21,8 +21,9 @@ namespace HelixToolkit.UWP
 {
     namespace Utilities
     {
-        using Shaders;   
-        using Render;   
+        using Shaders;
+        using Render;
+        using System.Diagnostics;
 
         /// <summary>
         ///
@@ -32,11 +33,20 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public bool Initialized { get { return buffer != null; } }
+            public bool Initialized
+            {
+                get
+                {
+                    return buffer != null;
+                }
+            }
 
             internal BufferDescription bufferDesc;
 
-            public string Name { private set; get; }
+            public string Name
+            {
+                private set; get;
+            }
 
             internal Dictionary<string, ConstantBufferVariable> VariableDictionary { get; } = new Dictionary<string, ConstantBufferVariable>();
             /// <summary>
@@ -103,7 +113,7 @@ namespace HelixToolkit.UWP
                 {
                     VariableDictionary.Add(var.Name, var);
                 }
-                else if(v.StartOffset != var.StartOffset || v.Size != var.Size)
+                else if (v.StartOffset != var.StartOffset || v.Size != var.Size)
                 {
                     throw new ArgumentException($"Variable {var.Name} already exists in constant buffer definition. " +
                                                 $"But start offset {var.StartOffset} and {v.StartOffset} or sizes {var.Size} and {v.Size} are not match");
@@ -117,19 +127,7 @@ namespace HelixToolkit.UWP
             public void CreateBuffer(Device device)
             {
                 RemoveAndDispose(ref buffer);
-                buffer = Collect(new SDX11.Buffer(device, bufferDesc));
-            }
-
-            /// <summary>
-            /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, ref T)"/>
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="context"></param>
-            /// <param name="data"></param>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data) where T : struct
-            {
-                UploadDataToBuffer<T>(context, ref data, 0);
+                buffer = new SDX11.Buffer(device, bufferDesc);
             }
 
             /// <summary>
@@ -140,15 +138,13 @@ namespace HelixToolkit.UWP
             /// <param name="data"></param>
             /// <param name="offset"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data, int offset) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data) where T : unmanaged
             {
                 if (bufferDesc.Usage == ResourceUsage.Dynamic)
                 {
-                    context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
-                    {
-                        stream.Write(data);
-                    }
+                    var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+                    Debug.Assert(dataBox.SlicePitch >= UnsafeHelper.SizeOf<T>());
+                    UnsafeHelper.Write(dataBox.DataPointer, ref data);
                     context.UnmapSubresource(buffer, 0);
                 }
                 else
@@ -165,9 +161,9 @@ namespace HelixToolkit.UWP
             /// <param name="data"></param>
             /// <param name="count"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count) where T : unmanaged
             {
-                UploadDataToBuffer<T>(context, data, count, 0);
+                UploadDataToBuffer(context, data, count, 0);
             }
 
             /// <summary>
@@ -179,15 +175,13 @@ namespace HelixToolkit.UWP
             /// <param name="count"></param>
             /// <param name="offset"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count, int offset) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count, int offset) where T : unmanaged
             {
                 if (bufferDesc.Usage == ResourceUsage.Dynamic)
                 {
-                    context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
-                    {
-                        stream.WriteRange(data, offset, count);
-                    }
+                    var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+                    Debug.Assert(count * UnsafeHelper.SizeOf<T>() <= dataBox.SlicePitch);
+                    UnsafeHelper.Write(dataBox.DataPointer, data, offset, count);
                     context.UnmapSubresource(buffer, 0);
                 }
                 else
@@ -197,34 +191,37 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContextProxy, Action{DataStream})"/>
+            /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContextProxy, Action{DataBox})"/>
             /// </summary>
             /// <param name="context"></param>
             /// <param name="writeFuc"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer(DeviceContextProxy context, Action<DataStream> writeFuc)
+            public void UploadDataToBuffer(DeviceContextProxy context, Action<DataBox> writeFuc)
             {
                 if (bufferDesc.Usage == ResourceUsage.Dynamic)
                 {
-                    context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
-                    {
-                        writeFuc?.Invoke(stream);
-                    }
+                    var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+                    writeFuc?.Invoke(dataBox);
                     context.UnmapSubresource(buffer, 0);
                 }
                 else
                 {
-    #if DEBUG
+#if DEBUG
                     throw new Exception("Constant buffer must be dynamic to use this function.");
-    #endif
+#endif
                 }
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public DataStream Map(DeviceContextProxy context)
+            public DataBox Map(DeviceContextProxy context)
             {
-                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+                return context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public DataStream MapToStream(DeviceContextProxy context)
+            {
+                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out var stream);
                 return stream;
             }
 
@@ -247,7 +244,13 @@ namespace HelixToolkit.UWP
                 }
                 RemoveAndDispose(ref buffer);
                 bufferDesc.SizeInBytes = structSize;
-                buffer = Collect(new SDX11.Buffer(device, bufferDesc));
+                buffer = new SDX11.Buffer(device, bufferDesc);
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref buffer);
+                base.OnDispose(disposeManagedResources);
             }
             /// <summary>
             /// Performs an implicit conversion from <see cref="ConstantBufferProxy"/> to <see cref="SDX11.Buffer"/>.
@@ -284,5 +287,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

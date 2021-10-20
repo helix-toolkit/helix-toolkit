@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="GeometryModel3D" />
     public abstract class MaterialGeometryModel3D : GeometryModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// 
         /// </summary>
@@ -57,8 +57,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Material Material
         {
-            get { return (Material)this.GetValue(MaterialProperty); }
-            set { this.SetValue(MaterialProperty, value); }
+            get
+            {
+                return (Material)this.GetValue(MaterialProperty);
+            }
+            set
+            {
+                this.SetValue(MaterialProperty, value);
+            }
         }
 
         /// <summary>
@@ -67,10 +73,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsTransparent
         {
-            get { return (bool)GetValue(IsTransparentProperty); }
-            set { SetValue(IsTransparentProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsTransparentProperty);
+            }
+            set
+            {
+                SetValue(IsTransparentProperty, value);
+            }
         }
-#endregion
+        #endregion
         /// <summary>
         /// Assigns the default values to scene node.
         /// </summary>

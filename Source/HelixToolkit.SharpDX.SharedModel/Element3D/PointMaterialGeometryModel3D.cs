@@ -41,8 +41,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Material Material
         {
-            get { return (Material)this.GetValue(MaterialProperty); }
-            set { this.SetValue(MaterialProperty, value); }
+            get
+            {
+                return (Material)this.GetValue(MaterialProperty);
+            }
+            set
+            {
+                this.SetValue(MaterialProperty, value);
+            }
         }
 
         /// <summary>
@@ -50,15 +56,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointMaterialGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Element3DCore).SceneNode as PointNode).HitTestThickness = (double)e.NewValue; }));
+            {
+                ((d as Element3DCore).SceneNode as PointNode).HitTestThickness = (double)e.NewValue;
+            }));
 
         /// <summary>
         /// Used only for point/line hit test
         /// </summary>
         public double HitTestThickness
         {
-            get { return (double)this.GetValue(HitTestThicknessProperty); }
-            set { this.SetValue(HitTestThicknessProperty, value); }
+            get
+            {
+                return (double)this.GetValue(HitTestThicknessProperty);
+            }
+            set
+            {
+                this.SetValue(HitTestThicknessProperty, value);
+            }
         }
         /// <summary>
         /// Called when [create render core].
@@ -72,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
             base.AssignDefaultValuesToSceneNode(node);
-            if(node is PointNode p)
+            if (node is PointNode p)
             {
                 p.Material = Material;
                 p.HitTestThickness = HitTestThickness;

@@ -86,7 +86,7 @@ namespace HelixToolkit.UWP
                 OnUpdateTextureAndBillboardVertices(deviceResources);
                 UpdateBounds();
             }
-            isInitialized = true;           
+            isInitialized = true;
         }
 
         protected abstract void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources);
@@ -94,7 +94,7 @@ namespace HelixToolkit.UWP
         protected override void OnAssignTo(Geometry3D target)
         {
             base.OnAssignTo(target);
-            if(target is BillboardBase billboard)
+            if (target is BillboardBase billboard)
             {
                 billboard.Texture = Texture;
                 billboard.IsInitialized = false;
@@ -147,8 +147,8 @@ namespace HelixToolkit.UWP
             {
                 return false;
             }
-            
-            for (int i = 0; i < count; ++i)
+
+            for (var i = 0; i < count; ++i)
             {
                 var vert = BillboardVertices[i];
                 var pos = vert.Position.ToVector3();
@@ -222,7 +222,7 @@ namespace HelixToolkit.UWP
             var viewMatrix = context.RenderMatrices.ViewMatrix;
             var viewMatrixInv = viewMatrix.PsudoInvert();
             var rayWS = context.RayWS;
-            for (int i = 0; i < count; ++i)
+            for (var i = 0; i < count; ++i)
             {
                 var vert = BillboardVertices[i];
                 var pos = vert.Position.ToVector3();
@@ -306,7 +306,7 @@ namespace HelixToolkit.UWP
             public Vector3 TR;
             public Vector3 BL;
             public Vector3 BR;
-            
+
             public Quad(ref Vector3 tl, ref Vector3 tr, ref Vector3 bl, ref Vector3 br)
             {
                 TL = tl;
@@ -383,7 +383,7 @@ namespace HelixToolkit.UWP
                 //    return false;
                 //}
                 //return true;
-                return Vector2.Dot(point - TL, BL - TL) >= 0 && Vector2.Dot(point - BL, BR - BL) >= 0 
+                return Vector2.Dot(point - TL, BL - TL) >= 0 && Vector2.Dot(point - BL, BR - BL) >= 0
                     && Vector2.Dot(point - BR, TR - BR) >= 0 && Vector2.Dot(point - TR, TL - TR) >= 0;
             }
         }
@@ -411,7 +411,7 @@ namespace HelixToolkit.UWP
             ref Matrix screenViewProjection, float scale)
         {
             var vcenter = Vector3.TransformCoordinate(center, screenViewProjection);
-            Vector2 p = new Vector2(vcenter.X, vcenter.Y);
+            var p = new Vector2(vcenter.X, vcenter.Y);
             var tl = p + new Vector2(TL.X, -TL.Y) * scale;
             var tr = p + new Vector2(TR.X, -TR.Y) * scale;
             var bl = p + new Vector2(BL.X, -BL.Y) * scale;

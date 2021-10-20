@@ -74,7 +74,8 @@ namespace SharpDX.Toolkit.Graphics
                 if (rtv == null)
                 {
                     // Create the render target view
-                    var rtvDescription = new RenderTargetViewDescription {
+                    var rtvDescription = new RenderTargetViewDescription
+                    {
                         Format = this.Description.Format,
                         Dimension = RenderTargetViewDimension.Texture2DArray,
                         Texture2DArray = {

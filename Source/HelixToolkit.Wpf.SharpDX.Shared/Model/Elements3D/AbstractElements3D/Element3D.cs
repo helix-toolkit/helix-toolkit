@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>    
     public abstract class Element3D : Element3DCore, IVisible
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
@@ -50,8 +50,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsRendering
         {
-            get { return (bool)GetValue(IsRenderingProperty); }
-            set { SetValue(IsRenderingProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsRenderingProperty);
+            }
+            set
+            {
+                SetValue(IsRenderingProperty, value);
+            }
         }
 
 
@@ -84,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty TransformProperty =
             DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new PropertyMetadata(Transform3D.Identity,
-                (d,e)=>
+                (d, e) =>
                 {
                     (d as Element3D).SceneNode.ModelMatrix = e.NewValue != null ? (e.NewValue as Transform3D).Value.ToMatrix() : Matrix.Identity;
                 }));
@@ -93,15 +99,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Transform3D Transform
         {
-            get { return (Transform3D)this.GetValue(TransformProperty); }
-            set { this.SetValue(TransformProperty, value); }
+            get
+            {
+                return (Transform3D)this.GetValue(TransformProperty);
+            }
+            set
+            {
+                this.SetValue(TransformProperty, value);
+            }
         }
 
         /// <summary>
         /// The is hit test visible property
         /// </summary>
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D),
-            new PropertyMetadata(true, (d, e) => {
+            new PropertyMetadata(true, (d, e) =>
+            {
                 (d as Element3D).SceneNode.IsHitTestVisible = (bool)e.NewValue;
             }));
 
@@ -130,21 +143,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int RenderOrder
         {
-            get { return (int)GetValue(RenderOrderProperty); }
-            set { SetValue(RenderOrderProperty, value); }
+            get
+            {
+                return (int)GetValue(RenderOrderProperty);
+            }
+            set
+            {
+                SetValue(RenderOrderProperty, value);
+            }
         }
 
         /// <summary>
         /// The render order property
         /// </summary>
         public static readonly DependencyProperty RenderOrderProperty =
-            DependencyProperty.Register("RenderOrder", typeof(int), typeof(Element3D), new PropertyMetadata(0, (d,e) =>
+            DependencyProperty.Register("RenderOrder", typeof(int), typeof(Element3D), new PropertyMetadata(0, (d, e) =>
             {
                 (d as Element3D).SceneNode.RenderOrder = (ushort)Math.Max(0, Math.Min(ushort.MaxValue, (int)e.NewValue));
             }));
-#endregion
+        #endregion
 
-#region Events
+        #region Events
         public static readonly RoutedEvent MouseDown3DEvent =
             EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
@@ -159,8 +178,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public event RoutedEventHandler MouseDown3D
         {
-            add { AddHandler(MouseDown3DEvent, value); }
-            remove { RemoveHandler(MouseDown3DEvent, value); }
+            add
+            {
+                AddHandler(MouseDown3DEvent, value);
+            }
+            remove
+            {
+                RemoveHandler(MouseDown3DEvent, value);
+            }
         }
 
         /// <summary>
@@ -168,8 +193,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public event RoutedEventHandler MouseUp3D
         {
-            add { AddHandler(MouseUp3DEvent, value); }
-            remove { RemoveHandler(MouseUp3DEvent, value); }
+            add
+            {
+                AddHandler(MouseUp3DEvent, value);
+            }
+            remove
+            {
+                RemoveHandler(MouseUp3DEvent, value);
+            }
         }
 
         /// <summary>
@@ -177,8 +208,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public event RoutedEventHandler MouseMove3D
         {
-            add { AddHandler(MouseMove3DEvent, value); }
-            remove { RemoveHandler(MouseMove3DEvent, value); }
+            add
+            {
+                AddHandler(MouseMove3DEvent, value);
+            }
+            remove
+            {
+                RemoveHandler(MouseMove3DEvent, value);
+            }
         }
 
         protected virtual void OnMouse3DDown(object sender, RoutedEventArgs e)
@@ -199,7 +236,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public event EventHandler<MouseDown3DEventArgs> Mouse3DDown;
         public event EventHandler<MouseUp3DEventArgs> Mouse3DUp;
         public event EventHandler<MouseMove3DEventArgs> Mouse3DMove;
-#endregion
+        #endregion
 
         public Element3D()
         {
@@ -275,15 +312,27 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public abstract class Mouse3DEventArgs : RoutedEventArgs
     {
-        public HitTestResult HitTestResult { get; private set; }
-        public Viewport3DX Viewport { get; private set; }
-        public Point Position { get; private set; }
+        public HitTestResult HitTestResult
+        {
+            get; private set;
+        }
+        public Viewport3DX Viewport
+        {
+            get; private set;
+        }
+        public Point Position
+        {
+            get; private set;
+        }
         /// <summary>
         /// The original mouse/touch event that generated this one.
         /// 
         /// Useful for knowing what mouse button got pressed.
         /// </summary>
-        public InputEventArgs OriginalInputEventArgs { get; private set; }
+        public InputEventArgs OriginalInputEventArgs
+        {
+            get; private set;
+        }
 
         public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
             : base(routedEvent, source)
@@ -299,20 +348,23 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public MouseDown3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
             : base(Element3D.MouseDown3DEvent, source, hitTestResult, position, viewport, originalInputEventArgs)
-        { }
+        {
+        }
     }
 
     public class MouseUp3DEventArgs : Mouse3DEventArgs
     {
         public MouseUp3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
             : base(Element3D.MouseUp3DEvent, source, hitTestResult, position, viewport, originalInputEventArgs)
-        { }
+        {
+        }
     }
 
     public class MouseMove3DEventArgs : Mouse3DEventArgs
     {
         public MouseMove3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
             : base(Element3D.MouseMove3DEvent, source, hitTestResult, position, viewport, originalInputEventArgs)
-        { }
+        {
+        }
     }
 }

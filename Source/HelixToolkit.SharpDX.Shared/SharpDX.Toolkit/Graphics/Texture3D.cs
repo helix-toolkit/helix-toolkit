@@ -136,7 +136,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <msdn-id>ff476522</msdn-id>	
         /// <unmanaged>HRESULT ID3D11Device::CreateTexture3D([In] const D3D11_TEXTURE3D_DESC* pDesc,[In, Buffer, Optional] const D3D11_SUBRESOURCE_DATA* pInitialData,[Out, Fast] ID3D11Texture3D** ppTexture3D)</unmanaged>	
         /// <unmanaged-short>ID3D11Device::CreateTexture3D</unmanaged-short>	
-        public unsafe static Texture3D New<T>(Device device, int width, int height, int depth, PixelFormat format, T[] textureData, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable) where T : struct
+        public unsafe static Texture3D New<T>(Device device, int width, int height, int depth, PixelFormat format, T[] textureData, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable) where T : unmanaged
         {
             Texture3D texture = null;
             Utilities.Pin(textureData, ptr =>
@@ -183,7 +183,8 @@ namespace SharpDX.Toolkit.Graphics
         /// <unmanaged-short>ID3D11Device::CreateTexture3D</unmanaged-short>	
         public static Texture3D New(Device device, Image image, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null)
+                throw new ArgumentNullException("image");
             if (image.Description.Dimension != TextureDimension.Texture3D)
                 throw new ArgumentException("Invalid image. Must be 3D", "image");
 

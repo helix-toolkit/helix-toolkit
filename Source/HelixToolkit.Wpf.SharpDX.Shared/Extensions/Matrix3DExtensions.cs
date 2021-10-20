@@ -120,16 +120,16 @@ namespace HelixToolkit.Wpf.SharpDX
             double a = 0;
             double b = 0;
             double c = 0;
-            int n = p.Count;
-            for (int i = 0; i < n; i++)
+            var n = p.Count;
+            for (var i = 0; i < n; i++)
             {
                 a += (p[i].X * p[i].X + p[i].Y * p[i].Y);
                 b += (p[i].X * q[i].X + p[i].Y * q[i].Y);
                 c += (p[i].Y * q[i].X - p[i].X * q[i].Y);
             }
 
-            double r1 = b / a;
-            double r2 = c / a;
+            var r1 = b / a;
+            var r2 = c / a;
             var m = new Matrix3D(
                 +r1, -r2, 0, 0,
                 +r2, +r1, 0, 0,
@@ -150,18 +150,18 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Rigid2D(IList<Point3D> p, IList<Point3D> q)
         {
-            int n = p.Count;
+            var n = p.Count;
             double b = 0;
             double c = 0;
 
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 b += (p[i].X * q[i].X + p[i].Y * q[i].Y);
                 c += (p[i].Y * q[i].X - p[i].X * q[i].Y);
             }
-            double d = Math.Sqrt(b * b + c * c);
-            double r1 = b / d;
-            double r2 = c / d;
+            var d = Math.Sqrt(b * b + c * c);
+            var r1 = b / d;
+            var r2 = c / d;
 
 
             var m = new Matrix3D(
@@ -184,18 +184,18 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Rigid2D(IList<Vector3D> p, IList<Vector3D> q)
         {
-            int n = p.Count;
+            var n = p.Count;
             double b = 0;
             double c = 0;
 
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 b += (p[i].X * q[i].X + p[i].Y * q[i].Y);
                 c += (p[i].Y * q[i].X - p[i].X * q[i].Y);
             }
-            double d = Math.Sqrt(b * b + c * c);
-            double r1 = b / d;
-            double r2 = c / d;
+            var d = Math.Sqrt(b * b + c * c);
+            var r1 = b / d;
+            var r2 = c / d;
 
 
             var m = new Matrix3D(
@@ -219,20 +219,20 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Similarity2D(IList<double> w, IList<Point3D> p, IList<Point3D> q)
         {
-            int n = w.Count;
+            var n = w.Count;
             double a = 0;
             double b = 0;
             double c = 0;
 
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 a += w[i] * (p[i].X * p[i].X + p[i].Y * p[i].Y);
                 b += w[i] * (p[i].X * q[i].X + p[i].Y * q[i].Y);
                 c += w[i] * (p[i].Y * q[i].X - p[i].X * q[i].Y);
             }
 
-            double r1 = b / a;
-            double r2 = c / a;
+            var r1 = b / a;
+            var r2 = c / a;
             var m = new Matrix3D(
                 +r1, -r2, 0, 0,
                 +r2, +r1, 0, 0,
@@ -254,18 +254,18 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Rigid2D(IList<double> w, IList<Point3D> p, IList<Point3D> q)
         {
-            int n = w.Count;
+            var n = w.Count;
             double b = 0;
             double c = 0;
 
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 b += w[i] * (p[i].X * q[i].X + p[i].Y * q[i].Y);
                 c += w[i] * (p[i].Y * q[i].X - p[i].X * q[i].Y);
             }
-            double d = Math.Sqrt(b * b + c * c);
-            double r1 = b / d;
-            double r2 = c / d;
+            var d = Math.Sqrt(b * b + c * c);
+            var r1 = b / d;
+            var r2 = c / d;
 
             var m = new Matrix3D(
                 +r1, -r2, 0, 0,
@@ -288,12 +288,12 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D Affine2D(IList<double> w, IList<Point3D> p, IList<Point3D> q)
         {
-            int n = w.Count;
+            var n = w.Count;
             double b1, b2, b3, b4;
             b1 = b2 = b3 = b4 = 0;
             double m11 = 0, m12 = 0, m22 = 0;
 
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 m11 += w[i] * p[i].X * p[i].X;
                 m12 += w[i] * p[i].X * p[i].Y;
@@ -358,11 +358,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix3D AnisotropicSimilarityX2D(Point3D p1, Point3D p2, Point3D q1, Point3D q2)
         {
             // rotation
-            double b = (p1.X * q1.X + p1.Y * q1.Y) + (p2.X * q2.X + p2.Y * q2.Y);
-            double c = (p1.Y * q1.X - p1.X * q1.Y) + (p2.Y * q2.X - p2.X * q2.Y);
-            double d = Math.Sqrt(b * b + c * c);
-            double r1 = b / d;
-            double r2 = c / d;
+            var b = (p1.X * q1.X + p1.Y * q1.Y) + (p2.X * q2.X + p2.Y * q2.Y);
+            var c = (p1.Y * q1.X - p1.X * q1.Y) + (p2.Y * q2.X - p2.X * q2.Y);
+            var d = Math.Sqrt(b * b + c * c);
+            var r1 = b / d;
+            var r2 = c / d;
 
             // anisortropic scale
             var s = Math.Sqrt(q1.X * q1.X + q1.Y * q1.Y) / Math.Sqrt(p1.X * p1.X + p1.Y * p1.Y);
@@ -389,11 +389,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix3D AnisotropicSimilarityY2D(Point3D p1, Point3D p2, Point3D q1, Point3D q2)
         {
             // rotation
-            double b = (p1.X * q1.X + p1.Y * q1.Y) + (p2.X * q2.X + p2.Y * q2.Y);
-            double c = (p1.Y * q1.X - p1.X * q1.Y) + (p2.Y * q2.X - p2.X * q2.Y);
-            double d = Math.Sqrt(b * b + c * c);
-            double r1 = b / d;
-            double r2 = c / d;
+            var b = (p1.X * q1.X + p1.Y * q1.Y) + (p2.X * q2.X + p2.Y * q2.Y);
+            var c = (p1.Y * q1.X - p1.X * q1.Y) + (p2.Y * q2.X - p2.X * q2.Y);
+            var d = Math.Sqrt(b * b + c * c);
+            var r1 = b / d;
+            var r2 = c / d;
 
             // anisortropic scale
             var s = Math.Sqrt(q1.X * q1.X + q1.Y * q1.Y) / Math.Sqrt(p1.X * p1.X + p1.Y * p1.Y);
@@ -504,7 +504,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var m32 = v1.Z * v2.Y;
             var m33 = v1.Z * v2.Z;
 
-            return new Matrix3D(m11, m12, m13, 0, m21, m22, m23, 0, m31, m32, m33, 0, 0, 0, 0, 0); ;
+            return new Matrix3D(m11, m12, m13, 0, m21, m22, m23, 0, m31, m32, m33, 0, 0, 0, 0, 0);
+            ;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Point ToPoint(this System.Windows.Vector v)

@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP
     namespace Shaders
     {
         using ShaderManager;
-        public sealed class Technique :  DisposeObject, IRenderTechnique
+        public sealed class Technique : DisposeObject, IRenderTechnique
         {
             public static IRenderTechnique NullTechnique { get; } = new Technique(new TechniqueDescription() { IsNull = true }, null, null);
             /// <summary>
@@ -38,42 +38,75 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The description.
             /// </value>
-            public TechniqueDescription Description { private set; get; }
+            public TechniqueDescription Description
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets a value indicating whether this Technique is null.
             /// </summary>
             /// <value>
             ///   <c>true</c> if this Technique is null; otherwise, <c>false</c>.
             /// </value>
-            public bool IsNull { get { return Description.IsNull; } }
+            public bool IsNull
+            {
+                get
+                {
+                    return Description.IsNull;
+                }
+            }
             private readonly Dictionary<string, Lazy<ShaderPass>> passDict = new Dictionary<string, Lazy<ShaderPass>>();
             private readonly List<Lazy<ShaderPass>> passList = new List<Lazy<ShaderPass>>();
-
+            private InputLayoutProxy layout;
             /// <summary>
             /// <see cref="IRenderTechnique.Layout"/>
             /// </summary>
-            public InputLayout Layout { private set; get; }
+            public InputLayoutProxy Layout => layout;
             /// <summary>
             /// <see cref="IRenderTechnique.Device"/>
             /// </summary>
-            public Device Device { get { return EffectsManager.Device; } }
+            public Device Device
+            {
+                get
+                {
+                    return EffectsManager.Device;
+                }
+            }
             /// <summary>
             /// <see cref="IRenderTechnique.Name"/>
             /// </summary>
-            public string Name { private set; get; }
+            public string Name
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// <see cref="IRenderTechnique.ShaderPassNames"/>
             /// </summary>
-            public IEnumerable<string> ShaderPassNames { get { return passDict.Keys; } }
+            public IEnumerable<string> ShaderPassNames
+            {
+                get
+                {
+                    return passDict.Keys;
+                }
+            }
             /// <summary>
             /// <see cref="IRenderTechnique.ConstantBufferPool"/>
             /// </summary>
-            public IConstantBufferPool ConstantBufferPool { get { return EffectsManager.ConstantBufferPool; } }
+            public IConstantBufferPool ConstantBufferPool
+            {
+                get
+                {
+                    return EffectsManager.ConstantBufferPool;
+                }
+            }
             /// <summary>
             /// <see cref="IRenderTechnique.EffectsManager"/>
             /// </summary>
-            public IEffectsManager EffectsManager { private set; get; }
+            public IEffectsManager EffectsManager
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// 
@@ -88,12 +121,15 @@ namespace HelixToolkit.UWP
                 EffectsManager = manager;
                 if (description.InputLayoutDescription != null && description.PassDescriptions != null)
                 {
-                    Layout = manager.ShaderManager.RegisterInputLayout(description.InputLayoutDescription);
                     if (description.PassDescriptions != null)
                     {
-                        foreach(var desc in description.PassDescriptions)
+                        foreach (var desc in description.PassDescriptions)
                         {
-                            var pass = new Lazy<ShaderPass>(()=> { return Collect(new ShaderPass(desc, Layout, manager)); }, true);
+                            if (desc.InputLayoutDescription == null)
+                            {
+                                desc.InputLayoutDescription = description.InputLayoutDescription;
+                            }
+                            var pass = new Lazy<ShaderPass>(() => { return new ShaderPass(desc, manager); }, true);
                             passDict.Add(desc.Name, pass);
                             passList.Add(pass);
                         }
@@ -132,7 +168,7 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
-                var pass = new Lazy<ShaderPass>(() => { return Collect(new ShaderPass(description, Layout, EffectsManager)); }, true);
+                var pass = new Lazy<ShaderPass>(() => { return new ShaderPass(description, EffectsManager); }, true);
                 passDict.Add(description.Name, pass);
                 passList.Add(pass);
                 return true;
@@ -145,7 +181,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool RemovePass(string name)
             {
-                if (passDict.TryGetValue(name, out Lazy<ShaderPass> pass))
+                if (passDict.TryGetValue(name, out var pass))
                 {
                     passDict.Remove(name);
                     passList.Remove(pass);
@@ -182,12 +218,18 @@ namespace HelixToolkit.UWP
             protected override void OnDispose(bool disposeManagedResources)
             {
                 passDict.Clear();
+                foreach (var p in passList)
+                {
+                    if (p.IsValueCreated)
+                    {
+                        p.Value.Dispose();
+                    }
+                }
                 passList.Clear();
+                RemoveAndDispose(ref layout);
                 EffectsManager = null;
-                Layout = null;
                 base.OnDispose(disposeManagedResources);
             }
         }
     }
-
 }

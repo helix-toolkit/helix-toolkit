@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <seealso cref="HelixToolkit.Wpf.SharpDX.Elements2D.Panel2D" />
         public class RelativePositionCanvas2D : Panel2D
         {
-#region Attached Properties        
+            #region Attached Properties        
             /// <summary>
             /// The relative x property
             /// </summary>
@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return (double)element.GetValue(RelativeYProperty);
             }
-#endregion
+            #endregion
 
             protected override SceneNode2D OnCreateSceneNode()
             {
@@ -103,10 +103,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         if (child is SceneNode2D c && c.WrapperSource is Element2DCore element2D)
                         {
-                            float xPos = finalSize.Width/2 * (1+(float)GetRelativeX(element2D));
-                            float yPos = finalSize.Height/2 * (1-(float)GetRelativeY(element2D));
+                            var xPos = finalSize.Width / 2 * (1 + (float)GetRelativeX(element2D));
+                            var yPos = finalSize.Height / 2 * (1 - (float)GetRelativeY(element2D));
                             var desired = c.DesiredSize;
-                            c.Arrange(new RectangleF(xPos - desired.X/2, yPos - desired.Y/2, desired.X, desired.Y));
+                            c.Arrange(new RectangleF(xPos - desired.X / 2, yPos - desired.Y / 2, desired.X, desired.Y));
                         }
                     }
                     return finalSize;
@@ -114,5 +114,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

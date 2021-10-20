@@ -30,7 +30,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets a value indicating whether this converter is inverted.
         /// </summary>
-        public bool Inverted { get; set; }
+        public bool Inverted
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Converts a value.
@@ -54,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (targetType == typeof(Visibility))
             {
-                bool isNotNull = value != null;
+                var isNotNull = value != null;
                 if (isNotNull != this.Inverted)
                 {
                     return Visibility.Visible;

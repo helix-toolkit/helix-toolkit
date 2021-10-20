@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(geometry == value)
+                    if (geometry == value)
                     {
                         return;
                     }
@@ -59,7 +59,10 @@ namespace HelixToolkit.UWP
                     }
                     UpdateBounds();
                 }
-                get { return geometry; }
+                get
+                {
+                    return geometry;
+                }
             }
 
             private IList<Matrix> instances = null;
@@ -67,7 +70,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(instances == value)
+                    if (instances == value)
                     {
                         return;
                     }
@@ -80,7 +83,13 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public bool HasInstances { get { return instances != null && instances.Count > 0; } }
+            public bool HasInstances
+            {
+                get
+                {
+                    return instances != null && instances.Count > 0;
+                }
+            }
 
             public bool GeometryValid { private set; get; } = false;
             #region Bounds
@@ -168,7 +177,7 @@ namespace HelixToolkit.UWP
             }
             #endregion
             public delegate bool OnCheckGeometryDelegate(Geometry3D geometry);
-            public OnCheckGeometryDelegate OnCheckGeometry; 
+            public OnCheckGeometryDelegate OnCheckGeometry;
 
             private GeometryNode elementCore;
 
@@ -311,7 +320,9 @@ namespace HelixToolkit.UWP
                     if (disposing)
                     {
                         if (geometry != null)
-                        { geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate; }
+                        {
+                            geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                        }
                         elementCore.TransformChanged -= OnTransformChanged;
                         OnBoundChanged = null;
                         OnTransformBoundChanged = null;
@@ -343,5 +354,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

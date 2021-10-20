@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
 {
     namespace Core
     {
-        using Shaders;    
+        using Shaders;
         using Utilities;
         using Render;
         /// <summary>
@@ -44,6 +44,7 @@ namespace HelixToolkit.UWP
             private SamplerStateProxy textureSampler;
             private int textureSamplerSlot;
             private ShaderPass DefaultShaderPass;
+            private SkyDomeBufferModel skyBuffer;
             #endregion
 
             #region Properties
@@ -91,7 +92,7 @@ namespace HelixToolkit.UWP
                     {
                         var newSampler = EffectTechnique.EffectsManager.StateManager.Register(value);
                         RemoveAndDispose(ref textureSampler);
-                        textureSampler = Collect(newSampler);
+                        textureSampler = newSampler;
                     }
                 }
                 get
@@ -133,12 +134,11 @@ namespace HelixToolkit.UWP
                 {
                     DefaultShaderPass = technique[DefaultPassNames.Default];
                     OnDefaultPassChanged(DefaultShaderPass);
-                    var buffer = Collect(new SkyDomeBufferModel());
-                    buffer.Geometry = SphereMesh;
-                    GeometryBuffer = buffer;
-                    cubeTextureRes = Collect(new ShaderResourceViewProxy(Device));
+                    skyBuffer = new SkyDomeBufferModel();
+                    skyBuffer.Geometry = SphereMesh;
+                    GeometryBuffer = skyBuffer;
                     UpdateTexture();
-                    textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+                    textureSampler = technique.EffectsManager.StateManager.Register(SamplerDescription);
                     return true;
                 }
                 else
@@ -149,24 +149,24 @@ namespace HelixToolkit.UWP
             private void UpdateTexture()
             {
                 MipMapLevels = 0;
-                if (cubeTexture != null)
+                RemoveAndDispose(ref cubeTextureRes);
+                if (CubeTexture != null)
                 {
+                    cubeTextureRes = new ShaderResourceViewProxy(Device);
                     cubeTextureRes.CreateView(cubeTexture);
                     if (cubeTextureRes.TextureView != null && cubeTextureRes.TextureView.Description.Dimension == ShaderResourceViewDimension.TextureCube)
                     {
                         MipMapLevels = cubeTextureRes.TextureView.Description.TextureCube.MipLevels;
                     }
                 }
-                else
-                {
-                    cubeTextureRes.DisposeAndClear();
-                }
             }
             protected override void OnDetach()
             {
                 MipMapLevels = 0;
-                textureSampler = null;
-                cubeTextureRes = null;
+                RemoveAndDispose(ref textureSampler);
+                RemoveAndDispose(ref cubeTextureRes);
+                GeometryBuffer = null;
+                RemoveAndDispose(ref skyBuffer);
                 base.OnDetach();
             }
 
@@ -205,8 +205,8 @@ namespace HelixToolkit.UWP
                 }
 
                 protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
-                {                
-                    if(bufferIndex == 0 && geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
+                {
+                    if (bufferIndex == 0 && geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
                     {
                         buffer.UploadDataToBuffer(context, geometry.Positions, geometry.Positions.Count);
                     }
@@ -226,5 +226,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

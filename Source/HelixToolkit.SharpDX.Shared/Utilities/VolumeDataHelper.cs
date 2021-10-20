@@ -32,15 +32,15 @@ namespace HelixToolkit.UWP
             /// <param name="sampleSize">The size/radius of the sample to take.</param>
             public static Half4[] GenerateGradients(float[] data, int width, int height, int depth, int sampleSize)
             {
-                int n = sampleSize;
+                var n = sampleSize;
 
                 var gradients = new Half4[width * height * depth];
                 Parallel.For(0, depth, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, (z) =>
                 {
-                    int index = z * width * height;
-                    for (int y = 0; y < height; y++)
+                    var index = z * width * height;
+                    for (var y = 0; y < height; y++)
                     {
-                        for (int x = 0; x < width; x++, ++index)
+                        for (var x = 0; x < width; x++, ++index)
                         {
                             Vector3 s1, s2;
                             s1.X = SampleVolume(data, width, height, depth, x - n, y, z);
@@ -73,12 +73,12 @@ namespace HelixToolkit.UWP
             /// <param name="n"></param>
             public static void FilterNxNxN(Half4[] data, int width, int height, int depth, int n)
             {
-                int index = 0;
-                for (int z = 0; z < depth; z++)
+                var index = 0;
+                for (var z = 0; z < depth; z++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (var y = 0; y < height; y++)
                     {
-                        for (int x = 0; x < width; x++)
+                        for (var x = 0; x < width; x++)
                         {
                             float w = data[index].W;
                             data[index++] = SampleNxNxN(data, width, height, depth, x, y, z, n).ToVector4(w);
@@ -105,14 +105,14 @@ namespace HelixToolkit.UWP
             {
                 n = (n - 1) / 2;
 
-                Vector3 average = Vector3.Zero;
-                int num = 0;
+                var average = Vector3.Zero;
+                var num = 0;
 
-                for (int k = z - n; k <= z + n; k++)
+                for (var k = z - n; k <= z + n; k++)
                 {
-                    for (int j = y - n; j <= y + n; j++)
+                    for (var j = y - n; j <= y + n; j++)
                     {
-                        for (int i = x - n; i <= x + n; i++)
+                        for (var i = x - n; i <= x + n; i++)
                         {
                             if (IsInBounds(width, height, depth, i, j, k))
                             {
@@ -176,5 +176,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

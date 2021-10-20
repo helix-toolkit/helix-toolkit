@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP
             }
 
             var str = new StringBuilder();
-            for (int i = 0; i < this.Count; i++)
+            for (var i = 0; i < this.Count; i++)
             {
                 //str.AppendFormat(provider, "{0:" + format + "}", this[i]);
                 str.AppendFormat(provider, "{0},{1},{2},{3}", this[i].Red, this[i].Green, this[i].Blue, this[i].Alpha);

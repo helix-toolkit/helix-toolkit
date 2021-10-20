@@ -50,13 +50,21 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public string Name
         {
-            get { return (string)this.GetValue(NameProperty); }
-            set { this.SetValue(NameProperty, value); }
+            get
+            {
+                return (string)this.GetValue(NameProperty);
+            }
+            set
+            {
+                this.SetValue(NameProperty, value);
+            }
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="Material"/> class.
         /// </summary>
-        public Material() { }
+        public Material()
+        {
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="Material"/> class.
         /// </summary>

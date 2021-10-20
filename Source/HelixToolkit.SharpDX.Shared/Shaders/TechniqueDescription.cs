@@ -29,14 +29,20 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Technique Name
             /// </summary>
-            [DataMember(Name= @"Name")]
-            public string Name { set; get; }
+            [DataMember(Name = @"Name")]
+            public string Name
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Input Layout
             /// </summary>
             [DataMember(Name = @"InputLayoutDescription")]
-            public InputLayoutDescription InputLayoutDescription { set; get; }
+            public InputLayoutDescription InputLayoutDescription
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the pass descriptions.
             /// </summary>
@@ -44,7 +50,10 @@ namespace HelixToolkit.UWP
             /// The pass descriptions.
             /// </value>
             [DataMember(Name = @"PassDescriptions")]
-            public IList<ShaderPassDescription> PassDescriptions { set; get; }
+            public IList<ShaderPassDescription> PassDescriptions
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether this technique is null technique.
             /// </summary>
@@ -56,7 +65,9 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Initializes a new instance of the <see cref="TechniqueDescription"/> class.
             /// </summary>
-            public TechniqueDescription() { }
+            public TechniqueDescription()
+            {
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="TechniqueDescription"/> class.
@@ -99,12 +110,18 @@ namespace HelixToolkit.UWP
             /// Pass Name
             /// </summary>
             [DataMember(Name = @"Name")]
-            public string Name { set; get; }
+            public string Name
+            {
+                set; get;
+            }
             /// <summary>
             /// Shaders for this technique
             /// </summary>
             [DataMember(Name = @"ShaderList")]
-            public IList<ShaderDescription> ShaderList { set; get; }
+            public IList<ShaderDescription> ShaderList
+            {
+                set; get;
+            }
 
             /// <summary>
             /// 
@@ -250,7 +267,9 @@ namespace HelixToolkit.UWP
             [DataMember(Name = @"InputLayoutDescription")]
             public InputLayoutDescription InputLayoutDescription { set; get; } = null;
 
-            public ShaderPassDescription() { }
+            public ShaderPassDescription()
+            {
+            }
 
             public ShaderPassDescription(string name)
             {
@@ -263,13 +282,25 @@ namespace HelixToolkit.UWP
         public struct DepthStencilOperationDataContract
         {
             [DataMember(Name = @"FailOperation")]
-            public int FailOperation { set; get; }
+            public int FailOperation
+            {
+                set; get;
+            }
             [DataMember(Name = @"DepthFailOperation")]
-            public int DepthFailOperation { set; get; }
+            public int DepthFailOperation
+            {
+                set; get;
+            }
             [DataMember(Name = @"PassOperation")]
-            public int PassOperation { set; get; }
+            public int PassOperation
+            {
+                set; get;
+            }
             [DataMember(Name = @"Comparison")]
-            public int Comparison { set; get; }
+            public int Comparison
+            {
+                set; get;
+            }
 
             public DepthStencilOperationDescription ToDepthStencilOperationDescription()
             {
@@ -295,21 +326,45 @@ namespace HelixToolkit.UWP
         public struct DepthStencilStateDataContract
         {
             [DataMember(Name = @"IsDepthEnabled")]
-            public bool IsDepthEnabled { set; get; }
+            public bool IsDepthEnabled
+            {
+                set; get;
+            }
             [DataMember(Name = @"DepthWriteMask")]
-            public int DepthWriteMask { set; get; }
+            public int DepthWriteMask
+            {
+                set; get;
+            }
             [DataMember(Name = @"DepthComparison")]
-            public int DepthComparison { set; get; }
+            public int DepthComparison
+            {
+                set; get;
+            }
             [DataMember(Name = @"IsStencilEnabled")]
-            public bool IsStencilEnabled { set; get; }
+            public bool IsStencilEnabled
+            {
+                set; get;
+            }
             [DataMember(Name = @"StencilReadMask")]
-            public byte StencilReadMask { set; get; }
+            public byte StencilReadMask
+            {
+                set; get;
+            }
             [DataMember(Name = @"StencilWriteMask")]
-            public byte StencilWriteMask { set; get; }
+            public byte StencilWriteMask
+            {
+                set; get;
+            }
             [DataMember(Name = @"FrontFace")]
-            public DepthStencilOperationDataContract FrontFace { set; get; }
+            public DepthStencilOperationDataContract FrontFace
+            {
+                set; get;
+            }
             [DataMember(Name = @"BackFace")]
-            public DepthStencilOperationDataContract BackFace { set; get; }
+            public DepthStencilOperationDataContract BackFace
+            {
+                set; get;
+            }
 
             public DepthStencilStateDataContract(DepthStencilStateDescription desc)
             {
@@ -343,25 +398,55 @@ namespace HelixToolkit.UWP
         public struct RasterizerStateDataContract
         {
             [DataMember(Name = @"FillMode")]
-            public int FillMode { set; get; }
+            public int FillMode
+            {
+                set; get;
+            }
             [DataMember(Name = @"CullMode")]
-            public int CullMode { set; get; }
+            public int CullMode
+            {
+                set; get;
+            }
             [DataMember(Name = @"IsFrontCounterClockwise")]
-            public bool IsFrontCounterClockwise { set; get; }
+            public bool IsFrontCounterClockwise
+            {
+                set; get;
+            }
             [DataMember(Name = @"DepthBias")]
-            public int DepthBias { set; get; }
+            public int DepthBias
+            {
+                set; get;
+            }
             [DataMember(Name = @"DepthBiasClamp")]
-            public float DepthBiasClamp { set; get; }
+            public float DepthBiasClamp
+            {
+                set; get;
+            }
             [DataMember(Name = @"SlopeScaledDepthBias")]
-            public float SlopeScaledDepthBias { set; get; }
+            public float SlopeScaledDepthBias
+            {
+                set; get;
+            }
             [DataMember(Name = @"IsDepthClipEnabled")]
-            public bool IsDepthClipEnabled { set; get; }
+            public bool IsDepthClipEnabled
+            {
+                set; get;
+            }
             [DataMember(Name = @"IsScissorEnabled")]
-            public bool IsScissorEnabled { set; get; }
+            public bool IsScissorEnabled
+            {
+                set; get;
+            }
             [DataMember(Name = @"IsMultisampleEnabled")]
-            public bool IsMultisampleEnabled { set; get; }
+            public bool IsMultisampleEnabled
+            {
+                set; get;
+            }
             [DataMember(Name = @"IsAntialiasedLineEnabled")]
-            public bool IsAntialiasedLineEnabled { set; get; }
+            public bool IsAntialiasedLineEnabled
+            {
+                set; get;
+            }
 
             public RasterizerStateDescription ToRasterizerStateDescription()
             {
@@ -393,26 +478,33 @@ namespace HelixToolkit.UWP
                 IsMultisampleEnabled = desc.IsMultisampleEnabled;
                 IsAntialiasedLineEnabled = desc.IsAntialiasedLineEnabled;
             }
-
-
         }
 
         [DataContract(Name = @"BlendStateDataContract")]
         public struct BlendStateDataContract
         {
             [DataMember(Name = @"AlphaToCoverageEnable")]
-            public bool AlphaToCoverageEnable { set; get; }
+            public bool AlphaToCoverageEnable
+            {
+                set; get;
+            }
             [DataMember(Name = @"IndependentBlendEnable")]
-            public bool IndependentBlendEnable { set; get; }
+            public bool IndependentBlendEnable
+            {
+                set; get;
+            }
             [DataMember(Name = @"RenderTarget")]
-            public RenderTargetBlendDataContract[] RenderTarget { set; get; }
+            public RenderTargetBlendDataContract[] RenderTarget
+            {
+                set; get;
+            }
 
             public BlendStateDataContract(BlendStateDescription desc)
             {
                 AlphaToCoverageEnable = desc.AlphaToCoverageEnable;
                 IndependentBlendEnable = desc.IndependentBlendEnable;
                 RenderTarget = new RenderTargetBlendDataContract[desc.RenderTarget.Length];
-                for (int i = 0; i < desc.RenderTarget.Length; ++i)
+                for (var i = 0; i < desc.RenderTarget.Length; ++i)
                 {
                     RenderTarget[i] = new RenderTargetBlendDataContract(desc.RenderTarget[i]);
                 }
@@ -425,7 +517,7 @@ namespace HelixToolkit.UWP
                     AlphaToCoverageEnable = AlphaToCoverageEnable,
                     IndependentBlendEnable = IndependentBlendEnable,
                 };
-                for(int i=0; i < desc.RenderTarget.Length; ++i)
+                for (var i = 0; i < desc.RenderTarget.Length; ++i)
                 {
                     desc.RenderTarget[i] = RenderTarget[i].ToRenderTargetBlendDescription();
                 }
@@ -437,21 +529,45 @@ namespace HelixToolkit.UWP
         public struct RenderTargetBlendDataContract
         {
             [DataMember(Name = @"IsBlendEnabled")]
-            public bool IsBlendEnabled { set; get; }
+            public bool IsBlendEnabled
+            {
+                set; get;
+            }
             [DataMember(Name = @"SourceBlend")]
-            public int SourceBlend { set; get; }
+            public int SourceBlend
+            {
+                set; get;
+            }
             [DataMember(Name = @"DestinationBlend")]
-            public int DestinationBlend { set; get; }
+            public int DestinationBlend
+            {
+                set; get;
+            }
             [DataMember(Name = @"BlendOperation")]
-            public int BlendOperation { set; get; }
+            public int BlendOperation
+            {
+                set; get;
+            }
             [DataMember(Name = @"SourceAlphaBlend")]
-            public int SourceAlphaBlend { set; get; }
+            public int SourceAlphaBlend
+            {
+                set; get;
+            }
             [DataMember(Name = @"DestinationAlphaBlend")]
-            public int DestinationAlphaBlend { set; get; }
+            public int DestinationAlphaBlend
+            {
+                set; get;
+            }
             [DataMember(Name = @"AlphaBlendOperation")]
-            public int AlphaBlendOperation { set; get; }
+            public int AlphaBlendOperation
+            {
+                set; get;
+            }
             [DataMember(Name = @"RenderTargetWriteMask")]
-            public int RenderTargetWriteMask { set; get; }
+            public int RenderTargetWriteMask
+            {
+                set; get;
+            }
 
             public RenderTargetBlendDataContract(RenderTargetBlendDescription desc)
             {
@@ -482,5 +598,4 @@ namespace HelixToolkit.UWP
         }
         #endregion
     }
-
 }

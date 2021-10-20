@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         using Render;
-        using Shaders;       
+        using Shaders;
         using Utilities;
 
         public abstract class GenericMaterialVariable : MaterialVariable
@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP
                 depthPass = technique[depthPassName];
                 shaderResources = new KeyValuePair<int, ShaderResourceViewProxy>[materialPass.PixelShader.ShaderResourceViewMapping.Count];
 
-                for(int i=0; i < materialPass.PixelShader.ShaderResourceViewMapping.Count; ++i)
+                for (var i = 0; i < materialPass.PixelShader.ShaderResourceViewMapping.Count; ++i)
                 {
                     var mapping = materialPass.PixelShader.ShaderResourceViewMapping.Mappings[i];
                     resourceIdxDict.Add(mapping.Value.Description.Name, i);
@@ -59,7 +59,7 @@ namespace HelixToolkit.UWP
 
                 samplerResources = new KeyValuePair<int, SamplerStateProxy>[materialPass.PixelShader.SamplerMapping.Count];
 
-                for(int i=0; i < materialPass.PixelShader.SamplerMapping.Count; ++i)
+                for (var i = 0; i < materialPass.PixelShader.SamplerMapping.Count; ++i)
                 {
                     var mapping = materialPass.PixelShader.SamplerMapping.Mappings[i];
                     samplerIdxDict.Add(mapping.Value.Name, i);
@@ -134,7 +134,7 @@ namespace HelixToolkit.UWP
 
             public bool SetTexture(string name, TextureModel texture)
             {
-                if(resourceIdxDict.TryGetValue(name, out var idx))
+                if (resourceIdxDict.TryGetValue(name, out var idx))
                 {
                     var exist = shaderResources[idx].Value;
                     RemoveAndDispose(ref exist);
@@ -144,7 +144,7 @@ namespace HelixToolkit.UWP
                     }
                     else
                     {
-                        var res = Collect(EffectsManager.MaterialTextureManager.Register(texture));
+                        var res = EffectsManager.MaterialTextureManager.Register(texture);
                         shaderResources[idx] = new KeyValuePair<int, ShaderResourceViewProxy>(shaderResources[idx].Key, res);
                     }
                     return true;
@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP
                     var newSampler = EffectsManager.StateManager.Register(sampler);
                     var exist = samplerResources[idx].Value;
                     RemoveAndDispose(ref exist);
-                    var res = Collect(newSampler);
+                    var res = newSampler;
                     samplerResources[idx] = new KeyValuePair<int, SamplerStateProxy>(samplerResources[idx].Key, res);
                     return true;
                 }
@@ -174,7 +174,7 @@ namespace HelixToolkit.UWP
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
             {
-                foreach(var res in shaderResources)
+                foreach (var res in shaderResources)
                 {
                     deviceContext.SetShaderResource(PixelShader.Type, res.Key, res.Value);
                 }
@@ -207,6 +207,19 @@ namespace HelixToolkit.UWP
                 {
                     materialCore.UpdatingResource -= MaterialCore_UpdatingResource;
                 }
+                for (var i = 0; i < samplerResources.Length; ++i)
+                {
+                    var res = samplerResources[i].Value;
+                    RemoveAndDispose(ref res);
+                    samplerResources[i] = new KeyValuePair<int, SamplerStateProxy>(samplerResources[i].Key, null);
+                }
+                for (var i = 0; i < shaderResources.Length; ++i)
+                {
+                    var res = shaderResources[i].Value;
+                    RemoveAndDispose(ref res);
+                    shaderResources[i] = new KeyValuePair<int, ShaderResourceViewProxy>(shaderResources[i].Key, null);
+
+                }
                 base.OnDispose(disposeManagedResources);
             }
         }
@@ -218,7 +231,7 @@ namespace HelixToolkit.UWP
                 string materialShaderPassName = DefaultPassNames.Default,
                 string shadowShaderPassName = DefaultPassNames.ShadowPass,
                 string wireframePassName = DefaultPassNames.Wireframe)
-                :base(manager, technique, materialCore, constantBufferDescription, materialShaderPassName, shadowShaderPassName, wireframePassName)
+                : base(manager, technique, materialCore, constantBufferDescription, materialShaderPassName, shadowShaderPassName, wireframePassName)
             {
 
             }
@@ -246,5 +259,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

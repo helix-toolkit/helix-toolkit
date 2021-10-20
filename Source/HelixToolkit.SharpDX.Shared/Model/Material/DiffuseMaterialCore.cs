@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         using Shaders;
-        
+
         [DataContract]
         public class DiffuseMaterialCore : MaterialCore
         {
@@ -32,8 +32,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 DiffuseColor
             {
-                set { Set(ref diffuseColor, value); }
-                get { return diffuseColor; }
+                set
+                {
+                    Set(ref diffuseColor, value);
+                }
+                get
+                {
+                    return diffuseColor;
+                }
             }
             private TextureModel diffuseMap;
             /// <summary>
@@ -44,8 +50,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel DiffuseMap
             {
-                set { Set(ref diffuseMap, value); }
-                get { return diffuseMap; }
+                set
+                {
+                    Set(ref diffuseMap, value);
+                }
+                get
+                {
+                    return diffuseMap;
+                }
             }
             /// <summary>
             /// Gets or sets the diffuse map file path. Only for export
@@ -53,7 +65,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The diffuse map file path.
             /// </value>
-            public string DiffuseMapFilePath { set; get; }
+            public string DiffuseMapFilePath
+            {
+                set; get;
+            }
 
             private UVTransform uvTransform = UVTransform.Identity;
             /// <summary>
@@ -64,8 +79,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public UVTransform UVTransform
             {
-                set { Set(ref uvTransform, value); }
-                get { return uvTransform; }
+                set
+                {
+                    Set(ref uvTransform, value);
+                }
+                get
+                {
+                    return uvTransform;
+                }
             }
             private SamplerStateDescription diffuseMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
             /// <summary>
@@ -76,8 +97,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public SamplerStateDescription DiffuseMapSampler
             {
-                set { Set(ref diffuseMapSampler, value); }
-                get { return diffuseMapSampler; }
+                set
+                {
+                    Set(ref diffuseMapSampler, value);
+                }
+                get
+                {
+                    return diffuseMapSampler;
+                }
             }
 
             private bool renderDiffuseMap = true;
@@ -90,7 +117,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref renderDiffuseMap, value);
                 }
-                get { return renderDiffuseMap; }
+                get
+                {
+                    return renderDiffuseMap;
+                }
             }
 
             private bool enableUnLit = false;
@@ -102,8 +132,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableUnLit
             {
-                set { Set(ref enableUnLit, value); }
-                get { return enableUnLit; }
+                set
+                {
+                    Set(ref enableUnLit, value);
+                }
+                get
+                {
+                    return enableUnLit;
+                }
             }
 
             private bool enableFlatShading = false;
@@ -115,8 +151,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableFlatShading
             {
-                set { Set(ref enableFlatShading, value); }
-                get { return enableFlatShading; }
+                set
+                {
+                    Set(ref enableFlatShading, value);
+                }
+                get
+                {
+                    return enableFlatShading;
+                }
             }
 
             private float vertexColorBlendingFactor = 0f;
@@ -129,8 +171,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float VertexColorBlendingFactor
             {
-                set { Set(ref vertexColorBlendingFactor, value); }
-                get { return vertexColorBlendingFactor; }
+                set
+                {
+                    Set(ref vertexColorBlendingFactor, value);
+                }
+                get
+                {
+                    return vertexColorBlendingFactor;
+                }
             }
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
@@ -147,5 +195,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

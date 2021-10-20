@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref text, value))
+                    if (SetAffectsRender(ref text, value))
                     {
                         textLayoutDirty = true;
                     }
@@ -42,10 +42,9 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = foreground;
-                    if(SetAffectsRender(ref foreground, value))
+                    if (SetAffectsRender(ref foreground, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                     }
                 }
                 get
@@ -63,7 +62,6 @@ namespace HelixToolkit.UWP
                     if (SetAffectsRender(ref background, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                     }
                 }
                 get
@@ -77,7 +75,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref fontFamily, value) && IsAttached)
+                    if (SetAffectsRender(ref fontFamily, value) && IsAttached)
                     {
                         UpdateFontFormat();
                     }
@@ -93,12 +91,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref fontSize, value) && IsAttached)
+                    if (SetAffectsRender(ref fontSize, value) && IsAttached)
                     {
                         UpdateFontFormat();
                     }
                 }
-                get { return fontSize; }
+                get
+                {
+                    return fontSize;
+                }
             }
 
             private FontWeight fontWeight = FontWeight.Normal;
@@ -106,12 +107,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref fontWeight, value) && IsAttached)
+                    if (SetAffectsRender(ref fontWeight, value) && IsAttached)
                     {
                         UpdateFontFormat();
                     }
                 }
-                get { return fontWeight; }
+                get
+                {
+                    return fontWeight;
+                }
             }
 
             private FontStyle fontStyle = FontStyle.Normal;
@@ -119,13 +123,16 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref fontStyle, value) && IsAttached)
+                    if (SetAffectsRender(ref fontStyle, value) && IsAttached)
                     {
                         UpdateFontFormat();
                     }
                 }
-                get { return fontStyle; }
-            } 
+                get
+                {
+                    return fontStyle;
+                }
+            }
 
             public D2D.DrawTextOptions DrawingOptions { set; get; } = D2D.DrawTextOptions.None;
 
@@ -176,7 +183,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref maxWidth, value))
+                    if (Set(ref maxWidth, value))
                     {
                         textLayoutDirty = true;
                     }
@@ -192,12 +199,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref maxHeight, value))
+                    if (Set(ref maxHeight, value))
                     {
                         textLayoutDirty = true;
                     }
                 }
-                get { return maxHeight; }
+                get
+                {
+                    return maxHeight;
+                }
             }
 
             protected override bool OnAttach(IRenderHost host)
@@ -205,8 +215,8 @@ namespace HelixToolkit.UWP
                 if (base.OnAttach(host))
                 {
                     textLayoutDirty = true;
-                    textFactory = Collect(new Factory(FactoryType.Isolated));
-                    textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize * host.DpiScale));
+                    textFactory = new Factory(FactoryType.Isolated);
+                    textFormat = new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize * host.DpiScale);
                     return true;
                 }
                 else
@@ -215,10 +225,20 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            protected override void OnDetach()
+            {
+                RemoveAndDispose(ref textFormat);
+                RemoveAndDispose(ref textLayout);
+                RemoveAndDispose(ref foreground);
+                RemoveAndDispose(ref background);
+                RemoveAndDispose(ref textFactory);
+                base.OnDetach();
+            }
+
             private void UpdateFontFormat()
             {
                 RemoveAndDispose(ref textFormat);
-                textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize * RenderHost.DpiScale));
+                textFormat = new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize * RenderHost.DpiScale);
                 textLayoutDirty = true;
             }
 
@@ -227,11 +247,11 @@ namespace HelixToolkit.UWP
                 if (textLayoutDirty)
                 {
                     RemoveAndDispose(ref textLayout);
-                    textLayout = Collect(new TextLayout(textFactory, Text, textFormat, MaxWidth, MaxHeight));
+                    textLayout = new TextLayout(textFactory, Text, textFormat, MaxWidth, MaxHeight);
                     textLayoutDirty = false;
                 }
-                textLayout.TextAlignment = TextAlignment;            
-            }       
+                textLayout.TextAlignment = TextAlignment;
+            }
 
             protected override bool CanRender(RenderContext2D context)
             {
@@ -249,5 +269,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

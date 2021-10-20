@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP
                             foreach (var b in ani.BoneSkinMeshes)
                             {
                                 AddUpdaterToDict(dict, new KeyFrameUpdater(ani, b.Bones));
-                            }   
+                            }
                         }
                         break;
                     case AnimationType.Node:
@@ -82,7 +82,7 @@ namespace HelixToolkit.UWP
                     newGroup.Children.Add(existingUpdater);
                     newGroup.Children.Add(updater);
                     dict.Add(newGroup.Name, newGroup);
-                }            
+                }
             }
             else
             {

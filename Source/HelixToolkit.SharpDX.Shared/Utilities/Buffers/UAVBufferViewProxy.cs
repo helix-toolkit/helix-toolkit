@@ -37,12 +37,24 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Get UnorderedAccessView
             /// </summary>
-            public UnorderedAccessView UAV { get { return uav; } }
+            public UnorderedAccessView UAV
+            {
+                get
+                {
+                    return uav;
+                }
+            }
 
             /// <summary>
             /// Get ShaderResourceView
             /// </summary>
-            public ShaderResourceViewProxy SRV { get { return srv; } }
+            public ShaderResourceViewProxy SRV
+            {
+                get
+                {
+                    return srv;
+                }
+            }
             /// <summary>
             /// Initializes a new instance of the <see cref="UAVBufferViewProxy"/> class.
             /// </summary>
@@ -117,5 +129,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

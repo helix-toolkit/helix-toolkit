@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP
         using Utilities;
         using Render;
         using Shaders;
-    
+
 
         /// <summary>
         /// 
@@ -31,10 +31,22 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            public RasterizerStateProxy RasterState { get { return rasterState; } }
+            public RasterizerStateProxy RasterState
+            {
+                get
+                {
+                    return rasterState;
+                }
+            }
 
             private RasterizerStateProxy invertCullModeState = null;
-            public RasterizerStateProxy InvertCullModeState { get { return invertCullModeState; } }
+            public RasterizerStateProxy InvertCullModeState
+            {
+                get
+                {
+                    return invertCullModeState;
+                }
+            }
 
             private IElementsBufferModel instanceBuffer = MatrixInstanceBufferModel.Empty;
             /// <summary>
@@ -45,7 +57,7 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = instanceBuffer;
-                    if(SetAffectsCanRenderFlag(ref instanceBuffer, value))
+                    if (SetAffectsCanRenderFlag(ref instanceBuffer, value))
                     {
                         if (old != null)
                         {
@@ -63,7 +75,7 @@ namespace HelixToolkit.UWP
                 }
                 get
                 {
-                    return instanceBuffer;   
+                    return instanceBuffer;
                 }
             }
 
@@ -75,12 +87,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsCanRenderFlag(ref geometryBuffer, value))
+                    if (SetAffectsCanRenderFlag(ref geometryBuffer, value))
                     {
                         OnGeometryBufferChanged(value);
                     }
                 }
-                get { return geometryBuffer; }
+                get
+                {
+                    return geometryBuffer;
+                }
             }
 
             private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
@@ -95,7 +110,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref rasterDescription, value) && IsAttached)
+                    if (SetAffectsRender(ref rasterDescription, value) && IsAttached)
                     {
                         CreateRasterState(value, false);
                     }
@@ -125,15 +140,15 @@ namespace HelixToolkit.UWP
             {
                 var newRasterState = EffectTechnique.EffectsManager.StateManager.Register(description);
                 var invCull = description;
-                if(description.CullMode != CullMode.None)
+                if (description.CullMode != CullMode.None)
                 {
                     invCull.CullMode = description.CullMode == CullMode.Back ? CullMode.Front : CullMode.Back;
                 }
                 var newInvertCullModeState = EffectTechnique.EffectsManager.StateManager.Register(invCull);
                 RemoveAndDispose(ref rasterState);
                 RemoveAndDispose(ref invertCullModeState);
-                rasterState = Collect(newRasterState);
-                invertCullModeState = Collect(newInvertCullModeState);
+                rasterState = newRasterState;
+                invertCullModeState = newInvertCullModeState;
                 return true;
             }
             /// <summary>
@@ -143,21 +158,22 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override bool OnAttach(IRenderTechnique technique)
             {
-                CreateRasterState(rasterDescription, true);       
+                CreateRasterState(rasterDescription, true);
                 return true;
             }
 
             protected override void OnDetach()
             {
-                rasterState = null;
-                invertCullModeState = null;
-                base.OnDetach();
+                RemoveAndDispose(ref rasterState);
+                RemoveAndDispose(ref invertCullModeState);
             }
             /// <summary>
             /// Called when [geometry buffer changed].
             /// </summary>
             /// <param name="buffer">The buffer.</param>
-            protected virtual void OnGeometryBufferChanged(IAttachableBufferModel buffer) { }
+            protected virtual void OnGeometryBufferChanged(IAttachableBufferModel buffer)
+            {
+            }
 
             /// <summary>
             /// Set all necessary states and buffers
@@ -167,7 +183,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
             {
-                context.SetRasterState(!isInvertCullMode ? rasterState : invertCullModeState);                
+                context.SetRasterState(!isInvertCullMode ? rasterState : invertCullModeState);
             }
 
             /// <summary>
@@ -177,7 +193,7 @@ namespace HelixToolkit.UWP
             /// <param name="vertStartSlot"></param>
             protected virtual bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
             {
-                if(GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager))
+                if (GeometryBuffer.AttachBuffers(context, ref vertStartSlot, EffectTechnique.EffectsManager))
                 {
                     InstanceBuffer.AttachBuffer(context, ref vertStartSlot);
                     return true;
@@ -225,7 +241,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected bool PreRender(RenderContext context, DeviceContextProxy deviceContext)
             {
-                int vertStartSlot = 0;
+                var vertStartSlot = 0;
                 if (!OnAttachBuffers(deviceContext, ref vertStartSlot))
                 {
                     return false;
@@ -251,7 +267,7 @@ namespace HelixToolkit.UWP
             public sealed override void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
             {
                 if (PreRender(context, deviceContext))
-                {               
+                {
                     OnRenderShadow(context, deviceContext);
                 }
             }
@@ -309,5 +325,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

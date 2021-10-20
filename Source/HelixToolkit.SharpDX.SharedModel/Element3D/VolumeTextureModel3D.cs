@@ -33,13 +33,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Material VolumeMaterial
         {
-            get { return (Material)GetValue(VolumeMaterialProperty); }
-            set { SetValue(VolumeMaterialProperty, value); }
+            get
+            {
+                return (Material)GetValue(VolumeMaterialProperty);
+            }
+            set
+            {
+                SetValue(VolumeMaterialProperty, value);
+            }
         }
 
         public static readonly DependencyProperty VolumeMaterialProperty =
-            DependencyProperty.Register("VolumeMaterial", typeof(Material), typeof(VolumeTextureModel3D), 
-                new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("VolumeMaterial", typeof(Material), typeof(VolumeTextureModel3D),
+                new PropertyMetadata(null, (d, e) =>
                 {
                     ((d as VolumeTextureModel3D).SceneNode as VolumeTextureNode).Material = (Material)e.NewValue;
                 }));

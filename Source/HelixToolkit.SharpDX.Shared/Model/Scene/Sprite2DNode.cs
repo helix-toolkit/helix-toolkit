@@ -23,19 +23,20 @@ namespace HelixToolkit.UWP
 
         public class Sprite2DNode : SceneNode
         {
-            private Stream texture;
-            public Stream Texture
+            private TextureModel texture;
+            public TextureModel Texture
             {
                 set
                 {
                     if (SetAffectsRender(ref texture, value) && IsAttached)
                     {
-                        var newView = value == null ? null : EffectTechnique.EffectsManager.MaterialTextureManager.Register(value, true);
-                        RemoveAndDispose(ref textureView);
-                        TextureView = Collect(newView);
+                        (RenderCore as Sprite2DRenderCore).UpdateTexture(value, EffectsManager.MaterialTextureManager);
                     }
                 }
-                get { return texture; }
+                get
+                {
+                    return texture;
+                }
             }
 
             public Matrix ProjectionMatrix
@@ -55,12 +56,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref sprites, value) && IsAttached)
+                    if (Set(ref sprites, value) && IsAttached)
                     {
                         bufferModel.Sprites = value;
                     }
                 }
-                get { return sprites; }
+                get
+                {
+                    return sprites;
+                }
             }
 
             private int spriteCount;
@@ -73,7 +77,10 @@ namespace HelixToolkit.UWP
                         bufferModel.SpriteCount = value;
                     }
                 }
-                get { return spriteCount; }
+                get
+                {
+                    return spriteCount;
+                }
             }
 
             private int[] indices;
@@ -81,7 +88,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref indices, value) && IsAttached)
+                    if (SetAffectsRender(ref indices, value) && IsAttached)
                     {
                         bufferModel.Indices = value;
                     }
@@ -97,28 +104,18 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref indexCount, value) && IsAttached)
+                    if (SetAffectsRender(ref indexCount, value) && IsAttached)
                     {
                         bufferModel.IndexCount = value;
                     }
                 }
-                get { return indexCount; }
+                get
+                {
+                    return indexCount;
+                }
             }
 
             private Sprite2DBufferModel bufferModel;
-
-            private ShaderResourceViewProxy textureView;
-            protected ShaderResourceViewProxy TextureView
-            {
-                set
-                {
-                    if(SetAffectsRender(ref textureView, value))
-                    {
-                        (RenderCore as Sprite2DRenderCore).TextureView = value;
-                    }
-                }
-                get { return textureView; }
-            }
 
             protected override RenderCore OnCreateRenderCore()
             {
@@ -127,27 +124,26 @@ namespace HelixToolkit.UWP
 
             protected override void OnAttached()
             {
-                bufferModel = Collect(new Sprite2DBufferModel());
+                bufferModel = new Sprite2DBufferModel();
                 bufferModel.Sprites = Sprites;
                 bufferModel.SpriteCount = SpriteCount;
                 if (texture != null)
                 {
-                    TextureView = Collect(EffectTechnique.EffectsManager.MaterialTextureManager.Register(texture, true));
+                    (RenderCore as Sprite2DRenderCore).UpdateTexture(texture, EffectTechnique.EffectsManager.MaterialTextureManager);
                 }
                 base.OnAttached();
             }
 
             protected override void OnDetach()
             {
-                bufferModel = null;
-                TextureView = null;
+                RemoveAndDispose(ref bufferModel);
                 base.OnDetach();
             }
 
             protected override bool CanRender(RenderContext context)
             {
-                return base.CanRender(context) && sprites != null && indices != null 
-                    && spriteCount != 0 && indexCount != 0 && textureView != null;
+                return base.CanRender(context) && sprites != null && indices != null
+                    && spriteCount != 0 && indexCount != 0;
             }
 
             protected override bool CanHitTest(HitTestContext context)
@@ -161,5 +157,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

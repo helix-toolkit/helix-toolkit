@@ -37,7 +37,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref ambientColor, value);
                 }
-                get { return ambientColor; }
+                get
+                {
+                    return ambientColor;
+                }
             }
 
             private Color4 diffuseColor = Color.White;
@@ -49,8 +52,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 DiffuseColor
             {
-                set { Set(ref diffuseColor, value); }
-                get { return diffuseColor; }
+                set
+                {
+                    Set(ref diffuseColor, value);
+                }
+                get
+                {
+                    return diffuseColor;
+                }
             }
 
             private Color4 emissiveColor = Color.Black;
@@ -66,7 +75,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref emissiveColor, value);
                 }
-                get { return emissiveColor; }
+                get
+                {
+                    return emissiveColor;
+                }
             }
 
             private Color4 reflectiveColor = Color.Black;
@@ -78,8 +90,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 ReflectiveColor
             {
-                set { Set(ref reflectiveColor, value); }
-                get { return reflectiveColor; }
+                set
+                {
+                    Set(ref reflectiveColor, value);
+                }
+                get
+                {
+                    return reflectiveColor;
+                }
             }
 
             private Color4 specularColor = Color.Gray;
@@ -91,8 +109,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 SpecularColor
             {
-                set { Set(ref specularColor, value); }
-                get { return specularColor; }
+                set
+                {
+                    Set(ref specularColor, value);
+                }
+                get
+                {
+                    return specularColor;
+                }
             }
 
             private float specularShininess = 1;
@@ -106,8 +130,14 @@ namespace HelixToolkit.UWP
             /// </exception>
             public float SpecularShininess
             {
-                set { Set(ref specularShininess, value); }
-                get { return specularShininess; }
+                set
+                {
+                    Set(ref specularShininess, value);
+                }
+                get
+                {
+                    return specularShininess;
+                }
             }
 
             private TextureModel diffuseMap;
@@ -119,8 +149,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel DiffuseMap
             {
-                set { Set(ref diffuseMap, value); }
-                get { return diffuseMap; }
+                set
+                {
+                    Set(ref diffuseMap, value);
+                }
+                get
+                {
+                    return diffuseMap;
+                }
             }
 
             /// <summary>
@@ -129,7 +165,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The diffuse map file path.
             /// </value>
-            public string DiffuseMapFilePath { set; get; }
+            public string DiffuseMapFilePath
+            {
+                set; get;
+            }
 
             private TextureModel diffuseAlphaMap;
             /// <summary>
@@ -140,8 +179,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel DiffuseAlphaMap
             {
-                set { Set(ref diffuseAlphaMap, value); }
-                get { return diffuseAlphaMap; }
+                set
+                {
+                    Set(ref diffuseAlphaMap, value);
+                }
+                get
+                {
+                    return diffuseAlphaMap;
+                }
             }
             /// <summary>
             /// Gets or sets the diffuse alpha map file path. For export only
@@ -149,7 +194,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The diffuse alpha map file path.
             /// </value>
-            public string DiffuseAlphaMapFilePath { set; get; }
+            public string DiffuseAlphaMapFilePath
+            {
+                set; get;
+            }
 
             private TextureModel normalMap;
             /// <summary>
@@ -160,8 +208,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel NormalMap
             {
-                set { Set(ref normalMap, value); }
-                get { return normalMap; }
+                set
+                {
+                    Set(ref normalMap, value);
+                }
+                get
+                {
+                    return normalMap;
+                }
             }
             /// <summary>
             /// Gets or sets the normal map file path. For export only
@@ -169,7 +223,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The normal map file path.
             /// </value>
-            public string NormalMapFilePath { set; get; }
+            public string NormalMapFilePath
+            {
+                set; get;
+            }
 
             private TextureModel specularColorMap;
             /// <summary>
@@ -180,8 +237,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel SpecularColorMap
             {
-                set { Set(ref specularColorMap, value); }
-                get { return specularColorMap; }
+                set
+                {
+                    Set(ref specularColorMap, value);
+                }
+                get
+                {
+                    return specularColorMap;
+                }
             }
             /// <summary>
             /// Gets or sets the specular color map file path. For export only
@@ -189,7 +252,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The specular color map file path.
             /// </value>
-            public string SpecularColorMapFilePath { set; get; }
+            public string SpecularColorMapFilePath
+            {
+                set; get;
+            }
 
             private TextureModel displacementMap;
             /// <summary>
@@ -200,8 +266,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel DisplacementMap
             {
-                set { Set(ref displacementMap, value); }
-                get { return displacementMap; }
+                set
+                {
+                    Set(ref displacementMap, value);
+                }
+                get
+                {
+                    return displacementMap;
+                }
             }
             /// <summary>
             /// Gets or sets the displacement file path. For export only
@@ -209,7 +281,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The displacement file path.
             /// </value>
-            public string DisplacementMapFilePath { set; get; }
+            public string DisplacementMapFilePath
+            {
+                set; get;
+            }
 
             private TextureModel emissiveMap;
             /// <summary>
@@ -220,8 +295,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel EmissiveMap
             {
-                set { Set(ref emissiveMap, value); }
-                get { return emissiveMap; }
+                set
+                {
+                    Set(ref emissiveMap, value);
+                }
+                get
+                {
+                    return emissiveMap;
+                }
             }
             /// <summary>
             /// Gets or sets the emissive map file path. For export only
@@ -229,7 +310,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The emissive map file path.
             /// </value>
-            public string EmissiveMapFilePath { set; get; }
+            public string EmissiveMapFilePath
+            {
+                set; get;
+            }
 
             private Vector4 displacementMapScaleMask;
             /// <summary>
@@ -240,8 +324,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector4 DisplacementMapScaleMask
             {
-                set { Set(ref displacementMapScaleMask, value); }
-                get { return displacementMapScaleMask; }
+                set
+                {
+                    Set(ref displacementMapScaleMask, value);
+                }
+                get
+                {
+                    return displacementMapScaleMask;
+                }
             }
 
             private UVTransform uvTransform = UVTransform.Identity;
@@ -253,8 +343,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public UVTransform UVTransform
             {
-                set { Set(ref uvTransform, value); }
-                get { return uvTransform; }
+                set
+                {
+                    Set(ref uvTransform, value);
+                }
+                get
+                {
+                    return uvTransform;
+                }
             }
 
             private SamplerStateDescription diffuseMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
@@ -266,8 +362,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public SamplerStateDescription DiffuseMapSampler
             {
-                set { Set(ref diffuseMapSampler, value); }
-                get { return diffuseMapSampler; }
+                set
+                {
+                    Set(ref diffuseMapSampler, value);
+                }
+                get
+                {
+                    return diffuseMapSampler;
+                }
             }
 
 
@@ -280,8 +382,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public SamplerStateDescription DisplacementMapSampler
             {
-                set { Set(ref displacementMapSampler, value); }
-                get { return displacementMapSampler; }
+                set
+                {
+                    Set(ref displacementMapSampler, value);
+                }
+                get
+                {
+                    return displacementMapSampler;
+                }
             }
 
             private bool renderDiffuseMap = true;
@@ -294,7 +402,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref renderDiffuseMap, value);
                 }
-                get { return renderDiffuseMap; }
+                get
+                {
+                    return renderDiffuseMap;
+                }
             }
 
             private bool renderDiffuseAlphaMap = true;
@@ -337,8 +448,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool RenderSpecularColorMap
             {
-                set { Set(ref renderSpecularColorMap, value); }
-                get { return renderSpecularColorMap; }
+                set
+                {
+                    Set(ref renderSpecularColorMap, value);
+                }
+                get
+                {
+                    return renderSpecularColorMap;
+                }
             }
 
             private bool renderDisplacementMap = true;
@@ -351,7 +468,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref renderDisplacementMap, value);
                 }
-                get { return renderDisplacementMap; }
+                get
+                {
+                    return renderDisplacementMap;
+                }
             }
 
             private bool renderEmissiveMap = true;
@@ -363,8 +483,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool RenderEmissiveMap
             {
-                set { Set(ref renderEmissiveMap, value); }
-                get { return renderEmissiveMap; }
+                set
+                {
+                    Set(ref renderEmissiveMap, value);
+                }
+                get
+                {
+                    return renderEmissiveMap;
+                }
             }
 
             private bool enableAutoTangent = false;
@@ -387,7 +513,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref minTessellationDistance, value);
                 }
-                get { return minTessellationDistance; }
+                get
+                {
+                    return minTessellationDistance;
+                }
             }
 
             private float maxTessellationDistance = 100;
@@ -397,7 +526,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref maxTessellationDistance, value);
                 }
-                get { return maxTessellationDistance; }
+                get
+                {
+                    return maxTessellationDistance;
+                }
             }
 
             private float minDistanceTessellationFactor = 2;
@@ -474,7 +606,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref renderShadowMap, value);
                 }
-                get { return renderShadowMap; }
+                get
+                {
+                    return renderShadowMap;
+                }
             }
 
             private bool renderEnvironmentMap = false;
@@ -487,7 +622,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref renderEnvironmentMap, value);
                 }
-                get { return renderEnvironmentMap; }
+                get
+                {
+                    return renderEnvironmentMap;
+                }
             }
 
             private bool enableFlatShading = false;
@@ -499,8 +637,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableFlatShading
             {
-                set { Set(ref enableFlatShading, value); }
-                get { return enableFlatShading; }
+                set
+                {
+                    Set(ref enableFlatShading, value);
+                }
+                get
+                {
+                    return enableFlatShading;
+                }
             }
 
             private float vertexColorBlendingFactor = 0f;
@@ -513,8 +657,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float VertexColorBlendingFactor
             {
-                set { Set(ref vertexColorBlendingFactor, value); }
-                get { return vertexColorBlendingFactor; }
+                set
+                {
+                    Set(ref vertexColorBlendingFactor, value);
+                }
+                get
+                {
+                    return vertexColorBlendingFactor;
+                }
             }
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
@@ -523,5 +673,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

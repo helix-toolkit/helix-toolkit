@@ -54,15 +54,15 @@ namespace HelixToolkit.UWP
             /// <param name="parameter">The parameter.</param>
             /// <param name="testFrustum"></param>
             /// <returns>Number of node has been rendered</returns>
-            public override int RenderOpaque(RenderContext context, FastList<SceneNode> renderables, 
+            public override int RenderOpaque(RenderContext context, FastList<SceneNode> renderables,
                 ref RenderParameter parameter, bool testFrustum)
             {
-                if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, 
-                    testFrustum, commandList, out int counter))
+                if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter,
+                    testFrustum, commandList, out var counter))
                 {
-                    RenderParameter param = parameter;
+                    var param = parameter;
 
-                    foreach (var command in commandList.OrderBy(x=>x.Key))
+                    foreach (var command in commandList.OrderBy(x => x.Key))
                     {
                         ImmediateContext.ExecuteCommandList(command.Value, true);
                         command.Value.Dispose();
@@ -93,5 +93,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

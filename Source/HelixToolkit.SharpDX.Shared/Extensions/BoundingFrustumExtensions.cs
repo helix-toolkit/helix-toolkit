@@ -26,10 +26,10 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Intersects(ref BoundingFrustum frustum, ref BoundingBox box)
         {
-            for (int i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
             {
                 var plane = frustum.GetPlane(i);
-                GetBoxToPlanePVertexNVertex(ref box, ref plane.Normal, out Vector3 p, out Vector3 n);
+                GetBoxToPlanePVertexNVertex(ref box, ref plane.Normal, out var p, out var n);
                 if (Collision.PlaneIntersectsPoint(ref plane, ref p) == PlaneIntersectionType.Back)
                     return false;
             }
@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Intersects(ref BoundingFrustum frustum, ref BoundingSphere sphere)
         {
-            for (int i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
             {
                 var plane = frustum.GetPlane(i);
                 var result = plane.Intersects(ref sphere);
@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsInOrIntersectFrustum(ref BoundingFrustum frustum, ref BoundingBox box, ref BoundingSphere sphere)
         {
-            for (int i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
             {
                 var plane = frustum.GetPlane(i);
                 var sphereRet = plane.Intersects(ref sphere);
@@ -77,7 +77,7 @@ namespace HelixToolkit.UWP
                 {
                     return true;
                 }
-                GetBoxToPlanePVertexNVertex(ref box, ref plane.Normal, out Vector3 p, out Vector3 n);
+                GetBoxToPlanePVertexNVertex(ref box, ref plane.Normal, out var p, out var n);
                 var boxRet = Collision.PlaneIntersectsPoint(ref plane, ref p);
                 if (boxRet == PlaneIntersectionType.Back)
                 {

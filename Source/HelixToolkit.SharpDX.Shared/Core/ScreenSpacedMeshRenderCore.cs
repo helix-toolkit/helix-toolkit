@@ -33,15 +33,24 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Relative position X of the center of viewport
             /// </summary>
-            float RelativeScreenLocationX { set; get; }
+            float RelativeScreenLocationX
+            {
+                set; get;
+            }
             /// <summary>
             /// Relative position Y of the center of viewport
             /// </summary>
-            float RelativeScreenLocationY { set; get; }
+            float RelativeScreenLocationY
+            {
+                set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float SizeScale { set; get; }
+            float SizeScale
+            {
+                set; get;
+            }
             /// <summary>
             /// Only being used when <see cref="Mode"/> is RelativeScreenSpaced
             /// </summary>
@@ -57,45 +66,72 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            float Width { get; }
+            float Width
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float Height { get; }
+            float Height
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float Size { get; }
+            float Size
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float ScreenRatio { get; }
+            float ScreenRatio
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float Fov { get; }
+            float Fov
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            float CameraDistance { get; }
+            float CameraDistance
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            GlobalTransformStruct GlobalTransform { get; }
+            GlobalTransformStruct GlobalTransform
+            {
+                get;
+            }
             /// <summary>
             /// Gets or sets the mode.
             /// </summary>
             /// <value>
             /// The mode.
             /// </value>
-            ScreenSpacedMode Mode { set; get; }
+            ScreenSpacedMode Mode
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the absolute position. Used in <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
             /// </summary>
             /// <value>
             /// The absolute position.
             /// </value>
-            Vector3 AbsolutePosition3D { set; get; }
+            Vector3 AbsolutePosition3D
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the far plane for screen spaced camera rendering.
             /// </summary>
@@ -125,7 +161,10 @@ namespace HelixToolkit.UWP
         {
             public event EventHandler<BoolArgs> OnCoordinateSystemChanged;
             private Matrix projectionMatrix;
-            public GlobalTransformStruct GlobalTransform { private set; get; }
+            public GlobalTransformStruct GlobalTransform
+            {
+                private set; get;
+            }
             public float ScreenRatio { private set; get; } = 1f;
             private float relativeScreenLocX = -0.8f;
             /// <summary>
@@ -207,8 +246,14 @@ namespace HelixToolkit.UWP
             /// </summary>
             public ScreenSpacedCameraType CameraType
             {
-                set { SetAffectsRender(ref cameraType, value); }
-                get { return cameraType; }
+                set
+                {
+                    SetAffectsRender(ref cameraType, value);
+                }
+                get
+                {
+                    return cameraType;
+                }
             }
 
             private bool isRightHand = true;
@@ -217,7 +262,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public bool IsRightHand
             {
-                get { return isRightHand; }
+                get
+                {
+                    return isRightHand;
+                }
                 private set
                 {
                     if (Set(ref isRightHand, value))
@@ -229,11 +277,17 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Viewport Width
             /// </summary>
-            public float Width { private set; get; }
+            public float Width
+            {
+                private set; get;
+            }
             /// <summary>
             /// Viewport Height
             /// </summary>
-            public float Height { private set; get; }
+            public float Height
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Default size. To scale, use <see cref="SizeScale"/>
@@ -288,6 +342,10 @@ namespace HelixToolkit.UWP
                 return true;
             }
 
+            protected override void OnDetach()
+            {
+            }
+
             /// <summary>
             /// Creates the view matrix.
             /// </summary>
@@ -311,7 +369,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void OnCreateProjectionMatrix(RenderContext context)
             {
-                bool isPerspective = false;
+                var isPerspective = false;
                 switch (CameraType)
                 {
                     case ScreenSpacedCameraType.Auto:
@@ -403,7 +461,7 @@ namespace HelixToolkit.UWP
                 }
                 if (clearDepthBuffer)
                 {
-                    deviceContext.GetDepthStencilView(out DepthStencilView dsView);
+                    deviceContext.GetDepthStencilView(out var dsView);
                     if (dsView == null)
                     {
                         return;
@@ -434,7 +492,7 @@ namespace HelixToolkit.UWP
             private void RenderRelativeScreenSpaced(RenderContext context, DeviceContextProxy deviceContext)
             {
                 IsRightHand = !context.Camera.CreateLeftHandSystem;
-                float viewportSize = Size * SizeScale * context.DpiScale;
+                var viewportSize = Size * SizeScale * context.DpiScale;
                 var globalTrans = context.GlobalTransform;
                 UpdateParameters(context, (float)context.ActualWidth, (float)context.ActualHeight);
                 globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
@@ -442,8 +500,8 @@ namespace HelixToolkit.UWP
                 globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
                 globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 1 / viewportSize, 1 / viewportSize);
                 GlobalTransform = globalTrans;
-                int offX = 0;
-                int offY = 0;
+                var offX = 0;
+                var offY = 0;
                 offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
                 offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
                 offX = Math.Max(0, Math.Min(offX, (int)(Width - viewportSize)));
@@ -456,20 +514,20 @@ namespace HelixToolkit.UWP
             }
 
             private void RenderAbsolutePositionPerspective(RenderContext context, DeviceContextProxy deviceContext)
-            {            
-                var globalTrans = context.GlobalTransform;            
+            {
+                var globalTrans = context.GlobalTransform;
                 UpdateParameters(context, (float)context.ActualWidth, (float)context.ActualHeight);
-                float distance = Size / 2 / SizeScale;
+                var distance = Size / 2 / SizeScale;
                 var viewInv = globalTrans.View.PsudoInvert();
                 //Determine new camera position. So the size of the object keeps the same. Decouple it from global zooming
                 var pos = Vector3.Normalize(absolutePosition - globalTrans.EyePos);
-                Vector3 newPos = absolutePosition - pos * distance;
+                var newPos = absolutePosition - pos * distance;
                 newPos -= absolutePosition; // Need to do additional translation, since translation is not in model matrix.
                 viewInv.M41 = newPos.X;
                 viewInv.M42 = newPos.Y;
                 viewInv.M43 = newPos.Z;
                 globalTrans.View = viewInv.PsudoInvert();
-                globalTrans.EyePos = newPos;                
+                globalTrans.EyePos = newPos;
                 // Create new projection matrix with proper near/far field.
                 globalTrans.Projection = projectionMatrix;
                 globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
@@ -477,7 +535,7 @@ namespace HelixToolkit.UWP
                 var viewport = new ViewportF(0, 0, context.ActualWidth, context.ActualHeight);
                 context.Set(ref globalTrans, ref viewport);
                 context.UpdatePerFrameData(true, false, deviceContext);
-                
+
                 deviceContext.SetViewport(ref viewport);
                 deviceContext.SetScissorRectangle(0, 0, (int)context.ActualWidth, (int)context.ActualHeight);
             }
@@ -485,7 +543,7 @@ namespace HelixToolkit.UWP
             private void RenderAbsolutePositionOrtho(RenderContext context, DeviceContextProxy deviceContext)
             {
                 IsRightHand = !context.Camera.CreateLeftHandSystem;
-                float viewportSize = Size * SizeScale * context.DpiScale;
+                var viewportSize = Size * SizeScale * context.DpiScale;
                 var globalTrans = context.GlobalTransform;
                 UpdateParameters(context, (float)context.ActualWidth, (float)context.ActualHeight);
                 globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
@@ -494,9 +552,9 @@ namespace HelixToolkit.UWP
                 GlobalTransform = globalTrans;
                 var svp = context.ScreenViewProjectionMatrix;
                 var pos = absolutePosition;
-                Vector3.TransformCoordinate(ref pos, ref svp, out Vector3 screenPoint);
-                float offX = (screenPoint.X - viewportSize / 2);
-                float offY = (screenPoint.Y - viewportSize / 2);
+                Vector3.TransformCoordinate(ref pos, ref svp, out var screenPoint);
+                var offX = (screenPoint.X - viewportSize / 2);
+                var offY = (screenPoint.Y - viewportSize / 2);
                 var viewport = new ViewportF(offX, offY, viewportSize, viewportSize);
                 context.Set(ref globalTrans, ref viewport);
                 context.UpdatePerFrameData(true, false, deviceContext);
@@ -505,5 +563,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -48,7 +48,10 @@ namespace HelixToolkit.UWP
 
             public int BufferSize
             {
-                get { return SizeInBytes; }
+                get
+                {
+                    return SizeInBytes;
+                }
             }
 
             public LightStruct[] Lights
@@ -69,30 +72,31 @@ namespace HelixToolkit.UWP
                 LightCount = 0;
                 AmbientLight = new Color4(0, 0, 0, 1);
             }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void UploadToBuffer(IBufferProxy buffer, DeviceContextProxy context)
             {
                 if (buffer.StructureSize == SizeInBytes)
                 {
-                    context.MapSubresource(buffer.Buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
+                    var dataBox = context.MapSubresource(buffer.Buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+                    if (dataBox.IsEmpty)
                     {
-                        stream.WriteRange(Lights, 0, Lights.Length);
-                        stream.Write(AmbientLight);
-                        stream.Write(LightCount);
-                        stream.Write(HasEnvironmentMap ? 1 : 0);
-                        stream.Write(EnvironmentMapMipLevels);
+                        return;
                     }
+                    var ptr = UnsafeHelper.Write(dataBox.DataPointer, Lights, 0, Lights.Length);
+                    ptr = UnsafeHelper.Write(ptr, AmbientLight);
+                    ptr = UnsafeHelper.Write(ptr, LightCount);
+                    ptr = UnsafeHelper.Write(ptr, HasEnvironmentMap ? 1 : 0);
+                    ptr = UnsafeHelper.Write(ptr, EnvironmentMapMipLevels);
                     context.UnmapSubresource(buffer.Buffer, 0);
                 }
                 else
                 {
-    #if DEBUG
+#if DEBUG
                     throw new ArgumentException("Buffer type or size do not match the model requirement");
-    #endif
+#endif
                 }
             }
         }
     }
-
 }

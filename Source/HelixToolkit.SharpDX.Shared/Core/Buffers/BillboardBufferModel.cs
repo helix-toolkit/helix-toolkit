@@ -20,13 +20,13 @@ namespace HelixToolkit.UWP
 {
     namespace Core
     {
-        using Render;       
+        using Render;
         using Utilities;
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="VertexStruct">The type of the ertex structure.</typeparam>
-        public abstract class BillboardBufferModel<VertexStruct> : GeometryBufferModel, IBillboardBufferModel where VertexStruct : struct
+        public abstract class BillboardBufferModel<VertexStruct> : GeometryBufferModel, IBillboardBufferModel where VertexStruct : unmanaged
         {
             private static readonly VertexStruct[] emptyVerts = new VertexStruct[0];
 
@@ -40,14 +40,23 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The texture view.
             /// </value>
-            public ShaderResourceViewProxy TextureView { get { return textureView; } }
+            public ShaderResourceViewProxy TextureView
+            {
+                get
+                {
+                    return textureView;
+                }
+            }
             /// <summary>
             /// Gets or sets the type.
             /// </summary>
             /// <value>
             /// The type.
             /// </value>
-            public BillboardType Type { private set; get; }
+            public BillboardType Type
+            {
+                private set; get;
+            }
 
             private TextureModel texture;
             /// <summary>
@@ -81,21 +90,21 @@ namespace HelixToolkit.UWP
             /// <param name="deviceResources">The device resources.</param>
             /// <param name="bufferIndex"></param>
             protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
-            {           
-                if(geometry is IBillboardText billboardGeometry)
+            {
+                if (geometry is IBillboardText billboardGeometry)
                 {
                     billboardGeometry.DrawTexture(deviceResources);
                     if (billboardGeometry.BillboardVertices != null && billboardGeometry.BillboardVertices.Count > 0)
                     {
-                        Type = billboardGeometry.Type;              
+                        Type = billboardGeometry.Type;
                         buffer.UploadDataToBuffer(context, billboardGeometry.BillboardVertices, billboardGeometry.BillboardVertices.Count, 0, geometry.PreDefinedVertexCount);
-                        if(texture != billboardGeometry.Texture)
+                        if (texture != billboardGeometry.Texture)
                         {
                             texture = billboardGeometry.Texture;
-                            var newView = texture == null ? 
-                                null : deviceResources.MaterialTextureManager.Register(texture);                           
+                            var newView = texture == null ?
+                                null : deviceResources.MaterialTextureManager.Register(texture);
                             RemoveAndDispose(ref textureView);
-                            textureView = Collect(newView);
+                            textureView = newView;
                         }
                     }
                     else
@@ -105,6 +114,12 @@ namespace HelixToolkit.UWP
                         buffer.UploadDataToBuffer(context, emptyVerts, 0);
                     }
                 }
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref textureView);
+                base.OnDispose(disposeManagedResources);
             }
         }
 
@@ -130,5 +145,4 @@ namespace HelixToolkit.UWP
             public DynamicBillboardBufferModel() : base(BillboardVertex.SizeInBytes, true) { }
         }
     }
-
 }

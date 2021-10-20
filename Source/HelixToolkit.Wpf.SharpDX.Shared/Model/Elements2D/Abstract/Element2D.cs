@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// 
             /// </summary>
             public static readonly DependencyProperty VisibilityProperty =
-                DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible, 
+                DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible,
                     (d, e) =>
                     {
                         (d as Element2DCore).SceneNode.Visibility = ((Visibility)e.NewValue).ToD2DVisibility();
@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public static readonly DependencyProperty IsHitTestVisibleProperty =
                 DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
-                    (d,e)=> 
+                    (d, e) =>
                     {
                         (d as Element2DCore).SceneNode.IsHitTestVisible = (bool)e.NewValue;
                     }));
@@ -80,8 +80,14 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public new bool IsMouseOver
             {
-                get { return (bool)GetValue(IsMouseOverProperty); }
-                set { SetValue(IsMouseOverProperty, value); }
+                get
+                {
+                    return (bool)GetValue(IsMouseOverProperty);
+                }
+                set
+                {
+                    SetValue(IsMouseOverProperty, value);
+                }
             }
 
             public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
@@ -178,26 +184,38 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public HorizontalAlignment HorizontalAlignment
             {
-                get { return (HorizontalAlignment)GetValue(HorizontalAlignmentProperty); }
-                set { SetValue(HorizontalAlignmentProperty, value); }
+                get
+                {
+                    return (HorizontalAlignment)GetValue(HorizontalAlignmentProperty);
+                }
+                set
+                {
+                    SetValue(HorizontalAlignmentProperty, value);
+                }
             }
 
 
             public static readonly DependencyProperty HorizontalAlignmentProperty =
-                DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D), 
+                DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D),
                     new PropertyMetadata(HorizontalAlignment.Stretch, (d, e) => { (d as Element2DCore).SceneNode.HorizontalAlignment = ((HorizontalAlignment)e.NewValue).ToD2DHorizontalAlignment(); }));
 
 
 
             public VerticalAlignment VerticalAlignment
             {
-                get { return (VerticalAlignment)GetValue(VerticalAlignmentProperty); }
-                set { SetValue(VerticalAlignmentProperty, value); }
+                get
+                {
+                    return (VerticalAlignment)GetValue(VerticalAlignmentProperty);
+                }
+                set
+                {
+                    SetValue(VerticalAlignmentProperty, value);
+                }
             }
 
 
             public static readonly DependencyProperty VerticalAlignmentProperty =
-                DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D), 
+                DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D),
                     new PropertyMetadata(VerticalAlignment.Stretch, (d, e) => { (d as Element2DCore).SceneNode.VerticalAlignment = ((VerticalAlignment)e.NewValue).ToD2DVerticalAlignment(); }));
 
 
@@ -205,13 +223,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public Thickness Margin
             {
-                get { return (Thickness)GetValue(MarginProperty); }
-                set { SetValue(MarginProperty, value); }
+                get
+                {
+                    return (Thickness)GetValue(MarginProperty);
+                }
+                set
+                {
+                    SetValue(MarginProperty, value);
+                }
             }
 
             public static readonly DependencyProperty MarginProperty =
-                DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(), 
-                    (d, e) => {
+                DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(),
+                    (d, e) =>
+                    {
                         (d as Element2DCore).SceneNode.Margin = ((Thickness)e.NewValue).ToD2DThickness();
                     }));
 
@@ -241,25 +266,38 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public System.Windows.Point RenderTransformOrigin
             {
-                get { return (System.Windows.Point)GetValue(RenderTransformOriginProperty); }
-                set { SetValue(RenderTransformOriginProperty, value); }
+                get
+                {
+                    return (System.Windows.Point)GetValue(RenderTransformOriginProperty);
+                }
+                set
+                {
+                    SetValue(RenderTransformOriginProperty, value);
+                }
             }
 
             public static readonly DependencyProperty RenderTransformOriginProperty =
-                DependencyProperty.Register("RenderTransformOrigin", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0.5,0.5),
-                    (d,e)=> {
+                DependencyProperty.Register("RenderTransformOrigin", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0.5, 0.5),
+                    (d, e) =>
+                    {
                         (d as Element2DCore).SceneNode.RenderTransformOrigin = ((System.Windows.Point)e.NewValue).ToVector2();
                     }));
 
             public bool EnableBitmapCache
             {
-                get { return (bool)GetValue(EnableBitmapCacheProperty); }
-                set { SetValue(EnableBitmapCacheProperty, value); }
+                get
+                {
+                    return (bool)GetValue(EnableBitmapCacheProperty);
+                }
+                set
+                {
+                    SetValue(EnableBitmapCacheProperty, value);
+                }
             }
 
             public static readonly DependencyProperty EnableBitmapCacheProperty =
                 DependencyProperty.Register("EnableBitmapCache", typeof(bool), typeof(Element2D),
-                    new PropertyMetadata(false, (d,e)=> { (d as Element2DCore).SceneNode.EnableBitmapCache = (bool)e.NewValue; }));
+                    new PropertyMetadata(false, (d, e) => { (d as Element2DCore).SceneNode.EnableBitmapCache = (bool)e.NewValue; }));
 
 
             #endregion
@@ -284,32 +322,62 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public event Mouse2DRoutedEventHandler MouseDown2D
             {
-                add { AddHandler(MouseDown2DEvent, value); }
-                remove { RemoveHandler(MouseDown2DEvent, value); }
+                add
+                {
+                    AddHandler(MouseDown2DEvent, value);
+                }
+                remove
+                {
+                    RemoveHandler(MouseDown2DEvent, value);
+                }
             }
 
             public event Mouse2DRoutedEventHandler MouseUp2D
             {
-                add { AddHandler(MouseUp2DEvent, value); }
-                remove { RemoveHandler(MouseUp2DEvent, value); }
+                add
+                {
+                    AddHandler(MouseUp2DEvent, value);
+                }
+                remove
+                {
+                    RemoveHandler(MouseUp2DEvent, value);
+                }
             }
 
             public event Mouse2DRoutedEventHandler MouseMove2D
             {
-                add { AddHandler(MouseMove2DEvent, value); }
-                remove { RemoveHandler(MouseMove2DEvent, value); }
+                add
+                {
+                    AddHandler(MouseMove2DEvent, value);
+                }
+                remove
+                {
+                    RemoveHandler(MouseMove2DEvent, value);
+                }
             }
 
             public event Mouse2DRoutedEventHandler MouseEnter2D
             {
-                add { AddHandler(MouseEnter2DEvent, value); }
-                remove { RemoveHandler(MouseEnter2DEvent, value); }
+                add
+                {
+                    AddHandler(MouseEnter2DEvent, value);
+                }
+                remove
+                {
+                    RemoveHandler(MouseEnter2DEvent, value);
+                }
             }
 
             public event Mouse2DRoutedEventHandler MouseLeave2D
             {
-                add { AddHandler(MouseLeave2DEvent, value); }
-                remove { RemoveHandler(MouseLeave2DEvent, value); }
+                add
+                {
+                    AddHandler(MouseLeave2DEvent, value);
+                }
+                remove
+                {
+                    RemoveHandler(MouseLeave2DEvent, value);
+                }
             }
             #endregion
 
@@ -322,37 +390,55 @@ namespace HelixToolkit.Wpf.SharpDX
 
             protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)
             {
-                if (!IsAttached) { return; }
+                if (!IsAttached)
+                {
+                    return;
+                }
                 IsMouseOver = false;
-    #if DEBUGMOUSEEVENT
+#if DEBUGMOUSEEVENT
                 Console.WriteLine("Element2D_MouseLeave2D");
-    #endif
+#endif
             }
 
             protected virtual void Element2D_MouseEnter2D(object sender, RoutedEventArgs e)
             {
-                if (!IsAttached) { return; }
+                if (!IsAttached)
+                {
+                    return;
+                }
                 IsMouseOver = true;
-    #if DEBUGMOUSEEVENT
+#if DEBUGMOUSEEVENT
                 Console.WriteLine("Element2D_MouseEnter2D");
-    #endif
+#endif
             }
 
             protected virtual void OnMouseOverChanged(bool newValue, bool oldValue)
             {
-    #if DEBUGMOUSEEVENT
+#if DEBUGMOUSEEVENT
                 Debug.WriteLine("OnMouseOverChanged:"+newValue);
-    #endif
+#endif
             }
         }
 
         public class Mouse2DEventArgs : RoutedEventArgs
         {
-            public HitTest2DResult HitTest2DResult { get; private set; }
-            public Viewport3DX Viewport { get; private set; }
-            public System.Windows.Point Position { get; private set; }
+            public HitTest2DResult HitTest2DResult
+            {
+                get; private set;
+            }
+            public Viewport3DX Viewport
+            {
+                get; private set;
+            }
+            public System.Windows.Point Position
+            {
+                get; private set;
+            }
 
-            public InputEventArgs InputArgs { get; private set; }
+            public InputEventArgs InputArgs
+            {
+                get; private set;
+            }
             public Mouse2DEventArgs(RoutedEvent routedEvent, object source, HitTest2DResult hitTestResult, System.Windows.Point position, Viewport3DX viewport = null, InputEventArgs inputArgs = null)
                 : base(routedEvent, source)
             {
@@ -368,5 +454,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

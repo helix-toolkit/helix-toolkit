@@ -171,7 +171,7 @@ namespace HelixToolkit.UWP
         {
             using (var bmp = CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
              {
-                 using(var gradientCol = new GradientStopCollection(target, gradients, gamma, extendMode))
+                 using (var gradientCol = new GradientStopCollection(target, gradients, gamma, extendMode))
                  {
                      using (var brush = new LinearGradientBrush(target, new LinearGradientBrushProperties()
                      {
@@ -195,7 +195,7 @@ namespace HelixToolkit.UWP
         {
             using (var bmp = CreateBitmapStream(deviceResources, width, height, imageType, (target) =>
             {
-                using(var gradientCol = new GradientStopCollection(target, gradients, gamma, extendMode))
+                using (var gradientCol = new GradientStopCollection(target, gradients, gamma, extendMode))
                 {
                     using (var brush = new RadialGradientBrush(target, new RadialGradientBrushProperties()
                     {
@@ -223,11 +223,11 @@ namespace HelixToolkit.UWP
             using (var bmp = CreateBitmapStream(deviceResources, faceSize * 6, faceSize, Direct2DImageFormat.Bmp, (target) =>
              {
                  target.Clear(Color.Black);
-                 RectangleF faceRect = new RectangleF(0, 0, faceSize, faceSize);
-                 Color4[] faceColors = new Color4[] { frontFaceColor, backFaceColor, leftFaceColor, rightFaceColor, topFaceColor, bottomFaceColor };
-                 Color4[] textColors = new Color4[] { frontTextColor, backTextColor, leftTextColor, rightTextColor, topTextColor, bottomTextColor };
-                 string[] texts = new string[] { front, back, right, left, top, down };
-                 for (int i = 0; i < 6; ++i)
+                 var faceRect = new RectangleF(0, 0, faceSize, faceSize);
+                 var faceColors = new Color4[] { frontFaceColor, backFaceColor, leftFaceColor, rightFaceColor, topFaceColor, bottomFaceColor };
+                 var textColors = new Color4[] { frontTextColor, backTextColor, leftTextColor, rightTextColor, topTextColor, bottomTextColor };
+                 var texts = new string[] { front, back, right, left, top, down };
+                 for (var i = 0; i < 6; ++i)
                  {
                      using (var layout = GetTextLayoutMetrices(texts[i], deviceResources, fontSize, fontFamily, fontWeight, fontStyle, faceSize, faceSize))
                      {
@@ -274,9 +274,9 @@ namespace HelixToolkit.UWP
             using (var imagePacker = new TextInfoExtPacker(effectsManager))
             {
                 var code = imagePacker.Pack(items, true, squareImage, maxWidth, maxHeight, 2,
-                    out global::SharpDX.WIC.Bitmap bitmap, out int imageWidth, out int imageHeight,
+                    out var bitmap, out var imageWidth, out var imageHeight,
                     out var map);
-                if(code == ImagePackReturnCode.Succeed)
+                if (code == ImagePackReturnCode.Succeed)
                 {
                     using (bitmap)
                     {
@@ -292,7 +292,8 @@ namespace HelixToolkit.UWP
                                  Position = x.Origin,
                                  UV_TopLeft = new Vector2(rect.Left / imageWidth, rect.Top / imageHeight),
                                  UV_BottomRight = new Vector2(rect.Right / imageWidth, rect.Bottom / imageHeight),
-                                 HorizontalAlignment = x.HorizontalAlignment, VerticalAlignment = x.VerticalAlignment
+                                 HorizontalAlignment = x.HorizontalAlignment,
+                                 VerticalAlignment = x.VerticalAlignment
                              };
                          }))
                         {

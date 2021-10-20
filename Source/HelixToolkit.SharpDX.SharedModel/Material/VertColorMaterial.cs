@@ -26,7 +26,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return ColorMaterialCore.Core;
         }
 
-        public VertColorMaterial() { }
+        public VertColorMaterial()
+        {
+        }
 
         public VertColorMaterial(ColorMaterialCore core) : base(core) { }
 #if !NETFX_CORE && !WINUI

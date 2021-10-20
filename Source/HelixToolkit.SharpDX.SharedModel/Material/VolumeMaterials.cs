@@ -34,8 +34,14 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public SamplerStateDescription Sampler
         {
-            get { return (SamplerStateDescription)GetValue(SamplerProperty); }
-            set { SetValue(SamplerProperty, value); }
+            get
+            {
+                return (SamplerStateDescription)GetValue(SamplerProperty);
+            }
+            set
+            {
+                SetValue(SamplerProperty, value);
+            }
         }
 
 
@@ -54,8 +60,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double SampleDistance
         {
-            get { return (double)GetValue(SampleDistanceProperty); }
-            set { SetValue(SampleDistanceProperty, value); }
+            get
+            {
+                return (double)GetValue(SampleDistanceProperty);
+            }
+            set
+            {
+                SetValue(SampleDistanceProperty, value);
+            }
         }
 
         public static readonly DependencyProperty SampleDistanceProperty =
@@ -74,8 +86,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int MaxIterations
         {
-            get { return (int)GetValue(MaxIterationsProperty); }
-            set { SetValue(MaxIterationsProperty, value); }
+            get
+            {
+                return (int)GetValue(MaxIterationsProperty);
+            }
+            set
+            {
+                SetValue(MaxIterationsProperty, value);
+            }
         }
 
         public static readonly DependencyProperty MaxIterationsProperty =
@@ -94,8 +112,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int IterationOffset
         {
-            get { return (int)GetValue(IterationOffsetProperty); }
-            set { SetValue(IterationOffsetProperty, value); }
+            get
+            {
+                return (int)GetValue(IterationOffsetProperty);
+            }
+            set
+            {
+                SetValue(IterationOffsetProperty, value);
+            }
         }
 
 
@@ -116,8 +140,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double IsoValue
         {
-            get { return (double)GetValue(IsoValueProperty); }
-            set { SetValue(IsoValueProperty, value); }
+            get
+            {
+                return (double)GetValue(IsoValueProperty);
+            }
+            set
+            {
+                SetValue(IsoValueProperty, value);
+            }
         }
 
         public static readonly DependencyProperty IsoValueProperty =
@@ -136,8 +166,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Color4 Color
         {
-            get { return (Color4)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
+            get
+            {
+                return (Color4)GetValue(ColorProperty);
+            }
+            set
+            {
+                SetValue(ColorProperty, value);
+            }
         }
 
 
@@ -158,8 +194,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Color4[] TransferMap
         {
-            get { return (Color4[])GetValue(TransferMapProperty); }
-            set { SetValue(TransferMapProperty, value); }
+            get
+            {
+                return (Color4[])GetValue(TransferMapProperty);
+            }
+            set
+            {
+                SetValue(TransferMapProperty, value);
+            }
         }
 
         public static readonly DependencyProperty TransferMapProperty =
@@ -174,8 +216,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool EnablePlaneAlignment
         {
-            get { return (bool)GetValue(EnablePlaneAlignmentProperty); }
-            set { SetValue(EnablePlaneAlignmentProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnablePlaneAlignmentProperty);
+            }
+            set
+            {
+                SetValue(EnablePlaneAlignmentProperty, value);
+            }
         }
 
         // Using a DependencyProperty as the backing store for EnablePlaneAlignment.  This enables animation, styling, binding, etc...
@@ -185,9 +233,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 ((d as VolumeTextureMaterialBase).Core as IVolumeTextureMaterial).EnablePlaneAlignment = (bool)e.NewValue;
             }));
 
-        public VolumeTextureMaterialBase() { }
+        public VolumeTextureMaterialBase()
+        {
+        }
 
-        public VolumeTextureMaterialBase(IVolumeTextureMaterial core) :base(core as MaterialCore)
+        public VolumeTextureMaterialBase(IVolumeTextureMaterial core) : base(core as MaterialCore)
         {
             SampleDistance = core.SampleDistance;
             MaxIterations = core.MaxIterations;
@@ -213,14 +263,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public TextureModel Texture
         {
-            get { return (TextureModel)GetValue(TextureProperty); }
-            set { SetValue(TextureProperty, value); }
+            get
+            {
+                return (TextureModel)GetValue(TextureProperty);
+            }
+            set
+            {
+                SetValue(TextureProperty, value);
+            }
         }
 
 
         public static readonly DependencyProperty TextureProperty =
             DependencyProperty.Register("Texture", typeof(TextureModel), typeof(VolumeTextureDDS3DMaterial),
-                new PropertyMetadata(null, (d,e)=> 
+                new PropertyMetadata(null, (d, e) =>
                 {
                     ((d as VolumeTextureDDS3DMaterial).Core as VolumeTextureDDS3DMaterialCore).VolumeTexture = (TextureModel)e.NewValue;
                 }));
@@ -288,8 +344,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public VolumeTextureParams Texture
         {
-            get { return (VolumeTextureParams)GetValue(TextureProperty); }
-            set { SetValue(TextureProperty, value); }
+            get
+            {
+                return (VolumeTextureParams)GetValue(TextureProperty);
+            }
+            set
+            {
+                SetValue(TextureProperty, value);
+            }
         }
 
 
@@ -300,7 +362,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as VolumeTextureRawDataMaterial).Core as VolumeTextureRawDataMaterialCore).VolumeTexture = (VolumeTextureParams)e.NewValue;
                 }));
 
-        public VolumeTextureRawDataMaterial() { }
+        public VolumeTextureRawDataMaterial()
+        {
+        }
 
         public VolumeTextureRawDataMaterial(VolumeTextureRawDataMaterialCore core) : base(core)
         {
@@ -362,8 +426,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public VolumeTextureGradientParams Texture
         {
-            get { return (VolumeTextureGradientParams)GetValue(TextureProperty); }
-            set { SetValue(TextureProperty, value); }
+            get
+            {
+                return (VolumeTextureGradientParams)GetValue(TextureProperty);
+            }
+            set
+            {
+                SetValue(TextureProperty, value);
+            }
         }
 
 
@@ -374,7 +444,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as VolumeTextureDiffuseMaterial).Core as VolumeTextureDiffuseMaterialCore).VolumeTexture = (VolumeTextureGradientParams)e.NewValue;
                 }));
 
-        public VolumeTextureDiffuseMaterial() { }
+        public VolumeTextureDiffuseMaterial()
+        {
+        }
 
         public VolumeTextureDiffuseMaterial(VolumeTextureDiffuseMaterialCore core) : base(core)
         {

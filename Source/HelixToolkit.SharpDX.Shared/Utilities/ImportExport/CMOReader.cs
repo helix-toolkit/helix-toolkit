@@ -196,12 +196,18 @@ namespace HelixToolkit.UWP
         /// Gets or sets the path to the textures.
         /// </summary>
         /// <value>The texture path.</value>
-        public string TexturePath { get; set; }
+        public string TexturePath
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Additional info how to treat the model
         /// </summary>
-        public ModelInfo ModelInfo { get; private set; }
+        public ModelInfo ModelInfo
+        {
+            get; private set;
+        }
         public List<Object3D> Read(string path, ModelInfo info = default(ModelInfo))
         {
             this.TexturePath = Path.GetDirectoryName(path);
@@ -218,7 +224,7 @@ namespace HelixToolkit.UWP
             using (var br = new BinaryReader(s))
             {
                 var meshCount = br.ReadUInt32();
-                for(int i = 0; i < meshCount; ++i)
+                for (var i = 0; i < meshCount; ++i)
                 {
                     Meshes.AddRange(Load(br));
                 }
@@ -229,9 +235,9 @@ namespace HelixToolkit.UWP
         private IList<Object3D> Load(BinaryReader reader)
         {
             var name = reader.ReadCMO_wchar();
-            int numMaterials = (int)reader.ReadUInt32();
+            var numMaterials = (int)reader.ReadUInt32();
             var materials = new List<Tuple<PhongMaterial, IList<string>>>(numMaterials);
-            for(int i=0; i < numMaterials; ++i)
+            for (var i = 0; i < numMaterials; ++i)
             {
                 var material = new PhongMaterial
                 {
@@ -243,15 +249,15 @@ namespace HelixToolkit.UWP
                     EmissiveColor = reader.ReadStructure<Color4>()
                 };
                 var uvTransform = reader.ReadStructure<Matrix>();
-                if(uvTransform == Matrix.Zero)
+                if (uvTransform == Matrix.Zero)
                 {
                     uvTransform = Matrix.Identity;
                 }
                 uvTransform.Decompose(out var s, out var r, out var tra);
-                material.UVTransform = new UVTransform(r.Angle, new Vector2(s.X,s.Y), new Vector2(tra.X,tra.Y));
+                material.UVTransform = new UVTransform(r.Angle, new Vector2(s.X, s.Y), new Vector2(tra.X, tra.Y));
                 var pixelShaderName = reader.ReadCMO_wchar();//Not used
                 var textures = new List<string>();
-                for (int t = 0; t < MaxTextures; ++t)
+                for (var t = 0; t < MaxTextures; ++t)
                 {
                     textures.Add(reader.ReadCMO_wchar());
                 }
@@ -261,7 +267,7 @@ namespace HelixToolkit.UWP
             //      BYTE - 1 if there is skeletal animation data present
 
             // is there skeletal animation data present?
-            bool isAnimationData = reader.ReadByte() == 1;
+            var isAnimationData = reader.ReadByte() == 1;
             //      UINT - SubMesh count
             //      { [SubMesh count]
             //          SubMesh structure
@@ -270,10 +276,10 @@ namespace HelixToolkit.UWP
             // load sub meshes if any
 
             var mesh = new MeshGeometry3D();
-            int subMeshCount = (int)reader.ReadUInt32();
+            var subMeshCount = (int)reader.ReadUInt32();
 
             var subMesh = new List<SubMesh>(subMeshCount);
-            for (int i = 0; i < subMeshCount; i++)
+            for (var i = 0; i < subMeshCount; i++)
             {
                 subMesh.Add(reader.ReadStructure<SubMesh>());
             }
@@ -285,7 +291,7 @@ namespace HelixToolkit.UWP
             //      }
 
             // load triangle indices
-            int indexBufferCount = (int)reader.ReadUInt32();
+            var indexBufferCount = (int)reader.ReadUInt32();
             var indices = new List<ushort[]>(indexBufferCount);
             for (var i = 0; i < indexBufferCount; i++)
             {
@@ -299,7 +305,7 @@ namespace HelixToolkit.UWP
             //      }
 
             // load vertex positions
-            int vertexBufferCount = (int)reader.ReadUInt32();
+            var vertexBufferCount = (int)reader.ReadUInt32();
             var vertexBuffers = new List<Vertex[]>(vertexBufferCount);
             for (var i = 0; i < vertexBufferCount; i++)
             {
@@ -312,7 +318,7 @@ namespace HelixToolkit.UWP
             //      }
 
             // load vertex skinning parameters
-            int skinningVertexBufferCount = (int)reader.ReadUInt32();
+            var skinningVertexBufferCount = (int)reader.ReadUInt32();
             var skinningVertexBuffers = new List<SkinningVertex[]>(skinningVertexBufferCount);
             for (var i = 0; i < skinningVertexBufferCount; i++)
             {
@@ -323,14 +329,14 @@ namespace HelixToolkit.UWP
             var animationHierarchy = new AnimationHierarchy();
             IList<string> boneNames = null;
             if (isAnimationData)
-            {               
+            {
                 //      UINT - Bone count
                 //      { [Bone count]
                 //          UINT - Length of bone name
                 //          wchar_t[] - Bone name (if length > 0)
                 //          Bone structure
                 //      }
-                int boneCount = (int)reader.ReadUInt32();
+                var boneCount = (int)reader.ReadUInt32();
                 boneNames = new string[boneCount];
                 for (var i = 0; i < boneCount; i++)
                 {
@@ -349,15 +355,15 @@ namespace HelixToolkit.UWP
                 //              Keyframe structure
                 //          }
                 //      }
-                int animationCount = (int)reader.ReadUInt32();
+                var animationCount = (int)reader.ReadUInt32();
                 for (var i = 0; i < animationCount; i++)
                 {
-                    Animation animation = new Animation(AnimationType.Keyframe);
-                    string animationName = reader.ReadCMO_wchar();
+                    var animation = new Animation(AnimationType.Keyframe);
+                    var animationName = reader.ReadCMO_wchar();
                     animation.StartTime = reader.ReadSingle();
                     animation.EndTime = reader.ReadSingle();
                     animation.Name = animationName;
-                    int keyframeCount = (int)reader.ReadUInt32();
+                    var keyframeCount = (int)reader.ReadUInt32();
                     for (var j = 0; j < keyframeCount; j++)
                     {
                         var keyframe = reader.ReadStructure<KeyframeCMO>();
@@ -373,25 +379,27 @@ namespace HelixToolkit.UWP
                 }
             }
             var obj3Ds = new List<Object3D>(subMeshCount);
-            
-            for (int i=0; i < subMesh.Count; ++i)
+
+            for (var i = 0; i < subMesh.Count; ++i)
             {
                 var sub = subMesh[i];
                 var material = materials.Count == 0 ? new PhongMaterial() : materials[(int)sub.MaterialIndex].Item1;
-                var vertexCollection = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x=>x.Position));
+                var vertexCollection = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Position));
                 var normal = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Normal));
                 var tex = new Vector2Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.UV));
                 var tangent = new Vector3Collection(vertexBuffers[(int)sub.VertexDataIndex].Select(x => x.Tangent.ToVector3()));
-                var biTangent = new Vector3Collection(normal.Zip(tangent, (x, y) => { return Vector3.Cross(x, y); }));                
+                var biTangent = new Vector3Collection(normal.Zip(tangent, (x, y) => { return Vector3.Cross(x, y); }));
                 var indexCollection = new IntCollection(indices[(int)sub.IndexDataIndex].Select(x => (int)x));
                 var meshGeo = new MeshGeometry3D()
                 {
                     Positions = vertexCollection,
-                    Indices = indexCollection, Normals = normal,
-                    Tangents = tangent, BiTangents = biTangent,
+                    Indices = indexCollection,
+                    Normals = normal,
+                    Tangents = tangent,
+                    BiTangents = biTangent,
                     TextureCoordinates = tex
                 };
-                if(isAnimationData)
+                if (isAnimationData)
                 {
                     var boneskinmesh = new BoneSkinnedMeshGeometry3D(meshGeo);
                     boneskinmesh.VertexBoneIds = new List<BoneIds>(skinningVertexBuffers[(int)sub.VertexDataIndex]
@@ -403,8 +411,8 @@ namespace HelixToolkit.UWP
                             Bone4 = (int)x.BoneIndex3,
                             Weights = new Vector4(x.BoneWeight0, x.BoneWeight1, x.BoneWeight2, x.BoneWeight3),
                         }));
-                    meshGeo = boneskinmesh;                    
-                }              
+                    meshGeo = boneskinmesh;
+                }
                 //Todo Load textures
                 obj3Ds.Add(new Object3D() { Geometry = meshGeo, Material = material, Name = name });
                 animationHierarchy.Meshes.Add(obj3Ds.Last());
@@ -489,7 +497,7 @@ namespace HelixToolkit.UWP
         {
             // uint - Length of string (in WCHAR's i.e. 2-bytes)
             // wchar[] - string (if length > 0)
-            int length = (int)br.ReadUInt32();
+            var length = (int)br.ReadUInt32();
             if (length > 0)
             {
                 var result = System.Text.Encoding.Unicode.GetString(br.ReadBytes(length * 2), 0, length * 2);
@@ -506,7 +514,7 @@ namespace HelixToolkit.UWP
         /// <typeparam name="T"></typeparam>
         /// <param name="br"></param>
         /// <returns></returns>
-        public static T ReadStructure<T>(this BinaryReader br) where T : struct
+        public static T ReadStructure<T>(this BinaryReader br) where T : unmanaged
         {
             return ByteArrayToStructure<T>(br.ReadBytes(global::SharpDX.Utilities.SizeOf<T>()));
         }
@@ -518,9 +526,9 @@ namespace HelixToolkit.UWP
         /// <param name="br"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public static T[] ReadStructure<T>(this BinaryReader br, int count) where T : struct
+        public static T[] ReadStructure<T>(this BinaryReader br, int count) where T : unmanaged
         {
-            T[] result = new T[count];
+            var result = new T[count];
 
             for (var i = 0; i < count; i++)
                 result[i] = ByteArrayToStructure<T>(br.ReadBytes(global::SharpDX.Utilities.SizeOf<T>()));
@@ -536,23 +544,22 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static ushort[] ReadUInt16(this BinaryReader br, int count)
         {
-            ushort[] result = new ushort[count];
+            var result = new ushort[count];
             for (var i = 0; i < count; i++)
                 result[i] = br.ReadUInt16();
             return result;
         }
 
-        static T ByteArrayToStructure<T>(byte[] bytes) where T : struct
+        static T ByteArrayToStructure<T>(byte[] bytes) where T : unmanaged
         {
-            GCHandle handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            var handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
 #if NETFX_CORE
             T stuff = Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject());
 #else
-            T stuff = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            var stuff = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
 #endif
             handle.Free();
             return stuff;
         }
-
     }
 }

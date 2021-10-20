@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP
             /// <param name="dynamic">Create dynamic buffer or immutable buffer</param>
             public LineGeometryBufferModel(int structSize, bool dynamic = false)
                 : base(PrimitiveTopology.LineList,
-                dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy, 
+                dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy,
                 dynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
             {
             }
@@ -59,7 +59,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="vertexBuffer"></param>
             /// <param name="dynamic">Create dynamic buffer or immutable buffer</param> 
-            public LineGeometryBufferModel(IElementsBufferProxy[] vertexBuffer, bool dynamic = false) 
+            public LineGeometryBufferModel(IElementsBufferProxy[] vertexBuffer, bool dynamic = false)
                 : base(PrimitiveTopology.LineList,
                 vertexBuffer,
                 dynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
@@ -80,7 +80,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="vertexBuffer"></param>
             /// <param name="indexBuffer"></param>
-            public LineGeometryBufferModel(IElementsBufferProxy[] vertexBuffer, IElementsBufferProxy indexBuffer) 
+            public LineGeometryBufferModel(IElementsBufferProxy[] vertexBuffer, IElementsBufferProxy indexBuffer)
                 : base(PrimitiveTopology.LineList,
                 vertexBuffer, indexBuffer)
             {
@@ -182,5 +182,4 @@ namespace HelixToolkit.UWP
             public DynamicLineGeometryBufferModel() : base(true) { }
         }
     }
-
 }

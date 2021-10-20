@@ -274,8 +274,8 @@ namespace HelixToolkit.UWP
                 new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                 new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
                 new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-                new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
-                new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 1),  
+                new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 1),
                 new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2),             
                 //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
                 new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
@@ -302,8 +302,8 @@ namespace HelixToolkit.UWP
                 new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
                 new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
                 new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-                new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
-                new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 1),       
+                new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+                new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 1),
                 new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2),             
                 //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
                 new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
@@ -447,7 +447,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            public static readonly ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex, 
+            public static readonly ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex,
                 new ShaderReflector(),
                 DefaultVSShaderByteCodes.VSMeshDefault);
 
@@ -619,5 +619,4 @@ namespace HelixToolkit.UWP
 #endif
         }
     }
-
 }

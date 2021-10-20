@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class ParticleStormModel3D : Element3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         public static DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultParticleCount,
             (d, e) =>
@@ -431,7 +431,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
-                 ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = ((Vector3D)e.NewValue).ToVector3();
+                ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = ((Vector3D)e.NewValue).ToVector3();
 
             }
             ));
@@ -514,8 +514,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public double Turbulance
         {
-            get { return (double)GetValue(TurbulanceProperty); }
-            set { SetValue(TurbulanceProperty, value); }
+            get
+            {
+                return (double)GetValue(TurbulanceProperty);
+            }
+            set
+            {
+                SetValue(TurbulanceProperty, value);
+            }
         }
 
 
@@ -642,8 +648,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Media.Color BlendFactor
         {
-            get { return (Media.Color)GetValue(BlendFactorProperty); }
-            set { SetValue(BlendFactorProperty, value); }
+            get
+            {
+                return (Media.Color)GetValue(BlendFactorProperty);
+            }
+            set
+            {
+                SetValue(BlendFactorProperty, value);
+            }
         }
 
         /// <summary>
@@ -669,15 +681,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int SampleMask
         {
-            get { return (int)GetValue(SampleMaskProperty); }
-            set { SetValue(SampleMaskProperty, value); }
+            get
+            {
+                return (int)GetValue(SampleMaskProperty);
+            }
+            set
+            {
+                SetValue(SampleMaskProperty, value);
+            }
         }
 
         /// <summary>
         /// The sample mask property
         /// </summary>
         public static readonly DependencyProperty SampleMaskProperty =
-            DependencyProperty.Register("SampleMask", typeof(int), typeof(ParticleStormModel3D), new PropertyMetadata(-1, (d, e)=>
+            DependencyProperty.Register("SampleMask", typeof(int), typeof(ParticleStormModel3D), new PropertyMetadata(-1, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as ParticleStormNode).SampleMask = (int)e.NewValue;
             }));
@@ -688,8 +706,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IList<Matrix> Instances
         {
-            get { return (IList<Matrix>)this.GetValue(InstancesProperty); }
-            set { this.SetValue(InstancesProperty, value); }
+            get
+            {
+                return (IList<Matrix>)this.GetValue(InstancesProperty);
+            }
+            set
+            {
+                this.SetValue(InstancesProperty, value);
+            }
         }
 
         /// <summary>
@@ -710,7 +734,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Element3DCore).SceneNode as ParticleStormNode).EnableViewFrustumCheck = (bool)e.NewValue;
                 }));
-#endregion
+        #endregion
 
 
         protected override SceneNode OnCreateSceneNode()

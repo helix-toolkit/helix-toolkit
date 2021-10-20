@@ -39,19 +39,25 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    #if WINUI
+#if WINUI
     [SupportedOSPlatform("windows")]
-    #endif
+#endif
     public class ScreenQuadModel3D : Element3D
     {
         public TextureModel Texture
         {
-            get { return (TextureModel)GetValue(TextureProperty); }
-            set { SetValue(TextureProperty, value); }
+            get
+            {
+                return (TextureModel)GetValue(TextureProperty);
+            }
+            set
+            {
+                SetValue(TextureProperty, value);
+            }
         }
 
         public static readonly DependencyProperty TextureProperty =
-            DependencyProperty.Register("Texture", typeof(TextureModel), typeof(ScreenQuadModel3D), new PropertyMetadata(null, (d,e)=>
+            DependencyProperty.Register("Texture", typeof(TextureModel), typeof(ScreenQuadModel3D), new PropertyMetadata(null, (d, e) =>
             {
                 ((d as ScreenQuadModel3D).SceneNode as ScreenQuadNode).Texture = (TextureModel)e.NewValue;
             }));
@@ -60,14 +66,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public SamplerStateDescription SamplerDescription
         {
-            get { return (SamplerStateDescription)GetValue(SamplerDescriptionProperty); }
-            set { SetValue(SamplerDescriptionProperty, value); }
+            get
+            {
+                return (SamplerStateDescription)GetValue(SamplerDescriptionProperty);
+            }
+            set
+            {
+                SetValue(SamplerDescriptionProperty, value);
+            }
         }
 
 
         public static readonly DependencyProperty SamplerDescriptionProperty =
-            DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(ScreenQuadModel3D), 
-                new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d,e)=>
+            DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(ScreenQuadModel3D),
+                new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
                 {
                     ((d as ScreenQuadModel3D).SceneNode as ScreenQuadNode).Sampler = (SamplerStateDescription)e.NewValue;
                 }));
@@ -81,13 +93,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double Depth
         {
-            get { return (double)GetValue(DepthProperty); }
-            set { SetValue(DepthProperty, value); }
+            get
+            {
+                return (double)GetValue(DepthProperty);
+            }
+            set
+            {
+                SetValue(DepthProperty, value);
+            }
         }
 
         public static readonly DependencyProperty DepthProperty =
-            DependencyProperty.Register("Depth", typeof(double), typeof(ScreenQuadModel3D), new PropertyMetadata(1.0, 
-                (d,e)=>
+            DependencyProperty.Register("Depth", typeof(double), typeof(ScreenQuadModel3D), new PropertyMetadata(1.0,
+                (d, e) =>
                 {
                     ((d as ScreenQuadModel3D).SceneNode as ScreenQuadNode).Depth = (float)Math.Max(0, Math.Min(1, (double)e.NewValue));
                 }));
@@ -102,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
             base.AssignDefaultValuesToSceneNode(node);
-            if(node is ScreenQuadNode n)
+            if (node is ScreenQuadNode n)
             {
                 n.Texture = Texture;
                 n.Sampler = SamplerDescription;

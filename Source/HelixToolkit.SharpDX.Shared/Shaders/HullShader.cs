@@ -25,7 +25,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class HullShader : ShaderBase
         {
-            internal global::SharpDX.Direct3D11.HullShader Shader { private set; get; }
+            private global::SharpDX.Direct3D11.HullShader shader;
+            internal global::SharpDX.Direct3D11.HullShader Shader => shader;
             public static readonly HullShader NullHullShader = new HullShader("NULL");
             public static readonly HullShaderType Type;
             /// <summary>
@@ -35,13 +36,13 @@ namespace HelixToolkit.UWP
             /// <param name="name"></param>
             /// <param name="byteCode"></param>
             public HullShader(Device device, string name, byte[] byteCode)
-                :base(name, ShaderStage.Hull)
+                : base(name, ShaderStage.Hull)
             {
-                Shader = Collect(new global::SharpDX.Direct3D11.HullShader(device, byteCode));
+                shader = new global::SharpDX.Direct3D11.HullShader(device, byteCode);
             }
 
             private HullShader(string name)
-                :base(name, ShaderStage.Hull, true)
+                : base(name, ShaderStage.Hull, true)
             {
 
             }
@@ -57,6 +58,12 @@ namespace HelixToolkit.UWP
                 context.SetShader(this);
             }
 
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref shader);
+                base.OnDispose(disposeManagedResources);
+            }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static implicit operator HullShaderType(HullShader s)
             {
@@ -64,5 +71,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

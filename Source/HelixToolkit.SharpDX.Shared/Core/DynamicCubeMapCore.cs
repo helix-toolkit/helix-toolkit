@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP
         using Shaders;
         using Utilities;
         using Components;
-    
+
 
         /// <summary>
         ///
@@ -183,7 +183,7 @@ namespace HelixToolkit.UWP
                     {
                         var newSampler = EffectTechnique.EffectsManager.StateManager.Register(value);
                         RemoveAndDispose(ref textureSampler);
-                        textureSampler = Collect(newSampler);
+                        textureSampler = newSampler;
                     }
                 }
                 get
@@ -277,7 +277,10 @@ namespace HelixToolkit.UWP
                         UpdateTargets();
                     }
                 }
-                get { return center; }
+                get
+                {
+                    return center;
+                }
             }
 
             /// <summary>
@@ -310,7 +313,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref isDynamicScene, value);
                 }
-                get { return isDynamicScene; }
+                get
+                {
+                    return isDynamicScene;
+                }
             }
             #endregion Properties
 
@@ -325,14 +331,14 @@ namespace HelixToolkit.UWP
 
             private bool CreateCubeMapResources()
             {
-                if(textureDesc.Width == faceSize && cubeMap != null && !cubeMap.IsDisposed)
+                if (textureDesc.Width == faceSize && cubeMap != null && !cubeMap.IsDisposed)
                 {
                     return false;
                 }
                 textureDesc.Width = textureDesc.Height = dsvTextureDesc.Width = dsvTextureDesc.Height = FaceSize;
 
                 RemoveAndDispose(ref cubeMap);
-                cubeMap = Collect(new ShaderResourceViewProxy(Device, textureDesc));
+                cubeMap = new ShaderResourceViewProxy(Device, textureDesc);
 
                 var srvDesc = new ShaderResourceViewDescription()
                 {
@@ -349,15 +355,15 @@ namespace HelixToolkit.UWP
                     Texture2DArray = new RenderTargetViewDescription.Texture2DArrayResource() { MipSlice = 0, FirstArraySlice = 0, ArraySize = 1 }
                 };
 
-                for (int i = 0; i < 6; ++i)
+                for (var i = 0; i < 6; ++i)
                 {
                     RemoveAndDispose(ref cubeRTVs[i]);
                     rtsDesc.Texture2DArray.FirstArraySlice = i;
-                    cubeRTVs[i] = Collect(new RenderTargetView(Device, CubeMap.Resource, rtsDesc));
+                    cubeRTVs[i] = new RenderTargetView(Device, CubeMap.Resource, rtsDesc);
                 }
 
                 RemoveAndDispose(ref cubeDSV);
-                cubeDSV = Collect(new ShaderResourceViewProxy(Device, dsvTextureDesc));
+                cubeDSV = new ShaderResourceViewProxy(Device, dsvTextureDesc);
                 var dsvDesc = new DepthStencilViewDescription()
                 {
                     Format = dsvTextureDesc.Format,
@@ -366,11 +372,11 @@ namespace HelixToolkit.UWP
                     Texture2DArray = new DepthStencilViewDescription.Texture2DArrayResource() { MipSlice = 0, FirstArraySlice = 0, ArraySize = 1 }
                 };
 
-                for (int i = 0; i < 6; ++i)
+                for (var i = 0; i < 6; ++i)
                 {
                     RemoveAndDispose(ref cubeDSVs[i]);
                     dsvDesc.Texture2DArray.FirstArraySlice = i;
-                    cubeDSVs[i] = Collect(new DepthStencilView(Device, cubeDSV.Resource, dsvDesc));
+                    cubeDSVs[i] = new DepthStencilView(Device, cubeDSV.Resource, dsvDesc);
                 }
 
                 viewport = new Viewport(0, 0, FaceSize, FaceSize);
@@ -381,24 +387,23 @@ namespace HelixToolkit.UWP
             {
                 DefaultShaderPass = technique[DefaultShaderPassName];
                 contextPool = technique.EffectsManager.DeviceContextPool;
-                textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+                textureSampler = technique.EffectsManager.StateManager.Register(SamplerDescription);
                 CreateCubeMapResources();
                 return true;
             }
 
             protected override void OnDetach()
             {
-                textureSampler = null;
-                contextPool = null;
-                cubeMap = null;
-                cubeDSV = null;
+                RemoveAndDispose(ref textureSampler);
+                RemoveAndDispose(ref cubeMap);
+                RemoveAndDispose(ref cubeDSV);
                 textureDesc.Width = textureDesc.Height = dsvTextureDesc.Width = dsvTextureDesc.Height = 0;
-                for (int i = 0; i < 6; ++i)
+                for (var i = 0; i < 6; ++i)
                 {
-                    cubeRTVs[i] = null;
-                    cubeDSVs[i] = null;
+                    RemoveAndDispose(ref cubeRTVs[i]);
+                    RemoveAndDispose(ref cubeDSVs[i]);
                 }
-                base.OnDetach();
+                contextPool = null;
             }
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
@@ -412,7 +417,7 @@ namespace HelixToolkit.UWP
                     RaiseInvalidateRender();
                     return; // Skip this frame if texture resized to reduce latency.
                 }
-                else if(!(IsDynamicScene || context.UpdateSceneGraphRequested || context.UpdatePerFrameRenderableRequested))
+                else if (!(IsDynamicScene || context.UpdateSceneGraphRequested || context.UpdatePerFrameRenderableRequested))
                 {
                     return;
                 }
@@ -420,12 +425,12 @@ namespace HelixToolkit.UWP
                 var camLook = Vector3.Normalize(context.Camera.LookDirection);
 
                 Exception exception = null;
-    #if TEST
+#if TEST
                 for (int index = 0; index < 6; ++index)
-    #else
+#else
                 Parallel.For(0, 6, (index) =>
-    #endif
-                {               
+#endif
+                {
                     try
                     {
                         var ctx = contextPool.Get();
@@ -437,14 +442,14 @@ namespace HelixToolkit.UWP
                         var transforms = new GlobalTransformStruct();
                         transforms.Projection = cubeFaceCameras.Cameras[index].Projection;
                         transforms.View = cubeFaceCameras.Cameras[index].View;
-                        transforms.Viewport = new Vector4(FaceSize, FaceSize, 1/FaceSize, 1/FaceSize);
+                        transforms.Viewport = new Vector4(FaceSize, FaceSize, 1 / FaceSize, 1 / FaceSize);
                         transforms.ViewProjection = transforms.View * transforms.Projection;
 
                         modelCB.Upload(ctx, ref transforms);
 
                         var frustum = new BoundingFrustum(transforms.ViewProjection);
                         //Render opaque
-                        for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
+                        for (var i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
                         {
                             var node = context.RenderHost.PerFrameOpaqueNodes[i];
                             if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
@@ -453,7 +458,7 @@ namespace HelixToolkit.UWP
                             }
                         }
                         //Render particle
-                        for (int i = 0; i < context.RenderHost.PerFrameParticleNodes.Count; ++i)
+                        for (var i = 0; i < context.RenderHost.PerFrameParticleNodes.Count; ++i)
                         {
                             var node = context.RenderHost.PerFrameParticleNodes[i];
                             if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
@@ -464,20 +469,20 @@ namespace HelixToolkit.UWP
                         commands[index] = ctx.FinishCommandList(true);
                         contextPool.Put(ctx);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         exception = ex;
-                    }                
+                    }
                 }
-    #if !TEST
+#if !TEST
                 );
-    #endif
+#endif
                 context.IsInvertCullMode = false;
                 if (exception != null)
                 {
                     throw exception;
-                }          
-                for (int i = 0; i < commands.Length; ++i)
+                }
+                for (var i = 0; i < commands.Length; ++i)
                 {
                     if (commands[i] != null)
                     {
@@ -491,7 +496,7 @@ namespace HelixToolkit.UWP
 
             private void UpdateTargets()
             {
-                for (int i = 0; i < 6; ++i)
+                for (var i = 0; i < 6; ++i)
                 {
                     targets[i] = center + lookVector[i];
                     cubeFaceCameras.Cameras[i].View = (IsLeftHanded ? Matrix.LookAtLH(center, targets[i], upVectors[i]) : Matrix.LookAtRH(center, targets[i], upVectors[i])) * Matrix.Scaling(-1, 1, 1);
@@ -528,11 +533,11 @@ namespace HelixToolkit.UWP
             {
                 deviceContext.SetShaderResources(PixelShader.Type, cubeTextureSlot, currRes);
                 deviceContext.SetSamplers(PixelShader.Type, textureSamplerSlot, currSampler);
-                for (int i = 0; i < currSampler.Length; ++i)
+                for (var i = 0; i < currSampler.Length; ++i)
                 {
                     Disposer.RemoveAndDispose(ref currSampler[i]);
                 }
-                for (int i = 0; i < currRes.Length; ++i)
+                for (var i = 0; i < currRes.Length; ++i)
                 {
                     Disposer.RemoveAndDispose(ref currRes[i]);
                 }
@@ -543,5 +548,4 @@ namespace HelixToolkit.UWP
             #endregion IReflector
         }
     }
-
 }

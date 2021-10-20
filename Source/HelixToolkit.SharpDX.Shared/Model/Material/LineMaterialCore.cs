@@ -51,7 +51,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref smoothness, value);
                 }
-                get { return smoothness; }
+                get
+                {
+                    return smoothness;
+                }
             }
 
             private Color4 lineColor = Color.Blue;
@@ -64,7 +67,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref lineColor, value);
                 }
-                get { return lineColor; }
+                get
+                {
+                    return lineColor;
+                }
             }
 
             private bool enableDistanceFading = false;
@@ -74,21 +80,36 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref enableDistanceFading, value);
                 }
-                get { return enableDistanceFading; }
+                get
+                {
+                    return enableDistanceFading;
+                }
             }
 
             private float fadingNearDistance = 100;
             public float FadingNearDistance
             {
-                set { Set(ref fadingNearDistance, value); }
-                get { return fadingNearDistance; }
+                set
+                {
+                    Set(ref fadingNearDistance, value);
+                }
+                get
+                {
+                    return fadingNearDistance;
+                }
             }
 
             private float fadingFarDistance = 0;
             public float FadingFarDistance
             {
-                set { Set(ref fadingFarDistance, value); }
-                get { return fadingFarDistance; }
+                set
+                {
+                    Set(ref fadingFarDistance, value);
+                }
+                get
+                {
+                    return fadingFarDistance;
+                }
             }
 
             private bool fixedSize = true;
@@ -100,8 +121,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool FixedSize
             {
-                set { Set(ref fixedSize, value); }
-                get { return fixedSize; }
+                set
+                {
+                    Set(ref fixedSize, value);
+                }
+                get
+                {
+                    return fixedSize;
+                }
             }
 
             private TextureModel texture;
@@ -113,8 +140,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel Texture
             {
-                set { Set(ref texture, value); }
-                get { return texture; }
+                set
+                {
+                    Set(ref texture, value);
+                }
+                get
+                {
+                    return texture;
+                }
             }
 
             private float textureScale = 1;
@@ -126,8 +159,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float TextureScale
             {
-                set { Set(ref textureScale, value); }
-                get { return textureScale; }
+                set
+                {
+                    Set(ref textureScale, value);
+                }
+                get
+                {
+                    return textureScale;
+                }
             }
 
             private float alphaThreshold = 0.2f;
@@ -140,8 +179,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float AlphaThreshold
             {
-                set { Set(ref alphaThreshold, value); }
-                get { return alphaThreshold; }
+                set
+                {
+                    Set(ref alphaThreshold, value);
+                }
+                get
+                {
+                    return alphaThreshold;
+                }
             }
 
 
@@ -168,5 +213,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

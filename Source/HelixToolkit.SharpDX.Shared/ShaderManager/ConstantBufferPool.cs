@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP
     namespace ShaderManager
     {
         using HelixToolkit.Logger;
-        using Shaders;   
+        using Shaders;
         using Utilities;
 
         /// <summary>
@@ -31,14 +31,20 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The count.
             /// </value>
-            int Count { get; }
+            int Count
+            {
+                get;
+            }
             /// <summary>
             /// Gets the device.
             /// </summary>
             /// <value>
             /// The device.
             /// </value>
-            Device Device { get; }
+            Device Device
+            {
+                get;
+            }
 
             /// <summary>
             /// Registers the specified description.
@@ -59,16 +65,24 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Pool to store and share constant buffers. Do not dispose constant buffer object externally.
         /// </summary>
-        public sealed class ConstantBufferPool : LongLivedResourcePoolBase<string, ConstantBufferProxy, ConstantBufferDescription>, IConstantBufferPool
+        public sealed class ConstantBufferPool : ReferenceCountedDictionaryPool<string, ConstantBufferProxy, ConstantBufferDescription>, IConstantBufferPool
         {
+            private readonly Device device;
+            public Device Device => device;
             /// <summary>
             /// Initializes a new instance of the <see cref="ConstantBufferPool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
             /// <param name="logger"></param>
             public ConstantBufferPool(Device device, LogWrapper logger)
-                : base(device, logger)
+                : base(false)
             {
+                this.device = device;
+            }
+
+            protected override bool CanCreate(ref string key, ref ConstantBufferDescription argument)
+            {
+                return !string.IsNullOrEmpty(key);
             }
 
             /// <summary>
@@ -77,24 +91,15 @@ namespace HelixToolkit.UWP
             /// <param name="device">The device.</param>
             /// <param name="description">The description.</param>
             /// <returns></returns>
-            protected override ConstantBufferProxy Create(Device device, ref ConstantBufferDescription description)
+            protected override ConstantBufferProxy OnCreate(ref string key, ref ConstantBufferDescription description)
             {
                 var buffer = description.CreateBuffer();
                 buffer.CreateBuffer(device);
+                ErrorCheck(buffer, ref description);
                 return buffer;
             }
 
-            /// <summary>
-            /// Gets the key.
-            /// </summary>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override string GetKey(ref ConstantBufferDescription description)
-            {
-                return description.Name;
-            }
-
-            protected override void ErrorCheck(ConstantBufferProxy value, ref ConstantBufferDescription description)
+            private void ErrorCheck(ConstantBufferProxy value, ref ConstantBufferDescription description)
             {
                 if (value.StructureSize != description.StructSize)
                 {
@@ -105,7 +110,7 @@ namespace HelixToolkit.UWP
                 }
                 if (description.Variables.Count > 0)
                 {
-                    foreach(var variable in description.Variables)
+                    foreach (var variable in description.Variables)
                     {
                         value.AddVariable(variable);
                     }
@@ -122,8 +127,19 @@ namespace HelixToolkit.UWP
             {
                 return Register(new ConstantBufferDescription(name, structSize));
             }
+
+            public ConstantBufferProxy Register(ConstantBufferDescription description)
+            {
+                if (TryCreateOrGet(description.Name, description, out var buffer))
+                {
+                    foreach (var var in description.Variables)
+                    {
+                        buffer.AddVariable(var);
+                    }
+                    return buffer;
+                }
+                return null;
+            }
         }
     }
-    
-
 }

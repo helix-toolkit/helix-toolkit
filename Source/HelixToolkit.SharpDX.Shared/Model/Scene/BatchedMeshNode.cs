@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref geometries, value))
+                    if (SetAffectsRender(ref geometries, value))
                     {
                         if (IsAttached)
                         {
@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref materials, value) && IsAttached)
+                    if (SetAffectsRender(ref materials, value) && IsAttached)
                     {
                         batchingBuffer.Materials = value;
                         if (value == null && Material is PhongMaterialCore p)
@@ -66,7 +66,10 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                get { return materials; }
+                get
+                {
+                    return materials;
+                }
             }
             #region Bound
             private BoundingBox originalBounds;
@@ -78,7 +81,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public override BoundingBox OriginalBounds
             {
-                get { return originalBounds; }
+                get
+                {
+                    return originalBounds;
+                }
             }
 
             private BoundingSphere originalBoundsSphere;
@@ -90,7 +96,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public override BoundingSphere OriginalBoundsSphere
             {
-                get { return originalBoundsSphere; }
+                get
+                {
+                    return originalBoundsSphere;
+                }
             }
 
             /// <summary>
@@ -101,7 +110,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public override BoundingBox Bounds
             {
-                get { return originalBounds; }
+                get
+                {
+                    return originalBounds;
+                }
             }
 
             private BoundingBox boundsWithTransform;
@@ -113,7 +125,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public override BoundingBox BoundsWithTransform
             {
-                get { return boundsWithTransform; }
+                get
+                {
+                    return boundsWithTransform;
+                }
             }
 
             /// <summary>
@@ -124,7 +139,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public override BoundingSphere BoundsSphere
             {
-                get { return originalBoundsSphere; }
+                get
+                {
+                    return originalBoundsSphere;
+                }
             }
 
             private BoundingSphere boundsSphereWithTransform;
@@ -136,7 +154,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public override BoundingSphere BoundsSphereWithTransform
             {
-                get { return boundsSphereWithTransform; }
+                get
+                {
+                    return boundsSphereWithTransform;
+                }
             }
             #endregion
             #region Rasterizer parameters
@@ -157,7 +178,10 @@ namespace HelixToolkit.UWP
                         OnRasterStateChanged();
                     }
                 }
-                get { return depthBias; }
+                get
+                {
+                    return depthBias;
+                }
             }
 
             private float slopScaledDepthBias = 0;
@@ -169,7 +193,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public float SlopeScaledDepthBias
             {
-                get { return slopScaledDepthBias; }
+                get
+                {
+                    return slopScaledDepthBias;
+                }
                 set
                 {
                     if (Set(ref slopScaledDepthBias, value))
@@ -188,7 +215,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsMSAAEnabled
             {
-                get { return isMSAAEnabled = true; }
+                get
+                {
+                    return isMSAAEnabled = true;
+                }
                 set
                 {
                     if (Set(ref isMSAAEnabled, value))
@@ -207,7 +237,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsScissorEnabled
             {
-                get { return isScissorEnabled; }
+                get
+                {
+                    return isScissorEnabled;
+                }
                 set
                 {
                     if (Set(ref isScissorEnabled, value))
@@ -226,7 +259,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public FillMode FillMode
             {
-                get { return fillMode; }
+                get
+                {
+                    return fillMode;
+                }
                 set
                 {
                     if (Set(ref fillMode, value))
@@ -245,7 +281,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsDepthClipEnabled
             {
-                get { return isDepthClipEnabled; }
+                get
+                {
+                    return isDepthClipEnabled;
+                }
                 set
                 {
                     if (Set(ref isDepthClipEnabled, value))
@@ -263,7 +302,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool FrontCCW
             {
-                get { return frontCCW; }
+                get
+                {
+                    return frontCCW;
+                }
                 set
                 {
                     if (Set(ref frontCCW, value))
@@ -282,7 +324,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public CullMode CullMode
             {
-                get { return cullMode; }
+                get
+                {
+                    return cullMode;
+                }
                 set
                 {
                     if (Set(ref cullMode, value))
@@ -301,8 +346,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableViewFrustumCheck
             {
-                set { Set(ref enableViewFrustumCheck, value); }
-                get { return enableViewFrustumCheck && HasBound; }
+                set
+                {
+                    Set(ref enableViewFrustumCheck, value);
+                }
+                get
+                {
+                    return enableViewFrustumCheck && HasBound;
+                }
             }
 
             private string postEffects;
@@ -314,7 +365,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public string PostEffects
             {
-                get { return postEffects; }
+                get
+                {
+                    return postEffects;
+                }
                 set
                 {
                     if (Set(ref postEffects, value))
@@ -359,7 +413,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool InvertNormal
             {
-                get { return (RenderCore as IMeshRenderParams).InvertNormal; }
+                get
+                {
+                    return (RenderCore as IMeshRenderParams).InvertNormal;
+                }
                 set
                 {
                     (RenderCore as IMeshRenderParams).InvertNormal = value;
@@ -391,8 +448,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool RenderWireframe
             {
-                get { return (RenderCore as IMeshRenderParams).RenderWireframe; }
-                set { (RenderCore as IMeshRenderParams).RenderWireframe = value; }
+                get
+                {
+                    return (RenderCore as IMeshRenderParams).RenderWireframe;
+                }
+                set
+                {
+                    (RenderCore as IMeshRenderParams).RenderWireframe = value;
+                }
             }
 
             private bool isTransparent = false;
@@ -402,7 +465,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public bool IsTransparent
             {
-                get { return isTransparent; }
+                get
+                {
+                    return isTransparent;
+                }
                 set
                 {
                     if (Set(ref isTransparent, value))
@@ -422,7 +488,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public MaterialCore Material
             {
-                get { return material; }
+                get
+                {
+                    return material;
+                }
                 set
                 {
                     if (Set(ref material, value))
@@ -459,7 +528,10 @@ namespace HelixToolkit.UWP
 
             protected DefaultStaticMeshBatchingBuffer batchingBuffer;
 
-            protected StaticBatchedGeometryBoundsOctree BatchedGeometryOctree { private set; get; }
+            protected StaticBatchedGeometryBoundsOctree BatchedGeometryOctree
+            {
+                private set; get;
+            }
             #endregion
 
             public BatchedMeshNode()
@@ -526,9 +598,9 @@ namespace HelixToolkit.UWP
                 RemoveAndDispose(ref materialVariable);
                 if (RenderCore is IMaterialRenderParams core)
                 {
-                    core.MaterialVariables = materialVariable = Collect(newVar);
-                }            
-                if(Materials == null && Material is PhongMaterialCore p)
+                    core.MaterialVariables = materialVariable = newVar;
+                }
+                if (Materials == null && Material is PhongMaterialCore p)
                 {
                     batchingBuffer.Materials = new PhongMaterialCore[] { p };
                 }
@@ -545,12 +617,12 @@ namespace HelixToolkit.UWP
             {
                 if (base.OnAttach(host))
                 {
-                    batchingBuffer = Collect(new DefaultStaticMeshBatchingBuffer());
+                    batchingBuffer = new DefaultStaticMeshBatchingBuffer();
                     batchingBuffer.Geometries = Geometries;
                     batchingBuffer.Materials = materials;
                     if (RenderCore is IGeometryRenderCore r)
                     {
-                        r.GeometryBuffer = batchingBuffer;                  
+                        r.GeometryBuffer = batchingBuffer;
                     }
                     AttachMaterial();
                     return true;
@@ -575,8 +647,8 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected override void OnDetach()
             {
-                batchingBuffer = null;
-                materialVariable = null;
+                RemoveAndDispose(ref batchingBuffer);
+                RemoveAndDispose(ref materialVariable);
                 if (RenderCore is IMaterialRenderParams core)
                 {
                     core.MaterialVariables = null;
@@ -612,7 +684,7 @@ namespace HelixToolkit.UWP
                 {
                     var b = geometries[0].Geometry.Bound;
                     var bs = geometries[0].Geometry.BoundingSphere;
-                    foreach(var geo in geometries)
+                    foreach (var geo in geometries)
                     {
                         b = BoundingBox.Merge(b, geo.Geometry.Bound.Transform(geo.ModelTransform));
                         bs = BoundingSphere.Merge(bs, geo.Geometry.BoundingSphere.TransformBoundingSphere(geo.ModelTransform));
@@ -631,7 +703,7 @@ namespace HelixToolkit.UWP
                 RaiseOnBoundChanged(new BoundChangeArgs<BoundingBox>(ref originalBounds, ref oldBound));
                 RaiseOnBoundSphereChanged(new BoundChangeArgs<BoundingSphere>(ref originalBoundsSphere, ref oldBoundSphere));
                 UpdateBoundsWithTransform();
-            }       
+            }
 
             private void UpdateBoundsWithTransform()
             {
@@ -641,11 +713,11 @@ namespace HelixToolkit.UWP
                     boundsWithTransform = MaxBound;
                 }
                 else
-                {               
+                {
                     boundsWithTransform = originalBounds.Transform(TotalModelMatrixInternal);
                 }
                 var oldBS = boundsSphereWithTransform;
-                if(originalBoundsSphere == MaxBoundSphere)
+                if (originalBoundsSphere == MaxBoundSphere)
                 {
                     boundsSphereWithTransform = MaxBoundSphere;
                 }
@@ -697,7 +769,7 @@ namespace HelixToolkit.UWP
                         geometry.Geometry?.UpdateOctree();
                     }
                 }
-                if(BatchedGeometryOctree != null && !BatchedGeometryOctree.TreeBuilt)
+                if (BatchedGeometryOctree != null && !BatchedGeometryOctree.TreeBuilt)
                 {
                     BatchedGeometryOctree.BuildTree();
                 }
@@ -706,26 +778,26 @@ namespace HelixToolkit.UWP
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
                 var rayWS = context.RayWS;
-                if(rayWS.Intersects(boundsWithTransform) && rayWS.Intersects(boundsSphereWithTransform))
-                {                
-                    if(BatchedGeometryOctree != null && BatchedGeometryOctree.TreeBuilt)
+                if (rayWS.Intersects(boundsWithTransform) && rayWS.Intersects(boundsSphereWithTransform))
+                {
+                    if (BatchedGeometryOctree != null && BatchedGeometryOctree.TreeBuilt)
                     {
                         return BatchedGeometryOctree.HitTest(context, WrapperSource, null, totalModelMatrix, ref hits);
                     }
                     else
                     {
-                        bool isHit = false;
-                        for(int i = 0; i < Geometries.Length; ++i)
+                        var isHit = false;
+                        for (var i = 0; i < Geometries.Length; ++i)
                         {
-                            int currCount = hits.Count;
+                            var currCount = hits.Count;
                             ref var geo = ref Geometries[i];
                             if (geo.Geometry is MeshGeometry3D mesh)
                             {
                                 var hasHit = mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref hits, WrapperSource);
                                 if (hasHit && currCount < hits.Count)
                                 {
-                                    int newCount = hits.Count;
-                                    for (int j = currCount; j < newCount; ++j)
+                                    var newCount = hits.Count;
+                                    for (var j = currCount; j < newCount; ++j)
                                     {
                                         hits.Add(new BatchedMeshHitTestResult(i, ref geo, hits[j]));
                                     }
@@ -735,7 +807,7 @@ namespace HelixToolkit.UWP
                             }
                         }
                         return isHit;
-                    }            
+                    }
                 }
                 else
                 {
@@ -744,5 +816,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

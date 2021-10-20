@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
-#region Dependency Properties        
+        #region Dependency Properties        
         /// <summary>
         /// The front counter clockwise property
         /// </summary>
@@ -57,14 +57,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty RenderWireframeProperty =
             DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).RenderWireframe = (bool)e.NewValue; }));
+            {
+                ((d as Element3DCore).SceneNode as MeshNode).RenderWireframe = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The wireframe color property
         /// </summary>
         public static readonly DependencyProperty WireframeColorProperty =
             DependencyProperty.Register("WireframeColor", typeof(Color), typeof(MeshGeometryModel3D), new PropertyMetadata(Colors.SkyBlue, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).WireframeColor = ((Color)e.NewValue).ToColor4(); }));
+            {
+                ((d as Element3DCore).SceneNode as MeshNode).WireframeColor = ((Color)e.NewValue).ToColor4();
+            }));
 
         /// <summary>
         /// Gets or sets a value indicating whether [render overlapping wireframe].
@@ -74,8 +78,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool RenderWireframe
         {
-            get { return (bool)GetValue(RenderWireframeProperty); }
-            set { SetValue(RenderWireframeProperty, value); }
+            get
+            {
+                return (bool)GetValue(RenderWireframeProperty);
+            }
+            set
+            {
+                SetValue(RenderWireframeProperty, value);
+            }
         }
 
         /// <summary>
@@ -86,8 +96,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Color WireframeColor
         {
-            get { return (Color)GetValue(WireframeColorProperty); }
-            set { SetValue(WireframeColorProperty, value); }
+            get
+            {
+                return (Color)GetValue(WireframeColorProperty);
+            }
+            set
+            {
+                SetValue(WireframeColorProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [front counter clockwise].
@@ -140,7 +156,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-#endregion
+        #endregion
         /// <summary>
         /// Called when [create scene node].
         /// </summary>

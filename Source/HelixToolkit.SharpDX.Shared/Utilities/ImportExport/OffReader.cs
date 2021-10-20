@@ -59,7 +59,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets the faces.
         /// </summary>
-        public IList<int[]> Faces { get; private set; }
+        public IList<int[]> Faces
+        {
+            get; private set;
+        }
 
         // public IList<Color> FaceColors { get; set; }
         // public IList<Color> VertexColors { get; set; }
@@ -69,7 +72,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets the vertices.
         /// </summary>
-        public IList<Point3D> Vertices { get; private set; }
+        public IList<Point3D> Vertices
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Reads the model from the specified stream.
@@ -82,7 +88,7 @@ namespace HelixToolkit.UWP
             using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 return this.Read(s, info);
-            }            
+            }
         }
 
         /// <summary>
@@ -135,7 +141,7 @@ namespace HelixToolkit.UWP
 
             modelGroup = new Object3DGroup();
             var g = this.CreateMeshGeometry3D(info);
-            var gm = new Object3D() { Geometry = g, Transform =  new List<Matrix>() };
+            var gm = new Object3D() { Geometry = g, Transform = new List<Matrix>() };
 
             gm.Material = new PhongMaterialCore()
             {
@@ -150,7 +156,7 @@ namespace HelixToolkit.UWP
             return modelGroup;
         }
 
-        
+
 
 
 
@@ -164,15 +170,15 @@ namespace HelixToolkit.UWP
         {
             using (var reader = new StreamReader(s))
             {
-                bool containsNormals = false;
-                bool containsTextureCoordinates = false;
-                bool containsColors = false;
-                bool containsHomogeneousCoordinates = false;
-                int vertexDimension = 3;
-                bool nextLineContainsVertexDimension = false;
-                bool nextLineContainsNumberOfVertices = false;
-                int numberOfVertices = 0;
-                int numberOfFaces = 0;
+                var containsNormals = false;
+                var containsTextureCoordinates = false;
+                var containsColors = false;
+                var containsHomogeneousCoordinates = false;
+                var vertexDimension = 3;
+                var nextLineContainsVertexDimension = false;
+                var nextLineContainsNumberOfVertices = false;
+                var numberOfVertices = 0;
+                var numberOfFaces = 0;
                 // int numberOfEdges = 0;
 
                 while (!reader.EndOfStream)
@@ -231,8 +237,8 @@ namespace HelixToolkit.UWP
                     {
                         var x = new double[vertexDimension];
                         var values = GetValues(line);
-                        int i = 0;
-                        for (int j = 0; j < vertexDimension; j++)
+                        var i = 0;
+                        for (var j = 0; j < vertexDimension; j++)
                         {
                             x[j] = values[i++];
                         }
@@ -247,7 +253,7 @@ namespace HelixToolkit.UWP
 
                         if (containsNormals)
                         {
-                            for (int j = 0; j < vertexDimension; j++)
+                            for (var j = 0; j < vertexDimension; j++)
                             {
                                 n[j] = values[i++];
                             }
@@ -260,7 +266,7 @@ namespace HelixToolkit.UWP
 
                         if (containsTextureCoordinates)
                         {
-                            for (int j = 0; j < 2; j++)
+                            for (var j = 0; j < 2; j++)
                             {
                                 uv[j] = values[i++];
                             }
@@ -274,9 +280,9 @@ namespace HelixToolkit.UWP
                     if (this.Faces.Count < numberOfFaces)
                     {
                         var values = GetIntValues(line);
-                        int nv = values[0];
+                        var nv = values[0];
                         var vertices = new int[nv];
-                        for (int i = 0; i < nv; i++)
+                        for (var i = 0; i < nv; i++)
                         {
                             vertices[i] = values[i + 1];
                         }
@@ -306,7 +312,7 @@ namespace HelixToolkit.UWP
         {
             var fields = RemoveComments(input).SplitOnWhitespace();
             var result = new int[fields.Length];
-            for (int i = 0; i < fields.Length; i++)
+            for (var i = 0; i < fields.Length; i++)
             {
                 result[i] = int.Parse(fields[i]);
             }
@@ -327,7 +333,7 @@ namespace HelixToolkit.UWP
         {
             var fields = RemoveComments(input).SplitOnWhitespace();
             var result = new double[fields.Length];
-            for (int i = 0; i < fields.Length; i++)
+            for (var i = 0; i < fields.Length; i++)
             {
                 result[i] = double.Parse(fields[i], CultureInfo.InvariantCulture);
             }
@@ -346,7 +352,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         private static string RemoveComments(string input)
         {
-            int commentIndex = input.IndexOf('#');
+            var commentIndex = input.IndexOf('#');
             if (commentIndex >= 0)
             {
                 return input.Substring(0, commentIndex);

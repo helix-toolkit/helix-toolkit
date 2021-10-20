@@ -17,8 +17,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public event FormMouseMoveEventHandler FormMouseMove
             {
-                add { this.AddHandler(FormMouseMoveEvent, value); }
-                remove { this.RemoveHandler(FormMouseMoveEvent, value); }
+                add
+                {
+                    this.AddHandler(FormMouseMoveEvent, value);
+                }
+                remove
+                {
+                    this.RemoveHandler(FormMouseMoveEvent, value);
+                }
             }
             public delegate void FormMouseWheelEventHandler(object sender, FormMouseWheelEventArgs e);
             public static readonly RoutedEvent FormMouseWheelEvent =
@@ -26,10 +32,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public event FormMouseWheelEventHandler FormMouseWheel
             {
-                add { this.AddHandler(FormMouseWheelEvent, value); }
-                remove { this.RemoveHandler(FormMouseWheelEvent, value); }
+                add
+                {
+                    this.AddHandler(FormMouseWheelEvent, value);
+                }
+                remove
+                {
+                    this.RemoveHandler(FormMouseWheelEvent, value);
+                }
             }
-            protected UIElement ParentControl { set; get; }
+            protected UIElement ParentControl
+            {
+                set; get;
+            }
 
             private double dpiScale = 1;
             public double DpiScale
@@ -47,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             protected event EventHandler<double> DpiScaleChanged;
-            
+
             public WinformHostExtend()
             {
                 ChildChanged += OnChildChanged;
@@ -87,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private void OnMouseDown(object sender, System.Windows.Forms.MouseEventArgs mouseEventArgs)
             {
-                MouseButton? wpfButton = ConvertToWpf(mouseEventArgs.Button);
+                var wpfButton = ConvertToWpf(mouseEventArgs.Button);
                 if (!wpfButton.HasValue)
                     return;
                 Capture();
@@ -105,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             private void OnMouseUp(object sender, System.Windows.Forms.MouseEventArgs mouseEventArgs)
             {
-                MouseButton? wpfButton = ConvertToWpf(mouseEventArgs.Button);
+                var wpfButton = ConvertToWpf(mouseEventArgs.Button);
                 if (!wpfButton.HasValue)
                     return;
                 Capture();
@@ -160,7 +175,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Returns:
                 //     A signed count of the number of detents the mouse wheel has rotated, multiplied
                 //     by the WHEEL_DELTA constant.
-                public int Delta { get; private set; }
+                public int Delta
+                {
+                    get; private set;
+                }
                 //
                 // Summary:
                 //     Gets the location of the mouse during the generating mouse event.
@@ -168,21 +186,30 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Returns:
                 //     A System.Drawing.Point that contains the x- and y- mouse coordinates, in pixels,
                 //     relative to the upper-left corner of the form.
-                public Point Location { get; private set; }
+                public Point Location
+                {
+                    get; private set;
+                }
                 //
                 // Summary:
                 //     Gets the x-coordinate of the mouse during the generating mouse event.
                 //
                 // Returns:
                 //     The x-coordinate of the mouse, in pixels.
-                public int X { get; private set; }
+                public int X
+                {
+                    get; private set;
+                }
                 //
                 // Summary:
                 //     Gets the y-coordinate of the mouse during the generating mouse event.
                 //
                 // Returns:
                 //     The y-coordinate of the mouse, in pixels.
-                public int Y { get; private set; }
+                public int Y
+                {
+                    get; private set;
+                }
                 /// <summary>
                 /// Initializes a new instance of the <see cref="FormMouseMoveEventArgs"/> class.
                 /// </summary>
@@ -192,7 +219,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// <param name="y">The y.</param>
                 /// <param name="delta">The delta.</param>
                 public FormMouseMoveEventArgs(RoutedEvent routedEvent, Point p, int x, int y, int delta)
-                    :base(routedEvent)
+                    : base(routedEvent)
                 {
                     Location = p;
                     X = x;
@@ -216,7 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 /// <param name="mouse">The mouse device associated with this event.</param>
                 /// <param name="timestamp">The time when the input occurred.</param>
                 /// <param name="delta">The amount the wheel has changed.</param>
-                public FormMouseWheelEventArgs(RoutedEvent routedEvent, MouseDevice mouse, int timestamp, int delta):base(routedEvent)
+                public FormMouseWheelEventArgs(RoutedEvent routedEvent, MouseDevice mouse, int timestamp, int delta) : base(routedEvent)
                 {
                     Delta = delta;
                     Timestamp = timestamp;
@@ -230,5 +257,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

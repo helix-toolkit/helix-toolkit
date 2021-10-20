@@ -21,12 +21,12 @@ namespace HelixToolkit.UWP
     [Serializable]
 #endif
     public class LineGeometry3D : Geometry3D
-    {                       
+    {
         public IEnumerable<Line> Lines
         {
             get
             {
-                for (int i = 0; i < Indices.Count; i += 2)
+                for (var i = 0; i < Indices.Count; i += 2)
                 {
                     yield return new Line { P0 = Positions[Indices[i]], P1 = Positions[Indices[i + 1]], };
                 }
@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP
                 return false;
             }
 
-            if(Octree != null) 
+            if (Octree != null)
             {
                 return Octree.HitTest(context, originalSource, this, modelMatrix, ref hits, hitTestThickness);
             }
@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP
                 {
                     var t0 = Vector3.TransformCoordinate(line.P0, modelMatrix);
                     var t1 = Vector3.TransformCoordinate(line.P1, modelMatrix);
-                    var rayToLineDistance = LineBuilder.GetRayToLineDistance(context.RayWS, t0, t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc);
+                    var rayToLineDistance = LineBuilder.GetRayToLineDistance(context.RayWS, t0, t1, out var sp, out var tp, out var sc, out var tc);
                     var svpm = context.RenderMatrices.ScreenViewProjectionMatrix;
                     Vector3.TransformCoordinate(ref sp, ref svpm, out var sp3);
                     Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);

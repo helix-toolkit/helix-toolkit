@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="structSize">Size of the structure.</param>
             /// <param name="dynamic">Create dynamic buffer or immutable buffer</param>
-            public PointGeometryBufferModel(int structSize, bool dynamic = false) 
+            public PointGeometryBufferModel(int structSize, bool dynamic = false)
                 : base(PrimitiveTopology.PointList,
                 dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy,
                 null)
@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP
             /// <param name="deviceResources">The device resources.</param>
             protected override void OnCreateIndexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
             {
-            
+
             }
         }
 
@@ -150,5 +150,4 @@ namespace HelixToolkit.UWP
             public DynamicPointGeometryBufferModel() : base(true) { }
         }
     }
-
 }

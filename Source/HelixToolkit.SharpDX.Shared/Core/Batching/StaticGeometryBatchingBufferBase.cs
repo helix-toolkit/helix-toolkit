@@ -22,52 +22,74 @@ namespace HelixToolkit.UWP
 {
     namespace Core
     {
-        using Render;    
+        using Render;
         using Utilities;
         public interface IBatchedGeometry
         {
-            Geometry3D Geometry { get; }
-            Matrix ModelTransform { get; }
+            Geometry3D Geometry
+            {
+                get;
+            }
+            Matrix ModelTransform
+            {
+                get;
+            }
         }
 
         public abstract class StaticGeometryBatchingBufferBase<BatchedGeometry, VertStruct> : DisposeObject, IAttachableBufferModel
-            where BatchedGeometry : struct, IBatchedGeometry where VertStruct : struct
+            where BatchedGeometry : struct, IBatchedGeometry where VertStruct : unmanaged
         {
             public Guid GUID { get; } = Guid.NewGuid();
             public event EventHandler<EventArgs> InvalidateRender;
             private bool isGeometryChanged = true;
             private static readonly VertStruct[] EmptyArray = new VertStruct[0];
             private static readonly int[] EmptyIntArray = new int[0];
+            private static readonly IElementsBufferProxy[] emptyBuffer = new IElementsBufferProxy[0];
+            private static readonly VertexBufferBinding[] emptyBindings = new VertexBufferBinding[0];
+
+            private IElementsBufferProxy[] vertexBuffers = emptyBuffer;
             /// <summary>
             /// Gets or sets the vertex buffer.
             /// </summary>
             /// <value>
             /// The vertex buffer.
             /// </value>
-            public IElementsBufferProxy[] VertexBuffer { private set; get; }
-            public IEnumerable<int> VertexStructSize { get { return VertexBuffer.Select(x => x != null ? x.StructureSize : 0); } }
-            private VertexBufferBinding[] vertexBufferBindings = new VertexBufferBinding[0];
+            public IElementsBufferProxy[] VertexBuffer => vertexBuffers;
+            public IEnumerable<int> VertexStructSize
+            {
+                get
+                {
+                    return VertexBuffer.Select(x => x != null ? x.StructureSize : 0);
+                }
+            }
+
+            private VertexBufferBinding[] vertexBufferBindings = emptyBindings;
+
+            private IElementsBufferProxy indexBuffer = null;
             /// <summary>
             /// Gets or sets the index buffer.
             /// </summary>
             /// <value>
             /// The index buffer.
             /// </value>
-            public IElementsBufferProxy IndexBuffer { private set; get; }
+            public IElementsBufferProxy IndexBuffer => indexBuffer;
             /// <summary>
             /// Gets or sets the topology.
             /// </summary>
             /// <value>
             /// The topology.
             /// </value>
-            public PrimitiveTopology Topology { set; get; }
+            public PrimitiveTopology Topology
+            {
+                set; get;
+            }
 
             private BatchedGeometry[] geometries;
             public BatchedGeometry[] Geometries
             {
                 set
                 {
-                    if(Set(ref geometries, value))
+                    if (Set(ref geometries, value))
                     {
                         InvalidateGeometries();
                     }
@@ -88,9 +110,8 @@ namespace HelixToolkit.UWP
             public StaticGeometryBatchingBufferBase(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
             {
                 Topology = topology;
-                VertexBuffer = new IElementsBufferProxy[] { Collect(vertexBuffer) };
-                if (indexBuffer != null)
-                { IndexBuffer = Collect(indexBuffer); }
+                vertexBuffers = new IElementsBufferProxy[] { vertexBuffer };
+                this.indexBuffer = indexBuffer;
             }
 
             public bool Commit(DeviceContextProxy deviceContext)
@@ -113,21 +134,21 @@ namespace HelixToolkit.UWP
 
             protected virtual void OnSubmitGeometries(DeviceContextProxy deviceContext)
             {
-                if(Geometries == null)
+                if (Geometries == null)
                 {
                     VertexBuffer[0].UploadDataToBuffer(deviceContext, EmptyArray, 0);
                     IndexBuffer?.UploadDataToBuffer(deviceContext, EmptyIntArray, 0);
                     vertexBufferBindings = new VertexBufferBinding[0];
                     return;
                 }
-    #if OutputBuildTime
+#if OutputBuildTime
                 var time = System.Diagnostics.Stopwatch.GetTimestamp();
-    #endif
-                int totalVertex = 0;
-                int totalIndices = 0;
-                int[] vertRange = new int[Geometries.Length];
-                int[] idxRange = new int[Geometries.Length];
-                for(int i=0; i < Geometries.Length; ++i)
+#endif
+                var totalVertex = 0;
+                var totalIndices = 0;
+                var vertRange = new int[Geometries.Length];
+                var idxRange = new int[Geometries.Length];
+                for (var i = 0; i < Geometries.Length; ++i)
                 {
                     vertRange[i] = totalVertex;
                     totalVertex += Geometries[i].Geometry.Positions.Count;
@@ -140,12 +161,12 @@ namespace HelixToolkit.UWP
 
                 var tempVerts = new VertStruct[totalVertex];
                 var tempIndices = new int[totalIndices];
-                if(Geometries.Length > 50 && totalVertex > 5000)
+                if (Geometries.Length > 50 && totalVertex > 5000)
                 {
                     var partitionParams = Partitioner.Create(0, Geometries.Length);
                     Parallel.ForEach(partitionParams, (range) =>
                     {
-                        for (int i = range.Item1; i < range.Item2; ++i)
+                        for (var i = range.Item1; i < range.Item2; ++i)
                         {
                             var geo = Geometries[i];
                             var transform = geo.ModelTransform;
@@ -155,9 +176,9 @@ namespace HelixToolkit.UWP
                             if (IndexBuffer != null && geo.Geometry.Indices != null)
                             {
                                 //Fill Indices, make sure to correct the offset
-                                int count = geo.Geometry.Indices.Count;
-                                int tempIdx = idxRange[i];
-                                for (int j = 0; j < count; ++j, ++tempIdx)
+                                var count = geo.Geometry.Indices.Count;
+                                var tempIdx = idxRange[i];
+                                for (var j = 0; j < count; ++j, ++tempIdx)
                                 {
                                     tempIndices[tempIdx] = geo.Geometry.Indices[j] + vertStart;
                                 }
@@ -167,9 +188,9 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    int vertOffset = 0;
-                    int indexOffset = 0;
-                    for (int i = 0; i < Geometries.Length; ++i)
+                    var vertOffset = 0;
+                    var indexOffset = 0;
+                    for (var i = 0; i < Geometries.Length; ++i)
                     {
                         var geo = Geometries[i];
                         var transform = geo.ModelTransform;
@@ -178,9 +199,9 @@ namespace HelixToolkit.UWP
                         if (IndexBuffer != null && geo.Geometry.Indices != null)
                         {
                             //Fill Indices, make sure to correct the offset
-                            int count = geo.Geometry.Indices.Count;
-                            int tempIdx = indexOffset;
-                            for (int j = 0; j < count; ++j, ++tempIdx)
+                            var count = geo.Geometry.Indices.Count;
+                            var tempIdx = indexOffset;
+                            for (var j = 0; j < count; ++j, ++tempIdx)
                             {
                                 tempIndices[tempIdx] = geo.Geometry.Indices[j] + vertOffset;
                             }
@@ -189,10 +210,10 @@ namespace HelixToolkit.UWP
                         vertOffset += geo.Geometry.Positions.Count;
                     }
                 }
-    #if OutputBuildTime
+#if OutputBuildTime
                 time = System.Diagnostics.Stopwatch.GetTimestamp() - time;
                 Console.WriteLine($"Build Batch Time: {(float)time / System.Diagnostics.Stopwatch.Frequency * 1000} ms");
-    #endif
+#endif
                 VertexBuffer[0].UploadDataToBuffer(deviceContext, tempVerts, tempVerts.Length);
                 IndexBuffer?.UploadDataToBuffer(deviceContext, tempIndices, tempIndices.Length);
                 vertexBufferBindings = new[] { new VertexBufferBinding(VertexBuffer[0].Buffer, VertexBuffer[0].StructureSize, VertexBuffer[0].Offset) };
@@ -239,10 +260,14 @@ namespace HelixToolkit.UWP
 
             protected override void OnDispose(bool disposeManagedResources)
             {
+                for (var i = 0; i < vertexBuffers.Length; ++i)
+                {
+                    RemoveAndDispose(ref vertexBuffers[i]);
+                }
+                RemoveAndDispose(ref indexBuffer);
                 base.OnDispose(disposeManagedResources);
-                InvalidateRender = null;           
+                InvalidateRender = null;
             }
         }
     }
-
 }

@@ -40,7 +40,10 @@ namespace HelixToolkit.Wpf.SharpDX
             /// <value>
             /// The render host.
             /// </value>
-            IRenderHost RenderHost { get; }
+            IRenderHost RenderHost
+            {
+                get;
+            }
 
             /// <summary>
             /// Fired whenever an exception occurred on this object.
@@ -48,5 +51,4 @@ namespace HelixToolkit.Wpf.SharpDX
             event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
         }
     }
-
 }

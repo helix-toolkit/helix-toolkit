@@ -52,14 +52,38 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public ShaderPass MaterialPass { get; }
-            public ShaderPass MaterialOITPass { get; }
-            public ShaderPass ShadowPass { get; }
-            public ShaderPass WireframePass { get; }
-            public ShaderPass WireframeOITPass { get; }
-            public ShaderPass TessellationPass { get; }
-            public ShaderPass TessellationOITPass { get; }
-            public ShaderPass DepthPass { get; }
+            public ShaderPass MaterialPass
+            {
+                get;
+            }
+            public ShaderPass MaterialOITPass
+            {
+                get;
+            }
+            public ShaderPass ShadowPass
+            {
+                get;
+            }
+            public ShaderPass WireframePass
+            {
+                get;
+            }
+            public ShaderPass WireframeOITPass
+            {
+                get;
+            }
+            public ShaderPass TessellationPass
+            {
+                get;
+            }
+            public ShaderPass TessellationOITPass
+            {
+                get;
+            }
+            public ShaderPass DepthPass
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -161,7 +185,7 @@ namespace HelixToolkit.UWP
                 samplerDiffuseSlot = samplerDisplaceSlot = samplerShadowSlot = -1;
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
-            
+
                 MaterialPass = technique[materialPassName];
                 MaterialOITPass = technique[materialOITPassName];
                 ShadowPass = technique[shadowPassName];
@@ -197,9 +221,9 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PhongMaterialCore.SpecularColor), () => { WriteValue(PhongPBRMaterialStruct.SpecularStr, material.SpecularColor); });
                 AddPropertyBinding(nameof(PhongMaterialCore.SpecularShininess), () => { WriteValue(PhongPBRMaterialStruct.ShininessStr, material.SpecularShininess); });
                 AddPropertyBinding(nameof(PhongMaterialCore.DisplacementMapScaleMask), () => { WriteValue(PhongPBRMaterialStruct.DisplacementMapScaleMaskStr, material.DisplacementMapScaleMask); });
-                AddPropertyBinding(nameof(PhongMaterialCore.RenderShadowMap), ()=> { WriteValue(PhongPBRMaterialStruct.RenderShadowMapStr, material.RenderShadowMap ? 1 : 0); });
+                AddPropertyBinding(nameof(PhongMaterialCore.RenderShadowMap), () => { WriteValue(PhongPBRMaterialStruct.RenderShadowMapStr, material.RenderShadowMap ? 1 : 0); });
                 AddPropertyBinding(nameof(PhongMaterialCore.RenderEnvironmentMap), () => { WriteValue(PhongPBRMaterialStruct.HasCubeMapStr, material.RenderEnvironmentMap ? 1 : 0); });
-                AddPropertyBinding(nameof(PhongMaterialCore.UVTransform), () => 
+                AddPropertyBinding(nameof(PhongMaterialCore.UVTransform), () =>
                 {
                     Matrix m = material.UVTransform;
                     WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
@@ -218,7 +242,7 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PhongMaterialCore.RenderEmissiveMap), () => { WriteValue(PhongPBRMaterialStruct.HasEmissiveMapStr, material.RenderEmissiveMap && textureResources[EmissiveIdx] != null ? 1 : 0); });
                 AddPropertyBinding(nameof(PhongMaterialCore.EnableFlatShading), () => { WriteValue(PhongPBRMaterialStruct.RenderFlat, material.EnableFlatShading); });
                 AddPropertyBinding(nameof(PhongMaterialCore.VertexColorBlendingFactor), () => { WriteValue(PhongPBRMaterialStruct.VertColorBlending, material.VertexColorBlendingFactor); });
-                AddPropertyBinding(nameof(PhongMaterialCore.DiffuseMap), () => 
+                AddPropertyBinding(nameof(PhongMaterialCore.DiffuseMap), () =>
                 {
                     CreateTextureView(material.DiffuseMap, DiffuseIdx);
                     TriggerPropertyAction(nameof(PhongMaterialCore.RenderDiffuseMap));
@@ -229,12 +253,12 @@ namespace HelixToolkit.UWP
                     TriggerPropertyAction(nameof(PhongMaterialCore.RenderDiffuseAlphaMap));
                 });
 
-                AddPropertyBinding(nameof(PhongMaterialCore.NormalMap), () => 
+                AddPropertyBinding(nameof(PhongMaterialCore.NormalMap), () =>
                 {
                     CreateTextureView(material.NormalMap, NormalIdx);
                     TriggerPropertyAction(nameof(PhongMaterialCore.RenderNormalMap));
                 });
-                AddPropertyBinding(nameof(PhongMaterialCore.DisplacementMap), () => 
+                AddPropertyBinding(nameof(PhongMaterialCore.DisplacementMap), () =>
                 {
                     CreateTextureView(material.DisplacementMap, DisplaceIdx);
                     TriggerPropertyAction(nameof(PhongMaterialCore.RenderDisplacementMap));
@@ -248,14 +272,14 @@ namespace HelixToolkit.UWP
                 {
                     var newSampler = statePoolManager.Register(material.DiffuseMapSampler);
                     RemoveAndDispose(ref surfaceSampler);
-                    surfaceSampler = Collect(newSampler);
+                    surfaceSampler = newSampler;
                 });
 
                 AddPropertyBinding(nameof(PhongMaterialCore.DisplacementMapSampler), () =>
                 {
                     var newDisplaceSampler = statePoolManager.Register(material.DisplacementMapSampler);
                     RemoveAndDispose(ref displacementSampler);
-                    displacementSampler = Collect(newDisplaceSampler);
+                    displacementSampler = newDisplaceSampler;
                 });
                 AddPropertyBinding(nameof(PhongMaterialCore.EmissiveMap), () =>
                 {
@@ -264,13 +288,13 @@ namespace HelixToolkit.UWP
                 });
                 AddPropertyBinding(nameof(PhongMaterialCore.EnableTessellation), () => { EnableTessellation = material.EnableTessellation; });
 
-                shadowSampler = Collect(statePoolManager.Register(DefaultSamplers.ShadowSampler));
+                shadowSampler = statePoolManager.Register(DefaultSamplers.ShadowSampler);
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void CreateTextureView(TextureModel textureModel, int index)
             {
-                var newTexture =  textureModel == null ? null : Collect(textureManager.Register(textureModel));
+                var newTexture = textureModel == null ? null : textureManager.Register(textureModel);
                 RemoveAndDispose(ref textureResources[index]);
                 textureResources[index] = newTexture;
                 if (textureResources[index] != null)
@@ -311,7 +335,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                int idx = shader.ShaderStageIndex;
+                var idx = shader.ShaderStageIndex;
                 shader.BindTexture(context, texDisplaceSlot, textureResources[DisplaceIdx]);
                 shader.BindSampler(context, samplerDisplaceSlot, displacementSampler);
             }
@@ -322,7 +346,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                int idx = shader.ShaderStageIndex;
+                var idx = shader.ShaderStageIndex;
                 shader.BindTexture(context, texDisplaceSlot, textureResources[DisplaceIdx]);
                 shader.BindSampler(context, samplerDisplaceSlot, displacementSampler);
             }
@@ -339,7 +363,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                int idx = shader.ShaderStageIndex;
+                var idx = shader.ShaderStageIndex;
                 shader.BindTexture(deviceContext, texDiffuseSlot, textureResources[DiffuseIdx]);
                 shader.BindTexture(deviceContext, texNormalSlot, textureResources[NormalIdx]);
                 shader.BindTexture(deviceContext, texAlphaSlot, textureResources[AlphaIdx]);
@@ -378,15 +402,13 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources"></param>
             protected override void OnDispose(bool disposeManagedResources)
             {
-                if (disposeManagedResources)
+                for (var i = 0; i < textureResources.Length; ++i)
                 {
-                    for (int i = 0; i < NUMTEXTURES; ++i)
-                    {
-                        textureResources[i] = null;
-                    }
-                    surfaceSampler = displacementSampler = shadowSampler = null;
+                    RemoveAndDispose(ref textureResources[i]);
                 }
-
+                RemoveAndDispose(ref surfaceSampler);
+                RemoveAndDispose(ref displacementSampler);
+                RemoveAndDispose(ref shadowSampler);
                 base.OnDispose(disposeManagedResources);
             }
 
@@ -416,5 +438,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

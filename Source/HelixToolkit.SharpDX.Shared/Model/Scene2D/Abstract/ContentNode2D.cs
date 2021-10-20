@@ -34,7 +34,10 @@ namespace HelixToolkit.UWP
                         InvalidateMeasure();
                     }
                 }
-                get { return horizontalContentAlignment; }
+                get
+                {
+                    return horizontalContentAlignment;
+                }
             }
 
             private VerticalAlignment verticalContentAlignment = VerticalAlignment.Center;
@@ -48,13 +51,22 @@ namespace HelixToolkit.UWP
                         InvalidateMeasure();
                     }
                 }
-                get { return verticalContentAlignment; }
+                get
+                {
+                    return verticalContentAlignment;
+                }
             }
 
             public Brush Background
             {
-                set { (RenderCore as BorderRenderCore2D).Background = value; }
-                get { return (RenderCore as BorderRenderCore2D).Background; }
+                set
+                {
+                    (RenderCore as BorderRenderCore2D).Background = value;
+                }
+                get
+                {
+                    return (RenderCore as BorderRenderCore2D).Background;
+                }
             }
 
             protected override RenderCore2D CreateRenderCore()
@@ -77,7 +89,7 @@ namespace HelixToolkit.UWP
 
             protected override Size2F MeasureOverride(Size2F availableSize)
             {
-                Size2F maxContentSize = new Size2F();
+                var maxContentSize = new Size2F();
                 foreach (var item in Items)
                 {
                     if (item is SceneNode2D e)
@@ -131,5 +143,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

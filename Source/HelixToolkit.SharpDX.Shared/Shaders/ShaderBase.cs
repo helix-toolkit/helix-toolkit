@@ -45,22 +45,34 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The type of the shader.
             /// </value>
-            public ShaderStage ShaderType { private set; get; }
+            public ShaderStage ShaderType
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets the index of the shader stage.
             /// </summary>
             /// <value>
             /// The index of the shader stage.
             /// </value>
-            public int ShaderStageIndex { private set; get; }
+            public int ShaderStageIndex
+            {
+                private set; get;
+            }
             /// <summary>
             /// If is null shader
             /// </summary>
-            public bool IsNULL { protected set; get; }
+            public bool IsNULL
+            {
+                protected set; get;
+            }
             /// <summary>
             /// Shader Name
             /// </summary>
-            public string Name { private set; get; }
+            public string Name
+            {
+                private set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -76,5 +88,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

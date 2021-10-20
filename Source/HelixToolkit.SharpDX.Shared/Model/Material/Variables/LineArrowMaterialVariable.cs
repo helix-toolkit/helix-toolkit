@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP
                 string depthPassName = DefaultPassNames.DepthPrepass)
                 : base(manager, technique, materialCore, linePassName, shadowPassName, depthPassName)
             {
-                this.material = materialCore;          
+                this.material = materialCore;
             }
 
             protected override void OnInitialPropertyBindings()

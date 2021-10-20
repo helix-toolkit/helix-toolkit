@@ -27,13 +27,19 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public string SourceCode
         {
-            get { return (string)GetValue(SourceCodeProperty); }
-            set { SetValue(SourceCodeProperty, value); }
+            get
+            {
+                return (string)GetValue(SourceCodeProperty);
+            }
+            set
+            {
+                SetValue(SourceCodeProperty, value);
+            }
         }
 
 
         public static readonly DependencyProperty SourceCodeProperty =
-            DependencyProperty.Register("SourceCode", typeof(string), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(null, (d,e)=>
+            DependencyProperty.Register("SourceCode", typeof(string), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(null, (d, e) =>
             {
                 ((d as DynamicCodeSurfaceModel3D).SceneNode as DynamicCodeSurface3DNode).Source = e.NewValue as string;
             }));
@@ -42,13 +48,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public double ParameterW
         {
-            get { return (double)GetValue(ParameterWProperty); }
-            set { SetValue(ParameterWProperty, value); }
+            get
+            {
+                return (double)GetValue(ParameterWProperty);
+            }
+            set
+            {
+                SetValue(ParameterWProperty, value);
+            }
         }
 
 
         public static readonly DependencyProperty ParameterWProperty =
-            DependencyProperty.Register("ParameterW", typeof(double), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(1.0, (d,e)=> 
+            DependencyProperty.Register("ParameterW", typeof(double), typeof(DynamicCodeSurfaceModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
                 ((d as DynamicCodeSurfaceModel3D).SceneNode as DynamicCodeSurface3DNode).ParameterW = (float)(double)e.NewValue;
             }));
@@ -57,8 +69,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public int MeshSizeU
         {
-            get { return (int)GetValue(MeshSizeUProperty); }
-            set { SetValue(MeshSizeUProperty, value); }
+            get
+            {
+                return (int)GetValue(MeshSizeUProperty);
+            }
+            set
+            {
+                SetValue(MeshSizeUProperty, value);
+            }
         }
 
 
@@ -70,8 +88,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public int MeshSizeV
         {
-            get { return (int)GetValue(MeshSizeVProperty); }
-            set { SetValue(MeshSizeVProperty, value); }
+            get
+            {
+                return (int)GetValue(MeshSizeVProperty);
+            }
+            set
+            {
+                SetValue(MeshSizeVProperty, value);
+            }
         }
 
 
@@ -85,8 +109,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public CompilerErrorCollection ErrorList
         {
-            get { return (CompilerErrorCollection)GetValue(ErrorListProperty); }
-            set { SetValue(ErrorListProperty, value); }
+            get
+            {
+                return (CompilerErrorCollection)GetValue(ErrorListProperty);
+            }
+            set
+            {
+                SetValue(ErrorListProperty, value);
+            }
         }
 
         public static readonly DependencyProperty ErrorListProperty =

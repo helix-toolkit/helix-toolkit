@@ -158,14 +158,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             p0 = Vector2.Multiply(p0, Controller.AllowRotateXY);
             p1 = Vector2.Multiply(p1, Controller.AllowRotateXY);
-            Vector3 newPos = Camera.CameraInternal.Position;
-            Vector3 newLook = Camera.CameraInternal.LookDirection;
-            Vector3 newUp = Vector3.Normalize(Camera.CameraInternal.UpDirection);
+            var newPos = Camera.CameraInternal.Position;
+            var newLook = Camera.CameraInternal.LookDirection;
+            var newUp = Vector3.Normalize(Camera.CameraInternal.UpDirection);
             switch (this.Controller.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
                     CameraMath.RotateTrackball(CameraMode, ref p0, ref p1, ref rotateAround, (float)RotationSensitivity,
-                        Controller.Width, Controller.Height, Camera, Inv, out newPos, out newLook, out newUp);                   
+                        Controller.Width, Controller.Height, Camera, Inv, out newPos, out newLook, out newUp);
                     break;
                 case CameraRotationMode.Turntable:
                     var p = p1 - p0;
@@ -299,6 +299,5 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.MouseDownPoint,
                 this.rotationPoint3D);
         }
-
     }
 }

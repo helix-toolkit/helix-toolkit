@@ -46,8 +46,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public IList<InstanceParameter> InstanceParamArray
             {
-                set { instanceParamBuffer.Elements = value; }
-                get { return instanceParamBuffer.Elements; }
+                set
+                {
+                    instanceParamBuffer.Elements = value;
+                }
+                get
+                {
+                    return instanceParamBuffer.Elements;
+                }
             }
 
             private IOctreeManager octreeManager = null;
@@ -61,7 +67,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref octreeManager, value))
+                    if (Set(ref octreeManager, value))
                     {
                         if (octreeManager != null)
                         {
@@ -70,7 +76,10 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                get { return octreeManager; }
+                get
+                {
+                    return octreeManager;
+                }
             }
             #endregion
 
@@ -162,7 +171,7 @@ namespace HelixToolkit.UWP
 
             public override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)
             {
-                bool isHit = false;
+                var isHit = false;
                 if (CanHitTest(context) && PreHitTestOnBounds(context))
                 {
                     if (octreeManager != null && octreeManager.Octree != null)
@@ -175,7 +184,7 @@ namespace HelixToolkit.UWP
                             Matrix instanceMatrix;
                             foreach (var hit in boundHits)
                             {
-                                int instanceIdx = (int)hit.Tag;
+                                var instanceIdx = (int)hit.Tag;
                                 instanceMatrix = InstanceBuffer.Elements[instanceIdx];
                                 var h = base.OnHitTest(context, TotalModelMatrixInternal * instanceMatrix, ref hits);
                                 isHit |= h;
@@ -206,5 +215,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

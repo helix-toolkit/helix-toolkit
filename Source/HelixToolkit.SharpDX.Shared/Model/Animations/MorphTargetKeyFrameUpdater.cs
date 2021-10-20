@@ -25,10 +25,22 @@ namespace HelixToolkit.UWP
             {
                 set; get;
             } = "";
-            public Animation animation { get; }
-            public IList<float> weights { get; }
-            public float startTime { get; }
-            public float endTime { get; }
+            public Animation animation
+            {
+                get;
+            }
+            public IList<float> weights
+            {
+                get;
+            }
+            public float startTime
+            {
+                get;
+            }
+            public float endTime
+            {
+                get;
+            }
             public AnimationRepeatMode RepeatMode { get; set; } = AnimationRepeatMode.PlayOnce;
 
             public float Speed { set; get; } = 1.0f;
@@ -49,10 +61,10 @@ namespace HelixToolkit.UWP
 
                 //Setup in groups of weight id and sort by time. This is somewhat slow, look into better solutions
                 targetKeyframeIds = new int[weights.Count][];
-                for (int i = 0; i < targetKeyframeIds.Length; i++)
+                for (var i = 0; i < targetKeyframeIds.Length; i++)
                 {
-                    FastList<int> ids = new FastList<int>(kfs.Count); //Quick initial cap
-                    for (int j = 0; j < kfs.Count; j++)
+                    var ids = new FastList<int>(kfs.Count); //Quick initial cap
+                    for (var j = 0; j < kfs.Count; j++)
                     {
                         if (kfs[j].Index == i)
                             ids.Add(j);
@@ -67,10 +79,10 @@ namespace HelixToolkit.UWP
             public void Update(long timeStamp, long frequency)
             {
                 //Find time(t)
-                double globalTime = (double)timeStamp / frequency;
+                var globalTime = (double)timeStamp / frequency;
                 if (timeOffset == 0)
                     timeOffset = globalTime;
-                float t = (float)(globalTime - timeOffset) * Speed;
+                var t = (float)(globalTime - timeOffset) * Speed;
 
                 //Handle repeat mode
                 if (RepeatMode == AnimationRepeatMode.Loop)
@@ -81,18 +93,18 @@ namespace HelixToolkit.UWP
                     t = Clamp(t, startTime, endTime);
 
                 //Interpolate between each individual weight's keyframe pairs at current time
-                for (int i = 0; i < targetKeyframeIds.Length; i++)
+                for (var i = 0; i < targetKeyframeIds.Length; i++)
                 {
                     //Skip if no keyframes for weight id
                     if (targetKeyframeIds[i].Length == 0)
                         continue;
 
                     //Locate keyframe where t is below it's set time. starting from recent kf and wrapping to search all
-                    int id = -1;
-                    int len = targetKeyframeIds[i].Length;
-                    for (int j = 0; j < len; j++)
+                    var id = -1;
+                    var len = targetKeyframeIds[i].Length;
+                    for (var j = 0; j < len; j++)
                     {
-                        int kfId = (j + prevKeyframes[i]) % len;
+                        var kfId = (j + prevKeyframes[i]) % len;
                         if (kfs[targetKeyframeIds[i][kfId]].Time > t)
                         {
                             //Ensure this is only the first kf larger than t
@@ -113,10 +125,10 @@ namespace HelixToolkit.UWP
                     else
                     {
                         //Interpolate between id-1 and 1 based on time between
-                        MorphTargetKeyframe a = kfs[targetKeyframeIds[i][id - 1]];
-                        MorphTargetKeyframe b = kfs[targetKeyframeIds[i][id]];
+                        var a = kfs[targetKeyframeIds[i][id - 1]];
+                        var b = kfs[targetKeyframeIds[i][id]];
 
-                        float k = (t - a.Time) / (b.Time - a.Time);
+                        var k = (t - a.Time) / (b.Time - a.Time);
                         weights[i] = a.Weight + ((b.Weight - a.Weight) * k);
                     }
                 }
@@ -132,8 +144,10 @@ namespace HelixToolkit.UWP
 
             private float Clamp(float x, float a, float b)
             {
-                if (x > a) return a;
-                if (x < b) return b;
+                if (x > a)
+                    return a;
+                if (x < b)
+                    return b;
                 return x;
             }
         }

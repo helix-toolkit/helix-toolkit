@@ -109,7 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         public static readonly DependencyProperty AutoCoverCompleteSceneProperty =
-            DependencyProperty.Register("AutoCoverCompleteScene", typeof(bool), typeof(ShadowMap3D), new PropertyMetadata(false, (d, e) => {
+            DependencyProperty.Register("AutoCoverCompleteScene", typeof(bool), typeof(ShadowMap3D), new PropertyMetadata(false, (d, e) =>
+            {
 
             }));
 
@@ -118,8 +119,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         // Using a DependencyProperty as the backing store for IsSceneDynamic.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsSceneDynamicProperty =
-            DependencyProperty.Register("IsSceneDynamic", typeof(bool), typeof(ShadowMap3D), new PropertyMetadata(false, (d, e) => {
-            
+            DependencyProperty.Register("IsSceneDynamic", typeof(bool), typeof(ShadowMap3D), new PropertyMetadata(false, (d, e) =>
+            {
+
             }));
 
 
@@ -132,8 +134,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double Distance
         {
-            get { return (double)GetValue(DistanceProperty); }
-            set { SetValue(DistanceProperty, value); }
+            get
+            {
+                return (double)GetValue(DistanceProperty);
+            }
+            set
+            {
+                SetValue(DistanceProperty, value);
+            }
         }
 
         /// <summary>
@@ -144,8 +152,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double OrthoWidth
         {
-            get { return (double)GetValue(OrthoWidthProperty); }
-            set { SetValue(OrthoWidthProperty, value); }
+            get
+            {
+                return (double)GetValue(OrthoWidthProperty);
+            }
+            set
+            {
+                SetValue(OrthoWidthProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the resolution.
@@ -155,8 +169,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Size Resolution
         {
-            get { return (Size)this.GetValue(ResolutionProperty); }
-            set { this.SetValue(ResolutionProperty, value); }
+            get
+            {
+                return (Size)this.GetValue(ResolutionProperty);
+            }
+            set
+            {
+                this.SetValue(ResolutionProperty, value);
+            }
         }
 
         /// <summary>
@@ -164,16 +184,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public double Bias
         {
-            get { return (double)this.GetValue(BiasProperty); }
-            set { this.SetValue(BiasProperty, value); }
+            get
+            {
+                return (double)this.GetValue(BiasProperty);
+            }
+            set
+            {
+                this.SetValue(BiasProperty, value);
+            }
         }
         /// <summary>
         /// 
         /// </summary>
         public double Intensity
         {
-            get { return (double)this.GetValue(IntensityProperty); }
-            set { this.SetValue(IntensityProperty, value); }
+            get
+            {
+                return (double)this.GetValue(IntensityProperty);
+            }
+            set
+            {
+                this.SetValue(IntensityProperty, value);
+            }
         }
 
         /// <summary>
@@ -184,8 +216,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double NearFieldDistance
         {
-            get { return (double)GetValue(NearFieldDistanceProperty); }
-            set { SetValue(NearFieldDistanceProperty, value); }
+            get
+            {
+                return (double)GetValue(NearFieldDistanceProperty);
+            }
+            set
+            {
+                SetValue(NearFieldDistanceProperty, value);
+            }
         }
 
         /// <summary>
@@ -196,16 +234,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FarFieldDistance
         {
-            get { return (double)GetValue(FarFieldDistanceProperty); }
-            set { SetValue(FarFieldDistanceProperty, value); }
+            get
+            {
+                return (double)GetValue(FarFieldDistanceProperty);
+            }
+            set
+            {
+                SetValue(FarFieldDistanceProperty, value);
+            }
         }
         /// <summary>
         /// Distance of the directional light from origin
         /// </summary>
         public IProjectionCameraModel LightCamera
         {
-            get { return (IProjectionCameraModel)this.GetValue(LightCameraProperty); }
-            set { this.SetValue(LightCameraProperty, value); }
+            get
+            {
+                return (IProjectionCameraModel)this.GetValue(LightCameraProperty);
+            }
+            set
+            {
+                this.SetValue(LightCameraProperty, value);
+            }
         }
 
         /// <summary>

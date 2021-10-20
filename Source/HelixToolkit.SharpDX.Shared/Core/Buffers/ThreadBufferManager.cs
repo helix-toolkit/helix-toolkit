@@ -71,7 +71,7 @@ namespace HelixToolkit.UWP
             } = 2;
         }
 
-        public static class ThreadBufferManager<T> where T : struct
+        public static class ThreadBufferManager<T> where T : unmanaged
         {
 #if !NETFX_CORE
             public static readonly int StructSize = Marshal.SizeOf(typeof(T));
@@ -128,12 +128,12 @@ namespace HelixToolkit.UWP
                 if (array.Length > MinimumElementCount
                     && array.Length > ThreadBufferManagerConfig.SizeReductionDividend * requestCount)
                 {
-                    long diff = Stopwatch.GetTimestamp() - lastUsed;
+                    var diff = Stopwatch.GetTimestamp() - lastUsed;
                     if (diff / Stopwatch.Frequency > ThreadBufferManagerConfig.MinimumAutoReleaseThresholdSeconds)
                     {
                         Debug.WriteLine($"Disposing thread buffer. Type: {typeof(T)};");
                         buffer = null;
-                        lastUsed = 0;                       
+                        lastUsed = 0;
                         return array;
                     }
                 }

@@ -146,7 +146,7 @@ namespace HelixToolkit.UWP
                 };
 
                 BSGlowBlending.RenderTarget[0] = new RenderTargetBlendDescription()
-                {             
+                {
                     BlendOperation = BlendOperation.Add,
                     SourceBlend = BlendOption.One,
                     DestinationBlend = BlendOption.InverseSourceAlpha,
@@ -679,5 +679,4 @@ namespace HelixToolkit.UWP
 #endif
         }
     }
-
 }

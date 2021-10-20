@@ -131,17 +131,17 @@ namespace SharpDX.Toolkit.Graphics
         /// <remarks>
         /// The first dimension of mipMapTextures describes the number of array (TextureCube Array), the second is the texture data for a particular cube face.
         /// </remarks>
-        public unsafe static TextureCube New<T>(Device device, int size, PixelFormat format, T[][] textureData, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable) where T : struct
+        public unsafe static TextureCube New<T>(Device device, int size, PixelFormat format, T[][] textureData, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable) where T : unmanaged
         {
             if (textureData.Length != 6)
                 throw new ArgumentException("Invalid texture data. First dimension must be equal to 6", "textureData");
 
-            DataBox dataBox1 = new DataBox();
-            DataBox dataBox2 = new DataBox();
-            DataBox dataBox3 = new DataBox();
-            DataBox dataBox4 = new DataBox();
-            DataBox dataBox5 = new DataBox();
-            DataBox dataBox6 = new DataBox();
+            var dataBox1 = new DataBox();
+            var dataBox2 = new DataBox();
+            var dataBox3 = new DataBox();
+            var dataBox4 = new DataBox();
+            var dataBox5 = new DataBox();
+            var dataBox6 = new DataBox();
 
             Utilities.Pin(textureData[0], ptr => dataBox1 = GetDataBox(format, size, size, 1, textureData[0], ptr));
             Utilities.Pin(textureData[1], ptr => dataBox2 = GetDataBox(format, size, size, 1, textureData[0], ptr));
@@ -190,7 +190,8 @@ namespace SharpDX.Toolkit.Graphics
         /// <unmanaged-short>ID3D11Device::CreateTexture2D</unmanaged-short>
         public static TextureCube New(Device device, Image image, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null)
+                throw new ArgumentNullException("image");
             if (image.Description.Dimension != TextureDimension.TextureCube)
                 throw new ArgumentException("Invalid image. Must be Cube", "image");
 

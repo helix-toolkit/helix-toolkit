@@ -50,8 +50,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public event RoutedEventHandler MouseDown3D
         {
-            add { this.AddHandler(GeometryModel3D.MouseDown3DEvent, value); }
-            remove { this.RemoveHandler(GeometryModel3D.MouseDown3DEvent, value); }
+            add
+            {
+                this.AddHandler(GeometryModel3D.MouseDown3DEvent, value);
+            }
+            remove
+            {
+                this.RemoveHandler(GeometryModel3D.MouseDown3DEvent, value);
+            }
         }
 
         /// <summary>
@@ -59,8 +65,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public event RoutedEventHandler MouseUp3D
         {
-            add { this.AddHandler(GeometryModel3D.MouseUp3DEvent, value); }
-            remove { this.RemoveHandler(GeometryModel3D.MouseUp3DEvent, value); }
+            add
+            {
+                this.AddHandler(GeometryModel3D.MouseUp3DEvent, value);
+            }
+            remove
+            {
+                this.RemoveHandler(GeometryModel3D.MouseUp3DEvent, value);
+            }
         }
 
         /// <summary>
@@ -68,24 +80,42 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public event RoutedEventHandler MouseMove3D
         {
-            add { this.AddHandler(GeometryModel3D.MouseMove3DEvent, value); }
-            remove { this.RemoveHandler(GeometryModel3D.MouseMove3DEvent, value); }
+            add
+            {
+                this.AddHandler(GeometryModel3D.MouseMove3DEvent, value);
+            }
+            remove
+            {
+                this.RemoveHandler(GeometryModel3D.MouseMove3DEvent, value);
+            }
         }
         /// <summary>
         /// Occurs when [form mouse move].
         /// </summary>
         public event WinformHostExtend.FormMouseMoveEventHandler FormMouseMove
         {
-            add { this.AddHandler(WinformHostExtend.FormMouseMoveEvent, value); }
-            remove { this.RemoveHandler(WinformHostExtend.FormMouseMoveEvent, value); }
+            add
+            {
+                this.AddHandler(WinformHostExtend.FormMouseMoveEvent, value);
+            }
+            remove
+            {
+                this.RemoveHandler(WinformHostExtend.FormMouseMoveEvent, value);
+            }
         }
         /// <summary>
         /// Occurs when [form mouse wheel].
         /// </summary>
         public event WinformHostExtend.FormMouseWheelEventHandler FormMouseWheel
         {
-            add { this.AddHandler(WinformHostExtend.FormMouseWheelEvent, value); }
-            remove { this.RemoveHandler(WinformHostExtend.FormMouseWheelEvent, value); }
+            add
+            {
+                this.AddHandler(WinformHostExtend.FormMouseWheelEvent, value);
+            }
+            remove
+            {
+                this.RemoveHandler(WinformHostExtend.FormMouseWheelEvent, value);
+            }
         }
         /// <summary>
         /// The camera inertia factor property.
@@ -94,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "CameraInertiaFactor", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0.93, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                viewport.CameraController.InertiaFactor = (double)e.NewValue;            
+                viewport.CameraController.InertiaFactor = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -114,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "Camera",
             typeof(Camera),
             typeof(Viewport3DX),
-            new PropertyMetadata(null, (s, e) => 
+            new PropertyMetadata(null, (s, e) =>
             {
                 (s as Viewport3DX).CameraPropertyChanged(e);
             }));
@@ -381,10 +411,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The is deferred shading enabled propery
         /// </summary>
         public static readonly DependencyProperty IsShadowMappingEnabledProperty = DependencyProperty.Register(
-            "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
+            "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
                 (s, e) =>
                 {
-                    if(((Viewport3DX)s).renderHostInternal!=null)
+                    if (((Viewport3DX)s).renderHostInternal != null)
                         ((Viewport3DX)s).renderHostInternal.IsShadowMapEnabled = (bool)e.NewValue;
                 }));
 
@@ -453,7 +483,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The pinch zoom at center property
         /// </summary>
         public static readonly DependencyProperty PinchZoomAtCenterProperty =
-            DependencyProperty.Register("PinchZoomAtCenter", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=> 
+            DependencyProperty.Register("PinchZoomAtCenter", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
                 viewport.CameraController.PinchZoomAtCenter = (bool)e.NewValue;
@@ -639,7 +669,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The show frame rate property.
         /// </summary>
         public static readonly DependencyProperty ShowFrameRateProperty = DependencyProperty.Register(
-            "ShowFrameRate", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=> 
+            "ShowFrameRate", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 if ((d as Viewport3DX).renderHostInternal != null)
                 {
@@ -658,7 +688,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The show frame rate property.
         /// </summary>
         public static readonly DependencyProperty ShowFrameDetailsProperty = DependencyProperty.Register(
-            "ShowFrameDetails", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=> 
+            "ShowFrameDetails", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 if ((d as Viewport3DX).renderHostInternal != null)
                 {
@@ -677,14 +707,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The show triangle count info property.
         /// </summary>
         public static readonly DependencyProperty ShowTriangleCountInfoProperty = DependencyProperty.Register(
-             "ShowTriangleCountInfo", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e)=> 
+             "ShowTriangleCountInfo", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 if ((d as Viewport3DX).renderHostInternal != null)
                 {
                     if (((bool)e.NewValue))
                     {
                         (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.TriangleInfo;
-    }
+                    }
                     else
                     {
                         (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.TriangleInfo;
@@ -777,7 +807,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("AllowUpDownRotation", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                float allowX = viewport.cameraController.AllowRotateXY.X;
+                var allowX = viewport.cameraController.AllowRotateXY.X;
                 float allowY = (bool)e.NewValue ? 1 : 0;
                 viewport.CameraController.AllowRotateXY = new global::SharpDX.Vector2(allowX, allowY);
             }));
@@ -788,7 +818,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var viewport = d as Viewport3DX;
                 float allowX = (bool)e.NewValue ? 1 : 0;
-                float allowY = viewport.cameraController.AllowRotateXY.Y;
+                var allowY = viewport.cameraController.AllowRotateXY.Y;
                 viewport.CameraController.AllowRotateXY = new global::SharpDX.Vector2(allowX, allowY);
             }));
 
@@ -952,7 +982,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabledProperty"/> 
         /// </summary>
         public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
-            "FixedRotationPoint", typeof(Point3D), typeof(Viewport3DX), new PropertyMetadata(new Point3D(), (d,e)=>
+            "FixedRotationPoint", typeof(Point3D), typeof(Viewport3DX), new PropertyMetadata(new Point3D(), (d, e) =>
             {
                 (d as Viewport3DX).CameraController.FixedRotationPoint = ((Point3D)e.NewValue).ToVector3();
             }));
@@ -961,7 +991,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable fixed rotation mode and use FixedRotationPoint for rotation. Only works under CameraMode = Inspect
         /// </summary>
         public static readonly DependencyProperty FixedRotationPointEnabledProperty = DependencyProperty.Register(
-            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=> 
+            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 (d as Viewport3DX).CameraController.FixedRotationPointEnabled = (bool)e.NewValue;
             }));
@@ -970,7 +1000,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable mouse button hit test
         /// </summary>
         public static readonly DependencyProperty EnableMouseButtonHitTestProperty = DependencyProperty.Register(
-            "EnableMouseButtonHitTest", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e)=> {
+            "EnableMouseButtonHitTest", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
                 (d as Viewport3DX).enableMouseButtonHitTest = (bool)e.NewValue;
             }));
 
@@ -984,7 +1015,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as Viewport3DX).LookAt((Point3D)e);
                     return e;
                 })
-            { BindsTwoWayByDefault = false });
+            {
+                BindsTwoWayByDefault = false
+            });
 
         /// <summary>
         /// Enable render frustum to avoid rendering model if it is out of view frustum
@@ -1054,15 +1087,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The content2 d property
         /// </summary>
         public static readonly DependencyProperty Content2DProperty
-            = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
+            = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e) =>
             {
                 if (e.OldValue is Element2D elementOld)
                 {
-                    (d as Viewport3DX).Overlay2D.Children.Remove(elementOld);                   
+                    (d as Viewport3DX).Overlay2D.Children.Remove(elementOld);
                 }
                 if (e.NewValue is Element2D elementNew)
                 {
-                    (d as Viewport3DX).Overlay2D.Children.Add(elementNew);                   
+                    (d as Viewport3DX).Overlay2D.Children.Add(elementNew);
                 }
             }));
 
@@ -1070,10 +1103,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The enable d2 d rendering property
         /// </summary>
         public static readonly DependencyProperty EnableD2DRenderingProperty =
-            DependencyProperty.Register("EnableD2DRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d,e)=>
+            DependencyProperty.Register("EnableD2DRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if(viewport.renderHostInternal != null)
+                if (viewport.renderHostInternal != null)
                 {
                     viewport.renderHostInternal.RenderConfiguration.RenderD2D = (bool)e.NewValue;
                     viewport.InvalidateRender();
@@ -1084,7 +1117,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The enable automatic octree update property
         /// </summary>
         public static readonly DependencyProperty EnableAutoOctreeUpdateProperty =
-            DependencyProperty.Register("EnableAutoOctreeUpdate", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=>
+            DependencyProperty.Register("EnableAutoOctreeUpdate", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
                 if (viewport.renderHostInternal != null)
@@ -1101,7 +1134,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
         /// </value>
         public static readonly DependencyProperty EnableOITRenderingProperty =
-            DependencyProperty.Register("EnableOITRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d,e)=> 
+            DependencyProperty.Register("EnableOITRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
                 if (viewport.renderHostInternal != null)
@@ -1115,7 +1148,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The Order independent transparent rendering color weight power property
         /// </summary>
         public static readonly DependencyProperty OITWeightPowerProperty =
-            DependencyProperty.Register("OITWeightPower", typeof(double), typeof(Viewport3DX), new PropertyMetadata(3.0, (d,e)=> 
+            DependencyProperty.Register("OITWeightPower", typeof(double), typeof(Viewport3DX), new PropertyMetadata(3.0, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
                 if (viewport.renderHostInternal != null)
@@ -1185,7 +1218,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty EnableRenderOrderProperty =
             DependencyProperty.Register("EnableRenderOrder", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
-                (d,e)=>
+                (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
                     if (viewport.renderHostInternal != null)
@@ -1200,7 +1233,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty EnableSSAOProperty =
             DependencyProperty.Register("EnableSSAO", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
-                (d,e)=> 
+                (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
                     if (viewport.renderHostInternal != null)
@@ -1215,24 +1248,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The ssao sampling radius property
         /// </summary>
         public static readonly DependencyProperty SSAOSamplingRadiusProperty =
-            DependencyProperty.Register("SSAOSamplingRadius", typeof(double), typeof(Viewport3DX), 
-                new PropertyMetadata(0.5, (d,e)=> 
+            DependencyProperty.Register("SSAOSamplingRadius", typeof(double), typeof(Viewport3DX),
+                new PropertyMetadata(0.5, (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
                     if (viewport.renderHostInternal != null)
                     {
-                        viewport.renderHostInternal.RenderConfiguration.SSAORadius =(float)(double)e.NewValue;
+                        viewport.renderHostInternal.RenderConfiguration.SSAORadius = (float)(double)e.NewValue;
                         viewport.renderHostInternal.InvalidateRender();
                     }
                 }));
 
         public static readonly DependencyProperty SSAOIntensityProperty =
-            DependencyProperty.Register("SSAOIntensity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e)=> 
+            DependencyProperty.Register("SSAOIntensity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
                     if (viewport.renderHostInternal != null)
                     {
-                        viewport.renderHostInternal.RenderConfiguration.SSAOIntensity =(float) (double) e.NewValue;
+                        viewport.renderHostInternal.RenderConfiguration.SSAOIntensity = (float)(double)e.NewValue;
                         viewport.renderHostInternal.InvalidateRender();
                     }
                 }));
@@ -1302,8 +1335,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Color BackgroundColor
         {
-            get { return (Color)this.GetValue(BackgroundColorProperty); }
-            set { this.SetValue(BackgroundColorProperty, value); }
+            get
+            {
+                return (Color)this.GetValue(BackgroundColorProperty);
+            }
+            set
+            {
+                this.SetValue(BackgroundColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -1756,8 +1795,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IEffectsManager EffectsManager
         {
-            get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
-            set { SetValue(EffectsManagerProperty, value); }
+            get
+            {
+                return (IEffectsManager)GetValue(EffectsManagerProperty);
+            }
+            set
+            {
+                SetValue(EffectsManagerProperty, value);
+            }
         }
 
         /// <summary>
@@ -1898,8 +1943,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Exception RenderException
         {
-            get { return (Exception)this.GetValue(RenderExceptionProperty); }
-            set { this.SetValue(RenderExceptionProperty, value); }
+            get
+            {
+                return (Exception)this.GetValue(RenderExceptionProperty);
+            }
+            set
+            {
+                this.SetValue(RenderExceptionProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the render host internal.
@@ -1929,8 +1980,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsShadowMappingEnabled
         {
-            get { return (bool)this.GetValue(IsShadowMappingEnabledProperty); }
-            set { this.SetValue(IsShadowMappingEnabledProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(IsShadowMappingEnabledProperty);
+            }
+            set
+            {
+                this.SetValue(IsShadowMappingEnabledProperty, value);
+            }
         }
 
         /// <summary>
@@ -2015,8 +2072,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsTouchRotateEnabled
         {
-            get { return (bool)GetValue(IsTouchRotateEnabledProperty); }
-            set { SetValue(IsTouchRotateEnabledProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsTouchRotateEnabledProperty);
+            }
+            set
+            {
+                SetValue(IsTouchRotateEnabledProperty, value);
+            }
         }
 
         /// <summary>
@@ -2046,8 +2109,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool PinchZoomAtCenter
         {
-            get { return (bool)GetValue(PinchZoomAtCenterProperty); }
-            set { SetValue(PinchZoomAtCenterProperty, value); }
+            get
+            {
+                return (bool)GetValue(PinchZoomAtCenterProperty);
+            }
+            set
+            {
+                SetValue(PinchZoomAtCenterProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [enable three finger panning].
@@ -2057,8 +2126,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsThreeFingerPanningEnabled
         {
-            get { return (bool)GetValue(IsThreeFingerPanningEnabledProperty); }
-            set { SetValue(IsThreeFingerPanningEnabledProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsThreeFingerPanningEnabledProperty);
+            }
+            set
+            {
+                SetValue(IsThreeFingerPanningEnabledProperty, value);
+            }
         }
 
         /// <summary>
@@ -2672,8 +2747,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsViewCubeEdgeClicksEnabled
         {
-            get { return (bool)GetValue(IsViewCubeEdgeClicksEnabledProperty); }
-            set { SetValue(IsViewCubeEdgeClicksEnabledProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsViewCubeEdgeClicksEnabledProperty);
+            }
+            set
+            {
+                SetValue(IsViewCubeEdgeClicksEnabledProperty, value);
+            }
         }
 
         /// <summary>
@@ -2684,8 +2765,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsViewCubeMoverEnabled
         {
-            get { return (bool)GetValue(IsViewCubeMoverEnabledProperty); }
-            set { SetValue(IsViewCubeMoverEnabledProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsViewCubeMoverEnabledProperty);
+            }
+            set
+            {
+                SetValue(IsViewCubeMoverEnabledProperty, value);
+            }
         }
 
 
@@ -2697,8 +2784,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsCoordinateSystemMoverEnabled
         {
-            get { return (bool)GetValue(IsCoordinateSystemMoverEnabledProperty); }
-            set { SetValue(IsCoordinateSystemMoverEnabledProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsCoordinateSystemMoverEnabledProperty);
+            }
+            set
+            {
+                SetValue(IsCoordinateSystemMoverEnabledProperty, value);
+            }
         }
 
         /// <summary>
@@ -3071,8 +3164,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableD2DRendering
         {
-            get { return (bool)GetValue(EnableD2DRenderingProperty); }
-            set { SetValue(EnableD2DRenderingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableD2DRenderingProperty);
+            }
+            set
+            {
+                SetValue(EnableD2DRenderingProperty, value);
+            }
         }
 
         /// <summary>
@@ -3083,8 +3182,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableAutoOctreeUpdate
         {
-            get { return (bool)GetValue(EnableAutoOctreeUpdateProperty); }
-            set { SetValue(EnableAutoOctreeUpdateProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableAutoOctreeUpdateProperty);
+            }
+            set
+            {
+                SetValue(EnableAutoOctreeUpdateProperty, value);
+            }
         }
 
         /// <summary>
@@ -3113,8 +3218,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableOITRendering
         {
-            get { return (bool)GetValue(EnableOITRenderingProperty); }
-            set { SetValue(EnableOITRenderingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableOITRenderingProperty);
+            }
+            set
+            {
+                SetValue(EnableOITRenderingProperty, value);
+            }
         }
 
         /// <summary>
@@ -3126,8 +3237,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double OITWeightDepthSlope
         {
-            get { return (double)GetValue(OITWeightDepthSlopeProperty); }
-            set { SetValue(OITWeightDepthSlopeProperty, value); }
+            get
+            {
+                return (double)GetValue(OITWeightDepthSlopeProperty);
+            }
+            set
+            {
+                SetValue(OITWeightDepthSlopeProperty, value);
+            }
         }
 
         /// <summary>
@@ -3140,8 +3257,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double OITWeightPower
         {
-            get { return (double)GetValue(OITWeightPowerProperty); }
-            set { SetValue(OITWeightPowerProperty, value); }
+            get
+            {
+                return (double)GetValue(OITWeightPowerProperty);
+            }
+            set
+            {
+                SetValue(OITWeightPowerProperty, value);
+            }
         }
 
         /// <summary>
@@ -3154,8 +3277,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public OITWeightMode OITWeightMode
         {
-            get { return (OITWeightMode)GetValue(OITWeightModeProperty); }
-            set { SetValue(OITWeightModeProperty, value); }
+            get
+            {
+                return (OITWeightMode)GetValue(OITWeightModeProperty);
+            }
+            set
+            {
+                SetValue(OITWeightModeProperty, value);
+            }
         }
 
         /// <summary>
@@ -3166,8 +3295,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public FXAALevel FXAALevel
         {
-            get { return (FXAALevel)GetValue(FXAALevelProperty); }
-            set { SetValue(FXAALevelProperty, value); }
+            get
+            {
+                return (FXAALevel)GetValue(FXAALevelProperty);
+            }
+            set
+            {
+                SetValue(FXAALevelProperty, value);
+            }
         }
 
         /// <summary>
@@ -3178,8 +3313,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableDesignModeRendering
         {
-            get { return (bool)GetValue(EnableDesignModeRenderingProperty); }
-            set { SetValue(EnableDesignModeRenderingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableDesignModeRenderingProperty);
+            }
+            set
+            {
+                SetValue(EnableDesignModeRenderingProperty, value);
+            }
         }
 
         /// <summary>
@@ -3192,8 +3333,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableRenderOrder
         {
-            get { return (bool)GetValue(EnableRenderOrderProperty); }
-            set { SetValue(EnableRenderOrderProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableRenderOrderProperty);
+            }
+            set
+            {
+                SetValue(EnableRenderOrderProperty, value);
+            }
         }
 
 
@@ -3205,8 +3352,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableSSAO
         {
-            get { return (bool)GetValue(EnableSSAOProperty); }
-            set { SetValue(EnableSSAOProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableSSAOProperty);
+            }
+            set
+            {
+                SetValue(EnableSSAOProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the ssao sampling radius.
@@ -3216,8 +3369,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double SSAOSamplingRadius
         {
-            get { return (double)GetValue(SSAOSamplingRadiusProperty); }
-            set { SetValue(SSAOSamplingRadiusProperty, value); }
+            get
+            {
+                return (double)GetValue(SSAOSamplingRadiusProperty);
+            }
+            set
+            {
+                SetValue(SSAOSamplingRadiusProperty, value);
+            }
         }
 
         /// <summary>
@@ -3228,8 +3387,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double SSAOIntensity
         {
-            get { return (double)GetValue(SSAOIntensityProperty); }
-            set { SetValue(SSAOIntensityProperty, value); }
+            get
+            {
+                return (double)GetValue(SSAOIntensityProperty);
+            }
+            set
+            {
+                SetValue(SSAOIntensityProperty, value);
+            }
         }
 
 
@@ -3241,8 +3406,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public SSAOQuality SSAOQuality
         {
-            get { return (SSAOQuality)GetValue(SSAOQualityProperty); }
-            set { SetValue(SSAOQualityProperty, value); }
+            get
+            {
+                return (SSAOQuality)GetValue(SSAOQualityProperty);
+            }
+            set
+            {
+                SetValue(SSAOQualityProperty, value);
+            }
         }
 
         /// <summary>
@@ -3255,8 +3426,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int MinimumUpdateCount
         {
-            get { return (int)GetValue(MinimumUpdateCountProperty); }
-            set { SetValue(MinimumUpdateCountProperty, value); }
+            get
+            {
+                return (int)GetValue(MinimumUpdateCountProperty);
+            }
+            set
+            {
+                SetValue(MinimumUpdateCountProperty, value);
+            }
         }
 
         /// <summary>
@@ -3267,8 +3444,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool AllowUpDownRotation
         {
-            get { return (bool)GetValue(AllowUpDownRotationProperty); }
-            set { SetValue(AllowUpDownRotationProperty, value); }
+            get
+            {
+                return (bool)GetValue(AllowUpDownRotationProperty);
+            }
+            set
+            {
+                SetValue(AllowUpDownRotationProperty, value);
+            }
         }
 
         /// <summary>
@@ -3279,8 +3462,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool AllowLeftRightRotation
         {
-            get { return (bool)GetValue(AllowLeftRightRotationProperty); }
-            set { SetValue(AllowLeftRightRotationProperty, value); }
+            get
+            {
+                return (bool)GetValue(AllowLeftRightRotationProperty);
+            }
+            set
+            {
+                SetValue(AllowLeftRightRotationProperty, value);
+            }
         }
 
         /// <summary>
@@ -3292,8 +3481,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool BelongsToParentWindow
         {
-            get { return (bool)GetValue(BelongsToParentWindowProperty); }
-            set { SetValue(BelongsToParentWindowProperty, value); }
+            get
+            {
+                return (bool)GetValue(BelongsToParentWindowProperty);
+            }
+            set
+            {
+                SetValue(BelongsToParentWindowProperty, value);
+            }
         }
 
         /// <summary>

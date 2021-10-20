@@ -36,18 +36,30 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            public IEnumerable<DATATYPE> Datas { get { return indexDataMapping.Values; } }
+            public IEnumerable<DATATYPE> Datas
+            {
+                get
+                {
+                    return indexDataMapping.Values;
+                }
+            }
             /// <summary>
             /// 
             /// </summary>
-            public int Count { get { return indexNameMapping.Count; } }
+            public int Count
+            {
+                get
+                {
+                    return indexNameMapping.Count;
+                }
+            }
             /// <summary>
             /// 
             /// </summary>
             /// <param name="index"></param>
             /// <param name="name"></param>
             /// <param name="item"></param>
-            public void Add(INDEXTYPE index, NAMETYPE name,  DATATYPE item)
+            public void Add(INDEXTYPE index, NAMETYPE name, DATATYPE item)
             {
                 if (nameIndexMapping.ContainsKey(name))
                 {
@@ -91,7 +103,7 @@ namespace HelixToolkit.UWP
             {
                 if (nameIndexMapping.ContainsKey(name))
                 {
-                    indexNameMapping.Remove(nameIndexMapping[name]);                
+                    indexNameMapping.Remove(nameIndexMapping[name]);
                     indexDataMapping.Remove(nameIndexMapping[name]);
                     nameIndexMapping.Remove(name);
                     MappingArray = indexDataMapping.ToArray();
@@ -159,7 +171,7 @@ namespace HelixToolkit.UWP
             public bool TryGetItem(NAMETYPE name, out DATATYPE data)
             {
                 INDEXTYPE idx;
-                if(nameIndexMapping.TryGetValue(name, out idx) && indexDataMapping.TryGetValue(idx, out data))
+                if (nameIndexMapping.TryGetValue(name, out idx) && indexDataMapping.TryGetValue(idx, out data))
                 {
                     return true;
                 }
@@ -184,7 +196,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public IEnumerable<INDEXTYPE> Keys
             {
-                get { return indexNameMapping.Keys; }
+                get
+                {
+                    return indexNameMapping.Keys;
+                }
             }
             /// <summary>
             /// 
@@ -193,7 +208,10 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public DATATYPE this[INDEXTYPE key]
             {
-                get { return indexDataMapping[key]; }
+                get
+                {
+                    return indexDataMapping[key];
+                }
             }
             /// <summary>
             /// 
@@ -202,9 +220,11 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public INDEXTYPE this[NAMETYPE name]
             {
-                get { return nameIndexMapping[name]; }
+                get
+                {
+                    return nameIndexMapping[name];
+                }
             }
         }
     }
-
 }

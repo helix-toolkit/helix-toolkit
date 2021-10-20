@@ -35,8 +35,8 @@ namespace SharpDX.Toolkit.Graphics
             base.Initialize(view);
 
             var shaderResourceView = view as ShaderResourceView;
-            int mipLevel = 0;
-            bool isMultisampled = Texture.Description.SampleDescription.Count > 1;
+            var mipLevel = 0;
+            var isMultisampled = Texture.Description.SampleDescription.Count > 1;
 
             if (shaderResourceView != null)
             {
@@ -130,29 +130,44 @@ namespace SharpDX.Toolkit.Graphics
         /// Gets a value indicating whether this instance is render view.
         /// </summary>
         /// <value><c>true</c> if this instance is render view; otherwise, <c>false</c>.</value>
-        public bool IsRenderView { get; private set; }
+        public bool IsRenderView
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets a value indicating whether this instance is a depth stencil view.
         /// </summary>
         /// <value><c>true</c> if this instance is a depth stencil view; otherwise, <c>false</c>.</value>
-        public bool IsDepthStencilView { get; private set; }
+        public bool IsDepthStencilView
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets the texture.
         /// </summary>
         /// <value>The texture.</value>
-        public Texture Texture { get; private set; }
+        public Texture Texture
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// The size of the view in pixel (taking account the miplevel of the view).
         /// </summary>
-        public Size2 Size { get; private set; }
+        public Size2 Size
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// The size of a texel in the view (1 texel = (1.0f / width of the view, 1.0f / height of the view)
         /// </summary>
-        public Size2F TexelSize { get; private set; }
+        public Size2F TexelSize
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="TextureView"/> to <see cref="ShaderResourceView"/>.

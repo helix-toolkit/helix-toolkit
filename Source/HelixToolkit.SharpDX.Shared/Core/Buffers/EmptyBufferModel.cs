@@ -34,7 +34,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public Geometry3D Geometry
             {
-                set;get;
+                set; get;
             }
             /// <summary>
             /// Gets the unique identifier.
@@ -71,7 +71,9 @@ namespace HelixToolkit.UWP
                 {
                     return PrimitiveTopology.Undefined;
                 }
-                set { }
+                set
+                {
+                }
             }
             /// <summary>
             /// Gets the vertex buffer.
@@ -89,18 +91,27 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The size of the vertex structure.
             /// </value>
-            public IEnumerable<int> VertexStructSize { get { yield return 0; } }
+            public IEnumerable<int> VertexStructSize
+            {
+                get
+                {
+                    yield return 0;
+                }
+            }
             /// <summary>
             /// Gets or sets the effects manager.
             /// </summary>
             /// <value>
             /// The effects manager.
             /// </value>
-            public IEffectsManager EffectsManager { set; get; }
-    #pragma warning disable CS0067
+            public IEffectsManager EffectsManager
+            {
+                set; get;
+            }
+#pragma warning disable CS0067
             public event EventHandler VertexBufferUpdated;
             public event EventHandler IndexBufferUpdated;
-    #pragma warning restore CS0067
+#pragma warning restore CS0067
             /// <summary>
             /// Attaches this instance.
             /// </summary>
@@ -158,5 +169,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

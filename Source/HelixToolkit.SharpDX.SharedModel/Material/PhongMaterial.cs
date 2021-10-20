@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Shaders;
 #endif
-    
+
 
     /// <summary>
     /// Implements a phong-material with its all properties
@@ -43,8 +43,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// property.
         /// </summary>
         public static readonly DependencyProperty AmbientColorProperty =
-            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black, 
-                (d, e)=> 
+            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black,
+                (d, e) =>
                 {
                     ((d as Material).Core as PhongMaterialCore).AmbientColor = (Color4)e.NewValue;
                 }));
@@ -114,8 +114,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color will be cDiffuse*cAlpha.
         /// </summary>
         public static readonly DependencyProperty DiffuseAlphaMapProperty =
-            DependencyProperty.Register("DiffuseAlphaMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null, 
-                (d,e)=> { ((d as Material).Core as PhongMaterialCore).DiffuseAlphaMap = e.NewValue as TextureModel; }));
+            DependencyProperty.Register("DiffuseAlphaMap", typeof(TextureModel), typeof(PhongMaterial), new PropertyMetadata(null,
+                (d, e) => { ((d as Material).Core as PhongMaterialCore).DiffuseAlphaMap = e.NewValue as TextureModel; }));
 
         /// <summary>
         /// 
@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapScaleMaskProperty =
-            DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new PropertyMetadata(new Vector4(0,0,0,1),
+            DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new PropertyMetadata(new Vector4(0, 0, 0, 1),
                 (d, e) => { ((d as Material).Core as PhongMaterialCore).DisplacementMapScaleMask = (Vector4)e.NewValue; }));
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX
         // Using a DependencyProperty as the backing store for VertexColorBlendingFactor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty VertexColorBlendingFactorProperty =
             DependencyProperty.Register("VertexColorBlendingFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(0.0,
-                (d, e)=> 
+                (d, e) =>
                 {
                     ((d as Material).Core as PhongMaterialCore).VertexColorBlendingFactor = (float)(double)e.NewValue;
                 }));
@@ -263,32 +263,40 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty MaxDistanceTessellationFactorProperty =
             DependencyProperty.Register("MaxDistanceTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Material).Core as PhongMaterialCore).MaxDistanceTessellationFactor = (float)(double)e.NewValue; }));
+            {
+                ((d as Material).Core as PhongMaterialCore).MaxDistanceTessellationFactor = (float)(double)e.NewValue;
+            }));
         /// <summary>
         /// The tessellation factor at <see cref="MinTessellationDistance"/> property
         /// </summary>
         public static readonly DependencyProperty MinDistanceTessellationFactorProperty =
             DependencyProperty.Register("MinDistanceTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(2.0, (d, e) =>
-            { ((d as Material).Core as PhongMaterialCore).MinDistanceTessellationFactor = (float)(double)e.NewValue; }));
+            {
+                ((d as Material).Core as PhongMaterialCore).MinDistanceTessellationFactor = (float)(double)e.NewValue;
+            }));
         /// <summary>
         /// The maximum tessellation distance property
         /// </summary>
         public static readonly DependencyProperty MaxTessellationDistanceProperty =
             DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(50.0, (d, e) =>
-            { ((d as Material).Core as PhongMaterialCore).MaxTessellationDistance = (float)(double)e.NewValue; }));
+            {
+                ((d as Material).Core as PhongMaterialCore).MaxTessellationDistance = (float)(double)e.NewValue;
+            }));
         /// <summary>
         /// The minimum tessellation distance property
         /// </summary>
         public static readonly DependencyProperty MinTessellationDistanceProperty =
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Material).Core as PhongMaterialCore).MinTessellationDistance = (float)(double)e.NewValue; }));
+            {
+                ((d as Material).Core as PhongMaterialCore).MinTessellationDistance = (float)(double)e.NewValue;
+            }));
 
 
         /// <summary>
         /// The uv transform property
         /// </summary>
         public static readonly DependencyProperty UVTransformProperty =
-            DependencyProperty.Register("UVTransform", typeof(UVTransform), typeof(PhongMaterial), new PropertyMetadata(UVTransform.Identity, (d,e)=>
+            DependencyProperty.Register("UVTransform", typeof(UVTransform), typeof(PhongMaterial), new PropertyMetadata(UVTransform.Identity, (d, e) =>
             {
                 ((d as Material).Core as PhongMaterialCore).UVTransform = (UVTransform)e.NewValue;
             }));
@@ -302,12 +310,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableFlatShading
         {
-            get { return (bool)GetValue(EnableFlatShadingProperty); }
-            set { SetValue(EnableFlatShadingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableFlatShadingProperty);
+            }
+            set
+            {
+                SetValue(EnableFlatShadingProperty, value);
+            }
         }
 
         public static readonly DependencyProperty EnableFlatShadingProperty =
-            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false, (d,e)=>
+            DependencyProperty.Register("EnableFlatShading", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(false, (d, e) =>
             {
                 ((d as Material).Core as PhongMaterialCore).EnableFlatShading = (bool)e.NewValue;
             }));
@@ -321,8 +335,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Color4 AmbientColor
         {
-            get { return (Color4)this.GetValue(AmbientColorProperty); }
-            set { this.SetValue(AmbientColorProperty, value); }
+            get
+            {
+                return (Color4)this.GetValue(AmbientColorProperty);
+            }
+            set
+            {
+                this.SetValue(AmbientColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -334,8 +354,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Color4 DiffuseColor
         {
-            get { return (Color4)this.GetValue(DiffuseColorProperty); }
-            set { this.SetValue(DiffuseColorProperty, value); }
+            get
+            {
+                return (Color4)this.GetValue(DiffuseColorProperty);
+            }
+            set
+            {
+                this.SetValue(DiffuseColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -347,8 +373,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Color4 EmissiveColor
         {
-            get { return (Color4)this.GetValue(EmissiveColorProperty); }
-            set { this.SetValue(EmissiveColorProperty, value); }
+            get
+            {
+                return (Color4)this.GetValue(EmissiveColorProperty);
+            }
+            set
+            {
+                this.SetValue(EmissiveColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -359,8 +391,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Color4 ReflectiveColor
         {
-            get { return (Color4)this.GetValue(ReflectiveColorProperty); }
-            set { this.SetValue(ReflectiveColorProperty, value); }
+            get
+            {
+                return (Color4)this.GetValue(ReflectiveColorProperty);
+            }
+            set
+            {
+                this.SetValue(ReflectiveColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -372,8 +410,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Color4 SpecularColor
         {
-            get { return (Color4)this.GetValue(SpecularColorProperty); }
-            set { this.SetValue(SpecularColorProperty, value); }
+            get
+            {
+                return (Color4)this.GetValue(SpecularColorProperty);
+            }
+            set
+            {
+                this.SetValue(SpecularColorProperty, value);
+            }
         }
 
         /// <summary>
@@ -382,8 +426,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public float SpecularShininess
         {
-            get { return (float)this.GetValue(SpecularShininessProperty); }
-            set { this.SetValue(SpecularShininessProperty, value); }
+            get
+            {
+                return (float)this.GetValue(SpecularShininessProperty);
+            }
+            set
+            {
+                this.SetValue(SpecularShininessProperty, value);
+            }
         }
 
         /// <summary>
@@ -392,15 +442,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public TextureModel DiffuseMap
         {
-            get { return (TextureModel)this.GetValue(DiffuseMapProperty); }
-            set { this.SetValue(DiffuseMapProperty, value); }
+            get
+            {
+                return (TextureModel)this.GetValue(DiffuseMapProperty);
+            }
+            set
+            {
+                this.SetValue(DiffuseMapProperty, value);
+            }
         }
 
 
         public TextureModel DiffuseAlphaMap
         {
-            get { return (TextureModel)this.GetValue(DiffuseAlphaMapProperty); }
-            set { this.SetValue(DiffuseAlphaMapProperty, value); }
+            get
+            {
+                return (TextureModel)this.GetValue(DiffuseAlphaMapProperty);
+            }
+            set
+            {
+                this.SetValue(DiffuseAlphaMapProperty, value);
+            }
         }
 
         /// <summary>
@@ -408,8 +470,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public TextureModel NormalMap
         {
-            get { return (TextureModel)this.GetValue(NormalMapProperty); }
-            set { this.SetValue(NormalMapProperty, value); }
+            get
+            {
+                return (TextureModel)this.GetValue(NormalMapProperty);
+            }
+            set
+            {
+                this.SetValue(NormalMapProperty, value);
+            }
         }
 
         /// <summary>
@@ -417,29 +485,53 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public TextureModel SpecularColorMap
         {
-            get { return (TextureModel)this.GetValue(SpecularColorMapProperty); }
-            set { this.SetValue(SpecularColorMapProperty, value); }
+            get
+            {
+                return (TextureModel)this.GetValue(SpecularColorMapProperty);
+            }
+            set
+            {
+                this.SetValue(SpecularColorMapProperty, value);
+            }
         }
         /// <summary>
         /// 
         /// </summary>
         public TextureModel DisplacementMap
         {
-            get { return (TextureModel)this.GetValue(DisplacementMapProperty); }
-            set { this.SetValue(DisplacementMapProperty, value); }
+            get
+            {
+                return (TextureModel)this.GetValue(DisplacementMapProperty);
+            }
+            set
+            {
+                this.SetValue(DisplacementMapProperty, value);
+            }
         }
         public TextureModel EmissiveMap
         {
-            get { return (TextureModel)this.GetValue(EmissiveMapProperty); }
-            set { this.SetValue(EmissiveMapProperty, value); }
+            get
+            {
+                return (TextureModel)this.GetValue(EmissiveMapProperty);
+            }
+            set
+            {
+                this.SetValue(EmissiveMapProperty, value);
+            }
         }
         /// <summary>
         /// 
         /// </summary>
         public SamplerStateDescription DiffuseMapSampler
         {
-            get { return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty); }
-            set { this.SetValue(DiffuseMapSamplerProperty, value); }
+            get
+            {
+                return (SamplerStateDescription)this.GetValue(DiffuseMapSamplerProperty);
+            }
+            set
+            {
+                this.SetValue(DiffuseMapSamplerProperty, value);
+            }
         }
 
         /// <summary>
@@ -447,8 +539,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public SamplerStateDescription DisplacementMapSampler
         {
-            get { return (SamplerStateDescription)this.GetValue(DisplacementMapSamplerProperty); }
-            set { this.SetValue(DisplacementMapSamplerProperty, value); }
+            get
+            {
+                return (SamplerStateDescription)this.GetValue(DisplacementMapSamplerProperty);
+            }
+            set
+            {
+                this.SetValue(DisplacementMapSamplerProperty, value);
+            }
         }
 
 #if !NETFX_CORE && !WINUI
@@ -456,8 +554,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
         public Vector4 DisplacementMapScaleMask
         {
-            set { SetValue(DisplacementMapScaleMaskProperty, value); }
-            get { return (Vector4)GetValue(DisplacementMapScaleMaskProperty); }
+            set
+            {
+                SetValue(DisplacementMapScaleMaskProperty, value);
+            }
+            get
+            {
+                return (Vector4)GetValue(DisplacementMapScaleMaskProperty);
+            }
         }
 
         /// <summary>
@@ -465,8 +569,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool RenderDiffuseMap
         {
-            get { return (bool)this.GetValue(RenderDiffuseMapProperty); }
-            set { this.SetValue(RenderDiffuseMapProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(RenderDiffuseMapProperty);
+            }
+            set
+            {
+                this.SetValue(RenderDiffuseMapProperty, value);
+            }
         }
 
         /// <summary>
@@ -474,24 +584,42 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool RenderNormalMap
         {
-            get { return (bool)this.GetValue(RenderNormalMapProperty); }
-            set { this.SetValue(RenderNormalMapProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(RenderNormalMapProperty);
+            }
+            set
+            {
+                this.SetValue(RenderNormalMapProperty, value);
+            }
         }
         /// <summary>
         /// 
         /// </summary>
         public bool RenderSpecularColorMap
         {
-            get { return (bool)this.GetValue(RenderSpecularColorMapProperty); }
-            set { this.SetValue(RenderSpecularColorMapProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(RenderSpecularColorMapProperty);
+            }
+            set
+            {
+                this.SetValue(RenderSpecularColorMapProperty, value);
+            }
         }
         /// <summary>
         /// 
         /// </summary>
         public bool RenderDiffuseAlphaMap
         {
-            get { return (bool)this.GetValue(RenderDiffuseAlphaMapProperty); }
-            set { this.SetValue(RenderDiffuseAlphaMapProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(RenderDiffuseAlphaMapProperty);
+            }
+            set
+            {
+                this.SetValue(RenderDiffuseAlphaMapProperty, value);
+            }
         }
 
 
@@ -500,8 +628,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool RenderDisplacementMap
         {
-            get { return (bool)this.GetValue(RenderDisplacementMapProperty); }
-            set { this.SetValue(RenderDisplacementMapProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(RenderDisplacementMapProperty);
+            }
+            set
+            {
+                this.SetValue(RenderDisplacementMapProperty, value);
+            }
         }
 
         /// <summary>
@@ -512,8 +646,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool RenderEnvironmentMap
         {
-            get { return (bool)GetValue(RenderEnvironmentMapProperty); }
-            set { SetValue(RenderEnvironmentMapProperty, value); }
+            get
+            {
+                return (bool)GetValue(RenderEnvironmentMapProperty);
+            }
+            set
+            {
+                SetValue(RenderEnvironmentMapProperty, value);
+            }
         }
 
         /// <summary>
@@ -524,16 +664,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool RenderShadowMap
         {
-            get { return (bool)GetValue(RenderShadowMapProperty); }
-            set { SetValue(RenderShadowMapProperty, value); }
+            get
+            {
+                return (bool)GetValue(RenderShadowMapProperty);
+            }
+            set
+            {
+                SetValue(RenderShadowMapProperty, value);
+            }
         }
         /// <summary>
         /// 
         /// </summary>
         public bool RenderEmissiveMap
         {
-            get { return (bool)this.GetValue(RenderEmissiveMapProperty); }
-            set { this.SetValue(RenderEmissiveMapProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(RenderEmissiveMapProperty);
+            }
+            set
+            {
+                this.SetValue(RenderEmissiveMapProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [enable automatic tangent].
@@ -543,8 +695,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableAutoTangent
         {
-            get { return (bool)GetValue(EnableAutoTangentProperty); }
-            set { SetValue(EnableAutoTangentProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableAutoTangentProperty);
+            }
+            set
+            {
+                SetValue(EnableAutoTangentProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [enable tessellation].
@@ -571,8 +729,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double MaxDistanceTessellationFactor
         {
-            get { return (double)GetValue(MaxDistanceTessellationFactorProperty); }
-            set { SetValue(MaxDistanceTessellationFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(MaxDistanceTessellationFactorProperty);
+            }
+            set
+            {
+                SetValue(MaxDistanceTessellationFactorProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the tessellation factor at <see cref="MinTessellationDistance"/>
@@ -582,8 +746,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double MinDistanceTessellationFactor
         {
-            get { return (double)GetValue(MinDistanceTessellationFactorProperty); }
-            set { SetValue(MinDistanceTessellationFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(MinDistanceTessellationFactorProperty);
+            }
+            set
+            {
+                SetValue(MinDistanceTessellationFactorProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the maximum tessellation distance.
@@ -593,8 +763,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double MaxTessellationDistance
         {
-            get { return (double)GetValue(MaxTessellationDistanceProperty); }
-            set { SetValue(MaxTessellationDistanceProperty, value); }
+            get
+            {
+                return (double)GetValue(MaxTessellationDistanceProperty);
+            }
+            set
+            {
+                SetValue(MaxTessellationDistanceProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the minimum tessellation distance.
@@ -604,8 +780,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double MinTessellationDistance
         {
-            get { return (double)GetValue(MinTessellationDistanceProperty); }
-            set { SetValue(MinTessellationDistanceProperty, value); }
+            get
+            {
+                return (double)GetValue(MinTessellationDistanceProperty);
+            }
+            set
+            {
+                SetValue(MinTessellationDistanceProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the texture uv transform.
@@ -615,8 +797,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public UVTransform UVTransform
         {
-            get { return (UVTransform)GetValue(UVTransformProperty); }
-            set { SetValue(UVTransformProperty, value); }
+            get
+            {
+                return (UVTransform)GetValue(UVTransformProperty);
+            }
+            set
+            {
+                SetValue(UVTransformProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the vertex color blending factor.
@@ -627,15 +815,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double VertexColorBlendingFactor
         {
-            get { return (double)GetValue(VertexColorBlendingFactorProperty); }
-            set { SetValue(VertexColorBlendingFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(VertexColorBlendingFactorProperty);
+            }
+            set
+            {
+                SetValue(VertexColorBlendingFactorProperty, value);
+            }
         }
 
         /// <summary>
         /// Constructs a Shading Material which correspnds with 
         /// the Phong and BlinnPhong lighting models.
         /// </summary>
-        public PhongMaterial() { }
+        public PhongMaterial()
+        {
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="PhongMaterial"/> class.
         /// </summary>

@@ -17,9 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public abstract class ShapeModel2D : Element2D
         {
-            public static DependencyProperty FillProperty 
-                = DependencyProperty.Register("Fill", typeof(Brush), typeof(ShapeModel2D), new PropertyMetadata(new SolidColorBrush(Colors.Black), 
-                    (d,e)=> 
+            public static DependencyProperty FillProperty
+                = DependencyProperty.Register("Fill", typeof(Brush), typeof(ShapeModel2D), new PropertyMetadata(new SolidColorBrush(Colors.Black),
+                    (d, e) =>
                     {
                         (d as ShapeModel2D).fillChanged = true;
                     }));
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
 
-#region Stroke properties
+            #region Stroke properties
             public static DependencyProperty StrokeProperty
                 = DependencyProperty.Register("Stroke", typeof(Brush), typeof(ShapeModel2D), new PropertyMetadata(new SolidColorBrush(Colors.Black),
                     (d, e) =>
@@ -117,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(ShapeModel2D), new PropertyMetadata(null,
                     (d, e) =>
                     {
-                        ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeDashArray = e.NewValue == null ? new float[0] : (e.NewValue as DoubleCollection).Select(x=>(float)x).ToArray();
+                        ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeDashArray = e.NewValue == null ? new float[0] : (e.NewValue as DoubleCollection).Select(x => (float)x).ToArray();
                     }));
 
             public DoubleCollection StrokeDashArray
@@ -212,18 +212,25 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public DashStyle DashStyle
             {
-                get { return (DashStyle)GetValue(DashStyleProperty); }
-                set { SetValue(DashStyleProperty, value); }
+                get
+                {
+                    return (DashStyle)GetValue(DashStyleProperty);
+                }
+                set
+                {
+                    SetValue(DashStyleProperty, value);
+                }
             }
 
             public static readonly DependencyProperty DashStyleProperty =
                 DependencyProperty.Register("DashStyle", typeof(DashStyle), typeof(ShapeModel2D), new PropertyMetadata(DashStyles.Solid,
-                    (d,e)=> {
+                    (d, e) =>
+                    {
                         ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeDashStyle = (e.NewValue as DashStyle).ToD2DDashStyle();
                     }));
 
 
-#endregion
+            #endregion
 
             private bool fillChanged = true;
             private bool strokeChanged = true;
@@ -265,5 +272,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

@@ -29,8 +29,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector3 Position
             {
-                set { (RenderCore as PointLightCore).Position = value; }
-                get { return (RenderCore as PointLightCore).Position; }
+                set
+                {
+                    (RenderCore as PointLightCore).Position = value;
+                }
+                get
+                {
+                    return (RenderCore as PointLightCore).Position;
+                }
             }
             /// <summary>
             /// Gets or sets the attenuation.
@@ -40,8 +46,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector3 Attenuation
             {
-                set { (RenderCore as PointLightCore).Attenuation = value; }
-                get { return (RenderCore as PointLightCore).Attenuation; }
+                set
+                {
+                    (RenderCore as PointLightCore).Attenuation = value;
+                }
+                get
+                {
+                    return (RenderCore as PointLightCore).Attenuation;
+                }
             }
             /// <summary>
             /// Gets or sets the range.
@@ -51,8 +63,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float Range
             {
-                set { (RenderCore as PointLightCore).Range = value; }
-                get { return (RenderCore as PointLightCore).Range; }
+                set
+                {
+                    (RenderCore as PointLightCore).Range = value;
+                }
+                get
+                {
+                    return (RenderCore as PointLightCore).Range;
+                }
             }
             /// <summary>
             /// Called when [create render core].
@@ -64,5 +82,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

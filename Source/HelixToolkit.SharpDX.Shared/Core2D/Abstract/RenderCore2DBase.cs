@@ -23,17 +23,17 @@ namespace HelixToolkit.UWP
         /// </summary>
         public abstract class RenderCore2DBase : RenderCore2D
         {
-    #if DEBUGBOUNDS
+#if DEBUGBOUNDS
             /// <summary>
             /// 
             /// </summary>
             public bool ShowDrawingBorder { set; get; } = true;
-    #else
+#else
             /// <summary>
             /// 
             /// </summary>
             public bool ShowDrawingBorder { set; get; } = false;
-    #endif
+#endif
             /// <summary>
             /// Renders the specified context.
             /// </summary>
@@ -78,5 +78,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

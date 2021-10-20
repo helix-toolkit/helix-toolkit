@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP
             /// <param name="formatProvider"> The IFormatProvider which controls this tokenization. </param> 
             public TokenizerHelper(string str, IFormatProvider formatProvider)
             {
-                char numberSeparator = GetNumericListSeparator(formatProvider);
+                var numberSeparator = GetNumericListSeparator(formatProvider);
                 this.Initialize(str, '\'', numberSeparator);
             }
 
@@ -169,12 +169,12 @@ namespace HelixToolkit.UWP
                     return false;
                 }
 
-                char currentChar = this.str[this.charIndex];
+                var currentChar = this.str[this.charIndex];
 
                 Debug.Assert(!Char.IsWhiteSpace(currentChar), "Token started on Whitespace");
 
                 // setup the quoteCount 
-                int quoteCount = 0;
+                var quoteCount = 0;
 
                 // If we are allowing a quoted token and this token begins with a quote, 
                 // set up the quote count and skip the initial quote
@@ -185,8 +185,8 @@ namespace HelixToolkit.UWP
                     ++this.charIndex; // move to next character 
                 }
 
-                int newTokenIndex = this.charIndex;
-                int newTokenLength = 0;
+                var newTokenIndex = this.charIndex;
+                var newTokenLength = 0;
 
                 // loop until hit end of string or hit a , or whitespace
                 // if at end of string ust return false.
@@ -252,7 +252,7 @@ namespace HelixToolkit.UWP
                 // if already at end of the string don't bother
                 if (this.charIndex < this.strLen)
                 {
-                    char currentChar = this.str[this.charIndex];
+                    var currentChar = this.str[this.charIndex];
 
                     // check that the currentChar is a space or the separator.  If not 
                     // we have an error. this can happen in the quote case
@@ -266,7 +266,7 @@ namespace HelixToolkit.UWP
                     // loop until hit a character that isn't 
                     // an argument separator or whitespace.
                     // !!!Todo: if more than one argSet throw an exception 
-                    int argSepCount = 0;
+                    var argSepCount = 0;
                     while (this.charIndex < this.strLen)
                     {
                         currentChar = this.str[this.charIndex];
@@ -307,12 +307,12 @@ namespace HelixToolkit.UWP
             // Separator is a comma [,] if the decimal separator is not a comma, or a semicolon [;] otherwise. 
             public static char GetNumericListSeparator(IFormatProvider provider)
             {
-                char numericSeparator = ',';
+                var numericSeparator = ',';
 
                 // Get the NumberFormatInfo out of the provider, if possible
                 // If the IFormatProvider doesn't not contain a NumberFormatInfo, then 
                 // this method returns the current culture's NumberFormatInfo. 
-                NumberFormatInfo numberFormat = NumberFormatInfo.GetInstance(provider);
+                var numberFormat = NumberFormatInfo.GetInstance(provider);
 
                 Debug.Assert(null != numberFormat);
 
@@ -335,5 +335,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

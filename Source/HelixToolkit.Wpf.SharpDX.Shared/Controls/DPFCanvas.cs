@@ -19,7 +19,7 @@ using global::SharpDX.Direct3D11;
     using Device = SharpDX.Direct3D11.Device1;
     using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #else
-    using Device = SharpDX.Direct3D11.Device;
+using Device = SharpDX.Direct3D11.Device;
 #endif
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
@@ -75,7 +75,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render host.
         /// </value>
-        public IRenderHost RenderHost { private set; get; }
+        public IRenderHost RenderHost
+        {
+            private set; get;
+        }
         private Window parentWindow;
         private readonly bool belongsToParentWindow;
         private double dpiScale = 1;
@@ -188,7 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            if(belongsToParentWindow && parentWindow != null)
+            if (belongsToParentWindow && parentWindow != null)
             {
                 parentWindow.Closed -= ParentWindow_Closed;
             }
@@ -206,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         private bool StartD3D()
-        {                   
+        {
             RenderHost.StartD3D((int)ActualWidth, (int)ActualHeight);
             return true;
         }
@@ -232,7 +235,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void EndD3D()
         {
-            RenderHost.EndD3D();           
+            RenderHost.EndD3D();
         }
 
         /// <summary>
@@ -280,7 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     try
                     {
-                        RenderHost.Resize((int)ActualWidth, (int)ActualHeight);                       
+                        RenderHost.Resize((int)ActualWidth, (int)ActualHeight);
                     }
                     catch (Exception ex)
                     {
@@ -337,7 +340,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return null;
         }
 
-#region IDisposable Support
+        #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -375,6 +378,6 @@ namespace HelixToolkit.Wpf.SharpDX
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-#endregion
+        #endregion
     }
 }

@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Gets or sets OuterDictionary.
         /// </summary>
-        private Dictionary<K, Dictionary<T, V>> OuterDictionary { get; }= new Dictionary<K, Dictionary<T, V>>();
+        private Dictionary<K, Dictionary<T, V>> OuterDictionary { get; } = new Dictionary<K, Dictionary<T, V>>();
 
         /// <summary>
         /// Gets or sets the value with the specified indices.
@@ -71,11 +71,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void Clear()
         {
-            foreach(var dict in OuterDictionary.Values)
+            foreach (var dict in OuterDictionary.Values)
             {
                 dict?.Clear();
             }
-            OuterDictionary.Clear();     
+            OuterDictionary.Clear();
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace HelixToolkit.Wpf
         public void Add(K key1, T key2, V value)
         {
             Dictionary<T, V> inner;
-            if(OuterDictionary.TryGetValue(key1, out inner))
+            if (OuterDictionary.TryGetValue(key1, out inner))
             {
                 if (inner.ContainsKey(key2))
                 {
@@ -155,7 +155,7 @@ namespace HelixToolkit.Wpf
                 return false;
             }
 
-            bool isEqual = true;
+            var isEqual = true;
 
             foreach (var innerItems in this.OuterDictionary)
             {
@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf
 
                 // here we can be sure that the key is in both lists,
                 // but we need to check the contents of the inner dictionary
-                Dictionary<T, V> otherInnerDictionary = other.OuterDictionary[innerItems.Key];
+                var otherInnerDictionary = other.OuterDictionary[innerItems.Key];
                 foreach (var innerValue in innerItems.Value)
                 {
                     if (!otherInnerDictionary.ContainsValue(innerValue.Value))
@@ -248,7 +248,7 @@ namespace HelixToolkit.Wpf
         public bool TryGetValue(K key1, T key2, out V obj)
         {
             Dictionary<T, V> inner = null;
-            if(OuterDictionary.TryGetValue(key1, out inner) && inner.TryGetValue(key2, out obj))
+            if (OuterDictionary.TryGetValue(key1, out inner) && inner.TryGetValue(key2, out obj))
             {
                 return true;
             }
@@ -272,7 +272,7 @@ namespace HelixToolkit.Wpf
                 {
                     if (dict != null)
                     {
-                        foreach(var item in dict.Values)
+                        foreach (var item in dict.Values)
                         {
                             yield return item;
                         }
@@ -319,19 +319,28 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the key1.
         /// </summary>
         /// <value>The key1.</value>
-        public K Key1 { get; set; }
+        public K Key1
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the key2.
         /// </summary>
         /// <value>The key2.</value>
-        public T Key2 { get; set; }
+        public T Key2
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
-        public V Value { get; set; }
+        public V Value
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -343,6 +352,5 @@ namespace HelixToolkit.Wpf
         {
             return this.Key1 + " - " + this.Key2 + " - " + this.Value;
         }
-
     }
 }

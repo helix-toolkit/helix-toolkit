@@ -44,7 +44,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The logger.
         /// </value>
-        LogWrapper Logger { get; }
+        LogWrapper Logger
+        {
+            get;
+        }
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
@@ -71,37 +74,55 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The device.
         /// </value>
-        Device Device { get; }
+        Device Device
+        {
+            get;
+        }
         /// <summary>
         /// Gets the immediate device context.
         /// </summary>
         /// <value>
         /// The immediate device context.
         /// </value>
-        DeviceContextProxy ImmediateDeviceContext { get; }
+        DeviceContextProxy ImmediateDeviceContext
+        {
+            get;
+        }
         /// <summary>
         /// Gets the device2d.
         /// </summary>
         /// <value>
         /// The device2d.
         /// </value>
-        global::SharpDX.Direct2D1.Device Device2D { get; }
+        global::SharpDX.Direct2D1.Device Device2D
+        {
+            get;
+        }
         /// <summary>
         /// Gets or sets the color of the clear.
         /// </summary>
         /// <value>
         /// The color of the clear.
         /// </value>
-        Color4 ClearColor { set; get; }
+        Color4 ClearColor
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets or sets a value indicating whether this instance is shadow map enabled.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is shadow map enabled; otherwise, <c>false</c>.
         /// </value>
-        bool IsShadowMapEnabled { set; get; }
+        bool IsShadowMapEnabled
+        {
+            set; get;
+        }
 #if MSAA
-        MSAALevel MSAA { get; set; }
+        MSAALevel MSAA
+        {
+            get; set;
+        }
 #endif        
         /// <summary>
         /// Gets or sets the viewport.
@@ -109,18 +130,27 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The viewport.
         /// </value>
-        IViewport3DX Viewport { get; set; }
+        IViewport3DX Viewport
+        {
+            get; set;
+        }
         /// <summary>
         /// Gets the render context.
         /// </summary>
         /// <value>
         /// The render context.
         /// </value>
-        RenderContext RenderContext { get; }
+        RenderContext RenderContext
+        {
+            get;
+        }
         /// <summary>
         /// Renderer
         /// </summary>
-        IRenderer Renderer { get; }
+        IRenderer Renderer
+        {
+            get;
+        }
         /// <summary>
         /// Sets the default render targets.
         /// </summary>
@@ -132,42 +162,60 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The effects manager.
         /// </value>
-        IEffectsManager EffectsManager { get; set; }
+        IEffectsManager EffectsManager
+        {
+            get; set;
+        }
 
         /// <summary>
         /// This technique is used for the entire render pass 
         /// by all Element3D if not specified otherwise in
         /// the elements itself
         /// </summary>
-        IRenderTechnique RenderTechnique { set; get; }
+        IRenderTechnique RenderTechnique
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets the feature level.
         /// </summary>
         /// <value>
         /// The feature level.
         /// </value>
-        global::SharpDX.Direct3D.FeatureLevel FeatureLevel { get; }
+        global::SharpDX.Direct3D.FeatureLevel FeatureLevel
+        {
+            get;
+        }
         /// <summary>
         /// Gets a value indicating whether this instance is deferred lighting.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is deferred lighting; otherwise, <c>false</c>.
         /// </value>
-        bool IsDeferredLighting { get; }
+        bool IsDeferredLighting
+        {
+            get;
+        }
         /// <summary>
         /// Gets the actual height.
         /// </summary>
         /// <value>
         /// The actual height.
         /// </value>
-        float ActualHeight { get; }
+        float ActualHeight
+        {
+            get;
+        }
         /// <summary>
         /// Gets the actual width.
         /// </summary>
         /// <value>
         /// The actual width.
         /// </value>
-        float ActualWidth { get; }
+        float ActualWidth
+        {
+            get;
+        }
         /// <summary>
         /// Gets or sets the dpi scale.
         /// </summary>
@@ -182,14 +230,20 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
-        bool IsBusy { get; }
+        bool IsBusy
+        {
+            get;
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [enable render frustum].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [enable render frustum]; otherwise, <c>false</c>.
         /// </value>
-        bool EnableRenderFrustum { set; get; }
+        bool EnableRenderFrustum
+        {
+            set; get;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable sharing model mode].
@@ -197,96 +251,138 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if [enable sharing model mode]; otherwise, <c>false</c>.
         /// </value>
-        bool EnableSharingModelMode { set; get; }
+        bool EnableSharingModelMode
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets or sets the shared model container.
         /// </summary>
         /// <value>
         /// The shared model container.
         /// </value>
-        IModelContainer SharedModelContainer { set; get; }
+        IModelContainer SharedModelContainer
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets or sets a value indicating whether this instance is rendering.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is rendering; otherwise, <c>false</c>.
         /// </value>
-        bool IsRendering { set; get; }
+        bool IsRendering
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets the color buffer view.
         /// </summary>
         /// <value>
         /// The color buffer view.
         /// </value>
-        RenderTargetView RenderTargetBufferView { get; }
+        RenderTargetView RenderTargetBufferView
+        {
+            get;
+        }
         /// <summary>
         /// Gets the depth stencil buffer view.
         /// </summary>
         /// <value>
         /// The depth stencil buffer view.
         /// </value>
-        DepthStencilView DepthStencilBufferView { get; }
+        DepthStencilView DepthStencilBufferView
+        {
+            get;
+        }
         /// <summary>
         /// Gets the d2d target.
         /// </summary>
         /// <value>
         /// The d2d target.
         /// </value>
-        D2DTargetProxy D2DTarget { get; }
+        D2DTargetProxy D2DTarget
+        {
+            get;
+        }
         /// <summary>
         /// Gets the current frame flattened scene graph
         /// </summary>
         /// <value>
         /// The per frame renderable.
         /// </value>
-        FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
+        FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene
+        {
+            get;
+        }
         /// <summary>
         /// Gets the current frame lights
         /// </summary>
         /// <value>
         /// The per frame lights.
         /// </value>
-        IEnumerable<LightNode> PerFrameLights { get; }
+        IEnumerable<LightNode> PerFrameLights
+        {
+            get;
+        }
         /// <summary>
         /// Gets the per frame nodes with post effects. It is the subset of <see cref="PerFrameOpaqueNodes"/>
         /// </summary>
         /// <value>
         /// Gets the per frame nodes with post effects.
         /// </value>
-        FastList<SceneNode> PerFrameNodesWithPostEffect { get; }
+        FastList<SceneNode> PerFrameNodesWithPostEffect
+        {
+            get;
+        }
         /// <summary>
         /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
         /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        FastList<SceneNode> PerFrameOpaqueNodes { get; }
+        FastList<SceneNode> PerFrameOpaqueNodes
+        {
+            get;
+        }
         /// <summary>
         /// Gets the per frame opaque nodes in frustum.
         /// </summary>
         /// <value>
         /// The per frame opaque nodes in frustum.
         /// </value>
-        FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
+        FastList<SceneNode> PerFrameOpaqueNodesInFrustum
+        {
+            get;
+        }
         /// <summary>
         /// Gets the per frame transparent nodes in frustum.
         /// </summary>
         /// <value>
         /// The per frame transparent nodes in frustum.
         /// </value>
-        FastList<SceneNode> PerFrameTransparentNodesInFrustum { get; }
+        FastList<SceneNode> PerFrameTransparentNodesInFrustum
+        {
+            get;
+        }
         /// <summary>
         /// Gets the per frame particle nodes. <see cref="RenderType.Particle"/>
         /// </summary>
         /// <value>
         /// The per frame particle nodes.
         /// </value>
-        FastList<SceneNode> PerFrameParticleNodes { get; }
+        FastList<SceneNode> PerFrameParticleNodes
+        {
+            get;
+        }
         /// <summary>
         /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>
         /// </summary>
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
-        FastList<SceneNode> PerFrameTransparentNodes { get; }
+        FastList<SceneNode> PerFrameTransparentNodes
+        {
+            get;
+        }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>
@@ -333,28 +429,40 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if [show statistics]; otherwise, <c>false</c>.
         /// </value>
-        RenderDetail ShowRenderDetail { set; get; }
+        RenderDetail ShowRenderDetail
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets the render statistics.
         /// </summary>
         /// <value>
         /// The render statistics.
         /// </value>
-        IRenderStatistics RenderStatistics { get; }
+        IRenderStatistics RenderStatistics
+        {
+            get;
+        }
         /// <summary>
         /// Gets or sets the render configuration.
         /// </summary>
         /// <value>
         /// The render configuration.
         /// </value>
-        DX11RenderHostConfiguration RenderConfiguration { set; get; }
+        DX11RenderHostConfiguration RenderConfiguration
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets the render buffer.
         /// </summary>
         /// <value>
         /// The render buffer.
         /// </value>
-        DX11RenderBufferProxyBase RenderBuffer { get; }
+        DX11RenderBufferProxyBase RenderBuffer
+        {
+            get;
+        }
         /// <summary>
         /// Occurs when [scene graph updated].
         /// </summary>

@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         using Shaders;
-    
+
 
         [DataContract]
         public abstract class GenericMaterialCore : MaterialCore
@@ -62,16 +62,25 @@ namespace HelixToolkit.UWP
             [DataMember]
             public string WireframePassName { set; get; } = DefaultPassNames.Wireframe;
 
-            public string[] PropertieNames { get; }
-            public string[] TextureNames { get; }
-            public string[] SamplerNames { get; }
+            public string[] PropertieNames
+            {
+                get;
+            }
+            public string[] TextureNames
+            {
+                get;
+            }
+            public string[] SamplerNames
+            {
+                get;
+            }
 
             protected readonly ConstantBufferDescription cbDescription;
 
             public GenericMaterialCore(
                 string materialShaderPassName,
                 string shadowShaderPassName,
-                string wireframePassName, 
+                string wireframePassName,
                 ConstantBufferDescription constantBufferDesc)
             {
                 this.MaterialPassName = materialShaderPassName;
@@ -95,7 +104,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                List<string> properties = new List<string>();
+                var properties = new List<string>();
                 var cb = shaderPass.PixelShader.ConstantBufferMapping.Mappings
                     .Where(x => x.Value.Name == modelMaterialConstantBufferName).FirstOrDefault();
 
@@ -103,8 +112,8 @@ namespace HelixToolkit.UWP
                 {
                     cbDescription = new ConstantBufferDescription(cb.Value.Name, cb.Value.bufferDesc.SizeInBytes);
                     properties.AddRange(cb.Value.VariableDictionary.Keys);
-                }                       
-            
+                }
+
                 PropertieNames = properties.ToArray();
                 TextureNames = shaderPass.PixelShader.ShaderResourceViewMapping.Mappings.Select(x => x.Value.Description.Name).ToArray();
                 SamplerNames = shaderPass.PixelShader.SamplerMapping.Mappings.Select(x => x.Value.Name).ToArray();
@@ -139,7 +148,7 @@ namespace HelixToolkit.UWP
 
             public TextureModel GetTexture(string name)
             {
-                if(TextureDict.TryGetValue(name, out var texture))
+                if (TextureDict.TryGetValue(name, out var texture))
                 {
                     return texture;
                 }
@@ -147,19 +156,18 @@ namespace HelixToolkit.UWP
                 {
                     return null;
                 }
-            
             }
 
             public SamplerStateDescription GetSampler(string name)
             {
-                if(SamplerDict.TryGetValue(name, out var samplerDesc))
+                if (SamplerDict.TryGetValue(name, out var samplerDesc))
                 {
                     return samplerDesc;
                 }
                 else
                 {
                     return new SamplerStateDescription();
-                }         
+                }
             }
 
 
@@ -258,7 +266,7 @@ namespace HelixToolkit.UWP
         public sealed class GenericMeshMaterialCore : GenericMaterialCore
         {
             public GenericMeshMaterialCore()
-                :base(MaterialVariable.DefaultMeshConstantBufferDesc)
+                : base(MaterialVariable.DefaultMeshConstantBufferDesc)
             {
 
             }
@@ -268,7 +276,7 @@ namespace HelixToolkit.UWP
             /// <param name="shaderPass">The shader pass. Currently only supports pixel shader parameter properties</param>
             /// <param name="modelMaterialConstantBufferName">Name of the model material constant buffer in pixel shader.</param>
             public GenericMeshMaterialCore(ShaderPass shaderPass, string modelMaterialConstantBufferName)
-                :base(shaderPass, modelMaterialConstantBufferName)
+                : base(shaderPass, modelMaterialConstantBufferName)
             {
 
             }
@@ -282,7 +290,7 @@ namespace HelixToolkit.UWP
         public sealed class GenericLineMaterialCore : GenericMaterialCore
         {
             public GenericLineMaterialCore()
-                :base(MaterialVariable.DefaultPointLineConstantBufferDesc)
+                : base(MaterialVariable.DefaultPointLineConstantBufferDesc)
             {
 
             }
@@ -306,7 +314,7 @@ namespace HelixToolkit.UWP
         public sealed class GenericPointMaterialCore : GenericMaterialCore
         {
             public GenericPointMaterialCore()
-                :base(MaterialVariable.DefaultPointLineConstantBufferDesc)
+                : base(MaterialVariable.DefaultPointLineConstantBufferDesc)
             {
 
             }
@@ -327,5 +335,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

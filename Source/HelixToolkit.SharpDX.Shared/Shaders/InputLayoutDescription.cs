@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP
                 }
                 get
                 {
-                    if(shaderByteCode == null && !string.IsNullOrEmpty(ShaderByteCodeName))
+                    if (shaderByteCode == null && !string.IsNullOrEmpty(ShaderByteCodeName))
                     {
                         shaderByteCode = UWPShaderBytePool.Read(ShaderByteCodeName, byteCodeReader);
                     }
@@ -55,7 +55,10 @@ namespace HelixToolkit.UWP
             }
 
             [IgnoreDataMember]
-            public string ShaderByteCodeName { private set; get; }
+            public string ShaderByteCodeName
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets or sets the input elements.
             /// </summary>
@@ -65,7 +68,13 @@ namespace HelixToolkit.UWP
             [DataMember]
             public InputElement[] InputElements { set; get; } = new InputElement[0];
 
-            public KeyValuePair<byte[], InputElement[]> Description { get { return new KeyValuePair<byte[], InputElement[]>(ShaderByteCode, InputElements); } }
+            public KeyValuePair<byte[], InputElement[]> Description
+            {
+                get
+                {
+                    return new KeyValuePair<byte[], InputElement[]>(ShaderByteCode, InputElements);
+                }
+            }
 
             private readonly IShaderByteCodeReader byteCodeReader;
             /// <summary>
@@ -98,5 +107,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

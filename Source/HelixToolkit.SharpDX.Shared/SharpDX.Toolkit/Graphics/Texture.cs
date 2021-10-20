@@ -85,7 +85,10 @@ namespace SharpDX.Toolkit.Graphics
         /// </remarks>
         public int Width
         {
-            get { return Description.Width; }
+            get
+            {
+                return Description.Width;
+            }
         }
 
         /// <summary>	
@@ -96,7 +99,10 @@ namespace SharpDX.Toolkit.Graphics
         /// </remarks>
         public int Height
         {
-            get { return Description.Height; }
+            get
+            {
+                return Description.Height;
+            }
         }
 
         /// <summary>	
@@ -107,7 +113,10 @@ namespace SharpDX.Toolkit.Graphics
         /// </remarks>
         public int Depth
         {
-            get { return Description.Depth; }
+            get
+            {
+                return Description.Depth;
+            }
         }
 
         /// <summary>
@@ -116,7 +125,10 @@ namespace SharpDX.Toolkit.Graphics
         /// <value>The texture format.</value>
         public PixelFormat Format
         {
-            get { return Description.Format; }
+            get
+            {
+                return Description.Format;
+            }
         }
 
         /// <summary>
@@ -157,7 +169,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             if (mipLevels > 1)
             {
-                int maxMips = CountMips(width);
+                var maxMips = CountMips(width);
                 if (mipLevels > maxMips)
                     throw new InvalidOperationException(String.Format("MipLevels must be <= {0}", maxMips));
             }
@@ -183,7 +195,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             if (mipLevels > 1)
             {
-                int maxMips = CountMips(width, height);
+                var maxMips = CountMips(width, height);
                 if (mipLevels > maxMips)
                     throw new InvalidOperationException(String.Format("MipLevels must be <= {0}", maxMips));
             }
@@ -213,7 +225,7 @@ namespace SharpDX.Toolkit.Graphics
                 if (!IsPow2(width) || !IsPow2(height) || !IsPow2(depth))
                     throw new InvalidOperationException("Width/Height/Depth must be power of 2");
 
-                int maxMips = CountMips(width, height, depth);
+                var maxMips = CountMips(width, height, depth);
                 if (mipLevels > maxMips)
                     throw new InvalidOperationException(String.Format("MipLevels must be <= {0}", maxMips));
             }
@@ -264,7 +276,7 @@ namespace SharpDX.Toolkit.Graphics
         public int CalculateWidth<TData>(int mipLevel = 0) where TData : struct
         {
             var widthOnMip = CalculateMipSize((int)Description.Width, mipLevel);
-            var rowStride = widthOnMip * ((PixelFormat) Description.Format).SizeInBytes;
+            var rowStride = widthOnMip * ((PixelFormat)Description.Format).SizeInBytes;
 
             var dataStrideInBytes = Utilities.SizeOf<TData>() * widthOnMip;
             var width = ((double)rowStride / dataStrideInBytes) * widthOnMip;
@@ -337,7 +349,7 @@ namespace SharpDX.Toolkit.Graphics
                     case TextureDimension.TextureCube:
                         return RenderTargetCube.New(graphicsDevice, description);
                 }
-            } 
+            }
             else if ((description.BindFlags & BindFlags.DepthStencil) != 0)
             {
                 return DepthStencilBuffer.New(graphicsDevice, description);
@@ -475,10 +487,10 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns>The resulting mipmap count (clamp to [1, maxMipMapCount] for this texture)</returns>
         internal static int CalculateMipMapCount(MipMapCount requestedLevel, int width, int height = 0, int depth = 0)
         {
-            int size = Math.Max(Math.Max(width, height), depth);
-            int maxMipMap = 1 + (int)Math.Log(size, 2);
+            var size = Math.Max(Math.Max(width, height), depth);
+            var maxMipMap = 1 + (int)Math.Log(size, 2);
 
-            return requestedLevel  == 0 ? maxMipMap : Math.Min(requestedLevel, maxMipMap);
+            return requestedLevel == 0 ? maxMipMap : Math.Min(requestedLevel, maxMipMap);
         }
 
         /// <summary>
@@ -492,16 +504,18 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="textureData"></param>
         /// <param name="fixedPointer"></param>
         /// <returns></returns>
-        internal static DataBox GetDataBox<T>(Format format, int width, int height, int depth, T[] textureData, IntPtr fixedPointer) where T : struct
+        internal static DataBox GetDataBox<T>(Format format, int width, int height, int depth, T[] textureData, IntPtr fixedPointer) where T : unmanaged
         {
             // Check that the textureData size is correct
-            if (textureData == null) throw new ArgumentNullException("textureData");
+            if (textureData == null)
+                throw new ArgumentNullException("textureData");
             int rowPitch;
             int slicePitch;
             int widthCount;
             int heightCount;
             Image.ComputePitch(format, width, height, out rowPitch, out slicePitch, out widthCount, out heightCount);
-            if (Utilities.SizeOf(textureData) != (slicePitch * depth)) throw new ArgumentException("Invalid size for TextureData");
+            if (Utilities.SizeOf(textureData) != (slicePitch * depth))
+                throw new ArgumentException("Invalid size for TextureData");
 
             return new DataBox(fixedPointer, rowPitch, slicePitch);
         }
@@ -522,7 +536,7 @@ namespace SharpDX.Toolkit.Graphics
 
         internal void GetViewSliceBounds(ViewType viewType, ref int arrayOrDepthIndex, ref int mipIndex, out int arrayOrDepthCount, out int mipCount)
         {
-            int arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
+            var arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
 
             switch (viewType)
             {
@@ -553,13 +567,13 @@ namespace SharpDX.Toolkit.Graphics
 
         internal int GetViewCount()
         {
-            int arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
+            var arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
             return GetViewIndex((ViewType)4, arrayOrDepthSize, this.Description.MipLevels);
         }
 
         internal int GetViewIndex(ViewType viewType, int arrayOrDepthIndex, int mipIndex)
         {
-            int arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
+            var arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
             return (((int)viewType) * arrayOrDepthSize + arrayOrDepthIndex) * this.Description.MipLevels + mipIndex;
         }
 
@@ -575,44 +589,47 @@ namespace SharpDX.Toolkit.Graphics
                 {
                     if (this.shaderResourceViews != null)
                     {
-                        int i = 0;
-                        foreach(var shaderResourceViewItem in shaderResourceViews)
+                        var i = 0;
+                        foreach (var shaderResourceViewItem in shaderResourceViews)
                         {
                             var shaderResourceView = shaderResourceViewItem.Value;
-                            if (shaderResourceView != null) shaderResourceView.View.DebugName = Name == null ? null : String.Format("{0} SRV[{1}]", i, Name);
+                            if (shaderResourceView != null)
+                                shaderResourceView.View.DebugName = Name == null ? null : String.Format("{0} SRV[{1}]", i, Name);
                             i++;
                         }
                     }
 
                     if (this.renderTargetViews != null)
                     {
-                        for (int i = 0; i < this.renderTargetViews.Length; i++)
+                        for (var i = 0; i < this.renderTargetViews.Length; i++)
                         {
                             var renderTargetView = this.renderTargetViews[i];
-                            if (renderTargetView != null) renderTargetView.View.DebugName = Name == null ? null : String.Format("{0} RTV[{1}]", i, Name);
+                            if (renderTargetView != null)
+                                renderTargetView.View.DebugName = Name == null ? null : String.Format("{0} RTV[{1}]", i, Name);
                         }
                     }
 
                     if (this.unorderedAccessViews != null)
                     {
-                        for (int i = 0; i < this.unorderedAccessViews.Length; i++)
+                        for (var i = 0; i < this.unorderedAccessViews.Length; i++)
                         {
                             var unorderedAccessView = this.unorderedAccessViews[i];
-                            if (unorderedAccessView != null) unorderedAccessView.DebugName = Name == null ? null : String.Format("{0} UAV[{1}]", i, Name);
+                            if (unorderedAccessView != null)
+                                unorderedAccessView.DebugName = Name == null ? null : String.Format("{0} UAV[{1}]", i, Name);
                         }
                     }
                 }
             }
         }
 
-        private static bool IsPow2( int x )
+        private static bool IsPow2(int x)
         {
             return ((x != 0) && (x & (x - 1)) == 0);
         }
 
         private static int CountMips(int width)
         {
-            int mipLevels = 1;
+            var mipLevels = 1;
 
             while (width > 1)
             {
@@ -627,7 +644,7 @@ namespace SharpDX.Toolkit.Graphics
 
         private static int CountMips(int width, int height)
         {
-            int mipLevels = 1;
+            var mipLevels = 1;
 
             while (height > 1 || width > 1)
             {
@@ -645,7 +662,7 @@ namespace SharpDX.Toolkit.Graphics
 
         private static int CountMips(int width, int height, int depth)
         {
-            int mipLevels = 1;
+            var mipLevels = 1;
 
             while (height > 1 || width > 1 || depth > 1)
             {
@@ -714,7 +731,8 @@ namespace SharpDX.Toolkit.Graphics
 
             public override bool Equals(object obj)
             {
-                if(ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(null, obj))
+                    return false;
                 return obj is TextureViewKey && Equals((TextureViewKey)obj);
             }
 

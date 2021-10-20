@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using Cameras;   
+    using Cameras;
     using Model.Scene;
     using Model.Scene2D;
 
@@ -41,28 +41,40 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The render host.
         /// </value>
-        IRenderHost RenderHost { get; }
+        IRenderHost RenderHost
+        {
+            get;
+        }
         /// <summary>
         /// Gets a value indicating whether this instance is shadow mapping enabled.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is shadow mapping enabled; otherwise, <c>false</c>.
         /// </value>
-        bool IsShadowMappingEnabled { get; }
+        bool IsShadowMappingEnabled
+        {
+            get;
+        }
         /// <summary>
         /// Gets or sets the effects manager.
         /// </summary>
         /// <value>
         /// The effects manager.
         /// </value>
-        IEffectsManager EffectsManager { set; get; }
+        IEffectsManager EffectsManager
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets the camera core.
         /// </summary>
         /// <value>
         /// The camera core.
         /// </value>
-        CameraCore CameraCore { get; }
+        CameraCore CameraCore
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -76,14 +88,20 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The renderables.
         /// </value>
-        IEnumerable<SceneNode> Renderables { get; }
+        IEnumerable<SceneNode> Renderables
+        {
+            get;
+        }
         /// <summary>
         /// Gets the d2 d renderables.
         /// </summary>
         /// <value>
         /// The d2 d renderables.
         /// </value>
-        IEnumerable<SceneNode2D> D2DRenderables { get; }
+        IEnumerable<SceneNode2D> D2DRenderables
+        {
+            get;
+        }
         /// <summary>
         /// Invalidates the render.
         /// </summary>
@@ -98,6 +116,9 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The viewport rectangle.
         /// </value>
-        Rectangle ViewportRectangle { get; }
+        Rectangle ViewportRectangle
+        {
+            get;
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class ManipulationBinding : InputBinding
     {
-        public int FingerCount => ((ManipulationGesture) this.Gesture).FingerCount;
+        public int FingerCount => ((ManipulationGesture)this.Gesture).FingerCount;
 
         [TypeConverter(typeof(ManipulationGestureConverter))]
         public override InputGesture Gesture
@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return base.Gesture;
             }
-        
+
             set
             {
                 var oldGesture = this.Gesture;

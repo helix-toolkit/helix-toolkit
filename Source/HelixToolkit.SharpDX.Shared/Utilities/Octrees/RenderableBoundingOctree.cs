@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP
     namespace Utilities
     {
         using Model.Scene;
-    
+
 
         public class BoundableNodeOctree : DynamicOctreeBase<SceneNode>
         {
@@ -47,7 +47,8 @@ namespace HelixToolkit.UWP
 
             protected BoundableNodeOctree(BoundingBox bound, List<SceneNode> objList, IDynamicOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> queueCache)
                 : base(ref bound, objList, parent, paramter, queueCache)
-            { }
+            {
+            }
 
             public override bool HitTestCurrentNodeExcludeChild(HitTestContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayModel,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
@@ -57,7 +58,7 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
-                bool isHit = false;
+                var isHit = false;
                 //var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
                 var bound = Bound;
                 var tempHits = new List<HitTestResult>();
@@ -144,7 +145,9 @@ namespace HelixToolkit.UWP
                 if (base.Add(item, out octant))
                 {
                     if (octant == null)
-                    { throw new Exception("Output octant is null"); };
+                    {
+                        throw new Exception("Output octant is null");
+                    };
                     var root = FindRoot(this) as BoundableNodeOctree;
                     if (!root.OctantDictionary.ContainsKey(item.GUID))
                     {
@@ -283,5 +286,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

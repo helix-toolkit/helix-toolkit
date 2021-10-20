@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP
     namespace Model.Scene2D
     {
         using Core2D;
-    
+
 
         /// <summary>
         ///
@@ -32,7 +32,10 @@ namespace HelixToolkit.UWP
         {
             public sealed class UpdateEventArgs : EventArgs
             {
-                public RenderContext2D Context { private set; get; }
+                public RenderContext2D Context
+                {
+                    private set; get;
+                }
 
                 public UpdateEventArgs(RenderContext2D context)
                 {
@@ -54,7 +57,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The parent.
             /// </value>
-            public SceneNode2D Parent { set; get; }
+            public SceneNode2D Parent
+            {
+                set; get;
+            }
 
             private Visibility visibility = Visibility.Visible;
 
@@ -69,9 +75,14 @@ namespace HelixToolkit.UWP
                 set
                 {
                     if (Set(ref visibility, value))
-                    { InvalidateVisual(); }
+                    {
+                        InvalidateVisual();
+                    }
                 }
-                get { return visibility; }
+                get
+                {
+                    return visibility;
+                }
             }
 
             /// <summary>
@@ -88,7 +99,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The hit test source.
             /// </value>
-            public object WrapperSource { set; get; }
+            public object WrapperSource
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Gets or sets a value indicating whether this instance is attached.
@@ -96,7 +110,10 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance is attached; otherwise, <c>false</c>.
             /// </value>
-            public bool IsAttached { private set; get; }
+            public bool IsAttached
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Gets or sets a value indicating whether this instance is renderable.
@@ -147,7 +164,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The render host.
             /// </value>
-            protected IRenderHost RenderHost { private set; get; }
+            protected IRenderHost RenderHost
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Gets the items.
@@ -182,7 +202,10 @@ namespace HelixToolkit.UWP
                         InvalidateVisual();
                     }
                 }
-                get { return modelMatrix; }
+                get
+                {
+                    return modelMatrix;
+                }
             }
 
             private Matrix3x2 layoutTranslate = Matrix3x2.Identity;
@@ -202,7 +225,10 @@ namespace HelixToolkit.UWP
                         InvalidateRender();
                     }
                 }
-                get { return layoutTranslate; }
+                get
+                {
+                    return layoutTranslate;
+                }
             }
 
             private Matrix3x2 parentMatrix = Matrix3x2.Identity;
@@ -222,7 +248,10 @@ namespace HelixToolkit.UWP
                         IsTransformDirty = true;
                     }
                 }
-                get { return parentMatrix; }
+                get
+                {
+                    return parentMatrix;
+                }
             }
 
             private Matrix3x2 totalTransform = Matrix3x2.Identity;
@@ -239,7 +268,7 @@ namespace HelixToolkit.UWP
                 {
                     if (Set(ref totalTransform, value))
                     {
-                        for (int i = 0; i < ItemsInternal.Count; ++i)
+                        for (var i = 0; i < ItemsInternal.Count; ++i)
                         {
                             ItemsInternal[i].ParentMatrix = totalTransform;
                         }
@@ -260,7 +289,9 @@ namespace HelixToolkit.UWP
             /// The relative matrix.
             /// </value>
             private Matrix3x2 RelativeMatrix
-            { set; get; }
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Gets or sets the layout bound with transform.
@@ -281,8 +312,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsMouseOver
             {
-                set { RenderCore.IsMouseOver = value; }
-                get { return RenderCore.IsMouseOver; }
+                set
+                {
+                    RenderCore.IsMouseOver = value;
+                }
+                get
+                {
+                    return RenderCore.IsMouseOver;
+                }
             }
 
             public float DpiScale
@@ -302,7 +339,10 @@ namespace HelixToolkit.UWP
             /// Creates the render core.
             /// </summary>
             /// <returns></returns>
-            protected virtual RenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
+            protected virtual RenderCore2D CreateRenderCore()
+            {
+                return new EmptyRenderCore2D();
+            }
 
             /// <summary>
             /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
@@ -426,7 +466,9 @@ namespace HelixToolkit.UWP
             public void Render(RenderContext2D context)
             {
                 if (!IsRenderable)
-                { return; }
+                {
+                    return;
+                }
                 if (IsTransformDirty)
                 {
                     RelativeMatrix = Matrix3x2.Translation(-RenderSize * RenderTransformOrigin)
@@ -439,18 +481,18 @@ namespace HelixToolkit.UWP
 
                 LayoutBoundWithTransform = LayoutBound.Translate(TotalModelMatrix.TranslationVector);
 
-    #if DISABLEBITMAPCACHE
+#if DISABLEBITMAPCACHE
                 IsBitmapCacheValid = false;
-    #else
+#else
                 EnsureBitmapCache(context, new Size2((int)Math.Ceiling(LayoutClipBound.Width), (int)Math.Ceiling(LayoutClipBound.Height)), context.DeviceContext.MaximumBitmapSize);
-    #endif
+#endif
                 if (EnableBitmapCache && IsBitmapCacheValid)
                 {
                     if (IsVisualDirty)
                     {
-    #if DEBUGDRAWING
+#if DEBUGDRAWING
                         Debug.WriteLine("Redraw bitmap cache");
-    #endif
+#endif
                         context.PushRenderTarget(bitmapCache, true);
                         context.DeviceContext.Transform = Matrix3x2.Identity;
                         context.PushRelativeTransform(Matrix3x2.Identity);
@@ -502,7 +544,7 @@ namespace HelixToolkit.UWP
             protected virtual void OnRender(RenderContext2D context)
             {
                 RenderCore.Render(context);
-                for (int i = 0; i < this.ItemsInternal.Count; ++i)
+                for (var i = 0; i < this.ItemsInternal.Count; ++i)
                 {
                     ItemsInternal[i].Render(context);
                 }
@@ -617,5 +659,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

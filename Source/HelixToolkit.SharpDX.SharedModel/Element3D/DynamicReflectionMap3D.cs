@@ -36,8 +36,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableReflector
         {
-            get { return (bool)GetValue(EnableReflectorProperty); }
-            set { SetValue(EnableReflectorProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableReflectorProperty);
+            }
+            set
+            {
+                SetValue(EnableReflectorProperty, value);
+            }
         }
 
         /// <summary>
@@ -58,8 +64,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int Size
         {
-            get { return (int)GetValue(SizeProperty); }
-            set { SetValue(SizeProperty, value); }
+            get
+            {
+                return (int)GetValue(SizeProperty);
+            }
+            set
+            {
+                SetValue(SizeProperty, value);
+            }
         }
 
         /// <summary>
@@ -80,8 +92,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FarField
         {
-            get { return (double)GetValue(FarFieldProperty); }
-            set { SetValue(FarFieldProperty, value); }
+            get
+            {
+                return (double)GetValue(FarFieldProperty);
+            }
+            set
+            {
+                SetValue(FarFieldProperty, value);
+            }
         }
 
         /// <summary>
@@ -102,8 +120,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double NearField
         {
-            get { return (double)GetValue(NearFieldProperty); }
-            set { SetValue(NearFieldProperty, value); }
+            get
+            {
+                return (double)GetValue(NearFieldProperty);
+            }
+            set
+            {
+                SetValue(NearFieldProperty, value);
+            }
         }
 
         /// <summary>
@@ -124,8 +148,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsLeftHanded
         {
-            get { return (bool)GetValue(IsLeftHandedProperty); }
-            set { SetValue(IsLeftHandedProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsLeftHandedProperty);
+            }
+            set
+            {
+                SetValue(IsLeftHandedProperty, value);
+            }
         }
 
         /// <summary>
@@ -147,8 +177,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsDynamicScene
         {
-            get { return (bool)GetValue(IsDynamicSceneProperty); }
-            set { SetValue(IsDynamicSceneProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsDynamicSceneProperty);
+            }
+            set
+            {
+                SetValue(IsDynamicSceneProperty, value);
+            }
         }
 
         public static readonly DependencyProperty IsDynamicSceneProperty =
@@ -165,7 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
             base.AssignDefaultValuesToSceneNode(node);
-            if(node is DynamicReflectionNode n)
+            if (node is DynamicReflectionNode n)
             {
                 n.IsDynamicScene = IsDynamicScene;
                 n.IsLeftHanded = IsLeftHanded;

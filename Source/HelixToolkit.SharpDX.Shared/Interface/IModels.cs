@@ -29,14 +29,20 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The type.
         /// </value>
-        BillboardType Type { get; }
+        BillboardType Type
+        {
+            get;
+        }
         /// <summary>
         /// Gets the texture.
         /// </summary>
         /// <value>
         /// The texture.
         /// </value>
-        TextureModel Texture { get; }
+        TextureModel Texture
+        {
+            get;
+        }
 
         /// <summary>
         /// Draws the texture.
@@ -49,21 +55,30 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The billboard vertices.
         /// </value>
-        IList<BillboardVertex> BillboardVertices { get; }
+        IList<BillboardVertex> BillboardVertices
+        {
+            get;
+        }
         /// <summary>
         /// Gets the width.
         /// </summary>
         /// <value>
         /// The width.
         /// </value>
-        float Width { get; }
+        float Width
+        {
+            get;
+        }
         /// <summary>
         /// Gets the height.
         /// </summary>
         /// <value>
         /// The height.
         /// </value>
-        float Height { get; }
+        float Height
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets a value indicating whether this billboard internal is initialized.
@@ -71,7 +86,10 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if this instance is initialized; otherwise, <c>false</c>.
         /// </value>
-        bool IsInitialized { get; }
+        bool IsInitialized
+        {
+            get;
+        }
     }
 
     /// <summary>
@@ -104,7 +122,7 @@ namespace HelixToolkit.UWP
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ILightsBufferProxy<T> where T : struct
+    public interface ILightsBufferProxy<T> where T : unmanaged
     {
         /// <summary>
         /// Gets the size of the buffer.
@@ -112,28 +130,40 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The size of the buffer.
         /// </value>
-        int BufferSize { get; }
+        int BufferSize
+        {
+            get;
+        }
         /// <summary>
         /// Gets the light array
         /// </summary>
         /// <value>
         /// The lights.
         /// </value>
-        T[] Lights { get; }
+        T[] Lights
+        {
+            get;
+        }
         /// <summary>
         /// Gets or sets the ambient light.
         /// </summary>
         /// <value>
         /// The ambient light.
         /// </value>
-        Color4 AmbientLight { set; get; }
+        Color4 AmbientLight
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets the light count.
         /// </summary>
         /// <value>
         /// The light count.
         /// </value>
-        int LightCount { get; }
+        int LightCount
+        {
+            get;
+        }
         /// <summary>
         /// Resets the light count. Must call before calling light render
         /// </summary>

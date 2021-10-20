@@ -83,7 +83,7 @@ namespace HelixToolkit.UWP
                 newPosition = rotateAround - newRelativePosition;
 
                 newLookDirection = newTarget - newPosition;
-                if(cameraMode != CameraMode.Inspect)
+                if (cameraMode != CameraMode.Inspect)
                 {
                     newPosition = camera.Position;
                 }
@@ -107,11 +107,11 @@ namespace HelixToolkit.UWP
             private static Vector3 ProjectToTrackball(Vector2 point, double w, double h)
             {
                 // Use the diagonal for scaling, making sure that the whole client area is inside the trackball
-                double r = Math.Sqrt((w * w) + (h * h)) / 2;
-                double x = (point.X - (w / 2)) / r;
-                double y = ((h / 2) - point.Y) / r;
-                double z2 = 1 - (x * x) - (y * y);
-                double z = z2 > 0 ? Math.Sqrt(z2) : 0;
+                var r = Math.Sqrt((w * w) + (h * h)) / 2;
+                var x = (point.X - (w / 2)) / r;
+                var y = ((h / 2) - point.Y) / r;
+                var z2 = 1 - (x * x) - (y * y);
+                var z = z2 > 0 ? Math.Sqrt(z2) : 0;
 
                 return new Vector3((float)x, (float)y, (float)z);
             }
@@ -139,7 +139,7 @@ namespace HelixToolkit.UWP
             {
                 InitTurnballRotationAxes(p1, viewportWidth, viewportHeight, camera, out var rotationAxisX, out var rotationAxisY);
 
-                Vector2 delta = p2 - p1;
+                var delta = p2 - p1;
 
                 var relativeTarget = rotateAround - camera.Target;
                 var relativePosition = rotateAround - camera.Position;
@@ -154,14 +154,14 @@ namespace HelixToolkit.UWP
 
                 var q1 = Quaternion.RotationAxis(rotationAxisX, d * invertFactor * delta.X / 180 * (float)Math.PI);
                 var q2 = Quaternion.RotationAxis(rotationAxisY, d * delta.Y / 180 * (float)Math.PI);
-                Quaternion q = q1 * q2;
+                var q = q1 * q2;
 
                 var m = Matrix.RotationQuaternion(q);
-                Vector3 newLookDir = Vector3.TransformNormal(Vector3.Normalize(camera.LookDirection), m);
+                var newLookDir = Vector3.TransformNormal(Vector3.Normalize(camera.LookDirection), m);
                 newUpDirection = Vector3.TransformNormal(Vector3.Normalize(camera.UpDirection), m);
 
-                Vector3 newRelativeTarget = Vector3.TransformCoordinate(relativeTarget, m);
-                Vector3 newRelativePosition = Vector3.TransformCoordinate(relativePosition, m);
+                var newRelativeTarget = Vector3.TransformCoordinate(relativeTarget, m);
+                var newRelativePosition = Vector3.TransformCoordinate(relativePosition, m);
 
                 var newRightVector = Vector3.Normalize(Vector3.Cross(newLookDir, newUpDirection));
                 var modUpDir = Vector3.Cross(newRightVector, newLookDir);
@@ -234,7 +234,7 @@ namespace HelixToolkit.UWP
             /// <param name="newPosition">The new position.</param>
             /// <param name="newLookDirection">The new look direction.</param>
             /// <param name="newUpDirection">The new up direction.</param>
-            public static void RotateTurntable(CameraMode cameraMode, ref Vector2 delta, ref Vector3 rotateAround,          
+            public static void RotateTurntable(CameraMode cameraMode, ref Vector2 delta, ref Vector3 rotateAround,
                 float sensitivity,
                 int viewportWidth, int viewportHeight,
                 CameraCore camera, int invertFactor,
@@ -248,7 +248,7 @@ namespace HelixToolkit.UWP
                 var dir = Vector3.Normalize(camera.LookDirection);
                 var right = Vector3.Normalize(Vector3.Cross(dir, cUp));
 
-                float d = -0.5f;
+                var d = -0.5f;
                 if (cameraMode != CameraMode.Inspect)
                 {
                     d *= -0.2f;
@@ -258,7 +258,7 @@ namespace HelixToolkit.UWP
 
                 var q1 = Quaternion.RotationAxis(up, d * invertFactor * delta.X / 180 * (float)Math.PI);
                 var q2 = Quaternion.RotationAxis(right, d * delta.Y / 180 * (float)Math.PI);
-                Quaternion q = q1 * q2;
+                var q = q1 * q2;
 
                 var m = Matrix.RotationQuaternion(q);
 
@@ -274,9 +274,8 @@ namespace HelixToolkit.UWP
                 if (cameraMode != CameraMode.Inspect)
                 {
                     newPosition = camera.Position;
-                }            
+                }
             }
         }
     }
-
 }

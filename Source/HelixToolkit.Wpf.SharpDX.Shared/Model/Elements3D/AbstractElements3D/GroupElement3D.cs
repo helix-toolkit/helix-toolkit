@@ -31,8 +31,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
-                new PropertyMetadata(null, 
-                    (d, e) => {
+                new PropertyMetadata(null,
+                    (d, e) =>
+                    {
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
@@ -58,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         // Using a DependencyProperty as the backing store for AlwaysHittable.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AlwaysHittableProperty =
-            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(GroupElement3D), new PropertyMetadata(false, (d, e) => 
+            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(GroupElement3D), new PropertyMetadata(false, (d, e) =>
             {
                 (d as GroupElement3D).SceneNode.AlwaysHittable = (bool)e.NewValue;
             }));
@@ -69,8 +70,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IList<Element3D> ItemsSource
         {
-            get { return (IList<Element3D>)this.GetValue(ItemsSourceProperty); }
-            set { this.SetValue(ItemsSourceProperty, value); }
+            get
+            {
+                return (IList<Element3D>)this.GetValue(ItemsSourceProperty);
+            }
+            set
+            {
+                this.SetValue(ItemsSourceProperty, value);
+            }
         }
 
         public IOctreeManagerWrapper OctreeManager
@@ -104,7 +111,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private IOctreeBasic Octree
         {
-            get { return (SceneNode as GroupNode).OctreeManager?.Octree; }
+            get
+            {
+                return (SceneNode as GroupNode).OctreeManager?.Octree;
+            }
         }
 
         private IList<Element3D> itemsSourceInternal;
@@ -153,9 +163,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var node = SceneNode as GroupNode;     
+            var node = SceneNode as GroupNode;
             switch (e.Action)
-            {               
+            {
                 case NotifyCollectionChangedAction.Remove:
                 case NotifyCollectionChangedAction.Replace:
                     if (e.OldItems != null)
@@ -188,7 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Reset:
-                    if(sender is IList list)
+                    if (sender is IList list)
                     {
                         foreach (Element3D item in list)
                         {
@@ -224,10 +234,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
                     s.CollectionChanged -= S_CollectionChanged;
-                }                
+                }
             }
             //Must not use both ItemsSource and Children at the same time
-            if(itemsSourceInternal == null && Children.Count > 0 && itemsSource != null)
+            if (itemsSourceInternal == null && Children.Count > 0 && itemsSource != null)
             {
                 throw new InvalidOperationException("Children must be empty before using ItemsSource");
             }
@@ -239,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     s.CollectionChanged += S_CollectionChanged;
                 }
-                foreach(Element3D item in itemsSourceInternal)
+                foreach (var item in itemsSourceInternal)
                 {
                     Children.Add(item);
                 }
@@ -255,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     break;
                 case NotifyCollectionChangedAction.Remove:
                 case NotifyCollectionChangedAction.Replace:
-                    foreach(Element3D item in e.OldItems)
+                    foreach (Element3D item in e.OldItems)
                     {
                         Children.Remove(item);
                     }
@@ -264,14 +274,14 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Reset:
-                    foreach(Element3D item in itemsSourceInternal)
+                    foreach (var item in itemsSourceInternal)
                     {
                         Children.Add(item);
                     }
                     break;
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
-                    foreach(Element3D item in e.NewItems)
+                    foreach (Element3D item in e.NewItems)
                     {
                         Children.Add(item);
                     }

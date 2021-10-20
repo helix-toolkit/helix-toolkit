@@ -87,12 +87,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets the last point (in 2D screen coordinates).
         /// </summary>
-        protected Point LastPoint { get; set; }
+        protected Point LastPoint
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the last point (in 3D world coordinates).
         /// </summary>
-        protected Vector3? LastPoint3D { get; set; }
+        protected Vector3? LastPoint3D
+        {
+            get; set;
+        }
         /// <summary>
         /// Use to invert the left handed system
         /// </summary>
@@ -116,24 +122,36 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets the mouse down point at the nearest hit element (3D world coordinates).
         /// </summary>
-        protected Vector3? MouseDownNearestPoint3D { get; set; }
+        protected Vector3? MouseDownNearestPoint3D
+        {
+            get; set;
+        }
         /// <summary>
         /// Gets or sets the mouse down nearest hit model bounding box center.
         /// </summary>
         /// <value>
         /// The mouse down nearest model bound center.
         /// </value>
-        protected Vector3? MouseDownNearestModelBoundCenter { set; get; }
+        protected Vector3? MouseDownNearestModelBoundCenter
+        {
+            set; get;
+        }
 
         /// <summary>
         /// Gets or sets the mouse down point (2D screen coordinates).
         /// </summary>
-        protected Point MouseDownPoint { get; set; }
+        protected Point MouseDownPoint
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the mouse down point (3D world coordinates).
         /// </summary>
-        protected Vector3? MouseDownPoint3D { get; set; }
+        protected Vector3? MouseDownPoint3D
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the rotation sensitivity.
@@ -153,10 +171,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>The viewport.</value>
         public Viewport3DX Viewport
         {
-            get { return Controller.Viewport; }
+            get
+            {
+                return Controller.Viewport;
+            }
         }
 
-        public CameraController Controller { get; private set; }
+        public CameraController Controller
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets the zoom sensitivity.
@@ -273,7 +297,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return point;
             }
-            else { return null; }
+            else
+            {
+                return null;
+            }
             //return ray.PlaneIntersection(position, normal);
         }
 
@@ -390,7 +417,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            foreach(var handler in Controller.MouseHandlers)
+            foreach (var handler in Controller.MouseHandlers)
             {
                 if (handler.IsActive)
                 {
@@ -431,18 +458,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindHitsInFrustum(this.MouseDownPoint.ToVector2(), ref hits))
             {
-                if(hits.Count > 0)
+                if (hits.Count > 0)
                 {
                     MouseDownNearestPoint3D = hits[0].PointHit;
-                    if(hits[0].ModelHit is Element3D ele)
+                    if (hits[0].ModelHit is Element3D ele)
                     {
                         MouseDownNearestModelBoundCenter = ele.BoundsWithTransform.Center;
                     }
-                    else if(hits[0].ModelHit is SceneNode node)
+                    else if (hits[0].ModelHit is SceneNode node)
                     {
                         MouseDownNearestModelBoundCenter = node.BoundsWithTransform.Center;
                     }
-                }               
+                }
             }
             else
             {

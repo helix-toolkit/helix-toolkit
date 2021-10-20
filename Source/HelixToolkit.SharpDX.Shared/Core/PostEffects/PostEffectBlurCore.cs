@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP
 {
     namespace Core
     {
-        
+
         using Render;
         using Shaders;
         using Utilities;
@@ -38,8 +38,8 @@ namespace HelixToolkit.UWP
             private ShaderPass screenBlurPassHorizontal;
             private readonly int textureSlot;
             private readonly int samplerSlot;
-            private readonly ConstantBufferComponent modelCB;
-            private readonly SamplerStateProxy sampler;
+            private ConstantBufferComponent modelCB;
+            private SamplerStateProxy sampler;
             private static readonly Color4 Transparent = new Color4(0, 0, 0, 0);
             #endregion
 
@@ -53,8 +53,8 @@ namespace HelixToolkit.UWP
                 screenBlurPassHorizontal = blurHorizontalPass;
                 this.textureSlot = textureSlot;
                 this.samplerSlot = samplerSlot;
-                this.sampler = Collect(manager.StateManager.Register(sampler));
-                modelCB = Collect(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
+                this.sampler = manager.StateManager.Register(sampler);
+                modelCB = new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes));
             }
 
             /// <summary>
@@ -67,14 +67,14 @@ namespace HelixToolkit.UWP
             /// <param name="sourceHeight"></param>
             /// <param name="sourceWidth"></param>
             /// <param name="modelStruct"></param>
-            public virtual void Run(RenderContext context, DeviceContextProxy deviceContext, 
+            public virtual void Run(RenderContext context, DeviceContextProxy deviceContext,
                 ShaderResourceViewProxy source, ref ViewportF sourceViewport, BlurDepth depth, ref BorderEffectStruct modelStruct)
             {
                 deviceContext.SetSampler(PixelShader.Type, samplerSlot, sampler);
-                if((depth & BlurDepth.One) != 0)
+                if ((depth & BlurDepth.One) != 0)
                 {
                     using (var target1 = context.GetOffScreenRT(OffScreenTextureSize.Half,
-                        global::SharpDX.DXGI.Format.R8G8B8A8_UNorm, out int width, out int height))
+                        global::SharpDX.DXGI.Format.R8G8B8A8_UNorm, out var width, out var height))
                     {
                         modelStruct.ViewportScale = (int)OffScreenTextureSize.Half;
                         modelCB.Upload(deviceContext, ref modelStruct);
@@ -87,10 +87,10 @@ namespace HelixToolkit.UWP
                         screenBlurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, source);
                         deviceContext.Draw(4, 0);
 
-                        if((depth & BlurDepth.Two) != 0)
+                        if ((depth & BlurDepth.Two) != 0)
                         {
-                            using(var target2 = context.GetOffScreenRT(OffScreenTextureSize.Quarter,
-                                global::SharpDX.DXGI.Format.R8G8B8A8_UNorm, out int width2, out int height2))
+                            using (var target2 = context.GetOffScreenRT(OffScreenTextureSize.Quarter,
+                                global::SharpDX.DXGI.Format.R8G8B8A8_UNorm, out var width2, out var height2))
                             {
                                 // Half to Quater Vertical
                                 modelStruct.ViewportScale = (int)OffScreenTextureSize.Quarter;
@@ -125,7 +125,12 @@ namespace HelixToolkit.UWP
                     }
                 }
             }
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref sampler);
+                RemoveAndDispose(ref modelCB);
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
-
 }

@@ -19,7 +19,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<SceneNode> Renderables { get; }
+        IEnumerable<SceneNode> Renderables
+        {
+            get;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -30,10 +33,13 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="viewport"></param>
         void DettachViewport3DX(IViewport3DX viewport);
-    /// <summary>
-    /// 
-    /// </summary>
-        IRenderHost CurrentRenderHost { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        IRenderHost CurrentRenderHost
+        {
+            set; get;
+        }
 
         void Attach(IRenderHost host);
         void Detach(IRenderHost host);

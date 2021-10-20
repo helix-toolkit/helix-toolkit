@@ -38,7 +38,7 @@ namespace HelixToolkit.UWP
 
 
         public static class DefaultComputeShaderDescriptions
-        {        
+        {
             /// <summary>
             /// 
             /// </summary>
@@ -51,5 +51,4 @@ namespace HelixToolkit.UWP
                 DefaultComputeShaders.CSParticleUpdate);
         }
     }
-
 }
