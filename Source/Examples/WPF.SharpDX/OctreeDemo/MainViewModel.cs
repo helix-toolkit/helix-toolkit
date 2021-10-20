@@ -385,27 +385,30 @@ namespace OctreeDemo
                 else
                 {
                     var hit = hitTests[0];
-                    if ((hit.ModelHit as Element3D).DataContext is DataModel)
+                    if (hit.ModelHit is Element3D elem)
                     {
-                        var model = (hit.ModelHit as Element3D).DataContext as DataModel;
-                        model.Highlight = true;
-                        HighlightItems.Add(model);
-                    }
-                    else if ((hit.ModelHit as Element3D).DataContext == this)
-                    {
-                        if (hit.TriangleIndices != null)
+                        if (elem.DataContext is DataModel)
                         {
-                            Material = PhongMaterials.Yellow;
+                            var model = elem.DataContext as DataModel;
+                            model.Highlight = true;
+                            HighlightItems.Add(model);
                         }
-                        else
+                        else if (elem.DataContext == this)
                         {
-                            var v = new Vector3Collection();
-                            v.Add(hit.PointHit);
-                            PointsHitModel.Positions = v;
-                            var idx = new IntCollection();
-                            idx.Add(0);
-                            PointsHitModel = new PointGeometry3D() { Positions = v, Indices = idx };
-                        }
+                            if (hit.TriangleIndices != null)
+                            {
+                                Material = PhongMaterials.Yellow;
+                            }
+                            else
+                            {
+                                var v = new Vector3Collection();
+                                v.Add(hit.PointHit);
+                                PointsHitModel.Positions = v;
+                                var idx = new IntCollection();
+                                idx.Add(0);
+                                PointsHitModel = new PointGeometry3D() { Positions = v, Indices = idx };
+                            }
+                        }                    
                     }
                 }
             }

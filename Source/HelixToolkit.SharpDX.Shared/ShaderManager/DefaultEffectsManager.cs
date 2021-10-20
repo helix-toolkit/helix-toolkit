@@ -48,7 +48,14 @@ namespace HelixToolkit.UWP
         {
             AddDefaultTechniques();
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
+        /// </summary>
+        /// <param name="configuration"></param>
+        public DefaultEffectsManager(EffectsManagerConfiguration configuration) : base(configuration)
+        {
+            AddDefaultTechniques();
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
         /// </summary>
