@@ -189,6 +189,10 @@ namespace HelixToolkit.UWP
             }
         }
         private IMaterialVariablePool materialVariableManager;
+
+        public IStructArrayPool StructArrayPool => structArrayPool;
+        private StructArrayPool structArrayPool;
+
         #region 3D Resoruces
 
         private global::SharpDX.Direct3D11.Device device;
@@ -468,6 +472,9 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref deviceContextPool);
             deviceContextPool = new DeviceContextPool(Device);
+
+            RemoveAndDispose(ref structArrayPool);
+            structArrayPool = new StructArrayPool(logger);
             #endregion
             Log(LogLevel.Information, "Initializing Direct2D resources");
             factory2D = new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded);
@@ -480,7 +487,6 @@ namespace HelixToolkit.UWP
                     global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations);
             }
             Initialized = true;
-
         }
 
         /// <summary>
@@ -715,6 +721,7 @@ namespace HelixToolkit.UWP
             RemoveAndDispose(ref device2D);
             RemoveAndDispose(ref factory2D);
             RemoveAndDispose(ref wicImgFactory);
+            RemoveAndDispose(ref structArrayPool);
             Initialized = false;
             global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
 #if DX11_1

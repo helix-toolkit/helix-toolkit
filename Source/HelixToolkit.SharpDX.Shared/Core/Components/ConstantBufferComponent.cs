@@ -34,7 +34,8 @@ namespace HelixToolkit.UWP
             /// </value>
             public ConstantBufferProxy ModelConstBuffer => modelConstBuffer;
             private readonly ConstantBufferDescription bufferDesc;
-            private readonly byte[] internalByteArray;
+            private int storageId = -1;
+            private ArrayStorage storage;
             private bool IsValid = false;
             private readonly object lck = new object();
             /// <summary>
@@ -44,10 +45,6 @@ namespace HelixToolkit.UWP
             public ConstantBufferComponent(ConstantBufferDescription desc)
             {
                 bufferDesc = desc;
-                if (desc != null)
-                {
-                    internalByteArray = new byte[desc.StructSize];
-                }
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="ConstantBufferComponent"/> class.
@@ -57,7 +54,6 @@ namespace HelixToolkit.UWP
             public ConstantBufferComponent(string name, int structSize)
             {
                 bufferDesc = new ConstantBufferDescription(name, structSize);
-                internalByteArray = new byte[structSize];
             }
 
             protected override void OnAttach(IRenderTechnique technique)
@@ -67,6 +63,8 @@ namespace HelixToolkit.UWP
                     if (bufferDesc != null)
                     {
                         modelConstBuffer = technique.ConstantBufferPool.Register(bufferDesc);
+                        storage = technique.EffectsManager.StructArrayPool.Register(bufferDesc.StructSize);
+                        storageId = storage.GetId();
                     }
                     IsValid = bufferDesc != null && ModelConstBuffer != null;
                 }
@@ -77,18 +75,11 @@ namespace HelixToolkit.UWP
                 lock (lck)
                 {
                     RemoveAndDispose(ref modelConstBuffer);
+                    storage.ReleaseId(storageId);
+                    RemoveAndDispose(ref storage);
+                    storageId = -1;
                     IsValid = false;
                 }
-            }
-            /// <summary>
-            /// Uploads the specified device context. This uploads struct only. Ignores internal byte buffer.
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="deviceContext">The device context.</param>
-            /// <param name="data">The data.</param>
-            public bool Upload<T>(DeviceContextProxy deviceContext, ref T data) where T : unmanaged
-            {
-                return Upload(deviceContext, ref data, false);
             }
 
             /// <summary>
@@ -101,7 +92,9 @@ namespace HelixToolkit.UWP
                 {
                     if (IsValid && IsAttached)
                     {
-                        ModelConstBuffer.UploadDataToBuffer(deviceContext, internalByteArray, internalByteArray.Length);
+                        var array = storage.GetArray();
+                        var off = storage.GetOffSet(storageId);
+                        ModelConstBuffer.UploadDataToBuffer(deviceContext, array, ModelConstBuffer.StructureSize, off);
                         return true;
                     }
                     return false;
@@ -115,23 +108,14 @@ namespace HelixToolkit.UWP
             /// <typeparam name="T"></typeparam>
             /// <param name="deviceContext">The device context.</param>
             /// <param name="data">The data.</param>
-            /// <param name="uploadInternal">Uploads internal data after external data has been written</param>
             /// <returns></returns>
-            public bool Upload<T>(DeviceContextProxy deviceContext, ref T data, bool uploadInternal) where T : unmanaged
+            public bool Upload<T>(DeviceContextProxy deviceContext, ref T data) where T : unmanaged
             {
                 lock (lck)
                 {
                     if (IsValid && IsAttached)
                     {
                         var structSize = UnsafeHelper.SizeOf<T>();
-                        if (structSize > internalByteArray.Length)
-                        {
-#if DEBUG
-                            throw new ArgumentOutOfRangeException($"Try to write value out of range. StructureSize {structSize} > Internal Buffer Size {internalByteArray.Length}");
-#else
-                            return false;
-#endif
-                        }
                         var box = ModelConstBuffer.Map(deviceContext);
                         if (box.SlicePitch < structSize || box.IsEmpty)
                         {
@@ -145,14 +129,6 @@ namespace HelixToolkit.UWP
                         {
                             var pBuf = (byte*)box.DataPointer.ToPointer();
                             *(T*)pBuf = data;
-                            if (uploadInternal && structSize < internalByteArray.Length)
-                            {
-                                pBuf += structSize;
-                                fixed (byte* pArray = &internalByteArray[structSize])
-                                {
-                                    UnsafeHelper.MemoryCopy(new IntPtr(pBuf), new IntPtr(pArray), internalByteArray.Length - structSize);
-                                }
-                            }
                         }
                         ModelConstBuffer.Unmap(deviceContext);
                         return true;
@@ -182,11 +158,10 @@ namespace HelixToolkit.UWP
                                     var structSize = UnsafeHelper.SizeOf<T>();
                                     throw new ArgumentException($"Input struct size {structSize} is larger than shader variable {variable.Name} size {variable.Size}");
                                 }
-                                global::SharpDX.Utilities.Pin(internalByteArray, (ptr) =>
+                                if (!storage.Write(storageId, variable.StartOffset, ref value))
                                 {
-                                    var offPtr = global::SharpDX.Utilities.IntPtrAdd(ptr, variable.StartOffset);
-                                    global::SharpDX.Utilities.Write(offPtr, ref value);
-                                });
+                                    throw new ArgumentException($"Failed to write value on {name}");
+                                }
                             }
                             else
                             {
@@ -214,16 +189,7 @@ namespace HelixToolkit.UWP
                     {
                         if (IsValid && IsAttached)
                         {
-                            if (UnsafeHelper.SizeOf<T>() > internalByteArray.Length - offset)
-                            {
-                                var structSize = UnsafeHelper.SizeOf<T>();
-                                throw new ArgumentOutOfRangeException($"Try to write value out of range. StructureSize {structSize} + Offset {offset} > Internal Buffer Size {internalByteArray.Length}");
-                            }
-                            global::SharpDX.Utilities.Pin(internalByteArray, (ptr) =>
-                            {
-                                var offPtr = global::SharpDX.Utilities.IntPtrAdd(ptr, offset);
-                                global::SharpDX.Utilities.Write(offPtr, ref value);
-                            });
+                            storage.Write(storageId, offset, ref value);
                         }
                     }
                 }
@@ -239,19 +205,8 @@ namespace HelixToolkit.UWP
                         if (IsValid && IsAttached)
                         {
                             if (ModelConstBuffer.TryGetVariableByName(name, out var variable))
-                            {
-                                if (UnsafeHelper.SizeOf<T>() > variable.Size)
-                                {
-                                    var structSize = UnsafeHelper.SizeOf<T>();
-                                    throw new ArgumentException($"Input struct size {structSize} is larger than shader variable {variable.Name} size {variable.Size}");
-                                }
-                                global::SharpDX.Utilities.Pin(internalByteArray, (ptr) =>
-                                {
-                                    var offPtr = global::SharpDX.Utilities.IntPtrAdd(ptr, variable.StartOffset);
-                                    global::SharpDX.Utilities.Read(offPtr, ref v);
-                                });
-                                value = v;
-                                return true;
+                            {                                
+                                return storage.Read(storageId, variable.StartOffset, out value);
                             }
                             else
                             {
@@ -278,19 +233,8 @@ namespace HelixToolkit.UWP
                     lock (lck)
                     {
                         if (IsValid && IsAttached)
-                        {
-                            if (UnsafeHelper.SizeOf<T>() > internalByteArray.Length - offset)
-                            {
-                                var structSize = UnsafeHelper.SizeOf<T>();
-                                throw new ArgumentOutOfRangeException($"Try to read value out of range. StructureSize {structSize} + Offset {offset} > Internal Buffer Size {internalByteArray.Length}");
-                            }
-                            global::SharpDX.Utilities.Pin(internalByteArray, (ptr) =>
-                            {
-                                var offPtr = global::SharpDX.Utilities.IntPtrAdd(ptr, offset);
-                                global::SharpDX.Utilities.Read(offPtr, ref v);
-                            });
-                            value = v;
-                            return true;
+                        {                           
+                            return storage.Read(storageId, offset, out value);
                         }
                     }
                 }

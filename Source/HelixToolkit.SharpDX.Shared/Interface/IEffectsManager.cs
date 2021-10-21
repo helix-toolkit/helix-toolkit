@@ -195,6 +195,11 @@ namespace HelixToolkit.UWP
         {
             get;
         }
+
+        IStructArrayPool StructArrayPool
+        {
+            get;
+        }
         /// <summary>
         /// Get list of existing technique names
         /// </summary>

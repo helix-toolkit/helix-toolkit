@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Linq;
 using HelixToolkit.SharpDX.Core.Model;
 using HelixToolkit.SharpDX.Core;
+using System;
 
 namespace CoreTest
 {
@@ -25,8 +26,8 @@ namespace CoreTest
         public static HelixToolkitScene scene;
         public static IList<IAnimationUpdater> animationUpdaters;
 
-        private static bool[] animationSelection;
-        private static string[] animationNames;
+        private static bool[] animationSelection = Array.Empty<bool>();
+        private static string[] animationNames = Array.Empty<string>();
         private static int currentSelectedAnimation = -1;
         private static float[] fps = new float[128];
         private static float[] frustumTest = new float[128];
