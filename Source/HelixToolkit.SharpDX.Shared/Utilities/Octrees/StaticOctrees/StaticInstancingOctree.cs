@@ -196,7 +196,6 @@ namespace HelixToolkit.UWP
             /// <param name="model">The model.</param>
             /// <param name="geometry"></param>
             /// <param name="modelMatrix">The model matrix.</param>
-            /// <param name="rayWS">The ray ws.</param>
             /// <param name="rayModel">The ray model.</param>
             /// <param name="returnMultiple"></param>
             /// <param name="hits">The hits.</param>

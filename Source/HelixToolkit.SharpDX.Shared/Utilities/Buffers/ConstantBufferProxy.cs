@@ -131,12 +131,11 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, ref T, int)"/>
+            /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, ref T)"/>
             /// </summary>
             /// <typeparam name="T"></typeparam>
             /// <param name="context"></param>
             /// <param name="data"></param>
-            /// <param name="offset"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data) where T : unmanaged
             {

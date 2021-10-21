@@ -29,25 +29,42 @@ namespace HelixToolkit.Wpf.SharpDX
 #if !COREWPF && !WINUI
     using Cameras;
 #endif
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ICameraModel
     {
+        /// <summary>
+        /// 
+        /// </summary>
         bool CreateLeftHandSystem
         {
             set; get;
         }
+        /// <summary>
+        /// 
+        /// </summary>
         Point3D Position
         {
             set; get;
         }
+        /// <summary>
+        /// 
+        /// </summary>
         Vector3D LookDirection
         {
             set; get;
         }
+        /// <summary>
+        /// 
+        /// </summary>
         Vector3D UpDirection
         {
             set; get;
         }
+        /// <summary>
+        /// 
+        /// </summary>
         CameraCore CameraInternal
         {
             get;

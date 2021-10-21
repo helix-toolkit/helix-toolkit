@@ -332,7 +332,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\TextureDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\TextureDimension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\TextureFlags.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\TextureView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\ViewType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />

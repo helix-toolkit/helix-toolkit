@@ -226,7 +226,6 @@ namespace HelixToolkit.UWP
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness">Only used for point/line hit test</param>

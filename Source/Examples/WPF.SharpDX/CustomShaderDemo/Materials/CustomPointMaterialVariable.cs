@@ -19,7 +19,7 @@ namespace CustomShaderDemo.Materials
             string pointPassName = "CustomPointPass")
             : base(manager, technique, materialCore, pointPassName)
         {
-            customConstantBuffer = Collect(new ConstantBufferComponent(new ConstantBufferDescription("CustomBuffer", Marshal.SizeOf<Vector4>())));
+            customConstantBuffer = new ConstantBufferComponent(new ConstantBufferDescription("CustomBuffer", Marshal.SizeOf<Vector4>()));
             customConstantBuffer.Attach(technique);
         }
 
@@ -42,6 +42,7 @@ namespace CustomShaderDemo.Materials
         protected override void OnDispose(bool disposeManagedResources)
         {
             customConstantBuffer.Detach();
+            customConstantBuffer.Dispose();
             base.OnDispose(disposeManagedResources);
         }
     }

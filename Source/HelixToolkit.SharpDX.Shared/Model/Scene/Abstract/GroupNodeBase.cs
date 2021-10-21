@@ -264,7 +264,6 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="totalModelMatrix">The total model matrix.</param>
-            /// <param name="ray">The ray.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)

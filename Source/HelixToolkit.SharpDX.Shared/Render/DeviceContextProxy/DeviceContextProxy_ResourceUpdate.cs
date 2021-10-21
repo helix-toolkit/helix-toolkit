@@ -81,7 +81,6 @@ namespace HelixToolkit.UWP
             /// <param name="resource">The resource.</param>
             /// <param name="mode">The mode.</param>
             /// <param name="flags">The flags.</param>
-            /// <param name="stream">The stream.</param>
             /// <returns>The locked SharpDX.DataBox      </returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public DataBox MapSubresource(Buffer resource, MapMode mode, MapFlags flags)

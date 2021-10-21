@@ -86,9 +86,9 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// Creates the specified device.
+            /// Creates the specified constant buffer.
             /// </summary>
-            /// <param name="device">The device.</param>
+            /// <param name="key">The key.</param>
             /// <param name="description">The description.</param>
             /// <returns></returns>
             protected override ConstantBufferProxy OnCreate(ref string key, ref ConstantBufferDescription description)

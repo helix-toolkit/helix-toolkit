@@ -65,9 +65,8 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="count">The count.</param>
             void CreateBuffer(DeviceContextProxy context, int count);
-
             /// <summary>
-            /// <see cref="DisposeObject.DisposeAndClear"/>
+            /// Dispose and clear internal buffers. Does not dispose this object.
             /// </summary>
             void DisposeAndClear();
         }
@@ -479,9 +478,10 @@ namespace HelixToolkit.UWP
             /// Initializes a new instance of the <see cref="StructuredBufferProxy"/> class.
             /// </summary>
             /// <param name="structureSize">Size of the structure.</param>
-            /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing. Otherwise create a new buffer with exact same size</param>
-            public StructuredBufferProxy(int structureSize, bool lazyResize = true) :
-                base(structureSize, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured, lazyResize)
+            /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing.
+            /// Otherwise create a new buffer with exact same size</param>
+            public StructuredBufferProxy(int structureSize, bool lazyResize = true)
+                : base(structureSize, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured, lazyResize)
             {
 
             }

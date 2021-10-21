@@ -39,7 +39,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Hits the test.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="ray">The ray.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
         public override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)

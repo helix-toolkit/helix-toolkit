@@ -249,7 +249,6 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            /// <typeparam name="T"></typeparam>
             /// <param name="destination"></param>
             /// <param name="data"></param>
             /// <param name="offset">By bytes</param>

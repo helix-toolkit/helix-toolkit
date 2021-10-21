@@ -337,7 +337,9 @@ namespace HelixToolkit.UWP
         }
         /// <summary>
         /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
-        /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
+        /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, 
+        /// <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostEffect"/>, <see cref="RenderType.GlobalEffect"/>, <see cref="RenderType.Light"/>, 
+        /// <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
         FastList<SceneNode> PerFrameOpaqueNodes
         {

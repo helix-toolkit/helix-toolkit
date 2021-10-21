@@ -64,8 +64,7 @@ namespace HelixToolkit.UWP
             /// <param name="deviceContext">The device context.</param>
             /// <param name="source">The source.</param>
             /// <param name="depth">The depth.</param>
-            /// <param name="sourceHeight"></param>
-            /// <param name="sourceWidth"></param>
+            /// <param name="sourceViewport"></param>
             /// <param name="modelStruct"></param>
             public virtual void Run(RenderContext context, DeviceContextProxy deviceContext,
                 ShaderResourceViewProxy source, ref ViewportF sourceViewport, BlurDepth depth, ref BorderEffectStruct modelStruct)

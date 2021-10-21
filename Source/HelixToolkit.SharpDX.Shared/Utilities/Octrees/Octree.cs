@@ -552,7 +552,7 @@ namespace HelixToolkit.UWP
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult})"/>
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -565,7 +565,7 @@ namespace HelixToolkit.UWP
             return HitTest(context, model, geometry, modelMatrix, ref hits, 0);
         }
         /// <summary>
-        /// Hits the test.
+        /// 
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="model">The model.</param>
@@ -581,7 +581,7 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -597,7 +597,7 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -684,7 +684,6 @@ namespace HelixToolkit.UWP
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
@@ -1613,13 +1612,12 @@ namespace HelixToolkit.UWP
             return new MeshGeometryOctree(Positions, Indices, ref region, objList, parent, parent.Parameter, this.stack);
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderMatrices, object, Geometry3D, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
@@ -2382,7 +2380,6 @@ namespace HelixToolkit.UWP
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>

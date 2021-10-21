@@ -116,7 +116,6 @@ namespace HelixToolkit.UWP
             /// 
             /// </summary>
             /// <param name="passDescription"></param>
-            /// <param name="layout"></param>
             /// <param name="manager"></param>
             public ShaderPass(ShaderPassDescription passDescription, IEffectsManager manager)
             {

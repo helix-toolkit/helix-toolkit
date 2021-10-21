@@ -36,12 +36,7 @@ namespace HelixToolkit.UWP
             {
                 return !IsDisposed;
             }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
+
             protected override BlendStateProxy OnCreate(ref BlendStateDescription key, ref BlendStateDescription description)
             {
                 if (device.FeatureLevel < global::SharpDX.Direct3D.FeatureLevel.Level_11_0 && description.IndependentBlendEnable)
@@ -70,12 +65,7 @@ namespace HelixToolkit.UWP
             {
                 return !IsDisposed;
             }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
+
             protected override DepthStencilStateProxy OnCreate(ref DepthStencilStateDescription key, ref DepthStencilStateDescription description)
             {
                 return new DepthStencilStateProxy(new DepthStencilState(device, description));
@@ -100,12 +90,7 @@ namespace HelixToolkit.UWP
             {
                 return !IsDisposed;
             }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
+
             protected override RasterizerStateProxy OnCreate(ref RasterizerStateDescription key, ref RasterizerStateDescription description)
             {
                 return new RasterizerStateProxy(new RasterizerState(device, description));
@@ -130,12 +115,7 @@ namespace HelixToolkit.UWP
             {
                 return !IsDisposed;
             }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
+
             protected override SamplerStateProxy OnCreate(ref SamplerStateDescription key, ref SamplerStateDescription description)
             {
                 return new SamplerStateProxy(new SamplerState(device, description));

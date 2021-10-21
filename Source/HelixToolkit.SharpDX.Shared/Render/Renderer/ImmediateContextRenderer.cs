@@ -315,6 +315,8 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
+            /// <param name="start">Start index in renderables</param>
+            /// <param name="count">Number of renderables to render.</param>
             /// <param name="parameter">The parameter.</param>
             public virtual void RenderScreenSpaced(RenderContext context, FastList<SceneNode> renderables, int start, int count,
                 ref RenderParameter parameter)

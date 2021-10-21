@@ -177,7 +177,6 @@ namespace HelixToolkit.UWP
             /// <typeparam name="T"></typeparam>
             /// <param name="context">The context.</param>
             /// <param name="model">The model.</param>
-            /// <param name="structSize"></param>
             public bool UpdateMaterialStruct<T>(DeviceContextProxy context, ref T model) where T : unmanaged
             {
                 if (NeedUpdate)

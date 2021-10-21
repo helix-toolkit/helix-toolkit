@@ -58,12 +58,6 @@ namespace HelixToolkit.UWP
                 return key != null && key.Length > 0;
             }
 
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
             protected override ShaderBase OnCreate(ref byte[] key, ref ShaderDescription description)
             {
                 return description.ByteCode == null ?
@@ -93,12 +87,7 @@ namespace HelixToolkit.UWP
             {
                 return key != null && key.Length > 0;
             }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
+
             protected override InputLayoutProxy OnCreate(ref byte[] key, ref InputLayoutDescription description)
             {
                 return new InputLayoutProxy(device, description.ShaderByteCode, description.InputElements);
