@@ -78,7 +78,7 @@ namespace HelixToolkit.UWP
             var array = binaryArray.GetInternalArray();
             fixed (byte* pArray = &array[offsetInArray])
             {
-                UnsafeHelper.ClearMemory(new IntPtr(pArray), 0, structSize);
+                UnsafeHelper.ClearMemory(new IntPtr(pArray), structSize);
             }
             rwLock.ExitReadLock();
         }

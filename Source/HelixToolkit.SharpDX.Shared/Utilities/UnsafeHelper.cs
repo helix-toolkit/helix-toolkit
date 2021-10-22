@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -17,6 +17,11 @@ namespace HelixToolkit.UWP
     {
         public static class UnsafeHelper
         {
+            [DllImport("kernel32.dll", EntryPoint = "RtlCopyMemory")]
+            private static extern void RtlCopyMemory(IntPtr Destination, IntPtr Source, uint Length);
+            [DllImport("kernel32.dll", EntryPoint = "RtlCopyMemory")]
+            private static extern void RtlZeroMemory(IntPtr dst, uint length);
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static int SizeOf<T>() where T : unmanaged
             {
@@ -53,12 +58,13 @@ namespace HelixToolkit.UWP
 #if NETSTANDARD2_1
                     Buffer.MemoryCopy((void*)src, (void*)dst, sizeInBytes, sizeInBytes);
 #else
-                    var pDest = (byte*)dst.ToPointer();
-                    var pSrc = (byte*)src.ToPointer();
-                    for (var i = 0; i < sizeInBytes; ++i)
-                    {
-                        *(pDest++) = *(pSrc++);
-                    }
+                    RtlCopyMemory(dst, src, (uint)sizeInBytes);
+                    //var pDest = (byte*)dst.ToPointer();
+                    //var pSrc = (byte*)src.ToPointer();
+                    //for (var i = 0; i < sizeInBytes; ++i)
+                    //{
+                    //    *(pDest++) = *(pSrc++);
+                    //}
 #endif
                 }
             }
@@ -66,10 +72,9 @@ namespace HelixToolkit.UWP
             /// Clears the memory.
             /// </summary>
             /// <param name="dest">The dest.</param>
-            /// <param name="value">The value.</param>
             /// <param name="sizeInBytesToClear">The size in bytes to clear.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static void ClearMemory(IntPtr dest, byte value, int sizeInBytesToClear)
+            public static void ClearMemory(IntPtr dest, int sizeInBytesToClear)
             {
                 if (dest == IntPtr.Zero)
                 {
@@ -81,11 +86,12 @@ namespace HelixToolkit.UWP
                     var span = new Span<byte>((void*)dest, (int)sizeInBytesToClear);
                     span.Fill(value);
 #else
-                    var pDest = (byte*)dest.ToPointer();
-                    for (var i = 0; i < sizeInBytesToClear; ++i)
-                    {
-                        *(pDest++) = value;
-                    }
+                    RtlZeroMemory(dest, (uint)sizeInBytesToClear);
+                    //var pDest = (byte*)dest.ToPointer();
+                    //for (var i = 0; i < sizeInBytesToClear; ++i)
+                    //{
+                    //    *(pDest++) = 0;
+                    //}
 #endif
                 }
             }
