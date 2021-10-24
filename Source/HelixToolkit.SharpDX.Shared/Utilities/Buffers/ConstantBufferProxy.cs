@@ -148,9 +148,9 @@ namespace HelixToolkit.UWP
                 lock (lockObj)
                 {
                     if (bufferDesc.Usage == ResourceUsage.Dynamic)
-                    {                  
-                        var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
-                        Debug.Assert(dataBox.SlicePitch >= UnsafeHelper.SizeOf<T>());
+                    {     
+                        Debug.Assert(buffer.Description.SizeInBytes >= UnsafeHelper.SizeOf<T>());            
+                        var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);                           
                         UnsafeHelper.Write(dataBox.DataPointer, ref data);
                         context.UnmapSubresource(buffer, 0);
                     }
@@ -189,8 +189,8 @@ namespace HelixToolkit.UWP
                 {
                     if (bufferDesc.Usage == ResourceUsage.Dynamic)
                     {
-                        var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
-                        Debug.Assert(count * UnsafeHelper.SizeOf<T>() <= dataBox.SlicePitch);
+                        Debug.Assert(count * UnsafeHelper.SizeOf<T>() <= buffer.Description.SizeInBytes);
+                        var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);                       
                         UnsafeHelper.Write(dataBox.DataPointer, data, offset, count);
                         context.UnmapSubresource(buffer, 0);
                     }

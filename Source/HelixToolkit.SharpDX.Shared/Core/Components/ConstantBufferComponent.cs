@@ -116,15 +116,16 @@ namespace HelixToolkit.UWP
                     if (IsValid && IsAttached)
                     {
                         var structSize = UnsafeHelper.SizeOf<T>();
-                        var box = ModelConstBuffer.Map(deviceContext);
-                        if (box.SlicePitch < structSize || box.IsEmpty)
+                        if (ModelConstBuffer.Buffer.Description.SizeInBytes < structSize)
                         {
 #if DEBUG
-                            throw new ArgumentOutOfRangeException($"Try to write value out of range. StructureSize {structSize} > Constant Buffer Size {box.SlicePitch}");
+                            throw new ArgumentOutOfRangeException($"Try to write value out of range. StructureSize {structSize}" +
+                                $" > Constant Buffer Size {ModelConstBuffer.StructureSize}");
 #else
                             return false;
 #endif
                         }
+                        var box = ModelConstBuffer.Map(deviceContext);
                         unsafe
                         {
                             var pBuf = (byte*)box.DataPointer.ToPointer();

@@ -129,7 +129,7 @@ namespace HelixToolkit.UWP
                             ssaoCB.ModelConstBuffer.UploadDataToBuffer(deviceContext, (dataBox) =>
                             {
                                 Debug.Assert(UnsafeHelper.SizeOf(kernels)
-                                    + UnsafeHelper.SizeOf(ref ssaoParam) <= dataBox.SlicePitch);
+                                    + UnsafeHelper.SizeOf(ref ssaoParam) <= ssaoCB.ModelConstBuffer.bufferDesc.SizeInBytes);
                                 var nextPtr = UnsafeHelper.Write(dataBox.DataPointer, kernels, 0, kernels.Length);
                                 UnsafeHelper.Write(nextPtr, ref ssaoParam);
                             });
