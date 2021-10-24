@@ -12,7 +12,7 @@
     <description>Provides Assimp Import/Export for HelixToolkit.SharpDX.</description>
     <tags>netstandard netcore Wpf UWP SharpDX 3D DirectX Assimp</tags>
     <dependencies>
-      <group targetFramework="net45">		
+      <group targetFramework="net46">		
         <dependency id="HelixToolkit.Wpf.SharpDX" version="[$version$]" />
         <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
@@ -22,20 +22,6 @@
       <group targetFramework="UAP10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.1.7" exclude="Build,Analyzers" />
         <dependency id="HelixToolkit.UWP" version="[$version$]" />
-        <dependency id="AssimpNet" version="5.0.0-beta1" />
-        <dependency id="SharpDX" version="4.2.0" />
-        <dependency id="SharpDX.Direct3D11" version="4.2.0" />
-        <dependency id="SharpDX.Mathematics" version="4.2.0" />
-      </group>
-      <group targetFramework="netcoreapp3.1">
-        <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
-        <dependency id="AssimpNet" version="5.0.0-beta1" />
-        <dependency id="SharpDX" version="4.2.0" />
-        <dependency id="SharpDX.Direct3D11" version="4.2.0" />
-        <dependency id="SharpDX.Mathematics" version="4.2.0" />
-      </group>
-      <group targetFramework="netcoreapp2.1">
-        <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
         <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
@@ -51,17 +37,13 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="HelixToolkit.Wpf.SharpDX.Assimp\bin\Release\HelixToolkit.Wpf.SharpDX.Assimp.???" target="lib\net45" />
+    <file src="HelixToolkit.Wpf.SharpDX.Assimp\bin\Release\HelixToolkit.Wpf.SharpDX.Assimp.???" target="lib\net46" />
     <file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP.Assimp.???" target="lib\uap10.0" />
 	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\*" target="lib\uap10.0\HelixToolkit.UWP" />
 	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\Resources\*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
 	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\Themes\*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
     <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netstandard1.3" />
     <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netstandard1.3" />
-    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp2.1\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netcoreapp2.1" />
-    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp2.1\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netcoreapp2.1" />
-    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp3.1\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netcoreapp3.1" />
-    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netcoreapp3.1\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netcoreapp3.1" />
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />

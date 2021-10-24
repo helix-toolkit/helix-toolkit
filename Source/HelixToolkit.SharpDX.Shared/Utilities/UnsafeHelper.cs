@@ -17,11 +17,6 @@ namespace HelixToolkit.UWP
     {
         public static class UnsafeHelper
         {
-            [DllImport("kernel32.dll", EntryPoint = "RtlCopyMemory")]
-            private static extern void RtlCopyMemory(IntPtr Destination, IntPtr Source, uint Length);
-            [DllImport("kernel32.dll", EntryPoint = "RtlCopyMemory")]
-            private static extern void RtlZeroMemory(IntPtr dst, uint length);
-
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static int SizeOf<T>() where T : unmanaged
             {
@@ -55,17 +50,7 @@ namespace HelixToolkit.UWP
                 }
                 unsafe
                 {
-#if NETSTANDARD2_1
                     Buffer.MemoryCopy((void*)src, (void*)dst, sizeInBytes, sizeInBytes);
-#else
-                    RtlCopyMemory(dst, src, (uint)sizeInBytes);
-                    //var pDest = (byte*)dst.ToPointer();
-                    //var pSrc = (byte*)src.ToPointer();
-                    //for (var i = 0; i < sizeInBytes; ++i)
-                    //{
-                    //    *(pDest++) = *(pSrc++);
-                    //}
-#endif
                 }
             }
             /// <summary>
@@ -82,17 +67,11 @@ namespace HelixToolkit.UWP
                 }
                 unsafe
                 {
-#if NETSTANDARD2_1
-                    var span = new Span<byte>((void*)dest, (int)sizeInBytesToClear);
-                    span.Fill(value);
-#else
-                    RtlZeroMemory(dest, (uint)sizeInBytesToClear);
-                    //var pDest = (byte*)dest.ToPointer();
-                    //for (var i = 0; i < sizeInBytesToClear; ++i)
-                    //{
-                    //    *(pDest++) = 0;
-                    //}
-#endif
+                    var pDest = (byte*)dest.ToPointer();
+                    for (var i = 0; i < sizeInBytesToClear; ++i)
+                    {
+                        *(pDest++) = 0;
+                    }
                 }
             }
 
