@@ -112,8 +112,9 @@ namespace HelixToolkit.Wpf.SharpDX
             Unloaded += OnUnloaded;
             surfaceD3D = new RenderControl();
             Child = surfaceD3D;
-            RenderHost.DpiScale = EnableDpiScale ? (float)DpiScale : 1;
+
             renderHost = createRenderHost(surfaceD3D.Handle);
+            RenderHost.DpiScale = EnableDpiScale ? (float)DpiScale : 1;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
