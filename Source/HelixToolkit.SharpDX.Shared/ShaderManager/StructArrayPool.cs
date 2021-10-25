@@ -25,7 +25,9 @@ namespace HelixToolkit.UWP
     public sealed unsafe class ArrayStorage : DisposeObject
     {
         const string tag = nameof(ArrayStorage);
-        private readonly FastList<byte> binaryArray = new FastList<byte>();
+        public static int MinArraySize = 1024 * 4;
+        public static int MaxArraySizeExpoentialIncrement = 1024 * 1024;
+        private readonly FastList<byte> binaryArray = new FastList<byte>(MinArraySize);
         private readonly int structSize;
         private readonly IdHelper idHelper = new IdHelper();
         private readonly ReaderWriterLockSlim rwLock = new ReaderWriterLockSlim();
@@ -44,8 +46,13 @@ namespace HelixToolkit.UWP
             var id = idHelper.GetNextId();
             if (binaryArray.Count <= id * structSize)
             {
+                var newSize = (id * 2) * structSize;
+                if (newSize > MaxArraySizeExpoentialIncrement)
+                {
+                    newSize = (id + 1) * structSize;
+                }
                 rwLock.EnterWriteLock();
-                binaryArray.Resize((id + 1) * structSize, false);
+                binaryArray.Resize(newSize, false);
                 rwLock.ExitWriteLock();
                 logger.Log(Logger.LogLevel.Debug, $"Resize struct array to " +
                     $"{structSize} * {id + 1} = {binaryArray.Count}", tag);
