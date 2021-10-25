@@ -2,4 +2,20 @@
  <PropertyGroup>
    <LangVersion>8.0</LangVersion>
  </PropertyGroup>
+ 
+ <PropertyGroup>
+  <Prefer32Bit>false</Prefer32Bit>
+</PropertyGroup>
+
+<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <AssemblyOriginatorKeyFile>$(SolutionDir)HelixToolkit.snk</AssemblyOriginatorKeyFile>
+  <SignAssembly>true</SignAssembly>  
+</PropertyGroup>
+
+<ItemGroup>
+  <None Include="$(SolutionDir)HelixToolkit.snk" />
+  <Compile Include="$(SolutionDir)AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+  </Compile>
+</ItemGroup>
 </Project>

@@ -118,7 +118,7 @@
     <Compile Include="MainPageViewModel.cs" />
     <Compile Include="OITDemoViewModel.cs" />
     <Compile Include="ParticleViewModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -45,10 +45,10 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
+    
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -62,9 +62,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
+
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="ShaderEffects\AnaglyphEffect.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />

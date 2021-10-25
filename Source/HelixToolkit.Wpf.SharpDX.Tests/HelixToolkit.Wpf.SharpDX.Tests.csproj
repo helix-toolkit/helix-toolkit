@@ -85,9 +85,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
+
     <Compile Include="Controls\CanvasMock.cs" />
     <Compile Include="Controls\EffectsManagerTests.cs" />
     <Compile Include="Elements3D\CrossSectionMeshGeometryModel3DTests.cs" />
