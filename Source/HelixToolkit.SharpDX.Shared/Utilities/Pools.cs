@@ -68,17 +68,23 @@ namespace HelixToolkit.UWP
                 {
                     if (!pool_.TryGetValue(key, out objOut))
                     {
-                        objOut = pool_.GetOrAdd(key, (k) => OnCreate(ref k, ref argument));
-                        if (objOut == null)
+                        lock (pool_)
                         {
-                            pool_.TryRemove(key, out objOut);
-                            return false;
+                            if (!pool_.TryGetValue(key, out objOut))
+                            {
+                                objOut = pool_.GetOrAdd(key, (k) => OnCreate(ref k, ref argument));
+                                if (objOut == null)
+                                {
+                                    pool_.TryRemove(key, out objOut);
+                                    return false;
+                                }
+                                objOut.AddBackToPool = Item_AddBackToPool;
+                                objOut.Disposing += (s, e) =>
+                                {
+                                    pool_.TryRemove(key, out var val);
+                                };                            
+                            }
                         }
-                        objOut.AddBackToPool = Item_AddBackToPool;
-                        objOut.Disposing += (s, e) =>
-                        {
-                            pool_.TryRemove(key, out var val);
-                        };
                     }
                     if (objOut == null)
                     {
