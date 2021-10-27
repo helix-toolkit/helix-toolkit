@@ -75,7 +75,7 @@ namespace DynamicCodeSurfaceDemo
         private string sourceCode;
         public string SourceCode
         {
-            private set
+            set
             {
                 SetValue(ref sourceCode, value);
             }
