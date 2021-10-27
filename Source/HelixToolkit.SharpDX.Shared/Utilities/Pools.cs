@@ -79,7 +79,7 @@ namespace HelixToolkit.UWP
                                     return false;
                                 }
                                 objOut.AddBackToPool = Item_AddBackToPool;
-                                objOut.Disposing += (s, e) =>
+                                objOut.Disposed += (s, e) =>
                                 {
                                     pool_.TryRemove(key, out var val);
                                 };                            
