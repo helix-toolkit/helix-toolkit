@@ -146,7 +146,7 @@ namespace HelixToolkit.UWP
                             {
                                 for (var i = range.Item1; i < range.Item2; ++i)
                                 {
-                                    items[i].RenderCore.Render(context, deferred);
+                                    items[i].Render(context, deferred);
                                     ++counter;
                                 }
                             }
@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP
                                     {
                                         continue;
                                     }
-                                    items[i].RenderCore.Render(context, deferred);
+                                    items[i].Render(context, deferred);
                                     ++counter;
                                 }
                             }

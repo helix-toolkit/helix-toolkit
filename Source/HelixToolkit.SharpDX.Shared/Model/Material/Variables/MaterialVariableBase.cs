@@ -204,9 +204,9 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                storage.Write(storageId, 0, ref model);
                 var box = materialCB.Map(context);
                 var succ = storage.Read(storageId, box.DataPointer);
+                UnsafeHelper.Write(box.DataPointer, ref model);
                 materialCB.Unmap(context);
                 return succ;
             }
@@ -229,11 +229,7 @@ namespace HelixToolkit.UWP
                     return false;
                 }
                 var box = nonMaterialCB.Map(context);
-                unsafe
-                {
-                    var pBuf = (byte*)box.DataPointer.ToPointer();
-                    *(T*)pBuf = model;
-                }
+                UnsafeHelper.Write(box.DataPointer, ref model);
                 nonMaterialCB.Unmap(context);
                 return true;
             }
