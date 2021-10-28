@@ -204,9 +204,12 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
+                var structSize = UnsafeHelper.SizeOf<T>();
                 var box = materialCB.Map(context);
-                var succ = storage.Read(storageId, box.DataPointer);
                 UnsafeHelper.Write(box.DataPointer, ref model);
+                var succ = storage.Read(storageId, structSize,
+                    box.DataPointer + structSize,
+                    storage.StructSize - structSize);
                 materialCB.Unmap(context);
                 return succ;
             }

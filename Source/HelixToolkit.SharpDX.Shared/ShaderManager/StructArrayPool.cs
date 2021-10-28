@@ -121,16 +121,16 @@ namespace HelixToolkit.UWP
 
         public bool Read(int id, IntPtr dest)
         {
-            return Read(id, dest, structSize);
+            return Read(id, 0, dest, structSize);
         }
 
-        public bool Read(int id, IntPtr dest, int size)
+        public bool Read(int id, int offset, IntPtr dest, int size)
         {
             if (id < 0)
             {
                 return false;
             }
-            var offsetInArray = GetOffSet(id);
+            var offsetInArray = GetOffSet(id) + offset;
             if (offsetInArray + size > binaryArray.Count)
             {
                 Debug.Assert(false);
