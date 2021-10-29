@@ -36,7 +36,8 @@ namespace HelixToolkit.UWP
             private readonly ShaderResourceViewProxy[] TextureResources = new ShaderResourceViewProxy[NUMTEXTURES];
             private readonly SamplerStateProxy[] SamplerResources = new SamplerStateProxy[NUMSAMPLERS];
 
-            private int texDiffuseSlot, texNormalSlot, texRMSlot, texEmissiveSlot, texIrradianceSlot, texDisplaceSlot, texShadowSlot, texAOSlot;
+            private int texDiffuseSlot, texNormalSlot, texRMSlot, texEmissiveSlot, texIrradianceSlot,
+                texDisplaceSlot, texShadowSlot, texAOSlot, texSSAOSlot;
             private int samplerSurfaceSlot, samplerIBLSlot, samplerShadowSlot, samplerDisplaceSlot;
             private uint textureIndex = 0;
 
@@ -244,6 +245,10 @@ namespace HelixToolkit.UWP
                     shaderPass.PixelShader.BindTexture(deviceContext, texShadowSlot, context.SharedResource.ShadowView);
                     shaderPass.PixelShader.BindSampler(deviceContext, samplerShadowSlot, SamplerResources[ShadowSamplerIdx]);
                 }
+                if (context.SSAOEnabled)
+                {
+                    shaderPass.PixelShader.BindTexture(deviceContext, texSSAOSlot, context.SharedResource.SSAOMap);
+                }
                 return true;
             }
             /// <summary>
@@ -308,6 +313,7 @@ namespace HelixToolkit.UWP
                 texAOSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.AOMapTB);
                 texShadowSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.ShadowMapTB);
                 texIrradianceSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.IrradianceMap);
+                texSSAOSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SSAOMapTB);
                 samplerSurfaceSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
                 samplerIBLSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.IBLSampler);
                 samplerShadowSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.ShadowMapSampler);

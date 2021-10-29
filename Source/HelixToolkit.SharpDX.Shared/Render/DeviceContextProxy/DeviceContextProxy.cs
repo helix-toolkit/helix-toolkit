@@ -129,6 +129,7 @@ namespace HelixToolkit.UWP
                 currStencilRef = 0;
                 currInputLayout = null;
                 currPrimitiveTopology = PrimitiveTopology.Undefined;
+                CurrShaderPass = null;
                 for (var i = 0; i < ConstantBufferCheck.Length; ++i)
                 {
                     ConstantBufferCheck[i] = null;

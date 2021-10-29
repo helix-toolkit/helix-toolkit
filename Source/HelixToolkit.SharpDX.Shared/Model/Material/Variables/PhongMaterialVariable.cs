@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP
             private readonly ShaderResourceViewProxy[] textureResources = new ShaderResourceViewProxy[NUMTEXTURES];
             private SamplerStateProxy surfaceSampler, displacementSampler, shadowSampler;
 
-            private int texDiffuseSlot, texAlphaSlot, texNormalSlot, texDisplaceSlot, texShadowSlot, texSpecularSlot, texEmissiveSlot;
+            private int texDiffuseSlot, texAlphaSlot, texNormalSlot, texDisplaceSlot, texShadowSlot, texSpecularSlot, texEmissiveSlot, texSSAOSlot;
             private int samplerDiffuseSlot, samplerDisplaceSlot, samplerShadowSlot;
             private uint textureIndex = 0;
 
@@ -320,6 +320,10 @@ namespace HelixToolkit.UWP
                     shaderPass.PixelShader.BindTexture(deviceContext, texShadowSlot, context.SharedResource.ShadowView);
                     shaderPass.PixelShader.BindSampler(deviceContext, samplerShadowSlot, shadowSampler);
                 }
+                if (context.SSAOEnabled)
+                {
+                    shaderPass.PixelShader.BindTexture(deviceContext, texSSAOSlot, context.SharedResource.SSAOMap);
+                }
                 return true;
             }
 
@@ -381,6 +385,7 @@ namespace HelixToolkit.UWP
                 texShadowSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowTexName);
                 texSpecularSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderSpecularTexName);
                 texEmissiveSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderEmissiveTexName);
+                texSSAOSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SSAOMapTB);
                 samplerDiffuseSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerDiffuseTexName);
                 samplerShadowSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerShadowMapName);
                 if (!shaderPass.DomainShader.IsNULL && material.EnableTessellation)
