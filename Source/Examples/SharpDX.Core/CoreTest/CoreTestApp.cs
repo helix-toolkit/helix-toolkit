@@ -96,7 +96,7 @@ namespace CoreTest
         {
             dpiScale = DpiHelper.GetWindowsScreenScalingFactor(false);
 
-            viewport = new ViewportCore(window.Handle);
+            viewport = new ViewportCore(window.Handle, true);
             viewport.DpiScale = dpiScale;
             cameraController = new CameraController(viewport);
             cameraController.CameraMode = CameraMode.Inspect;

@@ -29,8 +29,10 @@ namespace CoreTest
         private static bool[] animationSelection = Array.Empty<bool>();
         private static string[] animationNames = Array.Empty<string>();
         private static int currentSelectedAnimation = -1;
-        private static float[] fps = new float[128];
-        private static float[] frustumTest = new float[128];
+        private const int frameDataLength = 128;
+        private static float[] fps = new float[frameDataLength];
+        private static float[] frustumTest = new float[frameDataLength];
+        private static float[] latency = new float[frameDataLength];
         private static int currFPSIndex = 0;
 
         public static void DrawUI(int width, int height, ref ViewportOptions options, GroupNode rootNode)
@@ -52,8 +54,8 @@ namespace CoreTest
                 if (ImGui.BeginMenu("Options"))
                 {
                     ImGui.Checkbox("Dir Light Follow Camera", ref options.DirectionalLightFollowCamera);
-                    ImGui.SliderFloat("Dir Light Intensity", ref options.DirectionLightIntensity, 0, 1, "", 1);
-                    ImGui.SliderFloat("Ambient Light Intensity", ref options.AmbientLightIntensity, 0, 1, "", 1);
+                    ImGui.SliderFloat("Dir Light Intensity", ref options.DirectionLightIntensity, 0, 1, "", ImGuiSliderFlags.ClampOnInput);
+                    ImGui.SliderFloat("Ambient Light Intensity", ref options.AmbientLightIntensity, 0, 1, "", ImGuiSliderFlags.ClampOnInput);
                     ImGui.Separator();
                     ImGui.Checkbox("Show EnvironmentMap", ref options.ShowEnvironmentMap);
                     ImGui.Checkbox("Enable SSAO", ref options.EnableSSAO);
@@ -91,11 +93,14 @@ namespace CoreTest
             ImGui.Separator();
             ImGui.Text("FPS");
             ImGui.PlotLines("", ref fps[0], fps.Length, 0, $"{fps[currFPSIndex]}", 30, 70, new System.Numerics.Vector2(200, 50));
-            ImGui.Text("Frustum Test Time");
-            ImGui.PlotLines("", ref frustumTest[0], frustumTest.Length, 0, $"{frustumTest[currFPSIndex]}ms", 0, 5, new System.Numerics.Vector2(200, 50));
+            ImGui.Text("Rendering Latency Ms");
+            ImGui.PlotLines("", ref latency[0], latency.Length, 0, $"{latency[currFPSIndex]}ms", 0, 5, new System.Numerics.Vector2(200, 50));
             fps[currFPSIndex] = 1000f / (float)options.Viewport.RenderHost.RenderStatistics.LatencyStatistics.AverageValue;
-            frustumTest[currFPSIndex++] = (float)options.Viewport.RenderHost.RenderStatistics.FrustumTestTime * 1000;
-            currFPSIndex %= 128;
+            latency[currFPSIndex] = (float)options.Viewport.RenderHost.RenderStatistics.LatencyStatistics.AverageValue;
+            frustumTest[currFPSIndex] = (float)options.Viewport.RenderHost.RenderStatistics.FrustumTestTime * 1000;
+            ImGui.Text("Frustum Test Ms");
+            ImGui.PlotLines("", ref frustumTest[0], frustumTest.Length, 0, $"{frustumTest[currFPSIndex]}ms", 0, 5, new System.Numerics.Vector2(200, 50));
+            currFPSIndex = (currFPSIndex + 1) % frameDataLength;
 
             if (!loading && ImGui.CollapsingHeader("Scene Graph", ImGuiTreeNodeFlags.DefaultOpen))
             {
