@@ -329,7 +329,7 @@ namespace HelixToolkit.UWP
                 // Draw backface into stencil buffer
                 var dsView = renderContext.RenderHost.DepthStencilBufferView;
                 deviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
-                deviceContext.SetDepthStencilOnly(dsView);//Remove render target
+                deviceContext.SetDepthStencil(dsView);//Remove render target
                 deviceContext.SetRasterState(backfaceRasterState);
                 drawBackfacePass.BindShader(deviceContext);
                 drawBackfacePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);

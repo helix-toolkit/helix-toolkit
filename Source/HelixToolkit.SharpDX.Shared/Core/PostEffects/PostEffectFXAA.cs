@@ -52,7 +52,7 @@ namespace HelixToolkit.UWP
             private readonly ConstantBufferComponent modelCB;
             private BorderEffectStruct modelStruct;
 
-            public PostEffectFXAA() : base(RenderType.PostProc)
+            public PostEffectFXAA() : base(RenderType.GlobalEffect)
             {
                 modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
             }
@@ -81,7 +81,10 @@ namespace HelixToolkit.UWP
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 var buffer = context.RenderHost.RenderBuffer;
-                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.NextRTV, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.NextRTV);
+                var viewport = context.Viewport;
+                deviceContext.SetViewport(ref viewport);
+                deviceContext.SetScissorRectangle(ref viewport);
                 OnUpdatePerModelStruct(context);
                 modelCB.Upload(deviceContext, ref modelStruct);
                 LUMAPass.BindShader(deviceContext);
@@ -90,7 +93,7 @@ namespace HelixToolkit.UWP
                 LUMAPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                 deviceContext.Draw(4, 0);
            
-                deviceContext.SetRenderTargetOnly(buffer.FullResPPBuffer.CurrentRTV);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.CurrentRTV);
                 FXAAPass.BindShader(deviceContext);
                 FXAAPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
                 deviceContext.Draw(4, 0);

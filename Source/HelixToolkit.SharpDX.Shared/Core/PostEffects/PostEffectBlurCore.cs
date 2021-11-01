@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP
             /// <param name="sourceWidth"></param>
             /// <param name="modelStruct"></param>
             public virtual void Run(RenderContext context, DeviceContextProxy deviceContext, 
-                ShaderResourceViewProxy source, int sourceWidth, int sourceHeight, BlurDepth depth, ref BorderEffectStruct modelStruct)
+                ShaderResourceViewProxy source, ref ViewportF sourceViewport, BlurDepth depth, ref BorderEffectStruct modelStruct)
             {
                 deviceContext.SetSampler(PixelShader.Type, samplerSlot, sampler);
                 if((depth & BlurDepth.One) != 0)
@@ -79,7 +79,9 @@ namespace HelixToolkit.UWP
                         modelStruct.ViewportScale = (int)OffScreenTextureSize.Half;
                         modelCB.Upload(deviceContext, ref modelStruct);
                         //Full -> Half Vertical
-                        deviceContext.SetRenderTarget(target1, width, height);
+                        deviceContext.SetRenderTarget(target1);
+                        deviceContext.SetViewport(0, 0, width, height);
+                        deviceContext.SetScissorRectangle(0, 0, width, height);
                         screenBlurPassVertical.BindShader(deviceContext);
                         screenBlurPassVertical.BindStates(deviceContext, StateType.All);
                         screenBlurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, source);
@@ -93,7 +95,9 @@ namespace HelixToolkit.UWP
                                 // Half to Quater Vertical
                                 modelStruct.ViewportScale = (int)OffScreenTextureSize.Quarter;
                                 modelCB.Upload(deviceContext, ref modelStruct);
-                                deviceContext.SetRenderTarget(target2, width2, height2);
+                                deviceContext.SetRenderTarget(target2);
+                                deviceContext.SetViewport(0, 0, width2, height2);
+                                deviceContext.SetScissorRectangle(0, 0, width2, height2);
                                 screenBlurPassVertical.BindShader(deviceContext);
                                 screenBlurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, target1);
                                 deviceContext.Draw(4, 0);
@@ -101,7 +105,9 @@ namespace HelixToolkit.UWP
                                 // Quater to Half Horizontal
                                 modelStruct.ViewportScale = (int)OffScreenTextureSize.Half;
                                 modelCB.Upload(deviceContext, ref modelStruct);
-                                deviceContext.SetRenderTarget(target1, width, height);
+                                deviceContext.SetRenderTarget(target1);
+                                deviceContext.SetViewport(0, 0, width, height);
+                                deviceContext.SetScissorRectangle(0, 0, width, height);
                                 screenBlurPassHorizontal.BindShader(deviceContext);
                                 screenBlurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, target2);
                                 deviceContext.Draw(4, 0);
@@ -110,7 +116,9 @@ namespace HelixToolkit.UWP
                         // Half to Full Horizontal
                         modelStruct.ViewportScale = (int)OffScreenTextureSize.Full;
                         modelCB.Upload(deviceContext, ref modelStruct);
-                        deviceContext.SetRenderTarget(source, sourceWidth, sourceHeight);
+                        deviceContext.SetRenderTarget(source);
+                        deviceContext.SetViewport(ref sourceViewport);
+                        deviceContext.SetScissorRectangle(ref sourceViewport);
                         screenBlurPassHorizontal.BindShader(deviceContext);
                         screenBlurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, target1);
                         deviceContext.Draw(4, 0);

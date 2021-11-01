@@ -19,6 +19,8 @@ cbuffer cbTransforms : register(b0)
 	// viewport:
 	// [w,h,1/w,1/h]
     float4 vViewport;
+    // [x, y, w, h]
+    float4 vResolution;
 	// camera position
     float3 vEyePos;
     bool SSAOEnabled;

@@ -188,7 +188,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Initializes a new instance of the <see cref="PostEffectMeshOutlineBlurCore"/> class.
             /// </summary>
-            public PostEffectMeshOutlineBlurCore(bool useBlurCore = true) : base(RenderType.PostProc)
+            public PostEffectMeshOutlineBlurCore(bool useBlurCore = true) : base(RenderType.PostEffect)
             {
                 this.useBlurCore = useBlurCore;
                 Color = global::SharpDX.Color.Red;
@@ -220,21 +220,23 @@ namespace HelixToolkit.UWP
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
-                int width = 0;
-                int height = 0;
-                using (var depthStencilBuffer = context.GetOffScreenDS(TextureSize, global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt, out width, out height))
+                using (var depthStencilBuffer = context.GetOffScreenDS(TextureSize, global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt, 
+                    out var width, out var height))
                 {
                     using (var renderTargetBuffer = context.GetOffScreenRT(TextureSize, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm))
                     {
-                        OnUpdatePerModelStruct(context);                   
+                        OnUpdatePerModelStruct(context); 
+                        var viewport = context.Viewport;                  
                         if (drawMode == OutlineMode.Separated)
-                        {
+                        {                           
                             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                             {                    
                                 #region Render objects onto offscreen texture
                                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                                deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, width, height, true,
+                                deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, true,
                                     global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
+                                deviceContext.SetViewport(ref viewport);
+                                deviceContext.SetScissorRectangle(ref viewport);
                                 if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                                 {
                                     var color = Color;
@@ -253,15 +255,17 @@ namespace HelixToolkit.UWP
                                     pass.BindShader(deviceContext);
                                     pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                                     mesh.RenderCustom(context, deviceContext);
-                                    DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer, width, height);
+                                    DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer);
                                 }                             
                                 #endregion   
                             }
                         }
                         else
                         {
-                            deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, width, height, true,
+                            deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, true,
                                     Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
+                            deviceContext.SetViewport(ref viewport);
+                            deviceContext.SetScissorRectangle(ref viewport);
                             #region Render objects onto offscreen texture
                             bool hasMesh = false;
                             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
@@ -291,7 +295,7 @@ namespace HelixToolkit.UWP
                             #endregion
                             if (hasMesh)
                             {
-                                DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer, width, height);
+                                DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer);
                             }
                         }
                     }           
@@ -299,16 +303,18 @@ namespace HelixToolkit.UWP
             }
 
             private void DrawOutline(RenderContext context, DeviceContextProxy deviceContext, 
-                ShaderResourceViewProxy depthStencilBuffer, ShaderResourceViewProxy source, int width, int height)
+                ShaderResourceViewProxy depthStencilBuffer, ShaderResourceViewProxy source)
             {
                 var buffer = context.RenderHost.RenderBuffer;
-
+                var sourceViewport = new ViewportF(0, 0, buffer.FullResPPBuffer.Width, buffer.FullResPPBuffer.Height);
+                deviceContext.SetViewport(ref sourceViewport);
+                deviceContext.SetScissorRectangle(ref sourceViewport);
                 #region Do Blur Pass
                 if (useBlurCore)
-                {
+                {           
                     for(int i = 0; i < numberOfBlurPass; ++i)
                     {
-                        blurCore.Run(context, deviceContext, source, width, height, PostEffectBlurCore.BlurDepth.One, ref modelStruct);
+                        blurCore.Run(context, deviceContext, source, ref sourceViewport, PostEffectBlurCore.BlurDepth.One, ref modelStruct);
                     }
                 }
                 else
@@ -316,13 +322,13 @@ namespace HelixToolkit.UWP
                     blurPassHorizontal.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                     for (int i = 0; i < numberOfBlurPass; ++i)
                     {
-                        deviceContext.SetRenderTarget(context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV, width, height);
+                        deviceContext.SetRenderTarget(context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV);
                         blurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, source);                       
                         blurPassHorizontal.BindShader(deviceContext);
                         blurPassHorizontal.BindStates(deviceContext, StateType.All);
                         deviceContext.Draw(4, 0);
 
-                        deviceContext.SetRenderTarget(source, width, height);
+                        deviceContext.SetRenderTarget(source);
                         blurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV);
                         blurPassVertical.BindShader(deviceContext);
                         blurPassVertical.BindStates(deviceContext, StateType.All);
@@ -331,7 +337,7 @@ namespace HelixToolkit.UWP
                 }
 
                 #region Draw back with stencil test
-                deviceContext.SetRenderTarget(depthStencilBuffer, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV, width, height,
+                deviceContext.SetRenderTarget(depthStencilBuffer, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV,
                     true, global::SharpDX.Color.Transparent, false);
                 screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, source);
                 screenQuadPass.BindShader(deviceContext);
@@ -340,7 +346,7 @@ namespace HelixToolkit.UWP
                 #endregion
 
                 #region Draw outline onto original target
-                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.CurrentRTV, buffer.TargetWidth, buffer.TargetHeight);
+                deviceContext.SetRenderTarget(buffer.FullResPPBuffer.CurrentRTV);
                 screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV);
                 screenOutlinePass.BindShader(deviceContext);
                 screenOutlinePass.BindStates(deviceContext, StateType.All);

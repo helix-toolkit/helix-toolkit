@@ -35,6 +35,34 @@ namespace HelixToolkit.UWP
     using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics;
 
+    public sealed class EffectsManagerConfiguration
+    {
+        public int AdapterIndex
+        {
+            set; get;
+        } = -1;
+
+        public ILogger Logger
+        {
+            set; get;
+        }
+#if DEBUG
+            = new DebugLogger();
+#else
+            = new NullLogger();
+#endif
+        /// <summary>
+        /// Use software rendering. 
+        /// <para>
+        /// Limitation: Must enable swap chain rendering to support this feature.
+        /// </para>
+        /// </summary>
+        public bool EnableSoftwareRendering
+        {
+            set; get;
+        } = false;
+    }
+
     /// <summary>
     /// Shader and Technique manager
     /// </summary>
@@ -196,25 +224,26 @@ namespace HelixToolkit.UWP
         /// </summary>
         public bool Initialized { private set; get; } = false;
         /// <summary>
+        /// 
+        /// </summary>
+        public bool EnableSoftwareRendering
+        {
+            get;
+        } = false;
+        /// <summary>
         /// Initializes a new instance of the <see cref="EffectsManager"/> class.
         /// </summary>
         public EffectsManager()
+            : this(new EffectsManagerConfiguration())
         {
-#if DEBUG
-            logger = new LogWrapper(new DebugLogger());
-#else
-            logger = new LogWrapper(new NullLogger());
-#endif
-            Initialize();
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="EffectsManager"/> class.
         /// </summary>
         /// <param name="externallogger">The logger.</param>
         public EffectsManager(ILogger externallogger)
+            : this(new EffectsManagerConfiguration() { Logger = externallogger })
         {
-            this.logger = externallogger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(externallogger);
-            Initialize();
         }
 
         /// <summary>
@@ -222,13 +251,11 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="adapterIndex">Index of the adapter.</param>
         public EffectsManager(int adapterIndex)
+             : this(new EffectsManagerConfiguration() 
+             { 
+                 AdapterIndex = adapterIndex
+             })
         {
-#if DEBUG
-            logger = new LogWrapper(new DebugLogger());
-#else
-            logger = new LogWrapper(new NullLogger());
-#endif
-            Initialize(adapterIndex);
         }
 
         /// <summary>
@@ -236,10 +263,16 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="adapterIndex">Index of the adapter.</param>
         /// <param name="externallogger">The logger.</param>
-        public EffectsManager(int adapterIndex, ILogger externallogger)
+        public EffectsManager(int adapterIndex, ILogger externallogger) 
+            : this(new EffectsManagerConfiguration() { AdapterIndex = adapterIndex, Logger = externallogger})
         {
-            this.logger = externallogger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(externallogger);
-            Initialize(adapterIndex);
+        }
+
+        public EffectsManager(EffectsManagerConfiguration configuration)
+        {
+            EnableSoftwareRendering = configuration.EnableSoftwareRendering;
+            this.logger = configuration.Logger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(configuration.Logger);
+            Initialize(configuration.AdapterIndex);
         }
 
         /// <summary>
@@ -278,14 +311,26 @@ namespace HelixToolkit.UWP
 #if DX11
             if (adapter != null)
             {
+                DriverType = EnableSoftwareRendering ? DriverType.Warp : DriverType.Hardware;
                 if (adapter.Description.VendorId == 0x1414 && adapter.Description.DeviceId == 0x8c)
                 {
                     DriverType = DriverType.Warp;
-                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+                    device = EnableSoftwareRendering ?
+                        new global::SharpDX.Direct3D11.Device(DriverType, DeviceCreationFlags.BgraSupport)
+                        : new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
                 }
                 else
                 {
-                    DriverType = DriverType.Hardware;
+                    if (DriverType == DriverType.Warp)
+                    {
+#if DEBUGMEMORY
+                        device = new global::SharpDX.Direct3D11.Device(DriverType, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.Debug);
+#else
+                        device = new global::SharpDX.Direct3D11.Device(DriverType, DeviceCreationFlags.BgraSupport);
+#endif                   
+                    }
+                    else
+                    {
 #if DEBUGMEMORY
                     device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.Debug);
 #else
@@ -293,7 +338,8 @@ namespace HelixToolkit.UWP
 #endif
                     // DeviceCreationFlags.Debug should not be used in productive mode!
                     // See: http://sharpdx.org/forum/4-general/1774-how-to-debug-a-sharpdxexception
-                    // See: http://stackoverflow.com/questions/19810462/launching-sharpdx-directx-app-with-devicecreationflags-debug
+                    // See: http://stackoverflow.com/questions/19810462/launching-sharpdx-directx-app-with-devicecreationflags-debug                    
+                    }
                 }
 
 #if DX11_1

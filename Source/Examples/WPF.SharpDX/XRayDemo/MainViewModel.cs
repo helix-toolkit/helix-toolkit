@@ -45,6 +45,11 @@ namespace XRayDemo
 
         public Transform3D ModelTransform { private set; get; }
 
+        public Transform3D ScreenSpacedScale
+        {
+            private set; get;
+        } = new Media3D.ScaleTransform3D(0.1, 0.1, 0.1);
+
         public Vector3D Light1Direction { get; set; }
         public Color Light1Color { get; set; }
         public Color AmbientLightColor { get; set; }

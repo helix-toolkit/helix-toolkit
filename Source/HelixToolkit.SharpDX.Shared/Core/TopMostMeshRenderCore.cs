@@ -23,11 +23,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class TopMostMeshRenderCore: RenderCore
         {
-            private readonly ConstantBufferComponent globalTransformCB;
             public TopMostMeshRenderCore() : base(RenderType.ScreenSpaced)
             {
-                globalTransformCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes)));
             }
+            
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 if (RenderType != RenderType.ScreenSpaced)
@@ -42,10 +41,11 @@ namespace HelixToolkit.UWP
 
                 deviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
                 dsView.Dispose();
-                var globalTrans = context.GlobalTransform;
-                globalTransformCB.Upload(deviceContext, ref globalTrans);
-                deviceContext.SetViewport(0, 0, context.ActualWidth, context.ActualHeight);
-                deviceContext.SetScissorRectangle(0, 0, (int)context.ActualWidth, (int)context.ActualHeight);
+                context.RestoreGlobalTransform();
+                context.UpdatePerFrameData(true, false, deviceContext);
+                deviceContext.SetViewport(context.Viewport.X, context.Viewport.Y, context.Viewport.Width, context.Viewport.Height);
+                deviceContext.SetScissorRectangle((int)context.Viewport.X, (int)context.Viewport.Y,
+                    (int)context.Viewport.Width, (int)context.Viewport.Height);
             }
 
             protected override bool OnAttach(IRenderTechnique technique)

@@ -63,6 +63,11 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         public event EventHandler UpdatingImGuiUI;
 
+        public ImGuiNode()
+        {
+            AffectsGlobalVariable = true;
+        }
+
         protected override RenderCore OnCreateRenderCore()
         {
             return new ImGuiRenderCore();
