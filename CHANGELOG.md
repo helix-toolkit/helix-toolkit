@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.20.0] - 2021-10-31
 ### Added
 1. Post effect support in screen spaced group. (WPF.SharpDX/UWP/Core)
 1. Supports software rendering as config for effects manager. (WPF.SharpDX/UWP/Core)
