@@ -178,7 +178,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             unchecked
             {
-                int hashCode = Dimension.GetHashCode();
+                var hashCode = Dimension.GetHashCode();
                 hashCode = (hashCode * 397) ^ Width;
                 hashCode = (hashCode * 397) ^ Height;
                 hashCode = (hashCode * 397) ^ Depth;
@@ -223,7 +223,8 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns>The result of the conversion.</returns>
         public static implicit operator TextureDescription(Texture1DDescription description)
         {
-            return new TextureDescription() {
+            return new TextureDescription()
+            {
                 Dimension = TextureDimension.Texture1D,
                 Width = description.Width,
                 Height = 1,
@@ -318,7 +319,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             return new TextureDescription()
             {
-                Dimension =  TextureDimension.Texture3D,
+                Dimension = TextureDimension.Texture3D,
                 Width = description.Width,
                 Height = description.Height,
                 Depth = description.Depth,

@@ -27,8 +27,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float ArrowSize
             {
-                set { Set(ref arrowSize, value); }
-                get { return arrowSize; }
+                set
+                {
+                    Set(ref arrowSize, value);
+                }
+                get
+                {
+                    return arrowSize;
+                }
             }
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)

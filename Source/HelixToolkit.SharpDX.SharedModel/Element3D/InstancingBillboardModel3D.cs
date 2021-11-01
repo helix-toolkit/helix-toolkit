@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class InstancingBillboardModel3D : BillboardTextModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// List of instance parameter. 
         /// </summary>
@@ -43,10 +43,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IList<BillboardInstanceParameter> InstanceParamArray
         {
-            get { return (IList<BillboardInstanceParameter>)this.GetValue(InstanceAdvArrayProperty); }
-            set { this.SetValue(InstanceAdvArrayProperty, value); }
+            get
+            {
+                return (IList<BillboardInstanceParameter>)this.GetValue(InstanceAdvArrayProperty);
+            }
+            set
+            {
+                this.SetValue(InstanceAdvArrayProperty, value);
+            }
         }
-#endregion
+        #endregion
         /// <summary>
         /// Called when [create scene node].
         /// </summary>

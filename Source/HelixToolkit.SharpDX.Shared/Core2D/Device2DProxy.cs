@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public sealed class D2DTargetProxy : DisposeObject 
+        public sealed class D2DTargetProxy : DisposeObject
         {
             private BitmapProxy d2DTarget;
             /// <summary>
@@ -33,7 +33,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The d2d target.
             /// </value>
-            public BitmapProxy D2DTarget { get { return d2DTarget; } }
+            public BitmapProxy D2DTarget
+            {
+                get
+                {
+                    return d2DTarget;
+                }
+            }
 
 
             /// <summary>
@@ -46,7 +52,7 @@ namespace HelixToolkit.UWP
                 RemoveAndDispose(ref d2DTarget);
                 using (var surf = swapChain.GetBackBuffer<Surface>(0))
                 {
-                    d2DTarget = Collect(BitmapProxy.Create("SwapChainTarget", deviceContext, surf));
+                    d2DTarget = BitmapProxy.Create("SwapChainTarget", deviceContext, surf);
                 }
             }
             /// <summary>
@@ -56,11 +62,17 @@ namespace HelixToolkit.UWP
             /// <param name="deviceContext"></param>
             public void Initialize(Texture2D texture, DeviceContext2D deviceContext)
             {
-                RemoveAndDispose(ref d2DTarget);        
+                RemoveAndDispose(ref d2DTarget);
                 using (var surface = texture.QueryInterface<global::SharpDX.DXGI.Surface>())
                 {
-                    d2DTarget = Collect(BitmapProxy.Create("TextureTarget", deviceContext, surface));
+                    d2DTarget = BitmapProxy.Create("TextureTarget", deviceContext, surface);
                 }
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref d2DTarget);
+                base.OnDispose(disposeManagedResources);
             }
 
             /// <summary>
@@ -76,5 +88,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

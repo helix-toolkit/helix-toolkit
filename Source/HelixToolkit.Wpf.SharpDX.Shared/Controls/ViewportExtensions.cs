@@ -50,10 +50,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The total number of triangles</returns>        
         public static int GetTotalNumberOfTriangles(this Viewport3DX viewport)
         {
-            int count = 0;
-            var totalModel = viewport.Renderables.PreorderDFT((x) => 
+            var count = 0;
+            var totalModel = viewport.Renderables.PreorderDFT((x) =>
             {
-                if(x is GeometryNode g)
+                if (x is GeometryNode g)
                 {
                     if (g.Visible && g.Geometry != null && g.Geometry.Indices != null)
                     {
@@ -139,9 +139,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Element3D
         {
-            viewport.Renderables.PreorderDFT((node) => 
+            viewport.Renderables.PreorderDFT((node) =>
             {
-                if(node.WrapperSource is T element)
+                if (node.WrapperSource is T element)
                 {
                     action(element, element.Transform);
                 }
@@ -228,15 +228,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public static bool FindNearest(this Viewport3DX viewport, Point position,
             out Point3D point, out Vector3D normal, out Element3D model, out SceneNode node)
         {
-            bool succ = viewport.FindNearest(position.ToVector2(), out var p, out var n, out var m);
+            var succ = viewport.FindNearest(position.ToVector2(), out var p, out var n, out var m);
             point = p.ToPoint3D();
             normal = n.ToVector3D();
-            if(m is Element3D ele)
+            if (m is Element3D ele)
             {
                 model = ele;
                 node = ele.SceneNode;
             }
-            else if(m is SceneNode nd)
+            else if (m is SceneNode nd)
             {
                 node = nd;
                 model = null;
@@ -257,7 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The nearest point, or null if no point was found.</returns>
         public static Point3D? FindNearestPoint(this Viewport3DX viewport, Point position)
         {
-            if (viewport.FindNearest(position.ToVector2(), out Vector3 p, out Vector3 n, out var model))
+            if (viewport.FindNearest(position.ToVector2(), out var p, out var n, out var model))
             {
                 return p.ToPoint3D();
             }
@@ -307,7 +307,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static Point3D? UnProjectOnPlane(this Viewport3DX viewport, Point p, Point3D position, Vector3D normal)
         {
-            if(viewport.UnProjectOnPlane(p.ToVector2(), position.ToVector3(), normal.ToVector3(), out var intersection))
+            if (viewport.UnProjectOnPlane(p.ToVector2(), position.ToVector3(), normal.ToVector3(), out var intersection))
             {
                 return intersection.ToPoint3D();
             }
@@ -316,7 +316,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return null;
             }
         }
-          
+
         /// <summary>
         /// 
         /// </summary>
@@ -326,9 +326,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Vector2 p, Plane plane)
         {
-            if(viewport.UnProject(p, out var ray))
+            if (viewport.UnProject(p, out var ray))
             {
-                if(plane.Intersects(ref ray, out Vector3 point))
+                if (plane.Intersects(ref ray, out Vector3 point))
                 {
                     return point;
                 }
@@ -394,7 +394,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>A bitmap.</returns>
         public static BitmapSource RenderBitmap(this Viewport3DX view)
         {
-            if(view.RenderHost != null && view.RenderHost.IsRendering)
+            if (view.RenderHost != null && view.RenderHost.IsRendering)
             {
                 view.RenderHost.UpdateAndRender();
                 using (var memoryStream = new System.IO.MemoryStream())
@@ -473,7 +473,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static void SaveScreen(this Viewport3DX view, string fileName)
         {
             var ext = System.IO.Path.GetExtension(fileName);
-            Direct2DImageFormat format = Direct2DImageFormat.Bmp;
+            var format = Direct2DImageFormat.Bmp;
             switch (ext)
             {
                 case "bmp":
@@ -583,9 +583,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            double fov = pcamera.FieldOfView;
-            double d = pcamera.LookDirection.Length;
-            double r = d * Math.Tan(0.5 * fov / 180 * Math.PI);
+            var fov = pcamera.FieldOfView;
+            var d = pcamera.LookDirection.Length;
+            var r = d * Math.Tan(0.5 * fov / 180 * Math.PI);
 
             fov *= 1 + (delta * 0.5);
             if (fov < viewport.MinimumFieldOfView)
@@ -599,7 +599,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             pcamera.FieldOfView = fov;
-            double d2 = r / Math.Tan(0.5 * fov / 180 * Math.PI);
+            var d2 = r / Math.Tan(0.5 * fov / 180 * Math.PI);
             var newLookDirection = pcamera.LookDirection;
             newLookDirection.Normalize();
             newLookDirection *= d2;

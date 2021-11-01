@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class ParticleRenderCore : RenderCore
         {
-    #pragma warning disable 1591
+#pragma warning disable 1591
             public static readonly int DefaultParticleCount = 512;
             public static readonly float DefaultInitialVelocity = 1f;
             public static readonly Vector3 DefaultAcceleration = new Vector3(0, 0.1f, 0);
@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP
             public static readonly Vector3 DefaultBoundMinimum = new Vector3(-5, -5, -5);
             public static readonly float DefaultInitialEnergy = 5;
             public static readonly float DefaultEnergyDissipationRate = 1f;
-    #pragma warning restore
+#pragma warning restore
             #region variables
             /// <summary>
             /// Texture tile columns
@@ -57,8 +57,11 @@ namespace HelixToolkit.UWP
                 {
                     FrameVariables.NumTexCol = value;
                 }
-                get { return FrameVariables.NumTexCol; }
-            } 
+                get
+                {
+                    return FrameVariables.NumTexCol;
+                }
+            }
             /// <summary>
             /// Texture tile rows
             /// </summary>
@@ -95,7 +98,10 @@ namespace HelixToolkit.UWP
                 {
                     FrameVariables.Turbulance = value;
                 }
-                get { return FrameVariables.Turbulance; }
+                get
+                {
+                    return FrameVariables.Turbulance;
+                }
             }
 
             /// <summary>
@@ -128,7 +134,9 @@ namespace HelixToolkit.UWP
                     }
                     particleCount = value;
                     if (IsAttached)
-                    { OnInitialParticleChanged(value); }
+                    {
+                        OnInitialParticleChanged(value);
+                    }
                 }
                 get
                 {
@@ -145,7 +153,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref particleTexture, value) && IsAttached)
+                    if (Set(ref particleTexture, value) && IsAttached)
                     {
                         OnTextureChanged();
                     }
@@ -164,11 +172,11 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref samplerDescription, value) && IsAttached)
+                    if (Set(ref samplerDescription, value) && IsAttached)
                     {
                         var newSampler = EffectTechnique.EffectsManager.StateManager.Register(value);
                         RemoveAndDispose(ref textureSampler);
-                        textureSampler = Collect(newSampler);
+                        textureSampler = newSampler;
                     }
                 }
                 get
@@ -183,7 +191,13 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance has texture; otherwise, <c>false</c>.
             /// </value>
-            public bool HasTexture { get { return particleTexture != null; } }
+            public bool HasTexture
+            {
+                get
+                {
+                    return particleTexture != null;
+                }
+            }
 
             /// <summary>
             /// Particle Size
@@ -342,7 +356,10 @@ namespace HelixToolkit.UWP
                 {
                     InsertVariables.EnergyDissipationRate = value;
                 }
-                get { return InsertVariables.EnergyDissipationRate; }
+                get
+                {
+                    return InsertVariables.EnergyDissipationRate;
+                }
             }
             /// <summary>
             /// Gets or sets the initial acceleration.
@@ -352,8 +369,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector3 InitialAcceleration
             {
-                set { InsertVariables.InitialAcceleration = value; }
-                get { return InsertVariables.InitialAcceleration; }
+                set
+                {
+                    InsertVariables.InitialAcceleration = value;
+                }
+                get
+                {
+                    return InsertVariables.InitialAcceleration;
+                }
             }
             /// <summary>
             /// Gets or sets the initial energy.
@@ -363,8 +386,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float InitialEnergy
             {
-                set { InsertVariables.InitialEnergy = value; }
-                get { return InsertVariables.InitialEnergy; }
+                set
+                {
+                    InsertVariables.InitialEnergy = value;
+                }
+                get
+                {
+                    return InsertVariables.InitialEnergy;
+                }
             }
             /// <summary>
             /// Gets or sets the initial velocity.
@@ -374,8 +403,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float InitialVelocity
             {
-                set { InsertVariables.InitialVelocity = value; }
-                get { return InsertVariables.InitialVelocity; }
+                set
+                {
+                    InsertVariables.InitialVelocity = value;
+                }
+                get
+                {
+                    return InsertVariables.InitialVelocity;
+                }
             }
             /// <summary>
             /// Gets or sets the color of the particle blend.
@@ -385,8 +420,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 ParticleBlendColor
             {
-                set { InsertVariables.ParticleBlendColor = value; }
-                get { return InsertVariables.ParticleBlendColor; }
+                set
+                {
+                    InsertVariables.ParticleBlendColor = value;
+                }
+                get
+                {
+                    return InsertVariables.ParticleBlendColor;
+                }
             }
             /// <summary>
             /// Gets or sets the emitter radius.
@@ -396,22 +437,42 @@ namespace HelixToolkit.UWP
             /// </value>
             public float EmitterRadius
             {
-                set { InsertVariables.EmitterRadius = value; }
-                get { return InsertVariables.EmitterRadius; }
+                set
+                {
+                    InsertVariables.EmitterRadius = value;
+                }
+                get
+                {
+                    return InsertVariables.EmitterRadius;
+                }
             }
             /// <summary>
             /// Particle per frame parameters
             /// </summary>
-            private ParticlePerFrame FrameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0,
-                DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum,
-                ConsumerGravity = DefaultConsumerGravity, ConsumerLocation = DefaultConsumerLocation, ConsumerRadius = DefaultConsumerRadius };
+            private ParticlePerFrame FrameVariables = new ParticlePerFrame()
+            {
+                ExtraAcceleration = DefaultAcceleration,
+                CumulateAtBound = 0,
+                DomainBoundsMax = DefaultBoundMaximum,
+                DomainBoundsMin = DefaultBoundMinimum,
+                ConsumerGravity = DefaultConsumerGravity,
+                ConsumerLocation = DefaultConsumerLocation,
+                ConsumerRadius = DefaultConsumerRadius
+            };
 
             /// <summary>
             /// Particle insert parameters
             /// </summary>
-            private ParticleInsertParameters InsertVariables = new ParticleInsertParameters() { EmitterLocation = DefaultEmitterLocation, EmitterRadius = DefaultConsumerRadius,
-                EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy,
-                InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
+            private ParticleInsertParameters InsertVariables = new ParticleInsertParameters()
+            {
+                EmitterLocation = DefaultEmitterLocation,
+                EmitterRadius = DefaultConsumerRadius,
+                EnergyDissipationRate = DefaultEnergyDissipationRate,
+                InitialAcceleration = DefaultAcceleration,
+                InitialEnergy = DefaultInitialEnergy,
+                InitialVelocity = DefaultInitialVelocity,
+                ParticleBlendColor = Color.White.ToColor4()
+            };
 
             #region ShaderVariables
             private ShaderPass updatePass;
@@ -440,7 +501,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref instanceBuffer, value))
+                    if (Set(ref instanceBuffer, value))
                     {
                         if (value == null)
                         {
@@ -464,8 +525,8 @@ namespace HelixToolkit.UWP
             };
 
             //Buffer indirectArgsBuffer;
-            private readonly ConstantBufferProxy particleCountGSIABuffer 
-                = new ConstantBufferProxy("particleCount", ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, 
+            private readonly ConstantBufferProxy particleCountGSIABuffer
+                = new ConstantBufferProxy("particleCount", ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None,
                     ResourceOptionFlags.DrawIndirectArguments);
 
             private ConstantBufferProxy particleCountStaging
@@ -500,12 +561,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref blendDesc, value) && IsAttached)
+                    if (Set(ref blendDesc, value) && IsAttached)
                     {
                         OnBlendStateChanged();
                     }
                 }
-                get { return blendDesc; }
+                get
+                {
+                    return blendDesc;
+                }
             }
 
             private Color4 blendFactor = Color4.White;
@@ -521,7 +585,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref blendFactor, value);
                 }
-                get { return blendFactor; }
+                get
+                {
+                    return blendFactor;
+                }
             }
 
             private int sampleMask = -1;
@@ -537,7 +604,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref sampleMask, value);
                 }
-                get { return sampleMask; }
+                get
+                {
+                    return sampleMask;
+                }
             }
             /// <summary>
             /// Gets or sets the vertex layout.
@@ -545,7 +615,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The vertex layout.
             /// </value>
-            public InputLayout VertexLayout { private set; get; }
+            public InputLayoutProxy VertexLayout
+            {
+                private set; get;
+            }
             #region Shader Variable Names
             /// <summary>
             /// Set current sim state variable name inside compute shader for binding
@@ -634,7 +707,7 @@ namespace HelixToolkit.UWP
                 {
                     OnInitialParticleChanged(ParticleCount);
                 }
-                textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+                textureSampler = technique.EffectsManager.StateManager.Register(SamplerDescription);
                 OnTextureChanged();
                 OnBlendStateChanged();
                 return true;
@@ -650,7 +723,7 @@ namespace HelixToolkit.UWP
 
             private void UpdateTime(RenderContext context, ref double totalElapsed)
             {
-                double timeElapsed = Math.Max(0, (context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000);
+                var timeElapsed = Math.Max(0, (context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000);
                 prevTimeMillis = context.TimeStamp.TotalMilliseconds;
                 totalElapsed += timeElapsed;
                 //Update perframe variables
@@ -685,10 +758,9 @@ namespace HelixToolkit.UWP
 
                 if (BufferProxies != null)
                 {
-                    for (int i = 0; i < BufferProxies.Length; ++i)
+                    for (var i = 0; i < BufferProxies.Length; ++i)
                     {
-                        BufferProxies[i]?.Dispose();
-                        BufferProxies[i] = null;
+                        RemoveAndDispose(ref BufferProxies[i]);
                     }
                 }
             }
@@ -699,10 +771,9 @@ namespace HelixToolkit.UWP
             {
                 DisposeBuffers();
                 isInitialParticleChanged = true;
-                textureSampler = null;
-                blendState = null;
-                textureView = null;
-                base.OnDetach();
+                RemoveAndDispose(ref textureSampler);
+                RemoveAndDispose(ref blendState);
+                RemoveAndDispose(ref textureView);
             }
 
             private void InitializeBuffers(int count)
@@ -710,27 +781,27 @@ namespace HelixToolkit.UWP
                 bufferDesc.SizeInBytes = particleCount * Particle.SizeInBytes;
                 UAVBufferViewDesc.Buffer.ElementCount = particleCount;
 
-                for (int i = 0; i < BufferProxies.Length; ++i)
+                for (var i = 0; i < BufferProxies.Length; ++i)
                 {
                     BufferProxies[i] = new UAVBufferViewProxy(Device, ref bufferDesc, ref UAVBufferViewDesc, ref SRVBufferViewDesc);
                 }
 
-                particleCountStaging.CreateBuffer(this.Device); 
+                particleCountStaging.CreateBuffer(this.Device);
                 particleCountGSIABuffer.CreateBuffer(this.Device);
             }
 
             private void OnTextureChanged()
-            {              
+            {
                 var newView = EffectTechnique.EffectsManager.MaterialTextureManager.Register(ParticleTexture);
                 RemoveAndDispose(ref textureView);
-                textureView = Collect(newView);
+                textureView = newView;
             }
 
             private void OnBlendStateChanged()
             {
                 var newState = EffectTechnique.EffectsManager.StateManager.Register(blendDesc);
                 RemoveAndDispose(ref blendState);
-                blendState = Collect(newState);
+                blendState = newState;
             }
 
 
@@ -745,7 +816,7 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="deviceContext"></param>
             protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
-            {        
+            {
                 UpdateTime(context, ref totalElapsed);
                 //Set correct instance count from instance buffer
                 drawArgument.InstanceCount = !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.ElementCount;
@@ -778,9 +849,9 @@ namespace HelixToolkit.UWP
                     BufferProxies[1].CopyCount(deviceContext, particleCountGSIABuffer.Buffer, 0);
                 }
 
-    #if OUTPUTDEBUGGING
+#if OUTPUTDEBUGGING
                 ReadCount("UAV 0", deviceContext, BufferProxies[0].UAV);
-    #endif
+#endif
 
 
                 if (totalElapsed > InsertElapseThrottle)
@@ -791,9 +862,9 @@ namespace HelixToolkit.UWP
                     insertPass.ComputeShader.BindUAV(deviceContext, newStateSlot, BufferProxies[1]);
                     deviceContext.Dispatch(1, 1, 1);
                     totalElapsed = 0;
-    #if OUTPUTDEBUGGING
+#if OUTPUTDEBUGGING
                     ReadCount("UAV 1", deviceContext, BufferProxies[1].UAV);
-    #endif
+#endif
                 }
 
                 // Swap UAV buffers for next frame
@@ -823,7 +894,7 @@ namespace HelixToolkit.UWP
                 renderPass.PixelShader.BindTexture(deviceContext, textureSlot, textureView);
                 renderPass.PixelShader.BindSampler(deviceContext, samplerSlot, textureSampler);
                 deviceContext.InputLayout = VertexLayout;
-                int firstSlot = 0;
+                var firstSlot = 0;
                 InstanceBuffer?.AttachBuffer(deviceContext, ref firstSlot);
                 deviceContext.SetBlendState(blendState, blendFactor, sampleMask);
                 deviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
@@ -834,19 +905,15 @@ namespace HelixToolkit.UWP
             private int ReadCount(string src, DeviceContextProxy context, UnorderedAccessView uav)
             {
                 context.CopyStructureCount(particleCountStaging, 0, uav);
-                var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None, out DataStream ds);
-                int CurrentParticleCount = 0;
-                using (ds)
-                {
-                    CurrentParticleCount = ds.ReadInt();
-    #if OUTPUTDEBUGGING
-                    Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
-    #endif
-                }
+                var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None);
+                var CurrentParticleCount = 0;
+                CurrentParticleCount = UnsafeHelper.Read<int>(db.DataPointer);
+#if OUTPUTDEBUGGING
+                Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
+#endif
                 context.UnmapSubresource(particleCountStaging, 0);
                 return CurrentParticleCount;
             }
         }
     }
-
 }

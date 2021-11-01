@@ -37,35 +37,48 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The properties.
             /// </value>
-            public BitmapProperties1 Properties { private set; get; }
+            public BitmapProperties1 Properties
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets the context.
             /// </summary>
             /// <value>
             /// The context.
             /// </value>
-            public DeviceContext Context { private set; get; }
+            public DeviceContext Context
+            {
+                private set; get;
+            }
+            private Bitmap1 bitmap;
             /// <summary>
             /// Gets the bitmap.
             /// </summary>
             /// <value>
             /// The bitmap.
             /// </value>
-            public Bitmap1 Bitmap { private set; get; }
+            public Bitmap1 Bitmap => bitmap;
             /// <summary>
             /// Gets the name.
             /// </summary>
             /// <value>
             /// The name.
             /// </value>
-            public string Name { private set; get; }
+            public string Name
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets the bitmap size.
             /// </summary>
             /// <value>
             /// The size.
             /// </value>
-            public Size2 Size { private set; get; }
+            public Size2 Size
+            {
+                private set; get;
+            }
             /// <summary>
             /// Initializes a new instance of the <see cref="BitmapProxy"/> class.
             /// </summary>
@@ -77,7 +90,7 @@ namespace HelixToolkit.UWP
             {
                 Properties = properties;
                 Context = context;
-                Bitmap = Collect(new Bitmap1(context, size, properties));
+                bitmap = new Bitmap1(context, size, properties);
                 Size = size;
                 Name = name;
             }
@@ -92,7 +105,7 @@ namespace HelixToolkit.UWP
             {
                 Properties = properties;
                 Context = context;
-                Bitmap = Collect(new Bitmap1(context, surface, properties));
+                bitmap = new Bitmap1(context, surface, properties);
                 Size = new Size2((int)Bitmap.Size.Width, (int)Bitmap.Size.Height);
                 Name = name;
             }
@@ -157,6 +170,12 @@ namespace HelixToolkit.UWP
                 return new BitmapProxy(name, context, size, CreateDescription(context.DotsPerInch.Width, context.DotsPerInch.Height, format, global::SharpDX.Direct2D1.AlphaMode.Premultiplied, BitmapOptions.Target));
             }
 
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref bitmap);
+                base.OnDispose(disposeManagedResources);
+            }
+
             /// <summary>
             /// Performs an implicit conversion from <see cref="BitmapProxy"/> to <see cref="Bitmap1"/>.
             /// </summary>
@@ -170,5 +189,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

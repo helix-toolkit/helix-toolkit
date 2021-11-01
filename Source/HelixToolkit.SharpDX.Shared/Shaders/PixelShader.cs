@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP
 {
     namespace Shaders
     {
-        using Render;    
+        using Render;
         using Utilities;
 
         /// <summary>
@@ -25,7 +25,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class PixelShader : ShaderBase
         {
-            internal global::SharpDX.Direct3D11.PixelShader Shader { private set; get; } = null;
+            private global::SharpDX.Direct3D11.PixelShader shader;
+            internal global::SharpDX.Direct3D11.PixelShader Shader => shader;
             public static readonly PixelShader NullPixelShader = new PixelShader("NULL");
             public static readonly PixelShaderType Type;
             /// <summary>
@@ -35,13 +36,14 @@ namespace HelixToolkit.UWP
             /// <param name="name"></param>
             /// <param name="byteCode"></param>
             public PixelShader(Device device, string name, byte[] byteCode)
-                :base(name, ShaderStage.Pixel)
+                : base(name, ShaderStage.Pixel)
             {
-                Shader = Collect(new global::SharpDX.Direct3D11.PixelShader(device, byteCode));
+                shader = new global::SharpDX.Direct3D11.PixelShader(device, byteCode);
+                shader.DebugName = name;
             }
 
             private PixelShader(string name)
-                :base(name, ShaderStage.Pixel, true)
+                : base(name, ShaderStage.Pixel, true)
             {
 
             }
@@ -65,7 +67,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void BindTexture(DeviceContextProxy context, string name, ShaderResourceViewProxy texture)
             {
-                int slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
+                var slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
                 context.SetShaderResource(Type, slot, texture);
             }
             /// <summary>
@@ -112,7 +114,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void BindSampler(DeviceContextProxy context, string name, SamplerStateProxy sampler)
             {
-                int slot = this.SamplerMapping.TryGetBindSlot(name);
+                var slot = this.SamplerMapping.TryGetBindSlot(name);
                 context.SetSampler(Type, slot, sampler);
             }
 
@@ -130,6 +132,12 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref shader);
+                base.OnDispose(disposeManagedResources);
+            }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static implicit operator PixelShaderType(PixelShader s)
             {
@@ -137,5 +145,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

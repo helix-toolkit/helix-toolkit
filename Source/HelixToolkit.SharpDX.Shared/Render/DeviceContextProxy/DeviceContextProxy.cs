@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
 {
     namespace Render
     {
-        using Shaders;  
+        using Shaders;
         using Utilities;
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP
         public sealed partial class DeviceContextProxy : DisposeObject
         {
             public static bool AutoSkipRedundantStateSetting = false;
-            private readonly DeviceContext deviceContext;
+            private DeviceContext deviceContext;
             private readonly Device device;
             private RasterizerStateProxy currRasterState = null;
             private DepthStencilStateProxy currDepthStencilState = null;
@@ -46,7 +46,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The last shader pass.
             /// </value>
-            public ShaderPass CurrShaderPass { private set; get; }
+            public ShaderPass CurrShaderPass
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Gets the number of draw calls.
@@ -64,7 +67,7 @@ namespace HelixToolkit.UWP
             /// <param name="device">The device.</param>
             public DeviceContextProxy(Device device)
             {
-                deviceContext = Collect(new DeviceContext(device));
+                deviceContext = new DeviceContext(device);
                 this.device = device;
                 IsDeferred = true;
             }
@@ -126,11 +129,12 @@ namespace HelixToolkit.UWP
                 currStencilRef = 0;
                 currInputLayout = null;
                 currPrimitiveTopology = PrimitiveTopology.Undefined;
-                for (int i = 0; i < ConstantBufferCheck.Length; ++i)
+                CurrShaderPass = null;
+                for (var i = 0; i < ConstantBufferCheck.Length; ++i)
                 {
                     ConstantBufferCheck[i] = null;
                 }
-                for (int i = 0; i < SamplerStateCheck.Length; ++i)
+                for (var i = 0; i < SamplerStateCheck.Length; ++i)
                 {
                     SamplerStateCheck[i] = null;
                 }
@@ -160,14 +164,17 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources"></param>
             protected override void OnDispose(bool disposeManagedResources)
             {
-                if(deviceContext!=null && !deviceContext.IsDisposed)
+                if (deviceContext != null && !deviceContext.IsDisposed)
                 {
                     deviceContext.ClearState();
                     deviceContext.OutputMerger.ResetTargets();
+                }
+                if (IsDeferred)
+                {
+                    RemoveAndDispose(ref deviceContext);
                 }
                 base.OnDispose(disposeManagedResources);
             }
         }
     }
-
 }

@@ -125,18 +125,16 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
+    
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="UWPTextureLoader.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.Assimp.rd.xml" />
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
+
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet">
@@ -158,7 +156,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\HelixToolkit.snk" />
+    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.UWP\HelixToolkit.UWP.csproj">

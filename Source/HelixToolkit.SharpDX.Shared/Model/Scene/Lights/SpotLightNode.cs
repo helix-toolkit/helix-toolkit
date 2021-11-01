@@ -30,8 +30,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector3 Direction
             {
-                set { (RenderCore as SpotLightCore).Direction = value; }
-                get { return (RenderCore as SpotLightCore).Direction; }
+                set
+                {
+                    (RenderCore as SpotLightCore).Direction = value;
+                }
+                get
+                {
+                    return (RenderCore as SpotLightCore).Direction;
+                }
             }
             /// <summary>
             /// Gets or sets the fall off.
@@ -41,8 +47,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float FallOff
             {
-                set { (RenderCore as SpotLightCore).FallOff = value; }
-                get { return (RenderCore as SpotLightCore).FallOff; }
+                set
+                {
+                    (RenderCore as SpotLightCore).FallOff = value;
+                }
+                get
+                {
+                    return (RenderCore as SpotLightCore).FallOff;
+                }
             }
             /// <summary>
             /// Gets or sets the inner angle.
@@ -52,8 +64,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float InnerAngle
             {
-                set { (RenderCore as SpotLightCore).InnerAngle = value; }
-                get { return (RenderCore as SpotLightCore).InnerAngle; }
+                set
+                {
+                    (RenderCore as SpotLightCore).InnerAngle = value;
+                }
+                get
+                {
+                    return (RenderCore as SpotLightCore).InnerAngle;
+                }
             }
             /// <summary>
             /// Gets or sets the outer angle.
@@ -63,8 +81,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float OuterAngle
             {
-                set { (RenderCore as SpotLightCore).OuterAngle = value; }
-                get { return (RenderCore as SpotLightCore).OuterAngle; }
+                set
+                {
+                    (RenderCore as SpotLightCore).OuterAngle = value;
+                }
+                get
+                {
+                    return (RenderCore as SpotLightCore).OuterAngle;
+                }
             }
             /// <summary>
             /// Called when [create render core].
@@ -76,5 +100,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

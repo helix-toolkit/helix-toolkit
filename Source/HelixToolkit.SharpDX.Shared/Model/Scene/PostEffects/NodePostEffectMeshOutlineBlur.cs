@@ -114,7 +114,7 @@ namespace HelixToolkit.UWP
                 {
                     return (RenderCore as IPostEffectOutlineBlur).NumberOfBlurPass;
                 }
-            } 
+            }
             #endregion
 
             /// <summary>
@@ -150,5 +150,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

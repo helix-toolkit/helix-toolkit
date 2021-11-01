@@ -41,7 +41,10 @@ namespace HelixToolkit.UWP
                         UpdateAxisColor(0, value);
                     }
                 }
-                get { return axisXColor; }
+                get
+                {
+                    return axisXColor;
+                }
             }
 
             private Color4 axisYColor = Color.Green;
@@ -60,7 +63,10 @@ namespace HelixToolkit.UWP
                         UpdateAxisColor(1, value);
                     }
                 }
-                get { return axisYColor; }
+                get
+                {
+                    return axisYColor;
+                }
             }
 
             private Color4 axisZColor = Color.Blue;
@@ -79,7 +85,10 @@ namespace HelixToolkit.UWP
                         UpdateAxisColor(2, value);
                     }
                 }
-                get { return axisZColor; }
+                get
+                {
+                    return axisZColor;
+                }
             }
 
             private Color4 labelColor = Color.Gray;
@@ -98,7 +107,10 @@ namespace HelixToolkit.UWP
                         UpdateLabelColor(value);
                     }
                 }
-                get { return labelColor; }
+                get
+                {
+                    return labelColor;
+                }
             }
 
             private string labelX = "X";
@@ -117,7 +129,10 @@ namespace HelixToolkit.UWP
                         UpdateAxisLabel(0, value);
                     }
                 }
-                get { return labelX; }
+                get
+                {
+                    return labelX;
+                }
             }
 
             private string labelY = "Y";
@@ -136,7 +151,10 @@ namespace HelixToolkit.UWP
                         UpdateAxisLabel(1, value);
                     }
                 }
-                get { return labelY; }
+                get
+                {
+                    return labelY;
+                }
             }
 
             private string labelZ = "Z";
@@ -155,7 +173,10 @@ namespace HelixToolkit.UWP
                         UpdateAxisLabel(2, value);
                     }
                 }
-                get { return labelZ; }
+                get
+                {
+                    return labelZ;
+                }
             }
 
             private readonly BillboardNode axisBillboard = new BillboardNode() { Material = new BillboardMaterialCore() };
@@ -171,7 +192,7 @@ namespace HelixToolkit.UWP
             {
                 IsHitTestVisible = false;
                 CameraType = ScreenSpacedCameraType.Perspective;
-                arrowMeshModel.Material = new ColorMaterialCore();           
+                arrowMeshModel.Material = new ColorMaterialCore();
                 arrowMeshModel.CullMode = CullMode.Back;
                 axisBillboard.EnableViewFrustumCheck = false;
                 var axisLabel = new BillboardText3D();
@@ -201,7 +222,7 @@ namespace HelixToolkit.UWP
 
             private void UpdateAxisColor(int which, Color4 color)
             {
-                string label = "";
+                var label = "";
                 switch (which)
                 {
                     case 0:
@@ -260,7 +281,7 @@ namespace HelixToolkit.UWP
                 switch (which)
                 {
                     case 0:
-                        labelText.TextInfo[which] = new TextInfo(label, new Vector3(arrowSize + 1.5f, 0, 0)) { Foreground = labelColor, Scale = 0.5f };               
+                        labelText.TextInfo[which] = new TextInfo(label, new Vector3(arrowSize + 1.5f, 0, 0)) { Foreground = labelColor, Scale = 0.5f };
                         break;
 
                     case 1:
@@ -271,9 +292,9 @@ namespace HelixToolkit.UWP
                         labelText.TextInfo[which] = new TextInfo(label, new Vector3(0, 0, arrowSize + 1.5f)) { Foreground = labelColor, Scale = 0.5f };
                         break;
                 }
-                int segment = mesh.Positions.Count / 3;
+                var segment = mesh.Positions.Count / 3;
                 var colors = new Color4Collection(mesh.Colors == null ? Enumerable.Repeat<Color4>(Color.Black, mesh.Positions.Count) : mesh.Colors);
-                for (int i = segment * which; i < segment * (which + 1); ++i)
+                for (var i = segment * which; i < segment * (which + 1); ++i)
                 {
                     colors[i] = color;
                 }
@@ -286,5 +307,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

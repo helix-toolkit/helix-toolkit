@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Render;
     using Utilities;
 #endif
-    using Controls; 
+    using Controls;
 
     [DefaultProperty("Children")]
     [ContentProperty("Items")]
@@ -46,8 +46,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IEffectsManager EffectsManager
         {
-            get { return (IEffectsManager)GetValue(EffectsManagerProperty); }
-            set { SetValue(EffectsManagerProperty, value); }
+            get
+            {
+                return (IEffectsManager)GetValue(EffectsManagerProperty);
+            }
+            set
+            {
+                SetValue(EffectsManagerProperty, value);
+            }
         }
         /// <summary>
         /// The Render Technique property
@@ -64,8 +70,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IRenderTechnique RenderTechnique
         {
-            get { return (IRenderTechnique)this.GetValue(RenderTechniqueProperty); }
-            set { this.SetValue(RenderTechniqueProperty, value); }
+            get
+            {
+                return (IRenderTechnique)this.GetValue(RenderTechniqueProperty);
+            }
+            set
+            {
+                this.SetValue(RenderTechniqueProperty, value);
+            }
         }
 
         /// <summary>
@@ -79,8 +91,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Exception RenderException
         {
-            get { return (Exception)this.GetValue(RenderExceptionProperty); }
-            set { this.SetValue(RenderExceptionProperty, value); }
+            get
+            {
+                return (Exception)this.GetValue(RenderExceptionProperty);
+            }
+            set
+            {
+                this.SetValue(RenderExceptionProperty, value);
+            }
         }
 
         /// <summary>
@@ -125,8 +143,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Color BackgroundColor
         {
-            get { return (Color)this.GetValue(BackgroundColorProperty); }
-            set { this.SetValue(BackgroundColorProperty, value); }
+            get
+            {
+                return (Color)this.GetValue(BackgroundColorProperty);
+            }
+            set
+            {
+                this.SetValue(BackgroundColorProperty, value);
+            }
         }
 
 
@@ -150,14 +174,39 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public IEnumerable<SceneNode2D> D2DRenderables
         {
-            get { return Enumerable.Empty<SceneNode2D>(); }
+            get
+            {
+                return Enumerable.Empty<SceneNode2D>();
+            }
         }
 
-        public IRenderHost RenderHost { private set { renderHostInternal = value; } get { return renderHostInternal; } }
+        public IRenderHost RenderHost
+        {
+            private set
+            {
+                renderHostInternal = value;
+            }
+            get
+            {
+                return renderHostInternal;
+            }
+        }
 
-        public bool IsShadowMappingEnabled { get { return false; } }
+        public bool IsShadowMappingEnabled
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-        public global::SharpDX.Rectangle ViewportRectangle { get { return new global::SharpDX.Rectangle(); } }
+        public global::SharpDX.Rectangle ViewportRectangle
+        {
+            get
+            {
+                return new global::SharpDX.Rectangle();
+            }
+        }
 
         private IRenderHost renderHostInternal;
 
@@ -216,7 +265,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnApplyTemplate();
             if (IsInDesignMode)
-            { return; }
+            {
+                return;
+            }
             if (this.renderHostInternal != null)
             {
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
@@ -293,7 +344,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public void Update(TimeSpan timeStamp)
         {
-            
+
         }
 
         private class ScreenCloneRenderHost : SwapChainRenderHost

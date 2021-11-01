@@ -10,7 +10,7 @@ using System;
 using global::SharpDX;
 using Vector3D = global::SharpDX.Vector3;
 using Vector3 = global::SharpDX.Vector3;
-using Point3D = global::SharpDX.Vector3;    
+using Point3D = global::SharpDX.Vector3;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -21,12 +21,12 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using Core;  
+    using Core;
     public class LineBuilder
     {
         private Vector3Collection positions;
         private IntCollection lineListIndices;
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP
             // textureCoordinates = new List<Point>();
             lineListIndices = new IntCollection();
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -44,9 +44,10 @@ namespace HelixToolkit.UWP
         /// <param name="points"></param>
         public void Add(bool isClosed, params Point3D[] points)
         {
-            int i0 = positions.Count;
-            foreach (var p in points) positions.Add(p);
-            for (int i = 0; i + 1 < points.Length; i++)
+            var i0 = positions.Count;
+            foreach (var p in points)
+                positions.Add(p);
+            for (var i = 0; i + 1 < points.Length; i++)
             {
                 this.lineListIndices.Add(i0 + i);
                 this.lineListIndices.Add(i0 + i + 1);
@@ -58,7 +59,7 @@ namespace HelixToolkit.UWP
                 this.lineListIndices.Add(i0);
             }
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -68,15 +69,15 @@ namespace HelixToolkit.UWP
         /// <param name="zlength"></param>
         public void AddBox(Point3D center, double xlength, double ylength, double zlength)
         {
-            int i0 = positions.Count;
-            var dx = new Vector3D((float)xlength/2f, 0, 0);
-            var dy = new Vector3D(0, (float)ylength/2f, 0);
-            var dz = new Vector3D(0, 0, (float)zlength/2f);
+            var i0 = positions.Count;
+            var dx = new Vector3D((float)xlength / 2f, 0, 0);
+            var dy = new Vector3D(0, (float)ylength / 2f, 0);
+            var dz = new Vector3D(0, 0, (float)zlength / 2f);
             this.Add(true, center - dx - dy - dz, center + dx - dy - dz, center + dx + dy - dz, center - dx + dy - dz);
             this.Add(true, center - dx - dy + dz, center + dx - dy + dz, center + dx + dy + dz, center - dx + dy + dz);
             lineListIndices.AddRange(new[] { i0 + 0, i0 + 4, i0 + 1, i0 + 5, i0 + 2, i0 + 6, i0 + 3, i0 + 7 });
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -84,7 +85,7 @@ namespace HelixToolkit.UWP
         /// <param name="p2"></param>
         public void AddLine(Point3D p1, Point3D p2)
         {
-            int i0 = positions.Count;
+            var i0 = positions.Count;
             this.positions.Add(p1);
             this.positions.Add(p2);
             this.lineListIndices.Add(i0);
@@ -116,16 +117,16 @@ namespace HelixToolkit.UWP
             var stepx = width / (columns - 1);
 
             float minx = 0, miny = 0;
-            float maxx = width;
-            float maxy = height;
+            var maxx = width;
+            var maxy = height;
 
-            for (int y = 0; y < rows; y++)
+            for (var y = 0; y < rows; y++)
             {
                 this.AddLine(new Vector3(minx, stepy * y, 0), new Vector3(maxx, stepy * y, 0));
             }
-            for (int x = 0; x < columns; x++)
+            for (var x = 0; x < columns; x++)
             {
-                this.AddLine(new Vector3(stepx * x, miny, 0), new Vector3(stepx * x, maxy, 0));           
+                this.AddLine(new Vector3(stepx * x, miny, 0), new Vector3(stepx * x, maxy, 0));
             }
         }
 
@@ -169,18 +170,18 @@ namespace HelixToolkit.UWP
                 throw new ArgumentNullException("too few segments, at least 3");
             }
             normal.Normalize();
-            float sectionAngle = (float)(2.0 * Math.PI / segments);
+            var sectionAngle = (float)(2.0 * Math.PI / segments);
             var start = new Vector3(radius, 0.0f, 0.0f);
             var current = new Vector3(radius, 0.0f, 0.0f);
             var next = new Vector3(0.0f, 0.0f, 0.0f);
-            int posStart = positions.Count;
+            var posStart = positions.Count;
             positions.Add(current);
-            int currIndex = posStart;
-            
-            for (int i = 1; i < segments; i++)
+            var currIndex = posStart;
+
+            for (var i = 1; i < segments; i++)
             {
                 next.X = radius * (float)Math.Cos(i * sectionAngle);
-                next.Z = radius * (float)Math.Sin(i * sectionAngle);               
+                next.Z = radius * (float)Math.Sin(i * sectionAngle);
                 current = next;
                 positions.Add(current);
                 lineListIndices.Add(currIndex);
@@ -197,12 +198,12 @@ namespace HelixToolkit.UWP
                 transform = Matrix.RotationAxis(axis, (float)Math.Acos(Vector3.Dot(Vector3.UnitY, normal))) * transform;
             }
 
-            for(int i = posStart; i < positions.Count; ++i)
+            for (var i = posStart; i < positions.Count; ++i)
             {
                 positions[i] = Vector3.TransformCoordinate(positions[i], transform);
             }
         }
-               
+
         /// <summary>
         /// Generates a square grid with a step of 1.0 
         /// </summary>
@@ -222,34 +223,34 @@ namespace HelixToolkit.UWP
             //int width = max - min;
             if (plane == Vector3.UnitX)
             {
-                for (int i = min0; i <= max0; i++)
+                for (var i = min0; i <= max0; i++)
                 {
-                    grid.AddLine(new Vector3(0, i, min1), new Vector3(0, i, max1));                    
+                    grid.AddLine(new Vector3(0, i, min1), new Vector3(0, i, max1));
                 }
-                for (int i = min1; i <= max1; i++)
-                {                    
+                for (var i = min1; i <= max1; i++)
+                {
                     grid.AddLine(new Vector3(0, min0, i), new Vector3(0, max0, i));
                 }
             }
             else if (plane == Vector3.UnitY)
             {
-                for (int i = min0; i <= max0; i++)
+                for (var i = min0; i <= max0; i++)
                 {
                     grid.AddLine(new Vector3(i, 0, min1), new Vector3(i, 0, max1));
-                    
+
                 }
-                for (int i = min1; i <= max1; i++)
+                for (var i = min1; i <= max1; i++)
                 {
                     grid.AddLine(new Vector3(min0, 0, i), new Vector3(max0, 0, i));
                 }
             }
             else
             {
-                for (int i = min0; i <= max0; i++)
+                for (var i = min0; i <= max0; i++)
                 {
-                    grid.AddLine(new Vector3(i, min1, 0), new Vector3(i, max1, 0));                    
+                    grid.AddLine(new Vector3(i, min1, 0), new Vector3(i, max1, 0));
                 }
-                for (int i = min1; i <= max1; i++)
+                for (var i = min1; i <= max1; i++)
                 {
                     grid.AddLine(new Vector3(min0, i, 0), new Vector3(max0, i, 0));
                 }
@@ -258,7 +259,7 @@ namespace HelixToolkit.UWP
             return grid.ToLineGeometry3D();
         }
 
-        
+
         /// <summary>
         /// Generates a square grid with a step of 1.0 
         /// </summary>
@@ -269,7 +270,7 @@ namespace HelixToolkit.UWP
             //int width = max - min;
             if (plane == Vector3.UnitX)
             {
-                for (int i = min; i <= max; i++)
+                for (var i = min; i <= max; i++)
                 {
                     grid.AddLine(new Vector3(0, i, min), new Vector3(0, i, max));
                     grid.AddLine(new Vector3(0, min, i), new Vector3(0, max, i));
@@ -277,7 +278,7 @@ namespace HelixToolkit.UWP
             }
             else if (plane == Vector3.UnitY)
             {
-                for (int i = min; i <= max; i++)
+                for (var i = min; i <= max; i++)
                 {
                     grid.AddLine(new Vector3(i, 0, min), new Vector3(i, 0, max));
                     grid.AddLine(new Vector3(min, 0, i), new Vector3(max, 0, i));
@@ -285,7 +286,7 @@ namespace HelixToolkit.UWP
             }
             else
             {
-                for (int i = min; i <= max; i++)
+                for (var i = min; i <= max; i++)
                 {
                     grid.AddLine(new Vector3(i, min, 0), new Vector3(i, max, 0));
                     grid.AddLine(new Vector3(min, i, 0), new Vector3(max, i, 0));
@@ -323,7 +324,7 @@ namespace HelixToolkit.UWP
         /// <param name="bb">The bounding-box</param>
         /// <returns></returns>
         public static LineGeometry3D GenerateBoundingBox(global::SharpDX.BoundingBox bb)
-        {            
+        {
             var cc = bb.GetCorners();
             var ll = new LineBuilder();
             ll.AddLine(cc[0], cc[1]);
@@ -382,8 +383,8 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static float GetPointToLineDistance2D(ref Vector3 pt, ref Vector3 p0, ref Vector3 p1, out Vector3 closest, out float t)
         {
-            float dx = p1.X - p0.X;
-            float dy = p1.Y - p0.Y;
+            var dx = p1.X - p0.X;
+            var dy = p1.Y - p0.Y;
             if (Math.Abs(dx) < float.Epsilon && Math.Abs(dy) < float.Epsilon)
             {
                 // The points are too close together.
@@ -421,7 +422,7 @@ namespace HelixToolkit.UWP
 
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -457,16 +458,16 @@ namespace HelixToolkit.UWP
         public static float GetLineToLineDistance(
             Vector3 s0, Vector3 s1, Vector3 t0, Vector3 t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc, bool sIsRay = false)
         {
-            Vector3 u = s1 - s0;
-            Vector3 v = t1 - t0;
-            Vector3 w = s0 - t0;
+            var u = s1 - s0;
+            var v = t1 - t0;
+            var w = s0 - t0;
 
-            float a = Vector3.Dot(u, u); // always >= 0
-            float b = Vector3.Dot(u, v);
-            float c = Vector3.Dot(v, v); // always >= 0
-            float d = Vector3.Dot(u, w);
-            float e = Vector3.Dot(v, w);
-            float D = a * c - b * b;     // always >= 0
+            var a = Vector3.Dot(u, u); // always >= 0
+            var b = Vector3.Dot(u, v);
+            var c = Vector3.Dot(v, v); // always >= 0
+            var d = Vector3.Dot(u, w);
+            var e = Vector3.Dot(v, w);
+            var D = a * c - b * b;     // always >= 0
             float sN, sD = D;            // sc = sN / sD, default sD = D >= 0
             float tN, tD = D;            // tc = tN / tD, default tD = D >= 0
 
@@ -500,7 +501,7 @@ namespace HelixToolkit.UWP
                         sN = sD;
                         tN = e + b;
                         tD = c;
-                    }                    
+                    }
                 }
             }
 

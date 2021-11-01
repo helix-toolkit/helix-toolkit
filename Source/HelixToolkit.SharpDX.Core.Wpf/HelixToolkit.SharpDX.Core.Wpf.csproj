@@ -9,8 +9,8 @@
       <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
       <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
       <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
-      <SignAssembly>true</SignAssembly>
-      <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
+
+      <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
       <Company>HelixToolkit</Company>
       <Authors>HelixToolkit Contributors</Authors>
       <Version>0.0.0.1</Version>

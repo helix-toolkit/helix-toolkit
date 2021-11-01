@@ -85,7 +85,7 @@ namespace Wpf3DTools
         private ScaleTransform3D _scale = new ScaleTransform3D();
         private AxisAngleRotation3D _rotation = new AxisAngleRotation3D();
         private TranslateTransform3D _translate = new TranslateTransform3D();
-        
+
         private double _rotationFactor;
         private double _zoomFactor;
 
@@ -106,7 +106,10 @@ namespace Wpf3DTools
         /// </summary>
         public Transform3D Transform
         {
-            get { return _transform; }
+            get
+            {
+                return _transform;
+            }
         }
 
         /// <summary>
@@ -114,7 +117,10 @@ namespace Wpf3DTools
         /// </summary>
         public Transform3D RotateTransform
         {
-            get { return _rotateTransform; }
+            get
+            {
+                return _rotateTransform;
+            }
         }
 
         /// <summary>
@@ -122,7 +128,10 @@ namespace Wpf3DTools
         /// </summary>
         public FrameworkElement EventSource
         {
-            get { return _eventSource; }
+            get
+            {
+                return _eventSource;
+            }
 
             set
             {
@@ -171,7 +180,7 @@ namespace Wpf3DTools
         /// </summary>
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            Point currentPosition = e.GetPosition(EventSource);
+            var currentPosition = e.GetPosition(EventSource);
 
             if (e.LeftButton == MouseButtonState.Pressed && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
             {
@@ -194,19 +203,20 @@ namespace Wpf3DTools
         /// </summary>
         private void Look(Point currentPosition)
         {
-            Vector3D currentPosition3D = ProjectToTrackball(
+            var currentPosition3D = ProjectToTrackball(
                 EventSource.ActualWidth, EventSource.ActualHeight, currentPosition);
 
-            if (_previousPosition3D.Equals(currentPosition3D)) return;
-            
-            Vector3D axis = Vector3D.CrossProduct(_previousPosition3D, currentPosition3D);            
+            if (_previousPosition3D.Equals(currentPosition3D))
+                return;
 
-            double angle = _rotationFactor * Vector3D.AngleBetween(_previousPosition3D, currentPosition3D);
-            Quaternion delta = new Quaternion(axis, -angle);
+            var axis = Vector3D.CrossProduct(_previousPosition3D, currentPosition3D);
+
+            var angle = _rotationFactor * Vector3D.AngleBetween(_previousPosition3D, currentPosition3D);
+            var delta = new Quaternion(axis, -angle);
 
             // Get the current orientation from the RotateTransform3D
-            AxisAngleRotation3D r = _rotation;
-            Quaternion q = new Quaternion(_rotation.Axis, _rotation.Angle);
+            var r = _rotation;
+            var q = new Quaternion(_rotation.Axis, _rotation.Angle);
 
             // Compose the delta with the previous orientation
             q *= delta;
@@ -223,12 +233,12 @@ namespace Wpf3DTools
         /// </summary>
         private void Pan(Point currentPosition)
         {
-            Vector3D currentPosition3D = ProjectToTrackball(
+            var currentPosition3D = ProjectToTrackball(
                 EventSource.ActualWidth, EventSource.ActualHeight, currentPosition);
 
-            Vector change = Point.Subtract(_previousPosition2D, currentPosition);
+            var change = Point.Subtract(_previousPosition2D, currentPosition);
 
-            Vector3D changeVector = new Vector3D(change.X, change.Y, 0);
+            var changeVector = new Vector3D(change.X, change.Y, 0);
 
             _translate.OffsetX += changeVector.X * .1;
             _translate.OffsetY -= changeVector.Y * .1;
@@ -242,14 +252,14 @@ namespace Wpf3DTools
         /// </summary>
         private Vector3D ProjectToTrackball(double width, double height, Point point)
         {
-            double x = point.X / (width / 2);    // Scale so bounds map to [0,0] - [2,2]
-            double y = point.Y / (height / 2);
+            var x = point.X / (width / 2);    // Scale so bounds map to [0,0] - [2,2]
+            var y = point.Y / (height / 2);
 
             x = x - 1;                           // Translate 0,0 to the center
             y = 1 - y;                           // Flip so +Y is up instead of down
 
-            double z2 = 1 - x * x - y * y;       // z^2 = 1 - x^2 - y^2
-            double z = z2 > 0 ? Math.Sqrt(z2) : 0;
+            var z2 = 1 - x * x - y * y;       // z^2 = 1 - x^2 - y^2
+            var z = z2 > 0 ? Math.Sqrt(z2) : 0;
 
             return new Vector3D(x, y, z);
         }
@@ -259,9 +269,9 @@ namespace Wpf3DTools
         /// </summary>
         private void Zoom(Point currentPosition)
         {
-            double yDelta = currentPosition.Y - _previousPosition2D.Y;
+            var yDelta = currentPosition.Y - _previousPosition2D.Y;
 
-            double scale = _zoomFactor * Math.Exp(-yDelta / 100);    // e^(yDelta/100) is fairly arbitrary.
+            var scale = _zoomFactor * Math.Exp(-yDelta / 100);    // e^(yDelta/100) is fairly arbitrary.
 
             _scale.ScaleX *= scale;
             _scale.ScaleY *= scale;

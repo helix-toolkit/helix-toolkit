@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected bool isMouseCaptured;
         protected Viewport3DX viewport;
-        protected Vector3 lastHitPosWS, cameraNormal;       
+        protected Vector3 lastHitPosWS, cameraNormal;
 
         /// <summary>
         ///   The target transform property. 
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
             "TargetTransform", typeof(Transform3D), typeof(UIManipulator3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                (d,e)=> { (d as Element3DCore).InvalidateRender(); }));
+                (d, e) => { (d as Element3DCore).InvalidateRender(); }));
 
         /// <summary>
         ///   The offset property.
@@ -103,8 +103,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Transform3D TargetTransform
         {
-            get{return (Transform3D)this.GetValue(TargetTransformProperty);}
-            set{this.SetValue(TargetTransformProperty, value);}
+            get
+            {
+                return (Transform3D)this.GetValue(TargetTransformProperty);
+            }
+            set
+            {
+                this.SetValue(TargetTransformProperty, value);
+            }
         }
 
         /// <summary>
@@ -114,8 +120,14 @@ namespace HelixToolkit.Wpf.SharpDX
         [TypeConverter(typeof(Vector3Converter))]
         public Vector3 Offset
         {
-            get { return (Vector3)this.GetValue(OffsetProperty); }
-            set { this.SetValue(OffsetProperty, value); }
+            get
+            {
+                return (Vector3)this.GetValue(OffsetProperty);
+            }
+            set
+            {
+                this.SetValue(OffsetProperty, value);
+            }
         }
 
         /// <summary>
@@ -124,8 +136,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The value. </value>
         public double Value
         {
-            get{return (double)this.GetValue(ValueProperty);}
-            set{this.SetValue(ValueProperty, value);}
+            get
+            {
+                return (double)this.GetValue(ValueProperty);
+            }
+            set
+            {
+                this.SetValue(ValueProperty, value);
+            }
         }
 
         /// <summary>
@@ -164,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="e"></param>
         protected void OnOffetChanged(DependencyPropertyChangedEventArgs e)
-        {            
+        {
             //var trafo = this.Transform.Value;
 
             //this.Position = new Point3D(this.Position.X + this.Offset.X, this.Position.Y + this.Offset.Y, this.Position.Z + this.Offset.Z);
@@ -191,8 +209,10 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnMouse3DDown(sender, e);
 
             var args = e as Mouse3DEventArgs;
-            if (args == null) return;
-            if (args.Viewport == null) return;
+            if (args == null)
+                return;
+            if (args.Viewport == null)
+                return;
 
             this.isMouseCaptured = true;
             this.viewport = args.Viewport;
@@ -210,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnMouse3DUp(sender, e);
             if (this.isMouseCaptured)
             {
-                this.isMouseCaptured = false;                
+                this.isMouseCaptured = false;
                 this.viewport = null;
             }
         }
@@ -224,7 +244,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnMouse3DMove(sender, e);
             if (this.isMouseCaptured)
-            {                
+            {
                 UpdateManipulator(e);
             }
         }

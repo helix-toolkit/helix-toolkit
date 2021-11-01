@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <typeparam name="StateType">The type of the tate type.</typeparam>
-        public abstract class StateProxy<StateType> : ReferenceCountDisposeObject where StateType : ComObject
+        public abstract class StateProxy<StateType> : DisposeObject where StateType : ComObject
         {
             /// <summary>
             /// Gets the state.
@@ -27,14 +27,25 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The state.
             /// </value>
-            public StateType State { get { return state; } }
-            private readonly StateType state;
+            public StateType State
+            {
+                get
+                {
+                    return state;
+                }
+            }
+            private StateType state;
 
             public StateProxy(StateType state)
             {
-                this.state = Collect(state);
+                this.state = state;
             }
 
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref state);
+                base.OnDispose(disposeManagedResources);
+            }
             /// <summary>
             /// Performs an implicit conversion
             /// </summary>
@@ -54,7 +65,7 @@ namespace HelixToolkit.UWP
         public sealed class RasterizerStateProxy : StateProxy<RasterizerState>
         {
             public static readonly RasterizerStateProxy Empty = new RasterizerStateProxy(null);
-            public RasterizerStateProxy(RasterizerState state) : base(state) { }
+            internal RasterizerStateProxy(RasterizerState state) : base(state) { }
         }
 
         /// <summary>
@@ -63,7 +74,7 @@ namespace HelixToolkit.UWP
         public sealed class BlendStateProxy : StateProxy<BlendState>
         {
             public static readonly BlendStateProxy Empty = new BlendStateProxy(null);
-            public BlendStateProxy(BlendState state) : base(state) { }
+            internal BlendStateProxy(BlendState state) : base(state) { }
         }
         /// <summary>
         /// 
@@ -71,7 +82,7 @@ namespace HelixToolkit.UWP
         public sealed class DepthStencilStateProxy : StateProxy<DepthStencilState>
         {
             public static readonly DepthStencilStateProxy Empty = new DepthStencilStateProxy(null);
-            public DepthStencilStateProxy(DepthStencilState state) : base(state) { }
+            internal DepthStencilStateProxy(DepthStencilState state) : base(state) { }
         }
         /// <summary>
         /// 
@@ -79,8 +90,7 @@ namespace HelixToolkit.UWP
         public sealed class SamplerStateProxy : StateProxy<SamplerState>
         {
             public static readonly SamplerStateProxy Empty = new SamplerStateProxy(null);
-            public SamplerStateProxy(SamplerState state) : base(state) { }
+            internal SamplerStateProxy(SamplerState state) : base(state) { }
         }
     }
-
 }

@@ -67,10 +67,9 @@ namespace HelixToolkit.UWP
 
             protected override Size2F GetSize(TextLayoutInfo value)
             {
-                return new Size2F(value.TextLayout.Metrics.Width + value.Padding.X + value.Padding.Z, 
+                return new Size2F(value.TextLayout.Metrics.Width + value.Padding.X + value.Padding.Z,
                     value.TextLayout.Metrics.Height + value.Padding.Y + value.Padding.W);
             }
         }
     }
-
 }

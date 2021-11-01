@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP
             protected override BoundingBox GetMaxBound()
             {
                 var totalBound = GeometryBound.Transform(InstanceMatrix[0]);
-                for (int i = 0; i < InstanceMatrix.Count; ++i)
+                for (var i = 0; i < InstanceMatrix.Count; ++i)
                 {
                     var b = GeometryBound.Transform(InstanceMatrix[i]);
                     BoundingBox.Merge(ref totalBound, ref b, out totalBound);
@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP
             protected override KeyValuePair<int, BoundingBox>[] GetObjects()
             {
                 var bounds = new KeyValuePair<int, BoundingBox>[InstanceMatrix.Count];
-                for (int i = 0; i < InstanceMatrix.Count; ++i)
+                for (var i = 0; i < InstanceMatrix.Count; ++i)
                 {
                     var b = GeometryBound.Transform(InstanceMatrix[i]);
                     bounds[i] = new KeyValuePair<int, BoundingBox>(i, b);
@@ -98,13 +98,13 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
-                bool isHit = false;
+                var isHit = false;
                 var bound = octant.Bound.Transform(modelMatrix);
                 var rayWS = context.RayWS;
                 if (rayWS.Intersects(ref bound))
                 {
                     isIntersect = true;
-                    for (int i = octant.Start; i < octant.End; ++i)
+                    for (var i = octant.Start; i < octant.End; ++i)
                     {
                         var b = Objects[i].Value.Transform(modelMatrix);
                         if (b.Intersects(ref rayWS))
@@ -151,7 +151,7 @@ namespace HelixToolkit.UWP
                 : base(parameter)
             {
                 Geometries = geometries;
-                GeometryBound = geometries.Select(x=>x.Geometry.Bound.Transform(x.ModelTransform)).ToArray();
+                GeometryBound = geometries.Select(x => x.Geometry.Bound.Transform(x.ModelTransform)).ToArray();
             }
             /// <summary>
             /// Gets the bounding box from item.
@@ -169,7 +169,7 @@ namespace HelixToolkit.UWP
             protected override BoundingBox GetMaxBound()
             {
                 var totalBound = GeometryBound[0];
-                for (int i = 0; i < GeometryBound.Length; ++i)
+                for (var i = 0; i < GeometryBound.Length; ++i)
                 {
                     BoundingBox.Merge(ref totalBound, ref GeometryBound[i], out totalBound);
                 }
@@ -182,7 +182,7 @@ namespace HelixToolkit.UWP
             protected override KeyValuePair<int, BoundingBox>[] GetObjects()
             {
                 var bounds = new KeyValuePair<int, BoundingBox>[GeometryBound.Length];
-                for (int i = 0; i < GeometryBound.Length; ++i)
+                for (var i = 0; i < GeometryBound.Length; ++i)
                 {
                     bounds[i] = new KeyValuePair<int, BoundingBox>(i, GeometryBound[i]);
                 }
@@ -196,14 +196,13 @@ namespace HelixToolkit.UWP
             /// <param name="model">The model.</param>
             /// <param name="geometry"></param>
             /// <param name="modelMatrix">The model matrix.</param>
-            /// <param name="rayWS">The ray ws.</param>
             /// <param name="rayModel">The ray model.</param>
             /// <param name="returnMultiple"></param>
             /// <param name="hits">The hits.</param>
             /// <param name="isIntersect">if set to <c>true</c> [is intersect].</param>
             /// <param name="hitThickness">The hit thickness.</param>
             /// <returns></returns>
-            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, HitTestContext context, 
+            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, HitTestContext context,
                 object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayModel, bool returnMultiple,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
@@ -212,26 +211,26 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
-                bool isHit = false;
+                var isHit = false;
                 var bound = octant.Bound.Transform(modelMatrix);
                 var rayWS = context.RayWS;
                 if (rayWS.Intersects(ref bound))
                 {
                     isIntersect = true;
-                    for (int i = octant.Start; i < octant.End; ++i)
+                    for (var i = octant.Start; i < octant.End; ++i)
                     {
                         var b = Objects[i].Value.Transform(modelMatrix);
                         if (b.Intersects(ref rayWS))
                         {
                             ref var geo = ref Geometries[Objects[i].Key];
-                            if(geo.Geometry is MeshGeometry3D mesh)
+                            if (geo.Geometry is MeshGeometry3D mesh)
                             {
                                 var currCount = hits.Count;
                                 var hasHit = mesh.HitTest(context, geo.ModelTransform * modelMatrix, ref hits, model);
                                 if (hasHit)
                                 {
-                                    int newCount = hits.Count;
-                                    for (int j = currCount; j < newCount; ++j)
+                                    var newCount = hits.Count;
+                                    for (var j = currCount; j < newCount; ++j)
                                     {
                                         hits.Add(new BatchedMeshHitTestResult(Objects[i].Key, ref geo, hits[j]));
                                     }
@@ -259,5 +258,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -82,12 +82,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (surfaceD3D == null)
                     {
                         Debug.WriteLine("Create new D3DImageSource");
-                        surfaceD3D = Collect(new DX11ImageSource(EffectsManager.AdapterIndex));
+                        surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
                         surfaceD3D.IsFrontBufferAvailableChanged += SurfaceD3D_IsFrontBufferAvailableChanged;
                     }
                     surfaceD3D.SetRenderTargetDX11(e.Texture.Resource as Texture2D);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Logger.Log(HelixToolkit.Logger.LogLevel.Error, $"Failed to create surfaceD3D. Ex: {ex.Message}");
                     hasBackBuffer = false;
@@ -113,12 +113,12 @@ namespace HelixToolkit.Wpf.SharpDX
             private bool lastSurfaceD3DIsFrontBufferAvailable;
             private void SurfaceD3D_IsFrontBufferAvailableChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
             {
-                bool newValue = (bool)(e.NewValue);
-                if (EffectsManager == null ||newValue==lastSurfaceD3DIsFrontBufferAvailable)
+                var newValue = (bool)(e.NewValue);
+                if (EffectsManager == null || newValue == lastSurfaceD3DIsFrontBufferAvailable)
                 {
                     return;
                 }
-               
+
                 Logger.Log(HelixToolkit.Logger.LogLevel.Warning, $"SurfaceD3D front buffer changed. Value = {newValue}, last value {lastSurfaceD3DIsFrontBufferAvailable}");
                 if (surfaceD3D != null)
                 {

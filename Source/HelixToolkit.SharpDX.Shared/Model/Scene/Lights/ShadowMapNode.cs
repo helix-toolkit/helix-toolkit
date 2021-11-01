@@ -34,8 +34,15 @@ namespace HelixToolkit.UWP
             /// </value>
             public Size2 Resolution
             {
-                get { return new Size2((RenderCore as ShadowMapCore).Width, (RenderCore as ShadowMapCore).Height); }
-                set { (RenderCore as ShadowMapCore).Width = value.Width; (RenderCore as ShadowMapCore).Height = value.Height; }
+                get
+                {
+                    return new Size2((RenderCore as ShadowMapCore).Width, (RenderCore as ShadowMapCore).Height);
+                }
+                set
+                {
+                    (RenderCore as ShadowMapCore).Width = value.Width;
+                    (RenderCore as ShadowMapCore).Height = value.Height;
+                }
             }
 
             /// <summary>
@@ -43,8 +50,14 @@ namespace HelixToolkit.UWP
             /// </summary>
             public float Bias
             {
-                get { return (RenderCore as ShadowMapCore).Bias; }
-                set { (RenderCore as ShadowMapCore).Bias = value; }
+                get
+                {
+                    return (RenderCore as ShadowMapCore).Bias;
+                }
+                set
+                {
+                    (RenderCore as ShadowMapCore).Bias = value;
+                }
             }
 
             /// <summary>
@@ -52,8 +65,14 @@ namespace HelixToolkit.UWP
             /// </summary>
             public float Intensity
             {
-                get { return (RenderCore as ShadowMapCore).Intensity; }
-                set { (RenderCore as ShadowMapCore).Intensity = value; }
+                get
+                {
+                    return (RenderCore as ShadowMapCore).Intensity;
+                }
+                set
+                {
+                    (RenderCore as ShadowMapCore).Intensity = value;
+                }
             }
 
             private float distance = 200;
@@ -63,7 +82,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref distance, value);
                 }
-                get { return distance; }
+                get
+                {
+                    return distance;
+                }
             }
 
             private float orthoWidth = 100;
@@ -73,7 +95,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref orthoWidth, value);
                 }
-                get { return orthoWidth; }
+                get
+                {
+                    return orthoWidth;
+                }
             }
 
             private float farField = 500;
@@ -87,13 +112,16 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref farField, value))
+                    if (SetAffectsRender(ref farField, value))
                     {
                         orthoCamera.FarPlaneDistance = value;
                         persCamera.FarPlaneDistance = value;
                     }
                 }
-                get { return farField; }
+                get
+                {
+                    return farField;
+                }
             }
 
             private float nearField = 500;
@@ -107,13 +135,16 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref nearField, value))
+                    if (SetAffectsRender(ref nearField, value))
                     {
                         orthoCamera.NearPlaneDistance = value;
                         persCamera.NearPlaneDistance = value;
                     }
                 }
-                get { return nearField; }
+                get
+                {
+                    return nearField;
+                }
             }
             /// <summary>
             /// Distance of the directional light from origin
@@ -272,10 +303,10 @@ namespace HelixToolkit.UWP
                 points[6] = new Vector3(box.Minimum.X, box.Maximum.Y, box.Minimum.Z);
                 points[7] = new Vector3(box.Maximum.X, box.Minimum.Y, box.Maximum.Z);
                 var plane = new Plane(center, lookDir);
-                Vector3 farthest = Vector3.Zero;
-                float farestDist = 0f;
+                var farthest = Vector3.Zero;
+                var farestDist = 0f;
 
-                for (int i = 0; i < 8; ++i)
+                for (var i = 0; i < 8; ++i)
                 {
                     Vector3.Dot(ref plane.Normal, ref points[i], out var dot);
                     dot += plane.D;
@@ -283,7 +314,7 @@ namespace HelixToolkit.UWP
                     {
                         continue;
                     }
-                    float t = dot - plane.D;
+                    var t = dot - plane.D;
                     var v = points[i] - (t * plane.Normal);
                     var vDist = v.Length();
                     if (vDist > farestDist)
@@ -340,7 +371,7 @@ namespace HelixToolkit.UWP
                             {
                                 SetOrthoCameraParameters(ref dir);
                             }
-                            camera = orthoCamera;  
+                            camera = orthoCamera;
                             break;
                         }
                         else if (light.LightType == LightType.Spot)
@@ -380,5 +411,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

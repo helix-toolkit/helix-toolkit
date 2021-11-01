@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
 {
     namespace Model.Scene
     {
-        using Core;   
+        using Core;
         using Utilities;
         /// <summary>
         /// 
@@ -103,8 +103,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float ConsumerRadius
             {
-                set { particleCore.ConsumerRadius = value; }
-                get { return particleCore.ConsumerRadius; }
+                set
+                {
+                    particleCore.ConsumerRadius = value;
+                }
+                get
+                {
+                    return particleCore.ConsumerRadius;
+                }
             }
             /// <summary>
             /// Gets or sets the consumer gravity.
@@ -114,8 +120,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float ConsumerGravity
             {
-                set { particleCore.ConsumerGravity = value; }
-                get { return particleCore.ConsumerGravity; }
+                set
+                {
+                    particleCore.ConsumerGravity = value;
+                }
+                get
+                {
+                    return particleCore.ConsumerGravity;
+                }
             }
             /// <summary>
             /// Gets or sets the initial energy.
@@ -130,7 +142,10 @@ namespace HelixToolkit.UWP
                     particleCore.InitialEnergy = value;
                     particleCore.UpdateInsertThrottle();
                 }
-                get { return particleCore.InitialEnergy; }
+                get
+                {
+                    return particleCore.InitialEnergy;
+                }
             }
             /// <summary>
             /// Gets or sets the energy dissipation rate.
@@ -140,8 +155,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float EnergyDissipationRate
             {
-                set { particleCore.EnergyDissipationRate = value; }
-                get { return particleCore.EnergyDissipationRate; }
+                set
+                {
+                    particleCore.EnergyDissipationRate = value;
+                }
+                get
+                {
+                    return particleCore.EnergyDissipationRate;
+                }
             }
             /// <summary>
             /// Gets or sets the random vector generator.
@@ -168,8 +189,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel ParticleTexture
             {
-                set { particleCore.ParticleTexture = value; }
-                get { return particleCore.ParticleTexture; }
+                set
+                {
+                    particleCore.ParticleTexture = value;
+                }
+                get
+                {
+                    return particleCore.ParticleTexture;
+                }
             }
             /// <summary>
             /// Gets or sets the number texture column.
@@ -179,8 +206,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public uint NumTextureColumn
             {
-                set { particleCore.NumTextureColumn = value; }
-                get { return particleCore.NumTextureColumn; }
+                set
+                {
+                    particleCore.NumTextureColumn = value;
+                }
+                get
+                {
+                    return particleCore.NumTextureColumn;
+                }
             }
             /// <summary>
             /// Gets or sets the number texture row.
@@ -190,8 +223,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public uint NumTextureRow
             {
-                set { particleCore.NumTextureRow = value; }
-                get { return particleCore.NumTextureRow; }
+                set
+                {
+                    particleCore.NumTextureRow = value;
+                }
+                get
+                {
+                    return particleCore.NumTextureRow;
+                }
             }
             /// <summary>
             /// Gets or sets the size of the particle.
@@ -201,8 +240,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector2 ParticleSize
             {
-                set { particleCore.ParticleSize = value; }
-                get { return particleCore.ParticleSize; }
+                set
+                {
+                    particleCore.ParticleSize = value;
+                }
+                get
+                {
+                    return particleCore.ParticleSize;
+                }
             }
             /// <summary>
             /// Gets or sets the initial velocity.
@@ -212,8 +257,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float InitialVelocity
             {
-                set { particleCore.InitialVelocity = value; }
-                get { return particleCore.InitialVelocity; }
+                set
+                {
+                    particleCore.InitialVelocity = value;
+                }
+                get
+                {
+                    return particleCore.InitialVelocity;
+                }
             }
             /// <summary>
             /// Gets or sets the initialize acceleration.
@@ -223,8 +274,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector3 InitAcceleration
             {
-                set { particleCore.InitialAcceleration = value; }
-                get { return particleCore.InitialAcceleration; }
+                set
+                {
+                    particleCore.InitialAcceleration = value;
+                }
+                get
+                {
+                    return particleCore.InitialAcceleration;
+                }
             }
 
             private Vector3 domainBoundMax = ParticleRenderCore.DefaultBoundMaximum;
@@ -236,14 +293,18 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector3 DomainBoundMax
             {
-                set {
+                set
+                {
                     if (Set(ref domainBoundMax, value))
                     {
                         particleCore.DomainBoundMax = value;
                         boundChanged = true;
                     }
                 }
-                get { return domainBoundMax; }
+                get
+                {
+                    return domainBoundMax;
+                }
             }
 
             private Vector3 domainBoundMin = ParticleRenderCore.DefaultBoundMinimum;
@@ -257,11 +318,11 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref domainBoundMin, value))
+                    if (Set(ref domainBoundMin, value))
                     {
                         particleCore.DomainBoundMin = value;
                         boundChanged = true;
-                    }              
+                    }
                 }
                 get
                 {
@@ -276,8 +337,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool CumulateAtBound
             {
-                set { particleCore.CumulateAtBound = value; }
-                get { return particleCore.CumulateAtBound; }
+                set
+                {
+                    particleCore.CumulateAtBound = value;
+                }
+                get
+                {
+                    return particleCore.CumulateAtBound;
+                }
             }
             /// <summary>
             /// Gets or sets the color of the blend.
@@ -287,8 +354,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 BlendColor
             {
-                set { particleCore.ParticleBlendColor = value; }
-                get { return particleCore.ParticleBlendColor; }
+                set
+                {
+                    particleCore.ParticleBlendColor = value;
+                }
+                get
+                {
+                    return particleCore.ParticleBlendColor;
+                }
             }
             /// <summary>
             /// Gets or sets a value indicating whether [animate sprite by energy].
@@ -298,8 +371,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool AnimateSpriteByEnergy
             {
-                set { particleCore.AnimateSpriteByEnergy = value; }
-                get { return particleCore.AnimateSpriteByEnergy; }
+                set
+                {
+                    particleCore.AnimateSpriteByEnergy = value;
+                }
+                get
+                {
+                    return particleCore.AnimateSpriteByEnergy;
+                }
             }
             /// <summary>
             /// Gets or sets the turbulance.
@@ -309,8 +388,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float Turbulance
             {
-                set { particleCore.Turbulance = value; }
-                get { return particleCore.Turbulance; }
+                set
+                {
+                    particleCore.Turbulance = value;
+                }
+                get
+                {
+                    return particleCore.Turbulance;
+                }
             }
 
             private BlendOperation blend = BlendOperation.Add;
@@ -329,7 +414,10 @@ namespace HelixToolkit.UWP
                         OnBlendStateChanged();
                     }
                 }
-                get { return blend; }
+                get
+                {
+                    return blend;
+                }
             }
 
             private BlendOperation alphaBlend = BlendOperation.Add;
@@ -348,7 +436,10 @@ namespace HelixToolkit.UWP
                         OnBlendStateChanged();
                     }
                 }
-                get { return alphaBlend; }
+                get
+                {
+                    return alphaBlend;
+                }
             }
 
             private BlendOption sourceBlend = BlendOption.One;
@@ -367,7 +458,10 @@ namespace HelixToolkit.UWP
                         OnBlendStateChanged();
                     }
                 }
-                get { return sourceBlend; }
+                get
+                {
+                    return sourceBlend;
+                }
             }
 
             private BlendOption destBlend = BlendOption.One;
@@ -386,7 +480,10 @@ namespace HelixToolkit.UWP
                         OnBlendStateChanged();
                     }
                 }
-                get { return destBlend; }
+                get
+                {
+                    return destBlend;
+                }
             }
 
             private BlendOption sourceAlphaBlend = BlendOption.One;
@@ -405,7 +502,10 @@ namespace HelixToolkit.UWP
                         OnBlendStateChanged();
                     }
                 }
-                get { return sourceAlphaBlend; }
+                get
+                {
+                    return sourceAlphaBlend;
+                }
             }
 
             private BlendOption destAlphaBlend = BlendOption.Zero;
@@ -424,7 +524,10 @@ namespace HelixToolkit.UWP
                         OnBlendStateChanged();
                     }
                 }
-                get { return destAlphaBlend; }
+                get
+                {
+                    return destAlphaBlend;
+                }
             }
             /// <summary>
             /// Gets or sets the blend factor for blending
@@ -438,7 +541,10 @@ namespace HelixToolkit.UWP
                 {
                     particleCore.BlendFactor = value;
                 }
-                get { return particleCore.BlendFactor; }
+                get
+                {
+                    return particleCore.BlendFactor;
+                }
             }
             /// <summary>
             /// Gets or sets the sample mask for blending
@@ -448,8 +554,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public int SampleMask
             {
-                set { particleCore.SampleMask = value; }
-                get { return particleCore.SampleMask; }
+                set
+                {
+                    particleCore.SampleMask = value;
+                }
+                get
+                {
+                    return particleCore.SampleMask;
+                }
             }
 
             private IList<Matrix> instances;
@@ -463,11 +575,11 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref instances, value))
+                    if (Set(ref instances, value))
                     {
                         InstanceBuffer.Elements = value;
                         boundChanged = true;
-                    }               
+                    }
                 }
                 get
                 {
@@ -480,44 +592,68 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance has instances; otherwise, <c>false</c>.
             /// </value>
-            public bool HasInstances { get { return InstanceBuffer.HasElements; } }
+            public bool HasInstances
+            {
+                get
+                {
+                    return InstanceBuffer.HasElements;
+                }
+            }
             #endregion
 
             #region IBoundable
             private BoundingBox originalBound = MaxBound;
             public override BoundingBox OriginalBounds
             {
-                get { return originalBound; }
+                get
+                {
+                    return originalBound;
+                }
             }
 
             private BoundingSphere originalBoundsSphere = MaxBoundSphere;
             public override BoundingSphere OriginalBoundsSphere
             {
-                get { return originalBoundsSphere; }
+                get
+                {
+                    return originalBoundsSphere;
+                }
             }
 
             private BoundingBox bounds = MaxBound;
             public override BoundingBox Bounds
             {
-                get { return bounds; }
+                get
+                {
+                    return bounds;
+                }
             }
 
             private BoundingBox boundsWithTransform = MaxBound;
             public override BoundingBox BoundsWithTransform
             {
-                get { return boundsWithTransform; }
+                get
+                {
+                    return boundsWithTransform;
+                }
             }
 
             private BoundingSphere boundsSphere;
             public override BoundingSphere BoundsSphere
             {
-                get { return boundsSphere; }
+                get
+                {
+                    return boundsSphere;
+                }
             }
 
             private BoundingSphere boundsSphereWithTransform;
             public override BoundingSphere BoundsSphereWithTransform
             {
-                get { return boundsSphereWithTransform; }
+                get
+                {
+                    return boundsSphereWithTransform;
+                }
             }
 
             protected volatile bool boundChanged = true;
@@ -532,8 +668,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableViewFrustumCheck
             {
-                set { enableViewFrustumCheck = value; }
-                get { return enableViewFrustumCheck && HasBound; }
+                set
+                {
+                    enableViewFrustumCheck = value;
+                }
+                get
+                {
+                    return enableViewFrustumCheck && HasBound;
+                }
             }
 
             /// <summary>
@@ -543,7 +685,7 @@ namespace HelixToolkit.UWP
             /// The instance buffer.
             /// </value>
             public IElementsBufferModel<Matrix> InstanceBuffer { get; } = new MatrixInstanceBufferModel();
-        
+
             private ParticleRenderCore particleCore
             {
                 get
@@ -708,5 +850,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

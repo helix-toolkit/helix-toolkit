@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP
         using Shaders;
         using Render;
         using Utilities;
-        using ShaderManager;   
+        using ShaderManager;
 
         /// <summary>
         /// 
@@ -43,7 +43,10 @@ namespace HelixToolkit.UWP
             public ShaderPass WireframePass { get; private set; } = ShaderPass.NullPass;
 
             public ShaderPass ShadowPass { get; private set; } = ShaderPass.NullPass;
-            public ShaderPass DepthPass { get; }
+            public ShaderPass DepthPass
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -82,25 +85,25 @@ namespace HelixToolkit.UWP
 
             protected override void OnInitialPropertyBindings()
             {
-                AddPropertyBinding(nameof(ColorStripeMaterialCore.DiffuseColor), () => 
+                AddPropertyBinding(nameof(ColorStripeMaterialCore.DiffuseColor), () =>
                 {
                     WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor);
                 });
-                AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeX), () => 
+                AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeX), () =>
                 {
                     CreateTextureView(material.ColorStripeX, 0);
                     WriteValue(PhongPBRMaterialStruct.HasDiffuseMapStr, material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0);
                 });
-                AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeY), () => 
+                AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeY), () =>
                 {
                     CreateTextureView(material.ColorStripeY, 1);
                     WriteValue(PhongPBRMaterialStruct.HasDiffuseAlphaMapStr, material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0);
                 });
-                AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeSampler), () => 
+                AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeSampler), () =>
                 {
                     var newSampler = statePoolManager.Register(material.ColorStripeSampler);
                     RemoveAndDispose(ref sampler);
-                    sampler = Collect(newSampler);
+                    sampler = newSampler;
                 });
                 AddPropertyBinding(nameof(ColorStripeMaterialCore.ColorStripeXEnabled), () =>
                 {
@@ -119,7 +122,7 @@ namespace HelixToolkit.UWP
             private void CreateTextureView(IList<Color4> colors, int which)
             {
                 RemoveAndDispose(ref textures[which]);
-                textures[which] = (colors == null || colors.Count == 0) ? null : Collect(new ShaderResourceViewProxy(deviceResources.Device));
+                textures[which] = (colors == null || colors.Count == 0) ? null : new ShaderResourceViewProxy(deviceResources.Device);
                 textures[which]?.CreateViewFromColorArray(colors.ToArray());
                 if (textures[which] != null)
                 {
@@ -140,7 +143,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    for (int i = 0; i < textures.Length; ++i)
+                    for (var i = 0; i < textures.Length; ++i)
                     {
                         RemoveAndDispose(ref textures[i]);
                     }
@@ -154,7 +157,7 @@ namespace HelixToolkit.UWP
                 RemoveAndDispose(ref sampler);
                 if (material != null)
                 {
-                    sampler = Collect(newSampler);
+                    sampler = newSampler;
                 }
             }
 
@@ -201,11 +204,11 @@ namespace HelixToolkit.UWP
             {
                 if (disposeManagedResources)
                 {
-                    for (int i = 0; i < textures.Length; ++i)
+                    for (var i = 0; i < textures.Length; ++i)
                     {
-                        textures[i] = null;
+                        RemoveAndDispose(ref textures[i]);
                     }
-                    sampler = null;
+                    RemoveAndDispose(ref sampler);
                 }
 
                 base.OnDispose(disposeManagedResources);
@@ -236,5 +239,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -27,7 +27,10 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            protected ShaderPass OutlineShaderPass { private set; get; }
+            protected ShaderPass OutlineShaderPass
+            {
+                private set; get;
+            }
             #endregion
             #region Properties
             /// <summary>
@@ -87,7 +90,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref drawOutlineBeforeMesh, value);
                 }
-                get { return drawOutlineBeforeMesh; }
+                get
+                {
+                    return drawOutlineBeforeMesh;
+                }
             }
 
             /// <summary>
@@ -99,7 +105,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.Params.Y, value);
                 }
-                get { return modelStruct.Params.Y; }
+                get
+                {
+                    return modelStruct.Params.Y;
+                }
             }
 
             private string outlinePassName = DefaultPassNames.MeshOutline;
@@ -113,7 +122,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref outlinePassName, value) && IsAttached)
+                    if (SetAffectsRender(ref outlinePassName, value) && IsAttached)
                     {
                         OutlineShaderPass = EffectTechnique[value];
                     }
@@ -148,7 +157,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context">The context.</param>
             protected override void OnUpdatePerModelStruct(RenderContext context)
-            {            
+            {
                 base.OnUpdatePerModelStruct(context);
                 modelStruct.Params.Y = OutlineFadingFactor;
             }
@@ -178,5 +187,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

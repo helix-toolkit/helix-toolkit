@@ -27,7 +27,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The seed.
             /// </value>
-            uint Seed { get; }
+            uint Seed
+            {
+                get;
+            }
         }
         /// <summary>
         /// 
@@ -40,8 +43,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The random vector3.
             /// </value>
-            Vector3 RandomVector3 { get; }
+            Vector3 RandomVector3
+            {
+                get;
+            }
         }
     }
-
 }

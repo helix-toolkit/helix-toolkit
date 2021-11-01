@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                for (int i = 0; i < Positions.Count; ++i)
+                for (var i = 0; i < Positions.Count; ++i)
                 {
                     yield return new Point { P0 = Positions[i] };
                 }
@@ -45,8 +45,10 @@ namespace HelixToolkit.UWP
 
         public virtual bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits, object originalSource, float hitThickness)
         {
-            if(Positions==null || Positions.Count == 0)
-            { return false; }
+            if (Positions == null || Positions.Count == 0)
+            {
+                return false;
+            }
             if (Octree != null)
             {
                 return Octree.HitTest(context, originalSource, this, modelMatrix, ref hits, hitThickness);
@@ -96,12 +98,12 @@ namespace HelixToolkit.UWP
         public override void UpdateBounds()
         {
             base.UpdateBounds();
-            if(Bound.Size.LengthSquared() < 1e-1f)
+            if (Bound.Size.LengthSquared() < 1e-1f)
             {
                 var off = new Vector3(1f);
                 Bound = new BoundingBox(Bound.Minimum - off, Bound.Maximum + off);
             }
-            if(BoundingSphere.Radius < 1e-1f)
+            if (BoundingSphere.Radius < 1e-1f)
             {
                 BoundingSphere = new BoundingSphere(BoundingSphere.Center, 1f);
             }

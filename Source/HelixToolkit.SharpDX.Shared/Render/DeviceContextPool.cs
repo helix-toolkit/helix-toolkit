@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public DeviceContextProxy Get()
             {
-                if (contextPool.TryTake(out DeviceContextProxy context))
+                if (contextPool.TryTake(out var context))
                 {
                     return context;
                 }
@@ -73,7 +73,7 @@ namespace HelixToolkit.UWP
                 {
                     lock (this)
                     {
-                        return Collect(new DeviceContextProxy(device));
+                        return new DeviceContextProxy(device);
                     }
                 }
             }
@@ -92,8 +92,8 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int ResetDrawCalls()
             {
-                int totalCalls = 0;
-                foreach(var ctx in contextPool)
+                var totalCalls = 0;
+                foreach (var ctx in contextPool)
                 {
                     totalCalls += ctx.NumberOfDrawCalls;
                     ctx.ResetDrawCalls();
@@ -108,7 +108,7 @@ namespace HelixToolkit.UWP
             {
                 while (!contextPool.IsEmpty)
                 {
-                    if(contextPool.TryTake(out DeviceContextProxy context))
+                    if (contextPool.TryTake(out var context))
                     {
                         RemoveAndDispose(ref context);
                     }
@@ -117,5 +117,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

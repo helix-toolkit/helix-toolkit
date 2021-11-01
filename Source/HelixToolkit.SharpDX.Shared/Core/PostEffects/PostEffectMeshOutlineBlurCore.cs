@@ -35,28 +35,40 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The color of the border.
             /// </value>
-            Color4 Color { set; get; }
+            Color4 Color
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the scale x.
             /// </summary>
             /// <value>
             /// The scale x.
             /// </value>
-            float ScaleX { set; get; }
+            float ScaleX
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the scale y.
             /// </summary>
             /// <value>
             /// The scale y.
             /// </value>
-            float ScaleY { set; get; }
+            float ScaleY
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the number of blur pass.
             /// </summary>
             /// <value>
             /// The number of blur pass.
             /// </value>
-            int NumberOfBlurPass { set; get; }
+            int NumberOfBlurPass
+            {
+                set; get;
+            }
         }
 
         /// <summary>
@@ -122,7 +134,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref color, value);
                 }
-                get { return color; }
+                get
+                {
+                    return color;
+                }
             }
 
             private float scaleX = 1;
@@ -138,7 +153,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref scaleX, value);
                 }
-                get { return scaleX; }
+                get
+                {
+                    return scaleX;
+                }
             }
 
             private float scaleY = 1;
@@ -154,7 +172,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref scaleY, value);
                 }
-                get { return scaleY; }
+                get
+                {
+                    return scaleY;
+                }
             }
 
             private int numberOfBlurPass = 1;
@@ -170,18 +191,24 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref numberOfBlurPass, value);
                 }
-                get { return numberOfBlurPass; }
+                get
+                {
+                    return numberOfBlurPass;
+                }
             }
 
             private OutlineMode drawMode = OutlineMode.Merged;
-        
+
             public OutlineMode DrawMode
             {
                 set
                 {
                     SetAffectsRender(ref drawMode, value);
                 }
-                get { return drawMode; }
+                get
+                {
+                    return drawMode;
+                }
             }
             #endregion        
 
@@ -196,7 +223,7 @@ namespace HelixToolkit.UWP
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
-            {               
+            {
                 screenQuadPass = technique.GetPass(DefaultPassNames.ScreenQuad);
                 blurPassVertical = technique.GetPass(DefaultPassNames.EffectBlurVertical);
                 blurPassHorizontal = technique.GetPass(DefaultPassNames.EffectBlurHorizontal);
@@ -204,11 +231,11 @@ namespace HelixToolkit.UWP
                 screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
                 textureSlot = screenOutlinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
-                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
+                sampler = technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1);
                 if (useBlurCore)
                 {
-                    blurCore = Collect(new PostEffectBlurCore(blurPassVertical,
-                        blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager));
+                    blurCore = new PostEffectBlurCore(blurPassVertical,
+                        blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager);
                 }
                 return true;
             }
@@ -220,27 +247,27 @@ namespace HelixToolkit.UWP
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
-                using (var depthStencilBuffer = context.GetOffScreenDS(TextureSize, global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt, 
+                using (var depthStencilBuffer = context.GetOffScreenDS(TextureSize, global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt,
                     out var width, out var height))
                 {
                     using (var renderTargetBuffer = context.GetOffScreenRT(TextureSize, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm))
                     {
-                        OnUpdatePerModelStruct(context); 
-                        var viewport = context.Viewport;                  
+                        OnUpdatePerModelStruct(context);
+                        var viewport = context.Viewport;
                         if (drawMode == OutlineMode.Separated)
-                        {                           
-                            for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
-                            {                    
+                        {
+                            for (var i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                            {
                                 #region Render objects onto offscreen texture
                                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
                                 deviceContext.SetRenderTarget(depthStencilBuffer, renderTargetBuffer, true,
                                     global::SharpDX.Color.Transparent, true, DepthStencilClearFlags.Stencil, 0, 0);
                                 deviceContext.SetViewport(ref viewport);
                                 deviceContext.SetScissorRectangle(ref viewport);
-                                if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                                if (mesh.TryGetPostEffect(EffectName, out var effect))
                                 {
                                     var color = Color;
-                                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out var attribute) && attribute is string colorStr)
                                     {
                                         color = colorStr.ToColor4();
                                     }
@@ -251,13 +278,16 @@ namespace HelixToolkit.UWP
                                     }
                                     context.CustomPassName = DefaultPassNames.EffectOutlineP1;
                                     var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
-                                    if (pass.IsNULL) { continue; }
+                                    if (pass.IsNULL)
+                                    {
+                                        continue;
+                                    }
                                     pass.BindShader(deviceContext);
                                     pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                                     mesh.RenderCustom(context, deviceContext);
                                     DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer);
-                                }                             
-                                #endregion   
+                                }
+                                #endregion
                             }
                         }
                         else
@@ -267,14 +297,14 @@ namespace HelixToolkit.UWP
                             deviceContext.SetViewport(ref viewport);
                             deviceContext.SetScissorRectangle(ref viewport);
                             #region Render objects onto offscreen texture
-                            bool hasMesh = false;
-                            for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                            var hasMesh = false;
+                            for (var i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                             {
                                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                                if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                                if (mesh.TryGetPostEffect(EffectName, out var effect))
                                 {
                                     var color = Color;
-                                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out var attribute) && attribute is string colorStr)
                                     {
                                         color = colorStr.ToColor4();
                                     }
@@ -285,7 +315,10 @@ namespace HelixToolkit.UWP
                                     }
                                     context.CustomPassName = DefaultPassNames.EffectOutlineP1;
                                     var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
-                                    if (pass.IsNULL) { continue; }
+                                    if (pass.IsNULL)
+                                    {
+                                        continue;
+                                    }
                                     pass.BindShader(deviceContext);
                                     pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                                     mesh.RenderCustom(context, deviceContext);
@@ -298,11 +331,11 @@ namespace HelixToolkit.UWP
                                 DrawOutline(context, deviceContext, depthStencilBuffer, renderTargetBuffer);
                             }
                         }
-                    }           
+                    }
                 }
             }
 
-            private void DrawOutline(RenderContext context, DeviceContextProxy deviceContext, 
+            private void DrawOutline(RenderContext context, DeviceContextProxy deviceContext,
                 ShaderResourceViewProxy depthStencilBuffer, ShaderResourceViewProxy source)
             {
                 var buffer = context.RenderHost.RenderBuffer;
@@ -311,8 +344,8 @@ namespace HelixToolkit.UWP
                 deviceContext.SetScissorRectangle(ref sourceViewport);
                 #region Do Blur Pass
                 if (useBlurCore)
-                {           
-                    for(int i = 0; i < numberOfBlurPass; ++i)
+                {
+                    for (var i = 0; i < numberOfBlurPass; ++i)
                     {
                         blurCore.Run(context, deviceContext, source, ref sourceViewport, PostEffectBlurCore.BlurDepth.One, ref modelStruct);
                     }
@@ -320,10 +353,10 @@ namespace HelixToolkit.UWP
                 else
                 {
                     blurPassHorizontal.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
-                    for (int i = 0; i < numberOfBlurPass; ++i)
+                    for (var i = 0; i < numberOfBlurPass; ++i)
                     {
                         deviceContext.SetRenderTarget(context.RenderHost.RenderBuffer.FullResPPBuffer.NextRTV);
-                        blurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, source);                       
+                        blurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, source);
                         blurPassHorizontal.BindShader(deviceContext);
                         blurPassHorizontal.BindStates(deviceContext, StateType.All);
                         deviceContext.Draw(4, 0);
@@ -358,9 +391,8 @@ namespace HelixToolkit.UWP
 
             protected override void OnDetach()
             {
-                blurCore = null;
-                sampler = null;
-                base.OnDetach();
+                RemoveAndDispose(ref blurCore);
+                RemoveAndDispose(ref sampler);
             }
 
             private void OnUpdatePerModelStruct(RenderContext context)
@@ -372,5 +404,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

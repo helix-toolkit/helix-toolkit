@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP
         {
             public byte[] Read(string name)
             {
-    #if CORE
+#if CORE
                 var assembly = typeof(UWPShaderBytePool).GetTypeInfo().Assembly;
                 Stream shaderStream = assembly.GetManifestResourceStream($"HelixToolkit.SharpDX.Core.Resources.{name}.cso");
                 if (shaderStream == null)
@@ -40,8 +40,8 @@ namespace HelixToolkit.UWP
                     shaderStream.CopyTo(memory);
                     return memory.ToArray();
                 }
-    #else
-    #if NETFX_CORE
+#else
+#if NETFX_CORE
                 var filePath = Windows.ApplicationModel.Package.Current.InstalledLocation.Path + $"\\HelixToolkit.UWP\\Resources\\{name}.cso";
                 if (!File.Exists(filePath))
                 {
@@ -53,15 +53,15 @@ namespace HelixToolkit.UWP
                     throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
                 }
                 return byteCode;
-    #else
+#else
                 var byteCode = Properties.Resources.ResourceManager.GetObject(name) as byte[];
-                if(byteCode == null)
+                if (byteCode == null)
                 {
                     throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
                 }
                 return byteCode;
-    #endif
-    #endif
+#endif
+#endif
             }
         }
         /// <summary>
@@ -75,13 +75,13 @@ namespace HelixToolkit.UWP
             {
                 lock (Dict)
                 {
-                    if (!Dict.TryGetValue(name, out byte[] byteCode))
+                    if (!Dict.TryGetValue(name, out var byteCode))
                     {
                         lock (Dict)
                         {
                             if (!Dict.TryGetValue(name, out byteCode))
                             {
-                                if(reader == null)
+                                if (reader == null)
                                 {
                                     byteCode = InternalByteCodeReader.Read(name);
                                 }
@@ -91,12 +91,11 @@ namespace HelixToolkit.UWP
                                 }
                                 Dict.Add(name, byteCode);
                             }
-                        } 
+                        }
                     }
                     return byteCode;
                 }
             }
         }
     }
-
 }

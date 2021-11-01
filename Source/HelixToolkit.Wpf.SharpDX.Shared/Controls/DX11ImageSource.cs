@@ -46,9 +46,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public DX11ImageSource(int adapterIndex = 0)
         {
-            this.adapterIndex = adapterIndex;        
+            this.adapterIndex = adapterIndex;
             this.StartD3D();
-            
+
         }
 
         public void InvalidateD3DImage()
@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var handle = GetSharedHandle(target);
             if (handle == IntPtr.Zero)
                 throw new ArgumentNullException("Handle");
-                       
+
             try
             {
                 this.renderTarget = new Texture(device, target.Description.Width, target.Description.Height, 1, Usage.RenderTarget, format, Pool.Default, ref handle);
@@ -116,9 +116,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 SwapEffect = SwapEffect.Discard,
                 //DeviceWindowHandle = GetDesktopWindow(),
                 PresentationInterval = PresentInterval.Default,
-                BackBufferHeight = 1, BackBufferWidth = 1, BackBufferFormat = Format.Unknown
+                BackBufferHeight = 1,
+                BackBufferWidth = 1,
+                BackBufferFormat = Format.Unknown
             };
-                        
+
             device = new DeviceEx(context, this.adapterIndex, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve, presentparams);
         }
 
@@ -133,14 +135,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 Disposer.RemoveAndDispose(ref device);
                 Disposer.RemoveAndDispose(ref context);
-            }           
+            }
         }
 
         private static IntPtr GetSharedHandle(Texture2D sharedTexture)
         {
             using (var resource = sharedTexture.QueryInterface<global::SharpDX.DXGI.Resource>())
             {
-                IntPtr result = resource.SharedHandle;                
+                var result = resource.SharedHandle;
                 return result;
             }
         }

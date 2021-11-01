@@ -19,7 +19,13 @@ namespace SharpDX.Toolkit.Graphics
         private static readonly object lockObj = new object();
         private static WIC.ImagingFactory _factory = new ImagingFactory();
 
-        private static ImagingFactory Factory { get { return _factory ?? (_factory = new ImagingFactory()); } }
+        private static ImagingFactory Factory
+        {
+            get
+            {
+                return _factory ?? (_factory = new ImagingFactory());
+            }
+        }
 
         //-------------------------------------------------------------------------------------
         // WIC Pixel Format Translation Data
@@ -151,7 +157,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns>A <see cref="SharpDX.DXGI.Format"/></returns>
         private static DXGI.Format ToDXGI(Guid guid)
         {
-            for (int i = 0; i < WICToDXGIFormats.Length; ++i)
+            for (var i = 0; i < WICToDXGIFormats.Length; ++i)
             {
                 if (WICToDXGIFormats[i].WIC == guid)
                     return WICToDXGIFormats[i].Format;
@@ -168,7 +174,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns>True if conversion succeed, false otherwise.</returns>
         private static bool ToWIC(DXGI.Format format, out Guid guid)
         {
-            for (int i = 0; i < WICToDXGIFormats.Length; ++i)
+            for (var i = 0; i < WICToDXGIFormats.Length; ++i)
             {
                 if (WICToDXGIFormats[i].Format == format)
                 {
@@ -221,7 +227,7 @@ namespace SharpDX.Toolkit.Graphics
                 if (pixelFormatInfo == null)
                     return 0;
 
-                int bpp = pixelFormatInfo.BitsPerPixel;
+                var bpp = pixelFormatInfo.BitsPerPixel;
                 pixelFormatInfo.Dispose();
                 return bpp;
             }
@@ -233,12 +239,12 @@ namespace SharpDX.Toolkit.Graphics
         //-------------------------------------------------------------------------------------
         private static DXGI.Format DetermineFormat(Guid pixelFormat, WICFlags flags, out Guid pixelFormatOut)
         {
-            DXGI.Format format = ToDXGI(pixelFormat);
+            var format = ToDXGI(pixelFormat);
             pixelFormatOut = Guid.Empty;
 
             if (format == DXGI.Format.Unknown)
             {
-                for (int i = 0; i < WICConvertTable.Length; ++i)
+                for (var i = 0; i < WICConvertTable.Length; ++i)
                 {
                     if (WICConvertTable[i].source == pixelFormat)
                     {
@@ -307,15 +313,15 @@ namespace SharpDX.Toolkit.Graphics
             var size = frame.Size;
 
             var metadata = new ImageDescription
-                               {
-                                   Dimension = TextureDimension.Texture2D,
-                                   Width = size.Width,
-                                   Height = size.Height,
-                                   Depth = 1,
-                                   MipLevels = 1,
-                                   ArraySize = (flags & WICFlags.AllFrames) != 0 ? decoder.FrameCount : 1,
-                                   Format = DetermineFormat(frame.PixelFormat, flags, out pixelFormat)
-                               };
+            {
+                Dimension = TextureDimension.Texture2D,
+                Width = size.Width,
+                Height = size.Height,
+                Depth = 1,
+                MipLevels = 1,
+                ArraySize = (flags & WICFlags.AllFrames) != 0 ? decoder.FrameCount : 1,
+                Format = DetermineFormat(frame.PixelFormat, flags, out pixelFormat)
+            };
 
             if (metadata.Format == DXGI.Format.Unknown)
                 return null;
@@ -385,7 +391,7 @@ namespace SharpDX.Toolkit.Graphics
             if (!ToWIC(metadata.Format, out sourceGuid))
                 return null;
 
-            for (int index = 0; index < metadata.ArraySize; ++index)
+            for (var index = 0; index < metadata.ArraySize; ++index)
             {
                 var pixelBuffer = image.PixelBuffer[index, 0];
 
@@ -512,7 +518,7 @@ namespace SharpDX.Toolkit.Graphics
             frame.Initialize();
             frame.SetSize(image.Width, image.Height);
             frame.SetResolution(72, 72);
-            Guid targetGuid = pfGuid;
+            var targetGuid = pfGuid;
             frame.SetPixelFormat(ref targetGuid);
 
             if (targetGuid != pfGuid)
@@ -526,11 +532,12 @@ namespace SharpDX.Toolkit.Graphics
                             palette.Initialize(source, 256, true);
                             converter.Initialize(source, targetGuid, GetWICDither(flags), palette, 0, BitmapPaletteType.Custom);
 
-                            int bpp = GetBitsPerPixel(targetGuid);
-                            if (bpp == 0) throw new NotSupportedException("Unable to determine the Bpp for the target format");
+                            var bpp = GetBitsPerPixel(targetGuid);
+                            if (bpp == 0)
+                                throw new NotSupportedException("Unable to determine the Bpp for the target format");
 
-                            int rowPitch = (image.Width * bpp + 7) / 8;
-                            int slicePitch = rowPitch * image.Height;
+                            var rowPitch = (image.Width * bpp + 7) / 8;
+                            var slicePitch = rowPitch * image.Height;
 
                             var temp = Utilities.AllocateMemory(slicePitch);
                             try
@@ -596,7 +603,7 @@ namespace SharpDX.Toolkit.Graphics
 
                 encoder.Initialize(stream);
 
-                for (int i = 0; i < Math.Min(images.Length, count); i++)
+                for (var i = 0; i < Math.Min(images.Length, count); i++)
                 {
                     var pixelBuffer = images[i];
                     using (var frame = new BitmapFrameEncode(encoder))

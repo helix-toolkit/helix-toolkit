@@ -25,8 +25,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 typeof(object), typeof(ContentElement2D), new PropertyMetadata(null,
                     propertyChangedCallback: (d, e) =>
                     {
-                        if (!(d is ContentElement2D model)) return;
-                        if (!(model.SceneNode is ContentNode2D node)) return;
+                        if (!(d is ContentElement2D model))
+                            return;
+                        if (!(model.SceneNode is ContentNode2D node))
+                            return;
                         if (e.OldValue is Element2D old)
                         {
                             model.RemoveLogicalChild(old);
@@ -42,9 +44,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
                         model.InvalidateMeasure();
                     },
-                    coerceValueCallback: (d,e) =>
+                    coerceValueCallback: (d, e) =>
                     {
-                        return e is Element2D ? e : new TextModel2D() {Text = e?.ToString()};
+                        return e is Element2D ? e : new TextModel2D() { Text = e?.ToString() };
                     }));
 
             [Bindable(true)]
@@ -62,8 +64,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public static readonly DependencyProperty BackgroundProperty
                 = DependencyProperty.Register("Background", typeof(Brush), typeof(ContentElement2D),
-                    new PropertyMetadata(new SolidColorBrush(Colors.Transparent), 
-                    (d,e)=>
+                    new PropertyMetadata(new SolidColorBrush(Colors.Transparent),
+                    (d, e) =>
                     {
                         var m = d as ContentElement2D;
                         m.backgroundChanged = true;
@@ -100,13 +102,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public System.Windows.HorizontalAlignment HorizontalContentAlignment
             {
-                get { return (System.Windows.HorizontalAlignment)GetValue(HorizontalContentAlignmentProperty); }
-                set { SetValue(HorizontalContentAlignmentProperty, value); }
+                get
+                {
+                    return (System.Windows.HorizontalAlignment)GetValue(HorizontalContentAlignmentProperty);
+                }
+                set
+                {
+                    SetValue(HorizontalContentAlignmentProperty, value);
+                }
             }
 
             public static readonly DependencyProperty HorizontalContentAlignmentProperty =
-                DependencyProperty.Register("HorizontalContentAlignment", typeof(System.Windows.HorizontalAlignment), typeof(ContentElement2D), 
-                    new PropertyMetadata(System.Windows.HorizontalAlignment.Center, (d,e)=>
+                DependencyProperty.Register("HorizontalContentAlignment", typeof(System.Windows.HorizontalAlignment), typeof(ContentElement2D),
+                    new PropertyMetadata(System.Windows.HorizontalAlignment.Center, (d, e) =>
                     {
                         ((d as Element2DCore).SceneNode as ContentNode2D).HorizontalContentAlignment = ((System.Windows.HorizontalAlignment)e.NewValue).ToD2DHorizontalAlignment();
                     }));
@@ -114,13 +122,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public System.Windows.VerticalAlignment VerticalContentAlignment
             {
-                get { return (System.Windows.VerticalAlignment)GetValue(VerticalContentAlignmentProperty); }
-                set { SetValue(VerticalContentAlignmentProperty, value); }
+                get
+                {
+                    return (System.Windows.VerticalAlignment)GetValue(VerticalContentAlignmentProperty);
+                }
+                set
+                {
+                    SetValue(VerticalContentAlignmentProperty, value);
+                }
             }
 
             public static readonly DependencyProperty VerticalContentAlignmentProperty =
-                DependencyProperty.Register("VerticalContentAlignment", typeof(System.Windows.VerticalAlignment), typeof(ContentElement2D), 
-                    new PropertyMetadata(System.Windows.VerticalAlignment.Center, (d, e) => 
+                DependencyProperty.Register("VerticalContentAlignment", typeof(System.Windows.VerticalAlignment), typeof(ContentElement2D),
+                    new PropertyMetadata(System.Windows.VerticalAlignment.Center, (d, e) =>
                     {
                         ((d as Element2DCore).SceneNode as ContentNode2D).VerticalContentAlignment = ((System.Windows.VerticalAlignment)e.NewValue).ToD2DVerticalAlignment();
                     }));
@@ -156,5 +170,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

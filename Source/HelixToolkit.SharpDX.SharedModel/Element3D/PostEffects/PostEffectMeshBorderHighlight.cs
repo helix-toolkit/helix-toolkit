@@ -32,16 +32,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public OutlineMode DrawMode
         {
-            get { return (OutlineMode)GetValue(DrawModeProperty); }
-            set { SetValue(DrawModeProperty, value); }
+            get
+            {
+                return (OutlineMode)GetValue(DrawModeProperty);
+            }
+            set
+            {
+                SetValue(DrawModeProperty, value);
+            }
         }
 
         /// <summary>
         /// The draw mode property
         /// </summary>
         public static readonly DependencyProperty DrawModeProperty =
-            DependencyProperty.Register("DrawMode", typeof(OutlineMode), typeof(PostEffectMeshBorderHighlight), new PropertyMetadata(OutlineMode.Merged, 
-                (d,e)=>
+            DependencyProperty.Register("DrawMode", typeof(OutlineMode), typeof(PostEffectMeshBorderHighlight), new PropertyMetadata(OutlineMode.Merged,
+                (d, e) =>
                 {
                     ((d as Element3D).SceneNode as NodePostEffectBorderHighlight).DrawMode = (OutlineMode)e.NewValue;
                 }));

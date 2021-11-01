@@ -23,7 +23,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Whether the tree has been built.
         /// </summary>
-        bool TreeBuilt { get; }
+        bool TreeBuilt
+        {
+            get;
+        }
 
         /// <summary>
         ///
@@ -33,12 +36,18 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Output the hit path of the tree traverse. Only for debugging
         /// </summary>
-        IList<BoundingBox> HitPathBoundingBoxes { get; }
+        IList<BoundingBox> HitPathBoundingBoxes
+        {
+            get;
+        }
 
         /// <summary>
         /// Octree parameter
         /// </summary>
-        OctreeBuildParameter Parameter { get; }
+        OctreeBuildParameter Parameter
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the bound.
@@ -46,7 +55,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The bound.
         /// </value>
-        BoundingBox Bound { get; }
+        BoundingBox Bound
+        {
+            get;
+        }
 
         /// <summary>
         /// Build the static octree
@@ -143,42 +155,69 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The self array.
         /// </value>
-        IDynamicOctree[] SelfArray { get; }
+        IDynamicOctree[] SelfArray
+        {
+            get;
+        }
         /// <summary>
         /// This is a bitmask indicating which child nodes are actively being used.
         /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
         /// </summary>
-        byte ActiveNodes { set; get; }
+        byte ActiveNodes
+        {
+            set; get;
+        }
         /// <summary>
         /// Has child octants
         /// </summary>
-        bool HasChildren { get; }
+        bool HasChildren
+        {
+            get;
+        }
         /// <summary>
         /// If this node is root node
         /// </summary>
-        bool IsRoot { get; }
+        bool IsRoot
+        {
+            get;
+        }
         /// <summary>
         /// Parent node
         /// </summary>
-        IDynamicOctree Parent { get; set; }
+        IDynamicOctree Parent
+        {
+            get; set;
+        }
         /// <summary>
         /// Child octants
         /// </summary>
-        IDynamicOctree[] ChildNodes { get; }
+        IDynamicOctree[] ChildNodes
+        {
+            get;
+        }
         /// <summary>
         /// Octant bounds
         /// </summary>
-        BoundingBox[] Octants { get; }
+        BoundingBox[] Octants
+        {
+            get;
+        }
 
         /// <summary>
         /// Delete self if is empty;
         /// </summary>
-        bool AutoDeleteIfEmpty { set; get; }
+        bool AutoDeleteIfEmpty
+        {
+            set; get;
+        }
 
         /// <summary>
         /// Returns true if this node tree and all children have no content
         /// </summary>
-        bool IsEmpty { get; }
+        bool IsEmpty
+        {
+            get;
+        }
 
         /// <summary>
         /// Hit test for only this node, not its child node
@@ -187,7 +226,6 @@ namespace HelixToolkit.UWP
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness">Only used for point/line hit test</param>

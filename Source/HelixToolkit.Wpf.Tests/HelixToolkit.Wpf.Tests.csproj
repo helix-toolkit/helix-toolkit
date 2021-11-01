@@ -72,9 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
+
     <Compile Include="CrossThreadTestRunner.cs" />
     <Compile Include="Exporters\ColladaExporterTests.cs" />
     <Compile Include="Exporters\ObjExporterTests.cs" />

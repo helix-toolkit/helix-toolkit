@@ -45,10 +45,22 @@ namespace HelixToolkit.UWP
 
     public class Object3D
     {
-        public Geometry3D Geometry { get; set; }
-        public MaterialCore Material { get; set; }
-        public List<Matrix> Transform { get; set; }
-        public string Name { get; set; }
+        public Geometry3D Geometry
+        {
+            get; set;
+        }
+        public MaterialCore Material
+        {
+            get; set;
+        }
+        public List<Matrix> Transform
+        {
+            get; set;
+        }
+        public string Name
+        {
+            get; set;
+        }
     }
 
     /// <summary>
@@ -95,7 +107,10 @@ namespace HelixToolkit.UWP
         /// <remarks>
         /// The default value is Colors.Gold.
         /// </remarks>
-        public Color DefaultColor { get; set; }
+        public Color DefaultColor
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to ignore errors.
@@ -104,12 +119,18 @@ namespace HelixToolkit.UWP
         /// <remarks>
         /// The default value is on (true).
         /// </remarks>
-        public bool IgnoreErrors { get; set; }
+        public bool IgnoreErrors
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to switch Y and Z coordinates.
         /// </summary>
-        public bool SwitchYZ { get; set; }
+        public bool SwitchYZ
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to skip transparency values ("Tr") in the material files.
@@ -122,7 +143,10 @@ namespace HelixToolkit.UWP
         /// The transparency values ("Tr") are interpreted as 0 = transparent, 1 = opaque.
         /// The dissolve values ("d") are interpreted as 0 = transparent, 1=opaque.
         /// </remarks>
-        public bool SkipTransparencyValues { get; set; }
+        public bool SkipTransparencyValues
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Sets a value indicating whether smoothing is default.
@@ -142,24 +166,36 @@ namespace HelixToolkit.UWP
         /// Gets the groups of the file.
         /// </summary>
         /// <value>The groups.</value>
-        public IList<Group> Groups { get; private set; }
+        public IList<Group> Groups
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets the materials in the imported material files.
         /// </summary>
         /// <value>The materials.</value>
-        public Dictionary<string, MaterialDefinition> Materials { get; private set; }
+        public Dictionary<string, MaterialDefinition> Materials
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Gets or sets the path to the textures.
         /// </summary>
         /// <value>The texture path.</value>
-        public string TexturePath { get; set; }
+        public string TexturePath
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Additional info how to treat the model
         /// </summary>
-        public ModelInfo ModelInfo { get; private set; }
+        public ModelInfo ModelInfo
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// Reads the model from the specified path.
@@ -230,89 +266,89 @@ namespace HelixToolkit.UWP
                     string keyword, values;
                     SplitLine(line, out keyword, out values);
                     switch (keyword.ToLower())
-                        {
-                            // Vertex data
-                            case "v": // geometric vertices
-                                this.AddVertex(values);
-                                break;
-                            case "vt": // texture vertices
-                                this.AddTexCoord(values);
-                                break;
-                            case "vn": // vertex normals
-                                this.AddNormal(values);
-                                break;
-                            case "vp": // parameter space vertices
-                            case "cstype": // rational or non-rational forms of curve or surface type: basis matrix, Bezier, B-spline, Cardinal, Taylor
-                            case "degree": // degree
-                            case "bmat": // basis matrix
-                            case "step": // step size
-                                // not supported
-                                break;
+                    {
+                        // Vertex data
+                        case "v": // geometric vertices
+                            this.AddVertex(values);
+                            break;
+                        case "vt": // texture vertices
+                            this.AddTexCoord(values);
+                            break;
+                        case "vn": // vertex normals
+                            this.AddNormal(values);
+                            break;
+                        case "vp": // parameter space vertices
+                        case "cstype": // rational or non-rational forms of curve or surface type: basis matrix, Bezier, B-spline, Cardinal, Taylor
+                        case "degree": // degree
+                        case "bmat": // basis matrix
+                        case "step": // step size
+                                     // not supported
+                            break;
 
-                            // Elements
-                            case "f": // face
-                                this.AddFace(values);
-                                break;
-                            case "p": // point
-                            case "l": // line
-                            case "curv": // curve
-                            case "curv2": // 2D curve
-                            case "surf": // surface
-                                // not supported
-                                break;
+                        // Elements
+                        case "f": // face
+                            this.AddFace(values);
+                            break;
+                        case "p": // point
+                        case "l": // line
+                        case "curv": // curve
+                        case "curv2": // 2D curve
+                        case "surf": // surface
+                                     // not supported
+                            break;
 
-                            // Free-form curve/surface body statements
-                            case "parm": // parameter name
-                            case "trim": // outer trimming loop (trim)
-                            case "hole": // inner trimming loop (hole)
-                            case "scrv": // special curve (scrv)
-                            case "sp":  // special point (sp)
-                            case "end": // end statement (end)
-                                // not supported
-                                break;
+                        // Free-form curve/surface body statements
+                        case "parm": // parameter name
+                        case "trim": // outer trimming loop (trim)
+                        case "hole": // inner trimming loop (hole)
+                        case "scrv": // special curve (scrv)
+                        case "sp":  // special point (sp)
+                        case "end": // end statement (end)
+                                    // not supported
+                            break;
 
-                            // Connectivity between free-form surfaces
-                            case "con": // connect
-                                // not supported
-                                break;
+                        // Connectivity between free-form surfaces
+                        case "con": // connect
+                                    // not supported
+                            break;
 
-                            // Grouping
-                            case "g": // group name
-                                this.AddGroup(values);
-                                break;
-                            case "s": // smoothing group
-                                this.SetSmoothingGroup(values);
-                                break;
-                            case "mg": // merging group
-                                break;
-                            case "o": // object name
-                                // not supported
-                                break;
+                        // Grouping
+                        case "g": // group name
+                            this.AddGroup(values);
+                            break;
+                        case "s": // smoothing group
+                            this.SetSmoothingGroup(values);
+                            break;
+                        case "mg": // merging group
+                            break;
+                        case "o": // object name
+                                  // not supported
+                            break;
 
-                            // Display/render attributes
-                            case "mtllib": // material library
-                                this.LoadMaterialLib(values);
-                                break;
-                            case "usemtl": // material name
-                                this.EnsureNewMesh();
+                        // Display/render attributes
+                        case "mtllib": // material library
+                            this.LoadMaterialLib(values);
+                            break;
+                        case "usemtl": // material name
+                            this.EnsureNewMesh();
 
-                                this.SetMaterial(values);
-                                break;
-                            case "usemap": // texture map name
-                                this.EnsureNewMesh();
+                            this.SetMaterial(values);
+                            break;
+                        case "usemap": // texture map name
+                            this.EnsureNewMesh();
 
-                                break;
-                            case "bevel": // bevel interpolation
-                            case "c_interp": // color interpolation
-                            case "d_interp": // dissolve interpolation
-                            case "lod": // level of detail
-                            case "shadow_obj": // shadow casting
-                            case "trace_obj": // ray tracing
-                            case "ctech": // curve approximation technique
-                            case "stech": // surface approximation technique
-                                // not supported
-                                break;
-                        }
+                            break;
+                        case "bevel": // bevel interpolation
+                        case "c_interp": // color interpolation
+                        case "d_interp": // dissolve interpolation
+                        case "lod": // level of detail
+                        case "shadow_obj": // shadow casting
+                        case "trace_obj": // ray tracing
+                        case "ctech": // curve approximation technique
+                        case "stech": // surface approximation technique
+                                      // not supported
+                            break;
+                    }
                 }
             }
 
@@ -382,28 +418,43 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets or sets the normals.
         /// </summary>
-        private IList<Vector3D> Normals { get; set; }
+        private IList<Vector3D> Normals
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the points.
         /// </summary>
-        private IList<Point3D> Points { get; set; }
+        private IList<Point3D> Points
+        {
+            get; set;
+        }
         /// <summary>
         /// Gets or sets the vertex colors.
         /// </summary>
         /// <value>
         /// The colors.
         /// </value>
-        private IList<Color4> Colors { set; get; }
+        private IList<Color4> Colors
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets or sets the stream reader.
         /// </summary>
-        private StreamReader Reader { get; set; }
+        private StreamReader Reader
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the texture coordinates.
         /// </summary>
-        private IList<Point> TextureCoordinates { get; set; }
+        private IList<Point> TextureCoordinates
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Parses a color string.
@@ -452,7 +503,7 @@ namespace HelixToolkit.UWP
             input = input.Trim();
             var fields = input.SplitOnWhitespace();
             var result = new double[fields.Length];
-            for (int i = 0; i < fields.Length; i++)
+            for (var i = 0; i < fields.Length; i++)
             {
                 result[i] = DoubleParse(fields[i]);
             }
@@ -474,7 +525,7 @@ namespace HelixToolkit.UWP
         /// </param>
         private static void SplitLine(string line, out string keyword, out string arguments)
         {
-            int idx = line.IndexOf(' ');
+            var idx = line.IndexOf(' ');
             if (idx < 0)
             {
                 keyword = line;
@@ -581,9 +632,9 @@ namespace HelixToolkit.UWP
                 }
 
                 var ff = field.Split('/');
-                int vi = int.Parse(ff[0]);
-                int vti = ff.Length > 1 && ff[1].Length > 0 ? int.Parse(ff[1]) : int.MaxValue;
-                int vni = ff.Length > 2 && ff[2].Length > 0 ? int.Parse(ff[2]) : int.MaxValue;
+                var vi = int.Parse(ff[0]);
+                var vti = ff.Length > 1 && ff[1].Length > 0 ? int.Parse(ff[1]) : int.MaxValue;
+                var vni = ff.Length > 2 && ff[2].Length > 0 ? int.Parse(ff[2]) : int.MaxValue;
 
                 // Handle relative indices (negative numbers)
                 if (vi < 0)
@@ -648,7 +699,7 @@ namespace HelixToolkit.UWP
                     throw new FileFormatException(string.Format("Invalid normal index ({0}) on line {1}.", vni, this.currentLineNo));
                 }
 
-                bool addVertex = true;
+                var addVertex = true;
 
                 if (smoothingGroupMap != null)
                 {
@@ -680,7 +731,9 @@ namespace HelixToolkit.UWP
                     // add vertex
                     positions.Add(this.Points[vi - 1]);
                     if (Colors.Count == Points.Count)
-                    { colors.Add(this.Colors[vi - 1]); }
+                    {
+                        colors.Add(this.Colors[vi - 1]);
+                    }
                     // add texture coordinate (if enabled)
                     if (builder.HasTexCoords)
                     {
@@ -794,7 +847,7 @@ namespace HelixToolkit.UWP
             {
                 this.Points.Add(new Point3D((float)fields[0], (float)fields[1], (float)fields[2]));
             }
-            if(fields.Count >= 6)
+            if (fields.Count >= 6)
             {
                 if (fields.Count == 6)
                 {
@@ -862,13 +915,13 @@ namespace HelixToolkit.UWP
         /// </param>
         private void LoadMaterialLib(string mtlFile)
         {
-            string path = PathHelpers.GetFullPath(this.TexturePath, mtlFile);
+            var path = PathHelpers.GetFullPath(this.TexturePath, mtlFile);
             if (!File.Exists(path))
             {
                 return;
             }
             using (var fileStream = File.OpenRead(path))
-            {            
+            {
                 using (var mreader = new StreamReader(fileStream))
                 {
                     MaterialDefinition currentMaterial = null;
@@ -1068,13 +1121,19 @@ namespace HelixToolkit.UWP
 
             public Color4Collection VertexColors
             {
-                get { return this.vertexColors[this.vertexColors.Count - 1]; }
+                get
+                {
+                    return this.vertexColors[this.vertexColors.Count - 1];
+                }
             }
             /// <summary>
             /// Gets or sets the group name.
             /// </summary>
             /// <value>The name.</value>
-            public string Name { get; set; }
+            public string Name
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Adds a mesh.
@@ -1093,7 +1152,7 @@ namespace HelixToolkit.UWP
             /// <returns>The models.</returns>
             public IEnumerable<Object3D> CreateModels(ModelInfo info)
             {
-                for (int i = 0; i < this.meshBuilders.Count; i++)
+                for (var i = 0; i < this.meshBuilders.Count; i++)
                 {
                     this.meshBuilders[i].ComputeNormalsAndTangents(info.Faces, true);
                     var mesh = this.meshBuilders[i].ToMeshGeometry3D();
@@ -1128,37 +1187,55 @@ namespace HelixToolkit.UWP
             /// Gets or sets the alpha map.
             /// </summary>
             /// <value>The alpha map.</value>
-            public string AlphaMap { get; set; }
+            public string AlphaMap
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the ambient color.
             /// </summary>
             /// <value>The ambient.</value>
-            public Color Ambient { get; set; }
+            public Color Ambient
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the ambient map.
             /// </summary>
             /// <value>The ambient map.</value>
-            public string AmbientMap { get; set; }
+            public string AmbientMap
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the bump map.
             /// </summary>
             /// <value>The bump map.</value>
-            public string BumpMap { get; set; }
+            public string BumpMap
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the diffuse color.
             /// </summary>
             /// <value>The diffuse.</value>
-            public Color Diffuse { get; set; }
+            public Color Diffuse
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the diffuse map.
             /// </summary>
             /// <value>The diffuse map.</value>
-            public string DiffuseMap { get; set; }
+            public string DiffuseMap
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the opacity value.
@@ -1167,37 +1244,55 @@ namespace HelixToolkit.UWP
             /// <remarks>
             /// 0.0 is transparent, 1.0 is opaque.
             /// </remarks>
-            public double Dissolved { get; set; }
+            public double Dissolved
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the illumination.
             /// </summary>
             /// <value>The illumination.</value>
-            public int Illumination { get; set; }
+            public int Illumination
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the specular color.
             /// </summary>
             /// <value>The specular color.</value>
-            public Color Specular { get; set; }
+            public Color Specular
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the specular coefficient.
             /// </summary>
             /// <value>The specular coefficient.</value>
-            public double SpecularCoefficient { get; set; }
+            public double SpecularCoefficient
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the specular map.
             /// </summary>
             /// <value>The specular map.</value>
-            public string SpecularMap { get; set; }
+            public string SpecularMap
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets or sets the material.
             /// </summary>
             /// <value>The material.</value>
-            public PhongMaterialCore Material { get; set; }
+            public PhongMaterialCore Material
+            {
+                get; set;
+            }
 
             /// <summary>
             /// Gets the material from the specified path.
@@ -1316,7 +1411,7 @@ namespace HelixToolkit.UWP
                 {
                     path = path.Substring(1);
                 }
-    
+
                 return Path.GetFullPath(Path.Combine(basePath, path));
             }
         }

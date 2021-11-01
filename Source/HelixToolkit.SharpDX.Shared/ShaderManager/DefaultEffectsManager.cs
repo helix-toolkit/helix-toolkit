@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="adapterIndex">Index of the adapter.</param>
         /// <param name="externallogger">The externallogger.</param>
-        public DefaultEffectsManager(int adapterIndex, ILogger externallogger): base(adapterIndex, externallogger)
+        public DefaultEffectsManager(int adapterIndex, ILogger externallogger) : base(adapterIndex, externallogger)
         {
             AddDefaultTechniques();
         }
@@ -67,7 +67,7 @@ namespace HelixToolkit.UWP
 
         private void AddDefaultTechniques()
         {
-            foreach(var technique in LoadTechniqueDescriptions())
+            foreach (var technique in LoadTechniqueDescriptions())
             {
                 AddTechnique(technique);
             }
@@ -1700,10 +1700,10 @@ namespace HelixToolkit.UWP
                             DefaultVSShaderDescriptions.VSSkybox,
                             DefaultPSShaderDescriptions.PSSkybox
                         },
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,    
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        RasterStateDescription = DefaultRasterDescriptions.RSSkybox                   
-                    },                   
+                        RasterStateDescription = DefaultRasterDescriptions.RSSkybox
+                    },
                 }
             };
 
@@ -1971,7 +1971,7 @@ namespace HelixToolkit.UWP
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSScreenQuad,
-                            DefaultPSShaderDescriptions.PSScreenDup,                           
+                            DefaultPSShaderDescriptions.PSScreenDup,
                         },
                         Topology = PrimitiveTopology.TriangleStrip,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
@@ -2052,7 +2052,7 @@ namespace HelixToolkit.UWP
                         Topology = PrimitiveTopology.TriangleList,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSVolumeBackFace,
-                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeBack, 
+                        RasterStateDescription = DefaultRasterDescriptions.RSVolumeCubeBack,
                         StencilRef = 1
                     }
                 }

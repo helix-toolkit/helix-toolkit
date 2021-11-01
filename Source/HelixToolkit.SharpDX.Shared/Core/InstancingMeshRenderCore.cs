@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = parameterBufferModel;
-                    if(SetAffectsCanRenderFlag(ref parameterBufferModel, value))
+                    if (SetAffectsCanRenderFlag(ref parameterBufferModel, value))
                     {
                         if (old != null)
                         {
@@ -37,7 +37,10 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                get { return parameterBufferModel; }
+                get
+                {
+                    return parameterBufferModel;
+                }
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
@@ -57,7 +60,7 @@ namespace HelixToolkit.UWP
 
             protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
             {
-                if(base.OnAttachBuffers(context, ref vertStartSlot))
+                if (base.OnAttachBuffers(context, ref vertStartSlot))
                 {
                     ParameterBuffer?.AttachBuffer(context, ref vertStartSlot);
                     return true;
@@ -69,5 +72,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

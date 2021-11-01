@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="Element3D" />
     public class PostEffectMeshXRayGrid : Element3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// The effect name property
         /// </summary>
@@ -55,8 +55,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public string EffectName
         {
-            get { return (string)GetValue(EffectNameProperty); }
-            set { SetValue(EffectNameProperty, value); }
+            get
+            {
+                return (string)GetValue(EffectNameProperty);
+            }
+            set
+            {
+                SetValue(EffectNameProperty, value);
+            }
         }
 
 
@@ -96,15 +102,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int GridDensity
         {
-            get { return (int)GetValue(GridDensityProperty); }
-            set { SetValue(GridDensityProperty, value); }
+            get
+            {
+                return (int)GetValue(GridDensityProperty);
+            }
+            set
+            {
+                SetValue(GridDensityProperty, value);
+            }
         }
         /// <summary>
         /// The grid density property
         /// </summary>
         public static readonly DependencyProperty GridDensityProperty =
             DependencyProperty.Register("GridDensity", typeof(int), typeof(PostEffectMeshXRayGrid), new PropertyMetadata(8,
-                (d,e)=> 
+                (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as NodePostEffectXRayGrid).GridDensity = (int)e.NewValue;
                 }));
@@ -117,8 +129,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double DimmingFactor
         {
-            get { return (double)GetValue(DimmingFactorProperty); }
-            set { SetValue(DimmingFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(DimmingFactorProperty);
+            }
+            set
+            {
+                SetValue(DimmingFactorProperty, value);
+            }
         }
 
         /// <summary>
@@ -126,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DimmingFactorProperty =
             DependencyProperty.Register("DimmingFactor", typeof(double), typeof(PostEffectMeshXRayGrid), new PropertyMetadata(0.8,
-                (d, e)=> 
+                (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as NodePostEffectXRayGrid).DimmingFactor = (float)(double)e.NewValue;
                 }));
@@ -140,8 +158,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double BlendingFactor
         {
-            get { return (double)GetValue(BlendingFactorProperty); }
-            set { SetValue(BlendingFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(BlendingFactorProperty);
+            }
+            set
+            {
+                SetValue(BlendingFactorProperty, value);
+            }
         }
 
         /// <summary>
@@ -155,7 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
 
-#endregion
+        #endregion
 
         protected override SceneNode OnCreateSceneNode()
         {

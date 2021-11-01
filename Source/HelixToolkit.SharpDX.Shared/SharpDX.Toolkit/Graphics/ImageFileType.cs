@@ -38,7 +38,7 @@ namespace SharpDX.Toolkit.Graphics
         /// A TIFF file.
         /// </summary>
         Tiff,
-        
+
         /// <summary>
         /// A WMP file.
         /// </summary>

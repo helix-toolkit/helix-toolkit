@@ -64,12 +64,13 @@ namespace HelixToolkit.UWP
             }
 
             [StructLayout(LayoutKind.Sequential, Pack = 4)]
-            struct ModelMatrices{
+            struct ModelMatrices
+            {
                 public Matrix ModelMatrix;
                 public Matrix ModelMatrixInv;
                 public void Update(ref Matrix modelMatrix)
                 {
-                    if(ModelMatrix != modelMatrix)
+                    if (ModelMatrix != modelMatrix)
                     {
                         ModelMatrix = modelMatrix;
                         ModelMatrixInv = modelMatrix.Inverted();
@@ -111,13 +112,13 @@ namespace HelixToolkit.UWP
             public VolumeRenderCore()
                 : base(RenderType.Opaque)
             {
-                modelCB = Collect(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.VolumeModelCB, 
+                modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.VolumeModelCB,
                     VolumeParamsStruct.SizeInBytes)));
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
             {
-                buffer = Collect(new VolumeCubeBufferModel());
+                buffer = new VolumeCubeBufferModel();
                 buffer.Geometry = BoxMesh;
                 buffer.Topology = PrimitiveTopology.TriangleList;
                 cubeBackPass = technique[DefaultPassNames.Backface];
@@ -128,16 +129,14 @@ namespace HelixToolkit.UWP
 
             protected override void OnDetach()
             {
-                buffer = null;
-                modelCB.Detach();
-                base.OnDetach();
+                RemoveAndDispose(ref buffer);
             }
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 using (var back = context.GetOffScreenRT(OffScreenTextureSize.Full, global::SharpDX.DXGI.Format.R16G16B16A16_Float))
                 {
-                    int slot = 0;
+                    var slot = 0;
                     using (var depth = context.GetOffScreenDS(OffScreenTextureSize.Full, global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt))
                     {
                         deviceContext.ClearDepthStencilView(depth, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1, 1);
@@ -145,7 +144,7 @@ namespace HelixToolkit.UWP
                         BindTarget(depth, back, deviceContext, (int)context.ActualWidth, (int)context.ActualHeight);
                         #region Render box back face and set stencil buffer to 0
                         modelMatrices.Update(ref ModelMatrix);
-                        if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelMatrices, Matrix.SizeInBytes * 2))
+                        if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelMatrices))
                         {
                             return;
                         }
@@ -158,11 +157,14 @@ namespace HelixToolkit.UWP
                         #region Render all mesh Positions onto off-screen texture region with stencil = 0 only
                         if (context.RenderHost.PerFrameOpaqueNodesInFrustum.Count > 0)
                         {
-                            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodesInFrustum.Count; ++i)
+                            for (var i = 0; i < context.RenderHost.PerFrameOpaqueNodesInFrustum.Count; ++i)
                             {
                                 var mesh = context.RenderHost.PerFrameOpaqueNodesInFrustum[i];
                                 var meshPass = mesh.EffectTechnique[DefaultPassNames.Positions];
-                                if (meshPass.IsNULL) { continue; }
+                                if (meshPass.IsNULL)
+                                {
+                                    continue;
+                                }
                                 meshPass.BindShader(deviceContext);
                                 meshPass.BindStates(deviceContext, StateType.BlendState);
                                 // Set special depth stencil state to only render into region with stencil region is 0
@@ -225,5 +227,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

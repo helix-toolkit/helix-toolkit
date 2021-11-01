@@ -35,7 +35,7 @@ namespace SharpDX.Toolkit.Graphics
         private int zBufferCountPerArraySlice;
         private MipMapDescription[] mipmapDescriptions;
         private static List<LoadSaveDelegate> loadSaveDelegates = new List<LoadSaveDelegate>();
-        
+
         /// <summary>
         /// Provides access to all pixel buffers.
         /// </summary>
@@ -103,8 +103,8 @@ namespace SharpDX.Toolkit.Graphics
             if (bufferIsDisposable)
             {
                 Utilities.FreeMemory(buffer);
-            } 
-            
+            }
+
             base.Dispose(disposeManagedResources);
         }
 
@@ -139,7 +139,7 @@ namespace SharpDX.Toolkit.Graphics
                 // For 3D textures
                 return GetPixelBufferUnsafe(0, arrayOrZSliceIndex, mipmap);
             }
-            
+
             if (arrayOrZSliceIndex > Description.ArraySize)
             {
                 throw new ArgumentException("Invalid array slice index", "arrayOrZSliceIndex");
@@ -187,7 +187,7 @@ namespace SharpDX.Toolkit.Graphics
                 throw new ArgumentNullException("loader/saver", "Can set both loader and saver to null");
 
             var newDelegate = new LoadSaveDelegate(type, loader, saver);
-            for (int i = 0; i < loadSaveDelegates.Count; i++)
+            for (var i = 0; i < loadSaveDelegates.Count; i++)
             {
                 var loadSaveDelegate = loadSaveDelegates[i];
                 if (loadSaveDelegate.FileType == type)
@@ -206,7 +206,10 @@ namespace SharpDX.Toolkit.Graphics
         /// <value>A pointer to the image buffer in memory.</value>
         public IntPtr DataPointer
         {
-            get { return this.buffer; }
+            get
+            {
+                return this.buffer;
+            }
         }
 
         /// <summary>
@@ -218,7 +221,10 @@ namespace SharpDX.Toolkit.Graphics
         /// </remarks>
         public PixelBufferArray PixelBuffer
         {
-            get { return pixelBufferArray; }
+            get
+            {
+                return pixelBufferArray;
+            }
         }
 
         /// <summary>
@@ -226,7 +232,10 @@ namespace SharpDX.Toolkit.Graphics
         /// </summary>
         public int TotalSizeInBytes
         {
-            get { return totalSizeInBytes; }
+            get
+            {
+                return totalSizeInBytes;
+            }
         }
 
         /// <summary>
@@ -245,10 +254,10 @@ namespace SharpDX.Toolkit.Graphics
         private DataBox[] ComputeDataBox()
         {
             dataBoxArray = new DataBox[Description.ArraySize * Description.MipLevels];
-            int i = 0;
-            for (int arrayIndex = 0; arrayIndex < Description.ArraySize; arrayIndex++)
+            var i = 0;
+            for (var arrayIndex = 0; arrayIndex < Description.ArraySize; arrayIndex++)
             {
-                for (int mipIndex = 0; mipIndex < Description.MipLevels; mipIndex++)
+                for (var mipIndex = 0; mipIndex < Description.MipLevels; mipIndex++)
                 {
                     // Get the first z-slice (A DataBox for a Texture3D is pointing to the whole texture).
                     var pixelBuffer = this.GetPixelBufferUnsafe(arrayIndex, 0, mipIndex);
@@ -429,7 +438,7 @@ namespace SharpDX.Toolkit.Graphics
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
 
-            int size = buffer.Length;
+            var size = buffer.Length;
 
             // If buffer is allocated on Large Object Heap, then we are going to pin it instead of making a copy.
             if (size > (85 * 1024))
@@ -440,7 +449,7 @@ namespace SharpDX.Toolkit.Graphics
 
             fixed (void* pbuffer = buffer)
             {
-                return Load((IntPtr) pbuffer, size, true);
+                return Load((IntPtr)pbuffer, size, true);
             }
         }
 
@@ -489,7 +498,7 @@ namespace SharpDX.Toolkit.Graphics
         public static Image Load(string fileName)
         {
             NativeFileStream stream = null;
-            IntPtr memoryPtr = IntPtr.Zero;
+            var memoryPtr = IntPtr.Zero;
             int size;
             try
             {
@@ -510,7 +519,8 @@ namespace SharpDX.Toolkit.Graphics
                 {
                     if (stream != null)
                         stream.Dispose();
-                } catch {}
+                }
+                catch { }
             }
 
             // If everything was fine, load the image from memory
@@ -634,15 +644,15 @@ namespace SharpDX.Toolkit.Graphics
         private static ImageDescription CreateDescription(TextureDimension dimension, int width, int height, int depth, MipMapCount mipMapCount, PixelFormat format, int arraySize)
         {
             return new ImageDescription()
-                       {
-                           Width = width,
-                           Height = height,
-                           Depth = depth,
-                           ArraySize = arraySize,
-                           Dimension = dimension,
-                           Format = format,
-                           MipLevels = mipMapCount,
-                       };
+            {
+                Width = width,
+                Height = height,
+                Depth = depth,
+                ArraySize = arraySize,
+                Dimension = dimension,
+                Format = format,
+                MipLevels = mipMapCount,
+            };
         }
 
         [Flags]
@@ -662,7 +672,7 @@ namespace SharpDX.Toolkit.Graphics
 
             if (FormatHelper.IsCompressed(fmt))
             {
-                int bpb = (fmt == Format.BC1_Typeless
+                var bpb = (fmt == Format.BC1_Typeless
                              || fmt == Format.BC1_UNorm
                              || fmt == Format.BC1_UNorm_SRgb
                              || fmt == Format.BC4_Typeless
@@ -720,13 +730,13 @@ namespace SharpDX.Toolkit.Graphics
             pixelSize = 0;
             nImages = 0;
 
-            int w = metadata.Width;
-            int h = metadata.Height;
-            int d = metadata.Depth;
+            var w = metadata.Width;
+            var h = metadata.Height;
+            var d = metadata.Depth;
 
             var mipmaps = new MipMapDescription[metadata.MipLevels];
 
-            for (int level = 0; level < metadata.MipLevels; ++level)
+            for (var level = 0; level < metadata.MipLevels; ++level)
             {
                 int rowPitch, slicePitch;
                 int widthPacked;
@@ -765,20 +775,20 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="pitchFlags">Pitch flags.</param>
         /// <param name="bufferCount">Output number of mipmap.</param>
         /// <param name="pixelSizeInBytes">Output total size to allocate pixel buffers for all images.</param>
-        private static List<int> CalculateImageArray( ImageDescription imageDesc, PitchFlags pitchFlags, out int bufferCount, out int pixelSizeInBytes)
+        private static List<int> CalculateImageArray(ImageDescription imageDesc, PitchFlags pitchFlags, out int bufferCount, out int pixelSizeInBytes)
         {
             pixelSizeInBytes = 0;
             bufferCount = 0;
 
             var mipmapToZIndex = new List<int>();
 
-            for (int j = 0; j < imageDesc.ArraySize; j++)
+            for (var j = 0; j < imageDesc.ArraySize; j++)
             {
-                int w = imageDesc.Width;
-                int h = imageDesc.Height;
-                int d = imageDesc.Depth; 
-                
-                for (int i = 0; i < imageDesc.MipLevels; i++)
+                var w = imageDesc.Width;
+                var h = imageDesc.Height;
+                var d = imageDesc.Depth;
+
+                for (var i = 0; i < imageDesc.MipLevels; i++)
                 {
                     int rowPitch, slicePitch;
                     int widthPacked;
@@ -786,7 +796,7 @@ namespace SharpDX.Toolkit.Graphics
                     ComputePitch(imageDesc.Format, w, h, out rowPitch, out slicePitch, out widthPacked, out heightPacked, pitchFlags);
 
                     // Store the number of z-slices per miplevel
-                    if ( j == 0)
+                    if (j == 0)
                         mipmapToZIndex.Add(bufferCount);
 
                     // Keep a trace of indices for the 1st array size, for each mip levels
@@ -820,13 +830,13 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="output"></param>
         private static unsafe void SetupImageArray(IntPtr buffer, int pixelSize, ImageDescription imageDesc, PitchFlags pitchFlags, PixelBuffer[] output)
         {
-            int index = 0;
+            var index = 0;
             var pixels = (byte*)buffer;
             for (uint item = 0; item < imageDesc.ArraySize; ++item)
             {
-                int w = imageDesc.Width;
-                int h = imageDesc.Height;
-                int d = imageDesc.Depth;
+                var w = imageDesc.Width;
+                var h = imageDesc.Height;
+                var d = imageDesc.Depth;
 
                 for (uint level = 0; level < imageDesc.MipLevels; ++level)
                 {
@@ -963,7 +973,6 @@ namespace SharpDX.Toolkit.Graphics
                     loadSaveDelegate.Save(pixelBuffers, count, description, imageStream);
                     return;
                 }
-
             }
             throw new NotSupportedException("This file format is not yet implemented.");
         }

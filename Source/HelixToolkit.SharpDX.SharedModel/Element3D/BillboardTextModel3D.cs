@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="GeometryModel3D" />
     public class BillboardTextModel3D : GeometryModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// Fixed sized billboard. Default = true. 
         /// <para>When FixedSize = true, the billboard render size will be scale to normalized device coordinates(screen) size</para>
@@ -81,8 +81,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsTransparent
         {
-            get { return (bool)GetValue(IsTransparentProperty); }
-            set { SetValue(IsTransparentProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsTransparentProperty);
+            }
+            set
+            {
+                SetValue(IsTransparentProperty, value);
+            }
         }
 
         /// <summary>
@@ -93,21 +99,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public SamplerStateDescription SamplerDescription
         {
-            get { return (SamplerStateDescription)GetValue(SamplerDescriptionProperty); }
-            set { SetValue(SamplerDescriptionProperty, value); }
+            get
+            {
+                return (SamplerStateDescription)GetValue(SamplerDescriptionProperty);
+            }
+            set
+            {
+                SetValue(SamplerDescriptionProperty, value);
+            }
         }
 
         /// <summary>
         /// The sampler description property
         /// </summary>
         public static readonly DependencyProperty SamplerDescriptionProperty =
-            DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(BillboardTextModel3D), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d,e) =>
+            DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(BillboardTextModel3D), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1, (d, e) =>
             {
                 (d as BillboardTextModel3D).material.SamplerDescription = (SamplerStateDescription)e.NewValue;
             }));
-#endregion
+        #endregion
 
-#region Overridable Methods        
+        #region Overridable Methods        
 
         protected readonly BillboardMaterialCore material = new BillboardMaterialCore();
         /// <summary>
@@ -130,8 +142,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.IsTransparent = IsTransparent;
                 material.SamplerDescription = SamplerDescription;
             }
-            base.AssignDefaultValuesToSceneNode(core);       
+            base.AssignDefaultValuesToSceneNode(core);
         }
-#endregion
+        #endregion
     }
 }

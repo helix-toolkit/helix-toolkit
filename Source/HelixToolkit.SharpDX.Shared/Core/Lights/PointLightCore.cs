@@ -38,7 +38,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref position, value);
                 }
-                get { return position; }
+                get
+                {
+                    return position;
+                }
             }
 
             private Vector3 attenuation = new Vector3(1, 0, 0);
@@ -50,8 +53,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Vector3 Attenuation
             {
-                set { SetAffectsRender(ref attenuation, value); }
-                get { return attenuation; }
+                set
+                {
+                    SetAffectsRender(ref attenuation, value);
+                }
+                get
+                {
+                    return attenuation;
+                }
             }
 
             private float range = 1000;
@@ -63,8 +72,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float Range
             {
-                set { SetAffectsRender(ref range, value); }
-                get { return range; }
+                set
+                {
+                    SetAffectsRender(ref range, value);
+                }
+                get
+                {
+                    return range;
+                }
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="PointLightCore"/> class.
@@ -86,5 +101,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

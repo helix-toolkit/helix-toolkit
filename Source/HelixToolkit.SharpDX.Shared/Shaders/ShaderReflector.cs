@@ -20,7 +20,10 @@ namespace HelixToolkit.UWP
     {
         public sealed class ShaderReflector : IShaderReflector
         {
-            public FeatureLevel FeatureLevel { get; private set; }
+            public FeatureLevel FeatureLevel
+            {
+                get; private set;
+            }
 
             public Dictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; } = new Dictionary<string, ConstantBufferMapping>();
 
@@ -29,7 +32,7 @@ namespace HelixToolkit.UWP
             public Dictionary<string, UAVMapping> UAVMappings { get; } = new Dictionary<string, UAVMapping>();
 
             public Dictionary<string, SamplerMapping> SamplerMappings { get; } = new Dictionary<string, SamplerMapping>();
-        
+
             public ShaderReflector()
             {
 
@@ -44,9 +47,9 @@ namespace HelixToolkit.UWP
                 using (var reflection = new ShaderReflection(byteCode))
                 {
                     FeatureLevel = reflection.MinFeatureLevel;
-                    for (int i = 0; i < reflection.Description.BoundResources; ++i)
+                    for (var i = 0; i < reflection.Description.BoundResources; ++i)
                     {
-                        var res = reflection.GetResourceBindingDescription(i);                   
+                        var res = reflection.GetResourceBindingDescription(i);
                         switch (res.Type)
                         {
                             case ShaderInputType.ConstantBuffer:
@@ -95,5 +98,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

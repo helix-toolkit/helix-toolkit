@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
             {
-                return geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicLineGeometryBufferModel>(modelGuid, geometry) 
+                return geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicLineGeometryBufferModel>(modelGuid, geometry)
                     : EffectsManager.GeometryBufferManager.Register<DefaultLineGeometryBufferModel>(modelGuid, geometry);
             }
 
@@ -123,5 +123,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

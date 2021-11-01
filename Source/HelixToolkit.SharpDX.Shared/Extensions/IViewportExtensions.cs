@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP
                 return false;
             }
             hits?.Clear();
-            if(UnProject(viewport, pos, out var ray))
+            if (UnProject(viewport, pos, out var ray))
             {
                 var hitContext = new HitTestContext(viewport.RenderHost.RenderContext, ref ray, ref pos);
                 foreach (var element in viewport.RenderHost.PerFrameOpaqueNodesInFrustum)
@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Finds the hits for a given 2D viewport position.
         /// </summary>
@@ -103,7 +103,7 @@ namespace HelixToolkit.UWP
             hits?.Clear();
             if (viewport.RenderHost != null)
             {
-                if(!viewport.UnProject(position, out var ray))
+                if (!viewport.UnProject(position, out var ray))
                 {
                     return false;
                 }
@@ -154,7 +154,7 @@ namespace HelixToolkit.UWP
             normal = new Vector3();
             model = null;
             var hits = new List<HitTestResult>();
-            if(viewport.FindHitsInFrustum(position, ref hits) && hits.Count > 0)
+            if (viewport.FindHitsInFrustum(position, ref hits) && hits.Count > 0)
             {
                 point = hits[0].PointHit;
                 normal = hits[0].NormalAtHit;
@@ -195,7 +195,7 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static bool UnProjectOnPlane(this IViewport3DX viewport, Vector2 p, Vector3 position, Vector3 normal, out Vector3 intersection)
         {
-            if (viewport.UnProject(p, out Ray ray))
+            if (viewport.UnProject(p, out var ray))
             {
                 return ray.PlaneIntersection(position, normal, out intersection);
             }
@@ -215,7 +215,7 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static Vector3? UnProjectOnPlane(this IViewport3DX viewport, Vector2 p, Vector3 position, Vector3 normal)
         {
-            if(viewport.UnProjectOnPlane(p, position, normal, out var intersection))
+            if (viewport.UnProjectOnPlane(p, position, normal, out var intersection))
             {
                 return intersection;
             }
@@ -294,7 +294,7 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetViewProjectionMatrix(this IViewport3DX viewport)
         {
-            return viewport.RenderHost != null && viewport.RenderHost.RenderContext != null ? 
+            return viewport.RenderHost != null && viewport.RenderHost.RenderContext != null ?
                 viewport.RenderHost.RenderContext.ViewMatrix * viewport.RenderHost.RenderContext.ProjectionMatrix
                 : viewport.CameraCore.CreateProjectionMatrix((float)viewport.ViewportRectangle.Width / (float)viewport.ViewportRectangle.Height);
         }
@@ -413,11 +413,11 @@ namespace HelixToolkit.UWP
         {
             if (view.RenderHost != null && view.RenderHost.IsRendering)
             {
-                view.RenderHost.UpdateAndRender();              
+                view.RenderHost.UpdateAndRender();
                 if (view.RenderHost != null && view.RenderHost.IsRendering)
                 {
                     var memoryStream = new System.IO.MemoryStream();
-                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, 
+                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager,
                         view.RenderHost.RenderBuffer.BackBuffer.Resource as global::SharpDX.Direct3D11.Texture2D, memoryStream);
                     return memoryStream;
                 }

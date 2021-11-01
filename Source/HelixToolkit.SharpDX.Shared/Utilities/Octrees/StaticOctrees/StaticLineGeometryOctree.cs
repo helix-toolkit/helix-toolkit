@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP
             {
                 var objects = new KeyValuePair<int, BoundingBox>[Indices.Count / 2];
                 // Construct triangle index and its bounding box KeyValuePair
-                for (int i = 0; i < Indices.Count / 2; ++i)
+                for (var i = 0; i < Indices.Count / 2; ++i)
                 {
                     objects[i] = new KeyValuePair<int, BoundingBox>(i, GetBoundingBox(i));
                 }
@@ -100,7 +100,7 @@ namespace HelixToolkit.UWP
             /// <param name="isIntersect"></param>
             /// <param name="hitThickness"></param>
             /// <returns></returns>
-            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, HitTestContext context, object model, 
+            protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, HitTestContext context, object model,
                 Geometry3D geometry, Matrix modelMatrix, ref Ray rayModel, bool returnMultiple,
                 ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
             {
@@ -125,7 +125,7 @@ namespace HelixToolkit.UWP
                     var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
                     result.Distance = double.MaxValue;
                     var rayWS = context.RayWS;
-                    for (int i = octant.Start; i < octant.End; ++i)
+                    for (var i = octant.Start; i < octant.End; ++i)
                     {
                         var idx = Objects[i].Key * 2;
                         var idx1 = Indices[idx];
@@ -135,7 +135,7 @@ namespace HelixToolkit.UWP
 
                         var t0 = Vector3.TransformCoordinate(v0, modelMatrix);
                         var t1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                        var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc);
+                        var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out var sp, out var tp, out var sc, out var tc);
                         var svpm = context.RenderMatrices.ScreenViewProjectionMatrix;
                         Vector3.TransformCoordinate(ref sp, ref svpm, out var sp3);
                         Vector3.TransformCoordinate(ref tp, ref svpm, out var tp3);
@@ -202,13 +202,13 @@ namespace HelixToolkit.UWP
             protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, HitTestContext context, ref BoundingSphere sphere,
                 ref List<HitTestResult> result, ref bool isIntersect)
             {
-                bool isHit = false;
+                var isHit = false;
                 var tempResult = new LineHitTestResult();
                 tempResult.Distance = float.MaxValue;
                 if (!BoxDisjointSphere(octant.Bound, ref sphere))
                 {
                     isIntersect = true;
-                    for (int i = octant.Start; i < octant.End; ++i)
+                    for (var i = octant.Start; i < octant.End; ++i)
                     {
                         if (!BoxDisjointSphere(Objects[i].Value, ref sphere))
                         {
@@ -217,7 +217,7 @@ namespace HelixToolkit.UWP
                             var t2 = Indices[idx + 1];
                             var v0 = Positions[t1];
                             var v1 = Positions[t2];
-                            float distance = LineBuilder.GetPointToLineDistance2D(ref sphere.Center, ref v0, ref v1, out Vector3 cloestPoint, out float t);
+                            var distance = LineBuilder.GetPointToLineDistance2D(ref sphere.Center, ref v0, ref v1, out var cloestPoint, out var t);
                             if (tempResult.Distance > distance)
                             {
                                 tempResult.Distance = distance;
@@ -256,5 +256,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

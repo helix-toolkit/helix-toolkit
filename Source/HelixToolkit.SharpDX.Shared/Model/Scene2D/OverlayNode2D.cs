@@ -28,7 +28,9 @@ namespace HelixToolkit.UWP
                     foreach (var item in Items.Reverse())
                     {
                         if (item.HitTest(mousePoint, out hitResult))
-                        { return true; }
+                        {
+                            return true;
+                        }
                     }
                 }
                 return false;
@@ -47,5 +49,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -30,14 +30,20 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if this instance has elements; otherwise, <c>false</c>.
         /// </value>
-        bool HasElements { get; }
+        bool HasElements
+        {
+            get;
+        }
         /// <summary>
         /// Gets the element count.
         /// </summary>
         /// <value>
         /// The element count.
         /// </value>
-        int ElementCount { get; }
+        int ElementCount
+        {
+            get;
+        }
         /// <summary>
         /// Disposes internal buffer and reuse the object
         /// </summary>
@@ -55,6 +61,9 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The elements.
         /// </value>
-        IList<T> Elements { get; set; }
+        IList<T> Elements
+        {
+            get; set;
+        }
     }
 }

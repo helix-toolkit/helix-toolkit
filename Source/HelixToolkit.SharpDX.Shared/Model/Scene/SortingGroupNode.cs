@@ -95,8 +95,10 @@ namespace HelixToolkit.UWP
             {
                 base.UpdateNotRender(context);
                 if (!EnableSorting || ItemsInternal.Count == 0)
-                { return; }
-                long currTime = Stopwatch.GetTimestamp() * 1000 / Stopwatch.Frequency;
+                {
+                    return;
+                }
+                var currTime = Stopwatch.GetTimestamp() * 1000 / Stopwatch.Frequency;
 
                 if (currTime - LastSortTime > SortingInterval)
                 {
@@ -111,10 +113,10 @@ namespace HelixToolkit.UWP
                 sortingOpaqueCache.Clear();
                 notSorted.Clear();
 
-                Vector3 cameraPosition = context.Camera.Position;
+                var cameraPosition = context.Camera.Position;
                 if (SortTransparentOnly)
                 {
-                    for (int i = 0; i < nodes.Count; ++i)
+                    for (var i = 0; i < nodes.Count; ++i)
                     {
                         if (nodes[i].RenderCore.RenderType == RenderType.Transparent)
                         {
@@ -125,11 +127,14 @@ namespace HelixToolkit.UWP
                             notSorted.Add(nodes[i]);
                         }
                     }
-                    sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0; });
+                    sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b)
+                    {
+                        return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0;
+                    });
                 }
                 else
                 {
-                    for (int i = 0; i < nodes.Count; ++i)
+                    for (var i = 0; i < nodes.Count; ++i)
                     {
                         if (nodes[i].RenderCore.RenderType == RenderType.Transparent)
                         {
@@ -148,29 +153,41 @@ namespace HelixToolkit.UWP
                     {
                         Parallel.Invoke(() =>
                         {
-                            sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0; });
+                            sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b)
+                            {
+                                return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0;
+                            });
                         }, () =>
                         {
-                            sortingOpaqueCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? 1 : a.Key < b.Key ? -1 : 0; });
+                            sortingOpaqueCache.Sort(delegate (SortStruct a, SortStruct b)
+                            {
+                                return a.Key > b.Key ? 1 : a.Key < b.Key ? -1 : 0;
+                            });
                         });
                     }
                     else
                     {
-                        sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0; });
-                        sortingOpaqueCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? 1 : a.Key < b.Key ? -1 : 0; });
+                        sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b)
+                        {
+                            return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0;
+                        });
+                        sortingOpaqueCache.Sort(delegate (SortStruct a, SortStruct b)
+                        {
+                            return a.Key > b.Key ? 1 : a.Key < b.Key ? -1 : 0;
+                        });
                     }
                 }
 
                 ItemsInternal.Clear();
-                for (int i = 0; i < notSorted.Count; ++i)
+                for (var i = 0; i < notSorted.Count; ++i)
                 {
                     ItemsInternal.Add(notSorted[i]);
                 }
-                for (int i = 0; i < sortingOpaqueCache.Count; ++i)
+                for (var i = 0; i < sortingOpaqueCache.Count; ++i)
                 {
                     ItemsInternal.Add(sortingOpaqueCache[i].Value);
                 }
-                for (int i = 0; i < sortingTransparentCache.Count; ++i)
+                for (var i = 0; i < sortingTransparentCache.Count; ++i)
                 {
                     ItemsInternal.Add(sortingTransparentCache[i].Value);
                 }
@@ -191,7 +208,7 @@ namespace HelixToolkit.UWP
                     case SortingMethod.BoundingBoxCorners:
                         var bound = node.BoundsWithTransform;
                         //https://github.com/sharpdx/SharpDX/blob/master/Source/SharpDX.Mathematics/Collision.cs
-                        float distance = 0f;
+                        var distance = 0f;
                         if (cameraPos.X < bound.Minimum.X)
                             distance += (bound.Minimum.X - cameraPos.X) * (bound.Minimum.X - cameraPos.X);
                         if (cameraPos.X > bound.Maximum.X)
@@ -208,7 +225,7 @@ namespace HelixToolkit.UWP
                             distance += (cameraPos.Z - bound.Maximum.Z) * (cameraPos.Z - bound.Maximum.Z);
                         return distance;
                     case SortingMethod.BoundingSphereSurface:
-                        float distS = (node.BoundsSphereWithTransform.Center - cameraPos).Length() - node.BoundsSphereWithTransform.Radius;
+                        var distS = (node.BoundsSphereWithTransform.Center - cameraPos).Length() - node.BoundsSphereWithTransform.Radius;
                         return Math.Max(distS, 0f);
                     default:
                         return 0;
@@ -216,5 +233,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

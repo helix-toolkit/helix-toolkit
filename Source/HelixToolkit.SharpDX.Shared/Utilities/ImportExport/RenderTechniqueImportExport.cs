@@ -66,7 +66,7 @@ namespace HelixToolkit.UWP
             {
                 using (var binaryXMLWriter = XmlDictionaryWriter.CreateBinaryWriter(memory))
                 {
-                    int count = ExportTechniques(manager, binaryXMLWriter);
+                    var count = ExportTechniques(manager, binaryXMLWriter);
                     using (var binaryWriter = File.Open(filePath, FileMode.Create))
                     {
                         binaryWriter.Write(memory.ToArray(), 0, (int)memory.Length);
@@ -112,8 +112,8 @@ namespace HelixToolkit.UWP
             {
                 manager.RemoveAllTechniques();
             }
-            int count = 0;
-            foreach(var t in techniques)
+            var count = 0;
+            foreach (var t in techniques)
             {
                 if (append)
                 {
@@ -144,7 +144,7 @@ namespace HelixToolkit.UWP
                     {
                         return ImportTechniques(manager, binaryXMLReader, append);
                     }
-                }               
+                }
             }
         }
     }

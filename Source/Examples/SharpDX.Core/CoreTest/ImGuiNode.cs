@@ -75,7 +75,7 @@ namespace HelixToolkit.SharpDX.Core.Model
 
         protected override void OnDetach()
         {
-            bufferModel = null;
+            RemoveAndDispose(ref bufferModel);
             (RenderCore as ImGuiRenderCore).TextureView = null;
             base.OnDetach();
         }
@@ -121,13 +121,13 @@ namespace HelixToolkit.SharpDX.Core.Model
             IntPtr context = ImGui.CreateContext();
             ImGui.SetCurrentContext(context);
             ImGui.GetIO().Fonts.AddFontDefault();
-            bufferModel = Collect(new ImGui2DBufferModel());
+            bufferModel = new ImGui2DBufferModel();
             (RenderCore as ImGuiRenderCore).Buffer = bufferModel;
             var io = ImGui.GetIO();
             unsafe
             {
                 io.Fonts.GetTexDataAsRGBA32(out IntPtr textureData, out var width, out var height);
-                var textureView = Collect(new ShaderResourceViewProxy(EffectsManager.Device));
+                var textureView = new ShaderResourceViewProxy(EffectsManager.Device);
                 textureView.CreateView(textureData, width, height, 
                     Format.R8G8B8A8_UNorm);
                 io.Fonts.SetTexID(fontAtlasID);
@@ -162,7 +162,7 @@ namespace HelixToolkit.SharpDX.Core.Model
         private readonly ConstantBufferComponent globalTransformCB;
         public ImGuiRenderCore()
             : base(RenderType.ScreenSpaced)
-        {
+        {         
             globalTransformCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes)));
         }
 
@@ -253,22 +253,24 @@ namespace HelixToolkit.SharpDX.Core.Model
                 
                 Buffer.VertexBufferInternal.EnsureBufferCapacity(deviceContext, data.TotalVtxCount, data.TotalVtxCount * 2);
                 Buffer.IndexBufferInternal.EnsureBufferCapacity(deviceContext, data.TotalIdxCount, data.TotalIdxCount * 2);
-                Buffer.VertexBufferInternal.MapBuffer(deviceContext, (stream) => 
+                Buffer.VertexBufferInternal.MapBuffer(deviceContext, (dataBox) => 
                 {
+                    var ptr = dataBox.DataPointer;
                     for (int i = 0; i < data.CmdListsCount; i++)
                     {
                         var cmd_list = data.CmdListsRange[i];
                         int vCount = cmd_list.VtxBuffer.Size * sizeof(ImDrawVert);
-                        stream.WriteRange((IntPtr)cmd_list.VtxBuffer.Data, vCount);
+                        ptr = UnsafeHelper.Write(ptr, (IntPtr)cmd_list.VtxBuffer.Data, 0, vCount);
                     }
                 });
-                Buffer.IndexBufferInternal.MapBuffer(deviceContext, (stream) => 
+                Buffer.IndexBufferInternal.MapBuffer(deviceContext, (dataBox) => 
                 {
+                    var ptr = dataBox.DataPointer;
                     for (int i = 0; i < data.CmdListsCount; i++)
                     {
                         var cmd_list = data.CmdListsRange[i];
                         int iCount = cmd_list.IdxBuffer.Size * sizeof(ushort);
-                        stream.WriteRange((IntPtr)cmd_list.IdxBuffer.Data, iCount);
+                        ptr = UnsafeHelper.Write(ptr, (IntPtr)cmd_list.IdxBuffer.Data, 0, iCount);
                     }
                 });
             }
@@ -280,20 +282,19 @@ namespace HelixToolkit.SharpDX.Core.Model
             spritePass = technique[DefaultPassNames.Default];
             texSlot = spritePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.SpriteTB);
             samplerSlot = spritePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SpriteSampler);
-            sampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(DefaultSamplers.PointSamplerWrap));
+            sampler = EffectTechnique.EffectsManager.StateManager.Register(DefaultSamplers.PointSamplerWrap);
             return true;
         }
 
         protected override void OnDetach()
         {
             TextureView = null;
-            sampler = null;
-            base.OnDetach();
+            RemoveAndDispose(ref sampler);
         }
     }
 
 
-    public sealed class ImGui2DBufferModel : ReferenceCountDisposeObject, IGUID, IAttachableBufferModel
+    public sealed class ImGui2DBufferModel : DisposeObject, IGUID, IAttachableBufferModel
     {
         public PrimitiveTopology Topology { get; set; } = PrimitiveTopology.TriangleList;
 
@@ -308,15 +309,15 @@ namespace HelixToolkit.SharpDX.Core.Model
         public int SpriteCount;
         public int IndexCount;
 
-        internal readonly DynamicBufferProxy VertexBufferInternal;
+        internal DynamicBufferProxy VertexBufferInternal;
 
-        internal readonly DynamicBufferProxy IndexBufferInternal;
+        internal DynamicBufferProxy IndexBufferInternal;
 
         public ImGui2DBufferModel()
         {
-            VertexBufferInternal = Collect(new DynamicBufferProxy(global::SharpDX.Utilities.SizeOf<ImDrawVert>(), BindFlags.VertexBuffer));
+            VertexBufferInternal = new DynamicBufferProxy(global::SharpDX.Utilities.SizeOf<ImDrawVert>(), BindFlags.VertexBuffer);
             VertexBuffer[0] = VertexBufferInternal;
-            IndexBuffer = IndexBufferInternal = Collect(new DynamicBufferProxy(sizeof(ushort), BindFlags.IndexBuffer));
+            IndexBuffer = IndexBufferInternal = new DynamicBufferProxy(sizeof(ushort), BindFlags.IndexBuffer);
         }
 
         public bool AttachBuffers(DeviceContextProxy context, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
@@ -333,6 +334,14 @@ namespace HelixToolkit.SharpDX.Core.Model
         public bool UpdateBuffers(DeviceContextProxy context, IDeviceResources deviceResources)
         {
             return true;
+        }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            RemoveAndDispose(ref VertexBufferInternal);
+            RemoveAndDispose(ref IndexBufferInternal);
+            VertexBuffer[0] = null;
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

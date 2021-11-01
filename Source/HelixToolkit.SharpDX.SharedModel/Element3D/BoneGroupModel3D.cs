@@ -32,15 +32,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Matrix[] BoneMatrices
         {
-            get { return (Matrix[])GetValue(BoneMatricesProperty); }
-            set { SetValue(BoneMatricesProperty, value); }
+            get
+            {
+                return (Matrix[])GetValue(BoneMatricesProperty);
+            }
+            set
+            {
+                SetValue(BoneMatricesProperty, value);
+            }
         }
 
         /// <summary>
         /// The bone matrices property
         /// </summary>
         public static readonly DependencyProperty BoneMatricesProperty =
-            DependencyProperty.Register("BoneMatrices", typeof(Matrix[]), typeof(BoneGroupModel3D), new PropertyMetadata(null, (d,e) =>
+            DependencyProperty.Register("BoneMatrices", typeof(Matrix[]), typeof(BoneGroupModel3D), new PropertyMetadata(null, (d, e) =>
             {
                 ((d as Element3D).SceneNode as BoneGroupNode).BoneMatrices = (Matrix[])e.NewValue;
             }));

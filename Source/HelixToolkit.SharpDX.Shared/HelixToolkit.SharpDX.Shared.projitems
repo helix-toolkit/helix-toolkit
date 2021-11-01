@@ -199,6 +199,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\VolumeTextureNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHostPartial_Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DX11RenderHostConfiguration.cs" />
+    <Compile Include="..\HelixToolkit.SharpDX.Shared\ShaderManager\StructArrayPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\Variables\PhongMaterialVariable.cs" />
@@ -282,7 +283,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DefaultEffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\GeometryBufferManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\Pools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\IdHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Pools.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\RenderTechniqueNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ShaderPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\EffectsManager.cs" />
@@ -293,6 +295,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\GeometryShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\HullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\InputLayoutDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shaders\InputLayoutProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\MappingProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\PixelShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\SamplerDescription.cs" />
@@ -311,8 +314,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\DDSFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\DDSHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\DepthFormat.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\DepthStencilBuffer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\DepthStencilViewSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\GraphicsResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\Image.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\ImageDescription.cs" />
@@ -322,12 +323,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\PixelBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\PixelBufferArray.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\PixelFormat.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\RenderTarget1D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\RenderTarget2D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\RenderTarget3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\RenderTargetCube.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\RenderTargetViewSelector.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\ShaderResourceViewSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\Texture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\Texture1D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\Texture1DBase.cs" />
@@ -339,12 +334,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\TextureDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\TextureDimension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\TextureFlags.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\TextureView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\UnorderedAccessViewSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\ViewType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\AtomicHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\BoolEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BitmapProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ConstantBufferProxy.cs" />

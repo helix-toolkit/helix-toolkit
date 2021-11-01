@@ -60,9 +60,15 @@ namespace HelixToolkit.Wpf
 
             public SymmetricMatrix(double a, double b, double c, double d)
             {
-                M11 = a * a; M12 = a * b; M13 = a * c; M14 = a * d;
-                M22 = b * b; M23 = b * c; M24 = b * d;
-                M33 = c * c; M34 = c * d;
+                M11 = a * a;
+                M12 = a * b;
+                M13 = a * c;
+                M14 = a * d;
+                M22 = b * b;
+                M23 = b * c;
+                M24 = b * d;
+                M33 = c * c;
+                M34 = c * d;
                 M44 = d * d;
             }
 
@@ -86,24 +92,35 @@ namespace HelixToolkit.Wpf
                 {
                     switch (c)
                     {
-                        case 0: return M11;
-                        case 1: return M12;
-                        case 2: return M13;
-                        case 3: return M14;
-                        case 4: return M22;
-                        case 5: return M23;
-                        case 6: return M24;
-                        case 7: return M33;
-                        case 8: return M34;
-                        case 9: return M44;
-                        default: throw new ArgumentOutOfRangeException();
+                        case 0:
+                            return M11;
+                        case 1:
+                            return M12;
+                        case 2:
+                            return M13;
+                        case 3:
+                            return M14;
+                        case 4:
+                            return M22;
+                        case 5:
+                            return M23;
+                        case 6:
+                            return M24;
+                        case 7:
+                            return M33;
+                        case 8:
+                            return M34;
+                        case 9:
+                            return M44;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                 }
             }
 
             public double det(int a11, int a12, int a13, int a21, int a22, int a23, int a31, int a32, int a33)
             {
-                double det = this[a11] * this[a22] * this[a33] + this[a13] * this[a21] * this[a32] + this[a12] * this[a23] * this[a31]
+                var det = this[a11] * this[a22] * this[a33] + this[a13] * this[a21] * this[a32] + this[a12] * this[a23] * this[a31]
                             - this[a13] * this[a22] * this[a31] - this[a11] * this[a23] * this[a32] - this[a12] * this[a21] * this[a33];
                 return det;
             }
@@ -175,7 +192,10 @@ namespace HelixToolkit.Wpf
             public int tid;
             public int tvertex;
             public Ref(int id = 0, int tvert = 0)
-            { tid = id; tvertex = tvert; }
+            {
+                tid = id;
+                tvertex = tvert;
+            }
 
             //public Ref Clone()
             //{
@@ -198,16 +218,16 @@ namespace HelixToolkit.Wpf
         /// <param name="model"></param>
         public MeshSimplification(MeshGeometry3D model)
         {
-            triangles = new List<Triangle>(Enumerable.Range(0, model.TriangleIndices.Count / 3).Select(x=>new Triangle()));
-            int i = 0;
-            foreach(var tri in triangles)
+            triangles = new List<Triangle>(Enumerable.Range(0, model.TriangleIndices.Count / 3).Select(x => new Triangle()));
+            var i = 0;
+            foreach (var tri in triangles)
             {
                 tri.v[0] = model.TriangleIndices[i++];
                 tri.v[1] = model.TriangleIndices[i++];
                 tri.v[2] = model.TriangleIndices[i++];
             }
             vertices = model.Positions.Select(x => new Vertex(x)).ToList();
-            refs = new List<Ref>(Enumerable.Range(0, model.TriangleIndices.Count).Select(x=>new Ref()));
+            refs = new List<Ref>(Enumerable.Range(0, model.TriangleIndices.Count).Select(x => new Ref()));
         }
         /// <summary>
         /// 
@@ -232,16 +252,16 @@ namespace HelixToolkit.Wpf
             {
                 tri.deleted = false;
             }
-            int deletedTris = 0;
+            var deletedTris = 0;
             var deleted0 = new List<bool>();
             var deleted1 = new List<bool>();
-            int triCount = triangles.Count;
-            int maxIteration = 9999;
+            var triCount = triangles.Count;
+            var maxIteration = 9999;
             if (!lossless)
             {
                 maxIteration = 100;
             }
-            for (int iteration = 0; iteration < maxIteration; ++iteration)
+            for (var iteration = 0; iteration < maxIteration; ++iteration)
             {
                 if (!lossless && triCount - deletedTris <= targetCount)
                 {
@@ -262,8 +282,8 @@ namespace HelixToolkit.Wpf
                 // The following numbers works well for most models.
                 // If it does not, try to adjust the 3 parameters
                 //
-                double threshold = 0.001;
-                if(!lossless)
+                var threshold = 0.001;
+                if (!lossless)
                     threshold = 0.000000001 * Math.Pow(iteration + 3.0, aggressive);
                 if (verbose)
                 {
@@ -272,15 +292,18 @@ namespace HelixToolkit.Wpf
 
                 foreach (var tri in triangles)
                 {
-                    if (tri.err[3] > threshold || tri.deleted || tri.dirty) { continue; }
+                    if (tri.err[3] > threshold || tri.deleted || tri.dirty)
+                    {
+                        continue;
+                    }
 
-                    for (int j = 0; j < 3; ++j)
+                    for (var j = 0; j < 3; ++j)
                     {
                         if (tri.err[j] < threshold)
                         {
-                            int i0 = tri.v[j];
+                            var i0 = tri.v[j];
                             var v0 = vertices[i0];
-                            int i1 = tri.v[(j + 1) % 3];
+                            var i1 = tri.v[(j + 1) % 3];
                             var v1 = vertices[i1];
                             //border check
                             if (v0.border != v1.border)
@@ -297,20 +320,22 @@ namespace HelixToolkit.Wpf
 
                             if (Flipped(ref p, i0, i1, ref v0, ref v1, deleted0)
                                 || Flipped(ref p, i1, i0, ref v1, ref v0, deleted1))
-                            { continue; }
+                            {
+                                continue;
+                            }
                             v0.p = p;
                             v0.q = v1.q + v0.q;
 
-                            int tStart = refs.Count;
+                            var tStart = refs.Count;
                             UpdateTriangles(i0, ref v0, deleted0, ref deletedTris);
                             UpdateTriangles(i0, ref v1, deleted1, ref deletedTris);
 
-                            int tcount = refs.Count - tStart;
+                            var tcount = refs.Count - tStart;
                             if (tcount <= v0.tCount)
                             {
                                 if (tcount > 0)
                                 {
-                                    for (int k = 0; k < tcount; ++k)
+                                    for (var k = 0; k < tcount; ++k)
                                     {
                                         refs[v0.tStart + k] = refs[tStart + k];
                                     }
@@ -324,7 +349,6 @@ namespace HelixToolkit.Wpf
                             v0.tCount = tcount;
                             break;
                         }
-
                     }
                     if (!lossless && triCount - deletedTris <= targetCount)
                     {
@@ -349,8 +373,8 @@ namespace HelixToolkit.Wpf
         /// <returns></returns>
         public MeshGeometry3D GetMesh()
         {
-            var pos = new Point3DCollection(vertices.Select(x=>new Point3D(x.p.X, x.p.Y, x.p.Z)));
-            var tris = new Int32Collection(triangles.Count*3);
+            var pos = new Point3DCollection(vertices.Select(x => new Point3D(x.p.X, x.p.Y, x.p.Z)));
+            var tris = new Int32Collection(triangles.Count * 3);
             foreach (var tri in triangles)
             {
                 tris.Add(tri.v[0]);
@@ -362,22 +386,25 @@ namespace HelixToolkit.Wpf
 
         private bool Flipped(ref Vector3D p, int i0, int i1, ref Vertex v0, ref Vertex v1, IList<bool> deleted)
         {
-            for (int i = 0; i < v0.tCount; ++i)
+            for (var i = 0; i < v0.tCount; ++i)
             {
                 var t = triangles[refs[v0.tStart + i].tid];
-                if (t.deleted) { continue; }
-                int s = refs[v0.tStart + i].tvertex;
-                int id1 = t.v[(s + 1) % 3];
-                int id2 = t.v[(s + 2) % 3];
+                if (t.deleted)
+                {
+                    continue;
+                }
+                var s = refs[v0.tStart + i].tvertex;
+                var id1 = t.v[(s + 1) % 3];
+                var id2 = t.v[(s + 2) % 3];
                 if (id1 == i1 || id2 == i1)
                 {
                     deleted[i] = true;
                     continue;
                 }
 
-                Vector3D d1 = vertices[id1].p - p;
+                var d1 = vertices[id1].p - p;
                 d1.Normalize();
-                Vector3D d2 = vertices[id2].p - p;
+                var d2 = vertices[id2].p - p;
                 d2.Normalize();
                 if (SharedFunctions.DotProduct(ref d1, ref d2) > 0.999)
                 {
@@ -397,11 +424,14 @@ namespace HelixToolkit.Wpf
         private void UpdateTriangles(int i0, ref Vertex v, IList<bool> deleted, ref int deletedTriangles)
         {
             Vector3D p;
-            for (int i = 0; i < v.tCount; ++i)
+            for (var i = 0; i < v.tCount; ++i)
             {
                 var r = refs[v.tStart + i];
                 var t = triangles[r.tid];
-                if (t.deleted) { continue; }
+                if (t.deleted)
+                {
+                    continue;
+                }
                 if (deleted[i])
                 {
                     t.deleted = true;
@@ -424,10 +454,10 @@ namespace HelixToolkit.Wpf
             p_result = new Vector3D();
             // compute interpolated vertex
             var q = vertices[id_v1].q + vertices[id_v2].q;
-            bool border = vertices[id_v1].border & vertices[id_v2].border;
+            var border = vertices[id_v1].border & vertices[id_v2].border;
             double error = 0;
 
-            double det = q.det(0, 1, 2, 1, 4, 5, 2, 5, 7);
+            var det = q.det(0, 1, 2, 1, 4, 5, 2, 5, 7);
             if (det != 0 && !border)
             {
                 // q_delta is invertible
@@ -443,13 +473,16 @@ namespace HelixToolkit.Wpf
                 var p1 = vertices[id_v1].p;
                 var p2 = vertices[id_v2].p;
                 var p3 = (p1 + p2) / 2;
-                double error1 = VertexError(ref q, p1.X, p1.Y, p1.Z);
-                double error2 = VertexError(ref q, p2.X, p2.Y, p2.Z);
-                double error3 = VertexError(ref q, p3.X, p3.Y, p3.Z);
+                var error1 = VertexError(ref q, p1.X, p1.Y, p1.Z);
+                var error2 = VertexError(ref q, p2.X, p2.Y, p2.Z);
+                var error3 = VertexError(ref q, p3.X, p3.Y, p3.Z);
                 error = Math.Min(error1, Math.Min(error2, error3));
-                if (error1 == error) p_result = p1;
-                if (error2 == error) p_result = p2;
-                if (error3 == error) p_result = p3;
+                if (error1 == error)
+                    p_result = p1;
+                if (error2 == error)
+                    p_result = p2;
+                if (error3 == error)
+                    p_result = p3;
             }
             return error;
         }
@@ -464,8 +497,8 @@ namespace HelixToolkit.Wpf
         {
             if (iteration > 0) // compact triangles
             {
-                int dst = 0;
-                for (int i = 0; i < triangles.Count; ++i)
+                var dst = 0;
+                for (var i = 0; i < triangles.Count; ++i)
                 {
                     if (!triangles[i].deleted)
                     {
@@ -490,7 +523,7 @@ namespace HelixToolkit.Wpf
                     var n = SharedFunctions.CrossProduct(p1 - p0, p2 - p0);
                     n.Normalize();
                     tri.normal = n;
-                    for (int j = 0; j < 3; ++j)
+                    for (var j = 0; j < 3; ++j)
                     {
                         vertices[tri.v[j]].q += new SymmetricMatrix(n.X, n.Y, n.Z, -SharedFunctions.DotProduct(ref n, ref p0));
                     }
@@ -498,8 +531,8 @@ namespace HelixToolkit.Wpf
                 Vector3D p;
                 foreach (var tri in triangles)
                 {
-                    for (int i = 0; i < 3; ++i)
-                    {                       
+                    for (var i = 0; i < 3; ++i)
+                    {
                         tri.err[i] = CalculateError(tri.v[i], tri.v[(i + 1) % 3], out p);
                     }
                     tri.err[3] = Math.Min(tri.err[0], Math.Min(tri.err[1], tri.err[2]));
@@ -519,28 +552,28 @@ namespace HelixToolkit.Wpf
                 vertices[tri.v[2]].tCount++;
             }
 
-            int tstart = 0;
+            var tstart = 0;
             foreach (var vert in vertices)
             {
                 vert.tStart = tstart;
                 tstart += vert.tCount;
                 vert.tCount = 0;
             }
-            int totalTris = triangles.Count * 3;
-            if(refs.Count < totalTris)
+            var totalTris = triangles.Count * 3;
+            if (refs.Count < totalTris)
             {
                 refs.Clear();
-                refs.AddRange(Enumerable.Range(0, totalTris).Select(x=>new Ref()));
+                refs.AddRange(Enumerable.Range(0, totalTris).Select(x => new Ref()));
             }
             else
             {
                 refs.RemoveRange(totalTris, refs.Count - totalTris);
                 refs.ForEach(x => x.Reset());
             }
-            int count = 0;
+            var count = 0;
             foreach (var tri in triangles)
             {
-                for (int j = 0; j < 3; ++j)
+                for (var j = 0; j < 3; ++j)
                 {
                     var v = vertices[tri.v[j]];
                     var r = refs[v.tStart + v.tCount];
@@ -548,7 +581,7 @@ namespace HelixToolkit.Wpf
                     r.tvertex = j;
                     refs[v.tStart + v.tCount] = r;
                     v.tCount++;
-                    
+
                 }
                 ++count;
             }
@@ -566,16 +599,19 @@ namespace HelixToolkit.Wpf
                 {
                     vCount.Clear();
                     vids.Clear();
-                    for (int j = 0; j < vert.tCount; ++j)
+                    for (var j = 0; j < vert.tCount; ++j)
                     {
                         var t = triangles[refs[vert.tStart + j].tid];
-                        for (int k = 0; k < 3; ++k)
+                        for (var k = 0; k < 3; ++k)
                         {
-                            int ofs = 0;
-                            int id = t.v[k];
+                            var ofs = 0;
+                            var id = t.v[k];
                             while (ofs < vCount.Count)
                             {
-                                if (vids[ofs] == id) { break; }
+                                if (vids[ofs] == id)
+                                {
+                                    break;
+                                }
                                 ++ofs;
                             }
                             if (ofs == vCount.Count)
@@ -590,7 +626,7 @@ namespace HelixToolkit.Wpf
                         }
                     }
 
-                    for (int j = 0; j < vCount.Count; ++j)
+                    for (var j = 0; j < vCount.Count; ++j)
                     {
                         if (vCount[j] == 1)
                         {
@@ -603,13 +639,13 @@ namespace HelixToolkit.Wpf
 
         private void CompactMesh()
         {
-            int dst = 0;
+            var dst = 0;
             foreach (var vert in vertices)
             {
                 vert.tCount = 0;
             }
 
-            for (int i = 0; i < triangles.Count; ++i)
+            for (var i = 0; i < triangles.Count; ++i)
             {
                 if (!triangles[i].deleted)
                 {

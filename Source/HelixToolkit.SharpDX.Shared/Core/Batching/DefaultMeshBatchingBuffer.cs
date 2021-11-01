@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     namespace Core
-    {        
+    {
         using Model;
         using Utilities;
 
@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref materials, value))
+                    if (Set(ref materials, value))
                     {
                         InvalidateGeometries();
                     }
@@ -43,8 +43,8 @@ namespace HelixToolkit.UWP
             }
 
             public DefaultStaticMeshBatchingBuffer()
-                :base(PrimitiveTopology.TriangleList, 
-                     new ImmutableBufferProxy(BatchedMeshVertex.SizeInBytes, BindFlags.VertexBuffer), 
+                : base(PrimitiveTopology.TriangleList,
+                     new ImmutableBufferProxy(BatchedMeshVertex.SizeInBytes, BindFlags.VertexBuffer),
                      new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
             {
 
@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                else if(geometry.Geometry is MeshGeometry3D mesh)
+                else if (geometry.Geometry is MeshGeometry3D mesh)
                 {
                     var materialCount = Materials.Length;
                     var vertexCount = mesh.Positions.Count;
@@ -75,9 +75,9 @@ namespace HelixToolkit.UWP
                     var colorEncode = new Vector4(diffuse, emissive, specular, reflect);
                     var colorEncode2 = new Vector4(ambient, material.SpecularShininess, material.DiffuseColor.Alpha, 0);
 
-                    if(transform == Matrix.Identity)
+                    if (transform == Matrix.Identity)
                     {
-                        for (int i = offset; i < offset + vertexCount; ++i)
+                        for (var i = offset; i < offset + vertexCount; ++i)
                         {
                             positions.MoveNext();
                             normals.MoveNext();
@@ -98,7 +98,7 @@ namespace HelixToolkit.UWP
                     }
                     else
                     {
-                        for (int i = offset; i < offset + vertexCount; ++i)
+                        for (var i = offset; i < offset + vertexCount; ++i)
                         {
                             positions.MoveNext();
                             normals.MoveNext();
@@ -127,7 +127,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
-
-
 }

@@ -53,12 +53,16 @@ namespace SharpDX.Toolkit
         [DefaultValue(null)]
         public string Name
         {
-            get { return name; }
+            get
+            {
+                return name;
+            }
             set
             {
                 if (isNameImmutable)
                     throw new ArgumentException("Name property is immutable for this instance", "value");
-                if (name == value) return;
+                if (name == value)
+                    return;
                 name = value;
                 OnPropertyChanged("Name");
             }
@@ -80,7 +84,8 @@ namespace SharpDX.Toolkit
             }
             set
             {
-                if (ReferenceEquals(tag, value)) return;
+                if (ReferenceEquals(tag, value))
+                    return;
                 tag = value;
                 OnPropertyChanged("Tag");
             }
@@ -97,7 +102,7 @@ namespace SharpDX.Toolkit
         /// <param name="propertyName"></param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));

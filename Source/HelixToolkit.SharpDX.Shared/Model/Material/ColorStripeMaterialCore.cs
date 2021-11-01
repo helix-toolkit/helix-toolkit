@@ -30,8 +30,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 DiffuseColor
             {
-                set { Set(ref diffuseColor, value); }
-                get { return diffuseColor; }
+                set
+                {
+                    Set(ref diffuseColor, value);
+                }
+                get
+                {
+                    return diffuseColor;
+                }
             }
 
             private IList<Color4> colorStripeX = null;
@@ -43,8 +49,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public IList<Color4> ColorStripeX
             {
-                set { Set(ref colorStripeX, value); }
-                get { return colorStripeX; }
+                set
+                {
+                    Set(ref colorStripeX, value);
+                }
+                get
+                {
+                    return colorStripeX;
+                }
             }
 
             private IList<Color4> colorStripeY = null;
@@ -56,8 +68,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public IList<Color4> ColorStripeY
             {
-                set { Set(ref colorStripeY, value); }
-                get { return colorStripeY; }
+                set
+                {
+                    Set(ref colorStripeY, value);
+                }
+                get
+                {
+                    return colorStripeY;
+                }
             }
 
             private bool colorStripeXEnabled = true;
@@ -69,8 +87,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool ColorStripeXEnabled
             {
-                set { Set(ref colorStripeXEnabled, value); }
-                get { return colorStripeXEnabled; }
+                set
+                {
+                    Set(ref colorStripeXEnabled, value);
+                }
+                get
+                {
+                    return colorStripeXEnabled;
+                }
             }
 
             private bool colorStripeYEnabled = true;
@@ -82,8 +106,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool ColorStripeYEnabled
             {
-                set { Set(ref colorStripeYEnabled, value); }
-                get { return colorStripeYEnabled; }
+                set
+                {
+                    Set(ref colorStripeYEnabled, value);
+                }
+                get
+                {
+                    return colorStripeYEnabled;
+                }
             }
 
             private global::SharpDX.Direct3D11.SamplerStateDescription colorStripeSampler = DefaultSamplers.LinearSamplerClampAni1;
@@ -95,8 +125,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public global::SharpDX.Direct3D11.SamplerStateDescription ColorStripeSampler
             {
-                set { Set(ref colorStripeSampler, value); }
-                get { return colorStripeSampler; }
+                set
+                {
+                    Set(ref colorStripeSampler, value);
+                }
+                get
+                {
+                    return colorStripeSampler;
+                }
             }
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
@@ -105,5 +141,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

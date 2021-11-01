@@ -63,14 +63,20 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The bones.
             /// </value>
-            public Animations.Bone[] Bones { set; get; }
+            public Animations.Bone[] Bones
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether this node is used to show skeleton. Only used as an indication.
             /// </summary>
             /// <value>
             ///   <c>true</c> if this node is used to show skeleton; otherwise, <c>false</c>.
             /// </value>
-            public bool IsSkeletonNode { set; get; }
+            public bool IsSkeletonNode
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether this node has bone group. 
             /// <see cref="BoneGroupNode"/> shares bones with multiple <see cref="BoneSkinMeshNode"/>
@@ -78,7 +84,10 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if this instance has bone group; otherwise, <c>false</c>.
             /// </value>
-            public bool HasBoneGroup { internal set; get; }
+            public bool HasBoneGroup
+            {
+                internal set; get;
+            }
 
             private Vector3[] skinnedVerticesCache = new Vector3[0];
             /// <summary>
@@ -92,7 +101,7 @@ namespace HelixToolkit.UWP
 
             protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
             {
-                return !(EffectsManager.GeometryBufferManager.Register<BoneSkinnedMeshBufferModel>(modelGuid, geometry) is IBoneSkinMeshBufferModel buffer) ? 
+                return !(EffectsManager.GeometryBufferManager.Register<BoneSkinnedMeshBufferModel>(modelGuid, geometry) is IBoneSkinMeshBufferModel buffer) ?
                     EmptyGeometryBufferModel.Empty : new BoneSkinPreComputeBufferModel(buffer, buffer.VertexStructSize.FirstOrDefault()) as IAttachableBufferModel;
             }
 
@@ -153,7 +162,7 @@ namespace HelixToolkit.UWP
                         var proxy = new Render.DeviceContextProxy(manager.Device.ImmediateContext, manager.Device);
 #endif
                         var array = new Vector3[skGeometry.Positions.Count];
-                        if(skCore.CopySkinnedToArray(proxy, array) > 0)
+                        if (skCore.CopySkinnedToArray(proxy, array) > 0)
                         {
                             return array;
                         }
@@ -218,9 +227,9 @@ namespace HelixToolkit.UWP
                 BoneMatrices = new Matrix[] { Matrix.Identity };
                 Bones = new Bone[] { new Bone() { Name = "Identity", BindPose = Matrix.Identity, InvBindPose = Matrix.Identity, BoneLocalTransform = Matrix.Identity } };
 
-                BoneSkinnedMeshGeometry3D geom = Geometry as BoneSkinnedMeshGeometry3D;
+                var geom = Geometry as BoneSkinnedMeshGeometry3D;
                 geom.VertexBoneIds = new BoneIds[geom.Positions.Count];
-                for (int i = 0; i < geom.VertexBoneIds.Count; i++)
+                for (var i = 0; i < geom.VertexBoneIds.Count; i++)
                     geom.VertexBoneIds[i] = new BoneIds() { Bone1 = 0, Weights = new Vector4(1, 0, 0, 0) };
             }
 
@@ -235,11 +244,11 @@ namespace HelixToolkit.UWP
 
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                if(BoneMatrices.Length > 0 && Geometry is BoneSkinnedMeshGeometry3D skGeometry)
+                if (BoneMatrices.Length > 0 && Geometry is BoneSkinnedMeshGeometry3D skGeometry)
                 {
-                    if(RenderCore is BoneSkinRenderCore skCore)
+                    if (RenderCore is BoneSkinRenderCore skCore)
                     {
-                        if(skinnedVerticesCache.Length < skGeometry.Positions.Count)
+                        if (skinnedVerticesCache.Length < skGeometry.Positions.Count)
                         {
                             skinnedVerticesCache = new Vector3[skGeometry.Positions.Count];
                         }

@@ -32,7 +32,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref width, value);
                 }
-                get { return width; }
+                get
+                {
+                    return width;
+                }
             }
 
             private float height = 0.5f;
@@ -48,7 +51,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref height, value);
                 }
-                get { return height; }
+                get
+                {
+                    return height;
+                }
             }
 
             private PointFigure figure = PointFigure.Rect;
@@ -64,7 +70,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref figure, value);
                 }
-                get { return figure; }
+                get
+                {
+                    return figure;
+                }
             }
 
             private float figureRatio = 0.25f;
@@ -80,7 +89,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref figureRatio, value);
                 }
-                get { return figureRatio; }
+                get
+                {
+                    return figureRatio;
+                }
             }
 
             private Color4 pointColor = Color.Black;
@@ -105,21 +117,36 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref enableDistanceFading, value);
                 }
-                get { return enableDistanceFading; }
+                get
+                {
+                    return enableDistanceFading;
+                }
             }
 
             private float fadingNearDistance = 0;
             public float FadingNearDistance
             {
-                set { Set(ref fadingNearDistance, value); }
-                get { return fadingNearDistance; }
+                set
+                {
+                    Set(ref fadingNearDistance, value);
+                }
+                get
+                {
+                    return fadingNearDistance;
+                }
             }
 
             private float fadingFarDistance = 100;
             public float FadingFarDistance
             {
-                set { Set(ref fadingFarDistance, value); }
-                get { return fadingFarDistance; }
+                set
+                {
+                    Set(ref fadingFarDistance, value);
+                }
+                get
+                {
+                    return fadingFarDistance;
+                }
             }
 
             private bool fixedSize = true;
@@ -131,8 +158,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool FixedSize
             {
-                set { Set(ref fixedSize, value); }
-                get { return fixedSize; }
+                set
+                {
+                    Set(ref fixedSize, value);
+                }
+                get
+                {
+                    return fixedSize;
+                }
             }
 
             private bool enableColorBlending = false;
@@ -146,8 +179,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool EnableColorBlending
             {
-                set { Set(ref enableColorBlending, value); }
-                get { return enableColorBlending; }
+                set
+                {
+                    Set(ref enableColorBlending, value);
+                }
+                get
+                {
+                    return enableColorBlending;
+                }
             }
 
             private float blendingFactor = 0;
@@ -160,8 +199,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public float BlendingFactor
             {
-                set { Set(ref blendingFactor, value); }
-                get { return blendingFactor; }
+                set
+                {
+                    Set(ref blendingFactor, value);
+                }
+                get
+                {
+                    return blendingFactor;
+                }
             }
 
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
@@ -170,5 +215,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -58,8 +58,8 @@ namespace HelixToolkit.UWP
                     ArraySize = 1
                 };
 
-                var backBuffer = Collect(new ShaderResourceViewProxy(Device, colordescNMS));
-                d2dTarget = Collect(new D2DTargetProxy());
+                var backBuffer = new ShaderResourceViewProxy(Device, colordescNMS);
+                d2dTarget = new D2DTargetProxy();
                 d2dTarget.Initialize(backBuffer.Resource as Texture2D, DeviceContext2D);
                 return backBuffer;
             }
@@ -75,5 +75,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

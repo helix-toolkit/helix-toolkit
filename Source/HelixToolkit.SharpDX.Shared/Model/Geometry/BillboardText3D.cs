@@ -43,16 +43,28 @@ namespace HelixToolkit.UWP
 
     public class TextInfo
     {
-        public string Text { get; set; }
-        public Vector3 Origin { get; set; }
+        public string Text
+        {
+            get; set;
+        }
+        public Vector3 Origin
+        {
+            get; set;
+        }
 
         public Color4 Foreground { set; get; } = Color.Black;
 
         public Color4 Background { set; get; } = Color.Transparent;
 
-        public float ActualWidth { protected set; get; }
+        public float ActualWidth
+        {
+            protected set; get;
+        }
 
-        public float ActualHeight { protected set; get; }
+        public float ActualHeight
+        {
+            protected set; get;
+        }
 
         public float Scale { set; get; } = 1;
         /// <summary>
@@ -110,7 +122,10 @@ namespace HelixToolkit.UWP
             BoundSphere = new BoundingSphere(Origin, Math.Max(actualWidth, actualHeight) / 2);
         }
 
-        public BoundingSphere BoundSphere { get; private set; }
+        public BoundingSphere BoundSphere
+        {
+            get; private set;
+        }
     }
 
 #if !NETFX_CORE
@@ -120,7 +135,10 @@ namespace HelixToolkit.UWP
     {
         private readonly static BitmapFont bmpFont;
 
-        public static Stream TextureStatic { get; private set; }
+        public static Stream TextureStatic
+        {
+            get; private set;
+        }
         const float textureScale = 0.66f;
         const string FontName = "arial";
         static BillboardText3D()
@@ -177,7 +195,7 @@ namespace HelixToolkit.UWP
             set
             {
                 var old = textInfo;
-                if(Set(ref textInfo, value))
+                if (Set(ref textInfo, value))
                 {
                     old.CollectionChanged -= CollectionChanged;
                     IsInitialized = false;
@@ -187,7 +205,10 @@ namespace HelixToolkit.UWP
                     }
                 }
             }
-            get { return textInfo; }
+            get
+            {
+                return textInfo;
+            }
         }
 
         public BillboardText3D()
@@ -214,7 +235,7 @@ namespace HelixToolkit.UWP
         protected override void OnAssignTo(Geometry3D target)
         {
             base.OnAssignTo(target);
-            if(target is BillboardText3D billboard)
+            if (target is BillboardText3D billboard)
             {
                 billboard.TextInfo = this.TextInfo;
             }
@@ -226,7 +247,7 @@ namespace HelixToolkit.UWP
         }
 
         protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
-        {           
+        {
             Width = 0;
             Height = 0;
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
@@ -234,9 +255,9 @@ namespace HelixToolkit.UWP
 
             foreach (var textInfo in TextInfo)
             {
-                int tempPrevCount = tempList.Count;
-                int x = 0;
-                int y = 0;
+                var tempPrevCount = tempList.Count;
+                var x = 0;
+                var y = 0;
                 var w = BitmapFont.TextureSize.Width;
                 var h = BitmapFont.TextureSize.Height;
                 char previousCharacter;
@@ -244,7 +265,7 @@ namespace HelixToolkit.UWP
                 previousCharacter = ' ';
                 var normalizedText = textInfo.Text;
                 var rect = new RectangleF(textInfo.Origin.X, textInfo.Origin.Y, 0, 0);
-                foreach (char character in normalizedText)
+                foreach (var character in normalizedText)
                 {
                     switch (character)
                     {
@@ -253,8 +274,8 @@ namespace HelixToolkit.UWP
                             y -= BitmapFont.LineHeight;
                             break;
                         default:
-                            Character data = BitmapFont[character];
-                            int kerning = BitmapFont.GetKerning(previousCharacter, character);
+                            var data = BitmapFont[character];
+                            var kerning = BitmapFont.GetKerning(previousCharacter, character);
                             tempList.Add(DrawCharacter(data, new Vector3(x + data.XOffset, y - data.YOffset, 0), w, h, kerning, textInfo));
 
                             x += data.XAdvance + kerning;
@@ -285,9 +306,9 @@ namespace HelixToolkit.UWP
                 });
 
                 textInfo.UpdateTextInfo(rect.Width, rect.Height);
-                                var halfW = rect.Width / 2;
+                var halfW = rect.Width / 2;
                 var halfH = rect.Height / 2;
-                for(int k = tempPrevCount; k < tempList.Count; ++k)
+                for (var k = tempPrevCount; k < tempList.Count; ++k)
                 {
                     var v = tempList[k];
                     v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + tl);
@@ -300,7 +321,7 @@ namespace HelixToolkit.UWP
                 Height += rect.Height;
             }
 
-            foreach(var v in tempList)
+            foreach (var v in tempList)
             {
                 BillboardVertices.Add(v);
             }
@@ -317,7 +338,7 @@ namespace HelixToolkit.UWP
             {
                 var sphere = TextInfo[0].BoundSphere;
                 var bound = BoundingBox.FromSphere(sphere);
-                foreach(var info in TextInfo)
+                foreach (var info in TextInfo)
                 {
                     sphere = BoundingSphere.Merge(sphere, info.BoundSphere);
                     bound = BoundingBox.Merge(bound, BoundingBox.FromSphere(info.BoundSphere));
@@ -333,7 +354,7 @@ namespace HelixToolkit.UWP
             var ch = character.Height;
             var cu = character.X;
             var cv = character.Y;
-            var tl = new Vector2(origin.X + kerning, origin.Y );
+            var tl = new Vector2(origin.X + kerning, origin.Y);
             var br = new Vector2(origin.X + cw + kerning, origin.Y - ch);
             var offTL = tl * info.Scale * textureScale;
             var offBR = br * info.Scale * textureScale;
@@ -341,7 +362,7 @@ namespace HelixToolkit.UWP
             var offBL = new Vector2(offTL.X, offBR.Y);
             var uv_tl = new Vector2(cu / w, cv / h);
             var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
-            
+
             return new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
@@ -356,7 +377,7 @@ namespace HelixToolkit.UWP
             };
         }
 
-        public override bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits, 
+        public override bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits,
             object originalSource, bool fixedSize)
         {
             var rayWS = context.RayWS;

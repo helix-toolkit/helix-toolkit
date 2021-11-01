@@ -20,8 +20,14 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public Brush Background
             {
-                get { return (Brush)GetValue(BackgroundProperty); }
-                set { SetValue(BackgroundProperty, value); }
+                get
+                {
+                    return (Brush)GetValue(BackgroundProperty);
+                }
+                set
+                {
+                    SetValue(BackgroundProperty, value);
+                }
             }
 
             public static readonly DependencyProperty BackgroundProperty =
@@ -47,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (e.Action == NotifyCollectionChangedAction.Reset)
                 {
-                    foreach(var item in SceneNode.Items)
+                    foreach (var item in SceneNode.Items)
                     {
                         this.RemoveLogicalChild(item.WrapperSource);
                     }
@@ -108,6 +114,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
-
 }

@@ -18,8 +18,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableSorting
         {
-            get { return (bool)GetValue(EnableSortingProperty); }
-            set { SetValue(EnableSortingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableSortingProperty);
+            }
+            set
+            {
+                SetValue(EnableSortingProperty, value);
+            }
         }
 
         /// <summary>
@@ -40,15 +46,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public int SortingInterval
         {
-            get { return (int)GetValue(SortingIntervalProperty); }
-            set { SetValue(SortingIntervalProperty, value); }
+            get
+            {
+                return (int)GetValue(SortingIntervalProperty);
+            }
+            set
+            {
+                SetValue(SortingIntervalProperty, value);
+            }
         }
 
         /// <summary>
         /// The sorting interval property
         /// </summary>
         public static readonly DependencyProperty SortingIntervalProperty =
-            DependencyProperty.Register("SortingInterval", typeof(int), typeof(SortingGroupModel3D), new PropertyMetadata(500, (d,e)=> 
+            DependencyProperty.Register("SortingInterval", typeof(int), typeof(SortingGroupModel3D), new PropertyMetadata(500, (d, e) =>
             {
                 ((d as Element3D).SceneNode as SortingGroupNode).SortingInterval = (int)e.NewValue;
             }));
@@ -62,8 +74,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool SortTransparentOnly
         {
-            get { return (bool)GetValue(SortTransparentOnlyProperty); }
-            set { SetValue(SortTransparentOnlyProperty, value); }
+            get
+            {
+                return (bool)GetValue(SortTransparentOnlyProperty);
+            }
+            set
+            {
+                SetValue(SortTransparentOnlyProperty, value);
+            }
         }
 
         /// <summary>
@@ -84,8 +102,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public SortingMethod SortingMethod
         {
-            get { return (SortingMethod)GetValue(SortingMethodProperty); }
-            set { SetValue(SortingMethodProperty, value); }
+            get
+            {
+                return (SortingMethod)GetValue(SortingMethodProperty);
+            }
+            set
+            {
+                SetValue(SortingMethodProperty, value);
+            }
         }
 
         /// <summary>

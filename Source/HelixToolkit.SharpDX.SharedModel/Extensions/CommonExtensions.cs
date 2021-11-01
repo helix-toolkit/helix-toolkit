@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             {
                 return global::SharpDX.DirectWrite.FontWeight.Black;
             }
-            else if(fontWeight == FontWeights.Bold)
+            else if (fontWeight == FontWeights.Bold)
             {
                 return global::SharpDX.DirectWrite.FontWeight.Bold;
             }
@@ -179,11 +179,11 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             {
                 return global::SharpDX.DirectWrite.FontStyle.Italic;
             }
-            else if(style == FontStyles.Normal)
+            else if (style == FontStyles.Normal)
             {
                 return global::SharpDX.DirectWrite.FontStyle.Normal;
             }
-            else if(style == FontStyles.Oblique)
+            else if (style == FontStyles.Oblique)
             {
                 return global::SharpDX.DirectWrite.FontStyle.Oblique;
             }
@@ -224,11 +224,11 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
 
         public static D2D.Brush ToD2DBrush(this Media.Brush brush, global::SharpDX.Direct2D1.RenderTarget target)
         {
-            if(brush is Media.SolidColorBrush solid)
+            if (brush is Media.SolidColorBrush solid)
             {
                 return new global::SharpDX.Direct2D1.SolidColorBrush(target, solid.Color.ToColor4());
             }
-            else if(brush is Media.LinearGradientBrush linear)
+            else if (brush is Media.LinearGradientBrush linear)
             {
                 return new D2D.LinearGradientBrush(target,
                     new D2D.LinearGradientBrushProperties() { StartPoint = linear.StartPoint.ToVector2(), EndPoint = linear.EndPoint.ToVector2() },
@@ -243,13 +243,15 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             }
 #if NETFX_CORE || WINUI
 #else
-            else if(brush is Media.RadialGradientBrush radial)
+            else if (brush is Media.RadialGradientBrush radial)
             {
                 return new D2D.RadialGradientBrush(target,
-                    new D2D.RadialGradientBrushProperties() {
+                    new D2D.RadialGradientBrushProperties()
+                    {
                         Center = radial.Center.ToVector2(),
                         GradientOriginOffset = radial.GradientOrigin.ToVector2(),
-                        RadiusX = (float)radial.RadiusX, RadiusY = (float)radial.RadiusY
+                        RadiusX = (float)radial.RadiusX,
+                        RadiusY = (float)radial.RadiusY
                     },
                     new D2D.GradientStopCollection
                     (
@@ -300,11 +302,11 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
 #if !NETFX_CORE && !WINUI
         public static D2D.DashStyle ToD2DDashStyle(this Media.DashStyle style)
         {
-            if(style == Media.DashStyles.Dash)
+            if (style == Media.DashStyles.Dash)
             {
                 return D2D.DashStyle.Dash;
             }
-            else if(style == Media.DashStyles.DashDot)
+            else if (style == Media.DashStyles.DashDot)
             {
                 return D2D.DashStyle.DashDot;
             }

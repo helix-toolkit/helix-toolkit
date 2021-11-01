@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP
     namespace Utilities
     {
         using Render;
-    
+
 
         /// <summary>
         ///
@@ -35,7 +35,7 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="data"></param>
             /// <param name="count"></param>
-            void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count) where T : struct;
+            void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count) where T : unmanaged;
 
             /// <summary>
             ///
@@ -46,7 +46,8 @@ namespace HelixToolkit.UWP
             /// <param name="count"></param>
             /// <param name="offset"></param>
             /// <param name="minBufferCount">Used to initialize a buffer which size is Max(count, minBufferCount). Only used in dynamic buffer.</param>
-            void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset, int minBufferCount = default(int)) where T : struct;
+            void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset,
+                int minBufferCount = default(int)) where T : unmanaged;
 
             /// <summary>
             /// Uploads the data to buffer using data pointer.
@@ -56,16 +57,16 @@ namespace HelixToolkit.UWP
             /// <param name="countByBytes">The count by bytes.</param>
             /// <param name="offsetByBytes">The offset by bytes.</param>
             /// <param name="minBufferCountByBytes">The minimum buffer count by bytes.</param>
-            unsafe void UploadDataToBuffer(DeviceContextProxy context, System.IntPtr data, int countByBytes, int offsetByBytes, int minBufferCountByBytes = default(int));
+            unsafe void UploadDataToBuffer(DeviceContextProxy context, System.IntPtr data, int countByBytes, int offsetByBytes,
+                int minBufferCountByBytes = default(int));
             /// <summary>
             /// Creates the buffer with size = count * structure size;
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="count">The count.</param>
             void CreateBuffer(DeviceContextProxy context, int count);
-
             /// <summary>
-            /// <see cref="DisposeObject.DisposeAndClear"/>
+            /// Dispose and clear internal buffers. Does not dispose this object.
             /// </summary>
             void DisposeAndClear();
         }
@@ -78,7 +79,10 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public ResourceOptionFlags OptionFlags { private set; get; }
+            public ResourceOptionFlags OptionFlags
+            {
+                private set; get;
+            }
             public ResourceUsage Usage { private set; get; } = ResourceUsage.Immutable;
 
             public CpuAccessFlags CpuAccess { private set; get; } = CpuAccessFlags.None;
@@ -104,9 +108,9 @@ namespace HelixToolkit.UWP
             /// <param name="cpuAccess">The cpu access.</param>
             /// <param name="optionFlags">The option flags.</param>
             /// <param name="usage">The usage.</param>
-            public ImmutableBufferProxy(int structureSize, BindFlags bindFlags, 
+            public ImmutableBufferProxy(int structureSize, BindFlags bindFlags,
                 CpuAccessFlags cpuAccess,
-                ResourceOptionFlags optionFlags = ResourceOptionFlags.None, 
+                ResourceOptionFlags optionFlags = ResourceOptionFlags.None,
                 ResourceUsage usage = ResourceUsage.Immutable)
                 : base(structureSize, bindFlags)
             {
@@ -122,7 +126,7 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="data"></param>
             /// <param name="count"></param>
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count) where T : unmanaged
             {
                 UploadDataToBuffer<T>(context, data, count, 0);
             }
@@ -136,11 +140,12 @@ namespace HelixToolkit.UWP
             /// <param name="count"></param>
             /// <param name="offset"></param>
             /// <param name="minBufferCount">This is not being used in ImmutableBuffer</param>
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset, int minBufferCount = default(int)) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset,
+                int minBufferCount = default(int)) where T : unmanaged
             {
                 RemoveAndDispose(ref buffer);
                 ElementCount = count;
-                if(count == 0)
+                if (count == 0)
                 {
                     return;
                 }
@@ -153,7 +158,7 @@ namespace HelixToolkit.UWP
                     StructureByteStride = StructureSize,
                     Usage = Usage
                 };
-                buffer = Collect(Buffer.Create(context, data.GetArrayByType(), buffdesc));
+                buffer = Buffer.Create(context, data.GetArrayByType(), buffdesc);
             }
 
             /// <summary>
@@ -181,7 +186,7 @@ namespace HelixToolkit.UWP
                     StructureByteStride = StructureSize,
                     Usage = Usage
                 };
-                buffer = Collect(new Buffer(context, data, buffdesc));
+                buffer = new Buffer(context, data, buffdesc);
             }
             /// <summary>
             /// Creates the buffer with size of count * structure size.
@@ -205,7 +210,13 @@ namespace HelixToolkit.UWP
                     StructureByteStride = StructureSize,
                     Usage = Usage
                 };
-                buffer = Collect(new Buffer(context, buffdesc));
+                buffer = new Buffer(context, buffdesc);
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref buffer);
+                base.OnDispose(disposeManagedResources);
             }
         }
 
@@ -219,21 +230,30 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public ResourceOptionFlags OptionFlags { private set; get; }
+            public ResourceOptionFlags OptionFlags
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets the capacity in bytes.
             /// </summary>
             /// <value>
             /// The capacity.
             /// </value>
-            public int Capacity { private set; get; }
+            public int Capacity
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets the capacity used in bytes.
             /// </summary>
             /// <value>
             /// The capacity used.
             /// </value>
-            public int CapacityUsed { private set; get; }
+            public int CapacityUsed
+            {
+                private set; get;
+            }
 
             public CpuAccessFlags CpuAccess { private set; get; } = CpuAccessFlags.Write;
             /// <summary>
@@ -243,7 +263,7 @@ namespace HelixToolkit.UWP
             /// <param name="bindFlags"></param>
             /// <param name="optionFlags"></param>
             /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing. Otherwise create a new buffer with exact same size</param>
-            public DynamicBufferProxy(int structureSize, BindFlags bindFlags, 
+            public DynamicBufferProxy(int structureSize, BindFlags bindFlags,
                 ResourceOptionFlags optionFlags = ResourceOptionFlags.None, bool lazyResize = true)
                 : base(structureSize, bindFlags)
             {
@@ -294,7 +314,7 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="data"></param>
             /// <param name="count"></param>
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count) where T : unmanaged
             {
                 UploadDataToBuffer<T>(context, data, count, 0);
             }
@@ -308,37 +328,31 @@ namespace HelixToolkit.UWP
             /// <param name="count">Data Count</param>
             /// <param name="offset"></param>
             /// <param name="minBufferCount">Used to create a dynamic buffer with size of Max(count, minBufferCount).</param>
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset, int minBufferCount = default(int)) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset,
+                int minBufferCount = default(int)) where T : unmanaged
             {
                 ElementCount = count;
-                int newSizeInBytes = StructureSize * count;
+                var newSizeInBytes = StructureSize * count;
                 if (count == 0)
                 {
                     return;
                 }
                 EnsureBufferCapacity(context, ElementCount, minBufferCount);
-                if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred && CanOverwrite)
+                var mapMode = MapMode.WriteNoOverwrite;
+                if (CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred && CanOverwrite)
                 {
                     Offset = CapacityUsed;
-                    context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
-                    using (stream)
-                    {
-                        stream.Position = Offset;
-                        stream.WriteRange(data.GetArrayByType(), offset, count);                    
-                    }
-                    context.UnmapSubresource(this.buffer, 0);
                     CapacityUsed += newSizeInBytes;
                 }
                 else
                 {
-                    context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
-                    {
-                        stream.WriteRange(data.GetArrayByType(), offset, count);
-                    }
-                    context.UnmapSubresource(this.buffer, 0);
+                    mapMode = MapMode.WriteDiscard;
                     Offset = CapacityUsed = 0;
                 }
+                var dataArray = data.GetArrayByType();
+                var dataBox = context.MapSubresource(this.buffer, 0, mapMode, MapFlags.None);
+                UnsafeHelper.Write(dataBox.DataPointer + Offset, dataArray, offset, count);
+                context.UnmapSubresource(this.buffer, 0);
             }
 
             /// <summary>
@@ -349,37 +363,30 @@ namespace HelixToolkit.UWP
             /// <param name="byteCount">The count by bytes.</param>
             /// <param name="byteOffset">The offset by bytes.</param>
             /// <param name="minBufferSizeByBytes">The minimum buffer count by bytes.</param>
-            public unsafe void UploadDataToBuffer(DeviceContextProxy context, System.IntPtr data, int byteCount, int byteOffset, int minBufferSizeByBytes = default(int))
+            public unsafe void UploadDataToBuffer(DeviceContextProxy context, System.IntPtr data, int byteCount,
+                int byteOffset, int minBufferSizeByBytes = default(int))
             {
                 ElementCount = byteCount / StructureSize;
-                int newSizeInBytes = byteCount;
+                var newSizeInBytes = byteCount;
                 if (byteCount == 0)
                 {
                     return;
                 }
                 EnsureBufferCapacity(context, ElementCount, minBufferSizeByBytes / StructureSize);
+                var mapMode = MapMode.WriteNoOverwrite;
                 if (CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred && CanOverwrite)
                 {
                     Offset = CapacityUsed;
-                    context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
-                    using (stream)
-                    {
-                        stream.Position = Offset;
-                        stream.Write(data, byteOffset, byteCount);
-                    }
-                    context.UnmapSubresource(this.buffer, 0);
                     CapacityUsed += newSizeInBytes;
                 }
                 else
                 {
-                    context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
-                    {
-                        stream.Write(data, byteOffset, byteCount);
-                    }
-                    context.UnmapSubresource(this.buffer, 0);
+                    mapMode = MapMode.WriteDiscard;
                     Offset = CapacityUsed = 0;
                 }
+                var dataBox = context.MapSubresource(this.buffer, 0, mapMode, MapFlags.None);
+                UnsafeHelper.Write(dataBox.DataPointer + Offset, data, byteOffset, byteCount);
+                context.UnmapSubresource(this.buffer, 0);
             }
 
             /// <summary>
@@ -391,7 +398,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void EnsureBufferCapacity(DeviceContextProxy context, int count, int minSizeCount)
             {
-                int bytes = count * StructureSize;
+                var bytes = count * StructureSize;
                 if (buffer == null || Capacity < bytes || (!LazyResize && Capacity != bytes))
                 {
                     Initialize(context, count, minSizeCount);
@@ -403,13 +410,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="action">The action.</param>
-            public void MapBuffer(DeviceContextProxy context, System.Action<DataStream> action)
+            public void MapBuffer(DeviceContextProxy context, System.Action<DataBox> action)
             {
-                context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                using (stream)
-                {
-                    action(stream);
-                }
+                var dataBox = context.MapSubresource(this.buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+                action(dataBox);
                 context.UnmapSubresource(this.buffer, 0);
                 Offset = CapacityUsed = 0;
             }
@@ -434,7 +438,7 @@ namespace HelixToolkit.UWP
                 };
                 Capacity = buffdesc.SizeInBytes;
                 CapacityUsed = 0;
-                buffer = Collect(new Buffer(device, buffdesc));
+                buffer = new Buffer(device, buffdesc);
                 OnBufferChanged(buffer);
             }
 
@@ -448,7 +452,15 @@ namespace HelixToolkit.UWP
                 Initialize(context, count);
             }
 
-            protected virtual void OnBufferChanged(Buffer newBuffer) { }
+            protected virtual void OnBufferChanged(Buffer newBuffer)
+            {
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref buffer);
+                base.OnDispose(disposeManagedResources);
+            }
         }
 
         public sealed class StructuredBufferProxy : DynamicBufferProxy
@@ -456,16 +468,20 @@ namespace HelixToolkit.UWP
             private ShaderResourceViewProxy srv;
             public ShaderResourceViewProxy SRV
             {
-                get { return srv; }
+                get
+                {
+                    return srv;
+                }
             }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="StructuredBufferProxy"/> class.
             /// </summary>
             /// <param name="structureSize">Size of the structure.</param>
-            /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing. Otherwise create a new buffer with exact same size</param>
-            public StructuredBufferProxy(int structureSize, bool lazyResize = true) :
-                base(structureSize, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured, lazyResize)
+            /// <param name="lazyResize">If existing data size is smaller than buffer size, reuse existing.
+            /// Otherwise create a new buffer with exact same size</param>
+            public StructuredBufferProxy(int structureSize, bool lazyResize = true)
+                : base(structureSize, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured, lazyResize)
             {
 
             }
@@ -473,8 +489,14 @@ namespace HelixToolkit.UWP
             protected override void OnBufferChanged(Buffer newBuffer)
             {
                 RemoveAndDispose(ref srv);
-                srv = Collect(new ShaderResourceViewProxy(newBuffer.Device, newBuffer));
+                srv = new ShaderResourceViewProxy(newBuffer.Device, newBuffer);
                 srv.CreateTextureView();
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref srv);
+                base.OnDispose(disposeManagedResources);
             }
 
             public static implicit operator ShaderResourceViewProxy(StructuredBufferProxy proxy)
@@ -488,5 +510,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

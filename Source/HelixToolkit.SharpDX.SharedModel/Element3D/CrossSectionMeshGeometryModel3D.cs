@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         /// <summary>
         /// Gets or sets the cutting operation.
         /// </summary>
@@ -47,15 +47,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public CuttingOperation CuttingOperation
         {
-            get { return (CuttingOperation)GetValue(CuttingOperationProperty); }
-            set { SetValue(CuttingOperationProperty, value); }
+            get
+            {
+                return (CuttingOperation)GetValue(CuttingOperationProperty);
+            }
+            set
+            {
+                SetValue(CuttingOperationProperty, value);
+            }
         }
         /// <summary>
         /// The cutting operation property
         /// </summary>
         public static readonly DependencyProperty CuttingOperationProperty =
-            DependencyProperty.Register("CuttingOperation", typeof(CuttingOperation), typeof(CrossSectionMeshGeometryModel3D), 
-                new PropertyMetadata(CuttingOperation.Intersect, (d,e)=> 
+            DependencyProperty.Register("CuttingOperation", typeof(CuttingOperation), typeof(CrossSectionMeshGeometryModel3D),
+                new PropertyMetadata(CuttingOperation.Intersect, (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as CrossSectionMeshNode).CuttingOperation = (CuttingOperation)e.NewValue;
                 }));

@@ -67,11 +67,14 @@ namespace HelixToolkit.UWP
             }
             set
             {
-                if(position == value) { return; }
+                if (position == value)
+                {
+                    return;
+                }
                 position = value;
                 ClearOctree();
                 RaisePropertyChanged();
-                UpdateBounds();             
+                UpdateBounds();
             }
         }
 
@@ -135,7 +138,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
-        public IOctreeBasic Octree { private set; get; }
+        public IOctreeBasic Octree
+        {
+            private set; get;
+        }
         /// <summary>
         /// Gets or sets a value indicating whether [octree dirty], needs update.
         /// </summary>
@@ -212,7 +218,7 @@ namespace HelixToolkit.UWP
         /// Initializes a new instance of the <see cref="Geometry3D"/> class.
         /// </summary>
         /// <param name="isDynamic">if set to <c>true</c> [is dynamic].</param>
-        public Geometry3D(bool isDynamic) 
+        public Geometry3D(bool isDynamic)
             : this()
         {
             IsDynamic = isDynamic;
@@ -265,10 +271,10 @@ namespace HelixToolkit.UWP
                     {
                         if (OctreeDirty || force)
                         {
-                            this.Octree = CreateOctree(this.OctreeParameter);              
-                            this.Octree?.BuildTree();                                
-                            OctreeDirty = false;   
-                        }                 
+                            this.Octree = CreateOctree(this.OctreeParameter);
+                            this.Octree?.BuildTree();
+                            OctreeDirty = false;
+                        }
                     }
                     RaisePropertyChanged(nameof(Octree));
                 }
@@ -279,7 +285,7 @@ namespace HelixToolkit.UWP
                 OctreeDirty = true;
             }
         }
-        
+
         protected virtual bool CanCreateOctree()
         {
             return Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0;
@@ -367,7 +373,7 @@ namespace HelixToolkit.UWP
                 Bound = BoundingBoxExtensions.FromPoints(Positions);
                 BoundingSphere = BoundingSphereExtensions.FromPoints(Positions);
             }
-            if(Bound.Maximum.IsUndefined() || Bound.Minimum.IsUndefined() || BoundingSphere.Center.IsUndefined()
+            if (Bound.Maximum.IsUndefined() || Bound.Minimum.IsUndefined() || BoundingSphere.Center.IsUndefined()
                 || float.IsInfinity(Bound.Center.X) || float.IsInfinity(Bound.Center.Y) || float.IsInfinity(Bound.Center.Z))
             {
                 throw new Exception("Position vertex contains invalid value(Example: Float.NaN, Float.Infinity).");
@@ -425,7 +431,7 @@ namespace HelixToolkit.UWP
 
         protected virtual void OnClearAllGeometryData()
         {
-        
+
         }
     }
 }

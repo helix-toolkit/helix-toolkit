@@ -47,13 +47,15 @@ namespace HelixToolkit.UWP
             {
                 protected set
                 {
-                    if(Set(ref octree, value))
+                    if (Set(ref octree, value))
                     {
                         OnOctreeCreated?.Invoke(this, new OctreeArgs(value));
                     }
                 }
                 get
-                { return octree; }
+                {
+                    return octree;
+                }
             }
             /// <summary>
             /// The m octree
@@ -95,7 +97,17 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if [request update octree]; otherwise, <c>false</c>.
             /// </value>
-            public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } protected set { mRequestUpdateOctree = value; } }
+            public bool RequestUpdateOctree
+            {
+                get
+                {
+                    return mRequestUpdateOctree;
+                }
+                protected set
+                {
+                    mRequestUpdateOctree = value;
+                }
+            }
             private volatile bool mRequestUpdateOctree = false;
             /// <summary>
             /// Adds the pending item.
@@ -173,7 +185,7 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-                            foreach(var item in items.Where(x => !x.HasBound))
+                            foreach (var item in items.Where(x => !x.HasBound))
                             {
                                 NonBoundableItems.Add(item);
                             }
@@ -202,11 +214,13 @@ namespace HelixToolkit.UWP
             private readonly HashSet<SceneNode> pendingItems
                 = new HashSet<SceneNode>();
 
-            private void Item_OnBoundChanged(object sender,  BoundChangeArgs<BoundingBox> args)
+            private void Item_OnBoundChanged(object sender, BoundChangeArgs<BoundingBox> args)
             {
                 var item = sender as SceneNode;
                 if (item == null)
-                { return; }
+                {
+                    return;
+                }
                 else
                 {
                     pendingItems.Add(item);
@@ -220,7 +234,7 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    foreach(var item in pendingItems)
+                    foreach (var item in pendingItems)
                     {
                         if (!item.HasBound)
                         {
@@ -234,7 +248,7 @@ namespace HelixToolkit.UWP
                         }
                         int index;
                         var node = mOctree.FindItemByGuid(item.GUID, item, out index);
-                        bool rootAdd = true;
+                        var rootAdd = true;
                         if (node != null)
                         {
                             var tree = mOctree;
@@ -341,8 +355,8 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-                            bool succeed = true;
-                            int counter = 0;
+                            var succeed = true;
+                            var counter = 0;
                             while (!tree.Add(item))
                             {
                                 var direction = (item.Bounds.Minimum + item.Bounds.Maximum)
@@ -351,12 +365,12 @@ namespace HelixToolkit.UWP
                                 ++counter;
                                 if (counter > 10)
                                 {
-        #if DEBUG
+#if DEBUG
                                     throw new Exception("Expand tree failed");
-        #else
+#else
                                     succeed = false;
                                     break;
-        #endif
+#endif
                                 }
                             }
                             if (succeed)
@@ -381,7 +395,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="item">The item.</param>
             public override void RemoveItem(SceneNode item)
-            {           
+            {
                 if (Enabled && Octree != null && item != null)
                 {
                     lock (lockObj)
@@ -434,12 +448,12 @@ namespace HelixToolkit.UWP
             }
             public override bool HitTest(HitTestContext context, object model, Matrix modelMatrix, ref List<HitTestResult> hits)
             {
-                if(Octree == null)
+                if (Octree == null)
                 {
                     return false;
                 }
                 var hit = Octree.HitTest(context, model, null, modelMatrix, ref hits);
-                foreach(var item in NonBoundableItems)
+                foreach (var item in NonBoundableItems)
                 {
                     hit |= item.HitTest(context, ref hits);
                 }
@@ -476,7 +490,7 @@ namespace HelixToolkit.UWP
             /// <exception cref="NotImplementedException"></exception>
             public override void ProcessPendingItems()
             {
-            
+
             }
             /// <summary>
             /// Rebuilds the tree.
@@ -486,12 +500,14 @@ namespace HelixToolkit.UWP
             {
                 Clear();
                 if (items == null)
-                { return; }
-                if(items.FirstOrDefault() is IInstancing inst)
+                {
+                    return;
+                }
+                if (items.FirstOrDefault() is IInstancing inst)
                 {
                     var instMatrix = inst.InstanceBuffer.Elements;
                     var octree = new StaticInstancingModelOctree(instMatrix, (inst as SceneNode).OriginalBounds, this.Parameter);
-                        //new InstancingModel3DOctree(instMatrix, (inst as SceneNode).OriginalBounds, this.Parameter, new Stack<KeyValuePair<int, IOctree[]>>(10));
+                    //new InstancingModel3DOctree(instMatrix, (inst as SceneNode).OriginalBounds, this.Parameter, new Stack<KeyValuePair<int, IOctree[]>>(10));
                     octree.BuildTree();
                     Octree = octree;
                 }
@@ -513,5 +529,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

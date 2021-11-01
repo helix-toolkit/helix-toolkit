@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Model.Scene;
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -34,28 +34,40 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The octree.
         /// </value>
-        IOctreeBasic Octree { get; }
+        IOctreeBasic Octree
+        {
+            get;
+        }
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="IOctreeManager"/> is enabled.
         /// </summary>
         /// <value>
         ///   <c>true</c> if enabled; otherwise, <c>false</c>.
         /// </value>
-        bool Enabled { get; set; }
+        bool Enabled
+        {
+            get; set;
+        }
         /// <summary>
         /// Gets a value indicating whether [request update octree].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [request update octree]; otherwise, <c>false</c>.
         /// </value>
-        bool RequestUpdateOctree { get; }
+        bool RequestUpdateOctree
+        {
+            get;
+        }
         /// <summary>
         /// Gets or sets the parameter.
         /// </summary>
         /// <value>
         /// The parameter.
         /// </value>
-        OctreeBuildParameter Parameter { set; get; }
+        OctreeBuildParameter Parameter
+        {
+            set; get;
+        }
         /// <summary>
         /// Adds the pending item.
         /// </summary>

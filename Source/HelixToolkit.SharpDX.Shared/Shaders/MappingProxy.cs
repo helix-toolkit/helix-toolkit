@@ -24,17 +24,29 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <typeparam name="MappingType"></typeparam>
-        public sealed class MappingProxy<MappingType> where MappingType : class
+        public sealed class MappingProxy<MappingType> : DisposeObject where MappingType : class
         {
             private readonly MappingCollection<int, string, MappingType> mappingCollection = new MappingCollection<int, string, MappingType>();
             /// <summary>
             /// 
             /// </summary>
-            public KeyValuePair<int, MappingType>[] Mappings { get { return mappingCollection.MappingArray; } }
+            public KeyValuePair<int, MappingType>[] Mappings
+            {
+                get
+                {
+                    return mappingCollection.MappingArray;
+                }
+            }
             /// <summary>
             /// 
             /// </summary>
-            public int Count { get { return mappingCollection.Count; } }
+            public int Count
+            {
+                get
+                {
+                    return mappingCollection.Count;
+                }
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -96,7 +108,7 @@ namespace HelixToolkit.UWP
             public MappingType GetMapping(string name)
             {
                 MappingType item;
-                if(mappingCollection.TryGetItem(name, out item))
+                if (mappingCollection.TryGetItem(name, out item))
                 {
                     return item;
                 }
@@ -122,7 +134,19 @@ namespace HelixToolkit.UWP
                     return null;
                 }
             }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                foreach (var item in mappingCollection.Datas)
+                {
+                    if (item is IDisposable toDispose)
+                    {
+                        toDispose.Dispose();
+                    }
+                }
+                mappingCollection.Clear();
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
-
 }

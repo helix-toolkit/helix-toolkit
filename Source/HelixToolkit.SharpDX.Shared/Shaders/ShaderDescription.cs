@@ -35,7 +35,10 @@ namespace HelixToolkit.UWP
             /// The name.
             /// </value>
             [DataMember]
-            public string Name { set; get; }
+            public string Name
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the type of the shader.
             /// </summary>
@@ -43,7 +46,10 @@ namespace HelixToolkit.UWP
             /// The type of the shader.
             /// </value>
             [DataMember]
-            public ShaderStage ShaderType { set; get; }
+            public ShaderStage ShaderType
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Gets or sets the level.
@@ -87,7 +93,10 @@ namespace HelixToolkit.UWP
             /// The name of the byte code.
             /// </value>
             [IgnoreDataMember]
-            public string ByteCodeName { private set; get; }
+            public string ByteCodeName
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets or sets the constant buffer mappings.
             /// </summary>
@@ -95,7 +104,10 @@ namespace HelixToolkit.UWP
             /// The constant buffer mappings.
             /// </value>
             [IgnoreDataMember]
-            public ConstantBufferMapping[] ConstantBufferMappings { private set; get; }
+            public ConstantBufferMapping[] ConstantBufferMappings
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets or sets the texture mappings.
             /// </summary>
@@ -103,7 +115,10 @@ namespace HelixToolkit.UWP
             /// The texture mappings.
             /// </value>
             [IgnoreDataMember]
-            public TextureMapping[] TextureMappings { private set; get; }
+            public TextureMapping[] TextureMappings
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets or sets the uav mappings.
             /// </summary>
@@ -111,7 +126,10 @@ namespace HelixToolkit.UWP
             /// The uav mappings.
             /// </value>
             [IgnoreDataMember]
-            public UAVMapping[] UAVMappings { private set; get; }
+            public UAVMapping[] UAVMappings
+            {
+                private set; get;
+            }
             /// <summary>
             /// Gets or sets the sampler mappings.
             /// </summary>
@@ -119,7 +137,10 @@ namespace HelixToolkit.UWP
             /// The sampler mappings.
             /// </value>
             [IgnoreDataMember]
-            public SamplerMapping[] SamplerMappings { private set; get; }
+            public SamplerMapping[] SamplerMappings
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Gets or sets the shader reflector.
@@ -128,7 +149,10 @@ namespace HelixToolkit.UWP
             /// The shader reflector.
             /// </value>
             [IgnoreDataMember]
-            public IShaderReflector ShaderReflector { private set; get; }
+            public IShaderReflector ShaderReflector
+            {
+                private set; get;
+            }
 
             private readonly IShaderByteCodeReader byteCodeReader;
             #region GS Stream output Only
@@ -311,14 +335,14 @@ namespace HelixToolkit.UWP
                 }
                 if (UAVMappings != null)
                 {
-                    foreach(var mapping in UAVMappings)
+                    foreach (var mapping in UAVMappings)
                     {
                         shader.UnorderedAccessViewMapping.AddMapping(mapping.Description.Name, mapping.Slot, mapping);
                     }
                 }
                 if (SamplerMappings != null)
                 {
-                    foreach(var mapping in SamplerMappings)
+                    foreach (var mapping in SamplerMappings)
                     {
                         shader.SamplerMapping.AddMapping(mapping.Name, mapping.Slot, mapping);
                     }
@@ -338,5 +362,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

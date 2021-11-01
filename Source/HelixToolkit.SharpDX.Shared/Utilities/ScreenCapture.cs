@@ -30,24 +30,24 @@ namespace HelixToolkit.UWP
             public static bool CaptureTexture(DeviceContext context, Texture2D source, out Texture2D stagingTexture)
             {
                 stagingTexture = null;
-                if(source == null)
+                if (source == null)
                 {
                     return false;
                 }
                 var desc = source.Description;
-                if(source.Description.SampleDescription.Count > 1)
+                if (source.Description.SampleDescription.Count > 1)
                 {
-                
+
                     desc.SampleDescription.Count = 1;
                     desc.SampleDescription.Quality = 0;
                     using (var texture = new Texture2D(context.Device, desc))
                     {
-                        for (int i = 0; i < desc.ArraySize; ++i)
+                        for (var i = 0; i < desc.ArraySize; ++i)
                         {
-                            for (int level = 0; level < desc.MipLevels; ++level)
+                            for (var level = 0; level < desc.MipLevels; ++level)
                             {
                                 int mipSize;
-                                int index = texture.CalculateSubResourceIndex(level, i, out mipSize);
+                                var index = texture.CalculateSubResourceIndex(level, i, out mipSize);
                                 context.ResolveSubresource(source, index, texture, index, desc.Format);
                             }
                         }
@@ -59,7 +59,7 @@ namespace HelixToolkit.UWP
                         context.CopyResource(texture, stagingTexture);
                     }
                 }
-                else if(desc.Usage == ResourceUsage.Staging && desc.CpuAccessFlags == CpuAccessFlags.Read)
+                else if (desc.Usage == ResourceUsage.Staging && desc.CpuAccessFlags == CpuAccessFlags.Read)
                 {
                     stagingTexture = source;
                 }
@@ -100,21 +100,21 @@ namespace HelixToolkit.UWP
             public static bool SaveWICTextureToFile(IDeviceResources deviceResource, Texture2D source, string fileName, Guid containerFormat)
             {
                 Texture2D staging;
-                if(!CaptureTexture(deviceResource.Device.ImmediateContext, source, out staging))
+                if (!CaptureTexture(deviceResource.Device.ImmediateContext, source, out staging))
                 {
                     return false;
                 }
                 var desc = staging.Description;
-                bool sRGB = false;
-                Guid pfGuid = GetPfGuid(desc.Format, ref sRGB);
-            
+                var sRGB = false;
+                var pfGuid = GetPfGuid(desc.Format, ref sRGB);
+
                 if (pfGuid == Guid.Empty)
                 {
                     staging.Dispose();
                     throw new NotSupportedException($"Format: {desc.Format} does not support yet.");
                 }
 
-                using (WICStream stream = new WICStream(deviceResource.WICImgFactory, fileName, global::SharpDX.IO.NativeFileAccess.Write))
+                using (var stream = new WICStream(deviceResource.WICImgFactory, fileName, global::SharpDX.IO.NativeFileAccess.Write))
                 {
                     return CopyTextureToWICStream(deviceResource, staging, stream, pfGuid, containerFormat);
                 }
@@ -137,18 +137,18 @@ namespace HelixToolkit.UWP
                     return false;
                 }
                 var desc = staging.Description;
-                bool sRGB = false;
-                Guid pfGuid = GetPfGuid(desc.Format, ref sRGB);
+                var sRGB = false;
+                var pfGuid = GetPfGuid(desc.Format, ref sRGB);
 
                 if (pfGuid == Guid.Empty)
                 {
                     Disposer.RemoveAndDispose(ref staging);
                     throw new NotSupportedException($"Format: {desc.Format} does not support yet.");
                 }
-                bool succ = false;
+                var succ = false;
                 try
                 {
-                    using (WICStream stream = new WICStream(deviceResource.WICImgFactory, bitmapStream))
+                    using (var stream = new WICStream(deviceResource.WICImgFactory, bitmapStream))
                     {
                         succ = CopyTextureToWICStream(deviceResource, staging, stream, pfGuid, BitmapExtensions.ToWICImageFormat(Direct2DImageFormat.Bmp));
                     }
@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP
 
             private static Guid GetPfGuid(global::SharpDX.DXGI.Format format, ref bool sRGB)
             {
-                Guid pfGuid = Guid.Empty;
+                var pfGuid = Guid.Empty;
                 sRGB = false;
                 switch (format)
                 {
@@ -206,12 +206,12 @@ namespace HelixToolkit.UWP
 
             private static bool CopyTextureToWICStream(IDeviceResources deviceResource, Texture2D staging, WICStream stream, Guid pfGuid, Guid containerFormat)
             {
-                using (BitmapEncoder encoder = new BitmapEncoder(deviceResource.WICImgFactory, containerFormat))
+                using (var encoder = new BitmapEncoder(deviceResource.WICImgFactory, containerFormat))
                 {
                     var desc = staging.Description;
                     encoder.Initialize(stream);
-                    Guid targetGuid = Guid.Empty;
-                    using (BitmapFrameEncode frame = new BitmapFrameEncode(encoder))
+                    var targetGuid = Guid.Empty;
+                    using (var frame = new BitmapFrameEncode(encoder))
                     {
                         frame.Initialize();
                         frame.SetSize(desc.Width, desc.Height);
@@ -243,10 +243,10 @@ namespace HelixToolkit.UWP
                         {
                             if (targetGuid != pfGuid)
                             {
-                                using (Bitmap bitmap = new Bitmap(deviceResource.WICImgFactory, desc.Width, desc.Height, pfGuid, 
+                                using (var bitmap = new Bitmap(deviceResource.WICImgFactory, desc.Width, desc.Height, pfGuid,
                                     new global::SharpDX.DataRectangle(databox.DataPointer, databox.RowPitch)))
                                 {
-                                    using (FormatConverter converter = new FormatConverter(deviceResource.WICImgFactory))
+                                    using (var converter = new FormatConverter(deviceResource.WICImgFactory))
                                     {
                                         if (converter.CanConvert(pfGuid, targetGuid))
                                         {
@@ -277,5 +277,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -30,9 +30,15 @@ namespace HelixToolkit.UWP
             /// </summary>
             public string ShaderTextureSamplerName { get; } = DefaultSamplerStateNames.BillboardTextureSampler;
 
-            public ShaderPass BillboardPass { get; }
+            public ShaderPass BillboardPass
+            {
+                get;
+            }
 
-            public ShaderPass BillboardOITPass { get; }
+            public ShaderPass BillboardOITPass
+            {
+                get;
+            }
 
             #region Private Variables
             private readonly int textureSamplerSlot;
@@ -57,7 +63,7 @@ namespace HelixToolkit.UWP
                 this.materialCore = materialCore;
                 shaderTextureSlot = BillboardPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
                 textureSamplerSlot = BillboardPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
-                textureSampler = Collect(EffectsManager.StateManager.Register(materialCore.SamplerDescription));
+                textureSampler = EffectsManager.StateManager.Register(materialCore.SamplerDescription);
             }
 
             protected override void OnInitialPropertyBindings()
@@ -65,15 +71,16 @@ namespace HelixToolkit.UWP
                 base.OnInitialPropertyBindings();
                 AddPropertyBinding(nameof(BillboardMaterialCore.FixedSize), () => { WriteValue(PointLineMaterialStruct.FixedSize, materialCore.FixedSize); });
                 AddPropertyBinding(nameof(BillboardMaterialCore.Type), () => { WriteValue(PointLineMaterialStruct.ParamsStr, new Vector4((int)materialCore.Type, 0, 0, 0)); });
-                AddPropertyBinding(nameof(BillboardMaterialCore.SamplerDescription), () => {
+                AddPropertyBinding(nameof(BillboardMaterialCore.SamplerDescription), () =>
+                {
                     var newSampler = EffectsManager.StateManager.Register(materialCore.SamplerDescription);
                     RemoveAndDispose(ref textureSampler);
-                    textureSampler = Collect(newSampler);
+                    textureSampler = newSampler;
                 });
             }
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
-            {           
+            {
                 shaderPass.PixelShader.BindSampler(deviceContext, textureSamplerSlot, textureSampler);
                 return true;
             }
@@ -109,10 +116,9 @@ namespace HelixToolkit.UWP
 
             protected override void OnDispose(bool disposeManagedResources)
             {
-                textureSampler = null;
+                RemoveAndDispose(ref textureSampler);
                 base.OnDispose(disposeManagedResources);
             }
         }
     }
-
 }

@@ -28,9 +28,10 @@ namespace HelixToolkit.UWP
 
         public static void CreateOctreeLineModel(this IDynamicOctree tree, LineBuilder builder)
         {
-            if (tree == null) return;
+            if (tree == null)
+                return;
             var box = tree.Bound;
-            Vector3[] verts = new Vector3[8];
+            var verts = new Vector3[8];
             verts[0] = box.Minimum;
             verts[1] = new Vector3(box.Minimum.X, box.Minimum.Y, box.Maximum.Z); //Z
             verts[2] = new Vector3(box.Minimum.X, box.Maximum.Y, box.Minimum.Z); //Y
@@ -56,7 +57,7 @@ namespace HelixToolkit.UWP
 
             if (tree.HasChildren)
             {
-                foreach (IDynamicOctree child in tree.ChildNodes)
+                foreach (var child in tree.ChildNodes)
                 {
                     if (child != null)
                     {
@@ -68,7 +69,7 @@ namespace HelixToolkit.UWP
 
         public static LineGeometry3D CreatePathLines(this IList<BoundingBox> path)
         {
-            Vector3[] verts = new Vector3[8];
+            var verts = new Vector3[8];
             var builder = new LineBuilder();
             foreach (var box in path)
             {

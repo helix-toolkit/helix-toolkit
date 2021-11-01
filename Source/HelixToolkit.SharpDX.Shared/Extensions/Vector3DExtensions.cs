@@ -128,7 +128,7 @@ namespace HelixToolkit.UWP
         public static Vector3 FindAnyPerpendicular(this Vector3 n)
         {
             n.Normalize();
-            Vector3 u = Vector3.Cross(new Vector3(0, 1, 0), n);
+            var u = Vector3.Cross(new Vector3(0, 1, 0), n);
             if (u.LengthSquared() < 1e-3)
             {
                 u = Vector3.Cross(new Vector3(1, 0, 0), n);

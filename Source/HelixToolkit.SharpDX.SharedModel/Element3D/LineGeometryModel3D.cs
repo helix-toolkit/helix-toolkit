@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="GeometryModel3D" />
     public class LineGeometryModel3D : GeometryModel3D
     {
-#region Dependency Properties        
+        #region Dependency Properties        
         /// <summary>
         /// The color property
         /// </summary>
@@ -70,8 +70,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The hit test thickness property
         /// </summary>
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d,e)=> 
-            { ((d as Element3DCore).SceneNode as LineNode).HitTestThickness = (double)e.NewValue; }));
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as LineNode).HitTestThickness = (double)e.NewValue;
+            }));
 
 
         /// <summary>
@@ -94,8 +96,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Media.Color Color
         {
-            get { return (Media.Color)this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
+            get
+            {
+                return (Media.Color)this.GetValue(ColorProperty);
+            }
+            set
+            {
+                this.SetValue(ColorProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the thickness.
@@ -105,8 +113,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double Thickness
         {
-            get { return (double)this.GetValue(ThicknessProperty); }
-            set { this.SetValue(ThicknessProperty, value); }
+            get
+            {
+                return (double)this.GetValue(ThicknessProperty);
+            }
+            set
+            {
+                this.SetValue(ThicknessProperty, value);
+            }
         }
 
         /// <summary>
@@ -117,8 +131,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double Smoothness
         {
-            get { return (double)this.GetValue(SmoothnessProperty); }
-            set { this.SetValue(SmoothnessProperty, value); }
+            get
+            {
+                return (double)this.GetValue(SmoothnessProperty);
+            }
+            set
+            {
+                this.SetValue(SmoothnessProperty, value);
+            }
         }
 
         /// <summary>
@@ -126,8 +146,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public double HitTestThickness
         {
-            get { return (double)this.GetValue(HitTestThicknessProperty); }
-            set { this.SetValue(HitTestThicknessProperty, value); }
+            get
+            {
+                return (double)this.GetValue(HitTestThicknessProperty);
+            }
+            set
+            {
+                this.SetValue(HitTestThicknessProperty, value);
+            }
         }
 
         /// <summary>
@@ -146,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(FixedSizeProperty);
             }
         }
-#endregion
+        #endregion
 
         protected readonly LineMaterialCore material = new LineMaterialCore();
         /// <summary>

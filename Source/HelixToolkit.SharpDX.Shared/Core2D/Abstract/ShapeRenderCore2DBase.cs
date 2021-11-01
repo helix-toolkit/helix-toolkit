@@ -33,10 +33,9 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = fillBrush;
-                    if(SetAffectsRender(ref fillBrush, value))
+                    if (SetAffectsRender(ref fillBrush, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                     }
                 }
                 get
@@ -57,10 +56,9 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = strokeBrush;
-                    if(SetAffectsRender(ref strokeBrush, value))
+                    if (SetAffectsRender(ref strokeBrush, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                     }
                 }
                 get
@@ -91,10 +89,9 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = strokeStyle;
-                    if(SetAffectsRender(ref strokeStyle, value))
+                    if (SetAffectsRender(ref strokeStyle, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                     }
                 }
                 get
@@ -102,7 +99,14 @@ namespace HelixToolkit.UWP
                     return strokeStyle;
                 }
             }
+
+            protected override void OnDetach()
+            {
+                RemoveAndDispose(ref fillBrush);
+                RemoveAndDispose(ref strokeBrush);
+                RemoveAndDispose(ref strokeStyle);
+                base.OnDetach();
+            }
         }
     }
-
 }

@@ -70,7 +70,7 @@ namespace HelixToolkit.UWP
             ///     corresponds to a viewport in an array of viewports (see SharpDX.Direct3D11.RasterizerStage.SetViewports(SharpDX.Mathematics.Interop.RawViewportF[],System.Int32)).
             /// </remarks>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void SetScissorRectangles<T>(params T[] scissorRectangles) where T : struct
+            public void SetScissorRectangles<T>(params T[] scissorRectangles) where T : unmanaged
             {
                 deviceContext.Rasterizer.SetScissorRectangles(scissorRectangles);
             }
@@ -138,5 +138,4 @@ namespace HelixToolkit.UWP
             #endregion Viewport and Scissors
         }
     }
-
 }

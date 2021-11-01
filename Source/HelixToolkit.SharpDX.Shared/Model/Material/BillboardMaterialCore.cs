@@ -35,7 +35,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref fixedSize, value);
                 }
-                get { return fixedSize; }
+                get
+                {
+                    return fixedSize;
+                }
             }
 
             private BillboardType type = BillboardType.SingleText;
@@ -45,7 +48,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref type, value);
                 }
-                get { return type; }
+                get
+                {
+                    return type;
+                }
             }
 
             private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerClampAni1;
@@ -70,5 +76,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

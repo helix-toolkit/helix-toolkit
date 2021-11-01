@@ -23,7 +23,10 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            FeatureLevel FeatureLevel { get; }
+            FeatureLevel FeatureLevel
+            {
+                get;
+            }
             /// <summary>
             /// Pass the byte code, reflect all shader buffer bindings
             /// </summary>
@@ -33,20 +36,31 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Get constant buffer mapping.
             /// </summary>
-            Dictionary<string, ConstantBufferMapping> ConstantBufferMappings { get; }
+            Dictionary<string, ConstantBufferMapping> ConstantBufferMappings
+            {
+                get;
+            }
             /// <summary>
             /// Get texture buffer mapping.
             /// </summary>
-            Dictionary<string, TextureMapping> TextureMappings { get; }
+            Dictionary<string, TextureMapping> TextureMappings
+            {
+                get;
+            }
             /// <summary>
             /// Get Unordered Access View buffer mapping.
             /// </summary>
-            Dictionary<string, UAVMapping> UAVMappings { get; }
+            Dictionary<string, UAVMapping> UAVMappings
+            {
+                get;
+            }
             /// <summary>
             /// Get Sampler mapping
             /// </summary>
-            Dictionary<string, SamplerMapping> SamplerMappings { get; }
+            Dictionary<string, SamplerMapping> SamplerMappings
+            {
+                get;
+            }
         }
     }
-
 }

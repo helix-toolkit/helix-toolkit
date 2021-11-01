@@ -15,8 +15,8 @@ using Thickness = HelixToolkit.SharpDX.Core.Model.Scene2D.Thickness;
     using Media = Windows.UI.Xaml.Media;
     using Windows.UI.Text;
 #else
-    using System.Windows;
-    using Media = System.Windows.Media;
+using System.Windows;
+using Media = System.Windows.Media;
 #endif
 #endif
 
@@ -63,10 +63,13 @@ namespace HelixToolkit.UWP
         /// </value>
         public TextInfo TextInfo
         {
-            get { return mTextInfo; }
+            get
+            {
+                return mTextInfo;
+            }
             set
             {
-                if(Set(ref mTextInfo, value))
+                if (Set(ref mTextInfo, value))
                 {
                     IsInitialized = false;
                 }
@@ -84,12 +87,15 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref mFontColor, value))
+                if (Set(ref mFontColor, value))
                 {
                     IsInitialized = false;
                 }
             }
-            get { return mFontColor; }
+            get
+            {
+                return mFontColor;
+            }
         }
 
         private Color4 mBackgroundColor = Color.Transparent;
@@ -103,12 +109,15 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref mBackgroundColor, value))
+                if (Set(ref mBackgroundColor, value))
                 {
                     IsInitialized = false;
                 }
             }
-            get { return mBackgroundColor; }
+            get
+            {
+                return mBackgroundColor;
+            }
         }
 
         private int mFontSize = 12;
@@ -122,12 +131,15 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref mFontSize, value))
+                if (Set(ref mFontSize, value))
                 {
                     IsInitialized = false;
                 }
             }
-            get { return mFontSize; }
+            get
+            {
+                return mFontSize;
+            }
         }
 
         private string mFontFamily = "Arial";
@@ -141,7 +153,7 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref mFontFamily, value))
+                if (Set(ref mFontFamily, value))
                 {
                     IsInitialized = false;
                 }
@@ -163,7 +175,7 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref mFontWeight, value))
+                if (Set(ref mFontWeight, value))
                 {
                     IsInitialized = false;
                 }
@@ -188,7 +200,7 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref mFontStyle, value))
+                if (Set(ref mFontStyle, value))
                 {
                     IsInitialized = false;
                 }
@@ -210,7 +222,7 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if(Set(ref mPadding, value))
+                if (Set(ref mPadding, value))
                 {
                     IsInitialized = false;
                 }
@@ -298,7 +310,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public override void UpdateBounds()
         {
-            if(TextInfo == null)
+            if (TextInfo == null)
             {
                 BoundingSphere = new BoundingSphere();
                 Bound = new BoundingBox();
@@ -313,7 +325,7 @@ namespace HelixToolkit.UWP
         protected override void OnAssignTo(Geometry3D target)
         {
             base.OnAssignTo(target);
-            if(target is BillboardSingleText3D billboard)
+            if (target is BillboardSingleText3D billboard)
             {
                 billboard.BackgroundColor = BackgroundColor;
                 billboard.FontColor = FontColor;
@@ -391,7 +403,7 @@ namespace HelixToolkit.UWP
             object originalSource, bool fixedSize)
         {
             var rayWS = context.RayWS;
-            if (!IsInitialized || context == null || Width == 0 || Height == 0 
+            if (!IsInitialized || context == null || Width == 0 || Height == 0
                 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
                 return false;

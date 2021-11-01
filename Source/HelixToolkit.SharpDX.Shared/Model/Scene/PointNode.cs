@@ -46,14 +46,14 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public static double DistanceRayToPoint(Ray r, Vector3 p)
             {
-                Vector3 v = r.Direction;
-                Vector3 w = p - r.Position;
+                var v = r.Direction;
+                var w = p - r.Position;
 
-                float c1 = Vector3.Dot(w, v);
-                float c2 = Vector3.Dot(v, v);
-                float b = c1 / c2;
+                var c1 = Vector3.Dot(w, v);
+                var c2 = Vector3.Dot(v, v);
+                var b = c1 / c2;
 
-                Vector3 pb = r.Position + v * b;
+                var pb = r.Position + v * b;
                 return (p - pb).Length();
             }
 
@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override IAttachableBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
             {
-                return geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicPointGeometryBufferModel>(modelGuid, geometry) 
+                return geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicPointGeometryBufferModel>(modelGuid, geometry)
                     : EffectsManager.GeometryBufferManager.Register<DefaultPointGeometryBufferModel>(modelGuid, geometry);
             }
 
@@ -137,7 +137,7 @@ namespace HelixToolkit.UWP
             {
                 var center = BoundsSphereWithTransform.Center;
                 var centerSp = context.RenderMatrices.Project(center);
-                if (centerSp.X >= 0 && centerSp.Y >= 0 
+                if (centerSp.X >= 0 && centerSp.Y >= 0
                     && (centerSp - context.HitPointSP).Length() <= hitTestThickness)
                 {
                     return true;
@@ -151,5 +151,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

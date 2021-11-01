@@ -9,6 +9,7 @@ using System;
 using System.Runtime.CompilerServices;
 using SDX11 = SharpDX.Direct3D11;
 using System.Collections.Generic;
+using System.Threading;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -21,8 +22,9 @@ namespace HelixToolkit.UWP
 {
     namespace Utilities
     {
-        using Shaders;   
-        using Render;   
+        using Shaders;
+        using Render;
+        using System.Diagnostics;
 
         /// <summary>
         ///
@@ -32,11 +34,22 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            public bool Initialized { get { return buffer != null; } }
+            public bool Initialized
+            {
+                get
+                {
+                    return buffer != null;
+                }
+            }
 
             internal BufferDescription bufferDesc;
 
-            public string Name { private set; get; }
+            public string Name
+            {
+                private set; get;
+            }
+
+            private readonly object lockObj = new object();
 
             internal Dictionary<string, ConstantBufferVariable> VariableDictionary { get; } = new Dictionary<string, ConstantBufferVariable>();
             /// <summary>
@@ -103,7 +116,7 @@ namespace HelixToolkit.UWP
                 {
                     VariableDictionary.Add(var.Name, var);
                 }
-                else if(v.StartOffset != var.StartOffset || v.Size != var.Size)
+                else if (v.StartOffset != var.StartOffset || v.Size != var.Size)
                 {
                     throw new ArgumentException($"Variable {var.Name} already exists in constant buffer definition. " +
                                                 $"But start offset {var.StartOffset} and {v.StartOffset} or sizes {var.Size} and {v.Size} are not match");
@@ -116,8 +129,11 @@ namespace HelixToolkit.UWP
             /// <param name="device"></param>
             public void CreateBuffer(Device device)
             {
-                RemoveAndDispose(ref buffer);
-                buffer = Collect(new SDX11.Buffer(device, bufferDesc));
+                lock (lockObj)
+                {
+                    RemoveAndDispose(ref buffer);
+                    buffer = new SDX11.Buffer(device, bufferDesc);                
+                }
             }
 
             /// <summary>
@@ -127,33 +143,21 @@ namespace HelixToolkit.UWP
             /// <param name="context"></param>
             /// <param name="data"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data) where T : unmanaged
             {
-                UploadDataToBuffer<T>(context, ref data, 0);
-            }
-
-            /// <summary>
-            /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, ref T, int)"/>
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="context"></param>
-            /// <param name="data"></param>
-            /// <param name="offset"></param>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data, int offset) where T : struct
-            {
-                if (bufferDesc.Usage == ResourceUsage.Dynamic)
+                lock (lockObj)
                 {
-                    context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
-                    {
-                        stream.Write(data);
+                    if (bufferDesc.Usage == ResourceUsage.Dynamic)
+                    {     
+                        Debug.Assert(buffer.Description.SizeInBytes >= UnsafeHelper.SizeOf<T>());            
+                        var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);                           
+                        UnsafeHelper.Write(dataBox.DataPointer, ref data);
+                        context.UnmapSubresource(buffer, 0);
                     }
-                    context.UnmapSubresource(buffer, 0);
-                }
-                else
-                {
-                    context.UpdateSubresource(ref data, buffer);
+                    else
+                    {
+                        context.UpdateSubresource(ref data, buffer);
+                    }                
                 }
             }
 
@@ -165,9 +169,9 @@ namespace HelixToolkit.UWP
             /// <param name="data"></param>
             /// <param name="count"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count) where T : unmanaged
             {
-                UploadDataToBuffer<T>(context, data, count, 0);
+                UploadDataToBuffer(context, data, count, 0);
             }
 
             /// <summary>
@@ -179,52 +183,61 @@ namespace HelixToolkit.UWP
             /// <param name="count"></param>
             /// <param name="offset"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count, int offset) where T : struct
+            public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count, int offset) where T : unmanaged
             {
-                if (bufferDesc.Usage == ResourceUsage.Dynamic)
+                lock (lockObj)
                 {
-                    context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
+                    if (bufferDesc.Usage == ResourceUsage.Dynamic)
                     {
-                        stream.WriteRange(data, offset, count);
+                        Debug.Assert(count * UnsafeHelper.SizeOf<T>() <= buffer.Description.SizeInBytes);
+                        var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);                       
+                        UnsafeHelper.Write(dataBox.DataPointer, data, offset, count);
+                        context.UnmapSubresource(buffer, 0);
                     }
-                    context.UnmapSubresource(buffer, 0);
-                }
-                else
-                {
-                    context.UpdateSubresource(data, buffer);
+                    else
+                    {
+                        context.UpdateSubresource(data, buffer);
+                    }                
                 }
             }
 
             /// <summary>
-            /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContextProxy, Action{DataStream})"/>
+            /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContextProxy, Action{DataBox})"/>
             /// </summary>
             /// <param name="context"></param>
             /// <param name="writeFuc"></param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UploadDataToBuffer(DeviceContextProxy context, Action<DataStream> writeFuc)
+            public void UploadDataToBuffer(DeviceContextProxy context, Action<DataBox> writeFuc)
             {
-                if (bufferDesc.Usage == ResourceUsage.Dynamic)
+                lock (lockObj)
                 {
-                    context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-                    using (stream)
+                    if (bufferDesc.Usage == ResourceUsage.Dynamic)
                     {
-                        writeFuc?.Invoke(stream);
+                        var dataBox = context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+                        writeFuc?.Invoke(dataBox);
+                        context.UnmapSubresource(buffer, 0);
                     }
-                    context.UnmapSubresource(buffer, 0);
-                }
-                else
-                {
+                    else
+                    {
     #if DEBUG
-                    throw new Exception("Constant buffer must be dynamic to use this function.");
+                        throw new Exception("Constant buffer must be dynamic to use this function.");
     #endif
+                    }                
                 }
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public DataStream Map(DeviceContextProxy context)
+            public DataBox Map(DeviceContextProxy context)
             {
-                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+                Monitor.Enter(lockObj);
+                return context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public DataStream MapToStream(DeviceContextProxy context)
+            {
+                Monitor.Enter(lockObj);
+                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out var stream);
                 return stream;
             }
 
@@ -232,6 +245,7 @@ namespace HelixToolkit.UWP
             public void Unmap(DeviceContextProxy context)
             {
                 context.UnmapSubresource(buffer, 0);
+                Monitor.Exit(lockObj);
             }
 
             /// <summary>
@@ -245,9 +259,18 @@ namespace HelixToolkit.UWP
                 {
                     throw new ArgumentException("Constant buffer struct size must be multiple of 16 bytes");
                 }
+                lock (lockObj)
+                {
+                    RemoveAndDispose(ref buffer);
+                    bufferDesc.SizeInBytes = structSize;
+                    buffer = new SDX11.Buffer(device, bufferDesc);                
+                }
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
                 RemoveAndDispose(ref buffer);
-                bufferDesc.SizeInBytes = structSize;
-                buffer = Collect(new SDX11.Buffer(device, bufferDesc));
+                base.OnDispose(disposeManagedResources);
             }
             /// <summary>
             /// Performs an implicit conversion from <see cref="ConstantBufferProxy"/> to <see cref="SDX11.Buffer"/>.
@@ -284,5 +307,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

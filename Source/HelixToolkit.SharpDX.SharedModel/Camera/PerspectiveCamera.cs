@@ -23,7 +23,10 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public interface IPerspectiveCameraModel
     {
-        double FieldOfView { set; get; }
+        double FieldOfView
+        {
+            set; get;
+        }
     }
     /// <summary>
     /// Represents a perspective projection camera.
@@ -48,8 +51,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FieldOfView
         {
-            get { return (double)this.GetValue(FieldOfViewProperty); }
-            set { this.SetValue(FieldOfViewProperty, value); }
+            get
+            {
+                return (double)this.GetValue(FieldOfViewProperty);
+            }
+            set
+            {
+                this.SetValue(FieldOfViewProperty, value);
+            }
         }
 
         protected override CameraCore CreatePortableCameraCore()

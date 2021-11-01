@@ -38,11 +38,20 @@ namespace HelixToolkit.UWP
 
         public sealed class ConstantBufferDescription
         {
-            public string Name { set; get; }
+            public string Name
+            {
+                set; get;
+            }
 
-            public int StructSize { set; get; }
+            public int StructSize
+            {
+                set; get;
+            }
 
-            public int StrideSize { set; get; }
+            public int StrideSize
+            {
+                set; get;
+            }
 
             public BindFlags BindFlags { set; get; } = BindFlags.ConstantBuffer;
 
@@ -52,9 +61,15 @@ namespace HelixToolkit.UWP
 
             public ResourceUsage Usage { set; get; } = ResourceUsage.Dynamic;
 
-            public ShaderStage Stage { set; get; }
+            public ShaderStage Stage
+            {
+                set; get;
+            }
 
-            public int Slot { set; get; }
+            public int Slot
+            {
+                set; get;
+            }
 
             public List<ConstantBufferVariable> Variables { get; } = new List<ConstantBufferVariable>();
 
@@ -63,7 +78,7 @@ namespace HelixToolkit.UWP
                 Name = buffer.Description.Name;
                 StructSize = StrideSize = buffer.Description.Size;
                 Variables = new List<ConstantBufferVariable>();
-                for(int i=0; i < buffer.Description.VariableCount; ++i)
+                for (var i = 0; i < buffer.Description.VariableCount; ++i)
                 {
                     var variable = buffer.GetVariable(i);
                     Variables.Add(new ConstantBufferVariable() { Name = variable.Description.Name, Size = variable.Description.Size, StartOffset = variable.Description.StartOffset });
@@ -103,10 +118,16 @@ namespace HelixToolkit.UWP
         public sealed class ConstantBufferMapping
         {
             [DataMember]
-            public int Slot { set; get; }
+            public int Slot
+            {
+                set; get;
+            }
 
             [DataMember]
-            public ConstantBufferDescription Description { set; get; }
+            public ConstantBufferDescription Description
+            {
+                set; get;
+            }
 
             public ConstantBufferMapping(int slot, ConstantBufferDescription description)
             {
@@ -125,5 +146,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

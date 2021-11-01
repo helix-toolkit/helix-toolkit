@@ -38,8 +38,11 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly SamplerStateDescription LinearSamplerWrapAni8 = new SamplerStateDescription()
             {
-                AddressU = TextureAddressMode.Wrap, AddressV = TextureAddressMode.Wrap, AddressW = TextureAddressMode.Wrap,
-                Filter = Filter.MinMagLinearMipPoint, MaximumAnisotropy = 8,
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Wrap,
+                AddressW = TextureAddressMode.Wrap,
+                Filter = Filter.MinMagLinearMipPoint,
+                MaximumAnisotropy = 8,
             };
             /// <summary>
             /// The linear sampler wrap anisotropy = 4
@@ -152,7 +155,7 @@ namespace HelixToolkit.UWP
                 AddressU = TextureAddressMode.Clamp,
                 AddressV = TextureAddressMode.Clamp,
                 AddressW = TextureAddressMode.Clamp,
-                Filter = Filter.MinMagMipLinear           
+                Filter = Filter.MinMagMipLinear
             };
 
             public static readonly SamplerStateDescription VolumeSampler = new SamplerStateDescription()
@@ -197,5 +200,4 @@ namespace HelixToolkit.UWP
             };
         }
     }
-
 }

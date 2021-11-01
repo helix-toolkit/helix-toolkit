@@ -75,8 +75,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public DataTemplate ItemTemplate
         {
-            get { return (DataTemplate)this.GetValue(ItemTemplateProperty); }
-            set { this.SetValue(ItemTemplateProperty, value); }
+            get
+            {
+                return (DataTemplate)this.GetValue(ItemTemplateProperty);
+            }
+            set
+            {
+                this.SetValue(ItemTemplateProperty, value);
+            }
         }
 
         /// <summary>
@@ -87,8 +93,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IEnumerable ItemsSource
         {
-            get { return (IEnumerable)this.GetValue(ItemsSourceProperty); }
-            set { this.SetValue(ItemsSourceProperty, value); }
+            get
+            {
+                return (IEnumerable)this.GetValue(ItemsSourceProperty);
+            }
+            set
+            {
+                this.SetValue(ItemsSourceProperty, value);
+            }
         }
 
         public IOctreeManagerWrapper OctreeManager
@@ -105,7 +117,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private IOctreeBasic Octree
         {
-            get { return (SceneNode as GroupNode)?.OctreeManager?.Octree; }
+            get
+            {
+                return (SceneNode as GroupNode)?.OctreeManager?.Octree;
+            }
         }
 
         private readonly Dictionary<object, Element3D> elementDict = new Dictionary<object, Element3D>();
@@ -125,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 o.CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
-            if(e.OldValue == null && e.NewValue != null && Children.Count > 0)
+            if (e.OldValue == null && e.NewValue != null && Children.Count > 0)
             {
                 throw new InvalidOperationException("Children must be empty before using ItemsSource");
             }
@@ -190,11 +205,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (e.OldItems != null)
                     {
                         foreach (var item in e.OldItems)
-                        { 
-                            if(elementDict.TryGetValue(item, out var model))
+                        {
+                            if (elementDict.TryGetValue(item, out var model))
                             {
                                 elementDict.Remove(item);
-                                Children.Remove(model);                               
+                                Children.Remove(model);
                             }
                         }
                     }

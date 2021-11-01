@@ -25,8 +25,14 @@ namespace HelixToolkit.UWP
         {
             public float CornerRadius
             {
-                set { (RenderCore as BorderRenderCore2D).CornerRadius = value; }
-                get { return (RenderCore as BorderRenderCore2D).CornerRadius; }
+                set
+                {
+                    (RenderCore as BorderRenderCore2D).CornerRadius = value;
+                }
+                get
+                {
+                    return (RenderCore as BorderRenderCore2D).CornerRadius;
+                }
             }
 
             private Thickness padding = new Thickness(0);
@@ -37,13 +43,22 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsMeasure(ref padding, value);
                 }
-                get { return padding; }
+                get
+                {
+                    return padding;
+                }
             }
 
             public Brush BorderBrush
             {
-                set { (RenderCore as BorderRenderCore2D).StrokeBrush = value; }
-                get { return (RenderCore as BorderRenderCore2D).StrokeBrush; }
+                set
+                {
+                    (RenderCore as BorderRenderCore2D).StrokeBrush = value;
+                }
+                get
+                {
+                    return (RenderCore as BorderRenderCore2D).StrokeBrush;
+                }
             }
 
             private CapStyle strokeDashCap = CapStyle.Flat;
@@ -57,7 +72,10 @@ namespace HelixToolkit.UWP
                         strokeStyleChanged = true;
                     }
                 }
-                get { return strokeDashCap; }
+                get
+                {
+                    return strokeDashCap;
+                }
             }
 
             private CapStyle strokeStartLineCap = CapStyle.Flat;
@@ -71,7 +89,10 @@ namespace HelixToolkit.UWP
                         strokeStyleChanged = true;
                     }
                 }
-                get { return strokeStartLineCap; }
+                get
+                {
+                    return strokeStartLineCap;
+                }
             }
 
             private CapStyle strokeEndLineCap = CapStyle.Flat;
@@ -85,7 +106,10 @@ namespace HelixToolkit.UWP
                         strokeStyleChanged = true;
                     }
                 }
-                get { return strokeEndLineCap; }
+                get
+                {
+                    return strokeEndLineCap;
+                }
             }
 
             private DashStyle strokeDashStyle = DashStyle.Solid;
@@ -99,7 +123,10 @@ namespace HelixToolkit.UWP
                         strokeStyleChanged = true;
                     }
                 }
-                get { return strokeDashStyle; }
+                get
+                {
+                    return strokeDashStyle;
+                }
             }
 
             private float strokeDashOffset = 0;
@@ -113,7 +140,10 @@ namespace HelixToolkit.UWP
                         strokeStyleChanged = true;
                     }
                 }
-                get { return strokeDashOffset; }
+                get
+                {
+                    return strokeDashOffset;
+                }
             }
 
             private LineJoin strokeLineJoin = LineJoin.Miter;
@@ -144,7 +174,10 @@ namespace HelixToolkit.UWP
                         strokeStyleChanged = true;
                     }
                 }
-                get { return strokeMiterLimit; }
+                get
+                {
+                    return strokeMiterLimit;
+                }
             }
 
             private Thickness borderThickness;
@@ -249,5 +282,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

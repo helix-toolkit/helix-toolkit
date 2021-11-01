@@ -30,7 +30,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Gets the items from internal array. Make sure to access this array using <see cref="Count"/> instead of Array Length
         /// </summary>
-        internal T[] Items { get; private set; }
+        internal T[] Items
+        {
+            get; private set;
+        }
         private static readonly T[] empty = new T[0];
         private int _size;
 
@@ -69,7 +72,10 @@ namespace HelixToolkit.UWP
 
         public int Capacity
         {
-            get { return Items.Length; }
+            get
+            {
+                return Items.Length;
+            }
             set
             {
                 if (value != Items.Length)
@@ -174,7 +180,8 @@ namespace HelixToolkit.UWP
 
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= _size) throw new ArgumentOutOfRangeException(nameof(index));
+            if (index < 0 || index >= _size)
+                throw new ArgumentOutOfRangeException(nameof(index));
             _size--;
             if (index < _size)
             {
@@ -273,7 +280,7 @@ namespace HelixToolkit.UWP
         {
             if (Items.Length < min)
             {
-                var num = (Items.Length == 0) ? _defaultCapacity : (Items.Length*2);
+                var num = (Items.Length == 0) ? _defaultCapacity : (Items.Length * 2);
                 if (num < min)
                 {
                     num = min;
@@ -299,7 +306,7 @@ namespace HelixToolkit.UWP
             return default(T);
         }
 
-        
+
         public FastList<T> FindAll(Predicate<T> match)
         {
             var list = new FastList<T>();
@@ -384,7 +391,7 @@ namespace HelixToolkit.UWP
             return new Enumerator(this);
         }
 
-        
+
         public FastList<T> GetRange(int index, int count)
         {
             var list = new FastList<T>(count);
@@ -543,7 +550,7 @@ namespace HelixToolkit.UWP
             Array.Sort(Items, index, count, comparer);
         }
 
-        
+
         public T[] ToArray()
         {
             var destinationArray = new T[_size];

@@ -52,7 +52,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref renderType, value);
                 }
-                get { return renderType; }
+                get
+                {
+                    return renderType;
+                }
             }
 
             /// <summary>
@@ -79,7 +82,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref isThrowingShadow, value);
                 }
-                get { return isThrowingShadow; }
+                get
+                {
+                    return isThrowingShadow;
+                }
             }
 
             /// <summary>
@@ -111,11 +117,20 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            public IRenderTechnique EffectTechnique { private set; get; }
+            public IRenderTechnique EffectTechnique
+            {
+                private set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
-            public Device Device { get { return EffectTechnique?.Device; } }
+            public Device Device
+            {
+                get
+                {
+                    return EffectTechnique?.Device;
+                }
+            }
 
             /// <summary>
             /// Is render core has been attached
@@ -169,21 +184,24 @@ namespace HelixToolkit.UWP
             /// </summary>
             public void Detach()
             {
-                IsAttached = false;
+                if (!IsAttached)
+                {
+                    return;
+                }
                 OnDetach();
+
                 foreach (var comp in components)
                 {
                     comp.Detach();
                 }
+                IsAttached = false;
                 UpdateCanRenderFlag();
             }
             /// <summary>
             /// On detaching, default is to release all resources
             /// </summary>
-            protected virtual void OnDetach()
-            {
-                DisposeAndClear();
-            }
+            protected abstract void OnDetach();
+
             /// <summary>
             /// Render routine
             /// </summary>
@@ -195,13 +213,17 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="deviceContext">The device context.</param>
-            public virtual void RenderShadow(RenderContext context, DeviceContextProxy deviceContext) { }
+            public virtual void RenderShadow(RenderContext context, DeviceContextProxy deviceContext)
+            {
+            }
             /// <summary>
             /// Renders the custom pass. Must apply render pass externally. Usually used during PostEffect rendering.
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="deviceContext">The device context.</param>
-            public virtual void RenderCustom(RenderContext context, DeviceContextProxy deviceContext) { }
+            public virtual void RenderCustom(RenderContext context, DeviceContextProxy deviceContext)
+            {
+            }
             /// <summary>
             /// Renders the depth pass.
             /// </summary>
@@ -209,7 +231,9 @@ namespace HelixToolkit.UWP
             /// <param name="deviceContext">The device context.</param>
             /// <param name="customPass"></param>
             public virtual void RenderDepth(RenderContext context, DeviceContextProxy deviceContext,
-                Shaders.ShaderPass customPass) { }
+                Shaders.ShaderPass customPass)
+            {
+            }
             /// <summary>
             /// Update routine. Only used to run update computation such as compute shader in particle system. 
             /// <para>Compute shader can be run at the beginning of any other <see cref="Render(RenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
@@ -229,15 +253,17 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context"></param>
             /// <param name="deviceContext"></param>
-            protected virtual void OnUpdate(RenderContext context, DeviceContextProxy deviceContext) { }
+            protected virtual void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
+            {
+            }
 
             /// <summary>
             /// Updates the can render flag.
             /// </summary>
             public void UpdateCanRenderFlag()
             {
-                bool flag = OnUpdateCanRenderFlag();
-                if(CanRenderFlag != flag)
+                var flag = OnUpdateCanRenderFlag();
+                if (CanRenderFlag != flag)
                 {
                     CanRenderFlag = flag;
                     RaiseInvalidateRender();
@@ -323,5 +349,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

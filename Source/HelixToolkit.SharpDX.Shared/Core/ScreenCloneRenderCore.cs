@@ -48,7 +48,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The output.
             /// </value>
-            int Output { set; get; }
+            int Output
+            {
+                set; get;
+            }
 
             /// <summary>
             /// Gets or sets the clone rectangle.
@@ -56,21 +59,30 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The clone rectangle.
             /// </value>
-            Rectangle CloneRectangle { set; get; }
+            Rectangle CloneRectangle
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether cloned rectangle is stretched during rendering, default is false;
             /// </summary>
             /// <value>
             ///   <c>true</c> if stretch; otherwise, <c>false</c>.
             /// </value>
-            bool StretchToFill { set; get; }
+            bool StretchToFill
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether [show mouse cursor].
             /// </summary>
             /// <value>
             ///   <c>true</c> if [show mouse cursor]; otherwise, <c>false</c>.
             /// </value>
-            bool ShowMouseCursor { set; get; }
+            bool ShowMouseCursor
+            {
+                set; get;
+            }
         }
         /// <summary>
         /// Limitation: Under switchable graphics card setup(Laptop with integrated graphics card and external graphics card), 
@@ -92,7 +104,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref output, value))
+                    if (Set(ref output, value))
                     {
                         invalidRender = true;
                     }
@@ -114,13 +126,16 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref cloneRectangle, value))
+                    if (Set(ref cloneRectangle, value))
                     {
                         invalidRender = true;
                         clearTarget = true;
                     }
                 }
-                get { return cloneRectangle; }
+                get
+                {
+                    return cloneRectangle;
+                }
             }
 
             private bool stretchToFill = false;
@@ -134,7 +149,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref stretchToFill, value))
+                    if (Set(ref stretchToFill, value))
                     {
                         invalidRender = true;
                         if (!value)
@@ -143,7 +158,10 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                get { return stretchToFill; }
+                get
+                {
+                    return stretchToFill;
+                }
             }
             /// <summary>
             /// Gets or sets a value indicating whether [show mouse cursor].
@@ -173,7 +191,7 @@ namespace HelixToolkit.UWP
             /// Initializes a new instance of the <see cref="ScreenCloneRenderCore"/> class.
             /// </summary>
             public ScreenCloneRenderCore() : base(RenderType.Opaque)
-            { 
+            {
                 modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.ScreenDuplicationCB, ScreenDuplicationModelStruct.SizeInBytes)));
             }
 
@@ -188,15 +206,16 @@ namespace HelixToolkit.UWP
                 CursorShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.ScreenQuad];
                 textureBindSlot = DefaultShaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerBindSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
-                textureSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.ScreenDupSampler));
+                textureSampler = technique.EffectsManager.StateManager.Register(DefaultSamplers.ScreenDupSampler);
                 return Initialize(technique.EffectsManager);
             }
 
             private bool Initialize(IEffectsManager manager)
             {
                 RemoveAndDispose(ref duplicationResource);
-                duplicationResource = Collect(new DuplicationResource(manager.Device));
-                frameProcessor = Collect(new FrameProcessing());
+                RemoveAndDispose(ref frameProcessor);
+                duplicationResource = new DuplicationResource(manager.Device);
+                frameProcessor = new FrameProcessing();
                 return true;
             }
 
@@ -211,7 +230,7 @@ namespace HelixToolkit.UWP
             /// <param name="deviceContext">The device context.</param>
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
-                bool succ = duplicationResource.Initialize();
+                var succ = duplicationResource.Initialize();
                 if (!succ)
                 {
                     RaiseInvalidateRender();
@@ -219,8 +238,8 @@ namespace HelixToolkit.UWP
                 }
                 context.RenderHost.RenderConfiguration = config;
 
-                if (duplicationResource.GetFrame(Output, out FrameData data, ref pointer, out bool isTimeOut, out bool accessLost))
-                {              
+                if (duplicationResource.GetFrame(Output, out var data, ref pointer, out var isTimeOut, out var accessLost))
+                {
                     if (data.FrameInfo.TotalMetadataBufferSize > 0)
                     {
                         frameProcessor.ProcessFrame(ref data, deviceContext);
@@ -235,10 +254,10 @@ namespace HelixToolkit.UWP
                         clearTarget = false;
                         context.RenderHost.ClearRenderTarget(deviceContext, true, false);
                     }
-                    bool cursorValid = false;
+                    var cursorValid = false;
                     if (pointer.Visible)
                     {
-                        if(frameProcessor.ProcessCursor(ref pointer, deviceContext, out Vector4 rect))
+                        if (frameProcessor.ProcessCursor(ref pointer, deviceContext, out var rect))
                         {
                             GetCursorVertexBound((int)context.ActualWidth, (int)context.ActualHeight, frameProcessor.TextureWidth, frameProcessor.TextureHeight, ref rect);
                             invalidRender = true;
@@ -250,18 +269,18 @@ namespace HelixToolkit.UWP
                         OnUpdatePerModelStruct(context);
                         modelCB.Upload(deviceContext, ref modelStruct);
                         DefaultShaderPass.BindShader(deviceContext);
-                        DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+                        DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
                         DefaultShaderPass.PixelShader.BindSampler(deviceContext, samplerBindSlot, textureSampler);
-                        int left = (int)(context.ActualWidth * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
-                        int top = (int)(context.ActualHeight * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);
+                        var left = (int)(context.ActualWidth * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
+                        var top = (int)(context.ActualHeight * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);
                         deviceContext.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
                         using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext, frameProcessor.SharedTexture))
                         {
-                            deviceContext.SetShaderResource(PixelShader.Type, textureBindSlot, textureView);                       
+                            deviceContext.SetShaderResource(PixelShader.Type, textureBindSlot, textureView);
                             deviceContext.Draw(4, 0);
                         }
                         if (ShowMouseCursor && cursorValid)
-                        {                    
+                        {
                             DrawCursor(ref pointer, deviceContext);
                         }
                         invalidRender = false;
@@ -282,7 +301,7 @@ namespace HelixToolkit.UWP
                 RaiseInvalidateRender();
             }
 
-    #region Draw Cursor
+            #region Draw Cursor
 
 
 
@@ -299,16 +318,16 @@ namespace HelixToolkit.UWP
                 deviceContext.Draw(4, 0);
             }
 
-    #endregion
+            #endregion
 
             private void OnUpdatePerModelStruct(RenderContext context)
             {
-                if (!duplicationResource.TryGetInfo(Output, out DuplicationInfo info))
+                if (!duplicationResource.TryGetInfo(Output, out var info))
                 {
                     return;
                 }
-                int width = Math.Abs(info.OutputDesc.DesktopBounds.Right - info.OutputDesc.DesktopBounds.Left);
-                int height = Math.Abs(info.OutputDesc.DesktopBounds.Bottom - info.OutputDesc.DesktopBounds.Top);
+                var width = Math.Abs(info.OutputDesc.DesktopBounds.Right - info.OutputDesc.DesktopBounds.Left);
+                var height = Math.Abs(info.OutputDesc.DesktopBounds.Bottom - info.OutputDesc.DesktopBounds.Top);
                 var texBound = GetTextureBound(width, height);
                 var verBound = GetVertexBound((int)context.ActualWidth, (int)context.ActualHeight, width, height);
                 modelStruct.TopLeft = new Vector4(verBound.X, verBound.Z, 0, 1);
@@ -318,7 +337,7 @@ namespace HelixToolkit.UWP
                 modelStruct.TexTopLeft = new Vector2(texBound.X, texBound.Z);
                 modelStruct.TexTopRight = new Vector2(texBound.Y, texBound.Z);
                 modelStruct.TexBottomLeft = new Vector2(texBound.X, texBound.W);
-                modelStruct.TexBottomRight = new Vector2(texBound.Y, texBound.W);           
+                modelStruct.TexBottomRight = new Vector2(texBound.Y, texBound.W);
             }
 
             /// <summary>
@@ -329,7 +348,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected virtual Vector4 GetTextureBound(int screenWidth, int screenHeight)
             {
-                if(cloneRectangle.Width == 0 || cloneRectangle.Height == 0)
+                if (cloneRectangle.Width == 0 || cloneRectangle.Height == 0)
                 {
                     return new Vector4(0, 1, 0, 1);
                 }
@@ -352,8 +371,8 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected virtual Vector4 GetVertexBound(int viewportWidth, int viewportHeight, int deskWidth, int deskHeight)
             {
-                int cloneWidth = cloneRectangle.Width;
-                int cloneHeight = cloneRectangle.Height;
+                var cloneWidth = cloneRectangle.Width;
+                var cloneHeight = cloneRectangle.Height;
                 if (cloneWidth == 0 || cloneHeight == 0)
                 {
                     cloneWidth = deskWidth;
@@ -370,7 +389,7 @@ namespace HelixToolkit.UWP
                 if (viewportRatio >= cloneRatio)
                 {
                     var ndcCloneW = (2.0f * cloneRatio) / viewportRatio;
-                    bound.X = -1 + (2 - ndcCloneW)/2.0f;
+                    bound.X = -1 + (2 - ndcCloneW) / 2.0f;
                     bound.Y = bound.X + ndcCloneW;
                     bound.Z = 1;
                     bound.W = -1;
@@ -388,8 +407,8 @@ namespace HelixToolkit.UWP
 
             protected virtual void GetCursorVertexBound(int viewportWidth, int viewportHeight, int deskWidth, int deskHeight, ref Vector4 rect)
             {
-                int cloneWidth = cloneRectangle.Width;
-                int cloneHeight = cloneRectangle.Height;
+                var cloneWidth = cloneRectangle.Width;
+                var cloneHeight = cloneRectangle.Height;
                 if (cloneWidth == 0 || cloneHeight == 0)
                 {
                     cloneWidth = deskWidth;
@@ -451,8 +470,9 @@ namespace HelixToolkit.UWP
                 clearTarget = true;
                 invalidRender = true;
                 pointer = new PointerInfo();
-                textureSampler = null;
-                base.OnDetach();
+                RemoveAndDispose(ref textureSampler);
+                RemoveAndDispose(ref duplicationResource);
+                RemoveAndDispose(ref frameProcessor);
             }
 
             private sealed class DuplicationInfo
@@ -470,30 +490,38 @@ namespace HelixToolkit.UWP
             {
                 private Texture2D sharedTexture;
                 private Texture2DDescription sharedDescription;
-                public Texture2D SharedTexture { get { return sharedTexture; } }
-
-                public int TextureWidth { get { return sharedDescription.Width; } }
-                public int TextureHeight { get { return sharedDescription.Height; } }
-
-                public void ProcessFrame(ref FrameData data, DeviceContextProxy context)
+                public Texture2D SharedTexture
                 {
-                    if (sharedTexture == null || sharedDescription.Width != data.Frame.Description.Width || sharedDescription.Height != data.Frame.Description.Height)
+                    get
                     {
-                        RemoveAndDispose(ref sharedTexture);
-                        sharedDescription = new Texture2DDescription()
-                        {
-                            BindFlags = BindFlags.ShaderResource,
-                            CpuAccessFlags = CpuAccessFlags.None, Format = data.Frame.Description.Format, Width = data.Frame.Description.Width, Height = data.Frame.Description.Height,
-                            MipLevels = 1, Usage = ResourceUsage.Default, SampleDescription = new SampleDescription(1, 0), OptionFlags = ResourceOptionFlags.None, ArraySize=1
-                        };
-                        sharedTexture = Collect(new Texture2D(context, sharedDescription));
+                        return sharedTexture;
                     }
-                    context.CopyResource(data.Frame, sharedTexture);
+                }
+
+                public int TextureWidth
+                {
+                    get
+                    {
+                        return sharedDescription.Width;
+                    }
+                }
+                public int TextureHeight
+                {
+                    get
+                    {
+                        return sharedDescription.Height;
+                    }
                 }
 
                 private const int BPP = 4;
 
-                public ShaderResourceViewProxy PointerResource { get { return pointerResource; } }
+                public ShaderResourceViewProxy PointerResource
+                {
+                    get
+                    {
+                        return pointerResource;
+                    }
+                }
                 private ShaderResourceViewProxy pointerResource;
 
                 private Texture2DDescription pointerTexDesc = new Texture2DDescription()
@@ -531,14 +559,37 @@ namespace HelixToolkit.UWP
                 byte[] initBuffer = new byte[0];
                 private int currentType = 0;
 
+                public void ProcessFrame(ref FrameData data, DeviceContextProxy context)
+                {
+                    if (sharedTexture == null || sharedDescription.Width != data.Frame.Description.Width || sharedDescription.Height != data.Frame.Description.Height)
+                    {
+                        RemoveAndDispose(ref sharedTexture);
+                        sharedDescription = new Texture2DDescription()
+                        {
+                            BindFlags = BindFlags.ShaderResource,
+                            CpuAccessFlags = CpuAccessFlags.None,
+                            Format = data.Frame.Description.Format,
+                            Width = data.Frame.Description.Width,
+                            Height = data.Frame.Description.Height,
+                            MipLevels = 1,
+                            Usage = ResourceUsage.Default,
+                            SampleDescription = new SampleDescription(1, 0),
+                            OptionFlags = ResourceOptionFlags.None,
+                            ArraySize = 1
+                        };
+                        sharedTexture = new Texture2D(context, sharedDescription);
+                    }
+                    context.CopyResource(data.Frame, sharedTexture);
+                }
+
                 public bool ProcessCursor(ref PointerInfo pointer, DeviceContextProxy context, out Vector4 rect)
-                {               
-                
-                    int width = 0;
-                    int height = 0;
-                    int left = pointer.Position.X;
-                    int top = pointer.Position.Y;
-                
+                {
+
+                    var width = 0;
+                    var height = 0;
+                    var left = pointer.Position.X;
+                    var top = pointer.Position.Y;
+
                     switch (pointer.ShapeInfo.Type)
                     {
                         case (int)OutputDuplicatePointerShapeType.Color:
@@ -557,8 +608,8 @@ namespace HelixToolkit.UWP
                     }
 
                     rect = new Vector4(pointer.Position.X, pointer.Position.Y, width, height);
-                    int rowPitch = pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color ? pointer.ShapeInfo.Pitch : width * BPP;
-                    int slicePitch = 0;
+                    var rowPitch = pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color ? pointer.ShapeInfo.Pitch : width * BPP;
+                    var slicePitch = 0;
 
                     if (pointerResource == null || currentType != pointer.ShapeInfo.Type
                         || pointerTexDesc.Width != width || pointerTexDesc.Height != height)
@@ -567,35 +618,35 @@ namespace HelixToolkit.UWP
                         pointerTexDesc.Width = width;
                         pointerTexDesc.Height = height;
                         currentType = pointer.ShapeInfo.Type;
-                    
+
                         global::SharpDX.Utilities.Pin(pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color ? pointer.PtrShapeBuffer : initBuffer, ptr =>
                         {
-                            pointerResource = Collect(new ShaderResourceViewProxy(context,
-                                new Texture2D(context, pointerTexDesc, new[] { new DataBox(ptr, rowPitch, slicePitch) })));
+                            pointerResource = new ShaderResourceViewProxy(context,
+                                new Texture2D(context, pointerTexDesc, new[] { new DataBox(ptr, rowPitch, slicePitch) }));
                         });
                         pointerResource.CreateView(pointerSRVDesc);
-    #if OUTPUTDETAIL
+#if OUTPUTDETAIL
                         Console.WriteLine("Create new cursor texture. Type = " + pointer.ShapeInfo.Type);
-    #endif
+#endif
                     }
                     else
                     {
-                        var dataBox = context.MapSubresource(pointerResource.Resource, 0, global::SharpDX.Direct3D11.MapMode.WriteDiscard, 
+                        var dataBox = context.MapSubresource(pointerResource.Resource, 0, global::SharpDX.Direct3D11.MapMode.WriteDiscard,
                             global::SharpDX.Direct3D11.MapFlags.None);
                         if (pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color)
                         {
-    #if OUTPUTDETAIL
+#if OUTPUTDETAIL
                             Console.WriteLine("Reuse existing cursor texture for Color.");
-    #endif
+#endif
                             unsafe
                             {
-                                int row = pointer.ShapeInfo.Height;
-                                int sourceCounter = 0;
-                                byte* target32 = (byte*)dataBox.DataPointer;
-                                for (int i = 0; i < row; ++i)
+                                var row = pointer.ShapeInfo.Height;
+                                var sourceCounter = 0;
+                                var target32 = (byte*)dataBox.DataPointer;
+                                for (var i = 0; i < row; ++i)
                                 {
-                                    int targetCounter = i * dataBox.RowPitch;
-                                    for (int j = 0; j < pointer.ShapeInfo.Pitch; ++j)
+                                    var targetCounter = i * dataBox.RowPitch;
+                                    for (var j = 0; j < pointer.ShapeInfo.Pitch; ++j)
                                     {
                                         target32[targetCounter++] = pointer.PtrShapeBuffer[sourceCounter++];
                                     }
@@ -604,13 +655,13 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-    #if OUTPUTDETAIL
+#if OUTPUTDETAIL
                             Console.WriteLine("Reuse existing cursor texture for Mono and Mask.");
-    #endif
+#endif
                             unsafe // Call unmanaged code
                             {
-                                byte* target32 = (byte*)dataBox.DataPointer;
-                                for(int i = 0; i < initBuffer.Length; ++i)
+                                var target32 = (byte*)dataBox.DataPointer;
+                                for (var i = 0; i < initBuffer.Length; ++i)
                                 {
                                     target32[i] = initBuffer[i];
                                 }
@@ -619,15 +670,15 @@ namespace HelixToolkit.UWP
                         context.UnmapSubresource(pointerResource.Resource, 0);
                     }
                     return true;
-                }           
+                }
 
                 private void ProcessMonoMask(DeviceContextProxy context,
                     bool isMono, ref PointerInfo info, out int width, out int height, out int left, out int top)
                 {
-                    int deskWidth = sharedDescription.Width;
-                    int deskHeight = sharedDescription.Height;
-                    int givenLeft = info.Position.X;
-                    int givenTop = info.Position.Y;
+                    var deskWidth = sharedDescription.Width;
+                    var deskHeight = sharedDescription.Height;
+                    var givenLeft = info.Position.X;
+                    var givenTop = info.Position.Y;
                     if (givenLeft < 0)
                     {
                         width = givenLeft + info.ShapeInfo.Width;
@@ -650,7 +701,7 @@ namespace HelixToolkit.UWP
                     {
                         height = givenTop + info.ShapeInfo.Height;
                     }
-                    else if(givenTop + info.ShapeInfo.Height > deskHeight)
+                    else if (givenTop + info.ShapeInfo.Height > deskHeight)
                     {
                         height = deskHeight - givenTop;
                     }
@@ -673,41 +724,41 @@ namespace HelixToolkit.UWP
                         initBuffer = new byte[width * height * BPP];
                     }
 
-                    if(copyBuffer == null || stageTextureDesc.Width != width || stageTextureDesc.Height != height)
+                    if (copyBuffer == null || stageTextureDesc.Width != width || stageTextureDesc.Height != height)
                     {
                         RemoveAndDispose(ref copyBuffer);
-                        copyBuffer = Collect(new Texture2D(context, stageTextureDesc));
+                        copyBuffer = new Texture2D(context, stageTextureDesc);
                     }
 
                     context.CopySubresourceRegion(SharedTexture, 0,
                         new global::SharpDX.Direct3D11.ResourceRegion(left, top, 0, left + width, top + height, 1), copyBuffer, 0);
 
                     var dataBox = context.MapSubresource(copyBuffer, 0, global::SharpDX.Direct3D11.MapMode.Read, global::SharpDX.Direct3D11.MapFlags.None);
-    #region process
+                    #region process
                     unsafe // Call unmanaged code
                     {
-                        fixed(byte* initBufferPtr = initBuffer)
-                        {                                                         
-                            uint* initBuffer32 = (uint*)initBufferPtr;
-                            uint* desktop32 = (uint*)dataBox.DataPointer;
-                            int desktopPitchInPixels = dataBox.RowPitch / sizeof(int);
-                            uint skipX = (givenLeft < 0) ? (uint)(-1 * givenLeft) : 0;
-                            uint skipY = (givenTop < 0) ? (uint)(-1 * givenTop) : 0;
+                        fixed (byte* initBufferPtr = initBuffer)
+                        {
+                            var initBuffer32 = (uint*)initBufferPtr;
+                            var desktop32 = (uint*)dataBox.DataPointer;
+                            var desktopPitchInPixels = dataBox.RowPitch / sizeof(int);
+                            var skipX = (givenLeft < 0) ? (uint)(-1 * givenLeft) : 0;
+                            var skipY = (givenTop < 0) ? (uint)(-1 * givenTop) : 0;
                             if (isMono)
                             {
-                                for (int row = 0; row < stageTextureDesc.Height; ++row)
+                                for (var row = 0; row < stageTextureDesc.Height; ++row)
                                 {
                                     // Set mask
                                     byte Mask = 0x80;
                                     Mask = (byte)(Mask >> (byte)(skipX % 8));
-                                    for (int col = 0; col < stageTextureDesc.Width; ++col)
+                                    for (var col = 0; col < stageTextureDesc.Width; ++col)
                                     {
                                         // Get masks using appropriate offsets
-                                        byte AndMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY) * (info.ShapeInfo.Pitch))] & Mask);
-                                        byte XorMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY + (info.ShapeInfo.Height / 2)) 
+                                        var AndMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY) * (info.ShapeInfo.Pitch))] & Mask);
+                                        var XorMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY + (info.ShapeInfo.Height / 2))
                                             * (info.ShapeInfo.Pitch))] & Mask);
-                                        uint AndMask32 = (AndMask > 0) ? 0xFFFFFFFF : 0xFF000000;
-                                        uint XorMask32 = (XorMask > 0) ? (uint)0x00FFFFFF : 0x00000000;
+                                        var AndMask32 = (AndMask > 0) ? 0xFFFFFFFF : 0xFF000000;
+                                        var XorMask32 = (XorMask > 0) ? (uint)0x00FFFFFF : 0x00000000;
 
                                         // Set new pixel
                                         initBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col] & AndMask32) ^ XorMask32;
@@ -726,27 +777,27 @@ namespace HelixToolkit.UWP
                             }
                             else
                             {
-                                fixed(byte* shapeBufferPtr = info.PtrShapeBuffer)
+                                fixed (byte* shapeBufferPtr = info.PtrShapeBuffer)
                                 {
-                                    uint* Buffer32 = (uint*)shapeBufferPtr;
+                                    var Buffer32 = (uint*)shapeBufferPtr;
 
                                     // Iterate through pixels
-                                    for (int row = 0; row < stageTextureDesc.Height; ++row)
+                                    for (var row = 0; row < stageTextureDesc.Height; ++row)
                                     {
-                                        for (int col = 0; col < stageTextureDesc.Width; ++col)
+                                        for (var col = 0; col < stageTextureDesc.Width; ++col)
                                         {
                                             // Set up mask
-                                            uint MaskVal = 0xFF000000 & Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))];
+                                            var MaskVal = 0xFF000000 & Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))];
                                             if (MaskVal > 0)
                                             {
                                                 // Mask was 0xFF
-                                                initBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col] 
+                                                initBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col]
                                                     ^ Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))]) | 0xFF000000;
                                             }
                                             else
                                             {
                                                 // Mask was 0x00
-                                                initBuffer32[(row * stageTextureDesc.Width) + col] 
+                                                initBuffer32[(row * stageTextureDesc.Width) + col]
                                                     = Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))] | 0xFF000000;
                                             }
                                         }
@@ -755,8 +806,16 @@ namespace HelixToolkit.UWP
                             }
                         }
                     }
-    #endregion
+                    #endregion
                     context.UnmapSubresource(copyBuffer, 0);
+                }
+
+                protected override void OnDispose(bool disposeManagedResources)
+                {
+                    RemoveAndDispose(ref sharedTexture);
+                    RemoveAndDispose(ref pointerResource);
+                    RemoveAndDispose(ref copyBuffer);
+                    base.OnDispose(disposeManagedResources);
                 }
             }
 
@@ -784,14 +843,16 @@ namespace HelixToolkit.UWP
                 public bool Initialize()
                 {
                     if (IsInitialized)
-                    { return true; }
+                    {
+                        return true;
+                    }
                     var list = new List<DuplicationInfo>();
                     using (var dxgDevice = device.QueryInterface<Device>())
                     {
                         using (var adapter = dxgDevice.GetParent<Adapter>())
                         {
-                            int outputCount = adapter.GetOutputCount();
-                            for(int i=0; i<outputCount; ++i)
+                            var outputCount = adapter.GetOutputCount();
+                            for (var i = 0; i < outputCount; ++i)
                             {
                                 using (var output = adapter.GetOutput(i))
                                 {
@@ -799,10 +860,10 @@ namespace HelixToolkit.UWP
                                     {
                                         try
                                         {
-                                            var duplication = Collect(output1.DuplicateOutput(device));
+                                            var duplication = output1.DuplicateOutput(device);
                                             list.Add(new DuplicationInfo(output.Description, duplication));
                                         }
-                                        catch(SharpDXException ex)
+                                        catch (SharpDXException ex)
                                         {
                                             if (ex.ResultCode.Code == global::SharpDX.Result.AccessDenied.Code)
                                             {
@@ -818,15 +879,15 @@ namespace HelixToolkit.UWP
                             }
                         }
                     }
-                    int index = 0;
-                    foreach(var dup in list.OrderBy(x=>x.OutputDesc.DesktopBounds.Left))
+                    var index = 0;
+                    foreach (var dup in list.OrderBy(x => x.OutputDesc.DesktopBounds.Left))
                     {
                         duplicationDict.Add(index++, dup);
                     }
                     IsInitialized = true;
                     return true;
                 }
-            
+
 
                 public bool GetFrame(int outputIndex, out FrameData data, ref PointerInfo pointer, out bool timeOut, out bool accessLost)
                 {
@@ -837,12 +898,12 @@ namespace HelixToolkit.UWP
                     {
                         return false;
                     }
-                    if(!duplicationDict.TryGetValue(outputIndex, out DuplicationInfo info))
+                    if (!duplicationDict.TryGetValue(outputIndex, out var info))
                     {
                         return false;
                     }
 
-                    var code = info.Duplication.TryAcquireNextFrame(getFrameTimeOut, out OutputDuplicateFrameInformation frameInfo, out Resource desktopResource);
+                    var code = info.Duplication.TryAcquireNextFrame(getFrameTimeOut, out var frameInfo, out var desktopResource);
                     if (!code.Success)
                     {
                         if (code.Code == ResultCode.WaitTimeout.Result.Code)
@@ -857,9 +918,9 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-    #if DEBUG
+#if DEBUG
                             throw new HelixToolkitException("Failed to acquire next frame.");
-    #endif
+#endif
                         }
                     }
                     else
@@ -881,7 +942,7 @@ namespace HelixToolkit.UWP
                         {
                             moveBuffer = new OutputDuplicateMoveRectangle[metaDataSize];
                         }
-                        info.Duplication.GetFrameMoveRects(metaDataSize, moveBuffer, out int moveRectSize);
+                        info.Duplication.GetFrameMoveRects(metaDataSize, moveBuffer, out var moveRectSize);
                         data.MoveRectangles = moveBuffer;
 #if !NETFX_CORE
                         data.MoveCount = moveRectSize / Marshal.SizeOf(typeof(OutputDuplicateMoveRectangle));
@@ -892,7 +953,7 @@ namespace HelixToolkit.UWP
                         {
                             dirtyBuffer = new RawRectangle[metaDataSize];
                         }
-                        info.Duplication.GetFrameDirtyRects(metaDataSize, dirtyBuffer, out int dirtyRectSize);
+                        info.Duplication.GetFrameDirtyRects(metaDataSize, dirtyBuffer, out var dirtyRectSize);
                         data.DirtyRectangles = dirtyBuffer;
 #if !NETFX_CORE
                         data.DirtyCount = dirtyRectSize / Marshal.SizeOf(typeof(RawRectangle));
@@ -917,7 +978,7 @@ namespace HelixToolkit.UWP
                     if (frameInfo.LastMouseUpdateTime == 0)
                         return;
 
-                    bool updatePosition = true;
+                    var updatePosition = true;
 
                     // Make sure we don't update pointer position wrongly
                     // If pointer is invisible, make sure we did not get an update from another output that the last time that said pointer
@@ -954,9 +1015,9 @@ namespace HelixToolkit.UWP
                         unsafe
                         {
                             fixed (byte* ptrShapeBufferPtr = pointerInfo.PtrShapeBuffer)
-                            {                   
-                                duplication.GetFramePointerShape(frameInfo.PointerShapeBufferSize, (IntPtr)ptrShapeBufferPtr, out pointerInfo.BufferSize, out OutputDuplicatePointerShapeInformation info);
-                                if(info.Type != 0)
+                            {
+                                duplication.GetFramePointerShape(frameInfo.PointerShapeBufferSize, (IntPtr)ptrShapeBufferPtr, out pointerInfo.BufferSize, out var info);
+                                if (info.Type != 0)
                                 {
                                     pointerInfo.ShapeInfo = info;
                                 }
@@ -990,6 +1051,10 @@ namespace HelixToolkit.UWP
                     {
                         currentDuplicationTexture.Pop().Dispose();
                     }
+                    foreach (var info in duplicationDict.Values)
+                    {
+                        info.Duplication.Dispose();
+                    }
                     duplicationDict.Clear();
                     base.OnDispose(disposeManagedResources);
                 }
@@ -1022,6 +1087,5 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }
 #endif

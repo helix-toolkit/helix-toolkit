@@ -57,7 +57,10 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public static class PhongMaterials
     {
-        public static PhongMaterialCollection Materials { get; private set; }
+        public static PhongMaterialCollection Materials
+        {
+            get; private set;
+        }
 
         public static PhongMaterial GetMaterial(string materialName)
         {

@@ -59,14 +59,29 @@ namespace HelixToolkit.UWP
             // various properties of the resulting image
             private bool requirePow2, requireSquare;
             private int padding;
-            protected int OutputWidth { private set; get; }
-            protected int OutputHeight { private set; get; }
+            protected int OutputWidth
+            {
+                private set; get;
+            }
+            protected int OutputHeight
+            {
+                private set; get;
+            }
 
             // the input list of image files
-            protected KeyValuePair<int, E>[] ItemArray { private set; get; }
+            protected KeyValuePair<int, E>[] ItemArray
+            {
+                private set; get;
+            }
             // some dictionaries to hold the image sizes and destination rectangles
-            protected Size2F[] ImageSizes { private set; get; }
-            protected RectangleF[] ImagePlacement { private set; get; }
+            protected Size2F[] ImageSizes
+            {
+                private set; get;
+            }
+            protected RectangleF[] ImagePlacement
+            {
+                private set; get;
+            }
             protected readonly IDevice2DResources deviceRes2D;
 
             public SpritePackerBase(IDevice2DResources deviceResources)
@@ -125,7 +140,7 @@ namespace HelixToolkit.UWP
                         var b1 = GetSize(f1.Value);
                         var b2 = GetSize(f2.Value);
 
-                        int c = -b1.Width.CompareTo(b2.Width);
+                        var c = -b1.Width.CompareTo(b2.Width);
                         if (c != 0)
                             return c;
 
@@ -157,11 +172,11 @@ namespace HelixToolkit.UWP
             private bool PackImageRectangles()
             {
                 // we need a couple values for testing
-                int testWidth = OutputWidth;
-                int testHeight = OutputHeight;
-           
+                var testWidth = OutputWidth;
+                var testHeight = OutputHeight;
+
                 // try to pack the images into our current test size
-                if (!TestPackingImages(testWidth, testHeight, ImagePlacement, out int packedWidth, out int packedHeight))
+                if (!TestPackingImages(testWidth, testHeight, ImagePlacement, out var packedWidth, out var packedHeight))
                 {
                     return false;
                 }
@@ -177,7 +192,7 @@ namespace HelixToolkit.UWP
                 // if we require a square texture, set the width and height to the larger of the two
                 if (requireSquare)
                 {
-                    int max = Math.Max(testWidth, testHeight);
+                    var max = Math.Max(testWidth, testHeight);
                     testWidth = testHeight = max;
                 }
 
@@ -199,7 +214,7 @@ namespace HelixToolkit.UWP
                     var size = ImageSizes[image.Key];
 
                     // pack the image
-                    if (!rectanglePacker.TryPack((int)Math.Ceiling(size.Width + padding), (int)Math.Ceiling(size.Height + padding), out Point origin))
+                    if (!rectanglePacker.TryPack((int)Math.Ceiling(size.Width + padding), (int)Math.Ceiling(size.Height + padding), out var origin))
                     {
                         return false;
                     }
@@ -295,5 +310,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

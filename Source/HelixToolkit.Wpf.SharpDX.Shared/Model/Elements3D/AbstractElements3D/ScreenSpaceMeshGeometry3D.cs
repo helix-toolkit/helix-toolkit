@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Base class for screen space rendering, such as Coordinate System or ViewBox
     /// </summary>
     public abstract class ScreenSpacedElement3D : GroupModel3D
-    {        
+    {
         /// <summary>
         /// <see cref="RelativeScreenLocationX"/>
         /// </summary>
@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                   ((d as Element3DCore).SceneNode as ScreenSpacedNode).RelativeScreenLocationX = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).RelativeScreenLocationX = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="RelativeScreenLocationY"/>
@@ -90,8 +90,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableMover
         {
-            get { return (bool)GetValue(EnableMoverProperty); }
-            set { SetValue(EnableMoverProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableMoverProperty);
+            }
+            set
+            {
+                SetValue(EnableMoverProperty, value);
+            }
         }
 
         /// <summary>
@@ -146,8 +152,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public ScreenSpacedMode Mode
         {
-            get { return (ScreenSpacedMode)GetValue(ModeProperty); }
-            set { SetValue(ModeProperty, value); }
+            get
+            {
+                return (ScreenSpacedMode)GetValue(ModeProperty);
+            }
+            set
+            {
+                SetValue(ModeProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the absolute position in 3d. Use by <see cref="Mode"/> = <see cref="ScreenSpacedMode.AbsolutePosition3D"/>
@@ -157,13 +169,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Point3D AbsolutePosition3D
         {
-            get { return (Point3D)GetValue(AbsolutePosition3DProperty); }
-            set { SetValue(AbsolutePosition3DProperty, value); }
+            get
+            {
+                return (Point3D)GetValue(AbsolutePosition3DProperty);
+            }
+            set
+            {
+                SetValue(AbsolutePosition3DProperty, value);
+            }
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            if(node is ScreenSpacedNode n)
+            if (node is ScreenSpacedNode n)
             {
                 n.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
                 n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
@@ -175,8 +193,11 @@ namespace HelixToolkit.Wpf.SharpDX
             InitializeMover();
         }
 
-#region 2D stuffs
-        public RelativePositionCanvas2D MoverCanvas { private set; get; } 
+        #region 2D stuffs
+        public RelativePositionCanvas2D MoverCanvas
+        {
+            private set; get;
+        }
             = new RelativePositionCanvas2D() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
         private ScreenSpacePositionMoverBase mover;
 
@@ -234,10 +255,12 @@ namespace HelixToolkit.Wpf.SharpDX
             binding.Source = viewModel;
             binding.Mode = mode;
             if (converter != null)
-            { binding.Converter = converter; }
+            {
+                binding.Converter = converter;
+            }
             BindingOperations.SetBinding(dobj, property, binding);
         }
-#endregion
+        #endregion
     }
 }
 
@@ -286,8 +309,14 @@ namespace HelixToolkit.Wpf.SharpDX
             /// </value>
             public bool EnableMover
             {
-                get { return (bool)GetValue(EnableMoverProperty); }
-                set { SetValue(EnableMoverProperty, value); }
+                get
+                {
+                    return (bool)GetValue(EnableMoverProperty);
+                }
+                set
+                {
+                    SetValue(EnableMoverProperty, value);
+                }
             }
 
             /// <summary>
@@ -351,25 +380,29 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 MoveLeftTop = new MoverButton2D()
                 {
-                    HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
                     BorderThickness = new Thickness(2, 0, 0, 2)
                 };
 
                 MoveRightTop = new MoverButton2D()
                 {
-                    HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Top,
                     BorderThickness = new Thickness(2, 2, 0, 0)
                 };
 
                 MoveLeftBottom = new MoverButton2D()
                 {
-                    HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Bottom,
                     BorderThickness = new Thickness(0, 0, 2, 2)
                 };
 
                 MoveRightBottom = new MoverButton2D()
                 {
-                    HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Bottom,
                     BorderThickness = new Thickness(0, 2, 2, 0)
                 };
 
@@ -390,7 +423,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 MoveLeftTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftTop); };
                 MoveLeftBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftBottom); };
                 MoveRightTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightTop); };
-                MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightBottom); };         
+                MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightBottom); };
             }
 
             protected override SceneNode2D OnCreateSceneNode()
@@ -415,7 +448,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     hitResult = null;
                     if (!EnableMover)
-                    { return false; }
+                    {
+                        return false;
+                    }
                     if (LayoutBoundWithTransform.Contains(mousePoint))
                     {
                         foreach (var b in Buttons)

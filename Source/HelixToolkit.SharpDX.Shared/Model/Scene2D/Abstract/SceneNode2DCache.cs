@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP
 
         public partial class SceneNode2D
         {
-    #pragma warning disable
+#pragma warning disable
 
             /// <summary>
             /// The minimum bitmap size by Bytes. Default 2048 * B8G8R8A8 format = 64kb.
@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             private const int MinimumBitmapSize = 2048;
 
-    #pragma warning restore
+#pragma warning restore
 
             /// <summary>
             /// Gets or sets a value indicating whether [enable bitmap cache].
@@ -68,9 +68,9 @@ namespace HelixToolkit.UWP
                 }
                 else if (bitmapCache == null || size.Width > bitmapCache.Size.Width || size.Height > bitmapCache.Size.Height)
                 {
-    #if DEBUGCACHECREATE
+#if DEBUGCACHECREATE
                     Debug.WriteLine("Create new bitmap cache.");
-    #endif
+#endif
                     Disposer.RemoveAndDispose(ref bitmapCache);
                     bitmapCache = BitmapProxy.Create("Cache", context.DeviceContext, size, Format.B8G8R8A8_UNorm);
                     IsBitmapCacheValid = true;
@@ -83,5 +83,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

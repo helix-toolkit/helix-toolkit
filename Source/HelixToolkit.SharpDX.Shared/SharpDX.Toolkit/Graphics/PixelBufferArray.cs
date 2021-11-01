@@ -32,7 +32,13 @@ namespace SharpDX.Toolkit.Graphics
         /// Gets the total number of pixel buffers.
         /// </summary>
         /// <returns>The total number of pixel buffers.</returns>
-        public int Count { get { return this.image.pixelBuffers.Length; } }
+        public int Count
+        {
+            get
+            {
+                return this.image.pixelBuffers.Length;
+            }
+        }
 
         /// <summary>
         /// Gets the pixel buffer for the specified array/z slice and mipmap level.

@@ -71,11 +71,11 @@ namespace HelixToolkit.UWP
                     return;
                 }
                 OnUpdatePerModelStruct();
-                if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+                if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct))
                 {
                     return;
                 }
-                if(materialVariables.BindMaterialResources(context, deviceContext, shaderPass))
+                if (materialVariables.BindMaterialResources(context, deviceContext, shaderPass))
                 {
                     shaderPass.BindShader(deviceContext);
                     shaderPass.BindStates(deviceContext, DefaultStateBinding);
@@ -85,7 +85,7 @@ namespace HelixToolkit.UWP
 
             protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if(!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+                if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct))
                 {
                     return;
                 }
@@ -96,29 +96,33 @@ namespace HelixToolkit.UWP
             {
                 var pass = materialVariables.GetShadowPass(RenderType, context);
                 if (pass.IsNULL)
-                { return; }
+                {
+                    return;
+                }
                 var v = new SimpleMeshStruct()
                 {
                     World = ModelMatrix,
                     HasInstances = InstanceBuffer.HasElements ? 1 : 0
                 };
-                if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v, SimpleMeshStruct.SizeInBytes))
+                if (!materialVariables.UpdateNonMaterialStruct(deviceContext, ref v))
                 {
                     return;
                 }
                 pass.BindShader(deviceContext);
-                pass.BindStates(deviceContext, ShadowStateBinding); 
+                pass.BindStates(deviceContext, ShadowStateBinding);
                 materialVariables.Draw(deviceContext, GeometryBuffer, InstanceBuffer.ElementCount);
             }
 
-            protected sealed override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext, 
+            protected sealed override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext,
                 Shaders.ShaderPass customPass)
             {
                 var pass = customPass ?? materialVariables.GetDepthPass(RenderType, context);
                 if (pass.IsNULL)
-                { return; }
+                {
+                    return;
+                }
                 OnUpdatePerModelStruct();
-                if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct, PointLineModelStruct.SizeInBytes))
+                if (!materialVariables.UpdateMaterialStruct(deviceContext, ref modelStruct))
                 {
                     return;
                 }
@@ -131,5 +135,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

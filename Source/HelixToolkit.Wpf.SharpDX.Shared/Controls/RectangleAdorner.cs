@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var m = ct.TransformToDevice;
-            double dpiFactor = 1 / m.M11;
+            var dpiFactor = 1 / m.M11;
 
             this.pen = new Pen(new SolidColorBrush(color1), thickness1 * dpiFactor);
             this.pen2 = new Pen(new SolidColorBrush(color2), thickness2 * dpiFactor);
@@ -148,7 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                if(rectangle != value)
+                if (rectangle != value)
                 {
                     rectangle = value;
                     InvalidateVisual();
@@ -164,10 +164,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected override void OnRender(DrawingContext dc)
         {
-            double halfPenWidth = this.pen.Thickness / 2;
+            var halfPenWidth = this.pen.Thickness / 2;
 
-            double mx = (this.Rectangle.Left + this.Rectangle.Right) / 2;
-            double my = (this.Rectangle.Top + this.Rectangle.Bottom) / 2;
+            var mx = (this.Rectangle.Left + this.Rectangle.Right) / 2;
+            var my = (this.Rectangle.Top + this.Rectangle.Bottom) / 2;
             mx = (int)mx + halfPenWidth;
             my = (int)my + halfPenWidth;
 

@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>netstandard1.3</TargetFramework>
     <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
     <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
     <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
-    <Company>HelixToolkit</Company>
+      <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+      <Company>HelixToolkit</Company>
     <Authors>HelixToolkit Contributors</Authors>
     <Version>0.0.0.1</Version>
     <RepositoryType>git</RepositoryType>
@@ -31,31 +30,7 @@
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Release|AnyCPU'">
-      <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE2_1</DefineConstants>
-      <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
-      <OutputPath>bin\Release\</OutputPath>
-      <NoWarn>1701;1702;1591;</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp2.1|Debug|AnyCPU'">
-      <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE2_1</DefineConstants>
-      <OutputPath>bin\Debug\</OutputPath>
-      <DocumentationFile></DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp3.1|Release|AnyCPU'">
-      <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE3_1</DefineConstants>
-      <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.Assimp.xml</DocumentationFile>
-      <OutputPath>bin\Release\</OutputPath>
-      <NoWarn>1701;1702;1591;</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)|$(Configuration)|$(Platform)'=='netcoreapp3.1|Debug|AnyCPU'">
-      <DefineConstants>TRACE;NETFX_CORE;CORE;NETCORE3_1</DefineConstants>
-      <OutputPath>bin\Debug\</OutputPath>
-      <DocumentationFile></DocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -69,10 +44,8 @@
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
   </ItemGroup>
     <ItemGroup>
-        <None Include="..\HelixToolkit.snk" />
-        <Compile Include="..\AssemblyInfo.cs">
-            <Link>Properties\AssemblyInfo.cs</Link>
-        </Compile>
+        
+
     </ItemGroup>
   <Import Project="..\HelixToolkit.SharpDX.Assimp.Shared\HelixToolkit.SharpDX.Assimp.Shared.projitems" Label="Shared" />
 

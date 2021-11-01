@@ -144,7 +144,7 @@ namespace HelixToolkit.UWP
                 {
                     return (RenderCore as IPostEffectBloom).BloomCombineSaturation;
                 }
-            } 
+            }
             #endregion
 
             /// <summary>
@@ -180,5 +180,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

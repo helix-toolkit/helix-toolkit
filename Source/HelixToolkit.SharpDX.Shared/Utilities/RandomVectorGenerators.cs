@@ -42,5 +42,4 @@ namespace HelixToolkit.UWP
             private readonly Random random = new Random(Environment.TickCount);
         }
     }
-
 }

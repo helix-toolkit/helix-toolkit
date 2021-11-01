@@ -39,7 +39,10 @@ namespace HelixToolkit.UWP
                     IsInitialized = false;
                 }
             }
-            get { return maskColor; }
+            get
+            {
+                return maskColor;
+            }
         }
         private ObservableCollection<ImageInfo> imageInfos = new ObservableCollection<ImageInfo>();
         public ObservableCollection<ImageInfo> ImageInfos
@@ -57,7 +60,10 @@ namespace HelixToolkit.UWP
                     }
                 }
             }
-            get { return imageInfos; }
+            get
+            {
+                return imageInfos;
+            }
         }
 
         public BillboardImage3D(Stream imageStream)
@@ -79,7 +85,7 @@ namespace HelixToolkit.UWP
 
         protected override void OnUpdateTextureAndBillboardVertices(IDeviceResources deviceResources)
         {
-            foreach(var img in ImageInfos)
+            foreach (var img in ImageInfos)
             {
                 img.UpdateImage();
                 DrawImageVertex(img);
@@ -125,7 +131,7 @@ namespace HelixToolkit.UWP
         protected override void OnAssignTo(Geometry3D target)
         {
             base.OnAssignTo(target);
-            if(target is BillboardImage3D t)
+            if (target is BillboardImage3D t)
             {
                 t.ImageInfos = new ObservableCollection<ImageInfo>(ImageInfos);
                 t.IsInitialized = false;
@@ -156,9 +162,18 @@ namespace HelixToolkit.UWP
 
     public class ImageInfo
     {
-        public Vector2 UV_TopLeft { set; get; }
-        public Vector2 UV_BottomRight { set; get; }
-        public Vector3 Position { set; get; }
+        public Vector2 UV_TopLeft
+        {
+            set; get;
+        }
+        public Vector2 UV_BottomRight
+        {
+            set; get;
+        }
+        public Vector3 Position
+        {
+            set; get;
+        }
         public float Width { set; get; } = 1;
         public float Height { set; get; } = 1;
         public float Angle { set; get; } = 0;
@@ -199,6 +214,9 @@ namespace HelixToolkit.UWP
             BoundSphere = new BoundingSphere(Position, Math.Max(Width * Scale, Height * Scale) / 2);
         }
 
-        public BoundingSphere BoundSphere { get; private set; }
+        public BoundingSphere BoundSphere
+        {
+            get; private set;
+        }
     }
 }

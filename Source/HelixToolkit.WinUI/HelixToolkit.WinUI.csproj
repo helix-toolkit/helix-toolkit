@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <None Include="..\HelixToolkit.snk" />
-        <Compile Include="..\AssemblyInfo.cs">
-            <Link>Properties\AssemblyInfo.cs</Link>
-        </Compile>
+        
+
     </ItemGroup>
     <PropertyGroup>
         <TargetFramework>net5.0-windows10.0.19041</TargetFramework>
@@ -16,8 +14,8 @@
         <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
         <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
         <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
-        <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
+        
+        
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -26,12 +24,14 @@
         <DocumentationFile></DocumentationFile>
         <OutputPath>bin\Debug</OutputPath>
         <WarningLevel>4</WarningLevel>
+        <NoWarn>1701;1702;CA1416</NoWarn>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <DefineConstants>WINUI; DX11_1</DefineConstants>
         <DocumentationFile>bin\Release\HelixToolkit.WinUI.xml</DocumentationFile>
         <OutputPath>bin\Release</OutputPath>
         <WarningLevel>4</WarningLevel>
+        <NoWarn>1701;1702;CA1416</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="CommonDX\SwapChainComposition2RenderHost.cs" />

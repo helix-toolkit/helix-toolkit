@@ -18,7 +18,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public struct OrderKey : IComparable<OrderKey>
         {
-            public uint Key { get; }
+            public uint Key
+            {
+                get;
+            }
 
             public OrderKey(uint key)
             {
@@ -38,5 +41,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

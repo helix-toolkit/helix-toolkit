@@ -25,7 +25,13 @@ namespace HelixToolkit.UWP
     /// </summary>
     public sealed class TextureResourceManager : IDisposable, ITextureResourceManager
     {
-        public int Count { get { return resourceDictionaryMipMaps.Count + resourceDictionaryNoMipMaps.Count; } }
+        public int Count
+        {
+            get
+            {
+                return resourceDictionaryMipMaps.Count + resourceDictionaryNoMipMaps.Count;
+            }
+        }
         private readonly Dictionary<Guid, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<Guid, ShaderResourceViewProxy>();
         private readonly Dictionary<Guid, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<Guid, ShaderResourceViewProxy>();
         private readonly Device device;
@@ -62,7 +68,7 @@ namespace HelixToolkit.UWP
             var targetDict = enableAutoGenMipMap ? resourceDictionaryMipMaps : resourceDictionaryNoMipMaps;
             lock (targetDict)
             {
-                if (targetDict.TryGetValue(textureModel.Guid, out ShaderResourceViewProxy view))
+                if (targetDict.TryGetValue(textureModel.Guid, out var view))
                 {
                     Debug.WriteLine("Re-using existing texture resource");
                     view.IncRef();
@@ -81,7 +87,7 @@ namespace HelixToolkit.UWP
                             targetDict.Remove(proxy.Guid);
                         }
                     };
-                    targetDict.Add(textureModel.Guid, proxy);                    
+                    targetDict.Add(textureModel.Guid, proxy);
                     return proxy;
                 }
             }

@@ -20,147 +20,105 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public sealed class BlendStatePool : StatePoolBase<BlendStateDescription, BlendState, BlendStateDescription>
+        public sealed class BlendStatePool : ReferenceCountedDictionaryPool<BlendStateDescription, BlendStateProxy, BlendStateDescription>
         {
+            private readonly Device device;
             /// <summary>
             /// Initializes a new instance of the <see cref="BlendStatePool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
-            public BlendStatePool(Device device) : base(device) { }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override BlendState Create(Device device, ref BlendStateDescription description)
+            public BlendStatePool(Device device) : base(true)
             {
-                if(device.FeatureLevel < global::SharpDX.Direct3D.FeatureLevel.Level_11_0 && description.IndependentBlendEnable)
+                this.device = device;
+            }
+
+            protected override bool CanCreate(ref BlendStateDescription key, ref BlendStateDescription argument)
+            {
+                return !IsDisposed;
+            }
+
+            protected override BlendStateProxy OnCreate(ref BlendStateDescription key, ref BlendStateDescription description)
+            {
+                if (device.FeatureLevel < global::SharpDX.Direct3D.FeatureLevel.Level_11_0 && description.IndependentBlendEnable)
                 {
                     description.IndependentBlendEnable = false;
                 }
-                return new BlendState(device, description);
-            }
-
-            protected override StateProxy<BlendState> CreateProxy(BlendState state)
-            {
-                return new BlendStateProxy(state);
-            }
-            /// <summary>
-            /// Gets the key.
-            /// </summary>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override BlendStateDescription GetKey(ref BlendStateDescription description)
-            {
-                return description;
+                return new BlendStateProxy(new BlendState(device, description));
             }
         }
         /// <summary>
         /// 
         /// </summary>
-        public sealed class DepthStencilStatePool : StatePoolBase<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
+        public sealed class DepthStencilStatePool : ReferenceCountedDictionaryPool<DepthStencilStateDescription, DepthStencilStateProxy, DepthStencilStateDescription>
         {
+            private readonly Device device;
             /// <summary>
             /// Initializes a new instance of the <see cref="DepthStencilStatePool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
-            public DepthStencilStatePool(Device device) : base(device) { }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override DepthStencilState Create(Device device, ref DepthStencilStateDescription description)
+            public DepthStencilStatePool(Device device) : base(true)
             {
-                return new DepthStencilState(device, description);
+                this.device = device;
             }
 
-            protected override StateProxy<DepthStencilState> CreateProxy(DepthStencilState state)
+            protected override bool CanCreate(ref DepthStencilStateDescription key, ref DepthStencilStateDescription argument)
             {
-                return new DepthStencilStateProxy(state);
+                return !IsDisposed;
             }
-            /// <summary>
-            /// Gets the key.
-            /// </summary>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override DepthStencilStateDescription GetKey(ref DepthStencilStateDescription description)
+
+            protected override DepthStencilStateProxy OnCreate(ref DepthStencilStateDescription key, ref DepthStencilStateDescription description)
             {
-                return description;
+                return new DepthStencilStateProxy(new DepthStencilState(device, description));
             }
         }
         /// <summary>
         /// 
         /// </summary>
-        public sealed class RasterStatePool : StatePoolBase<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
+        public sealed class RasterStatePool : ReferenceCountedDictionaryPool<RasterizerStateDescription, RasterizerStateProxy, RasterizerStateDescription>
         {
+            private readonly Device device;
             /// <summary>
             /// Initializes a new instance of the <see cref="RasterStatePool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
-            public RasterStatePool(Device device) : base(device) { }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override RasterizerState Create(Device device, ref RasterizerStateDescription description)
+            public RasterStatePool(Device device) : base(true)
             {
-                return new RasterizerState(device, description);
+                this.device = device;
             }
 
-            protected override StateProxy<RasterizerState> CreateProxy(RasterizerState state)
+            protected override bool CanCreate(ref RasterizerStateDescription key, ref RasterizerStateDescription argument)
             {
-                return new RasterizerStateProxy(state);
+                return !IsDisposed;
             }
-            /// <summary>
-            /// Gets the key.
-            /// </summary>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override RasterizerStateDescription GetKey(ref RasterizerStateDescription description)
+
+            protected override RasterizerStateProxy OnCreate(ref RasterizerStateDescription key, ref RasterizerStateDescription description)
             {
-                return description;
+                return new RasterizerStateProxy(new RasterizerState(device, description));
             }
         }
         /// <summary>
         /// 
         /// </summary>
-        public sealed class SamplerStatePool : StatePoolBase<SamplerStateDescription, SamplerState, SamplerStateDescription>
+        public sealed class SamplerStatePool : ReferenceCountedDictionaryPool<SamplerStateDescription, SamplerStateProxy, SamplerStateDescription>
         {
+            private readonly Device device;
             /// <summary>
             /// Initializes a new instance of the <see cref="SamplerStatePool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
-            public SamplerStatePool(Device device) : base(device)
+            public SamplerStatePool(Device device) : base(true)
             {
-            }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override SamplerState Create(Device device, ref SamplerStateDescription description)
-            {
-                return new SamplerState(device, description);
+                this.device = device;
             }
 
-            protected override StateProxy<SamplerState> CreateProxy(SamplerState state)
+            protected override bool CanCreate(ref SamplerStateDescription key, ref SamplerStateDescription argument)
             {
-                return new SamplerStateProxy(state);
+                return !IsDisposed;
             }
-            /// <summary>
-            /// Gets the key.
-            /// </summary>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override SamplerStateDescription GetKey(ref SamplerStateDescription description)
+
+            protected override SamplerStateProxy OnCreate(ref SamplerStateDescription key, ref SamplerStateDescription description)
             {
-                return description;
+                return new SamplerStateProxy(new SamplerState(device, description));
             }
         }
         /// <summary>
@@ -174,21 +132,30 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The blend state pool.
             /// </value>
-            public BlendStatePool BlendStatePool { private set; get; }
+            public BlendStatePool BlendStatePool
+            {
+                get;
+            }
             /// <summary>
             /// Gets or sets the raster state pool.
             /// </summary>
             /// <value>
             /// The raster state pool.
             /// </value>
-            public RasterStatePool RasterStatePool { private set; get; }
+            public RasterStatePool RasterStatePool
+            {
+                get;
+            }
             /// <summary>
             /// Gets or sets the depth stencil state pool.
             /// </summary>
             /// <value>
             /// The depth stencil state pool.
             /// </value>
-            public DepthStencilStatePool DepthStencilStatePool { private set; get; }
+            public DepthStencilStatePool DepthStencilStatePool
+            {
+                get;
+            }
 
             /// <summary>
             /// Gets or sets the sampler state pool.
@@ -196,7 +163,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The sampler state pool.
             /// </value>
-            public SamplerStatePool SamplerStatePool { private set; get; }
+            public SamplerStatePool SamplerStatePool
+            {
+                get;
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="StatePoolManager"/> class.
@@ -204,10 +174,10 @@ namespace HelixToolkit.UWP
             /// <param name="device">The device.</param>
             public StatePoolManager(Device device)
             {
-                BlendStatePool = Collect(new BlendStatePool(device));
-                RasterStatePool = Collect(new RasterStatePool(device));
-                DepthStencilStatePool = Collect(new DepthStencilStatePool(device));
-                SamplerStatePool = Collect(new SamplerStatePool(device));
+                BlendStatePool = new BlendStatePool(device);
+                RasterStatePool = new RasterStatePool(device);
+                DepthStencilStatePool = new DepthStencilStatePool(device);
+                SamplerStatePool = new SamplerStatePool(device);
             }
 
             /// <summary>
@@ -217,7 +187,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public BlendStateProxy Register(BlendStateDescription desc)
             {
-                return BlendStatePool.Register(desc) as BlendStateProxy;
+                return BlendStatePool.TryCreateOrGet(desc, desc, out var state) ? state : null;
             }
             /// <summary>
             /// Registers the specified desc.
@@ -226,7 +196,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public RasterizerStateProxy Register(RasterizerStateDescription desc)
             {
-                return RasterStatePool.Register(desc) as RasterizerStateProxy;
+                return RasterStatePool.TryCreateOrGet(desc, desc, out var state) ? state : null;
             }
             /// <summary>
             /// Registers the specified desc.
@@ -235,7 +205,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public DepthStencilStateProxy Register(DepthStencilStateDescription desc)
             {
-                return DepthStencilStatePool.Register(desc) as DepthStencilStateProxy;
+                return DepthStencilStatePool.TryCreateOrGet(desc, desc, out var state) ? state : null;
             }
             /// <summary>
             /// Registers the specified desc.
@@ -244,9 +214,17 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public SamplerStateProxy Register(SamplerStateDescription desc)
             {
-                return SamplerStatePool.Register(desc) as SamplerStateProxy;
+                return SamplerStatePool.TryCreateOrGet(desc, desc, out var state) ? state : null;
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                BlendStatePool.Dispose();
+                RasterStatePool.Dispose();
+                DepthStencilStatePool.Dispose();
+                SamplerStatePool.Dispose();
+                base.OnDispose(disposeManagedResources);
             }
         }
     }
-
 }

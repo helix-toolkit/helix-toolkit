@@ -25,21 +25,6 @@ namespace SharpDX.Toolkit.Graphics
         public readonly TextureDescription Description;
 
         /// <summary>
-        /// Gets the selector for a <see cref="ShaderResourceView"/>
-        /// </summary>
-        public readonly ShaderResourceViewSelector ShaderResourceView;
-
-        /// <summary>
-        /// Gets the selector for a <see cref="RenderTargetView"/>
-        /// </summary>
-        public readonly RenderTargetViewSelector RenderTargetView;
-
-        /// <summary>
-        /// Gets the selector for a <see cref="UnorderedAccessView"/>
-        /// </summary>
-        public readonly UnorderedAccessViewSelector UnorderedAccessView;
-
-        /// <summary>
         /// Gets a boolean indicating whether this <see cref="Texture"/> is a using a block compress format (BC1, BC2, BC3, BC4, BC5, BC6H, BC7).
         /// </summary>
         public readonly bool IsBlockCompressed;
@@ -54,12 +39,6 @@ namespace SharpDX.Toolkit.Graphics
         /// </summary>
         internal readonly int DepthStride;
 
-        internal TextureView defaultShaderResourceView;
-        internal Dictionary<TextureViewKey, TextureView> shaderResourceViews;
-        internal TextureView[] renderTargetViews;
-        internal UnorderedAccessView[] unorderedAccessViews;
-        private MipMapDescription[] mipmapDescriptions;
-
         /// <summary>
         /// 
         /// </summary>
@@ -71,10 +50,6 @@ namespace SharpDX.Toolkit.Graphics
             IsBlockCompressed = FormatHelper.IsCompressed(description.Format);
             RowStride = this.Description.Width * ((PixelFormat)this.Description.Format).SizeInBytes;
             DepthStride = RowStride * this.Description.Height;
-            ShaderResourceView = new ShaderResourceViewSelector(this);
-            RenderTargetView = new RenderTargetViewSelector(this);
-            UnorderedAccessView = new UnorderedAccessViewSelector(this);
-            mipmapDescriptions = Image.CalculateMipMapDescription(description);
         }
 
         /// <summary>	
@@ -85,7 +60,10 @@ namespace SharpDX.Toolkit.Graphics
         /// </remarks>
         public int Width
         {
-            get { return Description.Width; }
+            get
+            {
+                return Description.Width;
+            }
         }
 
         /// <summary>	
@@ -96,7 +74,10 @@ namespace SharpDX.Toolkit.Graphics
         /// </remarks>
         public int Height
         {
-            get { return Description.Height; }
+            get
+            {
+                return Description.Height;
+            }
         }
 
         /// <summary>	
@@ -107,7 +88,10 @@ namespace SharpDX.Toolkit.Graphics
         /// </remarks>
         public int Depth
         {
-            get { return Description.Depth; }
+            get
+            {
+                return Description.Depth;
+            }
         }
 
         /// <summary>
@@ -116,7 +100,10 @@ namespace SharpDX.Toolkit.Graphics
         /// <value>The texture format.</value>
         public PixelFormat Format
         {
-            get { return Description.Format; }
+            get
+            {
+                return Description.Format;
+            }
         }
 
         /// <summary>
@@ -127,24 +114,8 @@ namespace SharpDX.Toolkit.Graphics
         {
             // Be sure that we are storing only the main device (which contains the immediate context).
             base.Initialize(resource);
-            InitializeViews();
             // Gets a Texture ID
             textureId = resource.NativePointer.ToInt64();
-        }
-
-        /// <summary>
-        /// Initializes the views provided by this texture.
-        /// </summary>
-        protected abstract void InitializeViews();
-
-        /// <summary>
-        /// Gets the mipmap description of this instance for the specified mipmap level.
-        /// </summary>
-        /// <param name="mipmap">The mipmap.</param>
-        /// <returns>A description of a particular mipmap for this texture.</returns>
-        public MipMapDescription GetMipMapDescription(int mipmap)
-        {
-            return mipmapDescriptions[mipmap];
         }
 
         /// <summary>
@@ -157,7 +128,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             if (mipLevels > 1)
             {
-                int maxMips = CountMips(width);
+                var maxMips = CountMips(width);
                 if (mipLevels > maxMips)
                     throw new InvalidOperationException(String.Format("MipLevels must be <= {0}", maxMips));
             }
@@ -183,7 +154,7 @@ namespace SharpDX.Toolkit.Graphics
         {
             if (mipLevels > 1)
             {
-                int maxMips = CountMips(width, height);
+                var maxMips = CountMips(width, height);
                 if (mipLevels > maxMips)
                     throw new InvalidOperationException(String.Format("MipLevels must be <= {0}", maxMips));
             }
@@ -213,7 +184,7 @@ namespace SharpDX.Toolkit.Graphics
                 if (!IsPow2(width) || !IsPow2(height) || !IsPow2(depth))
                     throw new InvalidOperationException("Width/Height/Depth must be power of 2");
 
-                int maxMips = CountMips(width, height, depth);
+                var maxMips = CountMips(width, height, depth);
                 if (mipLevels > maxMips)
                     throw new InvalidOperationException(String.Format("MipLevels must be <= {0}", maxMips));
             }
@@ -264,7 +235,7 @@ namespace SharpDX.Toolkit.Graphics
         public int CalculateWidth<TData>(int mipLevel = 0) where TData : struct
         {
             var widthOnMip = CalculateMipSize((int)Description.Width, mipLevel);
-            var rowStride = widthOnMip * ((PixelFormat) Description.Format).SizeInBytes;
+            var rowStride = widthOnMip * ((PixelFormat)Description.Format).SizeInBytes;
 
             var dataStrideInBytes = Utilities.SizeOf<TData>() * widthOnMip;
             var width = ((double)rowStride / dataStrideInBytes) * widthOnMip;
@@ -326,21 +297,11 @@ namespace SharpDX.Toolkit.Graphics
 
             if ((description.BindFlags & BindFlags.RenderTarget) != 0)
             {
-                switch (description.Dimension)
-                {
-                    case TextureDimension.Texture1D:
-                        return RenderTarget1D.New(graphicsDevice, description);
-                    case TextureDimension.Texture2D:
-                        return RenderTarget2D.New(graphicsDevice, description);
-                    case TextureDimension.Texture3D:
-                        return RenderTarget3D.New(graphicsDevice, description);
-                    case TextureDimension.TextureCube:
-                        return RenderTargetCube.New(graphicsDevice, description);
-                }
-            } 
+                throw new NotSupportedException("RenderTarget is not supported.");
+            }
             else if ((description.BindFlags & BindFlags.DepthStencil) != 0)
             {
-                return DepthStencilBuffer.New(graphicsDevice, description);
+                throw new NotSupportedException("DepthStencil is not supported.");
             }
             else
             {
@@ -358,57 +319,6 @@ namespace SharpDX.Toolkit.Graphics
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Return an equivalent staging texture CPU read-writable from this instance.
-        /// </summary>
-        /// <returns></returns>
-        public abstract Texture ToStaging();
-
-        /// <summary>
-        /// Gets a specific <see cref="ShaderResourceView" /> from this texture.
-        /// </summary>
-        /// <param name="viewFormat"></param>
-        /// <param name="viewType">Type of the view slice.</param>
-        /// <param name="arrayOrDepthSlice">The texture array slice index.</param>
-        /// <param name="mipIndex">The mip map slice index.</param>
-        /// <returns>An <see cref="ShaderResourceView" /></returns>
-        internal abstract TextureView GetShaderResourceView(Format viewFormat, ViewType viewType, int arrayOrDepthSlice, int mipIndex);
-
-        /// <summary>
-        /// Gets a specific <see cref="RenderTargetView" /> from this texture.
-        /// </summary>
-        /// <param name="viewType">Type of the view slice.</param>
-        /// <param name="arrayOrDepthSlice">The texture array slice index.</param>
-        /// <param name="mipMapSlice">The mip map slice index.</param>
-        /// <returns>An <see cref="RenderTargetView" /></returns>
-        internal abstract TextureView GetRenderTargetView(ViewType viewType, int arrayOrDepthSlice, int mipMapSlice);
-
-        /// <summary>
-        /// Gets a specific <see cref="UnorderedAccessView"/> from this texture.
-        /// </summary>
-        /// <param name="arrayOrDepthSlice">The texture array slice index.</param>
-        /// <param name="mipMapSlice">The mip map slice index.</param>
-        /// <returns>An <see cref="UnorderedAccessView"/></returns>
-        internal abstract UnorderedAccessView GetUnorderedAccessView(int arrayOrDepthSlice, int mipMapSlice);
-
-        /// <summary>
-        /// ShaderResourceView casting operator.
-        /// </summary>
-        /// <param name="from">Source for the.</param>
-        public static implicit operator ShaderResourceView(Texture from)
-        {
-            return @from == null ? null : from.defaultShaderResourceView;
-        }
-
-        /// <summary>
-        /// UnorderedAccessView casting operator.
-        /// </summary>
-        /// <param name="from">Source for the.</param>
-        public static implicit operator UnorderedAccessView(Texture from)
-        {
-            return @from == null ? null : @from.unorderedAccessViews != null ? @from.unorderedAccessViews[0] : null;
         }
 
         /// <summary>
@@ -475,10 +385,10 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns>The resulting mipmap count (clamp to [1, maxMipMapCount] for this texture)</returns>
         internal static int CalculateMipMapCount(MipMapCount requestedLevel, int width, int height = 0, int depth = 0)
         {
-            int size = Math.Max(Math.Max(width, height), depth);
-            int maxMipMap = 1 + (int)Math.Log(size, 2);
+            var size = Math.Max(Math.Max(width, height), depth);
+            var maxMipMap = 1 + (int)Math.Log(size, 2);
 
-            return requestedLevel  == 0 ? maxMipMap : Math.Min(requestedLevel, maxMipMap);
+            return requestedLevel == 0 ? maxMipMap : Math.Min(requestedLevel, maxMipMap);
         }
 
         /// <summary>
@@ -492,16 +402,18 @@ namespace SharpDX.Toolkit.Graphics
         /// <param name="textureData"></param>
         /// <param name="fixedPointer"></param>
         /// <returns></returns>
-        internal static DataBox GetDataBox<T>(Format format, int width, int height, int depth, T[] textureData, IntPtr fixedPointer) where T : struct
+        internal static DataBox GetDataBox<T>(Format format, int width, int height, int depth, T[] textureData, IntPtr fixedPointer) where T : unmanaged
         {
             // Check that the textureData size is correct
-            if (textureData == null) throw new ArgumentNullException("textureData");
+            if (textureData == null)
+                throw new ArgumentNullException("textureData");
             int rowPitch;
             int slicePitch;
             int widthCount;
             int heightCount;
             Image.ComputePitch(format, width, height, out rowPitch, out slicePitch, out widthCount, out heightCount);
-            if (Utilities.SizeOf(textureData) != (slicePitch * depth)) throw new ArgumentException("Invalid size for TextureData");
+            if (Utilities.SizeOf(textureData) != (slicePitch * depth))
+                throw new ArgumentException("Invalid size for TextureData");
 
             return new DataBox(fixedPointer, rowPitch, slicePitch);
         }
@@ -522,7 +434,7 @@ namespace SharpDX.Toolkit.Graphics
 
         internal void GetViewSliceBounds(ViewType viewType, ref int arrayOrDepthIndex, ref int mipIndex, out int arrayOrDepthCount, out int mipCount)
         {
-            int arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
+            var arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
 
             switch (viewType)
             {
@@ -553,66 +465,24 @@ namespace SharpDX.Toolkit.Graphics
 
         internal int GetViewCount()
         {
-            int arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
+            var arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
             return GetViewIndex((ViewType)4, arrayOrDepthSize, this.Description.MipLevels);
         }
 
         internal int GetViewIndex(ViewType viewType, int arrayOrDepthIndex, int mipIndex)
         {
-            int arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
+            var arrayOrDepthSize = this.Description.Depth > 1 ? this.Description.Depth : this.Description.ArraySize;
             return (((int)viewType) * arrayOrDepthSize + arrayOrDepthIndex) * this.Description.MipLevels + mipIndex;
         }
 
-        /// <summary>
-        /// Called when name changed for this component.
-        /// </summary>
-        protected override void OnPropertyChanged(string propertyName)
-        {
-            base.OnPropertyChanged(propertyName);
-            if (propertyName == "Name")
-            {
-                if ((((Direct3D11.Device)GraphicsDevice).CreationFlags & DeviceCreationFlags.Debug) != 0)
-                {
-                    if (this.shaderResourceViews != null)
-                    {
-                        int i = 0;
-                        foreach(var shaderResourceViewItem in shaderResourceViews)
-                        {
-                            var shaderResourceView = shaderResourceViewItem.Value;
-                            if (shaderResourceView != null) shaderResourceView.View.DebugName = Name == null ? null : String.Format("{0} SRV[{1}]", i, Name);
-                            i++;
-                        }
-                    }
-
-                    if (this.renderTargetViews != null)
-                    {
-                        for (int i = 0; i < this.renderTargetViews.Length; i++)
-                        {
-                            var renderTargetView = this.renderTargetViews[i];
-                            if (renderTargetView != null) renderTargetView.View.DebugName = Name == null ? null : String.Format("{0} RTV[{1}]", i, Name);
-                        }
-                    }
-
-                    if (this.unorderedAccessViews != null)
-                    {
-                        for (int i = 0; i < this.unorderedAccessViews.Length; i++)
-                        {
-                            var unorderedAccessView = this.unorderedAccessViews[i];
-                            if (unorderedAccessView != null) unorderedAccessView.DebugName = Name == null ? null : String.Format("{0} UAV[{1}]", i, Name);
-                        }
-                    }
-                }
-            }
-        }
-
-        private static bool IsPow2( int x )
+        private static bool IsPow2(int x)
         {
             return ((x != 0) && (x & (x - 1)) == 0);
         }
 
         private static int CountMips(int width)
         {
-            int mipLevels = 1;
+            var mipLevels = 1;
 
             while (width > 1)
             {
@@ -627,7 +497,7 @@ namespace SharpDX.Toolkit.Graphics
 
         private static int CountMips(int width, int height)
         {
-            int mipLevels = 1;
+            var mipLevels = 1;
 
             while (height > 1 || width > 1)
             {
@@ -645,7 +515,7 @@ namespace SharpDX.Toolkit.Graphics
 
         private static int CountMips(int width, int height, int depth)
         {
-            int mipLevels = 1;
+            var mipLevels = 1;
 
             while (height > 1 || width > 1 || depth > 1)
             {
@@ -714,7 +584,8 @@ namespace SharpDX.Toolkit.Graphics
 
             public override bool Equals(object obj)
             {
-                if(ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(null, obj))
+                    return false;
                 return obj is TextureViewKey && Equals((TextureViewKey)obj);
             }
 

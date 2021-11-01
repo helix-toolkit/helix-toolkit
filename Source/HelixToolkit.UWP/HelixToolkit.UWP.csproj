@@ -122,10 +122,10 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
+    
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
@@ -141,9 +141,7 @@
     <Compile Include="CommonDX\SwapChainCompositionRenderHost.cs" />
     <Compile Include="CommonDX\SwapChainRenderHost.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
+
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -40,10 +40,12 @@ namespace HelixToolkit.UWP
                         RemoveAndDispose(ref old);
                         if (value != null)
                         {
-                            Collect(value);
                             ImageSize = bitmap.Size;
                         }
-                        else { ImageSize = new Size2F(); }
+                        else
+                        {
+                            ImageSize = new Size2F();
+                        }
                     }
                 }
                 get
@@ -57,7 +59,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The size of the image.
             /// </value>
-            public Size2F ImageSize { private set; get; }
+            public Size2F ImageSize
+            {
+                private set; get;
+            }
 
             private float opacity = 1;
             /// <summary>
@@ -106,7 +111,12 @@ namespace HelixToolkit.UWP
             {
                 context.DeviceContext.DrawBitmap(Bitmap, LayoutBound, Opacity, InterpolationMode);
             }
+
+            protected override void OnDetach()
+            {
+                RemoveAndDispose(ref bitmap);
+                base.OnDetach();
+            }
         }
     }
-
 }

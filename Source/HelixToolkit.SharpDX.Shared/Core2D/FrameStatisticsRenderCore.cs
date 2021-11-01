@@ -42,7 +42,6 @@ namespace HelixToolkit.UWP
                     if (SetAffectsRender(ref foreground, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                     }
                 }
                 get
@@ -66,7 +65,6 @@ namespace HelixToolkit.UWP
                     if (SetAffectsRender(ref background, value))
                     {
                         RemoveAndDispose(ref old);
-                        Collect(value);
                     }
                 }
                 get
@@ -87,11 +85,21 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override bool OnAttach(IRenderHost target)
             {
-                factory = Collect(new Factory(FactoryType.Isolated));
-                format = Collect(new TextFormat(factory, "Arial", 12 * target.DpiScale));
+                factory = new Factory(FactoryType.Isolated);
+                format = new TextFormat(factory, "Arial", 12 * target.DpiScale);
                 previousStr = "";
                 this.statistics = target.RenderStatistics;
                 return base.OnAttach(target);
+            }
+
+            protected override void OnDetach()
+            {
+                RemoveAndDispose(ref format);
+                RemoveAndDispose(ref foreground);
+                RemoveAndDispose(ref background);
+                RemoveAndDispose(ref textLayout);
+                RemoveAndDispose(ref factory);
+                base.OnDetach();
             }
             /// <summary>
             /// Determines whether this instance can render the specified context.
@@ -110,29 +118,28 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             protected override void OnRender(RenderContext2D context)
             {
-                if(background == null)
+                if (background == null)
                 {
                     Background = new D2D.SolidColorBrush(context.DeviceContext, new Color4(0.8f, 0.8f, 0.8f, 0.6f));
                 }
-                if(foreground == null)
+                if (foreground == null)
                 {
                     Foreground = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue);
                 }
                 var str = statistics.GetDetailString();
-                if (str != previousStr)
+                if (str != previousStr || textLayout == null)
                 {
                     previousStr = str;
                     RemoveAndDispose(ref textLayout);
-                    textLayout = Collect(new TextLayout(factory, str, format, float.MaxValue, float.MaxValue));
+                    textLayout = new TextLayout(factory, str, format, float.MaxValue, float.MaxValue);
                 }
                 var metrices = textLayout.Metrics;
                 renderBound.Width = Math.Max(metrices.Width, renderBound.Width);
                 renderBound.Height = metrices.Height;
-                context.DeviceContext.Transform = Matrix3x2.Translation((float)context.ActualWidth - renderBound.Width, 0);                                     
+                context.DeviceContext.Transform = Matrix3x2.Translation((float)context.ActualWidth - renderBound.Width, 0);
                 context.DeviceContext.FillRectangle(renderBound, background);
                 context.DeviceContext.DrawTextLayout(Vector2.Zero, textLayout, foreground);
             }
         }
     }
-
 }

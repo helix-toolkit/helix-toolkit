@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
 {
     namespace Core
     {
-        using Shaders;   
+        using Shaders;
         using Utilities;
         using Render;
         /// <summary>
@@ -80,6 +80,7 @@ namespace HelixToolkit.UWP
             private SamplerStateProxy textureSampler;
             private int textureSamplerSlot;
             private ShaderPass DefaultShaderPass;
+            private SkyBoxBufferModel skyBuffer;
             #endregion
 
             #region Properties
@@ -94,7 +95,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref cubeTexture, value) && IsAttached)
+                    if (SetAffectsRender(ref cubeTexture, value) && IsAttached)
                     {
                         UpdateTexture();
                     }
@@ -123,11 +124,11 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref samplerDescription, value) && IsAttached)
+                    if (SetAffectsRender(ref samplerDescription, value) && IsAttached)
                     {
                         var newSampler = EffectTechnique.EffectsManager.StateManager.Register(value);
                         RemoveAndDispose(ref textureSampler);
-                        textureSampler = Collect(newSampler);
+                        textureSampler = newSampler;
                     }
                 }
                 get
@@ -169,13 +170,12 @@ namespace HelixToolkit.UWP
                 {
                     DefaultShaderPass = technique[DefaultPassNames.Default];
                     OnDefaultPassChanged(DefaultShaderPass);
-                    var buffer = Collect(new SkyBoxBufferModel());
-                    buffer.Geometry = new PointGeometry3D() { Positions = BoxPositions };
-                    buffer.Topology = PrimitiveTopology.TriangleList;
-                    GeometryBuffer = buffer;
-                    cubeTextureRes = Collect(new ShaderResourceViewProxy(Device));
+                    skyBuffer = new SkyBoxBufferModel();
+                    skyBuffer.Geometry = new PointGeometry3D() { Positions = BoxPositions };
+                    skyBuffer.Topology = PrimitiveTopology.TriangleList;
+                    GeometryBuffer = skyBuffer;
                     UpdateTexture();
-                    textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+                    textureSampler = technique.EffectsManager.StateManager.Register(SamplerDescription);
                     return true;
                 }
                 else
@@ -187,25 +187,26 @@ namespace HelixToolkit.UWP
             private void UpdateTexture()
             {
                 MipMapLevels = 0;
+                RemoveAndDispose(ref cubeTextureRes);
+
                 if (cubeTexture != null)
                 {
+                    cubeTextureRes = new ShaderResourceViewProxy(Device);
                     cubeTextureRes.CreateView(cubeTexture);
-                    if(cubeTextureRes.TextureView != null && cubeTextureRes.TextureView.Description.Dimension == ShaderResourceViewDimension.TextureCube)
+                    if (cubeTextureRes.TextureView != null && cubeTextureRes.TextureView.Description.Dimension == ShaderResourceViewDimension.TextureCube)
                     {
                         MipMapLevels = cubeTextureRes.TextureView.Description.TextureCube.MipLevels;
                     }
-                }
-                else
-                {
-                    cubeTextureRes.DisposeAndClear();
                 }
             }
 
             protected override void OnDetach()
             {
                 MipMapLevels = 0;
-                textureSampler = null;
-                cubeTextureRes = null;
+                GeometryBuffer = null;
+                RemoveAndDispose(ref skyBuffer);
+                RemoveAndDispose(ref textureSampler);
+                RemoveAndDispose(ref cubeTextureRes);
                 base.OnDetach();
             }
 
@@ -250,12 +251,12 @@ namespace HelixToolkit.UWP
             /// <param name="deviceContext">The device context.</param>
             protected sealed override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
             {
-            
+
             }
 
             protected sealed override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext)
             {
-            
+
             }
             protected sealed override void OnRenderDepth(RenderContext context, DeviceContextProxy deviceContext, Shaders.ShaderPass customPass)
             {
@@ -286,5 +287,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

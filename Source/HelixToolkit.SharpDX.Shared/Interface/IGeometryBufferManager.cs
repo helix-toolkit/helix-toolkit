@@ -15,7 +15,10 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IGeometryBufferManager : IDisposable
     {
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
         /// <summary>
         /// Registers the specified model unique identifier.
         /// </summary>

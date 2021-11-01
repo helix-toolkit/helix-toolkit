@@ -26,9 +26,18 @@ namespace HelixToolkit.UWP
         {
             private readonly LineMaterialCore material;
 
-            public ShaderPass LinePass { get; }
-            public ShaderPass ShadowPass { get; }
-            public ShaderPass DepthPass { get; }
+            public ShaderPass LinePass
+            {
+                get;
+            }
+            public ShaderPass ShadowPass
+            {
+                get;
+            }
+            public ShaderPass DepthPass
+            {
+                get;
+            }
             /// <summary>
             /// Set texture variable name insider shader for binding
             /// </summary>
@@ -54,7 +63,7 @@ namespace HelixToolkit.UWP
             /// <param name="depthPassName">Name of the depth pass</param>
             public LineMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineMaterialCore materialCore,
                 string linePassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass,
-                string depthPassName = DefaultPassNames.DepthPrepass) 
+                string depthPassName = DefaultPassNames.DepthPrepass)
                 : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
             {
                 textureManager = manager.MaterialTextureManager;
@@ -64,7 +73,7 @@ namespace HelixToolkit.UWP
                 this.material = materialCore;
                 shaderTextureSlot = LinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
                 textureSamplerSlot = LinePass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
-                textureSampler = Collect(EffectsManager.StateManager.Register(materialCore.SamplerDescription));
+                textureSampler = EffectsManager.StateManager.Register(materialCore.SamplerDescription);
             }
 
             protected override void OnInitialPropertyBindings()
@@ -83,10 +92,11 @@ namespace HelixToolkit.UWP
                     CreateTextureView(material.Texture);
                     WriteValue(PointLineMaterialStruct.HasTextureStr, textureResource != null ? 1 : 0);
                 });
-                AddPropertyBinding(nameof(LineMaterialCore.SamplerDescription), () => {
+                AddPropertyBinding(nameof(LineMaterialCore.SamplerDescription), () =>
+                {
                     var newSampler = EffectsManager.StateManager.Register(material.SamplerDescription);
                     RemoveAndDispose(ref textureSampler);
-                    textureSampler = Collect(newSampler);
+                    textureSampler = newSampler;
                 });
             }
 
@@ -95,7 +105,7 @@ namespace HelixToolkit.UWP
             {
                 var newRes = texture == null ? null : textureManager.Register(texture);
                 RemoveAndDispose(ref textureResource);
-                textureResource = Collect(newRes);
+                textureResource = newRes;
             }
 
             public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)
@@ -125,14 +135,20 @@ namespace HelixToolkit.UWP
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
             {
-                if(textureResource != null)
+                if (textureResource != null)
                 {
                     shaderPass.PixelShader.BindTexture(deviceContext, shaderTextureSlot, textureResource);
                     shaderPass.PixelShader.BindSampler(deviceContext, textureSamplerSlot, textureSampler);
                 }
                 return true;
             }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref textureResource);
+                RemoveAndDispose(ref textureSampler);
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
-
 }

@@ -207,7 +207,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     OnCameraChanged();
                 }
             }
-            get { return actualCamera; }
+            get
+            {
+                return actualCamera;
+            }
         }
 
         /// <summary>
@@ -568,7 +571,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set; get;
         } = Vector2.One;
 
-#region TouchGesture
+        #region TouchGesture
         public bool EnableTouchRotate { set; get; } = true;
         public bool EnablePinchZoom { set; get; } = true;
         public bool EnableThreeFingerPan { set; get; } = true;
@@ -808,7 +811,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void PushCameraSetting()
         {
-            if(ActualCamera == null)
+            if (ActualCamera == null)
             {
                 return;
             }
@@ -972,7 +975,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             // number of manipulators (fingers)
-            int n = e.Manipulators.Count();
+            var n = e.Manipulators.Count();
             var p = e.ManipulationOrigin;
             var position = new Point(this.touchPreviousPoint.X + e.DeltaManipulation.Translation.X, this.touchPreviousPoint.Y + e.DeltaManipulation.Translation.Y);
             this.touchPreviousPoint = position;
@@ -1039,7 +1042,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.rotateHandler.Delta(position);
                     e.Handled = true;
-                    if (!this.allowCombinedManipulation) return;
+                    if (!this.allowCombinedManipulation)
+                        return;
                 }
 
                 if (this.EnablePinchZoom && n == this.zoomFingerCount)
@@ -1070,7 +1074,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
 
                     e.Handled = true;
-                    if (!this.allowCombinedManipulation) return;
+                    if (!this.allowCombinedManipulation)
+                        return;
                 }
 
                 if (this.EnableThreeFingerPan && n == this.panFingerCount)
@@ -1237,7 +1242,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var axis2 = Vector3.Normalize(Vector3.Cross(axis1, this.CameraLookDirection));
             axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
             float l = 0;
-            if(actualCamera is PerspectiveCamera)
+            if (actualCamera is PerspectiveCamera)
             {
                 // this should be dependent on distance to target?
                 l = this.CameraLookDirection.Length();
@@ -1435,7 +1440,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetPosition(Viewport);
-                if (this.Viewport.FindNearest(point.ToVector2(), out Vector3 nearestPoint, out Vector3 normal, out var model))
+                if (this.Viewport.FindNearest(point.ToVector2(), out var nearestPoint, out var normal, out var model))
                 {
                     this.AddZoomForce(-e.Delta * 0.001f, nearestPoint);
                     e.Handled = true;
@@ -1464,7 +1469,7 @@ namespace HelixToolkit.Wpf.SharpDX
             time = Math.Min(time, 0.05f); // Clamp the maximum time elapse to prevent over shooting
             // should be independent of time
             var factor = this.IsInertiaEnabled ? (float)Clamp(Math.Pow(this.InertiaFactor, time / 0.02f), 0.1f, 1) : 0;
-            bool needUpdate = false;
+            var needUpdate = false;
 
             if (this.rotationSpeed.LengthSquared() > 0.1f)
             {
