@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+We did some major code refactoring and changes in this release.
+
+### Improvement
+1. Improved constant buffer array management in `MaterialVariable` and `ConstantBufferComponent`. Use single array to hold all structs used by material with same size.(WPF.SharpDX/UWP/Core)
+1. Simplified `DisposeObject` base class. Remove `Collect` function and object dictionary. All graphics resources must call `RemoveAndDispose` to free either on `OnDispose` if the resource is created in constructor or `OnDetach` if the resource is created in `OnAttach`. (WPF.SharpDX/UWP/Core)
+1. Improved all buffer upload functions to avoid creating `DataStream` object to reduce GC during rendering.(WPF.SharpDX/UWP/Core)
+1. Upgraded the Dot Net minimum requirements from **4.5** to **4.6** on `HelixToolkit.SharpDX.Wpf`. (WPF.SharpDX)
+1. Upgraded net standard from **1.1** to **1.3** on `Helixtoolkit.SharpDX.Core`. (Core)
+1. Improved resource pool implementation. (WPF.SharpDX/UWP/Core)
+
 ## [2.20.0] - 2021-10-31
 ### Added
 1. Post effect support in screen spaced group. (WPF.SharpDX/UWP/Core)
