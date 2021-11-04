@@ -164,6 +164,20 @@ namespace HelixToolkit.UWP
             {
                 Clear();
                 AddItems(ItemsSource);
+
+                itemsSource = ItemsSource;
+
+                if (ItemsSource is INotifyCollectionChanged n)
+                {
+                    n.CollectionChanged -= ItemsModel3D_CollectionChanged;
+                    n.CollectionChanged += ItemsModel3D_CollectionChanged;
+                }
+
+                if (Children.Count > 0)
+                {
+                    var groupNode = SceneNode as GroupNode;
+                    groupNode.OctreeManager?.RequestRebuild();
+                }
             }
         }
 
