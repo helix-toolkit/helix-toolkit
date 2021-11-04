@@ -465,6 +465,10 @@ namespace HelixToolkit.UWP
             {
                 orth.LookAt(center, 0);
                 var newWidth = radius * 2;
+                if (viewport.ActualWidth > viewport.ActualHeight)
+                {
+                    newWidth = radius * 2 * viewport.ActualWidth / viewport.ActualHeight;
+                }
                 orth.AnimateWidth(newWidth, animationTime);
             }
         }
