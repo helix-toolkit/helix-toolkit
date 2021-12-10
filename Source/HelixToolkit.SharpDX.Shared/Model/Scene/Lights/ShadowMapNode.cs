@@ -258,7 +258,8 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override bool CanRender(RenderContext context)
             {
-                return base.CanRender(context) && RenderHost.IsShadowMapEnabled;
+                (RenderCore as ShadowMapCore).NeedRender = base.CanRender(context) && RenderHost.IsShadowMapEnabled;
+                return true;
             }
 
             private BoundingBox FindSceneBound(FastList<SceneNode> nodes)

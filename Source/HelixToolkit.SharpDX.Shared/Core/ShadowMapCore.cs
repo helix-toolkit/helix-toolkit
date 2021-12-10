@@ -212,6 +212,8 @@ namespace HelixToolkit.UWP
             /// Update shadow map every N frames
             /// </summary>
             public int UpdateFrequency { set; get; } = 1;
+
+            public bool NeedRender { set; get; } = true;
             #endregion
 
             /// <summary>
@@ -227,6 +229,12 @@ namespace HelixToolkit.UWP
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
+                if (!NeedRender)
+                {
+                    modelStruct.HasShadowMap = 0;
+                    modelCB.Upload(deviceContext, ref modelStruct);
+                    return;
+                }
                 OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
                 ++currentFrame;
                 currentFrame %= Math.Max(1, UpdateFrequency);
