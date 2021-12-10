@@ -127,6 +127,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            private bool isShadowMapEnabled = false;
             /// <summary>
             /// Gets or sets a value indicating whether shadow map enabled.
             /// </summary>
@@ -135,8 +136,16 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsShadowMapEnabled
             {
-                set; get;
-            } = false;
+                set
+                {
+                    isShadowMapEnabled = value;
+                    InvalidateRender();
+                }
+                get
+                {
+                    return isShadowMapEnabled;
+                }
+            }
 
             private MSAALevel msaa = MSAALevel.Disable;
             /// <summary>
