@@ -513,7 +513,7 @@ namespace HelixToolkit.Wpf
             }
 
             var reader = new BinaryReader(stream);
-            this.Header = System.Text.Encoding.ASCII.GetString(reader.ReadBytes(80)).Trim(); 
+            this.Header = System.Text.Encoding.ASCII.GetString(reader.ReadBytes(80)).Trim();
             uint numberTriangles = ReadUInt32(reader);
 
             if (length - 84 != numberTriangles * 50)
