@@ -12,6 +12,10 @@ We did some major code refactoring and changes in this release.
 1. Upgraded net standard from **1.1** to **1.3** on `Helixtoolkit.SharpDX.Core`. (Core)
 1. Improved resource pool implementation. (WPF.SharpDX/UWP/Core)
 
+## [2.20.1] - 2022-01-19
+### Fixed
+1. Fixed stl reader failed to read any ASCii files on Dot net 5. (WPF)
+
 ## [2.20.0] - 2021-10-31
 ### Added
 1. Post effect support in screen spaced group. (WPF.SharpDX/UWP/Core)
