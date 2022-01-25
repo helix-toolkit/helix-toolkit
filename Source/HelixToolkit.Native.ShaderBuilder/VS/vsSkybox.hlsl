@@ -3,7 +3,7 @@
 
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
-const static float d = 1 / tan(3.1415926 / 4);
+const static float d = 1.0 / tan(3.1415926 / 4);
 
 PSInputCube main(float3 input : SV_Position)
 {
@@ -18,6 +18,8 @@ PSInputCube main(float3 input : SV_Position)
     }
     //Set w = 0 to make sure depth is infinite. Must disable depth clipping
     output.p = mul(mul(float4(input, 0), viewNoTranslate), proj);
+    output.p.z = output.p.z == 0 ? 1e-7 : output.p.z;
+    output.p.w = output.p.w == 0 ? 1e-7 : output.p.w;
     output.t = input;
     output.c = float4(1, 1, 1, 1);
     return output;
