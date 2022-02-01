@@ -115,6 +115,7 @@ namespace HelixToolkit.UWP
             private readonly InstancingMeshNode CornerModel;
 
             private bool isRightHanded = true;
+            private List<HitTestResult> hitsInternal = new List<HitTestResult>();
             #endregion
 
             static ViewBoxNode()
@@ -307,12 +308,14 @@ namespace HelixToolkit.UWP
 
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                if (base.OnHitTest(context, totalModelMatrix, ref hits))
+                if (base.OnHitTest(context, totalModelMatrix, ref hitsInternal))
                 {
                     Debug.WriteLine("View box hit.");
-                    var hit = hits[0];
-                    var normal = Vector3.Zero;
-                    var inv = isRightHanded ? 1 : -1;
+                    var hit = hitsInternal.OrderBy(x => x.Distance).FirstOrDefault();
+                    if (hit == null)
+                    { return false; }
+                    Vector3 normal = Vector3.Zero;
+                    int inv = isRightHanded ? 1 : -1;
                     if (hit.ModelHit == ViewBoxMeshModel)
                     {
                         normal = -hit.NormalAtHit * inv;
@@ -345,6 +348,10 @@ namespace HelixToolkit.UWP
                     }
                     normal.Normalize();
                     hit.NormalAtHit = normal;
+                    hit.ModelHit = this;
+                    hit.Tag = this.Tag;
+                    hits.Add(hit);
+                    hitsInternal.Clear();
                     return true;
                 }
                 else
