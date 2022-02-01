@@ -170,8 +170,40 @@ namespace CrossSectionDemo
             EdgeHGeometry.UpdateOctree();
         }
 
+        public static ICommand Cmd
+        {
+            get
+            {
+                if (cmd == null)
+                {
+                    cmd = new myCmd();    
+                }
+                return cmd;
+            }
+        }
+
+        private static ICommand cmd = null;
+
+        private class myCmd : ICommand
+        {
+            public event EventHandler CanExecuteChanged;
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                
+            }
+        }
+
+
+
         public CrossSectionPlaneManipulator3D()
         {
+            // corner manipulation is used to move the plane along its normal
             this.cornerHandle = new MeshGeometryModel3D()
             {
                 Geometry = NodeGeometry,
@@ -181,14 +213,26 @@ namespace CrossSectionDemo
             this.cornerHandle.MouseUp3D += OnNodeMouse3DUp;
             this.cornerHandle.MouseDown3D += OnNodeMouse3DDown;
 
+            // edge manipulation is used to rotate the plane
             this.edgeHandle = new MeshGeometryModel3D()
             {
                 Geometry = EdgeHGeometry,
                 CullMode = SharpDX.Direct3D11.CullMode.Back,
             };
-            this.edgeHandle.MouseMove3D += OnEdgeMouse3DMove;
-            this.edgeHandle.MouseUp3D += OnEdgeMouse3DUp;
-            this.edgeHandle.MouseDown3D += OnEdgeMouse3DDown;
+            //this.edgeHandle.MouseMove3D += OnEdgeMouse3DMove;
+            //this.edgeHandle.MouseUp3D += OnEdgeMouse3DUp;
+            //this.edgeHandle.MouseDown3D += OnEdgeMouse3DDown;
+            MouseGesture CutCmdMouseGesture = new MouseGesture(MouseAction.MiddleClick);
+            MouseBinding CutMouseBinding = new MouseBinding(
+                Cmd,
+                CutCmdMouseGesture
+                );
+            if (edgeHandle.InputBindings != null)
+            {
+                edgeHandle.InputBindings.Add(CutMouseBinding);
+            }
+            
+            // completing setup
             this.Children.Add(cornerHandle);
             this.Children.Add(edgeHandle);
 
@@ -272,6 +316,7 @@ namespace CrossSectionDemo
             {
                 RotateTrackball(startPoint, arg.Position, currentTranslation.TranslationVector);
                 startPoint = arg.Position;
+                e.Handled=true;
             }
         }
 
