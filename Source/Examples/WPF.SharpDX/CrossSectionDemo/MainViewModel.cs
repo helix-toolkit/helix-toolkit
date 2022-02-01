@@ -155,6 +155,10 @@
             binding.Mode = mode;
             BindingOperations.SetBinding(dobj, property, binding);
         }
+
+        private Vector3? constraintVector = new Vector3(0,1,0);
+
+        public Vector3? ConstraintVector { get => constraintVector; set => SetValue(ref constraintVector, value); }
     }
 
 }
