@@ -36,21 +36,30 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The color.
             /// </value>
-            Color4 Color { set; get; }
+            Color4 Color
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the outline fading factor.
             /// </summary>
             /// <value>
             /// The outline fading factor.
             /// </value>
-            float OutlineFadingFactor { set; get; }
+            float OutlineFadingFactor
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
             /// </summary>
             /// <value>
             ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
             /// </value>
-            bool EnableDoublePass { set; get; }
+            bool EnableDoublePass
+            {
+                set; get;
+            }
         }
         /// <summary>
         /// 
@@ -73,8 +82,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public string EffectName
             {
-                set { SetAffectsCanRenderFlag(ref effectName, value); }
-                get { return effectName; }
+                set
+                {
+                    SetAffectsCanRenderFlag(ref effectName, value);
+                }
+                get
+                {
+                    return effectName;
+                }
             }
 
             /// <summary>
@@ -89,7 +104,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.Color, value);
                 }
-                get { return modelStruct.Color; }
+                get
+                {
+                    return modelStruct.Color;
+                }
             }
 
             /// <summary>
@@ -101,7 +119,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.Param.M11, value);
                 }
-                get { return modelStruct.Param.M11; }
+                get
+                {
+                    return modelStruct.Param.M11;
+                }
             }
 
             private bool doublePass = false;
@@ -129,13 +150,13 @@ namespace HelixToolkit.UWP
             public PostEffectMeshXRayCore() : base(RenderType.PostEffect)
             {
                 modelCB = AddComponent(new ConstantBufferComponent(new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes)));
-                Color = global::SharpDX.Color.Blue;           
+                Color = global::SharpDX.Color.Blue;
             }
 
 
             protected override bool OnAttach(IRenderTechnique technique)
             {
-                depthPrepassCore = Collect(new DepthPrepassCore());
+                depthPrepassCore = new DepthPrepassCore();
                 depthPrepassCore.Attach(technique);
                 return true;
             }
@@ -143,8 +164,7 @@ namespace HelixToolkit.UWP
             protected override void OnDetach()
             {
                 depthPrepassCore.Detach();
-                depthPrepassCore = null;
-                base.OnDetach();
+                RemoveAndDispose(ref depthPrepassCore);
             }
 
             /// <summary>
@@ -155,7 +175,7 @@ namespace HelixToolkit.UWP
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 var buffer = context.RenderHost.RenderBuffer;
-                bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
+                var hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
                 var dPass = EnableDoublePass;
                 var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
                 deviceContext.SetRenderTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV);
@@ -170,28 +190,31 @@ namespace HelixToolkit.UWP
                 }
                 deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 1, 0);
                 if (dPass)
-                {                                   
-                    for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                {
+                    for (var i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                     {
                         var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                        if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                        if (mesh.TryGetPostEffect(EffectName, out var effect))
                         {
                             currentCores.Add(new KeyValuePair<SceneNode, IEffectAttributes>(mesh, effect));
                             context.CustomPassName = DefaultPassNames.EffectMeshXRayP1;
                             var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP1];
-                            if (pass.IsNULL) { continue; }
+                            if (pass.IsNULL)
+                            {
+                                continue;
+                            }
                             pass.BindShader(deviceContext);
                             pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                             mesh.RenderCustom(context, deviceContext);
                         }
                     }
                     modelCB.Upload(deviceContext, ref modelStruct);
-                    for (int i = 0; i < currentCores.Count; ++i)
+                    for (var i = 0; i < currentCores.Count; ++i)
                     {
                         var mesh = currentCores[i];
-                        IEffectAttributes effect = mesh.Value;
+                        var effect = mesh.Value;
                         var color = Color;
-                        if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                        if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out var attribute) && attribute is string colorStr)
                         {
                             color = colorStr.ToColor4();
                         }
@@ -203,23 +226,26 @@ namespace HelixToolkit.UWP
 
                         context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
                         var pass = mesh.Key.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
-                        if (pass.IsNULL) { continue; }
+                        if (pass.IsNULL)
+                        {
+                            continue;
+                        }
                         pass.BindShader(deviceContext);
                         pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                         mesh.Key.RenderCustom(context, deviceContext);
                     }
-                    currentCores.Clear();                
+                    currentCores.Clear();
                 }
                 else
                 {
                     modelCB.Upload(deviceContext, ref modelStruct);
-                    for (int i =0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
+                    for (var i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                     {
                         var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                        if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
+                        if (mesh.TryGetPostEffect(EffectName, out var effect))
                         {
                             var color = Color;
-                            if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
+                            if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out var attribute) && attribute is string colorStr)
                             {
                                 color = colorStr.ToColor4();
                             }
@@ -230,7 +256,10 @@ namespace HelixToolkit.UWP
                             }
                             context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
                             var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
-                            if (pass.IsNULL) { continue; }
+                            if (pass.IsNULL)
+                            {
+                                continue;
+                            }
                             pass.BindShader(deviceContext);
                             pass.BindStates(deviceContext, StateType.BlendState);
                             deviceContext.SetDepthStencilState(pass.DepthStencilState, 0);
@@ -251,5 +280,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

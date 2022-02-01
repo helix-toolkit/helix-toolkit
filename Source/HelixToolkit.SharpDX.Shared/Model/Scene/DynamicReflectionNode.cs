@@ -136,8 +136,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsDynamicScene
             {
-                set { (RenderCore as IDynamicReflector).IsDynamicScene = value; }
-                get { return (RenderCore as IDynamicReflector).IsDynamicScene; }
+                set
+                {
+                    (RenderCore as IDynamicReflector).IsDynamicScene = value;
+                }
+                get
+                {
+                    return (RenderCore as IDynamicReflector).IsDynamicScene;
+                }
             }
 
             /// <summary>
@@ -167,7 +173,7 @@ namespace HelixToolkit.UWP
             private void DynamicReflectionNode_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
             {
                 (RenderCore as DynamicCubeMapCore).IgnoredGuid.Add(e.Node.RenderCore.GUID);
-                if(e.Node is IDynamicReflectable dyn)
+                if (e.Node is IDynamicReflectable dyn)
                 {
                     dyn.DynamicReflector = this;
                 }
@@ -194,17 +200,17 @@ namespace HelixToolkit.UWP
             public override void UpdateNotRender(RenderContext context)
             {
                 base.UpdateNotRender(context);
-                if(Octree != null)
+                if (Octree != null)
                 {
                     Center = Octree.Bound.Center();
                 }
                 else
                 {
-                    BoundingBox box = new BoundingBox();
-                    int i = 0;
-                    for(; i < ItemsInternal.Count; ++i)
+                    var box = new BoundingBox();
+                    var i = 0;
+                    for (; i < ItemsInternal.Count; ++i)
                     {
-                        if(ItemsInternal[i] is IDynamicReflectable)
+                        if (ItemsInternal[i] is IDynamicReflectable)
                         {
                             box = ItemsInternal[i].BoundsWithTransform;
                             break;
@@ -249,5 +255,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

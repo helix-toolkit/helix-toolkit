@@ -41,7 +41,13 @@ namespace SharpDX.Toolkit.Graphics
         /// <summary>
         /// 
         /// </summary>
-        public int SizeInBytes { get { return (int)FormatHelper.SizeOfInBytes(this); } }
+        public int SizeInBytes
+        {
+            get
+            {
+                return (int)FormatHelper.SizeOfInBytes(this);
+            }
+        }
 
         /// <summary>
         /// 
@@ -733,8 +739,9 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is PixelFormat && Equals((PixelFormat) obj);
+            if (ReferenceEquals(null, obj))
+                return false;
+            return obj is PixelFormat && Equals((PixelFormat)obj);
         }
 
         /// <summary>

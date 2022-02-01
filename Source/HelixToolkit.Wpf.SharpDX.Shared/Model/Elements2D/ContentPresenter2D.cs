@@ -19,9 +19,9 @@ namespace HelixToolkit.Wpf.SharpDX
         [ContentProperty("Content")]
         public class ContentPresenter2D : Element2D
         {
-            public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content", typeof(Element2DCore), 
+            public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content", typeof(Element2DCore),
                 typeof(ContentPresenter2D),
-                new PropertyMetadata(null, 
+                new PropertyMetadata(null,
                 (d, e) =>
                 {
                     var model = d as ContentPresenter2D;
@@ -57,5 +57,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

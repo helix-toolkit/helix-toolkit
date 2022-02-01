@@ -34,20 +34,20 @@ namespace HelixToolkit.UWP
             renderMatrices.Update();
             var px = point2d.X;
             var py = point2d.Y;
-            
+
             var viewInv = renderMatrices.ViewMatrixInv;
             var projMatrix = renderMatrices.ProjectionMatrix;
 
-            float w = renderMatrices.ActualWidth / renderMatrices.DpiScale;
-            float h = renderMatrices.ActualHeight / renderMatrices.DpiScale;
+            var w = renderMatrices.ActualWidth / renderMatrices.DpiScale;
+            var h = renderMatrices.ActualHeight / renderMatrices.DpiScale;
 
-            Vector3 v = new Vector3
+            var v = new Vector3
             {
                 X = (2 * px / w - 1) / projMatrix.M11,
                 Y = -(2 * py / h - 1) / projMatrix.M22,
                 Z = 1 / projMatrix.M33
             };
-            Vector3.TransformCoordinate(ref v, ref viewInv, out Vector3 zf);
+            Vector3.TransformCoordinate(ref v, ref viewInv, out var zf);
             Vector3 zn;
             if (renderMatrices.IsPerspective)
             {
@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP
                 v.Z = 0;
                 Vector3.TransformCoordinate(ref v, ref viewInv, out zn);
             }
-            Vector3 r = zf - zn;
+            var r = zf - zn;
             r.Normalize();
             ray = new Ray(zn + r * renderMatrices.CameraParams.ZNear, r);
             return true;

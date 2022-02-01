@@ -47,11 +47,23 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
-        public float MIN_SIZE { get { return Parameter.MinimumOctantSize; } }
+        public float MIN_SIZE
+        {
+            get
+            {
+                return Parameter.MinimumOctantSize;
+            }
+        }
         /// <summary>
         /// <see cref="IOctreeBasic.TreeBuilt"/>
         /// </summary>
-        public bool TreeBuilt { get { return treeBuilt; } }
+        public bool TreeBuilt
+        {
+            get
+            {
+                return treeBuilt;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -59,7 +71,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// <see cref="IOctreeBasic.Parameter"/>
         /// </summary>
-        public OctreeBuildParameter Parameter { private set; get; }
+        public OctreeBuildParameter Parameter
+        {
+            private set; get;
+        }
 
         private BoundingBox bound;
 
@@ -85,13 +100,22 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// <see cref="DynamicOctreeBase{T}.Objects"/>
         /// </summary>
-        public List<T> Objects { protected set; get; }
+        public List<T> Objects
+        {
+            protected set; get;
+        }
 
         private readonly List<BoundingBox> hitPathBoundingBoxes = new List<BoundingBox>();
         /// <summary>
         /// <see cref="IOctreeBasic.HitPathBoundingBoxes"/>
         /// </summary>
-        public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
+        public IList<BoundingBox> HitPathBoundingBoxes
+        {
+            get
+            {
+                return hitPathBoundingBoxes.AsReadOnly();
+            }
+        }
         /// <summary>
         /// These are all of the possible child octants for this node in the tree.
         /// </summary>
@@ -99,21 +123,39 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// <see cref="IDynamicOctree.ChildNodes"/>
         /// </summary>
-        public IDynamicOctree[] ChildNodes { get { return childNodes; } }
+        public IDynamicOctree[] ChildNodes
+        {
+            get
+            {
+                return childNodes;
+            }
+        }
         /// <summary>
         /// <see cref="IDynamicOctree.ActiveNodes"/>
         /// </summary>
-        public byte ActiveNodes { set; get; }
+        public byte ActiveNodes
+        {
+            set; get;
+        }
         /// <summary>
         /// <see cref="IDynamicOctree.Parent"/>
         /// </summary>
-        public IDynamicOctree Parent { set; get; }
+        public IDynamicOctree Parent
+        {
+            set; get;
+        }
 
         private BoundingBox[] octants = null;
         /// <summary>
         /// <see cref="IDynamicOctree.Octants"/>
         /// </summary>
-        public BoundingBox[] Octants { get { return octants; } }
+        public BoundingBox[] Octants
+        {
+            get
+            {
+                return octants;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -124,7 +166,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The self array.
         /// </value>
-        public IDynamicOctree[] SelfArray { get; private set; }
+        public IDynamicOctree[] SelfArray
+        {
+            get; private set;
+        }
         /// <summary>
         /// Delete the octant if there is no object or child octant inside it.
         /// </summary>
@@ -282,7 +327,10 @@ namespace HelixToolkit.UWP
                     {
                         Parallel.ForEach(root.ChildNodes, (subTree) =>
                         {
-                            if (subTree == null) { return; }
+                            if (subTree == null)
+                            {
+                                return;
+                            }
                             TreeTraversal(subTree, new Stack<KeyValuePair<int, IDynamicOctree[]>>(), criteria, process, breakCriteria, false);
                         });
                     }
@@ -290,8 +338,8 @@ namespace HelixToolkit.UWP
             }
             else
             {
-                int i = -1;
-                IDynamicOctree[] treeArray = root.SelfArray;
+                var i = -1;
+                var treeArray = root.SelfArray;
                 while (true)
                 {
                     while (++i < treeArray.Length)
@@ -312,7 +360,10 @@ namespace HelixToolkit.UWP
                             }
                         }
                     }
-                    if (stack.Count == 0) { break; }
+                    if (stack.Count == 0)
+                    {
+                        break;
+                    }
                     var pair = stack.Pop();
                     i = pair.Key;
                     treeArray = pair.Value;
@@ -345,13 +396,13 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BoundingBox[] CreateOctants(ref BoundingBox box, float minSize)
         {
-            Vector3 dimensions = box.Maximum - box.Minimum;
+            var dimensions = box.Maximum - box.Minimum;
             if (dimensions == Vector3.Zero || (dimensions.X < minSize && dimensions.Y < minSize && dimensions.Z < minSize))
             {
                 return new BoundingBox[0];
             }
-            Vector3 half = dimensions / 2.0f;
-            Vector3 center = box.Minimum + half;
+            var half = dimensions / 2.0f;
+            var center = box.Minimum + half;
             var minimum = box.Minimum;
             var maximum = box.Maximum;
             //Create subdivided regions for each octant
@@ -373,7 +424,7 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool CheckDimension()
         {
-            Vector3 dimensions = Bound.Maximum - Bound.Minimum;
+            var dimensions = Bound.Maximum - Bound.Minimum;
 
             if (dimensions == Vector3.Zero)
             {
@@ -403,14 +454,14 @@ namespace HelixToolkit.UWP
 
             //This will contain all of our objects which fit within each respective octant.
             var octList = new List<T>[8];
-            for (int i = 0; i < 8; ++i)
+            for (var i = 0; i < 8; ++i)
                 octList[i] = new List<T>(Objects.Count / 8);
 
-            int count = Objects.Count;
-            for (int i = Objects.Count - 1; i >= 0; --i)
+            var count = Objects.Count;
+            for (var i = Objects.Count - 1; i >= 0; --i)
             {
                 var obj = Objects[i];
-                for (int x = 0; x < 8; ++x)
+                for (var x = 0; x < 8; ++x)
                 {
                     if (IsContains(Octants[x], obj))
                     {
@@ -425,7 +476,7 @@ namespace HelixToolkit.UWP
             Objects.TrimExcess();
 
             //Create child nodes where there are items contained in the bounding region
-            for (int i = 0; i < 8; ++i)
+            for (var i = 0; i < 8; ++i)
             {
                 if (octList[i].Count != 0)
                 {
@@ -452,7 +503,7 @@ namespace HelixToolkit.UWP
                 return Bound;
             }
             var b = GetBoundingBoxFromItem(Objects[0]);
-            for (int i = 0; i < Objects.Count; ++i)
+            for (var i = 0; i < Objects.Count; ++i)
             {
                 var bound = GetBoundingBoxFromItem(Objects[i]);
                 BoundingBox.Merge(ref b, ref bound, out b);
@@ -494,14 +545,14 @@ namespace HelixToolkit.UWP
         public virtual void Clear()
         {
             Objects.Clear();
-            for (int i = 0; i < ChildNodes.Length; ++i)
+            for (var i = 0; i < ChildNodes.Length; ++i)
             {
                 ChildNodes[i]?.Clear();
             }
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult})"/>
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -514,7 +565,7 @@ namespace HelixToolkit.UWP
             return HitTest(context, model, geometry, modelMatrix, ref hits, 0);
         }
         /// <summary>
-        /// Hits the test.
+        /// 
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="model">The model.</param>
@@ -530,7 +581,7 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -546,7 +597,7 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(HitTestContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -566,22 +617,28 @@ namespace HelixToolkit.UWP
             }
             hitPathBoundingBoxes.Clear();
             var hitStack = stack;
-            bool isHit = false;
+            var isHit = false;
             modelHits.Clear();
             var modelInv = modelMatrix.Inverted();
-            if (modelInv == Matrix.Zero) { return false; }//Cannot be inverted
+            if (modelInv == Matrix.Zero)
+            {
+                return false;
+            }//Cannot be inverted
             var rayWS = context.RayWS;
             var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.Normalize(Vector3.TransformNormal(rayWS.Direction, modelInv)));
             var treeArray = SelfArray;
-            int i = -1;
+            var i = -1;
             while (true)
             {
                 while (++i < treeArray.Length)
                 {
                     var node = treeArray[i];
-                    if (node == null) { continue; }
-                    bool isIntersect = false;
-                    bool nodeHit = node.HitTestCurrentNodeExcludeChild(context, model, geometry, modelMatrix, 
+                    if (node == null)
+                    {
+                        continue;
+                    }
+                    var isIntersect = false;
+                    var nodeHit = node.HitTestCurrentNodeExcludeChild(context, model, geometry, modelMatrix,
                         ref rayModel, ref modelHits, ref isIntersect, hitThickness);
                     isHit |= nodeHit;
                     if (isIntersect && node.HasChildren)
@@ -627,7 +684,6 @@ namespace HelixToolkit.UWP
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
@@ -650,17 +706,20 @@ namespace HelixToolkit.UWP
                 points = new List<HitTestResult>();
             }
             var hitStack = stack;
-            bool isHit = false;
+            var isHit = false;
             var treeArray = SelfArray;
-            int i = -1;
+            var i = -1;
             while (true)
             {
                 while (++i < treeArray.Length)
                 {
                     var node = treeArray[i];
-                    if (node == null) { continue; }
-                    bool isIntersect = false;
-                    bool nodeHit = node.FindNearestPointBySphereExcludeChild(context, ref sphere, ref points, ref isIntersect);
+                    if (node == null)
+                    {
+                        continue;
+                    }
+                    var isIntersect = false;
+                    var nodeHit = node.FindNearestPointBySphereExcludeChild(context, ref sphere, ref points, ref isIntersect);
                     isHit |= nodeHit;
                     if (isIntersect && node.HasChildren)
                     {
@@ -669,7 +728,10 @@ namespace HelixToolkit.UWP
                         i = -1;
                     }
                 }
-                if (hitStack.Count == 0) { break; }
+                if (hitStack.Count == 0)
+                {
+                    break;
+                }
                 var pair = hitStack.Pop();
                 i = pair.Key;
                 treeArray = pair.Value;
@@ -694,17 +756,20 @@ namespace HelixToolkit.UWP
             var hitStack = stack;
 
             var sphere = new global::SharpDX.BoundingSphere(point, float.MaxValue);
-            bool isIntersect = false;
-            bool isHit = false;
+            var isIntersect = false;
+            var isHit = false;
             heuristicSearchFactor = Math.Min(1.0f, Math.Max(0.1f, heuristicSearchFactor));
             var treeArray = SelfArray;
-            int i = -1;
+            var i = -1;
             while (true)
             {
                 while (++i < treeArray.Length)
                 {
                     var node = treeArray[i];
-                    if (node == null) { continue; }
+                    if (node == null)
+                    {
+                        continue;
+                    }
                     isHit |= node.FindNearestPointBySphereExcludeChild(context, ref sphere, ref results, ref isIntersect);
 
                     if (isIntersect)
@@ -721,7 +786,10 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                if (hitStack.Count == 0) { break; }
+                if (hitStack.Count == 0)
+                {
+                    break;
+                }
                 var pair = hitStack.Pop();
                 i = pair.Key;
                 treeArray = pair.Value;
@@ -769,7 +837,7 @@ namespace HelixToolkit.UWP
                 nodeBase.Objects.Add(item);
                 if (nodeBase.Objects.Count > Parameter.MinObjectSizeToSplit)
                 {
-                    int index = (node as DynamicOctreeBase<T>).Objects.Count - 1;
+                    var index = (node as DynamicOctreeBase<T>).Objects.Count - 1;
                     PushExistingToChild(nodeBase, index, IsContains, CreateNodeWithParent, out octant);
                 }
                 return true;
@@ -818,8 +886,8 @@ namespace HelixToolkit.UWP
         {
             var item = node.Objects[index];
             octant = node;
-            bool pushToChild = false;
-            for (int i = 0; i < node.Octants.Length; ++i)
+            var pushToChild = false;
+            for (var i = 0; i < node.Octants.Length; ++i)
             {
                 if (isContains(node.Octants[i], item))
                 {
@@ -834,7 +902,7 @@ namespace HelixToolkit.UWP
                         node.ChildNodes[i] = createNodeFunc(ref node.Octants[i], new List<T>() { item }, node);
                         node.ActiveNodes |= (byte)(1 << i);
                         node.ChildNodes[i].BuildTree();
-                        int idx = -1;
+                        var idx = -1;
                         octant = (node.ChildNodes[i] as DynamicOctreeBase<T>).FindChildByItemBound(item, out idx);
                     }
                     pushToChild = true;
@@ -913,9 +981,9 @@ namespace HelixToolkit.UWP
                 throw new ArgumentException("Input node is not root node");
             }
             var rootBound = oldRoot.Bound;
-            int xDirection = direction.X >= 0 ? 1 : -1;
-            int yDirection = direction.Y >= 0 ? 1 : -1;
-            int zDirection = direction.Z >= 0 ? 1 : -1;
+            var xDirection = direction.X >= 0 ? 1 : -1;
+            var yDirection = direction.Y >= 0 ? 1 : -1;
+            var zDirection = direction.Z >= 0 ? 1 : -1;
             var dimension = rootBound.Maximum - rootBound.Minimum;
             var half = dimension / 2 + epsilon;
             var center = rootBound.Minimum + half;
@@ -926,12 +994,12 @@ namespace HelixToolkit.UWP
             var newRoot = createNodeFunc(ref bound, new List<T>(), oldRoot);
             newRoot.Parent = null;
             newRoot.BuildTree();
-            bool succ = false;
+            var succ = false;
             if (!oldRoot.IsEmpty)
             {
-                int idx = -1;
-                float diff = float.MaxValue;
-                for (int i = 0; i < newRoot.Octants.Length; ++i)
+                var idx = -1;
+                var diff = float.MaxValue;
+                for (var i = 0; i < newRoot.Octants.Length; ++i)
                 {
                     var d = (newRoot.Octants[i].Minimum - rootBound.Minimum).LengthSquared();
                     if (d < diff)
@@ -977,14 +1045,16 @@ namespace HelixToolkit.UWP
         public static IDynamicOctree Shrink(IDynamicOctree root)
         {
             if (root.Parent != null)
-            { throw new ArgumentException("Input node is not a root node."); }
+            {
+                throw new ArgumentException("Input node is not a root node.");
+            }
             if (root.IsEmpty)
             {
                 return root;
             }
             else if ((root as DynamicOctreeBase<T>).Objects.Count == 0 && (root.ActiveNodes & (root.ActiveNodes - 1)) == 0)
             {
-                for (int i = 0; i < root.ChildNodes.Length; ++i)
+                for (var i = 0; i < root.ChildNodes.Length; ++i)
                 {
                     if (root.ChildNodes[i] != null)
                     {
@@ -1052,7 +1122,7 @@ namespace HelixToolkit.UWP
         public static IDynamicOctree FindChildByItem<E>(E item, DynamicOctreeBase<E> root, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache, out int index)
         {
             IDynamicOctree result = null;
-            int idx = -1;
+            var idx = -1;
             TreeTraversal(root, stackCache, null,
                 (node) =>
                 {
@@ -1151,7 +1221,9 @@ namespace HelixToolkit.UWP
         public virtual void RemoveSelf()
         {
             if (Parent == null)
-            { return; }
+            {
+                return;
+            }
 
             Clear();
             Parent.RemoveChild(this);
@@ -1163,7 +1235,7 @@ namespace HelixToolkit.UWP
         /// <param name="child"></param>
         public void RemoveChild(IDynamicOctree child)
         {
-            for (int i = 0; i < ChildNodes.Length; ++i)
+            for (var i = 0; i < ChildNodes.Length; ++i)
             {
                 if (ChildNodes[i] == child)
                 {
@@ -1211,7 +1283,7 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static IDynamicOctree FindChildByItemBound<E>(E item, BoundingBox bound, Func<BoundingBox, BoundingBox, E, bool> isContains, DynamicOctreeBase<E> root, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache, out int index)
         {
-            int idx = -1;
+            var idx = -1;
             IDynamicOctree result = null;
             DynamicOctreeBase<E> lastNode = null;
             TreeTraversal(root, stackCache,
@@ -1277,7 +1349,10 @@ namespace HelixToolkit.UWP
         public bool IsRoot
         {
             //The root node is the only node without a parent.
-            get { return Parent == null; }
+            get
+            {
+                return Parent == null;
+            }
         }
         /// <summary>
         /// <see cref="IDynamicOctree.HasChildren"/>
@@ -1322,7 +1397,10 @@ namespace HelixToolkit.UWP
             {
                 Set(ref minimumOctantSize, value);
             }
-            get { return minimumOctantSize; }
+            get
+            {
+                return minimumOctantSize;
+            }
         }
 
         private int minObjectSizeToSplit = 2;
@@ -1331,8 +1409,14 @@ namespace HelixToolkit.UWP
         /// </summary>
         public int MinObjectSizeToSplit
         {
-            set { Set(ref minObjectSizeToSplit, value); }
-            get { return minObjectSizeToSplit; }
+            set
+            {
+                Set(ref minObjectSizeToSplit, value);
+            }
+            get
+            {
+                return minObjectSizeToSplit;
+            }
         }
 
         private bool autoDeleteIfEmpty = true;
@@ -1341,8 +1425,14 @@ namespace HelixToolkit.UWP
         /// </summary>
         public bool AutoDeleteIfEmpty
         {
-            set { Set(ref autoDeleteIfEmpty, value); }
-            get { return autoDeleteIfEmpty; }
+            set
+            {
+                Set(ref autoDeleteIfEmpty, value);
+            }
+            get
+            {
+                return autoDeleteIfEmpty;
+            }
         }
 
         private bool cubify = false;
@@ -1351,8 +1441,14 @@ namespace HelixToolkit.UWP
         /// </summary>
         public bool Cubify
         {
-            set { Set(ref cubify, value); }
-            get { return cubify; }
+            set
+            {
+                Set(ref cubify, value);
+            }
+            get
+            {
+                return cubify;
+            }
         }
         /// <summary>
         /// Record hit path bounding boxes for debugging or display purpose only
@@ -1407,11 +1503,17 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public IList<Vector3> Positions { private set; get; }
+        public IList<Vector3> Positions
+        {
+            private set; get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public IList<int> Indices { private set; get; }
+        public IList<int> Indices
+        {
+            private set; get;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -1438,7 +1540,7 @@ namespace HelixToolkit.UWP
             Bound = BoundingBoxExtensions.FromPoints(positions);
             Objects = new List<KeyValuePair<int, BoundingBox>>(indices.Count / 3);
             // Construct triangle index and its bounding box KeyValuePair
-            for (int i = 0; i < indices.Count / 3; ++i)
+            for (var i = 0; i < indices.Count / 3; ++i)
             {
                 Objects.Add(new KeyValuePair<int, BoundingBox>(i, GetBoundingBox(i)));
             }
@@ -1470,7 +1572,8 @@ namespace HelixToolkit.UWP
         /// <param name="stackCache"></param>
         protected MeshGeometryOctree(BoundingBox bound, List<KeyValuePair<int, BoundingBox>> list, IDynamicOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : base(ref bound, list, parent, paramter, stackCache)
-        { }
+        {
+        }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
         {
@@ -1509,13 +1612,12 @@ namespace HelixToolkit.UWP
             return new MeshGeometryOctree(Positions, Indices, ref region, objList, parent, parent.Parameter, this.stack);
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderMatrices, object, Geometry3D, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
@@ -1544,7 +1646,7 @@ namespace HelixToolkit.UWP
                     Distance = double.MaxValue
                 };
                 var rayWS = context.RayWS;
-                for (int i = 0; i < Objects.Count; ++i)
+                for (var i = 0; i < Objects.Count; ++i)
                 {
                     var idx = Objects[i].Key * 3;
                     var t1 = Indices[idx];
@@ -1610,10 +1712,10 @@ namespace HelixToolkit.UWP
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, 
+        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere,
             ref List<HitTestResult> result, ref bool isIntersect)
         {
-            bool isHit = false;
+            var isHit = false;
             var containment = Bound.Contains(ref sphere);
             if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
             {
@@ -1624,7 +1726,7 @@ namespace HelixToolkit.UWP
                 }
                 var tempResult = new HitTestResult();
                 tempResult.Distance = float.MaxValue;
-                for (int i = 0; i < Objects.Count; ++i)
+                for (var i = 0; i < Objects.Count; ++i)
                 {
                     containment = Objects[i].Value.Contains(sphere);
                     if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
@@ -1686,11 +1788,17 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public IList<Vector3> Positions { private set; get; }
+        public IList<Vector3> Positions
+        {
+            private set; get;
+        }
         /// <summary>
         /// 
         /// </summary>
-        public IList<int> Indices { private set; get; }
+        public IList<int> Indices
+        {
+            private set; get;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -1717,7 +1825,7 @@ namespace HelixToolkit.UWP
             Bound = BoundingBoxExtensions.FromPoints(positions);
             Objects = new List<KeyValuePair<int, BoundingBox>>(indices.Count / 2);
             // Construct triangle index and its bounding box KeyValuePair
-            for (int i = 0; i < indices.Count / 2; ++i)
+            for (var i = 0; i < indices.Count / 2; ++i)
             {
                 Objects.Add(new KeyValuePair<int, BoundingBox>(i, GetBoundingBox(i)));
             }
@@ -1749,7 +1857,8 @@ namespace HelixToolkit.UWP
         /// <param name="stackCache"></param>
         protected LineGeometryOctree(BoundingBox bound, List<KeyValuePair<int, BoundingBox>> list, IDynamicOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : base(ref bound, list, parent, paramter, stackCache)
-        { }
+        {
+        }
 
         private BoundingBox GetBoundingBox(int triangleIndex)
         {
@@ -1823,7 +1932,7 @@ namespace HelixToolkit.UWP
                 var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
                 result.Distance = double.MaxValue;
                 var rayWS = context.RayWS;
-                for (int i = 0; i < Objects.Count; ++i)
+                for (var i = 0; i < Objects.Count; ++i)
                 {
                     var idx = Objects[i].Key * 2;
                     var idx1 = Indices[idx];
@@ -1894,10 +2003,10 @@ namespace HelixToolkit.UWP
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, 
+        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere,
             ref List<HitTestResult> result, ref bool isIntersect)
         {
-            bool isHit = false;
+            var isHit = false;
             var containment = Bound.Contains(ref sphere);
             if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
             {
@@ -1908,7 +2017,7 @@ namespace HelixToolkit.UWP
                 }
                 var tempResult = new LineHitTestResult();
                 tempResult.Distance = float.MaxValue;
-                for (int i = 0; i < Objects.Count; ++i)
+                for (var i = 0; i < Objects.Count; ++i)
                 {
                     containment = Objects[i].Value.Contains(sphere);
                     if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
@@ -1921,7 +2030,7 @@ namespace HelixToolkit.UWP
                         var v0 = Positions[t1];
                         var v1 = Positions[t2];
                         float t;
-                        float distance = LineBuilder.GetPointToLineDistance2D(ref sphere.Center, ref v0, ref v1, out cloestPoint, out t);
+                        var distance = LineBuilder.GetPointToLineDistance2D(ref sphere.Center, ref v0, ref v1, out cloestPoint, out t);
                         if (tempResult.Distance > distance)
                         {
                             tempResult.Distance = distance;
@@ -1990,7 +2099,7 @@ namespace HelixToolkit.UWP
             Positions = positions;
             Bound = BoundingBoxExtensions.FromPoints(positions);
             Objects = new List<int>(Positions.Count);
-            for(int i=0; i < Positions.Count; ++i)
+            for (var i = 0; i < Positions.Count; ++i)
             {
                 Objects.Add(i);
             }
@@ -2029,14 +2138,14 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public static double DistanceRayToPoint(ref Ray r, ref Vector3 p)
         {
-            Vector3 v = r.Direction;
-            Vector3 w = p - r.Position;
+            var v = r.Direction;
+            var w = p - r.Position;
 
-            float c1 = Vector3.Dot(w, v);
-            float c2 = Vector3.Dot(v, v);
-            float b = c1 / c2;
+            var c1 = Vector3.Dot(w, v);
+            var c2 = Vector3.Dot(v, v);
+            var b = c1 / c2;
 
-            Vector3 pb = r.Position + v * b;
+            var pb = r.Position + v * b;
             return (p - pb).Length();
         }
         /// <summary>
@@ -2066,7 +2175,7 @@ namespace HelixToolkit.UWP
             if (rayModel.Intersects(ref bound))
             {
                 isIntersect = true;
-                if(Objects.Count == 0)
+                if (Objects.Count == 0)
                 {
                     return false;
                 }
@@ -2079,9 +2188,9 @@ namespace HelixToolkit.UWP
                 var pos3 = rayWS.Position;
                 Vector3.TransformCoordinate(ref clickPoint3, ref svpm, out var clickPoint);
                 Vector3.TransformCoordinate(ref pos3, ref svpm, out pos3);
-                
+
                 var dist = hitThickness;
-                for (int i = 0; i < Objects.Count; ++i)
+                for (var i = 0; i < Objects.Count; ++i)
                 {
                     var v0 = Positions[Objects[i]];
                     var p0 = Vector3.TransformCoordinate(v0, smvpm);
@@ -2150,10 +2259,10 @@ namespace HelixToolkit.UWP
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, 
+        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere,
             ref List<HitTestResult> result, ref bool isIntersect)
         {
-            bool isHit = false;
+            var isHit = false;
             var containment = Bound.Contains(ref sphere);
             if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
             {
@@ -2164,7 +2273,7 @@ namespace HelixToolkit.UWP
                 }
                 var resultTemp = new HitTestResult();
                 resultTemp.Distance = float.MaxValue;
-                for (int i = 0; i < Objects.Count; ++i)
+                for (var i = 0; i < Objects.Count; ++i)
                 {
                     var p = Positions[Objects[i]];
                     containment = sphere.Contains(ref p);
@@ -2226,9 +2335,9 @@ namespace HelixToolkit.UWP
             : base(ref geometryBound, null, parameter, stackCache)
         {
             InstanceMatrix = instanceMatrix;
-            int counter = 0;
+            var counter = 0;
             var totalBound = geometryBound.Transform(instanceMatrix[0]);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceMatrix[0])).ToArray());
-            for (int i = 0; i < instanceMatrix.Count; ++i)
+            for (var i = 0; i < instanceMatrix.Count; ++i)
             {
                 var b = geometryBound.Transform(instanceMatrix[i]);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
                 Objects.Add(new KeyValuePair<int, BoundingBox>(counter, b));
@@ -2259,7 +2368,7 @@ namespace HelixToolkit.UWP
         /// <param name="points"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere, 
+        public override bool FindNearestPointBySphereExcludeChild(HitTestContext context, ref global::SharpDX.BoundingSphere sphere,
             ref List<HitTestResult> points, ref bool isIntersect)
         {
             return false;
@@ -2271,7 +2380,6 @@ namespace HelixToolkit.UWP
         /// <param name="model"></param>
         /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
@@ -2285,13 +2393,13 @@ namespace HelixToolkit.UWP
             {
                 return false;
             }
-            bool isHit = false;
+            var isHit = false;
             var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
             var rayWS = context.RayWS;
             if (rayWS.Intersects(ref bound))
             {
                 isIntersect = true;
-                for (int i = 0; i < this.Objects.Count; ++i)
+                for (var i = 0; i < this.Objects.Count; ++i)
                 {
                     var b = Objects[i].Value.Transform(modelMatrix);// BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
                     if (b.Intersects(ref rayWS))

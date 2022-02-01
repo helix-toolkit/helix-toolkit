@@ -72,9 +72,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
+
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

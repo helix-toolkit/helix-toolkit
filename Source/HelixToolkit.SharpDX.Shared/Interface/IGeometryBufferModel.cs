@@ -27,7 +27,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The topology.
         /// </value>
-        PrimitiveTopology Topology { set; get; }
+        PrimitiveTopology Topology
+        {
+            set; get;
+        }
 
         /// <summary>
         /// Gets the vertex buffer.
@@ -35,21 +38,30 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The vertex buffer.
         /// </value>
-        IElementsBufferProxy[] VertexBuffer { get; }
+        IElementsBufferProxy[] VertexBuffer
+        {
+            get;
+        }
         /// <summary>
         /// Gets the size of the vertex structure.
         /// </summary>
         /// <value>
         /// The size of the vertex structure.
         /// </value>
-        IEnumerable<int> VertexStructSize { get; }
+        IEnumerable<int> VertexStructSize
+        {
+            get;
+        }
         /// <summary>
         /// Gets the index buffer.
         /// </summary>
         /// <value>
         /// The index buffer.
         /// </value>
-        IElementsBufferProxy IndexBuffer { get; }
+        IElementsBufferProxy IndexBuffer
+        {
+            get;
+        }
         /// <summary>
         /// Attaches the buffers.
         /// </summary>
@@ -80,14 +92,20 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The effects manager.
         /// </value>
-        IEffectsManager EffectsManager { set; get; }
+        IEffectsManager EffectsManager
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets or sets the geometry.
         /// </summary>
         /// <value>
         /// The geometry.
         /// </value>
-        Geometry3D Geometry { get; set; }
+        Geometry3D Geometry
+        {
+            get; set;
+        }
     }
     /// <summary>
     /// 
@@ -100,14 +118,20 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The texture view.
         /// </value>
-        ShaderResourceViewProxy TextureView { get; }
+        ShaderResourceViewProxy TextureView
+        {
+            get;
+        }
         /// <summary>
         /// Gets the billboard type.
         /// </summary>
         /// <value>
         /// The type.
         /// </value>
-        BillboardType Type { get; }
+        BillboardType Type
+        {
+            get;
+        }
     }
     /// <summary>
     /// 
@@ -115,14 +139,20 @@ namespace HelixToolkit.UWP
     public interface IBoneSkinMeshBufferModel : IGeometryBufferModel
     {
         event EventHandler BoneIdBufferUpdated;
-        IElementsBufferProxy BoneIdBuffer { get; }
+        IElementsBufferProxy BoneIdBuffer
+        {
+            get;
+        }
     }
     /// <summary>
     /// 
     /// </summary>
     public interface IBoneSkinPreComputehBufferModel
     {
-        bool CanPreCompute { get; }
+        bool CanPreCompute
+        {
+            get;
+        }
         /// <summary>
         /// Binds the skinned vertex buffer to output.
         /// </summary>

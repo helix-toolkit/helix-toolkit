@@ -48,9 +48,21 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public int Width { get { return texture2DDesc.Width; } }
+            public int Width
+            {
+                get
+                {
+                    return texture2DDesc.Width;
+                }
+            }
 
-            public int Height { get { return texture2DDesc.Height; } }
+            public int Height
+            {
+                get
+                {
+                    return texture2DDesc.Height;
+                }
+            }
 
             /// <summary>
             /// Gets the current RenderTargetView.
@@ -107,6 +119,7 @@ namespace HelixToolkit.UWP
             #endregion Texture Resources
             private readonly IDevice3DResources deviceResources;
             public bool Initialized { private set; get; } = false;
+            private readonly object lockObj = new object();
             /// <summary>
             /// Initializes a new instance of the <see cref="PingPongColorBuffers"/> class.
             /// </summary>
@@ -127,17 +140,20 @@ namespace HelixToolkit.UWP
             /// </summary>
             public void Initialize()
             {
-                if (Initialized)
+                lock (lockObj)
                 {
-                    return;
+                    if (Initialized)
+                    {
+                        return;
+                    }
+                    for (var i = 0; i < NumPingPongBlurBuffer; ++i)
+                    {
+                        textures[i] = new ShaderResourceViewProxy(deviceResources.Device, texture2DDesc);
+                        textures[i].CreateRenderTargetView();
+                        textures[i].CreateTextureView();
+                    }
+                    Initialized = true;
                 }
-                for (int i = 0; i < NumPingPongBlurBuffer; ++i)
-                {
-                    textures[i] = Collect(new ShaderResourceViewProxy(deviceResources.Device, texture2DDesc));
-                    textures[i].CreateRenderTargetView();
-                    textures[i].CreateTextureView();
-                }
-                Initialized = true;
             }
 
             /// <summary>
@@ -145,10 +161,22 @@ namespace HelixToolkit.UWP
             /// </summary>
             public void SwapTargets()
             {
-                //swap buffer
-                var current = textures[0];
-                textures[0] = textures[1];
-                textures[1] = current;
+                lock (lockObj)
+                {
+                    //swap buffer
+                    var current = textures[0];
+                    textures[0] = textures[1];
+                    textures[1] = current;
+                }
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                for (var i = 0; i < NumPingPongBlurBuffer; ++i)
+                {
+                    RemoveAndDispose(ref textures[i]);
+                }
+                base.OnDispose(disposeManagedResources);
             }
         }
 
@@ -159,24 +187,25 @@ namespace HelixToolkit.UWP
             {
                 private readonly ConcurrentBag<ShaderResourceViewProxy> pool;
 
-                public PooledShaderResourceViewProxy(Device device, Texture2DDescription textureDesc, ConcurrentBag<ShaderResourceViewProxy> pool) 
+                public PooledShaderResourceViewProxy(Device device, Texture2DDescription textureDesc, ConcurrentBag<ShaderResourceViewProxy> pool)
                     : base(device, textureDesc)
                 {
                     this.pool = pool;
-                    IsPooled = true;
-                }
-
-                protected override void OnPutBackToPool()
-                {
-                    pool.Add(this);
+                    AddBackToPool = (o) => { pool.Add(this); };
                 }
             }
 
             private readonly ConcurrentDictionary<Format, ConcurrentBag<ShaderResourceViewProxy>> pool = new ConcurrentDictionary<Format, ConcurrentBag<ShaderResourceViewProxy>>();
             private readonly IDevice3DResources deviceResourse;
             private Texture2DDescription description;
-            public int Width { get => description.Width; }
-            public int Height { get => description.Height; }
+            public int Width
+            {
+                get => description.Width;
+            }
+            public int Height
+            {
+                get => description.Height;
+            }
 
             public TexturePool(IDevice3DResources deviceResourse, Texture2DDescription desc)
             {
@@ -194,34 +223,37 @@ namespace HelixToolkit.UWP
                 {
                     return ShaderResourceViewProxy.Empty;
                 }
-                if(pool.TryGetValue(format, out var bag) && bag.TryTake(out var proxy) && !proxy.IsDisposed)
+                if (pool.TryGetValue(format, out var bag) && bag.TryTake(out var proxy) && !proxy.IsDisposed)
                 {
+                    proxy.IncRef();
                     return proxy;
                 }
                 else
                 {
                     bag = bag ?? pool.GetOrAdd(format, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) =>
-                    { return new ConcurrentBag<ShaderResourceViewProxy>(); }));
+                    {
+                        return new ConcurrentBag<ShaderResourceViewProxy>();
+                    }));
                     var desc = description;
                     desc.Format = format;
                     ShaderResourceViewProxy texture = null;
-                
-                    if((desc.BindFlags & BindFlags.RenderTarget) != 0)
+
+                    if ((desc.BindFlags & BindFlags.RenderTarget) != 0)
                     {
-                        texture = Collect(new PooledShaderResourceViewProxy(deviceResourse.Device, desc, bag));
+                        texture = new PooledShaderResourceViewProxy(deviceResourse.Device, desc, bag);
                         texture.CreateRenderTargetView();
-                        if((desc.BindFlags & BindFlags.ShaderResource) != 0)
+                        if ((desc.BindFlags & BindFlags.ShaderResource) != 0)
                         {
                             texture.CreateTextureView();
                         }
                     }
-                    else if((desc.BindFlags & BindFlags.DepthStencil) != 0)
+                    else if ((desc.BindFlags & BindFlags.DepthStencil) != 0)
                     {
                         if (format == Format.R32_Typeless)// Special handle for depth buffer used as both depth stencil and shader resource
                         {
                             desc.BindFlags |= BindFlags.ShaderResource;
                         }
-                        texture = Collect(new PooledShaderResourceViewProxy(deviceResourse.Device, desc, bag));
+                        texture = new PooledShaderResourceViewProxy(deviceResourse.Device, desc, bag);
                         if (format == Format.R32_Typeless)// Special handle for depth buffer used as both depth stencil and shader resource
                         {
                             texture.CreateView(new DepthStencilViewDescription() { Format = Format.D32_Float, Dimension = DepthStencilViewDimension.Texture2D });
@@ -238,17 +270,18 @@ namespace HelixToolkit.UWP
                         }
                     }
                     Debug.WriteLine("Create New Full Screen Texture");
+                    texture.IncRef();
                     return texture;
                 }
             }
 
             protected override void OnDispose(bool disposeManagedResources)
             {
-                foreach(var bag in pool.Values)
+                foreach (var bag in pool.Values)
                 {
-                    while(bag.TryTake(out var proxy))
+                    while (bag.TryTake(out var proxy))
                     {
-                        proxy.IsPooled = false; // Set flag to false so it can be disposed
+                        proxy.Dispose(); // Set flag to false so it can be disposed
                         continue;
                     }
                 }
@@ -257,5 +290,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

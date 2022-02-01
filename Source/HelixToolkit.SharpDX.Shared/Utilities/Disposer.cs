@@ -39,5 +39,5 @@ namespace HelixToolkit.UWP
 
             resource = null;
         }
-    }    
+    }
 }

@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public class PointMaterial : Material
     {
-#region Dependency Properties
+        #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointMaterial),
 #if WINUI
@@ -120,8 +120,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Media.Color Color
         {
-            get { return (Media.Color)this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
+            get
+            {
+                return (Media.Color)this.GetValue(ColorProperty);
+            }
+            set
+            {
+                this.SetValue(ColorProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the size.
@@ -131,8 +137,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Size Size
         {
-            get { return (Size)this.GetValue(SizeProperty); }
-            set { this.SetValue(SizeProperty, value); }
+            get
+            {
+                return (Size)this.GetValue(SizeProperty);
+            }
+            set
+            {
+                this.SetValue(SizeProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the figure.
@@ -142,8 +154,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public PointFigure Figure
         {
-            get { return (PointFigure)this.GetValue(FigureProperty); }
-            set { this.SetValue(FigureProperty, value); }
+            get
+            {
+                return (PointFigure)this.GetValue(FigureProperty);
+            }
+            set
+            {
+                this.SetValue(FigureProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the figure ratio.
@@ -153,8 +171,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FigureRatio
         {
-            get { return (double)this.GetValue(FigureRatioProperty); }
-            set { this.SetValue(FigureRatioProperty, value); }
+            get
+            {
+                return (double)this.GetValue(FigureRatioProperty);
+            }
+            set
+            {
+                this.SetValue(FigureRatioProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [enable distance fading].
@@ -164,8 +188,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableDistanceFading
         {
-            set { SetValue(EnableDistanceFadingProperty, value); }
-            get { return (bool)GetValue(EnableDistanceFadingProperty); }
+            set
+            {
+                SetValue(EnableDistanceFadingProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableDistanceFadingProperty);
+            }
         }
         /// <summary>
         /// Gets or sets the fading near distance.
@@ -175,8 +205,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FadingNearDistance
         {
-            get { return (double)this.GetValue(FadingNearDistanceProperty); }
-            set { this.SetValue(FadingNearDistanceProperty, value); }
+            get
+            {
+                return (double)this.GetValue(FadingNearDistanceProperty);
+            }
+            set
+            {
+                this.SetValue(FadingNearDistanceProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the fading far distance.
@@ -186,8 +222,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FadingFarDistance
         {
-            get { return (double)this.GetValue(FadingFarDistanceProperty); }
-            set { this.SetValue(FadingFarDistanceProperty, value); }
+            get
+            {
+                return (double)this.GetValue(FadingFarDistanceProperty);
+            }
+            set
+            {
+                this.SetValue(FadingFarDistanceProperty, value);
+            }
         }
 
         /// <summary>
@@ -200,8 +242,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableColorBlending
         {
-            get { return (bool)GetValue(EnableColorBlendingProperty); }
-            set { SetValue(EnableColorBlendingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableColorBlendingProperty);
+            }
+            set
+            {
+                SetValue(EnableColorBlendingProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the blending factor.
@@ -212,12 +260,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double BlendingFactor
         {
-            get { return (double)GetValue(BlendingFactorProperty); }
-            set { SetValue(BlendingFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(BlendingFactorProperty);
+            }
+            set
+            {
+                SetValue(BlendingFactorProperty, value);
+            }
         }
         #endregion
 
-        public PointMaterial() { }
+        public PointMaterial()
+        {
+        }
 
         public PointMaterial(PointMaterialCore core) : base(core)
         {

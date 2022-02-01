@@ -148,8 +148,8 @@ namespace HelixToolkit.Wpf
                 throw new InvalidOperationException("At least three points required in the polygon to find a normal.");
             }
 
-            Vector3D v1 = this.Points[1] - this.Points[0];
-            for (int i = 2; i < this.Points.Count; i++)
+            var v1 = this.Points[1] - this.Points[0];
+            for (var i = 2; i < this.Points.Count; i++)
             {
 #if SHARPDX
                 var n = Vector3D.Cross(v1, this.Points[i] - this.Points[0]);
@@ -167,7 +167,7 @@ namespace HelixToolkit.Wpf
             }
 
 #if SHARPDX
-            Vector3D result = Vector3D.Cross(v1, this.Points[2] - this.Points[0]);
+            var result = Vector3D.Cross(v1, this.Points[2] - this.Points[0]);
 #else
             Vector3D result = Vector3D.CrossProduct(v1, this.Points[2] - this.Points[0]);
 #endif
@@ -183,9 +183,9 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public bool IsPlanar()
         {
-            Vector3D v1 = this.Points[1] - this.Points[0];
+            var v1 = this.Points[1] - this.Points[0];
             var normal = new Vector3D();
-            for (int i = 2; i < this.Points.Count; i++)
+            for (var i = 2; i < this.Points.Count; i++)
             {
 #if SHARPDX
                 var n = Vector3D.Cross(v1, this.Points[i] - this.Points[0]);

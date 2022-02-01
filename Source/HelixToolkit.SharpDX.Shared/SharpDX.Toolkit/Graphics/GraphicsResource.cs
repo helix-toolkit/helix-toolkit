@@ -16,7 +16,10 @@ namespace SharpDX.Toolkit.Graphics
         /// <summary>
         /// Device used to create this instance.
         /// </summary>
-        public Device GraphicsDevice { get; internal set; }
+        public Device GraphicsDevice
+        {
+            get; internal set;
+        }
 
         /// <summary>
         /// The attached Direct3D11 resource to this instance.

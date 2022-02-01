@@ -2,7 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if DEBUG
 //#define DEBUGMEMORY
+#endif
 using System;
 using System.Collections.Generic;
 using global::SharpDX.Direct3D;
@@ -75,7 +77,13 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The logger.
         /// </value>
-        public LogWrapper Logger { get { return logger; } }
+        public LogWrapper Logger
+        {
+            get
+            {
+                return logger;
+            }
+        }
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
@@ -97,26 +105,50 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// <see cref="IEffectsManager.RenderTechniques"/>
         /// </summary>
-        public IEnumerable<string> RenderTechniques { get { return techniqueDict.Keys; } }
+        public IEnumerable<string> RenderTechniques
+        {
+            get
+            {
+                return techniqueDict.Keys;
+            }
+        }
 
         private IConstantBufferPool constantBufferPool;
         /// <summary>
         /// <see cref="IDevice3DResources.ConstantBufferPool"/>
         /// </summary>
-        public IConstantBufferPool ConstantBufferPool { get { return constantBufferPool; } }
+        public IConstantBufferPool ConstantBufferPool
+        {
+            get
+            {
+                return constantBufferPool;
+            }
+        }
 
         private IShaderPoolManager shaderPoolManager;
         /// <summary>
         /// <see cref="IEffectsManager.ShaderManager"/>
         /// </summary>
-        public IShaderPoolManager ShaderManager { get { return shaderPoolManager; } }
+        public IShaderPoolManager ShaderManager
+        {
+            get
+            {
+                return shaderPoolManager;
+            }
+        }
 
         private IStatePoolManager statePoolManager;
 
         /// <summary>
         /// <see cref="IDevice3DResources.StateManager"/> 
         /// </summary>
-        public IStatePoolManager StateManager { get { return statePoolManager; } }
+        public IStatePoolManager StateManager
+        {
+            get
+            {
+                return statePoolManager;
+            }
+        }
 
         /// <summary>
         /// Gets the geometry buffer manager.
@@ -124,7 +156,13 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The geometry buffer manager.
         /// </value>
-        public IGeometryBufferManager GeometryBufferManager { get { return geometryBufferManager; } }
+        public IGeometryBufferManager GeometryBufferManager
+        {
+            get
+            {
+                return geometryBufferManager;
+            }
+        }
 
         private IGeometryBufferManager geometryBufferManager;
 
@@ -134,11 +172,27 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The material texture manager.
         /// </value>
-        public ITextureResourceManager MaterialTextureManager { get { return materialTextureManager; } }
+        public ITextureResourceManager MaterialTextureManager
+        {
+            get
+            {
+                return materialTextureManager;
+            }
+        }
         private ITextureResourceManager materialTextureManager;
 
-        public IMaterialVariablePool MaterialVariableManager { get { return materialVariableManager; } }
+        public IMaterialVariablePool MaterialVariableManager
+        {
+            get
+            {
+                return materialVariableManager;
+            }
+        }
         private IMaterialVariablePool materialVariableManager;
+
+        public IStructArrayPool StructArrayPool => structArrayPool;
+        private StructArrayPool structArrayPool;
+
         #region 3D Resoruces
 
         private global::SharpDX.Direct3D11.Device device;
@@ -153,12 +207,21 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public Device Device { get { return device; } }
+        public Device Device
+        {
+            get
+            {
+                return device;
+            }
+        }
 #endif
         /// <summary>
         /// 
         /// </summary>
-        public DriverType DriverType { private set; get; }
+        public DriverType DriverType
+        {
+            private set; get;
+        }
 
         private IDeviceContextPool deviceContextPool;
         /// <summary>
@@ -167,7 +230,13 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The device context pool.
         /// </value>
-        public IDeviceContextPool DeviceContextPool { get { return deviceContextPool; } }
+        public IDeviceContextPool DeviceContextPool
+        {
+            get
+            {
+                return deviceContextPool;
+            }
+        }
         #endregion
         #region 2D Resources
         private global::SharpDX.Direct2D1.Device device2D;
@@ -177,7 +246,13 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The device2 d.
         /// </value>
-        public global::SharpDX.Direct2D1.Device Device2D { get { return device2D; } }
+        public global::SharpDX.Direct2D1.Device Device2D
+        {
+            get
+            {
+                return device2D;
+            }
+        }
 
 
         private global::SharpDX.Direct2D1.DeviceContext deviceContext2D;
@@ -187,14 +262,26 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The device2 d context.
         /// </value>
-        public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return deviceContext2D; } }
+        public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D
+        {
+            get
+            {
+                return deviceContext2D;
+            }
+        }
         /// <summary>
         /// Gets the factory2 d.
         /// </summary>
         /// <value>
         /// The factory2 d.
         /// </value>
-        public global::SharpDX.Direct2D1.Factory1 Factory2D { get { return factory2D; } }
+        public global::SharpDX.Direct2D1.Factory1 Factory2D
+        {
+            get
+            {
+                return factory2D;
+            }
+        }
         private global::SharpDX.Direct2D1.Factory1 factory2D;
 
         private global::SharpDX.WIC.ImagingFactory wicImgFactory;
@@ -204,7 +291,13 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The wic img factory.
         /// </value>
-        public global::SharpDX.WIC.ImagingFactory WICImgFactory { get { return wicImgFactory; } }
+        public global::SharpDX.WIC.ImagingFactory WICImgFactory
+        {
+            get
+            {
+                return wicImgFactory;
+            }
+        }
 
         private global::SharpDX.DirectWrite.Factory directWriteFactory;
         /// <summary>
@@ -213,7 +306,13 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The direct write factory.
         /// </value>
-        public global::SharpDX.DirectWrite.Factory DirectWriteFactory { get { return directWriteFactory; } }
+        public global::SharpDX.DirectWrite.Factory DirectWriteFactory
+        {
+            get
+            {
+                return directWriteFactory;
+            }
+        }
         #endregion
         /// <summary>
         /// 
@@ -285,7 +384,7 @@ namespace HelixToolkit.UWP
 #endif
             if (AdapterIndex == -1)
             {
-                int adapterIndex = -1;
+                var adapterIndex = -1;
                 using (var adapter = GetBestAdapter(out adapterIndex))
                 {
                     Initialize(adapterIndex);
@@ -304,7 +403,7 @@ namespace HelixToolkit.UWP
             Log(LogLevel.Information, $"Adapter Index = {adapterIndex}");
             var adapter = GetAdapter(ref adapterIndex);
             AdapterIndex = adapterIndex;
-            if(AdapterIndex < 0 || adapter == null)
+            if (AdapterIndex < 0 || adapter == null)
             {
                 throw new PlatformNotSupportedException("Graphic adapter does not meet minimum requirement, must support DirectX 10 or above.");
             }
@@ -354,37 +453,40 @@ namespace HelixToolkit.UWP
             #region Initial Internal Pools
             Log(LogLevel.Information, "Initializing resource pools");
             RemoveAndDispose(ref constantBufferPool);
-            constantBufferPool = Collect(new ConstantBufferPool(Device, Logger));
+            constantBufferPool = new ConstantBufferPool(Device, Logger);
 
             RemoveAndDispose(ref shaderPoolManager);
-            shaderPoolManager = Collect(new ShaderPoolManager(Device, constantBufferPool, Logger));
+            shaderPoolManager = new ShaderPoolManager(Device, constantBufferPool, Logger);
 
             RemoveAndDispose(ref statePoolManager);
-            statePoolManager = Collect(new StatePoolManager(Device));
+            statePoolManager = new StatePoolManager(Device);
 
             RemoveAndDispose(ref geometryBufferManager);
-            geometryBufferManager = Collect(new GeometryBufferManager(this));
+            geometryBufferManager = new GeometryBufferManager(this);
 
             RemoveAndDispose(ref materialTextureManager);
-            materialTextureManager = Collect(new TextureResourceManager(Device));
+            materialTextureManager = new TextureResourceManager(Device);
 
             RemoveAndDispose(ref materialVariableManager);
-            materialVariableManager = Collect(new MaterialVariablePool(this));
+            materialVariableManager = new MaterialVariablePool(this);
 
             RemoveAndDispose(ref deviceContextPool);
-            deviceContextPool = Collect(new DeviceContextPool(Device));
-#endregion
+            deviceContextPool = new DeviceContextPool(Device);
+
+            RemoveAndDispose(ref structArrayPool);
+            structArrayPool = new StructArrayPool(logger);
+            #endregion
             Log(LogLevel.Information, "Initializing Direct2D resources");
-            factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));
-            wicImgFactory = Collect(new global::SharpDX.WIC.ImagingFactory());
-            directWriteFactory = Collect(new global::SharpDX.DirectWrite.Factory(global::SharpDX.DirectWrite.FactoryType.Shared));
+            factory2D = new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded);
+            wicImgFactory = new global::SharpDX.WIC.ImagingFactory();
+            directWriteFactory = new global::SharpDX.DirectWrite.Factory(global::SharpDX.DirectWrite.FactoryType.Shared);
             using (var dxgiDevice2 = device.QueryInterface<global::SharpDX.DXGI.Device>())
             {
-                device2D = Collect(new global::SharpDX.Direct2D1.Device(factory2D, dxgiDevice2));
-                deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
+                device2D = new global::SharpDX.Direct2D1.Device(factory2D, dxgiDevice2);
+                deviceContext2D = new global::SharpDX.Direct2D1.DeviceContext(device2D,
+                    global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations);
             }
             Initialized = true;
-            
         }
 
         /// <summary>
@@ -398,7 +500,10 @@ namespace HelixToolkit.UWP
                 throw new ArgumentException($"Technique { description.Name } already exists.");
             }
             techniqueDescriptions.Add(description.Name, description);
-            techniqueDict.Add(description.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(description, Device, this)) : null; }, true));
+            techniqueDict.Add(description.Name, new Lazy<IRenderTechnique>(() =>
+            {
+                return Initialized ? new Technique(description, Device, this) : null;
+            }, true));
         }
 
         /// <summary>
@@ -409,9 +514,9 @@ namespace HelixToolkit.UWP
             if (!Initialized)
             {
                 Initialize();
-                foreach(var tech in techniqueDescriptions.Values)
+                foreach (var tech in techniqueDescriptions.Values)
                 {
-                    techniqueDict.Add(tech.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(tech, Device, this)) : null; }, true));
+                    techniqueDict.Add(tech.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? new Technique(tech, Device, this) : null; }, true));
                 }
                 Reinitialized?.Invoke(this, EventArgs.Empty);
             }
@@ -444,7 +549,7 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public bool RemoveTechnique(string name)
         {
-            if(techniqueDict.TryGetValue(name, out Lazy<IRenderTechnique> t))
+            if (techniqueDict.TryGetValue(name, out var t))
             {
                 if (t.IsValueCreated)
                 {
@@ -463,7 +568,7 @@ namespace HelixToolkit.UWP
         public void RemoveAllTechniques()
         {
             var names = techniqueDict.Keys.ToArray();
-            foreach(var name in names)
+            foreach (var name in names)
             {
                 RemoveTechnique(name);
             }
@@ -479,7 +584,7 @@ namespace HelixToolkit.UWP
             {
                 Adapter bestAdapter = null;
                 bestAdapterIndex = -1;
-                int adapterIndex = -1;
+                var adapterIndex = -1;
                 ulong bestVideoMemory = 0;
                 ulong bestSystemMemory = 0;
                 Log(LogLevel.Information, $"Trying to get best adapter. Number of adapters: {f.Adapters.Length}");
@@ -510,8 +615,8 @@ namespace HelixToolkit.UWP
                         continue;
                     }
 
-                    ulong videoMemory = item.Description.DedicatedVideoMemory.ToUInt64();
-                    ulong systemMemory = item.Description.DedicatedSystemMemory.ToUInt64();
+                    var videoMemory = item.Description.DedicatedVideoMemory.ToUInt64();
+                    var systemMemory = item.Description.DedicatedSystemMemory.ToUInt64();
 
                     if ((bestAdapter == null) || (videoMemory > bestVideoMemory) || ((videoMemory == bestVideoMemory) && (systemMemory > bestSystemMemory)))
                     {
@@ -548,9 +653,8 @@ namespace HelixToolkit.UWP
         /// <exception cref="Exception">Manager has not been initialized.</exception>
         /// <exception cref="ArgumentException"></exception>
         public IRenderTechnique GetTechnique(string name)
-        {            
-            techniqueDict.TryGetValue(name, out var t);
-            if (t == null)
+        {
+            if (!techniqueDict.TryGetValue(name, out var t))
             {
                 Log(LogLevel.Warning, $"Technique {name} does not exist. Return a null technique.");
                 Debug.WriteLine($"Technique {name} does not exist. Return a null technique.");
@@ -575,7 +679,7 @@ namespace HelixToolkit.UWP
             get
             {
                 return GetTechnique(name);
-            }           
+            }
         }
 
         /// <summary>
@@ -585,24 +689,9 @@ namespace HelixToolkit.UWP
         [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "False positive.")]
         protected override void OnDispose(bool disposeManagedResources)
         {
-            DisposingResources?.Invoke(this, EventArgs.Empty);
-            foreach(var technique in techniqueDict.Values.ToArray())
-            {
-                if (technique.IsValueCreated)
-                {
-                    var t = technique.Value;
-                    RemoveAndDispose(ref t);
-                }
-            }
-            techniqueDict.Clear();
-            RemoveAndDispose(ref shaderPoolManager);           
-            base.OnDispose(disposeManagedResources);
+            DisposeResources();
             Initialized = false;
-            global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
-#if DX11_1
-            Disposer.RemoveAndDispose(ref device1);
-#endif
-            Disposer.RemoveAndDispose(ref device);
+            base.OnDispose(disposeManagedResources);
 #if DEBUGMEMORY
             ReportResources();
 #endif
@@ -620,14 +709,25 @@ namespace HelixToolkit.UWP
                 }
             }
             techniqueDict.Clear();
+            RemoveAndDispose(ref geometryBufferManager);
+            RemoveAndDispose(ref materialTextureManager);
+            RemoveAndDispose(ref materialVariableManager);
+            RemoveAndDispose(ref directWriteFactory);
             RemoveAndDispose(ref shaderPoolManager);
-            DisposeAndClear();
+            RemoveAndDispose(ref constantBufferPool);
+            RemoveAndDispose(ref statePoolManager);
+            RemoveAndDispose(ref deviceContextPool);
+            RemoveAndDispose(ref deviceContext2D);
+            RemoveAndDispose(ref device2D);
+            RemoveAndDispose(ref factory2D);
+            RemoveAndDispose(ref wicImgFactory);
+            RemoveAndDispose(ref structArrayPool);
             Initialized = false;
             global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
 #if DX11_1
-            Disposer.RemoveAndDispose(ref device1);
+            RemoveAndDispose(ref device1);
 #endif
-            Disposer.RemoveAndDispose(ref device);
+            RemoveAndDispose(ref device);
 #if DEBUGMEMORY
             ReportResources();
 #endif
@@ -648,7 +748,7 @@ namespace HelixToolkit.UWP
             //}
         }
 #endif
-        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
         {
             Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
         }

@@ -183,7 +183,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     throw GetConvertFromException(value);
                 }
-                if(value is string source)
+                if (value is string source)
                 {
                     try
                     {
@@ -203,7 +203,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
                     return result;
                 }
-                else if(value is System.Windows.Media.Color)
+                else if (value is System.Windows.Media.Color)
                 {
                     return (Color)((System.Windows.Media.Color)value).ToColor4();
                 }
@@ -212,16 +212,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
-                if(value is Color)
+                if (value is Color)
                 {
                     var val = (Color)value;
                     if (destinationType == typeof(string))
                     {
-                   
+
                         var str = string.Format("{0},{1},{2},{3}", val.R, val.G, val.B, val.A);
                         return str;
                     }
-                    else if(destinationType == typeof(System.Windows.Media.Color))
+                    else if (destinationType == typeof(System.Windows.Media.Color))
                     {
                         return System.Windows.Media.Color.FromArgb(val.A, val.R, val.G, val.B);
                     }
@@ -255,7 +255,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     throw GetConvertFromException(value);
                 }
-                if(value is System.Windows.Media.Color)
+                if (value is System.Windows.Media.Color)
                 {
                     return ((System.Windows.Media.Color)value).ToColor4();
                 }
@@ -284,7 +284,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 return color.ToColor4();
                             }
-                        } catch (Exception) {}
+                        }
+                        catch (Exception) { }
                     }
                 }
                 return base.ConvertFrom(context, culture, value);
@@ -292,15 +293,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
-                if(value is Color4)
+                if (value is Color4)
                 {
                     var val = (Color4)value;
-                    if(destinationType == typeof(System.Windows.Media.Color))
+                    if (destinationType == typeof(System.Windows.Media.Color))
                     {
                         return val.ToColor();
                     }
                     else if (destinationType == typeof(string))
-                    {                    
+                    {
                         var str = string.Format("{0},{1},{2},{3}", val.Red, val.Green, val.Blue, val.Alpha);
                         return str;
                     }
@@ -362,7 +363,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
-                if(value is Vector2)
+                if (value is Vector2)
                 {
                     var val = (Vector2)value;
                     if (destinationType == typeof(System.Windows.Vector))
@@ -387,7 +388,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
             {
-                if(sourceType == typeof(System.Windows.Media.Media3D.Vector3D) || sourceType == typeof(System.Windows.Media.Media3D.Point3D))
+                if (sourceType == typeof(System.Windows.Media.Media3D.Vector3D) || sourceType == typeof(System.Windows.Media.Media3D.Point3D))
                 {
                     return true;
                 }
@@ -409,12 +410,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     throw GetConvertFromException(value);
                 }
-                if(value is System.Windows.Media.Media3D.Vector3D)
+                if (value is System.Windows.Media.Media3D.Vector3D)
                 {
                     var source = (System.Windows.Media.Media3D.Vector3D)value;
                     return new Vector3((float)source.X, (float)source.Y, (float)source.Z);
                 }
-                else if(value is System.Windows.Media.Media3D.Point3D)
+                else if (value is System.Windows.Media.Media3D.Point3D)
                 {
                     var source = (System.Windows.Media.Media3D.Point3D)value;
                     return new Vector3((float)source.X, (float)source.Y, (float)source.Z);
@@ -440,19 +441,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
-                if(value is Vector3)
+                if (value is Vector3)
                 {
                     var val = (Vector3)value;
                     if (destinationType == typeof(System.Windows.Media.Media3D.Vector3D))
                     {
                         return new System.Windows.Media.Media3D.Vector3D(val.X, val.Y, val.Z);
                     }
-                    else if(destinationType == typeof(System.Windows.Media.Media3D.Point3D))
+                    else if (destinationType == typeof(System.Windows.Media.Media3D.Point3D))
                     {
                         return new System.Windows.Media.Media3D.Point3D(val.X, val.Y, val.Z);
                     }
                     else if (destinationType == typeof(string))
-                    {                    
+                    {
                         var str = string.Format("{0},{1},{2}", val.X, val.Y, val.Z);
                         return str;
                     }
@@ -536,5 +537,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

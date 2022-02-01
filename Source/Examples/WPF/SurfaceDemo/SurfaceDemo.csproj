@@ -85,9 +85,7 @@
     <Compile Include="Surfaces\HelicalSurface3D.cs" />
     <Compile Include="Surfaces\KleinBottle3D.cs" />
     <Compile Include="Surfaces\KleinBagel3D.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
+
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

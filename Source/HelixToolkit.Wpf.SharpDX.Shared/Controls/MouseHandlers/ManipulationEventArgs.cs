@@ -31,6 +31,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets the current position.
         /// </summary>
         /// <value>The current position.</value>
-        public Point CurrentPosition { get; private set; }
+        public Point CurrentPosition
+        {
+            get; private set;
+        }
     }
 }

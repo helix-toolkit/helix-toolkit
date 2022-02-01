@@ -81,14 +81,18 @@ namespace HelixToolkit.UWP
             /// <param name="resource">The resource.</param>
             /// <param name="mode">The mode.</param>
             /// <param name="flags">The flags.</param>
-            /// <param name="stream">The stream.</param>
             /// <returns>The locked SharpDX.DataBox      </returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public DataBox MapSubresource(Buffer resource, MapMode mode, MapFlags flags)
+            {
+                return deviceContext.MapSubresource(resource, 0, mode, flags);
+            }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public DataBox MapSubresource(Buffer resource, MapMode mode, MapFlags flags, out DataStream stream)
             {
                 return deviceContext.MapSubresource(resource, mode, flags, out stream);
             }
-
             /// <summary>
             /// Maps the subresource.
             /// </summary>
@@ -327,7 +331,7 @@ namespace HelixToolkit.UWP
             /// </param>
             /// <remarks>This method is implementing the workaround for deferred context.     </remarks>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UpdateSubresource<T>(T[] data, Resource resource, int subresource = 0, int rowPitch = 0, int depthPitch = 0, ResourceRegion? region = null) where T : struct
+            public void UpdateSubresource<T>(T[] data, Resource resource, int subresource = 0, int rowPitch = 0, int depthPitch = 0, ResourceRegion? region = null) where T : unmanaged
             {
                 deviceContext.UpdateSubresource(data, resource, subresource, rowPitch, depthPitch, region);
             }
@@ -344,7 +348,7 @@ namespace HelixToolkit.UWP
             /// <param name="region">The region.</param>
             /// <remarks>This method is implementing the workaround for deferred context.        </remarks>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void UpdateSubresource<T>(ref T data, Resource resource, int subresource = 0, int rowPitch = 0, int depthPitch = 0, ResourceRegion? region = null) where T : struct
+            public void UpdateSubresource<T>(ref T data, Resource resource, int subresource = 0, int rowPitch = 0, int depthPitch = 0, ResourceRegion? region = null) where T : unmanaged
             {
                 deviceContext.UpdateSubresource(ref data, resource, subresource, rowPitch, depthPitch, region);
             }
@@ -394,7 +398,7 @@ namespace HelixToolkit.UWP
             /// <remarks>This method is implementing the workaround for deferred context.       </remarks>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void UpdateSubresourceSafe<T>(T[] data, Resource resource, int srcBytesPerElement, int subresource = 0, int rowPitch = 0, int depthPitch = 0,
-                bool isCompressedResource = false) where T : struct
+                bool isCompressedResource = false) where T : unmanaged
             {
                 deviceContext.UpdateSubresourceSafe(data, resource, srcBytesPerElement, subresource, rowPitch, depthPitch);
             }
@@ -413,7 +417,7 @@ namespace HelixToolkit.UWP
             /// <remarks>This method is implementing the workaround for deferred context.  </remarks>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void UpdateSubresourceSafe<T>(ref T data, Resource resource, int srcBytesPerElement, int subresource = 0, int rowPitch = 0, int depthPitch = 0,
-                bool isCompressedResource = false) where T : struct
+                bool isCompressedResource = false) where T : unmanaged
             {
                 deviceContext.UpdateSubresourceSafe(ref data, resource, srcBytesPerElement, subresource, rowPitch, depthPitch, isCompressedResource);
             }
@@ -584,5 +588,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

@@ -38,8 +38,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public event Mouse2DRoutedEventHandler Clicked2D
             {
-                add { AddHandler(Clicked2DEvent, value); }
-                remove { RemoveHandler(Clicked2DEvent, value); }
+                add
+                {
+                    AddHandler(Clicked2DEvent, value);
+                }
+                remove
+                {
+                    RemoveHandler(Clicked2DEvent, value);
+                }
             }
 
             public static readonly RoutedEvent DoubleClicked2DEvent =
@@ -47,8 +53,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             public event Mouse2DRoutedEventHandler DoubleClicked2D
             {
-                add { AddHandler(DoubleClicked2DEvent, value); }
-                remove { RemoveHandler(DoubleClicked2DEvent, value); }
+                add
+                {
+                    AddHandler(DoubleClicked2DEvent, value);
+                }
+                remove
+                {
+                    RemoveHandler(DoubleClicked2DEvent, value);
+                }
             }
             #endregion
 
@@ -78,22 +90,22 @@ namespace HelixToolkit.Wpf.SharpDX
 
             private void Clickable2D_MouseDown2D(object sender, Mouse2DEventArgs e)
             {
-                if(e.InputArgs is TouchEventArgs || (e.InputArgs is MouseEventArgs && (e.InputArgs as MouseEventArgs).LeftButton == MouseButtonState.Pressed))
+                if (e.InputArgs is TouchEventArgs || (e.InputArgs is MouseEventArgs && (e.InputArgs as MouseEventArgs).LeftButton == MouseButtonState.Pressed))
                 {
                     long time = e.InputArgs.Timestamp;
                     if (time - lastClickedTime < DoubleClickThreshold)
                     {
                         RaiseEvent(new Mouse2DEventArgs(DoubleClicked2DEvent, this));
-    #if DEBUG
+#if DEBUG
                         Debug.WriteLine("DoubleClicked2DEvent");
-    #endif
+#endif
                     }
                     else
                     {
                         RaiseEvent(new Mouse2DEventArgs(Clicked2DEvent, this));
-    #if DEBUG
+#if DEBUG
                         Debug.WriteLine("Clicked2DEvent");
-    #endif
+#endif
                         Command?.Execute(e);
                     }
                     lastClickedTime = time;
@@ -101,5 +113,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

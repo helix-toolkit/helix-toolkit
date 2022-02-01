@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, IApplyPostEffect
     {
-#region DependencyProperties        
+        #region DependencyProperties        
         /// <summary>
         /// The geometry property
         /// </summary>
@@ -133,7 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The always hittable property
         /// </summary>
         public static readonly DependencyProperty AlwaysHittableProperty =
-            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false, (d, e) => 
+            DependencyProperty.Register("AlwaysHittable", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as GeometryNode).AlwaysHittable = (bool)e.NewValue;
             }));
@@ -185,8 +185,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IList<Matrix> Instances
         {
-            get { return (IList<Matrix>)this.GetValue(InstancesProperty); }
-            set { this.SetValue(InstancesProperty, value); }
+            get
+            {
+                return (IList<Matrix>)this.GetValue(InstancesProperty);
+            }
+            set
+            {
+                this.SetValue(InstancesProperty, value);
+            }
         }
 
         /// <summary>

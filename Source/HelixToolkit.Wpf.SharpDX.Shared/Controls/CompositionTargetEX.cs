@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             private void CompositionTarget_Rendering(object sender, EventArgs e)
             {
-                RenderingEventArgs args = (RenderingEventArgs)e;
+                var args = (RenderingEventArgs)e;
                 if (args.RenderingTime == _last)
                     return;
                 _last = args.RenderingTime;
@@ -75,6 +75,4 @@ namespace HelixToolkit.Wpf.SharpDX
             #endregion
         }
     }
-
-
 }

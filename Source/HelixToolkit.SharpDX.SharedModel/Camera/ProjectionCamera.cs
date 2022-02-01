@@ -32,8 +32,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IProjectionCameraModel : ICameraModel
     {
-        double FarPlaneDistance { set; get; }
-        double NearPlaneDistance { set; get; }
+        double FarPlaneDistance
+        {
+            set; get;
+        }
+        double NearPlaneDistance
+        {
+            set; get;
+        }
     }
     /// <summary>
     /// An abstract base class for perspective and orthographic projection cameras.
@@ -120,8 +126,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public override bool CreateLeftHandSystem
         {
-            get { return (bool)this.GetValue(CreateLeftHandSystemProperty); }
-            set { this.SetValue(CreateLeftHandSystemProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(CreateLeftHandSystemProperty);
+            }
+            set
+            {
+                this.SetValue(CreateLeftHandSystemProperty, value);
+            }
         }
 
         /// <summary>
@@ -132,8 +144,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FarPlaneDistance
         {
-            get { return (double)this.GetValue(FarPlaneDistanceProperty); }
-            set { this.SetValue(FarPlaneDistanceProperty, value); }
+            get
+            {
+                return (double)this.GetValue(FarPlaneDistanceProperty);
+            }
+            set
+            {
+                this.SetValue(FarPlaneDistanceProperty, value);
+            }
         }
 
         /// <summary>
@@ -144,8 +162,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public override Vector3D LookDirection
         {
-            get { return (Vector3D)this.GetValue(LookDirectionProperty); }
-            set { this.SetValue(LookDirectionProperty, value); }
+            get
+            {
+                return (Vector3D)this.GetValue(LookDirectionProperty);
+            }
+            set
+            {
+                this.SetValue(LookDirectionProperty, value);
+            }
         }
 
         /// <summary>
@@ -156,8 +180,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double NearPlaneDistance
         {
-            get { return (double)this.GetValue(NearPlaneDistanceProperty); }
-            set { this.SetValue(NearPlaneDistanceProperty, value); }
+            get
+            {
+                return (double)this.GetValue(NearPlaneDistanceProperty);
+            }
+            set
+            {
+                this.SetValue(NearPlaneDistanceProperty, value);
+            }
         }
 
         /// <summary>
@@ -168,8 +198,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public override Point3D Position
         {
-            get { return (Point3D)this.GetValue(PositionProperty); }
-            set { this.SetValue(PositionProperty, value); }
+            get
+            {
+                return (Point3D)this.GetValue(PositionProperty);
+            }
+            set
+            {
+                this.SetValue(PositionProperty, value);
+            }
         }
 
         /// <summary>
@@ -180,7 +216,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Point3D Target
         {
-            get { return this.Position + this.LookDirection; }
+            get
+            {
+                return this.Position + this.LookDirection;
+            }
         }
 
         /// <summary>
@@ -191,8 +230,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public override Vector3D UpDirection
         {
-            get { return (Vector3D)this.GetValue(UpDirectionProperty); }
-            set { this.SetValue(UpDirectionProperty, value); }
+            get
+            {
+                return (Vector3D)this.GetValue(UpDirectionProperty);
+            }
+            set
+            {
+                this.SetValue(UpDirectionProperty, value);
+            }
         }
     }
 }

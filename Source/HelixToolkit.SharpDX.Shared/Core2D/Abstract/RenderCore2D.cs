@@ -85,7 +85,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref clippingBound, value);
                 }
-                get { return clippingBound; }
+                get
+                {
+                    return clippingBound;
+                }
             }
 
             private Matrix3x2 transform = Matrix3x2.Identity;
@@ -159,7 +162,9 @@ namespace HelixToolkit.UWP
             public void Attach(IRenderHost host)
             {
                 if (IsAttached)
-                { return; }
+                {
+                    return;
+                }
                 if (host == null)
                 {
                     return;
@@ -181,20 +186,27 @@ namespace HelixToolkit.UWP
             /// </summary>
             public void Detach()
             {
-                IsAttached = false;
+                if (!IsAttached)
+                {
+                    return;
+                }
                 OnDetach();
-                DisposeAndClear();
+                IsAttached = false;
             }
             /// <summary>
             /// Called when [detach].
             /// </summary>
-            protected virtual void OnDetach() { }
+            protected virtual void OnDetach()
+            {
+            }
 
             /// <summary>
             /// 
             /// </summary>
             /// <param name="layoutBound"></param>
-            protected virtual void OnLayoutBoundChanged(RectangleF layoutBound) { }
+            protected virtual void OnLayoutBoundChanged(RectangleF layoutBound)
+            {
+            }
 
             /// <summary>
             /// Renders the specified context.
@@ -228,7 +240,12 @@ namespace HelixToolkit.UWP
                 InvalidateRenderer();
                 return true;
             }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                Detach();
+                base.OnDispose(disposeManagedResources);
+            }
         }
     }
-
 }

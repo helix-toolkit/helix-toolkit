@@ -18,12 +18,13 @@ namespace HelixToolkit.UWP
 {
     namespace ShaderManager
     {
-        using HelixToolkit.Logger;
+        using Logger;
         using Shaders;
+        using Utilities;
         /// <summary>
         /// Pool to store and share shaders. Do not dispose shader object externally.
         /// </summary>
-        public sealed class ShaderPool : LongLivedResourcePoolBase<byte[], ShaderBase, ShaderDescription>
+        public sealed class ShaderPool : ReferenceCountedDictionaryPool<byte[], ShaderBase, ShaderDescription>
         {
             /// <summary>
             /// Gets or sets the constant buffer pool.
@@ -31,7 +32,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The constant buffer pool.
             /// </value>
-            public IConstantBufferPool ConstantBufferPool { private set; get; }
+            public IConstantBufferPool ConstantBufferPool
+            {
+                private set; get;
+            }
+
+            private readonly Device device;
+            private readonly LogWrapper logger;
             /// <summary>
             /// Initializes a new instance of the <see cref="ShaderPool"/> class.
             /// </summary>
@@ -39,61 +46,51 @@ namespace HelixToolkit.UWP
             /// <param name="cbPool">The cb pool.</param>
             /// <param name="logger">The logger.</param>
             public ShaderPool(Device device, IConstantBufferPool cbPool, LogWrapper logger)
-                :base(device, logger)
+                : base(false)
             {
                 ConstantBufferPool = cbPool;
+                this.device = device;
+                this.logger = logger;
             }
-            /// <summary>
-            /// Gets the key.
-            /// </summary>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override byte[] GetKey(ref ShaderDescription description)
+
+            protected override bool CanCreate(ref byte[] key, ref ShaderDescription argument)
             {
-                return description.ByteCode;
+                return key != null && key.Length > 0;
             }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override ShaderBase Create(Device device, ref ShaderDescription description)
+
+            protected override ShaderBase OnCreate(ref byte[] key, ref ShaderDescription description)
             {
-                return description.ByteCode == null ? Constants.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool, logger);
+                return description.ByteCode == null ?
+                    Constants.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool, logger);
             }
         }
         /// <summary>
         /// Pool to store and share shader layouts. Do not dispose layout object externally.
         /// </summary>
-        public sealed class LayoutPool : LongLivedResourcePoolBase<byte[], InputLayout, KeyValuePair<byte[], InputElement[]>>
+        public sealed class LayoutPool : ReferenceCountedDictionaryPool<byte[], InputLayoutProxy, InputLayoutDescription>
         {
+            private readonly Device device;
+            private readonly LogWrapper logger;
             /// <summary>
             /// Initializes a new instance of the <see cref="LayoutPool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
             /// <param name="logger"></param>
             public LayoutPool(Device device, LogWrapper logger)
-                :base(device, logger)
-            { }
-            /// <summary>
-            /// Creates the specified device.
-            /// </summary>
-            /// <param name="device">The device.</param>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override InputLayout Create(Device device, ref KeyValuePair<byte[], InputElement[]> description)
+                : base(false)
             {
-                return description.Key == null || description.Value == null ? null : new InputLayout(Device, description.Key, description.Value);
+                this.device = device;
+                this.logger = logger;
             }
-            /// <summary>
-            /// Gets the key.
-            /// </summary>
-            /// <param name="description">The description.</param>
-            /// <returns></returns>
-            protected override byte[] GetKey(ref KeyValuePair<byte[], InputElement[]> description)
+
+            protected override bool CanCreate(ref byte[] key, ref InputLayoutDescription argument)
             {
-                return description.Key;
+                return key != null && key.Length > 0;
+            }
+
+            protected override InputLayoutProxy OnCreate(ref byte[] key, ref InputLayoutDescription description)
+            {
+                return new InputLayoutProxy(device, description.ShaderByteCode, description.InputElements);
             }
         }
         /// <summary>
@@ -102,7 +99,7 @@ namespace HelixToolkit.UWP
         public class ShaderPoolManager : DisposeObject, IShaderPoolManager
         {
             private readonly ShaderPool[] shaderPools = new ShaderPool[Constants.NumShaderStages];
-            private readonly LayoutPool layoutPool;
+            private LayoutPool layoutPool;
             /// <summary>
             /// Initializes a new instance of the <see cref="ShaderPoolManager"/> class.
             /// </summary>
@@ -111,13 +108,13 @@ namespace HelixToolkit.UWP
             /// <param name="logger"></param>
             public ShaderPoolManager(Device device, IConstantBufferPool cbPool, LogWrapper logger)
             {
-                shaderPools[Constants.VertexIdx] = Collect(new ShaderPool(device, cbPool, logger));
-                shaderPools[Constants.DomainIdx] = Collect(new ShaderPool(device, cbPool, logger));
-                shaderPools[Constants.HullIdx] = Collect(new ShaderPool(device, cbPool, logger));
-                shaderPools[Constants.GeometryIdx] = Collect(new ShaderPool(device, cbPool, logger));
-                shaderPools[Constants.PixelIdx] = Collect(new ShaderPool(device, cbPool, logger));
-                shaderPools[Constants.ComputeIdx] = Collect(new ShaderPool(device, cbPool, logger));
-                layoutPool = Collect(new LayoutPool(device, logger));
+                shaderPools[Constants.VertexIdx] = new ShaderPool(device, cbPool, logger);
+                shaderPools[Constants.DomainIdx] = new ShaderPool(device, cbPool, logger);
+                shaderPools[Constants.HullIdx] = new ShaderPool(device, cbPool, logger);
+                shaderPools[Constants.GeometryIdx] = new ShaderPool(device, cbPool, logger);
+                shaderPools[Constants.PixelIdx] = new ShaderPool(device, cbPool, logger);
+                shaderPools[Constants.ComputeIdx] = new ShaderPool(device, cbPool, logger);
+                layoutPool = new LayoutPool(device, logger);
             }
             /// <summary>
             /// Registers the shader.
@@ -126,16 +123,26 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public ShaderBase RegisterShader(ShaderDescription description)
             {
-                return description == null ? null : shaderPools[description.ShaderType.ToIndex()].Register(description);
+                if (description == null)
+                {
+                    return null;
+                }
+                return shaderPools[description.ShaderType.ToIndex()].TryCreateOrGet(description.ByteCode, description, out var shader)
+                    ? shader
+                    : null;
             }
             /// <summary>
             /// Registers the input layout.
             /// </summary>
             /// <param name="description">The description.</param>
             /// <returns></returns>
-            public InputLayout RegisterInputLayout(InputLayoutDescription description)
+            public InputLayoutProxy RegisterInputLayout(InputLayoutDescription description)
             {
-                return description == null ? null : layoutPool.Register(description.Description);
+                if (description == null)
+                {
+                    return null;
+                }
+                return layoutPool.TryCreateOrGet(description.ShaderByteCode, description, out var inputLayout) ? inputLayout : null;
             }
             /// <summary>
             /// Called when [dispose].
@@ -143,14 +150,13 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources">if set to <c>true</c> [dispose managed resources].</param>
             protected override void OnDispose(bool disposeManagedResources)
             {
-                for(int i=0; i < shaderPools.Length; ++i)
+                for (var i = 0; i < shaderPools.Length; ++i)
                 {
-                    shaderPools[i] = null;
+                    RemoveAndDispose(ref shaderPools[i]);
                 }
+                RemoveAndDispose(ref layoutPool);
                 base.OnDispose(disposeManagedResources);
-            }       
+            }
         }
     }
-    
-
 }

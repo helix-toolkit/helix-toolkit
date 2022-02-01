@@ -23,8 +23,14 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IMaterial : INotifyPropertyChanged
     {
-        string Name { set; get; }
-        Guid Guid { get; }
+        string Name
+        {
+            set; get;
+        }
+        Guid Guid
+        {
+            get;
+        }
         MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique);
     }
 
@@ -33,7 +39,10 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IMaterialVariablePool : IDisposable
     {
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
         MaterialVariable Register(IMaterial material, IRenderTechnique technique);
     }
 }

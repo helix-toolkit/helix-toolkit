@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
     {
         using Render;
         using ShaderManager;
-        using Shaders;   
+        using Shaders;
         using Utilities;
 
         /// <summary>
@@ -48,12 +48,30 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public ShaderPass MaterialPass { get; }
-            public ShaderPass TransparentPass { get; }
-            public ShaderPass ShadowPass { get; }
-            public ShaderPass WireframePass { get; }
-            public ShaderPass WireframeOITPass { get; }
-            public ShaderPass DepthPass { get; }
+            public ShaderPass MaterialPass
+            {
+                get;
+            }
+            public ShaderPass TransparentPass
+            {
+                get;
+            }
+            public ShaderPass ShadowPass
+            {
+                get;
+            }
+            public ShaderPass WireframePass
+            {
+                get;
+            }
+            public ShaderPass WireframeOITPass
+            {
+                get;
+            }
+            public ShaderPass DepthPass
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -66,7 +84,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            public string SamplerShadowMapName {  get; } = DefaultSamplerStateNames.ShadowMapSampler;
+            public string SamplerShadowMapName { get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
             private readonly DiffuseMaterialCore material;
             /// <summary>
@@ -110,7 +128,7 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique"></param>
             /// <param name="material">The material.</param>
-            public DiffuseMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, 
+            public DiffuseMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique,
                 DiffuseMaterialCore material)
                 : this(manager, technique, material)
             {
@@ -120,9 +138,11 @@ namespace HelixToolkit.UWP
             protected override void OnInitialPropertyBindings()
             {
                 base.OnInitialPropertyBindings();
-                AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseColor), () => 
-                { WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor); });
-                AddPropertyBinding(nameof(DiffuseMaterialCore.UVTransform), () => 
+                AddPropertyBinding(nameof(DiffuseMaterialCore.DiffuseColor), () =>
+                {
+                    WriteValue(PhongPBRMaterialStruct.DiffuseStr, material.DiffuseColor);
+                });
+                AddPropertyBinding(nameof(DiffuseMaterialCore.UVTransform), () =>
                 {
                     Matrix m = material.UVTransform;
                     WriteValue(PhongPBRMaterialStruct.UVTransformR1Str, m.Column1);
@@ -137,10 +157,12 @@ namespace HelixToolkit.UWP
                 {
                     var newSampler = statePoolManager.Register(material.DiffuseMapSampler);
                     RemoveAndDispose(ref SamplerResource);
-                    SamplerResource = Collect(newSampler);
+                    SamplerResource = newSampler;
                 });
-                AddPropertyBinding(nameof(DiffuseMaterialCore.EnableUnLit), () => 
-                { WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.EnableUnLit); });
+                AddPropertyBinding(nameof(DiffuseMaterialCore.EnableUnLit), () =>
+                {
+                    WriteValue(PhongPBRMaterialStruct.HasNormalMapStr, material.EnableUnLit);
+                });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.EnableFlatShading), () => { WriteValue(PhongPBRMaterialStruct.RenderFlat, material.EnableFlatShading); });
                 AddPropertyBinding(nameof(DiffuseMaterialCore.VertexColorBlendingFactor), () => { WriteValue(PhongPBRMaterialStruct.VertColorBlending, material.VertexColorBlendingFactor); });
             }
@@ -150,7 +172,7 @@ namespace HelixToolkit.UWP
             {
                 var newTexture = texture == null ? null : textureManager.Register(texture);
                 RemoveAndDispose(ref TextureResource);
-                TextureResource = Collect(newTexture);
+                TextureResource = newTexture;
                 if (TextureResource != null)
                 {
                     textureIndex |= 1u << index;
@@ -178,7 +200,7 @@ namespace HelixToolkit.UWP
             {
                 var newSampler = material == null ? null : statePoolManager.Register(material.DiffuseMapSampler);
                 RemoveAndDispose(ref SamplerResource);
-                SamplerResource = Collect(newSampler);
+                SamplerResource = newSampler;
             }
 
             public override bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
@@ -202,7 +224,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                int idx = shader.ShaderStageIndex;
+                var idx = shader.ShaderStageIndex;
                 shader.BindTexture(context, texDiffuseSlot, TextureResource);
                 shader.BindSampler(context, samplerDiffuseSlot, SamplerResource);
             }
@@ -224,8 +246,8 @@ namespace HelixToolkit.UWP
             {
                 if (disposeManagedResources)
                 {
-                    TextureResource = null;
-                    SamplerResource = null;
+                    RemoveAndDispose(ref SamplerResource);
+                    RemoveAndDispose(ref TextureResource);
                 }
 
                 base.OnDispose(disposeManagedResources);
@@ -257,5 +279,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

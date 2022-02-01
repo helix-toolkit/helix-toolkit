@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP
 {
     namespace Utilities
     {
-    #if !NETFX_CORE
+#if !NETFX_CORE
         /// <summary>
         /// Enable dedicated graphics card for rendering. https://stackoverflow.com/questions/17270429/forcing-hardware-accelerated-rendering
         /// </summary>
@@ -40,7 +40,6 @@ namespace HelixToolkit.UWP
             [System.Runtime.InteropServices.DllImport("nvapi.dll", EntryPoint = "fake")]
             internal static extern int LoadNvApi32();
         }
-    #endif
+#endif
     }
-
 }

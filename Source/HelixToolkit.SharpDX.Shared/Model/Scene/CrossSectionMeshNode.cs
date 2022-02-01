@@ -397,14 +397,14 @@ namespace HelixToolkit.UWP
 
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                int hitsBeforeCheck = hits?.Count ?? 0;
+                var hitsBeforeCheck = hits?.Count ?? 0;
                 var meshGeometry3d = Geometry as MeshGeometry3D;
                 if (meshGeometry3d == null)
                     return false;
-                if(meshGeometry3d.ReturnMultipleHitsOnHitTest)
+                if (meshGeometry3d.ReturnMultipleHitsOnHitTest)
                     throw new InvalidOperationException($"All hit tests should be called on the same thread, {nameof(Geometry)}.{nameof(meshGeometry3d.ReturnMultipleHitsOnHitTest)} would not be true if that was the case");
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = true;
-                bool result = meshGeometry3d.HitTest(context, totalModelMatrix, ref hits, this.WrapperSource);
+                var result = meshGeometry3d.HitTest(context, totalModelMatrix, ref hits, this.WrapperSource);
                 meshGeometry3d.ReturnMultipleHitsOnHitTest = false;
                 var operation = CuttingOperation;
                 if (result)
@@ -444,7 +444,7 @@ namespace HelixToolkit.UWP
             private static bool RemoveHitPointBehindCrossingPlane(Plane plane, List<HitTestResult> hits, int hitsBeforeCheck)
             {
                 // Loop backwards to remove at end of list when possible
-                for (int i = hits.Count-1; i >= hitsBeforeCheck; i--)
+                for (var i = hits.Count - 1; i >= hitsBeforeCheck; i--)
                 {
                     if (hits[i].PointHit.PointToPlanePosition(ref plane) == PlaneIntersectionType.Back)
                     {
@@ -456,9 +456,9 @@ namespace HelixToolkit.UWP
 
             private bool RemoveHitPointInFrontOfAllCrossingPlanes(List<HitTestResult> hits, int hitsBeforeCheck)
             {
-                for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                for (var i = hits.Count - 1; i >= hitsBeforeCheck; i--)
                 {
-                    Vector3 hitPoint = hits[i].PointHit;
+                    var hitPoint = hits[i].PointHit;
                     if (EnablePlane1)
                     {
                         if (hitPoint.PointToPlanePosition(Plane1) != PlaneIntersectionType.Front)
@@ -528,12 +528,12 @@ namespace HelixToolkit.UWP
             /// <param name="hitsBeforeCheck">The number of hits before this object was processed</param>
             private static void RemoveAllButClosest(List<HitTestResult> hits, int hitsBeforeCheck)
             {
-                if(hits.Count - hitsBeforeCheck == 0)
+                if (hits.Count - hitsBeforeCheck == 0)
                 {
                     return;
                 }
-                double minDistance = double.MaxValue;
-                for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                var minDistance = double.MaxValue;
+                for (var i = hits.Count - 1; i >= hitsBeforeCheck; i--)
                 {
                     var hit = hits[i];
                     if (minDistance > hit.Distance)
@@ -541,13 +541,13 @@ namespace HelixToolkit.UWP
                         minDistance = hit.Distance;
                     }
                 }
-                if(minDistance < double.MaxValue)
+                if (minDistance < double.MaxValue)
                 {
-                    bool foundMinDistance = false;
+                    var foundMinDistance = false;
                     // Loop backwards to remove at end of list when possible
-                    for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                    for (var i = hits.Count - 1; i >= hitsBeforeCheck; i--)
                     {
-                        if(hits[i].Distance > minDistance || (foundMinDistance && hits[i].Distance == minDistance))
+                        if (hits[i].Distance > minDistance || (foundMinDistance && hits[i].Distance == minDistance))
                         {
                             hits.RemoveAt(i);
                         }
@@ -560,5 +560,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

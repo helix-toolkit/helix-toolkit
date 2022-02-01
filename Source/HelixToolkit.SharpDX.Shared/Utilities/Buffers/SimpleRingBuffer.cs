@@ -27,7 +27,13 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// 
             /// </summary>
-            public int Count { get { return count; } }
+            public int Count
+            {
+                get
+                {
+                    return count;
+                }
+            }
             /// <summary>
             /// Constructor
             /// </summary>
@@ -64,10 +70,10 @@ namespace HelixToolkit.UWP
                     return false;
                 }
                 else
-                {         
+                {
                     next = DecLast();
                     buffer[next] = default(T);
-                    last = next == 0? bufferSize - 1 : next - 1;
+                    last = next == 0 ? bufferSize - 1 : next - 1;
                     --count;
                     return true;
                 }
@@ -174,5 +180,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

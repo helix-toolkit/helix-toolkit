@@ -33,7 +33,10 @@ namespace HelixToolkit.UWP
         {
             public sealed class UpdateLightSourceEventArgs : EventArgs
             {
-                public RenderContext Context { private set; get; }
+                public RenderContext Context
+                {
+                    private set; get;
+                }
                 public UpdateLightSourceEventArgs(RenderContext context)
                 {
                     Context = context;
@@ -116,7 +119,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref modelStruct.ShadowMapSize.X, value))
+                    if (SetAffectsRender(ref modelStruct.ShadowMapSize.X, value))
                     {
                         resolutionChanged = true;
                     }
@@ -153,7 +156,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.ShadowMapInfo.X, value);
                 }
-                get { return modelStruct.ShadowMapInfo.X; }
+                get
+                {
+                    return modelStruct.ShadowMapInfo.X;
+                }
             }
 
             /// <summary>
@@ -165,7 +171,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.ShadowMapInfo.Z, value);
                 }
-                get { return modelStruct.ShadowMapInfo.Z; }
+                get
+                {
+                    return modelStruct.ShadowMapInfo.Z;
+                }
             }
             /// <summary>
             /// 
@@ -176,7 +185,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.LightView, value);
                 }
-                get { return modelStruct.LightView; }
+                get
+                {
+                    return modelStruct.LightView;
+                }
             }
             /// <summary>
             /// 
@@ -187,7 +199,10 @@ namespace HelixToolkit.UWP
                 {
                     SetAffectsRender(ref modelStruct.LightProjection, value);
                 }
-                get { return modelStruct.LightProjection; }
+                get
+                {
+                    return modelStruct.LightProjection;
+                }
             }
             /// <summary>
             /// Set to true if found the light source, otherwise false.
@@ -197,6 +212,8 @@ namespace HelixToolkit.UWP
             /// Update shadow map every N frames
             /// </summary>
             public int UpdateFrequency { set; get; } = 1;
+
+            public bool NeedRender { set; get; } = true;
             #endregion
 
             /// <summary>
@@ -212,17 +229,23 @@ namespace HelixToolkit.UWP
 
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
+                if (!NeedRender)
+                {
+                    modelStruct.HasShadowMap = 0;
+                    modelCB.Upload(deviceContext, ref modelStruct);
+                    return;
+                }
                 OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
                 ++currentFrame;
                 currentFrame %= Math.Max(1, UpdateFrequency);
-                if(!FoundLightSource || currentFrame != 0)
+                if (!FoundLightSource || currentFrame != 0)
                 {
                     return;
                 }
                 if (resolutionChanged)
                 {
                     RemoveAndDispose(ref viewResource);
-                    viewResource = Collect(new ShaderResourceViewProxy(Device, ShadowMapTextureDesc));
+                    viewResource = new ShaderResourceViewProxy(Device, ShadowMapTextureDesc);
                     viewResource.CreateView(DepthStencilViewDesc);
                     viewResource.CreateView(ShaderResourceViewDesc);
                     resolutionChanged = false;
@@ -232,13 +255,13 @@ namespace HelixToolkit.UWP
                 var orgFrustum = context.BoundingFrustum;
                 var frustum = new BoundingFrustum(LightView * LightProjection);
                 context.BoundingFrustum = frustum;
-    #if !TEST
+#if !TEST
                 deviceContext.SetViewport(0, 0, Width, Height);
 
                 deviceContext.SetDepthStencil(viewResource.DepthStencilView);
                 modelStruct.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
                 modelCB.Upload(deviceContext, ref modelStruct);
-                for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
+                for (var i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
                 {
                     //Only support opaque object for throwing shadows.
                     var core = context.RenderHost.PerFrameOpaqueNodes[i];
@@ -250,7 +273,7 @@ namespace HelixToolkit.UWP
                 context.BoundingFrustum = orgFrustum;
                 context.RenderHost.SetDefaultRenderTargets(false);
                 context.SharedResource.ShadowView = viewResource;
-    #endif
+#endif
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
@@ -260,11 +283,9 @@ namespace HelixToolkit.UWP
 
             protected override void OnDetach()
             {
-                viewResource = null;
+                RemoveAndDispose(ref viewResource);
                 resolutionChanged = true;
-                base.OnDetach();
             }
         }
     }
-
 }

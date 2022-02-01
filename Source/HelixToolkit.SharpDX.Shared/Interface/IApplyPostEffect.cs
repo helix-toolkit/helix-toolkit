@@ -10,6 +10,9 @@ namespace HelixToolkit.UWP
 {
     public interface IApplyPostEffect
     {
-        string PostEffects { set; get; }
+        string PostEffects
+        {
+            set; get;
+        }
     }
 }

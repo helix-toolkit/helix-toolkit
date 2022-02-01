@@ -13,20 +13,20 @@ using global::SharpDX;
 
 
 namespace HelixToolkit.Wpf.SharpDX
-{   
+{
     using Model;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
 
     public class UICompositeManipulator3D : CompositeModel3D
     {
         private UIRotateManipulator3D rotateX, rotateY, rotateZ;
-        private UITranslateManipulator3D translateX, translateY, translateZ;       
+        private UITranslateManipulator3D translateX, translateY, translateZ;
 
         /// <summary>
         /// The can rotate x property.
         /// </summary>
         public static readonly DependencyProperty CanRotateXProperty = DependencyProperty.Register(
-            "CanRotateX", typeof(bool), typeof(UICompositeManipulator3D), new PropertyMetadata(true, (d,e)=>
+            "CanRotateX", typeof(bool), typeof(UICompositeManipulator3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as UICompositeManipulator3D).rotateX.IsRendering = (bool)e.NewValue;
             }));
@@ -86,17 +86,23 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   The target transform property.
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
-            "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D), 
+            "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D),
             new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                (d,e)=> { (d as Element3DCore).InvalidateRender(); }));
+                (d, e) => { (d as Element3DCore).InvalidateRender(); }));
 
         /// <summary>
         ///   Gets or sets TargetTransform.
         /// </summary>
         public Transform3D TargetTransform
         {
-            get { return (Transform3D)this.GetValue(TargetTransformProperty); }
-            set { this.SetValue(TargetTransformProperty, value); }
+            get
+            {
+                return (Transform3D)this.GetValue(TargetTransformProperty);
+            }
+            set
+            {
+                this.SetValue(TargetTransformProperty, value);
+            }
         }
 
         /// <summary>
@@ -105,8 +111,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if this instance can rotate X; otherwise, <c>false</c> . </value>
         public bool CanRotateX
         {
-            get { return (bool)this.GetValue(CanRotateXProperty); }
-            set { this.SetValue(CanRotateXProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(CanRotateXProperty);
+            }
+            set
+            {
+                this.SetValue(CanRotateXProperty, value);
+            }
         }
 
         /// <summary>
@@ -115,8 +127,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if this instance can rotate Y; otherwise, <c>false</c> . </value>
         public bool CanRotateY
         {
-            get { return (bool)this.GetValue(CanRotateYProperty); }
-            set { this.SetValue(CanRotateYProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(CanRotateYProperty);
+            }
+            set
+            {
+                this.SetValue(CanRotateYProperty, value);
+            }
         }
 
         /// <summary>
@@ -125,8 +143,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if this instance can rotate Z; otherwise, <c>false</c> . </value>
         public bool CanRotateZ
         {
-            get { return (bool)this.GetValue(CanRotateZProperty); }
-            set { this.SetValue(CanRotateZProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(CanRotateZProperty);
+            }
+            set
+            {
+                this.SetValue(CanRotateZProperty, value);
+            }
         }
 
         /// <summary>
@@ -135,8 +159,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if this instance can translate X; otherwise, <c>false</c> . </value>
         public bool CanTranslateX
         {
-            get { return (bool)this.GetValue(CanTranslateXProperty); }
-            set { this.SetValue(CanTranslateXProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(CanTranslateXProperty);
+            }
+            set
+            {
+                this.SetValue(CanTranslateXProperty, value);
+            }
         }
 
         /// <summary>
@@ -145,8 +175,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if this instance can translate Y; otherwise, <c>false</c> . </value>
         public bool CanTranslateY
         {
-            get { return (bool)this.GetValue(CanTranslateYProperty); }
-            set { this.SetValue(CanTranslateYProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(CanTranslateYProperty);
+            }
+            set
+            {
+                this.SetValue(CanTranslateYProperty, value);
+            }
         }
 
         /// <summary>
@@ -155,8 +191,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if this instance can translate Z; otherwise, <c>false</c> . </value>
         public bool CanTranslateZ
         {
-            get { return (bool)this.GetValue(CanTranslateZProperty); }
-            set { this.SetValue(CanTranslateZProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(CanTranslateZProperty);
+            }
+            set
+            {
+                this.SetValue(CanTranslateZProperty, value);
+            }
         }
 
         /// <summary>
@@ -165,8 +207,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The diameter. </value>
         public double Diameter
         {
-            get { return (double)this.GetValue(DiameterProperty); }
-            set { this.SetValue(DiameterProperty, value); }
+            get
+            {
+                return (double)this.GetValue(DiameterProperty);
+            }
+            set
+            {
+                this.SetValue(DiameterProperty, value);
+            }
         }
 
         /// <summary>
@@ -235,7 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   Releases the binding of this manipulator.
         /// </summary>
         public void UnBind()
-        {            
+        {
             BindingOperations.ClearBinding(this, TargetTransformProperty);
             BindingOperations.ClearBinding(this, TransformProperty);
         }

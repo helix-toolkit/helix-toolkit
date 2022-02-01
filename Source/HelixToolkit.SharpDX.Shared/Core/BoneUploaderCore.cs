@@ -40,10 +40,13 @@ namespace HelixToolkit.UWP
                         BoneChanged?.Invoke(this, EventArgs.Empty);
                     }
                 }
-                get { return boneMatrices; }
+                get
+                {
+                    return boneMatrices;
+                }
             }
-
-            public StructuredBufferProxy BoneSkinSB { private set; get; }
+            public StructuredBufferProxy boneSkinSB = null;
+            public StructuredBufferProxy BoneSkinSB => boneSkinSB;
 
             public BoneUploaderCore() : base(RenderType.None)
             {
@@ -57,7 +60,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if (matricsChanged)
+                if (matricsChanged && BoneSkinSB != null)
                 {
                     BoneSkinSB.UploadDataToBuffer(deviceContext, boneMatrices, boneMatrices.Length);
                     matricsChanged = false;
@@ -66,19 +69,21 @@ namespace HelixToolkit.UWP
 
             protected override bool OnAttach(IRenderTechnique technique)
             {
-                BoneSkinSB = Collect(new StructuredBufferProxy(Matrix.SizeInBytes, false));
+                boneSkinSB = new StructuredBufferProxy(Matrix.SizeInBytes, false);
                 return true;
             }
 
             protected override void OnDetach()
             {
-                BoneSkinSB = null;
-                base.OnDetach();
+                RemoveAndDispose(ref boneSkinSB);
             }
-        
+
             public void BindBuffer(DeviceContextProxy deviceContext, int slot)
             {
-                deviceContext.SetShaderResource(VertexShader.Type, slot, BoneSkinSB);
+                if (BoneSkinSB != null)
+                {
+                    deviceContext.SetShaderResource(VertexShader.Type, slot, BoneSkinSB);
+                }
             }
 
             protected override void OnDispose(bool disposeManagedResources)
@@ -91,5 +96,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

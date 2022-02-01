@@ -24,8 +24,14 @@ namespace HelixToolkit.UWP
         {
             public Vector3 Direction
             {
-                set { (RenderCore as DirectionalLightCore).Direction = value; }
-                get { return (RenderCore as DirectionalLightCore).Direction; }
+                set
+                {
+                    (RenderCore as DirectionalLightCore).Direction = value;
+                }
+                get
+                {
+                    return (RenderCore as DirectionalLightCore).Direction;
+                }
             }
 
             protected override RenderCore OnCreateRenderCore()
@@ -34,5 +40,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

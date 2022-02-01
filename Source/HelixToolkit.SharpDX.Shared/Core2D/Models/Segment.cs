@@ -23,7 +23,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public interface ISegment
         {
-            bool IsDirty { get; }
+            bool IsDirty
+            {
+                get;
+            }
             void Create(D2D.GeometrySink sink);
         }
 
@@ -42,5 +45,4 @@ namespace HelixToolkit.UWP
             public abstract void Create(D2D.GeometrySink sink);
         }
     }
-
 }

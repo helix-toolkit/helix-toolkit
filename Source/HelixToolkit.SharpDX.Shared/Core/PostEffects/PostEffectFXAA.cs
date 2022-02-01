@@ -27,8 +27,14 @@ namespace HelixToolkit.UWP
             private string effectName = DefaultRenderTechniqueNames.PostEffectFXAA;
             public string EffectName
             {
-                set { SetAffectsCanRenderFlag(ref effectName, value); }
-                get { return effectName; }
+                set
+                {
+                    SetAffectsCanRenderFlag(ref effectName, value);
+                }
+                get
+                {
+                    return effectName;
+                }
             }
 
             private FXAALevel fxaaLevel = FXAALevel.None;
@@ -40,8 +46,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public FXAALevel FXAALevel
             {
-                set { SetAffectsCanRenderFlag(ref fxaaLevel, value); }
-                get { return fxaaLevel; }
+                set
+                {
+                    SetAffectsCanRenderFlag(ref fxaaLevel, value);
+                }
+                get
+                {
+                    return fxaaLevel;
+                }
             }
 
             private int textureSlot;
@@ -63,14 +75,13 @@ namespace HelixToolkit.UWP
                 LUMAPass = technique[DefaultPassNames.LumaPass];
                 textureSlot = FXAAPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerSlot = FXAAPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.SurfaceSampler);
-                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
+                sampler = technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1);
                 return true;
             }
 
             protected override void OnDetach()
             {
-                sampler = null;
-                base.OnDetach();
+                RemoveAndDispose(ref sampler);
             }
 
             protected override bool OnUpdateCanRenderFlag()
@@ -92,7 +103,7 @@ namespace HelixToolkit.UWP
                 LUMAPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
                 LUMAPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
                 deviceContext.Draw(4, 0);
-           
+
                 deviceContext.SetRenderTarget(buffer.FullResPPBuffer.CurrentRTV);
                 FXAAPass.BindShader(deviceContext);
                 FXAAPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
@@ -130,5 +141,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

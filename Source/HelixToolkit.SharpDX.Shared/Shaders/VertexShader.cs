@@ -18,14 +18,15 @@ namespace HelixToolkit.UWP
 {
     namespace Shaders
     {
-        using Render;       
+        using Render;
         using Utilities;
         /// <summary>
         /// Vertex Shader
         /// </summary>
         public sealed class VertexShader : ShaderBase
         {
-            internal global::SharpDX.Direct3D11.VertexShader Shader { private set; get; } = null;
+            private global::SharpDX.Direct3D11.VertexShader shader = null;
+            internal global::SharpDX.Direct3D11.VertexShader Shader => shader;
             public static readonly VertexShader NullVertexShader = new VertexShader("NULL");
             public static readonly VertexShaderType Type;
             /// <summary>
@@ -35,9 +36,10 @@ namespace HelixToolkit.UWP
             /// <param name="name"></param>
             /// <param name="byteCode"></param>
             public VertexShader(Device device, string name, byte[] byteCode)
-                :base(name, ShaderStage.Vertex)
+                : base(name, ShaderStage.Vertex)
             {
-                 Shader = Collect(new global::SharpDX.Direct3D11.VertexShader(device, byteCode));
+                shader = new global::SharpDX.Direct3D11.VertexShader(device, byteCode);
+                shader.DebugName = name;
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="VertexShader"/> class.
@@ -80,7 +82,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void BindTexture(DeviceContextProxy context, string name, ShaderResourceViewProxy texture)
             {
-                int slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
+                var slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
                 context.SetShaderResource(Type, slot, texture);
             }
             /// <summary>
@@ -116,7 +118,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void BindSampler(DeviceContextProxy context, string name, SamplerStateProxy sampler)
             {
-                int slot = this.SamplerMapping.TryGetBindSlot(name);
+                var slot = this.SamplerMapping.TryGetBindSlot(name);
                 context.SetSampler(Type, slot, sampler);
             }
 
@@ -133,6 +135,13 @@ namespace HelixToolkit.UWP
                     context.SetSampler(Type, sampler.Key, sampler.Value);
                 }
             }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                RemoveAndDispose(ref shader);
+                base.OnDispose(disposeManagedResources);
+            }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static implicit operator VertexShaderType(VertexShader s)
             {
@@ -140,5 +149,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

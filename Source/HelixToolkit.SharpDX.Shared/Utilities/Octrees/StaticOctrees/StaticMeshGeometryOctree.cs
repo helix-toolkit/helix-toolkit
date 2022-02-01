@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP
             {
                 var objects = new KeyValuePair<int, BoundingBox>[Indices.Count / 3];
                 // Construct triangle index and its bounding box KeyValuePair
-                for (int i = 0; i < Indices.Count / 3; ++i)
+                for (var i = 0; i < Indices.Count / 3; ++i)
                 {
                     objects[i] = new KeyValuePair<int, BoundingBox>(i, GetBoundingBox(i));
                 }
@@ -122,9 +122,9 @@ namespace HelixToolkit.UWP
                     }
                     var result = new HitTestResult();
                     result.Distance = double.MaxValue;
-                    float minDistance = float.MaxValue;
+                    var minDistance = float.MaxValue;
                     var rayWS = context.RayWS;
-                    for (int i = octant.Start; i < octant.End; ++i)
+                    for (var i = octant.Start; i < octant.End; ++i)
                     {
                         var idx = Objects[i].Key * 3;
                         var t1 = Indices[idx];
@@ -220,13 +220,13 @@ namespace HelixToolkit.UWP
             protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, HitTestContext context,
                 ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
             {
-                bool isHit = false;
+                var isHit = false;
                 var tempResult = new HitTestResult();
                 tempResult.Distance = float.MaxValue;
                 if (!BoxDisjointSphere(octant.Bound, ref sphere))
                 {
                     isIntersect = true;
-                    for (int i = octant.Start; i < octant.End; ++i)
+                    for (var i = octant.Start; i < octant.End; ++i)
                     {
                         if (!BoxDisjointSphere(Objects[i].Value, ref sphere))
                         {
@@ -280,5 +280,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

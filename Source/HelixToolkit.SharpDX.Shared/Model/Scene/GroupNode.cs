@@ -30,19 +30,22 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = octreeManager;
-                    if(Set(ref octreeManager, value))
+                    if (Set(ref octreeManager, value))
                     {
                         old?.Clear();
                         if (octreeManager != null)
                         {
-                            foreach(var item in ItemsInternal)
+                            foreach (var item in ItemsInternal)
                             {
                                 octreeManager.AddPendingItem(item);
                             }
                         }
                     }
                 }
-                get { return octreeManager; }
+                get
+                {
+                    return octreeManager;
+                }
             }
 
             /// <summary>
@@ -104,21 +107,20 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="totalModelMatrix">The total model matrix.</param>
-            /// <param name="ray">The ray.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
             protected override bool OnHitTest(HitTestContext context, global::SharpDX.Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                bool isHit = false;
+                var isHit = false;
                 if (octreeManager != null)
                 {
                     isHit = octreeManager.HitTest(context, this.WrapperSource, totalModelMatrix, ref hits);
-    #if DEBUG
+#if DEBUG
                     if (isHit)
                     {
                         Debug.WriteLine("Octree hit test, hit at " + hits[0].PointHit);
                     }
-    #endif
+#endif
                 }
                 else
                 {
@@ -128,5 +130,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

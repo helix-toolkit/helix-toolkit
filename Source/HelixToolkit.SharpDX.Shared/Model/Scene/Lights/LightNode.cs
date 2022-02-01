@@ -31,8 +31,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 Color
             {
-                set { (RenderCore as LightCoreBase).Color = value; }
-                get { return (RenderCore as LightCoreBase).Color; }
+                set
+                {
+                    (RenderCore as LightCoreBase).Color = value;
+                }
+                get
+                {
+                    return (RenderCore as LightCoreBase).Color;
+                }
             }
             /// <summary>
             /// Gets the type of the light.
@@ -42,7 +48,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public LightType LightType
             {
-                get { return (RenderCore as LightCoreBase).LightType; }
+                get
+                {
+                    return (RenderCore as LightCoreBase).LightType;
+                }
             }
 
             public sealed override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)
@@ -56,5 +65,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

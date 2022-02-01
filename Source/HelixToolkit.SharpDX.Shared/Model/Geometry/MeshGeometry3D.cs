@@ -45,7 +45,10 @@ namespace HelixToolkit.UWP
         /// Does not raise property changed event
         /// </summary>
         [DataMember]
-        public Vector3Collection Normals { get; set; }
+        public Vector3Collection Normals
+        {
+            get; set;
+        }
 
         private Vector2Collection textureCoordinates = null;
         /// <summary>
@@ -67,19 +70,25 @@ namespace HelixToolkit.UWP
         /// Does not raise property changed event
         /// </summary>
         [DataMember]
-        public Vector3Collection Tangents { get; set; }
+        public Vector3Collection Tangents
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Does not raise property changed event
         /// </summary>
         [DataMember]
-        public Vector3Collection BiTangents { get; set; }
+        public Vector3Collection BiTangents
+        {
+            get; set;
+        }
 
         public IEnumerable<Triangle> Triangles
         {
             get
             {
-                for (int i = 0; i < Indices.Count; i += 3)
+                for (var i = 0; i < Indices.Count; i += 3)
                 {
                     yield return new Triangle() { P0 = Positions[Indices[i]], P1 = Positions[Indices[i + 1]], P2 = Positions[Indices[i + 2]], };
                 }
@@ -92,8 +101,14 @@ namespace HelixToolkit.UWP
         [IgnoreDataMember]
         public IntCollection TriangleIndices
         {
-            get { return Indices; }
-            set { Indices = new IntCollection(value); }
+            get
+            {
+                return Indices;
+            }
+            set
+            {
+                Indices = new IntCollection(value);
+            }
         }
 
         /// <summary>
@@ -112,7 +127,7 @@ namespace HelixToolkit.UWP
             var tangents = meshes.All(x => x.Tangents != null) ? new Vector3Collection() : null;
             var bitangents = meshes.All(x => x.BiTangents != null) ? new Vector3Collection() : null;
 
-            int index = 0;
+            var index = 0;
             foreach (var part in meshes)
             {
                 positions.AddRange(part.Positions);
@@ -167,7 +182,7 @@ namespace HelixToolkit.UWP
         protected override void OnAssignTo(Geometry3D target)
         {
             base.OnAssignTo(target);
-            if(target is MeshGeometry3D mesh)
+            if (target is MeshGeometry3D mesh)
             {
                 mesh.Normals = this.Normals;
                 mesh.TextureCoordinates = this.TextureCoordinates;
@@ -184,12 +199,12 @@ namespace HelixToolkit.UWP
 
         public virtual bool HitTest(HitTestContext context, Matrix modelMatrix, ref List<HitTestResult> hits, object originalSource)
         {
-            if(Positions == null || Positions.Count == 0
+            if (Positions == null || Positions.Count == 0
                 || Indices == null || Indices.Count == 0)
             {
                 return false;
             }
-            bool isHit = false;
+            var isHit = false;
             if (Octree != null)
             {
                 isHit = Octree.HitTest(context, originalSource, this, modelMatrix, ReturnMultipleHitsOnHitTest, ref hits);
@@ -213,13 +228,13 @@ namespace HelixToolkit.UWP
                 //Do hit test in local space
                 if (rayModel.Intersects(ref b))
                 {
-                    int index = 0;
-                    float minDistance = float.MaxValue;
+                    var index = 0;
+                    var minDistance = float.MaxValue;
 
                     foreach (var t in Triangles)
                     {
                         // Used when geometry size is really small, causes hit test failure due to SharpDX.MathUtils.ZeroTolerance.
-                        float scaling = 1f;
+                        var scaling = 1f;
                         var rayScaled = rayModel;
                         if (EnableSmallTriangleHitTestScaling)
                         {
@@ -307,9 +322,18 @@ namespace HelixToolkit.UWP
 
     public struct BatchedMeshGeometryConfig : IBatchedGeometry
     {
-        public Geometry3D Geometry { private set; get; }
-        public Matrix ModelTransform { private set; get; }
-        public int MaterialIndex { private set; get; }
+        public Geometry3D Geometry
+        {
+            private set; get;
+        }
+        public Matrix ModelTransform
+        {
+            private set; get;
+        }
+        public int MaterialIndex
+        {
+            private set; get;
+        }
         public BatchedMeshGeometryConfig(Geometry3D geometry, Matrix modelTransform, int materialIndex)
         {
             Geometry = geometry;

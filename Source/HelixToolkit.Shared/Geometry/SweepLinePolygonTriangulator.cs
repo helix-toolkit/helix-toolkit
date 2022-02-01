@@ -134,7 +134,7 @@ namespace HelixToolkit.Wpf
             if (didReverse)
             {
                 // Transform back every calculated Index
-                for (int i = 0; i < result.Count; i++)
+                for (var i = 0; i < result.Count; i++)
                 {
                     result[i] = count - result[i] - 1;
                 }
@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf
         private static Int32Collection TriangulateMonotone(PolygonData monoton)
         {
             // Collection to return
-            Int32Collection result = new Int32Collection();
+            var result = new Int32Collection();
 
             // Sort the Events
             var events = new List<PolygonPoint>(monoton.Points);
@@ -173,7 +173,7 @@ namespace HelixToolkit.Wpf
             var pointCnt = monoton.Points.Count;
 
             // Handle the 3rd...n-th Point to triangle
-            for (int i = 2; i < pointCnt; i++)
+            for (var i = 2; i < pointCnt; i++)
             {
                 // The current Point
                 var newPoint = events[i];
@@ -304,7 +304,7 @@ namespace HelixToolkit.Wpf
             var statusAndHelper = new StatusHelper();
 
             // Sweep through the Polygon using the sorted Polygon Points
-            for (int i = 0; i < events.Count; i++)
+            for (var i = 0; i < events.Count; i++)
             {
                 var ev = events[i];
                 // Get the Class of this event (depending on the sweeping direction)
@@ -470,7 +470,7 @@ namespace HelixToolkit.Wpf
                 var edgeVector = (possibleEdge.PointTwo.Point - possibleEdge.PointOne.Point);
                 edgeVector.Normalize();
                 // Dot determines if the Vector also points towards the Polygon Center or not (> 0, yes, < 0, no)
-                var dot =  insideVector.X * edgeVector.X + insideVector.Y * edgeVector.Y;
+                var dot = insideVector.X * edgeVector.X + insideVector.Y * edgeVector.Y;
                 // Cos represents the Angle between the last Edge and the next Edge
                 var cos = lastVector.X * edgeVector.X + lastVector.Y * edgeVector.Y;
                 var angle = 0f;
@@ -500,8 +500,8 @@ namespace HelixToolkit.Wpf
         /// <returns>True if the Polygon is present in a CCW manner.</returns>
         internal static Boolean IsCCW(IList<Point> polygon)
         {
-            int n = polygon.Count;
-            double area = 0.0;
+            var n = polygon.Count;
+            var area = 0.0;
             for (int p = n - 1, q = 0; q < n; p = q++)
             {
                 area += polygon[p].X * polygon[q].Y - polygon[q].X * polygon[p].Y;
@@ -530,7 +530,10 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// List of StatusHelperElements that are currently present at the Sweeper's Position
         /// </summary>
-        internal List<StatusHelperElement> EdgesHelpers { get; set; }
+        internal List<StatusHelperElement> EdgesHelpers
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Default Constructor
@@ -611,12 +614,18 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The Edge of the StatusHelperElement
         /// </summary>
-        public PolygonEdge Edge { get; set; }
+        public PolygonEdge Edge
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The Helper of the Edge is a Polygon Point
         /// </summary>
-        public PolygonPoint Helper { get; set; }
+        public PolygonPoint Helper
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Factor used for x-Value Calculation
@@ -628,7 +637,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public double Factor
         {
-            get { return mFactor; }
+            get
+            {
+                return mFactor;
+            }
         }
 
         /// <summary>
@@ -671,19 +683,45 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public Point Point
         {
-            get { return mPoint; }
-            set { mPoint = value; }
+            get
+            {
+                return mPoint;
+            }
+            set
+            {
+                mPoint = value;
+            }
         }
 
         /// <summary>
         /// Accessor for the X-Coordinate of the Point
         /// </summary>
-        public DoubleOrSingle X { get { return this.mPoint.X; } set { this.mPoint.X = value; } }
+        public DoubleOrSingle X
+        {
+            get
+            {
+                return this.mPoint.X;
+            }
+            set
+            {
+                this.mPoint.X = value;
+            }
+        }
 
         /// <summary>
         /// Accessor for the Y-Coordinate of the Point
         /// </summary>
-        public DoubleOrSingle Y { get { return this.mPoint.Y; } set { this.mPoint.Y = value; } }
+        public DoubleOrSingle Y
+        {
+            get
+            {
+                return this.mPoint.Y;
+            }
+            set
+            {
+                this.mPoint.Y = value;
+            }
+        }
 
         /// <summary>
         /// The "incoming" Edge of this PolygonPoint
@@ -695,8 +733,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public PolygonEdge EdgeOne
         {
-            get { return mEdgeOne; }
-            set { mEdgeOne = value; }
+            get
+            {
+                return mEdgeOne;
+            }
+            set
+            {
+                mEdgeOne = value;
+            }
         }
 
         /// <summary>
@@ -709,8 +753,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public PolygonEdge EdgeTwo
         {
-            get { return mEdgeTwo; }
-            set { mEdgeTwo = value; }
+            get
+            {
+                return mEdgeTwo;
+            }
+            set
+            {
+                mEdgeTwo = value;
+            }
         }
 
         /// <summary>
@@ -724,8 +774,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public int Index
         {
-            get { return mIndex; }
-            set { mIndex = value; }
+            get
+            {
+                return mIndex;
+            }
+            set
+            {
+                mIndex = value;
+            }
         }
 
         /// <summary>
@@ -884,9 +940,12 @@ namespace HelixToolkit.Wpf
         {
             if (this == null || second == null)
                 return 0;
-            if (this.Y > second.Y || (this.Y == second.Y && this.X < second.X)) return -1;
-            else if (this.Y == second.Y && this.X == second.X) return 0;
-            else return 1;
+            if (this.Y > second.Y || (this.Y == second.Y && this.X < second.X))
+                return -1;
+            else if (this.Y == second.Y && this.X == second.X)
+                return 0;
+            else
+                return 1;
         }
     }
 
@@ -905,8 +964,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public PolygonPoint PointOne
         {
-            get { return mPointOne; }
-            set { mPointOne = value; }
+            get
+            {
+                return mPointOne;
+            }
+            set
+            {
+                mPointOne = value;
+            }
         }
 
         /// <summary>
@@ -919,8 +984,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public PolygonPoint PointTwo
         {
-            get { return mPointTwo; }
-            set { mPointTwo = value; }
+            get
+            {
+                return mPointTwo;
+            }
+            set
+            {
+                mPointTwo = value;
+            }
         }
 
         /// <summary>
@@ -987,8 +1058,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public List<PolygonPoint> Points
         {
-            get { return mPoints; }
-            set { mPoints = value; }
+            get
+            {
+                return mPoints;
+            }
+            set
+            {
+                mPoints = value;
+            }
         }
 
         /// <summary>
@@ -996,7 +1073,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public Boolean HasHoles
         {
-            get { return mHoles.Count > 0; }
+            get
+            {
+                return mHoles.Count > 0;
+            }
         }
 
         /// <summary>
@@ -1009,7 +1089,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public List<List<PolygonPoint>> Holes
         {
-            get { return mHoles; }
+            get
+            {
+                return mHoles;
+            }
         }
 
         /// <summary>
@@ -1031,18 +1114,18 @@ namespace HelixToolkit.Wpf
 
             // If no Indices were specified, add them manually
             if (indices == null)
-                for (int i = 0; i < mPoints.Count; i++)
+                for (var i = 0; i < mPoints.Count; i++)
                 {
                     mPoints[i].Index = i;
                 }
             // If there were Indices specified, use them to set the PolygonPoint's Index Property
             else
-                for (int i = 0; i < mPoints.Count; i++)
+                for (var i = 0; i < mPoints.Count; i++)
                     mPoints[i].Index = indices[i];
 
             // Add Edges between the Points (to be able to navigate along the Polygon easily later)
             var cnt = mPoints.Count;
-            for (int i = 0; i < cnt; i++)
+            for (var i = 0; i < cnt; i++)
             {
                 var lastIdx = (i + cnt - 1) % cnt;
                 var edge = new PolygonEdge(mPoints[lastIdx], mPoints[i]);
@@ -1058,7 +1141,8 @@ namespace HelixToolkit.Wpf
         /// <param name="points">The PolygonPoints</param>
         public PolygonData(List<PolygonPoint> points)
             : this(points.Select(p => p.Point).ToList(), points.Select(p => p.Index).ToList())
-        { }
+        {
+        }
 
         /// <summary>
         /// Add Points of a Hole to the PolygonData
@@ -1084,14 +1168,14 @@ namespace HelixToolkit.Wpf
             mPoints.AddRange(polyPoints);
 
             // Add the Indices
-            for (int i = cntBefore; i < mPoints.Count; i++)
+            for (var i = cntBefore; i < mPoints.Count; i++)
             {
                 polyPoints[i - cntBefore].Index = i;
             }
 
             // Add Edges between the Points (to be able to navigate along the Polygon easily later)
             var cnt = mPoints.Count;
-            for (int i = 0; i < pointCount; i++)
+            for (var i = 0; i < pointCount; i++)
             {
                 var lastIdx = (i + pointCount - 1) % pointCount;
                 var edge = new PolygonEdge(polyPoints[lastIdx], polyPoints[i]);

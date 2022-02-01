@@ -54,8 +54,8 @@ float shadowStrength(float4 sp)
 
         float shadowFactor = sum / 16;
 
-        float fixTeil = vShadowMapInfo.x;
-        float nonTeil = 1 - vShadowMapInfo.x;
+        float fixTeil = 1 - vShadowMapInfo.x;
+        float nonTeil = vShadowMapInfo.x;
 	    // now, put the shadow-strengh into the 0-nonTeil range
         nonTeil = shadowFactor * nonTeil;
         return (fixTeil + nonTeil);

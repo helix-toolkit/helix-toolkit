@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP
 
         private CameraCore camera;
 
-        public bool IsPerspective 
+        public bool IsPerspective
         {
             get => globalTransform.IsPerspective;
         }
@@ -130,7 +130,13 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The actual width.
         /// </value>
-        public float ActualWidth { get { return RenderHost.ActualWidth; } }
+        public float ActualWidth
+        {
+            get
+            {
+                return RenderHost.ActualWidth;
+            }
+        }
 
         /// <summary>
         /// Gets the actual height.
@@ -138,7 +144,13 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The actual height.
         /// </value>
-        public float ActualHeight { get { return RenderHost.ActualHeight; } }
+        public float ActualHeight
+        {
+            get
+            {
+                return RenderHost.ActualHeight;
+            }
+        }
         /// <summary>
         /// Gets the dpi scale.
         /// </summary>
@@ -195,7 +207,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The render host.
         /// </value>
-        public IRenderHost RenderHost { get; }
+        public IRenderHost RenderHost
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether is deferred pass.
@@ -228,16 +243,16 @@ namespace HelixToolkit.UWP
         /// The time stamp.
         /// </value>
         public TimeSpan TimeStamp;
-
+        private Light3DSceneShared lightScene;
         /// <summary>
         /// Gets or sets the light scene.
         /// </summary>
         /// <value>
         /// The light scene.
         /// </value>
-        public readonly Light3DSceneShared LightScene;
+        public Light3DSceneShared LightScene => lightScene;
 
-        private readonly ConstantBufferProxy cbuffer;
+        private ConstantBufferProxy cbuffer;
 
         private GlobalTransformStruct globalTransform;
 
@@ -247,15 +262,21 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The global transform.
         /// </value>
-        public GlobalTransformStruct GlobalTransform { get { return globalTransform; } }
-
+        public GlobalTransformStruct GlobalTransform
+        {
+            get
+            {
+                return globalTransform;
+            }
+        }
+        private ContextSharedResource sharedResource;
         /// <summary>
         /// Gets or sets the shared resource.
         /// </summary>
         /// <value>
         /// The shared resource.
         /// </value>
-        public readonly ContextSharedResource SharedResource;
+        public ContextSharedResource SharedResource => sharedResource;
 
         /// <summary>
         /// Gets or sets a value indicating whether [update octree] automatically.
@@ -338,8 +359,14 @@ namespace HelixToolkit.UWP
         /// </value>
         public bool SSAOEnabled
         {
-            set { globalTransform.SSAOEnabled = value ? 1u : 0; }
-            get { return globalTransform.SSAOEnabled == 1u ? true : false; }
+            set
+            {
+                globalTransform.SSAOEnabled = value ? 1u : 0;
+            }
+            get
+            {
+                return globalTransform.SSAOEnabled == 1u ? true : false;
+            }
         }
         /// <summary>
         /// Gets or sets the ssao bias.
@@ -349,8 +376,14 @@ namespace HelixToolkit.UWP
         /// </value>
         public float SSAOBias
         {
-            set { globalTransform.SSAOBias = value; }
-            get { return globalTransform.SSAOBias; }
+            set
+            {
+                globalTransform.SSAOBias = value;
+            }
+            get
+            {
+                return globalTransform.SSAOBias;
+            }
         }
         /// <summary>
         /// Gets or sets the ssao intensity.
@@ -360,8 +393,14 @@ namespace HelixToolkit.UWP
         /// </value>
         public float SSAOIntensity
         {
-            set { globalTransform.SSAOIntensity = value; }
-            get { return globalTransform.SSAOIntensity; }
+            set
+            {
+                globalTransform.SSAOIntensity = value;
+            }
+            get
+            {
+                return globalTransform.SSAOIntensity;
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [update scene graph requested] in this frame.
@@ -371,7 +410,7 @@ namespace HelixToolkit.UWP
         /// </value>
         public bool UpdateSceneGraphRequested
         {
-            internal set;get;
+            internal set; get;
         }
         /// <summary>
         /// Gets or sets a value indicating whether [update per frame renderable requested] in this frame.
@@ -381,7 +420,7 @@ namespace HelixToolkit.UWP
         /// </value>
         public bool UpdatePerFrameRenderableRequested
         {
-            internal set;get;
+            internal set; get;
         }
         /// <summary>
         /// Gets a value indicating whether this instance is shadow map enabled.
@@ -403,13 +442,13 @@ namespace HelixToolkit.UWP
             this.RenderHost = renderHost;
             this.IsDeferredPass = false;
             cbuffer = renderHost.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
-            LightScene = Collect(new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool));
-            SharedResource = Collect(new ContextSharedResource());
+            lightScene = new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool);
+            sharedResource = new ContextSharedResource();
             OITWeightPower = 3;
             OITWeightDepthSlope = 1;
             OITWeightMode = OITWeightMode.Linear2;
         }
-         
+
         private void Camera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             needsUpdate = true;
@@ -636,6 +675,9 @@ namespace HelixToolkit.UWP
         protected override void OnDispose(bool disposeManagedResources)
         {
             Camera = null;
+            RemoveAndDispose(ref lightScene);
+            RemoveAndDispose(ref sharedResource);
+            RemoveAndDispose(ref cbuffer);
             base.OnDispose(disposeManagedResources);
         }
     }

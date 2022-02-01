@@ -26,12 +26,18 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class GeometryBufferManager : IDisposable, IGeometryBufferManager
         {
-            public int Count { get { return bufferDictionary.Count(); } }
+            public int Count
+            {
+                get
+                {
+                    return bufferDictionary.Count();
+                }
+            }
             /// <summary>
             /// The buffer dictionary. Key1=<see cref="Geometry3D.GUID"/>, Key2=Typeof(Buffer)
             /// </summary>
-            private readonly DoubleKeyDictionary<Type, Guid, ReferenceCountDisposeObject> bufferDictionary
-                = new DoubleKeyDictionary<Type, Guid, ReferenceCountDisposeObject>();
+            private readonly DoubleKeyDictionary<Type, Guid, DisposeObject> bufferDictionary
+                = new DoubleKeyDictionary<Type, Guid, DisposeObject>();
             private readonly IEffectsManager manager;
             /// <summary>
             /// Initializes a new instance of the <see cref="GeometryBufferManager"/> class.
@@ -56,23 +62,23 @@ namespace HelixToolkit.UWP
                 lock (bufferDictionary)
                 {
                     IGeometryBufferModel container;
-                    if (bufferDictionary.TryGetValue(typeof(T), geometry.GUID, out ReferenceCountDisposeObject obj))
+                    if (bufferDictionary.TryGetValue(typeof(T), geometry.GUID, out var obj))
                     {
-    #if DEBUGDETAIL
+#if DEBUGDETAIL
                         Debug.WriteLine("Existing buffer found, GeomoetryGUID = " + geometry.GUID);
-    #endif
+#endif
                         container = obj as IGeometryBufferModel;
                         obj.IncRef();
                     }
                     else
                     {
-    #if DEBUGDETAIL
+#if DEBUGDETAIL
                         Debug.WriteLine("Buffer not found, create new buffer. GeomoetryGUID = " + geometry.GUID);
-    #endif
+#endif
                         container = new T();
                         var id = geometry.GUID;
-                        obj = container as ReferenceCountDisposeObject;
-                        obj.Disposed += (s, e) => 
+                        obj = container as DisposeObject;
+                        obj.Disposed += (s, e) =>
                         {
                             lock (bufferDictionary)
                             {
@@ -82,7 +88,7 @@ namespace HelixToolkit.UWP
                         container.EffectsManager = manager;
                         container.Geometry = geometry;
                         bufferDictionary.Add(typeof(T), geometry.GUID, obj);
-                
+
                     }
                     return container;
                 }
@@ -131,5 +137,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

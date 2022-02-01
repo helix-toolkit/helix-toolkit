@@ -134,8 +134,8 @@ namespace DynamicPointsAndLines
             Lines2Transform = new TranslateTransform3D(0, 0, -45);
             Points1Transform = new TranslateTransform3D(0, 0, 0);
 
-            Lines = new LineGeometry3D { IsDynamic = true };
-            Points = new PointGeometry3D { IsDynamic = true };
+            Lines = new LineGeometry3D { IsDynamic = true, Positions = new Vector3Collection() };
+            Points = new PointGeometry3D { IsDynamic = true, Positions = new Vector3Collection() };
 
             StopWatch = new Stopwatch();
             StopWatch.Start();
@@ -147,9 +147,12 @@ namespace DynamicPointsAndLines
         {
             if (StopWatch.IsRunning)
             {
-                var vectors = new Vector3Collection(GeneratePoints(NumberOfPoints, StopWatch.ElapsedMilliseconds * 0.003));
-                Points.Positions = vectors;
-                Lines.Positions = vectors;
+                Points.Positions.Clear();
+                Points.Positions.AddRange(GeneratePoints(NumberOfPoints, StopWatch.ElapsedMilliseconds * 0.003));
+                Lines.Positions.Clear();            
+                Lines.Positions.AddRange(Points.Positions);
+                Points.UpdateVertices();
+                Lines.UpdateVertices();
             }
         }
 

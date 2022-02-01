@@ -31,8 +31,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public TextureModel Texture
             {
-                set { (RenderCore as DrawScreenQuadCore).Texture = value; }
-                get { return (RenderCore as DrawScreenQuadCore).Texture; }
+                set
+                {
+                    (RenderCore as DrawScreenQuadCore).Texture = value;
+                }
+                get
+                {
+                    return (RenderCore as DrawScreenQuadCore).Texture;
+                }
             }
             /// <summary>
             /// Gets or sets the sampler.
@@ -42,8 +48,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public SamplerStateDescription Sampler
             {
-                set { (RenderCore as DrawScreenQuadCore).SamplerDescription = value; }
-                get { return (RenderCore as DrawScreenQuadCore).SamplerDescription; }
+                set
+                {
+                    (RenderCore as DrawScreenQuadCore).SamplerDescription = value;
+                }
+                get
+                {
+                    return (RenderCore as DrawScreenQuadCore).SamplerDescription;
+                }
             }
 
             private float depth = 1f;
@@ -51,13 +63,16 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsRender(ref depth, value))
+                    if (SetAffectsRender(ref depth, value))
                     {
                         var core = RenderCore as DrawScreenQuadCore;
                         core.ModelStruct.TopLeft.Z = core.ModelStruct.TopRight.Z = core.ModelStruct.BottomLeft.Z = core.ModelStruct.BottomRight.Z = value;
                     }
                 }
-                get { return depth; }
+                get
+                {
+                    return depth;
+                }
             }
 
             public ScreenQuadNode()
@@ -86,5 +101,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

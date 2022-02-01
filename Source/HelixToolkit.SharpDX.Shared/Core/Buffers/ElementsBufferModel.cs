@@ -26,18 +26,33 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Used for managing instance buffer update
         /// </summary>
-        public class ElementsBufferModel<T> : DisposeObject, IElementsBufferModel<T> where T : struct
+        public class ElementsBufferModel<T> : DisposeObject, IElementsBufferModel<T> where T : unmanaged
         {
             public static readonly ElementsBufferModel<T> Empty = new ElementsBufferModel<T>(0);
             public event EventHandler<EventArgs> ElementChanged;
             public Guid GUID { get; } = Guid.NewGuid();
-            public bool Initialized { private set; get; }
+            public bool Initialized
+            {
+                private set; get;
+            }
             public bool HasElements { private set; get; } = false;
-            public IElementsBufferProxy Buffer { get { return elementBuffer; } }
+            public IElementsBufferProxy Buffer
+            {
+                get
+                {
+                    return elementBuffer;
+                }
+            }
             private IElementsBufferProxy elementBuffer;
             private VertexBufferBinding bufferBinding;
 
-            public bool Changed { get { return instanceChanged; } }
+            public bool Changed
+            {
+                get
+                {
+                    return instanceChanged;
+                }
+            }
             private volatile bool instanceChanged = true;
 
             private IList<T> elements = null;
@@ -53,7 +68,10 @@ namespace HelixToolkit.UWP
                         ElementChanged?.Invoke(this, EventArgs.Empty);
                     }
                 }
-                get { return elements; }
+                get
+                {
+                    return elements;
+                }
             }
 
             public int ElementCount
@@ -64,7 +82,10 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public int StructSize { private set; get; }
+            public int StructSize
+            {
+                private set; get;
+            }
 
             public ElementsBufferModel(int structSize)
             {
@@ -73,7 +94,7 @@ namespace HelixToolkit.UWP
 
             public void Initialize()
             {
-                elementBuffer = Collect(new DynamicBufferProxy(StructSize, BindFlags.VertexBuffer));
+                elementBuffer = new DynamicBufferProxy(StructSize, BindFlags.VertexBuffer);
                 Initialized = true;
                 instanceChanged = true;
             }
@@ -99,18 +120,16 @@ namespace HelixToolkit.UWP
                 ++vertexBufferStartSlot;
             }
 
+            public void DisposeAndClear()
+            {
+                Initialized = false;
+                RemoveAndDispose(ref elementBuffer);
+            }
+
             protected override void OnDispose(bool disposeManagedResources)
             {
-                Initialized = false;
+                DisposeAndClear();
                 base.OnDispose(disposeManagedResources);
-            }
-            /// <summary>
-            /// Disposes the internal resources. Object is reusable.
-            /// </summary>
-            public override void DisposeAndClear()
-            {
-                Initialized = false;
-                base.DisposeAndClear();
             }
         }
 
@@ -122,16 +141,16 @@ namespace HelixToolkit.UWP
             }
         }
 
-        public class InstanceParamsBufferModel<T> : ElementsBufferModel<T> where T : struct
+        public class InstanceParamsBufferModel<T> : ElementsBufferModel<T> where T : unmanaged
         {
             public InstanceParamsBufferModel(int structSize) : base(structSize)
-            { }
+            {
+            }
         }
 
-        public class VertexBoneIdBufferModel<T> : ElementsBufferModel<T> where T : struct
+        public class VertexBoneIdBufferModel<T> : ElementsBufferModel<T> where T : unmanaged
         {
             public VertexBoneIdBufferModel(int structSize) : base(structSize) { }
         }
     }
-
 }

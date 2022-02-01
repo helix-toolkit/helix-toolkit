@@ -77,7 +77,10 @@ namespace HelixToolkit.UWP
             /// Default ImmediateContext. Same as Device.ImmediateContext.
             /// <para>Used for update global variables</para>
             /// </summary>
-            DeviceContextProxy ImmediateContext { get; }
+            DeviceContextProxy ImmediateContext
+            {
+                get;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -189,5 +192,4 @@ namespace HelixToolkit.UWP
             void RenderScene2D(RenderContext2D context, FastList<SceneNode2D> renderables, ref RenderParameter2D parameter);
         }
     }
-
 }

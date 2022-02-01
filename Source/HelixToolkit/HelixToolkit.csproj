@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard1.1</TargetFramework>
-        <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\HelixToolkit.snk</AssemblyOriginatorKeyFile>
+        
         <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
         <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
@@ -25,8 +24,6 @@
       </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <Compile Include="..\AssemblyInfo.cs">
-          <Link>Properties\AssemblyInfo.cs</Link>
-      </Compile>
+
     </ItemGroup>
 </Project>

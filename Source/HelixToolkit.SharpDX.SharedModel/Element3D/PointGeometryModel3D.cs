@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class PointGeometryModel3D : GeometryModel3D
     {
-#region Dependency Properties
+        #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
 #if WINUI
@@ -58,7 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty SizeProperty =
             DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new PropertyMetadata(new Size(1.0, 1.0),
-                (d,e)=> 
+                (d, e) =>
                 {
                     var size = (Size)e.NewValue;
                     (d as PointGeometryModel3D).material.Width = (float)size.Width;
@@ -67,20 +67,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty FigureProperty =
             DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new PropertyMetadata(PointFigure.Rect,
-                (d, e)=> 
+                (d, e) =>
                 {
                     (d as PointGeometryModel3D).material.Figure = (PointFigure)e.NewValue;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
             DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.25,
-                (d, e)=> 
+                (d, e) =>
                 {
                     (d as PointGeometryModel3D).material.FigureRatio = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(4.0, (d, e)=> 
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(4.0, (d, e) =>
                 {
                     ((d as PointGeometryModel3D).SceneNode as PointNode).HitTestThickness = (float)(double)e.NewValue;
                 }));
@@ -116,26 +116,50 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Media.Color Color
         {
-            get { return (Media.Color)this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
+            get
+            {
+                return (Media.Color)this.GetValue(ColorProperty);
+            }
+            set
+            {
+                this.SetValue(ColorProperty, value);
+            }
         }
 
         public Size Size
         {
-            get { return (Size)this.GetValue(SizeProperty); }
-            set { this.SetValue(SizeProperty, value); }
+            get
+            {
+                return (Size)this.GetValue(SizeProperty);
+            }
+            set
+            {
+                this.SetValue(SizeProperty, value);
+            }
         }
 
         public PointFigure Figure
         {
-            get { return (PointFigure)this.GetValue(FigureProperty); }
-            set { this.SetValue(FigureProperty, value); }
+            get
+            {
+                return (PointFigure)this.GetValue(FigureProperty);
+            }
+            set
+            {
+                this.SetValue(FigureProperty, value);
+            }
         }
 
         public double FigureRatio
         {
-            get { return (double)this.GetValue(FigureRatioProperty); }
-            set { this.SetValue(FigureRatioProperty, value); }
+            get
+            {
+                return (double)this.GetValue(FigureRatioProperty);
+            }
+            set
+            {
+                this.SetValue(FigureRatioProperty, value);
+            }
         }
 
         /// <summary>
@@ -143,8 +167,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public double HitTestThickness
         {
-            get { return (double)this.GetValue(HitTestThicknessProperty); }
-            set { this.SetValue(HitTestThicknessProperty, value); }
+            get
+            {
+                return (double)this.GetValue(HitTestThicknessProperty);
+            }
+            set
+            {
+                this.SetValue(HitTestThicknessProperty, value);
+            }
         }
 
         /// <summary>
@@ -174,8 +204,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableColorBlending
         {
-            get { return (bool)GetValue(EnableColorBlendingProperty); }
-            set { SetValue(EnableColorBlendingProperty, value); }
+            get
+            {
+                return (bool)GetValue(EnableColorBlendingProperty);
+            }
+            set
+            {
+                SetValue(EnableColorBlendingProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the blending factor.
@@ -186,10 +222,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double BlendingFactor
         {
-            get { return (double)GetValue(BlendingFactorProperty); }
-            set { SetValue(BlendingFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(BlendingFactorProperty);
+            }
+            set
+            {
+                SetValue(BlendingFactorProperty, value);
+            }
         }
-#endregion
+        #endregion
 
         protected readonly PointMaterialCore material = new PointMaterialCore();
         /// <summary>
@@ -215,5 +257,4 @@ namespace HelixToolkit.Wpf.SharpDX
             base.AssignDefaultValuesToSceneNode(core);
         }
     }
-
 }

@@ -29,13 +29,20 @@ namespace HelixToolkit.UWP
         public class DX11SwapChainRenderBufferProxy : DX11RenderBufferProxyBase
         {
             private SwapChain1 swapChain;
+            private ShaderResourceViewProxy backBuffer;
             /// <summary>
             /// Gets the swap chain.
             /// </summary>
             /// <value>
             /// The swap chain.
             /// </value>
-            public SwapChain1 SwapChain { get { return swapChain; } }
+            public SwapChain1 SwapChain
+            {
+                get
+                {
+                    return swapChain;
+                }
+            }
             /// <summary>
             /// The surface pointer
             /// </summary>
@@ -75,11 +82,12 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
+                    RemoveAndDispose(ref d2dTarget);
+                    RemoveAndDispose(ref backBuffer);                   
                     swapChain.ResizeBuffers(swapChain.Description1.BufferCount, TargetWidth, TargetHeight, swapChain.Description.ModeDescription.Format, swapChain.Description.Flags);
                 }
-                var backBuffer = Collect(new ShaderResourceViewProxy(Device, Texture2D.FromSwapChain<Texture2D>(swapChain, 0)));
-                var sampleDesc = swapChain.Description1.SampleDescription;
-                d2dTarget = Collect(new D2DTargetProxy());
+                backBuffer = new ShaderResourceViewProxy(Device, Texture2D.FromSwapChain<Texture2D>(swapChain, 0));
+                d2dTarget = new D2DTargetProxy();
                 d2dTarget.Initialize(swapChain, DeviceContext2D);
                 return backBuffer;
             }
@@ -87,16 +95,14 @@ namespace HelixToolkit.UWP
             private SwapChain1 CreateSwapChain(System.IntPtr surfacePointer)
             {
                 var desc = CreateSwapChainDescription();
-                using (var dxgiDevice2 = Device.QueryInterface<global::SharpDX.DXGI.Device2>())
-                using (var dxgiAdapter = dxgiDevice2.Adapter)
-                using (var dxgiFactory2 = dxgiAdapter.GetParent<Factory2>())
-                {
-                    // The CreateSwapChain method is used so we can descend
-                    // from this class and implement a swapchain for a desktop
-                    // or a Windows 8 AppStore app
-                    return surfacePointer == IntPtr.Zero ? new SwapChain1(dxgiFactory2, Device, ref desc) 
-                        : new SwapChain1(dxgiFactory2, Device, surfacePointer, ref desc);
-                }
+                using var dxgiDevice2 = Device.QueryInterface<global::SharpDX.DXGI.Device2>();
+                using var dxgiAdapter = dxgiDevice2.Adapter;
+                using var dxgiFactory2 = dxgiAdapter.GetParent<Factory2>();
+                // The CreateSwapChain method is used so we can descend
+                // from this class and implement a swapchain for a desktop
+                // or a Windows 8 AppStore app
+                return surfacePointer == IntPtr.Zero ? new SwapChain1(dxgiFactory2, Device, ref desc)
+                    : new SwapChain1(dxgiFactory2, Device, surfacePointer, ref desc);
             }
 
             /// <summary>
@@ -108,8 +114,8 @@ namespace HelixToolkit.UWP
             /// </remarks>
             protected virtual SwapChainDescription1 CreateSwapChainDescription()
             {
-                int sampleCount = 1;
-                int sampleQuality = 0;
+                var sampleCount = 1;
+                var sampleQuality = 0;
                 var desc = new SwapChainDescription1()
                 {
                     Width = Math.Max(1, TargetWidth),
@@ -157,12 +163,18 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Must release swapchain at last after all its created resources have been released.
             /// </summary>
-            public override void DisposeAndClear()
+            public void DisposeAndClear()
             {
-                base.DisposeAndClear();
-                Disposer.RemoveAndDispose(ref swapChain);
+                RemoveAndDispose(ref d2dTarget);
+                RemoveAndDispose(ref backBuffer);
+                RemoveAndDispose(ref swapChain);
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                DisposeAndClear();
+                base.OnDispose(disposeManagedResources);
             }
         }
     }
-
 }

@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP
 {
     namespace Render
     {
+        using Shaders;
         public partial class DeviceContextProxy
         {
             private PrimitiveTopology currPrimitiveTopology = PrimitiveTopology.Undefined;
@@ -32,7 +33,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(currPrimitiveTopology == value)
+                    if (currPrimitiveTopology == value)
                     {
                         return;
                     }
@@ -45,20 +46,23 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            private InputLayout currInputLayout;
+            private InputLayoutProxy currInputLayout;
             /// <summary>
             /// Gets or sets the input layout.
             /// </summary>
             /// <value>
             /// The input layout.
             /// </value>
-            public InputLayout InputLayout
+            public InputLayoutProxy InputLayout
             {
                 set
                 {
-                    if(currInputLayout == value) { return; }
+                    if (currInputLayout == value)
+                    {
+                        return;
+                    }
                     currInputLayout = value;
-                    deviceContext.InputAssembler.InputLayout = value;
+                    deviceContext.InputAssembler.InputLayout = value?.Layout;
                 }
                 get
                 {
@@ -209,5 +213,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

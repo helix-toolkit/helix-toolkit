@@ -39,6 +39,7 @@ after_build:
   - nuget pack Source\HelixToolkit.SharpDX.Core.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - nuget pack Source\HelixToolkit.SharpDX.Core.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - nuget pack Source\HelixToolkit.SharpDX.Assimp.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
+  - nuget pack Source\HelixToolkit.WinUI.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
   - if "%APPVEYOR_REPO_NAME%" == "helix-toolkit/helix-toolkit" if not defined APPVEYOR_PULL_REQUEST_NUMBER Source\build-dist-examples.cmd
 
 artifacts:

@@ -44,15 +44,14 @@ namespace HelixToolkit.UWP
         ///   that occurs when a packing algorithm runs out of space and is unable to fit
         ///   the object you tried to pack into the remaining packing area.
         /// </remarks>
-	    public sealed class OutOfSpaceException : Exception 
-	    {
-		    /// <summary>Initializes the exception with an error message</summary>
-		    /// <param name="message">Error message describing the cause of the exception</param>
-		    public OutOfSpaceException(string message) 
-			    : base(message) 
-		    { 
-		    }
-	    }
+	    public sealed class OutOfSpaceException : Exception
+        {
+            /// <summary>Initializes the exception with an error message</summary>
+            /// <param name="message">Error message describing the cause of the exception</param>
+            public OutOfSpaceException(string message)
+                : base(message)
+            {
+            }
+        }
     }
-
 }

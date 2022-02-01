@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public class LineMaterial : Material
     {
-#region Dependency Properties        
+        #region Dependency Properties        
         /// <summary>
         /// The color property
         /// </summary>
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>
 #endif   
                 {
-                   ((d as LineMaterial).Core as LineMaterialCore).LineColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as LineMaterial).Core as LineMaterialCore).LineColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// The thickness property
@@ -90,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty TextureProperty =
             DependencyProperty.Register("Texture", typeof(TextureModel), typeof(LineMaterial), new PropertyMetadata(null,
-                (d, e)=> 
+                (d, e) =>
                 {
                     ((d as LineMaterial).Core as LineMaterialCore).Texture = e.NewValue == null ? null : (TextureModel)e.NewValue;
                 }));
@@ -106,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty SamplerDescriptionProperty =
             DependencyProperty.Register("SamplerDescription", typeof(SamplerStateDescription), typeof(LineMaterial), new PropertyMetadata(DefaultSamplers.LineSamplerUWrapVClamp,
-                (d, e)=> 
+                (d, e) =>
                 {
                     ((d as LineMaterial).Core as LineMaterialCore).SamplerDescription = (SamplerStateDescription)e.NewValue;
                 }));
@@ -126,8 +126,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Media.Color Color
         {
-            get { return (Media.Color)this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
+            get
+            {
+                return (Media.Color)this.GetValue(ColorProperty);
+            }
+            set
+            {
+                this.SetValue(ColorProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the thickness.
@@ -137,8 +143,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double Thickness
         {
-            get { return (double)this.GetValue(ThicknessProperty); }
-            set { this.SetValue(ThicknessProperty, value); }
+            get
+            {
+                return (double)this.GetValue(ThicknessProperty);
+            }
+            set
+            {
+                this.SetValue(ThicknessProperty, value);
+            }
         }
 
         /// <summary>
@@ -149,8 +161,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double Smoothness
         {
-            get { return (double)this.GetValue(SmoothnessProperty); }
-            set { this.SetValue(SmoothnessProperty, value); }
+            get
+            {
+                return (double)this.GetValue(SmoothnessProperty);
+            }
+            set
+            {
+                this.SetValue(SmoothnessProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [enable distance fading].
@@ -160,8 +178,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool EnableDistanceFading
         {
-            set { SetValue(EnableDistanceFadingProperty, value); }
-            get { return (bool)GetValue(EnableDistanceFadingProperty); }
+            set
+            {
+                SetValue(EnableDistanceFadingProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableDistanceFadingProperty);
+            }
         }
         /// <summary>
         /// Gets or sets the fading near distance.
@@ -171,8 +195,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FadingNearDistance
         {
-            get { return (double)this.GetValue(FadingNearDistanceProperty); }
-            set { this.SetValue(FadingNearDistanceProperty, value); }
+            get
+            {
+                return (double)this.GetValue(FadingNearDistanceProperty);
+            }
+            set
+            {
+                this.SetValue(FadingNearDistanceProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the fading far distance.
@@ -182,8 +212,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FadingFarDistance
         {
-            get { return (double)this.GetValue(FadingFarDistanceProperty); }
-            set { this.SetValue(FadingFarDistanceProperty, value); }
+            get
+            {
+                return (double)this.GetValue(FadingFarDistanceProperty);
+            }
+            set
+            {
+                this.SetValue(FadingFarDistanceProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the texture.
@@ -193,8 +229,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public TextureModel Texture
         {
-            get { return (TextureModel)GetValue(TextureProperty); }
-            set { SetValue(TextureProperty, value); }
+            get
+            {
+                return (TextureModel)GetValue(TextureProperty);
+            }
+            set
+            {
+                SetValue(TextureProperty, value);
+            }
         }
 
         /// <summary>
@@ -205,8 +247,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double TextureScale
         {
-            get { return (double)GetValue(TextureScaleProperty); }
-            set { SetValue(TextureScaleProperty, value); }
+            get
+            {
+                return (double)GetValue(TextureScaleProperty);
+            }
+            set
+            {
+                SetValue(TextureScaleProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets the sampler.
@@ -216,8 +264,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public SamplerStateDescription SamplerDescription
         {
-            get { return (SamplerStateDescription)GetValue(SamplerDescriptionProperty); }
-            set { SetValue(SamplerDescriptionProperty, value); }
+            get
+            {
+                return (SamplerStateDescription)GetValue(SamplerDescriptionProperty);
+            }
+            set
+            {
+                SetValue(SamplerDescriptionProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [fixed size].
@@ -227,14 +281,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool FixedSize
         {
-            get { return (bool)GetValue(FixedSizeProperty); }
-            set { SetValue(FixedSizeProperty, value); }
+            get
+            {
+                return (bool)GetValue(FixedSizeProperty);
+            }
+            set
+            {
+                SetValue(FixedSizeProperty, value);
+            }
         }
         #endregion
 
-        public LineMaterial() { }
+        public LineMaterial()
+        {
+        }
 
-        public LineMaterial(LineMaterialCore core):base(core)
+        public LineMaterial(LineMaterialCore core) : base(core)
         {
             Name = core.Name;
             Color = core.LineColor.ToColor();

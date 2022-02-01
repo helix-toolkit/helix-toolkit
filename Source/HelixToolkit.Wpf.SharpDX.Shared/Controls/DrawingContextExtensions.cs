@@ -95,8 +95,8 @@ namespace HelixToolkit.Wpf.SharpDX
             double radiusX,
             double radiusY)
         {
-            double startRadians = startAngle / 180 * Math.PI;
-            double endRadians = endAngle / 180 * Math.PI;
+            var startRadians = startAngle / 180 * Math.PI;
+            var endRadians = endAngle / 180 * Math.PI;
             var start = position + new Vector(Math.Cos(startRadians) * radiusX, -Math.Sin(startRadians) * radiusY);
             var end = position + new Vector(Math.Cos(endRadians) * radiusX, -Math.Sin(endRadians) * radiusY);
             dc.DrawArc(brush, pen, start, end, direction, radiusX, radiusY);

@@ -98,7 +98,7 @@ namespace HelixToolkit.UWP
             {
                 array = t;
             }
-            else if(list is FastList<T> f)
+            else if (list is FastList<T> f)
             {
                 array = f.Items;
             }

@@ -26,13 +26,18 @@ namespace HelixToolkit.UWP
         public sealed class UAVDescription
         {
             [DataMember]
-            public string Name { set; get; }
+            public string Name
+            {
+                set; get;
+            }
             [DataMember]
             public ShaderStage ShaderType;
             [DataMember]
             public UnorderedAccessViewType Type;
 
-            public UAVDescription() { }
+            public UAVDescription()
+            {
+            }
 
             public UAVDescription(string name, ShaderStage shaderType, UnorderedAccessViewType type)
             {
@@ -56,9 +61,15 @@ namespace HelixToolkit.UWP
         public sealed class UAVMapping
         {
             [DataMember]
-            public int Slot { set; get; }
+            public int Slot
+            {
+                set; get;
+            }
             [DataMember]
-            public UAVDescription Description { set; get; }
+            public UAVDescription Description
+            {
+                set; get;
+            }
 
             public UAVMapping(int slot, UAVDescription description)
             {
@@ -72,5 +83,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

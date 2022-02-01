@@ -30,17 +30,26 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// <see cref="ShaderPass.Name"/>
             /// </summary>
-            public string Name { private set; get; }
+            public string Name
+            {
+                private set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
             public bool IsNULL { get; } = false;
-            public VertexShader VertexShader { private set; get; } = VertexShader.NullVertexShader;
-            public DomainShader DomainShader { private set; get; } = DomainShader.NullDomainShader;
-            public HullShader HullShader { private set; get; } = HullShader.NullHullShader;
-            public PixelShader PixelShader { private set; get; } = PixelShader.NullPixelShader;
-            public GeometryShader GeometryShader { private set; get; } = GeometryShader.NullGeometryShader;
-            public ComputeShader ComputeShader { private set; get; } = ComputeShader.NullComputeShader;
+            private VertexShader vertexShader = VertexShader.NullVertexShader;
+            public VertexShader VertexShader => vertexShader;
+            private DomainShader domainShader = DomainShader.NullDomainShader;
+            public DomainShader DomainShader => domainShader;
+            private HullShader hullShader = HullShader.NullHullShader;
+            public HullShader HullShader => hullShader;
+            private PixelShader pixelShader = PixelShader.NullPixelShader;
+            public PixelShader PixelShader => pixelShader;
+            private GeometryShader geometryShader = GeometryShader.NullGeometryShader;
+            public GeometryShader GeometryShader => geometryShader;
+            private ComputeShader computeShader = ComputeShader.NullComputeShader;
+            public ComputeShader ComputeShader => computeShader;
 
             /// <summary>
             /// Gets or sets the blend factor.
@@ -63,18 +72,26 @@ namespace HelixToolkit.UWP
             /// The stencil reference.
             /// </value>
             public int StencilRef { private set; get; } = 0;
+
+            private BlendStateProxy blendState = BlendStateProxy.Empty;
             /// <summary>
             /// <see cref="ShaderPass.BlendState"/>
             /// </summary>
-            public BlendStateProxy BlendState { private set; get; } = BlendStateProxy.Empty;
+            public BlendStateProxy BlendState => blendState;
+
+            private DepthStencilStateProxy depthStencilState = DepthStencilStateProxy.Empty;
             /// <summary>
             /// <see cref="ShaderPass.DepthStencilState"/>
             /// </summary>
-            public DepthStencilStateProxy DepthStencilState { private set; get; } = DepthStencilStateProxy.Empty;
+            public DepthStencilStateProxy DepthStencilState => depthStencilState;
+
+            private RasterizerStateProxy rasterState = RasterizerStateProxy.Empty;
             /// <summary>
             /// <see cref="ShaderPass.RasterState"/>
             /// </summary>
-            public RasterizerStateProxy RasterState { private set; get; } = RasterizerStateProxy.Empty;
+            public RasterizerStateProxy RasterState => rasterState;
+
+            private InputLayoutProxy layout;
             /// <summary>
             /// Gets or sets the input layout. This is customized layout used for this ShaderPass only.
             /// If this is not set, default is using <see cref="Technique.Layout"/> from <see cref="TechniqueDescription.InputLayoutDescription"/>
@@ -82,7 +99,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The input layout.
             /// </value>
-            public InputLayout Layout { private set; get; } = null;
+            public InputLayoutProxy Layout => layout;
             /// <summary>
             /// Gets or sets the topology.
             /// </summary>
@@ -99,9 +116,8 @@ namespace HelixToolkit.UWP
             /// 
             /// </summary>
             /// <param name="passDescription"></param>
-            /// <param name="layout"></param>
             /// <param name="manager"></param>
-            public ShaderPass(ShaderPassDescription passDescription, InputLayout layout, IEffectsManager manager)
+            public ShaderPass(ShaderPassDescription passDescription, IEffectsManager manager)
             {
                 Name = passDescription.Name;
                 effectsManager = manager;
@@ -113,35 +129,35 @@ namespace HelixToolkit.UWP
                         switch (shader.ShaderType)
                         {
                             case ShaderStage.Vertex:
-                                VertexShader = s as VertexShader;
+                                vertexShader = s as VertexShader;
                                 break;
                             case ShaderStage.Domain:
-                                DomainShader = s as DomainShader;
+                                domainShader = s as DomainShader;
                                 break;
                             case ShaderStage.Hull:
-                                HullShader = s as HullShader;
+                                hullShader = s as HullShader;
                                 break;
                             case ShaderStage.Geometry:
-                                GeometryShader = s as GeometryShader;
+                                geometryShader = s as GeometryShader;
                                 break;
                             case ShaderStage.Pixel:
-                                PixelShader = s as PixelShader;
+                                pixelShader = s as PixelShader;
                                 break;
                             case ShaderStage.Compute:
-                                ComputeShader = s as ComputeShader;
-                                break;                            
+                                computeShader = s as ComputeShader;
+                                break;
                         }
                     }
                 }
 
-                BlendState = passDescription.BlendStateDescription != null ? 
-                    Collect(manager.StateManager.Register((BlendStateDescription)passDescription.BlendStateDescription)) : BlendStateProxy.Empty;
+                blendState = passDescription.BlendStateDescription != null ?
+                    manager.StateManager.Register((BlendStateDescription)passDescription.BlendStateDescription) : BlendStateProxy.Empty;
 
-                DepthStencilState = passDescription.DepthStencilStateDescription != null ?
-                    Collect(manager.StateManager.Register((DepthStencilStateDescription)passDescription.DepthStencilStateDescription)) : DepthStencilStateProxy.Empty;
+                depthStencilState = passDescription.DepthStencilStateDescription != null ?
+                    manager.StateManager.Register((DepthStencilStateDescription)passDescription.DepthStencilStateDescription) : DepthStencilStateProxy.Empty;
 
-                RasterState = passDescription.RasterStateDescription != null ?
-                    Collect(manager.StateManager.Register((RasterizerStateDescription)passDescription.RasterStateDescription)) : RasterizerStateProxy.Empty;
+                rasterState = passDescription.RasterStateDescription != null ?
+                    manager.StateManager.Register((RasterizerStateDescription)passDescription.RasterStateDescription) : RasterizerStateProxy.Empty;
 
                 BlendFactor = passDescription.BlendFactor;
 
@@ -150,13 +166,9 @@ namespace HelixToolkit.UWP
                 SampleMask = passDescription.SampleMask;
 
                 Topology = passDescription.Topology;
-                if(passDescription.InputLayoutDescription != null)
+                if (passDescription.InputLayoutDescription != null)
                 {
-                    Layout = manager.ShaderManager.RegisterInputLayout(passDescription.InputLayoutDescription);
-                }
-                else
-                {
-                    Layout = layout;
+                    layout = manager.ShaderManager.RegisterInputLayout(passDescription.InputLayoutDescription);
                 }
             }
 
@@ -177,7 +189,7 @@ namespace HelixToolkit.UWP
             public void BindShader(DeviceContextProxy context, bool bindConstantBuffer = true)
             {
                 context.SetShaderPass(this, bindConstantBuffer);
-                if(Layout != null)
+                if (Layout != null)
                 {
                     context.InputLayout = Layout;
                 }
@@ -282,72 +294,30 @@ namespace HelixToolkit.UWP
                 switch (shader.ShaderType)
                 {
                     case ShaderStage.Vertex:
-                        VertexShader = shader as VertexShader;
+                        RemoveAndDispose(ref vertexShader);
+                        vertexShader = shader as VertexShader ?? VertexShader.NullVertexShader;
                         break;
                     case ShaderStage.Pixel:
-                        PixelShader = shader as PixelShader;
+                        RemoveAndDispose(ref pixelShader);
+                        pixelShader = shader as PixelShader ?? PixelShader.NullPixelShader;
                         break;
                     case ShaderStage.Compute:
-                        ComputeShader = shader as ComputeShader;
+                        RemoveAndDispose(ref computeShader);
+                        computeShader = shader as ComputeShader ?? ComputeShader.NullComputeShader;
                         break;
                     case ShaderStage.Hull:
-                        HullShader = shader as HullShader;
+                        RemoveAndDispose(ref hullShader);
+                        hullShader = shader as HullShader ?? HullShader.NullHullShader;
                         break;
                     case ShaderStage.Domain:
-                        DomainShader = shader as DomainShader;
+                        RemoveAndDispose(ref domainShader);
+                        domainShader = shader as DomainShader ?? DomainShader.NullDomainShader;
                         break;
                     case ShaderStage.Geometry:
-                        GeometryShader = shader as GeometryShader;
+                        RemoveAndDispose(ref geometryShader);
+                        geometryShader = shader as GeometryShader ?? GeometryShader.NullGeometryShader;
                         break;
                 }
-            }
-            /// <summary>
-            /// Sets the shader.
-            /// </summary>
-            /// <param name="shader">The shader.</param>
-            public void SetShader(VertexShader shader)
-            {
-                VertexShader = shader;
-            }
-            /// <summary>
-            /// Sets the shader.
-            /// </summary>
-            /// <param name="shader">The shader.</param>
-            public void SetShader(HullShader shader)
-            {
-                HullShader = shader;
-            }
-            /// <summary>
-            /// Sets the shader.
-            /// </summary>
-            /// <param name="shader">The shader.</param>
-            public void SetShader(DomainShader shader)
-            {
-                DomainShader = shader;
-            }
-            /// <summary>
-            /// Sets the shader.
-            /// </summary>
-            /// <param name="shader">The shader.</param>
-            public void SetShader(GeometryShader shader)
-            {
-                GeometryShader = shader;
-            }
-            /// <summary>
-            /// Sets the shader.
-            /// </summary>
-            /// <param name="shader">The shader.</param>
-            public void SetShader(PixelShader shader)
-            {
-                PixelShader = shader;
-            }
-            /// <summary>
-            /// Sets the shader.
-            /// </summary>
-            /// <param name="shader">The shader.</param>
-            public void SetShader(ComputeShader shader)
-            {
-                ComputeShader = shader;
             }
             #endregion
 
@@ -383,14 +353,15 @@ namespace HelixToolkit.UWP
             public void SetState(BlendStateDescription? blendStateDesc)
             {
                 if (IsNULL)
-                { return; }
+                {
+                    return;
+                }
                 if (BlendState != BlendStateProxy.Empty)
                 {
-                    var state = BlendState;
-                    RemoveAndDispose(ref state);
+                    RemoveAndDispose(ref blendState);
                 }
-                BlendState = blendStateDesc != null ?
-                    Collect(effectsManager.StateManager.Register(blendStateDesc.Value)) : BlendStateProxy.Empty;
+                blendState = blendStateDesc != null ?
+                    effectsManager.StateManager.Register(blendStateDesc.Value) : BlendStateProxy.Empty;
             }
             /// <summary>
             /// Sets the state.
@@ -399,14 +370,15 @@ namespace HelixToolkit.UWP
             public void SetState(DepthStencilStateDescription? depthStencilStateDesc)
             {
                 if (IsNULL)
-                { return; }
+                {
+                    return;
+                }
                 if (DepthStencilState != DepthStencilStateProxy.Empty)
                 {
-                    var state = DepthStencilState;
-                    RemoveAndDispose(ref state);
+                    RemoveAndDispose(ref depthStencilState);
                 }
-                DepthStencilState = depthStencilStateDesc != null ?
-                    Collect(effectsManager.StateManager.Register(depthStencilStateDesc.Value)) : DepthStencilStateProxy.Empty;
+                depthStencilState = depthStencilStateDesc != null ?
+                    effectsManager.StateManager.Register(depthStencilStateDesc.Value) : DepthStencilStateProxy.Empty;
             }
             /// <summary>
             /// Sets the state.
@@ -415,16 +387,40 @@ namespace HelixToolkit.UWP
             public void SetState(RasterizerStateDescription? rasterizerStateDesc)
             {
                 if (IsNULL)
-                { return; }
+                {
+                    return;
+                }
                 if (RasterState != RasterizerStateProxy.Empty)
                 {
-                    var state = RasterState;
-                    RemoveAndDispose(ref state);
+                    RemoveAndDispose(ref rasterState);
                 }
-                RasterState = rasterizerStateDesc != null ?
-                    Collect(effectsManager.StateManager.Register(rasterizerStateDesc.Value)) : RasterizerStateProxy.Empty;
+                rasterState = rasterizerStateDesc != null ?
+                    effectsManager.StateManager.Register(rasterizerStateDesc.Value) : RasterizerStateProxy.Empty;
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                if (BlendState != BlendStateProxy.Empty)
+                {
+                    RemoveAndDispose(ref blendState);
+                }
+                if (DepthStencilState != DepthStencilStateProxy.Empty)
+                {
+                    RemoveAndDispose(ref depthStencilState);
+                }
+                if (RasterState != RasterizerStateProxy.Empty)
+                {
+                    RemoveAndDispose(ref rasterState);
+                }
+                RemoveAndDispose(ref layout);
+                RemoveAndDispose(ref vertexShader);
+                RemoveAndDispose(ref domainShader);
+                RemoveAndDispose(ref hullShader);
+                RemoveAndDispose(ref geometryShader);
+                RemoveAndDispose(ref pixelShader);
+                RemoveAndDispose(ref computeShader);
+                base.OnDispose(disposeManagedResources);
             }
         }
     }
-
 }

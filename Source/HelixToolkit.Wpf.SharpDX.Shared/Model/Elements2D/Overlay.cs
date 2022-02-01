@@ -18,5 +18,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-
 }

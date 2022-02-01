@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP
                 set
                 {
                     var old = parameterBufferModel;
-                    if(SetAffectsCanRenderFlag(ref parameterBufferModel, value))
+                    if (SetAffectsCanRenderFlag(ref parameterBufferModel, value))
                     {
                         if (old != null)
                         {
@@ -35,9 +35,12 @@ namespace HelixToolkit.UWP
                         {
                             parameterBufferModel.ElementChanged += OnElementChanged;
                         }
-                    }                
+                    }
                 }
-                get { return parameterBufferModel; }
+                get
+                {
+                    return parameterBufferModel;
+                }
             }
 
             protected override bool OnUpdateCanRenderFlag()
@@ -65,5 +68,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

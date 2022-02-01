@@ -57,6 +57,10 @@ namespace HelixToolkit.UWP
                 {
                     return true;
                 }
+
+                protected override void OnDetach()
+                {
+                }
             }
         }
     }

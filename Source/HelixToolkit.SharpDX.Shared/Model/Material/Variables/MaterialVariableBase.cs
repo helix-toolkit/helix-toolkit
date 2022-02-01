@@ -20,13 +20,13 @@ namespace HelixToolkit.UWP
     {
         using Render;
         using Shaders;
-        using Core.Components;
-        
+        using System.Diagnostics;
+        using Utilities;
 
         /// <summary>
         /// 
         /// </summary>
-        public abstract class MaterialVariable : ReferenceCountDisposeObject
+        public abstract class MaterialVariable : DisposeObject
         {
             public static readonly ConstantBufferDescription DefaultMeshConstantBufferDesc
                 = new ConstantBufferDescription(DefaultBufferNames.ModelCB,
@@ -53,8 +53,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public ushort ID { set; get; } = 0;
 
-            protected IRenderTechnique Technique { get; }
-            protected IEffectsManager EffectsManager { get; }
+            protected IRenderTechnique Technique
+            {
+                get;
+            }
+            protected IEffectsManager EffectsManager
+            {
+                get;
+            }
             protected bool NeedUpdate { private set; get; } = true;
             /// <summary>
             /// Gets the material cb.
@@ -62,16 +68,23 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The material cb.
             /// </value>
-            protected ConstantBufferComponent MaterialCB { get; }
+            protected ConstantBufferProxy materialCB;
             /// <summary>
             /// Gets the non material cb. Used for non material related rendering such as Shadow map
             /// </summary>
             /// <value>
             /// The non material cb.
             /// </value>
-            protected ConstantBufferComponent NonMaterialCB { get; }
+            protected ConstantBufferProxy nonMaterialCB;
             private readonly object updateLock = new object();
             private readonly MaterialCore material;
+
+            private ConstantBufferDescription materialCBDescription;
+            private ConstantBufferDescription nonMaterialCBDescription = DefaultNonMaterialBufferDesc;
+
+            private readonly int storageId = -1;
+            private ArrayStorage storage;
+            private bool initialized = false;
             /// <summary>
             /// Initializes a new instance of the <see cref="MaterialVariable"/> class.
             /// </summary>
@@ -79,33 +92,44 @@ namespace HelixToolkit.UWP
             /// <param name="technique">The technique.</param>
             /// <param name="meshMaterialConstantBufferDesc">The Constant Buffer description</param>
             /// <param name="materialCore"></param>
-            public MaterialVariable(IEffectsManager manager, IRenderTechnique technique, 
-                ConstantBufferDescription meshMaterialConstantBufferDesc, 
+            public MaterialVariable(IEffectsManager manager, IRenderTechnique technique,
+                ConstantBufferDescription meshMaterialConstantBufferDesc,
                 MaterialCore materialCore)
             {
                 Technique = technique;
                 EffectsManager = manager;
-                if(materialCore != null)
+                if (materialCore != null)
                 {
                     material = materialCore;
                     material.PropertyChanged += MaterialCore_PropertyChanged;
                 }
-                MaterialCB = new ConstantBufferComponent(meshMaterialConstantBufferDesc);
-                NonMaterialCB = new ConstantBufferComponent(DefaultNonMaterialBufferDesc);
+                materialCBDescription = meshMaterialConstantBufferDesc;
+                if (manager != null)
+                {
+                    storage = manager.StructArrayPool.Register(materialCBDescription.StructSize);
+                    storageId = storage.GetId();                
+                }
             }
 
             internal void Initialize()
             {
-                MaterialCB.Attach(Technique);
-                NonMaterialCB.Attach(Technique);
+                if (EffectsManager == null)
+                {
+                    return;
+                }
+                materialCB = EffectsManager.ConstantBufferPool.Register(materialCBDescription);
+                nonMaterialCB = EffectsManager.ConstantBufferPool.Register(nonMaterialCBDescription);
                 OnInitialPropertyBindings();
-                foreach(var v in propertyBindings.Values)
+                foreach (var v in propertyBindings.Values)
                 {
                     v.Invoke();
                 }
+                initialized = true;
             }
 
-            protected virtual void OnInitialPropertyBindings() { }
+            protected virtual void OnInitialPropertyBindings()
+            {
+            }
             /// <summary>
             /// Binds the material textures, samplers, etc,.
             /// </summary>
@@ -115,7 +139,9 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public abstract bool BindMaterialResources(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass);
 
-            protected virtual void UpdateInternalVariables(DeviceContextProxy deviceContext) { }
+            protected virtual void UpdateInternalVariables(DeviceContextProxy deviceContext)
+            {
+            }
 
             /// <summary>
             /// Gets the pass.
@@ -161,9 +187,12 @@ namespace HelixToolkit.UWP
             /// <typeparam name="T"></typeparam>
             /// <param name="context">The context.</param>
             /// <param name="model">The model.</param>
-            /// <param name="structSize"></param>
-            public bool UpdateMaterialStruct<T>(DeviceContextProxy context, ref T model, int structSize) where T : struct
+            public bool UpdateMaterialStruct<T>(DeviceContextProxy context, ref T model) where T : unmanaged
             {
+                if (!initialized)
+                {
+                    return false;
+                }
                 if (NeedUpdate)
                 {
                     lock (updateLock)
@@ -175,7 +204,14 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
-                return MaterialCB.Upload(context, ref model, structSize);
+                var structSize = UnsafeHelper.SizeOf<T>();
+                var box = materialCB.Map(context);
+                UnsafeHelper.Write(box.DataPointer, ref model);
+                var succ = storage.Read(storageId, structSize,
+                    box.DataPointer + structSize,
+                    storage.StructSize - structSize);
+                materialCB.Unmap(context);
+                return succ;
             }
             /// <summary>
             /// Updates the non material structure.
@@ -183,11 +219,22 @@ namespace HelixToolkit.UWP
             /// <typeparam name="T"></typeparam>
             /// <param name="context">The context.</param>
             /// <param name="model">The model.</param>
-            /// <param name="structSize">Size of the structure.</param>
             /// <returns></returns>
-            public bool UpdateNonMaterialStruct<T>(DeviceContextProxy context, ref T model, int structSize) where T : struct
+            public bool UpdateNonMaterialStruct<T>(DeviceContextProxy context, ref T model) where T : unmanaged
             {
-                return NonMaterialCB.Upload(context, ref model, structSize);
+                if (!initialized)
+                {
+                    return false;
+                }
+                if (UnsafeHelper.SizeOf<T>() != nonMaterialCB.StructureSize)
+                {
+                    Debug.Assert(false);
+                    return false;
+                }
+                var box = nonMaterialCB.Map(context);
+                UnsafeHelper.Write(box.DataPointer, ref model);
+                nonMaterialCB.Unmap(context);
+                return true;
             }
             /// <summary>
             /// Draws the specified device context.
@@ -242,9 +289,29 @@ namespace HelixToolkit.UWP
             /// <param name="name">The name.</param>
             /// <param name="value">The value.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void WriteValue<T>(string name, ref T value) where T : struct
+            public void WriteValue<T>(string name, ref T value) where T : unmanaged
             {
-                MaterialCB.WriteValueByName(name, value);
+                if (materialCB != null && materialCB.TryGetVariableByName(name, out var variable))
+                {
+                    if (UnsafeHelper.SizeOf<T>() > variable.Size)
+                    {
+                        var structSize = UnsafeHelper.SizeOf<T>();
+                        throw new ArgumentException($"Input struct size {structSize} is larger than shader variable {variable.Name} size {variable.Size}");
+                    }
+
+                    if (!storage.Write(storageId, variable.StartOffset, ref value))
+                    {
+                        throw new ArgumentException($"Failed to write value on {name}");
+                    }
+                }
+                else
+                {
+#if DEBUG
+                    throw new ArgumentException($"Variable not found in constant buffer {materialCB.Name}. Variable = {name}");
+#else
+                    Technique.EffectsManager.Logger.Log(Logger.LogLevel.Warning, $"Variable not found in constant buffer {materialCB.Name}. Variable = {name}");
+#endif
+                }
             }
             /// <summary>
             /// Writes the value to internal buffer array
@@ -253,20 +320,9 @@ namespace HelixToolkit.UWP
             /// <param name="name">The name.</param>
             /// <param name="value">The value.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void WriteValue<T>(string name, T value) where T : struct
+            public void WriteValue<T>(string name, T value) where T : unmanaged
             {
-                MaterialCB.WriteValueByName(name, value);
-            }
-            /// <summary>
-            /// Writes the value to internal buffer array with offset
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <param name="value">The value.</param>
-            /// <param name="offset">The offset.</param>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void WriteValue<T>(ref T value, int offset) where T : struct
-            {
-                MaterialCB.WriteValue(value, offset);
+                WriteValue(name, ref value);
             }
 
             /// <summary>
@@ -275,15 +331,17 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources"></param>
             protected override void OnDispose(bool disposeManagedResources)
             {
+                RemoveAndDispose(ref materialCB);
+                RemoveAndDispose(ref nonMaterialCB);
+                storage.ReleaseId(storageId);
+                RemoveAndDispose(ref storage);
                 if (disposeManagedResources)
                 {
                     UpdateNeeded = null;
-                    if(material != null)
+                    if (material != null)
                     {
                         material.PropertyChanged -= MaterialCore_PropertyChanged;
                     }
-                    MaterialCB.Detach();
-                    NonMaterialCB.Detach();
                     propertyBindings.Clear();
                 }
                 base.OnDispose(disposeManagedResources);
@@ -299,7 +357,7 @@ namespace HelixToolkit.UWP
 
             protected void TriggerPropertyAction(string propertyName)
             {
-                if (propertyBindings.TryGetValue(propertyName, out Action act))
+                if (propertyBindings.TryGetValue(propertyName, out var act))
                 {
                     act.Invoke();
                 }
@@ -313,5 +371,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

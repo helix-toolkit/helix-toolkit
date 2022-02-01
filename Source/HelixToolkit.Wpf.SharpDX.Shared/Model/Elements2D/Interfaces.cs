@@ -10,18 +10,26 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public interface ITransformable2D
         {
-            Media.Transform Transform { set; get; }
+            Media.Transform Transform
+            {
+                set; get;
+            }
         }
 
         public interface IBackground
         {
-            Media.Brush Background { set; get; }
+            Media.Brush Background
+            {
+                set; get;
+            }
         }
 
         public interface ITextBlock : IBackground
         {
-            Media.Brush Foreground { set; get; }
+            Media.Brush Foreground
+            {
+                set; get;
+            }
         }
     }
-
 }

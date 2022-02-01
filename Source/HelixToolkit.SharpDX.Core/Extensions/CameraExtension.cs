@@ -316,6 +316,10 @@ namespace HelixToolkit.SharpDX.Core
             {
                 orth.LookAt(center, 0);
                 var newWidth = radius * 2;
+                if (viewport.ActualWidth > viewport.ActualHeight)
+                {
+                    newWidth = radius * 2 * (float)(viewport.ActualWidth / viewport.ActualHeight);
+                }
                 orth.AnimateWidth(newWidth, animationTime);
             }
         }

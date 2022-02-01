@@ -231,7 +231,7 @@ namespace HelixToolkit.UWP
         /// Occurs when the manipulation is started.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="Point"/> instance containing the event data.
+        ///
         /// </param>
         public virtual void Started(Point e)
         {

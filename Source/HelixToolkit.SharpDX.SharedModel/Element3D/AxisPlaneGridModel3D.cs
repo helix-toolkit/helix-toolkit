@@ -45,8 +45,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool AutoSpacing
         {
-            get { return (bool)GetValue(AutoSpacingProperty); }
-            set { SetValue(AutoSpacingProperty, value); }
+            get
+            {
+                return (bool)GetValue(AutoSpacingProperty);
+            }
+            set
+            {
+                SetValue(AutoSpacingProperty, value);
+            }
         }
 
         /// <summary>
@@ -68,8 +74,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double AutoSpacingRate
         {
-            get { return (double)GetValue(AutoSpacingRateProperty); }
-            set { SetValue(AutoSpacingRateProperty, value); }
+            get
+            {
+                return (double)GetValue(AutoSpacingRateProperty);
+            }
+            set
+            {
+                SetValue(AutoSpacingRateProperty, value);
+            }
         }
 
         /// <summary>
@@ -90,8 +102,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double GridSpacing
         {
-            get { return (double)GetValue(GridSpacingProperty); }
-            set { SetValue(GridSpacingProperty, value); }
+            get
+            {
+                return (double)GetValue(GridSpacingProperty);
+            }
+            set
+            {
+                SetValue(GridSpacingProperty, value);
+            }
         }
 
         /// <summary>
@@ -99,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty GridSpacingProperty =
             DependencyProperty.Register("GridSpacing", typeof(double), typeof(AxisPlaneGridModel3D), new PropertyMetadata(10.0,
-                (d,e)=> 
+                (d, e) =>
                 {
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).GridSpacing = (float)(double)e.NewValue;
                 }));
@@ -113,8 +131,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double GridThickness
         {
-            get { return (double)GetValue(GridThicknessProperty); }
-            set { SetValue(GridThicknessProperty, value); }
+            get
+            {
+                return (double)GetValue(GridThicknessProperty);
+            }
+            set
+            {
+                SetValue(GridThicknessProperty, value);
+            }
         }
 
         /// <summary>
@@ -136,8 +160,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double FadingFactor
         {
-            get { return (double)GetValue(FadingFactorProperty); }
-            set { SetValue(FadingFactorProperty, value); }
+            get
+            {
+                return (double)GetValue(FadingFactorProperty);
+            }
+            set
+            {
+                SetValue(FadingFactorProperty, value);
+            }
         }
 
         /// <summary>
@@ -158,8 +188,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Media.Color PlaneColor
         {
-            get { return (Media.Color)GetValue(PlaneColorProperty); }
-            set { SetValue(PlaneColorProperty, value); }
+            get
+            {
+                return (Media.Color)GetValue(PlaneColorProperty);
+            }
+            set
+            {
+                SetValue(PlaneColorProperty, value);
+            }
         }
         /// <summary>
         /// The plane color property
@@ -185,8 +221,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Media.Color GridColor
         {
-            get { return (Media.Color)GetValue(GridColorProperty); }
-            set { SetValue(GridColorProperty, value); }
+            get
+            {
+                return (Media.Color)GetValue(GridColorProperty);
+            }
+            set
+            {
+                SetValue(GridColorProperty, value);
+            }
         }
         /// <summary>
         /// The grid color property
@@ -212,8 +254,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool RenderShadowMap
         {
-            get { return (bool)GetValue(RenderShadowMapProperty); }
-            set { SetValue(RenderShadowMapProperty, value); }
+            get
+            {
+                return (bool)GetValue(RenderShadowMapProperty);
+            }
+            set
+            {
+                SetValue(RenderShadowMapProperty, value);
+            }
         }
 
         /// <summary>
@@ -235,8 +283,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Axis UpAxis
         {
-            get { return (Axis)GetValue(UpAxisProperty); }
-            set { SetValue(UpAxisProperty, value); }
+            get
+            {
+                return (Axis)GetValue(UpAxisProperty);
+            }
+            set
+            {
+                SetValue(UpAxisProperty, value);
+            }
         }
 
         /// <summary>
@@ -244,7 +298,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty UpAxisProperty =
             DependencyProperty.Register("UpAxis", typeof(Axis), typeof(AxisPlaneGridModel3D), new PropertyMetadata(Axis.Y,
-                (d, e) => 
+                (d, e) =>
                 {
                     ((d as Element3D).SceneNode as AxisPlaneGridNode).UpAxis = (Axis)e.NewValue;
                 }));
@@ -258,8 +312,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public double Offset
         {
-            get { return (double)GetValue(OffsetProperty); }
-            set { SetValue(OffsetProperty, value); }
+            get
+            {
+                return (double)GetValue(OffsetProperty);
+            }
+            set
+            {
+                SetValue(OffsetProperty, value);
+            }
         }
 
         /// <summary>
@@ -279,8 +339,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public GridPattern GridPattern
         {
-            get { return (GridPattern)GetValue(GridPatternProperty); }
-            set { SetValue(GridPatternProperty, value); }
+            get
+            {
+                return (GridPattern)GetValue(GridPatternProperty);
+            }
+            set
+            {
+                SetValue(GridPatternProperty, value);
+            }
         }
 
         /// <summary>

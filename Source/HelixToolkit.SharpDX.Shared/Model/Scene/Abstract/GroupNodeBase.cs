@@ -37,14 +37,20 @@ namespace HelixToolkit.UWP
                 /// <value>
                 /// The node.
                 /// </value>
-                public SceneNode Node { private set; get; }
+                public SceneNode Node
+                {
+                    private set; get;
+                }
                 /// <summary>
                 /// Gets or sets a value indicating whether [add =true or remove = false].
                 /// </summary>
                 /// <value>
                 ///   <c>true</c> if [add or remove]; otherwise, <c>false</c>.
                 /// </value>
-                public Operation Operation { private set; get; }
+                public Operation Operation
+                {
+                    private set; get;
+                }
                 /// <summary>
                 /// Initializes a new instance of the <see cref="OnChildNodeChangedArgs"/> class.
                 /// </summary>
@@ -56,7 +62,10 @@ namespace HelixToolkit.UWP
                     Operation = operation;
                 }
 
-                public static implicit operator SceneNode(OnChildNodeChangedArgs args) { return args.Node; }
+                public static implicit operator SceneNode(OnChildNodeChangedArgs args)
+                {
+                    return args.Node;
+                }
             }
             protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
             /// <summary>
@@ -66,7 +75,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The metadata.
             /// </value>
-            public Metadata Metadata { set; get; }
+            public Metadata Metadata
+            {
+                set; get;
+            }
 
             public event EventHandler<OnChildNodeChangedArgs> ChildNodeAdded;
             public event EventHandler<OnChildNodeChangedArgs> ChildNodeRemoved;
@@ -99,7 +111,7 @@ namespace HelixToolkit.UWP
                 {
                     itemHashSet.Add(node.GUID, node);
                     ItemsInternal.Add(node);
-                    if(node.Parent != NullSceneNode.NullNode && node.Parent != this)
+                    if (node.Parent != NullSceneNode.NullNode && node.Parent != this)
                     {
                         throw new ArgumentException("SceneNode already attach to a different node");
                     }
@@ -112,7 +124,10 @@ namespace HelixToolkit.UWP
                     ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
                     return true;
                 }
-                else { return false; }
+                else
+                {
+                    return false;
+                }
             }
             /// <summary>
             /// Moves the child node.
@@ -123,7 +138,9 @@ namespace HelixToolkit.UWP
             {
                 ItemsInternal.Move(fromIndex, toIndex);
                 if (IsAttached)
-                { InvalidateSceneGraph(); }
+                {
+                    InvalidateSceneGraph();
+                }
             }
             /// <summary>
             /// Inserts the child node.
@@ -156,7 +173,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool TransferChildNode(SceneNode node, GroupNodeBase targetGroup)
             {
-                if(targetGroup == this || !itemHashSet.Remove(node.GUID))
+                if (targetGroup == this || !itemHashSet.Remove(node.GUID))
                 {
                     return false;
                 }
@@ -171,7 +188,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public void Clear()
             {
-                for (int i = 0; i < ItemsInternal.Count; ++i)
+                for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
                     ItemsInternal[i].Detach();
                     ItemsInternal[i].Parent = null;
@@ -189,7 +206,7 @@ namespace HelixToolkit.UWP
             {
                 if (node != null && itemHashSet.Remove(node.GUID))
                 {
-                    node.Detach();             
+                    node.Detach();
                     ItemsInternal.Remove(node);
                     node.Parent = null;
                     ChildNodeRemoved?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
@@ -219,20 +236,23 @@ namespace HelixToolkit.UWP
             {
                 if (base.OnAttach(host))
                 {
-                    for (int i = 0; i < ItemsInternal.Count; ++i)
+                    for (var i = 0; i < ItemsInternal.Count; ++i)
                     {
                         ItemsInternal[i].Attach(host);
                     }
                     return true;
                 }
-                else { return false; }
+                else
+                {
+                    return false;
+                }
             }
             /// <summary>
             /// Called when [detach].
             /// </summary>
             protected override void OnDetach()
             {
-                for (int i = 0; i < ItemsInternal.Count; ++i)
+                for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
                     ItemsInternal[i].Detach();
                 }
@@ -244,12 +264,11 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="totalModelMatrix">The total model matrix.</param>
-            /// <param name="ray">The ray.</param>
             /// <param name="hits">The hits.</param>
             /// <returns></returns>
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
-                bool hit = false;
+                var hit = false;
                 foreach (var c in this.ItemsInternal)
                 {
                     if (c.HitTest(context, ref hits))
@@ -272,5 +291,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

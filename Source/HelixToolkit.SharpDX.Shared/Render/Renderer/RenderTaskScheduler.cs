@@ -20,9 +20,9 @@ namespace HelixToolkit.UWP
 {
     namespace Render
     {
-        using Core;           
+        using Core;
         using Model.Scene;
-    
+
 
         /// <summary>
         /// 
@@ -57,7 +57,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The number processor.
             /// </value>
-            public int NumProcessor { private set; get; }
+            public int NumProcessor
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Gets or sets the minimum item to start multi-threading
@@ -125,37 +128,37 @@ namespace HelixToolkit.UWP
                 List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
             {
                 outputCommands.Clear();
-                int totalCount = 0;
+                var totalCount = 0;
                 numRendered = 0;
                 Exception exception = null;
                 if (items.Count > schedulerParams.MinimumDrawCalls)
                 {
                     var frustum = context.BoundingFrustum;
-                    var partitionParams = Partitioner.Create(0, items.Count, items.Count/schedulerParams.MaxNumberOfTasks+1);
+                    var partitionParams = Partitioner.Create(0, items.Count, items.Count / schedulerParams.MaxNumberOfTasks + 1);
                     Parallel.ForEach(partitionParams, (range, state) =>
                     {
                         try
                         {
-                            int counter = 0;                    
+                            var counter = 0;
                             var deferred = pool.Get();
                             SetRenderTargets(deferred, ref parameter);
                             if (!testFrustum)
                             {
-                                for (int i = range.Item1; i < range.Item2; ++i)
+                                for (var i = range.Item1; i < range.Item2; ++i)
                                 {
-                                    items[i].RenderCore.Render(context, deferred);
+                                    items[i].Render(context, deferred);
                                     ++counter;
                                 }
                             }
                             else
                             {
-                                for (int i = range.Item1; i < range.Item2; ++i)
+                                for (var i = range.Item1; i < range.Item2; ++i)
                                 {
                                     if (context.EnableBoundingFrustum && !items[i].TestViewFrustum(ref frustum))
                                     {
                                         continue;
                                     }
-                                    items[i].RenderCore.Render(context, deferred);
+                                    items[i].Render(context, deferred);
                                     ++counter;
                                 }
                             }
@@ -168,20 +171,20 @@ namespace HelixToolkit.UWP
                                 totalCount += counter;
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             exception = ex;
                         }
                     });
                     numRendered = totalCount;
-                    if(exception != null)
+                    if (exception != null)
                     {
                         throw exception;
                     }
                     return true;
                 }
                 else
-                {                
+                {
                     return false;
                 }
             }
@@ -201,5 +204,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

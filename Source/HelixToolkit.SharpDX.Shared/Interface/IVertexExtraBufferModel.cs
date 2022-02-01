@@ -27,21 +27,30 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if initialized; otherwise, <c>false</c>.
         /// </value>
-        bool Initialized { get; }
+        bool Initialized
+        {
+            get;
+        }
         /// <summary>
         /// Gets a value indicating whether this <see cref="IVertexExtraBufferModel"/> is changed.
         /// </summary>
         /// <value>
         ///   <c>true</c> if changed; otherwise, <c>false</c>.
         /// </value>
-        bool Changed { get; }
+        bool Changed
+        {
+            get;
+        }
         /// <summary>
         /// Gets the buffer.
         /// </summary>
         /// <value>
         /// The buffer.
         /// </value>
-        IElementsBufferProxy Buffer { get; }
+        IElementsBufferProxy Buffer
+        {
+            get;
+        }
         /// <summary>
         /// Attaches the buffer.
         /// </summary>

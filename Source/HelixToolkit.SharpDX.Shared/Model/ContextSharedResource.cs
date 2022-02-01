@@ -29,17 +29,17 @@ namespace HelixToolkit.UWP
 
             public ShaderResourceViewProxy EnvironementMap
             {
-                set;get;
+                set; get;
             }
 
             public ShaderResourceViewProxy SSAOMap
             {
-                set;get;
+                set; get;
             }
 
             public int EnvironmentMapMipLevels
             {
-                set;get;
+                set; get;
             }
             #region IDisposable Support
             private bool disposedValue = false; // To detect redundant calls
@@ -80,5 +80,4 @@ namespace HelixToolkit.UWP
             #endregion
         }
     }
-
 }

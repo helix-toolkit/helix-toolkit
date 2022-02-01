@@ -15,7 +15,10 @@ namespace HelixToolkit.UWP
     using Model;
     public interface ITextureResourceManager : IDisposable
     {
-        int Count { get; }
+        int Count
+        {
+            get;
+        }
         /// <summary>
         /// Registers the specified texture stream. This creates mipmaps automatically
         /// </summary>

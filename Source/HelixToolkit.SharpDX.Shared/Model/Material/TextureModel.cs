@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP
                 if (autoClose)
                 {
                     info.Texture?.Dispose();
-                }   
+                }
             }
 
             public TextureInfo Load(Guid id)
@@ -91,7 +91,7 @@ namespace HelixToolkit.UWP
             }
 
             public void Complete(Guid id, TextureInfo info, bool succeeded)
-            {               
+            {
             }
 
             public TextureInfo Load(Guid id)
@@ -163,7 +163,6 @@ namespace HelixToolkit.UWP
         /// Repository is used to load texture from file path.
         /// <para>
         /// You can customize the repository to provider your own implementation. Helixtoolkit will ask repository to load texture on-demand.
-        /// Set <see cref="CanAutoCloseStream"/> can let HelixToolkit close the stream after texture being uploaded into GPU for memory saving.
         /// </para>
         /// </summary>
         /// <value>
@@ -176,7 +175,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The unique identifier.
         /// </value>
-        public Guid Guid { get; }
+        public Guid Guid
+        {
+            get;
+        }
         /// <summary>
         /// Gets the tag.
         /// </summary>
@@ -202,7 +204,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Provides interface for user defined texture loader. 
         /// HelixToolkit will call <see cref="ITextureInfoLoader.Load(Guid)"/> to start loading content into GPU.
-        /// HelixToolkit will call <see cref="ITextureInfoLoader.Complete(Guid)"/> once content has been loaded into GPU.
+        /// HelixToolkit will call <see cref="ITextureInfoLoader.Complete(Guid, TextureInfo, bool)"/> once content has been loaded into GPU.
         /// </summary>
         /// <param name="contentId">The content identifier.</param>
         /// <param name="loader">The loader.</param>
@@ -220,7 +222,7 @@ namespace HelixToolkit.UWP
         public TextureModel(Stream stream, bool autoCloseStream = false)
             : this(Guid.NewGuid(), new StreamLoader(stream, autoCloseStream))
         {
-            
+
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureModel"/> class.
@@ -297,10 +299,7 @@ namespace HelixToolkit.UWP
         {
 
         }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextureModel"/> class.
-        /// </summary>
-        /// <param name="textureFile">The texture file.</param>
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureModel"/> class.
         /// </summary>
@@ -347,7 +346,7 @@ namespace HelixToolkit.UWP
         public TextureModel(string textureFile)
             : this(Guid.NewGuid(), new TextureFileLoader(textureFile))
         {
-        
+
         }
         /// <summary>
         /// Creates texture model from specified stream.
@@ -387,7 +386,7 @@ namespace HelixToolkit.UWP
             TextureInfoLoader.Complete(Guid, info, succ);
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="CompressedStream"/> to <see cref="TextureModel"/>.
+        /// Performs an implicit conversion from <see cref="Stream"/> to <see cref="TextureModel"/>.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <returns>
@@ -670,7 +669,7 @@ namespace HelixToolkit.UWP
         /// <param name="generateMipMaps">if set to <c>true</c> [generate mip maps].</param>
         /// <exception cref="ArgumentNullException">Texture cannot be null.</exception>
         /// <exception cref="ArgumentException">Height cannot be zero.</exception>
-        public TextureInfo(Color4[] texture, int width, bool generateMipMaps = true) 
+        public TextureInfo(Color4[] texture, int width, bool generateMipMaps = true)
             : this(texture, generateMipMaps)
         {
             Width = width == 0 ? throw new ArgumentException("Height cannot be zero.") : width;

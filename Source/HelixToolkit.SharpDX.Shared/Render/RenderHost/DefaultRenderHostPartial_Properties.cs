@@ -93,7 +93,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// Gets the current frame flattened scene graph
             /// </value>
-            public sealed override FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return perFrameFlattenedScene; } }
+            public sealed override FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene
+            {
+                get
+                {
+                    return perFrameFlattenedScene;
+                }
+            }
             /// <summary>
             /// Gets the per frame lights.
             /// </summary>
@@ -102,20 +108,37 @@ namespace HelixToolkit.UWP
             /// </value>
             public sealed override IEnumerable<LightNode> PerFrameLights
             {
-                get { return lightNodes.Select(x => x as LightNode); }
+                get
+                {
+                    return lightNodes.Select(x => x as LightNode);
+                }
             }
             /// <summary>
             /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
-            /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
+            /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>,
+            /// <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostEffect"/>, <see cref="RenderType.GlobalEffect"/>, <see cref="RenderType.Light"/>, 
+            /// <see cref="RenderType.ScreenSpaced"/></para>
             /// </summary>
-            public sealed override FastList<SceneNode> PerFrameOpaqueNodes { get { return opaqueNodes; } }
+            public sealed override FastList<SceneNode> PerFrameOpaqueNodes
+            {
+                get
+                {
+                    return opaqueNodes;
+                }
+            }
             /// <summary>
             /// Gets the per frame opaque nodes in frustum.
             /// </summary>
             /// <value>
             /// The per frame opaque nodes in frustum.
             /// </value>
-            public sealed override FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get { return opaqueNodesInFrustum; } }
+            public sealed override FastList<SceneNode> PerFrameOpaqueNodesInFrustum
+            {
+                get
+                {
+                    return opaqueNodesInFrustum;
+                }
+            }
 
             /// <summary>
             /// Gets the per frame transparent nodes in frustum.
@@ -123,22 +146,42 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The per frame transparent nodes in frustum.
             /// </value>
-            public sealed override FastList<SceneNode> PerFrameTransparentNodesInFrustum { get { return transparentNodesInFrustum; } }
+            public sealed override FastList<SceneNode> PerFrameTransparentNodesInFrustum
+            {
+                get
+                {
+                    return transparentNodesInFrustum;
+                }
+            }
             /// <summary>
             /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
-            /// <para>This does not include <see cref="RenderType.Opaque"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
+            /// <para>This does not include <see cref="RenderType.Opaque"/>, <see cref="RenderType.PreProc"/>,
+            /// <see cref="RenderType.PostEffect"/>, <see cref="RenderType.GlobalEffect"/>, <see cref="RenderType.Light"/>, 
+            /// <see cref="RenderType.ScreenSpaced"/></para>
             /// </summary>
             /// <value>
             /// The per frame transparent nodes.
             /// </value>
-            public sealed override FastList<SceneNode> PerFrameTransparentNodes { get { return transparentNodes; } }
+            public sealed override FastList<SceneNode> PerFrameTransparentNodes
+            {
+                get
+                {
+                    return transparentNodes;
+                }
+            }
             /// <summary>
             /// Gets the per frame transparent nodes.
             /// </summary>
             /// <value>
             /// The per frame transparent nodes.
             /// </value>
-            public sealed override FastList<SceneNode> PerFrameParticleNodes { get { return particleNodes; } }
+            public sealed override FastList<SceneNode> PerFrameParticleNodes
+            {
+                get
+                {
+                    return particleNodes;
+                }
+            }
             /// <summary>
             /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameOpaqueNodes"/>
             /// </summary>
@@ -147,7 +190,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public sealed override FastList<SceneNode> PerFrameNodesWithPostEffect
             {
-                get { return nodesWithPostEffect; }
+                get
+                {
+                    return nodesWithPostEffect;
+                }
             }
 
             public const int FrustumPartitionSize = 500;

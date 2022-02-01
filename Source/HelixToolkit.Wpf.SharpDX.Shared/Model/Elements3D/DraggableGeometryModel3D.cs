@@ -37,25 +37,46 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool DragX
         {
-            get { return (bool)this.GetValue(DragXProperty); }
-            set { this.SetValue(DragXProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(DragXProperty);
+            }
+            set
+            {
+                this.SetValue(DragXProperty, value);
+            }
         }
 
         public bool DragY
         {
-            get { return (bool)this.GetValue(DragYProperty); }
-            set { this.SetValue(DragYProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(DragYProperty);
+            }
+            set
+            {
+                this.SetValue(DragYProperty, value);
+            }
         }
 
         public bool DragZ
         {
-            get { return (bool)this.GetValue(DragZProperty); }
-            set { this.SetValue(DragZProperty, value); }
+            get
+            {
+                return (bool)this.GetValue(DragZProperty);
+            }
+            set
+            {
+                this.SetValue(DragZProperty, value);
+            }
         }
 
         public Point3D LastHitPosition
         {
-            get { return this.lastHitPos; }
+            get
+            {
+                return this.lastHitPos;
+            }
         }
 
         protected override void OnMouse3DDown(object sender, RoutedEventArgs e)
@@ -63,8 +84,10 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnMouse3DDown(sender, e);
 
             var args = e as Mouse3DEventArgs;
-            if (args == null) return;
-            if (args.Viewport == null) return;
+            if (args == null)
+                return;
+            if (args.Viewport == null)
+                return;
 
             this.isCaptured = true;
             this.viewport = args.Viewport;
@@ -89,7 +112,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.isCaptured)
             {
                 var args = e as Mouse3DEventArgs;
-
                 // move dragmodel                         
                 var normal = this.camera.LookDirection;
 
@@ -97,7 +119,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal);
                 if (newHit.HasValue)
                 {
-                    var offset = (newHit.Value - lastHitPos);
+                    var delta = (newHit.Value - lastHitPos);
+                    Vector3D offset = new Vector3D(
+                        DragX ? delta.X : 0,
+                        DragY ? delta.Y : 0,
+                        DragZ ? delta.Z : 0
+                        );
+
                     this.lastHitPos = newHit.Value;
                     if (Transform == null)
                     {

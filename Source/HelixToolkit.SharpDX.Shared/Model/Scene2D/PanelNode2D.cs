@@ -44,7 +44,10 @@ namespace HelixToolkit.UWP
                     }
                     return true;
                 }
-                else { return false; }
+                else
+                {
+                    return false;
+                }
             }
 
             /// <summary>
@@ -52,7 +55,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public virtual void Clear()
             {
-                for (int i = 0; i < Items.Count; ++i)
+                for (var i = 0; i < Items.Count; ++i)
                 {
                     Items[i].Detach();
                     Items[i].Parent = null;
@@ -94,7 +97,7 @@ namespace HelixToolkit.UWP
 
             protected override bool OnAttach(IRenderHost host)
             {
-                for (int i = 0; i < Items.Count; ++i)
+                for (var i = 0; i < Items.Count; ++i)
                 {
                     Items[i].Attach(host);
                 }
@@ -103,7 +106,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnDetach()
             {
-                for (int i = 0; i < Items.Count; ++i)
+                for (var i = 0; i < Items.Count; ++i)
                 {
                     Items[i].Detach();
                 }
@@ -120,11 +123,12 @@ namespace HelixToolkit.UWP
                 foreach (var item in Items.Reverse())
                 {
                     if (item.HitTest(mousePoint, out hitResult))
-                    { return true; }
+                    {
+                        return true;
+                    }
                 }
                 return false;
             }
         }
     }
-
 }

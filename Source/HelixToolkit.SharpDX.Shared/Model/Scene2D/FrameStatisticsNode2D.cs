@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP
     namespace Model.Scene2D
     {
         using Core2D;
-    
+
 
         public class FrameStatisticsNode2D : SceneNode2D
         {
@@ -70,5 +70,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

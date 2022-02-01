@@ -42,7 +42,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The type of the light.
             /// </value>
-            public LightType LightType { protected set; get; }
+            public LightType LightType
+            {
+                protected set; get;
+            }
 
             private Color4 color = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             /// <summary>
@@ -53,8 +56,14 @@ namespace HelixToolkit.UWP
             /// </value>
             public Color4 Color
             {
-                set { SetAffectsRender(ref color, value); }
-                get { return color; }
+                set
+                {
+                    SetAffectsRender(ref color, value);
+                }
+                get
+                {
+                    return color;
+                }
             }
 
             protected LightCoreBase() : base(RenderType.Light) { }
@@ -62,6 +71,11 @@ namespace HelixToolkit.UWP
             protected override bool OnAttach(IRenderTechnique technique)
             {
                 return true;
+            }
+
+            protected override void OnDetach()
+            {
+
             }
 
             /// <summary>
@@ -129,5 +143,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

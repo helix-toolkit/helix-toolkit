@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(SetAffectsMeasure(ref text, value))
+                    if (SetAffectsMeasure(ref text, value))
                     {
                         (RenderCore as TextRenderCore2D).Text = value;
                     }
@@ -173,5 +173,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

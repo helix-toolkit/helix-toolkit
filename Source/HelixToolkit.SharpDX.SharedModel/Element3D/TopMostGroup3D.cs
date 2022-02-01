@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         // Using a DependencyProperty as the backing store for EnableTopMost.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty EnableTopMostProperty =
-            DependencyProperty.Register("EnableTopMost", typeof(bool), typeof(TopMostGroup3D), new PropertyMetadata(true, (d, e) => 
+            DependencyProperty.Register("EnableTopMost", typeof(bool), typeof(TopMostGroup3D), new PropertyMetadata(true, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as TopMostGroupNode).EnableTopMost = (bool)e.NewValue;
             }));

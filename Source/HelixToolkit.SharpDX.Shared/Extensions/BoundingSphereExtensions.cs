@@ -38,8 +38,8 @@ namespace HelixToolkit.UWP
             var upperEnd = start + count;
 
             //Find the center of all points.
-            Vector3 center = Vector3.Zero;
-            for (int i = start; i < upperEnd; ++i)
+            var center = Vector3.Zero;
+            for (var i = start; i < upperEnd; ++i)
             {
                 var p = points[i];
                 Vector3.Add(ref p, ref center, out center);
@@ -49,13 +49,13 @@ namespace HelixToolkit.UWP
             center /= (float)count;
 
             //Find the radius of the sphere
-            float radius = 0f;
-            for (int i = start; i < upperEnd; ++i)
+            var radius = 0f;
+            for (var i = start; i < upperEnd; ++i)
             {
                 //We are doing a relative distance comparison to find the maximum distance
                 //from the center of our sphere.
                 var p = points[i];
-                Vector3.DistanceSquared(ref center, ref p, out float distance);
+                Vector3.DistanceSquared(ref center, ref p, out var distance);
 
                 if (distance > radius)
                     radius = distance;

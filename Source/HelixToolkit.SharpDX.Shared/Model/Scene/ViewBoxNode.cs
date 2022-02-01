@@ -48,7 +48,10 @@ namespace HelixToolkit.UWP
                         UpdateTexture(value);
                     }
                 }
-                get { return viewboxTexture; }
+                get
+                {
+                    return viewboxTexture;
+                }
             }
             /// <summary>
             /// Gets or sets a value indicating whether [enable edge click].
@@ -118,33 +121,33 @@ namespace HelixToolkit.UWP
             static ViewBoxNode()
             {
                 var builder = new MeshBuilder(true, false);
-                float cornerSize = size / 5;
+                var cornerSize = size / 5;
                 builder.AddBox(Vector3.Zero, cornerSize, cornerSize, cornerSize);
                 cornerGeometry = builder.ToMesh();
 
                 builder = new MeshBuilder(true, false);
-                float halfSize = size / 2;
-                float edgeSize = halfSize * 1.5f;
+                var halfSize = size / 2;
+                var edgeSize = halfSize * 1.5f;
                 builder.AddBox(Vector3.Zero, cornerSize, edgeSize, cornerSize);
                 edgeGeometry = builder.ToMesh();
 
                 cornerInstances = new Matrix[cornerPoints.Length];
-                for (int i = 0; i < cornerPoints.Length; ++i)
+                for (var i = 0; i < cornerPoints.Length; ++i)
                 {
                     cornerInstances[i] = Matrix.Translation(cornerPoints[i] * size / 2 * 0.95f);
                 }
-                int count = xAligned.Length;
+                var count = xAligned.Length;
                 edgeInstances = new Matrix[count * 3];
 
-                for (int i = 0; i < count; ++i)
+                for (var i = 0; i < count; ++i)
                 {
                     edgeInstances[i] = Matrix.RotationZ((float)Math.PI / 2) * Matrix.Translation(xAligned[i] * halfSize * 0.95f);
                 }
-                for (int i = count; i < count * 2; ++i)
+                for (var i = count; i < count * 2; ++i)
                 {
                     edgeInstances[i] = Matrix.Translation(yAligned[i % count] * halfSize * 0.95f);
                 }
-                for (int i = count * 2; i < count * 3; ++i)
+                for (var i = count * 2; i < count * 3; ++i)
                 {
                     edgeInstances[i] = Matrix.RotationX((float)Math.PI / 2) * Matrix.Translation(zAligned[i % count] * halfSize * 0.95f);
                 }
@@ -217,7 +220,7 @@ namespace HelixToolkit.UWP
 
             private void UpdateTexture(TextureModel texture)
             {
-                if(ViewBoxMeshModel.Material is ViewCubeMaterialCore material)
+                if (ViewBoxMeshModel.Material is ViewCubeMaterialCore material)
                     material.DiffuseMap = texture;
             }
 
@@ -244,11 +247,11 @@ namespace HelixToolkit.UWP
                 var pts = new List<Vector3>();
 
                 var center = up * -size / 2 * 1.1f;
-                int phi = 24;
-                for (int i = 0; i < phi; i++)
+                var phi = 24;
+                for (var i = 0; i < phi; i++)
                 {
                     double angle = 0 + (360 * i / (phi - 1));
-                    double angleRad = angle / 180 * Math.PI;
+                    var angleRad = angle / 180 * Math.PI;
                     var dir = (left * (float)Math.Cos(angleRad)) + (front * (float)Math.Sin(angleRad));
                     pts.Add(center + (dir * (size - 0.75f)));
                     pts.Add(center + (dir * (size + 1.1f)));
@@ -256,8 +259,8 @@ namespace HelixToolkit.UWP
                 builder = new MeshBuilder(false, false, false);
                 builder.AddTriangleStrip(pts);
                 var pie = builder.ToMesh();
-                int count = pie.Indices.Count;
-                for (int i = 0; i < count;)
+                var count = pie.Indices.Count;
+                for (var i = 0; i < count;)
                 {
                     var v1 = pie.Indices[i++];
                     var v2 = pie.Indices[i++];
@@ -270,7 +273,7 @@ namespace HelixToolkit.UWP
 
                 if (!isRightHanded)
                 {
-                    for (int i = 0; i < newMesh.Positions.Count; ++i)
+                    for (var i = 0; i < newMesh.Positions.Count; ++i)
                     {
                         var p = newMesh.Positions[i];
                         p.Z *= -1;
@@ -288,11 +291,11 @@ namespace HelixToolkit.UWP
 
             private static void CreateTextureCoordinates(MeshGeometry3D mesh)
             {
-                int faces = 6;
-                int segment = 4;
-                float inc = 1f / faces;
+                var faces = 6;
+                var segment = 4;
+                var inc = 1f / faces;
 
-                for (int i = 0; i < mesh.TextureCoordinates.Count; ++i)
+                for (var i = 0; i < mesh.TextureCoordinates.Count; ++i)
                 {
                     mesh.TextureCoordinates[i] = new Vector2(mesh.TextureCoordinates[i].X * inc + inc * (int)(i / segment), mesh.TextureCoordinates[i].Y);
                 }
@@ -317,7 +320,7 @@ namespace HelixToolkit.UWP
                     {
                         normal = -hit.NormalAtHit * inv;
                         //Fix the normal if returned normal is reversed
-                        if(Vector3.Dot(normal, context.RenderMatrices.CameraParams.LookAtDir) < 0)
+                        if (Vector3.Dot(normal, context.RenderMatrices.CameraParams.LookAtDir) < 0)
                         {
                             normal *= -1;
                         }
@@ -326,12 +329,12 @@ namespace HelixToolkit.UWP
                     {
                         if (hit.ModelHit == EdgeModel && index < edgeInstances.Length)
                         {
-                            Matrix transform = edgeInstances[index];
+                            var transform = edgeInstances[index];
                             normal = -transform.TranslationVector;
                         }
                         else if (hit.ModelHit == CornerModel && index < cornerInstances.Length)
                         {
-                            Matrix transform = cornerInstances[index];
+                            var transform = cornerInstances[index];
                             normal = -transform.TranslationVector;
                         }
                         else
@@ -355,8 +358,7 @@ namespace HelixToolkit.UWP
                 {
                     return false;
                 }
-            }        
+            }
         }
     }
-
 }

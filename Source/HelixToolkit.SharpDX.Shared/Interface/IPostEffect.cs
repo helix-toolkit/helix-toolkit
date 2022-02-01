@@ -14,6 +14,9 @@ namespace HelixToolkit.UWP
 {
     public interface IPostEffect
     {
-        string EffectName { set; get; }
+        string EffectName
+        {
+            set; get;
+        }
     }
 }

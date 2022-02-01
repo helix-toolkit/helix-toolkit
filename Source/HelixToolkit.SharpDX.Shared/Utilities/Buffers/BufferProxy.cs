@@ -20,28 +20,43 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public interface IBufferProxy
+        public interface IBufferProxy : IDisposable
         {
             /// <summary>
             /// Raw Buffer
             /// </summary>
-            SDX11.Buffer Buffer { get; }
+            SDX11.Buffer Buffer
+            {
+                get;
+            }
             /// <summary>
             /// Element Size
             /// </summary>
-            int StructureSize { get; }
+            int StructureSize
+            {
+                get;
+            }
             /// <summary>
             /// Element count
             /// </summary>
-            int ElementCount { get; }
+            int ElementCount
+            {
+                get;
+            }
             /// <summary>
             /// Buffer offset in bytes
             /// </summary>
-            int Offset { set; get; }
+            int Offset
+            {
+                set; get;
+            }
             /// <summary>
             /// Buffer binding flag
             /// </summary>
-            BindFlags BindFlags { get; }
+            BindFlags BindFlags
+            {
+                get;
+            }
         }
 
 
@@ -57,7 +72,10 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// <see cref="IBufferProxy.StructureSize"/> 
             /// </summary>
-            public int StructureSize { get; private set; }
+            public int StructureSize
+            {
+                get; private set;
+            }
             /// <summary>
             ///  <see cref="IBufferProxy.ElementCount"/> 
             /// </summary>
@@ -70,11 +88,20 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///  <see cref="IBufferProxy.Buffer"/> 
             /// </summary>
-            public SDX11.Buffer Buffer { get { return buffer; } }
+            public SDX11.Buffer Buffer
+            {
+                get
+                {
+                    return buffer;
+                }
+            }
             /// <summary>
             ///  <see cref="IBufferProxy.BindFlags"/> 
             /// </summary>
-            public BindFlags BindFlags { private set; get; }
+            public BindFlags BindFlags
+            {
+                private set; get;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -86,13 +113,17 @@ namespace HelixToolkit.UWP
                 BindFlags = bindFlags;
             }
 
-            public override void DisposeAndClear()
+            public void DisposeAndClear()
             {
-                buffer = null;
+                RemoveAndDispose(ref buffer);
                 ElementCount = 0;
-                base.DisposeAndClear();
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                DisposeAndClear();
+                base.OnDispose(disposeManagedResources);
             }
         }
     }
-
 }

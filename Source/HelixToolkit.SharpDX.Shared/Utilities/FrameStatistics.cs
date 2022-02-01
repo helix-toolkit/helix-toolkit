@@ -23,21 +23,30 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The average value.
             /// </value>
-            double AverageValue { get; }
+            double AverageValue
+            {
+                get;
+            }
             /// <summary>
             /// Gets the average frequency.
             /// </summary>
             /// <value>
             /// The average frequency.
             /// </value>
-            double AverageFrequency { get; }
+            double AverageFrequency
+            {
+                get;
+            }
             /// <summary>
             /// Gets or sets the update frequency by number of samples
             /// </summary>
             /// <value>
             /// The update frequency.
             /// </value>
-            uint UpdateFrequency { set; get; }
+            uint UpdateFrequency
+            {
+                set; get;
+            }
             /// <summary>
             /// Pushes the specified latency by milliseconds
             /// </summary>
@@ -84,7 +93,10 @@ namespace HelixToolkit.UWP
                 {
                     Set(ref averageFrequency, value);
                 }
-                get { return averageFrequency; }
+                get
+                {
+                    return averageFrequency;
+                }
             }
             /// <summary>
             /// Gets or sets the update frequency by number of samples, Default is 60
@@ -104,7 +116,7 @@ namespace HelixToolkit.UWP
             /// <param name="latency">The latency.</param>
             public void Push(double latency)
             {
-                if(latency > 1000 || latency < 0)
+                if (latency > 1000 || latency < 0)
                 {
                     Reset();
                     return;
@@ -137,15 +149,42 @@ namespace HelixToolkit.UWP
 
         public interface IRenderStatistics
         {
-            IFrameStatistics FPSStatistics { get; }
-            IFrameStatistics LatencyStatistics { get; }
-            int NumModel3D { get; }
-            int NumCore3D { get; }
-            int NumTriangles { get; }
-            int NumDrawCalls { get; }
-            float FrustumTestTime { get; }
-            RenderDetail FrameDetail { set; get; }
-            ICamera Camera { set; get; }
+            IFrameStatistics FPSStatistics
+            {
+                get;
+            }
+            IFrameStatistics LatencyStatistics
+            {
+                get;
+            }
+            int NumModel3D
+            {
+                get;
+            }
+            int NumCore3D
+            {
+                get;
+            }
+            int NumTriangles
+            {
+                get;
+            }
+            int NumDrawCalls
+            {
+                get;
+            }
+            float FrustumTestTime
+            {
+                get;
+            }
+            RenderDetail FrameDetail
+            {
+                set; get;
+            }
+            ICamera Camera
+            {
+                set; get;
+            }
             string GetDetailString();
             void Reset();
         }
@@ -212,7 +251,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The camera.
             /// </value>
-            public ICamera Camera { set; get; }
+            public ICamera Camera
+            {
+                set; get;
+            }
             /// <summary>
             /// Gets or sets the frame detail.
             /// </summary>
@@ -228,24 +270,24 @@ namespace HelixToolkit.UWP
 
             public string GetDetailString(RenderDetail detail)
             {
-                if(detail == RenderDetail.None)
+                if (detail == RenderDetail.None)
                 {
                     return "";
                 }
-                string s = "";
-                if((detail & RenderDetail.FPS) == RenderDetail.FPS)
+                var s = "";
+                if ((detail & RenderDetail.FPS) == RenderDetail.FPS)
                 {
                     s += GetFPS();
                 }
-                if((detail & RenderDetail.Statistics) == RenderDetail.Statistics)
+                if ((detail & RenderDetail.Statistics) == RenderDetail.Statistics)
                 {
                     s += GetStatistics();
                 }
-                if((detail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
+                if ((detail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
                 {
                     s += GetTriangleCount();
                 }
-                if((detail & RenderDetail.Camera) == RenderDetail.Camera)
+                if ((detail & RenderDetail.Camera) == RenderDetail.Camera)
                 {
                     s += GetCamera();
                 }
@@ -298,5 +340,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

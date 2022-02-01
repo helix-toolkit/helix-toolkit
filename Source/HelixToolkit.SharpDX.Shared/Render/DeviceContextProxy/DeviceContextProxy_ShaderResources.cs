@@ -58,8 +58,8 @@ namespace HelixToolkit.UWP
                 {
                     foreach (var buff in shader.ConstantBufferMapping.Mappings)
                     {
-                        int idx = CBCheckVertexShaderStartIdx + buff.Key;
-                        if(ConstantBufferCheck[idx] != buff.Value)
+                        var idx = CBCheckVertexShaderStartIdx + buff.Key;
+                        if (ConstantBufferCheck[idx] != buff.Value)
                         {
                             ConstantBufferCheck[idx] = buff.Value;
                             deviceContext.VertexShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
@@ -81,8 +81,8 @@ namespace HelixToolkit.UWP
                 {
                     foreach (var buff in shader.ConstantBufferMapping.Mappings)
                     {
-                        int idx = CBCheckHullShaderStartIdx + buff.Key;
-                        if(ConstantBufferCheck[idx] != buff.Value)
+                        var idx = CBCheckHullShaderStartIdx + buff.Key;
+                        if (ConstantBufferCheck[idx] != buff.Value)
                         {
                             ConstantBufferCheck[idx] = buff.Value;
                             deviceContext.HullShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
@@ -104,8 +104,8 @@ namespace HelixToolkit.UWP
                 {
                     foreach (var buff in shader.ConstantBufferMapping.Mappings)
                     {
-                        int idx = CBCheckDomainShaderStartIdx + buff.Key;
-                        if(ConstantBufferCheck[idx] != buff.Value)
+                        var idx = CBCheckDomainShaderStartIdx + buff.Key;
+                        if (ConstantBufferCheck[idx] != buff.Value)
                         {
                             ConstantBufferCheck[idx] = buff.Value;
                             deviceContext.DomainShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
@@ -127,8 +127,8 @@ namespace HelixToolkit.UWP
                 {
                     foreach (var buff in shader.ConstantBufferMapping.Mappings)
                     {
-                        int idx = CBCheckGeometryShaderStartIdx + buff.Key;
-                        if(ConstantBufferCheck[idx] != buff.Value)
+                        var idx = CBCheckGeometryShaderStartIdx + buff.Key;
+                        if (ConstantBufferCheck[idx] != buff.Value)
                         {
                             ConstantBufferCheck[idx] = buff.Value;
                             deviceContext.GeometryShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
@@ -150,8 +150,8 @@ namespace HelixToolkit.UWP
                 {
                     foreach (var buff in shader.ConstantBufferMapping.Mappings)
                     {
-                        int idx = CBCheckPixelShaderStartIdx + buff.Key;
-                        if(ConstantBufferCheck[idx] != buff.Value)
+                        var idx = CBCheckPixelShaderStartIdx + buff.Key;
+                        if (ConstantBufferCheck[idx] != buff.Value)
                         {
                             ConstantBufferCheck[idx] = buff.Value;
                             deviceContext.PixelShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
@@ -173,8 +173,8 @@ namespace HelixToolkit.UWP
                 {
                     foreach (var buff in shader.ConstantBufferMapping.Mappings)
                     {
-                        int idx = CBCheckComputeShaderStartIdx + buff.Key;
-                        if(ConstantBufferCheck[idx] != buff.Value)
+                        var idx = CBCheckComputeShaderStartIdx + buff.Key;
+                        if (ConstantBufferCheck[idx] != buff.Value)
                         {
                             ConstantBufferCheck[idx] = buff.Value;
                             deviceContext.ComputeShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
@@ -199,7 +199,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResource(VertexShaderType shaderType, int slot, ShaderResourceView texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.VertexShader.SetShaderResource(slot, texture);
             }
 
@@ -213,7 +215,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResources(VertexShaderType shaderType, int slot, ShaderResourceView[] texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.VertexShader.SetShaderResources(slot, texture);
             }
             /// <summary>
@@ -238,9 +242,11 @@ namespace HelixToolkit.UWP
             public void SetSampler(VertexShaderType shaderType, int slot, SamplerState sampler)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckVertexShaderStartIdx + slot;
-                if(SamplerStateCheck[idx] != sampler)
+                {
+                    return;
+                }
+                var idx = SamplerCheckVertexShaderStartIdx + slot;
+                if (SamplerStateCheck[idx] != sampler)
                 {
                     SamplerStateCheck[idx] = sampler;
                     deviceContext.VertexShader.SetSampler(slot, sampler);
@@ -257,20 +263,22 @@ namespace HelixToolkit.UWP
             public void SetSamplers(VertexShaderType shaderType, int slot, SamplerState[] samplers)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckVertexShaderStartIdx + slot;
-                bool needUpdate = false;
-                for(int i = 0; i < samplers.Length; ++i)
                 {
-                    if(SamplerStateCheck[idx+i] != samplers[i])
+                    return;
+                }
+                var idx = SamplerCheckVertexShaderStartIdx + slot;
+                var needUpdate = false;
+                for (var i = 0; i < samplers.Length; ++i)
+                {
+                    if (SamplerStateCheck[idx + i] != samplers[i])
                     {
                         needUpdate = true;
                         break;
-                    }           
+                    }
                 }
                 if (needUpdate)
                 {
-                    for(int i = 0; i < samplers.Length; ++i)
+                    for (var i = 0; i < samplers.Length; ++i)
                     {
                         SamplerStateCheck[idx + i] = samplers[i];
                     }
@@ -303,7 +311,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResource(DomainShaderType shaderType, int slot, ShaderResourceView texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.DomainShader.SetShaderResource(slot, texture);
             }
 
@@ -317,7 +327,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResources(DomainShaderType shaderType, int slot, ShaderResourceView[] texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.DomainShader.SetShaderResources(slot, texture);
             }
             /// <summary>
@@ -342,9 +354,11 @@ namespace HelixToolkit.UWP
             public void SetSampler(DomainShaderType shaderType, int slot, SamplerState sampler)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckDomainShaderStartIdx + slot;
-                if(SamplerStateCheck[idx] != sampler)
+                {
+                    return;
+                }
+                var idx = SamplerCheckDomainShaderStartIdx + slot;
+                if (SamplerStateCheck[idx] != sampler)
                 {
                     SamplerStateCheck[idx] = sampler;
                     deviceContext.DomainShader.SetSampler(slot, sampler);
@@ -361,10 +375,12 @@ namespace HelixToolkit.UWP
             public void SetSamplers(DomainShaderType shaderType, int slot, SamplerState[] samplers)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckDomainShaderStartIdx + slot;
-                bool needUpdate = false;
-                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    return;
+                }
+                var idx = SamplerCheckDomainShaderStartIdx + slot;
+                var needUpdate = false;
+                for (var i = 0; i < samplers.Length; ++i)
                 {
                     if (SamplerStateCheck[idx + i] != samplers[i])
                     {
@@ -374,7 +390,7 @@ namespace HelixToolkit.UWP
                 }
                 if (needUpdate)
                 {
-                    for (int i = 0; i < samplers.Length; ++i)
+                    for (var i = 0; i < samplers.Length; ++i)
                     {
                         SamplerStateCheck[idx + i] = samplers[i];
                     }
@@ -407,7 +423,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResource(HullShaderType shaderType, int slot, ShaderResourceView texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.HullShader.SetShaderResource(slot, texture);
             }
 
@@ -421,7 +439,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResources(HullShaderType shaderType, int slot, ShaderResourceView[] texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.HullShader.SetShaderResources(slot, texture);
             }
             /// <summary>
@@ -446,8 +466,10 @@ namespace HelixToolkit.UWP
             public void SetSampler(HullShaderType shaderType, int slot, SamplerState sampler)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckHullShaderStartIdx + slot;
+                {
+                    return;
+                }
+                var idx = SamplerCheckHullShaderStartIdx + slot;
                 if (SamplerStateCheck[idx] != sampler)
                 {
                     SamplerStateCheck[idx] = sampler;
@@ -465,10 +487,12 @@ namespace HelixToolkit.UWP
             public void SetSamplers(HullShaderType shaderType, int slot, SamplerState[] samplers)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckHullShaderStartIdx + slot;
-                bool needUpdate = false;
-                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    return;
+                }
+                var idx = SamplerCheckHullShaderStartIdx + slot;
+                var needUpdate = false;
+                for (var i = 0; i < samplers.Length; ++i)
                 {
                     if (SamplerStateCheck[idx + i] != samplers[i])
                     {
@@ -478,7 +502,7 @@ namespace HelixToolkit.UWP
                 }
                 if (needUpdate)
                 {
-                    for (int i = 0; i < samplers.Length; ++i)
+                    for (var i = 0; i < samplers.Length; ++i)
                     {
                         SamplerStateCheck[idx + i] = samplers[i];
                     }
@@ -511,7 +535,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResource(GeometryShaderType shaderType, int slot, ShaderResourceView texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.GeometryShader.SetShaderResource(slot, texture);
             }
 
@@ -525,7 +551,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResources(GeometryShaderType shaderType, int slot, ShaderResourceView[] texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.GeometryShader.SetShaderResources(slot, texture);
             }
             /// <summary>
@@ -550,8 +578,10 @@ namespace HelixToolkit.UWP
             public void SetSampler(GeometryShaderType shaderType, int slot, SamplerState sampler)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckGeometryShaderStartIdx + slot;
+                {
+                    return;
+                }
+                var idx = SamplerCheckGeometryShaderStartIdx + slot;
                 if (SamplerStateCheck[idx] != sampler)
                 {
                     SamplerStateCheck[idx] = sampler;
@@ -569,10 +599,12 @@ namespace HelixToolkit.UWP
             public void SetSamplers(GeometryShaderType shaderType, int slot, SamplerState[] samplers)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckGeometryShaderStartIdx + slot;
-                bool needUpdate = false;
-                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    return;
+                }
+                var idx = SamplerCheckGeometryShaderStartIdx + slot;
+                var needUpdate = false;
+                for (var i = 0; i < samplers.Length; ++i)
                 {
                     if (SamplerStateCheck[idx + i] != samplers[i])
                     {
@@ -582,7 +614,7 @@ namespace HelixToolkit.UWP
                 }
                 if (needUpdate)
                 {
-                    for (int i = 0; i < samplers.Length; ++i)
+                    for (var i = 0; i < samplers.Length; ++i)
                     {
                         SamplerStateCheck[idx + i] = samplers[i];
                     }
@@ -615,7 +647,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResource(PixelShaderType shaderType, int slot, ShaderResourceView texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.PixelShader.SetShaderResource(slot, texture);
             }
 
@@ -629,7 +663,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResources(PixelShaderType shaderType, int slot, ShaderResourceView[] texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.PixelShader.SetShaderResources(slot, texture);
             }
             /// <summary>
@@ -654,9 +690,11 @@ namespace HelixToolkit.UWP
             public void SetSampler(PixelShaderType shaderType, int slot, SamplerState sampler)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckPixelShaderStartIdx + slot;
-                if(SamplerStateCheck[idx] != sampler)
+                {
+                    return;
+                }
+                var idx = SamplerCheckPixelShaderStartIdx + slot;
+                if (SamplerStateCheck[idx] != sampler)
                 {
                     SamplerStateCheck[idx] = sampler;
                     deviceContext.PixelShader.SetSampler(slot, sampler);
@@ -673,10 +711,12 @@ namespace HelixToolkit.UWP
             public void SetSamplers(PixelShaderType shaderType, int slot, SamplerState[] samplers)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckPixelShaderStartIdx + slot;
-                bool needUpdate = false;
-                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    return;
+                }
+                var idx = SamplerCheckPixelShaderStartIdx + slot;
+                var needUpdate = false;
+                for (var i = 0; i < samplers.Length; ++i)
                 {
                     if (SamplerStateCheck[idx + i] != samplers[i])
                     {
@@ -686,12 +726,12 @@ namespace HelixToolkit.UWP
                 }
                 if (needUpdate)
                 {
-                    for (int i = 0; i < samplers.Length; ++i)
+                    for (var i = 0; i < samplers.Length; ++i)
                     {
                         SamplerStateCheck[idx + i] = samplers[i];
                     }
                     deviceContext.PixelShader.SetSamplers(slot, samplers);
-                }           
+                }
             }
             /// <summary>
             /// Gets the sampler. Use <see cref="PixelShader.Type"/>
@@ -719,7 +759,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResource(ComputeShaderType shaderType, int slot, ShaderResourceView texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.ComputeShader.SetShaderResource(slot, texture);
             }
 
@@ -733,7 +775,9 @@ namespace HelixToolkit.UWP
             public void SetShaderResources(ComputeShaderType shaderType, int slot, ShaderResourceView[] texture)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.ComputeShader.SetShaderResources(slot, texture);
             }
             /// <summary>
@@ -758,7 +802,9 @@ namespace HelixToolkit.UWP
             public void SetUnorderedAccessView(ComputeShaderType shaderType, int slot, UnorderedAccessView uav)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.ComputeShader.SetUnorderedAccessView(slot, uav);
             }
 
@@ -772,7 +818,9 @@ namespace HelixToolkit.UWP
             public void SetUnorderedAccessViews(ComputeShaderType shaderType, int slot, UnorderedAccessView[] UAVs)
             {
                 if (slot < 0)
-                { return; }
+                {
+                    return;
+                }
                 deviceContext.ComputeShader.SetUnorderedAccessViews(slot, UAVs);
             }
             /// <summary>
@@ -797,9 +845,11 @@ namespace HelixToolkit.UWP
             public void SetSampler(ComputeShaderType shaderType, int slot, SamplerState sampler)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckComputeShaderStartIdx + slot;
-                if(SamplerStateCheck[idx] != sampler)
+                {
+                    return;
+                }
+                var idx = SamplerCheckComputeShaderStartIdx + slot;
+                if (SamplerStateCheck[idx] != sampler)
                 {
                     SamplerStateCheck[idx] = sampler;
                     deviceContext.ComputeShader.SetSampler(slot, sampler);
@@ -816,10 +866,12 @@ namespace HelixToolkit.UWP
             public void SetSamplers(ComputeShaderType shaderType, int slot, SamplerState[] samplers)
             {
                 if (slot < 0)
-                { return; }
-                int idx = SamplerCheckComputeShaderStartIdx + slot;
-                bool needUpdate = false;
-                for (int i = 0; i < samplers.Length; ++i)
+                {
+                    return;
+                }
+                var idx = SamplerCheckComputeShaderStartIdx + slot;
+                var needUpdate = false;
+                for (var i = 0; i < samplers.Length; ++i)
                 {
                     if (SamplerStateCheck[idx + i] != samplers[i])
                     {
@@ -829,12 +881,12 @@ namespace HelixToolkit.UWP
                 }
                 if (needUpdate)
                 {
-                    for (int i = 0; i < samplers.Length; ++i)
+                    for (var i = 0; i < samplers.Length; ++i)
                     {
                         SamplerStateCheck[idx + i] = samplers[i];
                     }
                     deviceContext.ComputeShader.SetSamplers(slot, samplers);
-                }            
+                }
             }
             /// <summary>
             /// Gets the sampler. Use <see cref="ComputeShader.Type"/>
@@ -874,5 +926,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

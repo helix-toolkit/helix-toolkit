@@ -222,12 +222,12 @@ namespace HelixToolkit.Wpf
         {
             // https://graphics.stanford.edu/~mdfisher/Code/Engine/Plane.cpp.html
             var diff = la - lb;
-            float d = Vector3D.Dot(diff, plane.Normal);
-            if(d == 0)
+            var d = Vector3D.Dot(diff, plane.Normal);
+            if (d == 0)
             {
                 return null;
             }
-            float u = (Vector3D.Dot(la, plane.Normal) + plane.D) / d;
+            var u = (Vector3D.Dot(la, plane.Normal) + plane.D) / d;
             return (la + u * (lb - la));
         }
 #endif

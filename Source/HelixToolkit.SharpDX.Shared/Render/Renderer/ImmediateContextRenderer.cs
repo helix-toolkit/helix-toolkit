@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP
 {
     namespace Render
     {
-        using Core;    
+        using Core;
         using Model.Scene;
         using Model.Scene2D;
 
@@ -33,16 +33,17 @@ namespace HelixToolkit.UWP
         {
             private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
             private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
-            private readonly OrderIndependentTransparentRenderCore transparentRenderCore;
-            private readonly PostEffectFXAA postFXAACore;
-            private readonly SSAOCore preSSAOCore;
+            private OrderIndependentTransparentRenderCore transparentRenderCore;
+            private PostEffectFXAA postFXAACore;
+            private SSAOCore preSSAOCore;
+            private DeviceContextProxy immediateContext;
             /// <summary>
             /// Gets or sets the immediate context.
             /// </summary>
             /// <value>
             /// The immediate context.
             /// </value>
-            public DeviceContextProxy ImmediateContext { private set; get; }
+            public DeviceContextProxy ImmediateContext => immediateContext;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ImmediateContextRenderer"/> class.
@@ -50,14 +51,14 @@ namespace HelixToolkit.UWP
             /// <param name="deviceResource">The deviceResource.</param>
             public ImmediateContextRenderer(IDevice3DResources deviceResource)
             {
-    #if DX11_1
-                ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext1, deviceResource.Device));
-    #else
-                ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext, deviceResource.Device));
-    #endif
-                transparentRenderCore = Collect(new OrderIndependentTransparentRenderCore());
-                postFXAACore = Collect(new PostEffectFXAA());
-                preSSAOCore = Collect(new SSAOCore());
+#if DX11_1
+                immediateContext = new DeviceContextProxy(deviceResource.Device.ImmediateContext1, deviceResource.Device);
+#else
+                immediateContext = new DeviceContextProxy(deviceResource.Device.ImmediateContext, deviceResource.Device);
+#endif
+                transparentRenderCore = new OrderIndependentTransparentRenderCore();
+                postFXAACore = new PostEffectFXAA();
+                preSSAOCore = new SSAOCore();
             }
 
             private static readonly Func<SceneNode, RenderContext, bool> updateFunc = (x, context) =>
@@ -102,8 +103,8 @@ namespace HelixToolkit.UWP
                 if (parameter.RenderLight)
                 {
                     context.LightScene.LightModels.ResetLightCount();
-                    int count = lights.Count;
-                    for (int i = 0; i < count && i < Constants.MaxLights; ++i)
+                    var count = lights.Count;
+                    for (var i = 0; i < count && i < Constants.MaxLights; ++i)
                     {
                         lights[i].Render(context, ImmediateContext);
                     }
@@ -122,23 +123,23 @@ namespace HelixToolkit.UWP
             /// <param name="parameter">The parameter.</param>
             /// <param name="testFrustum"></param>
             /// <returns>Number of node has been rendered</returns>
-            public virtual int RenderOpaque(RenderContext context, FastList<SceneNode> renderables, 
+            public virtual int RenderOpaque(RenderContext context, FastList<SceneNode> renderables,
                 ref RenderParameter parameter, bool testFrustum)
             {
-                int renderedCount = 0;
-                int count = renderables.Count;
+                var renderedCount = 0;
+                var count = renderables.Count;
                 var frustum = context.BoundingFrustum;
                 if (!testFrustum)
                 {
-                    for (int i = 0; i < count; ++i)
+                    for (var i = 0; i < count; ++i)
                     {
                         renderables[i].Render(context, ImmediateContext);
                         ++renderedCount;
-                    }               
+                    }
                 }
                 else
                 {
-                    for (int i = 0; i < count; ++i)
+                    for (var i = 0; i < count; ++i)
                     {
                         if (!renderables[i].TestViewFrustum(ref frustum))
                         {
@@ -169,10 +170,10 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    int renderedCount = 0;
+                    var renderedCount = 0;
                     var frustum = context.BoundingFrustum;
-                    int count = renderables.Count;
-                    for (int i = 0; i < count; ++i)
+                    var count = renderables.Count;
+                    for (var i = 0; i < count; ++i)
                     {
                         renderables[i].Render(context, ImmediateContext);
                         ++renderedCount;
@@ -188,8 +189,8 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public virtual void UpdateNotRenderParallel(RenderContext context, FastList<KeyValuePair<int, SceneNode>> renderables)
             {
-                int count = renderables.Count;
-                for(int i = 0; i < count; ++i)
+                var count = renderables.Count;
+                for (var i = 0; i < count; ++i)
                 {
                     renderables[i].Value.UpdateNotRender(context);
                 }
@@ -203,7 +204,7 @@ namespace HelixToolkit.UWP
             {
                 ImmediateContext.SetRenderTargets(parameter.DepthStencilView, parameter.RenderTargetView);
                 ImmediateContext.SetViewport(ref parameter.ViewportRegion);
-                ImmediateContext.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
+                ImmediateContext.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top,
                     parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);
             }
 
@@ -215,8 +216,8 @@ namespace HelixToolkit.UWP
             /// <param name="parameter">The parameter.</param>
             public virtual void RenderScene2D(RenderContext2D context, FastList<SceneNode2D> renderables, ref RenderParameter2D parameter)
             {
-                int count = renderables.Count;
-                for (int i = 0; i < count; ++ i)
+                var count = renderables.Count;
+                for (var i = 0; i < count; ++i)
                 {
                     renderables[i].Render(context);
                 }
@@ -230,8 +231,8 @@ namespace HelixToolkit.UWP
             /// <param name="parameter">The parameter.</param>
             public virtual void RenderPreProc(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
             {
-                int count = renderables.Count;
-                for (int i = 0; i < count; ++i)
+                var count = renderables.Count;
+                for (var i = 0; i < count; ++i)
                 {
                     renderables[i].Render(context, ImmediateContext);
                 }
@@ -250,9 +251,9 @@ namespace HelixToolkit.UWP
             /// <param name="renderables">The renderables.</param>
             /// <param name="parameter">The parameter.</param>
             public virtual void RenderPostProc(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
-            {            
-                int count = renderables.Count;
-                for (int i = 0; i < count; ++i)
+            {
+                var count = renderables.Count;
+                for (var i = 0; i < count; ++i)
                 {
                     renderables[i].Render(context, ImmediateContext);
                 }
@@ -266,12 +267,12 @@ namespace HelixToolkit.UWP
             /// <param name="nodesWithPostEffects"></param>
             /// <param name="postProcNodes"></param>
             /// <param name="parameter">The parameter.</param>
-            public virtual void RenderScreenSpacedPostProc(RenderContext context, 
+            public virtual void RenderScreenSpacedPostProc(RenderContext context,
                 FastList<SceneNode> screenSpacedWithPostEffects,
                 FastList<SceneNode> nodesWithPostEffects,
                 FastList<SceneNode> postProcNodes, ref RenderParameter parameter)
             {
-                int i = 0;
+                var i = 0;
                 while (i < screenSpacedWithPostEffects.Count)
                 {
                     if (screenSpacedWithPostEffects[i].AffectsGlobalVariable)
@@ -279,7 +280,7 @@ namespace HelixToolkit.UWP
                         context.RestoreGlobalTransform();
                         screenSpacedWithPostEffects[i].Render(context, ImmediateContext);
                         nodesWithPostEffects.Clear();
-                        while (++i < screenSpacedWithPostEffects.Count 
+                        while (++i < screenSpacedWithPostEffects.Count
                             && !screenSpacedWithPostEffects[i].AffectsGlobalVariable)
                         {
                             nodesWithPostEffects.Add(screenSpacedWithPostEffects[i]);
@@ -306,7 +307,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);                    
+                    ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);
                 }
             }
             /// <summary>
@@ -314,18 +315,20 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="context">The context.</param>
             /// <param name="renderables">The renderables.</param>
+            /// <param name="start">Start index in renderables</param>
+            /// <param name="count">Number of renderables to render.</param>
             /// <param name="parameter">The parameter.</param>
             public virtual void RenderScreenSpaced(RenderContext context, FastList<SceneNode> renderables, int start, int count,
                 ref RenderParameter parameter)
             {
-                if(count > 0)
+                if (count > 0)
                 {
-                    bool hasMSAA = context.RenderHost.RenderBuffer.ColorBufferSampleDesc.Count == 1;
+                    var hasMSAA = context.RenderHost.RenderBuffer.ColorBufferSampleDesc.Count == 1;
                     var buffer = context.RenderHost.RenderBuffer;
                     var depthStencilBuffer = hasMSAA ? buffer.DepthStencilBuffer : context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt);
                     ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
 
-                    for (int i = start; i < start + count; ++i)
+                    for (var i = start; i < start + count; ++i)
                     {
                         renderables[i].Render(context, ImmediateContext);
                     }
@@ -355,7 +358,7 @@ namespace HelixToolkit.UWP
                     ImmediateContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.BackBuffer.Resource, 0, buffer.Format);
                 }
                 else
-                {                
+                {
                     ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.BackBuffer.Resource);
                 }
             }
@@ -363,6 +366,10 @@ namespace HelixToolkit.UWP
             protected override void OnDispose(bool disposeManagedResources)
             {
                 Detach();
+                RemoveAndDispose(ref immediateContext);
+                RemoveAndDispose(ref transparentRenderCore);
+                RemoveAndDispose(ref postFXAACore);
+                RemoveAndDispose(ref preSSAOCore);
                 base.OnDispose(disposeManagedResources);
             }
 
@@ -386,6 +393,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
-
 }

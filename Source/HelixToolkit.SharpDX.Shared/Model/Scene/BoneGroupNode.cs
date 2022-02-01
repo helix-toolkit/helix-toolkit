@@ -29,7 +29,10 @@ namespace HelixToolkit.UWP
                 {
                     core.BoneMatrices = value;
                 }
-                get { return core.BoneMatrices; }
+                get
+                {
+                    return core.BoneMatrices;
+                }
             }
 
             /// <summary>
@@ -38,7 +41,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The bones.
             /// </value>
-            public Animations.Bone[] Bones { set; get; }
+            public Animations.Bone[] Bones
+            {
+                set; get;
+            }
 
             public float[] MorphTargetWeights
             {
@@ -76,7 +82,7 @@ namespace HelixToolkit.UWP
 
             private void NodeGroup_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
             {
-                if(e.Node is BoneSkinMeshNode b)
+                if (e.Node is BoneSkinMeshNode b)
                 {
                     b.HasBoneGroup = true;
                     (b.RenderCore as BoneSkinRenderCore).SharedBoneBuffer = core;
@@ -84,5 +90,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

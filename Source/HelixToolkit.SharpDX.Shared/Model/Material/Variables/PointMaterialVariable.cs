@@ -21,12 +21,21 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public class PointMaterialVariable : MaterialVariable
-        {        
+        {
             private readonly PointMaterialCore material;
 
-            public ShaderPass PointPass { get; }
-            public ShaderPass ShadowPass { get; }
-            public ShaderPass DepthPass { get; }
+            public ShaderPass PointPass
+            {
+                get;
+            }
+            public ShaderPass ShadowPass
+            {
+                get;
+            }
+            public ShaderPass DepthPass
+            {
+                get;
+            }
             /// <summary>
             /// Initializes a new instance of the <see cref="PointMaterialVariable"/> class.
             /// </summary>
@@ -97,5 +106,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

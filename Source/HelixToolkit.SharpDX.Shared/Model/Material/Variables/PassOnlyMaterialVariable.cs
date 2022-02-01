@@ -21,13 +21,25 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class PassOnlyMaterialVariable : MaterialVariable
         {
-            public ShaderPass MaterialPass { get; }
+            public ShaderPass MaterialPass
+            {
+                get;
+            }
 
-            public ShaderPass ShadowPass { get; }
+            public ShaderPass ShadowPass
+            {
+                get;
+            }
 
-            public ShaderPass WireframePass { get; }
+            public ShaderPass WireframePass
+            {
+                get;
+            }
 
-            public ShaderPass DepthPass { get; }
+            public ShaderPass DepthPass
+            {
+                get;
+            }
 
             private readonly string passName;
 
@@ -40,7 +52,7 @@ namespace HelixToolkit.UWP
             /// <param name="wireframePassName">Name of the wireframe pass.</param>
             /// <param name="depthPassName">Name of the depth pass</param>
             public PassOnlyMaterialVariable(string passName, IRenderTechnique technique,
-                string shadowPassName = DefaultPassNames.ShadowPass, 
+                string shadowPassName = DefaultPassNames.ShadowPass,
                 string wireframePassName = DefaultPassNames.Wireframe,
                 string depthPassName = DefaultPassNames.DepthPrepass)
                 : base(technique.EffectsManager, technique, DefaultMeshConstantBufferDesc, null)
@@ -82,5 +94,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

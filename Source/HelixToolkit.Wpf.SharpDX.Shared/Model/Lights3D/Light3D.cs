@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class Light3D : Element3D
     {
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new PropertyMetadata(Media.Colors.Gray, (d,e)=>
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new PropertyMetadata(Media.Colors.Gray, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as LightNode).Color = ((Media.Color)e.NewValue).ToColor4();
             }));
@@ -38,19 +38,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Media.Color Color
         {
-            get { return (Media.Color)GetValue(ColorProperty); }
-            set { SetValue(ColorProperty, value); }
+            get
+            {
+                return (Media.Color)GetValue(ColorProperty);
+            }
+            set
+            {
+                SetValue(ColorProperty, value);
+            }
         }
 
         public LightType LightType
         {
-            get { return (SceneNode as LightNode).LightType; }
+            get
+            {
+                return (SceneNode as LightNode).LightType;
+            }
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             (core as LightNode).Color = Color.ToColor4();
-            base.AssignDefaultValuesToSceneNode(core);          
+            base.AssignDefaultValuesToSceneNode(core);
         }
     }
 }

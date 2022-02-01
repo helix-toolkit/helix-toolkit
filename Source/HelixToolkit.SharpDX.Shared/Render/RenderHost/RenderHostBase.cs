@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP
         using HelixToolkit.Logger;
         using Core;
         using Model.Scene;
-    
+
 
         /// <summary>
         /// 
@@ -58,7 +58,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The render buffer.
             /// </value>
-            public DX11RenderBufferProxyBase RenderBuffer { get { return renderBuffer; } }
+            public DX11RenderBufferProxyBase RenderBuffer
+            {
+                get
+                {
+                    return renderBuffer;
+                }
+            }
             /// <summary>
             /// Gets the device.
             /// </summary>
@@ -82,7 +88,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public DeviceContextProxy ImmediateDeviceContext
             {
-                get { return immediateDeviceContext; }
+                get
+                {
+                    return immediateDeviceContext;
+                }
             }
             /// <summary>
             /// Gets the device2d.
@@ -90,7 +99,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The device2d.
             /// </value>
-            public global::SharpDX.Direct2D1.Device Device2D { get { return EffectsManager.Device2D; } }
+            public global::SharpDX.Direct2D1.Device Device2D
+            {
+                get
+                {
+                    return EffectsManager.Device2D;
+                }
+            }
 
             private Color4 clearColor = Color.White;
             /// <summary>
@@ -112,6 +127,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            private bool isShadowMapEnabled = false;
             /// <summary>
             /// Gets or sets a value indicating whether shadow map enabled.
             /// </summary>
@@ -120,8 +136,16 @@ namespace HelixToolkit.UWP
             /// </value>
             public bool IsShadowMapEnabled
             {
-                set; get;
-            } = false;
+                set
+                {
+                    isShadowMapEnabled = value;
+                    InvalidateRender();
+                }
+                get
+                {
+                    return isShadowMapEnabled;
+                }
+            }
 
             private MSAALevel msaa = MSAALevel.Disable;
             /// <summary>
@@ -139,7 +163,10 @@ namespace HelixToolkit.UWP
                         Restart(true);
                     }
                 }
-                get { return msaa; }
+                get
+                {
+                    return msaa;
+                }
             }
 
             private IViewport3DX viewport;
@@ -163,7 +190,10 @@ namespace HelixToolkit.UWP
                         AttachRenderable(EffectsManager);
                     }
                 }
-                get { return viewport; }
+                get
+                {
+                    return viewport;
+                }
             }
 
             protected RenderContext renderContext;
@@ -172,7 +202,10 @@ namespace HelixToolkit.UWP
             /// </summary>
             public RenderContext RenderContext
             {
-                get { return renderContext; }
+                get
+                {
+                    return renderContext;
+                }
             }
 
             private RenderContext2D renderContext2D;
@@ -184,7 +217,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public RenderContext2D RenderContext2D
             {
-                get { return renderContext2D; }
+                get
+                {
+                    return renderContext2D;
+                }
             }
 
             private IEffectsManager effectsManager;
@@ -219,7 +255,7 @@ namespace HelixToolkit.UWP
                             {
                                 Restart(false);
                             }
-                            else if(isLoaded)
+                            else if (isLoaded)
                             {
                                 StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                             }
@@ -243,7 +279,13 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The logger.
             /// </value>
-            public LogWrapper Logger { get { return EffectsManager != null ? EffectsManager.Logger : NullLogger; } }
+            public LogWrapper Logger
+            {
+                get
+                {
+                    return EffectsManager != null ? EffectsManager.Logger : NullLogger;
+                }
+            }
 
             private IRenderTechnique renderTechnique;
             /// <summary>
@@ -256,7 +298,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(Set(ref renderTechnique, value) && IsInitialized)
+                    if (Set(ref renderTechnique, value) && IsInitialized)
                     {
                         Restart(false);
                     }
@@ -312,7 +354,10 @@ namespace HelixToolkit.UWP
                 {
                     width = Math.Max(MinWidth, value);
                 }
-                get { return width; }
+                get
+                {
+                    return width;
+                }
             }
 
             private float dpiScale = 1;
@@ -320,7 +365,7 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    float oldDpiScale = dpiScale;
+                    var oldDpiScale = dpiScale;
                     if (Set(ref dpiScale, value))
                     {
                         Resize((int)(ActualWidth / oldDpiScale), (int)(ActualHeight / oldDpiScale), true);
@@ -435,7 +480,10 @@ namespace HelixToolkit.UWP
             /// </value>
             public D2DTargetProxy D2DTarget
             {
-                get { return RenderBuffer.D2DTarget; }
+                get
+                {
+                    return RenderBuffer.D2DTarget;
+                }
             }
 
             /// <summary>
@@ -444,67 +492,97 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The render statistics.
             /// </value>
-            public IRenderStatistics RenderStatistics { get { return renderStatistics; } }
+            public IRenderStatistics RenderStatistics
+            {
+                get
+                {
+                    return renderStatistics;
+                }
+            }
             protected readonly RenderStatistics renderStatistics = new RenderStatistics();
-    #region Perframe renderables
+            #region Perframe renderables
             /// <summary>
             /// Gets the current frame renderables for rendering.
             /// </summary>
             /// <value>
             /// The per frame renderable.
             /// </value>
-            public abstract FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
+            public abstract FastList<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene
+            {
+                get;
+            }
             /// <summary>
             /// Gets the per frame lights.
             /// </summary>
             /// <value>
             /// The per frame lights.
             /// </value>
-            public abstract IEnumerable<LightNode> PerFrameLights { get; }
+            public abstract IEnumerable<LightNode> PerFrameLights
+            {
+                get;
+            }
             /// <summary>
             /// Gets the post effects render cores for this frame
             /// </summary>
             /// <value>
             /// The post effects render cores.
             /// </value>
-            public abstract FastList<SceneNode> PerFrameNodesWithPostEffect { get; }
+            public abstract FastList<SceneNode> PerFrameNodesWithPostEffect
+            {
+                get;
+            }
             /// <summary>
             /// Gets the per frame render cores.
             /// </summary>
             /// <value>
             /// The per frame render cores.
             /// </value>
-            public abstract FastList<SceneNode> PerFrameOpaqueNodes { get; }
+            public abstract FastList<SceneNode> PerFrameOpaqueNodes
+            {
+                get;
+            }
             /// <summary>
             /// Gets the per frame opaque nodes in frustum.
             /// </summary>
             /// <value>
             /// The per frame opaque nodes in frustum.
             /// </value>
-            public abstract FastList<SceneNode> PerFrameOpaqueNodesInFrustum { get; }
+            public abstract FastList<SceneNode> PerFrameOpaqueNodesInFrustum
+            {
+                get;
+            }
             /// <summary>
             /// Gets the per frame transparent node in frustum.
             /// </summary>
             /// <value>
             /// The per frame transparent node in frustum.
             /// </value>
-            public abstract FastList<SceneNode> PerFrameTransparentNodesInFrustum { get; }
+            public abstract FastList<SceneNode> PerFrameTransparentNodesInFrustum
+            {
+                get;
+            }
             /// <summary>
             /// Gets the per frame transparent nodes.
             /// </summary>
             /// <value>
             /// The per frame transparent nodes.
             /// </value>
-            public abstract FastList<SceneNode> PerFrameParticleNodes { get; }
+            public abstract FastList<SceneNode> PerFrameParticleNodes
+            {
+                get;
+            }
             /// <summary>
             /// Gets the per frame transparent nodes.
             /// </summary>
             /// <value>
             /// The per frame transparent nodes.
             /// </value>
-            public abstract FastList<SceneNode> PerFrameTransparentNodes { get; }
-    #endregion
-    #region Configuration
+            public abstract FastList<SceneNode> PerFrameTransparentNodes
+            {
+                get;
+            }
+            #endregion
+            #region Configuration
             /// <summary>
             /// Gets or sets a value indicating whether [show render statistics].
             /// </summary>
@@ -521,10 +599,16 @@ namespace HelixToolkit.UWP
                         InvalidateRender();
                     }
                 }
-                get { return RenderStatistics.FrameDetail; }
+                get
+                {
+                    return RenderStatistics.FrameDetail;
+                }
             }
 
-            public DX11RenderHostConfiguration RenderConfiguration { set; get; } 
+            public DX11RenderHostConfiguration RenderConfiguration
+            {
+                set; get;
+            }
                 = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true, EnableOITRendering = true };
             /// <summary>
             /// Gets the feature level.
@@ -533,10 +617,10 @@ namespace HelixToolkit.UWP
             /// The feature level.
             /// </value>
             public global::SharpDX.Direct3D.FeatureLevel FeatureLevel { get; private set; } = global::SharpDX.Direct3D.FeatureLevel.Level_11_0;
-    #endregion
-    #endregion
+            #endregion
+            #endregion
 
-    #region Events
+            #region Events
             /// <summary>
             /// Occurs when [exception occurred].
             /// </summary>
@@ -563,15 +647,21 @@ namespace HelixToolkit.UWP
             public event EventHandler<BoolArgs> FrustumEnabledChanged;
 
             public event EventHandler SceneGraphUpdated;
-    #endregion
+            #endregion
 
-    #region Private variables
+            #region Private variables
 
             protected IRenderer renderer;
             /// <summary>
             /// The renderer
             /// </summary>
-            public IRenderer Renderer { get { return renderer; } }
+            public IRenderer Renderer
+            {
+                get
+                {
+                    return renderer;
+                }
+            }
             /// <summary>
             /// The update requested
             /// </summary>
@@ -589,20 +679,25 @@ namespace HelixToolkit.UWP
 
             private readonly object lockObj = new object();
 
-            protected SynchronizationContext SyncContext { get => SynchronizationContext.Current; }
-    #endregion
+            protected SynchronizationContext SyncContext
+            {
+                get => SynchronizationContext.Current;
+            }
+            #endregion
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
             /// </summary>
-            public DX11RenderHostBase() { }
+            public DX11RenderHostBase()
+            {
+            }
             /// <summary>
             /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
             /// </summary>
             /// <param name="createRenderer">The create renderer.</param>
             public DX11RenderHostBase(Func<IDevice3DResources, IRenderer> createRenderer)
             {
-                createRendererFunction = createRenderer;           
+                createRendererFunction = createRenderer;
             }
 
             /// <summary>
@@ -661,17 +756,17 @@ namespace HelixToolkit.UWP
                         SharedModelContainer.CurrentRenderHost = this;
                     }
                     IsBusy = true;
-                    var t0 = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp()/Stopwatch.Frequency);
+                    var t0 = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp() / Stopwatch.Frequency);
                     renderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                     renderStatistics.Camera = viewport.CameraCore;
                     lastRenderTime = t0;
                     UpdateRequested = false;
                     ++updateCounter;
                     renderContext.AutoUpdateOctree = RenderConfiguration.AutoUpdateOctree;
-                    renderContext.EnableBoundingFrustum = EnableRenderFrustum;               
+                    renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                     if (RenderConfiguration.UpdatePerFrameData)
                     {
-                        viewport.Update(t0);                    
+                        viewport.Update(t0);
                         renderContext.TimeStamp = t0;
                         renderContext.Camera = viewport.CameraCore;
                         renderContext.OITWeightPower = RenderConfiguration.OITWeightPower;
@@ -682,15 +777,15 @@ namespace HelixToolkit.UWP
                         renderContext.SSAOIntensity = RenderConfiguration.SSAOIntensity;
                     }
                     renderBuffer.VSyncInterval = RenderConfiguration.EnableVSync ? 1 : 0;
-                    bool updateSceneGraph = UpdateSceneGraphRequested;
-                    bool updatePerFrameRenderable = UpdatePerFrameRenderableRequested;
+                    var updateSceneGraph = UpdateSceneGraphRequested;
+                    var updatePerFrameRenderable = UpdatePerFrameRenderableRequested;
                     renderContext.UpdateSceneGraphRequested = UpdateSceneGraphRequested;
                     renderContext.UpdatePerFrameRenderableRequested = UpdatePerFrameRenderableRequested;
                     UpdateSceneGraphRequested = false;
-                    UpdatePerFrameRenderableRequested = false;               
+                    UpdatePerFrameRenderableRequested = false;
                     PreRender(updateSceneGraph, updatePerFrameRenderable);
                     try
-                    {                    
+                    {
                         if (renderBuffer.BeginDraw())
                         {
                             OnRender(t0);
@@ -698,13 +793,15 @@ namespace HelixToolkit.UWP
                             renderStatistics.NumDrawCalls = renderer.ImmediateContext.ResetDrawCalls() + EffectsManager.DeviceContextPool.ResetDrawCalls();
                         }
                         if (RenderConfiguration.RenderD2D && D2DTarget.D2DTarget != null)
-                        { OnRender2D(t0); }
+                        {
+                            OnRender2D(t0);
+                        }
                         renderBuffer.Present();
                     }
                     catch (SharpDXException ex)
                     {
                         var desc = ResultDescriptor.Find(ex.ResultCode);
-                        if (desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset 
+                        if (desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset
                             || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
                             || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                         {
@@ -718,17 +815,17 @@ namespace HelixToolkit.UWP
                             ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Log(LogLevel.Error, ex);
                         EndD3D();
-                        ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));  
+                        ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                     }
                     finally
                     {
                         PostRender();
                         IsBusy = false;
-                    }                
+                    }
                     lastRenderingDuration = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp() / Stopwatch.Frequency) - t0;
                     RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);
                     Rendered?.Invoke(this, EventArgs.Empty);
@@ -741,7 +838,7 @@ namespace HelixToolkit.UWP
             /// <param name="context">The context.</param>
             /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
             /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
-            public void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer,bool clearDepthStencilBuffer)
+            public void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer)
             {
                 renderBuffer?.ClearRenderTarget(context, ClearColor, clearBackBuffer, clearDepthStencilBuffer);
             }
@@ -775,7 +872,10 @@ namespace HelixToolkit.UWP
             /// <returns>Set successful?</returns>
             public bool SetDefaultRenderTargets(DeviceContextProxy context, bool clear = true)
             {
-                if (!IsInitialized) { return false; }
+                if (!IsInitialized)
+                {
+                    return false;
+                }
                 renderBuffer.SetDefaultRenderTargets(context);
                 if (clear)
                 {
@@ -831,11 +931,11 @@ namespace HelixToolkit.UWP
                         Log(LogLevel.Information, $"EffectsManager is not valid");
                         return;
                     }
-        #if DX11_1
-                    immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext1, effectsManager.Device));
-        #else
-                    immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext, effectsManager.Device));
-        #endif
+#if DX11_1
+                    immediateDeviceContext = new DeviceContextProxy(effectsManager.Device.ImmediateContext1, effectsManager.Device);
+#else
+                    immediateDeviceContext = new DeviceContextProxy(effectsManager.Device.ImmediateContext, effectsManager.Device);
+#endif
                     RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
                     CreateAndBindBuffers();
                     IsInitialized = true;
@@ -866,12 +966,12 @@ namespace HelixToolkit.UWP
             {
                 Log(LogLevel.Information, "");
                 RemoveAndDispose(ref renderBuffer);
-                renderBuffer = Collect(CreateRenderBuffer());
+                renderBuffer = CreateRenderBuffer();
                 renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
                 renderBuffer.DeviceLost += RenderBuffer_OnDeviceLost;
                 renderer?.Detach();
                 RemoveAndDispose(ref renderer);
-                renderer = Collect(CreateRenderer());
+                renderer = CreateRenderer();
                 renderer.Attach(this);
                 OnInitializeBuffers(renderBuffer, renderer);
             }
@@ -920,20 +1020,22 @@ namespace HelixToolkit.UWP
             protected virtual void AttachRenderable(IDeviceResources deviceResources)
             {
                 if (!IsInitialized || Viewport == null)
-                { return; }
+                {
+                    return;
+                }
                 Log(LogLevel.Information, "");
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
                 }
                 viewport.Attach(this);
-    #if DX11_1
-                renderContext = Collect(CreateRenderContext());
-    #else
-                renderContext = Collect(CreateRenderContext());
-    #endif
+#if DX11_1
+                renderContext = CreateRenderContext();
+#else
+                renderContext = CreateRenderContext();
+#endif
 
-                renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
+                renderContext2D = CreateRenderContext2D(deviceResources.DeviceContext2D);
             }
             /// <summary>
             /// Creates the render context.
@@ -962,8 +1064,8 @@ namespace HelixToolkit.UWP
                     Log(LogLevel.Information, "");
                     StopRendering();
                     IsInitialized = false;
-                    immediateDeviceContext = null;
-            
+                    RemoveAndDispose(ref immediateDeviceContext);
+
                     OnEndingD3D();
                     DetachRenderable();
                     DisposeBuffers();
@@ -972,7 +1074,9 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Called when [ending d3 d].
             /// </summary>
-            protected virtual void OnEndingD3D() { }
+            protected virtual void OnEndingD3D()
+            {
+            }
 
             private void OnManagerDisposed(object sender, EventArgs args)
             {
@@ -1069,7 +1173,7 @@ namespace HelixToolkit.UWP
             {
                 if (isLoaded && !IsInitialized)
                 {
-                    SyncContext.Post((o) => 
+                    SyncContext.Post((o) =>
                     {
                         StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                     }, null);
@@ -1091,7 +1195,7 @@ namespace HelixToolkit.UWP
                 {
                     lock (lockObj)
                     {
-                        
+
                         EffectsManager?.Reinitialize();
                     }
                 }, null);
@@ -1116,16 +1220,18 @@ namespace HelixToolkit.UWP
                     ExceptionOccurred = null;
                     StartRenderLoop = null;
                     StopRenderLoop = null;
-                    Rendered = null;                
+                    Rendered = null;
                 }
+                RemoveAndDispose(ref renderContext);
+                RemoveAndDispose(ref renderContext2D);
+                DisposeBuffers();
                 base.OnDispose(disposeManagedResources);
             }
 
-            private void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+            private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
             {
                 Logger.Log(level, msg, nameof(DX11RenderHostBase), caller, sourceLineNumber);
             }
         }
     }
-
 }

@@ -32,7 +32,10 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if closed; otherwise, <c>false</c>.
             /// </value>
-            public bool Closed { private set; get; }
+            public bool Closed
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Gets or sets a value indicating whether this <see cref="Figure"/> is filled.
@@ -40,7 +43,10 @@ namespace HelixToolkit.UWP
             /// <value>
             ///   <c>true</c> if filled; otherwise, <c>false</c>.
             /// </value>
-            public bool Filled { private set; get; }
+            public bool Filled
+            {
+                private set; get;
+            }
 
             /// <summary>
             /// Gets or sets the start point.
@@ -48,7 +54,10 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The start point.
             /// </value>
-            public Vector2 StartPoint { private set; get; }
+            public Vector2 StartPoint
+            {
+                private set; get;
+            }
 
 
             /// <summary>
@@ -82,9 +91,9 @@ namespace HelixToolkit.UWP
             public void Create(D2D.GeometrySink sink)
             {
                 sink.BeginFigure(StartPoint, Filled ? D2D.FigureBegin.Filled : D2D.FigureBegin.Hollow);
-                for(int i = 0; i < Segments.Count; ++i)
+                for (var i = 0; i < Segments.Count; ++i)
                 {
-                    D2D.PathSegment flag = D2D.PathSegment.None;
+                    var flag = D2D.PathSegment.None;
                     var segment = Segments[i];
                     if (!segment.IsStroked)
                     {
@@ -117,5 +126,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

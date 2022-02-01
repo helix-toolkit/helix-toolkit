@@ -47,32 +47,44 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow, IApplyPostEffect
     {
-#region Dependency Properties
+        #region Dependency Properties
         public IList<BatchedMeshGeometryConfig> BatchedGeometries
         {
-            get { return (IList<BatchedMeshGeometryConfig>)GetValue(BatchedGeometriesProperty); }
-            set { SetValue(BatchedGeometriesProperty, value); }
+            get
+            {
+                return (IList<BatchedMeshGeometryConfig>)GetValue(BatchedGeometriesProperty);
+            }
+            set
+            {
+                SetValue(BatchedGeometriesProperty, value);
+            }
         }
 
         public static readonly DependencyProperty BatchedGeometriesProperty =
-            DependencyProperty.Register("BatchedGeometries", typeof(IList<BatchedMeshGeometryConfig>), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(null, 
-                (d, e)=> 
+            DependencyProperty.Register("BatchedGeometries", typeof(IList<BatchedMeshGeometryConfig>), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(null,
+                (d, e) =>
                 {
                     ((d as BatchedMeshGeometryModel3D).SceneNode as BatchedMeshNode).Geometries = e.NewValue == null ? null : ((IList<BatchedMeshGeometryConfig>)e.NewValue).ToArray();
                 }));
 
         public IList<Material> BatchedMaterials
         {
-            get { return (IList<Material>)GetValue(BatchedMaterialsProperty); }
-            set { SetValue(BatchedMaterialsProperty, value); }
+            get
+            {
+                return (IList<Material>)GetValue(BatchedMaterialsProperty);
+            }
+            set
+            {
+                SetValue(BatchedMaterialsProperty, value);
+            }
         }
 
         public static readonly DependencyProperty BatchedMaterialsProperty =
-            DependencyProperty.Register("BatchedMaterials", typeof(IList<Material>), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(null, 
+            DependencyProperty.Register("BatchedMaterials", typeof(IList<Material>), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(null,
                 (d, e) =>
                 {
                     ((d as BatchedMeshGeometryModel3D).SceneNode as BatchedMeshNode).Materials = e.NewValue == null ?
-                    null : ((IList<Material>)e.NewValue).Where(x => x.Core is PhongMaterialCore).Select(x=>x.Core as PhongMaterialCore).ToArray();
+                    null : ((IList<Material>)e.NewValue).Where(x => x.Core is PhongMaterialCore).Select(x => x.Core as PhongMaterialCore).ToArray();
                 }));
 
         public static readonly DependencyProperty IsThrowingShadowProperty =
@@ -194,14 +206,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty RenderWireframeProperty =
             DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
-            { ((d as Element3DCore).SceneNode as BatchedMeshNode).RenderWireframe = (bool)e.NewValue; }));
+            {
+                ((d as Element3DCore).SceneNode as BatchedMeshNode).RenderWireframe = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The wireframe color property
         /// </summary>
         public static readonly DependencyProperty WireframeColorProperty =
             DependencyProperty.Register("WireframeColor", typeof(Color), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(Colors.SkyBlue, (d, e) =>
-            { ((d as Element3DCore).SceneNode as BatchedMeshNode).WireframeColor = ((Color)e.NewValue).ToColor4(); }));
+            {
+                ((d as Element3DCore).SceneNode as BatchedMeshNode).WireframeColor = ((Color)e.NewValue).ToColor4();
+            }));
 
         /// <summary>
         /// The always hittable property
@@ -215,8 +231,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public string PostEffects
         {
-            get { return (string)GetValue(PostEffectsProperty); }
-            set { SetValue(PostEffectsProperty, value); }
+            get
+            {
+                return (string)GetValue(PostEffectsProperty);
+            }
+            set
+            {
+                SetValue(PostEffectsProperty, value);
+            }
         }
 
 
@@ -375,8 +397,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Material Material
         {
-            get { return (Material)this.GetValue(MaterialProperty); }
-            set { this.SetValue(MaterialProperty, value); }
+            get
+            {
+                return (Material)this.GetValue(MaterialProperty);
+            }
+            set
+            {
+                this.SetValue(MaterialProperty, value);
+            }
         }
 
         /// <summary>
@@ -385,8 +413,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsTransparent
         {
-            get { return (bool)GetValue(IsTransparentProperty); }
-            set { SetValue(IsTransparentProperty, value); }
+            get
+            {
+                return (bool)GetValue(IsTransparentProperty);
+            }
+            set
+            {
+                SetValue(IsTransparentProperty, value);
+            }
         }
 
 
@@ -399,8 +433,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool RenderWireframe
         {
-            get { return (bool)GetValue(RenderWireframeProperty); }
-            set { SetValue(RenderWireframeProperty, value); }
+            get
+            {
+                return (bool)GetValue(RenderWireframeProperty);
+            }
+            set
+            {
+                SetValue(RenderWireframeProperty, value);
+            }
         }
 
         /// <summary>
@@ -411,8 +451,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Color WireframeColor
         {
-            get { return (Color)GetValue(WireframeColorProperty); }
-            set { SetValue(WireframeColorProperty, value); }
+            get
+            {
+                return (Color)GetValue(WireframeColorProperty);
+            }
+            set
+            {
+                SetValue(WireframeColorProperty, value);
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [front counter clockwise].

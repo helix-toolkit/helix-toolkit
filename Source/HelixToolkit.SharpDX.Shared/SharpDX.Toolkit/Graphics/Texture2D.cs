@@ -25,11 +25,6 @@ namespace SharpDX.Toolkit.Graphics
             Initialize(Resource);
         }
 
-        internal override TextureView GetRenderTargetView(ViewType viewType, int arrayOrDepthSlice, int mipMapSlice)
-        {
-            throw new System.NotSupportedException();
-        }
-
         /// <summary>
         /// Makes a copy of this texture.
         /// </summary>
@@ -133,7 +128,7 @@ namespace SharpDX.Toolkit.Graphics
         /// <remarks>
         /// Each value in textureData is a pixel in the destination texture.
         /// </remarks>
-        public unsafe static Texture2D New<T>(Device device, int width, int height, PixelFormat format, T[] textureData, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable) where T : struct
+        public unsafe static Texture2D New<T>(Device device, int width, int height, PixelFormat format, T[] textureData, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable) where T : unmanaged
         {
             Texture2D texture = null;
             Utilities.Pin(textureData, ptr =>
@@ -177,7 +172,8 @@ namespace SharpDX.Toolkit.Graphics
         /// <unmanaged-short>ID3D11Device::CreateTexture2D</unmanaged-short>
         public static Texture2D New(Device device, Image image, TextureFlags flags = TextureFlags.ShaderResource, ResourceUsage usage = ResourceUsage.Immutable)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null)
+                throw new ArgumentNullException("image");
             if (image.Description.Dimension != TextureDimension.Texture2D)
                 throw new ArgumentException("Invalid image. Must be 2D", "image");
 
