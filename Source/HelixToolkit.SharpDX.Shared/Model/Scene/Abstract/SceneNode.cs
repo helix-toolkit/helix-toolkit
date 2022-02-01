@@ -721,7 +721,7 @@ namespace HelixToolkit.UWP
             /// </returns>
             protected virtual bool CanHitTest(HitTestContext context)
             {
-                return AlwaysHittable || (IsHitTestVisible && IsRenderable);
+                return context != null && (AlwaysHittable || (IsHitTestVisible && IsRenderable));
             }
 
             /// <summary>
