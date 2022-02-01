@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:local="clr-namespace:CrossSectionDemo"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
     Title="CrossSectionDemo"
     Width="800"
     Height="600"
@@ -85,6 +85,7 @@
                 SizeScale="10" />
             <local:CrossSectionPlaneManipulator3D
                 CornerScale="4"
+                ConstrainAxis="{Binding ConstraintVector}"
                 CutPlane="{Binding Plane2, Mode=TwoWay}"
                 EdgeThicknessScale="4"
                 IsRendering="{Binding EnablePlane2}"
