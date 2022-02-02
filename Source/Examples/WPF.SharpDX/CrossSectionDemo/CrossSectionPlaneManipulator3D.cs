@@ -170,36 +170,6 @@ namespace CrossSectionDemo
             EdgeHGeometry.UpdateOctree();
         }
 
-        public static ICommand Cmd
-        {
-            get
-            {
-                if (cmd == null)
-                {
-                    cmd = new myCmd();    
-                }
-                return cmd;
-            }
-        }
-
-        private static ICommand cmd = null;
-
-        private class myCmd : ICommand
-        {
-            public event EventHandler CanExecuteChanged;
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public void Execute(object parameter)
-            {
-                
-            }
-        }
-
-
 
         public CrossSectionPlaneManipulator3D()
         {
@@ -219,22 +189,11 @@ namespace CrossSectionDemo
                 Geometry = EdgeHGeometry,
                 CullMode = SharpDX.Direct3D11.CullMode.Back,
             };
-#if TRUE
+
             this.edgeHandle.MouseMove3D += OnEdgeMouse3DMove;
             this.edgeHandle.MouseUp3D += OnEdgeMouse3DUp;
             this.edgeHandle.MouseDown3D += OnEdgeMouse3DDown;
-#else
 
-            MouseGesture leftMouseGesture = new MouseGesture(MouseAction.LeftClick);
-            MouseBinding theBinding = new MouseBinding(
-                Cmd,
-                leftMouseGesture
-                );
-            if (edgeHandle.InputBindings != null)
-            {
-                edgeHandle.InputBindings.Add(theBinding);
-            }
-#endif
 
             // completing setup
             this.Children.Add(cornerHandle);
@@ -290,12 +249,11 @@ namespace CrossSectionDemo
         {
             if (e is Mouse3DEventArgs arg)
             {
-                arg.OriginalInputEventArgs.Handled = true;
+                arg.Handled = true;
                 viewport = arg.Viewport;
                 camera = viewport.Camera;
                 startPoint = arg.Position;
                 isCaptured = true;
-                e.Handled = true;
                 if(EdgeMaterial is DiffuseMaterial m)
                 {
                     orgColor = m.DiffuseColor;
@@ -306,28 +264,23 @@ namespace CrossSectionDemo
 
         private void OnEdgeMouse3DUp(object sender, RoutedEventArgs e)
         {
-            if (e is Mouse3DEventArgs me)
-            {
-                me.OriginalInputEventArgs.Handled = true;
-            }
-            if (isCaptured && EdgeMaterial is DiffuseMaterial m)
+            if (isCaptured && EdgeMaterial is DiffuseMaterial m && e is Mouse3DEventArgs arg)
             {
                 m.DiffuseColor = orgColor;
+                arg.Handled = true;
             }
             isCaptured = false;
             viewport = null;
             camera = null;
-            e.Handled = true;
         }
 
         private void OnEdgeMouse3DMove(object sender, RoutedEventArgs e)
         {
             if (isCaptured && e is Mouse3DEventArgs arg && arg.Viewport == viewport)
             {
-                arg.OriginalInputEventArgs.Handled = true;
                 RotateTrackball(startPoint, arg.Position, currentTranslation.TranslationVector);
                 startPoint = arg.Position;
-                e.Handled=true;
+                arg.Handled=true;
             }
         }
 
@@ -335,12 +288,11 @@ namespace CrossSectionDemo
         {
             if (e is Mouse3DEventArgs arg)
             {
-                arg.OriginalInputEventArgs.Handled = true;
                 viewport = arg.Viewport;
                 camera = viewport.Camera;
                 startHitPoint = arg.HitTestResult.PointHit;
                 isCaptured = true;
-                e.Handled = true;
+                arg.Handled = true;
                 if (CornerMaterial is DiffuseMaterial m)
                 {
                     orgColor = m.DiffuseColor;
@@ -351,13 +303,10 @@ namespace CrossSectionDemo
 
         private void OnNodeMouse3DUp(object sender, RoutedEventArgs e)
         {
-            if (e is Mouse3DEventArgs me)
-            {
-                me.OriginalInputEventArgs.Handled = true;
-            }
-            if (isCaptured && CornerMaterial is DiffuseMaterial m)
+            if (isCaptured && CornerMaterial is DiffuseMaterial m && e is Mouse3DEventArgs arg)
             {
                 m.DiffuseColor = orgColor;
+                arg.Handled = true;
             }
             isCaptured = false;
             viewport = null;
@@ -368,7 +317,6 @@ namespace CrossSectionDemo
         {
             if (isCaptured && e is Mouse3DEventArgs arg && arg.Viewport == viewport)
             {
-                arg.OriginalInputEventArgs.Handled = true;
                 var newHit = viewport.UnProjectOnPlane(arg.Position, startHitPoint.ToPoint3D(), camera.LookDirection);
                 if (newHit.HasValue)
                 {
@@ -378,7 +326,7 @@ namespace CrossSectionDemo
                     startHitPoint = newPos;
                     currentTranslation.TranslationVector += offset;
                     UpdateTransform();
-                    e.Handled = true;
+                    arg.Handled = true;
                 }
             }
         }
