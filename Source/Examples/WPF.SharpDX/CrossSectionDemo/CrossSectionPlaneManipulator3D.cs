@@ -170,8 +170,10 @@ namespace CrossSectionDemo
             EdgeHGeometry.UpdateOctree();
         }
 
+
         public CrossSectionPlaneManipulator3D()
         {
+            // corner manipulation is used to move the plane along its normal
             this.cornerHandle = new MeshGeometryModel3D()
             {
                 Geometry = NodeGeometry,
@@ -181,14 +183,19 @@ namespace CrossSectionDemo
             this.cornerHandle.MouseUp3D += OnNodeMouse3DUp;
             this.cornerHandle.MouseDown3D += OnNodeMouse3DDown;
 
+            // edge manipulation is used to rotate the plane
             this.edgeHandle = new MeshGeometryModel3D()
             {
                 Geometry = EdgeHGeometry,
                 CullMode = SharpDX.Direct3D11.CullMode.Back,
             };
+
             this.edgeHandle.MouseMove3D += OnEdgeMouse3DMove;
             this.edgeHandle.MouseUp3D += OnEdgeMouse3DUp;
             this.edgeHandle.MouseDown3D += OnEdgeMouse3DDown;
+
+
+            // completing setup
             this.Children.Add(cornerHandle);
             this.Children.Add(edgeHandle);
 
@@ -242,11 +249,11 @@ namespace CrossSectionDemo
         {
             if (e is Mouse3DEventArgs arg)
             {
+                arg.Handled = true;
                 viewport = arg.Viewport;
                 camera = viewport.Camera;
                 startPoint = arg.Position;
                 isCaptured = true;
-                e.Handled = true;
                 if(EdgeMaterial is DiffuseMaterial m)
                 {
                     orgColor = m.DiffuseColor;
@@ -257,9 +264,10 @@ namespace CrossSectionDemo
 
         private void OnEdgeMouse3DUp(object sender, RoutedEventArgs e)
         {
-            if (isCaptured && EdgeMaterial is DiffuseMaterial m)
+            if (isCaptured && EdgeMaterial is DiffuseMaterial m && e is Mouse3DEventArgs arg)
             {
                 m.DiffuseColor = orgColor;
+                arg.Handled = true;
             }
             isCaptured = false;
             viewport = null;
@@ -272,6 +280,7 @@ namespace CrossSectionDemo
             {
                 RotateTrackball(startPoint, arg.Position, currentTranslation.TranslationVector);
                 startPoint = arg.Position;
+                arg.Handled=true;
             }
         }
 
@@ -283,7 +292,7 @@ namespace CrossSectionDemo
                 camera = viewport.Camera;
                 startHitPoint = arg.HitTestResult.PointHit;
                 isCaptured = true;
-                e.Handled = true;
+                arg.Handled = true;
                 if (CornerMaterial is DiffuseMaterial m)
                 {
                     orgColor = m.DiffuseColor;
@@ -294,9 +303,10 @@ namespace CrossSectionDemo
 
         private void OnNodeMouse3DUp(object sender, RoutedEventArgs e)
         {
-            if (isCaptured && CornerMaterial is DiffuseMaterial m)
+            if (isCaptured && CornerMaterial is DiffuseMaterial m && e is Mouse3DEventArgs arg)
             {
                 m.DiffuseColor = orgColor;
+                arg.Handled = true;
             }
             isCaptured = false;
             viewport = null;
@@ -311,11 +321,12 @@ namespace CrossSectionDemo
                 if (newHit.HasValue)
                 {
                     var newPos = newHit.Value.ToVector3();
+                    newPos = new Vector3(newPos.X, startHitPoint.Y, newPos.Z); // trying to constraint elevation
                     var offset = newPos - startHitPoint;
                     startHitPoint = newPos;
                     currentTranslation.TranslationVector += offset;
                     UpdateTransform();
-                    e.Handled = true;
+                    arg.Handled = true;
                 }
             }
         }

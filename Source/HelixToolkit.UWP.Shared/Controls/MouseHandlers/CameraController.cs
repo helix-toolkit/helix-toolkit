@@ -1145,6 +1145,9 @@ namespace HelixToolkit.UWP
         /// </param>
         public void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
+            Debug.WriteLine("ManipulationDelta");
+            if (e.Handled)
+                return;
             // number of manipulators (fingers)
             if (Viewport.PointerCaptures == null)
             { return; }
