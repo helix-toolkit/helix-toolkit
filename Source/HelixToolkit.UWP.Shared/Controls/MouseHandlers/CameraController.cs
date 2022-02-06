@@ -13,10 +13,12 @@ using HelixToolkit.SharpDX.Core.Utilities;
 using HelixToolkit.SharpDX.Core.Cameras;
 using Point = Windows.Foundation.Point;
 using Microsoft.UI.Xaml.Input;
+using PointerDeviceType = Microsoft.UI.Input.PointerDeviceType;
 namespace HelixToolkit.WinUI
 #else
 using Point = Windows.Foundation.Point;
 using Windows.UI.Xaml.Input;
+using PointerDeviceType = Windows.Devices.Input.PointerDeviceType;
 namespace HelixToolkit.UWP
 #endif
 {
@@ -1309,11 +1311,11 @@ namespace HelixToolkit.UWP
         /// </param>
         public void OnMouseDown(PointerRoutedEventArgs e)
         {
-            if(e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Pen)
+            if(e.Pointer.PointerDeviceType == PointerDeviceType.Pen)
             {
                 OnStylusSystemGesture(e);
             }
-            else if(e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            else if(e.Pointer.PointerDeviceType == PointerDeviceType.Touch)
             {
                 Viewport.CapturePointer(e.Pointer);
             }
@@ -1325,7 +1327,7 @@ namespace HelixToolkit.UWP
 
         public void OnMouseUp(PointerRoutedEventArgs e)
         {
-            if(e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            if(e.Pointer.PointerDeviceType == PointerDeviceType.Touch)
             {
                 Viewport.ReleasePointerCapture(e.Pointer);
                 foreach(var handler in MouseHandlers)
