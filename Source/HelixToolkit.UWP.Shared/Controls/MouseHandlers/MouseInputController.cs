@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Windows.System;
 using Windows.UI.Core;
 #if WINUI
-using PointerPointProperties = Microsoft.UI.Input.Experimental.ExpPointerPointProperties;
+using PointerPointProperties = Microsoft.UI.Input.PointerPointProperties;
 using Microsoft.UI.Xaml.Input;
 namespace HelixToolkit.WinUI
 #else
