@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
         {
             public event EventHandler WeightsChanged;
             private bool weightUpdated;
-            private float[] morphTargetWeights = new float[0];
+            private float[] morphTargetWeights = Array.Empty<float>();
             public float[] MorphTargetWeights
             {
                 get
@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP
                 }
                 set
                 {
-                    if (SetAffectsRender(ref morphTargetWeights, value))
+                    if (SetAffectsRender(ref morphTargetWeights, value ?? Array.Empty<float>()))
                     {
                         weightUpdated = true;
                         WeightsChanged?.Invoke(this, EventArgs.Empty);
@@ -45,11 +45,12 @@ namespace HelixToolkit.UWP
             }
 
             private bool setDeltas = false;
-            private Vector3[] morphTargetsDeltas = null;
+            private Vector3[] morphTargetsDeltas = Array.Empty<Vector3>();
 
-            private int[] morphTargetOffsets = null;
+            private int[] morphTargetOffsets = Array.Empty<int>();
 
-            private bool setCBuffer = false;
+            private bool hasMorphTarget => mtCount > 0 && mtPitch > 0;
+            private bool setCBuffer = true;
             private int mtCount;
             private int mtPitch;
             private StructuredBufferProxy mtWeightsB;
@@ -125,6 +126,8 @@ namespace HelixToolkit.UWP
             protected override bool OnAttach(IRenderTechnique technique)
             {
                 mtWeightsB = new StructuredBufferProxy(sizeof(float), false);
+                mtDeltasB = new ImmutableBufferProxy(sizeof(float) * 3, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
+                mtOffsetsB = new ImmutableBufferProxy(sizeof(int), BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
                 return true;
             }
 
@@ -137,9 +140,12 @@ namespace HelixToolkit.UWP
 
             public void BindBuffers(DeviceContextProxy devCtx, int weightsSlot, int deltasSlot, int offsetsSlot)
             {
-                devCtx.SetShaderResource(VertexShader.Type, weightsSlot, MTWeightsB);
-                devCtx.SetShaderResource(VertexShader.Type, deltasSlot, mtDeltasSRV);
-                devCtx.SetShaderResource(VertexShader.Type, offsetsSlot, mtOffsetsSRV);
+                if (hasMorphTarget)
+                {
+                    devCtx.SetShaderResource(VertexShader.Type, weightsSlot, MTWeightsB);
+                    devCtx.SetShaderResource(VertexShader.Type, deltasSlot, mtDeltasSRV);
+                    devCtx.SetShaderResource(VertexShader.Type, offsetsSlot, mtOffsetsSRV);
+                }
             }
 
             protected override void OnDispose(bool disposeManagedResources)
@@ -151,13 +157,13 @@ namespace HelixToolkit.UWP
 
             public bool InitializeMorphTargets(MorphTargetVertex[] targets, int pitch)
             {
-                //The buffer is immutable, if it was already created, dont allow for recreation
-                if (MTDeltasB != null)
-                    return false;
-
+                if (targets == null || targets.Length == 0)
+                {
+                    mtCount = 0;
+                    mtPitch = 0;
+                    return true;
+                }
                 //Setup buffer and keep track of data to update
-                mtDeltasB = new ImmutableBufferProxy(sizeof(float) * 3, BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
-                mtOffsetsB = new ImmutableBufferProxy(sizeof(int), BindFlags.ShaderResource, ResourceOptionFlags.BufferStructured);
                 setDeltas = true;
 
                 //Setup arrays for morph target data
