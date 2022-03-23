@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="source">
         /// Source Visual3D which receives the manipulator transforms. 
         /// </param>
-        public void Bind(GeometryModel3D source)
+        public void Bind(Element3D source)
         {
             BindingOperations.SetBinding(this, TargetTransformProperty, new Binding("Transform") { Source = source });
             BindingOperations.SetBinding(this, TransformProperty, new Binding("Transform") { Source = source });
