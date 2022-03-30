@@ -11,6 +11,11 @@ We did some major code refactoring and changes in this release.
 1. Upgraded the Dot Net minimum requirements from **4.5** to **4.6** on `HelixToolkit.SharpDX.Wpf`. (WPF.SharpDX)
 1. Upgraded net standard from **1.1** to **1.3** on `Helixtoolkit.SharpDX.Core`. (Core)
 1. Improved resource pool implementation. (WPF.SharpDX/UWP/Core)
+1. Relax manipulator binding target type to Elements instead of GeometryModel3D (WPF.SharpDX)
+
+### Fixed
+1. Fix bone skin rendering crash. (WPF.SharpDX/UWP/Core)
+1. Update HelixToolkit.WinUI to support Windows App SDK 1.0 (WinUI)
 
 ## [2.20.2] - 2022-02-01
 ### Fixed
