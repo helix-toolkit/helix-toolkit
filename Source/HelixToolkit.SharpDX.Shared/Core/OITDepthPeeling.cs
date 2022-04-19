@@ -35,6 +35,7 @@ namespace HelixToolkit.UWP
             private readonly RenderTargetView[] targets = new RenderTargetView[3];
             private readonly ShaderResourceView[] finalSRVs = new ShaderResourceView[3];
             private ShaderPass finalPass = ShaderPass.NullPass;
+            private DepthPrepassCore depthPrepassCore = new DepthPrepassCore();
             public RenderParameter ExternRenderParameter
             {
                 set; get;
@@ -129,10 +130,22 @@ namespace HelixToolkit.UWP
                     RaiseInvalidateRender();
                     return;
                 }
+                var buffer = context.RenderHost.RenderBuffer;
+                var hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
+                var nonMSAADepthBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt) : null;
+                var depthStencilView = hasMSAA ? nonMSAADepthBuffer : ExternRenderParameter.DepthStencilView;        
+                if (hasMSAA)
+                {
+                    deviceContext.SetRenderTarget(depthStencilView, null);
+                    //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.
+                    deviceContext.ClearDepthStencilView(depthStencilView, DepthStencilClearFlags.Depth, 1, 0);
+                    depthPrepassCore.Render(context, deviceContext);
+                }
+
                 RenderCount = 0;
                 InitializeMinMaxRenderTarget(deviceContext);
                 context.OITRenderStage = OITRenderStage.DepthPeelingInitMinMaxZ;
-                deviceContext.SetRenderTarget(ExternRenderParameter.DepthStencilView, minMaxZTargets[0]);
+                deviceContext.SetRenderTarget(depthStencilView, minMaxZTargets[0]);
                 DrawMesh(context, deviceContext);
 
                 context.OITRenderStage = OITRenderStage.DepthPeeling;
@@ -146,7 +159,7 @@ namespace HelixToolkit.UWP
                     targets[0] = minMaxZTargets[currId];
                     targets[1] = frontBlendingTarget;
                     targets[2] = backBlendingTarget;
-                    deviceContext.SetRenderTargets(ExternRenderParameter.DepthStencilView, targets);
+                    deviceContext.SetRenderTargets(depthStencilView, targets);
                     deviceContext.SetShaderResource(new PixelShaderType(), 100, minMaxZTargets[prevId]);
                     DrawMesh(context, deviceContext);
                     deviceContext.SetShaderResource(new PixelShaderType(), 100, null);
@@ -160,12 +173,18 @@ namespace HelixToolkit.UWP
                 deviceContext.SetRenderTargets(null, ExternRenderParameter.RenderTargetView);
                 deviceContext.SetShaderResources(new PixelShaderType(), 100, finalSRVs);
                 deviceContext.Draw(4, 0);
+                if (hasMSAA)
+                {
+                    deviceContext.ClearRenderTagetBindings();
+                    nonMSAADepthBuffer.Dispose();
+                }
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
             {
                 finalPass = technique[DefaultPassNames.OITDepthPeelingFinal];
                 Debug.Assert(!finalPass.IsNULL);
+                depthPrepassCore.Attach(technique);
                 return true;
             }
 
@@ -174,6 +193,7 @@ namespace HelixToolkit.UWP
                 DisposeAllTargets();
                 currWidth = currHeight = 0;
                 finalPass = ShaderPass.NullPass;
+                depthPrepassCore.Detach();
             }
         }
     }
