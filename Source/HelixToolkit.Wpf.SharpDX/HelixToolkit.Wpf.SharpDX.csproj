@@ -35,7 +35,6 @@
     <DefineConstants>TRACE;DX11; MSAA; SHARPDX;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    
     <DocumentationFile>bin\Release\HelixToolkit.Wpf.SharpDX.XML</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
@@ -44,10 +43,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
-    
   </PropertyGroup>
   <PropertyGroup>
-    
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -107,7 +104,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
   </ItemGroup>
@@ -143,6 +139,7 @@
     <None Include="Resources\hsMeshTriTessellation.cso" />
     <None Include="Resources\psBillboardText.cso" />
     <None Include="Resources\psBillboardTextOIT.cso" />
+    <None Include="Resources\psBillboardTextOITDP.cso" />
     <None Include="Resources\psColor.cso" />
     <None Include="Resources\psDepthStencilOnly.cso" />
     <None Include="Resources\psDiffuseMap.cso" />
@@ -166,17 +163,23 @@
     <None Include="Resources\psLuma.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
     <None Include="Resources\psMeshBlinnPhongOIT.cso" />
+    <None Include="Resources\psMeshBlinnPhongOITDP.cso" />
     <None Include="Resources\psMeshBlinnPhongOITQuad.cso" />
     <None Include="Resources\psMeshClipPlaneBackface.cso" />
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
     <None Include="Resources\psMeshColorStripe.cso" />
     <None Include="Resources\psMeshDiffuseMapOIT.cso" />
+    <None Include="Resources\psMeshDiffuseMapOITDP.cso" />
+    <None Include="Resources\psMeshOITDPFinal.cso" />
+    <None Include="Resources\psMeshOITDPFirst.cso" />
     <None Include="Resources\psMeshPBR.cso" />
     <None Include="Resources\psMeshPBROIT.cso" />
+    <None Include="Resources\psMeshPBROITDP.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />
     <None Include="Resources\psParticleOIT.cso" />
+    <None Include="Resources\psParticleOITDP.cso" />
     <None Include="Resources\psPlaneGrid.cso" />
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
@@ -193,6 +196,7 @@
     <None Include="Resources\psVolumeDiffuse.cso" />
     <None Include="Resources\psWireframe.cso" />
     <None Include="Resources\psWireframeOIT.cso" />
+    <None Include="Resources\psWireframeOITDP.cso" />
     <None Include="Resources\vsBillboard.cso" />
     <None Include="Resources\vsBillboardInstancing.cso" />
     <None Include="Resources\vsBoneSkinningBasic.cso" />
@@ -257,7 +261,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    
   </ItemGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />

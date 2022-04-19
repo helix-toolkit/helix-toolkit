@@ -201,7 +201,7 @@ namespace HelixToolkit.UWP
                 }
                 Bind(context, deviceContext);
 
-                context.IsOITPass = true;
+                context.OITRenderStage = OITRenderStage.SinglePassWeighted;
                 var parameter = ExternRenderParameter;
                 if (!parameter.ScissorRegion.IsEmpty)
                 {
@@ -220,7 +220,7 @@ namespace HelixToolkit.UWP
                         ++RenderCount;
                     }
                 }
-                context.IsOITPass = false;
+                context.OITRenderStage = OITRenderStage.None;
                 UnBind(context, deviceContext);
                 screenQuadPass.BindShader(deviceContext);
                 screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);

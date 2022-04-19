@@ -31,7 +31,7 @@
             CameraRotationMode="Turnball"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            FXAALevel="Medium"
+            FXAALevel="Medium" EnableSwapChainRendering="True" EnableD2DRendering="False"
             ShowCoordinateSystem="True">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -73,7 +73,7 @@
                 Reset Camera
             </Button>
             <CheckBox Foreground="White" IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
-            <CheckBox Foreground="White" IsChecked="{Binding ElementName=view, Path=EnableOITRendering}">Enable OIT</CheckBox>
+            <ComboBox ItemsSource="{Binding OITRenderTypes}" SelectedItem="{Binding ElementName=view, Path=OITRenderMode}"></ComboBox>
             <ComboBox ItemsSource="{Binding OITWeights}" SelectedItem="{Binding ElementName=view, Path=OITWeightMode}" />
             <StackPanel Orientation="Horizontal">
                 <TextBlock Foreground="White">OIT Weight Power:</TextBlock>

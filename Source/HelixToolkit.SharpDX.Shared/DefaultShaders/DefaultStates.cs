@@ -29,9 +29,13 @@ namespace HelixToolkit.UWP
             public readonly static BlendStateDescription AdditiveBlend;
             public readonly static BlendStateDescription BSScreenDupCursorBlend;
             public readonly static BlendStateDescription BSOITBlend = new BlendStateDescription() { IndependentBlendEnable = true };
+            public readonly static BlendStateDescription BSOTISortingBlend;
             public readonly static BlendStateDescription BSMeshOITBlendQuad;
             public readonly static BlendStateDescription VolumeBlending;
             public readonly static BlendStateDescription BSGlowBlending;
+            public readonly static BlendStateDescription BSOITDP;
+            public readonly static BlendStateDescription BSOITDPMaxBlending;
+            public readonly static BlendStateDescription BSOITDPFinal;
 
             static DefaultBlendStateDescriptions()
             {
@@ -156,6 +160,73 @@ namespace HelixToolkit.UWP
                     AlphaBlendOperation = BlendOperation.Add,
                     IsBlendEnabled = true,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All
+                };
+
+                BSOITDP.IndependentBlendEnable = true;
+                // Max blending
+                BSOITDP.RenderTarget[0] = new RenderTargetBlendDescription()
+                {
+                    IsBlendEnabled = true,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                    SourceBlend = BlendOption.One,
+                    DestinationBlend = BlendOption.One,
+                    BlendOperation = BlendOperation.Maximum,
+                    SourceAlphaBlend = BlendOption.One,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Maximum
+                };
+                // Front to back blending
+                BSOITDP.RenderTarget[1] = new RenderTargetBlendDescription()
+                {
+                    IsBlendEnabled = true,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                    SourceBlend = BlendOption.DestinationAlpha,
+                    DestinationBlend = BlendOption.One,
+                    BlendOperation = BlendOperation.Add,
+                    SourceAlphaBlend = BlendOption.Zero,
+                    DestinationAlphaBlend = BlendOption.InverseSourceAlpha,
+                    AlphaBlendOperation = BlendOperation.Add
+                };
+                // Back to front blending
+                BSOITDP.RenderTarget[2] = new RenderTargetBlendDescription()
+                {
+                    IsBlendEnabled = true,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                    SourceBlend = BlendOption.SourceAlpha,
+                    DestinationBlend = BlendOption.InverseSourceAlpha,
+                    BlendOperation = BlendOperation.Add,
+                    SourceAlphaBlend = BlendOption.Zero,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Add
+                };
+
+                // Max blending
+                for (int i = 0; i < 3; ++i)
+                {
+                    BSOITDPMaxBlending.IndependentBlendEnable = true;
+                    BSOITDPMaxBlending.RenderTarget[i] = new RenderTargetBlendDescription()
+                    {
+                        IsBlendEnabled = true,
+                        RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                        SourceBlend = BlendOption.One,
+                        DestinationBlend = BlendOption.One,
+                        BlendOperation = BlendOperation.Maximum,
+                        SourceAlphaBlend = BlendOption.One,
+                        DestinationAlphaBlend = BlendOption.One,
+                        AlphaBlendOperation = BlendOperation.Maximum
+                    };
+                }
+
+                BSOITDPFinal.RenderTarget[0] = new RenderTargetBlendDescription()
+                {
+                    IsBlendEnabled = true,
+                    RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                    SourceBlend = BlendOption.One,
+                    DestinationBlend = BlendOption.SourceAlpha,
+                    BlendOperation = BlendOperation.Add,
+                    SourceAlphaBlend = BlendOption.One,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Maximum
                 };
             }
         }

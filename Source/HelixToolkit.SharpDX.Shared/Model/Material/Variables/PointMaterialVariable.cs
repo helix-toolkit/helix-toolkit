@@ -45,14 +45,12 @@ namespace HelixToolkit.UWP
             /// <param name="pointPassName">Name of the point pass.</param>
             /// <param name="shadowPassName">Name of the shadow pass.</param>
             /// <param name="depthPassName">Name of the depth pass</param>
-            public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore materialCore,
-                string pointPassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass,
-                string depthPassName = DefaultPassNames.DepthPrepass)
+            public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore materialCore)
                 : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
             {
-                PointPass = technique[pointPassName];
-                ShadowPass = technique[shadowPassName];
-                DepthPass = technique[depthPassName];
+                PointPass = technique[DefaultPassNames.Default];
+                ShadowPass = technique[DefaultPassNames.ShadowPass];
+                DepthPass = technique[DefaultPassNames.DepthPrepass];
                 this.material = materialCore;
             }
 

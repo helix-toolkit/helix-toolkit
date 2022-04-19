@@ -33,7 +33,8 @@ namespace HelixToolkit.UWP
         {
             private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
             private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
-            private OrderIndependentTransparentRenderCore transparentRenderCore;
+            private OrderIndependentTransparentRenderCore oitWeightedCore;
+            private OITDepthPeeling oitDepthPeelingCore;
             private PostEffectFXAA postFXAACore;
             private SSAOCore preSSAOCore;
             private DeviceContextProxy immediateContext;
@@ -56,7 +57,8 @@ namespace HelixToolkit.UWP
 #else
                 immediateContext = new DeviceContextProxy(deviceResource.Device.ImmediateContext, deviceResource.Device);
 #endif
-                transparentRenderCore = new OrderIndependentTransparentRenderCore();
+                oitWeightedCore = new OrderIndependentTransparentRenderCore();
+                oitDepthPeelingCore = new OITDepthPeeling();
                 postFXAACore = new PostEffectFXAA();
                 preSSAOCore = new SSAOCore();
             }
@@ -161,25 +163,30 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public virtual int RenderTransparent(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
             {
-                if (context.RenderHost.RenderConfiguration.EnableOITRendering
+                if (context.RenderHost.RenderConfiguration.OITRenderType != OITRenderType.None
                     && context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
                 {
-                    transparentRenderCore.ExternRenderParameter = parameter;
-                    transparentRenderCore.Render(context, ImmediateContext);
-                    return transparentRenderCore.RenderCount;
-                }
-                else
-                {
-                    var renderedCount = 0;
-                    var frustum = context.BoundingFrustum;
-                    var count = renderables.Count;
-                    for (var i = 0; i < count; ++i)
+                    switch (context.RenderHost.RenderConfiguration.OITRenderType)
                     {
-                        renderables[i].Render(context, ImmediateContext);
-                        ++renderedCount;
-                    }
-                    return renderedCount;
+                        case OITRenderType.SinglePassWeighted:
+                            oitWeightedCore.ExternRenderParameter = parameter;
+                            oitWeightedCore.Render(context, ImmediateContext);
+                            return oitWeightedCore.RenderCount;
+                        case OITRenderType.DepthPeeling:
+                            oitDepthPeelingCore.ExternRenderParameter = parameter;
+                            oitDepthPeelingCore.PeelingIteration = context.OITDepthPeelingIteration;
+                            oitDepthPeelingCore.Render(context, ImmediateContext);
+                            return oitDepthPeelingCore.RenderCount;
+                    }                    
                 }
+                var renderedCount = 0;
+                var count = renderables.Count;
+                for (var i = 0; i < count; ++i)
+                {
+                    renderables[i].Render(context, ImmediateContext);
+                    ++renderedCount;
+                }
+                return renderedCount;
             }
             /// <summary>
             /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(RenderContext, FastList{KeyValuePair{int, SceneNode}})"/>
@@ -367,7 +374,8 @@ namespace HelixToolkit.UWP
             {
                 Detach();
                 RemoveAndDispose(ref immediateContext);
-                RemoveAndDispose(ref transparentRenderCore);
+                RemoveAndDispose(ref oitWeightedCore);
+                RemoveAndDispose(ref oitDepthPeelingCore);
                 RemoveAndDispose(ref postFXAACore);
                 RemoveAndDispose(ref preSSAOCore);
                 base.OnDispose(disposeManagedResources);
@@ -377,7 +385,8 @@ namespace HelixToolkit.UWP
             {
                 if (host.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
                 {
-                    transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
+                    oitWeightedCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
+                    oitDepthPeelingCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITDepthPeeling));
                     postFXAACore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.PostEffectFXAA));
                     preSSAOCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.SSAO));
                 }
@@ -387,9 +396,10 @@ namespace HelixToolkit.UWP
             {
                 stackCache1.Clear();
                 stack2DCache1.Clear();
-                transparentRenderCore.Detach();
+                oitWeightedCore.Detach();
+                oitDepthPeelingCore.Detach();
                 postFXAACore.Detach();
-                preSSAOCore.Detach();
+                preSSAOCore.Detach();               
             }
         }
     }

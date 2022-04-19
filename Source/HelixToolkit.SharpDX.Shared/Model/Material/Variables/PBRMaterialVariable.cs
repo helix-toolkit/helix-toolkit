@@ -55,17 +55,30 @@ namespace HelixToolkit.UWP
             {
                 private set; get;
             }
-            public ShaderPass MaterialOITPass
+            public ShaderPass OITPass
             {
                 private set; get;
             }
-            public ShaderPass TessMaterialPass
+            public ShaderPass OITDepthPeelingInit
+            {
+                get;
+            }
+
+            public ShaderPass OITDepthPeeling
+            {
+                get;
+            }
+            public ShaderPass TessellationPass
             {
                 private set; get;
             }
-            public ShaderPass TessMaterialOITPass
+            public ShaderPass TessellationOITPass
             {
                 private set; get;
+            }
+            public ShaderPass TessellationOITDPPass
+            {
+                get;
             }
             public ShaderPass ShadowPass
             {
@@ -79,34 +92,50 @@ namespace HelixToolkit.UWP
             {
                 get;
             }
+            public ShaderPass WireframeOITDPPass
+            {
+                get;
+            }
             public ShaderPass DepthPass
             {
                 get;
             }
+            private bool enableTessellation = false;
+            public bool EnableTessellation
+            {
+                private set
+                {
+                    if (Set(ref enableTessellation, value))
+                    {
+                        UpdateMappings(currentMaterialPass);
+                        InvalidateRenderer();
+                    }
+                }
+                get
+                {
+                    return enableTessellation;
+                }
+            }
+            private ShaderPass currentMaterialPass => EnableTessellation ? TessellationPass : MaterialPass;
 
-            private ShaderPass currentMaterialPass;
-            private ShaderPass currentMaterialOITPass;
-
-            public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core,
-                string materialPassName = DefaultPassNames.PBR, string wireframePassName = DefaultPassNames.Wireframe,
-                string materialOITPassName = DefaultPassNames.PBROITPass, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,
-                string shadowPassName = DefaultPassNames.ShadowPass,
-                string tessellationPassName = DefaultPassNames.MeshPBRTriTessellation,
-                string tessellationOITPassName = DefaultPassNames.MeshPBRTriTessellationOIT,
-                string depthPassName = DefaultPassNames.DepthPrepass)
+            public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core)
                 : base(manager, technique, DefaultMeshConstantBufferDesc, core)
             {
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
                 material = core;
-                MaterialPass = technique[materialPassName];
-                MaterialOITPass = technique[materialOITPassName];
-                TessMaterialPass = technique[tessellationPassName];
-                TessMaterialOITPass = technique[tessellationOITPassName];
-                WireframePass = technique[wireframePassName];
-                WireframeOITPass = technique[wireframeOITPassName];
-                ShadowPass = technique[shadowPassName];
-                DepthPass = technique[depthPassName];
+                MaterialPass = technique[DefaultPassNames.PBR];
+                OITPass = technique[DefaultPassNames.PBROITPass];
+                OITDepthPeelingInit = technique[DefaultPassNames.OITDepthPeelingInit];
+                OITDepthPeeling = technique[DefaultPassNames.PBROITDPPass];
+                TessellationPass = technique[DefaultPassNames.MeshPBRTriTessellation];
+                TessellationOITPass = technique[DefaultPassNames.MeshPBRTriTessellationOIT];
+                TessellationOITDPPass = technique[DefaultPassNames.MeshPBRTriTessellationOITDP];
+                WireframePass = technique[DefaultPassNames.Wireframe];
+                WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
+                WireframeOITDPPass = technique[DefaultPassNames.WireframeOITDPPass];
+                ShadowPass = technique[DefaultPassNames.ShadowPass];
+                DepthPass = technique[DefaultPassNames.DepthPrepass];
                 UpdateMappings(MaterialPass);
                 CreateTextureViews();
                 CreateSamplers();
@@ -158,9 +187,7 @@ namespace HelixToolkit.UWP
                 AddPropertyBinding(nameof(PBRMaterialCore.DisplacementMapSampler), () => { CreateSampler(material.DisplacementMapSampler, DisplaceSamplerIdx); });
                 AddPropertyBinding(nameof(PBRMaterialCore.EnableTessellation), () =>
                 {
-                    currentMaterialPass = material.EnableTessellation ? TessMaterialPass : MaterialPass;
-                    UpdateMappings(MaterialPass);
-                    currentMaterialOITPass = material.EnableTessellation ? TessMaterialOITPass : MaterialOITPass;
+                    EnableTessellation = material.EnableTessellation;
                 });
 
                 WriteValue(PhongPBRMaterialStruct.RenderPBR, true); // Make sure to set this flag
@@ -336,7 +363,21 @@ namespace HelixToolkit.UWP
 
             public override ShaderPass GetPass(RenderType renderType, RenderContext context)
             {
-                return renderType == RenderType.Transparent && context.IsOITPass ? currentMaterialOITPass : currentMaterialPass;
+                if (renderType == RenderType.Transparent)
+                {
+                    switch (context.OITRenderStage)
+                    {
+                        case OITRenderStage.SinglePassWeighted:
+                            return EnableTessellation ? TessellationOITPass : OITPass;
+                        case OITRenderStage.DepthPeelingInitMinMaxZ:
+                            return OITDepthPeelingInit;
+                        case OITRenderStage.DepthPeeling:
+                            return EnableTessellation ? TessellationOITDPPass : OITDepthPeeling;
+                        default:
+                            break;
+                    }
+                }
+                return currentMaterialPass;
             }
 
             public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
@@ -351,7 +392,21 @@ namespace HelixToolkit.UWP
 
             public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
             {
-                return renderType == RenderType.Transparent && context.IsOITPass ? WireframeOITPass : WireframePass;
+                if (renderType == RenderType.Transparent)
+                {
+                    switch (context.OITRenderStage)
+                    {
+                        case OITRenderStage.SinglePassWeighted:
+                            return WireframeOITPass;
+                        case OITRenderStage.DepthPeelingInitMinMaxZ:
+                            return OITDepthPeelingInit;
+                        case OITRenderStage.DepthPeeling:
+                            return WireframeOITDPPass;
+                        default:
+                            break;
+                    }
+                }
+                return WireframePass;
             }
 
             protected override void OnDispose(bool disposeManagedResources)

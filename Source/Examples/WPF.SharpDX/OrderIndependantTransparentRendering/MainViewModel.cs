@@ -68,6 +68,8 @@ namespace OrderIndependentTransparentRendering
 
         public OITWeightMode[] OITWeights { get; } = new OITWeightMode[] { OITWeightMode.Linear0, OITWeightMode.Linear1, OITWeightMode.Linear2, OITWeightMode.NonLinear };
 
+        public OITRenderType[] OITRenderTypes { get; } = new OITRenderType[] { OITRenderType.None, OITRenderType.DepthPeeling, OITRenderType.SinglePassWeighted };
+
         public ICommand ResetCameraCommand
         {
             set; get;
@@ -208,11 +210,15 @@ namespace OrderIndependentTransparentRendering
                         diffuse.Blue = (float)rnd.NextDouble();
                         diffuse.Alpha = 0.8f;//(float)(Math.Min(0.8, Math.Max(0.2, rnd.NextDouble())));
                         p.DiffuseColor = diffuse;
-                        if (p.DiffuseColor.Alpha < 0.9)
+                        if (diffuse.Alpha < 0.9)
                         {
                             s.IsTransparent = true;
                         }
-                        s.Material = p;
+                        s.Material = new HelixToolkit.Wpf.SharpDX.Model.PBRMaterialCore()
+                        {
+                            AlbedoColor = diffuse,
+                            MetallicFactor = 0.3f, RoughnessFactor = 0.8f,
+                        };
                     }
 
                     if (ob.Transform != null && ob.Transform.Count > 0)

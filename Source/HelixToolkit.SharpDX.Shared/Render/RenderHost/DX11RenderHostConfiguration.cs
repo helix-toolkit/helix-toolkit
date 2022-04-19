@@ -43,13 +43,6 @@ namespace HelixToolkit.UWP
             /// </summary>
             public bool AutoUpdateOctree = false;
             /// <summary>
-            /// Gets or sets a value indicating whether [enable oit rendering].
-            /// </summary>
-            /// <value>
-            ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
-            /// </value>
-            public bool EnableOITRendering = true;
-            /// <summary>
             /// Gets or sets the OIT weight power used for color weight calculation. Default = 3.
             /// </summary>
             /// <value>
@@ -74,6 +67,17 @@ namespace HelixToolkit.UWP
             /// The oit weight mode.
             /// </value>
             public OITWeightMode OITWeightMode = OITWeightMode.Linear1;
+
+            /// <summary>
+            /// Gets or sets the oit render mode
+            /// </summary>
+            public OITRenderType OITRenderType = OITRenderType.DepthPeeling;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public int OITDepthPeelingIteration = 4;
+
             /// <summary>
             /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
             /// </summary>

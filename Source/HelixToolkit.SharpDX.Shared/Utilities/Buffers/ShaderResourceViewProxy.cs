@@ -132,7 +132,36 @@ namespace HelixToolkit.UWP
                 resource = new Texture3D(device, textureDesc);
                 TextureFormat = textureDesc.Format;
             }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture1DDescription textureDesc) : this(device)
+            {
+                resource = new Texture1D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture2DDescription textureDesc) : this(device)
+            {
+                resource = new Texture2D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture3DDescription textureDesc) : this(device)
+            {
+                resource = new Texture3D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -317,6 +346,19 @@ namespace HelixToolkit.UWP
                     return;
                 }
                 textureView = new ShaderResourceView(device, resource);
+            }
+
+            /// <summary>
+            /// Creates the view.
+            /// </summary>
+            public void CreateTextureView(ref ShaderResourceViewDescription desc)
+            {
+                RemoveAndDispose(ref textureView);
+                if (resource == null)
+                {
+                    return;
+                }
+                textureView = new ShaderResourceView(device, resource, desc);
             }
             /// <summary>
             /// Creates the render target.

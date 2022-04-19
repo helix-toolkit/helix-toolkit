@@ -608,8 +608,8 @@ namespace HelixToolkit.UWP
             public DX11RenderHostConfiguration RenderConfiguration
             {
                 set; get;
-            }
-                = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true, EnableOITRendering = true };
+            } = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, 
+                RenderLights = true, ClearEachFrame = true, OITRenderType = OITRenderType.DepthPeeling };
             /// <summary>
             /// Gets the feature level.
             /// </summary>
@@ -775,6 +775,7 @@ namespace HelixToolkit.UWP
                         renderContext.SSAOEnabled = RenderConfiguration.EnableSSAO;
                         renderContext.SSAOBias = RenderConfiguration.SSAOBias;
                         renderContext.SSAOIntensity = RenderConfiguration.SSAOIntensity;
+                        RenderContext.OITDepthPeelingIteration = RenderConfiguration.OITDepthPeelingIteration;
                     }
                     renderBuffer.VSyncInterval = RenderConfiguration.EnableVSync ? 1 : 0;
                     var updateSceneGraph = UpdateSceneGraphRequested;

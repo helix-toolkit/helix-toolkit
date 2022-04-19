@@ -1,8 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        
-
-    </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <Copyright>Copyright (C) Helix Toolkit 2019.</Copyright>
@@ -53,6 +49,7 @@
     <None Remove="Resources\hsMeshTriTessellation.cso" />
     <None Remove="Resources\psBillboardText.cso" />
     <None Remove="Resources\psBillboardTextOIT.cso" />
+    <None Remove="Resources\psBillboardTextOITDP.cso" />
     <None Remove="Resources\psColor.cso" />
     <None Remove="Resources\psDepthStencilOnly.cso" />
     <None Remove="Resources\psDiffuseMap.cso" />
@@ -76,17 +73,23 @@
     <None Remove="Resources\psLuma.cso" />
     <None Remove="Resources\psMeshBlinnPhong.cso" />
     <None Remove="Resources\psMeshBlinnPhongOIT.cso" />
+    <None Remove="Resources\psMeshBlinnPhongOITDP.cso" />
     <None Remove="Resources\psMeshBlinnPhongOITQuad.cso" />
     <None Remove="Resources\psMeshClipPlaneBackface.cso" />
     <None Remove="Resources\psMeshClipPlaneQuad.cso" />
     <None Remove="Resources\psMeshColorStripe.cso" />
     <None Remove="Resources\psMeshDiffuseMapOIT.cso" />
+    <None Remove="Resources\psMeshDiffuseMapOITDP.cso" />
+    <None Remove="Resources\psMeshOITDPFinal.cso" />
+    <None Remove="Resources\psMeshOITDPFirst.cso" />
     <None Remove="Resources\psMeshPBR.cso" />
     <None Remove="Resources\psMeshPBROIT.cso" />
+    <None Remove="Resources\psMeshPBROITDP.cso" />
     <None Remove="Resources\psMeshXRay.cso" />
     <None Remove="Resources\psNormals.cso" />
     <None Remove="Resources\psParticle.cso" />
     <None Remove="Resources\psParticleOIT.cso" />
+    <None Remove="Resources\psParticleOITDP.cso" />
     <None Remove="Resources\psPlaneGrid.cso" />
     <None Remove="Resources\psPoint.cso" />
     <None Remove="Resources\psPositions.cso" />
@@ -103,6 +106,7 @@
     <None Remove="Resources\psVolumeDiffuse.cso" />
     <None Remove="Resources\psWireframe.cso" />
     <None Remove="Resources\psWireframeOIT.cso" />
+    <None Remove="Resources\psWireframeOITDP.cso" />
     <None Remove="Resources\vsBillboard.cso" />
     <None Remove="Resources\vsBillboardInstancing.cso" />
     <None Remove="Resources\vsBoneSkinningBasic.cso" />
@@ -143,7 +147,12 @@
     <EmbeddedResource Include="Resources\arial.dds" />
     <EmbeddedResource Include="Resources\gsLineArrowHead.cso" />
     <EmbeddedResource Include="Resources\gsLineArrowHeadTail.cso" />
+    <EmbeddedResource Include="Resources\psBillboardTextOITDP.cso" />
     <EmbeddedResource Include="Resources\psEffectOutlineSmooth.cso" />
+    <EmbeddedResource Include="Resources\psMeshBlinnPhongOITDP.cso" />
+    <EmbeddedResource Include="Resources\psMeshDiffuseMapOITDP.cso" />
+    <EmbeddedResource Include="Resources\psMeshOITDPFinal.cso" />
+    <EmbeddedResource Include="Resources\psMeshOITDPFirst.cso" />
     <EmbeddedResource Include="Resources\psMeshPBROIT.cso" />
   </ItemGroup>
   <ItemGroup>
@@ -188,10 +197,12 @@
     <EmbeddedResource Include="Resources\psMeshColorStripe.cso" />
     <EmbeddedResource Include="Resources\psMeshDiffuseMapOIT.cso" />
     <EmbeddedResource Include="Resources\psMeshPBR.cso" />
+    <EmbeddedResource Include="Resources\psMeshPBROITDP.cso" />
     <EmbeddedResource Include="Resources\psMeshXRay.cso" />
     <EmbeddedResource Include="Resources\psNormals.cso" />
     <EmbeddedResource Include="Resources\psParticle.cso" />
     <EmbeddedResource Include="Resources\psParticleOIT.cso" />
+    <EmbeddedResource Include="Resources\psParticleOITDP.cso" />
     <EmbeddedResource Include="Resources\psPlaneGrid.cso" />
     <EmbeddedResource Include="Resources\psPoint.cso" />
     <EmbeddedResource Include="Resources\psPositions.cso" />
@@ -208,6 +219,7 @@
     <EmbeddedResource Include="Resources\psVolumeDiffuse.cso" />
     <EmbeddedResource Include="Resources\psWireframe.cso" />
     <EmbeddedResource Include="Resources\psWireframeOIT.cso" />
+    <EmbeddedResource Include="Resources\psWireframeOITDP.cso" />
     <EmbeddedResource Include="Resources\vsBillboard.cso" />
     <EmbeddedResource Include="Resources\vsBillboardInstancing.cso" />
     <EmbeddedResource Include="Resources\vsBoneSkinningBasic.cso" />
