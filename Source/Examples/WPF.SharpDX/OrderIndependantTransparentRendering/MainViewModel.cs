@@ -8,13 +8,18 @@ namespace OrderIndependentTransparentRendering
 {
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Model;
+    using SharpDX;
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Media3D = System.Windows.Media.Media3D;
-
+    public enum MaterialType
+    {
+        BlinnPhong, PBR, Diffuse
+    };
     public class MainViewModel : BaseViewModel
     {
         private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;";
@@ -66,9 +71,71 @@ namespace OrderIndependentTransparentRendering
             get { return highlightSeparated; }
         }
 
+        private bool oitWeightModeEnabled = false;
+        public bool OITWeightedModeEnabled
+        {
+            set
+            {
+                SetValue(ref oitWeightModeEnabled, value);
+            }
+            get { return oitWeightModeEnabled; }
+        }
+
+        private bool oitDepthPeelModeEnabled = true;
+        public bool OITDepthPeelModeEnabled
+        {
+            set
+            {
+                SetValue(ref oitDepthPeelModeEnabled, value);
+            }
+            get { return oitDepthPeelModeEnabled; }
+        }
+
+        private OITRenderType oitRenderType = OITRenderType.DepthPeeling;
+        public OITRenderType OITRenderType
+        {
+            set
+            {
+                if(SetValue(ref oitRenderType, value))
+                {
+                    switch (value)
+                    {
+                        case OITRenderType.None:
+                            OITDepthPeelModeEnabled = OITWeightedModeEnabled = false;
+                            break;
+                        case OITRenderType.DepthPeeling:
+                            OITDepthPeelModeEnabled = true;
+                            OITWeightedModeEnabled = false;
+                            break;
+                        case OITRenderType.SinglePassWeighted:
+                            oitDepthPeelModeEnabled = false;
+                            OITWeightedModeEnabled = true;
+                            break;
+                    }
+                }
+            }
+            get => oitRenderType;
+        }
+
+        private MaterialType materialType = MaterialType.BlinnPhong;
+        public MaterialType MaterialType
+        {
+            set
+            {
+                if(SetValue(ref materialType, value))
+                {
+                    UpdateMaterials();
+                }
+            }
+            get => materialType;
+        }
+
         public OITWeightMode[] OITWeights { get; } = new OITWeightMode[] { OITWeightMode.Linear0, OITWeightMode.Linear1, OITWeightMode.Linear2, OITWeightMode.NonLinear };
 
         public OITRenderType[] OITRenderTypes { get; } = new OITRenderType[] { OITRenderType.None, OITRenderType.DepthPeeling, OITRenderType.SinglePassWeighted };
+
+        public MaterialType[] MaterialTypes { get; } = new MaterialType[] { MaterialType.BlinnPhong, MaterialType.PBR, MaterialType.Diffuse };
+
 
         public ICommand ResetCameraCommand
         {
@@ -76,6 +143,9 @@ namespace OrderIndependentTransparentRendering
         }
 
         private SynchronizationContext context = SynchronizationContext.Current;
+
+
+        private readonly Random rnd = new Random();
 
         public MainViewModel()
         {
@@ -188,7 +258,7 @@ namespace OrderIndependentTransparentRendering
         public void AttachModelList(List<Object3D> objs)
         {
             
-            Random rnd = new Random();
+            var rnd = new Random();
 
             foreach (var ob in objs)
             {
@@ -198,36 +268,60 @@ namespace OrderIndependentTransparentRendering
                     var s = new MeshGeometryModel3D
                     {
                         Geometry = ob.Geometry,
-                        DepthBias = -100,
-                        SlopeScaledDepthBias = 0,
-                        CullMode = SharpDX.Direct3D11.CullMode.Back
+                        IsTransparent = true,
+                        DepthBias = -100
                     };
-                    if (ob.Material is HelixToolkit.Wpf.SharpDX.Model.PhongMaterialCore p)
-                    {
-                        var diffuse = p.DiffuseColor;
-                        diffuse.Red = (float)rnd.NextDouble();
-                        diffuse.Green = (float)rnd.NextDouble();
-                        diffuse.Blue = (float)rnd.NextDouble();
-                        diffuse.Alpha = 0.8f;//(float)(Math.Min(0.8, Math.Max(0.2, rnd.NextDouble())));
-                        p.DiffuseColor = diffuse;
-                        if (diffuse.Alpha < 0.9)
-                        {
-                            s.IsTransparent = true;
-                        }
-                        s.Material = new HelixToolkit.Wpf.SharpDX.Model.PBRMaterialCore()
-                        {
-                            AlbedoColor = diffuse,
-                            MetallicFactor = 0.3f, RoughnessFactor = 0.8f,
-                        };
-                    }
-
-                    if (ob.Transform != null && ob.Transform.Count > 0)
-                    {
-                        s.Instances = ob.Transform;
-                    }
+                    UpdateMaterial(s);
                     this.ModelGeometry.Add(s);
                 }, null);
             }
+        }
+
+        private void UpdateMaterials()
+        {
+            foreach (var geo in ModelGeometry)
+            {
+                if (geo is MeshGeometryModel3D mesh)
+                {
+                    UpdateMaterial(mesh);
+                }
+            }
+        }
+
+        private void UpdateMaterial(MeshGeometryModel3D mesh)
+        {
+            var diffuse = new Color4();
+            diffuse.Red = (float)rnd.NextDouble();
+            diffuse.Green = (float)rnd.NextDouble();
+            diffuse.Blue = (float)rnd.NextDouble();
+            diffuse.Alpha = 1;
+            diffuse.Alpha = 0.6f;
+            Material material = null;
+            switch (materialType)
+            {
+                case MaterialType.BlinnPhong:
+                    material = new PhongMaterial()
+                    {
+                        DiffuseColor = diffuse
+                    };
+                    break;
+                case MaterialType.PBR:
+                    material = new PBRMaterial()                    
+                    {
+                        AlbedoColor = diffuse,
+                        MetallicFactor = 0.7f,
+                        RoughnessFactor = 0.6f,
+                        ReflectanceFactor = 0.2, 
+                    };
+                    break;
+                case MaterialType.Diffuse:
+                    material = new DiffuseMaterial()
+                    {
+                        DiffuseColor = diffuse
+                    };
+                    break;
+            }
+            mesh.Material = material;
         }
     }
 }
