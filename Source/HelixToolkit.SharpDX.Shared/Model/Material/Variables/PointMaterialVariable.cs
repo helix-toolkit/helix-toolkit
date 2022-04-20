@@ -42,10 +42,12 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The material core.</param>
-            public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore materialCore)
+            /// <param name="defaultPassName">Default pass name</param>
+            public PointMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PointMaterialCore materialCore, 
+                string defaultPassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
             {
-                PointPass = technique[DefaultPassNames.Default];
+                PointPass = technique[defaultPassName];
                 ShadowPass = technique[DefaultPassNames.ShadowPass];
                 DepthPass = technique[DefaultPassNames.DepthPrepass];
                 this.material = materialCore;

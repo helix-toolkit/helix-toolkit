@@ -118,13 +118,14 @@ namespace HelixToolkit.UWP
             }
             private ShaderPass currentMaterialPass => EnableTessellation ? TessellationPass : MaterialPass;
 
-            public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core)
+            public PBRMaterialVariable(IEffectsManager manager, IRenderTechnique technique, PBRMaterialCore core,
+                string defaultPassName = DefaultPassNames.PBR)
                 : base(manager, technique, DefaultMeshConstantBufferDesc, core)
             {
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
                 material = core;
-                MaterialPass = technique[DefaultPassNames.PBR];
+                MaterialPass = technique[defaultPassName];
                 OITPass = technique[DefaultPassNames.PBROITPass];
                 OITDepthPeelingInit = technique[DefaultPassNames.OITDepthPeelingInit];
                 OITDepthPeeling = technique[DefaultPassNames.PBROITDPPass];

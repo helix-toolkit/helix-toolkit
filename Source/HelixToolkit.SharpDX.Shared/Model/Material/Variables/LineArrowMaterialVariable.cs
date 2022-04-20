@@ -25,8 +25,10 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The material core.</param>
-            public LineArrowMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineArrowHeadMaterialCore materialCore)
-                : base(manager, technique, materialCore)
+            /// <param name="defaultPassName">Default pass name</param>
+            public LineArrowMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineArrowHeadMaterialCore materialCore,
+                string defaultPassName = DefaultPassNames.Default)
+                : base(manager, technique, materialCore, defaultPassName)
             {
                 this.material = materialCore;
             }

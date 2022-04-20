@@ -62,10 +62,12 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The core.</param>
-            public BillboardMaterialVariable(IEffectsManager manager, IRenderTechnique technique, BillboardMaterialCore materialCore)
+            /// <param name="defaultPassName">Default pass name</param>
+            public BillboardMaterialVariable(IEffectsManager manager, IRenderTechnique technique, BillboardMaterialCore materialCore,
+                string defaultPassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
             {
-                BillboardPass = technique[DefaultPassNames.Default];
+                BillboardPass = technique[defaultPassName];
                 OITPass = technique[DefaultPassNames.OITPass];
                 OITDepthPeelingInit = technique[DefaultPassNames.OITDepthPeelingInit];
                 OITDepthPeeling = technique[DefaultPassNames.OITDepthPeeling];
