@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## Next Release
 We did some major code refactoring and changes in this release.
+### New
+1. Support Depth peeling based order independent transparency rendering. (WPF.SharpDX/UWP/Core)
 
 ### Improvement
 1. Improved constant buffer array management in `MaterialVariable` and `ConstantBufferComponent`. Use single array to hold all structs used by material with same size.(WPF.SharpDX/UWP/Core)
