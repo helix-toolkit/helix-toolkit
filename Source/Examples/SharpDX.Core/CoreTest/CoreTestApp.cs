@@ -68,8 +68,7 @@ namespace CoreTest
         private AmbientLightNode ambientLight;
         private const int NumItems = 400;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
-        private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
-        private MaterialCore[] materialList;
+        private List<Tuple<bool, MaterialCore>> materials = new List<Tuple<bool, MaterialCore>>();
         private long previousTime;
         private bool resizeRequested = false;
         private CameraController cameraController;
@@ -189,19 +188,22 @@ namespace CoreTest
             groupPoints = new GroupNode();
             groupEffects = new GroupNode();
             InitializeMaterials();
-            materialList = materials.Values.ToArray();
-            var materialCount = materialList.Length;
+            var materialCount = materials.Count;
 
             for (int i = 0; i < NumItems; ++i)
             {
                 var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
-                groupSphere.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                var material = materials[i % materialCount];
+                groupSphere.AddChildNode(new MeshNode() { Geometry = sphere, IsTransparent = material.Item1, Material = material.Item2, 
+                    ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
 
             for (int i = 0; i < NumItems; ++i)
             {
                 var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                groupBox.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                var material = materials[i % materialCount];
+                groupBox.AddChildNode(new MeshNode() { Geometry = box, IsTransparent = material.Item1, Material = material.Item2, 
+                    ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
 
             for (int i = 0; i < NumItems; ++i)
@@ -254,16 +256,32 @@ namespace CoreTest
         {
             var diffuse = TextureModel.Create("TextureCheckerboard2.jpg");
             var normal = TextureModel.Create("TextureCheckerboard2_dot3.jpg");
-            materials.Add("red", new DiffuseMaterialCore() { DiffuseColor = Color.Red, DiffuseMap = diffuse });
-            materials.Add("green", new DiffuseMaterialCore() { DiffuseColor = Color.Green, DiffuseMap = diffuse });
-            materials.Add("blue", new DiffuseMaterialCore() { DiffuseColor = Color.Blue, DiffuseMap = diffuse });
-            materials.Add("DodgerBlue", new PhongMaterialCore() { DiffuseColor = Color.DodgerBlue, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal });
-            materials.Add("Orange", new PhongMaterialCore() { DiffuseColor = Color.Orange, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal });
-            materials.Add("PaleGreen", new PhongMaterialCore() { DiffuseColor = Color.PaleGreen, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal });
-            materials.Add("normal", new NormalMaterialCore());
-            materials.Add("pbrBeige", new PBRMaterialCore() { AlbedoColor = Color.Beige, MetallicFactor = 0.8f, RoughnessFactor = 0.6f });
-            materials.Add("pbrBisque", new PBRMaterialCore() { AlbedoColor = Color.Bisque, MetallicFactor = 0.4f, RoughnessFactor = 0.9f });
-            materials.Add("pbrChartreuse", new PBRMaterialCore() { AlbedoColor = Color.Chartreuse, MetallicFactor = 0.2f, RoughnessFactor = 0.2f });
+            materials.Add(new Tuple<bool, MaterialCore>(false, new DiffuseMaterialCore() { DiffuseColor = Color.Red, DiffuseMap = diffuse }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new DiffuseMaterialCore() { DiffuseColor = Color.Green, DiffuseMap = diffuse }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new DiffuseMaterialCore() { DiffuseColor = Color.Blue, DiffuseMap = diffuse }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore() { DiffuseColor = Color.DodgerBlue, ReflectiveColor = Color.DarkGray, 
+                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore() { DiffuseColor = Color.Orange, ReflectiveColor = Color.DarkGray, 
+                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PhongMaterialCore() { DiffuseColor = Color.PaleGreen, ReflectiveColor = Color.DarkGray, 
+                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new NormalMaterialCore()));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PBRMaterialCore() { AlbedoColor = Color.Beige, MetallicFactor = 0.8f, RoughnessFactor = 0.6f }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PBRMaterialCore() { AlbedoColor = Color.Bisque, MetallicFactor = 0.4f, RoughnessFactor = 0.9f }));
+            materials.Add(new Tuple<bool, MaterialCore>(false, new PBRMaterialCore() { AlbedoColor = Color.Chartreuse, MetallicFactor = 0.2f, RoughnessFactor = 0.2f }));
+
+            materials.Add(new Tuple<bool, MaterialCore>(true, new DiffuseMaterialCore() { DiffuseColor = new Color4(1, 0, 1, 0.6f), DiffuseMap = diffuse }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new DiffuseMaterialCore() { DiffuseColor = new Color4(0, 1, 1, 0.4f), DiffuseMap = diffuse }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new DiffuseMaterialCore() { DiffuseColor = new Color4(1, 0, 1, 0.3f), DiffuseMap = diffuse }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore() { DiffuseColor = new Color4(1, 1, 0, 0.6f), ReflectiveColor = Color.DarkGray, 
+                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore() { DiffuseColor = new Color4(0, 1, 1, 0.4f), ReflectiveColor = Color.DarkGray,
+                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PhongMaterialCore() { DiffuseColor = new Color4(1, 0, 1, 0.3f), ReflectiveColor = Color.DarkGray,
+                SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PBRMaterialCore() { AlbedoColor = new Color4(1, 1, 0, 0.6f), MetallicFactor = 0.8f, RoughnessFactor = 0.6f }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PBRMaterialCore() { AlbedoColor = new Color4(0, 1, 1, 0.4f), MetallicFactor = 0.4f, RoughnessFactor = 0.9f }));
+            materials.Add(new Tuple<bool, MaterialCore>(true, new PBRMaterialCore() { AlbedoColor = new Color4(1, 0, 1, 0.6f), MetallicFactor = 0.2f, RoughnessFactor = 0.2f }));
         }
 
         private void Viewport_OnErrorOccurred(object sender, Exception e)

@@ -705,10 +705,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.IsRendering = this.Visibility == System.Windows.Visibility.Visible;
                 this.renderHostInternal.RenderConfiguration.RenderD2D = EnableD2DRendering;
                 this.renderHostInternal.RenderConfiguration.AutoUpdateOctree = EnableAutoOctreeUpdate;
-                this.renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;
+                this.renderHostInternal.RenderConfiguration.OITRenderType = this.OITRenderMode;
                 this.renderHostInternal.RenderConfiguration.OITWeightPower = (float)OITWeightPower;
                 this.renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                 this.renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
+                this.renderHostInternal.RenderConfiguration.OITDepthPeelingIteration = OITDepthPeelingIteration;
                 this.renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                 this.renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
                 this.renderHostInternal.RenderConfiguration.EnableSSAO = EnableSSAO;

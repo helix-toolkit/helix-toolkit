@@ -25,13 +25,8 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The material core.</param>
-            /// <param name="linePassName">Name of the line pass.</param>
-            /// <param name="shadowPassName">Name of the shadow pass.</param>
-            /// <param name="depthPassName">Name of the depth pass</param>
-            public LineArrowMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineArrowHeadMaterialCore materialCore,
-                string linePassName = DefaultPassNames.Default, string shadowPassName = DefaultPassNames.ShadowPass,
-                string depthPassName = DefaultPassNames.DepthPrepass)
-                : base(manager, technique, materialCore, linePassName, shadowPassName, depthPassName)
+            public LineArrowMaterialVariable(IEffectsManager manager, IRenderTechnique technique, LineArrowHeadMaterialCore materialCore)
+                : base(manager, technique, materialCore)
             {
                 this.material = materialCore;
             }

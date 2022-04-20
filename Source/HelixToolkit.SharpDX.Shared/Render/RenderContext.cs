@@ -30,6 +30,27 @@ namespace HelixToolkit.UWP
     using Utilities;
     using Render;
 
+    public enum OITRenderType
+    {
+        None,
+        /// <summary>
+        /// Use weighted order independent transparent rendering. This OIT is the fastest but not color accurate in many cases.
+        /// </summary>
+        SinglePassWeighted,
+        /// <summary>
+        /// Use classic depth peeling method for independent transparent rendering.
+        /// </summary>
+        DepthPeeling
+    }
+
+    public enum OITRenderStage
+    {
+        None,
+        SinglePassWeighted,
+        DepthPeelingInitMinMaxZ,
+        DepthPeeling,
+    }
+
     /// <summary>
     /// The render-context is currently generated per frame
     /// Optimizations might be possible
@@ -221,12 +242,12 @@ namespace HelixToolkit.UWP
         public bool IsDeferredPass;
 
         /// <summary>
-        /// Gets or sets a value indicating whether is order independent transparent pass.
+        /// Gets or sets a value indicating order independent transparent pass stage.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is oit pass; otherwise, <c>false</c>.
+        ///   <c>None</c> It is not using oit pass <c>false</c>.
         /// </value>
-        public bool IsOITPass = false;
+        public OITRenderStage OITRenderStage = OITRenderStage.None;
 
         /// <summary>
         /// Gets or sets the name of the custom pass.
@@ -351,6 +372,14 @@ namespace HelixToolkit.UWP
                 return (OITWeightMode)globalTransform.OITWeightMode;
             }
         }
+        /// <summary>
+        /// Depth peeling iteration. Default is 4. 
+        /// Iteration depends on estimating number of overlapping semi-transparent layers to be accurately rendered.
+        /// </summary>
+        public int OITDepthPeelingIteration
+        {
+            set; get;
+        } = 4;
         /// <summary>
         /// Gets or sets a value indicating whether [ssao enabled].
         /// </summary>
