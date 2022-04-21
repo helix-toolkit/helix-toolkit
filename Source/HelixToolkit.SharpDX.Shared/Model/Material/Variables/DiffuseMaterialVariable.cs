@@ -106,7 +106,8 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The material core.</param>
-            private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, DiffuseMaterialCore materialCore)
+            private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, DiffuseMaterialCore materialCore,
+                string defaultPassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultMeshConstantBufferDesc, materialCore)
             {
                 this.material = materialCore;
@@ -114,7 +115,7 @@ namespace HelixToolkit.UWP
                 samplerDiffuseSlot = samplerShadowSlot = -1;
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
-                MaterialPass = technique[DefaultPassNames.Default];
+                MaterialPass = technique[defaultPassName];
                 OITPass = technique[DefaultPassNames.DiffuseOIT];
                 OITDepthPeelingInit = technique[DefaultPassNames.OITDepthPeelingInit];
                 OITDepthPeeling = technique[DefaultPassNames.DiffuseOITDP];

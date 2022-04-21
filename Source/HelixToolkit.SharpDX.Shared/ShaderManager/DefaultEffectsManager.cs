@@ -1213,7 +1213,7 @@ namespace HelixToolkit.UWP
                         {
                             DefaultVSShaderDescriptions.VSPoint,
                             DefaultGSShaderDescriptions.GSLine,
-                            DefaultPSShaderDescriptions.PSShadow
+                            DefaultPSShaderDescriptions.PSDepthStencilOnly
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess

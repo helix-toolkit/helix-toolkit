@@ -200,6 +200,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\VolumeTextureNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHostPartial_Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DX11RenderHostConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\DepthStencilFormatHelper.cs" />
     <Compile Include="..\HelixToolkit.SharpDX.Shared\ShaderManager\StructArrayPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />

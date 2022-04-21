@@ -180,7 +180,9 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The material core.</param>
-            public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore)
+            /// <param name="defaultPassName">Default pass name</param>
+            public PhongMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore materialCore, 
+                string defaultPassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultMeshConstantBufferDesc, materialCore)
             {
                 this.material = materialCore;
@@ -189,7 +191,7 @@ namespace HelixToolkit.UWP
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
 
-                MaterialPass = technique[DefaultPassNames.Default];
+                MaterialPass = technique[defaultPassName];
                 OITPass = technique[DefaultPassNames.OITPass];
                 OITDepthPeelingInit = technique[DefaultPassNames.OITDepthPeelingInit];
                 OITDepthPeeling = technique[DefaultPassNames.OITDepthPeeling];
