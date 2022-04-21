@@ -349,7 +349,7 @@ namespace HelixToolkit.UWP
                     renderer.RenderToPingPongBuffer(RenderContext, ref renderParameter);
                     renderParameter.IsMSAATexture = false;
                     renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
-                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;
+                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;                                 
                 }
                 if (postEffectNodes.Count > 0)
                 {

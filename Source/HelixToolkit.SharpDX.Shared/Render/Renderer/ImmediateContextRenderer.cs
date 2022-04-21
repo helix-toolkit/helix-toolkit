@@ -332,18 +332,13 @@ namespace HelixToolkit.UWP
             {
                 if (count > 0)
                 {
-                    var hasMSAA = context.RenderHost.RenderBuffer.ColorBufferSampleDesc.Count == 1;
                     var buffer = context.RenderHost.RenderBuffer;
-                    var depthStencilBuffer = hasMSAA ? buffer.DepthStencilBuffer : context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt);
+                    var depthStencilBuffer = buffer.DepthStencilBufferNoMSAA;
                     ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
 
                     for (var i = start; i < start + count; ++i)
                     {
                         renderables[i].Render(context, ImmediateContext);
-                    }
-                    if (!hasMSAA)
-                    {
-                        depthStencilBuffer.Dispose();
                     }
                 }
             }
