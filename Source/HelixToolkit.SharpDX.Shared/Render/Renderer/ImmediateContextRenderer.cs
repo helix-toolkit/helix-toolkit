@@ -163,6 +163,8 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public virtual int RenderTransparent(RenderContext context, FastList<SceneNode> renderables, ref RenderParameter parameter)
             {
+                if (renderables.Count == 0)
+                { return 0; }
                 if (context.RenderHost.RenderConfiguration.OITRenderType != OITRenderType.None
                     && context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
                 {

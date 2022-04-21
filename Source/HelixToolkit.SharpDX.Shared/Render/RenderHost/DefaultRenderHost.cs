@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,7 +45,6 @@ namespace HelixToolkit.UWP
             private OrderablePartitioner<Tuple<int, int>> opaquePartitioner;
             private OrderablePartitioner<Tuple<int, int>> transparentPartitioner;
             private Action FrustumTestAction;
-
             private int numRendered = 0;
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
@@ -330,6 +330,12 @@ namespace HelixToolkit.UWP
                 {
                     needUpdateCores[i].Update(RenderContext, renderer.ImmediateContext);
                 }
+                numRendered += needUpdateCores.Count;
+                if (RenderBuffer.HasMSAA)
+                {
+                    numRendered += DoDepthPrepass();
+                    renderer.SetRenderTargets(ref renderParameter);
+                }
                 renderer.RenderPreProc(RenderContext, preProcNodes, ref renderParameter);
                 numRendered += renderer.RenderOpaque(RenderContext, opaqueNodesInFrustum, ref renderParameter, false);
                 numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter, true);
@@ -396,6 +402,19 @@ namespace HelixToolkit.UWP
                     renderStatistics.NumModel3D = perFrameFlattenedScene.Count;
                     renderStatistics.NumCore3D = numRendered;
                 }
+            }
+
+            private int DoDepthPrepass()
+            {
+                renderer.ImmediateContext.ClearDepthStencilView(RenderBuffer.DepthStencilBufferNoMSAA, 
+                    DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil);
+                renderer.ImmediateContext.SetRenderTarget(RenderBuffer.DepthStencilBufferNoMSAA, null);
+                RenderContext.CustomPassName = DefaultPassNames.DepthPrepass;
+                for (var i = 0; i < PerFrameOpaqueNodesInFrustum.Count; ++i)
+                {
+                    PerFrameOpaqueNodesInFrustum[i].RenderDepth(RenderContext, renderer.ImmediateContext, null);
+                }
+                return PerFrameOpaqueNodesInFrustum.Count;
             }
 
             /// <summary>

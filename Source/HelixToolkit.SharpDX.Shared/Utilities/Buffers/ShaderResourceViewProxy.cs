@@ -347,7 +347,14 @@ namespace HelixToolkit.UWP
                 }
                 textureView = new ShaderResourceView(device, resource);
             }
-
+            /// <summary>
+            /// Creates the view.
+            /// </summary>
+            /// <param name="desc"></param>
+            public void CreateTextureView(ShaderResourceViewDescription desc)
+            {
+                CreateTextureView(ref desc);
+            }
             /// <summary>
             /// Creates the view.
             /// </summary>
@@ -383,6 +390,20 @@ namespace HelixToolkit.UWP
                 depthStencilView = new DepthStencilView(device, resource);
             }
 
+            public void CreateDepthStencilView(DepthStencilViewDescription desc)
+            {
+                CreateDepthStencilView(ref desc);
+            }
+
+            public void CreateDepthStencilView(ref DepthStencilViewDescription desc)
+            {
+                RemoveAndDispose(ref depthStencilView);
+                if (resource == null)
+                {
+                    return;
+                }
+                depthStencilView = new DepthStencilView(device, resource, desc);
+            }
             /// <summary>
             /// Creates the 1D texture view from data array.
             /// </summary>

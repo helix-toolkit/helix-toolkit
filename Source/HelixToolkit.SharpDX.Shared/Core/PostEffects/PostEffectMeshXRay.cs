@@ -68,7 +68,6 @@ namespace HelixToolkit.UWP
         {
             #region Variables
             private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
-            private DepthPrepassCore depthPrepassCore;
             private readonly ConstantBufferComponent modelCB;
             private BorderEffectStruct modelStruct;
             #endregion
@@ -156,15 +155,11 @@ namespace HelixToolkit.UWP
 
             protected override bool OnAttach(IRenderTechnique technique)
             {
-                depthPrepassCore = new DepthPrepassCore();
-                depthPrepassCore.Attach(technique);
                 return true;
             }
 
             protected override void OnDetach()
             {
-                depthPrepassCore.Detach();
-                RemoveAndDispose(ref depthPrepassCore);
             }
 
             /// <summary>
@@ -175,19 +170,12 @@ namespace HelixToolkit.UWP
             public override void Render(RenderContext context, DeviceContextProxy deviceContext)
             {
                 var buffer = context.RenderHost.RenderBuffer;
-                var hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
                 var dPass = EnableDoublePass;
-                var depthStencilBuffer = hasMSAA ? context.GetOffScreenDS(OffScreenTextureSize.Full, Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
+                var depthStencilBuffer = buffer.DepthStencilBufferNoMSAA;
                 deviceContext.SetRenderTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV);
                 var viewport = context.Viewport;
                 deviceContext.SetViewport(ref viewport);
                 deviceContext.SetScissorRectangle(ref viewport);
-                if (hasMSAA)
-                {
-                    //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.
-                    deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
-                    depthPrepassCore.Render(context, deviceContext);
-                }
                 deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 1, 0);
                 if (dPass)
                 {
@@ -266,11 +254,6 @@ namespace HelixToolkit.UWP
                             mesh.RenderCustom(context, deviceContext);
                         }
                     }
-                }
-                if (hasMSAA)
-                {
-                    deviceContext.ClearRenderTagetBindings();
-                    depthStencilBuffer.Dispose();
                 }
             }
 
