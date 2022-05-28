@@ -79,6 +79,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
     - .NET CORE
       - HelixToolkit.SharpDX.Core
         - HelixToolkit.SharpDX.Core.Wpf
+        - HelixToolkit.WinUI (Experimental)
     - HelixToolkit.Assimp
 
 ## Bug Report
@@ -91,15 +92,15 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
-#### 2022-01-19
-[v2.20.1](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.20.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.20.1)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.20.1)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.20.1)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.20.1)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.20.1)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.20.1)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.20.1)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.20.1)
+#### 2022-02-01
+[v2.20.2](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.20.2) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.20.2)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.20.2)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.20.2)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.20.2)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.20.2)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.20.2)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.20.2)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.20.2)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)

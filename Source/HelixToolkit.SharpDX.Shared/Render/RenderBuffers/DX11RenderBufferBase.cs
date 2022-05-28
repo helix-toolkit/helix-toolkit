@@ -76,6 +76,21 @@ namespace HelixToolkit.UWP
                 {
                     return depthStencilBuffer;
                 }
+            }            
+            
+            /// <summary>
+            /// The depth stencil buffer
+            /// </summary>
+            private ShaderResourceViewProxy depthStencilBufferNoMSAA;
+            /// <summary>
+            /// The depth stencil buffer
+            /// </summary>
+            public ShaderResourceViewProxy DepthStencilBufferNoMSAA
+            {
+                get
+                {
+                    return depthStencilBufferNoMSAA;
+                }
             }
             /// <summary>
             /// The D2D controls
@@ -278,6 +293,10 @@ namespace HelixToolkit.UWP
             {
                 private set; get;
             }
+            /// <summary>
+            /// Whether render target/depth stencil buffer are MSAA buffers.
+            /// </summary>
+            public bool HasMSAA => ColorBufferSampleDesc.Count > 1;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DX11RenderBufferProxyBase"/> class.
@@ -291,6 +310,43 @@ namespace HelixToolkit.UWP
                 this.UseDepthStencilBuffer = useDepthStencilBuffer;
             }
 
+            private void CreateNonMSAADepthStencilBuffer(int width, int height)
+            {
+                if (HasMSAA)
+                {
+                    var depthFormat = Format.D32_Float_S8X24_UInt;
+                    var depthdesc = new Texture2DDescription
+                    {
+                        BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource,
+                        Format = DepthStencilFormatHelper.ComputeTextureFormat(depthFormat, out _),
+                        Width = width,
+                        Height = height,
+                        MipLevels = 1,
+                        SampleDescription = new SampleDescription(1, 0),
+                        Usage = ResourceUsage.Default,
+                        OptionFlags = ResourceOptionFlags.None,
+                        CpuAccessFlags = CpuAccessFlags.None,
+                        ArraySize = 1,
+                    };
+                    depthStencilBufferNoMSAA = new ShaderResourceViewProxy(Device, depthdesc);
+                    depthStencilBufferNoMSAA.CreateDepthStencilView(new DepthStencilViewDescription()
+                    {
+                        Format = DepthStencilFormatHelper.ComputeDSVFormat(depthFormat),
+                        Dimension = DepthStencilViewDimension.Texture2D
+                    });
+                    depthStencilBufferNoMSAA.CreateTextureView(new ShaderResourceViewDescription() 
+                    { 
+                        Format = DepthStencilFormatHelper.ComputeSRVFormat(depthFormat),
+                        Dimension = global::SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
+                        Texture2D = new ShaderResourceViewDescription.Texture2DResource() { MipLevels = 1 }
+                    });
+                }
+                else
+                {
+                    depthStencilBufferNoMSAA = depthStencilBuffer;
+                }
+            }
+
             private ShaderResourceViewProxy CreateRenderTarget(int width, int height, MSAALevel msaa)
             {
 #if MSAA
@@ -301,6 +357,7 @@ namespace HelixToolkit.UWP
                 DisposeBuffers();
                 ColorBufferSampleDesc = GetMSAASampleDescription();
                 OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer, out colorBuffer, out depthStencilBuffer);
+                CreateNonMSAADepthStencilBuffer(width, height);
                 backBuffer = OnCreateBackBuffer(width, height);
                 backBuffer.CreateRenderTargetView();
                 #region Initialize Texture Pool
@@ -412,8 +469,9 @@ namespace HelixToolkit.UWP
                 DeviceContext2D.Target = null;
                 DisposeTexturePools();
                 RemoveAndDispose(ref d2dTarget);
-                RemoveAndDispose(ref colorBuffer);
+                RemoveAndDispose(ref colorBuffer);               
                 RemoveAndDispose(ref depthStencilBuffer);
+                RemoveAndDispose(ref depthStencilBufferNoMSAA);
                 RemoveAndDispose(ref backBuffer);
             }
 
@@ -482,7 +540,7 @@ namespace HelixToolkit.UWP
                     var depthdesc = new Texture2DDescription
                     {
                         BindFlags = BindFlags.DepthStencil,
-                        Format = Format.D32_Float_S8X24_UInt,
+                        Format = DepthStencilFormatHelper.ComputeTextureFormat(Format.D32_Float_S8X24_UInt, out var canUseAsShaderResource),
                         Width = width,
                         Height = height,
                         MipLevels = 1,
@@ -492,8 +550,27 @@ namespace HelixToolkit.UWP
                         CpuAccessFlags = CpuAccessFlags.None,
                         ArraySize = 1,
                     };
+                    canUseAsShaderResource &= !HasMSAA;
+                    if (canUseAsShaderResource)
+                    {
+                        depthdesc.BindFlags |= BindFlags.ShaderResource;
+                    }
                     depthStencilBuffer = new ShaderResourceViewProxy(Device, depthdesc);
-                    depthStencilBuffer.CreateDepthStencilView();
+                    depthStencilBuffer.CreateDepthStencilView(
+                        new DepthStencilViewDescription() 
+                        {
+                            Format = DepthStencilFormatHelper.ComputeDSVFormat(depthdesc.Format),
+                            Dimension = HasMSAA ? DepthStencilViewDimension.Texture2DMultisampled : DepthStencilViewDimension.Texture2D
+                        });
+                    if (canUseAsShaderResource)
+                    {
+                        depthStencilBuffer.CreateTextureView(new ShaderResourceViewDescription()
+                        {
+                            Format = DepthStencilFormatHelper.ComputeSRVFormat(depthdesc.Format), 
+                            Dimension = global::SharpDX.Direct3D.ShaderResourceViewDimension.Texture2D,
+                            Texture2D = new ShaderResourceViewDescription.Texture2DResource() { MipLevels = depthdesc.MipLevels }
+                        });
+                    }
                 }
                 else
                 {

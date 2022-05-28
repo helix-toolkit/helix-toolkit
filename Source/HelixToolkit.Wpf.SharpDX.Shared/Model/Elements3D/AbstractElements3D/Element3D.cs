@@ -334,6 +334,22 @@ namespace HelixToolkit.Wpf.SharpDX
             get; private set;
         }
 
+        
+        public new bool Handled { // not overridable
+            get
+            {
+                return base.Handled;
+            }
+            set 
+            {
+                if (OriginalInputEventArgs != null)
+                    OriginalInputEventArgs.Handled = value; // ensuring that the original input event is also marked as Handled
+                base.Handled = value;
+            }
+        }   
+
+
+
         public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null, InputEventArgs originalInputEventArgs = null)
             : base(routedEvent, source)
         {

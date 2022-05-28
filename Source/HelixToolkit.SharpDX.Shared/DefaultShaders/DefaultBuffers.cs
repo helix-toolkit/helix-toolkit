@@ -62,6 +62,7 @@ namespace HelixToolkit.UWP
             //----------Order Independent Transparent-----------
             public const string OITColorTB = "texOITColor";
             public const string OITAlphaTB = "texOITAlpha";
+            public const string OITSortCB = "cbOITSortRender";
             //----------Bone Skin--------------
             public const string BoneSkinSB = "skinMatrices"; // Structured Buffer
 

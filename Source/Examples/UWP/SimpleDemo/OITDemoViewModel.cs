@@ -50,7 +50,7 @@ namespace SimpleDemoW10
         public LineGeometry3D GridModel { private set; get; }
         public Matrix GridTransform { private set; get; } = Matrix.Translation(60, -10, 0);
         public OITWeightMode[] OITWeights { get; } = new OITWeightMode[] { OITWeightMode.Linear0, OITWeightMode.Linear1, OITWeightMode.Linear2, OITWeightMode.NonLinear };
-
+        public OITRenderType[] OITRenderTypes { get; } = new OITRenderType[] { OITRenderType.None, OITRenderType.DepthPeeling, OITRenderType.SinglePassWeighted };
         private bool showWireframe = false;
 
         public bool ShowWireframe
@@ -70,7 +70,51 @@ namespace SimpleDemoW10
                 return showWireframe;
             }
         }
+        private bool oitWeightModeEnabled = false;
+        public bool OITWeightedModeEnabled
+        {
+            set
+            {
+                Set(ref oitWeightModeEnabled, value);
+            }
+            get { return oitWeightModeEnabled; }
+        }
 
+        private bool oitDepthPeelModeEnabled = true;
+        public bool OITDepthPeelModeEnabled
+        {
+            set
+            {
+                Set(ref oitDepthPeelModeEnabled, value);
+            }
+            get { return oitDepthPeelModeEnabled; }
+        }
+
+        private OITRenderType oitRenderType = OITRenderType.DepthPeeling;
+        public OITRenderType OITRenderType
+        {
+            set
+            {
+                if (Set(ref oitRenderType, value))
+                {
+                    switch (value)
+                    {
+                        case OITRenderType.None:
+                            OITDepthPeelModeEnabled = OITWeightedModeEnabled = false;
+                            break;
+                        case OITRenderType.DepthPeeling:
+                            OITDepthPeelModeEnabled = true;
+                            OITWeightedModeEnabled = false;
+                            break;
+                        case OITRenderType.SinglePassWeighted:
+                            oitDepthPeelModeEnabled = false;
+                            OITWeightedModeEnabled = true;
+                            break;
+                    }
+                }
+            }
+            get => oitRenderType;
+        }
         private SynchronizationContext syncContext = SynchronizationContext.Current;
 
         public OITDemoViewModel()

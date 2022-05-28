@@ -52,7 +52,16 @@ namespace HelixToolkit.UWP
             {
                 get;
             }
-            public ShaderPass TransparentPass
+            public ShaderPass OITPass
+            {
+                get;
+            }
+            public ShaderPass OITDepthPeelingInit
+            {
+                get;
+            }
+
+            public ShaderPass OITDepthPeeling
             {
                 get;
             }
@@ -67,6 +76,10 @@ namespace HelixToolkit.UWP
             public ShaderPass WireframeOITPass
             {
                 get;
+            }
+            public ShaderPass WireframeOITDPPass 
+            {
+                get; 
             }
             public ShaderPass DepthPass
             {
@@ -93,17 +106,8 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The material core.</param>
-            /// <param name="materialPassName">Name of the material pass.</param>
-            /// <param name="wireframePassName">Name of the wireframe pass.</param>
-            /// <param name="materialOITPassName">Name of the material oit pass.</param>
-            /// <param name="wireframeOITPassName">Name of the wireframe oit pass.</param>
-            /// <param name="shadowPassName">Name of the shadow pass.</param>
-            /// <param name="depthPassName">Name of the depth pass</param>
             private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, DiffuseMaterialCore materialCore,
-                string materialPassName = DefaultPassNames.Default, string wireframePassName = DefaultPassNames.Wireframe,
-                string materialOITPassName = DefaultPassNames.DiffuseOIT, string wireframeOITPassName = DefaultPassNames.WireframeOITPass,
-                string shadowPassName = DefaultPassNames.ShadowPass,
-                string depthPassName = DefaultPassNames.DepthPrepass)
+                string defaultPassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultMeshConstantBufferDesc, materialCore)
             {
                 this.material = materialCore;
@@ -111,12 +115,15 @@ namespace HelixToolkit.UWP
                 samplerDiffuseSlot = samplerShadowSlot = -1;
                 textureManager = manager.MaterialTextureManager;
                 statePoolManager = manager.StateManager;
-                MaterialPass = technique[materialPassName];
-                TransparentPass = technique[materialOITPassName];
-                ShadowPass = technique[shadowPassName];
-                WireframePass = technique[wireframePassName];
-                WireframeOITPass = technique[wireframeOITPassName];
-                DepthPass = technique[depthPassName];
+                MaterialPass = technique[defaultPassName];
+                OITPass = technique[DefaultPassNames.DiffuseOIT];
+                OITDepthPeelingInit = technique[DefaultPassNames.OITDepthPeelingInit];
+                OITDepthPeeling = technique[DefaultPassNames.DiffuseOITDP];
+                ShadowPass = technique[DefaultPassNames.ShadowPass];
+                WireframePass = technique[DefaultPassNames.Wireframe];
+                WireframeOITPass = technique[DefaultPassNames.WireframeOITPass];
+                WireframeOITDPPass = technique[DefaultPassNames.WireframeOITDPPass];
+                DepthPass = technique[DefaultPassNames.DepthPrepass];
                 UpdateMappings(MaterialPass);
                 CreateTextureViews();
                 CreateSamplers();
@@ -255,7 +262,21 @@ namespace HelixToolkit.UWP
 
             public override ShaderPass GetPass(RenderType renderType, RenderContext context)
             {
-                return renderType == RenderType.Transparent && context.IsOITPass ? TransparentPass : MaterialPass;
+                if (renderType == RenderType.Transparent)
+                {
+                    switch (context.OITRenderStage)
+                    {
+                        case OITRenderStage.SinglePassWeighted:
+                            return OITPass;
+                        case OITRenderStage.DepthPeelingInitMinMaxZ:
+                            return OITDepthPeelingInit;
+                        case OITRenderStage.DepthPeeling:
+                            return OITDepthPeeling;
+                        default:
+                            break;
+                    }
+                }
+                return MaterialPass;
             }
 
             public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)
@@ -270,7 +291,21 @@ namespace HelixToolkit.UWP
 
             public override ShaderPass GetWireframePass(RenderType renderType, RenderContext context)
             {
-                return renderType == RenderType.Transparent && context.IsOITPass ? WireframeOITPass : WireframePass;
+                if (renderType == RenderType.Transparent)
+                {
+                    switch (context.OITRenderStage)
+                    {
+                        case OITRenderStage.SinglePassWeighted:
+                            return WireframeOITPass;
+                        case OITRenderStage.DepthPeelingInitMinMaxZ:
+                            return OITDepthPeelingInit;
+                        case OITRenderStage.DepthPeeling:
+                            return WireframeOITDPPass;
+                        default:
+                            break;
+                    }
+                }
+                return WireframePass;
             }
 
             public override void Draw(DeviceContextProxy deviceContext, IAttachableBufferModel bufferModel, int instanceCount)

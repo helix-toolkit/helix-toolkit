@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP
             private readonly ConstantBufferComponent ssaoCB;
             private const int KernalSize = 32;
             private readonly Vector4[] kernels = new Vector4[KernalSize];
-            private const global::SharpDX.DXGI.Format DEPTHFORMAT = global::SharpDX.DXGI.Format.R32_Typeless;
+            private const global::SharpDX.DXGI.Format DEPTHFORMAT = global::SharpDX.DXGI.Format.D32_Float;
             private const global::SharpDX.DXGI.Format RENDERTARGETFORMAT = global::SharpDX.DXGI.Format.R16G16B16A16_Float;
             private const global::SharpDX.DXGI.Format SSAOTARGETFORMAT = global::SharpDX.DXGI.Format.R16_Float;
 

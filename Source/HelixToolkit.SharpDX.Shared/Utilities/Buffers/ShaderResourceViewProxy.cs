@@ -132,7 +132,36 @@ namespace HelixToolkit.UWP
                 resource = new Texture3D(device, textureDesc);
                 TextureFormat = textureDesc.Format;
             }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture1DDescription textureDesc) : this(device)
+            {
+                resource = new Texture1D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture2DDescription textureDesc) : this(device)
+            {
+                resource = new Texture2D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+            /// </summary>
+            /// <param name="device">The device.</param>
+            /// <param name="textureDesc">The texture desc.</param>
+            public ShaderResourceViewProxy(Device device, ref Texture3DDescription textureDesc) : this(device)
+            {
+                resource = new Texture3D(device, textureDesc);
+                TextureFormat = textureDesc.Format;
+            }
             /// <summary>
             /// 
             /// </summary>
@@ -319,6 +348,26 @@ namespace HelixToolkit.UWP
                 textureView = new ShaderResourceView(device, resource);
             }
             /// <summary>
+            /// Creates the view.
+            /// </summary>
+            /// <param name="desc"></param>
+            public void CreateTextureView(ShaderResourceViewDescription desc)
+            {
+                CreateTextureView(ref desc);
+            }
+            /// <summary>
+            /// Creates the view.
+            /// </summary>
+            public void CreateTextureView(ref ShaderResourceViewDescription desc)
+            {
+                RemoveAndDispose(ref textureView);
+                if (resource == null)
+                {
+                    return;
+                }
+                textureView = new ShaderResourceView(device, resource, desc);
+            }
+            /// <summary>
             /// Creates the render target.
             /// </summary>
             public void CreateRenderTargetView()
@@ -341,6 +390,20 @@ namespace HelixToolkit.UWP
                 depthStencilView = new DepthStencilView(device, resource);
             }
 
+            public void CreateDepthStencilView(DepthStencilViewDescription desc)
+            {
+                CreateDepthStencilView(ref desc);
+            }
+
+            public void CreateDepthStencilView(ref DepthStencilViewDescription desc)
+            {
+                RemoveAndDispose(ref depthStencilView);
+                if (resource == null)
+                {
+                    return;
+                }
+                depthStencilView = new DepthStencilView(device, resource, desc);
+            }
             /// <summary>
             /// Creates the 1D texture view from data array.
             /// </summary>

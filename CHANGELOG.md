@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## Next Release
 We did some major code refactoring and changes in this release.
+### New
+1. Support Depth peeling based order independent transparency rendering. (WPF.SharpDX/UWP/Core)
 
 ### Improvement
 1. Improved constant buffer array management in `MaterialVariable` and `ConstantBufferComponent`. Use single array to hold all structs used by material with same size.(WPF.SharpDX/UWP/Core)
@@ -11,6 +13,17 @@ We did some major code refactoring and changes in this release.
 1. Upgraded the Dot Net minimum requirements from **4.5** to **4.6** on `HelixToolkit.SharpDX.Wpf`. (WPF.SharpDX)
 1. Upgraded net standard from **1.1** to **1.3** on `Helixtoolkit.SharpDX.Core`. (Core)
 1. Improved resource pool implementation. (WPF.SharpDX/UWP/Core)
+1. Relax manipulator binding target type to Elements instead of GeometryModel3D (WPF.SharpDX)
+
+### Fixed
+1. Fix bone skin rendering crash. (WPF.SharpDX/UWP/Core)
+1. Update HelixToolkit.WinUI to support Windows App SDK 1.0 (WinUI)
+
+## [2.20.2] - 2022-02-01
+### Fixed
+1. Fix viewcube edge hit test is not working properly. #1702 (WPF.SharpDX/UWP/Core)
+1. Fix environment map getting black area under certain conditions when using orthographic camera. (WPF.SharpDX/UWP/Core)
+1. Fix null pointer exception if effects manager is not being set on viewport3DX. (WPF.SharpDX/UWP/Core)
 
 ## [2.20.1] - 2022-01-19
 ### Fixed

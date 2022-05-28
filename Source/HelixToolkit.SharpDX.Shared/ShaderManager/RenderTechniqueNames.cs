@@ -98,6 +98,12 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string MeshOITQuad = "MeshOITQuad";
         /// <summary>
+        /// 
+        /// </summary>
+        public const string MeshOITSortRender = "MeshOITSortRender";
+
+        public const string MeshOITDepthPeeling = "MeshOITDeepPeeling";
+        /// <summary>
         /// The post effect fxaa
         /// </summary>
         public const string PostEffectFXAA = "PostEffectFXAA";
@@ -148,6 +154,7 @@ namespace HelixToolkit.UWP
         /// The diffuse oit
         /// </summary>
         public const string DiffuseOIT = "RenderDiffuseOIT";
+        public const string DiffuseOITDP = "RenderDiffuseOITDepthPeeling";
         /// <summary>
         /// 
         /// </summary>
@@ -189,27 +196,41 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string OITPass = "MeshOITPass";
 
+        #region Deep peeling
+        public const string OITDepthPeelingInit = "OITDepthPeelingFirst";
+
+        public const string OITDepthPeeling = "OITDepthPeeling";
+
+        public const string OITDepthPeelingBlending = "OITDepthPeelingBlending";
+
+        public const string OITDepthPeelingFinal = "OITDepthPeelingFinal";
+        #endregion
         /// <summary>
         /// The oit pass PBR
         /// </summary>
         public const string PBROITPass = "MeshPhysicsBasedOITPass";
-
+        public const string PBROITDPPass = "MeshPhysicsBasedOITDepthPeelingPass";
         /// <summary>
         /// 
         /// </summary>
         public const string WireframeOITPass = "WireframeOIT";
+        public const string WireframeOITDPPass = "WireframeOITDP";
         /// <summary>
         /// 
         /// </summary>
         public const string MeshTriTessellation = "MeshTriTessellation";
 
         public const string MeshTriTessellationOIT = "MeshTriTessellationOIT";
+
+        public const string MeshTriTessellationOITDP = "MeshTriTessellationOITDP";
         /// <summary>
         /// 
         /// </summary>
         public const string MeshPBRTriTessellation = "MeshPBRTriTessellation";
 
         public const string MeshPBRTriTessellationOIT = "MeshPBRTriTessellationOIT";
+
+        public const string MeshPBRTriTessellationOITDP = "MeshPBRTriTessellationOITDP";
         /// <summary>
         /// 
         /// </summary>

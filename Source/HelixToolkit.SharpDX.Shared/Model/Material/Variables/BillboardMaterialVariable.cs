@@ -35,7 +35,17 @@ namespace HelixToolkit.UWP
                 get;
             }
 
-            public ShaderPass BillboardOITPass
+            public ShaderPass OITPass
+            {
+                get;
+            }
+
+            public ShaderPass OITDepthPeelingInit
+            {
+                get;
+            }
+
+            public ShaderPass OITDepthPeeling
             {
                 get;
             }
@@ -52,14 +62,15 @@ namespace HelixToolkit.UWP
             /// <param name="manager">The manager.</param>
             /// <param name="technique">The technique.</param>
             /// <param name="materialCore">The core.</param>
-            /// <param name="billboardPassName">Name of the billboard pass.</param>
-            /// <param name="billboardOITPassName">Name of the billboard oit pass.</param>
+            /// <param name="defaultPassName">Default pass name</param>
             public BillboardMaterialVariable(IEffectsManager manager, IRenderTechnique technique, BillboardMaterialCore materialCore,
-                string billboardPassName = DefaultPassNames.Default, string billboardOITPassName = DefaultPassNames.OITPass)
+                string defaultPassName = DefaultPassNames.Default)
                 : base(manager, technique, DefaultPointLineConstantBufferDesc, materialCore)
             {
-                BillboardPass = technique[billboardPassName];
-                BillboardOITPass = technique[billboardOITPassName];
+                BillboardPass = technique[defaultPassName];
+                OITPass = technique[DefaultPassNames.OITPass];
+                OITDepthPeelingInit = technique[DefaultPassNames.OITDepthPeelingInit];
+                OITDepthPeeling = technique[DefaultPassNames.OITDepthPeeling];
                 this.materialCore = materialCore;
                 shaderTextureSlot = BillboardPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
                 textureSamplerSlot = BillboardPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
@@ -87,7 +98,21 @@ namespace HelixToolkit.UWP
 
             public override ShaderPass GetPass(RenderType renderType, RenderContext context)
             {
-                return renderType == RenderType.Transparent && context.IsOITPass ? BillboardOITPass : BillboardPass;
+                if (renderType == RenderType.Transparent)
+                {
+                    switch (context.OITRenderStage)
+                    {
+                        case OITRenderStage.SinglePassWeighted:
+                            return OITPass;
+                        case OITRenderStage.DepthPeelingInitMinMaxZ:
+                            return OITDepthPeelingInit;
+                        case OITRenderStage.DepthPeeling:
+                            return OITDepthPeeling;
+                        default:
+                            break;
+                    }
+                }
+                return BillboardPass;
             }
 
             public override ShaderPass GetShadowPass(RenderType renderType, RenderContext context)

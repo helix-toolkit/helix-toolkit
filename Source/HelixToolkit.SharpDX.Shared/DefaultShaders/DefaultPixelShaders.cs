@@ -38,6 +38,7 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "psMeshBlinnPhongOIT";
+
             /// <summary>
             /// Gets the ps mesh binn phong oit quad.
             /// </summary>
@@ -48,6 +49,26 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "psMeshBlinnPhongOITQuad";
+
+            public static string PSMeshOITDPFirst
+            {
+                get;
+            } = "psMeshOITDPFirst";
+
+            public static string PSMeshBlinnPhongOITDP
+            {
+                get;
+            } = "psMeshBlinnPhongOITDP";
+
+            public static string PSMeshOITDPBlending
+            {
+                get;
+            } = "psMeshOITDPBlending";
+
+            public static string PSMeshOITDPFinal
+            {
+                get;
+            } = "psMeshOITDPFinal";
             /// <summary>
             /// Gets the ps mesh diffuse map oit.
             /// </summary>
@@ -58,6 +79,11 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "psMeshDiffuseMapOIT";
+
+            public static string PSMeshDiffuseMapOITDP
+            {
+                get;
+            } = "psMeshDiffuseMapOITDP";
             /// <summary>
             /// 
             /// </summary>
@@ -141,6 +167,11 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "psBillboardTextOIT";
+
+            public static string PSBillboardTextOITDP
+            {
+                get;
+            } = "psBillboardTextOITDP";
             /// <summary>
             /// 
             /// </summary>
@@ -177,6 +208,11 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "psParticleOIT";
+
+            public static string PSParticleOITDP
+            {
+                get;
+            } = "psParticleOITDP";
             /// <summary>
             /// 
             /// </summary>
@@ -202,6 +238,11 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "psWireframeOIT";
+
+            public static string PSMeshWireframeOITDP
+            {
+                get;
+            } = "psWireframeOITDP";
             /// <summary>
             /// 
             /// </summary>
@@ -405,7 +446,10 @@ namespace HelixToolkit.UWP
             {
                 get;
             } = "psMeshPBROIT";
-
+            public static string PSMeshPBROITDP
+            {
+                get;
+            } = "psMeshPBROITDP";
             /// <summary>
             /// Gets the ps sprite.
             /// </summary>
@@ -478,6 +522,18 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription PSMeshBlinnPhongOITQuad = new ShaderDescription(nameof(PSMeshBlinnPhongOITQuad), ShaderStage.Pixel, new ShaderReflector(),
                 DefaultPSShaderByteCodes.PSMeshBinnPhongOITQuad);
+
+            public static readonly ShaderDescription PSMeshOITDPInit = new ShaderDescription(nameof(PSMeshOITDPInit), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSMeshOITDPFirst);
+
+            public static readonly ShaderDescription PSMeshBlinnPhongOITDP = new ShaderDescription(nameof(PSMeshBlinnPhongOITDP), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSMeshBlinnPhongOITDP);
+
+            public static readonly ShaderDescription PSMeshOITDPBlending = new ShaderDescription(nameof(PSMeshOITDPBlending), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSMeshOITDPBlending);
+
+            public static readonly ShaderDescription PSMeshOITDPFinal = new ShaderDescription(nameof(PSMeshOITDPFinal), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSMeshOITDPFinal);
             /// <summary>
             /// 
             /// </summary>
@@ -503,6 +559,9 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription PSMeshDiffuseMapOIT = new ShaderDescription(nameof(PSMeshDiffuseMapOIT), ShaderStage.Pixel, new ShaderReflector(),
                 DefaultPSShaderByteCodes.PSMeshDiffuseMapOIT);
+
+            public static readonly ShaderDescription PSMeshDiffuseMapOITDP = new ShaderDescription(nameof(PSMeshDiffuseMapOITDP), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSMeshDiffuseMapOITDP);
             /// <summary>
             /// 
             /// </summary>
@@ -538,6 +597,9 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription PSBillboardTextOIT = new ShaderDescription(nameof(PSBillboardTextOIT), ShaderStage.Pixel, new ShaderReflector(),
                 DefaultPSShaderByteCodes.PSBillboardTextOIT);
+
+            public static readonly ShaderDescription PSBillboardTextOITDP = new ShaderDescription(nameof(PSBillboardTextOITDP), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSBillboardTextOITDP);
             /// <summary>
             /// 
             /// </summary>
@@ -571,6 +633,9 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription PSParticleOIT = new ShaderDescription(nameof(PSParticleOIT), ShaderStage.Pixel, new ShaderReflector(),
                 DefaultPSShaderByteCodes.PSParticleOIT);
+
+            public static readonly ShaderDescription PSParticleOITDP = new ShaderDescription(nameof(PSParticleOITDP), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSParticleOITDP);
             /// <summary>
             /// 
             /// </summary>
@@ -587,6 +652,9 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription PSMeshWireframeOIT = new ShaderDescription(nameof(PSMeshWireframeOIT), ShaderStage.Pixel, new ShaderReflector(),
                 DefaultPSShaderByteCodes.PSMeshWireframeOIT);
+
+            public static readonly ShaderDescription PSMeshWireframeOITDP = new ShaderDescription(nameof(PSMeshWireframeOITDP), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSMeshWireframeOITDP);
             /// <summary>
             /// The ps depth stencil only
             /// </summary>
@@ -696,7 +764,8 @@ namespace HelixToolkit.UWP
             /// </summary>
             public static readonly ShaderDescription PSMeshPBROIT = new ShaderDescription(nameof(PSMeshPBROIT), ShaderStage.Pixel, new ShaderReflector(),
                 DefaultPSShaderByteCodes.PSMeshPBROIT);
-
+            public static readonly ShaderDescription PSMeshPBROITDP = new ShaderDescription(nameof(PSMeshPBROITDP), ShaderStage.Pixel, new ShaderReflector(),
+                DefaultPSShaderByteCodes.PSMeshPBROITDP);
             /// <summary>
             /// The ps sprite
             /// </summary>

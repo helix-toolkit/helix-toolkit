@@ -33,7 +33,7 @@
             FXAALevel="Low"
             IsPanEnabled="False"
             ModelUpDirection="0,0,1"
-            ShowCoordinateSystem="True"
+            ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">
@@ -78,6 +78,10 @@
                     Geometry="{Binding BatchedText}"
                     IsHitTestVisible="False" />
             </hx:TopMostGroup3D>
+            <hx:ScreenSpacedGroup3D SizeScale="2">
+                <hx:BillboardTextModel3D Geometry="{Binding AxisLabels}"/>
+                <hx:LineGeometryModel3D Geometry="{Binding AxisLines}" Color="White"/>
+            </hx:ScreenSpacedGroup3D>
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <CheckBox IsChecked="{Binding ElementName=topMostGroup, Path=EnableTopMost}">Billboard Top most</CheckBox>

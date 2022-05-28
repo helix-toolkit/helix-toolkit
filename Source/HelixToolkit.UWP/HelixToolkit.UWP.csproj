@@ -122,10 +122,8 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup>
-    
   </PropertyGroup>
   <PropertyGroup>
-    
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
@@ -141,7 +139,6 @@
     <Compile Include="CommonDX\SwapChainCompositionRenderHost.cs" />
     <Compile Include="CommonDX\SwapChainRenderHost.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
-
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +222,9 @@
     <None Include="HelixToolkit.UWP\Resources\psBillboardText.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="HelixToolkit.UWP\Resources\psBillboardTextOITDP.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="HelixToolkit.UWP\Resources\psColor.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -276,10 +276,25 @@
     <None Include="HelixToolkit.UWP\Resources\psMeshBlinnPhong.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="HelixToolkit.UWP\Resources\psMeshBlinnPhongOITDP.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="HelixToolkit.UWP\Resources\psMeshClipPlaneBackface.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="HelixToolkit.UWP\Resources\psMeshClipPlaneQuad.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HelixToolkit.UWP\Resources\psMeshDiffuseMapOITDP.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HelixToolkit.UWP\Resources\psMeshOITDPFinal.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HelixToolkit.UWP\Resources\psMeshOITDPFirst.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HelixToolkit.UWP\Resources\psMeshPBROITDP.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="HelixToolkit.UWP\Resources\psMeshXRay.cso">
@@ -289,6 +304,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="HelixToolkit.UWP\Resources\psParticle.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HelixToolkit.UWP\Resources\psParticleOITDP.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="HelixToolkit.UWP\Resources\psPoint.cso">
@@ -310,6 +328,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="HelixToolkit.UWP\Resources\psWireframe.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="HelixToolkit.UWP\Resources\psWireframeOITDP.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="HelixToolkit.UWP\Resources\vsBillboard.cso">

@@ -1,8 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        
-
-    </ItemGroup>
     <PropertyGroup>
         <TargetFramework>net5.0-windows10.0.19041</TargetFramework>
         <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
@@ -42,9 +38,7 @@
 
     <ItemGroup>
         <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="2.0.0" />
-        <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.5" />
-        <PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.5" />
-        <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.5" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.3" />
         <PackageReference Include="SharpDX" Version="4.2.0" />
         <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
         <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />

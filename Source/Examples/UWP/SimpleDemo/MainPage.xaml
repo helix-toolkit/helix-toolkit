@@ -237,25 +237,33 @@
             <StackPanel.CacheMode>
                 <BitmapCache />
             </StackPanel.CacheMode>
-            <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Foreground="Black">OIT Weight Power:</TextBlock>
+            <ComboBox ItemsSource="{Binding OITVM.OITRenderTypes}" SelectedItem="{Binding OITVM.OITRenderType}"/>
+            <StackPanel Orientation="Vertical" Visibility="{Binding OITVM.OITDepthPeelModeEnabled}">
+                <TextBlock>Depth Peeling Iteration:</TextBlock>
+                <Slider Width="120" Minimum="1" Maximum="10" SmallChange="1" Value="{Binding ElementName=viewport1, Path=OITDepthPeelingIteration, Mode=TwoWay}"/>
             </StackPanel>
-            <Slider
-                LargeChange="1"
-                Maximum="5"
-                Minimum="0.5"
-                SmallChange="0.1"
-                Value="{Binding ElementName=viewport1, Path=OITWeightPower, Mode=TwoWay}" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Foreground="Black">OIT Weight Slope:</TextBlock>
+            <StackPanel Orientation="Vertical" Visibility="{Binding OITVM.OITWeightedModeEnabled}">
+                <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Foreground="Black">OIT Weight Power:</TextBlock>
+                </StackPanel>
+                <Slider
+                    LargeChange="1"
+                    Maximum="5"
+                    Minimum="0.5"
+                    SmallChange="0.1"
+                    Value="{Binding ElementName=viewport1, Path=OITWeightPower, Mode=TwoWay}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Foreground="Black">OIT Weight Slope:</TextBlock>
+                </StackPanel>
+                <Slider
+                    LargeChange="1"
+                    Maximum="5"
+                    Minimum="1"
+                    SmallChange="0.5"
+                    Value="{Binding ElementName=viewport1, Path=OITWeightDepthSlope, Mode=TwoWay}" />                
             </StackPanel>
-            <Slider
-                LargeChange="1"
-                Maximum="5"
-                Minimum="1"
-                SmallChange="0.5"
-                Value="{Binding ElementName=viewport1, Path=OITWeightDepthSlope, Mode=TwoWay}" />
+
         </StackPanel>
     </Grid>
 </Page>

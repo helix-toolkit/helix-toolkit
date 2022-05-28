@@ -23,6 +23,7 @@ using HelixToolkit.SharpDX.Core.Cameras;
 using HelixToolkit.SharpDX.Core.Model.Scene;
 using HelixToolkit.SharpDX.Core.Model.Scene2D;
 using HelixToolkit.SharpDX.Core.Utilities;
+using PointerDeviceType = Microsoft.UI.Input.PointerDeviceType;
 namespace HelixToolkit.WinUI
 #else
 using Windows.UI.Xaml;
@@ -31,6 +32,7 @@ using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using VisibilityEnum = Windows.UI.Xaml.Visibility;
+using PointerDeviceType = Windows.Devices.Input.PointerDeviceType;
 namespace HelixToolkit.UWP
 #endif
 {
@@ -390,7 +392,8 @@ namespace HelixToolkit.UWP
                     renderHostInternal.MSAA = this.MSAA;
 #endif
                     renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
-                    renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;
+                    renderHostInternal.RenderConfiguration.OITRenderType = OITRenderMode;
+                    renderHostInternal.RenderConfiguration.OITDepthPeelingIteration = OITDepthPeelingIteration;
                     renderHostInternal.RenderConfiguration.OITWeightPower = (float)OITWeightPower;
                     renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                     renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
@@ -582,14 +585,14 @@ namespace HelixToolkit.UWP
         /// <param name="e">Event data for the event.</param>
         protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
         {
-            if(e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            if(e.PointerDeviceType == PointerDeviceType.Touch)
                 CameraController.OnManipulationStarted(e);
             base.OnManipulationStarted(e);
         }
 
         protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
         {
-            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            if (e.PointerDeviceType == PointerDeviceType.Touch)
                 CameraController.OnManipulationCompleted(e);
             base.OnManipulationCompleted(e);
         }
@@ -597,7 +600,7 @@ namespace HelixToolkit.UWP
 
         protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
-            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            if (e.PointerDeviceType == PointerDeviceType.Touch)
                 CameraController.OnManipulationDelta(e);
             base.OnManipulationDelta(e);
         }
