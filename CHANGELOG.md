@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.21.0] - 2022-05-28
 We did some major code refactoring and changes in this release.
 ### New
 1. Support Depth peeling based order independent transparency rendering. (WPF.SharpDX/UWP/Core)
