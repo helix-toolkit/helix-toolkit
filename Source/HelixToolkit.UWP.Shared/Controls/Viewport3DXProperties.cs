@@ -536,7 +536,7 @@ namespace HelixToolkit.UWP
         /// The view cube texture. It must be a 6x1 (ex: 600x100) ratio image. You can also use BitmapExtension.CreateViewBoxBitmapSource to create
         /// </summary>
         public static readonly DependencyProperty ViewCubeTextureProperty = DependencyProperty.Register(
-                "ViewCubeTexture", typeof(System.IO.Stream), typeof(Viewport3DX), new PropertyMetadata(null));
+                "ViewCubeTexture", typeof(TextureModel), typeof(Viewport3DX), new PropertyMetadata(null));
 
         /// <summary>
         /// The view cube horizontal position property. Relative to viewport center.
@@ -596,11 +596,11 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The view cube texture.
         /// </value>
-        public System.IO.Stream ViewCubeTexture
+        public TextureModel ViewCubeTexture
         {
             get
             {
-                return (System.IO.Stream)this.GetValue(ViewCubeTextureProperty);
+                return (TextureModel)this.GetValue(ViewCubeTextureProperty);
             }
 
             set
