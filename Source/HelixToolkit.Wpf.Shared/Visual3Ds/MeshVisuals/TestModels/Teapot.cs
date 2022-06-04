@@ -103,10 +103,9 @@ namespace HelixToolkit.Wpf
         {
             var name = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.Name;
             name = name.Substring(0, name.IndexOf(".dll"));
-            var rd =
-                Application.LoadComponent(
-                    new Uri($"{name};component/Resources/TeapotGeometry.xaml", UriKind.Relative)) as
-                ResourceDictionary;
+            var rd = Application.LoadComponent(
+                    new Uri($"{name};component/SharedResources/TeapotGeometry.xaml", UriKind.Relative))
+                    as ResourceDictionary;
             if (rd == null)
             {
                 return null;

@@ -311,7 +311,7 @@ namespace HelixToolkit.Wpf
                 ti.Add(i0);
                 ti.Add(i1);
                 ti.Add(i2);
-                if (n != null)
+                if (n != null && input.Normals.Count>0)
                 {
                     n.Add(input.Normals[index0]);
                     n.Add(input.Normals[index1]);
