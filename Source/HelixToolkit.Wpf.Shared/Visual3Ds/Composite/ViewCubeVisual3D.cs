@@ -176,7 +176,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The overhang of the corner edge from the cube face
         /// </summary>
-        private const double OVERHANG = 1e-4;
+        private const double OVERHANG = 1e-3;
 
         #endregion Fields
 

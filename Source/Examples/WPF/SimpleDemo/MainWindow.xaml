@@ -235,7 +235,7 @@
                                       RotateAroundMouseDownPoint="True"
                                       IsTopBottomViewOrientedToFrontBack="True"
                                       IsViewCubeEdgeClicksEnabled="True"
-                                      ViewCubeHeight="300" ViewCubeWidth="300">
+                                      ShowCoordinateSystem="True">
 
             <!--  Remember to add light to the scene  -->
             <HelixToolkit:SunLight />
