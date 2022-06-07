@@ -162,7 +162,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         // Using a DependencyProperty as the backing store for PostEffects.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PostEffectsProperty =
-            DependencyProperty.Register("PostEffects", typeof(string), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata("", (d, e) =>
+            DependencyProperty.Register("PostEffects", typeof(string), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(string.Empty, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as BatchedMeshNode).PostEffects = e.NewValue as string;
             }));

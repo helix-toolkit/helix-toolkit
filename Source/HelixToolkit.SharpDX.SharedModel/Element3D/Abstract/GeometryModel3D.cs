@@ -124,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The post effects property
         /// </summary>
         public static readonly DependencyProperty PostEffectsProperty =
-            DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata("", (d, e) =>
+            DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata(string.Empty, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as GeometryNode).PostEffects = e.NewValue as string;
             }));

@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP
 
         public class TextNode2D : SceneNode2D
         {
-            private string text = "";
+            private string text = string.Empty;
             public string Text
             {
                 set

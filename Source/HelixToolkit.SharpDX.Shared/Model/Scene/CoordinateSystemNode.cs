@@ -222,7 +222,7 @@ namespace HelixToolkit.UWP
 
             private void UpdateAxisColor(int which, Color4 color)
             {
-                var label = "";
+                var label = string.Empty;
                 switch (which)
                 {
                     case 0:

@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP
     {
         public class TextRenderCore2D : RenderCore2DBase
         {
-            private string text = "";
+            private string text = string.Empty;
             public string Text
             {
                 set

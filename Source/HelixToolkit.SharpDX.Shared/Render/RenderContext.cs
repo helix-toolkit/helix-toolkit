@@ -255,7 +255,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The name of the custom pass.
         /// </value>
-        public string CustomPassName = "";
+        public string CustomPassName = string.Empty;
 
         /// <summary>
         /// Gets or sets the time stamp.
