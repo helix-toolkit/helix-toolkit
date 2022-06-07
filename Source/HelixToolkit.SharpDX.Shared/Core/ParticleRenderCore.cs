@@ -840,7 +840,7 @@ namespace HelixToolkit.UWP
                     // Get consume buffer count.
                     //Due to some intel integrated graphic card having issue copy structure count directly into constant buffer.
                     //Has to use staging buffer to read and pass into constant buffer              
-                    FrameVariables.NumParticles = (uint)ReadCount("", deviceContext, BufferProxies[0]);
+                    FrameVariables.NumParticles = (uint)ReadCount(string.Empty, deviceContext, BufferProxies[0]);
                     perFrameCB.Upload(deviceContext, ref FrameVariables);
                     #endregion
 

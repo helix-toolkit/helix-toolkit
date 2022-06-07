@@ -2328,7 +2328,7 @@ namespace HelixToolkit.UWP
         /// The render detail output property
         /// </summary>
         public static readonly DependencyProperty RenderDetailOutputProperty =
-            DependencyProperty.Register("RenderDetailOutput", typeof(string), typeof(Viewport3DX), new PropertyMetadata(""));
+            DependencyProperty.Register("RenderDetailOutput", typeof(string), typeof(Viewport3DX), new PropertyMetadata(string.Empty));
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable render order]. 
