@@ -23,7 +23,7 @@ namespace SimpleDemo
 
         private void Window_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            cube.EnableEdgeClicks = isShow;
+            viewPort3D.IsViewCubeEdgeClicksEnabled = cube.EnableEdgeClicks = isShow;
             isShow = !isShow;
         }
     }

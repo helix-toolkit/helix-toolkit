@@ -235,7 +235,8 @@
                                       RotateAroundMouseDownPoint="True"
                                       IsTopBottomViewOrientedToFrontBack="True"
                                       IsViewCubeEdgeClicksEnabled="True"
-                                      ShowCoordinateSystem="True">
+                                      ShowCoordinateSystem="True"
+                                      x:Name="viewPort3D">
 
             <!--  Remember to add light to the scene  -->
             <HelixToolkit:SunLight />

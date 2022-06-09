@@ -463,8 +463,8 @@ namespace HelixToolkit.Wpf
                 var element = new ModelUIElement3D();
                 CornerModels.Add(element);
                 element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-                element.MouseEnter += EdggesMouseEnters;
-                element.MouseLeave += EdgesMouseLeaves;
+                element.MouseEnter += CornersMouseEnters;
+                element.MouseLeave += CornersMouseLeaves;
             }
 
             UpdateVisuals();
@@ -662,13 +662,13 @@ namespace HelixToolkit.Wpf
         private void EdggesMouseEnters(object sender, MouseEventArgs e)
         {
             ModelUIElement3D s = sender as ModelUIElement3D;
-            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(/*Colors.Goldenrod*/ Colors.SkyBlue);
         }
 
         private void CornersMouseLeaves(object sender, MouseEventArgs e)
         {
             ModelUIElement3D s = sender as ModelUIElement3D;
-            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Gold);
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(/*Colors.Gold*/Colors.Silver);
         }
 
         private void CornersMouseEnters(object sender, MouseEventArgs e)
@@ -715,17 +715,19 @@ namespace HelixToolkit.Wpf
 
         private Material CreateTextMaterial(Brush b, string text)
         {
-            var grid = new Grid { Width = 20, Height = 20, Background = b };
+            var grid = new Grid { Width = 25, Height = 25, Background = b };
             grid.Children.Add(
                 new TextBlock
                 {
                     Text = text,
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center,
+                    Padding = new Thickness(0, 0, 0, 2),
                     FontSize = 15,
+                    FontWeight = FontWeights.Bold,
                     Foreground = Brushes.White
                 });
-            grid.Arrange(new Rect(new Point(0, 0), new Size(20, 20)));
+            grid.Arrange(new Rect(new Point(0, 0), new Size(25, 25)));
 
             var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
             bmp.Render(grid);
