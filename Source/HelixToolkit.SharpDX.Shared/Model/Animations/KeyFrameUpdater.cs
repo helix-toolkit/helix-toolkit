@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
             public string Name
             {
                 set; get;
-            } = "";
+            } = string.Empty;
 
             public Animation Animation
             {

@@ -333,7 +333,7 @@ namespace HelixToolkit.UWP
                 if (count > 0)
                 {
                     var buffer = context.RenderHost.RenderBuffer;
-                    var depthStencilBuffer = buffer.DepthStencilBufferNoMSAA;
+                    var depthStencilBuffer = parameter.IsMSAATexture ? buffer.DepthStencilBuffer : buffer.DepthStencilBufferNoMSAA;
                     ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
 
                     for (var i = start; i < start + count; ++i)
