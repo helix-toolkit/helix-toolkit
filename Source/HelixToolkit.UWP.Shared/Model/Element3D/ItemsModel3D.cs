@@ -153,51 +153,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         public ItemsModel3D()
         {
-            Children.CollectionChanged += Items_CollectionChanged;
-            Loaded += ItemsModel3D_Loaded;
-            Unloaded += ItemsModel3D_Unloaded;
-        }
-
-        private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (ItemsSource != itemsSource)
-            {
-                Clear();
-                AddItems(ItemsSource);
-
-                itemsSource = ItemsSource;
-
-                if (ItemsSource is INotifyCollectionChanged n)
-                {
-                    n.CollectionChanged -= ItemsModel3D_CollectionChanged;
-                    n.CollectionChanged += ItemsModel3D_CollectionChanged;
-                }
-
-                if (Children.Count > 0)
-                {
-                    var groupNode = SceneNode as GroupNode;
-                    groupNode.OctreeManager?.RequestRebuild();
-                }
-            }
-        }
-
-        private void ItemsModel3D_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Items.Clear();
-            foreach(var item in elementDict.Values)
-            {
-                Children.Remove(item);
-            }
-            elementDict.Clear();
-            DetachChild(itemsControl);
-            var node = SceneNode as GroupNode;
-            node.Clear();
-            if (ItemsSource is INotifyCollectionChanged n)
-            {
-                n.CollectionChanged -= ItemsModel3D_CollectionChanged;
-            }
-            itemsSource = null;
-        }
+            Children.CollectionChanged += Items_CollectionChanged;            
+        }      
 
         protected override void OnApplyTemplate()
         {
