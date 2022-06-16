@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Improvement
 1. Allow environment map to skip rendering but still available for other object to do reflection. (WPF.SharpDX/UWP/Core/WinUI)
 1. Remove unnecessary scene graph re-creation during loading/unloading. (UWP/WinUI)
+1. Update WinUI AppSDK to 1.1.1. (WinUI)
 
 ### Fixed
 1. Fix MSAA enable causes incorrect rendering on screenspaced objects. (WPF.SharpDX/UWP/Core/WinUI)
