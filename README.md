@@ -55,7 +55,7 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 ## Project Build
 
-**Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.17763).**
+**Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.18362.0).**
 
 ## Notes
 
