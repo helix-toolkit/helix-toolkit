@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 = DependencyProperty.Register("Text", typeof(string), typeof(TextModel2D),
                     new PropertyMetadata("Text", (d, e) =>
                     {
-                        ((d as Element2DCore).SceneNode as TextNode2D).Text = e.NewValue == null ? "" : (string)e.NewValue;
+                        ((d as Element2DCore).SceneNode as TextNode2D).Text = e.NewValue == null ? string.Empty : (string)e.NewValue;
                     }));
 
             public string Text
@@ -257,7 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
             protected override void AssignDefaultValuesToSceneNode(SceneNode2D node)
             {
                 var t = node as TextNode2D;
-                t.Text = Text == null ? "" : Text;
+                t.Text = Text == null ? string.Empty : Text;
                 t.FontFamily = FontFamily == null ? DefaultFont : FontFamily;
                 t.FontWeight = FontWeight.ToDXFontWeight();
                 t.FontStyle = FontStyle.ToDXFontStyle();

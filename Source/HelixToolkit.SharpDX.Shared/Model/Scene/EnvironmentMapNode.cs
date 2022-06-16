@@ -41,6 +41,20 @@ namespace HelixToolkit.UWP
                     return (RenderCore as ISkyboxRenderParams).CubeTexture;
                 }
             }
+            /// <summary>
+            /// Skip environment map rendering, but still keep it available for other object to use.
+            /// </summary>
+            public bool SkipRendering
+            {
+                set
+                {
+                    (RenderCore as ISkyboxRenderParams).SkipRendering = value;
+                }
+                get
+                {
+                    return (RenderCore as ISkyboxRenderParams).SkipRendering;
+                }
+            }
 
             private readonly bool UseSkyDome = false;
             /// <summary>

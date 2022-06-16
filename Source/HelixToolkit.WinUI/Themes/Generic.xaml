@@ -49,6 +49,36 @@
         </Setter>
     </Style>
 
+    <local:SceneNodeGroupModel3D
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.WinUI"
+        x:Key="sceneNodeGroupModel3D" />
+    
+    <local:GroupModel3D
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.WinUI"
+        x:Key="groupModel3D" />
+    
+    <local:ItemsModel3D
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.WinUI"
+        x:Key="itemsModel3D" />
+    
+    <local:Light3DCollection
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.WinUI"
+        x:Key="light3DCollection" />
+    
+    <local:SortingGroupModel3D
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.WinUI"
+        x:Key="sortingGroupModel3D" />    
+    
+    <local:Element3DPresenter
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.WinUI"
+        x:Key="element3DPresenter" />
+
     <local:PerspectiveCamera
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:local="using:HelixToolkit.WinUI"
