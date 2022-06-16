@@ -1,3 +1,5 @@
+[![HelixToolkit](https://img.shields.io/badge/-Helix%20Toolkit-blue)](https://github.com/helix-toolkit/helix-toolkit) 
+
 <img src='https://avatars3.githubusercontent.com/u/8432523?s=200&v=4' width='64' />
 
 # Helix Toolkit
@@ -53,7 +55,7 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 ## Project Build
 
-**Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.17763).**
+**Visual Studio 2019. Windows 10 SDK (Min Ver.10.0.18362.0).**
 
 ## Notes
 
@@ -79,7 +81,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
     - .NET CORE
       - HelixToolkit.SharpDX.Core
         - HelixToolkit.SharpDX.Core.Wpf
-        - HelixToolkit.WinUI (Experimental)
+        - HelixToolkit.WinUI
     - HelixToolkit.Assimp
 
 ## Bug Report
@@ -92,16 +94,16 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
-#### 2022-05-28
-[v2.21.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.21.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.21.0)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.21.0)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.21.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.21.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.21.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.21.0)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.21.0)
-- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.21.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.21.0)
+#### 2022-06-18
+[v2.21.1](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.21.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.21.1)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.21.1)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.21.1)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.21.1)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.21.1)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.21.1)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.21.1)
+- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.21.1)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.21.1)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)

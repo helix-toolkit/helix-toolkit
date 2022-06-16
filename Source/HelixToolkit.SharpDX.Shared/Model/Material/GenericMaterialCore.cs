@@ -307,7 +307,7 @@ namespace HelixToolkit.UWP
             public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
             {
                 return new GenericMeshMaterialVariable(manager, technique, this, cbDescription,
-                    MaterialPassName, ShadowPassName, "");
+                    MaterialPassName, ShadowPassName, string.Empty);
             }
         }
         [DataContract]

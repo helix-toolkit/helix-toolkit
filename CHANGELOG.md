@@ -1,6 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.21.1] - 2022-06-16
+
+### Improvement
+1. Allow environment map to skip rendering but still available for other object to do reflection. (WPF.SharpDX/UWP/Core/WinUI)
+1. Remove unnecessary scene graph re-creation during loading/unloading. (UWP/WinUI)
+1. Update WinUI AppSDK to 1.1.1. (WinUI)
+
+### Fixed
+1. Fix MSAA enable causes incorrect rendering on screenspaced objects. (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix binding erorr: Converter failed to convert value of type of Element3D. (UWP/WinUI)
+1. Fix missing TeapotGeometry in Helixtoolkit.Core.Wpf. (Core.Wpf)
+1. Fix custom viewcube texture not working. (WPF.SharpDX/UWP/Core/WinUI)
+
 ## [2.21.0] - 2022-05-28
 We did some major code refactoring and changes in this release.
 ### New

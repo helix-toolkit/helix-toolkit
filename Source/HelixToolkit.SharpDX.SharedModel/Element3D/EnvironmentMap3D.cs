@@ -51,6 +51,25 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (TextureModel)GetValue(TextureProperty);
             }
         }
+
+        public static readonly DependencyProperty SkipRenderingProperty = DependencyProperty.Register("SkipRendering", typeof(bool), typeof(EnvironmentMap3D),
+            new PropertyMetadata(false, (d, e) => {
+                ((d as Element3DCore).SceneNode as EnvironmentMapNode).SkipRendering = (bool)e.NewValue; 
+            }));
+        /// <summary>
+        /// Skip environment map rendering, but still keep it available for other object to use.
+        /// </summary>
+        public bool SkipRendering
+        {
+            set
+            {
+                SetValue(SkipRenderingProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(SkipRenderingProperty);
+            }
+        }
         /// <summary>
         /// Called when [create scene node].
         /// </summary>

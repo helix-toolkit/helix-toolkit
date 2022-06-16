@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private TextInfo mTextInfo = new TextInfo("", new Vector3());
+        private TextInfo mTextInfo = new TextInfo(string.Empty, new Vector3());
         /// <summary>
         /// Gets or sets the text information.
         /// </summary>
