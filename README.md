@@ -81,7 +81,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
     - .NET CORE
       - HelixToolkit.SharpDX.Core
         - HelixToolkit.SharpDX.Core.Wpf
-        - HelixToolkit.WinUI (Experimental)
+        - HelixToolkit.WinUI
     - HelixToolkit.Assimp
 
 ## Bug Report
