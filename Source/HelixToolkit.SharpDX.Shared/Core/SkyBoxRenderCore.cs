@@ -150,6 +150,10 @@ namespace HelixToolkit.UWP
             /// The name of the shader cube texture sampler.
             /// </value>
             public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
+            /// <summary>
+            /// Skip environment map rendering, but still keep it available for other object to use.
+            /// </summary>
+            public bool SkipRendering { set; get; }
             #endregion
 
             /// <summary>
@@ -237,6 +241,10 @@ namespace HelixToolkit.UWP
                 }
                 context.SharedResource.EnvironementMap = cubeTextureRes;
                 context.SharedResource.EnvironmentMapMipLevels = MipMapLevels;
+                if (SkipRendering)
+                {
+                    return;
+                }
                 DefaultShaderPass.BindShader(deviceContext);
                 DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                 DefaultShaderPass.PixelShader.BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);

@@ -748,7 +748,7 @@ namespace HelixToolkit.UWP
             //}
         }
 #endif
-        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = StringHelper.EmptyStr, [CallerLineNumber] int sourceLineNumber = 0)
         {
             Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
         }

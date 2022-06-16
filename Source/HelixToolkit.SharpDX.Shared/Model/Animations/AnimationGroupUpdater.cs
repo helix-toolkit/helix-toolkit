@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
             public string Name
             {
                 set; get;
-            } = "";
+            } = string.Empty;
 
             private List<IAnimationUpdater> children = new List<IAnimationUpdater>();
             public IList<IAnimationUpdater> Children => children;
@@ -57,12 +57,12 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public AnimationGroupUpdater(string name = "")
+            public AnimationGroupUpdater(string name = StringHelper.EmptyStr)
             {
                 Name = name;
             }
 
-            public AnimationGroupUpdater(IEnumerable<IAnimationUpdater> updaters, string name = "")
+            public AnimationGroupUpdater(IEnumerable<IAnimationUpdater> updaters, string name = StringHelper.EmptyStr)
                 : this(name)
             {
                 children.AddRange(updaters);

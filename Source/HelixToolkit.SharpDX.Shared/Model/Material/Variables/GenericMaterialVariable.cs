@@ -248,7 +248,7 @@ namespace HelixToolkit.UWP
                 GenericMaterialCore materialCore, ConstantBufferDescription constantBufferDescription,
                 string materialShaderPassName = DefaultPassNames.Default,
                 string shadowShaderPassName = DefaultPassNames.ShadowPass)
-                : base(manager, technique, materialCore, constantBufferDescription, materialShaderPassName, shadowShaderPassName, "")
+                : base(manager, technique, materialCore, constantBufferDescription, materialShaderPassName, shadowShaderPassName, string.Empty)
             {
 
             }

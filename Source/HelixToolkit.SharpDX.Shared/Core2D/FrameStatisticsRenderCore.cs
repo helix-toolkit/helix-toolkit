@@ -77,7 +77,7 @@ namespace HelixToolkit.UWP
             private Factory factory;
             private TextFormat format;
             private RectangleF renderBound = new RectangleF(0, 0, 100, 0);
-            private string previousStr = "";
+            private string previousStr = string.Empty;
             /// <summary>
             /// Called when [attach].
             /// </summary>
@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP
             {
                 factory = new Factory(FactoryType.Isolated);
                 format = new TextFormat(factory, "Arial", 12 * target.DpiScale);
-                previousStr = "";
+                previousStr = string.Empty;
                 this.statistics = target.RenderStatistics;
                 return base.OnAttach(target);
             }

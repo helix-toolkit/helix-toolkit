@@ -101,10 +101,11 @@ namespace HelixToolkit.Wpf
         /// </returns>
         protected override MeshGeometry3D Tessellate()
         {
-            var rd =
-                Application.LoadComponent(
-                    new Uri("HelixToolkit.Wpf;component/Resources/TeapotGeometry.xaml", UriKind.Relative)) as
-                ResourceDictionary;
+            var name = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.Name;
+            name = name.Substring(0, name.IndexOf(".dll"));
+            var rd = Application.LoadComponent(
+                    new Uri($"{name};component/SharedResources/TeapotGeometry.xaml", UriKind.Relative))
+                    as ResourceDictionary;
             if (rd == null)
             {
                 return null;
