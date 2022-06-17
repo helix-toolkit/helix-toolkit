@@ -6,8 +6,7 @@
     xmlns:local="clr-namespace:SimpleDemo"
     Title="SimpleDemo"
     Width="640"
-    Height="480"
-    MouseDoubleClick="Window_MouseDoubleClick">
+    Height="480">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
@@ -240,7 +239,6 @@
 
             <!--  Remember to add light to the scene  -->
             <HelixToolkit:SunLight />
-            <HelixToolkit:ViewCubeVisual3D x:Name="cube"  EnableEdgeClicks="True" />
 
             <!--  The content of this visual is defined in MainViewModel.cs  -->
             <ModelVisual3D Content="{Binding Model}" />

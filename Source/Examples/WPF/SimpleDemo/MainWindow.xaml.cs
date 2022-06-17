@@ -18,13 +18,5 @@ namespace SimpleDemo
         {
             this.InitializeComponent();
         }
-
-        private bool isShow = false;
-
-        private void Window_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            viewPort3D.IsViewCubeEdgeClicksEnabled = cube.EnableEdgeClicks = isShow;
-            isShow = !isShow;
-        }
     }
 }

@@ -454,7 +454,7 @@ namespace HelixToolkit.Wpf
                 var element = new ModelUIElement3D();
                 EdgeModels.Add(element);
                 element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-                element.MouseEnter += EdggesMouseEnters;
+                element.MouseEnter += EdgesMouseEnters;
                 element.MouseLeave += EdgesMouseLeaves;
             }
 
@@ -659,7 +659,7 @@ namespace HelixToolkit.Wpf
             (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Silver);
         }
 
-        private void EdggesMouseEnters(object sender, MouseEventArgs e)
+        private void EdgesMouseEnters(object sender, MouseEventArgs e)
         {
             ModelUIElement3D s = sender as ModelUIElement3D;
             (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(/*Colors.Goldenrod*/ Colors.SkyBlue);
