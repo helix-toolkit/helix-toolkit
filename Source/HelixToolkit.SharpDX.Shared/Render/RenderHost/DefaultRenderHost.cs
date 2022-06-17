@@ -498,7 +498,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected override void OnEndingD3D()
             {
-                Logger.Log(LogLevel.Information, "", nameof(DefaultRenderHost));
+                Logger.Log(LogLevel.Information, string.Empty, nameof(DefaultRenderHost));
                 asyncTask?.Wait();
                 getTriangleCountTask?.Wait();
                 getPostEffectCoreTask?.Wait();

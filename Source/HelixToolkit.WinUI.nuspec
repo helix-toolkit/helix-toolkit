@@ -30,7 +30,7 @@
 		<dependency id="System.Runtime.Serialization.Primitives" version="4.3.0"/>
 		<dependency id="System.Runtime.Serialization.Xml" version="4.3.0"/>
 		<dependency id="System.Threading.Tasks.Parallel" version="4.3.0"/>		
-		<dependency id="Microsoft.WindowsAppSDK" version="1.0.3"/>
+		<dependency id="Microsoft.WindowsAppSDK" version="1.1.1"/>
 	   </group>
     </dependencies>
   </metadata>
@@ -38,7 +38,6 @@
 	<file src="HelixToolkit.WinUI\bin\Release\net5.0-windows10.0.19041\HelixToolkit.WinUI.???" target="lib\net5.0-windows10.0.19041" />
 	<file src="HelixToolkit.WinUI\bin\Release\net5.0-windows10.0.19041\HelixToolkit.WinUI.deps.json" target="lib\net5.0-windows10.0.19041" />
     <file src="HelixToolkit.WinUI\bin\Release\net5.0-windows10.0.19041\ref\HelixToolkit.WinUI.???" target="lib\net5.0-windows10.0.19041\ref" />
-	<file src="HelixToolkit.WinUI\bin\Release\net5.0-windows10.0.19041\HelixToolkit.WinUI\HelixToolkit.WinUI\Resources\*.*" target="lib\net5.0-windows10.0.19041\HelixToolkit.WinUI\HelixToolkit.WinUI\Resources" />
     <file src="HelixToolkit.WinUI\bin\Release\net5.0-windows10.0.19041\HelixToolkit.WinUI\Themes\*.*" target="lib\net5.0-windows10.0.19041\HelixToolkit.WinUI\Themes" />
 	<file src="..\LICENSE" />
     <file src="..\AUTHORS" />

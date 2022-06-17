@@ -952,7 +952,7 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    Log(LogLevel.Information, "");
+                    Log(LogLevel.Information, string.Empty);
                     renderStatistics.Reset();
                     lastRenderingDuration = TimeSpan.Zero;
                     lastRenderTime = TimeSpan.Zero;
@@ -965,7 +965,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected void CreateAndBindBuffers()
             {
-                Log(LogLevel.Information, "");
+                Log(LogLevel.Information, string.Empty);
                 RemoveAndDispose(ref renderBuffer);
                 renderBuffer = CreateRenderBuffer();
                 renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
@@ -1024,7 +1024,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                Log(LogLevel.Information, "");
+                Log(LogLevel.Information, string.Empty);
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
@@ -1062,7 +1062,7 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    Log(LogLevel.Information, "");
+                    Log(LogLevel.Information, string.Empty);
                     StopRendering();
                     IsInitialized = false;
                     RemoveAndDispose(ref immediateDeviceContext);
@@ -1081,7 +1081,7 @@ namespace HelixToolkit.UWP
 
             private void OnManagerDisposed(object sender, EventArgs args)
             {
-                Log(LogLevel.Information, "");
+                Log(LogLevel.Information, string.Empty);
                 EndD3D();
             }
             /// <summary>
@@ -1089,7 +1089,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public virtual void StopRendering()
             {
-                Log(LogLevel.Information, "");
+                Log(LogLevel.Information, string.Empty);
                 StopRenderLoop?.Invoke(this, EventArgs.Empty);
             }
             /// <summary>
@@ -1097,7 +1097,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void DisposeBuffers()
             {
-                Log(LogLevel.Information, "");
+                Log(LogLevel.Information, string.Empty);
                 if (renderBuffer != null)
                 {
                     renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
@@ -1112,7 +1112,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void DetachRenderable()
             {
-                Log(LogLevel.Information, "");
+                Log(LogLevel.Information, string.Empty);
                 RemoveAndDispose(ref renderContext);
                 RemoveAndDispose(ref renderContext2D);
                 Viewport?.Detach();
@@ -1229,7 +1229,7 @@ namespace HelixToolkit.UWP
                 base.OnDispose(disposeManagedResources);
             }
 
-            private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+            private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = StringHelper.EmptyStr, [CallerLineNumber] int sourceLineNumber = 0)
             {
                 Logger.Log(level, msg, nameof(DX11RenderHostBase), caller, sourceLineNumber);
             }

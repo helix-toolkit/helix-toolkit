@@ -98,7 +98,7 @@ namespace HelixToolkit.UWP
             public string TryGetName(int slot)
             {
                 string item;
-                return mappingCollection.TryGetName(slot, out item) ? item : "";
+                return mappingCollection.TryGetName(slot, out item) ? item : string.Empty;
             }
             /// <summary>
             /// 

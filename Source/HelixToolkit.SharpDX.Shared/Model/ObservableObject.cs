@@ -39,13 +39,13 @@ namespace HelixToolkit.UWP
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-            protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+            protected void RaisePropertyChanged([CallerMemberName] string propertyName = StringHelper.EmptyStr)
             {
                 if (!DisablePropertyChangedEvent)
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
 
-            protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+            protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = StringHelper.EmptyStr)
             {
                 if (EqualityComparer<T>.Default.Equals(backingField, value))
                 {
@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP
                 return true;
             }
 
-            protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
+            protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = StringHelper.EmptyStr)
             {
                 if (EqualityComparer<T>.Default.Equals(backingField, value))
                 {

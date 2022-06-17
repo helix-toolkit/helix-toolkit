@@ -272,9 +272,9 @@ namespace HelixToolkit.UWP
             {
                 if (detail == RenderDetail.None)
                 {
-                    return "";
+                    return string.Empty;
                 }
-                var s = "";
+                var s = string.Empty;
                 if ((detail & RenderDetail.FPS) == RenderDetail.FPS)
                 {
                     s += GetFPS();
@@ -316,7 +316,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private string GetCamera()
             {
-                return Camera == null ? "" : "Camera:\n" + Camera.ToString() + LineBreak;
+                return Camera == null ? string.Empty : "Camera:\n" + Camera.ToString() + LineBreak;
             }
             /// <summary>
             /// Resets this instance.
