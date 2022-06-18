@@ -123,7 +123,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemHeightProperty =
             DependencyProperty.Register(
-                "CoordinateSystemHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+                "CoordinateSystemHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="CoordinateSystemHorizontalPosition"/> dependency property.
@@ -181,7 +181,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemWidthProperty =
             DependencyProperty.Register(
-                "CoordinateSystemWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+                "CoordinateSystemWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the CurrentPosition dependency property.
@@ -746,7 +746,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="ViewCubeHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeHeightProperty = DependencyProperty.Register(
-            "ViewCubeHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+            "ViewCubeHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="ViewCubeHorizontalPosition"/> dependency property.
@@ -800,7 +800,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="ViewCubeWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeWidthProperty = DependencyProperty.Register(
-            "ViewCubeWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+            "ViewCubeWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="ZoomAroundMouseDownPoint"/> dependency property.
@@ -889,7 +889,7 @@ namespace HelixToolkit.Wpf
         /// The limit FPS property
         /// </summary>
         public static readonly DependencyProperty LimitFPSProperty =
-            DependencyProperty.Register("LimitFPS", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(true, (d,e)=> 
+            DependencyProperty.Register("LimitFPS", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as HelixViewport3D).limitFPS = (bool)e.NewValue;
             }));
@@ -3195,9 +3195,12 @@ namespace HelixToolkit.Wpf
         }
 
         #region Private Variables
+
         private bool limitFPS = true;
         private TimeSpan prevTime;
-        #endregion
+
+        #endregion Private Variables
+
         /// <summary>
         /// Changes the camera direction.
         /// </summary>

@@ -117,11 +117,10 @@
                                             Position="0 0 10"
                                             Text="{Binding CoordinateSystemLabelZ, RelativeSource={RelativeSource TemplatedParent}}" />
 
-                                        <!--<local:PieSliceVisual3D Normal="1,0,0" UpVector="0,0,1" InnerRadius="3" OuterRadius="6"  Fill="#80ff0000"/>
-                                <local:PieSliceVisual3D Normal="0,1,0" UpVector="1,0,0" InnerRadius="3" OuterRadius="6"  Fill="#8000ff00"/>
-                                <local:PieSliceVisual3D Normal="0,0,1" UpVector="0,1,0" InnerRadius="3" OuterRadius="6"  Fill="#800000ff"/>-->
+                                        <!--<local:PieSliceVisual3D Normal="1,0,0" UpVector="0,0,1" InnerRadius="3" OuterRadius="6"  Fill="#80ff0000" />
+                                <local:PieSliceVisual3D Normal="0,1,0" UpVector="1,0,0" InnerRadius="3" OuterRadius="6"  Fill="#8000ff00" />
+                                <local:PieSliceVisual3D Normal="0,0,1" UpVector="0,1,0" InnerRadius="3" OuterRadius="6"  Fill="#800000ff" />-->
                                     </Viewport3D>
-
 
                                     <Grid IsHitTestVisible="False">
                                         <!--  Titles  -->
@@ -230,8 +229,13 @@
             </Style>
         </Grid.Resources>
         <!--  The HelixViewport3D supports camera manipulation, and can be used just like the Viewport3D  -->
-        <HelixToolkit:HelixViewport3D ShowFrameRate="True" ZoomExtentsWhenLoaded="True" ZoomAroundMouseDownPoint="True" RotateAroundMouseDownPoint="True" IsTopBottomViewOrientedToFrontBack="True" IsViewCubeEdgeClicksEnabled="True">
-
+        <HelixToolkit:HelixViewport3D ShowFrameRate="True" ZoomExtentsWhenLoaded="True"
+                                      ZoomAroundMouseDownPoint="True"
+                                      RotateAroundMouseDownPoint="True"
+                                      IsTopBottomViewOrientedToFrontBack="True"
+                                      IsViewCubeEdgeClicksEnabled="True"
+                                      ShowCoordinateSystem="True"
+                                      x:Name="viewPort3D">
 
             <!--  Remember to add light to the scene  -->
             <HelixToolkit:SunLight />
@@ -246,7 +250,6 @@
                 MajorDistance="1"
                 MinorDistance="1"
                 Thickness="0.01" />
-
         </HelixToolkit:HelixViewport3D>
     </Grid>
 </Window>
