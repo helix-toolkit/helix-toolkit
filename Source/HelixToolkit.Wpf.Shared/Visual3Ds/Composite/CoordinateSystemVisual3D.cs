@@ -19,6 +19,14 @@ namespace HelixToolkit.Wpf
     public class CoordinateSystemVisual3D : ModelVisual3D
     {
         /// <summary>
+        /// Identifies the <see cref="Position"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
+           "Position",
+           typeof(Point3D),
+           typeof(CoordinateSystemVisual3D),
+           new UIPropertyMetadata(new Point3D(0, 0, 0), GeometryChanged));
+        /// <summary>
         /// Identifies the <see cref="ArrowLengths"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ArrowLengthsProperty = DependencyProperty.Register(
@@ -34,7 +42,7 @@ namespace HelixToolkit.Wpf
             "XAxisColor",
             typeof(Color),
             typeof(CoordinateSystemVisual3D),
-            new UIPropertyMetadata(Color.FromRgb(150, 75, 75)));
+            new UIPropertyMetadata(Colors.Red, GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="YAxisColor"/> dependency property.
@@ -43,7 +51,7 @@ namespace HelixToolkit.Wpf
             "YAxisColor",
             typeof(Color),
             typeof(CoordinateSystemVisual3D),
-            new UIPropertyMetadata(Color.FromRgb(75, 150, 75)));
+            new UIPropertyMetadata(Colors.Green, GeometryChanged));
 
         /// <summary>
         /// Identifies the <see cref="ZAxisColor"/> dependency property.
@@ -52,7 +60,7 @@ namespace HelixToolkit.Wpf
             "ZAxisColor",
             typeof(Color),
             typeof(CoordinateSystemVisual3D),
-            new UIPropertyMetadata(Color.FromRgb(75, 75, 150)));
+            new UIPropertyMetadata(Colors.Blue, GeometryChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "CoordinateSystemVisual3D" /> class.
@@ -61,7 +69,22 @@ namespace HelixToolkit.Wpf
         {
             this.OnGeometryChanged();
         }
+        /// <summary>
+        /// Gets or sets the the position of CoordinateSystemVisual3D.
+        /// </summary>
+        /// <value>The position of CoordinateSystemVisual3D.</value>
+        public Point3D Position
+        {
+            get
+            {
+                return (Point3D)this.GetValue(PositionProperty);
+            }
 
+            set
+            {
+                this.SetValue(PositionProperty, value);
+            }
+        }
         /// <summary>
         /// Gets or sets the arrow lengths.
         /// </summary>
@@ -152,10 +175,13 @@ namespace HelixToolkit.Wpf
             this.Children.Clear();
             double l = this.ArrowLengths;
             double d = l * 0.1;
-
+            double oX = this.Position.X;
+            double oY = this.Position.Y;
+            double oZ = this.Position.Z;
             var xaxis = new ArrowVisual3D();
             xaxis.BeginEdit();
-            xaxis.Point2 = new Point3D(l, 0, 0);
+            xaxis.Point1 = this.Position;
+            xaxis.Point2 = new Point3D(oX + l, oY, oZ);
             xaxis.Diameter = d;
             xaxis.Fill = new SolidColorBrush(this.XAxisColor);
             xaxis.EndEdit();
@@ -163,7 +189,8 @@ namespace HelixToolkit.Wpf
 
             var yaxis = new ArrowVisual3D();
             yaxis.BeginEdit();
-            yaxis.Point2 = new Point3D(0, l, 0);
+            yaxis.Point1 = this.Position;
+            yaxis.Point2 = new Point3D(oX, oY + l, oZ);
             yaxis.Diameter = d;
             yaxis.Fill = new SolidColorBrush(this.YAxisColor);
             yaxis.EndEdit();
@@ -171,14 +198,14 @@ namespace HelixToolkit.Wpf
 
             var zaxis = new ArrowVisual3D();
             zaxis.BeginEdit();
-            zaxis.Point2 = new Point3D(0, 0, l);
+            zaxis.Point1 = this.Position;
+            zaxis.Point2 = new Point3D(oX, oY, oZ + l);
             zaxis.Diameter = d;
             zaxis.Fill = new SolidColorBrush(this.ZAxisColor);
             zaxis.EndEdit();
             this.Children.Add(zaxis);
 
-            this.Children.Add(new CubeVisual3D { SideLength = d, Fill = Brushes.Black });
+            this.Children.Add(new CubeVisual3D() { Center = this.Position, SideLength = d, Fill = Brushes.Black });
         }
-
     }
 }
