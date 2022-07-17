@@ -244,7 +244,7 @@
                 MajorDistance="1"
                 MinorDistance="1"
                 Thickness="0.01" />
-            <HelixToolkit:ViewCubeVisual3D EnableEdgeClicks="True" />
+            
         </HelixToolkit:HelixViewport3D>
     </Grid>
 </Window>
