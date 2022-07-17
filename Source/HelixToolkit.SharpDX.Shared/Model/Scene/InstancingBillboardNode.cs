@@ -60,29 +60,15 @@ namespace HelixToolkit.UWP
                 return new InstancingBillboardRenderCore() { ParameterBuffer = this.instanceParamBuffer };
             }
 
-            /// <summary>
-            /// Override this function to set render technique during Attach Host.
-            /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-            /// </summary>
-            /// <param name="host"></param>
-            /// <returns>
-            /// Return RenderTechnique
-            /// </returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.BillboardInstancing];
+                return effectsManager[DefaultRenderTechniqueNames.BillboardInstancing];
             }
-            /// <summary>
-            /// To override Attach routine, please override this.
-            /// </summary>
-            /// <param name="host"></param>
-            /// <returns>
-            /// Return true if attached
-            /// </returns>
-            protected override bool OnAttach(IRenderHost host)
+
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
                 // --- attach
-                if (!base.OnAttach(host))
+                if (!base.OnAttach(effectsManager))
                 {
                     return false;
                 }

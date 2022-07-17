@@ -385,7 +385,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     partItemsControl?.Items.Add(item);
                     if (this.IsAttached && item is Element3D element)
                     {
-                        element.SceneNode.Attach(renderHostInternal);
+                        element.SceneNode.Attach(EffectsManager);
                     }
                 }
             }
@@ -974,7 +974,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 foreach (var e in this.OwnedRenderables)
                 {
-                    e.Attach(host);
+                    e.Attach(EffectsManager);
+                    e.Invalidated += NodeInvalidated;
                 }
                 SharedModelContainerInternal?.Attach(host);
                 foreach (var e in this.D2DRenderables)
@@ -983,6 +984,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 IsAttached = true;
             }
+        }
+
+        private void NodeInvalidated(object sender, InvalidateTypes e)
+        {
+            renderHostInternal?.Invalidate(e);
         }
 
         /// <summary>
@@ -995,6 +1001,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsAttached = false;
                 foreach (var e in this.OwnedRenderables)
                 {
+                    e.Invalidated -= NodeInvalidated;
                     e.Detach();
                 }
                 SharedModelContainerInternal?.Detach(this.renderHostInternal);

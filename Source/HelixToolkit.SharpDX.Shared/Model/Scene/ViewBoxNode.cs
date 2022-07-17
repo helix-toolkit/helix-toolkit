@@ -190,14 +190,14 @@ namespace HelixToolkit.UWP
                 UpdateModel(UpDirection);
             }
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     var material = (ViewBoxMeshModel.Material as ViewCubeMaterialCore);
                     if (material.DiffuseMap == null)
                     {
-                        material.DiffuseMap = ViewBoxTexture ?? new TextureModel(BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
+                        material.DiffuseMap = ViewBoxTexture ?? new TextureModel(BitmapExtensions.CreateViewBoxTexture(effectsManager,
                             "F", "B", "L", "R", "U", "D", Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
                             Color.White, Color.White, Color.White, Color.White, Color.White, Color.White), true);
                     }

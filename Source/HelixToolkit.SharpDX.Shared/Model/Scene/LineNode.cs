@@ -77,28 +77,17 @@ namespace HelixToolkit.UWP
                     IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
                 };
             }
-            /// <summary>
-            /// Override this function to set render technique during Attach Host.
-            ///<para>If<see cref="SceneNode.OnSetRenderTechnique" /> is set, then<see cref="SceneNode.OnSetRenderTechnique" /> instead of<see cref="OnCreateRenderTechnique" /> function will be called.</para>
-            /// </summary>
-            /// <param name="host"></param>
-            /// <returns>
-            /// Return RenderTechnique
-            /// </returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.Lines];
+                return effectsManager[DefaultRenderTechniqueNames.Lines];
             }
-            /// <summary>
-            /// <para>Determine if this can be rendered.</para>
-            /// </summary>
-            /// <param name="context"></param>
-            /// <returns></returns>
+
             protected override bool CanRender(RenderContext context)
             {
                 if (base.CanRender(context))
                 {
-                    return !RenderHost.IsDeferredLighting;
+                    return !context.RenderHost.IsDeferredLighting;
                 }
                 else
                 {

@@ -314,7 +314,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 foreach (var e in this.Renderables)
                 {
-                    e.Attach(host);
+                    e.Attach(EffectsManager);
                 }
                 IsAttached = true;
             }

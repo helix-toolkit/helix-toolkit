@@ -58,10 +58,10 @@ namespace HelixToolkit.UWP
                 get => isTessellating;
             }
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
                 cancelToken = new CancellationTokenSource();
-                return base.OnAttach(host);
+                return base.OnAttach(effectsManager);
             }
 
             protected override void OnDetach()

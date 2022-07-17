@@ -89,31 +89,20 @@ namespace HelixToolkit.UWP
             /// The instance parameter buffer
             /// </summary>
             protected IElementsBufferModel<InstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<InstanceParameter>(InstanceParameter.SizeInBytes);
-            /// <summary>
-            /// Called when [create render technique].
-            /// </summary>
-            /// <param name="host">The host.</param>
-            /// <returns></returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.InstancingMesh];
+                return effectsManager[DefaultRenderTechniqueNames.InstancingMesh];
             }
-            /// <summary>
-            /// Called when [create render core].
-            /// </summary>
-            /// <returns></returns>
+
             protected override RenderCore OnCreateRenderCore()
             {
                 return new InstancingMeshRenderCore() { ParameterBuffer = this.instanceParamBuffer };
             }
-            /// <summary>
-            /// Called when [attach].
-            /// </summary>
-            /// <param name="host">The host.</param>
-            /// <returns></returns>
-            protected override bool OnAttach(IRenderHost host)
+
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     instanceParamBuffer.Initialize();
 

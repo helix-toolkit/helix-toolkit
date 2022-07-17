@@ -348,6 +348,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.InvalidatePerFrameRenderables();
             }
         }
+
+        public void Invalidate(InvalidateTypes type)
+        {
+            foreach (var v in attachedRenderHosts)
+            {
+                v.Invalidate(type);
+            }
+        }
         /// <summary>
         /// Sets the default render targets.
         /// </summary>
@@ -652,11 +660,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     foreach (var renderable in Renderables)
                     {
-                        renderable.Attach(this);
+                        renderable.Invalidated += RenderableInvalidated;
+                        renderable.Attach(EffectsManager);
                     }
                 }
             }
         }
+
+        private void RenderableInvalidated(object sender, InvalidateTypes e)
+        {
+            Invalidate(e);
+        }
+
         /// <summary>
         /// Detaches this instance.
         /// </summary>
@@ -669,8 +684,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (Interlocked.Decrement(ref d3dCounter) == 0)
                 {
                     foreach (var renderable in Renderables)
-                    {
+                    {                        
                         renderable.Detach();
+                        renderable.Invalidated -= RenderableInvalidated;
                     }
                 }
                 else if (d3dCounter < 0)
@@ -685,6 +701,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var renderable in Renderables)
             {
                 renderable.Detach();
+                renderable.Invalidated -= RenderableInvalidated;
             }
         }
         /// <summary>

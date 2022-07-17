@@ -24,10 +24,11 @@ namespace CoreTest
                 TopLevel = false, 
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right
             };
+            var context = WindowsFormsSynchronizationContext.Current;
             renderForm.Dock = DockStyle.Fill;
             renderForm.FormBorderStyle = FormBorderStyle.None;
             renderForm.ShowIcon = false;
-            app = new CoreTestApp(renderForm);
+            app = new CoreTestApp(renderForm, context);
             splitContainer1.Panel2.Controls.Add(renderForm);
             Shown += Form1_Shown;
             FormClosing += Form1_FormClosing;

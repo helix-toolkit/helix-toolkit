@@ -733,7 +733,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.manipulator = manipulator;
             }
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
                 models.Add(manipulator.translationX);
                 models.Add(manipulator.translationY);
@@ -744,7 +744,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 models.Add(manipulator.scaleX);
                 models.Add(manipulator.scaleY);
                 models.Add(manipulator.scaleZ);
-                return base.OnAttach(host);
+                return base.OnAttach(effectsManager);
             }
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
