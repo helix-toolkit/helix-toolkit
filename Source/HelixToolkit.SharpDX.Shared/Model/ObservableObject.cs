@@ -45,6 +45,12 @@ namespace HelixToolkit.UWP
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
 
+            protected void RaisePropertyChanged(PropertyChangedEventArgs args)
+            {
+                if (!DisablePropertyChangedEvent)
+                    PropertyChanged?.Invoke(this, args);
+            }
+
             protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = StringHelper.EmptyStr)
             {
                 if (EqualityComparer<T>.Default.Equals(backingField, value))

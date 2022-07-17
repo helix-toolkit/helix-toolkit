@@ -112,9 +112,9 @@ namespace HelixToolkit.UWP
                 return new ScreenCloneRenderCore();
             }
 
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication];
+                return effectsManager[DefaultRenderTechniqueNames.ScreenDuplication];
             }
 
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)

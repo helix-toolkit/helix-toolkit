@@ -420,6 +420,11 @@ namespace HelixToolkit.UWP
         /// </summary>
         void InvalidatePerFrameRenderables();
         /// <summary>
+        /// Invalidate by InvalidateTypes
+        /// </summary>
+        /// <param name="type"></param>
+        void Invalidate(InvalidateTypes type);
+        /// <summary>
         /// Resizes
         /// </summary>
         /// <param name="width">The width.</param>

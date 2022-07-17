@@ -164,9 +164,9 @@ namespace HelixToolkit.UWP
             /// <returns>
             /// Return RenderTechnique
             /// </returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.PostEffectBloom];
+                return effectsManager[DefaultRenderTechniqueNames.PostEffectBloom];
             }
 
             public sealed override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)

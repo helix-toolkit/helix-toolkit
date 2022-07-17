@@ -107,7 +107,7 @@ namespace HelixToolkit.UWP
             /// <exception cref="System.ArgumentException">SceneNode already attach to a different node</exception>
             public bool AddChildNode(SceneNode node)
             {
-                if (node != null && !itemHashSet.ContainsKey(node.GUID) && !node.IsAttached)
+                if (node != null && !itemHashSet.ContainsKey(node.GUID))
                 {
                     itemHashSet.Add(node.GUID, node);
                     ItemsInternal.Add(node);
@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP
                     node.Parent = this;
                     if (IsAttached)
                     {
-                        node.Attach(RenderHost);
+                        node.Attach(EffectsManager);
                         InvalidateSceneGraph();
                     }
                     ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
@@ -159,7 +159,7 @@ namespace HelixToolkit.UWP
                 node.Parent = this;
                 if (IsAttached)
                 {
-                    node.Attach(RenderHost);
+                    node.Attach(EffectsManager);
                     InvalidateSceneGraph();
                 }
                 ChildNodeAdded?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
@@ -230,15 +230,15 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Called when [attach].
             /// </summary>
-            /// <param name="host">The host.</param>
+            /// <param name="effectsManager">The effectsManager.</param>
             /// <returns></returns>
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     for (var i = 0; i < ItemsInternal.Count; ++i)
                     {
-                        ItemsInternal[i].Attach(host);
+                        ItemsInternal[i].Attach(effectsManager);
                     }
                     return true;
                 }

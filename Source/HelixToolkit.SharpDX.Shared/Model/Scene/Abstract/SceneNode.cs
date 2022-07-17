@@ -26,13 +26,29 @@ namespace HelixToolkit.UWP
         using Core;
         using Render;
 
+        public enum InvalidateTypes
+        {
+            /// <summary>
+            /// Notify if scene needs re-rendered.
+            /// </summary>
+            Render,
+            /// <summary>
+            /// Notify if scene graph structure has changed.
+            /// </summary>
+            SceneGraph,
+            /// <summary>
+            /// Notify to rebuild per frame renderables.
+            /// </summary>
+            PerFrameRenderables
+        }
+
         /// <summary>
         ///
         /// </summary>
         public abstract partial class SceneNode : DisposeObject, IComparable<SceneNode>, Animations.IAnimationNode
         {
             #region Properties
-
+            private static readonly string NodeStr = "Node";
             /// <summary>
             ///
             /// </summary>
@@ -43,7 +59,7 @@ namespace HelixToolkit.UWP
                     return RenderCore.GUID;
                 }
             }
-            private string name = "Node";
+            private string name = NodeStr;
             /// <summary>
             /// Gets or sets the name.
             /// </summary>
@@ -221,25 +237,14 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            ///
-            /// </summary>
-            public IRenderHost RenderHost
-            {
-                get; private set;
-            }
-
-            /// <summary>
             /// Gets the effects manager.
             /// </summary>
             /// <value>
             /// The effects manager.
             /// </value>
-            protected IEffectsManager EffectsManager
+            public IEffectsManager EffectsManager
             {
-                get
-                {
-                    return RenderHost.EffectsManager;
-                }
+                private set; get;
             }
 
             /// <summary>
@@ -398,7 +403,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="host"></param>
             /// <returns></returns>
-            public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
+            public delegate IRenderTechnique SetRenderTechniqueFunc(IEffectsManager effectsManager);
 
             /// <summary>
             /// A delegate function to change render technique.
@@ -414,9 +419,9 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="host"></param>
             /// <returns>Return RenderTechnique</returns>
-            protected virtual IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected virtual IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.RenderTechnique;
+                return effectsManager[DefaultRenderTechniqueNames.Mesh];
             }
 
             /// <summary>
@@ -504,6 +509,11 @@ namespace HelixToolkit.UWP
             /// Occurs when [mouse up].
             /// </summary>
             public event EventHandler<SceneNodeMouseUpArgs> MouseUp;
+            /// <summary>
+            /// Occurs when invalidation has happened.
+            /// This is a bubble up event.
+            /// </summary>
+            public event EventHandler<InvalidateTypes> Invalidated;
             #endregion Events
 
             private RenderCore core;
@@ -529,29 +539,33 @@ namespace HelixToolkit.UWP
                 Name = name;
             }
             /// <summary>
-            /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
+            /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(EffectsManager)"/> function.</para>
             /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
-            /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="InvalidateSceneGraph"/></para>
+            /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(EffectsManager)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(EffectsManager)"/> -> <see cref="InvalidateSceneGraph"/></para>
             /// </summary>
             /// <param name="host">The host.</param>
-            public void Attach(IRenderHost host)
+            public void Attach(IEffectsManager effectsManager)
             {
-                if (IsAttached || host == null || host.EffectsManager == null)
+                if (IsAttached && effectsManager != EffectsManager)
+                {
+                    throw new InvalidOperationException("EffectsManager instances must be the same during attaching.");
+                }
+                if (IsAttached || effectsManager == null)
                 {
                     return;
                 }
-                RenderHost = host;
-                this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
+                EffectsManager = effectsManager;
+                this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(effectsManager) : OnCreateRenderTechnique(effectsManager);
                 if (renderTechnique == null)
                 {
-                    var techniqueName = RenderHost.EffectsManager.RenderTechniques.FirstOrDefault();
+                    var techniqueName = EffectsManager.RenderTechniques.FirstOrDefault();
                     if (string.IsNullOrEmpty(techniqueName))
                     {
                         return;
                     }
-                    renderTechnique = RenderHost.EffectsManager[techniqueName];
+                    renderTechnique = EffectsManager[techniqueName];
                 }
-                IsAttached = OnAttach(host);
+                IsAttached = OnAttach(effectsManager);
                 if (IsAttached)
                 {
                     NeedMatrixUpdate = true;
@@ -566,7 +580,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="host"></param>
             /// <returns>Return true if attached</returns>
-            protected virtual bool OnAttach(IRenderHost host)
+            protected virtual bool OnAttach(IEffectsManager host)
             {
                 RenderCore.Attach(renderTechnique);
                 AssignDefaultValuesToCore(RenderCore);
@@ -593,6 +607,7 @@ namespace HelixToolkit.UWP
                     OnDetach();
                     renderTechnique = null;
                     Detached?.Invoke(this, EventArgs.Empty);
+                    Invalidated = null;
                 }
             }
 
@@ -601,12 +616,12 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void OnDetach()
             {
-                RenderHost = null;
+                EffectsManager = null;
             }
 
             protected void InvalidateRenderEvent(object sender, EventArgs arg)
             {
-                RenderHost?.InvalidateRender();
+                Invalidate(InvalidateTypes.Render);
             }
 
             /// <summary>
@@ -615,7 +630,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void InvalidateRender()
             {
-                RenderHost?.InvalidateRender();
+                Invalidate(InvalidateTypes.Render);
             }
 
             /// <summary>
@@ -624,7 +639,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected void InvalidateSceneGraph()
             {
-                RenderHost?.InvalidateSceneGraph();
+                Invalidate(InvalidateTypes.SceneGraph);
             }
 
             /// <summary>
@@ -633,7 +648,23 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             protected void InvalidatePerFrameRenderables()
             {
-                RenderHost?.InvalidatePerFrameRenderables();
+                Invalidate(InvalidateTypes.PerFrameRenderables);
+            }
+            /// <summary>
+            /// Invalidate by type
+            /// </summary>
+            /// <param name="type"></param>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            protected void Invalidate(InvalidateTypes type)
+            {
+                Invalidated?.Invoke(this, type);              
+                if (parent != null)
+                {
+                    foreach(var node in TreeTraverser.TraverseUp(parent))
+                    {
+                        node.Invalidated?.Invoke(this, type);
+                    }
+                }
             }
             /// <summary>
             /// Updates the element total transforms, determine renderability, etc. by the specified time span.
@@ -1053,6 +1084,7 @@ namespace HelixToolkit.UWP
             {
                 ItemsInternal.Clear();
                 RenderCore.Dispose();
+                Invalidated = null;
                 VisibleChanged = null;
                 TransformChanged = null;
                 OnSetRenderTechnique = null;

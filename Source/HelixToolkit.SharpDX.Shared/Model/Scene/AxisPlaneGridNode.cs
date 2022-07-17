@@ -247,9 +247,9 @@ namespace HelixToolkit.UWP
                 return new AxisPlaneGridCore();
             }
 
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.PlaneGrid];
+                return effectsManager[DefaultRenderTechniqueNames.PlaneGrid];
             }
 
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)

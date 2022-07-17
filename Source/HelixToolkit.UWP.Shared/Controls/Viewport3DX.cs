@@ -317,6 +317,7 @@ namespace HelixToolkit.UWP
                     if (item is Element3D element)
                     {
                         element.SceneNode.Detach();
+                        element.SceneNode.Invalidated -= NodeInvalidated;
                     }
                 }
             }
@@ -330,12 +331,14 @@ namespace HelixToolkit.UWP
                     }
                     if (this.IsAttached && item is Element3D element)
                     {
-                        element.SceneNode.Attach(renderHostInternal);
+                        element.SceneNode.Invalidated += NodeInvalidated;
+                        element.SceneNode.Attach(EffectsManager);
                     }
                 }
             }
             InvalidateRender();
         }
+
 
         protected override void OnApplyTemplate()
         {
@@ -514,7 +517,8 @@ namespace HelixToolkit.UWP
             {
                 foreach (var e in this.OwnedRenderables)
                 {
-                    e.Attach(host);
+                    e.Attach(EffectsManager);
+                    e.Invalidated += NodeInvalidated;
                 }
                 SharedModelContainerInternal?.Attach(host);
                 foreach (var e in this.D2DRenderables)
@@ -523,6 +527,11 @@ namespace HelixToolkit.UWP
                 }
                 IsAttached = true;
             }
+        }
+
+        private void NodeInvalidated(object sender, InvalidateTypes e)
+        {
+            renderHostInternal?.Invalidate(e);
         }
 
         /// <summary>

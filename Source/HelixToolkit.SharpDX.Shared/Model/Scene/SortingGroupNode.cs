@@ -85,10 +85,10 @@ namespace HelixToolkit.UWP
             private readonly List<SortStruct> sortingOpaqueCache = new List<SortStruct>();
             private readonly List<SceneNode> notSorted = new List<SceneNode>();
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
                 LastSortTime = 0;
-                return base.OnAttach(host);
+                return base.OnAttach(effectsManager);
             }
 
             public override void UpdateNotRender(RenderContext context)

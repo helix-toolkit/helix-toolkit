@@ -88,14 +88,10 @@ namespace HelixToolkit.UWP
                     return new SkyBoxRenderCore();
                 }
             }
-            /// <summary>
-            /// Called when [create render technique].
-            /// </summary>
-            /// <param name="host">The host.</param>
-            /// <returns></returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.Skybox];
+                return effectsManager[DefaultRenderTechniqueNames.Skybox];
             }
 
             public sealed override bool HitTest(HitTestContext context, ref List<HitTestResult> hits)

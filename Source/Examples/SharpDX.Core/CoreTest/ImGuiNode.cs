@@ -80,9 +80,9 @@ namespace HelixToolkit.SharpDX.Core.Model
             base.OnDetach();
         }
 
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
         {
-            return host.EffectsManager[ImGuiRenderTechnique];
+            return effectsManager[ImGuiRenderTechnique];
         }
 
         public override void Update(RenderContext context)

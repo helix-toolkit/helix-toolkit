@@ -55,7 +55,7 @@ namespace HelixToolkit.UWP
                 {
                     if (Set(ref material, value))
                     {
-                        if (RenderHost != null)
+                        if (EffectsManager != null)
                         {
                             if (IsAttached)
                             {
@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP
                             else
                             {
                                 Detach();
-                                Attach(RenderHost);
+                                Attach(EffectsManager);
                             }
                         }
                     }
@@ -94,9 +94,9 @@ namespace HelixToolkit.UWP
                 return base.CanRender(context) && materialVariable != null;
             }
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     AttachMaterial();
                     return true;

@@ -28,9 +28,9 @@ namespace CustomShaderDemo
             return new CustomMeshCore();
         }
 
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
         {
-            return host.EffectsManager[CustomShaderNames.DataSampling];
+            return effectsManager[CustomShaderNames.DataSampling];
         }
     }
 }

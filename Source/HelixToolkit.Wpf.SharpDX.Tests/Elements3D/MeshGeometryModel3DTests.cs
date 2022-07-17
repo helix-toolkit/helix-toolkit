@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
             var model = new MeshGeometryModel3D { Geometry = geometry };
 
             var canvas = new CanvasMock();
-            model.SceneNode.Attach(canvas.RenderHost);
+            model.SceneNode.Attach(canvas.RenderHost.EffectsManager);
 
             Assert.AreEqual(true, model.IsAttached);
         }

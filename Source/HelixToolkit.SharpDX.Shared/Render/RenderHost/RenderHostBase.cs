@@ -733,6 +733,22 @@ namespace HelixToolkit.UWP
                 UpdatePerFrameRenderableRequested = true;
                 InvalidateRender();
             }
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void Invalidate(InvalidateTypes type)
+            {
+                switch (type)
+                {
+                    case InvalidateTypes.SceneGraph:
+                        InvalidateSceneGraph();
+                        break;
+                    case InvalidateTypes.Render:
+                        InvalidateRender();
+                        break;
+                    case InvalidateTypes.PerFrameRenderables:
+                        InvalidatePerFrameRenderables();
+                        break;
+                }
+            }
             /// <summary>
             /// Determines whether this instance can render.
             /// </summary>

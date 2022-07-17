@@ -512,13 +512,13 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// This function initialize the Geometry Buffer and Instance Buffer
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns>
             /// Return true if attached
             /// </returns>
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     CreateGeometryBuffer();
                     BoundManager.Geometry = Geometry;

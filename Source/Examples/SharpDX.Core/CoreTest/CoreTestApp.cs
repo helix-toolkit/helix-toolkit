@@ -14,6 +14,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CoreTest
@@ -75,6 +77,7 @@ namespace CoreTest
         private Stack<IEnumerator<SceneNode>> stackCache = new Stack<IEnumerator<SceneNode>>();
         private IApplyPostEffect currentHighlight = null;
         private double dpiScale = 1;
+        private SynchronizationContext context;
 
         private ViewportOptions options = new ViewportOptions()
         {
@@ -91,8 +94,9 @@ namespace CoreTest
             EnableDpiScale = true
         };
 
-        public CoreTestApp(Form window)
+        public CoreTestApp(Form window, SynchronizationContext context)
         {
+            this.context = context;
             dpiScale = DpiHelper.GetWindowsScreenScalingFactor(false);
 
             viewport = new ViewportCore(window.Handle, true);
@@ -189,34 +193,79 @@ namespace CoreTest
             groupEffects = new GroupNode();
             InitializeMaterials();
             var materialCount = materials.Count;
+            Task.Run(() => {
+                for (int i = 0; i < NumItems; ++i)
+                {
+                    var builder = new MeshBuilder(true, true, true);
+                    builder.AddSphere(Vector3.Zero, 1);
+                    var sphere1 = builder.ToMesh();
+                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
+                    var material = materials[i % materialCount];
+                    var node = new MeshNode()
+                    {
+                        Geometry = sphere1,
+                        IsTransparent = material.Item1,
+                        Material = material.Item2,
+                        ModelMatrix = transform,
+                        CullMode = SharpDX.Direct3D11.CullMode.Back
+                    };
+                    node.Attach(effectsManager);
+                    context.Post((o) => { 
+                        groupSphere.AddChildNode(node);                    
+                    }, null);
+                    Task.Delay(1).Wait();
+                }            
+            });
 
-            for (int i = 0; i < NumItems; ++i)
-            {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
-                var material = materials[i % materialCount];
-                groupSphere.AddChildNode(new MeshNode() { Geometry = sphere, IsTransparent = material.Item1, Material = material.Item2, 
-                    ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
-            }
+            Task.Run(() => {
+                for (int i = 0; i < NumItems; ++i)
+                {
+                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                    var material = materials[i % materialCount];
+                    var node = new MeshNode()
+                    {
+                        Geometry = box,
+                        IsTransparent = material.Item1,
+                        Material = material.Item2,
+                        ModelMatrix = transform,
+                        CullMode = SharpDX.Direct3D11.CullMode.Back
+                    };
+                    node.Attach(effectsManager);
+                    context.Post((o) =>
+                    {
+                        groupBox.AddChildNode(node);
+                    }, null);
+                    Task.Delay(1).Wait();
+                }            
+            });
 
-            for (int i = 0; i < NumItems; ++i)
-            {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                var material = materials[i % materialCount];
-                groupBox.AddChildNode(new MeshNode() { Geometry = box, IsTransparent = material.Item1, Material = material.Item2, 
-                    ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
-            }
+            Task.Run(() => { 
+                for (int i = 0; i < NumItems; ++i)
+                {
+                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                    var node = new PointNode() { Geometry = points, ModelMatrix = transform, Material = new PointMaterialCore() { PointColor = Color.Red } };
+                    node.Attach(effectsManager);
+                    context.Post((o) =>
+                    {
+                        groupPoints.AddChildNode(node);
+                    }, null);
+                    Task.Delay(1).Wait();
+                }            
+            });
 
-            for (int i = 0; i < NumItems; ++i)
-            {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                groupPoints.AddChildNode(new PointNode() { Geometry = points, ModelMatrix = transform, Material = new PointMaterialCore() { PointColor = Color.Red } });
-            }
-
-            for (int i = 0; i < NumItems; ++i)
-            {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } });
-            }
+            Task.Run(() => { 
+                for (int i = 0; i < NumItems; ++i)
+                {
+                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                    var node = new LineNode() { Geometry = lines, ModelMatrix = transform, Material = new LineMaterialCore() { LineColor = Color.LightBlue } };
+                    node.Attach(effectsManager);
+                    context.Post((o) =>
+                    {
+                        groupLines.AddChildNode(node);
+                    }, null);
+                    Task.Delay(1).Wait();
+                }            
+            });
 
             groupModel.AddChildNode(groupSphere);
             groupSphere.AddChildNode(groupBox);
