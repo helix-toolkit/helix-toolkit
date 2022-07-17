@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Core;
+    using System.ComponentModel;
     using Utilities;
 #if !NETFX_CORE
     [Serializable]
@@ -25,6 +26,8 @@ namespace HelixToolkit.UWP
     [DataContract]
     public class MeshGeometry3D : Geometry3D
     {
+        private static readonly PropertyChangedEventArgs textureCoordChangedArgs = new PropertyChangedEventArgs(nameof(TextureCoordinates));
+
         /// <summary>
         /// Used to scale up small triangle during hit test.
         /// </summary>
@@ -63,7 +66,10 @@ namespace HelixToolkit.UWP
             }
             set
             {
-                Set(ref textureCoordinates, value);
+                if (Set(ref textureCoordinates, value, false))
+                {
+                    RaisePropertyChanged(textureCoordChangedArgs);
+                }
             }
         }
         /// <summary>
