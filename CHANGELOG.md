@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+
+### Improvement
+1. Change `SceneNode.Attach` to accept `IEffectsManager`. This change will allow scene graph to be built and pre-attached in separate thread (all graphics resources are created during attaching). UI thread is still required to add generated sub graph back to the main graph which is associated with the Viewport. (SharpDX)  
+
 ## [2.21.1] - 2022-06-16
 
 ### Improvement
