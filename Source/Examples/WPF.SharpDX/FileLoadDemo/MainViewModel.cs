@@ -261,7 +261,9 @@ namespace FileLoadDemo
             Task.Run(() =>
             {
                 var loader = new Importer();
-                return loader.Load(path);
+                var scene = loader.Load(path);
+                scene.Root.Attach(EffectsManager); // Pre attach scene graph
+                return scene;
             }).ContinueWith((result) =>
             {
                 IsLoading = false;

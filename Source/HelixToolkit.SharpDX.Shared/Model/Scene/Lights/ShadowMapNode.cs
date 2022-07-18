@@ -224,7 +224,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// To override Attach routine, please override this.
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns>
             /// Return true if attached
             /// </returns>
