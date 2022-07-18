@@ -401,7 +401,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             ///
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns></returns>
             public delegate IRenderTechnique SetRenderTechniqueFunc(IEffectsManager effectsManager);
 
@@ -417,7 +417,7 @@ namespace HelixToolkit.UWP
             /// Override this function to set render technique during Attach Host.
             /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns>Return RenderTechnique</returns>
             protected virtual IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
@@ -543,7 +543,7 @@ namespace HelixToolkit.UWP
             /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
             /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(EffectsManager)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(EffectsManager)"/> -> <see cref="InvalidateSceneGraph"/></para>
             /// </summary>
-            /// <param name="host">The host.</param>
+            /// <param name="effectsManager">The effectsManager.</param>
             public void Attach(IEffectsManager effectsManager)
             {
                 if (IsAttached && effectsManager != EffectsManager)
@@ -578,13 +578,13 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// To override Attach routine, please override this.
             /// </summary>
-            /// <param name="host"></param>
+            /// <param name="effectsManager"></param>
             /// <returns>Return true if attached</returns>
-            protected virtual bool OnAttach(IEffectsManager host)
+            protected virtual bool OnAttach(IEffectsManager effectsManager)
             {
                 RenderCore.Attach(renderTechnique);
                 AssignDefaultValuesToCore(RenderCore);
-                return RenderCore == null ? false : RenderCore.IsAttached;
+                return RenderCore != null && RenderCore.IsAttached;
             }
 
             /// <summary>
@@ -1082,7 +1082,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnDispose(bool disposeManagedResources)
             {
-                ItemsInternal.Clear();
+                Detach();
                 RenderCore.Dispose();
                 Invalidated = null;
                 VisibleChanged = null;

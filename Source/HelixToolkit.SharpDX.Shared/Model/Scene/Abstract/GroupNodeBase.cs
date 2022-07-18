@@ -184,13 +184,17 @@ namespace HelixToolkit.UWP
                 return targetGroup.AddChildNode(node);
             }
             /// <summary>
-            /// Clears this instance.
+            /// Clears this instance. If detach = false, then developer must manage the life cycle of the cleared child nodes manually.
             /// </summary>
-            public void Clear()
+            /// <param name="detachChildren">Whether to detach the child nodes automatically after removing. Default = true.</param>
+            public void Clear(bool detachChildren = true)
             {
                 for (var i = 0; i < ItemsInternal.Count; ++i)
                 {
-                    ItemsInternal[i].Detach();
+                    if (detachChildren)
+                    {
+                        ItemsInternal[i].Detach();
+                    }
                     ItemsInternal[i].Parent = null;
                 }
                 ItemsInternal.Clear();
@@ -198,15 +202,19 @@ namespace HelixToolkit.UWP
                 Cleared?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
             }
             /// <summary>
-            /// Removes the child node.
+            /// Removes the child node. If detach = false, then developer must manage the life cycle of the removed node manually.
             /// </summary>
             /// <param name="node">The node.</param>
+            /// <param name="detachChild">Whether to detach the child node automatically after removing. Default = true.</param>
             /// <returns></returns>
-            public bool RemoveChildNode(SceneNode node)
+            public bool RemoveChildNode(SceneNode node, bool detachChild = true)
             {
                 if (node != null && itemHashSet.Remove(node.GUID))
                 {
-                    node.Detach();
+                    if (detachChild)
+                    {
+                        node.Detach();
+                    }
                     ItemsInternal.Remove(node);
                     node.Parent = null;
                     ChildNodeRemoved?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
@@ -285,7 +293,6 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources">if set to <c>true</c> [dispose managed resources].</param>
             protected override void OnDispose(bool disposeManagedResources)
             {
-                Clear();
                 Cleared = null;
                 base.OnDispose(disposeManagedResources);
             }
