@@ -24,6 +24,7 @@ namespace FileLoadDemo
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using System.Linq;
 
     public class MainViewModel : BaseViewModel
     {
@@ -271,7 +272,13 @@ namespace FileLoadDemo
                 {
                     scene = result.Result;
                     Animations.Clear();
-                    GroupModel.Clear();
+                    var oldNode = GroupModel.SceneNode.Items.ToArray();
+                    GroupModel.Clear(false);
+                    Task.Run(() =>
+                    { 
+                        foreach (var node in oldNode) 
+                        { node.Dispose(); }
+                    });
                     if (scene != null)
                     {
                         if (scene.Root != null)

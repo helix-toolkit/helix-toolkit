@@ -584,7 +584,7 @@ namespace HelixToolkit.UWP
             {
                 RenderCore.Attach(renderTechnique);
                 AssignDefaultValuesToCore(RenderCore);
-                return RenderCore == null ? false : RenderCore.IsAttached;
+                return RenderCore != null && RenderCore.IsAttached;
             }
 
             /// <summary>
@@ -1082,7 +1082,7 @@ namespace HelixToolkit.UWP
 
             protected override void OnDispose(bool disposeManagedResources)
             {
-                ItemsInternal.Clear();
+                Detach();
                 RenderCore.Dispose();
                 Invalidated = null;
                 VisibleChanged = null;

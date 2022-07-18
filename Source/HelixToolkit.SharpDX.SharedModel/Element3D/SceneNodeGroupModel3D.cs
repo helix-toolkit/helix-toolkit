@@ -35,19 +35,22 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         /// <summary>
         /// Removes child node. <see cref="GroupNodeBase.RemoveChildNode(SceneNode)"/>
+        /// If detach = false, then developer must manage the life cycle of the removed child node manually.
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns>Sucess or not</returns>
-        public bool RemoveNode(SceneNode node)
+        public bool RemoveNode(SceneNode node, bool detachChildren = true)
         {
-            return GroupNode.RemoveChildNode(node);
+            return GroupNode.RemoveChildNode(node, detachChildren);
         }
         /// <summary>
-        /// Clears this group. <see cref="GroupNodeBase.Clear"/>
+        /// Clears this group. <see cref="GroupNodeBase.Clear"/>. If detach = false, then developer must manage the life cycle of the cleared child nodes manually.
         /// </summary>
-        public void Clear()
+        /// <param name="detachChildren">
+        /// </param>
+        public void Clear(bool detachChildren = true)
         {
-            GroupNode.Clear();
+            GroupNode.Clear(detachChildren);
         }
         /// <summary>
         /// Moves the child node order. <see cref="GroupNodeBase.MoveChildNode(int, int)"/>
