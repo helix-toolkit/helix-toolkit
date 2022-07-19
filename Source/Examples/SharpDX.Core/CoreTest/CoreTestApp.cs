@@ -99,6 +99,8 @@ namespace CoreTest
             this.context = context;
             dpiScale = DpiHelper.GetWindowsScreenScalingFactor(false);
 
+            var logger = HelixToolkit.Logger.LogManager.Create<CoreTestApp>();
+
             viewport = new ViewportCore(window.Handle, true);
             viewport.DpiScale = dpiScale;
             cameraController = new CameraController(viewport);

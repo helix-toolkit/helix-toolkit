@@ -125,26 +125,23 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup>
-    
   </PropertyGroup>
   <PropertyGroup>
-    
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="UWPTextureLoader.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.Assimp.rd.xml" />
-
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet">
       <Version>5.0.0-beta1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.10</Version>
+      <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub">
-      <Version>1.0.0</Version>
+      <Version>1.1.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -156,7 +153,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.UWP\HelixToolkit.UWP.csproj">

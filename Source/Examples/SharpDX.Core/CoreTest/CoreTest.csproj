@@ -106,7 +106,10 @@
       <Version>5.0.0-beta1</Version>
     </PackageReference>
     <PackageReference Include="ImGui.NET">
-      <Version>1.78.0</Version>
+      <Version>1.87.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
+      <Version>6.0.1</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.Desktop">
       <Version>4.2.0</Version>

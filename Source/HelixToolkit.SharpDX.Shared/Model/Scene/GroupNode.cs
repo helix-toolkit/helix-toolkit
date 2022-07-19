@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -24,6 +25,7 @@ namespace HelixToolkit.UWP
         [DebuggerDisplay("Name={" + nameof(Name) + "}; Child Count={" + nameof(ItemsCount) + "};")]
         public class GroupNode : GroupNodeBase, IHitable
         {
+            static readonly ILogger logger = Logger.LogManager.Create<GroupNode>();
             private IOctreeManager octreeManager;
             public IOctreeManager OctreeManager
             {
@@ -115,12 +117,10 @@ namespace HelixToolkit.UWP
                 if (octreeManager != null)
                 {
                     isHit = octreeManager.HitTest(context, this.WrapperSource, totalModelMatrix, ref hits);
-#if DEBUG
-                    if (isHit)
+                    if (isHit && logger.IsEnabled(LogLevel.Trace))
                     {
-                        Debug.WriteLine("Octree hit test, hit at " + hits[0].PointHit);
+                        logger.LogTrace("Octree hit test, hit at {}", hits[0].PointHit);
                     }
-#endif
                 }
                 else
                 {

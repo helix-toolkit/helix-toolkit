@@ -6,7 +6,7 @@ using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using System.Linq;
 using System.Runtime.Serialization;
-
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -28,6 +28,7 @@ namespace HelixToolkit.UWP
         [DataContract]
         public sealed class ShaderDescription
         {
+            private static readonly ILogger logger = LogManager.Create<ShaderDescription>();
             /// <summary>
             /// Gets or sets the name.
             /// </summary>
@@ -266,9 +267,8 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="device"></param>
             /// <param name="pool"></param>
-            /// <param name="logger"></param>
             /// <returns></returns>
-            public ShaderBase CreateShader(Device device, IConstantBufferPool pool, LogWrapper logger)
+            public ShaderBase CreateShader(Device device, IConstantBufferPool pool)
             {
                 if (ByteCode == null)
                 {
@@ -279,9 +279,9 @@ namespace HelixToolkit.UWP
                 Level = ShaderReflector.FeatureLevel;
                 if (Level > device.FeatureLevel)
                 {
-                    logger?.Log(LogLevel.Warning, $"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
+                    logger.LogWarning("Shader {} requires FeatureLevel {}. Current device only supports FeatureLevel {} and below.",
+                        this.Name, Level, device.FeatureLevel);
                     return null;
-                    //throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
                 }
                 this.ConstantBufferMappings = ShaderReflector.ConstantBufferMappings.Values.ToArray();
                 this.TextureMappings = ShaderReflector.TextureMappings.Values.ToArray();

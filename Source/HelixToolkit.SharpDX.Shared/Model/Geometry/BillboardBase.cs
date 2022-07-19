@@ -21,10 +21,13 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
+    using Microsoft.Extensions.Logging;
     using System.Diagnostics;
 
     public abstract class BillboardBase : Geometry3D, IBillboardText
     {
+        static readonly ILogger logger = Logger.LogManager.Create<BillboardBase>();
+
         public float Height
         {
             protected set;
@@ -81,7 +84,10 @@ namespace HelixToolkit.UWP
         {
             if (!isInitialized)
             {
-                Debug.WriteLine($"Billboard DrawTexture");
+                if (logger.IsEnabled(LogLevel.Trace))
+                {
+                    logger.LogTrace("Billboard update texture and verts");
+                }
                 BillboardVertices.Clear();
                 OnUpdateTextureAndBillboardVertices(deviceResources);
                 UpdateBounds();
@@ -175,7 +181,10 @@ namespace HelixToolkit.UWP
                     result.Distance = dist;
                     result.Geometry = this;
                     AssignResultAdditional(result, i);
-                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo == null ? Type.ToString() : result.TextInfo.Text));
+                    if (logger.IsEnabled(LogLevel.Trace))
+                    {
+                        logger.LogTrace("Hit; HitPoint:{}; Text={}", result.PointHit, (result.TextInfo == null ? Type.ToString() : result.TextInfo.Text));
+                    }
                 }
             }
             if (h)
@@ -248,7 +257,10 @@ namespace HelixToolkit.UWP
                     result.Distance = dist;
                     result.Geometry = this;
                     AssignResultAdditional(result, i);
-                    Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo == null ? Type.ToString() : result.TextInfo.Text));
+                    if (logger.IsEnabled(LogLevel.Trace))
+                    {
+                        logger.LogTrace("Hit; HitPoint:{}; Text={}", result.PointHit, result.TextInfo == null ? Type.ToString() : result.TextInfo.Text);
+                    }
                 }
             }
             if (h)

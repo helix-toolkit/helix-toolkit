@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -73,6 +74,7 @@ namespace HelixToolkit.UWP
 
         public static class ThreadBufferManager<T> where T : unmanaged
         {
+            static readonly ILogger logger = Logger.LogManager.Create(nameof(ThreadBufferManager<T>));
 #if !NETFX_CORE
             public static readonly int StructSize = Marshal.SizeOf(typeof(T));
 #else
@@ -110,12 +112,18 @@ namespace HelixToolkit.UWP
                         scale = 1.5f;
                     }
                     array = new T[(int)(requestCount * scale)];
-                    Debug.WriteLine($"Created new thread buffer. Type: {typeof(T)}; Size: {array.Length * StructSize / 1024} kB.");
+                    if (logger.IsEnabled(LogLevel.Debug))
+                    {
+                        logger.LogDebug("Created new thread buffer. Type: {}; Size: {} kB.", typeof(T), array.Length * StructSize / 1024);
+                    }
                 }
 
                 if (requestCount > MaximumElementCount)
                 {
-                    Debug.WriteLine($"Requested buffer size is larger than max retain size. Type: {typeof(T)};");
+                    if (logger.IsEnabled(LogLevel.Debug))
+                    {
+                        logger.LogDebug("Requested buffer size is larger than max retain size. Type: {}.", typeof(T));
+                    }
                     return array;
                 }
                 if (lastUsed == 0)
@@ -131,7 +139,10 @@ namespace HelixToolkit.UWP
                     var diff = Stopwatch.GetTimestamp() - lastUsed;
                     if (diff / Stopwatch.Frequency > ThreadBufferManagerConfig.MinimumAutoReleaseThresholdSeconds)
                     {
-                        Debug.WriteLine($"Disposing thread buffer. Type: {typeof(T)};");
+                        if (logger.IsEnabled(LogLevel.Debug))
+                        {
+                            logger.LogDebug("Disposing thread buffer. Type: {}.", typeof(T));
+                        }
                         buffer = null;
                         lastUsed = 0;
                         return array;

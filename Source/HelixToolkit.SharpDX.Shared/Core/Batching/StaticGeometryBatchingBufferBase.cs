@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -21,7 +22,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     namespace Core
-    {
+    {        
         using Render;
         using Utilities;
         public interface IBatchedGeometry
@@ -39,6 +40,7 @@ namespace HelixToolkit.UWP
         public abstract class StaticGeometryBatchingBufferBase<BatchedGeometry, VertStruct> : DisposeObject, IAttachableBufferModel
             where BatchedGeometry : struct, IBatchedGeometry where VertStruct : unmanaged
         {
+            static readonly ILogger logger = Logger.LogManager.Create<StaticGeometryBatchingBufferBase<BatchedGeometry, VertStruct>>();
             public Guid GUID { get; } = Guid.NewGuid();
             public event EventHandler<EventArgs> InvalidateRender;
             private bool isGeometryChanged = true;
@@ -212,7 +214,7 @@ namespace HelixToolkit.UWP
                 }
 #if OutputBuildTime
                 time = System.Diagnostics.Stopwatch.GetTimestamp() - time;
-                Console.WriteLine($"Build Batch Time: {(float)time / System.Diagnostics.Stopwatch.Frequency * 1000} ms");
+                logger.LogDebug($"Build Batch Time: {} ms", (float)time / System.Diagnostics.Stopwatch.Frequency * 1000);
 #endif
                 VertexBuffer[0].UploadDataToBuffer(deviceContext, tempVerts, tempVerts.Length);
                 IndexBuffer?.UploadDataToBuffer(deviceContext, tempIndices, tempIndices.Length);

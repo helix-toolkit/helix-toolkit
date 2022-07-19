@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP
     namespace ShaderManager
     {
         using HelixToolkit.Logger;
+        using Microsoft.Extensions.Logging;
         using Shaders;
         using Utilities;
 
@@ -67,14 +68,14 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class ConstantBufferPool : ReferenceCountedDictionaryPool<string, ConstantBufferProxy, ConstantBufferDescription>, IConstantBufferPool
         {
+            static readonly ILogger logger = LogManager.Create<ConstantBufferPool>();
             private readonly Device device;
             public Device Device => device;
             /// <summary>
             /// Initializes a new instance of the <see cref="ConstantBufferPool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
-            /// <param name="logger"></param>
-            public ConstantBufferPool(Device device, LogWrapper logger)
+            public ConstantBufferPool(Device device)
                 : base(false)
             {
                 this.device = device;
@@ -93,6 +94,10 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override ConstantBufferProxy OnCreate(ref string key, ref ConstantBufferDescription description)
             {
+                if (logger.IsEnabled(LogLevel.Debug))
+                {
+                    logger.LogDebug("Creating constant buffer. Key: {}; Size: {}", key, description.StructSize);
+                }
                 var buffer = description.CreateBuffer();
                 buffer.CreateBuffer(device);
                 ErrorCheck(buffer, ref description);

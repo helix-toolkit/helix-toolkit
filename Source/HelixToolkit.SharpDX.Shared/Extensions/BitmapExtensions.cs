@@ -11,6 +11,7 @@ using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 using SharpDX.WIC;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -30,6 +31,7 @@ namespace HelixToolkit.UWP
     }
     public static class BitmapExtensions
     {
+        static readonly ILogger logger = Logger.LogManager.Create(nameof(BitmapExtensions));
         public static MemoryStream ToBitmapStream(this string text, int fontSize, Color4 foreground,
             Color4 background, string fontFamily, FontWeight fontWeight, FontStyle fontStyle, Vector4 padding, ref float width, ref float height, bool predefinedSize,
             IDevice2DResources deviceResources)
@@ -305,7 +307,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    effectsManager.Logger.Log(Logger.LogLevel.Error, $"Failed to pack TextInfoExts, Error Code = {code.ToString()}");
+                    logger.LogError("Failed to pack TextInfoExts, Error Code = {}", code.ToString());
                     return null;
                 }
             }
