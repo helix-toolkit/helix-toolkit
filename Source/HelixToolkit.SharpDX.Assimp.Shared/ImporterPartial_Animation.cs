@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Animation = Assimp.Animation;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -44,10 +45,12 @@ namespace HelixToolkit.UWP
                 var ret = new FastList<HxAnimations.Keyframe>(maxCount);
                 if (posCount != rotCount || rotCount != scaleCount)
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Trace, 
-                        "Animation Channel is non-uniform lengths." +
-                        $" Position={posCount}; Rotation={rotCount}; Scale={scaleCount};" +
-                        " Trying to automatically create uniform animation keys");
+                    if (logger.IsEnabled(LogLevel.Trace))
+                    {
+                        logger.LogTrace(
+                            "Animation Channel is non-uniform lengths. Position={}; Rotation={}; Scale={};" +
+                            " Trying to automatically create uniform animation keys", posCount, rotCount, scaleCount);
+                    }
                     // Adds dummy key if it is empty
                     if (posCount == 0)
                     {
@@ -217,7 +220,7 @@ namespace HelixToolkit.UWP
             {
                 if (ani.TicksPerSecond == 0)
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Animation TicksPerSecond is 0. Set to {configuration.TickesPerSecond}");
+                    logger.LogWarning("Animation TicksPerSecond is 0. Set to {}", configuration.TickesPerSecond);
                     ani.TicksPerSecond = configuration.TickesPerSecond;
                 }
                 hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.Node)
@@ -269,7 +272,7 @@ namespace HelixToolkit.UWP
             {
                 if (ani.TicksPerSecond == 0)
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Animation TicksPerSecond is 0. Set to {configuration.TickesPerSecond}");
+                    logger.LogWarning("Animation TicksPerSecond is 0. Set to {}", configuration.TickesPerSecond);
                     ani.TicksPerSecond = configuration.TickesPerSecond;
                 }
 

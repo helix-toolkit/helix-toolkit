@@ -184,13 +184,6 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        LogWrapper Logger
-        {
-            get;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
         IShaderPoolManager ShaderManager
         {
             get;

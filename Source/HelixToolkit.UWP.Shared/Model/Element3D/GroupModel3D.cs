@@ -15,8 +15,8 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="HelixToolkit.UWP.GroupElement3D" />
-    /// <seealso cref="HelixToolkit.UWP.IHitable" />
+    /// <seealso cref="GroupElement3D" />
+    /// <seealso cref="IHitable" />
     public class GroupModel3D : GroupElement3D, IHitable
     {
         public GroupModel3D()

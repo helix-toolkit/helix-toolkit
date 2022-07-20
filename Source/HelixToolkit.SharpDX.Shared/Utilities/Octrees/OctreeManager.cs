@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -22,15 +24,17 @@ namespace HelixToolkit.UWP
 {
     namespace Utilities
     {
+        
         using Model;
         using Model.Scene;
-        using System.Diagnostics;
+        
 
         /// <summary>
         /// 
         /// </summary>
         public abstract class OctreeManagerBase : ObservableObject, IOctreeManager
         {
+            static readonly ILogger logger = Logger.LogManager.Create<OctreeManagerBase>();
             /// <summary>
             /// Occurs when [on octree created].
             /// </summary>
@@ -157,6 +161,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class GroupNodeGeometryBoundOctreeManager : OctreeManagerBase
         {
+            static readonly ILogger logger = Logger.LogManager.Create<GroupNodeGeometryBoundOctreeManager>();
             private object lockObj = new object();
 
             private readonly HashSet<SceneNode> NonBoundableItems = new HashSet<SceneNode>();
@@ -408,7 +413,10 @@ namespace HelixToolkit.UWP
                             UnsubscribeBoundChangeEvent(item);
                             if (!tree.RemoveByBound(item))
                             {
-                                //Console.WriteLine("Remove failed.");
+                                if (logger.IsEnabled(LogLevel.Debug))
+                                {
+                                    logger.LogDebug("Remove failed.");
+                                }
                             }
                             else
                             {

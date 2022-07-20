@@ -9,7 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
-
+using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -30,8 +31,8 @@ namespace HelixToolkit.UWP
     namespace Render
     {
         using Core;
-        using HelixToolkit.Logger;
-        using System.Collections.Concurrent;
+        using Logger;
+
 
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public partial class DefaultRenderHost : DX11RenderHostBase
         {
+            static readonly ILogger logger = LogManager.Create<DefaultRenderHost>();
             private Task asyncTask;
             private Task getTriangleCountTask;
             private Task getPostEffectCoreTask;
@@ -70,7 +72,7 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             protected override DX11RenderBufferProxyBase CreateRenderBuffer()
             {
-                Logger.Log(LogLevel.Information, "DX11Texture2DRenderBufferProxy", nameof(DefaultRenderHost));
+                logger.LogInformation("Creating DX11Texture2DRenderBufferProxy");
                 return new DX11Texture2DRenderBufferProxy(EffectsManager);
             }
 
@@ -83,16 +85,18 @@ namespace HelixToolkit.UWP
                 {
                     viewportRenderables.AddRange(Viewport.Renderables);
                     renderer.UpdateSceneGraph(RenderContext, viewportRenderables, perFrameFlattenedScene);
-#if DEBUG
-                    Debug.WriteLine("Flatten Scene Graph");
-#endif
+                    if (logger.IsEnabled(LogLevel.Trace))
+                    {
+                        logger.LogTrace("Flatten Scene Graph");
+                    }
                 }
                 var sceneCount = perFrameFlattenedScene.Count;
                 if (invalidatePerFrameRenderables)
                 {
-#if DEBUG
-                    Debug.WriteLine("Get PerFrameRenderables");
-#endif
+                    if (logger.IsEnabled(LogLevel.Trace))
+                    {
+                        logger.LogTrace("Get PerFrameRenderables");
+                    }
                     var isInScreenSpacedGroup = false;
                     var screenSpacedGroupDepth = int.MaxValue;
                     for (var i = 0; i < sceneCount;)
@@ -498,7 +502,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected override void OnEndingD3D()
             {
-                Logger.Log(LogLevel.Information, string.Empty, nameof(DefaultRenderHost));
+                logger.LogInformation("On Ending D3D");
                 asyncTask?.Wait();
                 getTriangleCountTask?.Wait();
                 getPostEffectCoreTask?.Wait();

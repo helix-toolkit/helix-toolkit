@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
-using HelixToolkit.Logger;
+using Microsoft.Extensions.Logging;
 
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
@@ -33,6 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_Canvas", Type = typeof(ContentPresenter))]
     public class ScreenDuplicationViewport3DX : ItemsControl, IViewport3DX
     {
+        private static readonly ILogger logger = Logger.LogManager.Create<ScreenDuplicationViewport3DX>();
         /// <summary>
         /// The EffectsManager property.
         /// </summary>
@@ -362,7 +363,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             protected override DX11RenderBufferProxyBase CreateRenderBuffer()
             {
-                Logger.Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy", nameof(ScreenCloneRenderHost));
+                logger.LogInformation("DX11SwapChainRenderBufferProxy");
                 return new DX11SwapChainRenderBufferProxy(surface, EffectsManager, false);
             }
         }

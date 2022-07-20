@@ -81,21 +81,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set; get;
         }
 
-        private static readonly LogWrapper NullLogger = new LogWrapper(new NullLogger());
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public LogWrapper Logger
-        {
-            get
-            {
-                return CurrentRenderHost != null ? CurrentRenderHost.Logger : NullLogger;
-            }
-        }
-
         private readonly HashSet<IViewport3DX> viewports = new HashSet<IViewport3DX>();
         private readonly HashSet<IRenderHost> attachedRenderHosts = new HashSet<IRenderHost>();
 #pragma warning disable 0067

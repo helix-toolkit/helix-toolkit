@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using Assimp;
 using System;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -192,7 +193,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Geometry type does not support yet. Type: {info.Mesh.GetType().Name}");
+                    logger.LogWarning("Geometry type does not support yet. Type: {}", info.Mesh.GetType().Name);
                 }
                 return assimpMesh;
             }
@@ -252,5 +253,4 @@ namespace HelixToolkit.UWP
             }
         }
     }
-
 }

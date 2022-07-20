@@ -32,6 +32,7 @@ namespace HelixToolkit.UWP
         using HelixToolkit.Logger;
         using Core;
         using Model.Scene;
+        using Microsoft.Extensions.Logging;
 
 
         /// <summary>
@@ -39,9 +40,9 @@ namespace HelixToolkit.UWP
         /// </summary>
         public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
         {
+            private static readonly ILogger logger = LogManager.Create<DX11RenderHostBase>();
             private const int MinWidth = 10;
             private const int MinHeight = 10;
-            private static readonly LogWrapper NullLogger = new LogWrapper(new NullLogger());
             #region Properties        
             /// <summary>
             /// Gets the unique identifier.
@@ -182,7 +183,7 @@ namespace HelixToolkit.UWP
                     {
                         return;
                     }
-                    Log(LogLevel.Information, $"Set Viewport, Initialized = {IsInitialized}");
+                    logger.LogInformation("Set Viewport, Initialized = {}", IsInitialized);
                     DetachRenderable();
                     viewport = value;
                     if (IsInitialized)
@@ -237,7 +238,7 @@ namespace HelixToolkit.UWP
                     var currentManager = effectsManager;
                     if (Set(ref effectsManager, value))
                     {
-                        Log(LogLevel.Information, $"Set new EffectsManager;");
+                        logger.LogInformation("Set new EffectsManager.");
                         if (currentManager != null)
                         {
                             currentManager.DisposingResources -= OnManagerDisposed;
@@ -270,20 +271,6 @@ namespace HelixToolkit.UWP
                 get
                 {
                     return effectsManager;
-                }
-            }
-
-            /// <summary>
-            /// Gets the logger.
-            /// </summary>
-            /// <value>
-            /// The logger.
-            /// </value>
-            public LogWrapper Logger
-            {
-                get
-                {
-                    return EffectsManager != null ? EffectsManager.Logger : NullLogger;
                 }
             }
 
@@ -822,19 +809,19 @@ namespace HelixToolkit.UWP
                             || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
                             || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                         {
-                            Log(LogLevel.Warning, $"Device Lost, code = {desc.Code}");
+                            logger.LogWarning("Device Lost, code = {}", desc.Code);
                             RenderBuffer_OnDeviceLost(RenderBuffer, EventArgs.Empty);
                         }
                         else
                         {
-                            Log(LogLevel.Error, ex);
+                            logger.LogError("DirectX Error during rendering. Exception: {}", ex);
                             EndD3D();
                             ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                         }
                     }
                     catch (Exception ex)
                     {
-                        Log(LogLevel.Error, ex);
+                        logger.LogError("Error during rendering. Exception: {}", ex);
                         EndD3D();
                         ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                     }
@@ -908,7 +895,7 @@ namespace HelixToolkit.UWP
             /// <param name="hotRestart">if set to <c>true</c> [hotRestart].</param>
             protected void Restart(bool hotRestart)
             {
-                Log(LogLevel.Information, $"Init = {IsInitialized}; HotRestart = {hotRestart};");
+                logger.LogInformation("Restart. IsInitialized = {}; HotRestart = {};", IsInitialized, hotRestart);
                 if (!IsInitialized)
                 {
                     return;
@@ -933,10 +920,10 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    Log(LogLevel.Information, $"Width = {width}; Height = {height};");
+                    logger.LogInformation("Starting D3D. Width = {}; Height = {};", width, height);
                     if (IsInitialized)
                     {
-                        Log(LogLevel.Information, $"RenderHost already Initialized.");
+                        logger.LogInformation("RenderHost already Initialized.");
                         StartRendering();
                         return;
                     }
@@ -945,7 +932,7 @@ namespace HelixToolkit.UWP
                     isLoaded = true;
                     if (EffectsManager == null || EffectsManager.Device == null || EffectsManager.Device.IsDisposed)
                     {
-                        Log(LogLevel.Information, $"EffectsManager is not valid");
+                        logger.LogInformation("EffectsManager is not valid");
                         return;
                     }
 #if DX11_1
@@ -956,7 +943,7 @@ namespace HelixToolkit.UWP
                     RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Mesh];
                     CreateAndBindBuffers();
                     IsInitialized = true;
-                    Log(LogLevel.Information, $"Initialized.");
+                    logger.LogInformation("Initialized.");
                     AttachRenderable(EffectsManager);
                     StartRendering();
                 }
@@ -968,7 +955,7 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    Log(LogLevel.Information, string.Empty);
+                    logger.LogInformation("Start rendering.");
                     renderStatistics.Reset();
                     lastRenderingDuration = TimeSpan.Zero;
                     lastRenderTime = TimeSpan.Zero;
@@ -981,7 +968,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected void CreateAndBindBuffers()
             {
-                Log(LogLevel.Information, string.Empty);
+                logger.LogInformation("CreateAndBindBuffers");
                 RemoveAndDispose(ref renderBuffer);
                 renderBuffer = CreateRenderBuffer();
                 renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
@@ -1040,7 +1027,7 @@ namespace HelixToolkit.UWP
                 {
                     return;
                 }
-                Log(LogLevel.Information, string.Empty);
+                logger.LogInformation("Attaching renderable.");
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
@@ -1078,7 +1065,7 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    Log(LogLevel.Information, string.Empty);
+                    logger.LogInformation("Ending D3D.");
                     StopRendering();
                     IsInitialized = false;
                     RemoveAndDispose(ref immediateDeviceContext);
@@ -1097,7 +1084,7 @@ namespace HelixToolkit.UWP
 
             private void OnManagerDisposed(object sender, EventArgs args)
             {
-                Log(LogLevel.Information, string.Empty);
+                logger.LogInformation("OnManagerDisposed.");
                 EndD3D();
             }
             /// <summary>
@@ -1105,7 +1092,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public virtual void StopRendering()
             {
-                Log(LogLevel.Information, string.Empty);
+                logger.LogInformation("Stop rendering");
                 StopRenderLoop?.Invoke(this, EventArgs.Empty);
             }
             /// <summary>
@@ -1113,7 +1100,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void DisposeBuffers()
             {
-                Log(LogLevel.Information, string.Empty);
+                logger.LogInformation("Disposing buffers");
                 if (renderBuffer != null)
                 {
                     renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
@@ -1128,7 +1115,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             protected virtual void DetachRenderable()
             {
-                Log(LogLevel.Information, string.Empty);
+                logger.LogInformation("Detaching renderable");
                 RemoveAndDispose(ref renderContext);
                 RemoveAndDispose(ref renderContext2D);
                 Viewport?.Detach();
@@ -1151,7 +1138,7 @@ namespace HelixToolkit.UWP
                 }
                 ActualWidth = Math.Max(2, width * DpiScale);
                 ActualHeight = Math.Max(2, height * DpiScale);
-                Log(LogLevel.Information, $"Width = {width}; Height = {height};");
+                logger.LogInformation("Resizing. Width = {}; Height = {};", width, height);
                 lock (lockObj)
                 {
                     if (IsInitialized)
@@ -1228,6 +1215,7 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
             protected override void OnDispose(bool disposeManagedResources)
             {
+                logger.LogInformation("Disposing");
                 if (disposeManagedResources)
                 {
                     EffectsManager = null;
@@ -1243,11 +1231,6 @@ namespace HelixToolkit.UWP
                 RemoveAndDispose(ref renderContext2D);
                 DisposeBuffers();
                 base.OnDispose(disposeManagedResources);
-            }
-
-            private void Log<Type>(LogLevel level, Type msg, [CallerMemberName] string caller = StringHelper.EmptyStr, [CallerLineNumber] int sourceLineNumber = 0)
-            {
-                Logger.Log(level, msg, nameof(DX11RenderHostBase), caller, sourceLineNumber);
             }
         }
     }

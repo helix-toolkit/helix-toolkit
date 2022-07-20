@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -22,14 +23,14 @@ namespace HelixToolkit.UWP
 {
     namespace Model.Scene2D
     {
-        using Core2D;
-
+        using Core2D;     
 
         /// <summary>
         ///
         /// </summary>
         public abstract partial class SceneNode2D : DisposeObject, IHitable2D
         {
+            static readonly ILogger logger = Logger.LogManager.Create<SceneNode2D>();
             public sealed class UpdateEventArgs : EventArgs
             {
                 public RenderContext2D Context
@@ -491,7 +492,10 @@ namespace HelixToolkit.UWP
                     if (IsVisualDirty)
                     {
 #if DEBUGDRAWING
-                        Debug.WriteLine("Redraw bitmap cache");
+                        if (logger.IsEnabled(LogLevel.Debug))
+                        {
+                            logger.LogDebug("Redraw bitmap cache");
+                        }
 #endif
                         context.PushRenderTarget(bitmapCache, true);
                         context.DeviceContext.Transform = Matrix3x2.Identity;

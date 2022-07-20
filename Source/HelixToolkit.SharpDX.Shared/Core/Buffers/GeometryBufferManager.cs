@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#define DEBUGDETAIL
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +26,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public sealed class GeometryBufferManager : IDisposable, IGeometryBufferManager
         {
+            static readonly ILogger logger = Logger.LogManager.Create<GeometryBufferManager>();
             public int Count
             {
                 get
@@ -64,22 +65,28 @@ namespace HelixToolkit.UWP
                     IGeometryBufferModel container;
                     if (bufferDictionary.TryGetValue(typeof(T), geometry.GUID, out var obj))
                     {
-#if DEBUGDETAIL
-                        Debug.WriteLine("Existing buffer found, GeomoetryGUID = " + geometry.GUID);
-#endif
+                        if (logger.IsEnabled(LogLevel.Trace))
+                        {
+                            logger.LogTrace("Existing buffer found, GeomoetryGUID = {}", geometry.GUID);
+                        }
                         container = obj as IGeometryBufferModel;
                         obj.IncRef();
                     }
                     else
                     {
-#if DEBUGDETAIL
-                        Debug.WriteLine("Buffer not found, create new buffer. GeomoetryGUID = " + geometry.GUID);
-#endif
+                        if (logger.IsEnabled(LogLevel.Trace))
+                        {
+                            logger.LogTrace("Buffer not found, create new buffer. GeomoetryGUID = {}", geometry.GUID);
+                        }
                         container = new T();
                         var id = geometry.GUID;
                         obj = container as DisposeObject;
                         obj.Disposed += (s, e) =>
                         {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                            {
+                                logger.LogTrace("Disposing Geometry Buffer. GeomoetryGUID = {}", id);
+                            }
                             lock (bufferDictionary)
                             {
                                 bufferDictionary.Remove(typeof(T), id);

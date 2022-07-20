@@ -1,8 +1,7 @@
-﻿using HelixToolkit.Logger;
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.CompilerServices;
-
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -15,13 +14,11 @@ namespace HelixToolkit.UWP
 {
     public class DefaultTexturePathResolver : ITexturePathResolver
     {
+        static readonly ILogger logger = Logger.LogManager.Create<DefaultTexturePathResolver>();
         private const string ToUpperDictString = @"..\";
 
-        public ILogger Logger { private set; get; }
-
-        public string Resolve(string modelPath, string texturePath, ILogger logger)
+        public string Resolve(string modelPath, string texturePath)
         {
-            Logger = logger;
             return OnLoadTexture(modelPath, texturePath);
         }
 
@@ -45,14 +42,14 @@ namespace HelixToolkit.UWP
                     p = HandleTexturePathNotFound(dict, texturePath);
                 if (!FileExists(p))
                 {
-                    Log(LogLevel.Warning, $"Load Texture Failed. Texture Path = {texturePath}.");
+                    logger.LogWarning("Load Texture Failed. Texture Path = {}.", texturePath);
                     return null;
                 }
                 return p;
             }
             catch (Exception ex)
             {
-                Log(LogLevel.Warning, $"Load Texture Exception. Texture Path = {texturePath}. Exception: {ex.Message}");
+                logger.LogWarning("Load Texture Exception. Texture Path = {}. Exception: {}", texturePath, ex.Message);
             }
             return null;
         }
@@ -82,7 +79,7 @@ namespace HelixToolkit.UWP
             }
             catch (NotSupportedException ex)
             {
-                Log(LogLevel.Warning, $"Exception: {ex}");
+                logger.LogWarning("Exception: {}", ex);
             }
             if (FileExists(upper))
                 return upper;
@@ -92,25 +89,12 @@ namespace HelixToolkit.UWP
             {
                 return currentPath;
             }
-            return "";
+            return string.Empty;
         }
 
         protected virtual bool FileExists(string path)
         {
             return File.Exists(path);
-        }
-
-        /// <summary>
-        /// Logs the specified level.
-        /// </summary>
-        /// <typeparam name="Type">The type of the ype.</typeparam>
-        /// <param name="level">The level.</param>
-        /// <param name="msg">The MSG.</param>
-        /// <param name="caller">The caller.</param>
-        /// <param name="sourceLineNumber">The source line number.</param>
-        protected void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
         }
     }
 }

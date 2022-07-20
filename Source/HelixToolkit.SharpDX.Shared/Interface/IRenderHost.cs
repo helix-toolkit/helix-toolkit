@@ -39,16 +39,6 @@ namespace HelixToolkit.UWP
     public interface IRenderHost : IGUID, IDisposable
     {
         /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        LogWrapper Logger
-        {
-            get;
-        }
-        /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
         event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;

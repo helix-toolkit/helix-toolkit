@@ -6,6 +6,7 @@ using global::SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -25,6 +26,7 @@ namespace HelixToolkit.UWP
     /// </summary>
     public sealed class TextureResourceManager : IDisposable, ITextureResourceManager
     {
+        static readonly ILogger logger = Logger.LogManager.Create<TextureResourceManager>();
         public int Count
         {
             get
@@ -70,13 +72,19 @@ namespace HelixToolkit.UWP
             {
                 if (targetDict.TryGetValue(textureModel.Guid, out var view))
                 {
-                    Debug.WriteLine("Re-using existing texture resource");
+                    if (logger.IsEnabled(LogLevel.Debug))
+                    {
+                        logger.LogDebug("Re-using existing texture resource");
+                    }
                     view.IncRef();
                     return view;
                 }
                 else
                 {
-                    Debug.WriteLine("Creating new texture resource");
+                    if (logger.IsEnabled(LogLevel.Debug))
+                    {
+                        logger.LogDebug("Creating new texture resource");
+                    }
                     var proxy = new ShaderResourceViewProxy(device);
                     proxy.CreateView(textureModel, true, enableAutoGenMipMap);
                     proxy.Guid = textureModel.Guid;
