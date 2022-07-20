@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 ## Next Release
 
 ### Improvement
-1. Change `SceneNode.Attach` to accept `IEffectsManager` instead of `IRenderHost`. This change will allow scene graph to be built and pre-attached in separate thread (all graphics resources are created during attaching). UI thread is still required to add generated sub graph back to the main graph which is associated with the Viewport. (SharpDX)  
+1. Change `SceneNode.Attach` to accept `IEffectsManager` instead of `IRenderHost`. This change will allow scene graph to be built and pre-attached in separate thread (all graphics resources are created during attaching). UI thread is still required to add generated sub graph back to the main graph which is associated with the Viewport. Example can be found [here](https://github.com/helix-toolkit/helix-toolkit/blob/15a36dd8a33c7d1fccd07a8dc5ca60523c86fdf2/Source/Examples/WPF.SharpDX/FileLoadDemo/MainViewModel.cs#L266). (WPF.SharpDX/UWP/Core/WinUI)
+3. Re-implement logging to use [Microsoft.Extensions.Logging.Abstractions](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.abstractions?view=dotnet-plat-ext-6.0) logging interface. To override the internal debug logger, set `HelixToolkit.Logger.LogManager.Factory` on app start up to provide your own logging implementation.
+4. Due to logging change, minimum dot net version has been changed to:
+   ```diff
+   + .Net Framework 4.6.2 
+   - .Net Framework 4.5
+   + netstandard 2.0
+   - netstandard 1.3
+   ```
 
 ## [2.21.1] - 2022-06-16
 
