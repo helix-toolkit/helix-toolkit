@@ -399,17 +399,23 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            if (e.HitTestResult.ModelHit == translationX)
+            if (!(e.HitTestResult.ModelHit is Element3D elem))
+            {
+                manipulationType = ManipulationType.None;
+                isCaptured = false;
+                return;
+            }
+            if (elem == translationX)
             {
                 manipulationType = ManipulationType.TranslationX;
                 direction = Vector3.UnitX;
             }
-            else if (e.HitTestResult.ModelHit == translationY)
+            else if (elem == translationY)
             {
                 manipulationType = ManipulationType.TranslationY;
                 direction = Vector3.UnitY;
             }
-            else if (e.HitTestResult.ModelHit == translationZ)
+            else if (elem == translationZ)
             {
                 manipulationType = ManipulationType.TranslationZ;
                 direction = Vector3.UnitZ;
@@ -470,17 +476,23 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            if (e.HitTestResult.ModelHit == rotationX)
+            if (!(e.HitTestResult.ModelHit is Element3D elem))
+            {
+                manipulationType = ManipulationType.None;
+                isCaptured = false;
+                return;
+            }
+            if (elem == rotationX)
             {
                 manipulationType = ManipulationType.RotationX;
                 direction = new Vector3(1, 0, 0);
             }
-            else if (e.HitTestResult.ModelHit == rotationY)
+            else if (elem == rotationY)
             {
                 manipulationType = ManipulationType.RotationY;
                 direction = new Vector3(0, 1, 0);
             }
-            else if (e.HitTestResult.ModelHit == rotationZ)
+            else if (elem == rotationZ)
             {
                 manipulationType = ManipulationType.RotationZ;
                 direction = new Vector3(0, 0, 1);
@@ -558,17 +570,23 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            if (e.HitTestResult.ModelHit == scaleX)
+            if (!(e.HitTestResult.ModelHit is Element3D elem))
+            {
+                manipulationType = ManipulationType.None;
+                isCaptured = false;
+                return;
+            }
+            if (elem == scaleX)
             {
                 manipulationType = ManipulationType.ScaleX;
                 direction = Vector3.UnitX;
             }
-            else if (e.HitTestResult.ModelHit == scaleY)
+            else if (elem == scaleY)
             {
                 manipulationType = ManipulationType.ScaleY;
                 direction = Vector3.UnitY;
             }
-            else if (e.HitTestResult.ModelHit == scaleZ)
+            else if (elem == scaleZ)
             {
                 manipulationType = ManipulationType.ScaleZ;
                 direction = Vector3.UnitZ;

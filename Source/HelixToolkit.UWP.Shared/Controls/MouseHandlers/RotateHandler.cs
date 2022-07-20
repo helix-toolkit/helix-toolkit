@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
+        /// <param name="e"></param>
         public override void Completed(Point e)
         {
             base.Completed(e);
@@ -96,7 +96,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
+        /// <param name="e"></param>
         public override void Delta(Vector2 e)
         {
             base.Delta(e);
@@ -194,7 +194,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when the manipulation is started.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
+        /// <param name="e"></param>
         public override void Started(Point e)
         {
             base.Started(e);

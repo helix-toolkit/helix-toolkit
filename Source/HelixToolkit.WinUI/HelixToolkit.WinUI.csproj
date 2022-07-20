@@ -20,14 +20,12 @@
         <DocumentationFile></DocumentationFile>
         <OutputPath>bin\Debug</OutputPath>
         <WarningLevel>4</WarningLevel>
-        <NoWarn>1701;1702;CA1416</NoWarn>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <DefineConstants>WINUI; DX11_1</DefineConstants>
         <DocumentationFile>bin\Release\HelixToolkit.WinUI.xml</DocumentationFile>
         <OutputPath>bin\Release</OutputPath>
         <WarningLevel>4</WarningLevel>
-        <NoWarn>1701;1702;CA1416</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="CommonDX\SwapChainComposition2RenderHost.cs" />

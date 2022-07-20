@@ -539,9 +539,10 @@ namespace HelixToolkit.UWP
                 Name = name;
             }
             /// <summary>
-            /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(EffectsManager)"/> function.</para>
+            /// <para>Attaches the element to the specified effectsManager and initialize all necessary graphics resources.</para>
+            /// <para>To overide Attach, please override <see cref="OnAttach(IEffectsManager)"/> function.</para>
             /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
-            /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(EffectsManager)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(EffectsManager)"/> -> <see cref="InvalidateSceneGraph"/></para>
+            /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IEffectsManager)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IEffectsManager)"/> -> <see cref="InvalidateSceneGraph"/></para>
             /// </summary>
             /// <param name="effectsManager">The effectsManager.</param>
             public void Attach(IEffectsManager effectsManager)
@@ -595,7 +596,7 @@ namespace HelixToolkit.UWP
             }
 
             /// <summary>
-            /// Detaches the element from the host. Override <see cref="OnDetach"/>
+            /// Detaches the element from the effectsManager and release all graphics resources. Override <see cref="OnDetach"/>
             /// </summary>
             public void Detach()
             {

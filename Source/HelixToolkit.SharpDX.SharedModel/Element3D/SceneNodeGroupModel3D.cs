@@ -2,7 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if NETFX_CORE
+#if NETFX_CORE
+
 namespace HelixToolkit.UWP
 #elif WINUI
 using HelixToolkit.SharpDX.Core.Model.Scene;
@@ -34,10 +35,11 @@ namespace HelixToolkit.Wpf.SharpDX
             return GroupNode.AddChildNode(node);
         }
         /// <summary>
-        /// Removes child node. <see cref="GroupNodeBase.RemoveChildNode(SceneNode)"/>
+        /// Removes child node. <see cref="GroupNodeBase.RemoveChildNode(SceneNode, bool)"/>
         /// If detach = false, then developer must manage the life cycle of the removed child node manually.
         /// </summary>
         /// <param name="node">The node.</param>
+        /// <param name="detachChildren">Detach children after being removed.</param>
         /// <returns>Sucess or not</returns>
         public bool RemoveNode(SceneNode node, bool detachChildren = true)
         {

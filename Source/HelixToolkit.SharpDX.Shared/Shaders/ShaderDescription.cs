@@ -232,7 +232,7 @@ namespace HelixToolkit.UWP
 
             /// <summary>
             /// Create shader using reflector to get buffer mapping directly from shader codes.
-            /// <para>Actual creation happened when calling <see cref="CreateShader(Device, IConstantBufferPool, LogWrapper)"/></para>
+            /// <para>Actual creation happened when calling <see cref="CreateShader(Device, IConstantBufferPool)"/></para>
             /// </summary>
             /// <param name="name"></param>
             /// <param name="type"></param>

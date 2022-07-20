@@ -4,7 +4,7 @@
     <id>HelixToolkit.SharpDX.Assimp</id>
     <version>$version$</version>
     <title>Assimp Import/Export for HelixToolkit.SharpDX Libraries</title>
-    <authors>objo, Lunci</authors>
+    <authors>Lunci</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
     <icon>helixtoolkit.png</icon>
@@ -12,12 +12,13 @@
     <description>Provides Assimp Import/Export for HelixToolkit.SharpDX.</description>
     <tags>netstandard netcore Wpf UWP SharpDX 3D DirectX Assimp</tags>
     <dependencies>
-      <group targetFramework="net46">		
+      <group targetFramework="net462">
         <dependency id="HelixToolkit.Wpf.SharpDX" version="[$version$]" />
         <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.0"/>
       </group>
       <group targetFramework="UAP10.0">
         <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.1.7" exclude="Build,Analyzers" />
@@ -26,24 +27,26 @@
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.0"/>
       </group>
-      <group targetFramework="netstandard1.3">
+      <group targetFramework="netstandard2.0">
         <dependency id="HelixToolkit.SharpDX.Core" version="[$version$]" />
         <dependency id="AssimpNet" version="5.0.0-beta1" />
         <dependency id="SharpDX" version="4.2.0" />
         <dependency id="SharpDX.Direct3D11" version="4.2.0" />
         <dependency id="SharpDX.Mathematics" version="4.2.0" />
-      </group>	  
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.0"/>
+      </group>
     </dependencies>
   </metadata>
   <files>
     <file src="HelixToolkit.Wpf.SharpDX.Assimp\bin\Release\HelixToolkit.Wpf.SharpDX.Assimp.???" target="lib\net46" />
     <file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP.Assimp.???" target="lib\uap10.0" />
-	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\*" target="lib\uap10.0\HelixToolkit.UWP" />
-	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\Resources\*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
-	<file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\Themes\*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
-    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netstandard1.3" />
-    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netstandard1.3" />
+    <file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\*" target="lib\uap10.0\HelixToolkit.UWP" />
+    <file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\Resources\*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
+    <file src="HelixToolkit.UWP.Assimp\bin\Release\HelixToolkit.UWP\Themes\*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
+    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard2.0\HelixToolkit.SharpDX.Core.Assimp.???" target="lib\netstandard2.0" />
+    <file src="HelixToolkit.SharpDX.Core.Assimp\bin\Release\netstandard2.0\HelixToolkit.SharpDX.Core.Assimp.deps.json" target="lib\netstandard2.0" />
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />

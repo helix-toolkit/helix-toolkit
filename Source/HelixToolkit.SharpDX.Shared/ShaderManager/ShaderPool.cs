@@ -70,7 +70,6 @@ namespace HelixToolkit.UWP
             /// Initializes a new instance of the <see cref="LayoutPool"/> class.
             /// </summary>
             /// <param name="device">The device.</param>
-            /// <param name="logger"></param>
             public LayoutPool(Device device)
                 : base(false)
             {

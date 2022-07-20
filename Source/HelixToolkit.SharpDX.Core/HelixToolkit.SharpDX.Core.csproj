@@ -26,7 +26,6 @@
     <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;</DefineConstants>
     <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>1701;1702;1705;CS1591</NoWarn>
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
 

@@ -4,13 +4,13 @@
     <id>HelixToolkit.WinUI</id>
     <version>$version$</version>
     <title>HelixToolkit for WinUI(based on SharpDX)</title>
-    <authors>objo, Lunci</authors>
+    <authors>Lunci</authors>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/helix-toolkit/helix-toolkit</projectUrl>
     <icon>helixtoolkit.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides custom 3D controls for WinUI based on SharpDX.</description>
-    <tags>net5.0 WinUI Wpf SharpDX 3D</tags>
+    <tags>net5.0 WinUI Wpf SharpDX 3D DirectX</tags>
     <dependencies>
 	   <group targetFramework="net5.0-windows10.0.19041">
 		<dependency id="Cyotek.Drawing.BitmapFont" version="2.0.0" />
@@ -22,15 +22,16 @@
 		<dependency id="SharpDX.Direct3D9" version="4.2.0" />
 		<dependency id="SharpDX.Direct3D11" version="4.2.0" />
 		<dependency id="SharpDX.DXGI" version="4.2.0" />
-		<dependency id="SharpDX.Mathematics" version="4.2.0" />	 
+		<dependency id="SharpDX.Mathematics" version="4.2.0" />
 		<dependency id="System.ComponentModel.TypeConverter" version="4.3.0"/>
-		<dependency id="System.Drawing.Primitives" version="4.3.0"/>		
+		<dependency id="System.Drawing.Primitives" version="4.3.0"/>
 		<dependency id="System.Private.DataContractSerialization" version="4.3.0"/>
 		<dependency id="System.Reflection.TypeExtensions" version="4.3.0"/>
 		<dependency id="System.Runtime.Serialization.Primitives" version="4.3.0"/>
 		<dependency id="System.Runtime.Serialization.Xml" version="4.3.0"/>
-		<dependency id="System.Threading.Tasks.Parallel" version="4.3.0"/>		
+		<dependency id="System.Threading.Tasks.Parallel" version="4.3.0"/>
 		<dependency id="Microsoft.WindowsAppSDK" version="1.1.1"/>
+		<dependency id="Microsoft.Extensions.Logging.Abstractions" version="6.0.0"/>
 	   </group>
     </dependencies>
   </metadata>
