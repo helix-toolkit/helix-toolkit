@@ -25,7 +25,7 @@ namespace OffScreenRendering
                 LookDirection = new Vector3(-100, 0, 0),
                 UpDirection = Vector3.UnitY,
                 Position = new Vector3(100, 0, 0),
-                Width = 200,
+                Width = 100,
                 NearPlaneDistance = 0.1f,
                 FarPlaneDistance = 500
             };
@@ -75,7 +75,7 @@ namespace OffScreenRendering
                 {
                     Geometry = mesh,
                     Material = new PhongMaterialCore() { DiffuseColor = random.NextColor() },
-                    ModelMatrix = Matrix.Translation(random.NextVector3(new Vector3(-100, -100, -100), new Vector3(100, 100, 100)))
+                    ModelMatrix = Matrix.Translation(random.NextVector3(new Vector3(-50, -50, -50), new Vector3(50, 50, 50)))
                 };
                 root.AddChildNode(meshNode);
             }
