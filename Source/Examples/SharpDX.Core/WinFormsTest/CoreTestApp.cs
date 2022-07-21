@@ -18,7 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CoreTest
+namespace WinFormsTest
 {
     public static class DpiHelper
     {
@@ -196,10 +196,10 @@ namespace CoreTest
             InitializeMaterials();
             var materialCount = materials.Count;
             Task.Run(() => {
+                var builder = new MeshBuilder(true, true, true);
+                builder.AddSphere(Vector3.Zero, 1);
                 for (int i = 0; i < NumItems; ++i)
                 {
-                    var builder = new MeshBuilder(true, true, true);
-                    builder.AddSphere(Vector3.Zero, 1);
                     var sphere1 = builder.ToMesh();
                     var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
                     var material = materials[i % materialCount];

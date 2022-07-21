@@ -9,8 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HelixToolkit.SharpDX.Core;
-namespace CoreTest
+
+namespace WinFormsTest
 {
     public partial class Form1 : Form
     {
@@ -18,10 +18,10 @@ namespace CoreTest
         private CoreTestApp app;
         public Form1()
         {
-            InitializeComponent();       
+            InitializeComponent();
             renderForm = new RenderForm()
             {
-                TopLevel = false, 
+                TopLevel = false,
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right
             };
             var context = WindowsFormsSynchronizationContext.Current;
@@ -36,7 +36,6 @@ namespace CoreTest
             renderForm.Width = splitContainer1.Panel2.Width;
             renderForm.Height = splitContainer1.Panel2.Height;
         }
-
         private void Panel2_Resize(object sender, EventArgs e)
         {
             Debug.WriteLine("Panel resize");
@@ -53,20 +52,6 @@ namespace CoreTest
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             renderForm.Close();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            SceneUI.SomeTextFromOutside = textBox1.Text;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            using (var mem = app.Viewport.RenderToBitmapStream())
-            {
-                var bmp = new Bitmap(mem);
-                pictureBox1.Image = bmp;
-            }
         }
     }
 }
