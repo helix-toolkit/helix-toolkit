@@ -12,7 +12,7 @@ using HelixToolkit.SharpDX.Core.Model;
 using HelixToolkit.SharpDX.Core;
 using System;
 
-namespace CoreTest
+namespace WinFormsTest
 {
     public static class SceneUI
     {
@@ -54,8 +54,8 @@ namespace CoreTest
                 if (ImGui.BeginMenu("Options"))
                 {
                     ImGui.Checkbox("Dir Light Follow Camera", ref options.DirectionalLightFollowCamera);
-                    ImGui.SliderFloat("Dir Light Intensity", ref options.DirectionLightIntensity, 0, 1, "", ImGuiSliderFlags.ClampOnInput);
-                    ImGui.SliderFloat("Ambient Light Intensity", ref options.AmbientLightIntensity, 0, 1, "", ImGuiSliderFlags.ClampOnInput);
+                    ImGui.SliderFloat("Dir Light Intensity", ref options.DirectionLightIntensity, 0, 1, "", ImGuiSliderFlags.AlwaysClamp);
+                    ImGui.SliderFloat("Ambient Light Intensity", ref options.AmbientLightIntensity, 0, 1, "", ImGuiSliderFlags.AlwaysClamp);
                     ImGui.Separator();
                     ImGui.Checkbox("Show EnvironmentMap", ref options.ShowEnvironmentMap);
                     ImGui.Checkbox("Enable SSAO", ref options.EnableSSAO);
