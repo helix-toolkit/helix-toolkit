@@ -20,22 +20,28 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// <param name="nativeWindowPointer">The native window pointer.</param>
         /// <param name="deferred">if set to <c>true</c> [deferred].</param>
         public ViewportCore(IntPtr nativeWindowPointer, bool deferred = false)
-        {
-            if (deferred)
-            {
-                RenderHost = new SwapChainRenderHost(nativeWindowPointer,
+            : this(deferred ? new SwapChainRenderHost(nativeWindowPointer,
                     (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); })
-                {
-                    Viewport = this,
-                };
-            }
-            else
-            {
-                RenderHost = new SwapChainRenderHost(nativeWindowPointer)
-                {
-                    Viewport = this,
-                };
-            }
+            : new SwapChainRenderHost(nativeWindowPointer))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewportCore"/> class.
+        /// </summary>
+        public ViewportCore() : this(new DefaultRenderHost())
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewportCore"/> class.
+        /// </summary>
+        /// <param name="renderHost"></param>
+        public ViewportCore(IRenderHost renderHost)
+        {
+            RenderHost = renderHost;
+            RenderHost.Viewport = this;
             RenderHost.DpiScale = (float)DpiScale;
             BackgroundColor = Color.Black;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
