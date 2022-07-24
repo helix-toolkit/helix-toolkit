@@ -43,6 +43,9 @@
   <PropertyGroup>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -68,8 +71,6 @@
       <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
       <Name>HelixToolkit</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AssimpNet">
