@@ -436,14 +436,18 @@ namespace HelixToolkit.UWP
             private static bool RemoveHitPointBehindCrossingPlane(Plane plane, List<HitTestResult> hits, int hitsBeforeCheck)
             {
                 // Loop backwards to remove at end of list when possible
-                for (var i = hits.Count - 1; i >= hitsBeforeCheck; i--)
+                for (int i = hits.Count - 1; i >= hitsBeforeCheck; i--)
                 {
-                    if (hits[i].PointHit.PointToPlanePosition(ref plane) == PlaneIntersectionType.Back)
+                    var pointTimesNormal = (hits[i].PointHit * plane.Normal);
+                    float distanceToPlane = pointTimesNormal.X + pointTimesNormal.Y + pointTimesNormal.Z - plane.D;
+                    if (distanceToPlane < 0)
                     {
                         hits.RemoveAt(i);
                     }
                 }
-                return hits.Count > hitsBeforeCheck;
+                if (hits.Count == hitsBeforeCheck)
+                    return false;
+                return true;
             }
 
             private bool RemoveHitPointInFrontOfAllCrossingPlanes(List<HitTestResult> hits, int hitsBeforeCheck)
