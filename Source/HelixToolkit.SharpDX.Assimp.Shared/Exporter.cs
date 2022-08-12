@@ -154,7 +154,7 @@ namespace HelixToolkit.UWP
                 {
                     if(!exporter.ExportFile(scene, filePath, formatId, postProcessing))
                     {
-                        logger.LogError("Export failed. FilePath: {}; Format: {}", filePath, formatId);
+                        logger.LogError("Export failed. FilePath: {0}; Format: {1}", filePath, formatId);
                         return ErrorCode.Failed;
                     }
                     return ErrorCode.Succeed;
@@ -274,7 +274,7 @@ namespace HelixToolkit.UWP
                         }
                         else
                         {
-                            logger.LogWarning("Current node type does not support yet. Type: {}", s.GetType().Name);
+                            logger.LogWarning("Current node type does not support yet. Type: {0}", s.GetType().Name);
                         }
                     }
                     if(group.Metadata != null)
@@ -295,7 +295,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    logger.LogWarning("Current node type does not support yet. Type: {}", current.GetType().Name);
+                    logger.LogWarning("Current node type does not support yet. Type: {0}", current.GetType().Name);
                 }                
                 return node;
             }
@@ -321,7 +321,7 @@ namespace HelixToolkit.UWP
                         var info = OnCreateMeshInfo(geo);
                         if (info == null)
                         {
-                            logger.LogWarning("Create Mesh info failed. Node Name: {}", geo.Name);
+                            logger.LogWarning("Create Mesh info failed. Node Name: {0}", geo.Name);
                             continue;
                         }
                         if (!meshInfos.ContainsKey(info.MaterialMeshKey))

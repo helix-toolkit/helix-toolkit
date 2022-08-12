@@ -224,7 +224,7 @@ namespace HelixToolkit.UWP
                             var vWeight = mesh.Bones[j].VertexWeights[i];
                             if (vWeight.VertexID >= accumArray.Length)
                             {
-                                logger.LogWarning("Bone weight index is out of range. Num verts: {}; Bone vert index: {}", 
+                                logger.LogWarning("Bone weight index is out of range. Num verts: {0}; Bone vert index: {1}", 
                                     accumArray.Length, vWeight.VertexID);
                                 continue;
                             }

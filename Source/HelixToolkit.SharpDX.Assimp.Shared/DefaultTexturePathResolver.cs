@@ -42,14 +42,14 @@ namespace HelixToolkit.UWP
                     p = HandleTexturePathNotFound(dict, texturePath);
                 if (!FileExists(p))
                 {
-                    logger.LogWarning("Load Texture Failed. Texture Path = {}.", texturePath);
+                    logger.LogWarning("Load Texture Failed. Texture Path = {0}.", texturePath);
                     return null;
                 }
                 return p;
             }
             catch (Exception ex)
             {
-                logger.LogWarning("Load Texture Exception. Texture Path = {}. Exception: {}", texturePath, ex.Message);
+                logger.LogWarning("Load Texture Exception. Texture Path = {0}. Exception: {1}", texturePath, ex.Message);
             }
             return null;
         }
@@ -79,7 +79,7 @@ namespace HelixToolkit.UWP
             }
             catch (NotSupportedException ex)
             {
-                logger.LogWarning("Exception: {}", ex);
+                logger.LogWarning("Exception: {0}", ex);
             }
             if (FileExists(upper))
                 return upper;

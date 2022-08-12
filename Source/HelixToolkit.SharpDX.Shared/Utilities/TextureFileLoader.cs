@@ -38,14 +38,14 @@ namespace HelixToolkit.UWP
             {
                 if (logger.IsEnabled(LogLevel.Debug))
                 {
-                    logger.LogDebug("Disposing file stream {}.", FilePath);
+                    logger.LogDebug("Disposing file stream: {0}.", FilePath);
                 }
                 fileStream.Dispose();
             }
 
             public TextureInfo Load(Guid id)
             {
-                logger.LogInformation("Loading texture file: {}", FilePath);
+                logger.LogInformation("Loading texture file: {0}", FilePath);
 
 #if WINDOWS_UWP
                 try
