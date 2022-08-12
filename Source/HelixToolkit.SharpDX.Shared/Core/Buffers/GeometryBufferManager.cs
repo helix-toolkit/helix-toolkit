@@ -67,7 +67,7 @@ namespace HelixToolkit.UWP
                     {
                         if (logger.IsEnabled(LogLevel.Trace))
                         {
-                            logger.LogTrace("Existing buffer found, GeomoetryGUID = {}", geometry.GUID);
+                            logger.LogTrace("Existing buffer found, GeomoetryGUID = {0}", geometry.GUID);
                         }
                         container = obj as IGeometryBufferModel;
                         obj.IncRef();
@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP
                     {
                         if (logger.IsEnabled(LogLevel.Trace))
                         {
-                            logger.LogTrace("Buffer not found, create new buffer. GeomoetryGUID = {}", geometry.GUID);
+                            logger.LogTrace("Buffer not found, create new buffer. GeomoetryGUID = {0}", geometry.GUID);
                         }
                         container = new T();
                         var id = geometry.GUID;
@@ -85,7 +85,7 @@ namespace HelixToolkit.UWP
                         {
                             if (logger.IsEnabled(LogLevel.Trace))
                             {
-                                logger.LogTrace("Disposing Geometry Buffer. GeomoetryGUID = {}", id);
+                                logger.LogTrace("Disposing Geometry Buffer. GeomoetryGUID = {0}", id);
                             }
                             lock (bufferDictionary)
                             {

@@ -171,7 +171,7 @@ namespace HelixToolkit.UWP
 #if DEBUG
                                 throw new ArgumentException($"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
 #else
-                                logger.LogWarning("Variable not found in constant buffer {}. Variable = {}", bufferDesc.Name, name);
+                                logger.LogWarning("Variable not found in constant buffer {0}. Variable = {1}", bufferDesc.Name, name);
 #endif
                             }
                         }
@@ -216,7 +216,7 @@ namespace HelixToolkit.UWP
 #if DEBUG
                                 throw new ArgumentException($"Variable not found in constant buffer {bufferDesc.Name}. Variable = {name}");
 #else
-                                logger.LogWarning("Variable not found in constant buffer {}. Variable = {}", bufferDesc.Name, name);
+                                logger.LogWarning("Variable not found in constant buffer {0}. Variable = {1}", bufferDesc.Name, name);
                                 value = v;
                                 return false;
 #endif

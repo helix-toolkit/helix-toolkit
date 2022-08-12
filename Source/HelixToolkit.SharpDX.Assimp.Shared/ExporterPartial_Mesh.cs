@@ -193,7 +193,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    logger.LogWarning("Geometry type does not support yet. Type: {}", info.Mesh.GetType().Name);
+                    logger.LogWarning("Geometry type does not support yet. Type: {0}", info.Mesh.GetType().Name);
                 }
                 return assimpMesh;
             }

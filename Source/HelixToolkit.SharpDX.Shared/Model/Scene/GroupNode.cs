@@ -119,7 +119,7 @@ namespace HelixToolkit.UWP
                     isHit = octreeManager.HitTest(context, this.WrapperSource, totalModelMatrix, ref hits);
                     if (isHit && logger.IsEnabled(LogLevel.Trace))
                     {
-                        logger.LogTrace("Octree hit test, hit at {}", hits[0].PointHit);
+                        logger.LogTrace("Octree hit test, hit at {0}", hits[0].PointHit);
                     }
                 }
                 else

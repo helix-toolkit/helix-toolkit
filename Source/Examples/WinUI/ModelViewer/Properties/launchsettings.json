@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "ModelViewer (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "ModelViewer (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}

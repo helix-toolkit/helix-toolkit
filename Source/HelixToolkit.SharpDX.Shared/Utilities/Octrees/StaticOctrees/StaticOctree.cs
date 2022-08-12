@@ -406,7 +406,7 @@ namespace HelixToolkit.UWP
                 Bound = octants[0].Bound;
 #if DEBUG
                 tick = Stopwatch.GetTimestamp() - tick;
-                logger.LogDebug("Build static tree time ={}; Total = {}", (double)tick / Stopwatch.Frequency * 1000, octants.Count);
+                logger.LogDebug("Build static tree time = {0}; Total = {1}", (double)tick / Stopwatch.Frequency * 1000, octants.Count);
 #endif
             }
 

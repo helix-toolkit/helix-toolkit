@@ -298,7 +298,7 @@ namespace HelixToolkit.UWP
 #if DEBUG
             var elapsed = Stopwatch.GetTimestamp() - now;
             if (logger.IsEnabled(LogLevel.Debug))
-                logger.LogDebug("Buildtree time = {} ms", (elapsed * 1e3) / Stopwatch.Frequency);
+                logger.LogDebug("Buildtree time = {0} ms", (elapsed * 1e3) / Stopwatch.Frequency);
 #endif
         }
         /// <summary>

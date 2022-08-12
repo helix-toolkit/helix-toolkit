@@ -307,7 +307,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    logger.LogError("Failed to pack TextInfoExts, Error Code = {}", code.ToString());
+                    logger.LogError("Failed to pack TextInfoExts, Error Code = {0}", code.ToString());
                     return null;
                 }
             }

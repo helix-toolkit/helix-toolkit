@@ -183,7 +183,7 @@ namespace HelixToolkit.UWP
                     {
                         return;
                     }
-                    logger.LogInformation("Set Viewport, Initialized = {}", IsInitialized);
+                    logger.LogInformation("Set Viewport, Initialized = {0}", IsInitialized);
                     DetachRenderable();
                     viewport = value;
                     if (IsInitialized)
@@ -809,19 +809,19 @@ namespace HelixToolkit.UWP
                             || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
                             || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                         {
-                            logger.LogWarning("Device Lost, code = {}", desc.Code);
+                            logger.LogWarning("Device Lost, code = {0}", desc.Code);
                             RenderBuffer_OnDeviceLost(RenderBuffer, EventArgs.Empty);
                         }
                         else
                         {
-                            logger.LogError("DirectX Error during rendering. Exception: {}", ex);
+                            logger.LogError("DirectX Error during rendering. Exception: {0}", ex);
                             EndD3D();
                             ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                         }
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError("Error during rendering. Exception: {}", ex);
+                        logger.LogError("Error during rendering. Exception: {0}", ex);
                         EndD3D();
                         ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                     }
@@ -895,7 +895,7 @@ namespace HelixToolkit.UWP
             /// <param name="hotRestart">if set to <c>true</c> [hotRestart].</param>
             protected void Restart(bool hotRestart)
             {
-                logger.LogInformation("Restart. IsInitialized = {}; HotRestart = {};", IsInitialized, hotRestart);
+                logger.LogInformation("Restart. IsInitialized = {0}; HotRestart = {1};", IsInitialized, hotRestart);
                 if (!IsInitialized)
                 {
                     return;
@@ -920,7 +920,7 @@ namespace HelixToolkit.UWP
             {
                 lock (lockObj)
                 {
-                    logger.LogInformation("Starting D3D. Width = {}; Height = {};", width, height);
+                    logger.LogInformation("Starting D3D. Width = {0}; Height = {1};", width, height);
                     if (IsInitialized)
                     {
                         logger.LogInformation("RenderHost already Initialized.");
@@ -1138,7 +1138,7 @@ namespace HelixToolkit.UWP
                 }
                 ActualWidth = Math.Max(2, width * DpiScale);
                 ActualHeight = Math.Max(2, height * DpiScale);
-                logger.LogInformation("Resizing. Width = {}; Height = {};", width, height);
+                logger.LogInformation("Resizing. Width = {0}; Height = {1};", width, height);
                 lock (lockObj)
                 {
                     if (IsInitialized)

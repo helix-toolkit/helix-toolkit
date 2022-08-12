@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError("Failed to create surfaceD3D. Ex: {}", ex.Message);
+                    logger.LogError("Failed to create surfaceD3D. Ex: {0}", ex.Message);
                     hasBackBuffer = false;
                     surfaceD3D.IsFrontBufferAvailableChanged -= SurfaceD3D_IsFrontBufferAvailableChanged;
                     RemoveAndDispose(ref surfaceD3D);
@@ -122,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     return;
                 }
 
-                logger.LogWarning("SurfaceD3D front buffer changed. Value = {}, last value {}", newValue, lastSurfaceD3DIsFrontBufferAvailable);
+                logger.LogWarning("SurfaceD3D front buffer changed. Value = {0}, last value {1}", newValue, lastSurfaceD3DIsFrontBufferAvailable);
                 if (surfaceD3D != null)
                 {
                     hasBackBuffer = false;

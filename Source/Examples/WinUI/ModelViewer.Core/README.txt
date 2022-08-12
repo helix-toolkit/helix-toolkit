@@ -1,0 +1,1 @@
+This is a .NET Standard project which is meant to contain code that can be reused across multiple .NET implementations.

@@ -114,7 +114,7 @@ namespace HelixToolkit.UWP
                     array = new T[(int)(requestCount * scale)];
                     if (logger.IsEnabled(LogLevel.Debug))
                     {
-                        logger.LogDebug("Created new thread buffer. Type: {}; Size: {} kB.", typeof(T), array.Length * StructSize / 1024);
+                        logger.LogDebug("Created new thread buffer. Type: {0}; Size: {1} kB.", typeof(T), array.Length * StructSize / 1024);
                     }
                 }
 
@@ -122,7 +122,7 @@ namespace HelixToolkit.UWP
                 {
                     if (logger.IsEnabled(LogLevel.Debug))
                     {
-                        logger.LogDebug("Requested buffer size is larger than max retain size. Type: {}.", typeof(T));
+                        logger.LogDebug("Requested buffer size is larger than max retain size. Type: {0}.", typeof(T));
                     }
                     return array;
                 }
@@ -141,7 +141,7 @@ namespace HelixToolkit.UWP
                     {
                         if (logger.IsEnabled(LogLevel.Debug))
                         {
-                            logger.LogDebug("Disposing thread buffer. Type: {}.", typeof(T));
+                            logger.LogDebug("Disposing thread buffer. Type: {0}.", typeof(T));
                         }
                         buffer = null;
                         lastUsed = 0;

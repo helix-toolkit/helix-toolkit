@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
                         {
                             if (logger.IsEnabled(LogLevel.Debug))
                             {
-                                logger.LogDebug("Reuse existing TextureModel. Guid: {}", target.Guid);
+                                logger.LogDebug("Reuse existing TextureModel. Guid: {0}", target.Guid);
                             }
                             return target;
                         }
@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP
                     streamDict.Add(stream, new WeakReference<TextureModel>(newTexModel));
                     if (logger.IsEnabled(LogLevel.Debug))
                     {
-                        logger.LogDebug("Created new TextureModel. Guid: {}", newTexModel.Guid);
+                        logger.LogDebug("Created new TextureModel. Guid: {0}", newTexModel.Guid);
                     }
                     return newTexModel;
                 }
@@ -73,7 +73,7 @@ namespace HelixToolkit.UWP
                         {
                             if (logger.IsEnabled(LogLevel.Debug))
                             {
-                                logger.LogDebug("Reuse existing TextureModel. Guid: {}", target.Guid);
+                                logger.LogDebug("Reuse existing TextureModel. Guid: {0}", target.Guid);
                             }
                             return target;
                         }
@@ -83,7 +83,7 @@ namespace HelixToolkit.UWP
                     fileDict.Add(texturePath, new WeakReference<TextureModel>(newTexModel));
                     if (logger.IsEnabled(LogLevel.Debug))
                     {
-                        logger.LogDebug("Created new TextureModel. Guid: {}", newTexModel.Guid);
+                        logger.LogDebug("Created new TextureModel. Guid: {0}", newTexModel.Guid);
                     }
                     return newTexModel;
                 }

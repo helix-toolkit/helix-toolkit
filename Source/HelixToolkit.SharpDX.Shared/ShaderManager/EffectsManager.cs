@@ -361,7 +361,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         private void Initialize(int adapterIndex)
         {
-            logger.LogInformation("Adapter Index = {}", adapterIndex);
+            logger.LogInformation("Adapter Index = {0}", adapterIndex);
             var adapter = GetAdapter(ref adapterIndex);
             AdapterIndex = adapterIndex;
             if (AdapterIndex < 0 || adapter == null)
@@ -409,7 +409,7 @@ namespace HelixToolkit.UWP
 #else
             device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
-            logger.LogInformation("Direct3D device initilized. DriverType: {}; FeatureLevel: {}", DriverType, device.FeatureLevel);
+            logger.LogInformation("Direct3D device initilized. DriverType: {0}; FeatureLevel: {1}", DriverType, device.FeatureLevel);
 
             #region Initial Internal Pools
             logger.LogInformation("Initializing resource pools");
@@ -548,7 +548,7 @@ namespace HelixToolkit.UWP
                 var adapterIndex = -1;
                 ulong bestVideoMemory = 0;
                 ulong bestSystemMemory = 0;
-                logger.LogInformation("Trying to get best adapter. Number of adapters: {}", f.Adapters.Length);
+                logger.LogInformation("Trying to get best adapter. Number of adapters: {0}", f.Adapters.Length);
                 ulong MByte = 1024 * 1024;
                 foreach (var item in f.Adapters)
                 {
@@ -570,7 +570,7 @@ namespace HelixToolkit.UWP
                     }
 
                     var level = global::SharpDX.Direct3D11.Device.GetSupportedFeatureLevel(item);
-                    logger.LogInformation("Feature Level: {}", level);
+                    logger.LogInformation("Feature Level: {0}", level);
                     if (level < MinimumFeatureLevel)
                     {
                         continue;
@@ -587,7 +587,7 @@ namespace HelixToolkit.UWP
                         bestSystemMemory = systemMemory;
                     }
                 }
-                logger.LogInformation("Best Adapter: {}", bestAdapterIndex);
+                logger.LogInformation("Best Adapter: {0}", bestAdapterIndex);
                 return bestAdapter;
             }
         }
@@ -617,7 +617,7 @@ namespace HelixToolkit.UWP
         {
             if (!techniqueDict.TryGetValue(name, out var t))
             {
-                logger.LogWarning("Technique {} does not exist. Return a null technique.", name);
+                logger.LogWarning("Technique {0} does not exist. Return a null technique.", name);
 #if DX11_1
                 return new Technique(new TechniqueDescription() { Name = name, IsNull = true }, device1, this);
 #else
@@ -698,7 +698,7 @@ namespace HelixToolkit.UWP
         {
             logger.LogDebug(global::SharpDX.Diagnostics.ObjectTracker.ReportActiveObjects());
             var liveObjects = global::SharpDX.Diagnostics.ObjectTracker.FindActiveObjects();
-            logger.LogDebug("Live object count = {}", liveObjects.Count);
+            logger.LogDebug("Live object count = {0}", liveObjects.Count);
             //if (liveObjects.Count != 0)
             //{
             //    foreach(var obj in liveObjects)

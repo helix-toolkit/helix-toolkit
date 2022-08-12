@@ -914,7 +914,7 @@ namespace HelixToolkit.UWP
 #if OUTPUTDEBUGGING
                 if (logger.IsEnabled(LogLevel.Debug))
                 {
-                    logger.LogDebug("{}: {}", src, currentParticleCount);
+                    logger.LogDebug("{0}: {1}", src, currentParticleCount);
                 }
 #endif
                 context.UnmapSubresource(particleCountStaging, 0);

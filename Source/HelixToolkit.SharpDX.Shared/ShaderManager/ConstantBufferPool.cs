@@ -96,7 +96,7 @@ namespace HelixToolkit.UWP
             {
                 if (logger.IsEnabled(LogLevel.Debug))
                 {
-                    logger.LogDebug("Creating constant buffer. Key: {}; Size: {}", key, description.StructSize);
+                    logger.LogDebug("Creating constant buffer. Key: {0}; Size: {1}", key, description.StructSize);
                 }
                 var buffer = description.CreateBuffer();
                 buffer.CreateBuffer(device);

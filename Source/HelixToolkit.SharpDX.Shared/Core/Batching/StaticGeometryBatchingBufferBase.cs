@@ -214,7 +214,7 @@ namespace HelixToolkit.UWP
                 }
 #if OutputBuildTime
                 time = System.Diagnostics.Stopwatch.GetTimestamp() - time;
-                logger.LogDebug($"Build Batch Time: {} ms", (float)time / System.Diagnostics.Stopwatch.Frequency * 1000);
+                logger.LogDebug($"Build Batch Time: {0} ms", (float)time / System.Diagnostics.Stopwatch.Frequency * 1000);
 #endif
                 VertexBuffer[0].UploadDataToBuffer(deviceContext, tempVerts, tempVerts.Length);
                 IndexBuffer?.UploadDataToBuffer(deviceContext, tempIndices, tempIndices.Length);

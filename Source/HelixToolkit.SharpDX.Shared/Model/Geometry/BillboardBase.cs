@@ -183,7 +183,7 @@ namespace HelixToolkit.UWP
                     AssignResultAdditional(result, i);
                     if (logger.IsEnabled(LogLevel.Trace))
                     {
-                        logger.LogTrace("Hit; HitPoint:{}; Text={}", result.PointHit, (result.TextInfo == null ? Type.ToString() : result.TextInfo.Text));
+                        logger.LogTrace("Hit; HitPoint:{0}; Text={1}", result.PointHit, (result.TextInfo == null ? Type.ToString() : result.TextInfo.Text));
                     }
                 }
             }
@@ -259,7 +259,7 @@ namespace HelixToolkit.UWP
                     AssignResultAdditional(result, i);
                     if (logger.IsEnabled(LogLevel.Trace))
                     {
-                        logger.LogTrace("Hit; HitPoint:{}; Text={}", result.PointHit, result.TextInfo == null ? Type.ToString() : result.TextInfo.Text);
+                        logger.LogTrace("Hit; HitPoint:{0}; Text={1}", result.PointHit, result.TextInfo == null ? Type.ToString() : result.TextInfo.Text);
                     }
                 }
             }

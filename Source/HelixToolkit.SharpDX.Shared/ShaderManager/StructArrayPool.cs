@@ -55,12 +55,12 @@ namespace HelixToolkit.UWP
                 rwLock.ExitWriteLock();
                 if (logger.IsEnabled(LogLevel.Debug))
                 {
-                    logger.LogDebug("Resize struct array to {} * {} = {}", structSize, id + 1, binaryArray.Count);
+                    logger.LogDebug("Resize struct array to {0} * {1} = {2}", structSize, id + 1, binaryArray.Count);
                 }
             }
             if (logger.IsEnabled(LogLevel.Debug))
             {
-                logger.LogDebug("Getting new id {} on struct size {}.", id, StructSize);
+                logger.LogDebug("Getting new id [{0}] on struct size [{1}].", id, StructSize);
             }
             return id;
         }
@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP
         {
             if (logger.IsEnabled(LogLevel.Debug))
             {
-                logger.LogDebug("Release id {} on struct size {}.", id, StructSize);
+                logger.LogDebug("Release id [{0}] on struct size [{1}].", id, StructSize);
             }
             idHelper.ReleaseId(id);
             Clear(id);
@@ -79,7 +79,7 @@ namespace HelixToolkit.UWP
         {
             if (id < 0)
             {
-                logger.LogError("Invalid Id {}", id);
+                logger.LogError("Invalid Id {0}", id);
                 return;
             }
             var offsetInArray = GetOffSet(id);
@@ -98,7 +98,7 @@ namespace HelixToolkit.UWP
         {
             if (id < 0)
             {
-                logger.LogError("Invalid Id {}", id);
+                logger.LogError("Invalid Id {0}", id);
                 return false;
             }
             var offsetInArray = GetOffSet(id) + offset;
@@ -221,7 +221,7 @@ namespace HelixToolkit.UWP
 
             protected override ArrayStorage OnCreate(ref int key, ref int argument)
             {
-                logger.LogInformation("Creating new struct array with size {}", argument);
+                logger.LogInformation("Creating new struct array with size {0}", argument);
                 return new ArrayStorage(argument);
             }        
         }

@@ -279,7 +279,7 @@ namespace HelixToolkit.UWP
                 Level = ShaderReflector.FeatureLevel;
                 if (Level > device.FeatureLevel)
                 {
-                    logger.LogWarning("Shader {} requires FeatureLevel {}. Current device only supports FeatureLevel {} and below.",
+                    logger.LogWarning("Shader {0} requires FeatureLevel {1}. Current device only supports FeatureLevel {2} and below.",
                         this.Name, Level, device.FeatureLevel);
                     return null;
                 }

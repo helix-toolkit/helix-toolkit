@@ -48,7 +48,7 @@ namespace HelixToolkit.UWP
                     if (logger.IsEnabled(LogLevel.Trace))
                     {
                         logger.LogTrace(
-                            "Animation Channel is non-uniform lengths. Position={}; Rotation={}; Scale={};" +
+                            "Animation Channel is non-uniform lengths. Position={0}; Rotation={1}; Scale={2};" +
                             " Trying to automatically create uniform animation keys", posCount, rotCount, scaleCount);
                     }
                     // Adds dummy key if it is empty
@@ -220,7 +220,7 @@ namespace HelixToolkit.UWP
             {
                 if (ani.TicksPerSecond == 0)
                 {
-                    logger.LogWarning("Animation TicksPerSecond is 0. Set to {}", configuration.TickesPerSecond);
+                    logger.LogWarning("Animation TicksPerSecond is 0. Set to {0}", configuration.TickesPerSecond);
                     ani.TicksPerSecond = configuration.TickesPerSecond;
                 }
                 hxAni = new HxAnimations.Animation(HxAnimations.AnimationType.Node)
@@ -272,7 +272,7 @@ namespace HelixToolkit.UWP
             {
                 if (ani.TicksPerSecond == 0)
                 {
-                    logger.LogWarning("Animation TicksPerSecond is 0. Set to {}", configuration.TickesPerSecond);
+                    logger.LogWarning("Animation TicksPerSecond is 0. Set to {0}", configuration.TickesPerSecond);
                     ani.TicksPerSecond = configuration.TickesPerSecond;
                 }
 

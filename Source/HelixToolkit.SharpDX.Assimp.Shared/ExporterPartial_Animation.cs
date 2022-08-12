@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP
                     {
                         if(f.Node == null || string.IsNullOrEmpty(f.Node.Name))
                         {
-                            logger.LogWarning("Node Animation NodeName is empty. AnimationName:{}", ani.Name);
+                            logger.LogWarning("Node Animation NodeName is empty. AnimationName:{0}", ani.Name);
                             continue;
                         }
                         var ch = new NodeAnimationChannel

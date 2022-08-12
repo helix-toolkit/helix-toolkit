@@ -341,7 +341,7 @@ namespace HelixToolkit.UWP
                                     core = new NormalMaterialCore();
                                     break;
                                 default:
-                                    logger.LogWarning("Shading Mode is not supported:{}", material.ShadingMode);
+                                    logger.LogWarning("Shading Mode is not supported: {0}", material.ShadingMode);
                                     core = new DiffuseMaterialCore() { DiffuseColor = Color.Red, EnableUnLit = true };
                                     break;
                             }
@@ -358,10 +358,10 @@ namespace HelixToolkit.UWP
             {               
                 if (texture.HasCompressedData)
                 {
-                    logger.LogInformation("Loading Embedded Compressed Texture. Format: {}", texture.CompressedFormatHint);
+                    logger.LogInformation("Loading Embedded Compressed Texture. Format: {0}", texture.CompressedFormatHint);
                     if (!SupportedTextureFormatDict.Contains(texture.CompressedFormatHint.ToLowerInvariant()))
                     {
-                        logger.LogInformation("Compressed Texture Format not supported. Format: {}", texture.CompressedFormatHint);
+                        logger.LogInformation("Compressed Texture Format not supported. Format: {0}", texture.CompressedFormatHint);
                         return null;
                     }
                     var data = texture.CompressedData.ToArray();
@@ -427,7 +427,7 @@ namespace HelixToolkit.UWP
                         var ext = Path.GetExtension(texturePath);
                         if (string.IsNullOrEmpty(ext) || !SupportedTextureFormats.Contains(ext.TrimStart('.').ToLowerInvariant()))
                         {
-                            logger.LogWarning("Load Texture Failed. Texture Format not supported = {}.", ext);
+                            logger.LogWarning("Load Texture Failed. Texture Format not supported = {0}.", ext);
 
                             return null;
                         }
@@ -437,7 +437,7 @@ namespace HelixToolkit.UWP
                 }
                 catch (Exception ex)
                 {
-                    logger.LogWarning("Load Texture Exception. Texture Path = {}. Exception: {}", texturePath, ex.Message);
+                    logger.LogWarning("Load Texture Exception. Texture Path = {0}. Exception: {1}", texturePath, ex.Message);
                 }
                 return null;
             }
