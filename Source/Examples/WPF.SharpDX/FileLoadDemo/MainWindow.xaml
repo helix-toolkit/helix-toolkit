@@ -23,11 +23,11 @@
             Grid.Row="1"
             BackgroundColor="#595959"
             Camera="{Binding Camera}"
-            CameraMode="Inspect"
-            CameraRotationMode="Trackball"
             EffectsManager="{Binding EffectsManager}"
             EnableSwapChainRendering="True"
-            FXAALevel="Low">
+            FXAALevel="Low"
+            FixedRotationPoint="{Binding ModelCentroid}"
+            FixedRotationPointEnabled="True">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -98,17 +98,27 @@
                 <CheckBox Margin="4" IsChecked="{Binding RenderEnvironmentMap}">Render EnvironmentMap</CheckBox>
                 <CheckBox Margin="4" IsChecked="{Binding RenderFlat}">Flat Shading</CheckBox>
                 <Separator />
-                <CheckBox x:Name="aniCheckbox" Margin="4" IsChecked="{Binding EnableAnimation}">Enable Animation</CheckBox>
+                <CheckBox
+                    x:Name="aniCheckbox"
+                    Margin="4"
+                    IsChecked="{Binding EnableAnimation}">
+                    Enable Animation
+                </CheckBox>
                 <TextBlock>Animations</TextBlock>
                 <ComboBox
-                    DisplayMemberPath="Name" IsEnabled="{Binding ElementName=aniCheckbox, Path=IsChecked}"
+                    DisplayMemberPath="Name"
+                    IsEnabled="{Binding ElementName=aniCheckbox, Path=IsChecked}"
                     ItemsSource="{Binding Animations}"
                     SelectedItem="{Binding SelectedAnimation}" />
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="PlayBack Speed: "/>
-                    <TextBlock Text="{Binding Speed}" VerticalAlignment="Center"/>
+                    <Label Content="PlayBack Speed: " />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Speed}" />
                 </StackPanel>
-                <Slider Value="{Binding Speed}" Minimum="0" Maximum="50" SmallChange="0.5"/>
+                <Slider
+                    Maximum="50"
+                    Minimum="0"
+                    SmallChange="0.5"
+                    Value="{Binding Speed}" />
                 <Separator />
                 <TextBlock>Scene Graph</TextBlock>
             </StackPanel>

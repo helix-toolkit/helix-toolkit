@@ -828,5 +828,19 @@ namespace HelixToolkit.Wpf
                 }
             }
         }
+
+        public static Point3D GetCentroid(this IList<Point3D> vertices)
+        {
+            if (vertices.Count == 0)
+            {
+                return default;
+            }
+            var centroid = vertices[0];
+            for (var i = 1; i < vertices.Count; i++)
+            {
+                centroid += (vertices[i] - centroid) / (i + 1);
+            }
+            return centroid;
+        }
     }
 }

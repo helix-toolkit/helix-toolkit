@@ -30,10 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HelixToolkit.SharpDX.Core.Assimp\HelixToolkit.SharpDX.Core.Assimp.csproj" />
     <ProjectReference Include="..\..\..\HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.csproj" />
     <ProjectReference Include="..\..\..\HelixToolkit.WinUI\HelixToolkit.WinUI.csproj" />
     <ProjectReference Include="..\..\..\HelixToolkit\HelixToolkit.csproj" />
-    <ProjectReference Include="..\ModelViewer.Core\ModelViewer.Core.csproj" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
