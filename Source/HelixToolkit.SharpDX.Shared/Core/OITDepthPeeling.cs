@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP
 
             private bool CreateRenderTargets(int width, int height)
             {
-                if (currWidth == width || currHeight == height)
+                if (currWidth == width && currHeight == height)
                 {
                     return false;
                 }
