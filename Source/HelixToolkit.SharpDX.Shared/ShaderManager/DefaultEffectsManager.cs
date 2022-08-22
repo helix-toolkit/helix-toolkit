@@ -590,6 +590,26 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITDP,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
                     },
+                    new ShaderPassDescription(DefaultPassNames.OITDepthPeelingInit)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBatched,
+                            DefaultPSShaderDescriptions.PSMeshOITDPInit
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITDPMaxBlending,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
+                    },                    
+                    new ShaderPassDescription(DefaultPassNames.OITDepthPeeling)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBatched,
+                            DefaultPSShaderDescriptions.PSMeshBlinnPhongOITDP
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITDP,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
+                    },
                     new ShaderPassDescription(DefaultPassNames.PreComputeMeshBoneSkinned)
                     {
                         ShaderList = new[]
