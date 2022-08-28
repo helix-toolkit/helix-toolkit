@@ -184,9 +184,9 @@ namespace HelixToolkit.UWP
                 return new DynamicCubeMapCore();
             }
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     RenderCore.Attach(this.EffectTechnique);
                     return true;
@@ -227,9 +227,9 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.Skybox];
+                return effectsManager[DefaultRenderTechniqueNames.Skybox];
             }
 
             /// <summary>

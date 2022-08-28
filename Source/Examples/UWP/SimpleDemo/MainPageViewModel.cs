@@ -118,8 +118,7 @@ namespace SimpleDemoW10
 
         public MainPageViewModel()
         {
-            EffectsManager = new DefaultEffectsManager(new Logger());
-
+            EffectsManager = new DefaultEffectsManager();
             Camera = new PerspectiveCamera() { Position = new Vector3(40, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = UpDirection, FarPlaneDistance = 500, NearPlaneDistance = 0.1 };
             Camera1 = new OrthographicCamera() { Position = new Vector3(60, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = upDirection, Width = 30, FarPlaneDistance = 2000, NearPlaneDistance = 20};
             var builder = new MeshBuilder(true, true, true);
@@ -205,20 +204,6 @@ namespace SimpleDemoW10
         {
             var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation.Path;
             return TextureModel.Create(packageFolder + @"\" + file);
-        }
-
-        public class Logger : ILogger
-        {
-            public void Log<MsgType>(LogLevel logLevel, MsgType msg, string className, string methodName, int lineNumber)
-            {
-                switch (logLevel)
-                {
-                    case LogLevel.Warning:
-                    case LogLevel.Error:
-                        Console.WriteLine($"Level:{logLevel}; Msg:{msg}");
-                        break;
-                }
-            }
         }
 
         private void ResetCamera()

@@ -8,6 +8,7 @@ using Device = SharpDX.Direct3D11.Device1;
 using Device = SharpDX.Direct3D11.Device;
 #endif
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace HelixToolkit.UWP.CommonDX
 {
@@ -18,6 +19,7 @@ namespace HelixToolkit.UWP.CommonDX
     /// </summary>
     public class SwapChainCompositionRenderHost : DefaultRenderHost
     {
+        static readonly ILogger logger = LogManager.Create<SwapChainCompositionRenderHost>();
         /// <summary>
         /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
         /// </summary>
@@ -38,7 +40,7 @@ namespace HelixToolkit.UWP.CommonDX
         /// <returns></returns>
         protected override DX11RenderBufferProxyBase CreateRenderBuffer()
         {
-            Logger.Log(LogLevel.Information, "DX11SwapChainCompositionRenderBufferProxy", nameof(SwapChainRenderHost));
+            logger.LogInformation("DX11SwapChainCompositionRenderBufferProxy");
             return new DX11SwapChainCompositionRenderBufferProxy(EffectsManager);
         }
     }

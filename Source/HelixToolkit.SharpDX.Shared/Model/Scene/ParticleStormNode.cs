@@ -713,23 +713,15 @@ namespace HelixToolkit.UWP
             {
                 return new ParticleRenderCore();
             }
-            /// <summary>
-            /// Called when [create render technique].
-            /// </summary>
-            /// <param name="host">The host.</param>
-            /// <returns></returns>
-            protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+
+            protected override IRenderTechnique OnCreateRenderTechnique(IEffectsManager effectsManager)
             {
-                return host.EffectsManager[DefaultRenderTechniqueNames.ParticleStorm];
+                return effectsManager[DefaultRenderTechniqueNames.ParticleStorm];
             }
-            /// <summary>
-            /// Called when [attach].
-            /// </summary>
-            /// <param name="host">The host.</param>
-            /// <returns></returns>
-            protected override bool OnAttach(IRenderHost host)
+
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                base.OnAttach(host);
+                base.OnAttach(effectsManager);
                 InstanceBuffer.Initialize();
                 InstanceBuffer.Elements = Instances;
                 particleCore.InstanceBuffer = InstanceBuffer;

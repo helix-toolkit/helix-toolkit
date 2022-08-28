@@ -20,22 +20,28 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// <param name="nativeWindowPointer">The native window pointer.</param>
         /// <param name="deferred">if set to <c>true</c> [deferred].</param>
         public ViewportCore(IntPtr nativeWindowPointer, bool deferred = false)
-        {
-            if (deferred)
-            {
-                RenderHost = new SwapChainRenderHost(nativeWindowPointer,
+            : this(deferred ? new SwapChainRenderHost(nativeWindowPointer,
                     (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); })
-                {
-                    Viewport = this,
-                };
-            }
-            else
-            {
-                RenderHost = new SwapChainRenderHost(nativeWindowPointer)
-                {
-                    Viewport = this,
-                };
-            }
+            : new SwapChainRenderHost(nativeWindowPointer))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewportCore"/> class.
+        /// </summary>
+        public ViewportCore() : this(new DefaultRenderHost())
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewportCore"/> class.
+        /// </summary>
+        /// <param name="renderHost"></param>
+        public ViewportCore(IRenderHost renderHost)
+        {
+            RenderHost = renderHost;
+            RenderHost.Viewport = this;
             RenderHost.DpiScale = (float)DpiScale;
             BackgroundColor = Color.Black;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
@@ -73,18 +79,30 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
-            Items.Attach(host);
-            ViewCube.Attach(host);
-            CoordinateSystem.Attach(host);
+            Items.Attach(host.EffectsManager);
+            Items.Invalidated += Items_Invalidated;
+            ViewCube.Attach(host.EffectsManager);
+            ViewCube.Invalidated += Items_Invalidated;
+            CoordinateSystem.Attach(host.EffectsManager);
+            CoordinateSystem.Invalidated += Items_Invalidated;
             Items2D.Attach(host);
         }
+
+        private void Items_Invalidated(object sender, InvalidateTypes e)
+        {
+            RenderHost?.Invalidate(e);
+        }
+
         /// <summary>
         /// Detaches this instance.
         /// </summary>
         public void Detach()
         {
+            Items.Invalidated -= Items_Invalidated;
             Items.Detach();
+            ViewCube.Invalidated -= Items_Invalidated;
             ViewCube.Detach();
+            CoordinateSystem.Invalidated -= Items_Invalidated;
             CoordinateSystem.Detach();
             Items2D.Detach();
         }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -31,6 +32,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class ViewBoxNode : ScreenSpacedNode
         {
+            static readonly ILogger logger = Logger.LogManager.Create<ViewBoxNode>();
             #region Properties
             private TextureModel viewboxTexture;
             /// <summary>
@@ -190,14 +192,14 @@ namespace HelixToolkit.UWP
                 UpdateModel(UpDirection);
             }
 
-            protected override bool OnAttach(IRenderHost host)
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
-                if (base.OnAttach(host))
+                if (base.OnAttach(effectsManager))
                 {
                     var material = (ViewBoxMeshModel.Material as ViewCubeMaterialCore);
                     if (material.DiffuseMap == null)
                     {
-                        material.DiffuseMap = ViewBoxTexture ?? new TextureModel(BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
+                        material.DiffuseMap = ViewBoxTexture ?? new TextureModel(BitmapExtensions.CreateViewBoxTexture(effectsManager,
                             "F", "B", "L", "R", "U", "D", Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
                             Color.White, Color.White, Color.White, Color.White, Color.White, Color.White), true);
                     }
@@ -310,7 +312,10 @@ namespace HelixToolkit.UWP
             {
                 if (base.OnHitTest(context, totalModelMatrix, ref hitsInternal))
                 {
-                    Debug.WriteLine("View box hit.");
+                    if (logger.IsEnabled(LogLevel.Debug))
+                    {
+                        logger.LogDebug("View box hit.");
+                    }
                     var hit = hitsInternal.OrderBy(x => x.Distance).FirstOrDefault();
                     if (hit == null)
                     { return false; }

@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -19,8 +21,7 @@ namespace HelixToolkit.UWP
     namespace Model
     {
         using Render;
-        using Shaders;
-        using System.Diagnostics;
+        using Shaders;       
         using Utilities;
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public abstract class MaterialVariable : DisposeObject
         {
+            static readonly ILogger logger = Logger.LogManager.Create<MaterialVariable>();
             public static readonly ConstantBufferDescription DefaultMeshConstantBufferDesc
                 = new ConstantBufferDescription(DefaultBufferNames.ModelCB,
                           PhongPBRMaterialStruct.SizeInBytes);
@@ -309,7 +311,7 @@ namespace HelixToolkit.UWP
 #if DEBUG
                     throw new ArgumentException($"Variable not found in constant buffer {materialCB.Name}. Variable = {name}");
 #else
-                    Technique.EffectsManager.Logger.Log(Logger.LogLevel.Warning, $"Variable not found in constant buffer {materialCB.Name}. Variable = {name}");
+                    logger.LogWarning("Variable not found in constant buffer {0}. Variable = {1}", materialCB.Name, name);
 #endif
                 }
             }

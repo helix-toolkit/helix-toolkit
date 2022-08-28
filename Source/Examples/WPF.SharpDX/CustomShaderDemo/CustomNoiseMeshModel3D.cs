@@ -13,7 +13,7 @@ namespace CustomShaderDemo
         protected override SceneNode OnCreateSceneNode()
         {
             var node = base.OnCreateSceneNode();
-            node.OnSetRenderTechnique = (host) => { return host.EffectsManager[CustomShaderNames.NoiseMesh]; };
+            node.OnSetRenderTechnique = (host) => { return node.EffectsManager[CustomShaderNames.NoiseMesh]; };
             return node;
         }
     }

@@ -1,7 +1,37 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.22.0]
+
+### Improvement
+1. Change `SceneNode.Attach` to accept `IEffectsManager` instead of `IRenderHost`. This change will allow scene graph to be built and pre-attached in separate thread (all graphics resources are created during attaching). UI thread is still required to add generated sub graph back to the main graph which is associated with the Viewport. Example can be found [here](https://github.com/helix-toolkit/helix-toolkit/blob/15a36dd8a33c7d1fccd07a8dc5ca60523c86fdf2/Source/Examples/WPF.SharpDX/FileLoadDemo/MainViewModel.cs#L266). (WPF.SharpDX/UWP/Core/WinUI)
+1. Re-implement logging to use [Microsoft.Extensions.Logging.Abstractions](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.abstractions?view=dotnet-plat-ext-6.0) logging interface. To override the internal debug logger, set `HelixToolkit.Logger.LogManager.Factory` on app start up to provide your own logging implementation.
+1. Due to logging change, minimum dot net version has been changed for all Helixtoolkit libraries.
+   ```diff
+   + .Net Framework 4.6.2 
+   - .Net Framework 4.5
+   + netstandard 2.0
+   - netstandard 1.3
+   ```
+### Fixed
+1. Fix intersecting hit test in CrossSectionMeshGeometryModel3D. (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix depth peeling not working after Viewport resizing. (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix missing depth peeling shader passes for batched mesh. (WPF.SharpDX/UWP/Core/WinUI)
+
+## [2.21.1] - 2022-06-16
+
+### Improvement
+1. Allow environment map to skip rendering but still available for other object to do reflection. (WPF.SharpDX/UWP/Core/WinUI)
+1. Remove unnecessary scene graph re-creation during loading/unloading. (UWP/WinUI)
+1. Update WinUI AppSDK to 1.1.1. (WinUI)
+
+### Fixed
+1. Fix MSAA enable causes incorrect rendering on screenspaced objects. (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix binding erorr: Converter failed to convert value of type of Element3D. (UWP/WinUI)
+1. Fix missing TeapotGeometry in Helixtoolkit.Core.Wpf. (Core.Wpf)
+1. Fix custom viewcube texture not working. (WPF.SharpDX/UWP/Core/WinUI)
+
+## [2.21.0] - 2022-05-28
 We did some major code refactoring and changes in this release.
 ### New
 1. Support Depth peeling based order independent transparency rendering. (WPF.SharpDX/UWP/Core)

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -24,6 +25,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public class ShaderResourceViewProxy : DisposeObject
         {
+            static readonly ILogger logger = Logger.LogManager.Create<ShaderResourceViewProxy>();
             public Guid Guid { internal set; get; } = Guid.NewGuid();
             public static ShaderResourceViewProxy Empty { get; } = new ShaderResourceViewProxy();
             /// <summary>
@@ -192,7 +194,7 @@ namespace HelixToolkit.UWP
                     var stream = content.Texture;
                     if (stream == null || !stream.CanRead)
                     {
-                        Debug.WriteLine("Stream is null or unreadable.");
+                        logger.LogWarning("Stream is null or unreadable.");
                         return false;
                     }
                     resource = TextureLoader.FromMemoryAsShaderResource(device, stream, !enableAutoGenMipMap);
@@ -221,7 +223,7 @@ namespace HelixToolkit.UWP
                             case TextureDataType.Stream:
                                 if (content.Texture == null || !content.Texture.CanRead)
                                 {
-                                    Debug.WriteLine("Data is null or unreadable.");
+                                    logger.LogWarning("Data is null or unreadable.");
                                     return false;
                                 }
                                 var temp = new byte[content.Texture.Length];

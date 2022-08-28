@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -11,7 +12,7 @@ namespace HelixToolkit.SharpDX.Core
 namespace HelixToolkit.UWP
 #endif
 #endif
-{
+{ 
     using Utilities;
     /// <summary>
     /// A array buffer defined by its struct size.
@@ -24,21 +25,19 @@ namespace HelixToolkit.UWP
     /// </summary>
     public sealed unsafe class ArrayStorage : DisposeObject
     {
-        const string tag = nameof(ArrayStorage);
+        static readonly ILogger logger = Logger.LogManager.Create<ArrayStorage>();
         public static int MinArraySize = 1024 * 4;
         public static int MaxArraySizeExpoentialIncrement = 1024 * 1024;
         private readonly FastList<byte> binaryArray = new FastList<byte>(MinArraySize);
         private readonly int structSize;
         private readonly IdHelper idHelper = new IdHelper();
         private readonly ReaderWriterLockSlim rwLock = new ReaderWriterLockSlim();
-        private readonly Logger.LogWrapper logger;
 
         public int StructSize => structSize;
 
-        public ArrayStorage(int structSize, Logger.LogWrapper logger)
+        public ArrayStorage(int structSize)
         {
             this.structSize = structSize;
-            this.logger = logger;
         }
 
         public int GetId()
@@ -54,16 +53,24 @@ namespace HelixToolkit.UWP
                 rwLock.EnterWriteLock();
                 binaryArray.Resize(newSize, false);
                 rwLock.ExitWriteLock();
-                logger.Log(Logger.LogLevel.Debug, $"Resize struct array to " +
-                    $"{structSize} * {id + 1} = {binaryArray.Count}", tag);
+                if (logger.IsEnabled(LogLevel.Debug))
+                {
+                    logger.LogDebug("Resize struct array to {0} * {1} = {2}", structSize, id + 1, binaryArray.Count);
+                }
             }
-            logger.Log(Logger.LogLevel.Debug, $"Getting new id {id} on struct size {StructSize}.", tag);
+            if (logger.IsEnabled(LogLevel.Debug))
+            {
+                logger.LogDebug("Getting new id [{0}] on struct size [{1}].", id, StructSize);
+            }
             return id;
         }
 
         public void ReleaseId(int id)
         {
-            logger.Log(Logger.LogLevel.Debug, $"Release id {id} on struct size {StructSize}.", tag);
+            if (logger.IsEnabled(LogLevel.Debug))
+            {
+                logger.LogDebug("Release id [{0}] on struct size [{1}].", id, StructSize);
+            }
             idHelper.ReleaseId(id);
             Clear(id);
         }
@@ -72,7 +79,7 @@ namespace HelixToolkit.UWP
         {
             if (id < 0)
             {
-                logger.Log(Logger.LogLevel.Error, $"Invalid Id {id}");
+                logger.LogError("Invalid Id {0}", id);
                 return;
             }
             var offsetInArray = GetOffSet(id);
@@ -91,7 +98,7 @@ namespace HelixToolkit.UWP
         {
             if (id < 0)
             {
-                logger.Log(Logger.LogLevel.Error, $"Invalid Id {id}");
+                logger.LogError("Invalid Id {0}", id);
                 return false;
             }
             var offsetInArray = GetOffSet(id) + offset;
@@ -202,10 +209,9 @@ namespace HelixToolkit.UWP
     {
         private sealed class ArrayPoolStorage : ReferenceCountedDictionaryPool<int, ArrayStorage, int>
         {
-            private readonly Logger.LogWrapper logger;
-            public ArrayPoolStorage(Logger.LogWrapper logger) : base(true)
+            private static readonly ILogger logger = Logger.LogManager.Create<ArrayPoolStorage>();
+            public ArrayPoolStorage() : base(true)
             {
-                this.logger = logger;
             }
 
             protected override bool CanCreate(ref int key, ref int argument)
@@ -215,18 +221,16 @@ namespace HelixToolkit.UWP
 
             protected override ArrayStorage OnCreate(ref int key, ref int argument)
             {
-                logger.Log(Logger.LogLevel.Information, $"Creating new struct array with size {argument}");
-                return new ArrayStorage(argument, logger);
+                logger.LogInformation("Creating new struct array with size {0}", argument);
+                return new ArrayStorage(argument);
             }        
         }
 
         private ArrayPoolStorage storage;
-        private readonly Logger.LogWrapper logger;
 
-        public StructArrayPool(Logger.LogWrapper logger)
+        public StructArrayPool()
         {
-            this.logger = logger;
-            storage = new ArrayPoolStorage(logger);
+            storage = new ArrayPoolStorage();
         }
 
         public ArrayStorage Register(int structSize)

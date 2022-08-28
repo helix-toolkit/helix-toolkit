@@ -29,6 +29,7 @@ using HelixToolkit.SharpDX.Core.Utilities;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using Controls;
+    using Microsoft.Extensions.Logging;
 #if !COREWPF
     using Render;
     using Utilities;
@@ -61,6 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="System.Windows.Controls.Image" />
     public class DPFCanvas : Image, IRenderCanvas, IDisposable
     {
+        static readonly ILogger logger = Logger.LogManager.Create<DPFCanvas>();
         /// <summary>
         /// 
         /// </summary>
@@ -245,7 +247,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Debug.WriteLine($"OnIsFrontBufferAvailableChanged: {(bool)e.NewValue}");
+            if (logger.IsEnabled(LogLevel.Debug))
+            {
+                logger.LogDebug($"OnIsFrontBufferAvailableChanged: {(bool)e.NewValue}");
+            }
             // this fires when the screensaver kicks in, the machine goes into sleep or hibernate
             // and any other catastrophic losses of the d3d device from WPF's point of view
             if (true.Equals(e.NewValue))

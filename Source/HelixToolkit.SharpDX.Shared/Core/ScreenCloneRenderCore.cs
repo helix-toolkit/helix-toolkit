@@ -8,6 +8,9 @@ using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Linq;
+using System.Diagnostics;
 using Texture2D = SharpDX.Direct3D11.Texture2D;
 using Texture2DDescription = SharpDX.Direct3D11.Texture2DDescription;
 using BindFlags = SharpDX.Direct3D11.BindFlags;
@@ -30,13 +33,12 @@ namespace HelixToolkit.UWP
     using Utilities;
     using Render;
     using Shaders;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Diagnostics;
 
     namespace Core
     {
         using Components;
+        using Microsoft.Extensions.Logging;
+
         /// <summary>
         /// 
         /// </summary>
@@ -488,6 +490,7 @@ namespace HelixToolkit.UWP
 
             private sealed class FrameProcessing : DisposeObject
             {
+                static readonly ILogger logger = Logger.LogManager.Create<FrameProcessing>();
                 private Texture2D sharedTexture;
                 private Texture2DDescription sharedDescription;
                 public Texture2D SharedTexture
@@ -626,7 +629,7 @@ namespace HelixToolkit.UWP
                         });
                         pointerResource.CreateView(pointerSRVDesc);
 #if OUTPUTDETAIL
-                        Console.WriteLine("Create new cursor texture. Type = " + pointer.ShapeInfo.Type);
+                        logger.LogDebug("Create new cursor texture. Type = " + pointer.ShapeInfo.Type);
 #endif
                     }
                     else
@@ -636,7 +639,7 @@ namespace HelixToolkit.UWP
                         if (pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color)
                         {
 #if OUTPUTDETAIL
-                            Console.WriteLine("Reuse existing cursor texture for Color.");
+                            logger.LogDebug("Reuse existing cursor texture for Color.");
 #endif
                             unsafe
                             {
@@ -656,7 +659,7 @@ namespace HelixToolkit.UWP
                         else
                         {
 #if OUTPUTDETAIL
-                            Console.WriteLine("Reuse existing cursor texture for Mono and Mask.");
+                            logger.LogDebug("Reuse existing cursor texture for Mono and Mask.");
 #endif
                             unsafe // Call unmanaged code
                             {

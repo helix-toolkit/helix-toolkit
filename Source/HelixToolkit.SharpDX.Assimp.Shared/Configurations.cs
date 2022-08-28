@@ -145,26 +145,6 @@ namespace HelixToolkit.UWP
             /// The flip triangle winding order during import
             /// </summary>
             public bool FlipWindingOrder = false;
-
-            private ILogger logger = new DebugLogger();
-            /// <summary>
-            /// Gets or sets the logger.
-            /// </summary>
-            /// <value>
-            /// The logger.
-            /// </value>
-            public ILogger Logger
-            {
-                set
-                {
-                    logger = value;
-                    if (logger == null)
-                    {
-                        logger = new DebugLogger();
-                    }
-                }
-                get { return logger; }
-            }
             /// <summary>
             /// The global scale for model
             /// </summary>
@@ -230,26 +210,6 @@ namespace HelixToolkit.UWP
             /// The tickes per second. Only used when file does not contains tickes per second for animation.
             /// </summary>
             public float TickesPerSecond = 25f;
-
-            private ILogger logger = new DebugLogger();
-            /// <summary>
-            /// Gets or sets the logger.
-            /// </summary>
-            /// <value>
-            /// The logger.
-            /// </value>
-            public ILogger Logger
-            {
-                set
-                {
-                    logger = value;
-                    if (logger == null)
-                    {
-                        logger = new DebugLogger();
-                    }
-                }
-                get { return logger; }
-            }
 
             /// <summary>
             /// The flip triangle winding order during import

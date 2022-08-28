@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using global::SharpDX;
 using global::SharpDX.Direct3D;
 
@@ -16,13 +17,14 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    using HelixToolkit.Logger;
+    using Logger;
     using Shaders;
     /// <summary>
     /// Default shader technique manager, includes all internal shaders
     /// </summary>
     public class DefaultEffectsManager : EffectsManager
     {
+        private static readonly ILogger logger = LogManager.Create<DefaultEffectsManager>();
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
         /// </summary>
@@ -32,15 +34,6 @@ namespace HelixToolkit.UWP
             AddDefaultTechniques();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
-        /// </summary>
-        /// <param name="adapterIndex">Index of the adapter.</param>
-        /// <param name="externallogger">The externallogger.</param>
-        public DefaultEffectsManager(int adapterIndex, ILogger externallogger) : base(adapterIndex, externallogger)
-        {
-            AddDefaultTechniques();
-        }
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
         /// </summary>
@@ -56,14 +49,7 @@ namespace HelixToolkit.UWP
         {
             AddDefaultTechniques();
         }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
-        /// </summary>
-        /// <param name="externallogger">The externallogger.</param>
-        public DefaultEffectsManager(ILogger externallogger) : base(externallogger)
-        {
-            AddDefaultTechniques();
-        }
+
 
         private void AddDefaultTechniques()
         {
@@ -600,6 +586,26 @@ namespace HelixToolkit.UWP
                         {
                             DefaultVSShaderDescriptions.VSMeshBatched,
                             DefaultPSShaderDescriptions.PSMeshPBROITDP
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITDP,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
+                    },
+                    new ShaderPassDescription(DefaultPassNames.OITDepthPeelingInit)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBatched,
+                            DefaultPSShaderDescriptions.PSMeshOITDPInit
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOITDPMaxBlending,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
+                    },                    
+                    new ShaderPassDescription(DefaultPassNames.OITDepthPeeling)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBatched,
+                            DefaultPSShaderDescriptions.PSMeshBlinnPhongOITDP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITDP,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite

@@ -97,10 +97,10 @@ namespace HelixToolkit.UWP
 
                 public IRenderHost RenderHost
                 {
-                    get;
+                    set; get;
                 }
 
-                public CameraCore Camera => RenderHost.RenderContext.Camera;
+                public CameraCore Camera => RenderHost != null ? RenderHost.RenderContext.Camera : null;
 
                 public FrustumCameraParams CameraParams
                 {
@@ -114,11 +114,6 @@ namespace HelixToolkit.UWP
                     {
                         CameraParams = Camera.CreateCameraParams(ActualWidth / ActualHeight, NearPlane, FarPlane);                    
                     }
-                }
-
-                public ScreenSpacedContext(IRenderHost host)
-                {
-                    RenderHost = host;
                 }
             }
             #region Properties
@@ -266,7 +261,7 @@ namespace HelixToolkit.UWP
 
             private List<HitTestResult> screenSpaceHits = new List<HitTestResult>();
 
-            private ScreenSpacedContext screenSpacedContext;
+            private readonly ScreenSpacedContext screenSpacedContext = new ScreenSpacedContext();
 
             public ScreenSpacedNode()
             {
@@ -291,24 +286,15 @@ namespace HelixToolkit.UWP
             protected virtual void OnCoordinateSystemChanged(bool e)
             {
             }
-            /// <summary>
-            /// Called when [attach].
-            /// </summary>
-            /// <param name="host">The host.</param>
-            /// <returns></returns>
-            protected override bool OnAttach(IRenderHost host)
+   
+            protected override bool OnAttach(IEffectsManager effectsManager)
             {
                 RenderCore.Attach(EffectTechnique);
                 var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
                 screenSpaceCore.RelativeScreenLocationX = RelativeScreenLocationX;
                 screenSpaceCore.RelativeScreenLocationY = RelativeScreenLocationY;
                 screenSpaceCore.SizeScale = SizeScale;
-                screenSpacedContext = new ScreenSpacedContext(host);
-                //for (int i = 0; i < ItemsInternal.Count; ++i)
-                //{
-                //    ItemsInternal[i].RenderType = RenderType.ScreenSpaced;
-                //}
-                return base.OnAttach(host);
+                return base.OnAttach(effectsManager);
             }
 
             /// <summary>
@@ -320,8 +306,10 @@ namespace HelixToolkit.UWP
                 base.OnDetach();
             }
 
+
             protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
             {
+                screenSpacedContext.RenderHost = context.RenderMatrices.RenderHost;
                 var newRay = new Ray();
                 var hitSP = context.HitPointSP;
                 var preHit = false;

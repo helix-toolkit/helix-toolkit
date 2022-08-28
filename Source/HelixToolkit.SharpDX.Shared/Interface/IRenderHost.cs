@@ -39,16 +39,6 @@ namespace HelixToolkit.UWP
     public interface IRenderHost : IGUID, IDisposable
     {
         /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        LogWrapper Logger
-        {
-            get;
-        }
-        /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
         event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
@@ -419,6 +409,11 @@ namespace HelixToolkit.UWP
         /// Invalidates the per frame renderables. Called when <see cref="SceneNode.IsRenderable"/> changed or <see cref="SceneNode.RenderType"/> changed.
         /// </summary>
         void InvalidatePerFrameRenderables();
+        /// <summary>
+        /// Invalidate by InvalidateTypes
+        /// </summary>
+        /// <param name="type"></param>
+        void Invalidate(InvalidateTypes type);
         /// <summary>
         /// Resizes
         /// </summary>

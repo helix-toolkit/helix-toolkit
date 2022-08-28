@@ -1,5 +1,5 @@
 image:
-- Visual Studio 2019
+- Visual Studio 2022
 
 pull_requests:
   do_not_increment_build_number: true
@@ -22,7 +22,7 @@ dotnet_csproj:
   informational_version: '{version}'
   
 before_build:
-  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v5.8.0/nuget.exe
+  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - nuget restore .\Source\HelixToolkit.AppVeyor.sln
   - gitversion /l console /output buildserver /updateAssemblyInfo
   

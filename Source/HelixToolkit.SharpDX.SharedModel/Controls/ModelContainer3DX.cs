@@ -81,21 +81,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set; get;
         }
 
-        private static readonly LogWrapper NullLogger = new LogWrapper(new NullLogger());
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public LogWrapper Logger
-        {
-            get
-            {
-                return CurrentRenderHost != null ? CurrentRenderHost.Logger : NullLogger;
-            }
-        }
-
         private readonly HashSet<IViewport3DX> viewports = new HashSet<IViewport3DX>();
         private readonly HashSet<IRenderHost> attachedRenderHosts = new HashSet<IRenderHost>();
 #pragma warning disable 0067
@@ -346,6 +331,14 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var v in attachedRenderHosts)
             {
                 v.InvalidatePerFrameRenderables();
+            }
+        }
+
+        public void Invalidate(InvalidateTypes type)
+        {
+            foreach (var v in attachedRenderHosts)
+            {
+                v.Invalidate(type);
             }
         }
         /// <summary>
@@ -652,11 +645,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     foreach (var renderable in Renderables)
                     {
-                        renderable.Attach(this);
+                        renderable.Invalidated += RenderableInvalidated;
+                        renderable.Attach(EffectsManager);
                     }
                 }
             }
         }
+
+        private void RenderableInvalidated(object sender, InvalidateTypes e)
+        {
+            Invalidate(e);
+        }
+
         /// <summary>
         /// Detaches this instance.
         /// </summary>
@@ -669,8 +669,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (Interlocked.Decrement(ref d3dCounter) == 0)
                 {
                     foreach (var renderable in Renderables)
-                    {
+                    {                        
                         renderable.Detach();
+                        renderable.Invalidated -= RenderableInvalidated;
                     }
                 }
                 else if (d3dCounter < 0)
@@ -685,6 +686,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var renderable in Renderables)
             {
                 renderable.Detach();
+                renderable.Invalidated -= RenderableInvalidated;
             }
         }
         /// <summary>

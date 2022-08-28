@@ -138,7 +138,7 @@ namespace HelixToolkit.UWP
                         break;
                     }
                 }
-                //Console.WriteLine("CurrentRangeIndex: " + CurrentRangeIndex);
+
                 var start = timeRange[CurrentRangeIndex];
                 var end = timeRange[CurrentRangeIndex + 1];
                 for (var i = start; i < end; ++i)

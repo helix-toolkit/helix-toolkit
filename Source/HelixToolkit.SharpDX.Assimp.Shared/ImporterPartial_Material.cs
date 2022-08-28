@@ -10,6 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using TextureType = Assimp.TextureType;
 
 #if !NETFX_CORE
@@ -340,7 +341,7 @@ namespace HelixToolkit.UWP
                                     core = new NormalMaterialCore();
                                     break;
                                 default:
-                                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Shading Mode is not supported:{material.ShadingMode}");
+                                    logger.LogWarning("Shading Mode is not supported: {0}", material.ShadingMode);
                                     core = new DiffuseMaterialCore() { DiffuseColor = Color.Red, EnableUnLit = true };
                                     break;
                             }
@@ -357,10 +358,10 @@ namespace HelixToolkit.UWP
             {               
                 if (texture.HasCompressedData)
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Information, $"Loading Embedded Compressed Texture. Format: {texture.CompressedFormatHint}");
+                    logger.LogInformation("Loading Embedded Compressed Texture. Format: {0}", texture.CompressedFormatHint);
                     if (!SupportedTextureFormatDict.Contains(texture.CompressedFormatHint.ToLowerInvariant()))
                     {
-                        Log(HelixToolkit.Logger.LogLevel.Information, $"Compressed Texture Format not supported. Format: {texture.CompressedFormatHint}");
+                        logger.LogInformation("Compressed Texture Format not supported. Format: {0}", texture.CompressedFormatHint);
                         return null;
                     }
                     var data = texture.CompressedData.ToArray();
@@ -369,7 +370,7 @@ namespace HelixToolkit.UWP
                 }
                 else if (texture.HasNonCompressedData)
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Information, $"Loading Embedded NonCompressed Texture");
+                    logger.LogInformation("Loading Embedded NonCompressed Texture");
                     var rawData = texture.NonCompressedData.Select(x => new Color4(x.R / 255f, x.G / 255f, x.B / 255f, x.A / 255f)).ToArray();
                     return new TextureModel(rawData, texture.Width, texture.Height);
                 }
@@ -426,21 +427,17 @@ namespace HelixToolkit.UWP
                         var ext = Path.GetExtension(texturePath);
                         if (string.IsNullOrEmpty(ext) || !SupportedTextureFormats.Contains(ext.TrimStart('.').ToLowerInvariant()))
                         {
-                            Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Failed. Texture Format not supported = {ext}.");
+                            logger.LogWarning("Load Texture Failed. Texture Format not supported = {0}.", ext);
 
                             return null;
                         }
-                        actualPath = configuration?.TexturePathResolver?.Resolve(path, texturePath, Logger);
-                        if (string.IsNullOrEmpty(actualPath))
-                        {
-                            return null;
-                        }
-                        return new TextureModel(actualPath);
+                        actualPath = configuration?.TexturePathResolver?.Resolve(path, texturePath);
+                        return string.IsNullOrEmpty(actualPath) ? null : new TextureModel(actualPath);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log(HelixToolkit.Logger.LogLevel.Warning, $"Load Texture Exception. Texture Path = {texturePath}. Exception: {ex.Message}");
+                    logger.LogWarning("Load Texture Exception. Texture Path = {0}. Exception: {1}", texturePath, ex.Message);
                 }
                 return null;
             }

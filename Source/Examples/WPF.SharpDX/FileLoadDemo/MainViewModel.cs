@@ -24,6 +24,9 @@ namespace FileLoadDemo
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using System.Linq;
+    using SharpDX;
+    using Point3D = System.Windows.Media.Media3D.Point3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -171,7 +174,18 @@ namespace FileLoadDemo
             }
             get => speed;
         }
-
+        private Point3D modelCentroid = default;
+        public Point3D ModelCentroid
+        {
+            private set =>SetValue(ref modelCentroid, value);
+            get => modelCentroid;
+        }
+        private BoundingBox modelBound = new BoundingBox();
+        public BoundingBox ModelBound
+        {
+            private set => SetValue(ref modelBound, value);
+            get => modelBound;
+        }
         public TextureModel EnvironmentMap { get; }
 
         private SynchronizationContext context = SynchronizationContext.Current;
@@ -180,7 +194,7 @@ namespace FileLoadDemo
         private List<BoneSkinMeshNode> boneSkinNodes = new List<BoneSkinMeshNode>();
         private List<BoneSkinMeshNode> skeletonNodes = new List<BoneSkinMeshNode>();
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
-
+        
         private MainWindow mainWindow = null;
 
         public MainViewModel(MainWindow window)
@@ -256,12 +270,25 @@ namespace FileLoadDemo
                 return;
             }
             StopAnimation();
-
+            var syncContext = SynchronizationContext.Current;
             IsLoading = true;
             Task.Run(() =>
             {
                 var loader = new Importer();
-                return loader.Load(path);
+                var scene = loader.Load(path);
+                scene.Root.Attach(EffectsManager); // Pre attach scene graph
+                scene.Root.UpdateAllTransformMatrix();
+                if (scene.Root.TryGetBound(out var bound))
+                {
+                    /// Must use UI thread to set value back.
+                    syncContext.Post((o) => { ModelBound = bound; }, null);
+                }
+                if (scene.Root.TryGetCentroid(out var centroid))
+                {
+                    /// Must use UI thread to set value back.
+                    syncContext.Post((o) => { ModelCentroid = centroid.ToPoint3D(); }, null);
+                }
+                return scene;
             }).ContinueWith((result) =>
             {
                 IsLoading = false;
@@ -269,7 +296,13 @@ namespace FileLoadDemo
                 {
                     scene = result.Result;
                     Animations.Clear();
-                    GroupModel.Clear();
+                    var oldNode = GroupModel.SceneNode.Items.ToArray();
+                    GroupModel.Clear(false);
+                    Task.Run(() =>
+                    { 
+                        foreach (var node in oldNode) 
+                        { node.Dispose(); }
+                    });
                     if (scene != null)
                     {
                         if (scene.Root != null)
@@ -303,6 +336,7 @@ namespace FileLoadDemo
                         {
                             n.Tag = new AttachedNodeViewModel(n);
                         }
+                        FocusCameraToScene();
                     }
                 }
                 else if (result.IsFaulted && result.Exception != null)
@@ -327,6 +361,19 @@ namespace FileLoadDemo
             if (animationUpdater != null)
             {
                 animationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+            }
+        }
+
+        private void FocusCameraToScene()
+        {
+            var maxWidth = Math.Max(Math.Max(modelBound.Width, modelBound.Height), modelBound.Depth);
+            var pos = modelBound.Center + new Vector3(0, 0, maxWidth);
+            Camera.Position = pos.ToPoint3D();
+            Camera.LookDirection = (modelBound.Center - pos).ToVector3D();
+            Camera.UpDirection = Vector3.UnitY.ToVector3D();
+            if (Camera is OrthographicCamera orthCam)
+            {
+                orthCam.Width = maxWidth;
             }
         }
 
