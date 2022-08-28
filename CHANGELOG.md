@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
    ```
 ### Fixed
 1. Fix intersecting hit test in CrossSectionMeshGeometryModel3D. (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix depth peeling not working after Viewport resizing.(WPF.SharpDX/UWP/Core/WinUI)
 
 ## [2.21.1] - 2022-06-16
 
