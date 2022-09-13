@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif          
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisXColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisYColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// <see cref="AxisZColor"/>
