@@ -204,11 +204,5 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 this.MouseDownPoint,
                 this.rotationPoint3D);
         }
-
-        protected override void Completed(Vector2 e)
-        {
-            base.Completed(e);
-            invertUpDir = false;
-        }
     }
 }

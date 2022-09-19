@@ -91,7 +91,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.Completed(e);
             this.Viewport.HideTargetAdorner();
-            invertUpDir = false;
         }
 
         /// <summary>
