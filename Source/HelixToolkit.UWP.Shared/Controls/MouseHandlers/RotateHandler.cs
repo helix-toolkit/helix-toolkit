@@ -85,16 +85,6 @@ namespace HelixToolkit.UWP
                 return this.Controller.CameraRotationMode;
             }
         }
-
-        /// <summary>
-        /// Occurs when the manipulation is completed.
-        /// </summary>
-        /// <param name="e"></param>
-        public override void Completed(Point e)
-        {
-            base.Completed(e);
-            invertUpDir = false;
-        }
        
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
