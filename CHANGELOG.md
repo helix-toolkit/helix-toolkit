@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+
+### Improvement
+1. Automatic invert up direction for rotation mode = turntable (WPF.SharpDX/UWP/Core/WinUI)
+
+### Fixed
+1. Fix models are not rendered by adding them directly into viewport3DX.Items. (WPF.SharpDX)
+1. Correct y axis color typo (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix potential null ref exception in HelixToolkit.WinUI. (WinUI)
+1. Fix null reference exception in GeometryRenderCore.OnAttachBuffers(). (WPF.SharpDX/UWP/Core/WinUI)
+
 ## [2.22.0]
 
 ### Improvement
