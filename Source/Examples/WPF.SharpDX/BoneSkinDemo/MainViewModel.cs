@@ -88,6 +88,7 @@ namespace BoneSkinDemo
                     reset = true;
                     var curr = scene.Animations.Where(x => x.Name == value).FirstOrDefault();
                     animationUpdater = new NodeAnimationUpdater(curr);
+                    animationUpdater.RepeatMode = selectedRepeatMode;
                 }
             }
             get { return selectedAnimation; }
@@ -101,6 +102,7 @@ namespace BoneSkinDemo
                 if(SetValue(ref selectedRepeatMode, value))
                 {
                     reset = true;
+                    if (animationUpdater != null) animationUpdater.RepeatMode = value;
                 }
             }
             get { return selectedRepeatMode; }

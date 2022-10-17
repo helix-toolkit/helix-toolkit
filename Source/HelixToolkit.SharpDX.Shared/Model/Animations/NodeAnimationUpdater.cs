@@ -79,6 +79,7 @@ namespace HelixToolkit.UWP
                     {
                         case AnimationRepeatMode.PlayOnce:
                             UpdateBoneSkinMesh();
+                            isStartFrame = false;
                             SetToStart();
                             return;
                         case AnimationRepeatMode.PlayOnceHold:
