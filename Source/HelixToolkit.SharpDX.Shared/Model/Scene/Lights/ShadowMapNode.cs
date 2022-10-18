@@ -155,12 +155,15 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if(lightCamera != null)
+                    if (lightCamera != null)
                     {
                         lightCamera.PropertyChanged -= LightCamera_PropertyChanged;
                     }
                     SetAffectsRender(ref lightCamera, value);
-                    lightCamera.PropertyChanged += LightCamera_PropertyChanged;
+                    if (lightCamera != null)
+                    {
+                        lightCamera.PropertyChanged += LightCamera_PropertyChanged;
+                    }
                 }
                 get => lightCamera;
             }
