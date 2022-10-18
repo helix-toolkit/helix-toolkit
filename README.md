@@ -82,7 +82,9 @@ graph TD
     dx11 --> hxCore[HelixToolkit.SharpDX.Core]
     hxCore --> hxWinUI[HelixToolkit.SharpDX.Core.Wpf]
     hxCore --> hxSharpDXCoreWpf[HelixToolkit.WinUI]
-    dx11 --> hxAssimp[HelixToolkit.SharpDX.Assimp]
+    hxSharpDX --> hxAssimp[HelixToolkit.SharpDX.Assimp]
+    hxUWP --> hxAssimp
+    hxCore --> hxAssimp
 ```
 
 ## Bug Report
