@@ -69,20 +69,20 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
-## HelixToolkit Library Relationship
-- HelixToolkit
-  - .NET WPF
-    - HelixToolkit.WPF
-  - SharpDX DX11 Engine
-    - .NET WPF
-      - HelixToolkit.WPF.SharpDX
-    - UWP
-      - Helixtoolkit.UWP
-    - .NET CORE
-      - HelixToolkit.SharpDX.Core
-        - HelixToolkit.SharpDX.Core.Wpf
-        - HelixToolkit.WinUI
-    - HelixToolkit.Assimp
+## HelixToolkit Library Structure
+
+```mermaid
+graph TD
+    hx[HelixToolkit] --> wpfdx9[WPF 3D]
+    hx --> dx11[DirectX11 Engine]
+    wpfdx9 --> hxWpf[HelixToolkit.Wpf]
+    wpfdx9 --> hxCoreWpf[HelixToolkit.Core.Wpf]
+    dx11 --> hxSharpDX[HelixToolkit.Wpf.SharpDX]
+    dx11 --> hxUWP[HelixToolkit.UWP]
+    dx11 --> hxCore[HelixToolkit.SharpDX.Core]
+    hxCore --> hxWinUI[HelixToolkit.SharpDX.Core.Wpf]
+    hxCore --> hxSharpDXCoreWpf[HelixToolkit.WinUI]
+```
 
 ## Bug Report
 Please use the following template to report bugs.
