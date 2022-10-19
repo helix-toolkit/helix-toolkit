@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 1. Correct y axis color typo (WPF.SharpDX/UWP/Core/WinUI)
 1. Fix potential null ref exception in HelixToolkit.WinUI. (WinUI)
 1. Fix null reference exception in GeometryRenderCore.OnAttachBuffers(). (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix shadow map light camera property update does not trigger re-rendering. (WPF.SharpDX/UWP/Core/WinUI)
 
 ## [2.22.0]
 
