@@ -124,7 +124,7 @@ namespace HelixToolkit.UWP
                             target.Z);
             }
 
-#if CORE
+
             private Vector3 targetPosition;
             private Vector3 targetLookDirection;
             private Vector3 targetUpDirection;
@@ -212,7 +212,6 @@ namespace HelixToolkit.UWP
             {
                 aniTime = 0;
             }
-#endif
         }
 
         public abstract class ProjectionCameraCore : CameraCore

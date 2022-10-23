@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP
     using Windows.UI.Popups;
     using Windows.UI.Xaml;
 
-    public class SwapChainRenderHost : SwapChainPanel
+    public class HelixToolkitRenderPanel : SwapChainPanel
     {       
         /// <summary>
         /// Fired whenever an exception occurred on this object.
@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP
             get => enableDpiScale;
         }
 
-        public SwapChainRenderHost(bool enableDeferredRendering)
+        public HelixToolkitRenderPanel(bool enableDeferredRendering)
         {   
             if (enableDeferredRendering)
             {
