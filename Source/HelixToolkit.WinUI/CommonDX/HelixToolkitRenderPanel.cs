@@ -20,7 +20,7 @@ namespace HelixToolkit.WinUI
     using HelixToolkit.SharpDX.Core;
 
     // https://github.com/RolandKoenig/SeeingSharp2/blob/dae33fd85f38a781a348155aa1ee07ce1f170152/SeeingSharp.WinUI/Multimedia/Views/SeeingSharpPanelPainter.cs
-    public class SwapChainRenderHost : SwapChainPanel
+    public class HelixToolkitRenderPanel : SwapChainPanel
     {       
         /// <summary>
         /// Fired whenever an exception occurred on this object.
@@ -63,7 +63,7 @@ namespace HelixToolkit.WinUI
             get => enableDpiScale;
         }
 
-        public SwapChainRenderHost(bool enableDeferredRendering)
+        public HelixToolkitRenderPanel(bool enableDeferredRendering)
         {
             if (enableDeferredRendering)
             {

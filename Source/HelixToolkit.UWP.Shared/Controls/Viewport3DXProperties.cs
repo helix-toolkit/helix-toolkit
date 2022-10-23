@@ -2517,7 +2517,7 @@ namespace HelixToolkit.UWP
             DependencyProperty.Register("EnableDpiScale", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e)=> 
             {
                 var viewport = (d as Viewport3DX);
-                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is SwapChainRenderHost host)
+                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is HelixToolkitRenderPanel host)
                 {
                     host.EnableDpiScale = (bool)e.NewValue;
                 }

@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP
     /// Renders the contained 3-D content within the 2-D layout bounds of the Viewport3DX element.
     /// </summary>
     [ContentProperty(Name = "Items")]
-    [TemplatePart(Name = ViewportPartNames.PART_RenderTarget, Type =typeof(SwapChainRenderHost))]
+    [TemplatePart(Name = ViewportPartNames.PART_RenderTarget, Type =typeof(HelixToolkitRenderPanel))]
     [TemplatePart(Name = ViewportPartNames.PART_CoordinateGroup, Type = typeof(ItemsControl))]
     [TemplatePart(Name = ViewportPartNames.PART_HostPresenter, Type =typeof(ContentPresenter))]
     [TemplatePart(Name = ViewportPartNames.PART_ItemsContainer, Type = typeof(ItemsControl))]
@@ -258,7 +258,7 @@ namespace HelixToolkit.UWP
         private void Viewport3DX_DpiChanged(DisplayInformation sender, object args)
         {
             var dpi = sender.RawPixelsPerViewPixel;
-            if (hostPresenter != null && hostPresenter.Content is SwapChainRenderHost host)
+            if (hostPresenter != null && hostPresenter.Content is HelixToolkitRenderPanel host)
             {
                 host.DpiScale = (float)dpi;
             }
@@ -369,7 +369,7 @@ namespace HelixToolkit.UWP
             hostPresenter = GetTemplateChild(ViewportPartNames.PART_HostPresenter) as ContentPresenter;
             if (hostPresenter != null)
             {
-                var host = new SwapChainRenderHost(EnableDeferredRendering);
+                var host = new HelixToolkitRenderPanel(EnableDeferredRendering);
                 hostPresenter.Content = host;
 #if WINDOWS_UWP
                 var view = DisplayInformation.GetForCurrentView();
@@ -379,7 +379,7 @@ namespace HelixToolkit.UWP
 #endif
                 host.DpiScale = (float)dpi;
                 host.EnableDpiScale = EnableDpiScale;
-                renderHostInternal = (hostPresenter.Content as SwapChainRenderHost).RenderHost;
+                renderHostInternal = (hostPresenter.Content as HelixToolkitRenderPanel).RenderHost;
                 if (renderHostInternal != null)
                 {
                     renderHostInternal.RenderConfiguration.RenderD2D = false;
