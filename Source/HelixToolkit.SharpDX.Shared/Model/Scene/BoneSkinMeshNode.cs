@@ -239,6 +239,16 @@ namespace HelixToolkit.UWP
                 BoneMatrices = BoneMatrices.Select((m, i) => Bones[i].Node.TotalModelMatrixInternal).ToArray();
             }
 
+            public void InvalidateBoneMatrices()
+            {
+                (RenderCore as BoneSkinRenderCore).InvalidateBoneMatrices();
+            }
+
+            public void InvalidateMorphTargetWeights()
+            {
+                (RenderCore as BoneSkinRenderCore).InvalidateMorphTargetWeights();
+            }
+
             public bool InitializeMorphTargets(MorphTargetVertex[] mtv, int pitch)
                 => (RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, pitch);
 
