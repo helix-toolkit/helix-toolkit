@@ -244,6 +244,11 @@ namespace HelixToolkit.UWP
                 (RenderCore as BoneSkinRenderCore).InvalidateBoneMatrices();
             }
 
+            public void InvalidateMorphTargetWeights()
+            {
+                (RenderCore as BoneSkinRenderCore).InvalidateMorphTargetWeights();
+            }
+
             public bool InitializeMorphTargets(MorphTargetVertex[] mtv, int pitch)
                 => (RenderCore as BoneSkinRenderCore).InitializeMorphTargets(mtv, pitch);
 
