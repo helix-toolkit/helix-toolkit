@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 get => dpiScale;
             }
 
-            protected event EventHandler<double> DpiScaleChanged;
+            public event EventHandler<double> DpiScaleChanged;
 
             public WinformHostExtend()
             {

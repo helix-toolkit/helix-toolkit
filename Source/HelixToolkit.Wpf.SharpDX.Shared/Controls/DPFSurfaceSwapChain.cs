@@ -12,6 +12,10 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 using global::SharpDX;
+using global::SharpDX.Direct3D9;
+using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Diagnostics.CodeAnalysis;  
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -29,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Controls;
 #if !COREWPF
-    using Render;
+    using Render;    
     using Utilities;
 #endif
 
@@ -37,9 +41,9 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     /// <seealso cref="System.Windows.Controls.Image" />
-    public class DPFSurfaceSwapChain : WinformHostExtend, IRenderCanvas, IDisposable
+    public class DPFSurfaceSwapChain : Grid, IRenderCanvas, IDisposable
     {
-        private readonly IRenderHost renderHost;
+        private IRenderHost renderHost;
         /// <summary>
         /// Gets or sets the render host.
         /// </summary>
@@ -55,8 +59,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         private RenderControl surfaceD3D;
         private Window parentWindow;
-        private readonly bool belongsToParentWindow;
-
+        private readonly WinformHostExtend winformHost = new WinformHostExtend();
+        private D3DImageExt image3D;
+        private bool belongsToParentWindow;
+        private readonly Image image = new Image
+        {
+            Width = 1,
+            Height = 1
+        };
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
@@ -77,31 +87,23 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get => enableDpiScale;
         }
-        /// <summary>
-        /// 
-        /// </summary>
+
+        public double DpiScale { set => winformHost.DpiScale = value; get => winformHost.DpiScale; }
+
         public DPFSurfaceSwapChain(bool deferredRendering = false, bool attachedToWindow = true)
         {
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
-            DpiScaleChanged += DPFSurfaceSwapChain_DpiScaleChanged;
-            surfaceD3D = new RenderControl(this);
-            Child = surfaceD3D;
-            if (deferredRendering)
-            {
-                renderHost = new SwapChainRenderHost(surfaceD3D.Handle,
-                    (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
-            }
-            else
-            {
-                renderHost = new SwapChainRenderHost(surfaceD3D.Handle);
-            }
-            RenderHost.DpiScale = EnableDpiScale ? (float)DpiScale : 1;
-            RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
-            RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
-            RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
+            SetupVisual(attachedToWindow);
+            SetupRenderHost(deferredRendering ? new SwapChainRenderHost(surfaceD3D.Handle,
+                    (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); }) :
+                    new SwapChainRenderHost(surfaceD3D.Handle));
+            SetupImage();
+        }
 
-            belongsToParentWindow = attachedToWindow;
+        public DPFSurfaceSwapChain(Func<IntPtr, IRenderHost> createRenderHost, bool attachedToWindow = true)
+        {
+            SetupVisual(attachedToWindow);
+            SetupRenderHost(createRenderHost(surfaceD3D.Handle)); 
+            SetupImage();
         }
 
         private void DPFSurfaceSwapChain_DpiScaleChanged(object sender, double e)
@@ -112,20 +114,42 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public DPFSurfaceSwapChain(Func<IntPtr, IRenderHost> createRenderHost, bool attachedToWindow = true)
+        private void SetupVisual(bool attachedToWindow)
         {
+            Children.Add(image);
+            Children.Add(winformHost);
+            winformHost.DpiScaleChanged += DPFSurfaceSwapChain_DpiScaleChanged;
+            surfaceD3D = new RenderControl(this);
+            winformHost.Child = surfaceD3D;
+            HorizontalAlignment = HorizontalAlignment.Stretch;
+            VerticalAlignment = VerticalAlignment.Stretch;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
-            surfaceD3D = new RenderControl();
-            Child = surfaceD3D;
+            belongsToParentWindow = attachedToWindow;
+        }
 
-            renderHost = createRenderHost(surfaceD3D.Handle);
+        private void SetupRenderHost(IRenderHost host)
+        {
+            renderHost = host;
             RenderHost.DpiScale = EnableDpiScale ? (float)DpiScale : 1;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
+            RenderHost.EffectsManagerChanged += (s, e) => { SetupImage(); };
+        }
 
-            belongsToParentWindow = attachedToWindow;
+        private void SetupImage()
+        {
+            if (image3D == null || (RenderHost.EffectsManager != null && RenderHost.EffectsManager.AdapterIndex != image3D.AdapterIndex))
+            {
+                image.Source = null;
+                image3D?.Dispose();
+                if (RenderHost.EffectsManager != null)
+                {
+                    image3D = new D3DImageExt(RenderHost.EffectsManager.AdapterIndex);
+                    image.Source = image3D;
+                }
+            }
         }
 
         /// <summary>
@@ -212,7 +236,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void CompositionTarget_Rendering(object sender, RenderingEventArgs e)
         {
-            RenderHost.UpdateAndRender();
+            if (RenderHost.UpdateAndRender())
+            {
+                image3D?.InvalidateD3DImage();
+            }
         }
 
         /// <summary>
@@ -300,17 +327,18 @@ namespace HelixToolkit.Wpf.SharpDX
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
+        protected void Dispose(bool disposing)
+        {            
+            winformHost?.Dispose();
+            image.Source = null;
+            image3D?.Dispose();
+            compositionTarget?.Dispose();
             if (!disposedValue)
             {
                 if (disposing)
                 {
                     if (!belongsToParentWindow)
-                        EndD3D();
-
-                    compositionTarget.Dispose();
+                        EndD3D();              
                     // TODO: dispose managed state (managed objects).
                 }
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
@@ -318,6 +346,136 @@ namespace HelixToolkit.Wpf.SharpDX
                 disposedValue = true;
             }
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
         #endregion
+
+        /// <summary>
+        /// Use a fake D3DImage to bump up frame rate.
+        /// </summary>
+        private sealed class D3DImageExt : D3DImage, IDisposable
+        {
+            private Direct3DEx context;
+            private DeviceEx device;
+
+            private readonly int adapterIndex;
+            private Texture renderTarget;
+            private Surface surface;
+
+            public int AdapterIndex => adapterIndex;
+
+            public D3DImageExt(int adapterIndex = 0)
+            {
+                this.adapterIndex = adapterIndex;
+                this.StartD3D();
+
+            }
+
+            public void InvalidateD3DImage()
+            {
+                if (this.renderTarget != null)
+                {
+                    base.Lock();
+                    base.AddDirtyRect(new Int32Rect(0, 0, 1, 1));
+                    base.Unlock();
+                }
+            }
+
+            private void StartD3D()
+            {
+                context = new Direct3DEx();
+                // Ref: https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/wpf-and-direct3d9-interoperation
+                var presentparams = new PresentParameters
+                {
+                    Windowed = true,
+                    SwapEffect = SwapEffect.Discard,
+                    PresentationInterval = PresentInterval.Immediate,
+                    BackBufferHeight = 1,
+                    BackBufferWidth = 1,
+                    BackBufferFormat = Format.Unknown
+                };
+
+                device = new DeviceEx(context, this.adapterIndex, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing, presentparams);
+                try
+                {
+                    this.renderTarget = new Texture(device, 1, 1, 1, Usage.RenderTarget, Format.A8R8G8B8, Pool.Default);
+                    surface = this.renderTarget.GetSurfaceLevel(0);
+                    base.Lock();
+                    // "enableSoftwareFallback = true" makes Remote Desktop possible.
+                    // See: http://msdn.microsoft.com/en-us/library/hh140978%28v=vs.110%29.aspx
+                    base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, surface.NativePointer, true);
+                    base.AddDirtyRect(new Int32Rect(0, 0, 1, 1));
+                    base.Unlock();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            private void EndD3D(bool disposeDevices)
+            {
+                base.Lock();
+                base.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
+                base.Unlock();
+                Disposer.RemoveAndDispose(ref surface);
+                Disposer.RemoveAndDispose(ref renderTarget);
+                if (disposeDevices)
+                {
+                    Disposer.RemoveAndDispose(ref device);
+                    Disposer.RemoveAndDispose(ref context);
+                }
+            }
+
+            public bool IsDeviceStateOk()
+            {
+                if (device != null)
+                {
+                    var state = device.CheckDeviceState(IntPtr.Zero);
+                    return state == DeviceState.Ok;
+                }
+                return false;
+            }
+
+            #region IDisposable Support
+            private bool disposedValue = false; // To detect redundant calls
+
+            [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification = "False positive.")]
+            void Dispose(bool disposing)
+            {
+                if (!disposedValue)
+                {
+                    if (disposing)
+                    {
+                        EndD3D(true);
+                    }
+
+                    // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                    // TODO: set large fields to null.
+
+                    disposedValue = true;
+                }
+            }
+
+            // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+            // ~DX11ImageSource() {
+            //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            //   Dispose(false);
+            // }
+
+            // This code added to correctly implement the disposable pattern.
+            public void Dispose()
+            {
+                // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+                Dispose(true);
+                // TODO: uncomment the following line if the finalizer is overridden above.
+                // GC.SuppressFinalize(this);
+            }
+            #endregion
+
+        }
     }
 }
