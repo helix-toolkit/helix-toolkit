@@ -396,7 +396,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Updates the and render.
         /// </summary>
-        void UpdateAndRender();
+        bool UpdateAndRender();
         /// <summary>
         /// Invalidates the render.
         /// </summary>
@@ -464,6 +464,10 @@ namespace HelixToolkit.UWP
         /// Occurs when [scene graph updated].
         /// </summary>
         event EventHandler SceneGraphUpdated;
+        /// <summary>
+        /// Occurs when effects manager is changed.
+        /// </summary>
+        event EventHandler<IEffectsManager> EffectsManagerChanged;
         /// <summary>
         /// Clears the render target.
         /// </summary>
