@@ -134,7 +134,7 @@ namespace HelixToolkit.UWP
                 u = Vector3.Cross(new Vector3(1, 0, 0), n);
             }
 
-            return u;
+            return u.Normalized();
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsUndefined(this Vector3 v)
         {
-            return float.IsNaN(v.X) && float.IsNaN(v.Y) && float.IsNaN(v.Z);
+            return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z);
         }
     }
 
