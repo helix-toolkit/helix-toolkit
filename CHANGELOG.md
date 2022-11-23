@@ -3,8 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## Next Release
 
+### Added
+1. Add feature of enabling rotation/translation/scale control in every axis for TransformManipulator3D (WPF.SharpDX/UWP/WinUI)
+
 ### Improvement
 1. Automatic invert up direction for rotation mode = turntable (WPF.SharpDX/UWP/Core/WinUI)
+1. Improve swapchain framerate under SharpDX.WPF (WPF.SharpDX)
+1. Adds function to invalidate bone matrices/morph target weights manually (WPF.SharpDX/UWP/Core/WinUI)
 
 ### Fixed
 1. Fix models are not rendered by adding them directly into viewport3DX.Items. (WPF.SharpDX)
