@@ -3771,7 +3771,7 @@ namespace HelixToolkit.Wpf
 
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
 
-            if (frontCap || backCap && path.Count > 1)
+            if (frontCap || backCap)
             {
                 var normals = new Vector3D[section.Count];
                 var fanTextures = new Point[section.Count];
