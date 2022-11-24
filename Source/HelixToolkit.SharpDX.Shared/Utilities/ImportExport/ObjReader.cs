@@ -500,8 +500,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         private static IList<double> Split(string input)
         {
-            input = input.Trim();
-            var fields = input.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var fields = input.SplitOnWhitespace();
             var result = new double[fields.Length];
             for (var i = 0; i < fields.Length; i++)
             {
@@ -622,7 +621,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            var fields = values.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var fields = values.SplitOnWhitespace();
             var faceIndices = new List<int>();
             foreach (var field in fields)
             {

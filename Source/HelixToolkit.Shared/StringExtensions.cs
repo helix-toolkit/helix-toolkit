@@ -7,17 +7,33 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkit
+#if SHARPDX
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
+#endif
+#else
+namespace HelixToolkit.Wpf
+#endif
 {
     using System.Collections;
     using System.Text;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Extension methods for strings.
     /// </summary>
     public static class StringExtensions
     {
-        private static readonly char[] whiteSpace = { ' ' };
+        /// <summary>
+        /// A regular expression containing "a one or more whitespaces" pattern.
+        /// </summary>
+        private static readonly Regex oneOrMoreWhitespaces = new Regex(@"\s+");
 
         /// <summary>
         /// Splits the string on whitespace.
@@ -26,7 +42,7 @@ namespace HelixToolkit
         /// <returns>Array of strings.</returns>
         public static string[] SplitOnWhitespace(this string input)
         {
-            return input.Split(whiteSpace, System.StringSplitOptions.RemoveEmptyEntries);
+            return oneOrMoreWhitespaces.Split(input.Trim());
         }
 
         /// <summary>
