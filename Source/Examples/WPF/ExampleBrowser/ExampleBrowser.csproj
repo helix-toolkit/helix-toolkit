@@ -1060,10 +1060,6 @@
       <Project>{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}</Project>
       <Name>HelixToolkit.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\HelixToolkit\HelixToolkit.csproj">
-      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
-      <Name>HelixToolkit</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NAudio">

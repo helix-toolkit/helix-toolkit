@@ -11,17 +11,13 @@ namespace HelixToolkit
 {
     using System.Collections;
     using System.Text;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Extension methods for strings.
     /// </summary>
     public static class StringExtensions
     {
-        /// <summary>
-        /// A regular expression containing "a one or more whitespaces" pattern.
-        /// </summary>
-        private static Regex oneOrMoreWhitespaces = new Regex(@"\s+");
+        private static readonly char[] whiteSpace = { ' ' };
 
         /// <summary>
         /// Splits the string on whitespace.
@@ -30,7 +26,7 @@ namespace HelixToolkit
         /// <returns>Array of strings.</returns>
         public static string[] SplitOnWhitespace(this string input)
         {
-            return oneOrMoreWhitespaces.Split(input.Trim());
+            return input.Split(whiteSpace, System.StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>

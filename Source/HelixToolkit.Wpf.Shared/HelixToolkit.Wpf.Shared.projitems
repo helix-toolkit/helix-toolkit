@@ -94,6 +94,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScreenSpace\PointGeometryBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScreenSpace\ScreenGeometryBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StereoHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\TextCreator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Transform3DHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Viewport3DHelper.cs" />
