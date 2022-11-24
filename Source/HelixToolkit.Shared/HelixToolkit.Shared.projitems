@@ -21,5 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helper\ContourHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\DoubleKeyDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\MathHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StringExtensions.cs" />
   </ItemGroup>
 </Project>

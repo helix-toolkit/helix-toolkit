@@ -7,7 +7,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace HelixToolkit
+#if SHARPDX
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
+#endif
+#else
+namespace HelixToolkit.Wpf
+#endif
 {
     using System.Collections;
     using System.Text;
@@ -21,7 +33,7 @@ namespace HelixToolkit
         /// <summary>
         /// A regular expression containing "a one or more whitespaces" pattern.
         /// </summary>
-        private static Regex oneOrMoreWhitespaces = new Regex(@"\s+");
+        private static readonly Regex oneOrMoreWhitespaces = new Regex(@"\s+");
 
         /// <summary>
         /// Splits the string on whitespace.
