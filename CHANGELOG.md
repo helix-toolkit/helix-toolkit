@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 1. Add feature of enabling rotation/translation/scale control in every axis for TransformManipulator3D (WPF.SharpDX/UWP/WinUI)
+1. Decouple `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf` packages from `HelixToolkit` core library. `HelixToolkit` package will no longer be a dependency for both `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf`. (WPF)
 
 ### Improvement
 1. Automatic invert up direction for rotation mode = turntable (WPF.SharpDX/UWP/Core/WinUI)
