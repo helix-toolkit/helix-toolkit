@@ -71,12 +71,18 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 ## HelixToolkit Library Structure
 
+### WPF Internal 3D Engine (DirectX9)
+
 ```mermaid
 graph TD
-    hx[HelixToolkit] --> wpfdx9[WPF 3D]
-    hx --> dx11[DirectX11 Engine]
-    wpfdx9 --> hxWpf[HelixToolkit.Wpf]
-    wpfdx9 --> hxCoreWpf[HelixToolkit.Core.Wpf]
+    wpf[WPF Framework] --> hxWpf[HelixToolkit.Wpf]
+    wpf --> hxCoreWpf[HelixToolkit.Core.Wpf]
+```
+### HelixToolkit DirectX11 Engine
+
+```mermaid
+graph TD
+    hx[HelixToolkit] --> dx11[DirectX11 Engine]    
     dx11 --> hxSharpDX[HelixToolkit.Wpf.SharpDX]
     dx11 --> hxUWP[HelixToolkit.UWP]
     dx11 --> hxCore[HelixToolkit.SharpDX.Core]
