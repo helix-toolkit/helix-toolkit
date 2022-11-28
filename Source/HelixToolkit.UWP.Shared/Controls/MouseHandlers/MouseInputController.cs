@@ -454,13 +454,23 @@ namespace HelixToolkit.UWP
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsCtrlKeyPressed()
         {
-            var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control);
+            var t = CoreWindow.GetForCurrentThread();
+            if (t == null)
+            {
+                return false;
+            }
+            var ctrlState = t.GetKeyState(VirtualKey.Control);
             return (ctrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsShiftKeyPressed()
         {
-            var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Shift);
+            var t = CoreWindow.GetForCurrentThread();
+            if (t == null)
+            {
+                return false;
+            }
+            var ctrlState = t.GetKeyState(VirtualKey.Shift);
             return (ctrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
         }
         #endregion

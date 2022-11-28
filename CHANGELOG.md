@@ -1,6 +1,24 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Next Release
+
+### Added
+1. Add feature of enabling rotation/translation/scale control in every axis for TransformManipulator3D (WPF.SharpDX/UWP/WinUI)
+1. Decouple `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf` packages from `HelixToolkit` core library. `HelixToolkit` package will no longer be a dependency for both `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf`. (WPF)
+
+### Improvement
+1. Automatic invert up direction for rotation mode = turntable (WPF.SharpDX/UWP/Core/WinUI)
+1. Improve swapchain framerate under SharpDX.WPF (WPF.SharpDX)
+1. Adds function to invalidate bone matrices/morph target weights manually (WPF.SharpDX/UWP/Core/WinUI)
+
+### Fixed
+1. Fix models are not rendered by adding them directly into viewport3DX.Items. (WPF.SharpDX)
+1. Correct y axis color typo (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix potential null ref exception in HelixToolkit.WinUI. (WinUI)
+1. Fix null reference exception in GeometryRenderCore.OnAttachBuffers(). (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix shadow map light camera property update does not trigger re-rendering. (WPF.SharpDX/UWP/Core/WinUI)
+
 ## [2.22.0]
 
 ### Improvement

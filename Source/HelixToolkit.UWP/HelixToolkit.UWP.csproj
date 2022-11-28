@@ -137,7 +137,7 @@
   <ItemGroup>
     <Compile Include="CommonDX\CompositionTargetEx.cs" />
     <Compile Include="CommonDX\SwapChainCompositionRenderHost.cs" />
-    <Compile Include="CommonDX\SwapChainRenderHost.cs" />
+    <Compile Include="CommonDX\HelixToolkitRenderPanel.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>

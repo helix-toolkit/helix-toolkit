@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
         {
             public event EventHandler BoneChanged;
             private static readonly Matrix[] empty = new Matrix[0];
-            private bool matricsChanged = true;
+            private bool matricesChanged = true;
             private Matrix[] boneMatrices = empty;
             public Matrix[] BoneMatrices
             {
@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP
                 {
                     if (SetAffectsRender(ref boneMatrices, value))
                     {
-                        matricsChanged = true;
+                        matricesChanged = true;
                         if (value == null)
                         {
                             boneMatrices = empty;
@@ -60,10 +60,10 @@ namespace HelixToolkit.UWP
 
             protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
             {
-                if (matricsChanged && BoneSkinSB != null)
+                if (matricesChanged && BoneSkinSB != null)
                 {
                     BoneSkinSB.UploadDataToBuffer(deviceContext, boneMatrices, boneMatrices.Length);
-                    matricsChanged = false;
+                    matricesChanged = false;
                 }
             }
 
@@ -84,6 +84,11 @@ namespace HelixToolkit.UWP
                 {
                     deviceContext.SetShaderResource(VertexShader.Type, slot, BoneSkinSB);
                 }
+            }
+
+            public void InvalidateBoneMatrices()
+            {
+                matricesChanged = true;
             }
 
             protected override void OnDispose(bool disposeManagedResources)

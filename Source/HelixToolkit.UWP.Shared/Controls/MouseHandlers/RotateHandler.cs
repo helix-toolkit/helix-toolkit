@@ -55,6 +55,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         private Point3D rotationPoint3D;
 
+        private bool invertUpDir = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RotateHandler"/> class.
         /// </summary>
@@ -82,15 +84,6 @@ namespace HelixToolkit.UWP
             {
                 return this.Controller.CameraRotationMode;
             }
-        }
-        
-        /// <summary>
-        /// Occurs when the manipulation is completed.
-        /// </summary>
-        /// <param name="e"></param>
-        public override void Completed(Point e)
-        {
-            base.Completed(e);
         }
        
         /// <summary>
@@ -161,7 +154,7 @@ namespace HelixToolkit.UWP
                 case CameraRotationMode.Turntable:
                     var p = p1 - p0;
                     CameraMath.RotateTurntable(CameraMode, ref p, ref rotateAround, (float)RotationSensitivity,
-                        Controller.Width, Controller.Height, Camera, inv, ModelUpDirection, out newPos, out newLook, out newUp);
+                        Controller.Width, Controller.Height, Camera, inv, invertUpDir ? -ModelUpDirection : ModelUpDirection, out newPos, out newLook, out newUp);
                     break;
                 case CameraRotationMode.Turnball:
                     CameraMath.RotateTurnball(CameraMode, ref p0, ref p1, ref rotateAround, (float)RotationSensitivity,
@@ -202,6 +195,7 @@ namespace HelixToolkit.UWP
             this.rotationPoint = new Vector2(
                 this.Controller.Width / 2f, this.Controller.Height / 2f);
             this.rotationPoint3D = this.Camera.CameraInternal.Target;
+            invertUpDir = Vector3.Dot(Controller.CameraUpDirection, ModelUpDirection) < 0;
 
             switch (this.CameraMode)
             {

@@ -171,6 +171,16 @@ namespace HelixToolkit.UWP
                 mtChanged = true;
                 internalMTBuffer.SetWeight(i, w);
             }
+
+            public void InvalidateBoneMatrices()
+            {
+                matricsChanged = true;
+            }
+
+            public void InvalidateMorphTargetWeights()
+            {
+                mtChanged = true;
+            }
         }
     }
 }

@@ -202,6 +202,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DX11RenderHostConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DepthStencilFormatHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\StringHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Viewport\ViewportCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Viewport\ViewportCoreProperties.cs" />
     <Compile Include="..\HelixToolkit.SharpDX.Shared\ShaderManager\StructArrayPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />

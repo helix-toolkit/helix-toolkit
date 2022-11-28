@@ -146,13 +146,28 @@ namespace HelixToolkit.UWP
                     return nearField;
                 }
             }
+
+            private ProjectionCameraCore lightCamera = null;
             /// <summary>
             /// Distance of the directional light from origin
             /// </summary>
             public ProjectionCameraCore LightCamera
             {
-                set; get;
-            } = null;
+                set
+                {
+                    if (lightCamera != null)
+                    {
+                        lightCamera.PropertyChanged -= LightCamera_PropertyChanged;
+                    }
+                    SetAffectsRender(ref lightCamera, value);
+                    if (lightCamera != null)
+                    {
+                        lightCamera.PropertyChanged += LightCamera_PropertyChanged;
+                    }
+                }
+                get => lightCamera;
+            }
+
             /// <summary>
             /// Gets or sets a value indicating whether shadow map should automatically cover complete scene. Only effective with directional light.
             /// <para>Limitation: Currently unable to properly cover BoneSkinned model animation.</para>
@@ -219,6 +234,11 @@ namespace HelixToolkit.UWP
                 c.Bias = (float)Bias;
                 c.Width = (int)(Resolution.Width);
                 c.Height = (int)(Resolution.Height);
+            }
+
+            private void LightCamera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            {
+                InvalidateRender();
             }
 
             /// <summary>

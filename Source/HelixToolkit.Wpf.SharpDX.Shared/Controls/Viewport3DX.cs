@@ -374,6 +374,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     partItemsControl?.Items.Remove(item);
                     if (item is Element3D element)
                     {
+                        element.SceneNode.Invalidated -= NodeInvalidated;
                         element.SceneNode.Detach();
                     }
                 }
@@ -385,6 +386,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     partItemsControl?.Items.Add(item);
                     if (this.IsAttached && item is Element3D element)
                     {
+                        element.SceneNode.Invalidated += NodeInvalidated;
                         element.SceneNode.Attach(EffectsManager);
                     }
                 }

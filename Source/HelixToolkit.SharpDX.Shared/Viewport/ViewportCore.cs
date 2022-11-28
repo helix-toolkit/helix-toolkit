@@ -5,7 +5,15 @@ Copyright (c) 2018 Helix Toolkit contributors
 using global::SharpDX;
 using System;
 
-namespace HelixToolkit.SharpDX.Core.Controls
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
+#else
+#if CORE
+namespace HelixToolkit.SharpDX.Core
+#else
+namespace HelixToolkit.UWP
+#endif
+#endif
 {
     using Cameras;
     using Model.Scene;

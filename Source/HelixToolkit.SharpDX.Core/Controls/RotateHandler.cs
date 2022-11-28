@@ -33,6 +33,9 @@ namespace HelixToolkit.SharpDX.Core.Controls
         /// The 3D rotation point.
         /// </summary>
         private Vector3 rotationPoint3D;
+
+        private bool invertUpDir = false;
+
         /// <summary>
         /// Gets the camera rotation mode.
         /// </summary>
@@ -121,7 +124,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
                 case CameraRotationMode.Turntable:
                     var p = p1 - p0;
                     CameraMath.RotateTurntable(CameraMode, ref p, ref rotateAround, (float)RotationSensitivity,
-                        Controller.Width, Controller.Height, Camera, inv, ModelUpDirection, out newPos, out newLook, out newUp);
+                        Controller.Width, Controller.Height, Camera, inv, invertUpDir ? -ModelUpDirection : ModelUpDirection, out newPos, out newLook, out newUp);
                     break;
                 case CameraRotationMode.Turnball:
                     CameraMath.RotateTurnball(CameraMode, ref p0, ref p1, ref rotateAround, (float)RotationSensitivity,
@@ -143,6 +146,7 @@ namespace HelixToolkit.SharpDX.Core.Controls
             this.rotationPoint = new Vector2(
                 this.Controller.Width / 2, this.Controller.Height / 2);
             this.rotationPoint3D = this.Camera.Target;
+            invertUpDir = Vector3.Dot(Controller.CameraUpDirection, ModelUpDirection) < 0;
 
             switch (this.CameraMode)
             {

@@ -283,6 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 viewport.EffectsManager = this.EffectsManager;
             }
+            EffectsManagerChanged?.Invoke(this, EffectsManager);
         }
 
         /// <summary>
@@ -625,6 +626,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public event EventHandler<IEffectsManager> EffectsManagerChanged;
+
         public ModelContainer3DX()
         {
             this.IsHitTestVisible = false;
@@ -718,9 +721,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Updates the and render.
         /// </summary>
-        public void UpdateAndRender()
+        public bool UpdateAndRender()
         {
-
+            return false;
         }
         /// <summary>
         /// Resizes

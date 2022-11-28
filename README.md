@@ -69,20 +69,29 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki) and useful [External Resources](https://github.com/helix-toolkit/helix-toolkit/wiki/External-References) on Computer Graphics.
 
-## HelixToolkit Library Relationship
-- HelixToolkit
-  - .NET WPF
-    - HelixToolkit.WPF
-  - SharpDX DX11 Engine
-    - .NET WPF
-      - HelixToolkit.WPF.SharpDX
-    - UWP
-      - Helixtoolkit.UWP
-    - .NET CORE
-      - HelixToolkit.SharpDX.Core
-        - HelixToolkit.SharpDX.Core.Wpf
-        - HelixToolkit.WinUI
-    - HelixToolkit.Assimp
+## HelixToolkit Library Structure
+
+### WPF Internal 3D Engine (DirectX9)
+
+```mermaid
+graph TD
+    wpf[WPF Framework] --> hxWpf[HelixToolkit.Wpf]
+    wpf --> hxCoreWpf[HelixToolkit.Core.Wpf]
+```
+### HelixToolkit DirectX11 Engine
+
+```mermaid
+graph TD
+    hx[HelixToolkit] --> dx11[DirectX11 Engine]    
+    dx11 --> hxSharpDX[HelixToolkit.Wpf.SharpDX]
+    dx11 --> hxUWP[HelixToolkit.UWP]
+    dx11 --> hxCore[HelixToolkit.SharpDX.Core]
+    hxCore --> hxWinUI[HelixToolkit.SharpDX.Core.Wpf]
+    hxCore --> hxSharpDXCoreWpf[HelixToolkit.WinUI]
+    hxSharpDX --> hxAssimp[HelixToolkit.SharpDX.Assimp]
+    hxUWP --> hxAssimp
+    hxCore --> hxAssimp
+```
 
 ## Bug Report
 Please use the following template to report bugs.
@@ -94,16 +103,16 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
-#### 2022-06-18
-[v2.21.1](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.21.1) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.21.1)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.21.1)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.21.1)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.21.1)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.21.1)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.21.1)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.21.1)
-- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.21.1)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.21.1)
+#### 2022-08-29
+[v2.22.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.22.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.22.0)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.22.0)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.22.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.22.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.22.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.22.0)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.22.0)
+- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.22.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.22.0)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)

@@ -29,7 +29,7 @@ public sealed class FilePickerService
             picker.FileTypeFilter.Add(filter);
         }
         return await picker.PickSingleFileAsync().AsTask().ContinueWith((result) => {
-            return result is null ? string.Empty : result.Result.Path;
+            return result is null || result.Result is null ? string.Empty : result.Result.Path;
         });
     }
 }

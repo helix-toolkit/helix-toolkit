@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
@@ -29,11 +30,9 @@ namespace HelixToolkit.UWP
     {
         using Core2D;
         using Utilities;
-        using HelixToolkit.Logger;
+        using Logger;
         using Core;
         using Model.Scene;
-        using Microsoft.Extensions.Logging;
-
 
         /// <summary>
         /// 
@@ -238,6 +237,7 @@ namespace HelixToolkit.UWP
                     var currentManager = effectsManager;
                     if (Set(ref effectsManager, value))
                     {
+                        EffectsManagerChanged?.Invoke(this, value);
                         logger.LogInformation("Set new EffectsManager.");
                         if (currentManager != null)
                         {
@@ -634,6 +634,8 @@ namespace HelixToolkit.UWP
             public event EventHandler<BoolArgs> FrustumEnabledChanged;
 
             public event EventHandler SceneGraphUpdated;
+
+            public event EventHandler<IEffectsManager> EffectsManagerChanged;
             #endregion
 
             #region Private variables
@@ -750,7 +752,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// Updates the and render.
             /// </summary>
-            public void UpdateAndRender()
+            public bool UpdateAndRender()
             {
                 if (CanRender())
                 {
@@ -833,7 +835,9 @@ namespace HelixToolkit.UWP
                     lastRenderingDuration = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp() / Stopwatch.Frequency) - t0;
                     RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);
                     Rendered?.Invoke(this, EventArgs.Empty);
+                    return true;
                 }
+                return false;
             }
 
             /// <summary>
