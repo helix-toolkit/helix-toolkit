@@ -88,6 +88,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get => enableDpiScale;
         }
 
+        public bool IncreaseFPS
+        {
+            set; get;
+        } = true;
+
         public double DpiScale { set => winformHost.DpiScale = value; get => winformHost.DpiScale; }
 
         public DPFSurfaceSwapChain(bool deferredRendering = false, bool attachedToWindow = true)
@@ -236,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void CompositionTarget_Rendering(object sender, RenderingEventArgs e)
         {
-            if (RenderHost.UpdateAndRender())
+            if (RenderHost.UpdateAndRender() && IncreaseFPS)
             {
                 image3D?.InvalidateD3DImage();
             }
@@ -392,7 +397,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     Windowed = true,
                     SwapEffect = SwapEffect.Discard,
-                    PresentationInterval = PresentInterval.Immediate,
+                    PresentationInterval = PresentInterval.Default,
                     BackBufferHeight = 1,
                     BackBufferWidth = 1,
                     BackBufferFormat = Format.Unknown
