@@ -225,10 +225,10 @@ namespace HelixToolkit.UWP
             } = MSAALevel.Disable;
 #endif
             /// <summary>
-            /// The vertical synchronize internal. Only valid under swapchain rendering mode. Default = 1
+            /// The vertical synchronize internal. Only valid under swapchain rendering mode. Default = 0
             /// <para>0: disable; 1: Sync with frame; More detail: <see cref="SwapChain.Present(int, PresentFlags)"/></para>
             /// </summary>
-            public int VSyncInterval = 1;
+            public int VSyncInterval = 0;
             /// <summary>
             /// The currently used Direct3D Device
             /// </summary>
