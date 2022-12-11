@@ -62,6 +62,7 @@ namespace HelixToolkit.UWP
         /// </para>
         /// </summary>
         /// <param name="root"></param>
+        /// <param name="centroid"></param>
         /// <returns></returns>
         public static bool TryGetCentroid(this SceneNode root, out Vector3 centroid)
         {
@@ -96,7 +97,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Try to get total bound of all meshes from current scene root.
         /// To make sure all transform matrics are updated.
-        /// Call <see cref="UpdateAllTransformMatrix(SceneNode)"/> before calling <see cref="TryGetBound(SceneNode, out Vector3)"/>.
+        /// Call <see cref="UpdateAllTransformMatrix(SceneNode)"/> before calling <see cref="TryGetBound(SceneNode, out BoundingBox)"/>.
         /// </summary>
         /// <param name="root"></param>
         /// <param name="bound"></param>
