@@ -22,7 +22,6 @@ namespace HelixToolkit.UWP
         using Shaders;
         public partial class DeviceContextProxy
         {
-            private PrimitiveTopology currPrimitiveTopology = PrimitiveTopology.Undefined;
             /// <summary>
             /// Gets or sets the primitive topology.
             /// </summary>
@@ -33,16 +32,11 @@ namespace HelixToolkit.UWP
             {
                 set
                 {
-                    if (currPrimitiveTopology == value)
-                    {
-                        return;
-                    }
-                    currPrimitiveTopology = value;
                     deviceContext.InputAssembler.PrimitiveTopology = value;
                 }
                 get
                 {
-                    return currPrimitiveTopology;
+                    return deviceContext.InputAssembler.PrimitiveTopology;
                 }
             }
 
