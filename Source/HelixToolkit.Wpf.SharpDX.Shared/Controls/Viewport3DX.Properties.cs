@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Controls;
     using Elements2D;
-
+    using HelixToolkit.Wpf.SharpDX.Render;
 
     /// <summary>
     /// Provides the dependency properties for Viewport3DX.
@@ -1233,6 +1233,18 @@ namespace HelixToolkit.Wpf.SharpDX
                         viewport.renderHostInternal.InvalidatePerFrameRenderables();
                     }
                 }));
+
+        /// <summary>
+        /// The enable parallel update property. <see cref="EnableParallelUpdate"/>
+        /// </summary>
+        public static readonly DependencyProperty EnableParallelUpdateProperty =
+            DependencyProperty.Register("EnableParallelUpdate", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) => {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null && viewport.renderHostInternal is DefaultRenderHost renderHost)
+                {
+                    renderHost.EnableParallelUpdate = (bool)e.NewValue;
+                }
+            }));
 
         /// <summary>
         /// The enable ssao property
@@ -3367,6 +3379,17 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
+        /// Enable some tasks in the render loop to be run parallel on separate threads.
+        /// This may cause the ui to be unresponsive if there are already parallel tasks running
+        /// causing the updates to wait until there are avaliable threads to execute the updates.
+        /// Default is enabled.
+        /// </summary>
+        public bool EnableParallelUpdate
+        {
+            get { return (bool)GetValue(EnableParallelUpdateProperty); }
+            set { SetValue(EnableParallelUpdateProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable ScreenSpaced Ambient Occlusion].

@@ -66,6 +66,8 @@ namespace HelixToolkit.UWP
                 FrustumEnabledChanged += (s, e) => { SetupFrustumTestFunctions(); };
             }
 
+            public bool EnableParallelUpdate { set; get; } = true;
+
             /// <summary>
             /// Creates the render buffer.
             /// </summary>
@@ -231,10 +233,17 @@ namespace HelixToolkit.UWP
                 {
                     TriggerSceneGraphUpdated();
                 }
-                asyncTask = Task.Factory.StartNew(() =>
+                if (EnableParallelUpdate)
+                {
+                    asyncTask = Task.Factory.StartNew(() =>
+                    {
+                        renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
+                    });
+                }
+                else
                 {
                     renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
-                });
+                }
                 var ft = Stopwatch.GetTimestamp();
                 FrustumTestAction();
                 ft = Stopwatch.GetTimestamp() - ft;
@@ -242,27 +251,17 @@ namespace HelixToolkit.UWP
                 CollectPostEffectNodes();
                 if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
                 {
-                    getTriangleCountTask = Task.Factory.StartNew(() =>
+                    if (EnableParallelUpdate)
                     {
-                        var count = 0;
-                        foreach (var core in opaqueNodesInFrustum.Select(x => x.RenderCore))
+                        getTriangleCountTask = Task.Factory.StartNew(() =>
                         {
-                            if (core is IGeometryRenderCore c)
-                            {
-                                if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
-                                    count += geo.Geometry.Indices.Count / 3;
-                            }
-                        }
-                        foreach (var core in transparentNodesInFrustum.Select(x => x.RenderCore))
-                        {
-                            if (core is IGeometryRenderCore c)
-                            {
-                                if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
-                                    count += geo.Geometry.Indices.Count / 3;
-                            }
-                        }
-                        renderStatistics.NumTriangles = count;
-                    });
+                            renderStatistics.NumTriangles = GetTriangleCount();
+                        });
+                    }
+                    else
+                    {
+                        renderStatistics.NumTriangles = GetTriangleCount();
+                    }
                 }
             }
 
@@ -271,7 +270,7 @@ namespace HelixToolkit.UWP
                 //Get RenderCores with post effect specified.
                 if (postEffectNodes.Count > 0)
                 {
-                    if (opaqueNodesInFrustum.Count + transparentNodesInFrustum.Count > 50)
+                    if (opaqueNodesInFrustum.Count + transparentNodesInFrustum.Count > 50 && EnableParallelUpdate)
                     {
                         getPostEffectCoreTask = Task.Run(() =>
                         {
@@ -309,6 +308,29 @@ namespace HelixToolkit.UWP
                         }
                     }
                 }
+            }
+
+            private int GetTriangleCount()
+            {
+                var count = 0;
+                foreach (var core in opaqueNodesInFrustum.Select(x => x.RenderCore))
+                {
+                    if (core is IGeometryRenderCore c)
+                    {
+                        if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                            count += geo.Geometry.Indices.Count / 3;
+                    }
+                }
+                foreach (var core in transparentNodesInFrustum.Select(x => x.RenderCore))
+                {
+                    if (core is IGeometryRenderCore c)
+                    {
+                        if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                            count += geo.Geometry.Indices.Count / 3;
+                    }
+                }
+
+                return count;
             }
 
             /// <summary>
