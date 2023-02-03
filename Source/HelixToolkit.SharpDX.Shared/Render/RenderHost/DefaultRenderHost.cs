@@ -498,16 +498,10 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public override void StartRendering()
+            protected override void OnStartD3D()
             {
+                base.OnStartD3D();
                 parallelThread.Start();
-                base.StartRendering();
-            }
-
-            public override void StopRendering()
-            {
-                base.StopRendering();
-                parallelThread.Stop();
             }
 
             /// <summary>
@@ -522,8 +516,15 @@ namespace HelixToolkit.UWP
                 asyncTask = null;
                 getTriangleCountTask = null;
                 getPostEffectCoreTask = null;
+                parallelThread.Stop();
                 Clear(true, true);
                 base.OnEndingD3D();
+            }
+
+            protected override void OnDispose(bool disposeManagedResources)
+            {
+                parallelThread.Dispose();
+                base.OnDispose(disposeManagedResources);
             }
 
             #region FrustumTest

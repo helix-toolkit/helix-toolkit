@@ -69,6 +69,8 @@ namespace HelixToolkit.UWP
 
         public AsyncActionWaitable EnqueueAction(Action action)
         {
+            if (!running) 
+            { return null; }
             var obj = AsyncActionWaitable.Get();
             obj.Action = action;
             lock (jobs)
@@ -93,7 +95,7 @@ namespace HelixToolkit.UWP
                 {
                     lock (jobs)
                     {
-                        while (jobs.Count > 0)
+                        while (jobs.Count > 0 && running)
                         {
                             var job = jobs.Dequeue();
                             Monitor.Exit(jobs);
@@ -104,6 +106,7 @@ namespace HelixToolkit.UWP
                         Monitor.Wait(jobs, 100);
                     }
                 }
+                Clear();
             });
             jobThread.Priority = ThreadPriority.Highest;
             jobThread.Start();
@@ -125,7 +128,6 @@ namespace HelixToolkit.UWP
                 jobThread.Join();
                 jobThread = null;
             }
-            Clear();
         }
 
         private void Clear()
