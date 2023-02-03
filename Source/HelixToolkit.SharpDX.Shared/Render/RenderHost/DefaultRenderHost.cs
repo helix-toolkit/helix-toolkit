@@ -41,13 +41,14 @@ namespace HelixToolkit.UWP
         public partial class DefaultRenderHost : DX11RenderHostBase
         {
             static readonly ILogger logger = LogManager.Create<DefaultRenderHost>();
-            private Task asyncTask;
-            private Task getTriangleCountTask;
-            private Task getPostEffectCoreTask;
+            private AsyncActionWaitable asyncTask;
+            private AsyncActionWaitable getTriangleCountTask;
+            private AsyncActionWaitable getPostEffectCoreTask;
             private OrderablePartitioner<Tuple<int, int>> opaquePartitioner;
             private OrderablePartitioner<Tuple<int, int>> transparentPartitioner;
             private Action FrustumTestAction;
             private int numRendered = 0;
+            private readonly AsyncActionThread parallelThread = new AsyncActionThread();
             /// <summary>
             /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
             /// </summary>
@@ -231,7 +232,7 @@ namespace HelixToolkit.UWP
                 {
                     TriggerSceneGraphUpdated();
                 }
-                asyncTask = Task.Factory.StartNew(() =>
+                asyncTask = parallelThread.EnqueueAction(() =>
                 {
                     renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
                 });
@@ -242,7 +243,7 @@ namespace HelixToolkit.UWP
                 CollectPostEffectNodes();
                 if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
                 {
-                    getTriangleCountTask = Task.Factory.StartNew(() =>
+                    getTriangleCountTask = parallelThread.EnqueueAction(() =>
                     {
                         var count = 0;
                         foreach (var core in opaqueNodesInFrustum.Select(x => x.RenderCore))
@@ -273,7 +274,7 @@ namespace HelixToolkit.UWP
                 {
                     if (opaqueNodesInFrustum.Count + transparentNodesInFrustum.Count > 50)
                     {
-                        getPostEffectCoreTask = Task.Run(() =>
+                        getPostEffectCoreTask = parallelThread.EnqueueAction(() =>
                         {
                             for (var i = 0; i < opaqueNodesInFrustum.Count; ++i)
                             {
@@ -497,6 +498,18 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            public override void StartRendering()
+            {
+                parallelThread.Start();
+                base.StartRendering();
+            }
+
+            public override void StopRendering()
+            {
+                base.StopRendering();
+                parallelThread.Stop();
+            }
+
             /// <summary>
             /// Called when [ending d3 d].
             /// </summary>
@@ -506,6 +519,9 @@ namespace HelixToolkit.UWP
                 asyncTask?.Wait();
                 getTriangleCountTask?.Wait();
                 getPostEffectCoreTask?.Wait();
+                asyncTask = null;
+                getTriangleCountTask = null;
+                getPostEffectCoreTask = null;
                 Clear(true, true);
                 base.OnEndingD3D();
             }
