@@ -949,9 +949,15 @@ namespace HelixToolkit.UWP
                     IsInitialized = true;
                     logger.LogInformation("Initialized.");
                     AttachRenderable(EffectsManager);
+                    OnStartD3D();
                     StartRendering();
                 }
             }
+
+            protected virtual void OnStartD3D()
+            {
+            }
+
             /// <summary>
             /// Starts the rendering.
             /// </summary>
