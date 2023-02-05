@@ -24,6 +24,7 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class ViewCubeVisual3D : ModelVisual3D
     {
+        #region Dependency Properties
         /// <summary>
         /// Identifies the <see cref="BackText"/> dependency property.
         /// </summary>
@@ -141,7 +142,8 @@ namespace HelixToolkit.Wpf
             {
                 (d as ViewCubeVisual3D).EnableDisableEdgeClicks();
             }));
-
+        #endregion Dependency Properties
+        #region Fields
         /// <summary>
         /// The normal vectors.
         /// </summary>
@@ -165,9 +167,15 @@ namespace HelixToolkit.Wpf
 
         private readonly PieSliceVisual3D circle = new PieSliceVisual3D();
 
-        private readonly Brush CornerBrush = Brushes.Gold;
+        private readonly Brush CornerBrush = Brushes.Silver;
         private readonly Brush EdgeBrush = Brushes.Silver;
+        /// <summary>
+        /// The overhang of the corner edge from the cube face
+        /// </summary>
+        private const double OVERHANG = 1e-3;
+        #endregion Fields
 
+        #region Constructors
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
         /// </summary>
@@ -175,12 +183,17 @@ namespace HelixToolkit.Wpf
         {
             this.InitialModels();
         }
+        #endregion Constructors
 
+        #region Events
         /// <summary>
         /// Occurs when a face has been clicked on.
         /// </summary>
         public event EventHandler<ClickedEventArgs> Clicked;
 
+        #endregion Events
+
+        #region Properties
         /// <summary>
         ///   Gets or sets the back text.
         /// </summary>
@@ -383,7 +396,9 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ViewportProperty, value);
             }
         }
+        #endregion Properties
 
+        #region Methods
         /// <summary>
         /// Raises the Clicked event.
         /// </summary>
@@ -428,7 +443,7 @@ namespace HelixToolkit.Wpf
                 var element = new ModelUIElement3D();
                 EdgeModels.Add(element);
                 element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-                element.MouseEnter += EdggesMouseEnters;
+                element.MouseEnter += EdgesMouseEnters;
                 element.MouseLeave += EdgesMouseLeaves;
             }
 
@@ -437,8 +452,8 @@ namespace HelixToolkit.Wpf
                 var element = new ModelUIElement3D();
                 CornerModels.Add(element);
                 element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-                element.MouseEnter += EdggesMouseEnters;
-                element.MouseLeave += EdgesMouseLeaves;
+                element.MouseEnter += CornersMouseEnters;
+                element.MouseLeave += CornersMouseLeaves;
             }
 
             UpdateVisuals();
@@ -561,28 +576,30 @@ namespace HelixToolkit.Wpf
 
         private void AddEdges()
         {
-            var halfSize = Size / 2;
-            var sideLength = halfSize / 2;
+            double halfSize = Size / 2;
+            double sideWidthHeight = halfSize / 2.5;
+            double squaredLength = halfSize - sideWidthHeight / 2 + OVERHANG;
+            double sideLength = Size - 2 * (sideWidthHeight - OVERHANG);
 
             int counter = 0;
             foreach (var p in xAligned)
             {
-                Point3D center = p.Multiply(halfSize);
-                AddEdge(EdgeModels[counter++], center, 1.5 * halfSize, sideLength, sideLength, p.ToVector3D());
+                Point3D center = p.Multiply(squaredLength);
+                AddEdge(EdgeModels[counter++], center, sideLength, sideWidthHeight, sideWidthHeight, p.ToVector3D());
             }
 
 
             foreach (var p in yAligned)
             {
-                Point3D center = p.Multiply(halfSize);
-                AddEdge(EdgeModels[counter++], center, sideLength, 1.5 * halfSize, sideLength, p.ToVector3D());
+                Point3D center = p.Multiply(squaredLength);
+                AddEdge(EdgeModels[counter++], center, sideWidthHeight, sideLength, sideWidthHeight, p.ToVector3D());
             }
 
 
             foreach (var p in zAligned)
             {
-                Point3D center = p.Multiply(halfSize);
-                AddEdge(EdgeModels[counter++], center, sideLength, sideLength, 1.5 * halfSize, p.ToVector3D());
+                Point3D center = p.Multiply(squaredLength);
+                AddEdge(EdgeModels[counter++], center, sideWidthHeight, sideWidthHeight, sideLength, p.ToVector3D());
             }
         }
 
@@ -604,14 +621,14 @@ namespace HelixToolkit.Wpf
 
         private void AddCorners()
         {
-            var a = Size / 2;
-            var sideLength = a / 2;
+            double halfSize = Size / 2;
+            double sideLength = halfSize / 2.5;
             int counter = 0;
             foreach (var p in cornerPoints)
             {
                 var builder = new MeshBuilder(false, true);
 
-                Point3D center = p.Multiply(a);
+                Point3D center = p.Multiply(halfSize - sideLength / 2 + OVERHANG);
                 builder.AddBox(center, sideLength, sideLength, sideLength);
                 var geometry = builder.ToMesh();
                 geometry.Freeze();
@@ -627,25 +644,26 @@ namespace HelixToolkit.Wpf
         private void EdgesMouseLeaves(object sender, MouseEventArgs e)
         {
             ModelUIElement3D s = sender as ModelUIElement3D;
-            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Silver);
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(EdgeBrush);
+
         }
 
-        private void EdggesMouseEnters(object sender, MouseEventArgs e)
+        private void EdgesMouseEnters(object sender, MouseEventArgs e)
         {
             ModelUIElement3D s = sender as ModelUIElement3D;
-            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.SteelBlue);
         }
 
-        private void CornersMouseLeave(object sender, MouseEventArgs e)
+        private void CornersMouseLeaves(object sender, MouseEventArgs e)
         {
             ModelUIElement3D s = sender as ModelUIElement3D;
-            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Gold);
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(CornerBrush);
         }
 
         private void CornersMouseEnters(object sender, MouseEventArgs e)
         {
             ModelUIElement3D s = sender as ModelUIElement3D;
-            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Goldenrod);
+            (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.SteelBlue);
         }
 
         /// <summary>
@@ -686,17 +704,19 @@ namespace HelixToolkit.Wpf
 
         private Material CreateTextMaterial(Brush b, string text)
         {
-            var grid = new Grid { Width = 20, Height = 20, Background = b };
+            var grid = new Grid { Width = 25, Height = 25, Background = b };
             grid.Children.Add(
                 new TextBlock
                 {
                     Text = text,
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center,
-                    FontSize = 15,
-                    Foreground = Brushes.White
+                    FontSize = 18,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = Brushes.White,
+                    Padding = new Thickness(0, 0, 0, 2),
                 });
-            grid.Arrange(new Rect(new Point(0, 0), new Size(20, 20)));
+            grid.Arrange(new Rect(new Point(0, 0), new Size(25, 25)));
 
             var bmp = new RenderTargetBitmap((int)grid.Width, (int)grid.Height, 96, 96, PixelFormats.Default);
             bmp.Render(grid);
@@ -756,6 +776,7 @@ namespace HelixToolkit.Wpf
             e.Handled = true;
             this.OnClicked(lookDirection, upDirection);
         }
+        #endregion Methods
 
         /// <summary>
         /// Provides event data for the Clicked event.
