@@ -46,12 +46,6 @@ namespace HelixToolkit.Wpf
             }));
 
         /// <summary>
-        /// Identifies the <see cref="Center"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
-            "Center", typeof(Point3D), typeof(ViewCubeVisual3D), new UIPropertyMetadata(new Point3D(0, 0, 0)));
-
-        /// <summary>
         /// Identifies the <see cref="FrontText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FrontTextProperty = DependencyProperty.Register(
@@ -72,7 +66,38 @@ namespace HelixToolkit.Wpf
             }));
 
         /// <summary>
-        /// Identifies the <see cref="LeftText"/> dependency property.
+        /// Identifies the <see cref="RightText"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RightTextProperty = DependencyProperty.Register(
+            "RightText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("R", (d, e) =>
+            {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(3);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(3, b, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
+
+        /// <summary>
+        /// Identifies the <see cref="TopText"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty TopTextProperty = DependencyProperty.Register(
+            "TopText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("U", (d, e) =>
+            {
+                var b = (d as ViewCubeVisual3D).GetCubefaceColor(4);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(4, b, e.NewValue == null ? "" : (string)e.NewValue);
+            }));
+
+        /// <summary>
+        /// Identifies the <see cref="Center"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(
+            "Center", typeof(Point3D), typeof(ViewCubeVisual3D), new UIPropertyMetadata(new Point3D(0, 0, 0)));
+        /// <summary>
+        /// Identifies the <see cref="Size"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SizeProperty = DependencyProperty.Register(
+            "Size", typeof(double), typeof(ViewCubeVisual3D), new UIPropertyMetadata(5.0));
+
+        /// <summary>
+        /// Identifies the <see cref="IsEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(
             "IsEnabled", typeof(bool), typeof(ViewCubeVisual3D), new UIPropertyMetadata(true));
@@ -92,32 +117,6 @@ namespace HelixToolkit.Wpf
                 typeof(Vector3D),
                 typeof(ViewCubeVisual3D),
                 new UIPropertyMetadata(new Vector3D(0, 0, 1), VisualModelChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="RightText"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty RightTextProperty = DependencyProperty.Register(
-            "RightText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("R", (d, e) =>
-            {
-                var b = (d as ViewCubeVisual3D).GetCubefaceColor(3);
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(3, b, e.NewValue == null ? "" : (string)e.NewValue);
-            }));
-
-        /// <summary>
-        /// Identifies the <see cref="Size"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SizeProperty = DependencyProperty.Register(
-            "Size", typeof(double), typeof(ViewCubeVisual3D), new UIPropertyMetadata(5.0));
-
-        /// <summary>
-        /// Identifies the <see cref="TopText"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TopTextProperty = DependencyProperty.Register(
-            "TopText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("U", (d, e) =>
-            {
-                var b = (d as ViewCubeVisual3D).GetCubefaceColor(4);
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(4, b, e.NewValue == null ? "" : (string)e.NewValue);
-            }));
 
         /// <summary>
         /// Identifies the <see cref="Viewport"/> dependency property.
