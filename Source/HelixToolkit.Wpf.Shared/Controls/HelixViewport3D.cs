@@ -746,7 +746,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="ViewCubeHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeHeightProperty = DependencyProperty.Register(
-            "ViewCubeHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+            "ViewCubeHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="ViewCubeHorizontalPosition"/> dependency property.
@@ -800,7 +800,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="ViewCubeWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeWidthProperty = DependencyProperty.Register(
-            "ViewCubeWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+            "ViewCubeWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="ZoomAroundMouseDownPoint"/> dependency property.
