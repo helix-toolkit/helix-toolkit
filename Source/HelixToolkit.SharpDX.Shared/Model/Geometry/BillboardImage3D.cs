@@ -108,10 +108,10 @@ namespace HelixToolkit.UWP
                 Background = maskColor,
                 TexTL = info.UV_TopLeft,
                 TexBR = info.UV_BottomRight,
-                OffTL = Matrix3x2.TransformPoint(transform, offTL),
-                OffBL = Matrix3x2.TransformPoint(transform, offBL),
-                OffBR = Matrix3x2.TransformPoint(transform, offBR),
-                OffTR = Matrix3x2.TransformPoint(transform, offTR)
+                OffTL = Matrix3x2.TransformPoint(transform, offTL) + info.Offset,
+                OffBL = Matrix3x2.TransformPoint(transform, offBL) + info.Offset,
+                OffBR = Matrix3x2.TransformPoint(transform, offBR) + info.Offset,
+                OffTR = Matrix3x2.TransformPoint(transform, offTR) + info.Offset
             });
         }
 
@@ -208,6 +208,16 @@ namespace HelixToolkit.UWP
         {
             set; get;
         } = BillboardVerticalAlignment.Center;
+
+        /// <summary>
+        /// Additional offset for billboard display location.
+        /// Behavior depends on whether billboard is fixed sized or not.
+        /// When billboard is fixed sized, the offset is screen spaced.
+        /// </summary>
+        public Vector2 Offset
+        {
+            set; get;
+        } = Vector2.Zero;
 
         public virtual void UpdateImage()
         {
