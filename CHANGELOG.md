@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 ## Next Release
 
 ### Added
+1. Adding IncreaseSwapchainFPS property for sharpdx wpf viewport for disable/enable FPS increasing feature. (WPF.SharpDX/UWP/WinUI)
+1. Adds additional 2D offset property for billboards. (WPF.SharpDX/UWP/WinUI)
+
+### Improvement
+1. Simplify topology setting in device context. (WPF.SharpDX/UWP/WinUI)
+1. Adds dedicated thread for processing non-rendering related tasks in DefaultRenderHost. (WPF.SharpDX/UWP/WinUI)
+1. Make the guid setter of ShaderResourceViewProxy public. (WPF.SharpDX/UWP/WinUI)
+
+## [2.23.0]
+
+### Added
 1. Add feature of enabling rotation/translation/scale control in every axis for TransformManipulator3D (WPF.SharpDX/UWP/WinUI)
 1. Decouple `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf` packages from `HelixToolkit` core library. `HelixToolkit` package will no longer be a dependency for both `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf`. (WPF)
 
