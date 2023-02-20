@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 1. Simplify topology setting in device context. (WPF.SharpDX/UWP/WinUI)
 1. Adds dedicated thread for processing non-rendering related tasks in DefaultRenderHost. (WPF.SharpDX/UWP/WinUI)
 1. Make the guid setter of ShaderResourceViewProxy public. (WPF.SharpDX/UWP/WinUI)
+1. Imporve GC by remvoing static reference to NullSceneNode in SceneNode. (WPF.SharpDX/UWP/WinUI)
 
 ## [2.23.0]
 
