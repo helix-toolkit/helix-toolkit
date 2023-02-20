@@ -52,6 +52,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public Guid GUID { get; } = Guid.NewGuid();
 
+            private readonly WeakReference<SceneNode2D> parent = new WeakReference<SceneNode2D>(null);
             /// <summary>
             /// Gets or sets the parent.
             /// </summary>
@@ -60,7 +61,19 @@ namespace HelixToolkit.UWP
             /// </value>
             public SceneNode2D Parent
             {
-                set; get;
+                set
+                {
+                    parent.TryGetTarget(out var target);
+                    if (Set(ref target, value))
+                    {
+                        parent.SetTarget(value);
+                    }
+                }
+                get 
+                { 
+                    parent.TryGetTarget(out var target); 
+                    return target; 
+                }
             }
 
             private Visibility visibility = Visibility.Visible;
