@@ -179,7 +179,7 @@ namespace HelixToolkit.UWP
             public delegate bool OnCheckGeometryDelegate(Geometry3D geometry);
             public OnCheckGeometryDelegate OnCheckGeometry;
 
-            private WeakReference<GeometryNode> elementCore;
+            private readonly WeakReference<GeometryNode> elementCore;
 
             public GeometryBoundManager(GeometryNode core)
             {
