@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP
         public class ShaderResourceViewProxy : DisposeObject
         {
             static readonly ILogger logger = Logger.LogManager.Create<ShaderResourceViewProxy>();
-            public Guid Guid { internal set; get; } = Guid.NewGuid();
+            public Guid Guid { set; get; } = Guid.NewGuid();
             public static ShaderResourceViewProxy Empty { get; } = new ShaderResourceViewProxy();
             /// <summary>
             /// Gets the texture view.
