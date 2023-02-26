@@ -648,7 +648,7 @@ namespace HelixToolkit.UWP
             }
             else
             {
-            return false;
+                return false;
             }
         }
 
