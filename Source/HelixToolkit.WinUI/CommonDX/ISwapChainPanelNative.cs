@@ -14,5 +14,6 @@ namespace HelixToolkit.WinUI.CommonDX
     public interface ISwapChainPanelNative
     {
         [PreserveSig] Result SetSwapChain([In] IntPtr swapChain);
+        [PreserveSig] ulong Release();
     }
 }

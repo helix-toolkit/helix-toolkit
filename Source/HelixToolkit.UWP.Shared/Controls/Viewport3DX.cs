@@ -933,9 +933,17 @@ namespace HelixToolkit.UWP
                     EffectsManager = null;
                     Camera = null;
                     Items.Clear();
+                    if (hostPresenter.Content is IDisposable host)
+                    {
+                        host.Dispose();
+                    }
                     RenderHost.Dispose();
                     CameraController.Dispose();
-                    DisplayInformation.GetForCurrentView().DpiChanged -= Viewport3DX_DpiChanged;
+                    try
+                    {
+                        DisplayInformation.GetForCurrentView().DpiChanged -= Viewport3DX_DpiChanged;
+                    }
+                    catch (Exception) { }
                 }
                 disposedValue = true;
             }
