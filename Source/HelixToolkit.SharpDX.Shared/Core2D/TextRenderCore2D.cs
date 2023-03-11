@@ -255,7 +255,7 @@ namespace HelixToolkit.UWP
 
             protected override bool CanRender(RenderContext2D context)
             {
-                return base.CanRender(context) && Foreground != null;
+                return base.CanRender(context) && Foreground != null && Text != null;
             }
 
             protected override void OnRender(RenderContext2D context)
