@@ -303,9 +303,9 @@ namespace HelixToolkit.SharpDX.Core
             // var target = Camera.Position + Camera.LookDirection;
             if (camera is PerspectiveCameraCore pcam)
             {
-                float disth = radius / (float)Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
+                float disth = radius / (float)Math.Tan(0.75 * pcam.FieldOfView * Math.PI / 180);
                 float vfov = pcam.FieldOfView / viewport.ViewportRectangle.Width * viewport.ViewportRectangle.Height;
-                float distv = radius / (float)Math.Tan(0.5 * vfov * Math.PI / 180);
+                float distv = radius / (float)Math.Tan(0.75 * vfov * Math.PI / 180);
 
                 float dist = Math.Max(disth, distv);
                 var dir = camera.LookDirection;
