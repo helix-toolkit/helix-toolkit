@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 #if !NETFX_CORE
@@ -40,9 +41,9 @@ namespace HelixToolkit.UWP
 
             private long currentTime;
             private IndexTime[] keyframeIndices;
-            private float accumulatedTime;
             private bool isStartFrame = false;
             private bool changed = false;
+            private float previousTimeElapsed = float.MinValue;
 
             public IList<NodeAnimation> NodeCollection
             {
@@ -66,33 +67,35 @@ namespace HelixToolkit.UWP
                 if (currentTime == 0)
                 {
                     currentTime = timeStamp;
-                    accumulatedTime = 0;
                     SetToStart();
+                    UpdateBoneSkinMesh();
                     return;
                 }
 
-                var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency * Speed;
+                var timeElapsed = (float)Math.Max(0, timeStamp - currentTime) / frequency * Speed;
 
-                if (accumulatedTime >= Animation.EndTime)
+                if (timeElapsed >= Animation.EndTime)
                 {
                     switch (RepeatMode)
                     {
                         case AnimationRepeatMode.PlayOnce:
-                            UpdateBoneSkinMesh();
                             isStartFrame = false;
                             SetToStart();
+                            UpdateBoneSkinMesh();
                             return;
                         case AnimationRepeatMode.PlayOnceHold:
-                            return;
+                            timeElapsed = Animation.EndTime;
+                            break;
+                        case AnimationRepeatMode.Loop:
+                            timeElapsed = timeElapsed % Animation.EndTime;
+                            break;
                     }
                 }
-                if (accumulatedTime >= Animation.EndTime)
-                {
-                    Reset();
-                }
+                if (timeElapsed < previousTimeElapsed)
+                    Array.Clear(keyframeIndices, 0, keyframeIndices.Length);
+                previousTimeElapsed = timeElapsed;
+                UpdateNodes(timeElapsed);
                 UpdateBoneSkinMesh();
-                UpdateNodes(timeElpased);
-                currentTime = timeStamp;
             }
 
             private void UpdateBoneSkinMesh()
@@ -135,20 +138,15 @@ namespace HelixToolkit.UWP
 
             private void UpdateNodes(float timeElapsed)
             {
-                accumulatedTime += timeElapsed;
                 for (var i = 0; i < NodeCollection.Count; ++i)
                 {
                     var n = NodeCollection[i];
                     var count = n.KeyFrames.Count; // Make sure to use this count
                     var frames = n.KeyFrames.Items;
                     ref var idxTime = ref keyframeIndices[i];
-                    while (idxTime.Index < count - 1 && accumulatedTime > frames[idxTime.Index + 1].Time)//check if should move to next time frame
+                    while (idxTime.Index < count - 1 && timeElapsed > frames[idxTime.Index + 1].Time)//check if should move to next time frame
                     {
                         ++idxTime.Index;
-                    }
-                    if (idxTime.Index >= count - 1)//check if is at the end, if at the end, stays there
-                    {
-                        continue;
                     }
                     ref var currFrame = ref frames[idxTime.Index];
                     if (count == 1)
@@ -160,7 +158,7 @@ namespace HelixToolkit.UWP
                     else
                     {
                         ref var nextFrame = ref frames[idxTime.Index + 1];
-                        var diff = accumulatedTime - currFrame.Time;
+                        var diff = timeElapsed - currFrame.Time;
                         var length = nextFrame.Time - currFrame.Time;
                         var amount = diff / length;
                         var transform = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
@@ -176,9 +174,9 @@ namespace HelixToolkit.UWP
             {
                 Array.Clear(keyframeIndices, 0, keyframeIndices.Length);
                 currentTime = 0;
-                accumulatedTime = 0;
                 changed = false;
                 isStartFrame = false;
+                previousTimeElapsed = float.MinValue;
             }
 
             private void SetToStart()
