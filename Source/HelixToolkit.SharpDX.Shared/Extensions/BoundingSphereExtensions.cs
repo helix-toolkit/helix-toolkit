@@ -92,12 +92,20 @@ namespace HelixToolkit.UWP
         public static global::SharpDX.BoundingSphere TransformBoundingSphere(this global::SharpDX.BoundingSphere b, Matrix m)
         {
             var center = b.Center;
-            var edge = b.Center + Vector3.Right * b.Radius;
+            var edgeX = b.Center + Vector3.UnitX * b.Radius;
+            var edgeY = b.Center + Vector3.UnitY * b.Radius;
+            var edgeZ = b.Center + Vector3.UnitZ * b.Radius;
 
             var worldCenter = Vector3.Transform(center, m);
-            var worldEdge = Vector3.Transform(edge, m);
+            var worldEdgeX = Vector3.Transform(edgeX, m);
+            var worldEdgeY = Vector3.Transform(edgeY, m);
+            var worldEdgeZ = Vector3.Transform(edgeZ, m);
 
-            return new global::SharpDX.BoundingSphere(worldCenter.ToXYZ(), (worldEdge - worldCenter).Length());
+            var maxRadius = (float)Math.Sqrt(Math.Max(Math.Max((worldEdgeX - worldCenter).LengthSquared(),
+                (worldEdgeY - worldCenter).LengthSquared()),
+                (worldEdgeZ - worldCenter).LengthSquared()));
+
+            return new global::SharpDX.BoundingSphere(worldCenter.ToXYZ(), maxRadius);
         }
     }
 }
