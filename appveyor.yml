@@ -61,9 +61,9 @@ artifacts:
     
 deploy:
   provider: NuGet
-  server: https://www.myget.org/F/helix-toolkit/api/v2/package
+  server: https://www.myget.org/F/helixtoolkit-nightly/api/v2/package
   api_key:
-    secure: 2GnqgfpkOUH6Umfn1WWlun0b021+QeInBXkgQOQfa4/wDOYHLT757rrjTsb0lmon
+    secure: Ed/7hI7ap963N/sJk9GAj1FeaZ0ynQlG1sH2U7BtoW5ykGPKNr2q0ThLkBRY8JKh
   skip_symbols: false
   symbol_server:           # remove to push symbols to SymbolSource.org
   artifact: /.*\.nupkg/
