@@ -103,6 +103,9 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
+#### 2023-03-17
+Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+
 #### 2022-11-28
 [v2.23.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.23.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.23.0)
