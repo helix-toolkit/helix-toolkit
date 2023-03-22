@@ -100,6 +100,8 @@ namespace HelixToolkit.UWP
 
             private void UpdateBoneSkinMesh()
             {
+                foreach (var node in NodeCollection)
+                    node.Node.ComputeTransformMatrix();
                 if (Animation.HasBoneSkinMeshes && changed)
                 {
                     foreach (var m in Animation.BoneSkinMeshes)
