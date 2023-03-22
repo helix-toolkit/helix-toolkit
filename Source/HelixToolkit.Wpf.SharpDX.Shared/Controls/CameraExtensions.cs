@@ -574,9 +574,9 @@ namespace HelixToolkit.Wpf.SharpDX
             // var target = Camera.Position + Camera.LookDirection;
             if (camera is IPerspectiveCameraModel pcam)
             {
-                var disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
+                var disth = radius / Math.Tan(0.75 * pcam.FieldOfView * Math.PI / 180);
                 var vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
-                var distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
+                var distv = radius / Math.Tan(0.75 * vfov * Math.PI / 180);
 
                 var dist = Math.Max(disth, distv);
                 var dir = camera.LookDirection;

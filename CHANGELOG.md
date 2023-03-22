@@ -12,6 +12,12 @@ All notable changes to this project will be documented in this file.
 1. Adds dedicated thread for processing non-rendering related tasks in DefaultRenderHost. (WPF.SharpDX/UWP/WinUI)
 1. Make the guid setter of ShaderResourceViewProxy public. (WPF.SharpDX/UWP/WinUI)
 1. Imporve GC by remvoing static reference to NullSceneNode in SceneNode. (WPF.SharpDX/UWP/WinUI)
+1. Improve node animation to avoid accumulated time dependency. (WPF.SharpDX/UWP/WinUI)
+
+### Fixed
+1. Fixed HelixToolkit.WinUI package severe memory leak. (WinUI)
+1. Fixed bounding sphere is not properly transformed with non-uniform scaling matrix. (WPF.SharpDX/UWP/WinUI)
+1. Fixed the difference size of ZoomExtends of Viewport3DX between different cameras. (WPF.SharpDX/UWP/WinUI)
 
 ## [2.23.0]
 

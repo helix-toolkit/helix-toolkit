@@ -452,9 +452,9 @@ namespace HelixToolkit.UWP
             // var target = Camera.Position + Camera.LookDirection;
             if (camera is PerspectiveCamera pcam)
             {
-                double disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
+                double disth = radius / Math.Tan(0.75 * pcam.FieldOfView * Math.PI / 180);
                 double vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
-                double distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
+                double distv = radius / Math.Tan(0.75 * vfov * Math.PI / 180);
 
                 var dist = (float)Math.Max(disth, distv);
                 var dir = projectionCamera.LookDirection;
