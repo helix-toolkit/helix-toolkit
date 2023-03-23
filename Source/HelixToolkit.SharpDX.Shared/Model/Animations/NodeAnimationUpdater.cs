@@ -49,7 +49,11 @@ namespace HelixToolkit.UWP
             {
                 get => Animation.NodeAnimationCollection;
             }
+<<<<<<< HEAD
             public NodeAnimation[] OrderedNodeArray;
+=======
+            public NodeAnimation[] OrderedNodeCollection;
+>>>>>>> fec66e49ccd70a6d8ec1919045feedb1c053b27c
 
             public AnimationRepeatMode RepeatMode
             {
@@ -61,21 +65,37 @@ namespace HelixToolkit.UWP
                 Animation = animation;
                 Name = animation.Name;
                 keyframeIndices = new IndexTime[NodeCollection.Count];
+<<<<<<< HEAD
                 OrderedNodeArray = new NodeAnimation[NodeCollection.Count];
                 NodeCollection.CopyTo(OrderedNodeArray, 0);
                 int index = 0;
                 while (index < NodeCollection.Count)
                 {
                     NodeAnimation animationNode = OrderedNodeArray[index];
+=======
+                OrderedNodeCollection = new NodeAnimation[NodeCollection.Count];
+                NodeCollection.CopyTo(OrderedNodeCollection, 0);
+                int index = 0;
+                while (index < NodeCollection.Count)
+                {
+                    NodeAnimation animationNode = OrderedNodeCollection[index];
+>>>>>>> fec66e49ccd70a6d8ec1919045feedb1c053b27c
                     if (animationNode.Node.Parent != null)
                     {
                         int index2 = index;
                         for (; index2 < NodeCollection.Count; index2++)
                         {
+<<<<<<< HEAD
                             if (OrderedNodeArray[index2].Node == animationNode.Node.Parent)
                             {
                                 (OrderedNodeArray[index2], OrderedNodeArray[index]) =
                                     (OrderedNodeArray[index], OrderedNodeArray[index2]);
+=======
+                            if (OrderedNodeCollection[index2].Node == animationNode.Node.Parent)
+                            {
+                                (OrderedNodeCollection[index2], OrderedNodeCollection[index]) =
+                                    (OrderedNodeCollection[index], OrderedNodeCollection[index2]);
+>>>>>>> fec66e49ccd70a6d8ec1919045feedb1c053b27c
                                 break;
                             }
                         }
@@ -122,7 +142,11 @@ namespace HelixToolkit.UWP
 
             private void UpdateBoneSkinMesh()
             {
+<<<<<<< HEAD
                 foreach (var node in OrderedNodeArray)
+=======
+                foreach (var node in OrderedNodeCollection)
+>>>>>>> fec66e49ccd70a6d8ec1919045feedb1c053b27c
                     node.Node.ComputeTransformMatrix();
                 if (Animation.HasBoneSkinMeshes && changed)
                 {
