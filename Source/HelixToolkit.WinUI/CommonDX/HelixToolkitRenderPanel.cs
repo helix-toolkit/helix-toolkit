@@ -124,7 +124,6 @@ namespace HelixToolkit.WinUI
             if (panelNativeDesktop != null)
             {
                 panelNativeDesktop.SetSwapChain(IntPtr.Zero);
-                panelNativeDesktop.Release();
                 panelNativeDesktop = null;
             }
         }
