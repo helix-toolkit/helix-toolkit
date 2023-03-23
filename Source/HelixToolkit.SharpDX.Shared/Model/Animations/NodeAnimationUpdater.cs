@@ -49,6 +49,7 @@ namespace HelixToolkit.UWP
             {
                 get => Animation.NodeAnimationCollection;
             }
+            public NodeAnimation[] OrderedNodeCollection;
 
             public AnimationRepeatMode RepeatMode
             {
@@ -60,6 +61,27 @@ namespace HelixToolkit.UWP
                 Animation = animation;
                 Name = animation.Name;
                 keyframeIndices = new IndexTime[NodeCollection.Count];
+                OrderedNodeCollection = new NodeAnimation[NodeCollection.Count];
+                NodeCollection.CopyTo(OrderedNodeCollection, 0);
+                int index = 0;
+                while (index < NodeCollection.Count)
+                {
+                    NodeAnimation animationNode = OrderedNodeCollection[index];
+                    if (animationNode.Node.Parent != null)
+                    {
+                        int index2 = index;
+                        for (; index2 < NodeCollection.Count; index2++)
+                        {
+                            if (OrderedNodeCollection[index2].Node == animationNode.Node.Parent)
+                            {
+                                (OrderedNodeCollection[index2], OrderedNodeCollection[index]) =
+                                    (OrderedNodeCollection[index], OrderedNodeCollection[index2]);
+                                break;
+                            }
+                        }
+                        if (index2 == NodeCollection.Count) index++;
+                    }
+                };
             }
 
             public void Update(long timeStamp, long frequency)
@@ -100,7 +122,7 @@ namespace HelixToolkit.UWP
 
             private void UpdateBoneSkinMesh()
             {
-                foreach (var node in NodeCollection)
+                foreach (var node in OrderedNodeCollection)
                     node.Node.ComputeTransformMatrix();
                 if (Animation.HasBoneSkinMeshes && changed)
                 {
