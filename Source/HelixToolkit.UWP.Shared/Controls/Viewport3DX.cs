@@ -931,7 +931,13 @@ namespace HelixToolkit.UWP
                 if (disposing)
                 {
                     EffectsManager = null;
-                    Camera = null;
+                    Camera = null; 
+                    foreach (var item in Items)
+                    {
+                        item.Dispose();
+                    }
+                    viewCube?.Dispose();
+                    coordinateSystem?.Dispose();
                     Items.Clear();
                     if (hostPresenter.Content is IDisposable host)
                     {

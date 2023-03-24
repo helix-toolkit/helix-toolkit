@@ -293,13 +293,10 @@ namespace HelixToolkit.UWP
             /// <param name="disposeManagedResources">if set to <c>true</c> [dispose managed resources].</param>
             protected override void OnDispose(bool disposeManagedResources)
             {
-                if (disposeManagedResources)
+                Cleared = null;
+                foreach (var c in this.ItemsInternal)
                 {
-                    Cleared = null;
-                    foreach (var c in this.ItemsInternal)
-                    {
-                        c.Dispose();
-                    }
+                    c?.Dispose();
                 }
                 base.OnDispose(disposeManagedResources);
             }
