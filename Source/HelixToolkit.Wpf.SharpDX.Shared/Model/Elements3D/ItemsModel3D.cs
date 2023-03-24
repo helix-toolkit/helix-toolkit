@@ -300,11 +300,28 @@ namespace HelixToolkit.Wpf.SharpDX
                     break;
             }
         }
-
+        public virtual void Clear()
+        {
+            elementDict.Clear();
+            var node = SceneNode as GroupNode;
+            node.Clear();
+            Children.Clear();
+        }
 
         protected override void Dispose(bool disposing)
         {
-            elementDict.Clear();
+            if (disposing)
+            {
+                if (ItemsSource is INotifyCollectionChanged n)
+                {
+                    n.CollectionChanged -= ItemsModel3D_CollectionChanged;
+                }
+                foreach (var item in elementDict)
+                {
+                    item.Value?.Dispose();
+                }
+                Clear();
+            }
             base.Dispose(disposing);
         }
     }

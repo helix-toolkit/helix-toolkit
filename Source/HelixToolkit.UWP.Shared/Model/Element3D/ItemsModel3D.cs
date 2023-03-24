@@ -392,7 +392,18 @@ namespace HelixToolkit.UWP
 
         protected override void Dispose(bool disposing)
         {
-            Clear();
+            if (disposing)
+            {
+                if (itemsSource is INotifyCollectionChanged n)
+                {
+                    n.CollectionChanged -= ItemsModel3D_CollectionChanged;
+                }
+                foreach (var item in elementDict)
+                {
+                    item.Value?.Dispose();
+                }
+                Clear();
+            }
             base.Dispose(disposing);
         }
     }

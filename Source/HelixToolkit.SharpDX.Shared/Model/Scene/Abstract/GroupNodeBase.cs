@@ -294,6 +294,10 @@ namespace HelixToolkit.UWP
             protected override void OnDispose(bool disposeManagedResources)
             {
                 Cleared = null;
+                foreach (var c in this.ItemsInternal)
+                {
+                    c?.Dispose();
+                }
                 base.OnDispose(disposeManagedResources);
             }
         }
