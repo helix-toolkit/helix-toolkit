@@ -291,5 +291,28 @@ namespace HelixToolkit.Wpf.SharpDX
                     break;
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (itemsSourceInternal is INotifyCollectionChanged s)
+                {
+                    s.CollectionChanged -= S_CollectionChanged;
+                }
+                if (itemsSourceInternal != null)
+                {
+                    foreach (var item in itemsSourceInternal)
+                    {
+                        item.Dispose();
+                    }
+                }
+                foreach (var child in Children)
+                {
+                    child.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
     }
 }

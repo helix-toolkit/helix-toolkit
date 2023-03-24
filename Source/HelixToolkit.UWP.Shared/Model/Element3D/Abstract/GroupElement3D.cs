@@ -37,7 +37,8 @@ namespace HelixToolkit.UWP
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
                 new PropertyMetadata(null,
-                    (d, e) => {
+                    (d, e) =>
+                    {
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
@@ -147,7 +148,7 @@ namespace HelixToolkit.UWP
                     Items.Add(item);
                 }
             }
-            if(OctreeManager is Element3D elem)
+            if (OctreeManager is Element3D elem)
             {
                 Items.Add(elem);
             }
@@ -233,7 +234,7 @@ namespace HelixToolkit.UWP
                     Children.Remove(child);
                 }
             }
-            if(itemsSourceInternal == null && itemsSource != null && Children.Count > 0)
+            if (itemsSourceInternal == null && itemsSource != null && Children.Count > 0)
             {
                 throw new InvalidOperationException("Children must be empty before using ItemsSource");
             }
@@ -286,6 +287,29 @@ namespace HelixToolkit.UWP
                     Children.Move(e.OldStartingIndex, e.NewStartingIndex);
                     break;
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (itemsSourceInternal is INotifyCollectionChanged s)
+                {
+                    s.CollectionChanged -= S_CollectionChanged;
+                }
+                if (itemsSourceInternal != null)
+                {
+                    foreach (var item in itemsSourceInternal)
+                    {
+                        item.Dispose();
+                    }
+                }
+                foreach (var child in Children)
+                {
+                    child.Dispose();
+                }
+            }
+            base.Dispose(disposing);
         }
     }
 }
