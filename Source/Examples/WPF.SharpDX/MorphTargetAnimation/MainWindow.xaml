@@ -1,23 +1,54 @@
-﻿<Window x:Class="MorphTargetAnimationDemo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        Title="Morph Target Animation Demo" Height="540" Width="960">
+﻿<Window
+    x:Class="MorphTargetAnimationDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    Title="Morph Target Animation Demo"
+    Width="960"
+    Height="540">
     <Window.Resources>
         <DataTemplate x:Key="Template1">
-            <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Transform="{Binding Transform}" Material="{Binding Material}"/>
+            <hx:MeshGeometryModel3D
+                Geometry="{Binding Geometry}"
+                Material="{Binding Material}"
+                Transform="{Binding Transform}" />
         </DataTemplate>
     </Window.Resources>
     <Grid x:Name="grid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <hx:Viewport3DX x:Name="Viewport" EffectsManager="{Binding ElementName=grid, Path = DataContext.EffectsManager}" ShowFrameRate="True" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <hx:Viewport3DX
+            x:Name="Viewport"
+            EffectsManager="{Binding ElementName=grid, Path=DataContext.EffectsManager}"
+            EnableD2DRendering="False"
+            EnableSwapChainRendering="True">
             <hx:AmbientLight3D Color="White" />
-            <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
+            <hx:DirectionalLight3D Direction="-2,-5,-2" />
             <hx:Element3DPresenter Content="{Binding ModelGroup}" />
         </hx:Viewport3DX>
-        <Label x:Name="DebugLabel" Content="{Binding debugLabel}" HorizontalAlignment="Center" Margin="400,0,395,20" VerticalAlignment="Bottom" Height="38" Width="157"/>
+        <Label
+            x:Name="DebugLabel"
+            Width="157"
+            Height="38"
+            Margin="400,0,395,20"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Content="{Binding DebugLabel}" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Slider
+                Width="500"
+                LargeChange="1"
+                Maximum="{Binding EndTime}"
+                SmallChange="0.01"
+                Value="{Binding CurrTime}" />
+            <Label Content="{Binding EndTime}" />
+            <Button Command="{Binding PlayCommand}" Width="80">
+                Play
+            </Button>
+            <Label>Time:</Label>
+            <Label Content="{Binding CurrTime}" />
+        </StackPanel>
     </Grid>
 </Window>

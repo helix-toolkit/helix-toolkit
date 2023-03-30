@@ -34,13 +34,17 @@ namespace HelixToolkit.UWP
             public Model.Scene.SceneNode Node; // Used for scene graph based node animation
             public FastList<Keyframe> KeyFrames;
         }
+        public interface IKeyFrame
+        {
+            float Time { get; }       
+        }
 
-        public struct Keyframe
+        public struct Keyframe : IKeyFrame
         {
             public Vector3 Translation;
             public Quaternion Rotation;
             public Vector3 Scale;
-            public float Time;
+            public float Time { set; get; }
             public int BoneIndex;// Used only for array based bones
             public Matrix ToTransformMatrix()
             {
@@ -48,10 +52,10 @@ namespace HelixToolkit.UWP
             }
         }
 
-        public struct MorphTargetKeyframe
+        public struct MorphTargetKeyframe : IKeyFrame
         {
             public float Weight;
-            public float Time;
+            public float Time { set; get; }
             public int Index;
         }
 

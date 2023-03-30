@@ -22,10 +22,6 @@ namespace HelixToolkit.UWP
     {
         public class NodeAnimationUpdater : IAnimationUpdater
         {
-            private struct IndexTime
-            {
-                public int Index;
-            }
 
             public string Name
             {
@@ -37,13 +33,12 @@ namespace HelixToolkit.UWP
                 get;
             }
 
-            public float Speed { set; get; } = 1.0f;
+            public float StartTime => Animation.StartTime;
 
-            private long currentTime;
-            private IndexTime[] keyframeIndices;
-            private bool isStartFrame = false;
+            public float EndTime => Animation.EndTime;
             private bool changed = false;
             private float previousTimeElapsed = float.MinValue;
+            private readonly List<Model.Scene.SceneNode> animationRoots = new List<Model.Scene.SceneNode>();
 
             public IList<NodeAnimation> NodeCollection
             {
@@ -59,40 +54,76 @@ namespace HelixToolkit.UWP
             {
                 Animation = animation;
                 Name = animation.Name;
-                keyframeIndices = new IndexTime[NodeCollection.Count];
+                CreateAnimationRoots();
             }
 
-            public void Update(long timeStamp, long frequency)
+            private void CreateAnimationRoots()
             {
-                if (currentTime == 0)
+                var nodeHash = new HashSet<Model.Scene.SceneNode>(Animation.NodeAnimationCollection.Select(x => x.Node));
+                var roots = new HashSet<Model.Scene.SceneNode>();
+                foreach (var node in Animation.NodeAnimationCollection.Select(x => x.Node))
                 {
-                    currentTime = timeStamp;
-                    SetToStart();
-                    UpdateBoneSkinMesh();
+                    var prev = node;
+                    foreach (var n in node.TraverseUp())
+                    {
+                        if (!nodeHash.Contains(n))
+                        {
+                            roots.Add(prev);
+                            break;
+                        }
+                        prev = n;
+                    }
+                }
+                animationRoots.Clear();
+                animationRoots.AddRange(roots);
+            }
+
+            public void Update(float timeStamp, long frequency)
+            {
+                var timeSec = timeStamp / frequency;
+                if (timeSec < StartTime)
+                {
                     return;
                 }
 
-                var timeElapsed = (float)Math.Max(0, timeStamp - currentTime) / frequency * Speed;
+                if (timeSec == StartTime)
+                {
+                    SetToStart();
+                    return;
+                }
 
-                if (timeElapsed >= Animation.EndTime)
+                if (StartTime == EndTime)
+                {
+                    return;
+                }
+
+                var timeElapsed = timeSec - StartTime;
+                if (previousTimeElapsed == timeElapsed)
+                {
+                    return;
+                }
+
+                if (timeElapsed > Animation.EndTime)
                 {
                     switch (RepeatMode)
                     {
                         case AnimationRepeatMode.PlayOnce:
-                            isStartFrame = false;
-                            SetToStart();
-                            UpdateBoneSkinMesh();
-                            return;
+                            {
+                                SetToStart();
+                                return;
+                            }
                         case AnimationRepeatMode.PlayOnceHold:
-                            timeElapsed = Animation.EndTime;
-                            break;
+                            {
+                                timeElapsed = Animation.EndTime;
+                                break;
+                            }
                         case AnimationRepeatMode.Loop:
-                            timeElapsed = timeElapsed % Animation.EndTime;
-                            break;
+                            {
+                                timeElapsed = timeElapsed % (EndTime - StartTime) + StartTime;
+                                break;
+                            }
                     }
                 }
-                if (timeElapsed < previousTimeElapsed)
-                    Array.Clear(keyframeIndices, 0, keyframeIndices.Length);
                 previousTimeElapsed = timeElapsed;
                 UpdateNodes(timeElapsed);
                 UpdateBoneSkinMesh();
@@ -102,6 +133,10 @@ namespace HelixToolkit.UWP
             {
                 if (Animation.HasBoneSkinMeshes && changed)
                 {
+                    foreach (var root in animationRoots)
+                    {
+                        root.UpdateAllTransformMatrix();
+                    }
                     foreach (var m in Animation.BoneSkinMeshes)
                     {
                         if (m.IsRenderable && !m.HasBoneGroup)// Do not update if has a bone group. Update the group only
@@ -143,65 +178,48 @@ namespace HelixToolkit.UWP
                     var n = NodeCollection[i];
                     var count = n.KeyFrames.Count; // Make sure to use this count
                     var frames = n.KeyFrames.Items;
-                    ref var idxTime = ref keyframeIndices[i];
-                    while (idxTime.Index < count - 1 && timeElapsed > frames[idxTime.Index + 1].Time)//check if should move to next time frame
+                    var idx = AnimationUtils.FindKeyFrame(timeElapsed, frames);
+                    if (idx < 0)
                     {
-                        ++idxTime.Index;
+                        n.Node.ModelMatrix = Matrix.Identity;
+                        continue;
                     }
-                    ref var currFrame = ref frames[idxTime.Index];
-                    if (count == 1)
+                    ref var currFrame = ref frames[idx];
+                    if (currFrame.Time > timeElapsed && idx == 0)
+                    {
+                        continue;
+                    }
+                    Debug.Assert(currFrame.Time <= timeElapsed);
+                    if (count == 1 || idx == frames.Length - 1)
                     {
                         n.Node.ModelMatrix = Matrix.Scaling(currFrame.Scale) *
                                 Matrix.RotationQuaternion(currFrame.Rotation) *
                                 Matrix.Translation(currFrame.Translation);
+                        continue;
                     }
-                    else
-                    {
-                        ref var nextFrame = ref frames[idxTime.Index + 1];
-                        var diff = timeElapsed - currFrame.Time;
-                        var length = nextFrame.Time - currFrame.Time;
-                        var amount = diff / length;
-                        var transform = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
-                                    Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount)) *
-                                    Matrix.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
-                        n.Node.ModelMatrix = transform;
-                    }
+                    ref var nextFrame = ref frames[idx + 1];
+                    Debug.Assert(nextFrame.Time >= timeElapsed);
+                    var diff = timeElapsed - currFrame.Time;
+                    var length = nextFrame.Time - currFrame.Time;
+                    var amount = diff / length;
+                    var transform = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
+                                Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount)) *
+                                Matrix.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
+                    n.Node.ModelMatrix = transform;
                 }
                 changed = true;
             }
 
             public void Reset()
             {
-                Array.Clear(keyframeIndices, 0, keyframeIndices.Length);
-                currentTime = 0;
-                changed = false;
-                isStartFrame = false;
-                previousTimeElapsed = float.MinValue;
+                SetToStart();
             }
 
             private void SetToStart()
             {
-                if (isStartFrame)
-                {
-                    return;
-                }
-                for (var i = 0; i < NodeCollection.Count; ++i)
-                {
-                    var n = NodeCollection[i];
-                    var count = n.KeyFrames.Count; // Make sure to use this count
-                    if (count == 0)
-                    {
-                        //n.Node.ModelMatrix = Matrix.Identity;
-                        continue;
-                    }
-                    var frames = n.KeyFrames.Items;
-                    ref var currFrame = ref frames[0];
-                    n.Node.ModelMatrix = Matrix.Scaling(currFrame.Scale) *
-                            Matrix.RotationQuaternion(currFrame.Rotation) *
-                            Matrix.Translation(currFrame.Translation);
-                }
-                isStartFrame = true;
-                changed = true;
+                previousTimeElapsed = float.MinValue;
+                UpdateNodes(0);
+                UpdateBoneSkinMesh();
             }
         }
     }

@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 #if !NETFX_CORE
@@ -34,11 +35,6 @@ namespace HelixToolkit.UWP
                 get;
             }
 
-            public int CurrentRangeIndex
-            {
-                private set; get;
-            }
-
             public IList<Bone> Bones
             {
                 get;
@@ -49,17 +45,9 @@ namespace HelixToolkit.UWP
                 set; get;
             } = AnimationRepeatMode.PlayOnce;
 
-            public float StartTime
-            {
-                get;
-            }
+            public float StartTime => Animation.StartTime;
 
-            public float EndTime
-            {
-                get;
-            }
-
-            public float Speed { set; get; } = 1.0f;
+            public float EndTime => Animation.EndTime;
 
             private readonly Keyframe?[] tempKeyframes;
 
@@ -67,11 +55,9 @@ namespace HelixToolkit.UWP
 
             private readonly Matrix[] currentBones;
 
-            private readonly List<int> timeRange = new List<int>();
+            private readonly List<Keyframe>[] keyframes;
 
             private readonly int BoneCount;
-
-            private long currentTime;
             /// <summary>
             /// Initializes a new instance of the <see cref="KeyFrameUpdater"/> class.
             /// </summary>
@@ -86,19 +72,15 @@ namespace HelixToolkit.UWP
                 tempBones = new Matrix[BoneCount];
                 currentBones = new Matrix[BoneCount];
                 Bones = bones;
-                EndTime = animation.EndTime;
-                StartTime = animation.StartTime;
-                var time = animation.Keyframes[0].Time;
-                timeRange.Add(0);
-                for (var i = 1; i < animation.Keyframes.Count; ++i)
+                keyframes = new List<Keyframe>[BoneCount];
+                for (int i = 0; i < BoneCount; ++i)
                 {
-                    if (time < animation.Keyframes[i].Time)
-                    {
-                        time = animation.Keyframes[i].Time;
-                        timeRange.Add(i);
-                    }
+                    keyframes[i] = new List<Keyframe>(animation.Keyframes.Count / BoneCount);
                 }
-                timeRange.Add(animation.Keyframes.Count);
+                foreach(var frame in animation.Keyframes.OrderBy(x => x.Time))
+                {
+                    keyframes[frame.BoneIndex].Add(frame);
+                }
             }
 
             /// <summary>
@@ -106,19 +88,24 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="timeStamp">The time stamp (ticks).</param>
             /// <param name="frequency">The frequency (ticks per second).</param>
-            public void Update(long timeStamp, long frequency)
+            public void Update(float timeStamp, long frequency)
             {
                 if (Animation.BoneSkinMeshes == null || Animation.BoneSkinMeshes.Count == 0)
                 {
                     return;
                 }
-                if (currentTime == 0)
+                var timeSec = timeStamp / frequency;
+                if (timeSec < StartTime)
                 {
-                    currentTime = timeStamp;
+                    return;
                 }
-                var timeElpased = (float)Math.Max(0, timeStamp - currentTime) / frequency * Speed;
+                if (StartTime == EndTime)
+                {
+                    return;
+                }
+                var timeElapsed = timeSec - StartTime;
                 var boneNode = Animation.BoneSkinMeshes[0];
-                if (timeElpased > Animation.EndTime)
+                if (timeElapsed > Animation.EndTime)
                 {
                     switch (RepeatMode)
                     {
@@ -127,51 +114,33 @@ namespace HelixToolkit.UWP
                         case AnimationRepeatMode.PlayOnceHold:
                             OutputBones(boneNode);
                             return;
+                        case AnimationRepeatMode.Loop:
+                            timeElapsed = timeElapsed % EndTime + StartTime;
+                            return;
                     }
                 }
-                //Search for time range
-                for (var i = CurrentRangeIndex + 1; i < timeRange.Count - 1; ++i)
+                foreach(var frames in keyframes)
                 {
-                    if (Animation.Keyframes[timeRange[i]].Time > timeElpased)
+                    var idx = AnimationUtils.FindKeyFrame(timeElapsed, frames);
+                    ref var currFrame = ref frames.GetInternalArray()[idx]; 
+                    if (currFrame.Time > timeElapsed && idx == 0)
                     {
-                        CurrentRangeIndex = i - 1;
-                        break;
+                        continue;
                     }
-                }
-
-                var start = timeRange[CurrentRangeIndex];
-                var end = timeRange[CurrentRangeIndex + 1];
-                for (var i = start; i < end; ++i)
-                {
-                    var frame = Animation.Keyframes[i];
-                    tempBones[frame.BoneIndex] = frame.ToTransformMatrix();
-                    tempKeyframes[frame.BoneIndex] = frame;
-                }
-                if (timeElpased > Animation.Keyframes[start].Time)
-                {
-                    var startNext = end;
-                    var endNext = timeRange[Math.Min(CurrentRangeIndex + 2, timeRange.Count - 1)];
-                    // Calculate time difference between frames
-                    var frameLength = Animation.Keyframes[startNext].Time - Animation.Keyframes[start].Time;
-                    var timeDiff = timeElpased - Animation.Keyframes[start].Time;
-                    var amount = timeDiff / frameLength;
-                    for (var i = startNext; i < endNext; ++i)
+                    Debug.Assert(currFrame.Time <= timeElapsed);
+                    if (frames.Count == 1 || idx == frames.Count - 1)
                     {
-                        var nextFrame = Animation.Keyframes[i];
-                        var currFrame = tempKeyframes[nextFrame.BoneIndex];
-                        if (currFrame.HasValue)
-                        {
-                            // Perform interpolation and reconstitute matrix
-                            tempBones[nextFrame.BoneIndex] =
-                                Matrix.Scaling(Vector3.Lerp(currFrame.Value.Scale, nextFrame.Scale, amount)) *
-                                Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Value.Rotation, nextFrame.Rotation, amount)) *
-                                Matrix.Translation(Vector3.Lerp(currFrame.Value.Translation, nextFrame.Translation, amount));
-                        }
-                        else
-                        {
-                            continue;
-                        }
+                        tempBones[currFrame.BoneIndex] = currFrame.ToTransformMatrix();
+                        continue;
                     }
+                    ref var nextFrame = ref frames.GetInternalArray()[idx + 1];
+                    Debug.Assert(nextFrame.Time >= timeElapsed);
+                    var diff = timeElapsed - currFrame.Time;
+                    var length = nextFrame.Time - currFrame.Time;
+                    var amount = diff / length;
+                    tempBones[currFrame.BoneIndex] = Matrix.Scaling(Vector3.Lerp(currFrame.Scale, nextFrame.Scale, amount)) *
+                                Matrix.RotationQuaternion(Quaternion.Slerp(currFrame.Rotation, nextFrame.Rotation, amount)) *
+                                Matrix.Translation(Vector3.Lerp(currFrame.Translation, nextFrame.Translation, amount));
                 }
 
                 // Apply parent bone transforms
@@ -192,15 +161,6 @@ namespace HelixToolkit.UWP
                     currentBones[i] = Bones[i].InvBindPose * tempBones[i];
                 }
                 OutputBones(boneNode);
-
-                if (RepeatMode == AnimationRepeatMode.Loop)
-                {
-                    if (timeElpased > EndTime)
-                    {
-                        CurrentRangeIndex = 0;
-                        currentTime = 0;
-                    }
-                }
             }
 
 
@@ -218,8 +178,7 @@ namespace HelixToolkit.UWP
 
             public void Reset()
             {
-                CurrentRangeIndex = 0;
-                currentTime = 0;
+                
             }
         }
     }
