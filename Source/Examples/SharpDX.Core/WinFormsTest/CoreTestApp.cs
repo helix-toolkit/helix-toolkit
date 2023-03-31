@@ -375,7 +375,8 @@ namespace WinFormsTest
 
                 if (options.PlayAnimation && options.AnimationUpdater != null)
                 {
-                    options.AnimationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+                    var elapsed = Stopwatch.GetTimestamp() - options.InitTimeStamp;
+                    options.AnimationUpdater.Update(elapsed, Stopwatch.Frequency);
                 }
 #if TESTADDREMOVE
                 if (groupSphere.Items.Count > 0 && !isAddingNode)
