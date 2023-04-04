@@ -227,6 +227,7 @@ namespace WinFormsTest
                 ImGui.Text($"Animations: {animationNames.Length}");
                 if(ImGui.Combo(" ", ref currentSelectedAnimation, animationNames, animationNames.Length))
                 {
+                    options.InitTimeStamp = 0;
                     if(currentSelectedAnimation >= 0 && currentSelectedAnimation < animationNames.Length)
                     {
                         options.AnimationUpdater = animationUpdaters[currentSelectedAnimation];

@@ -27,9 +27,9 @@ namespace BoneSkinDemo
         {
             set
             {
-                if(SetValue(ref showWireframe, value))
+                if (SetValue(ref showWireframe, value))
                 {
-                    foreach(var m in boneSkinNodes)
+                    foreach (var m in boneSkinNodes)
                     {
                         m.RenderWireframe = value;
                     }
@@ -46,9 +46,9 @@ namespace BoneSkinDemo
         {
             set
             {
-                if(SetValue(ref showSkeleton, value))
+                if (SetValue(ref showSkeleton, value))
                 {
-                    foreach(var m in skeletonNodes)
+                    foreach (var m in skeletonNodes)
                     {
                         m.Visible = value;
                     }
@@ -83,7 +83,7 @@ namespace BoneSkinDemo
         {
             set
             {
-                if(SetValue(ref selectedAnimation, value))
+                if (SetValue(ref selectedAnimation, value))
                 {
                     reset = true;
                     var curr = scene.Animations.Where(x => x.Name == value).FirstOrDefault();
@@ -99,7 +99,7 @@ namespace BoneSkinDemo
         {
             set
             {
-                if(SetValue(ref selectedRepeatMode, value))
+                if (SetValue(ref selectedRepeatMode, value))
                 {
                     reset = true;
                     if (animationUpdater != null) animationUpdater.RepeatMode = value;
@@ -120,6 +120,7 @@ namespace BoneSkinDemo
 
         private const int NumSegments = 100;
         private const int Theta = 24;
+        private long startAniTime = 0;
         private CancellationTokenSource cts = new CancellationTokenSource();
         private SynchronizationContext context = SynchronizationContext.Current;
 
@@ -151,7 +152,7 @@ namespace BoneSkinDemo
             HitLineGeometry.Indices.Add(0);
             HitLineGeometry.Indices.Add(1);
             LoadFile();
-            compositeHelper.Rendering += CompositeHelper_Rendering;           
+            compositeHelper.Rendering += CompositeHelper_Rendering;
         }
 
         private void LoadFile()
@@ -163,16 +164,16 @@ namespace BoneSkinDemo
             scene = importer.Load("Solus_The_Knight.fbx");
             ModelGroup.AddNode(scene.Root);
             Animations = scene.Animations.Select(x => x.Name).ToArray();
-            foreach(var node in scene.Root.Items.Traverse(false))
+            foreach (var node in scene.Root.Items.Traverse(false))
             {
-                if(node is BoneSkinMeshNode m)
-                {                     
+                if (node is BoneSkinMeshNode m)
+                {
                     if (!m.IsSkeletonNode)
                     {
                         m.IsThrowingShadow = true;
                         m.WireframeColor = new SharpDX.Color4(0, 0, 1, 1);
                         boneSkinNodes.Add(m);
-                        m.MouseDown += M_MouseDown;
+                        m.MouseDown += HandleMouseDown;
                     }
                     else
                     {
@@ -183,7 +184,7 @@ namespace BoneSkinDemo
             }
         }
 
-        private void M_MouseDown(object sender, SceneNodeMouseDownArgs e)
+        private void HandleMouseDown(object sender, SceneNodeMouseDownArgs e)
         {
             var result = e.HitResult;
             HitLineGeometry.Positions[0] = result.PointHit - result.NormalAtHit * 0.5f;
@@ -200,10 +201,16 @@ namespace BoneSkinDemo
                     animationUpdater.Reset();
                     animationUpdater.RepeatMode = SelectedRepeatMode;
                     reset = false;
+                    startAniTime = 0;
                 }
                 else
                 {
-                    animationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+                    if (startAniTime == 0)
+                    {
+                        startAniTime = Stopwatch.GetTimestamp();
+                    }
+                    var elapsed = Stopwatch.GetTimestamp() - startAniTime;
+                    animationUpdater.Update(elapsed, Stopwatch.Frequency);
                 }
             }
         }

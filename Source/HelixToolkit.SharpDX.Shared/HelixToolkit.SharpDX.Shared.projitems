@@ -137,6 +137,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\MorphTargetKeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\NodeAnimationUpdater.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)model\animations\Utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMath.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMode.cs" />

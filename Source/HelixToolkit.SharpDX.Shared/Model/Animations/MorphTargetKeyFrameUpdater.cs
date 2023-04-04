@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 #if !NETFX_CORE
@@ -25,130 +26,124 @@ namespace HelixToolkit.UWP
             {
                 set; get;
             } = string.Empty;
-            public Animation animation
+            public Animation Animation
             {
                 get;
             }
-            public IList<float> weights
+            public IList<float> Weights
             {
                 get;
             }
-            public float startTime
+            public float StartTime
             {
                 get;
             }
-            public float endTime
+            public float EndTime
             {
                 get;
             }
             public AnimationRepeatMode RepeatMode { get; set; } = AnimationRepeatMode.PlayOnce;
 
-            public float Speed { set; get; } = 1.0f;
-
-            private List<MorphTargetKeyframe> kfs;
-            private int[][] targetKeyframeIds;
-            private int[] prevKeyframes;
-            private double timeOffset = 0;
+            private readonly FastList<MorphTargetKeyframe>[] kfs;
 
             public MorphTargetKeyFrameUpdater(Animation animation, IList<float> weights)
             {
-                this.animation = animation;
+                this.Animation = animation;
                 Name = animation.Name;
-                this.weights = weights;
-                startTime = animation.StartTime;
-                endTime = animation.EndTime;
-                kfs = animation.MorphTargetKeyframes;
-
-                //Setup in groups of weight id and sort by time. This is somewhat slow, look into better solutions
-                targetKeyframeIds = new int[weights.Count][];
-                for (var i = 0; i < targetKeyframeIds.Length; i++)
+                this.Weights = weights;
+                StartTime = animation.StartTime;
+                EndTime = animation.EndTime;
+                kfs = new FastList<MorphTargetKeyframe>[weights.Count];
+                for (var i = 0; i < kfs.Length; ++i)
                 {
-                    var ids = new FastList<int>(kfs.Count); //Quick initial cap
-                    for (var j = 0; j < kfs.Count; j++)
-                    {
-                        if (kfs[j].Index == i)
-                            ids.Add(j);
-                    }
-                    targetKeyframeIds[i] = ids.OrderBy(n => kfs[n].Time).ToArray();
+                    kfs[i] = new FastList<MorphTargetKeyframe>(animation.MorphTargetKeyframes.Count / weights.Count);
                 }
-
-                //Used to cache previous keyframe id's per morph target
-                prevKeyframes = new int[weights.Count];
+                foreach (var ani in animation.MorphTargetKeyframes.OrderBy(x => x.Time))
+                {
+                    kfs[ani.Index].Add(ani);
+                }
+                foreach (var ani in kfs)
+                {
+                    Debug.Assert(ani.First().Time < ani.Last().Time);
+                }
             }
 
-            public void Update(long timeStamp, long frequency)
+            public void Update(float timeStamp, long frequency)
             {
-                //Find time(t)
-                var globalTime = (double)timeStamp / frequency;
-                if (timeOffset == 0)
-                    timeOffset = globalTime;
-                var t = (float)(globalTime - timeOffset) * Speed;
-
-                //Handle repeat mode
-                if (RepeatMode == AnimationRepeatMode.Loop)
-                    t = t % (startTime - endTime) + startTime;
-                else if (RepeatMode == AnimationRepeatMode.PlayOnce && t > endTime)
-                    return;
-                else if (RepeatMode == AnimationRepeatMode.PlayOnceHold)
-                    t = Clamp(t, startTime, endTime);
-
-                //Interpolate between each individual weight's keyframe pairs at current time
-                for (var i = 0; i < targetKeyframeIds.Length; i++)
+                if (StartTime == EndTime || kfs.Length == 0)
                 {
-                    //Skip if no keyframes for weight id
-                    if (targetKeyframeIds[i].Length == 0)
+                    return;
+                }
+                //Find time(t)
+                var timeSec = timeStamp / frequency;
+                if (timeSec < StartTime)
+                {
+                    return;
+                }
+                var elapsed = (float)(timeSec - StartTime);
+                if (elapsed > EndTime)
+                {
+                    switch (RepeatMode)
+                    {
+                        case AnimationRepeatMode.Loop:
+                            {
+                                elapsed = elapsed % (EndTime - StartTime) + StartTime;
+                                break;
+                            }
+                        case AnimationRepeatMode.PlayOnce:
+                            {
+                                SetWeights(StartTime);
+                                return;
+                            }
+                        case AnimationRepeatMode.PlayOnceHold:
+                            {
+                                elapsed = EndTime;
+                                break;
+                            }
+                    }
+                }
+
+                SetWeights(elapsed);
+            }
+
+            private void SetWeights(float timeElapsed)
+            {
+                //Interpolate between each individual weight's keyframe pairs at current time
+                for (var i = 0; i < kfs.Length; ++i)
+                {
+                    var frames = kfs[i];
+                    var idx = AnimationUtils.FindKeyFrame(timeElapsed, frames);
+                    if (idx < 0)
+                    {
+                        Weights[i] = 0;
                         continue;
-
-                    //Locate keyframe where t is below it's set time. starting from recent kf and wrapping to search all
-                    var id = -1;
-                    var len = targetKeyframeIds[i].Length;
-                    for (var j = 0; j < len; j++)
-                    {
-                        var kfId = (j + prevKeyframes[i]) % len;
-                        if (kfs[targetKeyframeIds[i][kfId]].Time > t)
-                        {
-                            //Ensure this is only the first kf larger than t
-                            if (kfId != 0 && kfs[targetKeyframeIds[i][kfId - 1]].Time > t)
-                                continue;
-
-                            prevKeyframes[i] = kfId;
-                            id = kfId;
-                            break;
-                        }
                     }
-
-                    //Set mt weight to end keyframes if id is on end, otherwise interpolate
-                    if (id == 0)
-                        weights[i] = kfs[targetKeyframeIds[i][0]].Weight;
-                    else if (id == -1)
-                        weights[i] = kfs[targetKeyframeIds[i].Last()].Weight;
-                    else
+                    ref var currFrame = ref frames.GetInternalArray()[idx];
+                    if (currFrame.Time > timeElapsed && idx == 0)
                     {
-                        //Interpolate between id-1 and 1 based on time between
-                        var a = kfs[targetKeyframeIds[i][id - 1]];
-                        var b = kfs[targetKeyframeIds[i][id]];
-
-                        var k = (t - a.Time) / (b.Time - a.Time);
-                        weights[i] = a.Weight + ((b.Weight - a.Weight) * k);
+                        continue;
                     }
+                    Debug.Assert(currFrame.Time <= timeElapsed);
+                    if (frames.Count == 1 || idx == frames.Count - 1)
+                    {
+                        Weights[i] = currFrame.Weight;
+                        continue;
+                    }
+                    ref var nextFrame = ref frames.GetInternalArray()[idx + 1];
+                    Debug.Assert(nextFrame.Time >= timeElapsed);
+                    var diff = timeElapsed - currFrame.Time;
+                    var length = nextFrame.Time - currFrame.Time;
+                    var ratio = diff / length;
+                    Weights[i] = currFrame.Weight + (nextFrame.Weight - currFrame.Weight) * ratio;
                 }
 
                 //Mark weights updated
-                (animation.RootNode as Model.Scene.BoneSkinMeshNode)?.WeightUpdated();
+                (Animation.RootNode as Model.Scene.BoneSkinMeshNode)?.WeightUpdated();
             }
 
             public void Reset()
             {
-                timeOffset = 0;
-            }
-
-            private float Clamp(float x, float a, float b)
-            {
-                if (x > a)
-                    return a;
-                if (x < b)
-                    return b;
-                return x;
+                Update(0, 1);
             }
         }
     }

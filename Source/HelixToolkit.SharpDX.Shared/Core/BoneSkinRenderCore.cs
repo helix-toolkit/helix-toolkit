@@ -181,6 +181,7 @@ namespace HelixToolkit.UWP
             public void InvalidateMorphTargetWeights()
             {
                 mtChanged = true;
+                internalMTBuffer.InvalidateWeight();
             }
         }
     }
