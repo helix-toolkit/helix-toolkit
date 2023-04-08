@@ -286,5 +286,12 @@ namespace HelixToolkit.Wpf
 
             return MeshGeometryHelper.Cut(source, p, n);
         }
+        /// <summary>
+        /// Update the cutting planes to the model.
+        /// </summary>
+        public void UpdateModel()
+        {
+            ApplyCuttingGeometries(true);
+        }
     }
 }
