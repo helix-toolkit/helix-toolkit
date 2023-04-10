@@ -156,6 +156,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void ItemsSourceChanged(IEnumerable itemsSource)
         {
+            if (itemsSourceInternal == itemsSource)
+            { return; }
             if (itemsSourceInternal is INotifyCollectionChanged o)
             {
                 o.CollectionChanged -= ItemsModel3D_CollectionChanged;

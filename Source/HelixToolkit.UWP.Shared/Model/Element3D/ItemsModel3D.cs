@@ -258,11 +258,12 @@ namespace HelixToolkit.UWP
 
         private void OnItemsSourceChanged(IEnumerable itemsSource)
         {
+            if (itemsSourceInternal == itemsSource)
+            { return; }
             if (itemsSourceInternal is INotifyCollectionChanged o)
             {
                 o.CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
-            itemsSourceInternal = null;
             foreach (Element3D item in Children)
             {
                 item.DataContext = null;

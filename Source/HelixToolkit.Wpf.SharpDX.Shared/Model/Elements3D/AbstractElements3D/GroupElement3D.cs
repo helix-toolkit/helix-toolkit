@@ -250,6 +250,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OnItemsSourceChanged(IEnumerable<Element3D> itemsSource)
         {
+            if (itemsSourceInternal == itemsSource) 
+            { return; }
             if (itemsSourceInternal != null)
             {
                 if (itemsSourceInternal is INotifyCollectionChanged s)

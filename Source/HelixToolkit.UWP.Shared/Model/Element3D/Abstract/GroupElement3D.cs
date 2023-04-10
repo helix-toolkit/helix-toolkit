@@ -244,6 +244,8 @@ namespace HelixToolkit.UWP
 
         private void OnItemsSourceChanged(IList<Element3D> itemsSource)
         {
+            if (itemsSourceInternal == itemsSource)
+            { return; }
             if (itemsSourceInternal != null)
             {
                 if (itemsSourceInternal is INotifyCollectionChanged s)
