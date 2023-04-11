@@ -39,7 +39,10 @@ namespace HelixToolkit.UWP
                 new PropertyMetadata(null,
                     (d, e) =>
                     {
-                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
+                        if (d is GroupElement3D g && g.IsAttached)
+                        {
+                            g.OnItemsSourceChanged(e.NewValue as IList<Element3D>);
+                        }
                     }));
 
         /// <summary>
@@ -134,6 +137,24 @@ namespace HelixToolkit.UWP
         public GroupElement3D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
+            SceneNode.Attached += SceneNode_Attached;
+            SceneNode.Detached += SceneNode_Detached;
+        }
+
+        private void SceneNode_Attached(object sender, EventArgs e)
+        {
+            if (ItemsSource != null)
+            {
+                OnItemsSourceChanged(ItemsSource);
+            }
+        }
+
+        private void SceneNode_Detached(object sender, EventArgs e)
+        {
+            if (itemsSourceInternal != null)
+            {
+                OnItemsSourceChanged(null);
+            }
         }
 
         protected override void OnApplyTemplate()
@@ -223,15 +244,13 @@ namespace HelixToolkit.UWP
 
         private void OnItemsSourceChanged(IList<Element3D> itemsSource)
         {
+            if (itemsSourceInternal == itemsSource)
+            { return; }
             if (itemsSourceInternal != null)
             {
                 if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
                     s.CollectionChanged -= S_CollectionChanged;
-                }
-                foreach (var child in itemsSourceInternal)
-                {
-                    Children.Remove(child);
                 }
             }
             if (itemsSourceInternal == null && itemsSource != null && Children.Count > 0)
@@ -287,29 +306,6 @@ namespace HelixToolkit.UWP
                     Children.Move(e.OldStartingIndex, e.NewStartingIndex);
                     break;
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (itemsSourceInternal is INotifyCollectionChanged s)
-                {
-                    s.CollectionChanged -= S_CollectionChanged;
-                }
-                if (itemsSourceInternal != null)
-                {
-                    foreach (var item in itemsSourceInternal)
-                    {
-                        item.Dispose();
-                    }
-                }
-                foreach (var child in Children)
-                {
-                    child.Dispose();
-                }
-            }
-            base.Dispose(disposing);
         }
     }
 }
