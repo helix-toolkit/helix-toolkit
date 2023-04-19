@@ -706,13 +706,13 @@ namespace HelixToolkit.Wpf
         }
 
         /// <summary>
-        /// Adds a cube face.
+        /// Add a cube face.
         /// </summary>
+        /// <param name="element"></param>
         /// <param name="normal"></param>
         /// <param name="up"></param>
         /// <param name="background"></param>
         /// <param name="text"></param>
-        /// <returns></returns>
         private void AddCubeFace(ModelUIElement3D element, Vector3D normal, Vector3D up, Brush background, string text)
         {
             Material material = CreateTextMaterial(background, text);
