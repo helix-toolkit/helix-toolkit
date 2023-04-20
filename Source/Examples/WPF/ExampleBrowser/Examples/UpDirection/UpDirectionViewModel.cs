@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UpDirectionViewModel.cs" company="Helix Toolkit">
+//   Copyright (c) 2014 Helix Toolkit contributors
+// </copyright>
+// <summary>
+//   Provides a ViewModel for the Main window.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 
 namespace UpDirectionDemo
 {
-
     public class UpDirectionViewModel : INotifyPropertyChanged
     {
         Vector3D _upModel = new Vector3D(0, 1, 0);
