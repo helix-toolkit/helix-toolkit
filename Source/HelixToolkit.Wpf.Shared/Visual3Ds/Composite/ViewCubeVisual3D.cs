@@ -31,7 +31,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty FrontTextProperty = DependencyProperty.Register(
             "FrontText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("F", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(0, _frontBackBrush, e.NewValue == null ? "" : (string)e.NewValue);
+                var brush = (d as ViewCubeVisual3D).GetCubefaceColor(0);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(0, brush, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -40,7 +41,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty BackTextProperty = DependencyProperty.Register(
             "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(1, _frontBackBrush, e.NewValue == null ? "" : (string)e.NewValue);
+                var brush = (d as ViewCubeVisual3D).GetCubefaceColor(1);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(1, brush, e.NewValue == null ? "" : (string)e.NewValue);
             }));
         /// <summary>
         /// Identifies the <see cref="LeftText"/> dependency property.
@@ -48,7 +50,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty LeftTextProperty = DependencyProperty.Register(
             "LeftText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("L", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(2, _leftRightBrush, e.NewValue == null ? "" : (string)e.NewValue);
+                var brush = (d as ViewCubeVisual3D).GetCubefaceColor(2);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(2, brush, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -57,7 +60,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty RightTextProperty = DependencyProperty.Register(
             "RightText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("R", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(3, _leftRightBrush, e.NewValue == null ? "" : (string)e.NewValue);
+                var brush = (d as ViewCubeVisual3D).GetCubefaceColor(3);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(3, brush, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -66,7 +70,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty TopTextProperty = DependencyProperty.Register(
             "TopText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("U", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(4, _upDownBrush, e.NewValue == null ? "" : (string)e.NewValue);
+                var brush = (d as ViewCubeVisual3D).GetCubefaceColor(4);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(4, brush, e.NewValue == null ? "" : (string)e.NewValue);
             }));
         /// <summary>
         /// Identifies the <see cref="BottomText"/> dependency property.
@@ -74,7 +79,8 @@ namespace HelixToolkit.Wpf
         public static readonly DependencyProperty BottomTextProperty = DependencyProperty.Register(
             "BottomText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("D", (d, e) =>
             {
-                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(5, _upDownBrush, e.NewValue == null ? "" : (string)e.NewValue);
+                var brush = (d as ViewCubeVisual3D).GetCubefaceColor(5);
+                (d as ViewCubeVisual3D).UpdateCubefaceMaterial(5, brush, e.NewValue == null ? "" : (string)e.NewValue);
             }));
 
         /// <summary>
@@ -353,26 +359,14 @@ namespace HelixToolkit.Wpf
         private readonly ModelUIElement3D[] _cubeCornerModels = new ModelUIElement3D[8];//8 corners of cube
         private readonly PieSliceVisual3D _circle = new PieSliceVisual3D();
 
-        private Vector3D _frontVector;
-        private Vector3D _leftVector;
-        private Vector3D _upVector;
-
-        /// <summary>
-        /// The red color
-        /// </summary>
-        private static readonly SolidColorBrush _frontBackBrush = Brushes.Red;
-        /// <summary>
-        /// The green color
-        /// </summary>
-        private static readonly SolidColorBrush _leftRightBrush = Brushes.Green;
-        /// <summary>
-        /// The blue color
-        /// </summary>
-        private static readonly SolidColorBrush _upDownBrush = Brushes.Blue;
 
         private readonly SolidColorBrush _cornerBrush = Brushes.Silver;
         private readonly SolidColorBrush _edgeBrush = Brushes.Silver;
         private readonly SolidColorBrush _highlightBrush = Brushes.CornflowerBlue;
+
+        private Vector3D _frontVector;
+        private Vector3D _leftVector;
+        private Vector3D _upVector;
 
         /// <summary>
         /// Map number cube face to text name of cube.
@@ -540,20 +534,59 @@ namespace HelixToolkit.Wpf
         }
         private Brush GetCubefaceColor(int index)
         {
-            switch (index)
+            double max = Math.Max(Math.Max(ModelUpDirection.X, ModelUpDirection.Y), ModelUpDirection.Z);
+            if (max == ModelUpDirection.Z)
             {
-                case 0:
-                case 1:
-                    return _frontBackBrush;
-                case 2:
-                case 3:
-                    return _leftRightBrush;
-                case 4:
-                case 5:
-                    return _upDownBrush;
-                default:
-                    return Brushes.White;
+                switch (index)
+                {
+                    case 0:
+                    case 1:
+                        return Brushes.Red;
+                    case 2:
+                    case 3:
+                        return Brushes.Green;
+                    case 4:
+                    case 5:
+                        return Brushes.Blue;
+                    default:
+                        return Brushes.White;
+                }
             }
+            else if (max == ModelUpDirection.Y)
+            {
+                switch (index)
+                {
+                    case 0:
+                    case 1:
+                        return Brushes.Blue;
+                    case 2:
+                    case 3:
+                        return Brushes.Red;
+                    case 4:
+                    case 5:
+                        return Brushes.Green;
+                    default:
+                        return Brushes.White;
+                }
+            }
+            else // if (max == ModelUpDirection.X)
+            {
+                switch (index)
+                {
+                    case 0:
+                    case 1:
+                        return Brushes.Green;
+                    case 2:
+                    case 3:
+                        return Brushes.Blue;
+                    case 4:
+                    case 5:
+                        return Brushes.Red;
+                    default:
+                        return Brushes.White;
+                }
+            }
+           
         }
         void CreateCubeEdges()
         {
