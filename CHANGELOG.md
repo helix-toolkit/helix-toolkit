@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 1. Fixed bounding sphere is not properly transformed with non-uniform scaling matrix. (WPF.SharpDX/UWP/WinUI)
 1. Fixed the difference size of ZoomExtends of Viewport3DX between different cameras. (WPF.SharpDX/UWP/WinUI)
 1. Fix memory leak by disposing entire tree if top node is being disposed. (WPF.SharpDX/UWP/WinUI)
+1. Fix missing edge clicking, incorrect model updirection in ViewCubeVisual3d (WPF)
 
 ## [2.23.0]
 
