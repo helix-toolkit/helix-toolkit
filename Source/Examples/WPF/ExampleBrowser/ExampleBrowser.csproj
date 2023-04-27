@@ -182,6 +182,7 @@
     <Compile Include="Examples\TriangularizationDemo\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\UpDirection\UpDirectionViewModel.cs" />
     <Compile Include="Workitems\Workitem10271\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
