@@ -600,7 +600,7 @@ namespace HelixToolkit.Wpf
              *      /  p04     |      /   |
              *  p5 |--------p56------|p6 p37
              *     |    |      |     |    |
-             *     |    |    O +--- -|---------- Y Left
+             *     |    |    O +-----|----------- Y Left
              *     |  p0|_____/_p03__|____|p3
              *    p15  /     /      p26   /
              *     |  /     /        |   /
@@ -685,7 +685,7 @@ namespace HelixToolkit.Wpf
              *      /   |      |      /   |
              *  p5 |-----------------|p6  |
              *     |    |      |     |    |
-             *     |    |    O +--- -|---------- Y Left
+             *     |    |    O +-----|----------- Y Left
              *     |  p0|_____/______|____|p3
              *     |   /     /       |    /
              *     |  /     /        |   /
@@ -860,8 +860,6 @@ namespace HelixToolkit.Wpf
             var faceIndex = Array.IndexOf(_cubeFaceModels, s);
             (s.Model as GeometryModel3D).Material = CreateTextMaterial(GetCubefaceColor(faceIndex), _mapFaceNames[faceIndex]);
         }
-
-
 
         private void EdgesMouseEnters(object sender, MouseEventArgs e)
         {
