@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.24.0]
 
 ### Added
 1. Adding IncreaseSwapchainFPS property for sharpdx wpf viewport for disable/enable FPS increasing feature. (WPF.SharpDX/UWP/WinUI)
