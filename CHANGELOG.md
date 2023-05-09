@@ -1,7 +1,53 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.24.0]
+
+### Added
+1. Adding IncreaseSwapchainFPS property for sharpdx wpf viewport for disable/enable FPS increasing feature. (WPF.SharpDX/UWP/WinUI)
+1. Adds additional 2D offset property for billboards. (WPF.SharpDX/UWP/WinUI)
+
+### Improvement
+1. Simplify topology setting in device context. (WPF.SharpDX/UWP/WinUI)
+1. Adds dedicated thread for processing non-rendering related tasks in DefaultRenderHost. (WPF.SharpDX/UWP/WinUI)
+1. Make the guid setter of ShaderResourceViewProxy public. (WPF.SharpDX/UWP/WinUI)
+1. Imporve GC by remvoing static reference to NullSceneNode in SceneNode. (WPF.SharpDX/UWP/WinUI)
+1. Improve node animation to avoid accumulated time dependency. (WPF.SharpDX/UWP/WinUI)
+
+### Breaking Change
+1. Change animation updater to absolute timestamp based. (WPF.SharpDX/UWP/WinUI)
+
+### Fixed
+1. Fixed HelixToolkit.WinUI package severe memory leak. (WinUI)
+1. Fixed bounding sphere is not properly transformed with non-uniform scaling matrix. (WPF.SharpDX/UWP/WinUI)
+1. Fixed the difference size of ZoomExtends of Viewport3DX between different cameras. (WPF.SharpDX/UWP/WinUI)
+1. Fix memory leak by disposing entire tree if top node is being disposed. (WPF.SharpDX/UWP/WinUI)
+1. Fix missing edge clicking, incorrect model updirection in ViewCubeVisual3d (WPF)
+
+## [2.23.0]
+
+### Added
+1. Adding IncreaseSwapchainFPS property for sharpdx wpf viewport for disable/enable FPS increasing feature. (WPF.SharpDX/UWP/WinUI)
+1. Adds additional 2D offset property for billboards. (WPF.SharpDX/UWP/WinUI)
+
+### Improvement
+1. Simplify topology setting in device context. (WPF.SharpDX/UWP/WinUI)
+1. Adds dedicated thread for processing non-rendering related tasks in DefaultRenderHost. (WPF.SharpDX/UWP/WinUI)
+1. Make the guid setter of ShaderResourceViewProxy public. (WPF.SharpDX/UWP/WinUI)
+1. Imporve GC by remvoing static reference to NullSceneNode in SceneNode. (WPF.SharpDX/UWP/WinUI)
+1. Improve node animation to avoid accumulated time dependency. (WPF.SharpDX/UWP/WinUI)
+
+### Breaking Change
+1. Change animation updater to absolute timestamp based. (WPF.SharpDX/UWP/WinUI)
+
+### Fixed
+1. Fixed HelixToolkit.WinUI package severe memory leak. (WinUI)
+1. Fixed bounding sphere is not properly transformed with non-uniform scaling matrix. (WPF.SharpDX/UWP/WinUI)
+1. Fixed the difference size of ZoomExtends of Viewport3DX between different cameras. (WPF.SharpDX/UWP/WinUI)
+1. Fix memory leak by disposing entire tree if top node is being disposed. (WPF.SharpDX/UWP/WinUI)
+1. Fix missing edge clicking, incorrect model updirection in ViewCubeVisual3d (WPF)
+
+## [2.23.0]
 
 ### Added
 1. Adding IncreaseSwapchainFPS property for sharpdx wpf viewport for disable/enable FPS increasing feature. (WPF.SharpDX/UWP/WinUI)
