@@ -27,50 +27,22 @@ All notable changes to this project will be documented in this file.
 ## [2.23.0]
 
 ### Added
-1. Adding IncreaseSwapchainFPS property for sharpdx wpf viewport for disable/enable FPS increasing feature. (WPF.SharpDX/UWP/WinUI)
-1. Adds additional 2D offset property for billboards. (WPF.SharpDX/UWP/WinUI)
+1. Add feature of enabling rotation/translation/scale control in every axis for TransformManipulator3D (WPF.SharpDX/UWP/WinUI)
+1. Decouple `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf` packages from `HelixToolkit` core library. `HelixToolkit` package will no longer be a dependency for both `HelixToolkit.Wpf` and `HelixToolkit.Core.Wpf`. (WPF)
 
 ### Improvement
-1. Simplify topology setting in device context. (WPF.SharpDX/UWP/WinUI)
-1. Adds dedicated thread for processing non-rendering related tasks in DefaultRenderHost. (WPF.SharpDX/UWP/WinUI)
-1. Make the guid setter of ShaderResourceViewProxy public. (WPF.SharpDX/UWP/WinUI)
-1. Imporve GC by remvoing static reference to NullSceneNode in SceneNode. (WPF.SharpDX/UWP/WinUI)
-1. Improve node animation to avoid accumulated time dependency. (WPF.SharpDX/UWP/WinUI)
-
-### Breaking Change
-1. Change animation updater to absolute timestamp based. (WPF.SharpDX/UWP/WinUI)
+1. Automatic invert up direction for rotation mode = turntable (WPF.SharpDX/UWP/Core/WinUI)
+1. Improve swapchain framerate under SharpDX.WPF (WPF.SharpDX)
+1. Adds function to invalidate bone matrices/morph target weights manually (WPF.SharpDX/UWP/Core/WinUI)
 
 ### Fixed
-1. Fixed HelixToolkit.WinUI package severe memory leak. (WinUI)
-1. Fixed bounding sphere is not properly transformed with non-uniform scaling matrix. (WPF.SharpDX/UWP/WinUI)
-1. Fixed the difference size of ZoomExtends of Viewport3DX between different cameras. (WPF.SharpDX/UWP/WinUI)
-1. Fix memory leak by disposing entire tree if top node is being disposed. (WPF.SharpDX/UWP/WinUI)
-1. Fix missing edge clicking, incorrect model updirection in ViewCubeVisual3d (WPF)
+1. Fix models are not rendered by adding them directly into viewport3DX.Items. (WPF.SharpDX)
+1. Correct y axis color typo (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix potential null ref exception in HelixToolkit.WinUI. (WinUI)
+1. Fix null reference exception in GeometryRenderCore.OnAttachBuffers(). (WPF.SharpDX/UWP/Core/WinUI)
+1. Fix shadow map light camera property update does not trigger re-rendering. (WPF.SharpDX/UWP/Core/WinUI)
 
-## [2.23.0]
-
-### Added
-1. Adding IncreaseSwapchainFPS property for sharpdx wpf viewport for disable/enable FPS increasing feature. (WPF.SharpDX/UWP/WinUI)
-1. Adds additional 2D offset property for billboards. (WPF.SharpDX/UWP/WinUI)
-
-### Improvement
-1. Simplify topology setting in device context. (WPF.SharpDX/UWP/WinUI)
-1. Adds dedicated thread for processing non-rendering related tasks in DefaultRenderHost. (WPF.SharpDX/UWP/WinUI)
-1. Make the guid setter of ShaderResourceViewProxy public. (WPF.SharpDX/UWP/WinUI)
-1. Imporve GC by remvoing static reference to NullSceneNode in SceneNode. (WPF.SharpDX/UWP/WinUI)
-1. Improve node animation to avoid accumulated time dependency. (WPF.SharpDX/UWP/WinUI)
-
-### Breaking Change
-1. Change animation updater to absolute timestamp based. (WPF.SharpDX/UWP/WinUI)
-
-### Fixed
-1. Fixed HelixToolkit.WinUI package severe memory leak. (WinUI)
-1. Fixed bounding sphere is not properly transformed with non-uniform scaling matrix. (WPF.SharpDX/UWP/WinUI)
-1. Fixed the difference size of ZoomExtends of Viewport3DX between different cameras. (WPF.SharpDX/UWP/WinUI)
-1. Fix memory leak by disposing entire tree if top node is being disposed. (WPF.SharpDX/UWP/WinUI)
-1. Fix missing edge clicking, incorrect model updirection in ViewCubeVisual3d (WPF)
-
-## [2.23.0]
+## [2.22.1]
 
 ### Added
 1. Add feature of enabling rotation/translation/scale control in every axis for TransformManipulator3D (WPF.SharpDX/UWP/WinUI)
