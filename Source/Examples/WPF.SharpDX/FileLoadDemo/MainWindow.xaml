@@ -98,27 +98,37 @@
                 <CheckBox Margin="4" IsChecked="{Binding RenderEnvironmentMap}">Render EnvironmentMap</CheckBox>
                 <CheckBox Margin="4" IsChecked="{Binding RenderFlat}">Flat Shading</CheckBox>
                 <Separator />
-                <CheckBox
-                    x:Name="aniCheckbox"
-                    Margin="4"
-                    IsChecked="{Binding EnableAnimation}">
-                    Enable Animation
-                </CheckBox>
                 <TextBlock>Animations</TextBlock>
                 <ComboBox
                     DisplayMemberPath="Name"
                     IsEnabled="{Binding ElementName=aniCheckbox, Path=IsChecked}"
                     ItemsSource="{Binding Animations}"
                     SelectedItem="{Binding SelectedAnimation}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="PlayBack Speed: " />
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Speed}" />
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="PlayBack Speed: " />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Speed}" />
+                        <Button Command="{Binding PlayCommand}">Play</Button>
+                    </StackPanel>
+
+                    <Slider
+                        Maximum="50"
+                        Minimum="0"
+                        SmallChange="0.5"
+                        Value="{Binding Speed}" />
+                    <Label>
+                        <TextBlock>
+                            <Run>TimeStamp:</Run>
+                            <Run Text="{Binding CurrAnimationTime}" />
+                        </TextBlock>
+                    </Label>
+                    <Slider
+                        LargeChange="1"
+                        Maximum="{Binding EndTime}"
+                        Minimum="{Binding StartTime}"
+                        SmallChange="0.1"
+                        Value="{Binding CurrAnimationTime}" />
                 </StackPanel>
-                <Slider
-                    Maximum="50"
-                    Minimum="0"
-                    SmallChange="0.5"
-                    Value="{Binding Speed}" />
                 <Separator />
                 <TextBlock>Scene Graph</TextBlock>
             </StackPanel>

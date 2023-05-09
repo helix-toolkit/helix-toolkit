@@ -45,7 +45,13 @@ namespace HelixToolkit.Wpf.SharpDX
             "ItemsSource",
             typeof(IEnumerable),
             typeof(ItemsModel3D),
-            new PropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
+            new PropertyMetadata(null, (s, e) =>
+            {
+                if (s is ItemsModel3D itemsModel && itemsModel.IsAttached)
+                {
+                    itemsModel.ItemsSourceChanged(e.NewValue as IEnumerable);
+                }
+            }));
 
         /// <summary>
         /// Add octree manager to use octree hit test.
@@ -124,23 +130,39 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly Dictionary<object, Element3D> elementDict = new Dictionary<object, Element3D>();
+        private IEnumerable itemsSourceInternal;
 
-        /// <summary>
-        /// Handles changes in the ItemsSource property.
-        /// </summary>
-        /// <param name="e">
-        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        /// <exception cref="System.InvalidOperationException">
-        /// Cannot create a Model3D from ItemTemplate.
-        /// </exception>
-        private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
+        public ItemsModel3D()
         {
-            if (e.OldValue is INotifyCollectionChanged o)
+            SceneNode.Attached += SceneNode_Attached;
+            SceneNode.Detached += SceneNode_Detached;
+        }
+
+        private void SceneNode_Attached(object sender, EventArgs e)
+        {
+            if (ItemsSource != null)
+            {
+                ItemsSourceChanged(ItemsSource);
+            }
+        }
+
+        private void SceneNode_Detached(object sender, EventArgs e)
+        {
+            if (itemsSourceInternal != null)
+            {
+                ItemsSourceChanged(null);
+            }
+        }
+
+        private void ItemsSourceChanged(IEnumerable itemsSource)
+        {
+            if (itemsSourceInternal == itemsSource)
+            { return; }
+            if (itemsSourceInternal is INotifyCollectionChanged o)
             {
                 o.CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
-            if (e.OldValue == null && e.NewValue != null && Children.Count > 0)
+            if (itemsSourceInternal == null && itemsSource != null && Children.Count > 0)
             {
                 throw new InvalidOperationException("Children must be empty before using ItemsSource");
             }
@@ -148,20 +170,22 @@ namespace HelixToolkit.Wpf.SharpDX
             elementDict.Clear();
             Children.Clear();
 
-            if (e.NewValue is INotifyCollectionChanged n)
+            itemsSourceInternal = itemsSource;
+
+            if (itemsSourceInternal is INotifyCollectionChanged n)
             {
                 n.CollectionChanged -= ItemsModel3D_CollectionChanged;
                 n.CollectionChanged += ItemsModel3D_CollectionChanged;
             }
 
-            if (ItemsSource == null)
+            if (itemsSourceInternal == null)
             {
                 return;
             }
 
             if (this.ItemTemplate == null)
             {
-                foreach (var item in this.ItemsSource)
+                foreach (var item in this.itemsSourceInternal)
                 {
                     if (item is Element3D model)
                     {
@@ -176,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                foreach (var item in this.ItemsSource)
+                foreach (var item in this.itemsSourceInternal)
                 {
                     if (this.ItemTemplate.LoadContent() is Element3D model)
                     {
@@ -300,12 +324,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     break;
             }
         }
-
-
-        protected override void Dispose(bool disposing)
+        public virtual void Clear()
         {
             elementDict.Clear();
-            base.Dispose(disposing);
+            var node = SceneNode as GroupNode;
+            node.Clear();
+            Children.Clear();
         }
     }
 }

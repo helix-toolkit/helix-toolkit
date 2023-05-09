@@ -248,6 +248,9 @@ namespace HelixToolkit.UWP
                                     id.Bone4 = j;
                                     id.Weights.W = vWeight.Weight;
                                     break;
+                                default:
+                                    logger.LogWarning("Bone index count {0} is out of range. Maximum 4 bone indices per vertex are supported.", currIdx);
+                                    break;
                             }
                         }
                     }

@@ -106,24 +106,40 @@ namespace FileLoadDemo
             get => isLoading;
         }
 
-        private bool enableAnimation = false;
-        public bool EnableAnimation
+        private bool isPlaying = false;
+        public bool IsPlaying
+        {
+            private set => SetValue(ref isPlaying, value);
+            get => isPlaying;
+        }
+
+        private float startTime;
+        public float StartTime
+        {
+            private set => SetValue(ref startTime, value);
+            get => startTime;
+        }
+
+        private float endTime;
+        public float EndTime
+        {
+            private set => SetValue(ref endTime, value);
+            get => endTime;
+        }
+
+        private float currAnimationTime = 0;
+        public float CurrAnimationTime
         {
             set
             {
-                if (SetValue(ref enableAnimation, value))
+                if (EndTime == 0)
+                { return; }
+                if (SetValue(ref currAnimationTime, value % EndTime + StartTime))
                 {
-                    if (value)
-                    {
-                        StartAnimation();
-                    }
-                    else
-                    {
-                        StopAnimation();
-                    }
+                    animationUpdater?.Update(value, 1);
                 }
             }
-            get { return enableAnimation; }
+            get => currAnimationTime;
         }
 
         public ObservableCollection<IAnimationUpdater> Animations { get; } = new ObservableCollection<IAnimationUpdater>();
@@ -138,20 +154,19 @@ namespace FileLoadDemo
                 if (SetValue(ref selectedAnimation, value))
                 {
                     StopAnimation();
+                    CurrAnimationTime = 0;
                     if (value != null)
                     {
                         animationUpdater = value;
                         animationUpdater.Reset();
                         animationUpdater.RepeatMode = AnimationRepeatMode.Loop;
-                        animationUpdater.Speed = Speed;
+                        StartTime = value.StartTime;
+                        EndTime = value.EndTime;
                     }
                     else
                     {
                         animationUpdater = null;
-                    }
-                    if (enableAnimation)
-                    {
-                        StartAnimation();
+                        StartTime = EndTime = 0;
                     }
                 }
             }
@@ -166,18 +181,15 @@ namespace FileLoadDemo
         {
             set
             {
-                if (SetValue(ref speed, value))
-                {
-                    if (animationUpdater != null)
-                        animationUpdater.Speed = value;
-                }
+                SetValue(ref speed, value);
             }
             get => speed;
         }
+
         private Point3D modelCentroid = default;
         public Point3D ModelCentroid
         {
-            private set =>SetValue(ref modelCentroid, value);
+            private set => SetValue(ref modelCentroid, value);
             get => modelCentroid;
         }
         private BoundingBox modelBound = new BoundingBox();
@@ -188,13 +200,16 @@ namespace FileLoadDemo
         }
         public TextureModel EnvironmentMap { get; }
 
+        public ICommand PlayCommand { get; }
+
         private SynchronizationContext context = SynchronizationContext.Current;
         private HelixToolkitScene scene;
         private IAnimationUpdater animationUpdater;
         private List<BoneSkinMeshNode> boneSkinNodes = new List<BoneSkinMeshNode>();
         private List<BoneSkinMeshNode> skeletonNodes = new List<BoneSkinMeshNode>();
         private CompositionTargetEx compositeHelper = new CompositionTargetEx();
-        
+        private long initTimeStamp = 0;
+
         private MainWindow mainWindow = null;
 
         public MainViewModel(MainWindow window)
@@ -223,6 +238,18 @@ namespace FileLoadDemo
             CopyAsHiresBitmapCommand = new DelegateCommand(() => { CopyAsHiResBitmapToClipBoard(mainWindow.view); });
 
             EnvironmentMap = TextureModel.Create("Cubemap_Grandcanyon.dds");
+
+            PlayCommand = new DelegateCommand(() =>
+            {
+                if (!IsPlaying && SelectedAnimation != null)
+                {
+                    StartAnimation();
+                }
+                else
+                {
+                    StopAnimation();
+                }
+            });
         }
 
         private void CopyAsBitmapToClipBoard(Viewport3DX viewport)
@@ -299,8 +326,8 @@ namespace FileLoadDemo
                     var oldNode = GroupModel.SceneNode.Items.ToArray();
                     GroupModel.Clear(false);
                     Task.Run(() =>
-                    { 
-                        foreach (var node in oldNode) 
+                    {
+                        foreach (var node in oldNode)
                         { node.Dispose(); }
                     });
                     if (scene != null)
@@ -348,11 +375,14 @@ namespace FileLoadDemo
 
         public void StartAnimation()
         {
+            initTimeStamp = Stopwatch.GetTimestamp();
             compositeHelper.Rendering += CompositeHelper_Rendering;
+            IsPlaying = true;
         }
 
         public void StopAnimation()
         {
+            IsPlaying = false;
             compositeHelper.Rendering -= CompositeHelper_Rendering;
         }
 
@@ -360,7 +390,8 @@ namespace FileLoadDemo
         {
             if (animationUpdater != null)
             {
-                animationUpdater.Update(Stopwatch.GetTimestamp(), Stopwatch.Frequency);
+                var elapsed = (Stopwatch.GetTimestamp() - initTimeStamp) * speed;
+                CurrAnimationTime = elapsed / Stopwatch.Frequency;
             }
         }
 

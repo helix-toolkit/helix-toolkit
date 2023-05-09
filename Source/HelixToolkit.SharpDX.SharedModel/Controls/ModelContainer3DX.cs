@@ -13,7 +13,7 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #endif
 
 #if NETFX_CORE
-using  Windows.UI.Xaml;
+using Windows.UI.Xaml;
 using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP
 #elif WINUI 
@@ -672,7 +672,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (Interlocked.Decrement(ref d3dCounter) == 0)
                 {
                     foreach (var renderable in Renderables)
-                    {                        
+                    {
                         renderable.Detach();
                         renderable.Invalidated -= RenderableInvalidated;
                     }
@@ -756,6 +756,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     attachedRenderHosts.Clear();
                     Detach();
+                    foreach (var item in Items)
+                    {
+                        if (item is IDisposable d)
+                        {
+                            d.Dispose();
+                        }
+                    }
                     // TODO: dispose managed state (managed objects).
                     viewports.Clear();
                     currentRenderHost = null;

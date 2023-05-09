@@ -116,11 +116,10 @@ namespace HelixToolkit.UWP
                     cbMorphTarget.WriteValue<int>(mtCount, 0);
                     cbMorphTarget.WriteValue<int>(mtPitch, sizeof(int));
 
-                    //Update/upload or whatever
-                    cbMorphTarget.Upload(deviceContext);
-
                     setCBuffer = false;
                 }
+                //Update/upload or whatever
+                cbMorphTarget.Upload(deviceContext);
             }
 
             protected override bool OnAttach(IRenderTechnique technique)
@@ -203,15 +202,19 @@ namespace HelixToolkit.UWP
                 setCBuffer = true;
                 mtCount = targets.Length / pitch;
                 mtPitch = pitch;
-
                 return true;
             }
 
             public void SetWeight(int i, float w)
             {
+                MorphTargetWeights[i] = w;
+                InvalidateWeight();
+            }
+
+            public void InvalidateWeight()
+            {
                 weightUpdated = true;
                 WeightsChanged?.Invoke(this, EventArgs.Empty);
-                MorphTargetWeights[i] = w;
             }
         }
     }

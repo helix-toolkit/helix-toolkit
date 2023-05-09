@@ -29,20 +29,6 @@ namespace HelixToolkit.UWP
             private List<IAnimationUpdater> children = new List<IAnimationUpdater>();
             public IList<IAnimationUpdater> Children => children;
 
-            private float speed = 1.0f;
-            public float Speed
-            {
-                get => speed;
-                set
-                {
-                    speed = value;
-                    foreach (var updater in Children)
-                    {
-                        updater.Speed = value;
-                    }
-                }
-            }
-
             private AnimationRepeatMode repeatMode = AnimationRepeatMode.PlayOnce;
             public AnimationRepeatMode RepeatMode
             {
@@ -57,6 +43,10 @@ namespace HelixToolkit.UWP
                 }
             }
 
+            public float StartTime { get; }
+
+            public float EndTime { get; }
+
             public AnimationGroupUpdater(string name = StringHelper.EmptyStr)
             {
                 Name = name;
@@ -66,6 +56,11 @@ namespace HelixToolkit.UWP
                 : this(name)
             {
                 children.AddRange(updaters);
+                foreach(var updater in Children)
+                {
+                    StartTime = Math.Min(StartTime, updater.StartTime);
+                    EndTime = Math.Max(EndTime, updater.EndTime);
+                }
             }
 
             public void Reset()
@@ -76,7 +71,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            public void Update(long timeStamp, long frequency)
+            public void Update(float timeStamp, long frequency)
             {
                 foreach (var updater in Children)
                 {

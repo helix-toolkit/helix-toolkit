@@ -248,9 +248,8 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if (horizontalAlignment != value)
+                if (Set(ref horizontalAlignment, value))
                 {
-                    horizontalAlignment = value;
                     IsInitialized = false;
                 }
             }
@@ -275,9 +274,8 @@ namespace HelixToolkit.UWP
         {
             set
             {
-                if (verticalAlignment != value)
+                if (Set(ref verticalAlignment, value))
                 {
-                    verticalAlignment = value;
                     IsInitialized = false;
                 }
             }
@@ -285,6 +283,24 @@ namespace HelixToolkit.UWP
             {
                 return verticalAlignment;
             }
+        }
+
+        private Vector2 offset = Vector2.Zero;
+        /// <summary>
+        /// Additional offset for billboard display location.
+        /// Behavior depends on whether billboard is fixed sized or not.
+        /// When billboard is fixed sized, the offset is screen spaced.
+        /// </summary>
+        public Vector2 Offset
+        {
+            set
+            {
+                if(Set(ref offset, value))
+                {
+                    IsInitialized = false;
+                }
+            }
+            get { return offset; }
         }
 
         /// <summary>
@@ -391,10 +407,10 @@ namespace HelixToolkit.UWP
                 Background = BackgroundColor,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = Matrix3x2.TransformPoint(transform, offTL),
-                OffBL = Matrix3x2.TransformPoint(transform, offBL),
-                OffBR = Matrix3x2.TransformPoint(transform, offBR),
-                OffTR = Matrix3x2.TransformPoint(transform, offTR)
+                OffTL = Matrix3x2.TransformPoint(transform, offTL) + Offset,
+                OffBL = Matrix3x2.TransformPoint(transform, offBL) + Offset,
+                OffBR = Matrix3x2.TransformPoint(transform, offBR) + Offset,
+                OffTR = Matrix3x2.TransformPoint(transform, offTR) + Offset
             });
         }
 

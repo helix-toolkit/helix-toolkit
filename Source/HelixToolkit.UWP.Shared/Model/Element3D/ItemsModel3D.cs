@@ -27,7 +27,10 @@ namespace HelixToolkit.UWP
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsModel3D),
                 new PropertyMetadata(null,
                     (d, e) => {
-                        (d as ItemsModel3D).OnItemsSourceChanged(e);
+                        if (d is ItemsModel3D itemsModel && itemsModel.IsAttached)
+                        {
+                            itemsModel.OnItemsSourceChanged(e.NewValue as IEnumerable);
+                        }
                     }));
 
         /// <summary>
@@ -143,7 +146,7 @@ namespace HelixToolkit.UWP
         } = new ObservableElement3DCollection();
 
         private readonly ItemsControl itemsControl = new ItemsControl();
-        private IEnumerable itemsSource = null;
+        private IEnumerable itemsSourceInternal = null;
 
         public ItemCollection Items => itemsControl.Items;
 
@@ -153,8 +156,25 @@ namespace HelixToolkit.UWP
         /// </summary>
         public ItemsModel3D()
         {
-            Children.CollectionChanged += Items_CollectionChanged;            
-        }      
+            Children.CollectionChanged += Items_CollectionChanged;
+            SceneNode.Attached += SceneNode_Attached;
+            SceneNode.Detached += SceneNode_Detached;
+        }
+        private void SceneNode_Attached(object sender, EventArgs e)
+        {
+            if (ItemsSource != null)
+            {
+                OnItemsSourceChanged(ItemsSource);
+            }
+        }
+
+        private void SceneNode_Detached(object sender, EventArgs e)
+        {
+            if (itemsSourceInternal != null)
+            {
+                OnItemsSourceChanged(null);
+            }
+        }
 
         protected override void OnApplyTemplate()
         {
@@ -236,32 +256,36 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private void OnItemsSourceChanged(DependencyPropertyChangedEventArgs e)
+        private void OnItemsSourceChanged(IEnumerable itemsSource)
         {
-            if (e.OldValue is INotifyCollectionChanged o)
+            if (itemsSourceInternal == itemsSource)
+            { return; }
+            if (itemsSourceInternal is INotifyCollectionChanged o)
             {
                 o.CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
-            itemsSource = null;
             foreach (Element3D item in Children)
             {
                 item.DataContext = null;
             }
-
+            if (itemsSourceInternal == null && itemsSource != null && Children.Count > 0)
+            {
+                throw new InvalidOperationException("Children must be empty before using ItemsSource");
+            }
             Clear();
+            itemsSourceInternal = itemsSource;
+            if (itemsSource == null)
+            {
+                return;
+            }
 
-            if (e.NewValue is INotifyCollectionChanged n)
+            if (itemsSource is INotifyCollectionChanged n)
             {
                 n.CollectionChanged -= ItemsModel3D_CollectionChanged;
                 n.CollectionChanged += ItemsModel3D_CollectionChanged;
             }
 
-            if (ItemsSource == null)
-            {
-                return;
-            }
-            itemsSource = ItemsSource;
-            AddItems(ItemsSource);
+            AddItems(itemsSource);
 
             if (Children.Count > 0)
             {
@@ -388,12 +412,6 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             node.Clear();
             Children.Clear();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            Clear();
-            base.Dispose(disposing);
         }
     }
 }

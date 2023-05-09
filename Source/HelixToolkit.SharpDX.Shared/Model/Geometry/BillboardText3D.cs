@@ -104,6 +104,15 @@ namespace HelixToolkit.UWP
         {
             set; get;
         } = BillboardVerticalAlignment.Center;
+        /// <summary>
+        /// Additional offset for billboard display location.
+        /// Behavior depends on whether billboard is fixed sized or not.
+        /// When billboard is fixed sized, the offset is screen spaced.
+        /// </summary>
+        public Vector2 Offset
+        {
+            set; get;
+        } = Vector2.Zero;
 
         public TextInfo()
         {
@@ -299,10 +308,10 @@ namespace HelixToolkit.UWP
                     Background = textInfo.Background,
                     TexTL = Vector2.Zero,
                     TexBR = Vector2.Zero,
-                    OffTL = Matrix3x2.TransformPoint(transform, tl),
-                    OffBR = Matrix3x2.TransformPoint(transform, br),
-                    OffTR = Matrix3x2.TransformPoint(transform, tr),
-                    OffBL = Matrix3x2.TransformPoint(transform, bl),
+                    OffTL = Matrix3x2.TransformPoint(transform, tl) + textInfo.Offset,
+                    OffBR = Matrix3x2.TransformPoint(transform, br) + textInfo.Offset,
+                    OffTR = Matrix3x2.TransformPoint(transform, tr) + textInfo.Offset,
+                    OffBL = Matrix3x2.TransformPoint(transform, bl) + textInfo.Offset,
                 });
 
                 textInfo.UpdateTextInfo(rect.Width, rect.Height);
@@ -311,10 +320,10 @@ namespace HelixToolkit.UWP
                 for (var k = tempPrevCount; k < tempList.Count; ++k)
                 {
                     var v = tempList[k];
-                    v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + tl);
-                    v.OffBR = Matrix3x2.TransformPoint(transform, v.OffBR + tl);
-                    v.OffTR = Matrix3x2.TransformPoint(transform, v.OffTR + tl);
-                    v.OffBL = Matrix3x2.TransformPoint(transform, v.OffBL + tl);
+                    v.OffTL = Matrix3x2.TransformPoint(transform, v.OffTL + tl) + textInfo.Offset;
+                    v.OffBR = Matrix3x2.TransformPoint(transform, v.OffBR + tl) + textInfo.Offset;
+                    v.OffTR = Matrix3x2.TransformPoint(transform, v.OffTR + tl) + textInfo.Offset;
+                    v.OffBL = Matrix3x2.TransformPoint(transform, v.OffBL + tl) + textInfo.Offset;
                     tempList[k] = v;
                 }
                 Width += rect.Width;

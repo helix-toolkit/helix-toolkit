@@ -137,6 +137,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\KeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\MorphTargetKeyFrameUpdater.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Animations\NodeAnimationUpdater.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)model\animations\Utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMath.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\CameraMode.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\VolumeTextureNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHostPartial_Properties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DX11RenderHostConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)utilities\asynctasks\AsyncActionThread.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DepthStencilFormatHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\StringHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Viewport\ViewportCore.cs" />
@@ -408,5 +410,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Model\Collection\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\Renderer\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Utilities\AsyncTasks\" />
   </ItemGroup>
 </Project>

@@ -30,11 +30,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
+            DependencyProperty.Register("ItemsSource", typeof(IEnumerable<Element3D>), typeof(GroupElement3D),
                 new PropertyMetadata(null,
                     (d, e) =>
                     {
-                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
+                        if (d is GroupElement3D group && group.IsAttached)
+                        {
+                            group.OnItemsSourceChanged(e.NewValue as IEnumerable<Element3D>);
+                        }
                     }));
 
         /// <summary>
@@ -117,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private IList<Element3D> itemsSourceInternal;
+        private IEnumerable<Element3D> itemsSourceInternal;
         /// <summary>
         /// Gets the children.
         /// </summary>
@@ -134,8 +137,26 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public GroupElement3D()
         {
-            Children.CollectionChanged += Items_CollectionChanged;
             Loaded += GroupElement3D_Loaded;
+            Children.CollectionChanged += Items_CollectionChanged;
+            SceneNode.Attached += SceneNode_Attached;
+            SceneNode.Detached += SceneNode_Detached;
+        }
+
+        private void SceneNode_Attached(object sender, EventArgs e)
+        {          
+            if (ItemsSource != null)
+            {
+                OnItemsSourceChanged(ItemsSource);
+            }
+        }
+
+        private void SceneNode_Detached(object sender, EventArgs e)
+        {
+            if (itemsSourceInternal != null)
+            {
+                OnItemsSourceChanged(null);
+            }
         }
 
         private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
@@ -227,8 +248,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void OnItemsSourceChanged(IList<Element3D> itemsSource)
+        private void OnItemsSourceChanged(IEnumerable<Element3D> itemsSource)
         {
+            if (itemsSourceInternal == itemsSource) 
+            { return; }
             if (itemsSourceInternal != null)
             {
                 if (itemsSourceInternal is INotifyCollectionChanged s)

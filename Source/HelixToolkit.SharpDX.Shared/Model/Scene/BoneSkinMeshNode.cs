@@ -218,7 +218,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             public void WeightUpdated()
             {
-                (RenderCore as BoneSkinRenderCore).SetWeight(0, MorphTargetWeights[0]);
+                (RenderCore as BoneSkinRenderCore).InvalidateMorphTargetWeights();
                 InvalidateRender();
             }
 

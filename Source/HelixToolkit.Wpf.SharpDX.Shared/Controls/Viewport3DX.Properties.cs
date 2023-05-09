@@ -1336,6 +1336,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }));
 
+        public static readonly DependencyProperty IncreaseSwapchainFPSProperty =
+            DependencyProperty.Register("IncreaseSwapchainFPS", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) => {
+                var viewport = d as Viewport3DX;
+                if (viewport.hostPresenter != null && viewport.hostPresenter.Content is DPFSurfaceSwapChain surface)
+                {
+                    surface.IncreaseFPS = (bool)e.NewValue;
+                }
+            }));
+
         /// <summary>
         /// Background Color
         /// </summary>
@@ -3542,6 +3551,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 SetValue(EnableDpiScaleProperty, value);
             }
+        }
+
+        /// <summary>
+        /// Increase swapchain fps by speed up the wpf composition target frame rate.
+        /// This may negatively impact the performance on low end graphics card.
+        /// Default is enabled.
+        /// </summary>
+        public bool IncreaseSwapchainFPS
+        {
+            get { return (bool)GetValue(IncreaseSwapchainFPSProperty); }
+            set { SetValue(IncreaseSwapchainFPSProperty, value); }
         }
     }
 }

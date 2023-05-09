@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP
                 }
             }
 
-            private SceneNode parent = NullSceneNode.NullNode;
+            private readonly WeakReference<SceneNode> parent = new WeakReference<SceneNode>(null);
             /// <summary>
             /// Gets or sets the parent.
             /// </summary>
@@ -169,18 +169,16 @@ namespace HelixToolkit.UWP
             {
                 internal set
                 {
-                    if (Set(ref parent, value))
+                    parent.TryGetTarget(out var target);
+                    if (Set(ref target, value))
                     {
+                        parent.SetTarget(value);
                         NeedMatrixUpdate = true;
-                        if (value == null)
-                        {
-                            parent = NullSceneNode.NullNode;
-                        }
                     }
                 }
                 get
                 {
-                    return parent;
+                    return parent.TryGetTarget(out var target) ? target : null;
                 }
             }
 
@@ -659,9 +657,9 @@ namespace HelixToolkit.UWP
             protected void Invalidate(InvalidateTypes type)
             {
                 Invalidated?.Invoke(this, type);              
-                if (parent != null)
+                if (parent.TryGetTarget(out var target))
                 {
-                    foreach(var node in TreeTraverser.TraverseUp(parent))
+                    foreach(var node in TreeTraverser.TraverseUp(target))
                     {
                         node.Invalidated?.Invoke(this, type);
                     }
@@ -687,7 +685,8 @@ namespace HelixToolkit.UWP
             {
                 if (NeedMatrixUpdate)
                 {
-                    TotalModelMatrixInternal = modelMatrix * parent.TotalModelMatrixInternal;
+                    parent.TryGetTarget(out var target);
+                    TotalModelMatrixInternal = modelMatrix * (target == null ? Matrix.Identity : target.TotalModelMatrixInternal);
                     for (var i = 0; i < ItemsInternal.Count; ++i)
                     {
                         ItemsInternal[i].NeedMatrixUpdate = true;
@@ -1108,23 +1107,12 @@ namespace HelixToolkit.UWP
             /// <returns></returns>
             public bool RemoveSelf()
             {
-                if (parent != null && parent is GroupNodeBase group)
-                {
-                    return group.RemoveChildNode(this);
-                }
-                else
-                {
-                    return false;
-                }
+                return parent.TryGetTarget(out var target) && target is GroupNodeBase group && group.RemoveChildNode(this);
             }
 
             public int CompareTo(SceneNode other)
             {
-                if (other == null)
-                {
-                    return 1;
-                }
-                return RenderOrderKey.CompareTo(other.RenderOrderKey);
+                return other == null ? 1 : RenderOrderKey.CompareTo(other.RenderOrderKey);
             }
 
             public void RaiseMouseDownEvent(IViewport3DX viewport, Vector2 pos, HitTestResult hit, object originalInputEventArgs = null)
@@ -1179,16 +1167,6 @@ namespace HelixToolkit.UWP
                 backingField = value;
                 InvalidateSceneGraph();
                 return true;
-            }
-        }
-
-        public sealed class NullSceneNode : SceneNode
-        {
-            public static readonly NullSceneNode NullNode = new NullSceneNode();
-
-            protected override bool OnHitTest(HitTestContext context, Matrix totalModelMatrix, ref List<HitTestResult> hits)
-            {
-                return false;
             }
         }
 

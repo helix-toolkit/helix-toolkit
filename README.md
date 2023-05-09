@@ -35,7 +35,7 @@ Custom 3D Engine and XAML/MVVM compatible Scene Graphs based on [SharpDX](https:
 Please download full source code to run examples. Or download [compiled version](https://ci.appveyor.com/project/objorke/helix-toolkit/branch/master/artifacts)
 
 [![License: MIT](https://img.shields.io/github/license/helix-toolkit/helix-toolkit)](https://github.com/helix-toolkit/helix-toolkit/blob/develop/LICENSE)
-[![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7?svg=true)](https://ci.appveyor.com/project/objorke/helix-toolkit)
+[![Build status](https://ci.appveyor.com/api/projects/status/vbrornad55ln8tp4?svg=true)](https://ci.appveyor.com/project/holance/helix-toolkit-qqf1e)
 [![Release](https://img.shields.io/github/release/helix-toolkit/helix-toolkit.svg?style=popout)](https://www.nuget.org/packages?q=Helix-Toolkit)
 [![Chat](https://img.shields.io/gitter/room/helix-toolkit/helix-toolkit.svg)](https://gitter.im/helix-toolkit/helix-toolkit)
 
@@ -46,10 +46,10 @@ Wiki                | https://github.com/helix-toolkit/helix-toolkit/wiki
 Documentation       | http://helix-toolkit.readthedocs.io/
 Chat                | https://gitter.im/helix-toolkit/helix-toolkit
 Source repository   | http://github.com/helix-toolkit/helix-toolkit
-Latest build        | http://ci.appveyor.com/project/objorke/helix-toolkit
+Latest build        | http://ci.appveyor.com/project/holance/helix-toolkit
 Issue tracker       | http://github.com/helix-toolkit/helix-toolkit/issues
 NuGet packages      | http://www.nuget.org/packages?q=HelixToolkit
-Nightly build       | https://www.myget.org/F/helix-toolkit
+Nightly build       | https://www.myget.org/F/helixtoolkit-nightly
 StackOverflow       | http://stackoverflow.com/questions/tagged/helix-3d-toolkit
 Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
@@ -103,16 +103,19 @@ Please use the following template to report bugs.
 - Sample Code:
 
 ## News
-#### 2022-08-29
-[v2.22.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.22.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.22.0)
-- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.22.0)
-- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.22.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.22.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.22.0)
-- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.22.0)
-- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.22.0)
-- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.22.0)
-- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.22.0)
+#### 2023-03-17
+Nightly build myget feed link has been updated to: https://www.myget.org/F/helixtoolkit-nightly
+
+#### 2022-11-28
+[v2.23.0](https://github.com/helix-toolkit/helix-toolkit/releases/tag/v2.23.0) releases are available on nuget. [Release Note](/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.23.0)
+- [Core.WPF](https://www.nuget.org/packages/HelixToolkit.Core.Wpf/2.23.0)
+- [WPF.Input](https://www.nuget.org/packages/HelixToolkit.Wpf.Input/2.23.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.23.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.23.0)
+- [SharpDX.Core](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core/2.23.0)
+- [SharpDX.Core.Wpf](https://www.nuget.org/packages/HelixToolkit.SharpDX.Core.Wpf/2.23.0)
+- [WinUI](https://www.nuget.org/packages/HelixToolkit.WinUI/2.23.0)
+- [SharpDX.Assimp](https://www.nuget.org/packages/HelixToolkit.SharpDX.Assimp/2.23.0)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)

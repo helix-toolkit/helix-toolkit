@@ -111,7 +111,7 @@ namespace HelixToolkit.UWP
                 {
                     itemHashSet.Add(node.GUID, node);
                     ItemsInternal.Add(node);
-                    if (node.Parent != NullSceneNode.NullNode && node.Parent != this)
+                    if (node.Parent != null && node.Parent != this)
                     {
                         throw new ArgumentException("SceneNode already attach to a different node");
                     }
@@ -294,6 +294,10 @@ namespace HelixToolkit.UWP
             protected override void OnDispose(bool disposeManagedResources)
             {
                 Cleared = null;
+                foreach (var c in this.ItemsInternal)
+                {
+                    c?.Dispose();
+                }
                 base.OnDispose(disposeManagedResources);
             }
         }
