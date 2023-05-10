@@ -92,37 +92,14 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected virtual void OnBoxChanged()
         {
-            this.Children.Clear();
             if (this.BoundingBox.IsEmpty)
             {
                 return;
             }
-
-            Rect3D bb = this.BoundingBox;
-
-            var p0 = new Point3D(bb.X, bb.Y, bb.Z);
-            var p1 = new Point3D(bb.X, bb.Y + bb.SizeY, bb.Z);
-            var p2 = new Point3D(bb.X + bb.SizeX, bb.Y + bb.SizeY, bb.Z);
-            var p3 = new Point3D(bb.X + bb.SizeX, bb.Y, bb.Z);
-            var p4 = new Point3D(bb.X, bb.Y, bb.Z + bb.SizeZ);
-            var p5 = new Point3D(bb.X, bb.Y + bb.SizeY, bb.Z + bb.SizeZ);
-            var p6 = new Point3D(bb.X + bb.SizeX, bb.Y + bb.SizeY, bb.Z + bb.SizeZ);
-            var p7 = new Point3D(bb.X + bb.SizeX, bb.Y, bb.Z + bb.SizeZ);
-
-            this.AddEdge(p0, p1);
-            this.AddEdge(p1, p2);
-            this.AddEdge(p2, p3);
-            this.AddEdge(p3, p0);
-
-            this.AddEdge(p4, p5);
-            this.AddEdge(p5, p6);
-            this.AddEdge(p6, p7);
-            this.AddEdge(p7, p4);
-
-            this.AddEdge(p0, p4);
-            this.AddEdge(p1, p5);
-            this.AddEdge(p2, p6);
-            this.AddEdge(p3, p7);
+            MeshBuilder meshBuilder = new MeshBuilder(false, false);
+            meshBuilder.AddBoundingBox(this.BoundingBox, Diameter);
+            GeometryModel3D geoBoundingBox = new GeometryModel3D(meshBuilder.ToMesh(), MaterialHelper.CreateMaterial(Fill));
+            this.Content = geoBoundingBox;
         }
 
         /// <summary>
@@ -130,13 +107,13 @@ namespace HelixToolkit.Wpf
         /// </summary>
         protected virtual void OnFillChanged()
         {
-            foreach (MeshElement3D item in this.Children)
+            GeometryModel3D geoBoundingBox = Content as GeometryModel3D;
+            if (geoBoundingBox is null)
             {
-                if (item != null)
-                {
-                    item.Fill = this.Fill;
-                }
+                return;
             }
+            geoBoundingBox.Material = MaterialHelper.CreateMaterial(Fill);
+
         }
 
         /// <summary>
@@ -166,28 +143,5 @@ namespace HelixToolkit.Wpf
         {
             ((BoundingBoxVisual3D)d).OnFillChanged();
         }
-
-        /// <summary>
-        /// Adds an edge.
-        /// </summary>
-        /// <param name="p1">
-        /// The start point.
-        /// </param>
-        /// <param name="p2">
-        /// The end point.
-        /// </param>
-        private void AddEdge(Point3D p1, Point3D p2)
-        {
-            var fv = new PipeVisual3D();
-            fv.BeginEdit();
-            fv.Diameter = this.Diameter;
-            fv.ThetaDiv = 10;
-            fv.Fill = this.Fill;
-            fv.Point1 = p1;
-            fv.Point2 = p2;
-            fv.EndEdit();
-            this.Children.Add(fv);
-        }
-
     }
 }
