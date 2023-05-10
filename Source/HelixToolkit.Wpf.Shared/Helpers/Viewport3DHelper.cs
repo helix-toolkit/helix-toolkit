@@ -223,48 +223,65 @@ namespace HelixToolkit.Wpf
                 (model, visual, transform) =>
                 {
                     var geometry = model.Geometry as MeshGeometry3D;
-                    if (geometry == null || geometry.Positions == null || geometry.TriangleIndices == null)
+                    if (geometry == null
+                    || model.Bounds.IsEmpty
+                    || geometry.Bounds.IsEmpty
+                    || geometry.Positions == null
+                    || geometry.Positions.Count == 0
+                    || geometry.TriangleIndices == null
+                    || geometry.TriangleIndices.Count == 0)
                     {
                         return;
                     }
+                    // ref https://learn.microsoft.com/en-us/archive/blogs/wpf3d/transforming-bounds
+                    GeneralTransform3DTo2D transform3DTo2D = visual.TransformToAncestor(viewport);
+                    // If null, the transform isn't possible at all
+                    if (transform3DTo2D is null) return;
+                    Rect visualBound = transform3DTo2D.TransformBounds(VisualTreeHelper.GetDescendantBounds(visual));
 
-                    var status = mode == SelectionHitMode.Inside;
-
-                    // transform the positions of the mesh to screen coordinates
-                    var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
-
-                    // evaluate each triangle
-                    for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
-                    {
-                        var triangle = new Triangle(
-                            point2Ds[geometry.TriangleIndices[i * 3]],
-                            point2Ds[geometry.TriangleIndices[(i * 3) + 1]],
-                            point2Ds[geometry.TriangleIndices[(i * 3) + 2]]);
-                        switch (mode)
-                        {
-                            case SelectionHitMode.Inside:
-                                status = status && triangle.IsCompletelyInside(rectangle);
-                                break;
-                            case SelectionHitMode.Touch:
-                                status = status
-                                         || triangle.IsCompletelyInside(rectangle)
-                                         || triangle.IntersectsWith(rectangle)
-                                         || triangle.IsRectCompletelyInside(rectangle);
-                                break;
-                        }
-
-                        if (mode == SelectionHitMode.Touch && status)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (status)
+                    if (rectangle.Contains(visualBound)) // object is both inside and touch
                     {
                         results.Add(new RectangleHitResult(model, visual));
                     }
-                });
+                    else if (rectangle.IntersectsWith(visualBound))
+                    {
+                        // transform the positions of the mesh to screen coordinates
+                        var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
+                        var meshPoints = new Point[geometry.TriangleIndices.Count];
+                        for (var i = 0; i < geometry.TriangleIndices.Count; i += 3)
+                        {
+                            meshPoints[i] = point2Ds[geometry.TriangleIndices[i]];
+                            meshPoints[i + 1] = point2Ds[geometry.TriangleIndices[i + 1]];
+                            meshPoints[i + 2] = point2Ds[geometry.TriangleIndices[i + 2]];
+                        }
+                        double minX = meshPoints.Min(x => x.X);
+                        double minY = meshPoints.Min(x => x.Y);
+                        double maxX = meshPoints.Max(x => x.X);
+                        double maxY = meshPoints.Max(x => x.Y);
+                        Rect geometryBound = new Rect(new Point(minX, minY), new Point(maxX, maxY));
 
+                        if (rectangle.Contains(geometryBound))// object is both inside and touch
+                        {
+                            results.Add(new RectangleHitResult(model, visual));
+                        }
+                        else if (mode == SelectionHitMode.Touch && rectangle.IntersectsWith(geometryBound))
+                        {
+                            // evaluate each triangle
+                            for (var i = 0; i < meshPoints.Length; i += 3)
+                            {
+                                var triangle = new Triangle(meshPoints[i], meshPoints[i + 1], meshPoints[i + 2]);
+                                // check if triangle touched/inside with rectangle
+                                if (triangle.IsCompletelyInside(rectangle)
+                                         || triangle.IntersectsWith(rectangle)
+                                         || triangle.IsRectCompletelyInside(rectangle))
+                                {
+                                    results.Add(new RectangleHitResult(model, visual));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
             return results;
         }
 
@@ -1255,7 +1272,7 @@ namespace HelixToolkit.Wpf
             /// Gets the hit model.
             /// </summary>
             public Model3D Model { get; private set; }
-            
+
             /// <summary>
             /// Gets the hit visual.
             /// </summary>
