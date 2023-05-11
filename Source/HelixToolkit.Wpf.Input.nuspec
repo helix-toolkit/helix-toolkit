@@ -12,14 +12,14 @@
     <description>Provides SpaceNavigator decorator for custom controls and extensions for WPF 3D.</description>
     <tags>wpf wpf3d 3D input SpaceNavigator</tags>
     <dependencies>
-      <group targetFramework="net45">
+      <group targetFramework="net462">
         <dependency id="HelixToolkit.Wpf" version="[$version$]" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="HelixToolkit.Wpf.Input\bin\Release\HelixToolkit.Wpf.Input.???" target="lib\net45" />
-    <file src="HelixToolkit.Wpf.Input\bin\Release\TDx.TDxInput.???" target="lib\net45" />
+    <file src="HelixToolkit.Wpf.Input\bin\Release\HelixToolkit.Wpf.Input.???" target="lib\net462" />
+    <file src="HelixToolkit.Wpf.Input\bin\Release\TDx.TDxInput.???" target="lib\net462" />
     <file src="..\LICENSE" />
     <file src="..\AUTHORS" />
     <file src="..\CONTRIBUTORS" />
