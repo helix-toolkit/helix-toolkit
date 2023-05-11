@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Represents a triangle in two-dimensional space.
     /// </summary>
-    public class Triangle
+    public struct Triangle
     {
         /// <summary>
         /// The first point of the triangle.
