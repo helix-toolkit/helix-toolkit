@@ -245,15 +245,16 @@ namespace HelixToolkit.Wpf
                     }
                     else if (rectangle.IntersectsWith(visualBound))
                     {
-                        // transform the positions of the mesh to screen coordinates
-                        var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
-                        var meshPoints = new Point[geometry.TriangleIndices.Count];
-                        for (var i = 0; i < geometry.TriangleIndices.Count; i += 3)
+                        int indicesCount = geometry.TriangleIndices.Count;
+                        Point3D[] meshPositions = new Point3D[indicesCount];
+                        for (var i = 0; i < indicesCount; i += 3)
                         {
-                            meshPoints[i] = point2Ds[geometry.TriangleIndices[i]];
-                            meshPoints[i + 1] = point2Ds[geometry.TriangleIndices[i + 1]];
-                            meshPoints[i + 2] = point2Ds[geometry.TriangleIndices[i + 2]];
+                            meshPositions[i] = geometry.Positions[geometry.TriangleIndices[i]];
+                            meshPositions[i + 1] = geometry.Positions[geometry.TriangleIndices[i + 1]];
+                            meshPositions[i + 2] = geometry.Positions[geometry.TriangleIndices[i + 2]];
                         }
+                        // transform the positions of the mesh to screen coordinates
+                        var meshPoints = meshPositions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
                         double minX = meshPoints.Min(x => x.X);
                         double minY = meshPoints.Min(x => x.Y);
                         double maxX = meshPoints.Max(x => x.X);
