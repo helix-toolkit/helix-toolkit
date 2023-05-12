@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="BoundingBox"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BoundingBoxProperty = DependencyProperty.Register(
-            "BoundingBox", typeof(Rect3D), typeof(BoundingBoxVisual3D), new UIPropertyMetadata(new Rect3D(), BoxChanged));
+            "BoundingBox", typeof(Rect3D), typeof(BoundingBoxVisual3D), new UIPropertyMetadata(Rect3D.Empty, BoxChanged));
 
         /// <summary>
         /// Identifies the <see cref="Diameter"/> dependency property.
@@ -94,6 +94,7 @@ namespace HelixToolkit.Wpf
         {
             if (this.BoundingBox.IsEmpty)
             {
+                this.Content = null;
                 return;
             }
             MeshBuilder meshBuilder = new MeshBuilder(false, false);
