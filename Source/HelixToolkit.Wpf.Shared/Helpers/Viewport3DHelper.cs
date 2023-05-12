@@ -295,8 +295,7 @@ namespace HelixToolkit.Wpf
                             for (var i = 0; i < length; i++)
                             {
                                 int triangleIndice = distinctTriangleIndices[i];
-                                int pointIndex = geometry.TriangleIndices[triangleIndice];
-                                meshPoints[i] = point2Ds[pointIndex];
+                                meshPoints[i] = point2Ds[triangleIndice];
                             }
                         }
                         Rect geometryBound = GetBound2d(meshPoints);
