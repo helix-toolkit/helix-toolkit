@@ -223,49 +223,143 @@ namespace HelixToolkit.Wpf
                 (model, visual, transform) =>
                 {
                     var geometry = model.Geometry as MeshGeometry3D;
-                    if (geometry == null || geometry.Positions == null || geometry.TriangleIndices == null)
+                    if (geometry == null
+                    || model.Bounds.IsEmpty
+                    || geometry.Bounds.IsEmpty
+                    || geometry.Positions == null
+                    || geometry.Positions.Count == 0
+                    || geometry.TriangleIndices == null
+                    || geometry.TriangleIndices.Count == 0)
                     {
                         return;
                     }
+                    // ref https://learn.microsoft.com/en-us/archive/blogs/wpf3d/transforming-bounds
+                    GeneralTransform3DTo2D transform3DTo2D = visual.TransformToAncestor(viewport);
+                    // If null, the transform isn't possible at all
+                    if (transform3DTo2D is null) return;
+                    Rect visualBound = transform3DTo2D.TransformBounds(VisualTreeHelper.GetDescendantBounds(visual));
 
-                    var status = mode == SelectionHitMode.Inside;
-
-                    // transform the positions of the mesh to screen coordinates
-                    var point2Ds = geometry.Positions.Select(transform.Transform).Select(viewport.Point3DtoPoint2D).ToArray();
-
-                    // evaluate each triangle
-                    for (var i = 0; i < geometry.TriangleIndices.Count / 3; i++)
-                    {
-                        var triangle = new Triangle(
-                            point2Ds[geometry.TriangleIndices[i * 3]],
-                            point2Ds[geometry.TriangleIndices[(i * 3) + 1]],
-                            point2Ds[geometry.TriangleIndices[(i * 3) + 2]]);
-                        switch (mode)
-                        {
-                            case SelectionHitMode.Inside:
-                                status = status && triangle.IsCompletelyInside(rectangle);
-                                break;
-                            case SelectionHitMode.Touch:
-                                status = status
-                                         || triangle.IsCompletelyInside(rectangle)
-                                         || triangle.IntersectsWith(rectangle)
-                                         || triangle.IsRectCompletelyInside(rectangle);
-                                break;
-                        }
-
-                        if (mode == SelectionHitMode.Touch && status)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (status)
+                    if (rectangle.Contains(visualBound)) // object is both inside and touch
                     {
                         results.Add(new RectangleHitResult(model, visual));
                     }
-                });
+                    else if (rectangle.IntersectsWith(visualBound))
+                    {
+                        // transform the positions of the mesh to screen coordinates
+                        Point[] meshPoints;
 
+                        var point2Ds = TransformPoints3dTo2d(viewport, transform, geometry.Positions.ToArray());
+
+                        int[] distinctTriangleIndices = geometry.TriangleIndices.Distinct().ToArray();
+                        if (geometry.Positions.Count == distinctTriangleIndices.Length)//MeshGeometry3D maybe (high probability) is origin (have not edited like is cutted...)
+                        {
+                            /* Get bound points by Transform Rect3D of MeshGeometry3D.Bounds to Rect 2d through 8 corner point
+                             *
+                             *              Z | Up   
+                             *                |
+                             *        p4______|_________p7
+                             *        /|      |        /|
+                             *       / |      |       / |
+                             *      /  |      |      /  |
+                             *  p5 |----------------|p6 |
+                             *     |   |      |     |   |
+                             *     |   |    O +-----|---------- Y Left
+                             *     | p0|_____/______|___|p3
+                             *     |  /     /       |   /
+                             *     | /     /        |  /
+                             *     |/     /         | /
+                             *  p1 |_____/__________|/p2
+                             *          /
+                             *       X / Front
+                             */
+
+                            Rect3D rect3d = geometry.Bounds;
+                            Point3D p0 = rect3d.Location;
+                            Point3D p1 = new Point3D(p0.X + rect3d.SizeX, p0.Y, p0.Z);
+                            Point3D p2 = new Point3D(p0.X + rect3d.SizeX, p0.Y + rect3d.SizeY, p0.Z);
+                            Point3D p3 = new Point3D(p0.X, p0.Y + rect3d.SizeY, p0.Z);
+
+                            Point3D p4 = new Point3D(p0.X, p0.Y, p0.Z + rect3d.SizeZ);
+                            Point3D p5 = new Point3D(p1.X, p1.Y, p1.Z + rect3d.SizeZ);
+                            Point3D p6 = new Point3D(p2.X, p2.Y, p2.Z + rect3d.SizeZ);
+                            Point3D p7 = new Point3D(p3.X, p3.Y, p3.Z + rect3d.SizeZ);
+
+                            Point3D[] point3dCorners = new Point3D[8] { p0, p1, p2, p3, p4, p5, p6, p7 };
+                            meshPoints= TransformPoints3dTo2d(viewport, transform, point3dCorners);
+                        }
+                        else //MeshGeometry3D maybe (high probability) is changed from origin model3D (like is cutted...)
+                        {
+                            //Get all point in actual mesh position 
+                            int length = distinctTriangleIndices.Length;
+                            meshPoints = new Point[length];
+                            for (var i = 0; i < length; i++)
+                            {
+                                int triangleIndice = distinctTriangleIndices[i];
+                                meshPoints[i] = point2Ds[triangleIndice];
+                            }
+                        }
+                        Rect geometryBound = GetBound2d(meshPoints);
+
+                        if (rectangle.Contains(geometryBound))// object is both inside and touch
+                        {
+                            results.Add(new RectangleHitResult(model, visual));
+                        }
+                        else if (mode == SelectionHitMode.Touch && rectangle.IntersectsWith(geometryBound))
+                        {
+                            // evaluate each triangle
+                            int triangleIndiceCount = geometry.TriangleIndices.Count;
+                            for (var i = 0; i < triangleIndiceCount; i += 3)
+                            {
+                                var p1 = point2Ds[geometry.TriangleIndices[i]];
+                                var p2 = point2Ds[geometry.TriangleIndices[i + 1]];
+                                var p3 = point2Ds[geometry.TriangleIndices[i + 2]];
+                                var triangle = new Triangle(p1, p2, p3);
+                                // check if triangle touched/inside with rectangle
+                                if (triangle.IsCompletelyInside(rectangle)
+                                         || triangle.IntersectsWith(rectangle)
+                                         || triangle.IsRectCompletelyInside(rectangle))
+                                {
+                                    results.Add(new RectangleHitResult(model, visual));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
             return results;
+            Point[] TransformPoints3dTo2d(Viewport3D viewport3d, Transform3D transform3d, Point3D[] point3ds)
+            {
+                int length = point3ds.Length;
+                Point[] point2ds = new Point[length];
+                for (int i = 0; i < length; i++)
+                {
+                    Point3D transformedPoint3d = transform3d.Transform(point3ds[i]);
+                    Point point2d = viewport3d.Point3DtoPoint2D(transformedPoint3d);
+                    point2ds[i] = point2d;
+                }
+                return point2ds;
+            }
+            Rect GetBound2d(Point[] point2ds)
+            {
+                double minX = point2ds[0].X;
+                double minY = point2ds[0].Y;
+                double maxX = point2ds[0].X;
+                double maxY = point2ds[0].Y;
+                for (int i = 1; i < point2ds.Length; i++)
+                {
+                    Point pi = point2ds[i];
+                    if (pi.X < minX)
+                        minX = pi.X;
+                    else if (pi.X > maxX)
+                        maxX = pi.X;
+                    if (pi.Y < minY)
+                        minY = pi.Y;
+                    else if (pi.Y > maxY)
+                        maxY = pi.Y;
+                }
+                return new Rect(new Point(minX, minY), new Point(maxX, maxY));
+            }
+
         }
 
         /// <summary>
@@ -1255,7 +1349,7 @@ namespace HelixToolkit.Wpf
             /// Gets the hit model.
             /// </summary>
             public Model3D Model { get; private set; }
-            
+
             /// <summary>
             /// Gets the hit visual.
             /// </summary>

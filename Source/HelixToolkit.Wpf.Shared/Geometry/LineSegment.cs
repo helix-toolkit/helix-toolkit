@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Represents a line segment in two-dimensional space.
     /// </summary>
-    public class LineSegment
+    public struct LineSegment
     {
         /// <summary>
         /// The first point of the line segment.
