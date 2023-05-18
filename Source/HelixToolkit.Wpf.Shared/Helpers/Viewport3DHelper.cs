@@ -248,12 +248,12 @@ namespace HelixToolkit.Wpf
                         // transform the positions of the mesh to screen coordinates
                         Point[] meshPoints;
 
-                        var point2Ds = TransformPoints3dTo2d(viewport, transform, geometry.Positions.ToArray());
+                        var point2Ds = TransformPoints3dTo2d(viewport, transform, geometry.Positions);
 
                         int[] distinctTriangleIndices = geometry.TriangleIndices.Distinct().ToArray();
                         if (geometry.Positions.Count == distinctTriangleIndices.Length)//MeshGeometry3D maybe (high probability) is origin (have not edited like is cutted...)
                         {
-                            /* Get bound points by Transform Rect3D of MeshGeometry3D.Bounds to Rect 2d through 8 corner point
+                            /* Get bound points by Transform Rect3D of MeshGeometry3D.Bounds to Rect 2d through 8 corners point
                              *
                              *              Z | Up   
                              *                |
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf
                             Point3D p7 = new Point3D(p3.X, p3.Y, p3.Z + rect3d.SizeZ);
 
                             Point3D[] point3dCorners = new Point3D[8] { p0, p1, p2, p3, p4, p5, p6, p7 };
-                            meshPoints= TransformPoints3dTo2d(viewport, transform, point3dCorners);
+                            meshPoints = TransformPoints3dTo2d(viewport, transform, point3dCorners);
                         }
                         else //MeshGeometry3D maybe (high probability) is changed from origin model3D (like is cutted...)
                         {
@@ -327,9 +327,9 @@ namespace HelixToolkit.Wpf
                     }
                 });
             return results;
-            Point[] TransformPoints3dTo2d(Viewport3D viewport3d, Transform3D transform3d, Point3D[] point3ds)
+            Point[] TransformPoints3dTo2d(Viewport3D viewport3d, Transform3D transform3d, IList<Point3D> point3ds)
             {
-                int length = point3ds.Length;
+                int length = point3ds.Count;
                 Point[] point2ds = new Point[length];
                 for (int i = 0; i < length; i++)
                 {
@@ -347,7 +347,7 @@ namespace HelixToolkit.Wpf
                 double maxY = point2ds[0].Y;
                 for (int i = 1; i < point2ds.Length; i++)
                 {
-                    Point pi = point2ds[i];
+                    ref Point pi = ref point2ds[i];
                     if (pi.X < minX)
                         minX = pi.X;
                     else if (pi.X > maxX)
