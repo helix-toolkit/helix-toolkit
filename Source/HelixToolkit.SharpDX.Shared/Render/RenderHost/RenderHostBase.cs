@@ -595,8 +595,14 @@ namespace HelixToolkit.UWP
             public DX11RenderHostConfiguration RenderConfiguration
             {
                 set; get;
-            } = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, 
-                RenderLights = true, ClearEachFrame = true, OITRenderType = OITRenderType.DepthPeeling };
+            } = new DX11RenderHostConfiguration()
+            {
+                UpdatePerFrameData = true,
+                RenderD2D = true,
+                RenderLights = true,
+                ClearEachFrame = true,
+                OITRenderType = OITRenderType.DepthPeeling
+            };
             /// <summary>
             /// Gets the feature level.
             /// </summary>
@@ -662,16 +668,12 @@ namespace HelixToolkit.UWP
 
             private uint updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
 
-            private volatile bool UpdateSceneGraphRequested = true;
+            private volatile bool updateSceneGraphRequested = true;
 
-            private volatile bool UpdatePerFrameRenderableRequested = true;
+            private volatile bool updatePerFrameRenderableRequested = true;
 
             private readonly object lockObj = new object();
 
-            protected SynchronizationContext SyncContext
-            {
-                get => SynchronizationContext.Current;
-            }
             #endregion
 
             /// <summary>
@@ -710,7 +712,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void InvalidateSceneGraph()
             {
-                UpdateSceneGraphRequested = true;
+                updateSceneGraphRequested = true;
                 InvalidatePerFrameRenderables();
             }
             /// <summary>
@@ -719,7 +721,7 @@ namespace HelixToolkit.UWP
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void InvalidatePerFrameRenderables()
             {
-                UpdatePerFrameRenderableRequested = true;
+                updatePerFrameRenderableRequested = true;
                 InvalidateRender();
             }
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -783,12 +785,12 @@ namespace HelixToolkit.UWP
                         RenderContext.OITDepthPeelingIteration = RenderConfiguration.OITDepthPeelingIteration;
                     }
                     renderBuffer.VSyncInterval = RenderConfiguration.EnableVSync ? 1 : 0;
-                    var updateSceneGraph = UpdateSceneGraphRequested;
-                    var updatePerFrameRenderable = UpdatePerFrameRenderableRequested;
-                    renderContext.UpdateSceneGraphRequested = UpdateSceneGraphRequested;
-                    renderContext.UpdatePerFrameRenderableRequested = UpdatePerFrameRenderableRequested;
-                    UpdateSceneGraphRequested = false;
-                    UpdatePerFrameRenderableRequested = false;
+                    var updateSceneGraph = updateSceneGraphRequested;
+                    var updatePerFrameRenderable = updatePerFrameRenderableRequested;
+                    renderContext.updateSceneGraphRequested = updateSceneGraphRequested;
+                    renderContext.updatePerFrameRenderableRequested = updatePerFrameRenderableRequested;
+                    updateSceneGraphRequested = false;
+                    updatePerFrameRenderableRequested = false;
                     PreRender(updateSceneGraph, updatePerFrameRenderable);
                     try
                     {
@@ -1169,7 +1171,7 @@ namespace HelixToolkit.UWP
                                 overlay.InvalidateAll();
                             }
                         }
-                        SyncContext.Post((o) => { StartRendering(); }, null);
+                        StartRendering();
                     }
                 }
             }
@@ -1187,10 +1189,7 @@ namespace HelixToolkit.UWP
             {
                 if (isLoaded && !IsInitialized)
                 {
-                    SyncContext.Post((o) =>
-                    {
-                        StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
-                    }, null);
+                    StartD3D((int)Math.Floor(ActualWidth), (int)Math.Floor(ActualHeight));
                 }
             }
 
@@ -1204,15 +1203,8 @@ namespace HelixToolkit.UWP
                 lock (lockObj)
                 {
                     EffectsManager?.DisposeAllResources();
+                    EffectsManager?.Reinitialize();
                 }
-                SyncContext.Post((o) =>
-                {
-                    lock (lockObj)
-                    {
-
-                        EffectsManager?.Reinitialize();
-                    }
-                }, null);
             }
 
             protected void TriggerSceneGraphUpdated()
