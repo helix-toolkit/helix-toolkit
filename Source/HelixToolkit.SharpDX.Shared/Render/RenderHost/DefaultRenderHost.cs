@@ -44,8 +44,6 @@ namespace HelixToolkit.UWP
             private AsyncActionWaitable asyncTask;
             private AsyncActionWaitable getTriangleCountTask;
             private AsyncActionWaitable getPostEffectCoreTask;
-            private OrderablePartitioner<Tuple<int, int>> opaquePartitioner;
-            private OrderablePartitioner<Tuple<int, int>> transparentPartitioner;
             private Action FrustumTestAction;
             private int numRendered = 0;
             private readonly AsyncActionThread parallelThread = new AsyncActionThread();
@@ -186,8 +184,6 @@ namespace HelixToolkit.UWP
                         }
                         particleNodes.Sort();
                     }
-                    opaquePartitioner = opaqueNodes.Count > 0 ? Partitioner.Create(0, opaqueNodes.Count, FrustumPartitionSize) : null;
-                    transparentPartitioner = transparentNodes.Count > 0 ? Partitioner.Create(0, transparentNodes.Count, FrustumPartitionSize) : null;
                     SetupFrustumTestFunctions();
                 }
                 else
@@ -536,14 +532,7 @@ namespace HelixToolkit.UWP
                 }
                 else
                 {
-                    if (opaqueNodes.Count < FrustumPartitionSize && transparentNodes.Count < FrustumPartitionSize)
-                    {
-                        FrustumTestAction = FrustumTestDefault;
-                    }
-                    else
-                    {
-                        FrustumTestAction = FrustumTestParallel;
-                    }
+                    FrustumTestAction = FrustumTestDefault;
                 }
             }
 
@@ -570,45 +559,6 @@ namespace HelixToolkit.UWP
                     if (transparentNodes.Items[i].IsInFrustum)
                     {
                         transparentNodesInFrustum.Add(transparentNodes.Items[i]);
-                    }
-                }
-            }
-
-            private void FrustumTestParallel()
-            {
-                var frustum = renderContext.BoundingFrustum;
-                if (opaquePartitioner != null)
-                {
-                    Parallel.ForEach(opaquePartitioner, (range) =>
-                    {
-                        for (var i = range.Item1; i < range.Item2; ++i)
-                        {
-                            opaqueNodes.Items[i].IsInFrustum = opaqueNodes.Items[i].TestViewFrustum(ref frustum);
-                        }
-                    });
-                    for (var i = 0; i < opaqueNodes.Count; ++i)
-                    {
-                        if (opaqueNodes.Items[i].IsInFrustum)
-                        {
-                            opaqueNodesInFrustum.Add(opaqueNodes.Items[i]);
-                        }
-                    }
-                }
-                if (transparentPartitioner != null)
-                {
-                    Parallel.ForEach(transparentPartitioner, (range) =>
-                    {
-                        for (var i = range.Item1; i < range.Item2; ++i)
-                        {
-                            transparentNodes.Items[i].IsInFrustum = transparentNodes.Items[i].TestViewFrustum(ref frustum);
-                        }
-                    });
-                    for (var i = 0; i < transparentNodes.Count; ++i)
-                    {
-                        if (transparentNodes.Items[i].IsInFrustum)
-                        {
-                            transparentNodesInFrustum.Add(transparentNodes.Items[i]);
-                        }
                     }
                 }
             }
