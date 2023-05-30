@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
 {
     namespace Model.Scene2D
     {
+        using Utilities;
         public class PresenterNode2D : SceneNode2D
         {
             private SceneNode2D content;
@@ -55,8 +56,8 @@ namespace HelixToolkit.UWP
 
             public PresenterNode2D()
             {
-                ItemsInternal = new System.Collections.ObjectModel.ObservableCollection<SceneNode2D>();
-                Items = new System.Collections.ObjectModel.ReadOnlyObservableCollection<SceneNode2D>(ItemsInternal);
+                ItemsInternal = new ObservableFastList<SceneNode2D>();
+                Items = new ReadOnlyObservableFastList<SceneNode2D>(ItemsInternal);
             }
 
             protected override bool OnAttach(IRenderHost host)

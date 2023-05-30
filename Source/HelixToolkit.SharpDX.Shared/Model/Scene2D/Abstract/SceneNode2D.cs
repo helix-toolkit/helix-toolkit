@@ -23,8 +23,8 @@ namespace HelixToolkit.UWP
 {
     namespace Model.Scene2D
     {
-        using Core2D;     
-
+        using Core2D;
+        using Utilities;
         /// <summary>
         ///
         /// </summary>
@@ -189,14 +189,14 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items.
             /// </value>
-            internal ObservableCollection<SceneNode2D> ItemsInternal { set; get; } = Constants.EmptyRenderable2D;
+            internal ObservableFastList<SceneNode2D> ItemsInternal { set; get; } = Constants.EmptyRenderable2D;
             /// <summary>
             /// Gets the items as readonly. Expose for outside for UI access or bindings
             /// </summary>
             /// <value>
             /// The items.
             /// </value>
-            public ReadOnlyObservableCollection<SceneNode2D> Items { internal set; get; } = Constants.EmptyReadOnlyRenderable2DArray;
+            public ReadOnlyObservableFastList<SceneNode2D> Items { internal set; get; } = Constants.EmptyReadOnlyRenderable2DArray;
 
             private Matrix3x2 modelMatrix = Matrix3x2.Identity;
 
