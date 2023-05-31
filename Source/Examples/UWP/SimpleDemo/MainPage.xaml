@@ -190,6 +190,7 @@
             EnableDesignModeRendering="True"
             EnableSharedModelMode="True"
             FXAALevel="Low"
+            OITRenderMode="{Binding OITVM.OITRenderType}"
             IsPanEnabled="False"
             ModelUpDirection="{Binding UpDirection}"
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
@@ -237,7 +238,7 @@
             <StackPanel.CacheMode>
                 <BitmapCache />
             </StackPanel.CacheMode>
-            <ComboBox ItemsSource="{Binding OITVM.OITRenderTypes}" SelectedItem="{Binding OITVM.OITRenderType}"/>
+            <ComboBox ItemsSource="{Binding OITVM.OITRenderTypes}" SelectedItem="{Binding OITVM.OITRenderType, Mode=TwoWay}"/>
             <StackPanel Orientation="Vertical" Visibility="{Binding OITVM.OITDepthPeelModeEnabled}">
                 <TextBlock>Depth Peeling Iteration:</TextBlock>
                 <Slider Width="120" Minimum="1" Maximum="10" SmallChange="1" Value="{Binding ElementName=viewport1, Path=OITDepthPeelingIteration, Mode=TwoWay}"/>
