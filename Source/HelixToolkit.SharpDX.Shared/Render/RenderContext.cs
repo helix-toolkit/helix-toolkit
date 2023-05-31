@@ -437,7 +437,7 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if [update scene graph requested]; otherwise, <c>false</c>.
         /// </value>
-        public bool UpdateSceneGraphRequested
+        public bool updateSceneGraphRequested
         {
             internal set; get;
         }
@@ -447,7 +447,7 @@ namespace HelixToolkit.UWP
         /// <value>
         ///   <c>true</c> if [update per frame renderable requested]; otherwise, <c>false</c>.
         /// </value>
-        public bool UpdatePerFrameRenderableRequested
+        public bool updatePerFrameRenderableRequested
         {
             internal set; get;
         }

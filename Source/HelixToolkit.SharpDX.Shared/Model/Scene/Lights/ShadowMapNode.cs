@@ -378,7 +378,7 @@ namespace HelixToolkit.UWP
                             var dir = Vector3.TransformNormal(dlight.Direction, dlight.ModelMatrix).Normalized();
                             if (AutoCoverCompleteScene)
                             {
-                                if (sceneChanged || e.Context.UpdateSceneGraphRequested || IsSceneDynamic)
+                                if (sceneChanged || e.Context.updateSceneGraphRequested || IsSceneDynamic)
                                 {
                                     sceneChanged = false;
                                     var boundingBox = FindSceneBound(e.Context.RenderHost.PerFrameOpaqueNodes);

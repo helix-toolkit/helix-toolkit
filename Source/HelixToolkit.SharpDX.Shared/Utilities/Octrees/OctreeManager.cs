@@ -24,10 +24,10 @@ namespace HelixToolkit.UWP
 {
     namespace Utilities
     {
-        
+
         using Model;
         using Model.Scene;
-        
+
 
         /// <summary>
         /// 
@@ -182,15 +182,19 @@ namespace HelixToolkit.UWP
                     RequestUpdateOctree = false;
                     if (Enabled)
                     {
-                        UpdateOctree(RebuildOctree(items.Where(x => x.HasBound)));
-
+                        var nodes = items.Where(x => x.HasBound);
+                        if (nodes.Count() == 0)
+                        {
+                            return;
+                        }
+                        UpdateOctree(RebuildOctree(nodes));
                         if (Octree == null)
                         {
                             RequestRebuild();
                         }
                         else
                         {
-                            foreach (var item in items.Where(x => !x.HasBound))
+                            foreach (var item in nodes)
                             {
                                 NonBoundableItems.Add(item);
                             }

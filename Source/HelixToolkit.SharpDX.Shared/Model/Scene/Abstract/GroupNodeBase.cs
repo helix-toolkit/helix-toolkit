@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP
 {
     namespace Model.Scene
     {
+        using Utilities;
         /// <summary>
         /// 
         /// </summary>
@@ -88,8 +89,8 @@ namespace HelixToolkit.UWP
             /// </summary>
             public GroupNodeBase()
             {
-                ItemsInternal = new System.Collections.ObjectModel.ObservableCollection<SceneNode>();
-                Items = new System.Collections.ObjectModel.ReadOnlyObservableCollection<SceneNode>(ItemsInternal);
+                ItemsInternal = new ObservableFastList<SceneNode>();
+                Items = new ReadOnlyObservableFastList<SceneNode>(ItemsInternal);
             }
             /// <summary>
             /// Initializes a new instance of the <see cref="GroupNodeBase"/> class.

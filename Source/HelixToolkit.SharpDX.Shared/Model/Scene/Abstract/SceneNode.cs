@@ -24,6 +24,7 @@ namespace HelixToolkit.UWP
     namespace Model.Scene
     {
         using Core;
+        using Utilities;
         using Render;
 
         public enum InvalidateTypes
@@ -251,7 +252,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The items.
             /// </value>
-            internal ObservableCollection<SceneNode> ItemsInternal
+            internal ObservableFastList<SceneNode> ItemsInternal
             {
                 set; get;
             } = Constants.EmptyRenderableArray;
@@ -262,7 +263,7 @@ namespace HelixToolkit.UWP
             /// <value>
             /// The children.
             /// </value>
-            public ReadOnlyObservableCollection<SceneNode> Items { internal set; get; } = Constants.EmptyReadOnlyRenderableArray;
+            public ReadOnlyObservableFastList<SceneNode> Items { internal set; get; } = Constants.EmptyReadOnlyRenderableArray;
             /// <summary>
             /// Gets the items count.
             /// </summary>
@@ -271,7 +272,7 @@ namespace HelixToolkit.UWP
             /// </value>
             public int ItemsCount
             {
-                get => Items.Count;
+                get => ItemsInternal.Count;
             }
 
             private bool isHitTestVisible = true;
