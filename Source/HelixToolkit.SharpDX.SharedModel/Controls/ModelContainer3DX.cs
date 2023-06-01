@@ -628,6 +628,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public event EventHandler<IEffectsManager> EffectsManagerChanged;
 
+        public bool EnableParallelProcessing { set; get; }
+
         public ModelContainer3DX()
         {
             this.IsHitTestVisible = false;

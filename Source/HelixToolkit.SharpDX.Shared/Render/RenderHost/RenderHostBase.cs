@@ -610,6 +610,8 @@ namespace HelixToolkit.UWP
             /// The feature level.
             /// </value>
             public global::SharpDX.Direct3D.FeatureLevel FeatureLevel { get; private set; } = global::SharpDX.Direct3D.FeatureLevel.Level_11_0;
+
+            public bool EnableParallelProcessing { set; get; } = true;
             #endregion
             #endregion
 
