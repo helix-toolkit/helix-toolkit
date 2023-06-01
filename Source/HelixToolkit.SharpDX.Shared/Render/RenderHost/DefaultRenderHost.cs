@@ -220,6 +220,7 @@ namespace HelixToolkit.UWP
             protected override void PreRender(bool invalidateSceneGraph, bool invalidatePerFrameRenderables)
             {
                 base.PreRender(invalidateSceneGraph, invalidatePerFrameRenderables);
+                parallelThread.Enabled = EnableParallelProcessing;
 
                 SeparateRenderables(RenderContext, invalidateSceneGraph, invalidatePerFrameRenderables);
                 if (invalidateSceneGraph)
@@ -348,7 +349,7 @@ namespace HelixToolkit.UWP
                     renderer.RenderToPingPongBuffer(RenderContext, ref renderParameter);
                     renderParameter.IsMSAATexture = false;
                     renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
-                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;                                 
+                    renderParameter.RenderTargetView[0] = RenderBuffer.FullResPPBuffer.CurrentRTV;
                 }
                 if (postEffectNodes.Count > 0)
                 {
@@ -391,7 +392,7 @@ namespace HelixToolkit.UWP
                         {
                             ++start;
                         }
-                    }                       
+                    }
                 }
                 renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
                 numRendered += preProcNodes.Count + postEffectNodes.Count + screenSpacedNodes.Count;
@@ -405,7 +406,7 @@ namespace HelixToolkit.UWP
 
             private int DoDepthPrepass()
             {
-                renderer.ImmediateContext.ClearDepthStencilView(RenderBuffer.DepthStencilBufferNoMSAA, 
+                renderer.ImmediateContext.ClearDepthStencilView(RenderBuffer.DepthStencilBufferNoMSAA,
                     DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil);
                 renderer.ImmediateContext.SetRenderTarget(RenderBuffer.DepthStencilBufferNoMSAA, null);
                 RenderContext.CustomPassName = DefaultPassNames.DepthPrepass;
@@ -495,7 +496,9 @@ namespace HelixToolkit.UWP
             protected override void OnStartD3D()
             {
                 base.OnStartD3D();
+#if !WINUI
                 parallelThread.Start();
+#endif
             }
 
             /// <summary>
@@ -510,7 +513,9 @@ namespace HelixToolkit.UWP
                 RemoveAndDispose(ref asyncTask);
                 RemoveAndDispose(ref getTriangleCountTask);
                 RemoveAndDispose(ref getPostEffectCoreTask);
+#if !WINUI
                 parallelThread.Stop();
+#endif
                 Clear(true, true);
                 base.OnEndingD3D();
             }

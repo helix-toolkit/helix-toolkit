@@ -85,10 +85,15 @@ namespace HelixToolkit.UWP
         private volatile bool running = true;
         private bool disposedValue;
 
+        public bool Enabled { set; get; }
+
         public AsyncActionWaitable EnqueueAction(Action action)
         {
-            if (!running)
-            { return null; }
+            if (!running || !Enabled)
+            {
+                action.Invoke();
+                return null; 
+            }
             var obj = AsyncActionWaitable.Get();
             obj.SetAction(action);
             lock (jobs)

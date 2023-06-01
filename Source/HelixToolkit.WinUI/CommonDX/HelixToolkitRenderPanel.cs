@@ -69,13 +69,13 @@ namespace HelixToolkit.WinUI
             if (enableDeferredRendering)
             {
                 renderHost = new SwapChainCompositionRenderHost((device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
-                // renderHost = new SwapChainSurfaceRenderHost(swapChainPanelNativePtr, (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
             }
             else
             {
                 renderHost = new SwapChainCompositionRenderHost();
-                // renderHost = new SwapChainSurfaceRenderHost(swapChainPanelNativePtr);
             }
+            // Disable parallel processing until this issue is fixed: https://github.com/microsoft/microsoft-ui-xaml/issues/8501
+            renderHost.EnableParallelProcessing = false;
             renderHost.OnNewRenderTargetTexture += SwapChainRenderHost_OnNewRenderTargetTexture;
             renderHost.StartRenderLoop += SwapChainRenderHost_StartRenderLoop;
             renderHost.StopRenderLoop += SwapChainRenderHost_StopRenderLoop;
