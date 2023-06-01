@@ -6,11 +6,9 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using System.Collections.Concurrent;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -343,7 +341,7 @@ namespace HelixToolkit.UWP
                 numRendered += renderer.RenderTransparent(RenderContext, transparentNodesInFrustum, ref renderParameter);
 
                 getPostEffectCoreTask?.Wait();
-                getPostEffectCoreTask = null;
+                RemoveAndDispose(ref getPostEffectCoreTask);
                 if (RenderConfiguration.FXAALevel != FXAALevel.None
                     || postEffectNodes.Count > 0 || globalEffectNodes.Count > 0)
                 {
@@ -424,9 +422,9 @@ namespace HelixToolkit.UWP
             protected override void PostRender()
             {
                 asyncTask?.Wait();
-                asyncTask = null;
+                RemoveAndDispose(ref asyncTask);
                 getTriangleCountTask?.Wait();
-                getTriangleCountTask = null;
+                RemoveAndDispose(ref getTriangleCountTask);
             }
 
             /// <summary>
@@ -509,9 +507,9 @@ namespace HelixToolkit.UWP
                 asyncTask?.Wait();
                 getTriangleCountTask?.Wait();
                 getPostEffectCoreTask?.Wait();
-                asyncTask = null;
-                getTriangleCountTask = null;
-                getPostEffectCoreTask = null;
+                RemoveAndDispose(ref asyncTask);
+                RemoveAndDispose(ref getTriangleCountTask);
+                RemoveAndDispose(ref getPostEffectCoreTask);
                 parallelThread.Stop();
                 Clear(true, true);
                 base.OnEndingD3D();

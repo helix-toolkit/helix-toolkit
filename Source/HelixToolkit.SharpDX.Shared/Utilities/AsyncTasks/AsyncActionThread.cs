@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 
 #if !NETFX_CORE
@@ -15,18 +13,27 @@ namespace HelixToolkit.UWP
 #endif
 #endif
 {
-    internal sealed class AsyncActionWaitable
+    internal sealed class AsyncActionWaitable : DisposeObject
     {
         private readonly object waitable = new object();
         private AsyncActionWaitable() { }
-        public Action Action;
+        private Action action;
+
+        public void SetAction(Action action)
+        {
+            lock (waitable)
+            {
+                this.action = action;
+            }
+        }
 
         public void Trigger()
         {
             lock (waitable)
             {
-                Action?.Invoke();
-                Action = null;
+                var a = action;
+                action = null;
+                a?.Invoke();
                 Monitor.Pulse(waitable);
             }
         }
@@ -35,7 +42,7 @@ namespace HelixToolkit.UWP
         {
             lock (waitable)
             {
-                if (Action == null)
+                if (action == null)
                 {
                     return;
                 }
@@ -47,13 +54,24 @@ namespace HelixToolkit.UWP
 
         public static AsyncActionWaitable Get()
         {
-            return pool.TryTake(out var obj) ? obj : new AsyncActionWaitable();
+            if (!pool.TryTake(out AsyncActionWaitable obj))
+            {
+                obj = new AsyncActionWaitable
+                {
+                    AddBackToPool = Put
+                };
+            }
+            obj.IncRef();
+            return obj;
         }
 
-        public static void Put(AsyncActionWaitable obj)
+        static void Put(DisposeObject obj)
         {
-            obj.Action = null;
-            pool.Add(obj);
+            if (obj is AsyncActionWaitable t)
+            {
+                t.action = null;
+                pool.Add(t);
+            }
         }
     }
     /// <summary>
@@ -69,10 +87,10 @@ namespace HelixToolkit.UWP
 
         public AsyncActionWaitable EnqueueAction(Action action)
         {
-            if (!running) 
+            if (!running)
             { return null; }
             var obj = AsyncActionWaitable.Get();
-            obj.Action = action;
+            obj.SetAction(action);
             lock (jobs)
             {
                 jobs.Enqueue(obj);
@@ -100,7 +118,6 @@ namespace HelixToolkit.UWP
                             var job = jobs.Dequeue();
                             Monitor.Exit(jobs);
                             job.Trigger();
-                            AsyncActionWaitable.Put(job);
                             Monitor.Enter(jobs);
                         }
                         Monitor.Wait(jobs, 100);
@@ -108,7 +125,7 @@ namespace HelixToolkit.UWP
                 }
                 Clear();
             });
-            jobThread.Priority = ThreadPriority.Highest;
+            jobThread.Priority = ThreadPriority.AboveNormal;
             jobThread.Start();
         }
 
@@ -136,7 +153,7 @@ namespace HelixToolkit.UWP
             {
                 while (jobs.Count > 0)
                 {
-                    AsyncActionWaitable.Put(jobs.Dequeue());
+                    jobs.Dequeue().Dispose();
                 }
             }
         }
