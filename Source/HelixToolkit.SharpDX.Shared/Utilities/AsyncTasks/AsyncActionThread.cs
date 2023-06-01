@@ -21,10 +21,7 @@ namespace HelixToolkit.UWP
 
         public void SetAction(Action action)
         {
-            lock (waitable)
-            {
-                this.action = action;
-            }
+            this.action = action;
         }
 
         public void Trigger()
@@ -92,7 +89,7 @@ namespace HelixToolkit.UWP
             if (!running || !Enabled)
             {
                 action.Invoke();
-                return null; 
+                return null;
             }
             var obj = AsyncActionWaitable.Get();
             obj.SetAction(action);
