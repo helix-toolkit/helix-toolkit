@@ -827,7 +827,7 @@ namespace HelixToolkit.Wpf
 
 #if !NETFX_CORE
         /// <summary>
-        /// Adds the edges of a bounding box as cylinders.
+        /// Adds the edges of a bounding box as pipes.
         /// </summary>
         /// <param name="boundingBox">
         /// The bounding box.
@@ -846,7 +846,7 @@ namespace HelixToolkit.Wpf
             var p6 = new Point3D((DoubleOrSingle)boundingBox.X + (DoubleOrSingle)boundingBox.SizeX, (DoubleOrSingle)boundingBox.Y + (DoubleOrSingle)boundingBox.SizeY, (DoubleOrSingle)boundingBox.Z + (DoubleOrSingle)boundingBox.SizeZ);
             var p7 = new Point3D((DoubleOrSingle)boundingBox.X + (DoubleOrSingle)boundingBox.SizeX, (DoubleOrSingle)boundingBox.Y, (DoubleOrSingle)boundingBox.Z + (DoubleOrSingle)boundingBox.SizeZ);
 
-            Action<Point3D, Point3D> addEdge = (c1, c2) => this.AddCylinder(c1, c2, diameter, 10);
+            Action<Point3D, Point3D> addEdge = (c1, c2) => this.AddPipe(c1, c2,0, diameter, 10);
 
             addEdge(p0, p1);
             addEdge(p1, p2);
