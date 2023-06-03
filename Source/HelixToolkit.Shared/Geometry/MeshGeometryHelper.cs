@@ -283,13 +283,13 @@ namespace HelixToolkit.Wpf
             var p = new Point3DCollection();
             var ti = new Int32Collection();
             Vector3DCollection n = null;
-            if (input.Normals != null)
+            if (input.Normals != null && input.Normals.Count>0)
             {
                 n = new Vector3DCollection();
             }
 
             PointCollection tc = null;
-            if (input.TextureCoordinates != null)
+            if (input.TextureCoordinates != null && input.TextureCoordinates.Count > 0 )
             {
                 tc = new PointCollection();
             }
@@ -311,7 +311,7 @@ namespace HelixToolkit.Wpf
                 ti.Add(i0);
                 ti.Add(i1);
                 ti.Add(i2);
-                if (n != null && input.Normals.Count>0)
+                if (n != null)
                 {
                     n.Add(input.Normals[index0]);
                     n.Add(input.Normals[index1]);
