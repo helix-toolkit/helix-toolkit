@@ -2,24 +2,22 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using SharpDX;
+using System;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-
-using SharpDX;
-
-using System;
 
 namespace HelixToolkit.WinUI
 {
     using CommonDX;
-
-    using HelixToolkit.SharpDX.Core;
+    using Microsoft.UI.Xaml;
+    using Microsoft.UI.Xaml.Input;
     using HelixToolkit.SharpDX.Core.Render;
     using HelixToolkit.SharpDX.Core.Utilities;
-
+    using Windows.Foundation;
     using Windows.UI.Popups;
-
     using WinRT;
+    using HelixToolkit.SharpDX.Core;
 
     // https://github.com/RolandKoenig/SeeingSharp2/blob/dae33fd85f38a781a348155aa1ee07ce1f170152/SeeingSharp.WinUI/Multimedia/Views/SeeingSharpPanelPainter.cs
     public class HelixToolkitRenderPanel : SwapChainPanel, IDisposable
@@ -70,9 +68,7 @@ namespace HelixToolkit.WinUI
         {
             if (enableDeferredRendering)
             {
-                // Disable parallel processing until this issue is fixed: https://github.com/microsoft/microsoft-ui-xaml/issues/8501
-                var schedulerParams = new AutoTaskSchedulerParameter { EnableParallelProcessing = false };
-                renderHost = new SwapChainCompositionRenderHost(device => new DeferredContextRenderer(device, new AutoRenderTaskScheduler(schedulerParams)));
+                renderHost = new SwapChainCompositionRenderHost((device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
             }
             else
             {
