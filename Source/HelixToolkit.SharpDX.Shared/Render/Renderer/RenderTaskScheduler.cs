@@ -2,12 +2,13 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using global::SharpDX.Direct3D11;
-using System.Collections.Concurrent;
-using System.Runtime.CompilerServices;
+
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -20,7 +21,6 @@ namespace HelixToolkit.UWP
 {
     namespace Render
     {
-        using Core;
         using Model.Scene;
 
 
@@ -81,6 +81,12 @@ namespace HelixToolkit.UWP
             public int MaxNumberOfTasks { set; get; } = 4;
 
             /// <summary>
+            /// Whether to allow parallel processing.
+            /// It will need to be disabled in WinUi environment until this issue is fixed: https://github.com/microsoft/microsoft-ui-xaml/issues/8501.
+            /// </summary>
+            public bool EnableParallelProcessing { get; set; } = true;
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="AutoTaskSchedulerParameter"/> class.
             /// </summary>
             public AutoTaskSchedulerParameter()
@@ -134,8 +140,8 @@ namespace HelixToolkit.UWP
                 if (items.Count > schedulerParams.MinimumDrawCalls)
                 {
                     var frustum = context.BoundingFrustum;
-                    var partitionParams = Partitioner.Create(0, items.Count, items.Count / schedulerParams.MaxNumberOfTasks + 1);
-                    Parallel.ForEach(partitionParams, (range, state) =>
+
+                    void Action(Tuple<int, int> range, ParallelLoopState state)
                     {
                         try
                         {
@@ -158,6 +164,7 @@ namespace HelixToolkit.UWP
                                     {
                                         continue;
                                     }
+
                                     items[i].Render(context, deferred);
                                     ++counter;
                                 }
@@ -175,7 +182,19 @@ namespace HelixToolkit.UWP
                         {
                             exception = ex;
                         }
-                    });
+                    }
+
+                    if (schedulerParams.EnableParallelProcessing)
+                    {
+                        var partitionParams = Partitioner.Create(0, items.Count, items.Count / schedulerParams.MaxNumberOfTasks + 1);
+
+                        Parallel.ForEach(partitionParams, Action);
+                    }
+                    else
+                    {
+                        Action(Tuple.Create(0, items.Count), null);
+                    }
+
                     numRendered = totalCount;
                     if (exception != null)
                     {
