@@ -2019,11 +2019,11 @@ namespace HelixToolkit.Wpf
         /// <param name="thetaDiv">
         /// The number of divisions around the cylinders.
         /// </param>
-        public void AddPipes(IList<Vector3D> points, IList<int> edges, double diameter = 1, int thetaDiv = 32)
+        public void AddPipes(IList<Point3D> points, IList<int> edges, double diameter = 1, int thetaDiv = 32)
         {
             for (var i = 0; i < edges.Count - 1; i += 2)
             {
-                this.AddCylinder((Point3D)points[edges[i]], (Point3D)points[edges[i + 1]], diameter, thetaDiv);
+                this.AddCylinder(points[edges[i]], points[edges[i + 1]], diameter, thetaDiv);
             }
         }
         /// <summary>
