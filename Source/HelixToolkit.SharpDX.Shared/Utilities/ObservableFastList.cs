@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP
             {
                 if (list.Remove(item))
                 {
-                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, null, item));
+                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
                     OnPropertyChanged(nameof(Count));
                     return true;
                 }
@@ -71,7 +71,7 @@ namespace HelixToolkit.UWP
             {
                 var item = list[index];
                 list.RemoveAt(index);
-                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, null, item));
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
                 OnPropertyChanged(nameof(Count));
             }
 
