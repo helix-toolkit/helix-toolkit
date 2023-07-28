@@ -15,6 +15,7 @@ namespace HelixToolkit.UWP
 {
     using Cameras;
     using Model.Scene;
+
     /// <summary>
     /// 
     /// </summary>
