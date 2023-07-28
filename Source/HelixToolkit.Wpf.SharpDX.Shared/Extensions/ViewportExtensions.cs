@@ -528,7 +528,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            viewport.Camera.ZoomExtents(viewport, new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D()), animationTime);
+            viewport.Camera.ZoomExtents(viewport, bounds, animationTime);
         }
 
         /// <summary>

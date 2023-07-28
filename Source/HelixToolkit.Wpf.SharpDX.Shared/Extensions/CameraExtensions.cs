@@ -11,13 +11,12 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Windows;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
 using Matrix = global::SharpDX.Matrix;
 using Matrix3x3 = global::SharpDX.Matrix3x3;
 using Vector3 = global::SharpDX.Vector3;
-
+using BoundingBox = global::SharpDX.BoundingBox;
 #if COREWPF
 using HelixToolkit.SharpDX.Core;
 using HelixToolkit.SharpDX.Core.Cameras;
@@ -516,14 +515,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this Camera camera, Viewport3DX viewport, double animationTime = 0)
         {
             var bounds = viewport.FindBounds();
-            var diagonal = bounds.Maximum - bounds.Minimum;
-
-            if (diagonal.LengthSquared().Equals(0))
-            {
-                return;
-            }
-
-            ZoomExtents(camera, viewport, new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D()), animationTime);
+            ZoomExtents(camera, viewport, bounds, animationTime);
         }
 
         /// <summary>
@@ -544,12 +536,49 @@ namespace HelixToolkit.Wpf.SharpDX
         public static void ZoomExtents(
             this Camera camera, Viewport3DX viewport, Rect3D bounds, double animationTime = 0)
         {
-            var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
-            var center = bounds.Location + (diagonal * 0.5);
-            var radius = diagonal.Length * 0.5;
-            ZoomExtents(camera, viewport, center, radius, animationTime);
+            ZoomExtents(camera, viewport, bounds.ToBoundingBox(), animationTime);
         }
 
+        public static BoundingBox ToBoundingBox(this Rect3D bounds)
+        {
+            return new BoundingBox(bounds.Location.ToVector3(), bounds.Location.ToVector3() + new Vector3((float)bounds.X, (float)bounds.Y, (float)bounds.Z));
+        }
+        /// <summary>
+        /// Zooms to fit the specified bounding rectangle.
+        /// </summary>
+        /// <param name="camera">
+        /// The actual camera.
+        /// </param>
+        /// <param name="viewport">
+        /// The viewport.
+        /// </param>
+        /// <param name="bounds">
+        /// The bounding rectangle.
+        /// </param>
+        /// <param name="animationTime">
+        /// The animation time.
+        /// </param>
+        public static void ZoomExtents(
+            this Camera camera, Viewport3DX viewport, global::SharpDX.BoundingBox bounds, double animationTime = 0)
+        {
+            var diagonal = bounds.Maximum - bounds.Minimum;
+
+            if (diagonal.LengthSquared().Equals(0))
+            {
+                return;
+            }
+            if (camera is PerspectiveCamera p && camera.CameraInternal is PerspectiveCameraCore pCore)
+            {
+                pCore.ZoomExtents((float)(viewport.ActualWidth / viewport.ActualHeight), bounds, out var pos, out var look, out var up);
+                p.AnimateTo(pos.ToPoint3D(), look.ToVector3D(), up.ToVector3D(), animationTime);
+            }
+            else if (camera is OrthographicCamera orth && camera.CameraInternal is OrthographicCameraCore oCore)
+            {
+                oCore.ZoomExtents((float)(viewport.ActualWidth / viewport.ActualHeight), bounds, out var pos, out var look, out var up, out var width);
+                orth.AnimateWidth(width, animationTime);
+                orth.AnimateTo(pos.ToPoint3D(), look.ToVector3D(), up.ToVector3D(), animationTime);
+            }
+        }
         /// <summary>
         /// Zooms to fit the specified sphere.
         /// </summary>
@@ -574,9 +603,9 @@ namespace HelixToolkit.Wpf.SharpDX
             // var target = Camera.Position + Camera.LookDirection;
             if (camera is IPerspectiveCameraModel pcam)
             {
-                var disth = radius / Math.Tan(0.75 * pcam.FieldOfView * Math.PI / 180);
+                var disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
                 var vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
-                var distv = radius / Math.Tan(0.75 * vfov * Math.PI / 180);
+                var distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
 
                 var dist = Math.Max(disth, distv);
                 var dir = camera.LookDirection;

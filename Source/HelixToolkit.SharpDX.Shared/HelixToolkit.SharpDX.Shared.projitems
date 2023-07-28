@@ -93,12 +93,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingFrustumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)extensions\CameraCoreExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Color4Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataStreamExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IRenderMetricesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IViewportExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)extensions\PlaneExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PointerSizeHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\RayExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SceneNodeExtensions.cs" />
