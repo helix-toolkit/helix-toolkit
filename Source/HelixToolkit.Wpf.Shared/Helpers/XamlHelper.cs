@@ -38,10 +38,7 @@ namespace HelixToolkit.Wpf
                 XamlWriter.Save(view, xw);
 
                 string xaml = sb.ToString();
-                xaml =
-                    xaml.Replace(
-                        string.Format("<Viewport3D Height=\"{0}\" Width=\"{1}\" ", view.ActualHeight, view.ActualWidth),
-                        "<Viewport3D ");
+                xaml = xaml.Replace(string.Format("<Viewport3D Height=\"{0}\" Width=\"{1}\" ", view.ActualHeight, view.ActualWidth), "<Viewport3D ");
 
                 return xaml;
             }

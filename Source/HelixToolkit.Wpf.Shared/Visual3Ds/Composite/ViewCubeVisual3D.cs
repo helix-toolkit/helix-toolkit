@@ -124,15 +124,6 @@ namespace HelixToolkit.Wpf
             "Viewport", typeof(Viewport3D), typeof(ViewCubeVisual3D), new PropertyMetadata(null));
 
         /// <summary>
-        /// Set or Get if view cube edge clickable.
-        /// </summary>
-        public bool EnableEdgeClicks
-        {
-            get { return (bool)GetValue(EnableEdgeClicksProperty); }
-            set { SetValue(EnableEdgeClicksProperty, value); }
-        }
-
-        /// <summary>
         /// Identifies the <see cref="EnableEdgeClicks"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EnableEdgeClicksProperty =
@@ -345,9 +336,18 @@ namespace HelixToolkit.Wpf
                 this.SetValue(ViewportProperty, value);
             }
         }
+
+        /// <summary>
+        /// Set or Get if view cube edge clickable.
+        /// </summary>
+        public bool EnableEdgeClicks
+        {
+            get { return (bool)GetValue(EnableEdgeClicksProperty); }
+            set { SetValue(EnableEdgeClicksProperty, value); }
+        }
         private double Overhang => 0.001 * Size;
         #endregion Properties
-
+        #region Fields
         /// <summary>
         /// The dictionary [object,(normal vector,up vector)].
         /// </summary>
@@ -368,7 +368,7 @@ namespace HelixToolkit.Wpf
         private Vector3D _frontVector;
         private Vector3D _leftVector;
         private Vector3D _upVector;
-
+        #endregion Fields
         #region Constructors
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ViewCubeVisual3D" /> class.
