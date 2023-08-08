@@ -153,6 +153,8 @@ namespace ModelViewer
 
         private void CopyXaml()
         {
+            if (this.CurrentModel is null)
+                return;
             var rd = XamlExporter.WrapInResourceDictionary(this.CurrentModel);
             Clipboard.SetText(XamlHelper.GetXaml(rd));
         }
@@ -175,7 +177,7 @@ namespace ModelViewer
             return await Task.Factory.StartNew(() =>
             {
                 var mi = new ModelImporter();
-                
+
                 if (freeze)
                 {
                     // Alt 1. - freeze the model 
