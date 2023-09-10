@@ -1652,7 +1652,7 @@ namespace HelixToolkit.Wpf
             this.PushCameraSetting();
             if (this.DefaultCamera != null)
             {
-                this.DefaultCamera.Copy(this.ActualCamera);
+                this.DefaultCamera.CopyTo(this.ActualCamera);
             }
             else
             {

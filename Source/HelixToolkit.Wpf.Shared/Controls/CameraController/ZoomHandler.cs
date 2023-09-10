@@ -259,11 +259,8 @@ namespace HelixToolkit.Wpf
                 {
                     this.ZoomByChangingCameraPosition(delta, zoomAround);
                 }
-
-                return;
             }
-
-            if (this.Camera is OrthographicCamera)
+            else if (this.Camera is OrthographicCamera)
             {
                 this.ZoomByChangingCameraWidth(delta, zoomAround);
             }

@@ -29,14 +29,11 @@ namespace HelixToolkit.Wpf
             this.UpDirection = camera.UpDirection;
             this.NearPlaneDistance = camera.NearPlaneDistance;
             this.FarPlaneDistance = camera.FarPlaneDistance;
-            var pcamera = camera as PerspectiveCamera;
-            if (pcamera != null)
+            if (camera is PerspectiveCamera pcamera)
             {
                 this.FieldOfView = pcamera.FieldOfView;
             }
-
-            var ocamera = camera as OrthographicCamera;
-            if (ocamera != null)
+            else if (camera is OrthographicCamera ocamera)
             {
                 this.Width = ocamera.Width;
             }
@@ -90,14 +87,11 @@ namespace HelixToolkit.Wpf
             camera.UpDirection = this.UpDirection;
             camera.NearPlaneDistance = this.NearPlaneDistance;
             camera.FarPlaneDistance = this.FarPlaneDistance;
-            var pcamera = camera as PerspectiveCamera;
-            if (pcamera != null)
+            if (camera is PerspectiveCamera pcamera)
             {
                 pcamera.FieldOfView = this.FieldOfView;
             }
-
-            var ocamera = camera as OrthographicCamera;
-            if (ocamera != null)
+            else if (camera is OrthographicCamera ocamera)
             {
                 ocamera.Width = this.Width;
             }
