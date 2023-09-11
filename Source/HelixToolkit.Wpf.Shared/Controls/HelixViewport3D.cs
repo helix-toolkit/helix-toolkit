@@ -3842,8 +3842,8 @@ namespace HelixToolkit.Wpf
             {
                 if (this.DefaultCamera != null)
                 {
-                    this.DefaultCamera.Copy(this.perspectiveCamera);
-                    this.DefaultCamera.Copy(this.orthographicCamera);
+                    this.DefaultCamera.CopyTo(this.perspectiveCamera);
+                    this.DefaultCamera.CopyTo(this.orthographicCamera);
                 }
 
                 this.hasBeenLoadedBefore = true;
@@ -3885,7 +3885,7 @@ namespace HelixToolkit.Wpf
                 this.Camera = this.perspectiveCamera;
             }
 
-            oldCamera.Copy(this.Camera, false);
+            oldCamera.CopyTo(this.Camera, false);
         }
 
         /// <summary>
