@@ -122,6 +122,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\PerspectiveCameraExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MarkupExtensions\TranslateExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Physics\VerletIntegrator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\CombinedSelectionCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedByPointEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedByRectangleEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectionCommands\ModelsSelectedEventArgs.cs" />
