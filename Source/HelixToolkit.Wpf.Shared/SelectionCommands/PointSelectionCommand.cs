@@ -3,8 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Provides a command that shows a rectangle when the mouse is dragged and raises an event returning the models contained in the rectangle
-//   when the mouse button is released.
+//   Provides a command that raises an event returning the hit models at the mouse location when the mouse button is clicked.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

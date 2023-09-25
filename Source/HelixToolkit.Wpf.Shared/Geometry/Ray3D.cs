@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // <summary>
-//   Represents a 3D ray.
+//   Represents a ray in three-dimensional space.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Represents a 3D ray.
+    /// Represents a ray in three-dimensional space.
     /// </summary>
     public class Ray3D
     {

@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf
         private readonly Point p2;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSegment"/> class.
+        /// Initializes a new instance of the <see cref="LineSegment"/> structure.
         /// </summary>
         /// <param name="p1">The first point of the line segment.</param>
         /// <param name="p2">The second point of the line segment.</param>

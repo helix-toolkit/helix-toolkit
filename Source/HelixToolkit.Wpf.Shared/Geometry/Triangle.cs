@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf
         private readonly Point p3;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Triangle"/> class.
+        /// Initializes a new instance of the <see cref="Triangle"/> structure.
         /// </summary>
         /// <param name="a">The first point of the triangle.</param>
         /// <param name="b">The second point of the triangle.</param>
