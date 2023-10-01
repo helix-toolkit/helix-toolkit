@@ -66,6 +66,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\AnimationExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Matrix3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Point3DExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Rect3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods\Vector3DExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\BoundingSphere.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geometry\LineSegment.cs" />
