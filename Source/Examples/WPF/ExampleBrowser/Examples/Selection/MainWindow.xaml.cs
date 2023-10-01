@@ -29,7 +29,7 @@ namespace Selection
             this.DataContext = vm;
             this.view1.InputBindings.Add(new MouseBinding(vm.PointSelectionCommand, new MouseGesture(MouseAction.LeftClick)));
             this.view1.InputBindings.Add(new MouseBinding(vm.RectangleSelectionCommand, new MouseGesture(MouseAction.LeftClick, ModifierKeys.Control)));
-            this.view1.InputBindings.Add(new MouseBinding(vm.CombinedSelectionCommand, new MouseGesture(MouseAction.LeftClick, ModifierKeys.Control | ModifierKeys.Shift)));
+            this.view1.InputBindings.Add(new MouseBinding(vm.CombinedSelectionCommand, new MouseGesture(MouseAction.LeftClick, ModifierKeys.Shift)));
         }
     }
 
@@ -98,9 +98,9 @@ namespace Selection
             }
             set
             {
-                CombinedSelectionCommand.AllowAutoSetSelectionHitMode =value;
+                CombinedSelectionCommand.AllowAutoSetSelectionHitMode = value;
                 RaisePropertyChanged(nameof(AllowAutoSetSelectionHitMode));
-;
+                ;
             }
         }
 

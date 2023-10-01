@@ -24,7 +24,7 @@
                              GroupName="selection"
                              IsChecked="{Binding IsRectangleSelectionCommand}">
                     <TextBlock>
-                        <Run>  Point Selection</Run>
+                        <Run>Rectangle Selection</Run>
                         <LineBreak/>
                         <Run> (Ctrl + Left Click)</Run>
                     </TextBlock>
@@ -42,7 +42,7 @@
                     <TextBlock>
                             <Run>Combined Selection</Run>
                             <LineBreak/>
-                            <Run> (Ctrl + Shift + Left Click)</Run>
+                            <Run> (Shift + Left Click)</Run>
                     </TextBlock>
                       
                   
