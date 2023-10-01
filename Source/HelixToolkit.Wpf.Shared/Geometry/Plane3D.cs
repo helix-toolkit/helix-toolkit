@@ -38,16 +38,16 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane3D"/> class.
         /// </summary>
-        /// <param name="p0">
-        /// The p0.
+        /// <param name="position">
+        /// The position.
         /// </param>
-        /// <param name="n">
-        /// The n.
+        /// <param name="normal">
+        /// The normal.
         /// </param>
-        public Plane3D(Point3D p0, Vector3D n)
+        public Plane3D(Point3D position, Vector3D normal)
         {
-            this.Position = p0;
-            this.Normal = n;
+            this.Position = position;
+            this.Normal = normal;
         }
 
         /// <summary>
@@ -113,6 +113,35 @@ namespace HelixToolkit.Wpf
             }
 
             return la + ((a / b) * l);
+        }
+
+        /// <summary>
+        /// Calculates the distance from a point to a plane.
+        /// </summary>
+        /// <param name="plane">The plane used to calculate distance</param>
+        /// <param name="point">The point used to calculate distance</param>
+        /// <returns>
+        /// The distance from given point to the given plane<br/>
+        /// Equal zero: Point on the plane<br/>
+        /// Greater than zero: The point is on the same side of the plane's normal vector<br/>
+        /// Less than zero: The point is on the opposite side of the plane's normal vector<br/>
+        /// </returns>
+        public static double DistanceToPoint3D(Plane3D plane, Point3D point)
+        {
+            return point.DistanceToPlane(plane.Position, plane.Normal);
+        }
+
+        /// <summary>
+        /// Calculates the projection of a point onto a plane.
+        /// </summary>
+        /// <param name="plane">The palne used to calculate projection</param>
+        /// <param name="point">The point used to calculate projection</param>
+        /// <returns>
+        /// The projection of a given point on a given plane.
+        /// </returns>
+        public static Point3D ProjectOnPlane(Plane3D plane, Point3D point)
+        {
+            return point.ProjectOnPlane(plane.Position, plane.Normal);
         }
 
         // public void SetYZ(double x, int dir)
