@@ -93,14 +93,13 @@ namespace HelixToolkit.Wpf
             this.Mesh = new MeshGeometry3D
             {
                 TriangleIndices = BillboardGeometryBuilder.CreateIndices(1),
-                TextureCoordinates =
-                                    new PointCollection
-                                        {
-                                            new Point(0, 1),
-                                            new Point(1, 1),
-                                            new Point(1, 0),
-                                            new Point(0, 0)
-                                        }
+                TextureCoordinates = new PointCollection
+                {
+                    new Point(0, 1),
+                    new Point(1, 1),
+                    new Point(1, 0),
+                    new Point(0, 0)
+                }
             };
 
             this.Model = new GeometryModel3D { Geometry = this.Mesh };
