@@ -33,6 +33,7 @@ namespace HelixToolkit.Wpf
     [Localizability(LocalizationCategory.NeverLocalize)]
     public class HelixViewport3D : ItemsControl, IHelixViewport3D
     {
+        #region Dependency Properties
         /// <summary>
         /// Identifies the <see cref="BackViewGesture"/> dependency property.
         /// </summary>
@@ -123,7 +124,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemHeightProperty =
             DependencyProperty.Register(
-                "CoordinateSystemHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+                "CoordinateSystemHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="CoordinateSystemHorizontalPosition"/> dependency property.
@@ -181,7 +182,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemWidthProperty =
             DependencyProperty.Register(
-                "CoordinateSystemWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+                "CoordinateSystemWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the CurrentPosition dependency property.
@@ -376,7 +377,7 @@ namespace HelixToolkit.Wpf
             DependencyProperty.Register("IsTopBottomViewOrientedToFrontBack", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
+        /// Identifies the <see cref="IsViewCubeEdgeClicksEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsViewCubeEdgeClicksEnabledProperty =
             DependencyProperty.Register("IsViewCubeEdgeClicksEnabled", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(false));
@@ -746,7 +747,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="ViewCubeHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeHeightProperty = DependencyProperty.Register(
-            "ViewCubeHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+            "ViewCubeHeight", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="ViewCubeHorizontalPosition"/> dependency property.
@@ -800,7 +801,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="ViewCubeWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeWidthProperty = DependencyProperty.Register(
-            "ViewCubeWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(80.0));
+            "ViewCubeWidth", typeof(double), typeof(HelixViewport3D), new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="ZoomAroundMouseDownPoint"/> dependency property.
@@ -889,11 +890,13 @@ namespace HelixToolkit.Wpf
         /// The limit FPS property
         /// </summary>
         public static readonly DependencyProperty LimitFPSProperty =
-            DependencyProperty.Register("LimitFPS", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(true, (d,e)=> 
+            DependencyProperty.Register("LimitFPS", typeof(bool), typeof(HelixViewport3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as HelixViewport3D).limitFPS = (bool)e.NewValue;
             }));
+        #endregion Dependency Properties
 
+        #region Fields
         /// <summary>
         /// The adorner layer name.
         /// </summary>
@@ -1019,6 +1022,12 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private Viewport3D viewCubeViewport;
 
+        private bool limitFPS = true;
+        private TimeSpan prevTime;
+
+        #endregion Fields
+
+        #region Constructors
         /// <summary>
         /// Initializes static members of the <see cref="HelixViewport3D"/> class.
         /// </summary>
@@ -1062,10 +1071,12 @@ namespace HelixToolkit.Wpf
             this.Unloaded += this.OnControlUnloaded;
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.CopyHandler));
-            this.CommandBindings.Add(new CommandBinding(OrthographicToggleCommand, this.OrthographicToggle));
+            this.CommandBindings.Add(new CommandBinding(OrthographicToggleCommand, this.OrthographicToggleHandler));
             this.renderingEventListener = new RenderingEventListener(this.CompositionTargetRendering);
         }
+        #endregion Constructors
 
+        #region Events
         /// <summary>
         /// Event when a property has been changed
         /// </summary>
@@ -1113,7 +1124,9 @@ namespace HelixToolkit.Wpf
                 this.RemoveHandler(ZoomedByRectangleEvent, value);
             }
         }
+        #endregion Events
 
+        #region Properties
         /// <summary>
         /// Gets the command that toggles between orthographic and perspective camera.
         /// </summary>
@@ -3193,11 +3206,9 @@ namespace HelixToolkit.Wpf
             get { return (bool)GetValue(LimitFPSProperty); }
             set { SetValue(LimitFPSProperty, value); }
         }
+        #endregion  Properties
 
-        #region Private Variables
-        private bool limitFPS = true;
-        private TimeSpan prevTime;
-        #endregion
+        #region Methods
         /// <summary>
         /// Changes the camera direction.
         /// </summary>
@@ -3909,7 +3920,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="ExecutedRoutedEventArgs"/> instance containing the event data.</param>
-        private void OrthographicToggle(object sender, ExecutedRoutedEventArgs e)
+        private void OrthographicToggleHandler(object sender, ExecutedRoutedEventArgs e)
         {
             this.Orthographic = !this.Orthographic;
         }
@@ -4018,5 +4029,6 @@ namespace HelixToolkit.Wpf
         {
             this.viewCubeViewport.AnimateOpacity(this.ViewCubeOpacity, 200);
         }
+        #endregion Methods
     }
 }
