@@ -91,9 +91,9 @@ namespace HelixToolkit.Wpf
         {
             this.builder = new BillboardGeometryBuilder(this);
             this.Mesh = new MeshGeometry3D
-                            {
-                                TriangleIndices = BillboardGeometryBuilder.CreateIndices(1),
-                                TextureCoordinates =
+            {
+                TriangleIndices = BillboardGeometryBuilder.CreateIndices(1),
+                TextureCoordinates =
                                     new PointCollection
                                         {
                                             new Point(0, 1),
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf
                                             new Point(1, 0),
                                             new Point(0, 0)
                                         }
-                            };
+            };
 
             this.Model = new GeometryModel3D { Geometry = this.Mesh };
             this.Content = this.Model;
@@ -345,7 +345,7 @@ namespace HelixToolkit.Wpf
                 this.VerticalAlignment,
                 this.DepthOffset);
 
-            this.Mesh.Positions = this.builder.GetPositions(new[] { bb },new Vector());
+            this.Mesh.Positions = this.builder.GetPositions(new[] { bb }, new Vector());
         }
 
         /// <summary>

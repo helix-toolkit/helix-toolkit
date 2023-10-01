@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Xml;
-
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -223,10 +221,10 @@ namespace HelixToolkit.Wpf
                     }
 
                     line = line.Trim();
-                    while (line.EndsWith("\\")) 
+                    while (line.EndsWith("\\"))
                     {
                         var nextLine = this.Reader.ReadLine();
-                        while (nextLine.Length == 0) 
+                        while (nextLine.Length == 0)
                         {
                             nextLine = this.Reader.ReadLine();
                         }

@@ -641,7 +641,7 @@ namespace HelixToolkit.Wpf
             {
                 throw new ArgumentNullException(nameof(camera));
             }
-            var maxtrix = Matrix3D.Identity;
+            var matrix = Matrix3D.Identity;
             if (camera.Transform != null)
             {
                 var cameraTransform = camera.Transform.Value;
@@ -652,11 +652,11 @@ namespace HelixToolkit.Wpf
                 }
 
                 cameraTransform.Invert();
-                maxtrix.Append(cameraTransform);
+                matrix.Append(cameraTransform);
             }
-            maxtrix.Append(GetViewMatrix(camera));
-            maxtrix.Append(GetProjectionMatrix(camera, aspectRatio));
-            return maxtrix;
+            matrix.Append(GetViewMatrix(camera));
+            matrix.Append(GetProjectionMatrix(camera, aspectRatio));
+            return matrix;
         }
 
         /// <summary>
@@ -679,13 +679,13 @@ namespace HelixToolkit.Wpf
             {
                 throw new ArgumentNullException(nameof(camera));
             }
-            var maxtrix = GetTotalTransform(camera, aspectRatio);
-            if (!maxtrix.HasInverse)
+            var matrix = GetTotalTransform(camera, aspectRatio);
+            if (!matrix.HasInverse)
             {
                 throw new HelixToolkitException("Camera transform has no inverse.");
             }
-            maxtrix.Invert();
-            return maxtrix;
+            matrix.Invert();
+            return matrix;
         }
 
         /// <summary>
