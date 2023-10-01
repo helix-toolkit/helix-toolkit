@@ -19,12 +19,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The normal.
         /// </summary>
-        private Vector3D normal;
+        private Vector3D _normal;
 
         /// <summary>
         /// The position.
         /// </summary>
-        private Point3D position;
+        private Point3D _position;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "Plane3D" /> class.
@@ -58,12 +58,12 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return this.normal;
+                return _normal;
             }
 
             set
             {
-                this.normal = value;
+                _normal = value;
             }
         }
 
@@ -75,12 +75,12 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return this.position;
+                return _position;
             }
 
             set
             {
-                this.position = value;
+                _position = value;
             }
         }
 
@@ -100,8 +100,8 @@ namespace HelixToolkit.Wpf
         {
             // http://en.wikipedia.org/wiki/Line-plane_intersection
             var l = lb - la;
-            double a = Vector3D.DotProduct(this.position - la, this.normal);
-            double b = Vector3D.DotProduct(l, this.normal);
+            double a = Vector3D.DotProduct(_position - la, _normal);
+            double b = Vector3D.DotProduct(l, _normal);
             if (a.Equals(0) && b.Equals(0))
             {
                 return null;
