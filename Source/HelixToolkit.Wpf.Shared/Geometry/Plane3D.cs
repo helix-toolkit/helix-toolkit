@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf
         /// True if the plane intersects with Rect3D<br/>
         /// False if the plane does not intersect with Rect3D
         /// </returns>
-        public bool Intersects(this Rect3D rect)
+        public bool Intersects(Rect3D rect)
         {
             return rect.Intersects(_position, _normal);
         }

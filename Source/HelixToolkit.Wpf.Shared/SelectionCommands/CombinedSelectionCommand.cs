@@ -145,6 +145,7 @@ namespace HelixToolkit.Wpf
                 this.OnVisualsSelected(new VisualsSelectedByRectangleEventArgs(selectedVisuals, this.selectionRect));
             }
         }
+
         /// <summary>
         /// Determines whether the selection is a point selection or not
         /// </summary>
@@ -154,6 +155,7 @@ namespace HelixToolkit.Wpf
         {
             return this.selectionRect.Width < TOLERANCE && this.selectionRect.Height < TOLERANCE;
         }
+
         /// <summary>
         /// If <see cref="AllowAutoSetSelectionHitMode"/> is true,
         /// the <see cref="SelectionHitMode"/> will be set automatically depending on:<br/>

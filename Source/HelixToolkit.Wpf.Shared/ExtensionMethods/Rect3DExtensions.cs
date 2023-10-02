@@ -79,7 +79,9 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static bool Intersects(this Rect3D rect, Point3D planePosition, Vector3D planeNormal)
         {
-            /* AABB-Plane intersections https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
+            /* AABB-Plane intersections 
+             * https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
+             * http://what-when-how.com/advanced-methods-in-computer-graphics/collision-detection-advanced-methods-in-computer-graphics-part-3/
              * 
              *      _______________        ^ Normal
              *     |               |       |
@@ -94,9 +96,10 @@ namespace HelixToolkit.Wpf
              */
 
             planeNormal.Normalize();
+            Vector3D absPlaneNormal = new Vector3D(Math.Abs(planeNormal.X), Math.Abs(planeNormal.Y), Math.Abs(planeNormal.Z));
             Point3D center = rect.GetCenterPoint3D();
             Vector3D centerToCorner = center - rect.Location;
-            double extents = Vector3D.DotProduct(centerToCorner, planeNormal);
+            double extents = Vector3D.DotProduct(centerToCorner, absPlaneNormal);
             double distance = center.DistanceToPlane(planePosition, planeNormal);
             return Math.Abs(distance) <= extents;
         }
