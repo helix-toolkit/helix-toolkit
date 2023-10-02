@@ -126,9 +126,9 @@ namespace HelixToolkit.Wpf
         /// Greater than zero: The point is on the same side of the plane's normal vector<br/>
         /// Less than zero: The point is on the opposite side of the plane's normal vector<br/>
         /// </returns>
-        public static double DistanceToPoint3D(Plane3D plane, Point3D point)
+        public double DistanceTo(Point3D point)
         {
-            return point.DistanceToPlane(plane.Position, plane.Normal);
+            return point.DistanceToPlane(_position, _normal);
         }
 
         /// <summary>
@@ -139,9 +139,22 @@ namespace HelixToolkit.Wpf
         /// <returns>
         /// The projection of a given point on a given plane.
         /// </returns>
-        public static Point3D ProjectOnPlane(Plane3D plane, Point3D point)
+        public Point3D Project(Point3D point)
         {
-            return point.ProjectOnPlane(plane.Position, plane.Normal);
+            return point.ProjectOnPlane(_position, _normal);
+        }
+
+        /// <summary>
+        /// Check whether a plane intersects with a given <see cref="Rect3D"/> box.
+        /// </summary>
+        /// <param name="rect">The Rect3D bounding box</param>
+        /// <returns>
+        /// True if the plane intersects with Rect3D<br/>
+        /// False if the plane does not intersect with Rect3D
+        /// </returns>
+        public bool Intersects(this Rect3D rect)
+        {
+            return rect.Intersects(_position, _normal);
         }
 
         // public void SetYZ(double x, int dir)

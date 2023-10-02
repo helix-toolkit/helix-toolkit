@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf
         {
             Vector3D planeToPoint = point - planePosition;
             planeNormal.Normalize();
-            return Vector3D.DotProduct(planeNormal, planeToPoint);
+            return Vector3D.DotProduct(planeToPoint,planeNormal);
         }
 
         /// <summary>

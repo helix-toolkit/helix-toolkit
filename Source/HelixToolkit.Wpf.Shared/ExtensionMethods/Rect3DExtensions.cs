@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.Wpf
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows.Media.Media3D;
 
@@ -26,6 +27,7 @@ namespace HelixToolkit.Wpf
                 rect.Y + rect.SizeY / 2,
                 rect.Z + rect.SizeZ / 2);
         }
+
         /// <summary>
         /// Expands the size of <see cref="Rect3D"/>
         /// in 3 directions by the given amount
@@ -65,6 +67,38 @@ namespace HelixToolkit.Wpf
             }
             return result;
         }
+        /// <summary>
+        /// Check whether a plane intersects with a given <see cref="Rect3D"/> box.
+        /// </summary>
+        /// <param name="rect">The Rect3D bounding box</param>
+        /// <param name="planePosition">The position of plane</param>
+        /// <param name="planeNormal">The normal vector of plan</param>
+        /// <returns>
+        /// True if the plane intersects with Rect3D<br/>
+        /// False if the plane does not intersect with Rect3D
+        /// </returns>
+        public static bool Intersects(this Rect3D rect, Point3D planePosition, Vector3D planeNormal)
+        {
+            /* AABB-Plane intersections https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
+             * 
+             *      _______________        ^ Normal
+             *     |               |       |
+             *     |               |       |
+             *     |       *C------|------ + --+
+             *     |               |      e|   |
+             *     |               |       |   |
+             *   O *--------------- -------+   |d
+             *                             |   |
+             *                             |   |
+             * ----------------------------+---+----Plane  
+             */
 
+            planeNormal.Normalize();
+            Point3D center = rect.GetCenterPoint3D();
+            Vector3D centerToCorner = center - rect.Location;
+            double extents = Vector3D.DotProduct(centerToCorner, planeNormal);
+            double distance = center.DistanceToPlane(planePosition, planeNormal);
+            return Math.Abs(distance) <= extents;
+        }
     }
 }
