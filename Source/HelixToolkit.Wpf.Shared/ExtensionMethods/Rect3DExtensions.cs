@@ -74,10 +74,9 @@ namespace HelixToolkit.Wpf
         /// <param name="planePosition">The position of plane</param>
         /// <param name="planeNormal">The normal vector of plan</param>
         /// <returns>
-        /// True if the plane intersects with Rect3D<br/>
-        /// False if the plane does not intersect with Rect3D
+        /// Whether the two objects intersected.
         /// </returns>
-        public static bool Intersects(this Rect3D rect, Point3D planePosition, Vector3D planeNormal)
+        public static PlaneIntersectionType Intersects(this Rect3D rect, Point3D planePosition, Vector3D planeNormal)
         {
             /* AABB-Plane intersections 
              * https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
@@ -101,7 +100,19 @@ namespace HelixToolkit.Wpf
             Vector3D centerToCorner = center - rect.Location;
             double extents = Vector3D.DotProduct(centerToCorner, absPlaneNormal);
             double distance = center.DistanceToPlane(planePosition, planeNormal);
-            return Math.Abs(distance) <= extents;
+
+            if (Math.Abs(distance) <= extents)
+            {
+                return PlaneIntersectionType.Intersecting;
+            }
+            else if (distance > 0)
+            {
+                return PlaneIntersectionType.Front;
+            }
+            else
+            {
+                return PlaneIntersectionType.Back;
+            }
         }
     }
 }

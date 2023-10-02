@@ -118,7 +118,6 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Calculates the distance from a point to a plane.
         /// </summary>
-        /// <param name="plane">The plane used to calculate distance</param>
         /// <param name="point">The point used to calculate distance</param>
         /// <returns>
         /// The distance from given point to the given plane<br/>
@@ -134,7 +133,6 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Calculates the projection of a point onto a plane.
         /// </summary>
-        /// <param name="plane">The palne used to calculate projection</param>
         /// <param name="point">The point used to calculate projection</param>
         /// <returns>
         /// The projection of a given point on a given plane.
@@ -149,10 +147,9 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="rect">The Rect3D bounding box</param>
         /// <returns>
-        /// True if the plane intersects with Rect3D<br/>
-        /// False if the plane does not intersect with Rect3D
+        /// Whether the two objects intersected.
         /// </returns>
-        public bool Intersects(Rect3D rect)
+        public PlaneIntersectionType Intersects(Rect3D rect)
         {
             return rect.Intersects(_position, _normal);
         }
