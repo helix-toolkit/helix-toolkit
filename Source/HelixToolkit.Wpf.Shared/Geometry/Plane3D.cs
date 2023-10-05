@@ -19,12 +19,12 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// The normal.
         /// </summary>
-        private Vector3D _normal;
+        private Vector3D normal;
 
         /// <summary>
         /// The position.
         /// </summary>
-        private Point3D _position;
+        private Point3D position;
 
         /// <summary>
         /// Initializes a new instance of the <see cref = "Plane3D" /> class.
@@ -58,12 +58,12 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return _normal;
+                return normal;
             }
 
             set
             {
-                _normal = value;
+                normal = value;
             }
         }
 
@@ -75,12 +75,12 @@ namespace HelixToolkit.Wpf
         {
             get
             {
-                return _position;
+                return position;
             }
 
             set
             {
-                _position = value;
+                position = value;
             }
         }
 
@@ -100,8 +100,8 @@ namespace HelixToolkit.Wpf
         {
             // http://en.wikipedia.org/wiki/Line-plane_intersection
             var l = lb - la;
-            double a = Vector3D.DotProduct(_position - la, _normal);
-            double b = Vector3D.DotProduct(l, _normal);
+            double a = Vector3D.DotProduct(position - la, normal);
+            double b = Vector3D.DotProduct(l, normal);
             if (a.Equals(0) && b.Equals(0))
             {
                 return null;
@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public double DistanceTo(Point3D point)
         {
-            return point.DistanceToPlane(_position, _normal);
+            return point.DistanceToPlane(position, normal);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public Point3D Project(Point3D point)
         {
-            return point.ProjectOnPlane(_position, _normal);
+            return point.ProjectOnPlane(position, normal);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public PlaneIntersectionType Intersects(Rect3D rect)
         {
-            return rect.Intersects(_position, _normal);
+            return rect.Intersects(position, normal);
         }
 
         // public void SetYZ(double x, int dir)

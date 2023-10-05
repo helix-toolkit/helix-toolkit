@@ -27,5 +27,5 @@ namespace HelixToolkit.Wpf
         /// The object is intersecting the plane.
         /// </summary>
         Intersecting
-    };
+    }
 }
