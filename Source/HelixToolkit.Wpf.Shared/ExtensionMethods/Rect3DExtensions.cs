@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="rect">The given Rect3D</param>
         /// <returns>The center point of given Rect3D</returns>
-        public static Point3D GetCenterPoint3D(this Rect3D rect)
+        public static Point3D GetCenter(this Rect3D rect)
         {
             return new Point3D(
                 rect.X + rect.SizeX / 2,
@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf
         /// <param name="rect3d">The given Rect3D</param>
         /// <param name="expand">Amount of expansion</param>
         /// <returns>A newly expanded Rect3D</returns>
-        public static Rect3D ExpandRect3D(Rect3D rect3d, double expand)
+        public static Rect3D Expand(this Rect3D rect3d, double expand)
         {
             if (rect3d == Rect3D.Empty
                || double.IsNaN(expand)
@@ -58,7 +58,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="rects">Collection Rect3D</param>
         /// <returns>A newly total Rect3D</returns>
-        public static Rect3D MergeRect3D(IEnumerable<Rect3D> rects)
+        public static Rect3D Merge(this IEnumerable<Rect3D> rects)
         {
             Rect3D result = Rect3D.Empty;
             foreach (var rect in rects)
@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf
 
             planeNormal.Normalize();
             Vector3D absPlaneNormal = new Vector3D(Math.Abs(planeNormal.X), Math.Abs(planeNormal.Y), Math.Abs(planeNormal.Z));
-            Point3D center = rect.GetCenterPoint3D();
+            Point3D center = rect.GetCenter();
             Vector3D centerToCorner = center - rect.Location;
             double extents = Vector3D.DotProduct(centerToCorner, absPlaneNormal);
             double distance = center.DistanceToPlane(planePosition, planeNormal);
