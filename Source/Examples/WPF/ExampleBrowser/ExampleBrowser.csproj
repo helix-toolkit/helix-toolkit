@@ -196,6 +196,11 @@
     <Compile Include="Workitems\Workitem10046\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Resources\simple3dModel.objz" />
+    <Resource Include="Resources\simple3dModel.obj" />
+    <Resource Include="Resources\simple3dModel.off" />
+    <Resource Include="Resources\simple3dModel.ply" />
+    <Resource Include="Resources\simple3dModel.stl" />
     <Resource Include="Images\TriangularizationDemo_small.png" />
     <Resource Include="Images\MvvmCameraDemo_small.png" />
     <Resource Include="Images\MvvmDemo_small.png" />

@@ -20,7 +20,7 @@ namespace ModelViewer
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class MainViewModel : Observable
     {
-        private const string OpenFileFilter = "3D model files (*.3ds;*.obj;*.lwo;*.stl;*.ply;)|*.3ds;*.obj;*.objz;*.lwo;*.stl;*.ply;";
+        private const string OpenFileFilter = "3D model files (*.3ds;*.obj;*.off;*.lwo;*.stl;*.ply;)|*.3ds;*.obj;*.objz;*.off;*.lwo;*.stl;*.ply;";
 
         private const string TitleFormatString = "3D model viewer - {0}";
 
@@ -60,6 +60,14 @@ namespace ModelViewer
             {
                 this.Elements.Add(new VisualViewModel(c));
             }
+            
+            // defaults: just to make sure it works
+            var modelImporter = new ModelImporter();
+            //this.CurrentModel = modelImporter.Load("pack://application:,,,/ExampleBrowser;component/Resources/simple3dModel.obj");
+            //this.CurrentModel = modelImporter.Load("pack://application:,,,/ExampleBrowser;component/Resources/simple3dModel.objz");
+            //this.CurrentModel = modelImporter.Load("pack://application:,,,/ExampleBrowser;component/Resources/simple3dModel.off");
+            //this.CurrentModel = modelImporter.Load("pack://application:,,,/ExampleBrowser;component/Resources/simple3dModel.ply");
+            this.CurrentModel = modelImporter.Load("pack://application:,,,/ExampleBrowser;component/Resources/simple3dModel.stl");
         }
 
         public string CurrentModelPath
