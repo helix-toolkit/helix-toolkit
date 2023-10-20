@@ -48,12 +48,8 @@ namespace HelixToolkit.Wpf
         /// <returns>The model.</returns>
         public override Model3DGroup Read(string path)
         {
-            this.Directory = Path.GetDirectoryName(path);
             Load(path);
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                return this.Read(s);
-            }
+            return this.CreateModel3D();
         }
 
         /// <summary>
@@ -186,10 +182,8 @@ namespace HelixToolkit.Wpf
         public void Load(string path)
         {
             this.Directory = Path.GetDirectoryName(path);
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                Load(fs);
-            }
+            using var stream = GetResourceStream(path);
+            Load(stream);
         }
 
         /// <summary>

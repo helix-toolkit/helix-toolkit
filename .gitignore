@@ -205,3 +205,9 @@ FakesAssemblies/
 **/.vs/**
 /Source/MigrationBackup/**
 **/*.cso
+
+!/Source/Examples/WPF/ExampleBrowser/Resources/simple3dModel.obj
+!/Source/Examples/WPF/ExampleBrowser/Resources/simple3dModel.objz
+!/Source/Examples/WPF/ExampleBrowser/Resources/simple3dModel.off
+!/Source/Examples/WPF/ExampleBrowser/Resources/simple3dModel.ply
+!/Source/Examples/WPF/ExampleBrowser/Resources/simple3dModel.stl

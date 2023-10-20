@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+
 namespace HelixToolkit.Wpf
 {
     using System;
@@ -80,10 +82,24 @@ namespace HelixToolkit.Wpf
         public virtual Model3DGroup Read(string path)
         {
             this.Directory = Path.GetDirectoryName(path);
-            using (var s = File.OpenRead(path))
+            using var stream = GetResourceStream(path);
+            return this.Read(stream);
+        }
+
+        /// <summary>
+        /// Gets the resource stream by the specified path.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns>The stream.</returns>
+        protected Stream GetResourceStream(string path)
+        {
+            if (path.StartsWith("pack://application:"))
             {
-                return this.Read(s);
+                var streamInfo = Application.GetResourceStream(new Uri(path, UriKind.Absolute));
+                return streamInfo?.Stream;
             }
+
+            return new FileStream(path, FileMode.Open, FileAccess.Read);
         }
 
         /// <summary>

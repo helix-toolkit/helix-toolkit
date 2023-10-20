@@ -195,10 +195,8 @@ namespace HelixToolkit.Wpf
         public override Model3DGroup Read(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                return this.Read(s);
-            }
+            using var s = GetResourceStream(path);
+            return this.Read(s);
         }
 
         /// <summary>
@@ -340,11 +338,9 @@ namespace HelixToolkit.Wpf
         public Model3DGroup ReadZ(string path)
         {
             this.TexturePath = Path.GetDirectoryName(path);
-            using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                var deflateStream = new GZipStream(s, CompressionMode.Decompress, true);
-                return this.Read(deflateStream);
-            }
+            using var s = GetResourceStream(path);
+            using var deflateStream = new GZipStream(s, CompressionMode.Decompress, true);
+            return this.Read(deflateStream);
         }
 
         /// <summary>
