@@ -1205,7 +1205,13 @@ namespace HelixToolkit.Wpf
                     path = path.Substring(1);
                 }
 
-                return !string.IsNullOrWhiteSpace(basePath) ? Path.GetFullPath(Path.Combine(basePath, path)) : "";
+                if (string.IsNullOrWhiteSpace(basePath))
+                {
+                    // If base path is non-existent, trying to set it to absolute path of the current folder.
+                    basePath = AppDomain.CurrentDomain.BaseDirectory;
+                }
+
+                return !string.IsNullOrWhiteSpace(basePath) ? Path.GetFullPath(Path.Combine(basePath, path)) : string.Empty;
             }
         }
     }
