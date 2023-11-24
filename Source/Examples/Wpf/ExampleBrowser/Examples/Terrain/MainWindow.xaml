@@ -1,0 +1,20 @@
+﻿<Window x:Class="Terrain.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:Terrain"
+        mc:Ignorable="d"
+        Title="Terrain"
+        Height="480"
+        Width="640">
+    <Grid>
+        <h:HelixViewport3D x:Name="view1"
+                           ShowCameraInfo="True">
+            <h:DefaultLights />
+            <h:TerrainVisual3D Source="Examples/Terrain/Models/crater_0513.btz" />
+            <h:CubeVisual3D />
+        </h:HelixViewport3D>
+    </Grid>
+</Window>

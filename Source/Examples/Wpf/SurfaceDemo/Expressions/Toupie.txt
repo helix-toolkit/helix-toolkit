@@ -1,0 +1,9 @@
+﻿// http://root.cern.ch/root/html/tutorials/gl/glparametric.C.html
+
+u = (u - 0.5) * 2;
+v *= 2 * pi;
+
+double au = Math.Abs(u) - 1;
+x = au * au * cos(v);
+y = au * au * sin(v);
+z = u;

@@ -1,0 +1,20 @@
+﻿<Window x:Class="ExtrudedText.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:ExtrudedText"
+        mc:Ignorable="d"
+        Title="ExtrudedText"
+        Height="480"
+        Width="640">
+    <Grid>
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True"
+                           ShowCameraInfo="False">
+            <h:DefaultLights />
+            <h:MeshGeometryVisual3D MeshGeometry="{Binding TextGeometry}"
+                                    Fill="White" />
+        </h:HelixViewport3D>
+    </Grid>
+</Window>

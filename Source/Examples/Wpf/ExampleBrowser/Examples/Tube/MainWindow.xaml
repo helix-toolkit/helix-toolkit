@@ -1,0 +1,49 @@
+﻿<Window x:Class="Tube.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:Tube"
+        mc:Ignorable="d"
+        Title="Tube"
+        Height="480"
+        Width="640">
+    <Grid>
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True">
+            <h:SunLight />
+            <h:TubeVisual3D Path="{Binding Ring1}"
+                            Diameter="{Binding Value, ElementName=diameterSlider}"
+                            ThetaDiv="{Binding Value, ElementName=thetaDivSlider}"
+                            IsPathClosed="True"
+                            Fill="Red" />
+            <h:TubeVisual3D Path="{Binding Ring2}"
+                            Diameter="{Binding Value, ElementName=diameterSlider}"
+                            ThetaDiv="{Binding Value, ElementName=thetaDivSlider}"
+                            IsPathClosed="True"
+                            Fill="Green" />
+            <h:TubeVisual3D Path="{Binding Ring3}"
+                            Diameter="{Binding Value, ElementName=diameterSlider}"
+                            ThetaDiv="{Binding Value, ElementName=thetaDivSlider}"
+                            IsPathClosed="True"
+                            Fill="Blue" />
+        </h:HelixViewport3D>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Opacity="0.5">
+            <Slider x:Name="diameterSlider"
+                    Value="0.4"
+                    Minimum="0.1"
+                    Maximum="1"
+                    Width="150"
+                    Margin="10" />
+            <Slider x:Name="thetaDivSlider"
+                    Value="20"
+                    Minimum="3"
+                    Maximum="100"
+                    Width="150"
+                    Margin="10" />
+        </StackPanel>
+    </Grid>
+</Window>

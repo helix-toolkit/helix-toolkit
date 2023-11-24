@@ -1,0 +1,215 @@
+﻿<Window x:Class="SurfaceDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:SurfaceDemo"
+        mc:Ignorable="d"
+        Title="Parametric surfaces"
+        Height="720"
+        Width="1280"
+        x:Name="thisWindow"
+        Background="Black"
+        Foreground="White">
+    <Window.Resources>
+        <h:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    </Window.Resources>
+    <DockPanel>
+        <Menu Name="mainMenu"
+              DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open..."
+                          IsEnabled="False" />
+                <MenuItem Header="Save as..."
+                          IsEnabled="False" />
+                <Separator />
+                <MenuItem Header="Export..."
+                          Click="Export_Click" />
+                <MenuItem Header="Export stereo..."
+                          Click="ExportStereo_Click" />
+                <Separator />
+                <MenuItem Header="E_xit"
+                          Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Name="ViewSource"
+                          Header="Source"
+                          IsCheckable="True"
+                          IsChecked="True"
+                          Click="ViewSource_Click" />
+                <MenuItem Header="Reset camera"
+                          Click="ResetCamera_Click" />
+                <MenuItem Name="Fullscreen"
+                          Header="Full screen"
+                          IsCheckable="True"
+                          Click="FullScreen_Click" />
+                <Separator />
+                <MenuItem Header="Normal"
+                          IsCheckable="True"
+                          IsChecked="{Binding ViewMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Normal}"
+                          Click="Stereo_Click" />
+                <MenuItem Header="Stereo"
+                          IsCheckable="True"
+                          IsChecked="{Binding ViewMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Stereo}"
+                          Click="Stereo_Click" />
+                <MenuItem Header="Anaglyph"
+                          IsCheckable="True"
+                          IsChecked="{Binding ViewMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Anaglyph}"
+                          Click="Stereo_Click" />
+                <MenuItem Header="Interlaced"
+                          IsCheckable="True"
+                          IsChecked="{Binding ViewMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Interlaced}"
+                          Click="Stereo_Click" />
+            </MenuItem>
+            <MenuItem Header="Brush">
+                <MenuItem Header="Hue"
+                          Click="BrushHue_Click" />
+                <MenuItem Header="Hue (stripes)"
+                          Click="BrushHueStripes_Click" />
+                <MenuItem Header="Rainbow"
+                          Click="BrushRainbow_Click" />
+                <MenuItem Header="Rainbow (stripes)"
+                          Click="BrushRainbowStripes_Click" />
+                <MenuItem Header="Pattern"
+                          Click="BrushPattern_Click" />
+                <MenuItem Header="Image..."
+                          Click="BrushImage_Click" />
+                <MenuItem Header="Media..."
+                          IsEnabled="False" />
+            </MenuItem>
+            <MenuItem Header="Surfaces"
+                      Name="surfacesMenu" />
+        </Menu>
+        <Grid DockPanel.Dock="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <DockPanel Name="SourcePanel">
+                <Grid DockPanel.Dock="Bottom"
+                      Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Elements in 'u' direction"
+                               Grid.Row="0" />
+                    <TextBlock Text="Elements in 'v' direction"
+                               Grid.Row="1" />
+                    <TextBlock Text="Parameter 'w'"
+                               Grid.Row="2" />
+                    <TextBlock Text="Stereobase"
+                               Grid.Row="3" />
+                    <Slider Name="slider1"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Minimum="10"
+                            Maximum="400"
+                            Value="{Binding MeshSizeU}"
+                            Margin="10 0 10 0" />
+                    <Slider Name="slider2"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Minimum="10"
+                            Maximum="400"
+                            Value="{Binding MeshSizeV}"
+                            Margin="10 0 10 0" />
+                    <Slider Name="slider3"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Minimum="0"
+                            Maximum="2"
+                            Value="{Binding ParameterW}"
+                            Margin="10 0 10 0" />
+                    <Slider Name="slider4"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            Minimum="0.003"
+                            Maximum="1.2"
+                            Value="{Binding StereoBase}"
+                            IsEnabled="{Binding ViewStereo}"
+                            Margin="10 0 10 0" />
+                    <TextBlock Text="{Binding MeshSizeU, StringFormat='{}{0:N0}'}"
+                               Grid.Column="2"
+                               Grid.Row="0" />
+                    <TextBlock Text="{Binding MeshSizeV, StringFormat={}{0:N0}}"
+                               Grid.Column="2"
+                               Grid.Row="1" />
+                    <TextBlock Text="{Binding ParameterW, StringFormat={}{0:N2}}"
+                               Grid.Column="2"
+                               Grid.Row="2" />
+                    <TextBlock IsEnabled="{Binding ViewStereo}"
+                               Text="{Binding StereoBase, StringFormat={}{0:N3}}"
+                               Grid.Column="2"
+                               Grid.Row="3" />
+                </Grid>
+                <ListView x:Name="errorList"
+                          DockPanel.Dock="Bottom"
+                          Height="100">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="40"
+                                            Header="Line"
+                                            DisplayMemberBinding="{Binding Line}" />
+                            <GridViewColumn Width="300"
+                                            Header="Error"
+                                            DisplayMemberBinding="{Binding ErrorText}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <TextBox x:Name="source1"
+                         FontFamily="Lucida Console, Courier New"
+                         HorizontalScrollBarVisibility="Auto"
+                         VerticalScrollBarVisibility="Auto"
+                         AcceptsReturn="True"
+                         TextChanged="Source1_TextChanged" />
+            </DockPanel>
+            <GridSplitter HorizontalAlignment="Right"
+                          Width="8"
+                          VerticalAlignment="Stretch"
+                          Background="Transparent"
+                          Focusable="False" />
+
+            <h:HelixViewport3D x:Name="view1"
+                               Grid.Column="1"
+                               CameraRotationMode="Trackball"
+                               Title="{Binding ModelTitle}"
+                               ShowFrameRate="True"
+                               Background="Black">
+                <h:DefaultLights />
+                <local:DynamicCodeSurface3D x:Name="surface1"
+                                            Fill="{Binding Brush}"
+                                            MeshSizeU="{Binding MeshSizeU}"
+                                            MeshSizeV="{Binding MeshSizeV}"
+                                            ParameterW="{Binding ParameterW}"
+                                            Source="{Binding Text, ElementName=source1, UpdateSourceTrigger=PropertyChanged}" />
+            </h:HelixViewport3D>
+            <h:StereoView3D x:Name="view2"
+                            Visibility="Hidden"
+                            Grid.Column="1"
+                            Background="Black"
+                            StereoBase="{Binding StereoBase}"
+                            CameraRotationMode="Trackball" />
+            <h:AnaglyphView3D x:Name="view3"
+                              Visibility="Hidden"
+                              Grid.Column="1"
+                              Background="Black"
+                              StereoBase="{Binding StereoBase}"
+                              CameraRotationMode="Trackball" />
+            <h:InterlacedView3D x:Name="view4"
+                                Visibility="Hidden"
+                                Grid.Column="1"
+                                Background="Black"
+                                StereoBase="{Binding StereoBase}"
+                                CameraRotationMode="Trackball" />
+        </Grid>
+    </DockPanel>
+</Window>

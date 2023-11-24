@@ -1,0 +1,12 @@
+﻿// http://xahlee.org/surface/klein_bottle/klein_bottle.html
+
+u *= 2 * pi;
+v *= 2*pi;
+
+double aa=3;
+double s=1;
+
+x= s*(aa+cos(v/2)*sin(u)-sin(v/2)*sin(2*u))*cos(v);
+y= s*(aa+cos(v/2)*sin(u)-sin(v/2)*sin(2*u))*sin(v);
+z= s*sin(v/2)*sin(u)+cos(v/2)*sin(2*u);
+      

@@ -1,0 +1,33 @@
+﻿<Window x:Class="Triangularization.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:local="clr-namespace:Triangularization"
+        mc:Ignorable="d"
+        Title="Triangularization"
+        Height="480"
+        Width="640">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <!-- The HelixViewport3D supports camera manipulation, and can be used just like the Viewport3D -->
+        <h:HelixViewport3D ZoomExtentsWhenLoaded="True">
+
+            <!-- Remember to add light to the scene -->
+            <h:SunLight />
+
+            <!-- The content of this visual is defined in MainViewModel.cs -->
+            <ModelVisual3D Content="{Binding Model}" />
+
+            <!-- You can also add elements here in the xaml -->
+            <h:GridLinesVisual3D Width="8"
+                                 Length="8"
+                                 MinorDistance="1"
+                                 MajorDistance="1"
+                                 Thickness="0.01" />
+        </h:HelixViewport3D>
+    </Grid>
+</Window>
