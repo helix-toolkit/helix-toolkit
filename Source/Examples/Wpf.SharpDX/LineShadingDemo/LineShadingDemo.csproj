@@ -6,6 +6,7 @@
     <LangVersion>11.0</LangVersion>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

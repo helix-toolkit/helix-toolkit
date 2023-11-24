@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseWinUI>true</UseWinUI>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

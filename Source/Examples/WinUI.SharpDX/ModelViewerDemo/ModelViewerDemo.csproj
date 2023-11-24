@@ -12,6 +12,7 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
