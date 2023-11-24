@@ -1,0 +1,355 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <HLSLShader Include="CS\csParticleInsert.hlsl">
+      <ShaderProfile>cs_5_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="CS\csParticleUpdate.hlsl">
+      <ShaderProfile>cs_5_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="DS\dsMeshTriTessellation.hlsl">
+      <ShaderProfile>ds_5_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="GS\gsBillboard.hlsl">
+      <ShaderProfile>gs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="GS\gsLine.hlsl">
+      <ShaderProfile>gs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="GS\gsLineArrowHead.hlsl">
+      <ShaderProfile>gs_4_0</ShaderProfile>
+      <EntryPointName>mainArrowHead</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="GS\gsLineArrowHeadTail.hlsl">
+      <ShaderProfile>gs_4_0</ShaderProfile>
+      <EntryPointName>mainArrowHeadTail</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="GS\gsMeshNormalVector.hlsl">
+      <ShaderProfile>gs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="GS\gsMeshSkinnedOut.hlsl">
+      <ShaderProfile>gs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="GS\gsParticle.hlsl">
+      <ShaderProfile>gs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="GS\gsPoint.hlsl">
+      <ShaderProfile>gs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="HS\hsMeshTriTessellation.hlsl">
+      <ShaderProfile>hs_5_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psBillboardText.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psBillboardTextOITDP.hlsl">
+      <EntryPointName>billboardTextOIT</EntryPointName>
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psBillboardTextOIT.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>billboardTextOIT</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psBillboardTextOITDP.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>billboardTextOIT</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psColor.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psDepthStencilOnly.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psDiffuseMap.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectBloomBlurHorizontal.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectBloomBlurVertical.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectBloomCombine.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectBloomExtract.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>psBloomExtract</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectGaussianBlurHorizontal.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectGaussianBlurVertical.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectMeshBorderHighlight.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectMeshDiffuseXRayGrid.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>mainXRayGrid</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectMeshXRay.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectMeshXRayGrid.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectOutlineQuad.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectOutlineQuadStencil.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectOutlineQualFinal.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psEffectOutlineSmooth.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psFXAA.hlsl">
+      <ShaderProfile>ps_5_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psLine.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psLineColor.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psLuma.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshBlinnPhong.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshBlinnPhongOIT.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>meshBlinnPhongOIT</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psOITDepthPeelingCommon.hlsl">
+      <ShaderProfile>ps_5_0</ShaderProfile>
+      <EntryPointName>firstPassPS</EntryPointName>
+      <ObjectFileOutput>$(OutDir)\PS\psMeshOITDPFirst.cso</ObjectFileOutput>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshBlinnPhongOITDP.hlsl">
+      <ShaderProfile>ps_5_0</ShaderProfile>
+      <EntryPointName>blinnPhongOITDP</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psOITDepthPeelingCommon.hlsl">
+      <ShaderProfile>ps_5_0</ShaderProfile>
+      <EntryPointName>finalPS</EntryPointName>
+      <ObjectFileOutput>$(OutDir)\PS\psMeshOITDPFinal.cso</ObjectFileOutput>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshBlinnPhongOITQuad.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshClipPlaneBackface.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>psClipPlaneBackFace</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshClipPlaneQuad.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshColorStripe.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshDiffuseMapOIT.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>meshDiffuseOIT</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshDiffuseMapOITDP.hlsl">
+      <ShaderProfile>ps_5_0</ShaderProfile>
+      <EntryPointName>diffuseOITDP</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshPBR.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshPBROIT.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>meshPBROIT</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshPBROITDP.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>pbrOITDP</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psMeshXRay.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psNormals.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psParticle.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psParticleOIT.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>particleOIT</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psParticleOITDP.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>particleOITDP</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psPlaneGrid.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psPoint.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psPositions.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psScreenDup.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psShadow.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psSkybox.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psSprite.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psSSAO.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psSSAOBlur.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psSSAOP1.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psViewCube.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psVolume.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psVolumeCube.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psVolumeDiffuse.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psWireframe.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="PS\psWireframeOIT.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>wireframeOIT</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="PS\psWireframeOITDP.hlsl">
+      <ShaderProfile>ps_4_0</ShaderProfile>
+      <EntryPointName>wireframeOITDP</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsBillboard.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsBillboardInstancing.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+      <EntryPointName>mainInstancing</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsBoneSkinningBasic.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsCubeMap.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshBatched.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshBatchedShadow.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshBatchedSSAO.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshBatchedWireframe.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshClipPlane.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+      <EntryPointName>mainClip</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshClipPlaneQuad.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshDefault.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshDepth.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshInstancing.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+      <EntryPointName>mainInstancing</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshInstancingTessellation.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+      <EntryPointName>mainInstancing</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshOutlinePass1.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+      <EntryPointName>VSMeshOutlineP1</EntryPointName>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshOutlineScreenQuad.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshShadow.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshSSAO.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshTessellation.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsMeshWireframe.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsParticle.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsPlaneGrid.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsPoint.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsPointShadow.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsScreenDup.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsScreenDupCursor.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsScreenQuad.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsSkybox.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsSprite.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsSSAO.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+    <HLSLShader Include="VS\vsVolume.hlsl">
+      <ShaderProfile>vs_4_0</ShaderProfile>
+    </HLSLShader>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JeremyAnsel.HLSL.Targets" Version="2.0.20" />
+  </ItemGroup>
+
+</Project>
