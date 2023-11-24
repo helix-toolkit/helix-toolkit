@@ -1,0 +1,104 @@
+﻿<Window x:Class="DynamicTextureDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:local="clr-namespace:DynamicTextureDemo"
+        mc:Ignorable="d"
+        Title="DynamicTextureDemo"
+        Width="1200"
+        Height="600">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX x:Name="view1"
+                        Title="{Binding Title}"
+                        BackgroundColor="Black"
+                        Camera="{Binding Camera}"
+                        CoordinateSystemLabelForeground="White"
+                        EffectsManager="{Binding EffectsManager}"
+                        ShowCoordinateSystem="False"
+                        ShowFrameRate="True"
+                        TextBrush="Black"
+                        UseDefaultGestures="False">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B"
+                            Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F"
+                            Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U"
+                            Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D"
+                            Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L"
+                            Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R"
+                            Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents"
+                            Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate"
+                              Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom"
+                              Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan"
+                              Gesture="LeftClick" />
+            </hx:Viewport3DX.InputBindings>
+
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"
+                                   Color="{Binding Light1Color}" />
+            <!--<hx:MeshGeometryModel3D FillMode="{Binding FillMode}"
+                Geometry="{Binding Other}"
+                Material="{Binding OtherMaterial}" />-->
+            <hx:MeshGeometryModel3D CullMode="Front"
+                                    FillMode="{Binding FillMode}"
+                                    Geometry="{Binding InnerModel}"
+                                    InvertNormal="True"
+                                    Material="{Binding InnerModelMaterial}" />
+            <hx:MeshGeometryModel3D CullMode="Back"
+                                    FillMode="{Binding FillMode}"
+                                    Geometry="{Binding Model}"
+                                    Material="{Binding ModelMaterial}" />
+
+            <hx:PointGeometryModel3D Geometry="{Binding PointModel}"
+                                     Size="2,2"
+                                     Color="White">
+                <hx:PointGeometryModel3D.Transform>
+                    <TranslateTransform3D OffsetX="-10" />
+                </hx:PointGeometryModel3D.Transform>
+            </hx:PointGeometryModel3D>
+            <hx:LineMaterialGeometryModel3D Geometry="{Binding LineModel}"
+                                            Material="{Binding LineMaterial}">
+                <hx:LineMaterialGeometryModel3D.Transform>
+                    <TranslateTransform3D OffsetX="10" />
+                </hx:LineMaterialGeometryModel3D.Transform>
+            </hx:LineMaterialGeometryModel3D>
+        </hx:Viewport3DX>
+        <StackPanel Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Orientation="Vertical">
+            <CheckBox Margin="4"
+                      IsChecked="{Binding DynamicTexture}">Dynamic Texture</CheckBox>
+            <CheckBox Margin="15,4,0,4"
+                      IsChecked="{Binding AnimateUVOffset}"
+                      IsEnabled="{Binding DynamicTexture}">
+                Animate UV
+            </CheckBox>
+            <CheckBox Margin="4"
+                      IsChecked="{Binding DynamicVertices}">Dynamic Vertex Positions</CheckBox>
+            <CheckBox Margin="4"
+                      IsChecked="{Binding DynamicTriangles}">Dynamic Triangles</CheckBox>
+            <CheckBox Margin="4"
+                      IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox Margin="4"
+                      IsChecked="{Binding ReverseInnerRotation}">Reverse Inner Rotation</CheckBox>
+        </StackPanel>
+    </Grid>
+</Window>

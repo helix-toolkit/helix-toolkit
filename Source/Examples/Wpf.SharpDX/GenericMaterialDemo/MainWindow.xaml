@@ -1,0 +1,31 @@
+﻿<Window x:Class="GenericMaterialDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:local="clr-namespace:GenericMaterialDemo"
+        mc:Ignorable="d"
+        Title="GenericMaterialDemo"
+        Width="800"
+        Height="450">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX x:Name="view1"
+                        Background="Black"
+                        BackgroundColor="Black"
+                        Camera="{Binding Camera}"
+                        CameraMode="Inspect"
+                        EffectsManager="{Binding EffectsManager}">
+            <hx:DirectionalLight3D Direction="0, 0, 1"
+                                   Color="White" />
+            <hx:Element3DPresenter Content="{Binding ModelGroup}" />
+        </hx:Viewport3DX>
+    </Grid>
+</Window>

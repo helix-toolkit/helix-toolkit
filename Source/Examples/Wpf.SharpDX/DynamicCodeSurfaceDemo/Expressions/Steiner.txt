@@ -1,0 +1,13 @@
+﻿// http://xahlee.org/surface/steiner/steiner.html
+
+u*=pi;
+v*=2*pi;
+
+double cosv=cos(v);
+
+// b in [0,1]
+double b=0.0;
+
+x=sqrt(2)*cos(2*u)*cosv*cosv+cos(u)*sin(2*v)/(2-(b*sqrt(2)*sin(3*u)*sin(2*v)));
+y=sqrt(2)*sin(2*u)*cosv*cosv-sin(u)*sin(2*v)/(2-(b*sqrt(2)*sin(3*u)*sin(2*v)));
+z=3*cosv*cosv/(2-(b*sqrt(2)*sin(3*u)*sin(2*v)))-1;

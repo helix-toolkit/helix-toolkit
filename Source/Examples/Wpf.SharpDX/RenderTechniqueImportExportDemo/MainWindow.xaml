@@ -1,0 +1,75 @@
+﻿<Window x:Class="RenderTechniqueImportExportDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:local="clr-namespace:RenderTechniqueImportExportDemo"
+        mc:Ignorable="d"
+        Title="RenderTechniqueImportExportDemo"
+        Width="800"
+        Height="450">
+    <Window.DataContext>
+        <local:MainViewModel x:Name="viewmodel" />
+    </Window.DataContext>
+    <Grid x:Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.RowSpan="2"
+                   Width="120">
+            <StackPanel HorizontalAlignment="Center"
+                        DockPanel.Dock="Top"
+                        Orientation="Vertical">
+                <Button Margin="4"
+                        Command="{Binding ExportCommand}">Export</Button>
+                <Button Margin="4"
+                        Command="{Binding ImportCommand}">Import</Button>
+            </StackPanel>
+            <ListBox DockPanel.Dock="Bottom"
+                     ItemsSource="{Binding TechniqueList}"
+                     SelectedItem="{Binding SelectedTechnique}"
+                     Tag="{Binding ElementName=viewmodel}">
+                <ListBox.ContextMenu>
+                    <ContextMenu x:Name="listMenu"
+                                 DataContext="{Binding ElementName=mainGrid, Path=DataContext}">
+                        <MenuItem Command="{Binding ExportSingleTechniqueCommand}"
+                                  Header="Export" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+        </DockPanel>
+        <hx:Viewport3DX Grid.Row="1"
+                        Grid.Column="1"
+                        BackgroundColor="Black"
+                        Camera="{Binding Camera}"
+                        EffectsManager="{Binding EffectsManager}"
+                        ShowCoordinateSystem="True"
+                        ShowViewCube="True">
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"
+                                   Color="White" />
+            <hx:MeshGeometryModel3D Geometry="{Binding MeshModel}"
+                                    Material="{Binding MeshMaterial}" />
+            <hx:LineGeometryModel3D Geometry="{Binding LineModel}"
+                                    Color="Blue" />
+            <hx:PointGeometryModel3D Geometry="{Binding PointModel}"
+                                     Color="Red" />
+        </hx:Viewport3DX>
+        <TextBox Grid.Row="0"
+                 Grid.Column="1"
+                 AcceptsReturn="True"
+                 Foreground="Blue"
+                 IsReadOnly="True"
+                 MaxLines="10"
+                 TextWrapping="Wrap">
+            Usage: Techniques folder contains several exported technique files.
+            Import individual technique to show models only using corresponding technique.
+            DefaultAll.techniques contains all default techniques used by HelixToolkit.
+        </TextBox>
+    </Grid>
+</Window>

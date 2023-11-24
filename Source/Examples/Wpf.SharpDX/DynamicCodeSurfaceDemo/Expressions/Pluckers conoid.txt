@@ -1,0 +1,8 @@
+﻿u *= 2 * pi;
+v *= 2 * pi;
+
+// Plücker’s conoid
+int n=2;
+x=v*cos(u);
+y=v*sin(u);
+z=sin(n*u);

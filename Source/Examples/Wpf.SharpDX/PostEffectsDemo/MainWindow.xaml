@@ -1,0 +1,145 @@
+﻿<Window x:Class="PostEffectsDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:local="clr-namespace:PostEffectsDemo"
+        mc:Ignorable="d"
+        Title="PostEffectsDemo"
+        Width="800"
+        Height="600">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <hx:Viewport3DX x:Name="view1"
+                        Title="{Binding Title}"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="Black"
+                        BackgroundColor="Black"
+                        Camera="{Binding Camera}"
+                        CoordinateSystemLabelForeground="White"
+                        EffectsManager="{Binding EffectsManager}"
+                        EnableD2DRendering="False"
+                        EnableSwapChainRendering="True"
+                        FXAALevel="Low"
+                        ModelUpDirection="0,0,1"
+                        ShowCoordinateSystem="False"
+                        SubTitle="{Binding SubTitle}"
+                        TextBrush="Black"
+                        UseDefaultGestures="False">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B"
+                            Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F"
+                            Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U"
+                            Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D"
+                            Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L"
+                            Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R"
+                            Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents"
+                            Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate"
+                              Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom"
+                              Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan"
+                              Gesture="LeftClick" />
+            </hx:Viewport3DX.InputBindings>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}"
+                                   Color="White" />
+
+            <hx:MeshGeometryModel3D x:Name="mesh1"
+                                    CullMode="Back"
+                                    Geometry="{Binding MeshModel1}"
+                                    Material="{Binding Material1}"
+                                    PostEffects="xrayGrid;glow[color:#85FA00];"
+                                    Transform="{Binding Model1Transform}" />
+
+            <hx:MeshGeometryModel3D CullMode="Back"
+                                    Geometry="{Binding MeshModel1}"
+                                    Material="{Binding Material3}"
+                                    PostEffects="glow[color:#FA8000]; border[color:#004CFF]" />
+
+            <hx:MeshGeometryModel3D x:Name="mesh2"
+                                    CullMode="Back"
+                                    Geometry="{Binding MeshModel2}"
+                                    Material="{Binding Material2}"
+                                    PostEffects="border; glow[color:#0000FF]; xrayGrid[color:#D22FDCDC]"
+                                    Transform="{Binding Model2Transform}" />
+            <hx:MeshGeometryModel3D CullMode="Back"
+                                    Geometry="{Binding MeshModel3}"
+                                    Material="{Binding Material2}"
+                                    PostEffects="xrayGrid"
+                                    Transform="{Binding Model1Transform}" />
+            <hx:MeshGeometryModel3D CullMode="Back"
+                                    Geometry="{Binding FloorModel}"
+                                    Material="{Binding FloorMaterial}" />
+            <hx:LineGeometryModel3D Geometry="{Binding LineModel}"
+                                    PostEffects="xrayLine"
+                                    Color="White" />
+            <hx:ScreenSpacedGroup3D Mode="RelativeScreenSpaced">
+                <hx:MeshGeometryModel3D CullMode="Back"
+                                        Geometry="{Binding MeshModel1}"
+                                        Material="{Binding Material1}"
+                                        PostEffects="xrayGrid;glow[color:#85FA00];"
+                                        Transform="{Binding Model1Transform}" />
+
+                <hx:MeshGeometryModel3D CullMode="Back"
+                                        Geometry="{Binding MeshModel1}"
+                                        Material="{Binding Material3}"
+                                        PostEffects="glow[color:#FA8000]; border[color:#004CFF]" />
+
+                <hx:MeshGeometryModel3D CullMode="Back"
+                                        Geometry="{Binding MeshModel2}"
+                                        Material="{Binding Material2}"
+                                        PostEffects="border; glow[color:#0000FF]; xrayGrid[color:#D22FDCDC]"
+                                        Transform="{Binding Model2Transform}" />
+                <hx:MeshGeometryModel3D CullMode="Back"
+                                        Geometry="{Binding MeshModel3}"
+                                        Material="{Binding Material2}"
+                                        PostEffects="xrayGrid"
+                                        Transform="{Binding Model1Transform}" />
+                <hx:MeshGeometryModel3D CullMode="Back"
+                                        Geometry="{Binding FloorModel}"
+                                        Material="{Binding FloorMaterial}" />
+                <hx:LineGeometryModel3D Geometry="{Binding LineModel}"
+                                        PostEffects="xrayLine"
+                                        Color="White" />
+            </hx:ScreenSpacedGroup3D>
+            <hx:PostEffectMeshXRayGrid x:Name="xrayGrid"
+                                       EffectName="xrayGrid"
+                                       GridDensity="4" />
+            <hx:PostEffectMeshOutlineBlur x:Name="outlineGlow"
+                                          EffectName="glow"
+                                          NumberOfBlurPass="6"
+                                          Color="Yellow" />
+            <hx:PostEffectMeshBorderHighlight x:Name="border"
+                                              EffectName="border"
+                                              Color="Red" />
+            <hx:PostEffectMeshXRay x:Name="xrayLine"
+                                   EffectName="xrayLine" />
+        </hx:Viewport3DX>
+        <StackPanel Grid.Column="1"
+                    Orientation="Vertical">
+            <CheckBox Margin="2"
+                      IsChecked="{Binding ElementName=xrayGrid, Path=IsRendering}">Mesh XRayGrid</CheckBox>
+            <CheckBox Margin="2"
+                      IsChecked="{Binding ElementName=outlineGlow, Path=IsRendering}">Glow</CheckBox>
+            <CheckBox Margin="2"
+                      IsChecked="{Binding ElementName=border, Path=IsRendering}">Mesh Outline</CheckBox>
+            <CheckBox Margin="2"
+                      IsChecked="{Binding ElementName=xrayLine, Path=IsRendering}">Line XRay</CheckBox>
+        </StackPanel>
+    </Grid>
+</Window>
