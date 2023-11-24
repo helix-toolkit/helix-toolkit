@@ -1,0 +1,24 @@
+﻿<Window x:Class="OffScreenRenderingDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OffScreenRenderingDemo"
+        mc:Ignorable="d"
+        Title="OffScreenRenderingDemo"
+        Width="800"
+        Height="450">
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Image Source="{Binding Image}" />
+        <Button Margin="10"
+                Padding="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Command="{Binding RenderCommand}">
+            Render
+        </Button>
+    </Grid>
+</Window>
