@@ -17,11 +17,6 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'True'">true</ContinuousIntegrationBuild>
     <DefineConstants>$(DefineConstants);WINUI</DefineConstants>
-    <Version>3.0.0</Version>
-    <AssemblyVersion>3.0.0</AssemblyVersion>
-    <FileVersion>3.0.0</FileVersion>
-    <InformationalVersion>3.0.0</InformationalVersion>
-    <PackageVersion>3.0.0</PackageVersion>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
   <ItemGroup>
