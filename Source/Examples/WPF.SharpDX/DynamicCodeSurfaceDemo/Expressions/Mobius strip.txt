@@ -1,9 +1,0 @@
-﻿// http://en.wikipedia.org/wiki/M%C3%B6bius_strip
-// http://www.worldofescher.com/gallery/jpgs/P3L.jpg
-
-u *= 2 * pi;
-v = -1 + 2 * v;
-
-x = (1 + 0.5 * v * cos(0.5 * u)) * cos(u);
-y = (1 + 0.5 * v * cos(0.5 * u)) * sin(u);
-z = 0.5 * v * sin(0.5 * u);

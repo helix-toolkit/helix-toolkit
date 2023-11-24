@@ -1,8 +1,0 @@
-﻿u *= 2 * pi;
-v *= 2 * pi;
-
-// Seashell surface
-// http://en.wikipedia.org/wiki/Seashell_surface
-x=5.0/4*(1-v/2/pi)*cos(2*v)*(1+cos(u))+cos(2*v);
-y=5.0/4*(1-v/2/pi)*sin(2*v)*(1+cos(u))+sin(2*v);
-z=7*v/2/pi+5.0/4*(1-v/2/pi)*sin(u);
