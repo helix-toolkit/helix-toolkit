@@ -14,50 +14,24 @@ install:
 configuration: Release
 dotnet_csproj:
   patch: true
-  file: '**\*.csproj'
+  file: 'Source\Directory.Build.props'
   version: '{version}'
   package_version: '{version}'
   assembly_version: '{version}'
   file_version: '{build}'
   informational_version: '{version}'
-  
+
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - nuget restore .\Source\HelixToolkit.AppVeyor.sln
-  - gitversion /l console /output buildserver /updateAssemblyInfo
-  
-build_script:
-  - msbuild Source/HelixToolkit.AppVeyor.sln "/property:Platform=Any CPU" "/property:Version=%GitVersion_NuGetVersion%" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /p:SourceLinkCreate=true
+  - nuget restore .\Source\HelixToolkit.sln
+  - gitversion /l console /output buildserver /updateAssemblyInfo Source\Directory.Build.props
 
-after_build:
-  - nuget pack Source\HelixToolkit.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.Wpf.Input.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.Core.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg  
-  - nuget pack Source\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.UWP.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.SharpDX.Core.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.SharpDX.Core.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.SharpDX.Assimp.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - nuget pack Source\HelixToolkit.WinUI.nuspec -version "%GitVersion_NuGetVersion%" -Symbols -SymbolPackageFormat snupkg
-  - if "%APPVEYOR_REPO_NAME%" == "helix-toolkit/helix-toolkit" if not defined APPVEYOR_PULL_REQUEST_NUMBER Source\build-dist-examples.cmd
-
-artifacts:
-  - path: '*.nupkg'
-    name: HelixToolkit-packages-$(GitVersion_SemVer)
-    type: zip
-  - path: '*.snupkg'
-    name: HelixToolkit-packages-symbols-$(GitVersion_SemVer)
-    type: zip
-  - path: Source\dist-examples\WPF
-    name: HelixToolkit-Examples-WPF-$(GitVersion_SemVer)
-    type: zip
-  - path: Source\dist-examples\WPF.SharpDX
-    name: HelixToolkit-Examples-WPF-SharpDX-$(GitVersion_SemVer)
-    type: zip
-  - path: Source\dist-examples\SharpDX.Core
-    name: HelixToolkit-Examples-SharpDX-Core-$(GitVersion_SemVer)
-    type: zip
+build:
+  project: Source\HelixToolkit.sln
+  publish_nuget: true
+  publish_nuget_symbols: true
+  use_snupkg_format: true
+  verbosity: minimal
     
 deploy:
   provider: NuGet
@@ -70,3 +44,4 @@ deploy:
   on:
     APPVEYOR_REPO_NAME: helix-toolkit/helix-toolkit
     APPVEYOR_ACCOUNT_NAME: holance
+
