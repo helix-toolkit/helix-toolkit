@@ -1,0 +1,56 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <Version>3.0.0</Version>
+    <Description>Helix Toolkit is a collection of 3D components for .NET.</Description>
+    <PackageTags>3D</PackageTags>
+    <Authors>JeremyAnsel, Lunci, objo</Authors>
+    <Company>Helix Toolkit</Company>
+    <Copyright>Copyright (C) Helix Toolkit 2023</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>http://www.helix-toolkit.org</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>helixtoolkit.png</PackageIcon>
+    <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>Default</AnalysisMode>
+    <!--<AnalysisMode>All</AnalysisMode>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="$(SolutionDir)..\AUTHORS">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="$(SolutionDir)..\CONTRIBUTORS">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="$(SolutionDir)..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="$(SolutionDir)..\Images\helixtoolkit.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <NoWarn>MC1000;NU1701;CS1591;NU5104;NUnit2005;CA1069;CA1401;CA2253;CA2254;MC3074</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)HelixToolkit.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+</Project>
